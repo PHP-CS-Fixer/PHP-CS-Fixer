@@ -1696,7 +1696,7 @@ use const some\a\{ConstA, ConstB, ConstC};
             array(
                 '<?php
 if (1==1) { // test
- $a = 1;
+    $a = 1;
 }
 echo $a;',
                 '<?php
@@ -1710,7 +1710,7 @@ if ($test) { // foo
     echo 1;
 }
 if (1 === 1) {//a
-$a = "b"; /*d*/
+    $a = "b"; /*d*/
 }//c
 echo $a;
 if ($a === 3) /**/

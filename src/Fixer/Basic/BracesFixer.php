@@ -318,16 +318,6 @@ $negative = function ($item) {
             for ($nestIndex = $lastCommaIndex; $nestIndex >= $startBraceIndex; --$nestIndex) {
                 $nestToken = $tokens[$nestIndex];
 
-                // fix indent before comments starting with double slash
-                if ($nestToken->isComment() && substr($nestToken->getContent(), 0, 2) === '//') {
-                    $tokens->ensureWhitespaceAtIndex(
-                        $nestIndex - 1,
-                        0,
-                        rtrim($tokens[$nestIndex - 1]->getContent(), ' ')
-                            .$indent
-                            .$this->whitespacesConfig->getIndent()
-                    );
-                }
 
                 if ($nestToken->equals(')')) {
                     $nestIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nestIndex, false);
@@ -340,7 +330,14 @@ $negative = function ($item) {
 
                     if (
                         // next Token is not a comment
-                        !$nextNonWhitespaceNestToken->isComment() &&
+                        (
+                            !$nextNonWhitespaceNestToken->isComment() ||
+                            (
+                                substr($nextNonWhitespaceNestToken->getContent(), 0, 2) === '//' &&
+                                strpos($tokens[$nestIndex + 1]->getContent(), $this->whitespacesConfig->getLineEnding()) !== false/* ||
+                                (echo $tokens[$nestIndex]->getContent()) && false*/
+                            )
+                        ) &&
                         // and it is not a `$foo = function () {};` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']', array(CT::T_ARRAY_SQUARE_BRACE_CLOSE)))) &&
                         // and it is not a `Foo::{bar}()` situation
