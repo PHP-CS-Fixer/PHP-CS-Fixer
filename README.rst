@@ -477,10 +477,6 @@ Choose from the list of available rules:
 
   Code MUST use configured indentation type.
 
-* **invisible_symbols**
-   | Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
-   | unicode symbols.
-
 * **is_null** [@Symfony:risky]
 
   Replaces is_null(parameter) expression with ``null === parameter``.
@@ -719,6 +715,11 @@ Choose from the list of available rules:
 * **no_whitespace_in_blank_line** [@Symfony]
 
   Remove trailing whitespace at the end of blank lines.
+
+* **non_printable_character**
+   | Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
+   | invisible unicode symbols.
+   | *Rule is: risky.*
 
 * **normalize_index_brace** [@Symfony]
 

@@ -18,11 +18,11 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Fixer Zero-width space (ZWSP), Non-breaking space (NBSP) and other unicode symbols.
+ * Fixer Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
  *
  * @author Ivan Boprzenkov <ivan.borzenkov@gmail.com>
  */
-final class InvisibleSymbolsFixer extends AbstractFixer
+final class NonPrintableCharacterFixer extends AbstractFixer
 {
     private $symbolsReplace;
 
@@ -54,7 +54,7 @@ final class InvisibleSymbolsFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other unicode symbols.',
+            'Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.',
             array(
                 new CodeSample(
 '<?php
@@ -62,8 +62,20 @@ final class InvisibleSymbolsFixer extends AbstractFixer
 echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'World'.pack('CC', 0xc2, 0xa0).'!";
 '
                 ),
-            )
+            ),
+            null,
+            null,
+            null,
+            'Risky change strings data.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     /**

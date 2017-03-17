@@ -19,7 +19,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  */
-final class InvisibleSymbolsFixerTest extends AbstractFixerTestCase
+final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string       $expected
