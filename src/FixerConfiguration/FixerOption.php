@@ -12,8 +12,6 @@
 
 namespace PhpCsFixer\FixerConfiguration;
 
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-
 final class FixerOption implements FixerOptionInterface
 {
     /**
@@ -37,12 +35,12 @@ final class FixerOption implements FixerOptionInterface
     private $useDefault = false;
 
     /**
-     * @var array|null
+     * @var null|string[]
      */
     private $allowedTypes;
 
     /**
-     * @var array|null
+     * @var null|array
      */
     private $allowedValues;
 
@@ -111,16 +109,12 @@ final class FixerOption implements FixerOptionInterface
     }
 
     /**
-     * @param string[]|string|null $allowedTypes
+     * @param string[] $allowedTypes
      *
      * @return $this
      */
-    public function setAllowedTypes($allowedTypes)
+    public function setAllowedTypes(array $allowedTypes)
     {
-        if (null !== $allowedTypes && !is_array($allowedTypes)) {
-            $allowedTypes = array($allowedTypes);
-        }
-
         $this->allowedTypes = $allowedTypes;
 
         return $this;
@@ -135,16 +129,12 @@ final class FixerOption implements FixerOptionInterface
     }
 
     /**
-     * @param string[]|string|null $allowedValues
+     * @param array $allowedValues
      *
      * @return $this
      */
-    public function setAllowedValues($allowedValues)
+    public function setAllowedValues(array $allowedValues)
     {
-        if (!is_array($allowedValues)) {
-            $allowedValues = array($allowedValues);
-        }
-
         $this->allowedValues = $allowedValues;
 
         return $this;
@@ -156,34 +146,6 @@ final class FixerOption implements FixerOptionInterface
     public function getAllowedValues()
     {
         return $this->allowedValues;
-    }
-
-    /**
-     * Sets the given option to only accept an array with a subset of the given values.
-     *
-     * @param array $allowedArrayValues
-     *
-     * @return $this
-     */
-    public function setAllowedValueIsSubsetOf(array $allowedArrayValues)
-    {
-        $option = $this->name;
-
-        return $this
-            ->setAllowedTypes('array')
-            ->setAllowedValues($this->unbind(function ($values) use ($option, $allowedArrayValues) {
-                foreach ($values as $value) {
-                    if (!in_array($value, $allowedArrayValues, true)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'The option "%s" contains an invalid value.',
-                            $option
-                        ));
-                    }
-                }
-
-                return true;
-            }))
-        ;
     }
 
     /**
@@ -204,22 +166,5 @@ final class FixerOption implements FixerOptionInterface
     public function getNormalizer()
     {
         return $this->normalizer;
-    }
-
-    /**
-     * Unbinds the given closure to avoid memory leaks. See {@see https://bugs.php.net/bug.php?id=69639 Bug #69639} for
-     * details.
-     *
-     * @param \Closure $closure
-     *
-     * @return \Closure
-     */
-    private function unbind(\Closure $closure)
-    {
-        if (PHP_VERSION_ID < 50400) {
-            return $closure;
-        }
-
-        return $closure->bindTo(null);
     }
 }

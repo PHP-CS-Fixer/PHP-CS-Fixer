@@ -25,7 +25,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -65,7 +64,6 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
     public function getConfigurationDefinition()
     {
         $supportedSortTypes = $this->supportedSortTypes;
-        $configurationDefinition = new FixerConfigurationResolver();
 
         $sortAlgorithm = new FixerOption('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length');
         $sortAlgorithm
@@ -76,7 +74,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
         $importsOrder = new FixerOption('importsOrder', 'Defines the order of import types.');
         $importsOrder
             ->setAllowedTypes(array('array', 'null'))
-            ->setNormalizer(function (Options $options, $value) use ($supportedSortTypes) {
+            ->setAllowedValues(array(function ($value) use ($supportedSortTypes) {
                 if (null !== $value) {
                     $missing = array_diff($supportedSortTypes, $value);
                     if (count($missing)) {
@@ -97,15 +95,15 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
                     }
                 }
 
-                return $value;
-            })
+                return true;
+            }))
             ->setDefault(null)
         ;
 
-        return $configurationDefinition
-            ->addOption($sortAlgorithm)
-            ->addOption($importsOrder)
-        ;
+        return new FixerConfigurationResolver(array(
+            $sortAlgorithm,
+            $importsOrder,
+        ));
     }
 
     /**

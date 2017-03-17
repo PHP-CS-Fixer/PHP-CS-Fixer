@@ -39,7 +39,11 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
      */
     public function getConfigurationDefinition()
     {
-        $configurationDefinition = new FixerConfigurationResolver();
+        $alignDoubleArrows = new FixerOption('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.');
+        $alignDoubleArrows
+            ->setDefault(false)
+            ->setAllowedValues(array(true, false, null))
+        ;
 
         $alignEquals = new FixerOption('align_equals', 'Whether to apply, remove or ignore equals alignment.');
         $alignEquals
@@ -47,16 +51,10 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             ->setAllowedValues(array(true, false, null))
         ;
 
-        $alignDoubleArrows = new FixerOption('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.');
-        $alignDoubleArrows
-            ->setDefault(false)
-            ->setAllowedValues(array(true, false, null))
-        ;
-
-        return $configurationDefinition
-            ->addOption($alignEquals)
-            ->addOption($alignDoubleArrows)
-        ;
+        return new FixerConfigurationResolver(array(
+            $alignDoubleArrows,
+            $alignEquals,
+        ));
     }
 
     /**

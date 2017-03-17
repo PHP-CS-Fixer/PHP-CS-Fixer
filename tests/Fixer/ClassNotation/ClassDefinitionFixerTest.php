@@ -31,9 +31,9 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testLegacyConfigureDefaultToNull()
     {
         $defaultConfig = array(
-            'singleLine' => false,
-            'singleItemSingleLine' => false,
             'multiLineExtendsEachSingleLine' => false,
+            'singleItemSingleLine' => false,
+            'singleLine' => false,
         );
 
         $fixer = new ClassDefinitionFixer();
@@ -47,9 +47,9 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testConfigureDefaultToNull()
     {
         $defaultConfig = array(
-            'singleLine' => false,
-            'singleItemSingleLine' => false,
             'multiLineExtendsEachSingleLine' => false,
+            'singleItemSingleLine' => false,
+            'singleLine' => false,
         );
 
         $fixer = new ClassDefinitionFixer();

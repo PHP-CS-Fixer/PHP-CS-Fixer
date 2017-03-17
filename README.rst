@@ -212,10 +212,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``align_equals`` (``true``, ``false``, ``NULL``): whether to apply, remove or ignore
-    equals alignment; defaults to ``false``
-  - ``align_double_arrow`` (``true``, ``false``, ``NULL``): whether to apply, remove or
+  - ``align_double_arrow`` (``NULL``, ``false``, ``true``): whether to apply, remove or
     ignore double arrows alignment; defaults to ``false``
+  - ``align_equals`` (``NULL``, ``false``, ``true``): whether to apply, remove or ignore
+    equals alignment; defaults to ``false``
 
 * **blank_line_after_namespace** [@PSR2, @Symfony]
 
@@ -251,12 +251,12 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``singleLine`` (``bool``): whether definitions should be single line; defaults
-    to ``false``
-  - ``singleItemSingleLine`` (``bool``): whether definitions should be single line
-    when including a single item; defaults to ``false``
   - ``multiLineExtendsEachSingleLine`` (``bool``): whether definitions should be
     multiline; defaults to ``false``
+  - ``singleItemSingleLine`` (``bool``): whether definitions should be single line
+    when including a single item; defaults to ``false``
+  - ``singleLine`` (``bool``): whether definitions should be single line; defaults
+    to ``false``
 
 * **class_keyword_remove**
 
@@ -272,7 +272,7 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``spacing`` (``'one'``, ``'none'``): spacing to apply around concatenation operator;
+  - ``spacing`` (``'none'``, ``'one'``): spacing to apply around concatenation operator;
     defaults to ``'none'``
 
 * **declare_equal_normalize** [@Symfony]
@@ -282,7 +282,7 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``space`` (``'single'``, ``'none'``): spacing to apply around the equal sign;
+  - ``space`` (``'none'``, ``'single'``): spacing to apply around the equal sign;
     defaults to ``'none'``
 
 * **declare_strict_types**
@@ -346,12 +346,12 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``header`` (``string``): proper header content; required
   - ``commentType`` (``'PHPDoc'``, ``'comment'``): comment syntax type; defaults to
     ``'comment'``
-  - ``location`` (``'after_open'``, ``'after_declare_strict'``): the location of the
+  - ``header`` (``string``): proper header content; required
+  - ``location`` (``'after_declare_strict'``, ``'after_open'``): the location of the
     inserted header; defaults to ``'after_declare_strict'``
-  - ``separate`` (``'both'``, ``'top'``, ``'bottom'``, ``'none'``): whether the header should be
+  - ``separate`` (``'both'``, ``'bottom'``, ``'none'``, ``'top'``): whether the header should be
     separated from the file content with a new line; defaults to ``'both'``
 
 * **heredoc_to_nowdoc**
@@ -496,7 +496,7 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``use`` (``'print'``, ``'echo'``): the desired language construct; defaults to
+  - ``use`` (``'echo'``, ``'print'``): the desired language construct; defaults to
     ``'echo'``
 
 * **no_multiline_whitespace_around_double_arrow** [@Symfony]
@@ -633,10 +633,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``sortAlgorithm`` (``'alpha'``, ``'length'``): whether the statements should be
-    sorted alphabetically or by length; defaults to ``'alpha'``
   - ``importsOrder`` (``array``, ``null``): defines the order of import types; defaults
     to ``NULL``
+  - ``sortAlgorithm`` (``'alpha'``, ``'length'``): whether the statements should be
+    sorted alphabetically or by length; defaults to ``'alpha'``
 
 * **php_unit_construct** [@Symfony:risky]
 
@@ -841,7 +841,7 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``space_before`` (``'one'``, ``'none'``): spacing to apply before colon; defaults to
+  - ``space_before`` (``'none'``, ``'one'``): spacing to apply before colon; defaults to
     ``'none'``
 
 * **self_accessor** [@Symfony]

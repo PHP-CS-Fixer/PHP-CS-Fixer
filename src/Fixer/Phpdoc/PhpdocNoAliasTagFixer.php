@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -37,11 +37,9 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements Configuration
      */
     public function getConfigurationDefinition()
     {
-        $configurationDefinition = new FixerConfigurationResolver();
-
         $replacements = new FixerOption('replacements', 'Mapping between replaced annotations with new ones.');
         $replacements
-            ->setAllowedTypes('array')
+            ->setAllowedTypes(array('array'))
             ->setNormalizer(function (Options $options, $value) {
                 $normalizedValue = array();
 
@@ -89,10 +87,9 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements Configuration
             ))
         ;
 
-        return $configurationDefinition
-            ->addOption($replacements)
-            ->mapRootConfigurationTo('replacements')
-        ;
+        return new FixerConfigurationResolverRootless('replacements', array(
+            $replacements,
+        ));
     }
 
     /**

@@ -18,31 +18,27 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class FixerConfigurationResolver implements FixerConfigurationResolverInterface
 {
     /**
-     * @var array<string, FixerOptionInterface>
+     * @var FixerOptionInterface[]
      */
     private $options = array();
 
     /**
-     * @var string|null
+     * @var string[]
      */
-    private $root;
+    private $registeredNames = array();
 
     /**
-     * @param FixerOptionInterface $option
-     *
-     * @throws \LogicException when the option is already defined
-     *
-     * @return $this
+     * @param iterable<FixerOptionInterface> $options
      */
-    public function addOption(FixerOptionInterface $option)
+    public function __construct($options)
     {
-        if (array_key_exists($name = $option->getName(), $this->options)) {
-            throw new \LogicException(sprintf('The "%s" option is already defined.', $name));
+        foreach ($options as $option) {
+            $this->addOption($option);
         }
 
-        $this->options[$name] = $option;
-
-        return $this;
+        if (empty($this->registeredNames)) {
+            throw new \LogicException('Options cannot be empty.');
+        }
     }
 
     /**
@@ -50,27 +46,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
      */
     public function getOptions()
     {
-        return array_values($this->options);
-    }
-
-    /**
-     * @param string $optionName
-     *
-     * @throws \LogicException when the option is already defined
-     *
-     * @return $this
-     *
-     * @deprecated will be removed in 3.0
-     */
-    public function mapRootConfigurationTo($optionName)
-    {
-        if (!array_key_exists($optionName, $this->options)) {
-            throw new \LogicException(sprintf('The "%s" option is not defined.', $optionName));
-        }
-
-        $this->root = $optionName;
-
-        return $this;
+        return $this->options;
     }
 
     /**
@@ -105,15 +81,27 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             }
         }
 
-        if (null !== $this->root && !array_key_exists($this->root, $options) && count($options)) {
-            @trigger_error(sprintf(
-                'Passing "%1$s" at the root of the configuration is deprecated and will not be supported in 3.0, use "%1$s" => array(...) option instead.',
-                $this->root
-            ), E_USER_DEPRECATED);
+        return $resolver->resolve($options);
+    }
 
-            $options = array($this->root => $options);
+    /**
+     * @param FixerOptionInterface $option
+     *
+     * @throws \LogicException when the option is already defined
+     *
+     * @return $this
+     */
+    private function addOption(FixerOptionInterface $option)
+    {
+        $name = $option->getName();
+
+        if (in_array($name, $this->registeredNames, true)) {
+            throw new \LogicException(sprintf('The "%s" option is defined multiple times.', $name));
         }
 
-        return $resolver->resolve($options);
+        $this->options[] = $option;
+        $this->registeredNames[] = $name;
+
+        return $this;
     }
 }

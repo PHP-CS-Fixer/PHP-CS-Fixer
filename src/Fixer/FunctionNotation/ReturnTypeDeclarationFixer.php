@@ -32,17 +32,15 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
      */
     public function getConfigurationDefinition()
     {
-        $configurationDefinition = new FixerConfigurationResolver();
-
         $spaceBefore = new FixerOption('space_before', 'Spacing to apply before colon.');
         $spaceBefore
             ->setAllowedValues(array('one', 'none'))
             ->setDefault('none')
         ;
 
-        return $configurationDefinition
-            ->addOption($spaceBefore)
-        ;
+        return new FixerConfigurationResolver(array(
+            $spaceBefore,
+        ));
     }
 
     /**

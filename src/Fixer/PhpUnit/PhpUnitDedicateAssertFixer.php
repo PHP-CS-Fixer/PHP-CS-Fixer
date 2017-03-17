@@ -14,8 +14,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -78,18 +79,20 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
             'is_scalar',
             'is_string',
         );
-        $configurationDefinition = new FixerConfigurationResolver();
+        $generator = new FixerOptionValidatorGenerator();
 
         $functions = new FixerOption('functions', 'List of assertions to fix.');
         $functions
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(
+                $generator->allowedValueIsSubsetOf($values),
+            ))
             ->setDefault($values)
-            ->setAllowedValueIsSubsetOf($values)
         ;
 
-        return $configurationDefinition
-            ->addOption($functions)
-            ->mapRootConfigurationTo('functions')
-        ;
+        return new FixerConfigurationResolverRootless('functions', array(
+            $functions,
+        ));
     }
 
     /**

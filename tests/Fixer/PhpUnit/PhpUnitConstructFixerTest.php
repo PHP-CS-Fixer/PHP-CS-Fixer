@@ -21,16 +21,6 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfiguration()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            'The option "assertions" contains an invalid value.'
-        );
-
-        $this->fixer->configure(array('assertions' => array('MyTest')));
-    }
-
     /**
      * @param string      $expected
      * @param null|string $input
@@ -122,9 +112,9 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfig()
     {
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[php_unit_construct] Invalid configuration: The option "assertions" contains an invalid value.'
+            '/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/'
         );
 
         $this->fixer->configure(array('assertions' => array('__TEST__')));

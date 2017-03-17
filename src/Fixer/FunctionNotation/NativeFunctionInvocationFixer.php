@@ -21,7 +21,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -33,12 +32,10 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
      */
     public function getConfigurationDefinition()
     {
-        $configurationDefinition = new FixerConfigurationResolver();
-
         $exclude = new FixerOption('exclude', 'List of functions to ignore.');
         $exclude
-            ->setAllowedTypes('array')
-            ->setNormalizer(function (Options $options, $value) {
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(function ($value) {
                 foreach ($value as $functionName) {
                     if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
                         throw new InvalidOptionsException(\sprintf(
@@ -48,14 +45,14 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                     }
                 }
 
-                return $value;
-            })
+                return true;
+            }))
             ->setDefault(array())
         ;
 
-        return $configurationDefinition
-            ->addOption($exclude)
-        ;
+        return new FixerConfigurationResolver(array(
+            $exclude,
+        ));
     }
 
     /**

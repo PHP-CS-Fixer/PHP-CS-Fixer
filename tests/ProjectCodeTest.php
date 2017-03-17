@@ -83,10 +83,8 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
             'PhpCsFixer\Config' => array('create'),
             'PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer' => array('fixSpace'),
             'PhpCsFixer\Fixer\Import\OrderedImportsFixer' => array('sortingCallBack'),
-            'PhpCsFixer\FixerConfiguration\FixerConfigurationResolver' => array('addOption', 'mapRootConfigurationTo'),
             'PhpCsFixer\FixerConfiguration\FixerOption' => array(
                 'setAllowedTypes',
-                'setAllowedValueIsSubsetOf',
                 'setAllowedValues',
                 'setDefault',
                 'setNormalizer',

@@ -614,9 +614,9 @@ EOT
 
     public function testWrongConfig()
     {
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_class_elements] Invalid configuration: The option "order" contains an invalid value.'
+            '/^\[ordered_class_elements\] Invalid configuration: The option "order" .*\.$/'
         );
 
         $this->fixer->configure(array('order' => array('foo')));

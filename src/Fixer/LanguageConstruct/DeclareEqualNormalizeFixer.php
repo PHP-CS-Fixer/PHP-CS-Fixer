@@ -47,17 +47,15 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
      */
     public function getConfigurationDefinition()
     {
-        $configurationDefinition = new FixerConfigurationResolver();
-
         $space = new FixerOption('space', 'Spacing to apply around the equal sign.');
         $space
             ->setAllowedValues(array('single', 'none'))
             ->setDefault('none')
         ;
 
-        return $configurationDefinition
-            ->addOption($space)
-        ;
+        return new FixerConfigurationResolver(array(
+            $space,
+        ));
     }
 
     /**

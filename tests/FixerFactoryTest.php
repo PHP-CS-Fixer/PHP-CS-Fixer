@@ -457,7 +457,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $configurationDefinition = $fixer->getConfigurationDefinition();
 
-        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerConfigurationResolver', $configurationDefinition);
+        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface', $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
             $this->assertNotEmpty($option->getDescription());

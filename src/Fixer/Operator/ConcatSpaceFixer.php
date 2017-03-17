@@ -48,17 +48,15 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
      */
     public function getConfigurationDefinition()
     {
-        $configurationDefinition = new FixerConfigurationResolver();
-
         $spacing = new FixerOption('spacing', 'Spacing to apply around concatenation operator.');
         $spacing
             ->setAllowedValues(array('one', 'none'))
             ->setDefault('none')
         ;
 
-        return $configurationDefinition
-            ->addOption($spacing)
-        ;
+        return new FixerConfigurationResolver(array(
+            $spacing,
+        ));
     }
 
     /**

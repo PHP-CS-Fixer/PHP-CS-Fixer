@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Test\AccessibleObject;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -256,18 +257,18 @@ echo 1;',
 
     public function testDefaultConfiguration()
     {
-        $property = new \ReflectionProperty($this->fixer, 'configuration');
-        $property->setAccessible(true);
+        $fixer = new AccessibleObject($this->fixer);
         $this->fixer->configure(array('header' => 'a'));
         $this->assertSame(
             array(
                 'commentType' => 'comment',
                 'location' => 'after_declare_strict',
                 'separate' => 'both',
-                'header' => "/*\n * a\n */",
+                'header' => 'a',
             ),
-            $property->getValue($this->fixer)
+            $fixer->configuration
         );
+        $this->assertSame("/*\n * a\n */", $fixer->getHeaderAsComment());
     }
 
     /**
@@ -348,14 +349,13 @@ echo 1;',
      */
     public function testHeaderGeneration($expected, $header, $type)
     {
-        $property = new \ReflectionProperty($this->fixer, 'configuration');
-        $property->setAccessible(true);
+        $fixer = new AccessibleObject($this->fixer);
         $this->fixer->configure(array(
             'header' => $header,
             'commentType' => $type,
         ));
-        $configuration = $property->getValue($this->fixer);
-        $this->assertSame($expected, $configuration['header']);
+
+        $this->assertSame($expected, $fixer->getHeaderAsComment());
     }
 
     public function provideHeaderGenerationCases()
@@ -500,7 +500,7 @@ declare(strict_types=1)?>',
     public function testConfigurationUpdatedWithWhitespsacesConfig()
     {
         $this->fixer->configure(array('header' => 'Foo'));
-        
+
         $this->doTest(
             "<?php\n\n/*\n * Foo\n */\n\necho 1;",
             "<?php\necho 1;"

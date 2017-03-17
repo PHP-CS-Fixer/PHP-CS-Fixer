@@ -64,7 +64,7 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
     public function testSetAllowedTypes()
     {
         $option = new FixerOption('foo', 'Bar.');
-        $this->assertSame($option, $option->setAllowedTypes('bool'));
+        $this->assertSame($option, $option->setAllowedTypes(array('bool')));
     }
 
     public function testGetAllowedTypes()
@@ -72,7 +72,7 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
         $option = new FixerOption('foo', 'Bar.');
         $this->assertNull($option->getAllowedTypes());
 
-        $option->setAllowedTypes('bool');
+        $option->setAllowedTypes(array('bool'));
         $this->assertSame(array('bool'), $option->getAllowedTypes());
 
         $option->setAllowedTypes(array('bool', 'string'));
@@ -82,7 +82,7 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
     public function testSetAllowedValues()
     {
         $option = new FixerOption('foo', 'Bar.');
-        $this->assertSame($option, $option->setAllowedValues('baz'));
+        $this->assertSame($option, $option->setAllowedValues(array('baz')));
     }
 
     public function testGetAllowedValues()
@@ -90,21 +90,15 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
         $option = new FixerOption('foo', 'Bar.');
         $this->assertNull($option->getAllowedValues());
 
-        $option->setAllowedValues('baz');
+        $option->setAllowedValues(array('baz'));
         $this->assertSame(array('baz'), $option->getAllowedValues());
 
         $option->setAllowedValues(array('baz', 'qux'));
         $this->assertSame(array('baz', 'qux'), $option->getAllowedValues());
 
         $function = function () {};
-        $option->setAllowedValues($function);
+        $option->setAllowedValues(array($function));
         $this->assertSame(array($function), $option->getAllowedValues());
-    }
-
-    public function testSetAllowedValueIsSubsetOf()
-    {
-        $option = new FixerOption('foo', 'Bar.');
-        $this->assertSame($option, $option->setAllowedValueIsSubsetOf(array('baz', 'qux')));
     }
 
     public function testAddNormalizer()

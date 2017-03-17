@@ -16,7 +16,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 
@@ -273,11 +273,11 @@ EOF
     /**
      * Returns the allowed values of the given option that can be converted to a string.
      *
-     * @param FixerOption $option
+     * @param FixerOptionInterface $option
      *
      * @return array|null
      */
-    public static function getDisplayableAllowedValues(FixerOption $option)
+    public static function getDisplayableAllowedValues(FixerOptionInterface $option)
     {
         $allowed = $option->getAllowedValues();
 
@@ -285,6 +285,8 @@ EOF
             $allowed = array_filter($allowed, function ($value) {
                 return !is_callable($value);
             });
+
+            sort($allowed);
 
             if (0 === count($allowed)) {
                 $allowed = null;
@@ -350,10 +352,18 @@ EOF
 
             if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
                 $configurationDefinition = $fixer->getConfigurationDefinition();
-                if (count($configurationDefinition->getOptions())) {
+                $configurationDefinitionOptions = $configurationDefinition->getOptions();
+                if (count($configurationDefinitionOptions)) {
                     $help .= "   |\n   | Configuration options:\n";
 
-                    foreach ($configurationDefinition->getOptions() as $option) {
+                    usort(
+                        $configurationDefinitionOptions,
+                        function (FixerOptionInterface $optionA, FixerOptionInterface $optionB) {
+                            return strcmp($optionA->getName(), $optionB->getName());
+                        }
+                    );
+
+                    foreach ($configurationDefinitionOptions as $option) {
                         $line = '<info>'.$option->getName().'</info>';
 
                         $allowed = self::getDisplayableAllowedValues($option);

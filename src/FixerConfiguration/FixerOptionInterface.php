@@ -37,12 +37,12 @@ interface FixerOptionInterface
     public function getDefault();
 
     /**
-     * @return array|null
+     * @return null|string[]
      */
     public function getAllowedTypes();
 
     /**
-     * @return array|null
+     * @return null|array
      */
     public function getAllowedValues();
 

@@ -433,7 +433,7 @@ EOF;
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Invalid configuration: The option "elements" contains an invalid value\.$/'
+            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
         $this->fixer->configure(array('elements' => array(null)));
@@ -443,7 +443,7 @@ EOF;
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Invalid configuration: The option "elements" contains an invalid value\.$/'
+            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
         $this->fixer->configure(array('elements' => array('_unknown_')));

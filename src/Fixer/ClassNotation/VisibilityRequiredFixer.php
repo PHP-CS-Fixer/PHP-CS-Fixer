@@ -14,8 +14,9 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -39,11 +40,14 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurati
      */
     public function getConfigurationDefinition()
     {
-        $configurationDefinition = new FixerConfigurationResolver();
+        $generator = new FixerOptionValidatorGenerator();
 
         $elements = new FixerOption('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).');
         $elements
-            ->setAllowedValueIsSubsetOf(array('property', 'method', 'const'))
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(
+                $generator->allowedValueIsSubsetOf(array('property', 'method', 'const')),
+            ))
             ->setNormalizer(function (Options $options, $value) {
                 if (PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
                     throw new InvalidOptionsException('"const" option can only be enabled with PHP 7.1+.');
@@ -54,10 +58,9 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurati
             ->setDefault(array('property', 'method'))
         ;
 
-        return $configurationDefinition
-            ->addOption($elements)
-            ->mapRootConfigurationTo('elements')
-        ;
+        return new FixerConfigurationResolverRootless('elements', array(
+            $elements,
+        ));
     }
 
     /**

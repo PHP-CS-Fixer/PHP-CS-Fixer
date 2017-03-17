@@ -14,13 +14,12 @@ namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
@@ -58,12 +57,11 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     public function getConfigurationDefinition()
     {
         $argumentCounts = self::$argumentCounts;
-        $configurationDefinition = new FixerConfigurationResolver();
 
         $replacements = new FixerOption('replacements', 'Mapping between replaced functions with the new ones.');
         $replacements
-            ->setAllowedTypes('array')
-            ->setNormalizer(function (Options $options, $value) use ($argumentCounts) {
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(function ($value) use ($argumentCounts) {
                 foreach ($value as $functionName => $replacement) {
                     if (!array_key_exists($functionName, $argumentCounts)) {
                         throw new InvalidOptionsException(sprintf(
@@ -81,8 +79,8 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                     }
                 }
 
-                return $value;
-            })
+                return true;
+            }))
             ->setDefault(array(
                 'getrandmax' => 'mt_getrandmax',
                 'mt_rand' => 'mt_rand',
@@ -91,10 +89,9 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
             ))
         ;
 
-        return $configurationDefinition
-            ->addOption($replacements)
-            ->mapRootConfigurationTo('replacements')
-        ;
+        return new FixerConfigurationResolverRootless('replacements', array(
+            $replacements,
+        ));
     }
 
     /**

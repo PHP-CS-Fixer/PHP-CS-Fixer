@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -49,11 +49,10 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
             '$static' => 'static',
             '@static' => 'static',
         );
-        $configurationDefinition = new FixerConfigurationResolver();
 
         $replacements = new FixerOption('replacements', 'Mapping between replaced return types with new ones.');
         $replacements
-            ->setAllowedTypes('array')
+            ->setAllowedTypes(array('array'))
             ->setNormalizer(function (Options $options, $value) use ($toTypes, $default) {
                 $normalizedValue = array();
                 foreach ($value as $from => $to) {
@@ -85,10 +84,9 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
             ->setDefault($default)
         ;
 
-        return $configurationDefinition
-            ->addOption($replacements)
-            ->mapRootConfigurationTo('replacements')
-        ;
+        return new FixerConfigurationResolverRootless('replacements', array(
+            $replacements,
+        ));
     }
 
     /**
