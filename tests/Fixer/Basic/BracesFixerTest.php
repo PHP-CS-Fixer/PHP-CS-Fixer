@@ -1827,4 +1827,34 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
             ),
         );
     }
+
+    public function provideDoWhileLoopInsideAnIfWithoutBrackets()
+    {
+        return array(
+            array(
+                '<?php
+if (true) {
+    do {
+        echo 1;
+    } while (false);
+}',
+                '<?php
+if (true)
+    do {
+        echo 1;
+    } while (false);',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBrackets
+     */
+    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
 }
