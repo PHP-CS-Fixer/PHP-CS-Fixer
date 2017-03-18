@@ -29,6 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -62,6 +63,7 @@ final class DescribeCommand extends Command
                 )
             )
             ->setDescription('Describe rule / ruleset.')
+            ->addOption('json', 'j', InputOption::VALUE_NONE, 'Format output in JSON format')
         ;
     }
 
@@ -71,14 +73,18 @@ final class DescribeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('name');
+        $jsonOutput = $input->getOption('json');
         try {
             if ('@' === $name[0]) {
-                $this->describeSet($output, $name);
+                $this->describeSet($output, $name, $jsonOutput);
 
                 return;
             }
-
-            $this->describeRule($output, $name);
+            if ($jsonOutput) {
+                $this->describeRuleJSON($output, $name);
+            } else {
+                $this->describeRule($output, $name);
+            }
         } catch (DescribeNameNotFoundException $e) {
             $alternative = $this->getAlternative($e->getType(), $name);
             $this->describeList($output, $e->getType());
@@ -199,7 +205,55 @@ final class DescribeCommand extends Command
      * @param OutputInterface $output
      * @param string          $name
      */
-    private function describeSet(OutputInterface $output, $name)
+    private function describeRuleJSON(OutputInterface $output, $name)
+    {
+        $fixers = $this->getFixers();
+
+        if (!isset($fixers[$name])) {
+            throw new DescribeNameNotFoundException($name, 'rule');
+        }
+
+        $fixer = $fixers[$name];
+        /** @var FixerInterface $fixer */
+        $help = array(
+            'name' => $fixer->getName(),
+            'summary' => '',
+            'description' => '',
+            'priority' => $fixer->getPriority(),
+            'risky' => $fixer->isRisky(),
+            'riskyDescription' => '',
+            'configurationDescription' => '',
+            'defaultConfiguration' => ($fixer instanceof ConfigurableFixerInterface) ? false : null,
+            'configurationSchema' => ($fixer instanceof ConfigurableFixerInterface) ? false : null,
+            'codeSamples' => array(),
+        );
+        if ($fixer instanceof DefinedFixerInterface) {
+            $definition = $fixer->getDefinition();
+            /* @var \PhpCsFixer\FixerDefinition\FixerDefinitionInterface $definition */
+            $help['summary'] = (string) $definition->getSummary();
+            $help['description'] = (string) $definition->getDescription();
+            $help['riskyDescription'] = (string) $definition->getRiskyDescription();
+            $help['configurationDescription'] = (string) $definition->getConfigurationDescription();
+            $help['defaultConfiguration'] = $definition->getDefaultConfiguration();
+            if ($fixer instanceof ConfigurableFixerInterface) {
+                $help['configurationSchema'] = $definition->getConfigurationSchema();
+            }
+            foreach ($definition->getCodeSamples() as $codeSample) {
+                $help['defaultConfiguration']['codeSamples'] = array(
+                    'code' => $codeSample->getCode(),
+                    'configuration' => $codeSample->getConfiguration(),
+                );
+            }
+        }
+        $output->write(json_encode($help, JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $name
+     * @param bool            $jsonOutput
+     */
+    private function describeSet(OutputInterface $output, $name, $jsonOutput)
     {
         if (!in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
@@ -211,24 +265,35 @@ final class DescribeCommand extends Command
 
         $fixers = $this->getFixers();
 
-        $output->writeln(sprintf('<info>Description of</info> %s <info>set.</info>', $name));
-        $output->writeln('');
-
-        $help = '';
-
-        foreach ($rules as $rule => $config) {
-            /** @var FixerDefinitionInterface $definition */
-            $definition = $fixers[$rule]->getDefinition();
-            $help .= sprintf(
-                " * <info>%s</info>%s\n   | %s\n%s\n",
-                $rule,
-                $fixers[$rule]->isRisky() ? ' <error>risky</error>' : '',
-                $definition->getSummary(),
-                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", $this->arrayToText($config)) : ''
+        if ($jsonOutput) {
+            $help = array(
+                'ruleset' => $name,
+                'rules' => array(),
             );
-        }
+            foreach ($rules as $rule => $config) {
+                $help['rules'][$rule] = $config;
+            }
+            $output->write(json_encode($help, JSON_PRETTY_PRINT));
+        } else {
+            $output->writeln(sprintf('<info>Description of</info> %s <info>set.</info>', $name));
+            $output->writeln('');
 
-        $output->write($help);
+            $help = '';
+
+            foreach ($rules as $rule => $config) {
+                /** @var FixerDefinitionInterface $definition */
+                $definition = $fixers[$rule]->getDefinition();
+                $help .= sprintf(
+                    " * <info>%s</info>%s\n   | %s\n%s\n",
+                    $rule,
+                    $fixers[$rule]->isRisky() ? ' <error>risky</error>' : '',
+                    $definition->getSummary(),
+                    true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", $this->arrayToText($config)) : ''
+                );
+            }
+
+            $output->write($help);
+        }
     }
 
     /**

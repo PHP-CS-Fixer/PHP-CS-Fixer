@@ -23,6 +23,7 @@ final class FixerDefinition implements FixerDefinitionInterface
     private $codeSamples;
     private $summary;
     private $description;
+    private $configurationSchema;
 
     /**
      * @param string                $summary
@@ -31,6 +32,7 @@ final class FixerDefinition implements FixerDefinitionInterface
      * @param null|string           $configurationDescription null for non-configurable fixer
      * @param null|array            $defaultConfiguration     null for non-configurable fixer
      * @param null|string           $riskyDescription         null for non-risky fixer
+     * @param array|null|false      $configurationSchema      Configuration Schema (null for non-configurable fixer, false if not implemented) 
      */
     public function __construct(
         $summary,
@@ -38,7 +40,8 @@ final class FixerDefinition implements FixerDefinitionInterface
         $description = null,
         $configurationDescription = null,
         array $defaultConfiguration = null,
-        $riskyDescription = null
+        $riskyDescription = null,
+        $configurationSchema = false
     ) {
         $this->summary = $summary;
         $this->codeSamples = $codeSamples;
@@ -46,6 +49,11 @@ final class FixerDefinition implements FixerDefinitionInterface
         $this->configurationDescription = $configurationDescription;
         $this->defaultConfiguration = $defaultConfiguration;
         $this->riskyDescription = $riskyDescription;
+        if ($defaultConfiguration === null) {
+            $this->configurationSchema = null;
+        } else {
+            $this->configurationSchema = $configurationSchema;
+        }
     }
 
     public function getSummary()
@@ -76,5 +84,10 @@ final class FixerDefinition implements FixerDefinitionInterface
     public function getCodeSamples()
     {
         return $this->codeSamples;
+    }
+
+    public function getConfigurationSchema()
+    {
+        return $this->configurationSchema;
     }
 }
