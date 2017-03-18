@@ -222,7 +222,7 @@ function f9(string $foo, $bar, $baz) {}',
     public function getPriority()
     {
         // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
-        return -5;
+        return -1;
     }
 
     /**

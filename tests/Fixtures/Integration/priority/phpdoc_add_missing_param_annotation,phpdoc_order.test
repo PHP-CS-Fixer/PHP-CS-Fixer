@@ -1,0 +1,18 @@
+--TEST--
+Integration of fixers: phpdoc_add_missing_param_annotation,phpdoc_order.
+--RULESET--
+{"phpdoc_add_missing_param_annotation": true, "phpdoc_order": true}
+--EXPECT--
+<?php
+/**
+ * @param mixed $fo
+ * @return int
+ */
+function foo ($fo) {}
+
+--INPUT--
+<?php
+/**
+ * @return int
+ */
+function foo ($fo) {}

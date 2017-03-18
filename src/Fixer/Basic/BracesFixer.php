@@ -569,7 +569,7 @@ $negative = function ($item) {
 
             $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
 
-            if ($nextToken->isGivenKind(array(T_IF, T_TRY))) {
+            if ($nextToken->isGivenKind(array(T_IF, T_TRY, T_DO))) {
                 $openingTokenKind = $nextToken->getId();
 
                 while (true) {
@@ -668,6 +668,10 @@ $negative = function ($item) {
                 T_ELSE,
                 T_ELSEIF,
             );
+        }
+
+        if ($openingTokenKind === T_DO) {
+            return array(T_WHILE);
         }
 
         if ($openingTokenKind === T_TRY) {

@@ -35,7 +35,8 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
     public function provideInternalTypeMethods()
     {
         $cases = array();
-        foreach (array('array', 'bool', 'boolean', 'callable', 'double', 'float', 'int', 'integer', 'long', '​numeric', 'object', '​resource', 'real', 'scalar', 'string') as $type) {
+
+        foreach (array('array', 'bool', 'boolean', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string') as $type) {
             $cases[] = array(
                 sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
                 sprintf('<?php $this->assertTrue(is_%s($a));', $type),
