@@ -72,6 +72,14 @@ function fnc($foo, $bar) {}'
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        return -3;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
