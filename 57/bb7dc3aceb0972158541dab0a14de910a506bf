@@ -1,0 +1,63 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-16T09:28:43Z
+
+nice
+how did you found it ?
+
+---------------------------------------------------------------------------
+
+by ivan1986 at 2017-03-16T09:34:11Z
+
+@keradus bitbucket diff and colleague like write all options in config and not use default
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-16T09:37:24Z
+
+Github diff shows words replaced by the same words, what changed exactly?
+
+---------------------------------------------------------------------------
+
+by ivan1986 at 2017-03-16T09:41:55Z
+
+![screenshot_20170316_114049](https://cloud.githubusercontent.com/assets/156418/23990070/85ade930-0a3d-11e7-8372-676853c15342.png)
+in gitk
+
+---------------------------------------------------------------------------
+
+by ivan1986 at 2017-03-16T09:43:26Z
+
+`
+0x00000160: 20747275 652C0A2D 20202020 20202020      true,.-
+0x00000170: 2769735F E2808B6E 756D6572 69632720     'is_...numeric'
+0x00000180: 3D3E2074 7275652C 0A2B2020 20202020     => true,.+
+0x00000190: 20202769 735F6E75 6D657269 6327203D       'is_numeric' =
+`
+
+E2808B
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-16T09:47:41Z
+
+Yay, invisible zero width spaces 😑.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-16T10:35:57Z
+
+nice find! :)
+I wonder how it got in there in the first place
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-16T10:40:29Z
+
+I already faced similar issues. These zero width spaces are rarely (never?) intended and often the result of an odd keyboard combination. Would a fixer that removes them make sense?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-16T10:42:15Z
+
+Please create dedicated PR/issue.
