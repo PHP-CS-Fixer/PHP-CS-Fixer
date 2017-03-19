@@ -126,10 +126,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingTraits($expected, $input)
     {
-        if (!defined('T_TRAIT')) {
-            $this->markTestSkipped('Test requires traits.');
-        }
-
         $this->fixer->configure(array());
 
         $this->doTest($expected, $input);

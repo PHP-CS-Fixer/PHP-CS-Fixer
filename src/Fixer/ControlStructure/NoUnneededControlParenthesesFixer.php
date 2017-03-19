@@ -34,6 +34,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         'echo_print' => array('lookupTokens' => array(T_ECHO, T_PRINT), 'neededSuccessors' => array(';', array(T_CLOSE_TAG))),
         'return' => array('lookupTokens' => T_RETURN, 'neededSuccessors' => array(';', array(T_CLOSE_TAG))),
         'switch_case' => array('lookupTokens' => T_CASE, 'neededSuccessors' => array(';', ':')),
+        'yield' => array('lookupTokens' => T_YIELD, 'neededSuccessors' => array(';', ')')),
     );
 
     /**
@@ -42,11 +43,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     public function __construct()
     {
         parent::__construct();
-
-        // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 5.5+
-        if (defined('T_YIELD')) {
-            self::$loops['yield'] = array('lookupTokens' => T_YIELD, 'neededSuccessors' => array(';', ')'));
-        }
 
         // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
         if (defined('T_COALESCE')) {

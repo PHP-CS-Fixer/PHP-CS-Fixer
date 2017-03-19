@@ -86,15 +86,7 @@ class Token
      */
     public static function getClassyTokenKinds()
     {
-        static $classTokens = null;
-
-        if (null === $classTokens) {
-            $classTokens = array(T_CLASS, T_INTERFACE);
-
-            if (defined('T_TRAIT')) {
-                $classTokens[] = T_TRAIT;
-            }
-        }
+        static $classTokens = array(T_CLASS, T_TRAIT, T_INTERFACE);
 
         return $classTokens;
     }

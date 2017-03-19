@@ -111,11 +111,8 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
             array($this->getForeachToken(), false),
             array(new Token(array(T_CLASS, 'class', 1)), true),
             array(new Token(array(T_INTERFACE, 'interface', 1)), true),
+            array(new Token(array(T_TRAIT, 'trait', 1)), true),
         );
-
-        if (defined('T_TRAIT')) {
-            $cases[] = array(new Token(array(T_TRAIT, 'trait', 1)), true);
-        }
 
         return $cases;
     }
@@ -210,11 +207,8 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
             array(T_LINE, '__LINE__'),
             array(T_METHOD_C, '__METHOD__'),
             array(T_NS_C, '__NAMESPACE__'),
+            array(T_TRAIT_C, '__TRAIT__'),
         );
-
-        if (defined('T_TRAIT_C')) {
-            $cases[] = array(T_TRAIT_C, '__TRAIT__');
-        }
 
         foreach ($cases as $case) {
             $cases[] = array($case[0], strtolower($case[1]));

@@ -383,10 +383,7 @@ final class TokensAnalyzer
 
         static $otherOperators;
         if (null === $otherOperators) {
-            $otherOperators = array('!', '~', '@');
-            if (defined('T_ELLIPSIS')) {
-                $otherOperators[] = array(T_ELLIPSIS);
-            }
+            $otherOperators = array('!', '~', '@', array(T_ELLIPSIS));
         }
 
         static $disallowedPrevTokens;
@@ -413,11 +410,9 @@ final class TokensAnalyzer
                 array(T_METHOD_C),
                 array(T_NS_C),
                 array(T_STRING),
+                array(T_TRAIT_C),
                 array(T_VARIABLE),
             );
-            if (defined('T_TRAIT_C')) {
-                $disallowedPrevTokens[] = array(T_TRAIT_C);
-            }
         }
 
         $tokens = $this->tokens;
@@ -507,17 +502,14 @@ final class TokensAnalyzer
                 T_MUL_EQUAL => true,            // *=
                 T_OR_EQUAL => true,             // |=
                 T_PLUS_EQUAL => true,           // +=
+                T_POW => true,                  // **
+                T_POW_EQUAL => true,            // **=
                 T_SL => true,                   // <<
                 T_SL_EQUAL => true,             // <<=
                 T_SR => true,                   // >>
                 T_SR_EQUAL => true,             // >>=
                 T_XOR_EQUAL => true,            // ^=
             );
-
-            if (defined('T_POW')) {
-                $arrayOperators[T_POW] = true;       // **
-                $arrayOperators[T_POW_EQUAL] = true; // **=
-            }
 
             if (defined('T_SPACESHIP')) {
                 $arrayOperators[T_SPACESHIP] = true; // <=>

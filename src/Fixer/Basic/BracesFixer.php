@@ -660,46 +660,32 @@ class Foo
 
     private function getControlTokens()
     {
-        static $tokens = null;
-
-        if (null === $tokens) {
-            $tokens = array(
-                T_DECLARE,
-                T_DO,
-                T_ELSE,
-                T_ELSEIF,
-                T_FOR,
-                T_FOREACH,
-                T_IF,
-                T_WHILE,
-                T_TRY,
-                T_CATCH,
-                T_SWITCH,
-            );
-
-            if (defined('T_FINALLY')) {
-                $tokens[] = T_FINALLY;
-            }
-        }
+        static $tokens = array(
+            T_DECLARE,
+            T_DO,
+            T_ELSE,
+            T_ELSEIF,
+            T_FINALLY,
+            T_FOR,
+            T_FOREACH,
+            T_IF,
+            T_WHILE,
+            T_TRY,
+            T_CATCH,
+            T_SWITCH,
+        );
 
         return $tokens;
     }
 
     private function getControlContinuationTokens()
     {
-        static $tokens = null;
-
-        if (null === $tokens) {
-            $tokens = array(
-                T_ELSE,
-                T_ELSEIF,
-                T_CATCH,
-            );
-
-            if (defined('T_FINALLY')) {
-                $tokens[] = T_FINALLY;
-            }
-        }
+        static $tokens = array(
+            T_CATCH,
+            T_ELSE,
+            T_ELSEIF,
+            T_FINALLY,
+        );
 
         return $tokens;
     }
@@ -718,12 +704,10 @@ class Foo
         }
 
         if ($openingTokenKind === T_TRY) {
-            $tokens = array(T_CATCH);
-            if (defined('T_FINALLY')) {
-                $tokens[] = T_FINALLY;
-            }
-
-            return $tokens;
+            return array(
+                T_CATCH,
+                T_FINALLY,
+            );
         }
 
         return array();
@@ -735,7 +719,7 @@ class Foo
             return array(T_ELSE);
         }
 
-        if ($openingTokenKind === T_TRY && defined('T_FINALLY')) {
+        if ($openingTokenKind === T_TRY) {
             return array(T_FINALLY);
         }
 

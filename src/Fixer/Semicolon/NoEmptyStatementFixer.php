@@ -106,10 +106,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
     {
         static $beforeCurlyOpeningKinds = null;
         if (null === $beforeCurlyOpeningKinds) {
-            $beforeCurlyOpeningKinds = array(T_ELSE, T_NAMESPACE, T_OPEN_TAG);
-            if (defined('T_FINALLY')) {
-                $beforeCurlyOpeningKinds[] = T_FINALLY;
-            }
+            $beforeCurlyOpeningKinds = array(T_ELSE, T_FINALLY, T_NAMESPACE, T_OPEN_TAG);
         }
 
         $curlyOpeningIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $curlyCloseIndex, false);

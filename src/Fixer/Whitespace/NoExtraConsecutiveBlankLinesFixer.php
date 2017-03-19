@@ -20,8 +20,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -195,7 +193,7 @@ function foo($bar)
 }',
                     array('tokens' => array('return'))
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
 '<?php
 
 $foo = [
@@ -203,7 +201,6 @@ $foo = [
     "foo"
 
 ];',
-                    new VersionSpecification(50400),
                     array('tokens' => array('square_brace_block'))
                 ),
                 new CodeSample(

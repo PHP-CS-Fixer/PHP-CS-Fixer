@@ -407,68 +407,6 @@ else?><?php echo 5;',
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideBefore54FixCases
-     */
-    public function testBefore54Fix($expected, $input = null)
-    {
-        if (PHP_VERSION_ID >= 50400) {
-            $this->markTestSkipped('PHP lower than 5.4 is required.');
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideBefore54FixCases()
-    {
-        $expected =
-            '<?php
-                $a = 1; $b = 0;
-                while(true) {
-                    while(true) {
-                        ++$b;
-                        if ($b > $a) {
-                            %s %%s;
-                        }  //
-                            echo 22;
-                        //
-                    }
-                }
-            ';
-
-        $input =
-            '<?php
-                $a = 1; $b = 0;
-                while(true) {
-                    while(true) {
-                        ++$b;
-                        if ($b > $a) {
-                            %s %%s;
-                        } else {//
-                            echo 22;
-                        }//
-                    }
-                }
-            ';
-
-        $cases = array();
-        foreach (array('continue', 'break') as $stop) {
-            $expectedTemplate = sprintf($expected, $stop);
-            $inputTemplate = sprintf($input, $stop);
-            foreach (array('1+1', '$a', '(1+1)', '($a)') as $value) {
-                $cases[] = array(
-                    sprintf($expectedTemplate, $value),
-                    sprintf($inputTemplate, $value),
-                );
-            }
-        }
-
-        return $cases;
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixEmptyElseCases
      */
     public function testFixEmptyElse($expected, $input = null)

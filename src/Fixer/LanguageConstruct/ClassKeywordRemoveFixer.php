@@ -13,9 +13,8 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -37,16 +36,15 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Converts `::class` keywords to FQCN strings. Requires PHP >= 5.5.',
+            'Converts `::class` keywords to FQCN strings.',
             array(
-                new VersionSpecificCodeSample(
+                new CodeSample(
 '<?php
 
 use Foo\Bar\Baz;
 
 $className = Baz::class;
-',
-                    new VersionSpecification(50500)
+'
                 ),
             )
         );
@@ -57,7 +55,7 @@ $className = Baz::class;
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 50500 && $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
+        return $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
     }
 
     /**

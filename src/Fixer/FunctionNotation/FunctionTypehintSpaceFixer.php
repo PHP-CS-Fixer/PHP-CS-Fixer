@@ -67,11 +67,9 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
                 }
 
                 // skip ... before $variable for variadic parameter
-                if (defined('T_ELLIPSIS')) {
-                    $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
-                    if ($tokens[$prevNonWhitespaceIndex]->isGivenKind(T_ELLIPSIS)) {
-                        $iter = $prevNonWhitespaceIndex;
-                    }
+                $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
+                if ($tokens[$prevNonWhitespaceIndex]->isGivenKind(T_ELLIPSIS)) {
+                    $iter = $prevNonWhitespaceIndex;
                 }
 
                 // skip & before $variable for parameter passed by reference

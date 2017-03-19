@@ -47,21 +47,19 @@ class  Foo  extends  Bar  implements  Baz,  BarBaz
 {
 }'
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
 '<?php
 
 trait  Foo
 {
-}',
-                    new VersionSpecification(50400)
+}'
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
 '<?php
 
 final  class  Foo  extends  Bar  implements  Baz,  BarBaz
 {
-}',
-                    new VersionSpecification(50500)
+}'
                 ),
                 new VersionSpecificCodeSample(
 '<?php
@@ -305,7 +303,7 @@ interface Bar extends
         $implements = false;
         $anonymousClass = false;
 
-        if (!(defined('T_TRAIT') && $tokens[$classyIndex]->isGivenKind(T_TRAIT))) {
+        if (!$tokens[$classyIndex]->isGivenKind(T_TRAIT)) {
             $extends = $tokens->findGivenKind(T_EXTENDS, $classyIndex, $openIndex);
             $extends = count($extends) ? $this->getClassyInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
 

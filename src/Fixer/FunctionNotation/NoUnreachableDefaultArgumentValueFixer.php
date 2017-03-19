@@ -140,10 +140,6 @@ function example($foo = "two words", $bar) {}
      */
     private function isEllipsis(Tokens $tokens, $variableIndex)
     {
-        if (!defined('T_ELLIPSIS')) {
-            return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->equals('.');
-        }
-
         return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->isGivenKind(T_ELLIPSIS);
     }
 
@@ -177,13 +173,8 @@ function example($foo = "two words", $bar) {}
 
         $variableIndex = $tokens->getPrevMeaningfulToken($index);
 
-        $searchTokens = array(',', '(', array(T_STRING), array(CT::T_ARRAY_TYPEHINT));
-        $typehintKinds = array(T_STRING, CT::T_ARRAY_TYPEHINT);
-
-        if (defined('T_CALLABLE')) {
-            $searchTokens[] = array(T_CALLABLE);
-            $typehintKinds[] = T_CALLABLE;
-        }
+        $searchTokens = array(',', '(', array(T_STRING), array(CT::T_ARRAY_TYPEHINT), array(T_CALLABLE));
+        $typehintKinds = array(T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE);
 
         $prevIndex = $tokens->getPrevTokenOfKind($variableIndex, $searchTokens);
 

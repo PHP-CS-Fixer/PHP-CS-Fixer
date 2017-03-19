@@ -54,7 +54,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHP arrays should be declared using the configured syntax (requires PHP >= 5.4 for short syntax).',
+            'PHP arrays should be declared using the configured syntax.',
             array(
                 new CodeSample(
                     "<?php\n[1,2];",
@@ -107,16 +107,6 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
         $syntax = new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` array syntax.');
         $syntax = $syntax
             ->setAllowedValues(array('long', 'short'))
-            ->setNormalizer(function (Options $options, $value) {
-                if (PHP_VERSION_ID < 50400 && 'short' === $value) {
-                    throw new InvalidOptionsException(sprintf(
-                        'Short array syntax is supported from PHP5.4 (your PHP version is %d).',
-                        PHP_VERSION_ID
-                    ));
-                }
-
-                return $value;
-            })
             ->setDefault('long')
             ->getOption()
         ;

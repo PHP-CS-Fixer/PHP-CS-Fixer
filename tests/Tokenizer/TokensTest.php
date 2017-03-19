@@ -412,15 +412,6 @@ PHP;
      */
     public function testShortOpenTagEchoMonolithicPhpDetection($source, $monolithic)
     {
-        /*
-         * short_open_tag setting is ignored by HHVM
-         * @see https://github.com/facebook/hhvm/issues/4758
-         */
-        if (!ini_get('short_open_tag') && 50400 > PHP_VERSION_ID && !defined('HHVM_VERSION')) {
-            // Short open tag echo is parsed as T_INLINE_HTML
-            $monolithic = false;
-        }
-
         $tokens = Tokens::fromCode($source);
         $this->assertSame($monolithic, $tokens->isMonolithicPhp());
     }

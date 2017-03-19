@@ -41,7 +41,7 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
     public function testCasesWithShortOpenTag($expected, $input = null)
     {
         if (!ini_get('short_open_tag')) {
-            $this->markTestSkipped('PHP short open tags are not enabled.');
+            $this->markTestSkipped('The short_open_tag option is required to be enabled.');
 
             return;
         }
