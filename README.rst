@@ -703,6 +703,10 @@ Choose from the list of available rules:
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
+* **method_chaining_indentation**
+
+  Method chaining MUST be properly indented.
+
 * **method_separation** [@Symfony]
 
   Methods must be separated with one blank line.
