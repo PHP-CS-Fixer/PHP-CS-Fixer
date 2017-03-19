@@ -638,6 +638,16 @@ Choose from the list of available rules:
 
   There should be no blank lines before a namespace declaration.
 
+* **no_break_comment** [@PSR2, @Symfony]
+
+  There must be a comment when fall-through is intentional in a non-empty
+  case body.
+
+  Configuration options:
+
+  - ``comment_text`` (``string``): the text to use in the added comment and to
+    detect it; defaults to ``'no break'``
+
 * **no_closing_tag** [@PSR2, @Symfony]
 
   The closing ``?>`` tag MUST be omitted from files containing only PHP.
