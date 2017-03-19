@@ -109,28 +109,6 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCasesLT54
-     * @requires PHP <5.4
-     */
-    public function testFixLT54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCasesLT54()
-    {
-        return array(
-            array(
-                '<?php function foo() {} foo(+$a, -2,-$b, &$c);',
-                '<?php function foo() {} foo(+ $a, - 2,- $b, & $c);',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideCases56
      */
     public function testFix56($expected, $input = null)
