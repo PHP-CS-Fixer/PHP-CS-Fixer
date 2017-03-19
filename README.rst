@@ -322,6 +322,9 @@ Choose from the list of available rules:
    | In method arguments and method call, there MUST NOT be a space before
    | each comma and there MUST be one space after each comma.
 
+* **method_chaining_indentation**
+   | Method chaining MUST indented with one tab.
+
 * **method_separation** [@Symfony]
    | Methods must be separated with one blank line.
 
