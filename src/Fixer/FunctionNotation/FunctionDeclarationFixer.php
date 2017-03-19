@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -26,7 +27,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class FunctionDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class FunctionDeclarationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * @internal
@@ -41,42 +42,6 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
     private $supportedSpacings = array(self::SPACING_NONE, self::SPACING_ONE);
 
     private $singleLineWhitespaceOptions = " \t";
-
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'closure_function_spacing' => self::SPACING_ONE,
-    );
-
-    /**
-     * @param array|null $configuration
-     *
-     * @throws InvalidFixerConfigurationException
-     */
-    public function configure(array $configuration = null)
-    {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        foreach ($configuration as $key => $value) {
-            if (!array_key_exists($key, self::$defaultConfiguration)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $key));
-            }
-
-            if ('closure_function_spacing' === $key && !in_array($value, $this->supportedSpacings, true)) {
-                throw new InvalidFixerConfigurationException(
-                    $this->getName(),
-                    sprintf('Spacing is invalid. Should be one of: "%s".', implode('", "', $this->supportedSpacings))
-                );
-            }
-        }
-
-        $this->configuration = array_merge(self::$defaultConfiguration, $configuration);
-    }
 
     /**
      * {@inheritdoc}
@@ -207,11 +172,23 @@ $f = function () {};
 ',
                     array('closure_function_spacing' => self::SPACING_NONE)
                 ),
-            ),
-            null,
-            'The `closure_function_spacing` key configures whether there should be a space character after the `function` keyword of an anonymous function; it can be either "none" or "one".',
-            self::$defaultConfiguration
+            )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $spacing = new FixerOptionBuilder('closure_function_spacing', 'Spacing to use before open parenthesis for closures.');
+        $spacing = $spacing
+            ->setDefault(self::SPACING_ONE)
+            ->setAllowedValues($this->supportedSpacings)
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($spacing));
     }
 
     private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end)

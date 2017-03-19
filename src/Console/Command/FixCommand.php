@@ -106,7 +106,7 @@ final class FixCommand extends Command
                 )
             )
             ->setDescription('Fixes a directory or a file.')
-            ->setHelp(FixCommandHelp::getHelpCopy())
+            ->setHelp(CommandHelp::getHelpCopy())
         ;
     }
 

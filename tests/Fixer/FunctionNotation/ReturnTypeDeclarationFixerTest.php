@@ -27,10 +27,25 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[return_type_declaration\] Configuration must define "space_before" being "one" or "none".$#'
+            '#^\[return_type_declaration\] Invalid configuration: The option "s" does not exist. (Known|Defined) options are: "space_before".$#'
         );
 
         $this->fixer->configure(array('s' => 9000));
+    }
+
+    /**
+     * @group legacy
+     * @dataProvider testFixProviderWithSpaceBeforeNone
+     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
+    {
+        $this->fixer->configure(null);
+
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -41,7 +56,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
      */
     public function testFixWithDefaultConfiguration($expected, $input = null)
     {
-        $this->fixer->configure(null);
+        $this->fixer->configure(array());
 
         $this->doTest($expected, $input);
     }

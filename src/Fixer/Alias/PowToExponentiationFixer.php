@@ -84,8 +84,6 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
                 ),
             ),
             null,
-            null,
-            null,
             'Risky when the function `pow()` is overridden.'
         );
     }

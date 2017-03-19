@@ -25,42 +25,58 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[random_api_migration\] "is_null" is not handled by the fixer.$#'
+            '#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer.$#'
         );
 
-        $this->fixer->configure(array('is_null' => 'random_int'));
+        $this->fixer->configure(array('replacements' => array('is_null' => 'random_int')));
     }
 
     public function testConfigureCheckReplacementType()
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[random_api_migration\] Expected string got "NULL".$#'
+            '#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given.$#'
         );
 
-        $this->fixer->configure(array('rand' => null));
+        $this->fixer->configure(array('replacements' => array('rand' => null)));
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Passing "replacements" at the root of the configuration is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
+     */
+    public function testLegacyConfigure()
+    {
+        $this->fixer->configure(array('rand' => 'random_int'));
+
+        static::assertSame(
+            array('replacements' => array(
+                'rand' => array('alternativeName' => 'random_int', 'argumentCount' => array(0, 2)), ),
+            ),
+            static::getObjectAttribute($this->fixer, 'configuration')
+        );
     }
 
     public function testConfigure()
     {
-        $config = array('rand' => 'random_int');
-        $this->fixer->configure($config);
+        $this->fixer->configure(array('replacements' => array('rand' => 'random_int')));
 
-        /** @var $replacements string[] */
-        $replacements = static::getObjectAttribute($this->fixer, 'configuration');
         static::assertSame(
-            array('rand' => array('alternativeName' => 'random_int', 'argumentCount' => array(0, 2))),
-            $replacements
+            array('replacements' => array(
+                'rand' => array('alternativeName' => 'random_int', 'argumentCount' => array(0, 2)), ),
+            ),
+            static::getObjectAttribute($this->fixer, 'configuration')
         );
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param array       $config
      *
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input = null, array $config = null)
+    public function testFix($expected, $input = null, array $config = array())
     {
         $this->fixer->configure($config);
 
@@ -117,22 +133,22 @@ class srand extends SrandClass{
             array(
                 '<?php rand(rand($a));',
                 null,
-                array('rand' => 'random_int'),
+                array('replacements' => array('rand' => 'random_int')),
             ),
             array(
                 '<?php random_int($d, random_int($a,$b));',
                 '<?php rand($d, rand($a,$b));',
-                array('rand' => 'random_int'),
+                array('replacements' => array('rand' => 'random_int')),
             ),
             array(
                 '<?php random_int($a, \Other\Scope\mt_rand($a));',
                 '<?php rand($a, \Other\Scope\mt_rand($a));',
-                array('rand' => 'random_int'),
+                array('replacements' => array('rand' => 'random_int')),
             ),
             array(
                 '<?php $a = random_int(1,2) + random_int(3,4);',
                 '<?php $a = rand(1,2) + mt_rand(3,4);',
-                array('rand' => 'random_int', 'mt_rand' => 'random_int'),
+                array('replacements' => array('rand' => 'random_int', 'mt_rand' => 'random_int')),
             ),
             array(
                 '<?php
@@ -142,7 +158,7 @@ class srand extends SrandClass{
                     public function &rand();
                 }',
                 null,
-                array('rand' => 'random_int'),
+                array('replacements' => array('rand' => 'random_int')),
             ),
         );
     }

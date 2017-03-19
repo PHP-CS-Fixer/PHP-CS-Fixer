@@ -24,11 +24,16 @@ use PhpCsFixer\Console\Command\FixCommand;
 class InvalidConfigurationException extends \InvalidArgumentException
 {
     /**
-     * @param string   $message
-     * @param int|null $code
+     * @param string          $message
+     * @param int|null        $code
+     * @param \Exception|null $previous
      */
-    public function __construct($message, $code = null)
+    public function __construct($message, $code = null, \Exception $previous = null)
     {
-        parent::__construct($message, null === $code ? FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG : $code);
+        parent::__construct(
+            $message,
+            null === $code ? FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG : $code,
+            $previous
+        );
     }
 }

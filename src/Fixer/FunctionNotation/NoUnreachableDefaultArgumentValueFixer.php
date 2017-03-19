@@ -57,8 +57,6 @@ function example($foo = "two words", $bar) {}
                 ),
             ),
             null,
-            null,
-            null,
             'Modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).'
         );
     }

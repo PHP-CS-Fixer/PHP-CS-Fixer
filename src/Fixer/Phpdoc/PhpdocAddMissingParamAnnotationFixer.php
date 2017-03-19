@@ -13,11 +13,12 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,46 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * @var array<string, bool>
-     */
-    private $configuration;
-
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'only_untyped' => true,
-    );
-
-    /**
-     * @param null|array<string, bool> $configuration
-     */
-    public function configure(array $configuration = null)
-    {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        foreach ($configuration as $key => $value) {
-            if (!array_key_exists($key, self::$defaultConfiguration)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $key));
-            }
-
-            if (!is_bool($value)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected boolean got "%s".', is_object($value) ? get_class($value) : gettype($value)));
-            }
-
-            $configuration[$key] = $value;
-        }
-
-        $this->configuration = $configuration;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -209,10 +172,7 @@ function f9(string $foo, $bar, $baz) {}',
 function f9(string $foo, $bar, $baz) {}',
                     array('only_untyped' => false)
                 ),
-            ),
-            null,
-            'The following can be configured: `only_untyped => boolean`',
-            self::$defaultConfiguration
+            )
         );
     }
 
@@ -239,6 +199,21 @@ function f9(string $foo, $bar, $baz) {}',
     public function isRisky()
     {
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $onlyUntyped = new FixerOptionBuilder('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.');
+        $onlyUntyped = $onlyUntyped
+            ->setDefault(true)
+            ->setAllowedTypes(array('bool'))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($onlyUntyped));
     }
 
     /**

@@ -13,8 +13,10 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -22,49 +24,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var string[]
-     */
-    private static $defaultConfiguration = array(
-        'assertEquals',
-        'assertSame',
-        'assertNotEquals',
-        'assertNotSame',
-    );
-
-    /**
-     * @var string[]
-     */
-    private $configuration;
-
     private static $assertionFixers = array(
         'assertSame' => 'fixAssertPositive',
         'assertEquals' => 'fixAssertPositive',
         'assertNotEquals' => 'fixAssertNegative',
         'assertNotSame' => 'fixAssertNegative',
     );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(array $configuration = null)
-    {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        foreach ($configuration as $method) {
-            if (!array_key_exists($method, self::$assertionFixers)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
-            }
-        }
-
-        $this->configuration = $configuration;
-    }
 
     /**
      * {@inheritdoc}
@@ -88,11 +55,11 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         // no assertions to be fixed - fast return
-        if (empty($this->configuration)) {
+        if (empty($this->configuration['assertions'])) {
             return;
         }
 
-        foreach ($this->configuration as $assertionMethod) {
+        foreach ($this->configuration['assertions'] as $assertionMethod) {
             $assertionFixer = self::$assertionFixers[$assertionMethod];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
@@ -128,13 +95,11 @@ $this->assertSame(true, $a);
 $this->assertNotEquals(null, $c);
 $this->assertNotSame(null, $d);
 ',
-                    array('assertSame', 'assertNotSame')
+                    array('assertions' => array('assertSame', 'assertNotSame'))
                 ),
             ),
             null,
-            'List of strings which methods should be modified.',
-            self::$defaultConfiguration,
-            'Fixer could be risky if one is overwritting PHPUnit\'s native methods.'
+            'Fixer could be risky if one is overriding PHPUnit\'s native methods.'
         );
     }
 
@@ -145,6 +110,31 @@ $this->assertNotSame(null, $d);
     {
         // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
         return -10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $generator = new FixerOptionValidatorGenerator();
+
+        $assertions = new FixerOptionBuilder('assertions', 'List of assertion methods to fix.');
+        $assertions = $assertions
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(
+                $generator->allowedValueIsSubsetOf(array_keys(self::$assertionFixers)),
+            ))
+            ->setDefault(array(
+                'assertEquals',
+                'assertSame',
+                'assertNotEquals',
+                'assertNotSame',
+            ))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolverRootless('assertions', array($assertions));
     }
 
     /**

@@ -23,13 +23,26 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string     $expected
-     * @param string     $input
-     * @param array|null $config
+     * @group legacy
+     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
+     */
+    public function testLegacyFix()
+    {
+        $this->fixer->configure(null);
+        $this->doTest(
+             '<?php declare(ticks=1);',
+            '<?php declare(ticks= 1);'
+        );
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     * @param array  $config
      *
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input, $config)
+    public function testFix($expected, $input, array $config)
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -41,7 +54,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
             'minimal case remove whitespace (default config)' => array(
                 '<?php declare(ticks=1);',
                 '<?php declare(ticks= 1);',
-                null,
+                array(),
             ),
             'minimal case remove whitespace (no space config)' => array(
                 '<?php declare(ticks=1);',
@@ -61,7 +74,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
             'repeating case remove whitespace (default config)' => array(
                 '<?php declare(ticks=1);declare(ticks=1)?>',
                 '<?php declare(ticks= 1);declare(ticks= 1)?>',
-                null,
+                array(),
             ),
             'repeating case add whitespace' => array(
                 '<?php declare ( ticks = 1 );declare( ticks = 1)  ?>',
@@ -72,13 +85,16 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array  $config
+     * @param string $expectedMessage
+     *
      * @dataProvider provideInvalidConfig
      */
-    public function testInvalidConfig(array $config)
+    public function testInvalidConfig(array $config, $expectedMessage)
     {
         $this->setExpectedException(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[declare_equal_normalize] Configuration must define "space" being "single" or "none".'
+            sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage)
         );
 
         $this->fixer->configure($config);
@@ -87,9 +103,14 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     public function provideInvalidConfig()
     {
         return array(
-            array(array()),
-            array(array(1, 2)),
-            array(array('space' => 'tab')),
+            array(
+                array(1, 2),
+                'The options "0", "1" do not exist.',
+            ),
+            array(
+                array('space' => 'tab'),
+                'The option "space" with value "tab" is invalid.',
+            ),
         );
     }
 }

@@ -121,8 +121,6 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 '),
             ),
             null,
-            null,
-            null,
             'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
         );
     }

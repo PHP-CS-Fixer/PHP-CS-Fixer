@@ -95,9 +95,7 @@ $a = substr_count($a, $b);
                 ),
             ),
             null,
-            null,
-            null,
-            'Risky when the any of functions are overridden.'
+            'Risky when any of the functions are overridden.'
         );
     }
 

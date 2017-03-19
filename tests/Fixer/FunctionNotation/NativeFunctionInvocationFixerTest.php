@@ -26,23 +26,13 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         $key = 'foo';
 
         $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
-            '"%s" is not handled by the fixer.',
+            '[native_function_invocation] Invalid configuration: The option "%s" does not exist.',
             $key
         ));
 
         $this->fixer->configure(array(
             $key => 'bar',
         ));
-    }
-
-    public function testConfigureRejectsEmptyConfiguration()
-    {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            'Configuration must define "exclude" as an array.'
-        );
-
-        $this->fixer->configure(array());
     }
 
     /**
@@ -123,7 +113,7 @@ PHP;
 
         $this->doTest($before);
 
-        $this->fixer->configure(null);
+        $this->fixer->configure(array());
 
         $this->doTest($after, $before);
     }

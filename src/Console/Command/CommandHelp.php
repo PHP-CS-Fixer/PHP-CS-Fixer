@@ -13,8 +13,10 @@
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 
@@ -25,7 +27,7 @@ use PhpCsFixer\RuleSet;
  *
  * @internal
  */
-final class FixCommandHelp
+final class CommandHelp
 {
     /**
      * @return string
@@ -238,6 +240,69 @@ EOF
         );
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return string
+     */
+    public static function toString($value)
+    {
+        if (is_array($value)) {
+            // Output modifications:
+            // - remove new-lines
+            // - combine multiple whitespaces
+            // - switch array-syntax to short array-syntax
+            // - remove whitespace at array opening
+            // - remove trailing array comma and whitespace at array closing
+            // - remove numeric array indexes
+            static $replaces = array(
+                array('#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'),
+                array('', ' ', '[$1]', '[', ']', ''),
+            );
+
+            $str = preg_replace(
+                $replaces[0],
+                $replaces[1],
+                var_export($value, true)
+            );
+        } else {
+            $str = var_export($value, true);
+        }
+
+        return preg_replace('/\bNULL\b/', 'null', $str);
+    }
+
+    /**
+     * Returns the allowed values of the given option that can be converted to a string.
+     *
+     * @param FixerOptionInterface $option
+     *
+     * @return array|null
+     */
+    public static function getDisplayableAllowedValues(FixerOptionInterface $option)
+    {
+        $allowed = $option->getAllowedValues();
+
+        if (null !== $allowed) {
+            $allowed = array_filter($allowed, function ($value) {
+                return !is_callable($value);
+            });
+
+            usort($allowed, function ($valueA, $valueB) {
+                return strcasecmp(
+                    CommandHelp::toString($valueA),
+                    CommandHelp::toString($valueB)
+                );
+            });
+
+            if (0 === count($allowed)) {
+                $allowed = null;
+            }
+        }
+
+        return $allowed;
+    }
+
     private static function getFixersHelp()
     {
         $help = '';
@@ -279,16 +344,6 @@ EOF
                 $description = '[n/a]';
             }
 
-            $attributes = array();
-
-            if ($fixer->isRisky()) {
-                $attributes[] = 'risky';
-            }
-
-            if ($fixer instanceof ConfigurableFixerInterface) {
-                $attributes[] = 'configurable';
-            }
-
             $description = wordwrap($description, 72, "\n   | ");
             $description = str_replace('`', '``', $description);
 
@@ -298,9 +353,56 @@ EOF
                 $help .= sprintf(" * <comment>%s</comment>\n   | %s\n", $fixer->getName(), $description);
             }
 
-            if (count($attributes)) {
-                sort($attributes);
-                $help .= sprintf("   | *Rule is: %s.*\n", implode(', ', $attributes));
+            if ($fixer->isRisky()) {
+                $help .= sprintf(
+                    "   | *Risky rule: %s.*\n",
+                    str_replace('`', '``', lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription())))
+                );
+            }
+
+            if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
+                $configurationDefinition = $fixer->getConfigurationDefinition();
+                $configurationDefinitionOptions = $configurationDefinition->getOptions();
+                if (count($configurationDefinitionOptions)) {
+                    $help .= "   |\n   | Configuration options:\n";
+
+                    usort(
+                        $configurationDefinitionOptions,
+                        function (FixerOptionInterface $optionA, FixerOptionInterface $optionB) {
+                            return strcmp($optionA->getName(), $optionB->getName());
+                        }
+                    );
+
+                    foreach ($configurationDefinitionOptions as $option) {
+                        $line = '<info>'.$option->getName().'</info>';
+
+                        $allowed = self::getDisplayableAllowedValues($option);
+                        if (null !== $allowed) {
+                            foreach ($allowed as &$value) {
+                                $value = self::toString($value);
+                            }
+                        } else {
+                            $allowed = $option->getAllowedTypes();
+                        }
+
+                        if (null !== $allowed) {
+                            $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
+                        }
+
+                        $line .= ': '.str_replace('`', '``', lcfirst(preg_replace('/\.$/', '', $option->getDescription()))).'; ';
+                        if ($option->hasDefault()) {
+                            $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
+                        } else {
+                            $line .= 'required';
+                        }
+
+                        foreach (self::wordwrap($line, 72) as $index => $line) {
+                            $help .= (0 === $index ? '   | - ' : '   |   ').$line."\n";
+                        }
+                    }
+                }
+            } elseif ($fixer instanceof ConfigurableFixerInterface) {
+                $help .= "   | *Configurable rule.*\n";
             }
 
             if ($count !== $i) {
@@ -309,5 +411,38 @@ EOF
         }
 
         return $help;
+    }
+
+    /**
+     * Wraps a string to the given number of characters, ignoring style tags.
+     *
+     * @param string $string
+     * @param int    $width
+     *
+     * @return string[]
+     */
+    private static function wordwrap($string, $width)
+    {
+        $result = array();
+        $currentLine = 0;
+        $lineLength = 0;
+        foreach (explode(' ', $string) as $word) {
+            $wordLength = strlen(preg_replace('~</?(\w+)>~', '', $word));
+            if (0 !== $lineLength) {
+                ++$wordLength; // space before word
+            }
+
+            if ($lineLength + $wordLength > $width) {
+                ++$currentLine;
+                $lineLength = 0;
+            }
+
+            $result[$currentLine][] = $word;
+            $lineLength += $wordLength;
+        }
+
+        return array_map(function ($line) {
+            return implode(' ', $line);
+        }, $result);
     }
 }

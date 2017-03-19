@@ -4,7 +4,7 @@ Integration of fixers: single_import_per_statement,no_leading_import_slash,no_ex
 {
     "single_import_per_statement": true,
     "no_leading_import_slash": true,
-    "no_extra_consecutive_blank_lines": ["use"],
+    "no_extra_consecutive_blank_lines": {"tokens": ["use"]},
     "ordered_imports": true
 }
 --EXPECT--

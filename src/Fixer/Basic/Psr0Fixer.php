@@ -13,7 +13,9 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractPsrAutoloadingFixer;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -24,31 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Bram Gotink <bram@gotink.me>
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurableFixerInterface
+final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array();
-
-    private $configuration = array();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(array $configuration = null)
-    {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        if (isset($configuration['dir'])) {
-            $this->configuration['dir'] = $configuration['dir'];
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -167,9 +146,21 @@ class InvalidName {}
                 ),
             ),
             null,
-            'One could set up `dir` where the code is placed under project location.',
-            self::$defaultConfiguration,
-            'This fixer may change you class name, which will break the code that is depended on old name.'
+            'This fixer may change your class name, which will break the code that is depended on old name.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $dir = new FixerOptionBuilder('dir', 'The directory where the project code is placed.');
+        $dir = $dir
+            ->setAllowedTypes(array('string'))
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array($dir));
     }
 }

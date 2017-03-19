@@ -15,6 +15,7 @@ namespace PhpCsFixer\Console\Command;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
@@ -127,7 +128,42 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        if ($fixer instanceof ConfigurableFixerInterface) {
+        if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
+            $output->writeln('Fixer is configurable using following options:');
+
+            $configurationDefinition = $fixer->getConfigurationDefinition();
+
+            foreach ($configurationDefinition->getOptions() as $option) {
+                $line = '* <info>'.$option->getName().'</info>';
+
+                $allowed = CommandHelp::getDisplayableAllowedValues($option);
+                if (null !== $allowed) {
+                    foreach ($allowed as &$value) {
+                        $value = CommandHelp::toString($value);
+                    }
+                } else {
+                    $allowed = $option->getAllowedTypes();
+                }
+
+                if (null !== $allowed) {
+                    $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
+                }
+
+                $line .= ': '.lcfirst(preg_replace('/\.$/', '', $option->getDescription())).'; ';
+                if ($option->hasDefault()) {
+                    $line .= sprintf(
+                        'defaults to <comment>%s</comment>',
+                        CommandHelp::toString($option->getDefault())
+                    );
+                } else {
+                    $line .= 'required';
+                }
+
+                $output->writeln($line);
+            }
+
+            $output->writeln('');
+        } elseif ($fixer instanceof ConfigurableFixerInterface) {
             $output->writeln('<comment>Fixer is configurable.</comment>');
 
             if ($definition->getConfigurationDescription()) {
@@ -135,7 +171,7 @@ final class DescribeCommand extends Command
             }
 
             if ($definition->getDefaultConfiguration()) {
-                $output->writeln(sprintf('Default configuration: <comment>%s</comment>.', $this->arrayToText($definition->getDefaultConfiguration())));
+                $output->writeln(sprintf('Default configuration: <comment>%s</comment>.', CommandHelp::toString($definition->getDefaultConfiguration())));
             }
 
             $output->writeln('');
@@ -181,7 +217,7 @@ final class DescribeCommand extends Command
                 if (null === $codeSample->getConfiguration()) {
                     $output->writeln(sprintf(' * Example #%d.', $index + 1));
                 } else {
-                    $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, $this->arrayToText($codeSample->getConfiguration())));
+                    $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, CommandHelp::toString($codeSample->getConfiguration())));
                 }
                 $output->writeln($diffFormatter->format($diff, '   %s'));
                 $output->writeln('');
@@ -224,37 +260,11 @@ final class DescribeCommand extends Command
                 $rule,
                 $fixers[$rule]->isRisky() ? ' <error>risky</error>' : '',
                 $definition->getSummary(),
-                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", $this->arrayToText($config)) : ''
+                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", CommandHelp::toString($config)) : ''
             );
         }
 
         $output->write($help);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return string
-     */
-    private function arrayToText(array $data)
-    {
-        // Output modifications:
-        // - remove new-lines
-        // - combine multiple whitespaces
-        // - switch array-syntax to short array-syntax
-        // - remove whitespace at array opening
-        // - remove trailing array comma and whitespace at array closing
-        // - remove numeric array indexes
-        static $replaces = array(
-            array('#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'),
-            array('', ' ', '[$1]', '[', ']', ''),
-        );
-
-        return preg_replace(
-            $replaces[0],
-            $replaces[1],
-            var_export($data, true)
-        );
     }
 
     /**
