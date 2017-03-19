@@ -1,0 +1,235 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-02-05T01:33:29Z
+
+Should probably be targeted at master, not 2.0.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-02-05T01:34:16Z
+
+> With this PR, FixerInterface has 4 new methods
+
+Adding methods to the interface is a major breaking change is it not?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-05T11:05:59Z
+
+Woops, of course it is 😅
+
+I reverted `ConfigurableFixerInterface` removal and added a new `ConfigurationDefinitionFixerInterface` with the new methods instead. Both interfaces are deprecated and to be removed and merged into `FixerInterface` in 3.0.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-05T11:54:23Z
+
+fabbio.io reports seem buggy right now.
+
+By the way, does anyone know why AppVeyor queues all PHP-CS-Fixer's builds and never runs them?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-05T16:43:41Z
+
+Rebased onto master as introducing deprecations requires a minor version incrementation.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-09T08:33:01Z
+
+I added configuration details in the `describe` command output. By the way, do you think I should add colors for configuration details in the `fix` command help?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-09T22:33:13Z
+
+I replaced `WhitespacesFixerConfig` by configuration options `indent` and `line_ending`. The `WhitespacesFixerConfig` class and all methods using it are now deprecated.
+
+`FixerFactory::setWhitespacesConfig()` has no replacement yet. I'm thinking about something like a `setDefaultOptions()` method. As the class is tagged as `@internal`, am I allowed to break BC here?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-10T09:05:26Z
+
+> I replaced `WhitespacesFixerConfig` by configuration options `indent` and `line_ending`. The `WhitespacesFixerConfig` class and all methods using it are now deprecated.
+
+Please don't make such changes before alignment on it.
+Big :-1: for that. One thing is that it is pointless to have this config specified for each fixer separately (repeating it for half of the fixers in docs is pointless), but bigger thing is now one could configure different whitespaces for different fixers.
+Please revert that change.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-10T18:08:26Z
+
+> One thing is that it is pointless to have this config specified for each fixer separately (repeating it for half of the fixers in docs is pointless), but bigger thing is now one could configure different whitespaces for different fixers.
+
+I didn't though about this and I completely agree. I removed the related commit.
+
+The point was to have a single configuration entry point and I still think it would be great, but I'll try to figure out a better solution later, maybe in a separate PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-11T18:54:42Z
+
+Thank you
+Totally :+1: for not doing everything in one PR ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-12T14:05:45Z
+
+Added description to all configuration options and tweaked the README.
+
+Last thing I'd like to do is to deprecate `getConfigurationDescription()` and `getDefaultConfiguration()` methods from `FixerDefinitionInterface` since the details are also available through the new configuration definition. Do you agree?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-14T08:27:26Z
+
+I reverted the implementation of `ConfigurationDefinitionFixer` in `AbstractFixer`. Now, only fixers that are actually configurable implement it so I removed the `isConfigurable()` method from it.
+
+I also added tests on the internal `OptionsResolver` that extends Symfony's one.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-02-15T16:03:32Z
+
+Not sure how this simplifies things. There's twice as much code now...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-02-15T16:04:08Z
+
+That said, the new help output is very nice. :P
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-15T16:17:08Z
+
+@GrahamCampbell You're right, maybe some parts could be simplified (thinking about `OptionsResolver::setNormalizer()` usages for example). I'll have a look at it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-15T16:37:16Z
+
+side request: @juliendufresne , if possible, please avoid squashing.
+it's hard to see the changes you made across the time if the commits get squashed and one need to read whole diff again.
+thanks !
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-15T16:47:24Z
+
+@keradus I use `git commit --fixup` a lot, is it ok if I still push fixup commits so we can squash them before merging?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-15T16:49:40Z
+
+sure, don't bother about squashing on your side. we do it automatically during merging anyway.
+(the only exception is when there are many authors to not remove authorship)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-16T08:22:36Z
+
+@keradus When I edit the original post of the PR, fabbot.io checks are triggered while the code didn't change, is it expected?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-16T08:30:46Z
+
+fabbot.io works in mysterious ways, it's not something to worry about ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-16T11:15:33Z
+
+new github hook msg is send, so new processing is executed
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-19T21:28:13Z
+
+@SpacePossum , we have just release `v2@stable`, I don't want to have this a BC breaker for 3.0, it will make maintainable 2.x<=>3.x harder. I don't wanna have BC breakers for at least next few months and I believe this PR could be achieved without breaking BC.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-19T22:36:36Z
+
+> I believe this PR could be achieved without breaking BC
+
+I can remove some of the deprecations introduced in this PR for the moment but I think they make sense. However, there is one that cannot be avoided because of `symfony/options-resolver` not handling some configuration cases as described in the OP.
+
+I do understand the maintenance burden this PR may create so maybe it's wiser to wait before merging. But on the other hand, having full details of configuration options right in the README file seems valuable to me.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-19T22:55:09Z
+
+@julienfalque, deprecations without breaking a BC are OK. Like triggering warnings or introducing new interfaces.
+In my prev msg I refer to fact I remove the milestone, not to your code ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-20T18:08:59Z
+
+@julienfalque, sorry for very small output from my side.
+
+I think I do want to have here for sure is no BC breakers (deprecations and new interfaces are OK, as stated). For sure I would like to have more time and review whole PR once in the future, but for now it would be great if anyone from community would help reviewing this every-day bigger PR.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-20T18:35:59Z
+
+@keradus Sure, no problem. I think I'm done here and I won't push more changes, unless I'm requested to. Anyway, thanks for the feedback you already gave :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-20T18:44:04Z
+
+great @julienfalque :)
+can you do the reviewers one more favor and rebase one more time, I hope to pick this one up shortly.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-20T18:48:22Z
+
+Done.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-26T15:07:48Z
+
+Adressed most of the review comments. Note that with `symfony/phpunit-bridge` being used for tests, the tested code will **not** be allowed to throw deprecation notices that are not explicitly expected in the related tests anymore.
+
+Last point: as @SpacePossum noticed, there is no upgrade path to avoid using code that is deprecated in this PR. While I agree it would be better to have one, I wonder if it's really worth it: the only deprecated code that we can't avoid using is `ConfigurationDefinitionFixerInterface`, which is an interface so using it does not actually trigger any deprecation notices. @SpacePossum suggested to remove the `@deprecated` tag for now and add it again just before releasing `3.0`, which we may forget to do. So, is it worth it?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-27T21:41:59Z
+
+I think I adressed all last review comments.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-02T22:25:12Z
+
+I'm not into the codebase of the PHP CS Fixer enough to help here, but the changes from this PR seems really good, so is there anything else needed here? I see AppVeyor is failing but seems like a temporary networking problem.
+
+@julienfalque Thank you for all the work!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-03T07:10:19Z
+
+For now only reviews are required here I think.
+
+Sadly AppVeyor isn't as reliable as Travis and is very slow IMO. Wish we could run Travis on Windows and get rid of AppVeyor.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-18T16:15:39Z
+
+please squash last 3 commits and do the final rebase to be sure that it works with #2613
