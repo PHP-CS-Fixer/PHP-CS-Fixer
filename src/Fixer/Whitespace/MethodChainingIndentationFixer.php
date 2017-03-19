@@ -65,7 +65,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         return new FixerDefinition(
             'Method chaining MUST indented with one tab.',
-            array(new CodeSample("\$user->setEmail('voff.web@gmail.com')\n    ->setPassword('233434');"),
+            array(new CodeSample("<?php\n\$user->setEmail('voff.web@gmail.com')\n         ->setPassword('233434');"),
         ));
     }
 
