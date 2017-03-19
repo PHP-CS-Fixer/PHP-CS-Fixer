@@ -755,4 +755,22 @@ $negative = function ($item) {
 
         return false;
     }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $startParenthesisIndex
+     * @param int    $endParenthesisIndex
+     *
+     * @return bool
+     */
+    private function isMultilined(Tokens $tokens, $startParenthesisIndex, $endParenthesisIndex)
+    {
+        for ($i = $startParenthesisIndex; $i < $endParenthesisIndex; ++$i) {
+            if (false !== strpos($tokens[$i]->getContent(), "\n")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
