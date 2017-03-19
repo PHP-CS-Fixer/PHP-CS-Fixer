@@ -526,7 +526,7 @@ EOF;
      * @param string $expected
      * @param string $input
      *
-     * @requires PHP 5.6
+     *
      * @dataProvider provideVariadicCases
      */
     public function testVariadicParams($expected, $input)

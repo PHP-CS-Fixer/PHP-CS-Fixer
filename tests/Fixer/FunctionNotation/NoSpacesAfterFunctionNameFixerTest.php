@@ -152,7 +152,6 @@ $$e(2);
      * @param null|string $input
      *
      * @dataProvider provide54Cases
-     * @requires PHP 5.4
      */
     public function test54($expected, $input = null)
     {

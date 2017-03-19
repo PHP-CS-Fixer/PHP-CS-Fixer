@@ -100,7 +100,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @requires PHP 5.4
+     *
      * @dataProvider provideShortSyntaxCases
      */
     public function testFixShortSyntax($expected, $input = null)

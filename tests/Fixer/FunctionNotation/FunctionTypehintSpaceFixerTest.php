@@ -112,7 +112,6 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @dataProvider provideCases56
-     * @requires PHP 5.6
      */
     public function testFix56($expected, $input = null)
     {

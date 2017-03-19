@@ -378,7 +378,6 @@ preg_replace_callback(
      * @param string $source
      *
      * @dataProvider provideIsUnaryPredecessorOperator56
-     * @requires PHP 5.6
      */
     public function testIsUnaryPredecessorOperator56($source, array $expected)
     {
@@ -543,7 +542,6 @@ $b;',
      * @param string $source
      *
      * @dataProvider provideIsBinaryOperator56
-     * @requires PHP 5.6
      */
     public function testIsBinaryOperator56($source, array $expected)
     {
@@ -611,7 +609,6 @@ $b;',
      * @param bool   $isMultiLineArray
      *
      * @dataProvider provideIsArrayCases
-     * @requires PHP 5.4
      */
     public function testIsArray($source, $tokenIndex, $isMultiLineArray = false)
     {

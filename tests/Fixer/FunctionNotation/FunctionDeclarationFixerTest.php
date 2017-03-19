@@ -341,7 +341,6 @@ foo#
      * @param null|array  $configuration
      *
      * @dataProvider provide54Cases
-     * @requires PHP 5.4
      */
     public function test54($expected, $input = null, array $configuration = null)
     {

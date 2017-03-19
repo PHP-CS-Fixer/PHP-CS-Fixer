@@ -28,7 +28,6 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @dataProvider provideFixCases
-     * @requires PHP 5.5
      */
     public function testFix($expected, $input = null)
     {

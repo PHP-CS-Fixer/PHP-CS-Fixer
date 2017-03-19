@@ -324,7 +324,6 @@ TWIG
      * @param null|string $input
      *
      * @dataProvider provideExamples55
-     * @requires PHP 5.5
      */
     public function testFix55($expected, $input = null)
     {

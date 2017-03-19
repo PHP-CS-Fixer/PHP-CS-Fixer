@@ -29,8 +29,6 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @dataProvider provideFixCases
-     *
-     * @requires PHP 5.6
      */
     public function testFix($expected, $input = null)
     {

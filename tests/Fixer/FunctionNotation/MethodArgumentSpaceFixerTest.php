@@ -257,7 +257,7 @@ $a#
      * @param string $expected
      * @param string $input
      *
-     * @requires PHP 5.6
+     *
      * @dataProvider provideFix56Cases
      */
     public function testFix56($expected, $input)

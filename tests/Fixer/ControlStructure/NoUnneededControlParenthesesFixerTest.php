@@ -72,7 +72,6 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      * @param null|string $fixStatement
      *
      * @dataProvider provideFixCases55
-     * @requires PHP 5.5
      */
     public function testFix55($expected, $input = null, $fixStatement = null)
     {

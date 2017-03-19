@@ -315,9 +315,6 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function test54()
     {
         $expected = <<<'EOF'
@@ -393,9 +390,6 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testFixWithTraitImports()
     {
         $expected = <<<'EOF'
@@ -1169,9 +1163,6 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testByLength54()
     {
         $this->fixer->configure(array(
@@ -1252,9 +1243,6 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testByLengthFixWithTraitImports()
     {
         $this->fixer->configure(array(

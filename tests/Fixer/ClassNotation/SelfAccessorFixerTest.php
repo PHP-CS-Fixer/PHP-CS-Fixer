@@ -112,9 +112,6 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         );
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testFix54()
     {
         $expected = '<?php trait Foo { function bar() { self::bar(); } }';

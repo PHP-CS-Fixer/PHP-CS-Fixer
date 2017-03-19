@@ -212,7 +212,6 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @dataProvider provide54Cases
-     * @requires PHP 5.4
      */
     public function testFix54($expected, $input = null)
     {

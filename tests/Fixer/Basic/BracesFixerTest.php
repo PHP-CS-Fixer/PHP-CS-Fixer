@@ -2078,7 +2078,6 @@ function foo()
      * @param null|array  $configuration
      *
      * @dataProvider provideFixClassyBraces54Cases
-     * @requires PHP 5.4
      */
     public function testFixClassyBraces54($expected, $input = null, array $configuration = null)
     {
@@ -2119,7 +2118,6 @@ function foo()
      * @param null|array  $configuration
      *
      * @dataProvider provideFixAnonFunctionInShortArraySyntax54Cases
-     * @requires PHP 5.4
      */
     public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null, array $configuration = null)
     {
@@ -2995,7 +2993,6 @@ declare   (   ticks   =   1   )   {
      * @param null|array  $configuration
      *
      * @dataProvider provide55Cases
-     * @requires PHP 5.5
      */
     public function test55($expected, $input = null, array $configuration = null)
     {
@@ -3067,7 +3064,6 @@ declare   (   ticks   =   1   )   {
      * @param null|array  $configuration
      *
      * @dataProvider provide56Cases
-     * @requires PHP 5.6
      */
     public function test56($expected, $input = null, array $configuration = null)
     {

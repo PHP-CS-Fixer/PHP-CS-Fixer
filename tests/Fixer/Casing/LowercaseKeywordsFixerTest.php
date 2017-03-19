@@ -44,9 +44,6 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
         );
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testHaltCompiler()
     {
         $this->doTest('<?php __HALT_COMPILER();');

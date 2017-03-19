@@ -306,7 +306,6 @@ EOT
      * @param null|string $input
      *
      * @dataProvider provideCases54
-     * @requires PHP 5.4
      */
     public function testFix54($expected, $input = null)
     {

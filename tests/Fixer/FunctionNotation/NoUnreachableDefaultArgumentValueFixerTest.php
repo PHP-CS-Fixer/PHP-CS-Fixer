@@ -169,7 +169,6 @@ $bar) {}',
 
     /**
      * @dataProvider provide56Cases
-     * @requires PHP 5.6
      *
      * @param string      $expected
      * @param null|string $input

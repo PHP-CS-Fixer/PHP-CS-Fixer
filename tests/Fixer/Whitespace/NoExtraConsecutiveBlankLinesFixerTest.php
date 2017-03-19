@@ -891,7 +891,7 @@ class Foo
      * @param string $expected
      * @param string $input
      *
-     * @requires PHP 5.4
+     *
      * @dataProvider provideBraceCases54
      */
     public function testBraces54(array $config = null, $expected, $input)
