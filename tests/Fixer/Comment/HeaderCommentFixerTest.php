@@ -443,6 +443,13 @@ declare(strict_types=1)?>',
         );
     }
 
+    public function testWithoutConfiguration()
+    {
+        $this->setExpectedException('PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException');
+
+        $this->doTest('<?php echo 1;');
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
