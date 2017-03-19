@@ -38,28 +38,6 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide54Cases
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide56Cases
-     */
-    public function testFix56($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provide70Cases
      * @requires PHP 7.0
      */
@@ -244,12 +222,6 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
                 '<?php $a = [(string) new Foo() => 1];',
                 '<?php $a = [(string) new Foo => 1];',
             ),
-        );
-    }
-
-    public function provide54Cases()
-    {
-        return array(
             array(
                 '<?php $a = [ "key" => new DateTime(), ];',
                 '<?php $a = [ "key" => new DateTime, ];',
@@ -258,12 +230,6 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
                 '<?php $a = [ "key" => new DateTime() ];',
                 '<?php $a = [ "key" => new DateTime ];',
             ),
-        );
-    }
-
-    public function provide56Cases()
-    {
-        return array(
             array(
                 '<?php
                     $a = new Foo() ** 1;

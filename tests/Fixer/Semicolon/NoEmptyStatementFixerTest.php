@@ -358,23 +358,6 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     namespace A\B\C;;use D;
                 ',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide54Cases
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provide54Cases()
-    {
-        return array(
             array(
                 '<?php
                     trait TestTrait
@@ -387,25 +370,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     };
                 ',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide55Cases
-     */
-    public function testFix55($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provide55Cases()
-    {
-        return array(
             array(
-            '<?php
+                '<?php
                     try {
                         throw new \Exception("a");
                     } catch (\Exception $e){
@@ -413,7 +379,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     } finally {
                     }  '.'
                 ',
-            '<?php
+                '<?php
                     try {
                         throw new \Exception("a");
                     } catch (\Exception $e){

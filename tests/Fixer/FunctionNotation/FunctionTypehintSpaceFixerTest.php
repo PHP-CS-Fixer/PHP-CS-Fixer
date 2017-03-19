@@ -104,23 +104,6 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
                     array$b, array     $c, array
                     $d) {};',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideCases56
-     */
-    public function testFix56($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCases56()
-    {
-        return array(
             array(
                 '<?php function foo(...$param) {}',
             ),

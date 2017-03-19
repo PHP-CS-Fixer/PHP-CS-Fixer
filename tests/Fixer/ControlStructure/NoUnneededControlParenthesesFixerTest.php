@@ -71,33 +71,6 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|string $fixStatement
      *
-     * @dataProvider provideFixCases55
-     */
-    public function testFix55($expected, $input = null, $fixStatement = null)
-    {
-        $this->fixerTest($expected, $input, $fixStatement);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
-     * @group legacy
-     * @dataProvider provideFixCases55
-     * @expectedDeprecation Passing "statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
-     * @requires PHP 5.5
-     */
-    public function testLegacyFix55($expected, $input = null, $fixStatement = null)
-    {
-        $this->fixerTest($expected, $input, $fixStatement, true);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
      * @dataProvider provideFixCases70
      * @requires PHP 7.0
      */
@@ -448,12 +421,6 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 )#
 ; } }',
             ),
-        );
-    }
-
-    public function provideFixCases55()
-    {
-        return array(
             array(
                 '<?php
                 function foo() { yield "prod"; }

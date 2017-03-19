@@ -34,17 +34,6 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix54Cases
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
     public function provideFixCases()
     {
         return array(
@@ -138,12 +127,6 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 class Foo implements Baz {}
                 ',
             ),
-        );
-    }
-
-    public function provideFix54Cases()
-    {
-        return array(
             array(
                 '<?php
                 trait SomeTrait {

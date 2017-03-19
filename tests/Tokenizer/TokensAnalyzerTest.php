@@ -371,30 +371,6 @@ preg_replace_callback(
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
                 array(5 => true, 11 => true, 17 => true),
             ),
-        );
-    }
-
-    /**
-     * @param string $source
-     *
-     * @dataProvider provideIsUnaryPredecessorOperator56
-     */
-    public function testIsUnaryPredecessorOperator56($source, array $expected)
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isUnary) {
-            $this->assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
-            if ($isUnary) {
-                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                $this->assertFalse($tokensAnalyzer->isBinaryOperator($index));
-            }
-        }
-    }
-
-    public function provideIsUnaryPredecessorOperator56()
-    {
-        return array(
             array(
                 '<?php function foo($a, ...$b) {}',
                 array(8 => true),
@@ -522,6 +498,14 @@ $b;',
                 '<?php `echo 1` + 1;',
                 array(5 => true),
             ),
+            array(
+                '<?php $a ** $b;',
+                array(3 => true),
+            ),
+            array(
+                '<?php $a **= $b;',
+                array(3 => true),
+            ),
         );
 
         $operators = array(
@@ -536,38 +520,6 @@ $b;',
         }
 
         return $cases;
-    }
-
-    /**
-     * @param string $source
-     *
-     * @dataProvider provideIsBinaryOperator56
-     */
-    public function testIsBinaryOperator56($source, array $expected)
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-            if ($isBinary) {
-                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
-    }
-
-    public function provideIsBinaryOperator56()
-    {
-        return array(
-            array(
-                '<?php $a ** $b;',
-                array(3 => true),
-            ),
-            array(
-                '<?php $a **= $b;',
-                array(3 => true),
-            ),
-        );
     }
 
     /**

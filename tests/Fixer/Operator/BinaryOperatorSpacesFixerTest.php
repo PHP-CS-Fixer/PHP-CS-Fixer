@@ -202,6 +202,20 @@ $b;',
                 '<?php $a = array("b" => "c", );',
                 '<?php $a = array("b"=> "c", );',
             ),
+            array(
+                '<?php [1, 2] + [3, 4];',
+                '<?php [1, 2]+[3, 4];',
+            ),
+            array(
+                '<?php [1, 2] + [3, 4];',
+                '<?php [1, 2]   +   [3, 4];',
+            ),
+            array(
+                '<?php [1, 2] + //   '.'
+                [3, 4];',
+                '<?php [1, 2]   + //   '.'
+                [3, 4];',
+            ),
         );
     }
 
@@ -366,37 +380,6 @@ $b;',
         );
 
         $this->fixer->configure(array('align_double_arrow' => 123));
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideCases54
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCases54()
-    {
-        return array(
-            array(
-                '<?php [1, 2] + [3, 4];',
-                '<?php [1, 2]+[3, 4];',
-            ),
-            array(
-                '<?php [1, 2] + [3, 4];',
-                '<?php [1, 2]   +   [3, 4];',
-            ),
-            array(
-                '<?php [1, 2] + //   '.'
-                [3, 4];',
-                '<?php [1, 2]   + //   '.'
-                [3, 4];',
-            ),
-        );
     }
 
     /**

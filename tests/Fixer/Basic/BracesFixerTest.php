@@ -2069,28 +2069,24 @@ function foo()
 }',
                 self::$configurationOopPositionSameLine,
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|array  $configuration
-     *
-     * @dataProvider provideFixClassyBraces54Cases
-     */
-    public function testFixClassyBraces54($expected, $input = null, array $configuration = null)
+            array(
+                '<?php
+    trait TFoo
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixClassyBraces54Cases()
-    {
-        return array(
+        public $a;
+    }',
+                '<?php
+    trait TFoo {public $a;}',
+            ),
+            array(
+                '<?php
+    trait TFoo {
+        public $a;
+    }',
+                '<?php
+    trait TFoo {public $a;}',
+                self::$configurationOopPositionSameLine,
+            ),
             array(
                 '<?php
     trait TFoo
@@ -2117,9 +2113,9 @@ function foo()
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provideFixAnonFunctionInShortArraySyntax54Cases
+     * @dataProvider provideFixAnonFunctionInShortArraySyntaxCases
      */
-    public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null, array $configuration = null)
+    public function testFixAnonFunctionInShortArraySyntax($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -2128,7 +2124,7 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAnonFunctionInShortArraySyntax54Cases()
+    public function provideFixAnonFunctionInShortArraySyntaxCases()
     {
         return array(
             array(
@@ -2992,9 +2988,9 @@ declare   (   ticks   =   1   )   {
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide55Cases
+     * @dataProvider provideFinallyCases
      */
-    public function test55($expected, $input = null, array $configuration = null)
+    public function testFinally($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -3003,7 +2999,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provide55Cases()
+    public function provideFinallyCases()
     {
         return array(
             array(
@@ -3063,9 +3059,9 @@ declare   (   ticks   =   1   )   {
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide56Cases
+     * @dataProvider provideFunctionImportCases
      */
-    public function test56($expected, $input = null, array $configuration = null)
+    public function testFunctionImport($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -3074,7 +3070,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provide56Cases()
+    public function provideFunctionImportCases()
     {
         return array(
             array(

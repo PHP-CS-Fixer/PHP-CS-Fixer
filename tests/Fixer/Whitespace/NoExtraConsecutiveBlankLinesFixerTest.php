@@ -884,25 +884,6 @@ class Foo
     }
 }',
             ),
-        );
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     *
-     * @dataProvider provideBraceCases54
-     */
-    public function testBraces54(array $config = null, $expected, $input)
-    {
-        $this->fixer->configure(array('tokens' => $config));
-        $this->doTest($expected, $input);
-    }
-
-    public function provideBraceCases54()
-    {
-        return array(
             array(
                 array('square_brace_block'),
                 "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",

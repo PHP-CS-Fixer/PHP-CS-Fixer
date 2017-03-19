@@ -316,23 +316,6 @@ TWIG
         "string"
         /* foo */];',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideExamples55
-     */
-    public function testFix55($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideExamples55()
-    {
-        return array(
             array(
                 '<?php
 function a()

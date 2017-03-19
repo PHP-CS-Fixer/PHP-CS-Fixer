@@ -36,7 +36,7 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        $cases = array(
+        return array(
             array(
                 '<?php $a= 1;$a#
 ++#
@@ -100,25 +100,6 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
                 '<?php function foo(& $a, array & $b, Bar & $c) {}',
             ),
-        );
-
-        return $cases;
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideCases56
-     */
-    public function testFix56($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCases56()
-    {
-        return array(
             array(
                 '<?php function foo($a, ...$b) {}',
                 '<?php function foo($a, ... $b) {}',

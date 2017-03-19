@@ -65,24 +65,6 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
                 '<?php echo __NAMESPACE__;',
                 '<?php echo __namespace__;',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 5.4
-     * @dataProvider provideFixCases54
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixCases54()
-    {
-        return array(
             array(
                 '<?php echo __TRAIT__;',
                 '<?php echo __trait__;',
@@ -91,24 +73,6 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
                 '<?php echo __TRAIT__;',
                 '<?php echo __trAIt__;',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 5.5
-     * @dataProvider provideFixCases55
-     */
-    public function testFix55($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixCases55()
-    {
-        return array(
             array(
                 '<?php echo Exception::class;',
                 '<?php echo Exception::CLASS;',

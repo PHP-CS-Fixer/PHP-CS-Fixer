@@ -133,7 +133,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
     public function providerMissingData()
     {
         $data = array(
-            'php' => '5.5.5',
+            'php' => '7.1.2',
             'version' => '2.0',
             'rules' => array(
                 'foo' => true,

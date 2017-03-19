@@ -27,14 +27,14 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param string|null $input
      *
-     * @dataProvider provideDoFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideDoFixCases()
+    public function provideFixCases()
     {
         return array(
             array(
@@ -204,23 +204,6 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 }
                 ',
             ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide54Cases
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provide54Cases()
-    {
-        return array(
             array(
                 '<?php
                 trait T

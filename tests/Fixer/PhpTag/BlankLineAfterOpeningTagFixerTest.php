@@ -36,18 +36,6 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     *
-     * @dataProvider provideCases54
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
     public function provideCases()
     {
         return array(
@@ -113,12 +101,6 @@ Html here
 <?php $bar = false;
 ',
             ),
-        );
-    }
-
-    public function provideCases54()
-    {
-        return array(
             array(
                 '<?= $bar;
 $foo = $bar;

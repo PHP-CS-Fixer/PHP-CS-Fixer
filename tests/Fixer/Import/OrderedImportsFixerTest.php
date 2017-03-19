@@ -315,7 +315,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function test54()
+    public function testWithTraits()
     {
         $expected = <<<'EOF'
 <?php
@@ -1163,7 +1163,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLength54()
+    public function testByLength()
     {
         $this->fixer->configure(array(
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
