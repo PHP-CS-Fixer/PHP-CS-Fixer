@@ -28,7 +28,6 @@ class Finder extends BaseFinder
             ->files()
             ->name('*.php')
             ->name('*.phpt')
-            ->name('*.twig')
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
             ->exclude('vendor')
