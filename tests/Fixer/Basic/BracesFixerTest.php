@@ -28,7 +28,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[braces\] Position of the opening brace is invalid\. Should be one of: "next", "same"\.$#'
+            '#^\[braces\] Invalid configuration: The option "position_after_functions_and_oop_constructs" with value "neither" is invalid\. Accepted values are: "next", "same"\.$#'
         );
 
         $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'neither'));
