@@ -36,13 +36,12 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->ident = $this->whitespacesConfig->getIndent();
-        foreach ($tokens as $index => $token) {
-            $content = $token->getContent();
-            if ($content === '->' && $index > 0) {
+        for ($index = 1; $index < count($tokens); ++$index) {
+            if ($tokens[$index]->getContent() === '->') {
                 $prev = $tokens[$index - 1];
                 $prevContent = $prev->getContent();
                 $matches = array();
-                if (preg_match('/([\n\r|\n])(\s*)/uis', $prevContent, $matches)) {
+                if (preg_match('/([\n\r|\n])(\s*)/i', $prevContent, $matches)) {
                     if (!isset($matches[1]) || !isset($matches[2])) {
                         continue;
                     }
@@ -74,7 +73,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     public function getPriority()
     {
-        return 50;
+        return 0;
     }
 
     /**
@@ -82,7 +81,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     public function isCandidate(Tokens $tokens)
     {
-        return true;
+        return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
     }
 
     /**
@@ -94,7 +93,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     private function getRightIdents($index, Tokens $tokens)
     {
         for ($i = $index; $i >= 0; --$i) {
-            if (preg_match('/[\n\r|\n](\s*)/uis', $tokens[$i]->getContent(), $matches)) {
+            if (preg_match('/[\n\r|\n](\s*)/i', $tokens[$i]->getContent(), $matches)) {
                 if ($tokens[$i + 1]->getContent() === '->') {
                     return $matches[1];
                 }

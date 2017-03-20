@@ -44,7 +44,7 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
         ->setEmailConfirmationCode(\'123456\')
         ->setHashsalt(\'1234\')
         ->setTncAccepted(true);
-', // This is expected output
+',
                 '<?php
 
     $user->setEmail(\'voff.web@gmail.com\')
@@ -56,6 +56,10 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
                 ->setHashsalt(\'1234\')
   ->setTncAccepted(true);
 ', // This is input
+            ),
+            array(
+                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n    ->setPassword('233434')\r\n    ->setEmailConfirmed(false)\r\n    ->setEmailConfirmationCode('123456')\r\n    ->setHashsalt('1234')\r\n    ->setTncAccepted(true);",
+                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\r\n     ->setPassword('233434')\r\n\t->setEmailConfirmed(false)\r\n\t\t  ->setEmailConfirmationCode('123456')\r\n->setHashsalt('1234')\r\n->setTncAccepted(true);",
             ),
         );
     }
