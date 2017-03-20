@@ -157,9 +157,6 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
      */
     public function getDefinition()
     {
-        $types = array_merge(array_keys(self::$typeHierarchy), array_keys(self::$specialTypes));
-        sort($types);
-
         return new FixerDefinition(
             'Orders the elements of classes/interfaces/traits.',
             array(
