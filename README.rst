@@ -413,6 +413,11 @@ Choose from the list of available rules:
   In method arguments and method call, there MUST NOT be a space before
   each comma and there MUST be one space after each comma.
 
+  Configuration options:
+
+  - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
+    after comma; defaults to ``false``
+
 * **method_separation** [@Symfony]
 
   Methods must be separated with one blank line.
