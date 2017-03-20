@@ -175,6 +175,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('strict_comparison', $fixers[0]->getName());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testFixersPriorityEdgeFixers()
     {
         $factory = new FixerFactory();
@@ -188,6 +191,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getFixersPriorityCases
+     *
+     * @coversNothing
      */
     public function testFixersPriority(FixerInterface $first, FixerInterface $second)
     {
@@ -378,6 +383,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
      * @param FixerInterface $fixer
      *
      * @dataProvider provideFixerDefinitionsCases
+     *
+     * @coversNothing
      */
     public function testFixerDefinitions(FixerInterface $fixer)
     {
@@ -477,6 +484,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provideFixerDefinitionsCases
+     *
+     * @coversNothing
      */
     public function testFixersAreFinal(FixerInterface $fixer)
     {
@@ -487,6 +496,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provideFixerDefinitionsCases
+     *
+     * @coversNothing
      */
     public function testFixersAreDefined(FixerInterface $fixer)
     {

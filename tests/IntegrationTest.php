@@ -20,6 +20,8 @@ use PhpCsFixer\Test\AbstractIntegrationTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @coversNothing
  */
 final class IntegrationTest extends AbstractIntegrationTestCase
 {
