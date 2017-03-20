@@ -1,0 +1,40 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-20T11:05:37Z
+
+:-1:
+BC breaker
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-03-20T11:06:59Z
+
+👍 By definition, all bug fixes are breaking changes, and this is a bug fix.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-20T11:13:20Z
+
+> Twig files do not (or should) not contain PHP code.
+
+they should not or must not contain PHP code?
+If `should not` - this is change of behaviour, thus BC breaker
+If `must not` - this is fix
+
+Is it possible by design to put PHP code into twig file?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T11:23:58Z
+
+>Is it possible by design to put PHP code into twig file?
+
+no, Twig will not execute or process PHP code in side a Twig template.
+This is by design, hiding PHP details for designers and such.
+However, since Twig templates can contain any text you can put PHP code in there, but the only function for that would be to render that code, not to execute it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-20T11:32:50Z
+
+OK, then :+1:
