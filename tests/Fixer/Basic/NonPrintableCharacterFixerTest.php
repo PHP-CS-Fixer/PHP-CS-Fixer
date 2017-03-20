@@ -37,9 +37,6 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 '<?php echo "Hello World !";',
-            ),
-            array(
-                '<?php echo "Hello World !";',
                 '<?php echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'World'.pack('CC', 0xc2, 0xa0).'!";',
             ),
             array(
