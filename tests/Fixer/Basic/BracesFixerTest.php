@@ -374,6 +374,14 @@ final class BracesFixerTest extends AbstractFixerTestCase
                 null,
                 self::$configurationOopPositionSameLine,
             ),
+            array(
+                '<?php class A
+/** */
+{
+}',
+                null,
+                self::$configurationOopPositionSameLine,
+            ),
         );
     }
 
@@ -1885,7 +1893,8 @@ function C() /**/ //    # /**/
 
 function D() /**
 *
-*/ {
+*/
+{
 }',
                 '<?php
 class Something # a
