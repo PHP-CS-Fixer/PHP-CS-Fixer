@@ -69,7 +69,7 @@ class Tokens extends \SplFixedArray
      *
      * @var bool[]
      */
-    private $foundTokenKinds;
+    private $foundTokenKinds = array();
 
     /**
      * Clone tokens collection.
