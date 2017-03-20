@@ -1,0 +1,127 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2016-12-30T07:17:37Z
+
+Sorry, done. I also made the configuration key more explicit.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-02T10:47:08Z
+
+you changed method argument comma spacing fixer, while your PR description is about commas in arrays, not method declarations
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-01-02T11:03:01Z
+
+You are right, sorry, I oversimplified our business code while blurring it.
+Here are some less obfuscated examples:
+```php
+// Symfony command specifications
+$this
+    ->setName('company:command')
+    ->setDescription('Our command')
+    ->addOption('xxxxxyyy',             null, InputOption::VALUE_NONE,      'desc [...]')
+    ->addOption('xxxxxyyyyyy',          null, InputOption::VALUE_REQUIRED,  'desc [...]')
+    ->addOption('xxxxxyyyy',            null, InputOption::VALUE_REQUIRED,  'desc [...]')
+    ->addOption('xxxxxauto',            null, InputOption::VALUE_NONE,      'desc [...]')
+    ->addOption('xxxxx',                null, InputOption::VALUE_NONE,      'desc [...]')
+    ->addOption('xxxxxi',               null, InputOption::VALUE_REQUIRED,  'desc [...]')
+    ->addOption('xxxxxyyyyyyyyyyy',     null, InputOption::VALUE_NONE,      'desc [...]')
+    ->addOption('xxxxxyyyyyyyyyy',      null, InputOption::VALUE_NONE,      'desc [...]')
+    ->addOption('xxxxxyyyyyyyyyy',      null, InputOption::VALUE_NONE,      'desc [...]')
+    ->addOption('xxxxxyyyyyyyyyyyyy',   null, InputOption::VALUE_NONE,      'desc [...]')
+;
+
+// Values objects
+$columns = new Excel\Collection(array(
+    new Excel\Column('xxx',                        'DESC 1111',             5, new Excel\Style\Text()),
+    new Excel\Column('xxxx',                       'DESC',                 15, new Excel\Style\Text()),
+    new Excel\Column('xxx',                        'DES',                  15, new Excel\Style\Text()),
+    new Excel\Column('xxxxxxxxxxxxxxxxxxxxxx',     'DESC 2222222',         20, new Excel\Style\CC()),
+    new Excel\Column('xxxxxxxxxxxxxxxxxxxxxxx',    'DESC 333333333333',    40, new Excel\Style\Text()),
+    new Excel\Column('xxxxxxxxxxx',                'DESC 444444',          15, new Excel\Style\Text()),
+    new Excel\Column('xxxxxxxxxxxxxxxxxxxx',       'DESC 5555555555555',   10, new Excel\Style\Text()),
+    new Excel\Column('xxxxxxxxxxxxxxxo',           'DESC 66666666666',     15, new Excel\Style\Number()),
+    new Excel\Column('xxxxxxxxxxxxx',              'DESC 77777777',        15, new Excel\Style\Data()),
+    new Excel\Column('xxxxxxxxxxxxxxxxxxxxxx',     'DESC 8888888',         15, new Excel\Style\CC()),
+    new Excel\Column('xxxxxxxxxxxxxxxxxxxxxxx',    'DESC 999999999999',    40, new Excel\Style\Text()),
+    new Excel\Column('xxxxxxxxxxx',                'DESC 000000',          15, new Excel\Style\Text()),
+    new Excel\Column('xxxx',                       'DESC',                 15, new Excel\Style\Data()),
+    new Excel\Column('xxxxxxxxxxxxxxxxx',          'DESC             ',    15, new Excel\Style\Data()),
+    new Excel\Column('xxxxxxxxxxxxxxx',            'DESC xxxxxxxxxx',      15, new Excel\Style\Data()),
+));
+
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-27T04:54:36Z
+
+kinda old PR, anyone willing to review it ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-27T06:13:39Z
+
+just a view minors left, @ see https://github.com/Slamdunk/PHP-CS-Fixer/pull/3 @Slamdunk
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-01-27T07:53:49Z
+
+@SpacePossum Done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-27T08:19:01Z
+
+awesome :+1:
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-01-27T08:56:37Z
+
+@keradus
+
+1. I've changed the PR description to match the right code example, so that will be shown when you're going to merge it
+1. Please tell me if you want a squash: I've retained some commit for @SpacePossum respect
+1. Surfing the code for the configuration description, I've seen a standard arising: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.0.0/src/Fixer/Operator/ConcatSpaceFixer.php#L98 maybe a `getDefaultConfiguration` should be added to `ConfigurableFixerInterface`
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-01-27T09:11:06Z
+
+Without hints on how to write it, I feel I'm reinventing the wheel. I copy-pasted what you have done on `BracesFixer`, but it can be a mess if someone calls the configuration with an empty `array()`:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/0d17628e89c10ea1115450930102ffc37d3f801f/src/Fixer/Basic/BracesFixer.php#L272
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-02-14T08:13:58Z
+
+Rebased, eventually all checks pass
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-02-28T07:44:52Z
+
+@keradus would you prefer if I rebase this on `2.1` branch?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-28T08:44:51Z
+
+I think master is good, as it would make this go into 2.2.
+PR LGTM, so please rebase on top of master, feel free to squash my commit out so we have one nice commit for this new feature :)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-03-20T12:59:35Z
+
+Rebased with the new `ConfigurationDefinitionFixerInterface` of https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2500
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-03-20T13:59:54Z
+
+@keradus could you review it now please?
