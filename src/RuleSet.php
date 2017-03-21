@@ -121,6 +121,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_types' => true,
             'phpdoc_var_without_name' => true,
             'pre_increment' => true,
+            'protected_to_private' => true,
             'return_type_declaration' => true,
             'self_accessor' => true,
             'short_scalar_cast' => true,
@@ -136,10 +137,15 @@ final class RuleSet implements RuleSetInterface
             'whitespace_after_comma_in_array' => true,
         ),
         '@Symfony:risky' => array(
+            'dir_constant' => true,
+            'ereg_to_preg' => true,
+            'function_to_constant' => true,
             'is_null' => true,
+            'modernize_types_casting' => true,
             'no_alias_functions' => true,
             'php_unit_construct' => true,
             'php_unit_dedicate_assert' => true,
+            'psr4' => true,
             'silenced_deprecation_error' => true,
         ),
         '@PHP56Migration' => array(
