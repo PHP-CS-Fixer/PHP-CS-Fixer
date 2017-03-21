@@ -36,8 +36,8 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->ident = $this->whitespacesConfig->getIndent();
-        for ($index = 1; $index < count($tokens); $index++) {
-            if($tokens[$index]->equals(array(T_OBJECT_OPERATOR))) {
+        for ($index = 1; $index < count($tokens); ++$index) {
+            if ($tokens[$index]->equals(array(T_OBJECT_OPERATOR))) {
                 $prev = $tokens[$index - 1];
                 $prevContent = $prev->getContent();
                 $matches = array();

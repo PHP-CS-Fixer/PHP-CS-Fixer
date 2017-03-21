@@ -323,7 +323,7 @@ Choose from the list of available rules:
    | each comma and there MUST be one space after each comma.
 
 * **method_chaining_indentation**
-   | Method chaining MUST indented with one tab.
+   | Method chaining MUST be indented with one tab.
 
 * **method_separation** [@Symfony]
    | Methods must be separated with one blank line.
