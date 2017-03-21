@@ -133,7 +133,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                 }
             }
 
-            /* edge cases: is_null() followed/preceeded by ==, ===, !=, !==, <> */
+            /* edge cases: is_null() followed/preceded by ==, ===, !=, !==, <> */
             $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
             $parentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
             $parentOperations = array(T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL);
