@@ -14,7 +14,7 @@ namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -133,7 +133,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
             ->getOption()
         ;
 
-        return new FixerConfigurationResolverRootless('functions', array($functions));
+        return new FixerConfigurationResolver(array($functions));
     }
 
     /**
