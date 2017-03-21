@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T16:43:31Z
+
+Won't this remove `src/Test/IntegrationCase.php` for example, that is a valid API/endpoint right?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-03-20T16:50:31Z
+
+I guess that class should have been marked as `@internal`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T16:52:35Z
+
+don't think so, it a useful class for authors of 3rd party fixers
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-20T16:55:24Z
+
+that's my goal @SpacePossum
+this class is still visible when one install package as library as dependency via composer, but when one install project as CLI app, he doesn't need to have it.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T17:02:11Z
+
+alright than :)
