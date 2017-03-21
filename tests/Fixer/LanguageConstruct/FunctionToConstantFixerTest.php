@@ -151,15 +151,11 @@ $a =
         );
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing "functions" at the root of the configuration is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
-     */
     public function testInvalidConfigurationValue()
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#'
+            '#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#'
         );
 
         $this->fixer->configure(array('pi123'));
