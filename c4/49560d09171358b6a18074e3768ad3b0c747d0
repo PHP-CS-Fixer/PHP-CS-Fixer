@@ -1,0 +1,94 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-17T17:27:03Z
+
+Aside from squashing my last commit into the first I don't thing there is more to do here.
+Please let me know if otherwise (@ reviewers).
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-19T08:16:23Z
+
+I would like to play with a fixer on my env first. I hope to do it tmr.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-14T12:39:49Z
+
+@SpacePossum @julienfalque this one is conflicting with #2500
+which one we want to merge first ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-14T12:48:30Z
+
+The configuration handling will have to be updated but the options defined here are already compatible with #2500 as they use an array with string keys. It would really be a problem if the configuration was an array of tokens with numeric keys, e.g. `['foo', 'bar']` but it's not the case here.
+
+You can merge this one first, I'll then rebase my PR and update the code.
+
+Edit: nope, I misread, it's actually not compatible. We do have a list as root configuration here, so it should be updated to create a dedicated option, e.g.:
+
+```php
+[
+    'replacements' => [
+        'phpversion' => 'PHP_VERSION',
+        'php_sapi_name' => 'PHP_SAPI',
+        'pi' => 'M_PI',
+    ],
+]
+```
+
+Or store the map internally and use boolean options:
+
+```php
+[
+    'phpversion' => true,
+    'php_sapi_name' => true,
+    'pi' => true,
+]
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-14T12:51:42Z
+
+OK, then this one will go first.
+
+(but still, ~root config key is missing, eg for current configuration: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2486/files#diff-8734f36b18f3357b8502815bc6d869f1R102 )
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-14T18:40:01Z
+
+Maybe better to do 2500 first, after that I can work on the configuration of this fixer as I know what the new configuration structure will be. No rush on any of these two PR's : )
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-14T21:37:11Z
+
+for me, this PR is almost RTM (3 comments only). 2500 is way further
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-15T08:32:47Z
+
+@julienfalque please let me know if the new config structure makes sense :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-15T08:45:40Z
+
+Yep, it's now compatible, thx :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-21T10:12:55Z
+
+I re-did the configuration options, @julienfalque can you take a look again?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-21T12:41:46Z
+
+all green :)
+thanks @keradus , interesting commit history for this PR :)
