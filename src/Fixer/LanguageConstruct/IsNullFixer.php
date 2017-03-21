@@ -167,10 +167,18 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                 }
             }
 
+            /* edge cases: is_null() followed/preceded by ==, ===, !=, !==, <> */
+            $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
+            $parentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
+            $parentOperations = array(T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL);
+            $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
+
             if (!$isContainingDangerousConstructs) {
-                // closing parenthesis removed with leading spaces
-                $tokens->removeLeadingWhitespace($referenceEnd);
-                $tokens[$referenceEnd]->clear();
+                if (!$wrapIntoParentheses) {
+                    // closing parenthesis removed with leading spaces
+                    $tokens->removeLeadingWhitespace($referenceEnd);
+                    $tokens[$referenceEnd]->clear();
+                }
 
                 // opening parenthesis removed with trailing spaces
                 $tokens->removeLeadingWhitespace($matches[1]);
@@ -187,6 +195,10 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
             );
 
             if (true === $this->configuration['use_yoda_style']) {
+                if ($wrapIntoParentheses) {
+                    array_unshift($replacement, new Token('('));
+                }
+
                 $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
             } else {
                 $replacement = array_reverse($replacement);
@@ -194,8 +206,14 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                     array_unshift($replacement, new Token(array(')')));
                 }
 
-                $tokens[$isNullIndex]->clear();
-                $tokens->removeTrailingWhitespace($referenceEnd);
+                if ($wrapIntoParentheses) {
+                    $replacement[] = new Token(')');
+                    $tokens[$isNullIndex]->setContent('(');
+                } else {
+                    $tokens[$isNullIndex]->clear();
+                    $tokens->removeTrailingWhitespace($referenceEnd);
+                }
+
                 $tokens->overrideRange($referenceEnd, $referenceEnd, $replacement);
             }
 
