@@ -249,6 +249,16 @@ use A\{B};
 use D\{E,F};
                 ',
             ),
+            array(
+                '<?php use FooA#
+;#
+#
+use FooB;',
+                '<?php use FooA#
+,#
+#
+FooB;',
+            ),
         );
     }
 

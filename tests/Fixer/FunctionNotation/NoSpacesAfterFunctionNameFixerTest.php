@@ -138,6 +138,10 @@ $$e(2);
                 '<?php $b->$a(); $c();',
                 '<?php $b->$a  (); $c  ();',
             ),
+            'test function call comment' => array(
+                '<?php abc#
+ ($a);',
+            ),
         );
     }
 

@@ -111,27 +111,27 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(CT::T_TYPE_COLON)) {
+            if (!$tokens[$index]->isGivenKind(CT::T_TYPE_COLON)) {
                 continue;
             }
 
             $previousToken = $tokens[$index - 1];
 
             if ($previousToken->isWhitespace()) {
-                if ('none' === $this->configuration) {
-                    $previousToken->clear();
-                } else {
-                    $previousToken->setContent(' ');
+                if (!$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                    if ('none' === $this->configuration) {
+                        $previousToken->clear();
+                    } else {
+                        $previousToken->setContent(' ');
+                    }
                 }
             } elseif ('one' === $this->configuration) {
-                $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
+                $limit += $tokens->ensureWhitespaceAtIndex($index, 0, ' ') ? 1 : 0;
                 ++$index;
             }
 
             ++$index;
-            $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
+            $limit += $tokens->ensureWhitespaceAtIndex($index, 0, ' ') ? 1 : 0;
         }
     }
 }

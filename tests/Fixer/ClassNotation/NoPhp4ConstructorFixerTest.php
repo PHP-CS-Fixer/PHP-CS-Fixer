@@ -63,9 +63,22 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public function testSimpleClass()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideSimpleCases
+     */
+    public function testSimpleClass($expected, $input = null)
     {
-        $expected = <<<'EOF'
+        $this->doTest($expected, $input);
+    }
+
+    public function provideSimpleCases()
+    {
+        return array(
+            array(
+            <<<'EOF'
 <?php
 
 class Foo
@@ -75,9 +88,9 @@ class Foo
         var_dump(1);
     }
 }
-EOF;
-
-        $input = <<<'EOF'
+EOF
+        ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -87,9 +100,40 @@ class Foo
         var_dump(1);
     }
 }
-EOF;
+EOF
+            ),
+            array(
+                <<<'EOF'
+<?php
 
-        $this->doTest($expected, $input);
+class Foo
+{
+    public#
+    function#
+__construct#
+    (#
+    $bar#
+    )#
+    {}
+}
+EOF
+        ,
+            <<<'EOF'
+<?php
+
+class Foo
+{
+    public#
+    function#
+Foo#
+    (#
+    $bar#
+    )#
+    {}
+}
+EOF
+            ),
+        );
     }
 
     public function testNamespaces()

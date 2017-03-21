@@ -143,7 +143,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                                 */ $b=2000,
                         $a2=10 /* multiline comment
                                  not at the end of line
-                                */, $b2=2000,
+                                */ , $b2=2000,
                         $c=30) {
                     }',
                 '<?php
@@ -223,6 +223,14 @@ EOTXTb
         'foo'
     );
 ",
+            ),
+            array(
+                '<?php xyz#
+ (#
+""#
+,#
+$a#
+);',
             ),
         );
     }

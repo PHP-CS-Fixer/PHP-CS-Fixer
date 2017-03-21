@@ -128,7 +128,7 @@ class Foo
 
             // remove whitespace before (
             // eg: `function foo () {}` => `function foo() {}`
-            if (!$isLambda && $tokens[$startParenthesisIndex - 1]->isWhitespace()) {
+            if (!$isLambda && $tokens[$startParenthesisIndex - 1]->isWhitespace() && !$tokens[$tokens->getPrevNonWhitespace($startParenthesisIndex - 1)]->isComment()) {
                 $tokens[$startParenthesisIndex - 1]->clear();
             }
 

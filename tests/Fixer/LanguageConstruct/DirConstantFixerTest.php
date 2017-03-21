@@ -74,12 +74,26 @@ FIXED;
             array('<?php "SELECT ... DIRNAME(__FILE__) ...";'),
             array('<?php "test" . "dirname" . "in concatenation";'),
 
-            array('<?php $x = dirname(__DIR__);', '<?php $x = dirname(dirname(__FILE__));'),
-            array('<?php $x = __DIR__;', '<?php $x = dirname(__FILE__);'),
-            array('<?php $x = __DIR__;', '<?php $x = \\dirname(__FILE__);'),
-            array('<?php $x = __DIR__.".dist";', '<?php $x = dirname(__FILE__).".dist";'),
-            array('<?php $x = __DIR__.".dist";', '<?php $x = \\dirname(__FILE__).".dist";'),
-
+            array(
+                '<?php $x = dirname(__DIR__);',
+                '<?php $x = dirname(dirname(__FILE__));',
+            ),
+            array(
+                '<?php $x = __DIR__;',
+                '<?php $x = dirname(__FILE__);',
+            ),
+            array(
+                '<?php $x = __DIR__;',
+                '<?php $x = \\dirname(__FILE__);',
+            ),
+            array(
+                '<?php $x = __DIR__.".dist";',
+                '<?php $x = dirname(__FILE__).".dist";',
+            ),
+            array(
+                '<?php $x = __DIR__.".dist";',
+                '<?php $x = \\dirname(__FILE__).".dist";',
+            ),
             array($multiLinePatternFixed, $multiLinePatternToFix),
             array(
                 '<?php $x = /**//**/ /** x*//**//** */__DIR__/***//*xx*/;',
@@ -102,6 +116,25 @@ FIXED;
             array(
                 "<?php echo __DIR__\n?>",
                 "<?php echo dirname\n(\n__FILE__\n)\n?>",
+            ),
+            array(
+                '<?php $x =# A
+# A1
+# B
+# C
+__DIR__# D
+# E
+;# F
+',
+                '<?php $x =# A
+\
+# A1
+dirname# B
+(# C
+__FILE__# D
+)# E
+;# F
+',
             ),
         );
     }
