@@ -135,9 +135,9 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
 
             /* edge cases: is_null() followed/preceeded by ==, ===, !=, !==, <> */
             $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
-            $ParentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
+            $parentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
             $parentOperations = array(T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL);
-            $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $ParentRightToken->isGivenKind($parentOperations);
+            $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
 
             if (!$isContainingDangerousConstructs) {
                 // closing parenthesis removed with leading spaces
@@ -160,8 +160,8 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
 
             if (true === $this->configuration['use_yoda_style']) {
                 if ($wrapIntoParentheses) {
-                    array_unshift($replacement, new Token(array('(')));
-                    $replacement[] = new Token(array(')'));
+                    array_unshift($replacement, new Token('('));
+                    $replacement[] = new Token(')');
                 }
 
                 $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
@@ -172,8 +172,8 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                 }
 
                 if ($wrapIntoParentheses) {
-                    array_unshift($replacement, new Token(array('(')));
-                    $replacement[] = new Token(array(')'));
+                    array_unshift($replacement, new Token('('));
+                    $replacement[] = new Token(')');
                 }
 
                 $tokens[$isNullIndex]->clear();
