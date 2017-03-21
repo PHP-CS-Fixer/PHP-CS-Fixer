@@ -37,8 +37,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         $this->ident = $this->whitespacesConfig->getIndent();
         foreach ($tokens as $index => $token) {
-            $content = $token->getContent();
-            if ($content === '->' && $index > 0) {
+            if (0 < $index && $token->isGivenKind(T_OBJECT_OPERATOR)) {
                 $prev = $tokens[$index - 1];
                 $prevContent = $prev->getContent();
                 $matches = array();
