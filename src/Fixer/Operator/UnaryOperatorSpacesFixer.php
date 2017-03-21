@@ -49,14 +49,18 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; $index > 0; --$index) {
             if ($tokensAnalyzer->isUnarySuccessorOperator($index)) {
-                $tokens->removeLeadingWhitespace($index);
+                if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isComment()) {
+                    $tokens->removeLeadingWhitespace($index);
+                }
+
                 continue;
             }
 
             if ($tokensAnalyzer->isUnaryPredecessorOperator($index)) {
                 $tokens->removeTrailingWhitespace($index);
+
                 continue;
             }
         }
