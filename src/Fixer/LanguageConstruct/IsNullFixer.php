@@ -175,11 +175,12 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                 }
 
                 if ($wrapIntoParentheses) {
-                    array_unshift($replacement, new Token('('));
                     $replacement[] = new Token(')');
+                    $tokens[$isNullIndex]->setContent('(');
+                } else {
+                    $tokens[$isNullIndex]->clear();
                 }
 
-                $tokens[$isNullIndex]->clear();
                 $tokens->removeTrailingWhitespace($referenceEnd);
                 $tokens->overrideRange($referenceEnd, $referenceEnd, $replacement);
             }
