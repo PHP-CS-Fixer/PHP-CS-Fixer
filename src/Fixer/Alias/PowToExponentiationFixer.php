@@ -94,7 +94,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     public function getPriority()
     {
         // must be run before BinaryOperatorSpacesFixer
-        return 1;
+        return 3;
     }
 
     /**

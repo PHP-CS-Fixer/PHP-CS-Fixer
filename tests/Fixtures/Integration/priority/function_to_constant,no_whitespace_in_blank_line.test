@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: function_to_constant,no_whitespace_in_blank_line.
+--RULESET--
+{"function_to_constant": true, "no_whitespace_in_blank_line": true}
+--EXPECT--
+<?php
+
+echo M_PI
+
+;
+
+--INPUT--
+<?php
+
+echo pi
+  (
+);
