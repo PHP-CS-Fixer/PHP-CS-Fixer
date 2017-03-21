@@ -1,0 +1,153 @@
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-01-13T00:02:51Z
+
+Constants added and rebased.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-06T11:16:44Z
+
+1 month old PR. I would need some comments here from community ! ;)
+
+---------------------------------------------------------------------------
+
+by eduardodgarciac at 2017-02-24T00:34:52Z
+
+Hi, when do you will add this feature?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-24T11:12:32Z
+
+the voice of community is missing here :(
+
+---------------------------------------------------------------------------
+
+by mstanglx at 2017-03-06T20:13:04Z
+
+This is definitely an option our team is looking forward to having in this tool! Can't wait.
+
+---------------------------------------------------------------------------
+
+by allejo at 2017-03-08T03:01:22Z
+
+definitely something I'd use 👍
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-08T11:15:21Z
+
+Anyone willing to make a review ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T13:41:52Z
+
+can you add this case to tests so I it is clear how comments are handled?
+
+```php
+<?php
+class Something # a
+{
+    public function sth(): string //
+    {
+        return function (int $foo) use ($bar): string { return $bar; };
+    }
+}
+
+function C /**/ //    # /**/
+{
+}
+
+function C /**
+*
+*/
+{
+}
+
+```
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-03-08T21:39:46Z
+
+@SpacePossum Your test case is not valid PHP code.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T22:06:57Z
+
+updated here https://3v4l.org/uCQQI  , thanks!
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-03-08T22:09:18Z
+
+@SpacePossum Are the trailing spaces intentional?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T23:27:04Z
+
+yes, they are :)
+
+The check for the comment case should be changed. Looking from the `{` token you want to know the previous non-whitespace token (https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.1/src/Tokenizer/Tokens.php#L557).
+If that is a comment token (https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.1/src/Tokenizer/Token.php#L352) of which the token content starts with `//` or `#`  than you need to keep a line break between the comment and `{`. Otherwise you can move the `{` to the same line as you currently added.
+Hope it helps :)
+
+---------------------------------------------------------------------------
+
+by mstanglx at 2017-03-13T13:56:19Z
+
+Hey all, good job on this. Any idea when it will get merged to the main branch?
+Thanks.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-13T17:31:22Z
+
+@mstanglx There is one known issue with this PR, after that I think we are close to merging. Stay put :)
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-03-13T18:22:50Z
+
+@SpacePossum I already did the changes suggested in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2459#issuecomment-285203911 in cd54be3. Also, the trailing whitespace is not important, since it is a [part of the comment](https://3v4l.org/dJuIL).
+
+---------------------------------------------------------------------------
+
+by allejo at 2017-03-20T01:55:16Z
+
+Any updates?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T14:40:07Z
+
+@jtojnar please consider https://github.com/jtojnar/PHP-CS-Fixer/pull/1
+and please rebase :)
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-03-20T15:32:11Z
+
+Rebased.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T16:38:59Z
+
+Nice!! all green
+
+one last detail:
+```
+if (isset($configuration)) {
+```
+to
+```
+if (null !== $configuration) {
+```
+
+in the unit tests.
+After that this is ready to merge IMO :)
