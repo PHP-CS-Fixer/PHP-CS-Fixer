@@ -40,6 +40,17 @@ final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                 '<?php $a = $a  ? 1 : 0;',
             ),
             array(
+                '<?php $a = $a ?
+#
+: $b;',
+            ),
+            array(
+                '<?php $a = $a#
+ ? '.'
+#
+1 : 0;',
+            ),
+            array(
                 '<?php $val = (1===1) ? true : false;',
                 '<?php $val = (1===1)?true:false;',
             ),
