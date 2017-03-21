@@ -161,10 +161,13 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
             if (true === $this->configuration['use_yoda_style']) {
                 if ($wrapIntoParentheses) {
                     array_unshift($replacement, new Token('('));
-                    $replacement[] = new Token(')');
                 }
 
                 $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
+
+                if ($wrapIntoParentheses) {
+                    $tokens->overrideRange($referenceEnd, $referenceEnd, array(new Token(')')));
+                }
             } else {
                 $replacement = array_reverse($replacement);
                 if ($isContainingDangerousConstructs) {
