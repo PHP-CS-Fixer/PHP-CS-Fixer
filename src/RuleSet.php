@@ -151,6 +151,7 @@ final class RuleSet implements RuleSetInterface
                 'mt_rand' => 'random_int',
                 'rand' => 'random_int',
             ),
+            'ternary_to_null_coalescing' => true,
         ),
         '@PHP71Migration' => array(
             '@PHP70Migration' => true,

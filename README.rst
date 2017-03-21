@@ -847,16 +847,16 @@ Choose from the list of available rules:
 
 * **random_api_migration** [@PHP70Migration, @PHP71Migration]
 
-  Replaces ``rand``, ``mt_rand``, ``srand``, ``getrandmax`` functions calls with
-  their ``mt_*`` analogs.
+  Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
+  analogs.
 
   *Risky rule: risky when the configured functions are overridden.*
 
   Configuration options:
 
   - ``replacements`` (``array``): mapping between replaced functions with the new
-    ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'mt_rand' =>
-    'mt_rand', 'rand' => 'mt_rand', 'srand' => 'mt_srand']``
+    ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'rand' =>
+    'mt_rand', 'srand' => 'mt_srand']``
 
 * **return_type_declaration** [@Symfony]
 
@@ -958,9 +958,9 @@ Choose from the list of available rules:
 
   Standardize spaces around ternary operator.
 
-* **ternary_to_null_coalescing**
+* **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration]
 
-  Use ``null`` coalescing operator ``??`` where possible.
+  Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 
 * **trailing_comma_in_multiline_array** [@Symfony]
 
