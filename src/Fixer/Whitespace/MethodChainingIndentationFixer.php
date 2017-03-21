@@ -36,8 +36,8 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->ident = $this->whitespacesConfig->getIndent();
-        for ($index = 1; $index < count($tokens); ++$index) {
-            if ($tokens[$index]->getContent() === '->') {
+        for ($index = 1; $index < count($tokens); $index++) {
+            if($tokens[$index]->equals(array(T_OBJECT_OPERATOR))) {
                 $prev = $tokens[$index - 1];
                 $prevContent = $prev->getContent();
                 $matches = array();
@@ -73,6 +73,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     public function getPriority()
     {
+        // fixer is idempotent
         return 0;
     }
 
@@ -94,7 +95,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         for ($i = $index; $i >= 0; --$i) {
             if (preg_match('/[\n\r|\n](\s*)/i', $tokens[$i]->getContent(), $matches)) {
-                if ($tokens[$i + 1]->getContent() === '->') {
+                if ($tokens[$i + 1]->equals(array(T_OBJECT_OPERATOR))) {
                     return $matches[1];
                 }
 
