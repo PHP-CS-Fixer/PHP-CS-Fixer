@@ -239,6 +239,10 @@ Choose from the list of available rules:
 
   - ``allow_single_line_closure`` (``bool``): whether single line lambda notation
     should be allowed; defaults to ``false``
+  - ``position_after_functions_and_oop_constructs`` (``'same'``): whether the
+    opening brace should be placed on "next" or "same" line after classy
+    constructs (non-anonymous classes, interfaces, traits, methods and
+    non-lambda functions); defaults to ``'next'``
 
 * **cast_spaces** [@Symfony]
 

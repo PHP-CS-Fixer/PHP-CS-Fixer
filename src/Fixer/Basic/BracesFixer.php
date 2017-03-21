@@ -32,6 +32,16 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class BracesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
+     * @internal
+     */
+    const LINE_NEXT = 'next';
+
+    /**
+     * @internal
+     */
+    const LINE_SAME = 'same';
+
+    /**
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
@@ -88,6 +98,37 @@ $negative = function ($item) {
 ',
                     array('allow_single_line_closure' => true)
                 ),
+                new CodeSample(
+'<?php
+
+class Foo
+{
+    public function bar($baz)
+    {
+        if ($baz = 900) echo "Hello!";
+
+        if ($baz = 9000)
+            echo "Wait!";
+
+        if ($baz == true)
+        {
+            echo "Why?";
+        }
+        else
+        {
+            echo "Ha?";
+        }
+
+        if (is_array($baz))
+            foreach ($baz as $b)
+            {
+                echo $b;
+            }
+    }
+}
+',
+                    array('position_after_functions_and_oop_constructs' => self::LINE_SAME)
+                ),
             )
         );
     }
@@ -121,7 +162,17 @@ $negative = function ($item) {
             ->getOption()
         ;
 
-        return new FixerConfigurationResolver(array($allowSingleLineClosure));
+        $positionAfterFunctionsAndOopConstructs = new FixerOptionBuilder('position_after_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).');
+        $positionAfterFunctionsAndOopConstructs = $positionAfterFunctionsAndOopConstructs
+            ->setAllowedValues(array(self::LINE_NEXT, self::LINE_SAME))
+            ->setDefault(self::LINE_NEXT)
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array(
+            $allowSingleLineClosure,
+            $positionAfterFunctionsAndOopConstructs,
+        ));
     }
 
     private function fixCommentBeforeBrace(Tokens $tokens)
@@ -383,7 +434,13 @@ $negative = function ($item) {
             }
 
             if ($token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)) {
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $this->whitespacesConfig->getLineEnding().$indent);
+                if (self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs'] && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()) {
+                    $ensuredWhitespace = ' ';
+                } else {
+                    $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
+                }
+
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
             } elseif ($token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)) {
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, array(')'));
                 if (null === $closingParenthesisIndex) {
@@ -396,7 +453,13 @@ $negative = function ($item) {
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
                 } else {
-                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $this->whitespacesConfig->getLineEnding().$indent);
+                    if (self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs'] && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()) {
+                        $ensuredWhitespace = ' ';
+                    } else {
+                        $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
+                    }
+
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
                 }
             } else {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
