@@ -140,9 +140,11 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
             $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
 
             if (!$isContainingDangerousConstructs) {
-                // closing parenthesis removed with leading spaces
-                $tokens->removeLeadingWhitespace($referenceEnd);
-                $tokens[$referenceEnd]->clear();
+                if (!$wrapIntoParentheses) {
+                    // closing parenthesis removed with leading spaces
+                    $tokens->removeLeadingWhitespace($referenceEnd);
+                    $tokens[$referenceEnd]->clear();
+                }
 
                 // opening parenthesis removed with trailing spaces
                 $tokens->removeLeadingWhitespace($matches[1]);
@@ -164,10 +166,6 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                 }
 
                 $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
-
-                if ($wrapIntoParentheses) {
-                    $tokens->overrideRange($referenceEnd, $referenceEnd, array(new Token(')')));
-                }
             } else {
                 $replacement = array_reverse($replacement);
                 if ($isContainingDangerousConstructs) {
@@ -179,9 +177,9 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
                     $tokens[$isNullIndex]->setContent('(');
                 } else {
                     $tokens[$isNullIndex]->clear();
+                    $tokens->removeTrailingWhitespace($referenceEnd);
                 }
 
-                $tokens->removeTrailingWhitespace($referenceEnd);
                 $tokens->overrideRange($referenceEnd, $referenceEnd, $replacement);
             }
 
