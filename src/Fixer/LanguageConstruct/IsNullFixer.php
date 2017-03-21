@@ -134,16 +134,10 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
             }
 
             /* edge cases: is_null() followed/preceeded by ==, ===, !=, !==, <> */
-            if (!$isContainingDangerousConstructs) {
-                $parentOperations = array(T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL);
-
-                $comparisonCandidateLeft = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
-                $comparisonCandidateRight = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
-
-                if ($comparisonCandidateLeft->isGivenKind($parentOperations) || $comparisonCandidateRight->isGivenKind($parentOperations)) {
-                    $isContainingDangerousConstructs = true;
-                }
-            }
+            $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
+            $ParentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
+            $parentOperations = array(T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL);
+            $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $ParentRightToken->isGivenKind($parentOperations);
 
             if (!$isContainingDangerousConstructs) {
                 // closing parenthesis removed with leading spaces
@@ -165,11 +159,21 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
             );
 
             if (true === $this->configuration['use_yoda_style']) {
+                if ($wrapIntoParentheses) {
+                    array_unshift($replacement, new Token(array('(')));
+                    $replacement[] = new Token(array(')'));
+                }
+
                 $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
             } else {
                 $replacement = array_reverse($replacement);
                 if ($isContainingDangerousConstructs) {
                     array_unshift($replacement, new Token(array(')')));
+                }
+
+                if ($wrapIntoParentheses) {
+                    array_unshift($replacement, new Token(array('(')));
+                    $replacement[] = new Token(array(')'));
                 }
 
                 $tokens[$isNullIndex]->clear();
