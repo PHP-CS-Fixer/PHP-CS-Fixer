@@ -155,7 +155,7 @@ $a =
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#'
+            '#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. (Defined|Known) options are: "functions"\.$#'
         );
 
         $this->fixer->configure(array('pi123'));
