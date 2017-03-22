@@ -36,7 +36,31 @@ final class IncludeFixerTest extends AbstractFixerTestCase
     public function testFixProvider()
     {
         $template = '<?php %s';
-        $tests = array();
+        $tests = array(
+            array(
+                '<?php include # A
+# B
+# C
+"a"# D
+# E
+# F
+;# G
+# H',
+                '<?php include# A
+(# B
+# C
+"a"# D
+# E
+)# F
+;# G
+# H',
+            ),
+            array(
+                '<?php include $a;',
+                '<?php include  (  $a  )  ;',
+            ),
+        );
+
         foreach (array('require', 'require_once', 'include', 'include_once') as $statement) {
             $tests[] = array(
                 sprintf($template.' "foo.php"?>', $statement),
@@ -44,9 +68,9 @@ final class IncludeFixerTest extends AbstractFixerTestCase
             );
 
             $tests[] = array(
-                sprintf($template.' /**/ "foo.php"// test
+                sprintf($template.' /**/"foo.php"// test
                     ?>', $statement),
-                sprintf($template.' /**/ ("foo.php") // test
+                sprintf($template.'/**/ ("foo.php") // test
                     ?>', $statement),
             );
 
