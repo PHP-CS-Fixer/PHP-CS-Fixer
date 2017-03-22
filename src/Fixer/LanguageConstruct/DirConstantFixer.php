@@ -81,8 +81,6 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             'Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.',
             array(new CodeSample("<?php\n\$a = dirname(__FILE__);")),
             null,
-            null,
-            null,
             'Risky when the function `dirname()` is overridden.'
         );
     }

@@ -13,9 +13,10 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -28,40 +29,17 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class BracesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var array
+     * @internal
      */
-    private $configuration;
-
-    private static $defaultConfiguration = array(
-        'allow_single_line_closure' => false,
-    );
+    const LINE_NEXT = 'next';
 
     /**
-     * @param array<string, bool>|null $configuration
+     * @internal
      */
-    public function configure(array $configuration = null)
-    {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        foreach ($configuration as $functionName => $replacement) {
-            if (!array_key_exists($functionName, self::$defaultConfiguration)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $functionName));
-            }
-
-            if (!is_bool($replacement)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected bool got "%s".', is_object($replacement) ? get_class($replacement) : gettype($replacement)));
-            }
-        }
-
-        $this->configuration = $configuration;
-    }
+    const LINE_SAME = 'same';
 
     /**
      * {@inheritdoc}
@@ -120,10 +98,38 @@ $negative = function ($item) {
 ',
                     array('allow_single_line_closure' => true)
                 ),
-            ),
-            null,
-            'The `allow_single_line_closure` key could be set to `true` to allow for single line lambda notation.',
-            self::$defaultConfiguration
+                new CodeSample(
+'<?php
+
+class Foo
+{
+    public function bar($baz)
+    {
+        if ($baz = 900) echo "Hello!";
+
+        if ($baz = 9000)
+            echo "Wait!";
+
+        if ($baz == true)
+        {
+            echo "Why?";
+        }
+        else
+        {
+            echo "Ha?";
+        }
+
+        if (is_array($baz))
+            foreach ($baz as $b)
+            {
+                echo $b;
+            }
+    }
+}
+',
+                    array('position_after_functions_and_oop_constructs' => self::LINE_SAME)
+                ),
+            )
         );
     }
 
@@ -142,6 +148,31 @@ $negative = function ($item) {
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $allowSingleLineClosure = new FixerOptionBuilder('allow_single_line_closure', 'Whether single line lambda notation should be allowed.');
+        $allowSingleLineClosure = $allowSingleLineClosure
+            ->setAllowedTypes(array('bool'))
+            ->setDefault(false)
+            ->getOption()
+        ;
+
+        $positionAfterFunctionsAndOopConstructs = new FixerOptionBuilder('position_after_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).');
+        $positionAfterFunctionsAndOopConstructs = $positionAfterFunctionsAndOopConstructs
+            ->setAllowedValues(array(self::LINE_NEXT, self::LINE_SAME))
+            ->setDefault(self::LINE_NEXT)
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver(array(
+            $allowSingleLineClosure,
+            $positionAfterFunctionsAndOopConstructs,
+        ));
     }
 
     private function fixCommentBeforeBrace(Tokens $tokens)
@@ -403,7 +434,13 @@ $negative = function ($item) {
             }
 
             if ($token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)) {
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $this->whitespacesConfig->getLineEnding().$indent);
+                if (self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs'] && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()) {
+                    $ensuredWhitespace = ' ';
+                } else {
+                    $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
+                }
+
+                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
             } elseif ($token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)) {
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, array(')'));
                 if (null === $closingParenthesisIndex) {
@@ -416,7 +453,13 @@ $negative = function ($item) {
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
                 } else {
-                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $this->whitespacesConfig->getLineEnding().$indent);
+                    if (self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs'] && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()) {
+                        $ensuredWhitespace = ' ';
+                    } else {
+                        $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
+                    }
+
+                    $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
                 }
             } else {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');

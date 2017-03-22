@@ -27,15 +27,28 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[array_syntax\] Configuration must define "syntax" being "short" or "long".$#'
+            '#^\[array_syntax\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "syntax"\.$#'
         );
 
         $this->fixer->configure(array('a' => 1));
     }
 
-    public function testFixWithDefaultConfiguration()
+    /**
+     * @group legacy
+     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
+     */
+    public function testLegacyFixWithDefaultConfiguration()
     {
         $this->fixer->configure(null);
+        $this->doTest(
+            '<?php $a = array(); $b = array();',
+            '<?php $a = array(); $b = [];'
+        );
+    }
+
+    public function testFixWithDefaultConfiguration()
+    {
+        $this->fixer->configure(array());
         $this->doTest(
             '<?php $a = array(); $b = array();',
             '<?php $a = array(); $b = [];'

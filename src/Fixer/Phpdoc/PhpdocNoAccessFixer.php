@@ -51,7 +51,7 @@ class Foo
     protected function createProxyFixer()
     {
         $fixer = new GeneralPhpdocAnnotationRemoveFixer();
-        $fixer->configure(array('access'));
+        $fixer->configure(array('annotations' => array('access')));
 
         return $fixer;
     }

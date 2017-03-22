@@ -16,10 +16,8 @@ env:
 matrix:
     fast_finish: true
     include:
-        - php: 7.0
-          env: DEPLOY=yes TASK_TESTS_COVERAGE=1
         - php: 7.1
-          env: TASK_SCA=1
+          env: DEPLOY=yes TASK_TESTS_COVERAGE=1
         - php: nightly
           env: TASK_SCA=1 COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1
         - php: 5.3
@@ -29,7 +27,7 @@ matrix:
         - php: 5.5
           env: SKIP_LINT_TEST_CASES=1
         - php: 5.6
-        - php: 7.1
+        - php: 7.0
           env: SYMFONY_VERSION="^2.8"
         # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
         - php: hhvm

@@ -433,20 +433,20 @@ EOF;
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Expected string got "NULL".$/'
+            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
-        $this->fixer->configure(array(null));
+        $this->fixer->configure(array('elements' => array(null)));
     }
 
     public function testInvalidConfigurationValue()
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Unknown configuration item "_unknown_", expected any of "property", "method", "const".$/'
+            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
-        $this->fixer->configure(array('_unknown_'));
+        $this->fixer->configure(array('elements' => array('_unknown_')));
     }
 
     public function testInvalidConfigurationValueForPHPVersion()
@@ -457,10 +457,25 @@ EOF;
 
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Invalid configuration item "const" for PHP ".+".$/'
+            '/^\[visibility_required\] Invalid configuration: "const" option can only be enabled with PHP 7\.1\+\.$/'
         );
 
+        $this->fixer->configure(array('elements' => array('const')));
+    }
+
+    /**
+     * @param string $expected expected PHP source after fixing
+     * @param string $input    PHP source to fix
+     *
+     * @group legacy
+     * @requires PHP 7.1
+     * @dataProvider provideClassConstTest
+     * @expectedDeprecation Passing "elements" at the root of the configuration is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
+     */
+    public function testLegacyFixClassConst($expected, $input)
+    {
         $this->fixer->configure(array('const'));
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -472,7 +487,7 @@ EOF;
      */
     public function testFixClassConst($expected, $input)
     {
-        $this->fixer->configure(array('const'));
+        $this->fixer->configure(array('elements' => array('const')));
         $this->doTest($expected, $input);
     }
 

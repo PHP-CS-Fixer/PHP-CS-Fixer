@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
@@ -174,6 +175,9 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('strict_comparison', $fixers[0]->getName());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testFixersPriorityEdgeFixers()
     {
         $factory = new FixerFactory();
@@ -187,6 +191,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getFixersPriorityCases
+     *
+     * @coversNothing
      */
     public function testFixersPriority(FixerInterface $first, FixerInterface $second)
     {
@@ -305,6 +311,13 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']), // tested also in: phpdoc_to_comment,phpdoc_no_useless_inheritdoc.test
             array($fixers['declare_strict_types'], $fixers['declare_equal_normalize']), // tested also in: declare_strict_types,declare_equal_normalize.test
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']), // tested also in: phpdoc_add_missing_param_annotation,phpdoc_order.test
+            array($fixers['no_spaces_after_function_name'], $fixers['function_to_constant']), // tested also in: no_spaces_after_function_name,function_to_constant.test
+            array($fixers['no_spaces_inside_parenthesis'], $fixers['function_to_constant']), // tested also in: no_spaces_inside_parenthesis,function_to_constant.test
+            array($fixers['function_to_constant'], $fixers['native_function_casing']), // no priority issue; for speed only
+            array($fixers['function_to_constant'], $fixers['no_extra_consecutive_blank_lines']), // tested also in: function_to_constant,no_extra_consecutive_blank_lines.test
+            array($fixers['function_to_constant'], $fixers['no_singleline_whitespace_before_semicolons']), // tested also in: function_to_constant,no_singleline_whitespace_before_semicolons.test
+            array($fixers['function_to_constant'], $fixers['no_trailing_whitespace']), // tested also in: function_to_constant,no_trailing_whitespace.test
+            array($fixers['function_to_constant'], $fixers['no_whitespace_in_blank_line']), // tested also in: function_to_constant,no_whitespace_in_blank_line.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
@@ -377,6 +390,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
      * @param FixerInterface $fixer
      *
      * @dataProvider provideFixerDefinitionsCases
+     *
+     * @coversNothing
      */
     public function testFixerDefinitions(FixerInterface $fixer)
     {
@@ -417,24 +432,27 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixer->getName(), $sampleCounter));
         }
 
-        if ($fixer instanceof ConfigurableFixerInterface) {
-            $this->assertStringIsNotEmpty($definition->getConfigurationDescription(), sprintf('[%s] Configuration description is required.', $fixer->getName()));
-            $default = $definition->getDefaultConfiguration();
-            $this->assertInternalType('array', $default, sprintf('[%s] Default configuration must be an array.', $fixer->getName()));
-
-            if (!in_array($fixer->getName(), array('general_phpdoc_annotation_remove', 'psr0'), true)) {
-                $this->assertNotEmpty($default, sprintf('[%s] Default configuration is required.', $fixer->getName()));
-            }
-        } else {
-            $this->assertNull($definition->getConfigurationDescription(), sprintf('[%s] No configuration description expected.', $fixer->getName()));
-            $this->assertNull($definition->getDefaultConfiguration(), sprintf('[%s] No default configuration expected.', $fixer->getName()));
-        }
-
         if ($fixer->isRisky()) {
             $this->assertStringIsNotEmpty($definition->getRiskyDescription(), sprintf('[%s] Risky reasoning is required.', $fixer->getName()));
         } else {
             $this->assertNull($definition->getRiskyDescription(), sprintf('[%s] Fixer is not risky so no description of it expected.', $fixer->getName()));
         }
+    }
+
+    /**
+     * @param FixerInterface $fixer
+     *
+     * @group legacy
+     * @dataProvider provideFixerDefinitionsCases
+     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.
+     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.
+     */
+    public function testLegacyFixerDefinitions(FixerInterface $fixer)
+    {
+        $definition = $fixer->getDefinition();
+
+        $this->assertNull($definition->getConfigurationDescription(), sprintf('[%s] No configuration description expected.', $fixer->getName()));
+        $this->assertNull($definition->getDefaultConfiguration(), sprintf('[%s] No default configuration expected.', $fixer->getName()));
     }
 
     public function provideFixerDefinitionsCases()
@@ -445,7 +463,36 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param ConfigurationDefinitionFixerInterface $fixer
+     *
+     * @dataProvider provideFixerConfigurationDefinitionsCases
+     */
+    public function testFixerConfigurationDefinitions(ConfigurationDefinitionFixerInterface $fixer)
+    {
+        $configurationDefinition = $fixer->getConfigurationDefinition();
+
+        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface', $configurationDefinition);
+
+        foreach ($configurationDefinition->getOptions() as $option) {
+            $this->assertNotEmpty($option->getDescription());
+        }
+    }
+
+    public function provideFixerConfigurationDefinitionsCases()
+    {
+        $fixers = array_filter($this->getAllFixers(), function (FixerInterface $fixer) {
+            return $fixer instanceof ConfigurationDefinitionFixerInterface;
+        });
+
+        return array_map(function (FixerInterface $fixer) {
+            return array($fixer);
+        }, $fixers);
+    }
+
+    /**
      * @dataProvider provideFixerDefinitionsCases
+     *
+     * @coversNothing
      */
     public function testFixersAreFinal(FixerInterface $fixer)
     {
@@ -456,6 +503,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provideFixerDefinitionsCases
+     *
+     * @coversNothing
      */
     public function testFixersAreDefined(FixerInterface $fixer)
     {

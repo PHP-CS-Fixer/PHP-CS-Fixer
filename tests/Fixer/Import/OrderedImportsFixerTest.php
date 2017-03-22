@@ -704,7 +704,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
     {
         $this->setExpectedException(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_imports] $configuration["importsOrder"] should be array and should be composed of all import types in desired order.'
+            '[ordered_imports] Invalid configuration: Missing sort type "function".'
         );
 
         $this->fixer->configure(array(
@@ -717,7 +717,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
     {
         $this->setExpectedException(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_imports] Unknown type "bar" in type order configuration, expected all types ["class","const","function"] to be included in desired order.'
+            '[ordered_imports] Invalid configuration: Missing sort type "class".'
         );
 
         $this->fixer->configure(array(
@@ -729,36 +729,45 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
     /**
      * @dataProvider provideInvalidSortAlgorithmConfiguration
      *
-     * @param mixed $sortAlgorithm
-     * @param mixed $typesOrder
+     * @param array  $configuration
+     * @param string $expectedValue
      */
-    public function testInvalidSortAlgorithm($sortAlgorithm, $typesOrder)
+    public function testInvalidSortAlgorithm($configuration, $expectedValue)
     {
         $this->setExpectedException(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_imports] Sort algorithm is invalid. Should be one of the: "alpha", "length".'
+            sprintf(
+                '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
+                $expectedValue
+            )
         );
 
-        $this->fixer->configure(array(
-            'sortAlgorithm' => $sortAlgorithm,
-            'importsOrder' => $typesOrder,
-        ));
+        $this->fixer->configure($configuration);
     }
 
     public function provideInvalidSortAlgorithmConfiguration()
     {
         return array(
             array(
-                'sortAlgorithm' => 'dope',
-                'importsOrder' => null,
+                array(
+                    'sortAlgorithm' => 'dope',
+                    'importsOrder' => null,
+                ),
+                '"dope"',
             ),
             array(
-                'sortAlgorithm' => array(OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH),
-                'importsOrder' => null,
+                array(
+                    'sortAlgorithm' => array(OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH),
+                    'importsOrder' => null,
+                ),
+                'array',
             ),
             array(
-                'sortAlgorithm' => new \stdClass(),
-                'importsOrder' => null,
+                array(
+                    'sortAlgorithm' => new \stdClass(),
+                    'importsOrder' => null,
+                ),
+                'stdClass',
             ),
         );
     }

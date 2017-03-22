@@ -61,8 +61,6 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
             'Ensures deprecation notices are silenced.',
             array(new CodeSample("<?php\ntrigger_error('Warning.', E_USER_DEPRECATED);")),
             null,
-            null,
-            null,
             'Silencing of deprecation errors might cause changes to code behaviour.'
         );
     }

@@ -347,7 +347,7 @@ $b;',
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[binary_operator_spaces\] Unknown configuration option "foo"\. Expected any of "align_equals", "align_double_arrow"\.$/'
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "align_double_arrow", "align_equals"\.$/'
         );
 
         $this->fixer->configure(array('foo' => true));
@@ -357,7 +357,7 @@ $b;',
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[binary_operator_spaces\] Invalid value type for configuration option "align_double_arrow"\. Expected "bool" or "null" got "integer"\.$/'
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid. Accepted values are: true, false, null\.$/'
         );
 
         $this->fixer->configure(array('align_double_arrow' => 123));

@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -23,6 +24,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -30,7 +32,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author SpacePossum
  * @author Darius Matulionis <darius@matulionis.lt>
  */
-final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     const IMPORT_TYPE_CLASS = 'class';
 
@@ -41,21 +43,6 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     const SORT_ALPHA = 'alpha';
 
     const SORT_LENGTH = 'length';
-
-    /**
-     * @var array<string, string|array>
-     */
-    private static $defaultConfiguration = array(
-        // type of sort algorithm
-        'sortAlgorithm' => self::SORT_ALPHA,
-        // array of import types by which use statements should be ordered. If not defined in configuration only sort algorithm will be applied.
-        'importsOrder' => null,
-    );
-
-    /**
-     * @var array
-     */
-    private $config;
 
     /**
      * Array of supported sort types in configuration.
@@ -70,57 +57,6 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      * @var string[]
      */
     private $supportedSortAlgorithms = array(self::SORT_ALPHA, self::SORT_LENGTH);
-
-    /**
-     * @param null|array $configuration
-     *
-     * @throws InvalidFixerConfigurationException
-     */
-    public function configure(array $configuration = null)
-    {
-        // If no configuration was passed, stick to default.
-        if (null === $configuration) {
-            $this->config = self::$defaultConfiguration;
-
-            return;
-        }
-
-        $configuration = array_merge(self::$defaultConfiguration, $configuration);
-
-        /* Sort types order configuration */
-
-        // If no import types order was provided, we will sort only by algorithm.
-        if (array_key_exists('importsOrder', $configuration) && null !== $configuration['importsOrder']) {
-            $importsOrder = $configuration['importsOrder'];
-
-            if (!is_array($importsOrder) || count($importsOrder) !== count($this->supportedSortTypes)) {
-                throw new InvalidFixerConfigurationException('ordered_imports', sprintf('$configuration["importsOrder"] should be array and should be composed of all import types in desired order.'));
-            }
-
-            // Check if all provided sort types are supported.
-            foreach ($importsOrder as $type) {
-                if (!in_array($type, $this->supportedSortTypes, true)) {
-                    throw new InvalidFixerConfigurationException('ordered_imports', sprintf('Unknown type "%s" in type order configuration, expected all types ["%s"] to be included in desired order.', $type, implode('","', $this->supportedSortTypes)));
-                }
-            }
-        }
-
-        /* Sort algorithm configuration */
-
-        // Check if sort algorithm is defined.
-        if (!array_key_exists('sortAlgorithm', $configuration)) {
-            throw new InvalidFixerConfigurationException('ordered_imports', sprintf('Configuration array should have defined "sortAlgorithm".'));
-        }
-
-        $sortAlgorithm = $configuration['sortAlgorithm'];
-
-        // Check if passed sort type is supported.
-        if (!is_string($sortAlgorithm) || !in_array($sortAlgorithm, $this->supportedSortAlgorithms, true)) {
-            throw new InvalidFixerConfigurationException('ordered_imports', sprintf('Sort algorithm is invalid. Should be one of the: "%s".', implode('", "', $this->supportedSortAlgorithms)));
-        }
-
-        $this->config = $configuration;
-    }
 
     /**
      * {@inheritdoc}
@@ -235,10 +171,7 @@ use function CCC\AA;
                         ),
                     )
                 ),
-            ),
-            null,
-            'Configure how \'use\' statements should be ordered, alphabetically or by length. Also specify how import types should be ordered.',
-            self::$defaultConfiguration
+            )
         );
     }
 
@@ -257,6 +190,54 @@ use function CCC\AA;
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_USE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $supportedSortTypes = $this->supportedSortTypes;
+
+        $sortAlgorithm = new FixerOptionBuilder('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length');
+        $sortAlgorithm
+            ->setAllowedValues($this->supportedSortAlgorithms)
+            ->setDefault(self::SORT_ALPHA)
+        ;
+
+        $importsOrder = new FixerOptionBuilder('importsOrder', 'Defines the order of import types.');
+        $importsOrder
+            ->setAllowedTypes(array('array', 'null'))
+            ->setAllowedValues(array(function ($value) use ($supportedSortTypes) {
+                if (null !== $value) {
+                    $missing = array_diff($supportedSortTypes, $value);
+                    if (count($missing)) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Missing sort %s "%s".',
+                            1 === count($missing) ? 'type' : 'types',
+                            implode('", "', $missing)
+                        ));
+                    }
+
+                    $unknown = array_diff($value, $supportedSortTypes);
+                    if (count($unknown)) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Unknown sort %s "%s".',
+                            1 === count($unknown) ? 'type' : 'types',
+                            implode('", "', $unknown)
+                        ));
+                    }
+                }
+
+                return true;
+            }))
+            ->setDefault(null)
+        ;
+
+        return new FixerConfigurationResolver(array(
+            $sortAlgorithm->getOption(),
+            $importsOrder->getOption(),
+        ));
     }
 
     /**
@@ -443,7 +424,7 @@ use function CCC\AA;
         }
 
         // Is sort types provided, sorting by groups and each group by algorithm
-        if ($this->config['importsOrder']) {
+        if ($this->configuration['importsOrder']) {
             // Grouping indexes by import type.
             $groupedByTypes = array();
             foreach ($indexes as $startIndex => $item) {
@@ -457,7 +438,7 @@ use function CCC\AA;
 
             // Ordering groups
             $sortedGroups = array();
-            foreach ($this->config['importsOrder'] as $type) {
+            foreach ($this->configuration['importsOrder'] as $type) {
                 if (isset($groupedByTypes[$type]) && !empty($groupedByTypes[$type])) {
                     foreach ($groupedByTypes[$type] as $startIndex => $item) {
                         $sortedGroups[$startIndex] = $item;
@@ -488,7 +469,7 @@ use function CCC\AA;
      */
     private function sortByAlgorithm($indexes)
     {
-        switch ($this->config['sortAlgorithm']) {
+        switch ($this->configuration['sortAlgorithm']) {
             case self::SORT_ALPHA:
                 uasort($indexes, array($this, 'sortAlphabetically'));
                 break;
@@ -496,8 +477,7 @@ use function CCC\AA;
                 uasort($indexes, array($this, 'sortByLength'));
                 break;
             default:
-                throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->config['sortAlgorithm']));
-                break;
+                throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
         }
 
         return $indexes;

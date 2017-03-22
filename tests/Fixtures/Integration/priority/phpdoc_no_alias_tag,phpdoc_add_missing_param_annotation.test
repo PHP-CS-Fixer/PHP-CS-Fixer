@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: phpdoc_no_alias_tag,phpdoc_add_missing_param_annotation.
 --RULESET--
-{"phpdoc_no_alias_tag": {"params": "param"}, "phpdoc_add_missing_param_annotation": true}
+{"phpdoc_no_alias_tag": {"replacements": {"params": "param"}}, "phpdoc_add_missing_param_annotation": true}
 --EXPECT--
 <?php
 /**

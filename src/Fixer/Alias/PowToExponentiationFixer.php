@@ -84,8 +84,6 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
                 ),
             ),
             null,
-            null,
-            null,
             'Risky when the function `pow()` is overridden.'
         );
     }
@@ -96,7 +94,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     public function getPriority()
     {
         // must be run before BinaryOperatorSpacesFixer
-        return 1;
+        return 3;
     }
 
     /**

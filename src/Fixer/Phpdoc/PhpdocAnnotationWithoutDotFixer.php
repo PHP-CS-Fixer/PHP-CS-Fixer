@@ -23,9 +23,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 {
-    private $configuration = array(
-        'tags' => array('throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'),
-    );
+    private $tags = array('throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type');
 
     /**
      * {@inheritdoc}
@@ -46,8 +44,7 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 
             foreach ($annotations as $annotation) {
                 if (
-                    !$annotation->getTag()->valid()
-                    || !in_array($annotation->getTag()->getName(), $this->configuration['tags'], true)
+                    !$annotation->getTag()->valid() || !in_array($annotation->getTag()->getName(), $this->tags, true)
                 ) {
                     continue;
                 }

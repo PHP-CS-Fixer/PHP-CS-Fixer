@@ -24,34 +24,52 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
-    private static $defaultTestConfig = array(
-        'singleLine' => false,
-        'singleItemSingleLine' => false,
-        'multiLineExtendsEachSingleLine' => false,
-    );
+    /**
+     * @group legacy
+     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
+     */
+    public function testLegacyConfigureDefaultToNull()
+    {
+        $defaultConfig = array(
+            'multiLineExtendsEachSingleLine' => false,
+            'singleItemSingleLine' => false,
+            'singleLine' => false,
+        );
+
+        $fixer = new ClassDefinitionFixer();
+        $fixer->configure($defaultConfig);
+        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
+
+        $fixer->configure(null);
+        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
+    }
 
     public function testConfigureDefaultToNull()
     {
+        $defaultConfig = array(
+            'multiLineExtendsEachSingleLine' => false,
+            'singleItemSingleLine' => false,
+            'singleLine' => false,
+        );
+
         $fixer = new ClassDefinitionFixer();
-        $fixer->configure(self::$defaultTestConfig);
-        $fixer->configure(null);
+        $fixer->configure($defaultConfig);
+        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
 
-        $defaultConfigProperty = new \ReflectionProperty('PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer', 'defaultConfiguration');
-        $defaultConfigProperty->setAccessible(true);
-
-        $this->assertAttributeSame($defaultConfigProperty->getValue(), 'config', $fixer);
+        $fixer->configure(array());
+        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
     }
 
     /**
-     * @param string                   $expected PHP source code
-     * @param string                   $input    PHP source code
-     * @param null|array<string, bool> $config
+     * @param string              $expected PHP source code
+     * @param string              $input    PHP source code
+     * @param array<string, bool> $config
      *
      * @dataProvider provideAnonymousClassesCases
      *
      * @requires PHP 7.0
      */
-    public function testFixingAnonymousClasses($expected, $input, array $config = null)
+    public function testFixingAnonymousClasses($expected, $input, array $config = array())
     {
         $this->fixer->configure($config);
 
@@ -66,7 +84,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingClasses($expected, $input)
     {
-        $this->fixer->configure(self::$defaultTestConfig);
+        $this->fixer->configure(array());
 
         $this->doTest($expected, $input);
     }
@@ -93,7 +111,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingInterfaces($expected, $input)
     {
-        $this->fixer->configure(self::$defaultTestConfig);
+        $this->fixer->configure(array());
 
         $this->doTest($expected, $input);
     }
@@ -110,7 +128,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
             $this->markTestSkipped('Test requires traits.');
         }
 
-        $this->fixer->configure(self::$defaultTestConfig);
+        $this->fixer->configure(array());
 
         $this->doTest($expected, $input);
     }
@@ -119,7 +137,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[class_definition\] Unknown configuration item "a", expected any of "singleLine, singleItemSingleLine, multiLineExtendsEachSingleLine".$/'
+            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "multiLineExtendsEachSingleLine", "singleItemSingleLine", "singleLine"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
@@ -130,7 +148,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[class_definition\] Configuration value for item "singleLine" must be a bool, got "string".$/'
+            '/^\[class_definition\] Invalid configuration: The option "singleLine" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
@@ -540,7 +558,7 @@ namespace {
      */
     public function testFixPHP7($expected, $input = null)
     {
-        $this->fixer->configure(self::$defaultTestConfig);
+        $this->fixer->configure(array());
 
         $this->doTest($expected, $input);
     }
@@ -590,7 +608,7 @@ $a = new class implements
     public function testMessyWhitespaces($expected, $input = null)
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->fixer->configure(self::$defaultTestConfig);
+        $this->fixer->configure(array());
 
         $this->doTest($expected, $input);
     }

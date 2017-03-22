@@ -28,7 +28,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[function_declaration\] Spacing is invalid. Should be one of: "none", "one".$#'
+            '#^\[function_declaration\] Invalid configuration: The option "closure_function_spacing" with value "neither" is invalid\. Accepted values are: "none", "one"\.$#'
         );
 
         $this->fixer->configure(array('closure_function_spacing' => 'neither'));

@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: function_to_constant,no_singleline_whitespace_before_semicolons.
+--RULESET--
+{"function_to_constant": true, "no_singleline_whitespace_before_semicolons": true}
+--EXPECT--
+<?php
+
+echo M_PI;
+
+--INPUT--
+<?php
+
+echo pi(  );
