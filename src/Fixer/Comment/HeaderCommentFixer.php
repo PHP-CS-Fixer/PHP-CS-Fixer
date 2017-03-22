@@ -292,7 +292,14 @@ echo 1;
 
         // fix lines before header comment
         $expectedLineCount = self::HEADER_LINE_SEPARATION_BOTH === $this->headerLineSeparation || self::HEADER_LINE_SEPARATION_TOP === $this->headerLineSeparation ? 2 : 1;
-        $lineBreakCount = $this->getLineBreakCount($tokens, $tokens->getPrevNonWhitespace($headerIndex), $headerIndex);
+        $prev = $tokens->getPrevNonWhitespace($headerIndex);
+
+        $regex = '/[\t ]$/';
+        if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && preg_match($regex, $tokens[$prev]->getContent())) {
+            $tokens[$prev]->setContent(preg_replace($regex, $lineEnding, $tokens[$prev]->getContent()));
+        }
+
+        $lineBreakCount = $this->getLineBreakCount($tokens, $prev, $headerIndex);
         if ($lineBreakCount < $expectedLineCount) {
             // because of the way the insert index was determined for header comment there cannot be an empty token here
             $tokens->insertAt($headerIndex, new Token(array(T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount - $lineBreakCount))));
