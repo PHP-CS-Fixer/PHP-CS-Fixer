@@ -526,7 +526,7 @@ const F=1; }',
 class A
 {#
 public static function#
-A#
+AB#
 (#
 )#
 {#
@@ -540,7 +540,7 @@ class A
 static#
 # 
 function#
-A#
+AB#
 (#
 )#
 {#
