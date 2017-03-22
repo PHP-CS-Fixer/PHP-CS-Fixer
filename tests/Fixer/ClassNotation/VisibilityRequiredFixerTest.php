@@ -538,7 +538,7 @@ AB#
 class A
 {#
 static#
-# 
+#
 function#
 AB#
 (#

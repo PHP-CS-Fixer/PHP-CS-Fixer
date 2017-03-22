@@ -586,7 +586,7 @@ EOF;
 
     public function testFixWithComments()
     {
-        $input = '<?php 
+        $input = '<?php
 use#
 \#
 Exception#
@@ -594,7 +594,7 @@ Exception#
 ;
 echo 1;';
 
-        $expected = '<?php 
+        $expected = '<?php
 echo 1;';
 
         $this->doTest($expected, $input);
