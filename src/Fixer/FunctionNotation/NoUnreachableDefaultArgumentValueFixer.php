@@ -198,7 +198,7 @@ function example($foo = "two words", $bar) {}
      */
     private function clearWhitespacesBeforeIndex(Tokens $tokens, $index)
     {
-        $prevIndex = $tokens->getNonEmptySibling($index - 1, -1);
+        $prevIndex = $tokens->getNonEmptySibling($index, -1);
         if (!$tokens[$prevIndex]->isWhitespace()) {
             return;
         }
