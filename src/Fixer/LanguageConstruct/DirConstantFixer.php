@@ -81,11 +81,17 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             }
 
             // closing parenthesis removed with leading spaces
-            $tokens->removeLeadingWhitespace($closeParenthesis);
+            if (!$tokens[$tokens->getNextNonWhitespace($closeParenthesis)]->isComment()) {
+                $tokens->removeLeadingWhitespace($closeParenthesis);
+            }
+
             $tokens[$closeParenthesis]->clear();
 
             // opening parenthesis removed with trailing and leading spaces
-            $tokens->removeLeadingWhitespace($openParenthesis);
+            if (!$tokens[$tokens->getNextNonWhitespace($openParenthesis)]->isComment()) {
+                $tokens->removeLeadingWhitespace($openParenthesis);
+            }
+
             $tokens->removeTrailingWhitespace($openParenthesis);
             $tokens[$openParenthesis]->clear();
 
