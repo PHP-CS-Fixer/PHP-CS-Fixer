@@ -518,6 +518,20 @@ function getNumberFormatter()
 ',
         );
 
+        $cases[] = array(
+            '<?php
+
+class A
+{
+    public function b()
+    {
+        /** @var int $c */
+        print($c = 0);
+    }
+}
+',
+        );
+
         return $cases;
     }
 
