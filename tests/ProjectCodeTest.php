@@ -24,6 +24,65 @@ use Symfony\Component\Finder\SplFileInfo;
 final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * This structure contains older classes that are not yet covered by tests.
+     *
+     * It may only shrink, never add anything to it.
+     *
+     * @var string[]
+     */
+    private static $classesWithoutTests = array(
+        'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+        'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+        'PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException',
+        'PhpCsFixer\Console\Command\CommandHelp',
+        'PhpCsFixer\Console\Command\DescribeCommand',
+        'PhpCsFixer\Console\Command\DescribeNameNotFoundException',
+        'PhpCsFixer\Console\Command\ReadmeCommand',
+        'PhpCsFixer\Console\Command\SelfUpdateCommand',
+        'PhpCsFixer\Console\Output\NullOutput',
+        'PhpCsFixer\Console\Output\ProcessOutput',
+        'PhpCsFixer\Differ\DiffConsoleFormatter',
+        'PhpCsFixer\Differ\NullDiffer',
+        'PhpCsFixer\Differ\SebastianBergmannDiffer',
+        'PhpCsFixer\FileRemoval',
+        'PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator',
+        'PhpCsFixer\FixerDefinition\FileSpecificCodeSample',
+        'PhpCsFixer\FixerFileProcessedEvent',
+        'PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper',
+        'PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper',
+        'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer',
+        'PhpCsFixer\Linter\LintingException',
+        'PhpCsFixer\Linter\ProcessLintingResult',
+        'PhpCsFixer\Linter\TokenizerLintingResult',
+        'PhpCsFixer\Linter\UnavailableLinterException',
+        'PhpCsFixer\Report\ReportSummary',
+        'PhpCsFixer\Runner\FileCachingLintingIterator',
+        'PhpCsFixer\Runner\FileFilterIterator',
+        'PhpCsFixer\Runner\FileLintingIterator',
+        'PhpCsFixer\StdinFileInfo',
+        'PhpCsFixer\Test\IntegrationCaseFactory',
+        'PhpCsFixer\Tokenizer\Transformers',
+    );
+
+    /**
+     * @param string $className
+     *
+     * @dataProvider provideSrcConcreteClasses
+     */
+    public function testThatSrcClassHaveTestClass($className)
+    {
+        $testClassName = str_replace('PhpCsFixer', 'PhpCsFixer\\Tests', $className).'Test';
+
+        if (in_array($className, self::$classesWithoutTests, true)) {
+            $this->assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, __CLASS__));
+            $this->markTestIncomplete(sprintf('Class "%s" has no tests yet, please help and add it.', $className));
+        }
+
+        $this->assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
+        $this->assertTrue(is_subclass_of($testClassName, '\PHPUnit_Framework_TestCase'), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit_Framework_TestCase".', $testClassName));
+    }
+
+    /**
      * @param string $className
      *
      * @dataProvider provideSrcClasses
@@ -212,6 +271,21 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
                 return array($item);
             },
             $this->getSrcClasses()
+        );
+    }
+
+    public function provideSrcConcreteClasses()
+    {
+        return array_map(
+            function ($item) { return array($item); },
+            array_filter(
+                $this->getSrcClasses(),
+                function ($className) {
+                    $rc = new \ReflectionClass($className);
+
+                    return !$rc->isAbstract() && !$rc->isInterface();
+                }
+            )
         );
     }
 
