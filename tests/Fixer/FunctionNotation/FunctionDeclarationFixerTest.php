@@ -154,6 +154,14 @@ function foo() /* bar */
 {              /* baz */
 }',
             ),
+            array(
+                '<?php function #
+foo#
+ (#
+ ) #
+{#
+}#',
+            ),
         );
     }
 
