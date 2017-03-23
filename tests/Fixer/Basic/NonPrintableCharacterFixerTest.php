@@ -45,7 +45,7 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 echo "Hello World !";',
                 '<?php
 // ec'.pack('CCC', 0xe2, 0x80, 0x8b).'ho
-echo "Hello World !";',
+echo "Hello'.pack('CCC', 0xe2, 0x80, 0xaf).'World'.pack('CC', 0xc2, 0xa0).'!";',
             ),
         );
     }

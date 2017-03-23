@@ -30,11 +30,11 @@ final class NonPrintableCharacterFixer extends AbstractFixer
     {
         parent::__construct();
         $this->symbolsReplace = array(
-            pack('CCC', 0xe2, 0x80, 0x8b) => '',
-            pack('CCC', 0xe2, 0x80, 0x87) => ' ',
-            pack('CCC', 0xe2, 0x80, 0xaf) => ' ',
-            pack('CCC', 0xe2, 0x81, 0xa0) => '',
-            pack('CC', 0xc2, 0xa0) => ' ',
+            pack('CCC', 0xe2, 0x80, 0x8b) => '', // ZWSP
+            pack('CCC', 0xe2, 0x80, 0x87) => ' ', // FIGURE SPACE
+            pack('CCC', 0xe2, 0x80, 0xaf) => ' ', // NBSP
+            pack('CCC', 0xe2, 0x81, 0xa0) => '', // WORD JOINER
+            pack('CC', 0xc2, 0xa0) => ' ', // NO-BREAK SPACE
         );
     }
 
