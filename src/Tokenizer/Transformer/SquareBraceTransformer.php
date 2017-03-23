@@ -71,6 +71,10 @@ final class SquareBraceTransformer extends AbstractTransformer
         }
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
     private function transformIntoArraySquareBrace(Tokens $tokens, $index)
     {
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
@@ -79,6 +83,10 @@ final class SquareBraceTransformer extends AbstractTransformer
         $tokens[$endIndex]->override(array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
     private function transformIntoDestructuringSquareBrace(Tokens $tokens, $index)
     {
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);

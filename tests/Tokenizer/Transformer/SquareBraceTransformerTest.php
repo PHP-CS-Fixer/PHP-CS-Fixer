@@ -80,30 +80,11 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
     /**
      * @param string $source
+     * @param array  $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
     public function testProcess($source, array $expectedTokens = array())
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            array(
-                CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-            )
-        );
-    }
-
-    /**
-     * @param string $source
-     *
-     * @dataProvider provideProcessCases71
-     * @requires PHP 7.1
-     */
-    public function testProcess71($source, array $expectedTokens = array())
     {
         $this->doTest(
             $source,
@@ -240,6 +221,27 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @param string          $source
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcessCases71
+     * @requires PHP 7.1
+     */
+    public function testProcess71($source, array $expectedTokens)
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+            )
+        );
+    }
+
     public function provideProcessCases71()
     {
         return array(
@@ -279,6 +281,61 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
                     19 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
                     23 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
                     24 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                ),
+            ),
+            array(
+                '<?php [$$a, $b] = $array;',
+                array(
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ),
+            ),
+        );
+    }
+
+    /**
+     * @param string          $source
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcessCases72
+     * @requires PHP 7.2
+     */
+    public function testProcess72($source, array $expectedTokens)
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            array(
+                CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+            )
+        );
+    }
+
+    public function provideProcessCases72()
+    {
+        return array(
+            array(
+                '<?php [&$a, $b] = $a;',
+                array(
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ),
+            ),
+            array(
+                '<?php [$a, &$b] = $a;',
+                array(
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ),
+            ),
+            array(
+                '<?php [&$a, &$b] = $a;',
+                array(
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    8 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
                 ),
             ),
         );
