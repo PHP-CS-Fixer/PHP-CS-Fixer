@@ -219,6 +219,69 @@ extends
 ArrayAccess
 {};',
             ),
+            array(
+                "<?php \$a = new #
+class #
+( #
+'1a', #
+1 #
+) #
+implements#
+A, #
+B,
+    C #
+{#
+#
+}#
+;",
+                "<?php \$a = new#
+class#
+(#
+'1a',#
+1 #
+)#
+implements#
+A, #
+B,C#
+{#
+#
+}#
+;",
+                null,
+            ),
+            array(
+                "<?php \$a = new #
+class #
+( #
+'1a', #
+1 #
+) #
+implements #
+A #
+{#
+#
+}#
+;",
+                "<?php \$a = new#
+class#
+(#
+'1a',#
+1 #
+)#
+implements#
+A#
+{#
+#
+}#
+;",
+                array('singleItemSingleLine' => true),
+            ),
+            array(
+                '<?php $a = new class() #
+{};',
+                '<?php $a = new class()#
+{};',
+            ),
         );
     }
 
@@ -765,7 +828,7 @@ class Aaa implements
             ),
             array(
                 '<?php
-class /**/ Test123 EXtends  /**/ \RuntimeException implements
+class /**/ Test123 EXtends /**/ \RuntimeException implements
 TestZ
 {
 }',
