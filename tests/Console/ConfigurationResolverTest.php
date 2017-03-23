@@ -16,6 +16,8 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
+use PhpCsFixer\RuleSet;
+use PhpCsFixer\Test\AccessibleObject;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -943,6 +945,120 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param array $expected
+     * @param array $rules
+     *
+     * @dataProvider provideResolveRulesCases
+     */
+    public function testResolveRules(array $expected, array $rules)
+    {
+        $ruleSet = $this->createRuleSetToTestWith($rules);
+
+        $this->assertSameRules($expected, $ruleSet->getRules());
+    }
+
+    public function provideResolveRulesCases()
+    {
+        return array(
+            'Set reconfigure rule in other set, reconfigure rule.' => array(
+                array(
+                    'AA' => true,
+                    'AB' => true,
+                    'AC' => 'abc',
+                ),
+                array(
+                    '@A' => true,
+                    '@D' => true,
+                    'AC' => 'abc',
+                ),
+            ),
+            'Set reconfigure rule in other set.' => array(
+                array(
+                    'AA' => true,
+                    'AB' => true,
+                    'AC' => 'b',
+                ),
+                array(
+                    '@A' => true,
+                    '@D' => true,
+                ),
+            ),
+            'Set minus two sets minus rule' => array(
+                array(
+                    'AB' => true,
+                ),
+                array(
+                    '@A' => true,
+                    '@B' => false,
+                    '@C' => false,
+                    'AC' => false,
+                ),
+            ),
+            'Set minus two sets' => array(
+                array(
+                    'AB' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                    '@B' => false,
+                    '@C' => false,
+                ),
+            ),
+            'Set minus rule test.' => array(
+                array(
+                    'AA' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                    'AB' => false,
+                ),
+            ),
+            'Set minus set test.' => array(
+                array(
+                    'AB' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                    '@B' => false,
+                ),
+            ),
+            'Set to rules test.' => array(
+                array(
+                    'AA' => true,
+                    'AB' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                ),
+            ),
+            '@A - @C' => array(
+                array(
+                    'AB' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                    '@C' => false,
+                ),
+            ),
+            '@A - @D' => array(
+                array(
+                    'AA' => true,
+                    'AB' => true,
+                ),
+                array(
+                    '@A' => true,
+                    '@D' => false,
+                ),
+            ),
+        );
+    }
+
     public function testResolveRulesWithUnknownRules()
     {
         $this->setExpectedException(
@@ -1036,6 +1152,34 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($resolver->getUsingCache());
         $this->assertNull($resolver->getCacheFile());
         $this->assertSame('xml', $resolver->getReporter()->getFormat());
+    }
+
+    private function createRuleSetToTestWith(array $rules)
+    {
+        static $testSet = array(
+            '@A' => array(
+                'AA' => true,
+                'AB' => true,
+                'AC' => 'a',
+            ),
+            '@B' => array(
+                'AA' => true,
+            ),
+            '@C' => array(
+                'AA' => false,
+            ),
+            '@D' => array(
+                'AC' => 'b',
+            ),
+        );
+
+        $ruleSet = new RuleSet();
+        $reflection = new AccessibleObject($ruleSet);
+        $reflection->setDefinitions = $testSet;
+        $reflection->set = $rules;
+        $reflection->resolveSet();
+
+        return $ruleSet;
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')
