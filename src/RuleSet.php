@@ -16,6 +16,7 @@ namespace PhpCsFixer;
  * Set of rules to be used by fixer.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  */
@@ -271,37 +272,56 @@ final class RuleSet implements RuleSetInterface
     private function resolveSet()
     {
         $rules = $this->set;
-        $hasSet = null;
+        $resolvedRules = array();
 
         // expand sets
-        do {
-            $hasSet = false;
-
-            $tmpRules = $rules;
-            $rules = array();
-
-            foreach ($tmpRules as $name => $value) {
-                if (!$hasSet && '@' === $name[0]) {
-                    $hasSet = true;
-                    $set = $this->getSetDefinition($name);
-
-                    foreach ($set as $nestedName => $nestedValue) {
-                        // if set value is false then disable all fixers in set, if not then get value from set item
-                        $rules[$nestedName] = $value ? $nestedValue : false;
-                    }
-
-                    continue;
+        foreach ($rules as $name => $value) {
+            if ('@' === $name[0]) {
+                if (!is_bool($value)) {
+                    throw new \UnexpectedValueException(sprintf('Nested rule set "%s" configuration must be a boolean.', $name));
                 }
 
-                $rules[$name] = $value;
+                $set = $this->resolveSubset($name, $value);
+                $resolvedRules = array_merge($resolvedRules, $set);
+            } else {
+                $resolvedRules[$name] = $value;
             }
-        } while ($hasSet);
+        }
 
-        // filter out all rules that are off
-        $rules = array_filter($rules);
+        // filter out all resolvedRules that are off
+        $resolvedRules = array_filter($resolvedRules);
 
-        $this->rules = $rules;
+        $this->rules = $resolvedRules;
 
         return $this;
+    }
+
+    /**
+     * Resolve set rules as part of another set.
+     *
+     * If set value is false then disable all fixers in set,
+     * if not then get value from set item.
+     *
+     * @param string $setName
+     * @param bool   $setValue
+     *
+     * @return array
+     */
+    private function resolveSubset($setName, $setValue)
+    {
+        $rules = $this->getSetDefinition($setName);
+        foreach ($rules as $name => $value) {
+            if ('@' === $name[0]) {
+                $set = $this->resolveSubset($name, $setValue);
+                unset($rules[$name]);
+                $rules = array_merge($rules, $set);
+            } elseif (!$setValue) {
+                $rules[$name] = false;
+            } else {
+                $rules[$name] = $value;
+            }
+        }
+
+        return $rules;
     }
 }
