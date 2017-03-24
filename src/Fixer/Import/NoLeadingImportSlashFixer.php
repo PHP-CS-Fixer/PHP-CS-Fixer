@@ -26,7 +26,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $foundNamespace = $tokens->findGivenKind(T_NAMESPACE);
         if (empty($foundNamespace)) {

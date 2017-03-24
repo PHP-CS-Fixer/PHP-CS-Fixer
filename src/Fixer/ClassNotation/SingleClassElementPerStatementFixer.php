@@ -70,7 +70,7 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $analyzer = new TokensAnalyzer($tokens);
         $elements = array_reverse($analyzer->getClassyElements(), true);

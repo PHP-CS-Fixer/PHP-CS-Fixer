@@ -52,7 +52,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         if (!count($this->configuration)) {
             return;

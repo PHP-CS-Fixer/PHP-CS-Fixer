@@ -95,7 +95,7 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $searchFor = array_keys($this->configuration);
 

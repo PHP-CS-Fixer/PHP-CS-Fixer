@@ -121,7 +121,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $searchSequence = array(
             array(T_VARIABLE, '$this'),

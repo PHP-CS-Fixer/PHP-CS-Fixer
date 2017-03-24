@@ -48,7 +48,7 @@ final class PhpdocToCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $controlStructures = array(
             T_FOREACH,

@@ -34,7 +34,7 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imp
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 

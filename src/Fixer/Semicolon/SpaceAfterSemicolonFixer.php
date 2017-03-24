@@ -26,7 +26,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = count($tokens) - 2; $index > 0; --$index) {
             if (!$tokens[$index]->equals(';')) {

@@ -27,7 +27,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $classes = array_keys($tokens->findGivenKind(T_CLASS));

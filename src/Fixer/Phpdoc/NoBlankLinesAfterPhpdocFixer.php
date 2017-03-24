@@ -35,7 +35,7 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $forbiddenSuccessors = array(
             T_DOC_COMMENT,

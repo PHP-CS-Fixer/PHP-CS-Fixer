@@ -38,7 +38,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $ending = $this->whitespacesConfig->getLineEnding();
 

@@ -67,7 +67,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurableFixerInterf
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $sequenceNeeded = array(array(T_STRING, 'is_null'), '(');
 

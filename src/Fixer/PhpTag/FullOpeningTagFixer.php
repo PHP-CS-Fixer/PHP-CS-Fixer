@@ -27,7 +27,7 @@ final class FullOpeningTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokensOrg)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokensOrg)
     {
         $content = $tokensOrg->generateCode();
 

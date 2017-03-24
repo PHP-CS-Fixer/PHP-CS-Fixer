@@ -26,7 +26,7 @@ final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // [Structure] there should not be space before or after T_OBJECT_OPERATOR
         foreach ($tokens as $index => $token) {

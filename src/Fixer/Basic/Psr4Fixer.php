@@ -28,7 +28,7 @@ final class Psr4Fixer extends AbstractPsrAutoloadingFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $namespace = false;
         $classyName = null;

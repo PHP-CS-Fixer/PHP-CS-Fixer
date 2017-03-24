@@ -26,7 +26,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // skip first as it cannot be a white space token
         for ($i = 1, $count = count($tokens); $i < $count; ++$i) {

@@ -43,7 +43,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach (self::$functions as $functionIdentity => $functionReplacement) {
             $currIndex = 0;

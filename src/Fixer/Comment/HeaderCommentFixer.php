@@ -67,7 +67,7 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         if (null === $this->headerComment) {
             throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');

@@ -27,7 +27,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $i = count($tokens);
         $HHVM = defined('HHVM_VERSION');

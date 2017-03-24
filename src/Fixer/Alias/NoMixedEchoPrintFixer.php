@@ -63,7 +63,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $callBack = $this->callBack;
         foreach ($tokens as $index => $token) {

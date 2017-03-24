@@ -34,7 +34,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->replaceClassKeywords($tokens);
     }

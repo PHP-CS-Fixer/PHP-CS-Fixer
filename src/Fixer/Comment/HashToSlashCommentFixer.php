@@ -27,7 +27,7 @@ final class HashToSlashCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
             $originalContent = $tokens[$i]->isGivenKind(T_COMMENT) ? $tokens[$i]->getContent() : null;

@@ -162,7 +162,7 @@ final class Runner
 
         try {
             foreach ($this->fixers as $fixer) {
-                if (!$fixer->supports($file) || !$fixer->isCandidate($tokens)) {
+                if (!$fixer->supports($file)) {
                     continue;
                 }
 

@@ -69,7 +69,7 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($this->configuration as $methodBefore) {
             $methodAfter = self::$assertionMap[$methodBefore];

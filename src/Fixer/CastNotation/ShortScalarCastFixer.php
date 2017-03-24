@@ -26,7 +26,7 @@ final class ShortScalarCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $castMap = array(
             'boolean' => 'bool',

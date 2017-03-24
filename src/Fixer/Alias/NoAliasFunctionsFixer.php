@@ -48,7 +48,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         /** @var $token \PhpCsFixer\Tokenizer\Token */
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {

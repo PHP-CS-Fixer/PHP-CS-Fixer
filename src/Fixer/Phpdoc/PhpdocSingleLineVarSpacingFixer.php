@@ -28,7 +28,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         /** @var Token $token */
         foreach ($tokens as $index => $token) {

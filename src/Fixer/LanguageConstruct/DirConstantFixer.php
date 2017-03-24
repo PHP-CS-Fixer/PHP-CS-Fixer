@@ -26,7 +26,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $currIndex = 0;
         while (null !== $currIndex) {

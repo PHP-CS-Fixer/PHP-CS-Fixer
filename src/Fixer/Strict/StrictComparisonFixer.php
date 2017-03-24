@@ -25,7 +25,7 @@ final class StrictComparisonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $map = array(
             T_IS_EQUAL => array(

@@ -85,7 +85,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $functionNames = $this->getFunctionNames();
 

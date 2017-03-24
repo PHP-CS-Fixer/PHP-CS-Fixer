@@ -85,7 +85,7 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // no assertions to be fixed - fast return
         if (empty($this->configuration)) {

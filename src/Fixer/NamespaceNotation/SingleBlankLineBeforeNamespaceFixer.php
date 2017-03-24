@@ -25,7 +25,7 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];

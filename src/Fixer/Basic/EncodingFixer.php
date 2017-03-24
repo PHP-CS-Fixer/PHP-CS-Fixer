@@ -36,7 +36,7 @@ final class EncodingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $token = $tokens[0];
         $content = $token->getContent();

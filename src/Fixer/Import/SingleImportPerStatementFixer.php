@@ -32,7 +32,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $uses = array_reverse($tokensAnalyzer->getImportUseIndexes());

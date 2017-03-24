@@ -28,7 +28,7 @@ final class NoClosingTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         if (count($tokens) < 2 || !$tokens->isMonolithicPhp()) {
             return;

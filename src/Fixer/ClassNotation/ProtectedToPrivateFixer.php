@@ -27,7 +27,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $end = count($tokens) - 3; // min. number of tokens to form a class candidate to fix
         for ($index = 0; $index < $end; ++$index) {
