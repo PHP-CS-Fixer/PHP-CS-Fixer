@@ -30,35 +30,6 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isWhitespace()) {
-                continue;
-            }
-
-            $lines = preg_split("/([\r\n]+)/", $token->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
-            $linesSize = count($lines);
-
-            // fix only multiline whitespaces or singleline whitespaces at the end of file
-            if ($linesSize > 1 || !isset($tokens[$index + 1])) {
-                $lines[0] = rtrim($lines[0], " \t");
-
-                for ($i = 1; $i < $linesSize; ++$i) {
-                    $trimmedLine = rtrim($lines[$i], " \t");
-                    if ('' !== $trimmedLine) {
-                        $lines[$i] = $trimmedLine;
-                    }
-                }
-
-                $token->setContent(implode($lines));
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -82,5 +53,34 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isWhitespace()) {
+                continue;
+            }
+
+            $lines = preg_split("/([\r\n]+)/", $token->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
+            $linesSize = count($lines);
+
+            // fix only multiline whitespaces or singleline whitespaces at the end of file
+            if ($linesSize > 1 || !isset($tokens[$index + 1])) {
+                $lines[0] = rtrim($lines[0], " \t");
+
+                for ($i = 1; $i < $linesSize; ++$i) {
+                    $trimmedLine = rtrim($lines[$i], " \t");
+                    if ('' !== $trimmedLine) {
+                        $lines[$i] = $trimmedLine;
+                    }
+                }
+
+                $token->setContent(implode($lines));
+            }
+        }
     }
 }

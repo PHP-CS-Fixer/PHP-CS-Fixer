@@ -41,33 +41,6 @@ final class MethodSeparationFixer extends AbstractFixer implements WhitespacesAw
     /**
      * {@inheritdoc}
      */
-    public function fix(SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isClassy()) {
-                continue;
-            }
-
-            // figure out where the classy starts
-            $classStart = $tokens->getNextTokenOfKind($index, array('{'));
-
-            // figure out where the classy ends
-            $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
-
-            if ($tokens[$index]->isGivenKind(T_INTERFACE)) {
-                $this->fixInterface($tokens, $classStart, $classEnd);
-            } else {
-                // classes and traits can be fixed the same way
-                $this->fixClass($tokens, $tokensAnalyzer, $classStart, $classEnd);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -98,6 +71,33 @@ final class Sample
         // Must run before BracesFixer and IndentationTypeFixer fixers because this fixer
         // might add line breaks to the code without indenting.
         return 55;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
+            if (!$tokens[$index]->isClassy()) {
+                continue;
+            }
+
+            // figure out where the classy starts
+            $classStart = $tokens->getNextTokenOfKind($index, array('{'));
+
+            // figure out where the classy ends
+            $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
+
+            if ($tokens[$index]->isGivenKind(T_INTERFACE)) {
+                $this->fixInterface($tokens, $classStart, $classEnd);
+            } else {
+                // classes and traits can be fixed the same way
+                $this->fixClass($tokens, $tokensAnalyzer, $classStart, $classEnd);
+            }
+        }
     }
 
     /**

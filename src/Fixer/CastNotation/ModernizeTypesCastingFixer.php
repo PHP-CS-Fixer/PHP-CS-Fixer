@@ -26,7 +26,38 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval` function calls with according type casting operator.',
+            array(new CodeSample(
+'<?php
+    $a = intval($b);
+    $a = floatval($b);
+    $a = doubleval($b);
+    $a = strval ($b);
+    $a = boolval($b);
+'),
+            ),
+            null,
+            null,
+            null,
+            'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // replacement patterns
         static $replacement = array(
@@ -102,36 +133,5 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 $currIndex = $functionName;
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval` function calls with according type casting operator.',
-            array(new CodeSample(
-'<?php
-    $a = intval($b);
-    $a = floatval($b);
-    $a = doubleval($b);
-    $a = strval ($b);
-    $a = boolval($b);
-'),
-            ),
-            null,
-            null,
-            null,
-            'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
     }
 }

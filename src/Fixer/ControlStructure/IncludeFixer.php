@@ -27,14 +27,6 @@ final class IncludeFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $this->clearIncludies($tokens, $this->findIncludies($tokens));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -58,6 +50,14 @@ include_once("sample4.php");
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $this->clearIncludies($tokens, $this->findIncludies($tokens));
     }
 
     private function clearIncludies(Tokens $tokens, array $includies)

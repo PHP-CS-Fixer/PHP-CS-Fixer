@@ -17,6 +17,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -42,6 +43,13 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 
         if ($this instanceof WhitespacesAwareFixerInterface) {
             $this->whitespacesConfig = $this->getDefaultWhitespacesFixerConfig();
+        }
+    }
+
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        if (0 < $tokens->count() && $this->isCandidate($tokens) && $this->supports($file)) {
+            $this->applyFix($file, $tokens);
         }
     }
 
@@ -88,6 +96,8 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 
         $this->whitespacesConfig = $config;
     }
+
+    abstract protected function applyFix(\SplFileInfo $file, Tokens $tokens);
 
     private function getDefaultWhitespacesFixerConfig()
     {

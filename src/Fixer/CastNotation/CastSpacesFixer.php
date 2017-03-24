@@ -26,7 +26,35 @@ final class CastSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'A single space should be between cast and variable.',
+            array(new CodeSample("<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be ran after the NoShortBoolCastFixer
+        return -10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $insideCastSpaceReplaceMap = array(
             ' ' => '',
@@ -51,33 +79,5 @@ final class CastSpacesFixer extends AbstractFixer
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'A single space should be between cast and variable.',
-            array(new CodeSample("<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be ran after the NoShortBoolCastFixer
-        return -10;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
     }
 }

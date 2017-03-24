@@ -25,7 +25,26 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Function defined by PHP should be called using the correct casing.',
+            array(new CodeSample("<?php\nSTRLEN(\$str);"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $nativeFunctionNames = null;
 
@@ -67,25 +86,6 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             $tokens[$index]->setContent($nativeFunctionNames[$lower]);
             $index = $next;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Function defined by PHP should be called using the correct casing.',
-            array(new CodeSample("<?php\nSTRLEN(\$str);"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
     }
 
     /**

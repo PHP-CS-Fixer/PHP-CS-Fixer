@@ -28,24 +28,6 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
-                continue;
-            }
-
-            $this->fixWhitespace($tokens[$index - 1]);
-            // do not move anything about if there is a comment following the whitespace
-            if (!$tokens[$index + 2]->isComment()) {
-                $this->fixWhitespace($tokens[$index + 1]);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -69,6 +51,24 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
+                continue;
+            }
+
+            $this->fixWhitespace($tokens[$index - 1]);
+            // do not move anything about if there is a comment following the whitespace
+            if (!$tokens[$index + 2]->isComment()) {
+                $this->fixWhitespace($tokens[$index + 1]);
+            }
+        }
     }
 
     private function fixWhitespace(Token $token)

@@ -52,36 +52,6 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        if (!count($this->configuration)) {
-            return;
-        }
-
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType($this->configuration);
-
-            // nothing to do if there are no annotations
-            if (empty($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                $annotation->remove();
-            }
-
-            $token->setContent($doc->getContent());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -119,5 +89,35 @@ function foo() {}',
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        if (!count($this->configuration)) {
+            return;
+        }
+
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $doc = new DocBlock($token->getContent());
+            $annotations = $doc->getAnnotationsOfType($this->configuration);
+
+            // nothing to do if there are no annotations
+            if (empty($annotations)) {
+                continue;
+            }
+
+            foreach ($annotations as $annotation) {
+                $annotation->remove();
+            }
+
+            $token->setContent($doc->getContent());
+        }
     }
 }

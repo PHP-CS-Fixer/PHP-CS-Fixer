@@ -69,37 +69,6 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($this->configuration as $methodBefore) {
-            $methodAfter = self::$assertionMap[$methodBefore];
-
-            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $sequence = $tokens->findSequence(
-                    array(
-                        array(T_VARIABLE, '$this'),
-                        array(T_OBJECT_OPERATOR, '->'),
-                        array(T_STRING, $methodBefore),
-                        '(',
-                    ),
-                    $index
-                );
-
-                if (null === $sequence) {
-                    break;
-                }
-
-                $sequenceIndexes = array_keys($sequence);
-                $tokens[$sequenceIndexes[2]]->setContent($methodAfter);
-
-                $index = $sequenceIndexes[3];
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -146,5 +115,36 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($this->configuration as $methodBefore) {
+            $methodAfter = self::$assertionMap[$methodBefore];
+
+            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+                $sequence = $tokens->findSequence(
+                    array(
+                        array(T_VARIABLE, '$this'),
+                        array(T_OBJECT_OPERATOR, '->'),
+                        array(T_STRING, $methodBefore),
+                        '(',
+                    ),
+                    $index
+                );
+
+                if (null === $sequence) {
+                    break;
+                }
+
+                $sequenceIndexes = array_keys($sequence);
+                $tokens[$sequenceIndexes[2]]->setContent($methodAfter);
+
+                $index = $sequenceIndexes[3];
+            }
+        }
     }
 }

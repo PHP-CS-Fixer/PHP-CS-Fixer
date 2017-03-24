@@ -33,22 +33,6 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespac
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(T_NAMESPACE)) {
-                continue;
-            }
-
-            $this->fixLinesBeforeNamespace($tokens, $index, 1);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -59,5 +43,21 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespac
                 ),
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(T_NAMESPACE)) {
+                continue;
+            }
+
+            $this->fixLinesBeforeNamespace($tokens, $index, 1);
+        }
     }
 }

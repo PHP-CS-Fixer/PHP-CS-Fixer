@@ -34,7 +34,27 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imp
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Multi-line whitespace before closing semicolon are prohibited.',
+            array(
+                new CodeSample(
+                    '<?php
+function foo () {
+    return 1 + 2
+        ;
+}
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
@@ -55,25 +75,5 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imp
                 $previous->clear();
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Multi-line whitespace before closing semicolon are prohibited.',
-            array(
-                new CodeSample(
-                    '<?php
-function foo () {
-    return 1 + 2
-        ;
-}
-'
-                ),
-            )
-        );
     }
 }

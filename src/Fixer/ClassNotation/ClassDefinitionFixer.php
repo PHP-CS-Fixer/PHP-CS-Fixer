@@ -79,19 +79,6 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        // -4, one for count to index, 3 because min. of tokens for a classy location.
-        for ($index = $tokens->getSize() - 4; $index > 0; --$index) {
-            if ($tokens[$index]->isClassy()) {
-                $this->fixClassyDefinition($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -169,6 +156,19 @@ interface Bar extends
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // -4, one for count to index, 3 because min. of tokens for a classy location.
+        for ($index = $tokens->getSize() - 4; $index > 0; --$index) {
+            if ($tokens[$index]->isClassy()) {
+                $this->fixClassyDefinition($tokens, $index);
+            }
+        }
     }
 
     /**

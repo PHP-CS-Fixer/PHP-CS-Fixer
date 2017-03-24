@@ -85,29 +85,6 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        // no assertions to be fixed - fast return
-        if (empty($this->configuration)) {
-            return;
-        }
-
-        foreach ($this->configuration as $assertionMethod) {
-            $assertionFixer = self::$assertionFixers[$assertionMethod];
-
-            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $index = $this->$assertionFixer($tokens, $index, $assertionMethod);
-
-                if (null === $index) {
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -145,6 +122,29 @@ $this->assertNotSame(null, $d);
     {
         // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
         return -10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // no assertions to be fixed - fast return
+        if (empty($this->configuration)) {
+            return;
+        }
+
+        foreach ($this->configuration as $assertionMethod) {
+            $assertionFixer = self::$assertionFixers[$assertionMethod];
+
+            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+                $index = $this->$assertionFixer($tokens, $index, $assertionMethod);
+
+                if (null === $index) {
+                    break;
+                }
+            }
+        }
     }
 
     /**

@@ -25,18 +25,6 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_IS_NOT_EQUAL)) {
-                $tokens[$index]->setContent('!=');
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -51,5 +39,17 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_IS_NOT_EQUAL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_IS_NOT_EQUAL)) {
+                $tokens[$index]->setContent('!=');
+            }
+        }
     }
 }

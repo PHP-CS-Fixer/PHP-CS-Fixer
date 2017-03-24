@@ -27,7 +27,36 @@ final class NoShortEchoTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replace short-echo `<?=` with long format `<?php echo` syntax.',
+            array(new VersionSpecificCodeSample('<?= "foo";', new VersionSpecification(50400)))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO)
+        /*
+         * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
+         *
+         * @see https://github.com/facebook/hhvm/issues/4809
+         * @see https://github.com/facebook/hhvm/issues/7161
+         */
+        || (
+            defined('HHVM_VERSION')
+            && $tokens->isTokenKindFound(T_ECHO)
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $i = count($tokens);
         $HHVM = defined('HHVM_VERSION');
@@ -59,34 +88,5 @@ final class NoShortEchoTagFixer extends AbstractFixer
 
             $tokens->insertAt($nextIndex, new Token(array(T_ECHO, 'echo')));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replace short-echo `<?=` with long format `<?php echo` syntax.',
-            array(new VersionSpecificCodeSample('<?= "foo";', new VersionSpecification(50400)))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO)
-        /*
-         * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-         *
-         * @see https://github.com/facebook/hhvm/issues/4809
-         * @see https://github.com/facebook/hhvm/issues/7161
-         */
-        || (
-            defined('HHVM_VERSION')
-            && $tokens->isTokenKindFound(T_ECHO)
-        );
     }
 }

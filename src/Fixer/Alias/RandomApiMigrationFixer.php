@@ -68,7 +68,38 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replaces `rand`, `mt_rand`, `srand`, `getrandmax` functions calls with their `mt_*` analogs.',
+            array(
+                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();"),
+                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();", array('getrandmax' => 'mt_getrandmax')),
+            ),
+            null,
+            'Configure any of the functions `getrandmax`, `rand` and `srand` to be replaced with modern versions.',
+            array(
+                'getrandmax' => 'mt_getrandmax',
+                'rand' => 'mt_rand',
+                'mt_rand' => 'mt_rand',
+                'srand' => 'mt_srand',
+            ),
+            'Risky when the configured functions are overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($this->configuration as $functionIdentity => $functionReplacement) {
             if ($functionIdentity === $functionReplacement['alternativeName']) {
@@ -96,36 +127,5 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 $tokens[$functionName]->setContent($functionReplacement['alternativeName']);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replaces `rand`, `mt_rand`, `srand`, `getrandmax` functions calls with their `mt_*` analogs.',
-            array(
-                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();"),
-                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();", array('getrandmax' => 'mt_getrandmax')),
-            ),
-            null,
-            'Configure any of the functions `getrandmax`, `rand` and `srand` to be replaced with modern versions.',
-            array(
-                'getrandmax' => 'mt_getrandmax',
-                'rand' => 'mt_rand',
-                'mt_rand' => 'mt_rand',
-                'srand' => 'mt_srand',
-            ),
-            'Risky when the configured functions are overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
     }
 }

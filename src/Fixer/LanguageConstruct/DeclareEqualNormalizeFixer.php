@@ -57,23 +57,6 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $callback = $this->callback;
-        for ($index = 0, $count = $tokens->count(); $index < $count - 6; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_DECLARE)) {
-                continue;
-            }
-
-            while (!$tokens[++$index]->equals('='));
-
-            $this->$callback($tokens, $index);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -91,6 +74,23 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DECLARE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $callback = $this->callback;
+        for ($index = 0, $count = $tokens->count(); $index < $count - 6; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_DECLARE)) {
+                continue;
+            }
+
+            while (!$tokens[++$index]->equals('='));
+
+            $this->$callback($tokens, $index);
+        }
     }
 
     /**

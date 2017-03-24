@@ -69,19 +69,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $callBack = $this->fixCallback;
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->equals('.')) {
-                $this->$callBack($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -112,6 +99,19 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $callBack = $this->fixCallback;
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            if ($tokens[$index]->equals('.')) {
+                $this->$callBack($tokens, $index);
+            }
+        }
     }
 
     /**
