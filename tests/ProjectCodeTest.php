@@ -28,7 +28,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
      *
      * It may only shrink, never add anything to it.
      *
-     * @var array
+     * @var string[]
      */
     private static $classesWithoutTests = array(
         'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
