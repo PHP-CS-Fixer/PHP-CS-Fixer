@@ -71,7 +71,7 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, $content)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // Add the fixing logic of the fixer here.
     }
@@ -268,7 +268,7 @@ class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // no action
     }
@@ -318,7 +318,7 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach($tokens as $index => $token){
             if (!$token->isGivenKind(T_COMMENT)) {
@@ -341,7 +341,7 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach($tokens as $index => $token){
             if (!$token->isGivenKind(T_COMMENT)) {
@@ -386,7 +386,7 @@ final class RemoveCommentsFixer extends AbstractFixer {
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens) {
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens) {
         foreach($tokens as $index => $token){
             if (!$token->isGivenKind(T_COMMENT)) {
                 continue;
