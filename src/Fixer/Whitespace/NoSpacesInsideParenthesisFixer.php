@@ -29,6 +29,32 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.',
+            array(
+                new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}"),
+                new CodeSample('<?php
+function foo( $bar, $baz )
+{
+}'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound('(');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
@@ -53,32 +79,6 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
                 $this->removeSpaceAroundToken($tokens[$endIndex - 1]);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.',
-            array(
-                new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}"),
-                new CodeSample('<?php
-function foo( $bar, $baz )
-{
-}'
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound('(');
     }
 
     /**

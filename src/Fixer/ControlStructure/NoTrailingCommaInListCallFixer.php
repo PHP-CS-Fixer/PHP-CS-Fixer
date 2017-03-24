@@ -25,6 +25,25 @@ final class NoTrailingCommaInListCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Remove trailing commas in list function calls.',
+            array(new CodeSample("<?php\nlist(\$a, \$b,) = foo();"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_LIST);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
@@ -51,24 +70,5 @@ final class NoTrailingCommaInListCallFixer extends AbstractFixer
                 );
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Remove trailing commas in list function calls.',
-            array(new CodeSample("<?php\nlist(\$a, \$b,) = foo();"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_LIST);
     }
 }

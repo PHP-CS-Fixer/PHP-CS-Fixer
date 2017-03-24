@@ -53,8 +53,6 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
         }
     }
 
-    abstract protected function applyFix(\SplFileInfo $file, Tokens $tokens);
-
     /**
      * {@inheritdoc}
      */
@@ -98,6 +96,8 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 
         $this->whitespacesConfig = $config;
     }
+
+    abstract protected function applyFix(\SplFileInfo $file, Tokens $tokens);
 
     private function getDefaultWhitespacesFixerConfig()
     {

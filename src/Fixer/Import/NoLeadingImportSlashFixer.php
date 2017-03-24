@@ -26,6 +26,34 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Remove leading slashes in use clauses.',
+            array(new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the SingleImportPerStatementFixer (for fix separated use statements as well) and NoUnusedImportsFixer (just for save performance)
+        return -20;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_USE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $foundNamespace = $tokens->findGivenKind(T_NAMESPACE);
@@ -50,33 +78,5 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
                 $nextToken->clear();
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Remove leading slashes in use clauses.',
-            array(new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after the SingleImportPerStatementFixer (for fix separated use statements as well) and NoUnusedImportsFixer (just for save performance)
-        return -20;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_USE);
     }
 }

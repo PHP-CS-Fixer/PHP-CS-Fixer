@@ -28,6 +28,33 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Code MUST use configured indentation type.',
+            array(new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return 50;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
@@ -56,32 +83,5 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 $tokens[$index]->setContent($content);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Code MUST use configured indentation type.',
-            array(new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 50;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE));
     }
 }

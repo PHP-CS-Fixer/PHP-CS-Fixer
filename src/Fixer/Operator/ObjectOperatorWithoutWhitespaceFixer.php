@@ -26,6 +26,25 @@ final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'There should not be space before or after object `T_OBJECT_OPERATOR` `->`.',
+            array(new CodeSample('<?php $a  ->  b;'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // [Structure] there should not be space before or after T_OBJECT_OPERATOR
@@ -44,24 +63,5 @@ final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
                 $tokens[$index + 1]->clear();
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'There should not be space before or after object `T_OBJECT_OPERATOR` `->`.',
-            array(new CodeSample('<?php $a  ->  b;'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
     }
 }

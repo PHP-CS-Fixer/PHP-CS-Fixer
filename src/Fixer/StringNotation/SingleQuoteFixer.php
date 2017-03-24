@@ -25,6 +25,25 @@ final class SingleQuoteFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Convert double quotes to single quotes for simple strings.',
+            array(new CodeSample('<?php $a = "sample";'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
@@ -44,24 +63,5 @@ final class SingleQuoteFixer extends AbstractFixer
                 $token->setContent('\''.$content.'\'');
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Convert double quotes to single quotes for simple strings.',
-            array(new CodeSample('<?php $a = "sample";'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
     }
 }

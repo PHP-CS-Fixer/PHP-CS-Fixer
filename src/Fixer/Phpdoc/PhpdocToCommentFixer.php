@@ -48,6 +48,27 @@ final class PhpdocToCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Docblocks should only be used on structural elements.',
+            array(
+                new CodeSample(
+                    '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** This should not be a docblock */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $controlStructures = array(
@@ -95,27 +116,6 @@ final class PhpdocToCommentFixer extends AbstractFixer
 
             $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Docblocks should only be used on structural elements.',
-            array(
-                new CodeSample(
-                    '<?php
-$first = true;// needed because by default first docblock is never fixed.
-
-/** This should not be a docblock */
-foreach($connections as $key => $sqlite) {
-    $sqlite->open($path);
-}'
-                ),
-            )
-        );
     }
 
     /**

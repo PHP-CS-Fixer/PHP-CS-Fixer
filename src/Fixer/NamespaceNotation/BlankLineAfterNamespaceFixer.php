@@ -29,6 +29,37 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'There MUST be one blank line after the namespace declaration.',
+            array(
+                new CodeSample("<?php\nnamespace Sample\\Sample;\n\n\n\$a;"),
+                new CodeSample("<?php\nnamespace Sample\\Sample;\nClass Test{}"),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the NoUnusedImportsFixer
+        return -20;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_NAMESPACE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $ending = $this->whitespacesConfig->getLineEnding();
@@ -59,36 +90,5 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
                 );
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'There MUST be one blank line after the namespace declaration.',
-            array(
-                new CodeSample("<?php\nnamespace Sample\\Sample;\n\n\n\$a;"),
-                new CodeSample("<?php\nnamespace Sample\\Sample;\nClass Test{}"),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after the NoUnusedImportsFixer
-        return -20;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_NAMESPACE);
     }
 }

@@ -27,6 +27,36 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Removes extra spaces between colon and case value.',
+            array(
+                new CodeSample(
+'<?php
+    switch($a) {
+        case 1   :
+            break;
+        default     :
+            return 2;
+    }
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
@@ -55,35 +85,5 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
                 $tokens[$valueIndex + 1]->clear();
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Removes extra spaces between colon and case value.',
-            array(
-                new CodeSample(
-'<?php
-    switch($a) {
-        case 1   :
-            break;
-        default     :
-            return 2;
-    }
-'
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
     }
 }
