@@ -58,6 +58,22 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
             array('<?php ?>'),
             array('<?php if($a){}'),
             array('<?php while($a > $b){}'),
+            array(
+'<?php if ($a == 5): ?>
+A is equal to 5
+<?php endif; ?>
+<?php switch ($foo): ?>
+<?php case 1: ?>
+...
+<?php endswitch; ?>',
+'<?php if ($a == 5): ?>
+A is equal to 5
+<?php endif; ?>
+<?php switch ($foo): ?>
+<?php case 1: ?>
+...
+<?php endswitch ?>',
+                ),
         );
     }
 

@@ -11,7 +11,7 @@
     "finder": [
         {
             "name": ["*.php"],
-            "exclude": ["Tests", "tests"],
+            "exclude": ["Test", "test", "Tests", "tests"],
             "in": ["vendor", "src"]
         }
     ],
