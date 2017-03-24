@@ -36,17 +36,6 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
-                '<?php
-                class Bar
-                {
-                    const __line__ = "foo";
-                }
-
-                namespace {
-                    echo \Bar::__line__;
-                }',
-            ),
-            array(
                 '<?php echo __LINE__;',
                 '<?php echo __line__;',
             ),
@@ -95,6 +84,35 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
             array(
                 '<?php echo __TRAIT__;',
                 '<?php echo __trait__;',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideFixCases70
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCases70()
+    {
+        return array(
+            array(
+                '<?php
+                class Bar
+                {
+                    const __line__ = "foo";
+                }
+
+                namespace {
+                    echo \Bar::__line__;
+                }',
             ),
         );
     }
