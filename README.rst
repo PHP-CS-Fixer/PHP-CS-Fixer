@@ -295,7 +295,7 @@ Choose from the list of available rules:
 
   *Risky rule: forcing strict types will stop non strict code from working.*
 
-* **dir_constant**
+* **dir_constant** [@Symfony:risky]
 
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
@@ -402,7 +402,7 @@ Choose from the list of available rules:
 
   PHP code MUST use only UTF-8 without BOM (remove BOM).
 
-* **ereg_to_preg**
+* **ereg_to_preg** [@Symfony:risky]
 
   Replace deprecated ``ereg`` regular expression functions with preg.
 
@@ -422,7 +422,7 @@ Choose from the list of available rules:
   - ``closure_function_spacing`` (``'none'``, ``'one'``): spacing to use before open
     parenthesis for closures; defaults to ``'one'``
 
-* **function_to_constant**
+* **function_to_constant** [@Symfony:risky]
 
   Replace core functions calls returning constants with the constants.
 
@@ -528,7 +528,7 @@ Choose from the list of available rules:
 
   Methods must be separated with one blank line.
 
-* **modernize_types_casting**
+* **modernize_types_casting** [@Symfony:risky]
 
   Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
   function calls with according type casting operator.
@@ -915,7 +915,7 @@ Choose from the list of available rules:
 
   Pre incrementation/decrementation should be used if possible.
 
-* **protected_to_private**
+* **protected_to_private** [@Symfony]
 
   Converts ``protected`` variables and methods to ``private`` where possible.
 
@@ -930,7 +930,7 @@ Choose from the list of available rules:
 
   - ``dir`` (``string``): the directory where the project code is placed; required
 
-* **psr4**
+* **psr4** [@Symfony:risky]
 
   Class names should match the file name.
 

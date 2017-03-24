@@ -83,7 +83,7 @@ final class IntegrationCaseFactory
      *
      * @return array
      */
-    protected function determineConfig($config)
+    private function determineConfig($config)
     {
         $parsed = $this->parseJson($config, array(
             'indent' => '    ',
@@ -114,7 +114,7 @@ final class IntegrationCaseFactory
      *
      * @return array
      */
-    protected function determineRequirements($config)
+    private function determineRequirements($config)
     {
         $parsed = $this->parseJson($config, array(
             'hhvm' => true,
@@ -145,7 +145,7 @@ final class IntegrationCaseFactory
      *
      * @return RuleSet
      */
-    protected function determineRuleset($config)
+    private function determineRuleset($config)
     {
         return new RuleSet($this->parseJson($config));
     }
@@ -157,7 +157,7 @@ final class IntegrationCaseFactory
      *
      * @return array
      */
-    protected function determineSettings($config)
+    private function determineSettings($config)
     {
         $parsed = $this->parseJson($config, array(
             'checkPriority' => true,
@@ -179,7 +179,7 @@ final class IntegrationCaseFactory
      *
      * @return string
      */
-    protected function determineExpectedCode($code, SplFileInfo $file)
+    private function determineExpectedCode($code, SplFileInfo $file)
     {
         $code = $this->determineCode($code, $file, '-out.php');
 
@@ -196,7 +196,7 @@ final class IntegrationCaseFactory
      *
      * @return string|null
      */
-    protected function determineInputCode($code, SplFileInfo $file)
+    private function determineInputCode($code, SplFileInfo $file)
     {
         return $this->determineCode($code, $file, '-in.php');
     }
