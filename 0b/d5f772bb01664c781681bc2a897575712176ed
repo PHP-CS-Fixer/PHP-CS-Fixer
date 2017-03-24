@@ -1,0 +1,281 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2016-10-12T21:02:44Z
+
+@julienfalque
+
+If this works, that would kick butt! 👍
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-10-13T09:47:48Z
+
+@GrahamCampbell could you take a look please?
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-11T18:35:57Z
+
+anyone ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-11-12T11:07:16Z
+
+Probably too may fixers. Would be better to make use of config.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2016-11-22T18:47:03Z
+
+@GrahamCampbell what do you mean by _use of config_?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-11-22T20:43:22Z
+
+> what do you mean by use of config?
+
+Fixers can be "configurable". See the array align fixers on 2.x line for example.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-22T23:05:45Z
+
+A lot of awesome work, thanks @julienfalque
+Having some many things in one PR makes it hard to review. I'm _not_ stating to split this up, but it a lot to process. You might want to follow up on @GrahamCampbell suggestion, checking the master line which  has (way better) support for configuration of fixers. One candidate would be to combine `doctrine_annotation_with_braces` and `doctrine_annotation_without_braces`. The reason would be that one would always choose one of those, but never both (i.e. those are conflicting fixers). It would be better to have fixer that you can configure, like: `doctrine_annotation_braces` fixer with config for either `with` or `without` braces.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2016-11-27T18:45:11Z
+
+The patch was originally submitted for 1.12, I didn't know that fixers were way more configurable on master, this is pretty cool :)
+
+I was wondering if it would be better to have a single `DoctrineAnnotationFixer` with several options like `fix_arguments_spaces`, `fix_assignment_spaces` and so on, instead of these separate fixers. WDYT?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-28T09:42:00Z
+
+I can see why you picked the 1.x line, that's how we described the contribution flow so :+1:
+
+Looking at the current state of the project I _think_ you PR will be processed faster on the master line, because the focus seems:
+- answer question from the community/end-users
+- bug fixes on 1.x line (especially if those bugs are also on the 2.x line)
+- wrap up 2.x release
+- look at new features in PR's
+
+This is by no way official, but to me it looks like the current state. This is still a lot of work and not that many people working on it so please be patient with us :)
+
+I would unofficially advice you to create a branch from master and add the fixers on there. After that merge the `doctrine_annotation_with_braces` and `doctrine_annotation_without_braces`. I'm not sure about merging the other atm, but happy to look at those later. If you don't want to take your changes with doing that work I can totally see that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-28T09:56:53Z
+
+> I would unofficially advice you to create a branch from master and add the fixers on there.
+
+This PR is already targeting `master` branch, I think it was even rebased ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-28T10:03:28Z
+
+>This PR is already targeting master branch
+
+I need coffee and stand corrected ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2016-12-14T21:47:23Z
+
+I merged `doctrine_annotation_with_braces` and `doctrine_annotation_without_braces` fixers into a single, configurable `doctrine_annotation_braces` fixer and ignored tags are now configurable via the fixers instead of a static method. I also rebased the branch onto `master` to include all the (impressive) work done there :)
+
+Should I merge more fixers?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-01-03T14:18:25Z
+
+I'm stuck with `doctrine/annotations` integration: `DocLexer` ignores meaningless tokens so we can't use it as is. But the class is final, we can't extend it and tweak it. Any suggestion?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-01-25T14:50:00Z
+
+I managed to integrate `doctrine/annotations`' lexer, which allowed me to slightly simplify the code.
+I also merged all spacing-related fixers into a single one and improved descriptions.
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-01T18:37:53Z
+
+It seems stuck. What needs to be done here?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-01T21:53:16Z
+
+I think this requires more tests and reviews. Also I'd like #2500 to be merged first to leverage it here.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-02T11:41:17Z
+
+@julienfalque, do you have some doctrine-familiar friends (eg from projects you work on) that could at least doublecheck the principles of rules you have implemented? like is the code after fixes is nice here ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-02T13:26:34Z
+
+I don't think my current coworkers are familiar with Doctrine Annotations, but it's a quite widespread lib so there are probably people here that use it and could help.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-02T13:28:36Z
+
+As you see, it's hard to get their feedback here
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-02T13:30:11Z
+
+I'm thinking about splitting this PR into smaller parts, would it help?
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-02T14:15:37Z
+
+I'll make sure to test it out this weekend on our project which we've recently updated with even more Doctrine annotations including some from Doctrine extensions. I even created a reminder to test this PR out on Saturday :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-02T14:54:44Z
+
+Thank you @hkdobrev , it would be really appreciated !
+
+@julienfalque, I'm not sure it would be helpful here. We first need to confirm rules, splitting PR won't help here. Then we need to review the code, but if splitted (like 3x rule + annotation classes) then you don't see the whole context here. Other words, I would not split it, at least not currently.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-04T20:00:57Z
+
+Here are a few things I've noticed when running the fixers on our codebase:
+
+1. The fixers are changing some whitespace in legacy PHPDoc annotations in an undesirable manner.
+
+```php
+/**
+ * @copyright  (c) 2011-2017 Acme Inc.
+ */
+```
+is changed to:
+```php
+/**
+ * @copyright(c) 2011-2017 Acme Inc.
+ */
+```
+Before the annotation was only `@copyright` and the content was aligned to the above annotation content. It seems the fixer is recognising the annotation as a Doctrine annotation with arguments incorrectly.
+
+I can see `@copyright` is already in the list of PHPDoc annotations ignored by default. Do you think you could look into what's causing this?
+
+2. Options in Doctrine annotations have some unwanted whitespace changed:
+
+Before:
+```php
+/**
+ * @ORM\Column(type="integer", nullable=true, options={"unsigned":true})
+ */
+```
+After:
+```php
+/**
+ * @ORM\Column(type="integer", nullable=true, options={"unsigned" : true})
+ */
+```
+
+Notice there is a space added before the colon character in the options.
+
+---
+
+Other than these, it works as expected, fixes what it needs to fix and the configuration works as expected 🎉
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-05T12:08:58Z
+
+@hkdobrev Thank you for testing this!
+
+> The fixers are changing some whitespace in legacy PHPDoc annotations
+
+Yes, ignored tags were not correctly handled in some parts of the fixers. I fixed this, added tests and updated the default list of ignored tags.
+
+> Options in Doctrine annotations have some unwanted whitespace changed
+
+This is expected. For now, the fixer removes spaces around argument assignment operator and forces one space around array assignment operator. I made this choice based on the syntax used in Symfony documentation, see [@Route and @Method](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/routing.html) for example.
+
+I think adding options to change this behavior makes sense, but I'd rather do it in a separate PR later.
+
+* * *
+
+I tried running the fixers on PHP-CS-Fixer code itself. No change should have occured (as we don't use Doctrine Annotation internally) but I actually got one change. I think there is a bug in Doctrine Annotation's lexer, I'll investigate this. For now, I just added the corresponding failing test cases.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-07T00:23:11Z
+
+Just wanted to mention I've tried it again after the latest updates from @julienfalque and everything works fine :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-07T09:31:08Z
+
+> I think adding options to change this behavior makes sense, but I'd rather do it in a separate PR later.
+
+Actually I'm going to implement the options in this PR, as I will split the `around_assignments` option into `around_argument_assignments` and `around_array_assignments` options, which requires to deprecate the current one.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-07T18:31:46Z
+
+@hkdobrev I splitted option `around_assignments` into `around_argument_assignments` and `around_array_assignments`. Now you should be able to run the fixer without having unexpected whitespace added around colons.
+
+Note that this will not remove spaces around colons when already there. Thinking about it, this would require to change all options to support setting whether you (don't) want a space before and/or after a `(`, before and/or after a `)`, and so on. It should not be very complicated to implement, but I'm not sure it's worth it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-20T08:26:18Z
+
+ing @julienfalque
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-21T08:48:36Z
+
+I'd like to be sure tests cover as much cases as possible. If anybody can test this on other projects and report issues, that would be very helpful :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-21T09:08:06Z
+
+We tried it over last 6 months (!!!) and only @hkdobrev did (good of himself!).
+If we will wait for next user, it will take next 6 months.
+Let you assure that rules are as good as possible, then we will release and collect bug reports, if any.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-21T09:14:41Z
+
+Yeah, release early and often :) People would start gradually using those and the early adopters would notice the changes and report back if there are any problems.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-21T09:17:48Z
+
+Then I think it's ok to merge it right now :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-21T09:40:38Z
+
+than please rebase :)
