@@ -30,7 +30,39 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replaces is_null(parameter) expression with `null === parameter`.',
+            array(
+                new CodeSample("<?php\n\$a = is_null(\$b);"),
+                new CodeSample("<?php\n\$a = is_null(\$b);", array('use_yoda_style' => false)),
+            ),
+            null,
+            'Risky when the function `is_null()` is overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $sequenceNeeded = array(array(T_STRING, 'is_null'), '(');
 
@@ -131,38 +163,6 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             // nested is_null calls support
             $currIndex = $isNullIndex;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replaces is_null(parameter) expression with `null === parameter`.',
-            array(
-                new CodeSample("<?php\n\$a = is_null(\$b);"),
-                new CodeSample("<?php\n\$a = is_null(\$b);", array('use_yoda_style' => false)),
-            ),
-            null,
-            'Risky when the function `is_null()` is overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
     }
 
     /**

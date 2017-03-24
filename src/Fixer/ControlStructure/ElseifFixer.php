@@ -25,11 +25,30 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ElseifFixer extends AbstractFixer
 {
     /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'The keyword `elseif` should be used instead of `else if` so that all control keywords look like single words.',
+            array(new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAllTokenKindsFound(array(T_IF, T_ELSE));
+    }
+
+    /**
      * Replace all `else if` (T_ELSE T_IF) with `elseif` (T_ELSEIF).
      *
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_ELSE)) {
@@ -60,24 +79,5 @@ final class ElseifFixer extends AbstractFixer
                 $tokens[$ifTokenIndex + 1]->clear();
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'The keyword `elseif` should be used instead of `else if` so that all control keywords look like single words.',
-            array(new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound(array(T_IF, T_ELSE));
     }
 }

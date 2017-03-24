@@ -54,7 +54,46 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Spaces should be properly placed in a function declaration.',
+            array(
+                new CodeSample(
+'<?php
+
+function  foo  ($bar, $baz)
+{
+    return false;
+}
+'
+                ),
+                new CodeSample(
+'<?php
+
+class Foo
+{
+    public static function  bar ($baz)
+    {
+        return false;
+    }
+}
+'
+                ),
+                new CodeSample(
+'<?php
+$f = function () {};
+',
+                    array('closure_function_spacing' => self::SPACING_NONE)
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -135,45 +174,6 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Spaces should be properly placed in a function declaration.',
-            array(
-                new CodeSample(
-'<?php
-
-function  foo  ($bar, $baz)
-{
-    return false;
-}
-'
-                ),
-                new CodeSample(
-'<?php
-
-class Foo
-{
-    public static function  bar ($baz)
-    {
-        return false;
-    }
-}
-'
-                ),
-                new CodeSample(
-'<?php
-$f = function () {};
-',
-                    array('closure_function_spacing' => self::SPACING_NONE)
-                ),
-            )
-        );
     }
 
     /**

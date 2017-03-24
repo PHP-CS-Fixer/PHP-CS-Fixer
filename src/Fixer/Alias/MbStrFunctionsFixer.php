@@ -43,35 +43,6 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach (self::$functions as $functionIdentity => $functionReplacement) {
-            $currIndex = 0;
-            while (null !== $currIndex) {
-                // try getting function reference and translate boundaries for humans
-                $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
-                if (null === $boundaries) {
-                    // next function search, as current one not found
-                    continue 2;
-                }
-
-                list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
-                $count = $this->countArguments($tokens, $openParenthesis, $closeParenthesis);
-                if (!in_array($count, $functionReplacement['argumentCount'], true)) {
-                    continue 2;
-                }
-
-                // analysing cursor shift, so nested calls could be processed
-                $currIndex = $openParenthesis;
-
-                $tokens[$functionName]->setContent($functionReplacement['alternativeName']);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -105,5 +76,34 @@ $a = substr_count($a, $b);
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach (self::$functions as $functionIdentity => $functionReplacement) {
+            $currIndex = 0;
+            while (null !== $currIndex) {
+                // try getting function reference and translate boundaries for humans
+                $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
+                if (null === $boundaries) {
+                    // next function search, as current one not found
+                    continue 2;
+                }
+
+                list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
+                $count = $this->countArguments($tokens, $openParenthesis, $closeParenthesis);
+                if (!in_array($count, $functionReplacement['argumentCount'], true)) {
+                    continue 2;
+                }
+
+                // analysing cursor shift, so nested calls could be processed
+                $currIndex = $openParenthesis;
+
+                $tokens[$functionName]->setContent($functionReplacement['alternativeName']);
+            }
+        }
     }
 }

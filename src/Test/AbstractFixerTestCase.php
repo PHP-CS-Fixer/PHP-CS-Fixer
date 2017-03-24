@@ -128,6 +128,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 
             if ($fileIsSupported) {
                 $this->assertTrue($this->fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
+                $this->assertFalse($tokens->isChanged(), 'Fixer must not touch Tokens on candidate check.');
                 $fixResult = $this->fixer->fix($file, $tokens);
                 $this->assertNull($fixResult, '->fix method must return null.');
             }
@@ -158,13 +159,6 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode($expected);
-
-        $isCandidate = $this->fixer->isCandidate($tokens);
-        $this->assertFalse($tokens->isChanged(), 'Fixer should not touch Tokens on candidate check.');
-
-        if (!$isCandidate) {
-            return;
-        }
 
         if ($fileIsSupported) {
             $fixResult = $this->fixer->fix($file, $tokens);

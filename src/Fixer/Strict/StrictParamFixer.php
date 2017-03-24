@@ -27,34 +27,6 @@ final class StrictParamFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        static $map = null;
-
-        if (null === $map) {
-            $trueToken = new Token(array(T_STRING, 'true'));
-
-            $map = array(
-                'array_keys' => array(null, null, $trueToken),
-                'array_search' => array(null, null, $trueToken),
-                'base64_decode' => array(null, $trueToken),
-                'in_array' => array(null, null, $trueToken),
-                'mb_detect_encoding' => array(null, array(new Token(array(T_STRING, 'mb_detect_order')), new Token('('), new Token(')')), $trueToken),
-            );
-        }
-
-        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-
-            if ($token->isGivenKind(T_STRING) && isset($map[$token->getContent()])) {
-                $this->fixFunction($tokens, $index, $map[$token->getContent()]);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -79,6 +51,34 @@ final class StrictParamFixer extends AbstractFixer
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        static $map = null;
+
+        if (null === $map) {
+            $trueToken = new Token(array(T_STRING, 'true'));
+
+            $map = array(
+                'array_keys' => array(null, null, $trueToken),
+                'array_search' => array(null, null, $trueToken),
+                'base64_decode' => array(null, $trueToken),
+                'in_array' => array(null, null, $trueToken),
+                'mb_detect_encoding' => array(null, array(new Token(array(T_STRING, 'mb_detect_order')), new Token('('), new Token(')')), $trueToken),
+            );
+        }
+
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
+            $token = $tokens[$index];
+
+            if ($token->isGivenKind(T_STRING) && isset($map[$token->getContent()])) {
+                $this->fixFunction($tokens, $index, $map[$token->getContent()]);
+            }
+        }
     }
 
     private function fixFunction(Tokens $tokens, $functionIndex, array $functionParams)

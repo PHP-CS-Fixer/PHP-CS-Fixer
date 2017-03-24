@@ -38,7 +38,22 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'All PHP files must use same line ending.',
+            array(
+                new CodeSample(
+                    "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\n"
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $ending = $this->whitespacesConfig->getLineEnding();
 
@@ -65,20 +80,5 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
                 ));
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'All PHP files must use same line ending.',
-            array(
-                new CodeSample(
-                    "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\n"
-                ),
-            )
-        );
     }
 }

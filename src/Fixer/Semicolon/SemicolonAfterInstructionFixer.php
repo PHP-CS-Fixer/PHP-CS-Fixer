@@ -26,25 +26,6 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = count($tokens) - 1; $index > 1; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLOSE_TAG)) {
-                continue;
-            }
-
-            $prev = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prev]->equalsAny(array(';', '}', ':', array(T_OPEN_TAG)))) {
-                continue;
-            }
-
-            $tokens->insertAt($prev + 1, new Token(';'));
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -59,5 +40,24 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_CLOSE_TAG);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = count($tokens) - 1; $index > 1; --$index) {
+            if (!$tokens[$index]->isGivenKind(T_CLOSE_TAG)) {
+                continue;
+            }
+
+            $prev = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prev]->equalsAny(array(';', '}', ':', array(T_OPEN_TAG)))) {
+                continue;
+            }
+
+            $tokens->insertAt($prev + 1, new Token(';'));
+        }
     }
 }

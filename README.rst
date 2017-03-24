@@ -508,6 +508,10 @@ Choose from the list of available rules:
 
   PHP keywords MUST be in lower case.
 
+* **magic_constant_casing** [@Symfony]
+
+  Magic constants should be referred to using the correct casing.
+
 * **mb_str_functions**
 
   Replace non multibyte-safe functions with corresponding mb function.

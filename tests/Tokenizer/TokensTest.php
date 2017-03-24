@@ -728,6 +728,16 @@ PHP;
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
     }
 
+    public function testParsingWithHHError()
+    {
+        if (!defined('HHVM_VERSION')) {
+            $this->markTestSkipped('Skip tests for PHP compiler when running on non HHVM compiler.');
+        }
+
+        $this->setExpectedException('ParseError');
+        Tokens::fromCode('<?php# this will cause T_HH_ERROR');
+    }
+
     /**
      * @param null|Token[] $expected
      * @param null|Token[] $input

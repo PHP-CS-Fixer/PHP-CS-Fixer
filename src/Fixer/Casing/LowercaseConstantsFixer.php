@@ -28,25 +28,6 @@ final class LowercaseConstantsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isNativeConstant()) {
-                continue;
-            }
-
-            if (
-                $this->isNeighbourAccepted($tokens, $tokens->getPrevMeaningfulToken($index)) &&
-                $this->isNeighbourAccepted($tokens, $tokens->getNextMeaningfulToken($index))
-            ) {
-                $token->setContent(strtolower($token->getContent()));
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -61,6 +42,25 @@ final class LowercaseConstantsFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isNativeConstant()) {
+                continue;
+            }
+
+            if (
+                $this->isNeighbourAccepted($tokens, $tokens->getPrevMeaningfulToken($index)) &&
+                $this->isNeighbourAccepted($tokens, $tokens->getNextMeaningfulToken($index))
+            ) {
+                $token->setContent(strtolower($token->getContent()));
+            }
+        }
     }
 
     /**

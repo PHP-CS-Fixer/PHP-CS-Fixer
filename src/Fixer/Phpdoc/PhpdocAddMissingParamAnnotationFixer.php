@@ -31,7 +31,73 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Phpdoc should contain @param for all params.',
+            array(
+                new CodeSample(
+                    '<?php
+/**
+ * @param int $bar
+ *
+ * @return void
+ */
+function f9(string $foo, $bar, $baz) {}'
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param int $bar
+ *
+ * @return void
+ */
+function f9(string $foo, $bar, $baz) {}',
+                    array('only_untyped' => true)
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param int $bar
+ *
+ * @return void
+ */
+function f9(string $foo, $bar, $baz) {}',
+                    array('only_untyped' => false)
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
+        return -1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
@@ -133,72 +199,6 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
 
             $token->setContent(implode('', $lines));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Phpdoc should contain @param for all params.',
-            array(
-                new CodeSample(
-                    '<?php
-/**
- * @param int $bar
- *
- * @return void
- */
-function f9(string $foo, $bar, $baz) {}'
-                ),
-                new CodeSample(
-                    '<?php
-/**
- * @param int $bar
- *
- * @return void
- */
-function f9(string $foo, $bar, $baz) {}',
-                    array('only_untyped' => true)
-                ),
-                new CodeSample(
-                    '<?php
-/**
- * @param int $bar
- *
- * @return void
- */
-function f9(string $foo, $bar, $baz) {}',
-                    array('only_untyped' => false)
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
-        return -1;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return false;
     }
 
     /**

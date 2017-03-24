@@ -28,23 +28,6 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($i = 0, $l = $tokens->count(); $i < $l; ++$i) {
-            if (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
-                continue;
-            }
-
-            $startIndex = $tokens->getNextTokenOfKind($i, array('('));
-            $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
-
-            $this->fixFunctionDefinition($tokens, $startIndex, $i);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -75,6 +58,23 @@ function example($foo = "two words", $bar) {}
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($i = 0, $l = $tokens->count(); $i < $l; ++$i) {
+            if (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+
+            $startIndex = $tokens->getNextTokenOfKind($i, array('('));
+            $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+
+            $this->fixFunctionDefinition($tokens, $startIndex, $i);
+        }
     }
 
     /**

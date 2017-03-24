@@ -32,26 +32,6 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $uses = array_reverse($tokensAnalyzer->getImportUseIndexes());
-
-        foreach ($uses as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
-            $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
-
-            if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
-                $this->fixGroupUse($tokens, $index, $endIndex);
-            } else {
-                $this->fixMultipleUse($tokens, $index, $endIndex);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -72,6 +52,26 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_USE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $uses = array_reverse($tokensAnalyzer->getImportUseIndexes());
+
+        foreach ($uses as $index) {
+            $endIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
+            $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
+
+            if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                $this->fixGroupUse($tokens, $index, $endIndex);
+            } else {
+                $this->fixMultipleUse($tokens, $index, $endIndex);
+            }
+        }
     }
 
     /**

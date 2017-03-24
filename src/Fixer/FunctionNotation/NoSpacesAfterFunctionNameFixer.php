@@ -29,7 +29,35 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.',
+            array(new CodeSample("<?php\nrequire ('sample.php');\necho (test (3));\nexit  (1);\n\$func ();"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must run before FunctionToConstantFixer
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), array(T_STRING)));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $functionyTokens = $this->getFunctionyTokenKinds();
         $languageConstructionTokens = $this->getLanguageConstructionTokenKinds();
@@ -75,34 +103,6 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.',
-            array(new CodeSample("<?php\nrequire ('sample.php');\necho (test (3));\nexit  (1);\n\$func ();"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must run before FunctionToConstantFixer
-        return 2;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), array(T_STRING)));
     }
 
     /**

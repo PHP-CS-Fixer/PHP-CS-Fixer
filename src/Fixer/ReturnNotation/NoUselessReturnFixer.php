@@ -33,23 +33,6 @@ final class NoUselessReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_FUNCTION)) {
-                continue;
-            }
-
-            $index = $tokens->getNextTokenOfKind($index, array(';', '{'));
-            if ($tokens[$index]->equals('{')) {
-                $this->fixFunction($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -76,6 +59,23 @@ function example($b) {
     {
         // should be run before BlankLineBeforeReturnFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLineFixer and after SimplifiedNullReturnFixer and NoEmptyStatementFixer.
         return -18;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+
+            $index = $tokens->getNextTokenOfKind($index, array(';', '{'));
+            if ($tokens[$index]->equals('{')) {
+                $this->fixFunction($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
+            }
+        }
     }
 
     /**
