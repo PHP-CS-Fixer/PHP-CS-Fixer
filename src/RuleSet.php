@@ -249,7 +249,7 @@ final class RuleSet implements RuleSetInterface
             throw new \InvalidArgumentException(sprintf('Rule "%s" is not in the set.', $rule));
         }
 
-        if ($this->rules[$rule] === true) {
+        if (true === $this->rules[$rule]) {
             return null;
         }
 
