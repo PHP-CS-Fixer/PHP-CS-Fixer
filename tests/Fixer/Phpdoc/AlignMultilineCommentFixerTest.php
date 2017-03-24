@@ -266,7 +266,7 @@ class A
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $expected = str_replace("\n", "\r\n", $expected);
-        if ($input !== null) {
+        if (null !== $input) {
             $input = str_replace("\n", "\r\n", $input);
         }
 

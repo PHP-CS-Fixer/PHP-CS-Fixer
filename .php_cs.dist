@@ -46,6 +46,7 @@ $config = PhpCsFixer\Config::create()
         'single_line_comment_style' => true,
         'strict_comparison' => true,
         'strict_param' => true,
+        'yoda_style' => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

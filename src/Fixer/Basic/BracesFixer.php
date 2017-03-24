@@ -780,18 +780,18 @@ class Foo
 
     private function getControlContinuationTokensForOpeningToken($openingTokenKind)
     {
-        if ($openingTokenKind === T_IF) {
+        if (T_IF === $openingTokenKind) {
             return [
                 T_ELSE,
                 T_ELSEIF,
             ];
         }
 
-        if ($openingTokenKind === T_DO) {
+        if (T_DO === $openingTokenKind) {
             return [T_WHILE];
         }
 
-        if ($openingTokenKind === T_TRY) {
+        if (T_TRY === $openingTokenKind) {
             return [
                 T_CATCH,
                 T_FINALLY,
@@ -803,11 +803,11 @@ class Foo
 
     private function getFinalControlContinuationTokensForOpeningToken($openingTokenKind)
     {
-        if ($openingTokenKind === T_IF) {
+        if (T_IF === $openingTokenKind) {
             return [T_ELSE];
         }
 
-        if ($openingTokenKind === T_TRY) {
+        if (T_TRY === $openingTokenKind) {
             return [T_FINALLY];
         }
 
