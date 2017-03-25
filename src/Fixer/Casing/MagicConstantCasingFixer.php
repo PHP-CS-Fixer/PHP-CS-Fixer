@@ -28,13 +28,14 @@ final class MagicConstantCasingFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         $magicConstants = $this->getMagicConstants();
+        $magicConstantTokens = $this->getMagicConstantTokens();
 
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(array_keys($magicConstants))) {
+            if (!$tokens[$index]->isGivenKind($magicConstantTokens)) {
                 continue;
             }
 
-            if (!array_key_exists($tokens[$index]->getId(), $magicConstants)) {
+            if (!isset($magicConstants[$tokens[$index]->getId()])) {
                 continue;
             }
 
@@ -58,7 +59,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array_keys($this->getMagicConstants()));
+        return $tokens->isAnyTokenKindsFound($this->getMagicConstantTokens());
     }
 
     /**
@@ -66,20 +67,38 @@ final class MagicConstantCasingFixer extends AbstractFixer
      */
     private function getMagicConstants()
     {
-        $magicConstants = array(
-            T_LINE => '__LINE__',
-            T_FILE => '__FILE__',
-            T_DIR => '__DIR__',
-            T_FUNC_C => '__FUNCTION__',
-            T_CLASS_C => '__CLASS__',
-            T_METHOD_C => '__METHOD__',
-            T_NS_C => '__NAMESPACE__',
-        );
+        static $magicConstants = null;
 
-        if (PHP_VERSION_ID >= 50400) {
-            $magicConstants[T_TRAIT_C] = '__TRAIT__';
+        if (null === $magicConstants) {
+            $magicConstants = array(
+                T_LINE => '__LINE__',
+                T_FILE => '__FILE__',
+                T_DIR => '__DIR__',
+                T_FUNC_C => '__FUNCTION__',
+                T_CLASS_C => '__CLASS__',
+                T_METHOD_C => '__METHOD__',
+                T_NS_C => '__NAMESPACE__',
+            );
+
+            if (PHP_VERSION_ID >= 50400) {
+                $magicConstants[T_TRAIT_C] = '__TRAIT__';
+            }
         }
 
         return $magicConstants;
+    }
+
+    /**
+     * @return array<int>
+     */
+    private function getMagicConstantTokens()
+    {
+        static $magicConstantTokens = null;
+
+        if (null === $magicConstantTokens) {
+            $magicConstantTokens = array_keys($this->getMagicConstants());
+        }
+
+        return $magicConstantTokens;
     }
 }
