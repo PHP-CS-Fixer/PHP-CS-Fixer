@@ -35,10 +35,6 @@ final class MagicConstantCasingFixer extends AbstractFixer
                 continue;
             }
 
-            if (!isset($magicConstants[$tokens[$index]->getId()])) {
-                continue;
-            }
-
             $tokens[$index]->setContent($magicConstants[$tokens[$index]->getId()]);
         }
     }
