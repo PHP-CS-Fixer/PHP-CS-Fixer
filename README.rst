@@ -809,8 +809,8 @@ Choose from the list of available rules:
 
 * **phpdoc_align** [@Symfony]
 
-  All items of the @param, @throws, @return, @var, and @type phpdoc tags
-  must be aligned vertically.
+  All items of the @param, @throws, @return, @var, @type and @property
+  phpdoc tags must be aligned vertically.
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 
