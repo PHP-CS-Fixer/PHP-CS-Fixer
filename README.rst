@@ -295,12 +295,103 @@ Choose from the list of available rules:
 
   *Risky rule: forcing strict types will stop non strict code from working.*
 
-* **dir_constant**
+* **dir_constant** [@Symfony:risky]
 
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
 
   *Risky rule: risky when the function ``dirname()`` is overridden.*
+
+* **doctrine_annotation_braces**
+
+  Doctrine annotations without arguments must use the configured syntax.
+
+  Configuration options:
+
+  - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
+    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
+    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
+    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
+    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
+    'license', 'link', 'method', 'package', 'param', 'property',
+    'property-read', 'property-write', 'return', 'see', 'since', 'source',
+    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
+    'version', 'after', 'afterClass', 'backupGlobals',
+    'backupStaticAttributes', 'before', 'beforeClass',
+    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
+    'coversNothing', 'dataProvider', 'depends', 'expectedException',
+    'expectedExceptionCode', 'expectedExceptionMessage',
+    'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
+    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
+    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
+    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
+    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+  - ``syntax`` (``'with_braces'``, ``'without_braces'``): whether to add or remove
+    braces; defaults to ``'without_braces'``
+
+* **doctrine_annotation_indentation**
+
+  Doctrine annotations must be indented with four spaces.
+
+  Configuration options:
+
+  - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
+    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
+    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
+    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
+    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
+    'license', 'link', 'method', 'package', 'param', 'property',
+    'property-read', 'property-write', 'return', 'see', 'since', 'source',
+    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
+    'version', 'after', 'afterClass', 'backupGlobals',
+    'backupStaticAttributes', 'before', 'beforeClass',
+    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
+    'coversNothing', 'dataProvider', 'depends', 'expectedException',
+    'expectedExceptionCode', 'expectedExceptionMessage',
+    'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
+    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
+    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
+    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
+    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+
+* **doctrine_annotation_spaces**
+
+  Fixes spaces in Doctrine annotations.
+
+  Configuration options:
+
+  - ``around_argument_assignments`` (``bool``): whether to fix spaces around
+    argument assignment operator; defaults to ``true``
+  - ``around_array_assignments`` (``bool``): whether to fix spaces around array
+    assignment operators; defaults to ``true``
+  - ``around_commas`` (``bool``): whether to fix spaces around commas; defaults to
+    ``true``
+  - ``around_parentheses`` (``bool``): whether to fix spaces around parentheses;
+    defaults to ``true``
+  - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
+    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
+    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
+    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
+    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
+    'license', 'link', 'method', 'package', 'param', 'property',
+    'property-read', 'property-write', 'return', 'see', 'since', 'source',
+    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
+    'version', 'after', 'afterClass', 'backupGlobals',
+    'backupStaticAttributes', 'before', 'beforeClass',
+    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
+    'coversNothing', 'dataProvider', 'depends', 'expectedException',
+    'expectedExceptionCode', 'expectedExceptionMessage',
+    'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
+    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
+    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
+    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
+    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
 
 * **elseif** [@PSR2, @Symfony]
 
@@ -311,7 +402,7 @@ Choose from the list of available rules:
 
   PHP code MUST use only UTF-8 without BOM (remove BOM).
 
-* **ereg_to_preg**
+* **ereg_to_preg** [@Symfony:risky]
 
   Replace deprecated ``ereg`` regular expression functions with preg.
 
@@ -331,7 +422,7 @@ Choose from the list of available rules:
   - ``closure_function_spacing`` (``'none'``, ``'one'``): spacing to use before open
     parenthesis for closures; defaults to ``'one'``
 
-* **function_to_constant**
+* **function_to_constant** [@Symfony:risky]
 
   Replace core functions calls returning constants with the constants.
 
@@ -441,7 +532,7 @@ Choose from the list of available rules:
 
   Methods must be separated with one blank line.
 
-* **modernize_types_casting**
+* **modernize_types_casting** [@Symfony:risky]
 
   Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
   function calls with according type casting operator.
@@ -828,7 +919,7 @@ Choose from the list of available rules:
 
   Pre incrementation/decrementation should be used if possible.
 
-* **protected_to_private**
+* **protected_to_private** [@Symfony]
 
   Converts ``protected`` variables and methods to ``private`` where possible.
 
@@ -843,7 +934,7 @@ Choose from the list of available rules:
 
   - ``dir`` (``string``): the directory where the project code is placed; required
 
-* **psr4**
+* **psr4** [@Symfony:risky]
 
   Class names should match the file name.
 
@@ -851,16 +942,16 @@ Choose from the list of available rules:
 
 * **random_api_migration** [@PHP70Migration, @PHP71Migration]
 
-  Replaces ``rand``, ``mt_rand``, ``srand``, ``getrandmax`` functions calls with
-  their ``mt_*`` analogs.
+  Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
+  analogs.
 
   *Risky rule: risky when the configured functions are overridden.*
 
   Configuration options:
 
   - ``replacements`` (``array``): mapping between replaced functions with the new
-    ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'mt_rand' =>
-    'mt_rand', 'rand' => 'mt_rand', 'srand' => 'mt_srand']``
+    ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'rand' =>
+    'mt_rand', 'srand' => 'mt_srand']``
 
 * **return_type_declaration** [@Symfony]
 
@@ -962,9 +1053,9 @@ Choose from the list of available rules:
 
   Standardize spaces around ternary operator.
 
-* **ternary_to_null_coalescing**
+* **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration]
 
-  Use ``null`` coalescing operator ``??`` where possible.
+  Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 
 * **trailing_comma_in_multiline_array** [@Symfony]
 

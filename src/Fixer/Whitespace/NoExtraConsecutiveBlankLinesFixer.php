@@ -441,7 +441,7 @@ class Foo
             $ending = $this->whitespacesConfig->getLineEnding();
 
             $pos = strrpos($content, "\n");
-            if ($pos + 2 < strlen($content)) { // preserve indenting where possible
+            if ($pos + 2 <= strlen($content)) { // preserve indenting where possible
                 $this->tokens[$i]->setContent($ending.substr($content, $pos + 1));
             } else {
                 $this->tokens[$i]->setContent($ending);
