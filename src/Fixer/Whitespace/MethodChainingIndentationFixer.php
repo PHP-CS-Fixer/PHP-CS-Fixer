@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -26,31 +27,26 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class MethodChainingIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
-     * @var string
-     */
-    private $ident;
-
-    /**
      * {@inheritdoc}
      */
     public function fix(\SplFileInfo $file, Tokens $tokens)
     {
-        $this->ident = $this->whitespacesConfig->getIndent();
+        $indent = $this->whitespacesConfig->getIndent();
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
         for ($index = 1; $index < count($tokens); ++$index) {
             if ($tokens[$index]->equals(array(T_OBJECT_OPERATOR))) {
+                if ($this->needLineBreak($index - 1, $tokens)) {
+                    $tokens[$index - 1]->setContent($tokens[$index - 1]->getContent().$lineEnding);
+                    --$index;
+                    continue;
+                }
                 $prev = $tokens[$index - 1];
-                $prevContent = $prev->getContent();
-                $matches = array();
-                if (preg_match('/([\n\r|\n])(\s*)/i', $prevContent, $matches)) {
-                    if (!isset($matches[1]) || !isset($matches[2])) {
-                        continue;
-                    }
-                    $lineBreak = $matches[1];
-                    $currentWhitespaces = $matches[2];
+                $currentWhitespaces = $this->isLineBreak($prev);
+                if ($currentWhitespaces !== false) {
                     $prevMeaningIndex = $tokens->getPrevMeaningfulToken($index);
-                    $rightWhitespaces = $this->getRightIdents($prevMeaningIndex, $tokens);
+                    $rightWhitespaces = $this->getRightIndents($prevMeaningIndex, $tokens, $indent);
                     if ($currentWhitespaces !== $rightWhitespaces) {
-                        $prev->setContent($lineBreak.$rightWhitespaces);
+                        $prev->setContent($lineEnding.$rightWhitespaces);
                     }
                 }
             }
@@ -88,19 +84,69 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     /**
      * @param int    $index
      * @param Tokens $tokens
+     * @param mixed  $indent
      *
      * @return string
      */
-    private function getRightIdents($index, Tokens $tokens)
+    private function getRightIndents($index, Tokens $tokens, $indent)
     {
         for ($i = $index; $i >= 0; --$i) {
-            if (preg_match('/[\n\r|\n](\s*)/i', $tokens[$i]->getContent(), $matches)) {
+            $currentWhitespaces = $this->isLineBreak($tokens[$i]);
+            if ($currentWhitespaces !== false) {
                 if ($tokens[$i + 1]->equals(array(T_OBJECT_OPERATOR))) {
-                    return $matches[1];
+                    return $currentWhitespaces;
                 }
 
-                return $matches[1].$this->ident;
+                return $currentWhitespaces.$indent;
             }
         }
+
+        return $indent;
+    }
+
+    /**
+     * @param $index
+     * @param Tokens $tokens
+     *
+     * @return bool
+     */
+    private function needLineBreak($index, Tokens $tokens)
+    {
+        $prevMeaningful = $tokens->getPrevMeaningfulToken($index);
+        $isComment = false;
+        for ($i = $index; $i > $prevMeaningful; --$i) {
+            if ($tokens[$i]->equals(array(T_OBJECT_OPERATOR)) || $this->isLineBreak($tokens[$i]) !== false) {
+                if ($isComment) {
+                    return true;
+                }
+
+                return false;
+            }
+            if ($tokens[$i]->equalsAny(array(array(T_COMMENT), array(T_DOC_COMMENT), array(T_START_HEREDOC)))) {
+                $isComment = true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Token $token
+     *
+     * @return string|bool
+     */
+    private function isLineBreak(Token $token)
+    {
+        $matches = array();
+        $content = $token->getContent();
+        if (preg_match('/\R(\s*)/', $content, $matches)) {
+            if (!isset($matches[1])) {
+                false;
+            }
+
+            return $matches[1];
+        }
+
+        return false;
     }
 }

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Vladimir Boliev <voff.web@gmail.com>
@@ -58,8 +59,61 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
 ',
             ),
             array(
-                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n    ->setPassword('233434')\r\n    ->setEmailConfirmed(false)\r\n    ->setEmailConfirmationCode('123456')\r\n    ->setHashsalt('1234')\r\n    ->setTncAccepted(true);",
-                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\r\n     ->setPassword('233434')\r\n\t->setEmailConfirmed(false)\r\n\t\t  ->setEmailConfirmationCode('123456')\r\n->setHashsalt('1234')\r\n->setTncAccepted(true);",
+                '<?php
+$foo
+    ->bar1() // comment
+    ->bar2() /*
+comment
+*/
+    ->bar3()
+    // comment
+    ->bar4()
+    ->bar5()
+                                /** buahaha */
+    ->bar6();',
+                '<?php
+$foo
+         ->bar1() // comment
+      ->bar2() /*
+comment
+*/
+  ->bar3()
+    // comment
+        ->bar4()
+->bar5()
+                                /** buahaha */    ->bar6();',
+            ),
+            array(
+            '<?php
+$foo
+    ->bar1()
+    ->bar2();',
+            '<?php
+$foo
+->bar1()
+->bar2();',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideWindowsWhitespaces
+     */
+    public function testWindowsWhitespaces($expected, $input = null)
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideWindowsWhitespaces()
+    {
+        return array(
+            array(
+                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\t->setPassword('233434')\r\n\t->setEmailConfirmed(false)\r\n\t->setEmailConfirmationCode('123456')\r\n\t->setHashsalt('1234')\r\n\t->setTncAccepted(true);",
+                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\r\n     ->setPassword('233434')\r\n\t\t\t->setEmailConfirmed(false)\r\n\t\t      ->setEmailConfirmationCode('123456')\r\n->setHashsalt('1234')\r\n\t\t->setTncAccepted(true);",
             ),
         );
     }
