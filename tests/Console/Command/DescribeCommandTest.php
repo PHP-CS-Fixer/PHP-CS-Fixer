@@ -158,10 +158,15 @@ EOT;
         $command = $application->find('describe');
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
-            'command' => $command->getName(),
-            'name' => 'Foo/bar',
-        ));
+        $commandTester->execute(
+            array(
+                'command' => $command->getName(),
+                'name' => 'Foo/bar',
+            ),
+            array(
+                'decorated' => false,
+            )
+        );
 
         return $commandTester;
     }
