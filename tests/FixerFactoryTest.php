@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
@@ -420,7 +421,10 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 
             Tokens::clearCache();
             $tokens = Tokens::fromCode($code);
-            $fixer->fix($dummyFileInfo, $tokens);
+            $fixer->fix(
+                $sample instanceof FileSpecificCodeSampleInterface ? $sample->getSplFileInfo() : $dummyFileInfo,
+                $tokens
+            );
             $this->assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixer->getName(), $sampleCounter));
         }
 
