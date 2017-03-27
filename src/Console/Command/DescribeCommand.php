@@ -45,9 +45,29 @@ final class DescribeCommand extends Command
     private $setNames;
 
     /**
+     * @var FixerFactory
+     */
+    private $fixerFactory;
+
+    /**
      * @var array<string, FixerInterface>
      */
     private $fixers;
+
+    /**
+     * @param FixerFactory|null $fixerFactory
+     */
+    public function __construct(FixerFactory $fixerFactory = null)
+    {
+        parent::__construct();
+
+        if (null === $fixerFactory) {
+            $fixerFactory = new FixerFactory();
+            $fixerFactory->registerBuiltInFixers();
+        }
+
+        $this->fixerFactory = $fixerFactory;
+    }
 
     /**
      * {@inheritdoc}
@@ -187,12 +207,6 @@ final class DescribeCommand extends Command
                 $output->writeln('');
             }
         }
-
-        if (!($fixer instanceof DefinedFixerInterface)) {
-            $output->writeln(sprintf('<question>This rule is not yet described, do you want to help us and describe it?</question>'));
-            $output->writeln('Contribute at <comment>https://github.com/FriendsOfPHP/PHP-CS-Fixer</comment> !');
-            $output->writeln('');
-        }
     }
 
     /**
@@ -266,10 +280,8 @@ final class DescribeCommand extends Command
             return $this->fixers;
         }
 
-        $fixerFactory = new FixerFactory();
         $fixers = array();
-
-        foreach ($fixerFactory->registerBuiltInFixers()->getFixers() as $fixer) {
+        foreach ($this->fixerFactory->getFixers() as $fixer) {
             $fixers[$fixer->getName()] = $fixer;
         }
 
