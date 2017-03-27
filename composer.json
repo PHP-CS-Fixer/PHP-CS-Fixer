@@ -37,6 +37,9 @@
     "suggest": {
         "ext-xml": "For better performance."
     },
+    "suggest": {
+        "ext-xml": "For better performance."
+    },
     "conflict": {
         "hhvm": "<3.9"
     },
