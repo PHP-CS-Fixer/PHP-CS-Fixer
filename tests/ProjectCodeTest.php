@@ -35,7 +35,6 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
         'PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException',
         'PhpCsFixer\Console\Command\CommandHelp',
-        'PhpCsFixer\Console\Command\DescribeCommand',
         'PhpCsFixer\Console\Command\DescribeNameNotFoundException',
         'PhpCsFixer\Console\Command\ReadmeCommand',
         'PhpCsFixer\Console\Command\SelfUpdateCommand',

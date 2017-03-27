@@ -58,7 +58,7 @@ Put this content inside:
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -107,7 +107,7 @@ content inside:
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
@@ -192,7 +192,7 @@ like:
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\Contrib;
+namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\Tests\Fixer\AbstractFixerTestBase;
 
@@ -374,7 +374,7 @@ So the fixer in the end looks like this:
  *
  */
 
-namespace PhpCsFixer\Fixer\Contrib;
+namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -481,16 +481,6 @@ part of the application as soon as possible.
 
 No. Short arrays were introduced in PHP 5.4 and PHP CS Fixer still
 supports PHP 5.3.6.
-
-#### Why are you steering me to create my fixer at CONTRIB_LEVEL ?
-
-CONTRIB_LEVEL is the most lax level - and it is far more likely to have
-your fixer accepted at CONTRIB_LEVEL and later changed to SYMFOMY_LEVEL
-or PSR2_LEVEL; than the other way around.
-
-If you make your contribution directly at PSR2_LEVEL, eventually the
-relevance debate will take place and your fixer might be pushed to
-CONTRIB_LEVEL.
 
 #### Why am I asked to use `getPrevMeaningfulToken()` instead of `getPrevNonWhitespace()`?
 

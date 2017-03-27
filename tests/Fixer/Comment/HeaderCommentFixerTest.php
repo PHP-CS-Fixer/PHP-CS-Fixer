@@ -252,6 +252,17 @@ declare(ticks=1);
 
 echo 1;',
             ),
+            array(
+                array('header' => 'Foo'),
+                '<?php
+
+/*
+ * Foo
+ */
+
+echo \'bar\';',
+                '<?php echo \'bar\';',
+            ),
         );
     }
 
