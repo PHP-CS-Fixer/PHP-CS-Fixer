@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\DocBlock\DocBlock;
 use Symfony\Component\Finder\Finder;
@@ -20,6 +20,9 @@ use Symfony\Component\Finder\SplFileInfo;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @coversNothing
+ * @group auto-review
  */
 final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
 {
@@ -311,7 +314,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $finder = Finder::create()
             ->files()
             ->name('*.php')
-            ->in(__DIR__.'/../src')
+            ->in(__DIR__.'/../../src')
             ->exclude(array(
                 'Resources',
             ))
@@ -346,7 +349,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $finder = Finder::create()
             ->files()
             ->name('*.php')
-            ->in(__DIR__)
+            ->in(__DIR__.'/..')
             ->exclude(array(
                 'Fixtures',
             ))
@@ -355,8 +358,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $names = array_map(
             function (SplFileInfo $file) {
                 return sprintf(
-                    '%s\\%s%s%s',
-                    __NAMESPACE__,
+                    'PhpCsFixer\\Tests\\%s%s%s',
                     strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
                     $file->getRelativePath() ? '\\' : '',
                     $file->getBasename('.'.$file->getExtension())
