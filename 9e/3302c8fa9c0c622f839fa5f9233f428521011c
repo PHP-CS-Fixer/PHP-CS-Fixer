@@ -1,0 +1,124 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-25T08:26:08Z
+
+what if someone imported his own `__file__` constant ?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-03-25T08:32:29Z
+
+Thanks @keradus, I will take those into consideration!
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-03-25T08:52:05Z
+
+I've updated my PR with your suggestions.
+
+In terms of importing a magic constant, I don't think it's possible (correct me if I'm wrong), see:
+https://3v4l.org/uuGn4
+https://3v4l.org/ndn9b
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-25T08:59:41Z
+
+you have used wrong syntax to import a const, but indeed it's not possible to import const named like keyword https://3v4l.org/nug2Z
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-03-25T09:25:33Z
+
+Oops 🤦‍♂️
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-28T08:04:25Z
+
+What about supporting `::class` as well?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T08:09:58Z
+
+valid scenario, but then it's not a magic constant
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-28T08:12:39Z
+
+According to [PHP Manual](http://php.net/manual/en/language.constants.predefined.php), it is.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T08:14:06Z
+
+wow, :+1:
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-03-28T08:53:11Z
+
+I've applied those changes.
+
+@julienfalque I'll take a look at that tonight, it's a little bit harder than the rest because it's not a single token like the rest
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T09:17:42Z
+
+`Foo::class` are 3 tokens, you fix last one, so you fix single token as well.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-03-28T09:41:38Z
+
+Yep, but `T_CLASS` can also refer to when you declare a class, so I'll have to do some checks for `T_DOUBLE_COLON` before it
+
+Also anyone else having trouble viewing the travis logs? They aren't loading for me
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-28T09:43:21Z
+
+> Also anyone else having trouble viewing the travis logs? They aren't loading for me
+
+Yep, same here :/
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T09:44:04Z
+
+You are not interested in `T_CLASS`, you are in `CT::T_CLASS_CONSTANT` (thanks to `ClassConstantTransformer`).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-28T10:36:29Z
+
+Added dealing with `T_CLASS_CONSTANT` looks good :)
+Please rebase, btw. the last Travis job for this PR has logs again \o/
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-03-28T10:56:16Z
+
+What am I running to rebase sorry? I tried `git rebase -i master` and squashing everything but my first commit but I got conflicts 😢
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-28T11:00:40Z
+
+don't worry about squashing, as long as you are the only author the squashing can be done simple at the end before it is merged
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-28T11:15:06Z
+
+LGTM :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T12:52:59Z
+
+please add to symfony ruleset
