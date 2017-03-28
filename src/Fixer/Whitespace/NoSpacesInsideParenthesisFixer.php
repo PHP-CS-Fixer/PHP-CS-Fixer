@@ -29,35 +29,6 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->equals('(')) {
-                continue;
-            }
-
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-
-            // ignore parenthesis for T_ARRAY
-            if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
-                continue;
-            }
-
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-
-            // remove space after opening `(`
-            $this->removeSpaceAroundToken($tokens[$index + 1]);
-
-            // remove space before closing `)` if it is not `list($a, $b, )` case
-            if (!$tokens[$tokens->getPrevMeaningfulToken($endIndex)]->equals(',')) {
-                $this->removeSpaceAroundToken($tokens[$endIndex - 1]);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -88,6 +59,35 @@ function foo( $bar, $baz )
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('(');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->equals('(')) {
+                continue;
+            }
+
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            // ignore parenthesis for T_ARRAY
+            if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
+                continue;
+            }
+
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+            // remove space after opening `(`
+            $this->removeSpaceAroundToken($tokens[$index + 1]);
+
+            // remove space before closing `)` if it is not `list($a, $b, )` case
+            if (!$tokens[$tokens->getPrevMeaningfulToken($endIndex)]->equals(',')) {
+                $this->removeSpaceAroundToken($tokens[$endIndex - 1]);
+            }
+        }
     }
 
     /**

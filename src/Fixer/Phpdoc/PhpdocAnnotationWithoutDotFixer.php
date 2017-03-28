@@ -28,7 +28,31 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Phpdocs annotation descriptions should not be a sentence.',
+            array(new CodeSample('<?php
+/**
+ * @param string $bar Some string.
+ */
+function foo ($bar) {}
+'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -73,29 +97,5 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 
             $token->setContent($doc->getContent());
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Phpdocs annotation descriptions should not be a sentence.',
-            array(new CodeSample('<?php
-/**
- * @param string $bar Some string.
- */
-function foo ($bar) {}
-'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 }

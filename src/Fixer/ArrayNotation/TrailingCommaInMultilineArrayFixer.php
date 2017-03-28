@@ -29,20 +29,6 @@ final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokensAnalyzer->isArray($index)) {
-                $this->fixArray($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -57,6 +43,20 @@ final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            if ($tokensAnalyzer->isArray($index)) {
+                $this->fixArray($tokens, $index);
+            }
+        }
     }
 
     /**

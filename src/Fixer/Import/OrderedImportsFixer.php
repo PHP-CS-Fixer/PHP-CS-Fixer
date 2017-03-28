@@ -61,53 +61,6 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
-
-        if (0 === count($namespacesImports)) {
-            return;
-        }
-
-        $usesOrder = array();
-        foreach ($namespacesImports as $uses) {
-            $usesOrder[] = $this->getNewOrder(array_reverse($uses), $tokens);
-        }
-        $usesOrder = call_user_func_array('array_replace', $usesOrder);
-
-        $usesOrder = array_reverse($usesOrder, true);
-        $mapStartToEnd = array();
-
-        foreach ($usesOrder as $use) {
-            $mapStartToEnd[$use['startIndex']] = $use['endIndex'];
-        }
-
-        // Now insert the new tokens, starting from the end
-        foreach ($usesOrder as $index => $use) {
-            $declarationTokens = Tokens::fromCode('<?php use '.$use['namespace'].';');
-            $declarationTokens->clearRange(0, 2); // clear `<?php use `
-            $declarationTokens[count($declarationTokens) - 1]->clear(); // clear `;`
-            $declarationTokens->clearEmptyTokens();
-
-            $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
-            if ($use['group']) {
-                // a group import must start with `use` and cannot be part of comma separated import list
-                $prev = $tokens->getPrevMeaningfulToken($index);
-                if ($tokens[$prev]->equals(',')) {
-                    $tokens[$prev]->setContent(';');
-                    $tokens->insertAt($prev + 1, new Token(array(T_USE, 'use')));
-                    if (!$tokens[$prev + 2]->isWhitespace()) {
-                        $tokens->insertAt($prev + 2, new Token(array(T_WHITESPACE, ' ')));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -190,6 +143,53 @@ use function CCC\AA;
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_USE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
+
+        if (0 === count($namespacesImports)) {
+            return;
+        }
+
+        $usesOrder = array();
+        foreach ($namespacesImports as $uses) {
+            $usesOrder[] = $this->getNewOrder(array_reverse($uses), $tokens);
+        }
+        $usesOrder = call_user_func_array('array_replace', $usesOrder);
+
+        $usesOrder = array_reverse($usesOrder, true);
+        $mapStartToEnd = array();
+
+        foreach ($usesOrder as $use) {
+            $mapStartToEnd[$use['startIndex']] = $use['endIndex'];
+        }
+
+        // Now insert the new tokens, starting from the end
+        foreach ($usesOrder as $index => $use) {
+            $declarationTokens = Tokens::fromCode('<?php use '.$use['namespace'].';');
+            $declarationTokens->clearRange(0, 2); // clear `<?php use `
+            $declarationTokens[count($declarationTokens) - 1]->clear(); // clear `;`
+            $declarationTokens->clearEmptyTokens();
+
+            $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
+            if ($use['group']) {
+                // a group import must start with `use` and cannot be part of comma separated import list
+                $prev = $tokens->getPrevMeaningfulToken($index);
+                if ($tokens[$prev]->equals(',')) {
+                    $tokens[$prev]->setContent(';');
+                    $tokens->insertAt($prev + 1, new Token(array(T_USE, 'use')));
+                    if (!$tokens[$prev + 2]->isWhitespace()) {
+                        $tokens->insertAt($prev + 2, new Token(array(T_WHITESPACE, ' ')));
+                    }
+                }
+            }
+        }
     }
 
     /**

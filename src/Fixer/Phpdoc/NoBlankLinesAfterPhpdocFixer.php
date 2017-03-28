@@ -35,35 +35,6 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        static $forbiddenSuccessors = array(
-            T_DOC_COMMENT,
-            T_COMMENT,
-            T_WHITESPACE,
-            T_RETURN,
-            T_THROW,
-            T_GOTO,
-            T_CONTINUE,
-            T_BREAK,
-        );
-
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-            // get the next non-whitespace token inc comments, provided
-            // that there is whitespace between it and the current token
-            $next = $tokens->getNextNonWhitespace($index);
-            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind($forbiddenSuccessors)) {
-                $this->fixWhitespace($tokens[$index + 1]);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -91,6 +62,35 @@ class Bar {}
     {
         // should be ran before the SingleBlankLineBeforeNamespaceFixer.
         return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        static $forbiddenSuccessors = array(
+            T_DOC_COMMENT,
+            T_COMMENT,
+            T_WHITESPACE,
+            T_RETURN,
+            T_THROW,
+            T_GOTO,
+            T_CONTINUE,
+            T_BREAK,
+        );
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+            // get the next non-whitespace token inc comments, provided
+            // that there is whitespace between it and the current token
+            $next = $tokens->getNextNonWhitespace($index);
+            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind($forbiddenSuccessors)) {
+                $this->fixWhitespace($tokens[$index + 1]);
+            }
+        }
     }
 
     /**

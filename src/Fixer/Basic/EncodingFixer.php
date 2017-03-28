@@ -36,25 +36,6 @@ final class EncodingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $token = $tokens[0];
-        $content = $token->getContent();
-
-        if (0 === strncmp($content, $this->BOM, 3)) {
-            $newContent = substr($content, 3);
-
-            if (false === $newContent) {
-                $newContent = ''; // substr returns false rather than an empty string when starting at the end
-            }
-
-            $token->setContent($newContent);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -85,5 +66,24 @@ echo "Hello!";
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $token = $tokens[0];
+        $content = $token->getContent();
+
+        if (0 === strncmp($content, $this->BOM, 3)) {
+            $newContent = substr($content, 3);
+
+            if (false === $newContent) {
+                $newContent = ''; // substr returns false rather than an empty string when starting at the end
+            }
+
+            $token->setContent($newContent);
+        }
     }
 }

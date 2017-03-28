@@ -50,41 +50,6 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurationDef
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        if (null === $this->configuration['header']) {
-            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
-        }
-
-        // figure out where the comment should be placed
-        $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens);
-
-        // check if there is already a comment
-        $headerCurrentIndex = $this->findHeaderCommentCurrentIndex($tokens, $headerNewIndex - 1);
-
-        if (null === $headerCurrentIndex) {
-            if ('' === $this->configuration['header']) {
-                return; // header not found and none should be set, return
-            }
-
-            $this->insertHeader($tokens, $headerNewIndex);
-        } elseif ($this->getHeaderAsComment() !== $tokens[$headerCurrentIndex]->getContent()) {
-            $tokens->clearTokenAndMergeSurroundingWhitespace($headerCurrentIndex);
-            if ('' === $this->configuration['header']) {
-                return; // header found and cleared, none should be set, return
-            }
-
-            $this->insertHeader($tokens, $headerNewIndex);
-        } else {
-            $headerNewIndex = $headerCurrentIndex;
-        }
-
-        $this->fixWhiteSpaceAroundHeader($tokens, $headerNewIndex);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -141,6 +106,41 @@ echo 1;
     public function isCandidate(Tokens $tokens)
     {
         return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        if (null === $this->configuration['header']) {
+            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
+        }
+
+        // figure out where the comment should be placed
+        $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens);
+
+        // check if there is already a comment
+        $headerCurrentIndex = $this->findHeaderCommentCurrentIndex($tokens, $headerNewIndex - 1);
+
+        if (null === $headerCurrentIndex) {
+            if ('' === $this->configuration['header']) {
+                return; // header not found and none should be set, return
+            }
+
+            $this->insertHeader($tokens, $headerNewIndex);
+        } elseif ($this->getHeaderAsComment() !== $tokens[$headerCurrentIndex]->getContent()) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($headerCurrentIndex);
+            if ('' === $this->configuration['header']) {
+                return; // header found and cleared, none should be set, return
+            }
+
+            $this->insertHeader($tokens, $headerNewIndex);
+        } else {
+            $headerNewIndex = $headerCurrentIndex;
+        }
+
+        $this->fixWhiteSpaceAroundHeader($tokens, $headerNewIndex);
     }
 
     /**

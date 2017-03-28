@@ -20,6 +20,7 @@ use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
@@ -57,6 +58,13 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 
         if ($this instanceof WhitespacesAwareFixerInterface) {
             $this->whitespacesConfig = $this->getDefaultWhitespacesFixerConfig();
+        }
+    }
+
+    public function fix(\SplFileInfo $file, Tokens $tokens)
+    {
+        if (0 < $tokens->count() && $this->isCandidate($tokens) && $this->supports($file)) {
+            $this->applyFix($file, $tokens);
         }
     }
 
@@ -153,6 +161,8 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 
         $this->whitespacesConfig = $config;
     }
+
+    abstract protected function applyFix(\SplFileInfo $file, Tokens $tokens);
 
     /**
      * @return FixerConfigurationResolverInterface

@@ -30,38 +30,6 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $oneSpaceBefore = 'one' === $this->configuration['space_before'];
-
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(CT::T_TYPE_COLON)) {
-                continue;
-            }
-
-            $previousToken = $tokens[$index - 1];
-
-            if ($previousToken->isWhitespace()) {
-                if ($oneSpaceBefore) {
-                    $previousToken->setContent(' ');
-                } else {
-                    $previousToken->clear();
-                }
-            } elseif ($oneSpaceBefore) {
-                $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
-                ++$index;
-            }
-
-            ++$index;
-            $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         $versionSpecification = new VersionSpecification(70000);
@@ -94,6 +62,38 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     public function isCandidate(Tokens $tokens)
     {
         return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT::T_TYPE_COLON);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $oneSpaceBefore = 'one' === $this->configuration['space_before'];
+
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(CT::T_TYPE_COLON)) {
+                continue;
+            }
+
+            $previousToken = $tokens[$index - 1];
+
+            if ($previousToken->isWhitespace()) {
+                if ($oneSpaceBefore) {
+                    $previousToken->setContent(' ');
+                } else {
+                    $previousToken->clear();
+                }
+            } elseif ($oneSpaceBefore) {
+                $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
+                ++$index;
+            }
+
+            ++$index;
+            $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
+        }
     }
 
     /**

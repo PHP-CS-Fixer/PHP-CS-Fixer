@@ -455,6 +455,10 @@ declare(strict_types=1)?>',
      */
     public function testDoNotTouch($expected)
     {
+        $this->fixer->configure(array(
+            'header' => '',
+        ));
+
         $this->doTest($expected);
     }
 

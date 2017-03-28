@@ -118,18 +118,6 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $this->tokens = $tokens;
-        $this->tokensAnalyzer = new TokensAnalyzer($this->tokens);
-        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
-            $this->fixByToken($tokens[$index], $index);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -281,6 +269,18 @@ class Foo
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $this->tokens = $tokens;
+        $this->tokensAnalyzer = new TokensAnalyzer($this->tokens);
+        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
+            $this->fixByToken($tokens[$index], $index);
+        }
     }
 
     /**

@@ -44,19 +44,6 @@ final class BracesFixer extends AbstractFixer implements ConfigurationDefinition
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $this->fixCommentBeforeBrace($tokens);
-        $this->fixMissingControlBraces($tokens);
-        $this->fixIndents($tokens);
-        $this->fixControlContinuationBraces($tokens);
-        $this->fixSpaceAroundToken($tokens);
-        $this->fixDoWhile($tokens);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -148,6 +135,19 @@ class Foo
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $this->fixCommentBeforeBrace($tokens);
+        $this->fixMissingControlBraces($tokens);
+        $this->fixIndents($tokens);
+        $this->fixControlContinuationBraces($tokens);
+        $this->fixSpaceAroundToken($tokens);
+        $this->fixDoWhile($tokens);
     }
 
     /**

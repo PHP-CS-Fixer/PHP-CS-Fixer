@@ -26,20 +26,6 @@ final class LowercaseCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if (!$tokens[$index]->isCast()) {
-                continue;
-            }
-
-            $tokens[$index]->setContent(strtolower($tokens[$index]->getContent()));
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -72,5 +58,19 @@ final class LowercaseCastFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
+            if (!$tokens[$index]->isCast()) {
+                continue;
+            }
+
+            $tokens[$index]->setContent(strtolower($tokens[$index]->getContent()));
+        }
     }
 }

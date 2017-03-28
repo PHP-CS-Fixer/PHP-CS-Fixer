@@ -29,30 +29,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        // check if the declaration is already done
-        $searchIndex = $tokens->getNextMeaningfulToken(0);
-        if (null === $searchIndex) {
-            $this->insertSequence($tokens); // declaration not found, insert one
-
-            return;
-        }
-
-        $sequence = $this->getDeclareStrictTypeSequence();
-        $sequenceLocation = $tokens->findSequence($sequence, $searchIndex, null, false);
-        if (null === $sequenceLocation) {
-            $this->insertSequence($tokens); // declaration not found, insert one
-
-            return;
-        }
-
-        $this->fixStrictTypesCasing($tokens, $sequenceLocation);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -91,6 +67,30 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // check if the declaration is already done
+        $searchIndex = $tokens->getNextMeaningfulToken(0);
+        if (null === $searchIndex) {
+            $this->insertSequence($tokens); // declaration not found, insert one
+
+            return;
+        }
+
+        $sequence = $this->getDeclareStrictTypeSequence();
+        $sequenceLocation = $tokens->findSequence($sequence, $searchIndex, null, false);
+        if (null === $sequenceLocation) {
+            $this->insertSequence($tokens); // declaration not found, insert one
+
+            return;
+        }
+
+        $this->fixStrictTypesCasing($tokens, $sequenceLocation);
     }
 
     /**

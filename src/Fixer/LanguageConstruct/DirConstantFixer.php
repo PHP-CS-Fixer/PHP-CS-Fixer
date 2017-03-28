@@ -26,7 +26,28 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.',
+            array(new CodeSample("<?php\n\$a = dirname(__FILE__);")),
+            null,
+            'Risky when the function `dirname()` is overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_FILE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $currIndex = 0;
         while (null !== $currIndex) {
@@ -70,26 +91,5 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $tokens->overrideAt($fileCandidateLeftIndex, new Token(array(T_DIR, '__DIR__')));
             $tokens[$functionNameIndex]->clear();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.',
-            array(new CodeSample("<?php\n\$a = dirname(__FILE__);")),
-            null,
-            'Risky when the function `dirname()` is overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_FILE);
     }
 }

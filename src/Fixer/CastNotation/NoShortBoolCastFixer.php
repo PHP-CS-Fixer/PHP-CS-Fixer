@@ -26,18 +26,6 @@ final class NoShortBoolCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = count($tokens) - 1; $index > 1; --$index) {
-            if ($tokens[$index]->equals('!')) {
-                $index = $this->fixShortCast($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run before the CastSpacesFixer
@@ -61,6 +49,18 @@ final class NoShortBoolCastFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('!');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = count($tokens) - 1; $index > 1; --$index) {
+            if ($tokens[$index]->equals('!')) {
+                $index = $this->fixShortCast($tokens, $index);
+            }
+        }
     }
 
     /**
