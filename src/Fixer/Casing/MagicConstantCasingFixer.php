@@ -30,12 +30,10 @@ final class MagicConstantCasingFixer extends AbstractFixer
         $magicConstants = $this->getMagicConstants();
         $magicConstantTokens = $this->getMagicConstantTokens();
 
-        for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind($magicConstantTokens)) {
-                continue;
+        foreach ($tokens as $token) {
+            if ($token->isGivenKind($magicConstantTokens)) {
+                $token->setContent($magicConstants[$token->getId()]);
             }
-
-            $tokens[$index]->setContent($magicConstants[$tokens[$index]->getId()]);
         }
     }
 
@@ -76,7 +74,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
                 T_NS_C => '__NAMESPACE__',
             );
 
-            if (PHP_VERSION_ID >= 50400) {
+            if (defined('T_TRAIT_C')) {
                 $magicConstants[T_TRAIT_C] = '__TRAIT__';
             }
         }

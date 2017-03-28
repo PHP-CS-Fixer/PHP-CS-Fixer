@@ -41,23 +41,23 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php echo __FILE__;',
-                '<?php echo __file__;',
+                '<?php echo __FILe__;',
             ),
             array(
                 '<?php echo __DIR__;',
-                '<?php echo __dir__;',
+                '<?php echo __dIr__;',
             ),
             array(
                 '<?php echo __FUNCTION__;',
-                '<?php echo __function__;',
+                '<?php echo __fUncTiOn__;',
             ),
             array(
                 '<?php echo __CLASS__;',
-                '<?php echo __class__;',
+                '<?php echo __clasS__;',
             ),
             array(
                 '<?php echo __METHOD__;',
-                '<?php echo __method__;',
+                '<?php echo __mEthoD__;',
             ),
             array(
                 '<?php echo __NAMESPACE__;',
@@ -84,6 +84,10 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
             array(
                 '<?php echo __TRAIT__;',
                 '<?php echo __trait__;',
+            ),
+            array(
+                '<?php echo __TRAIT__;',
+                '<?php echo __trAIt__;',
             ),
         );
     }
