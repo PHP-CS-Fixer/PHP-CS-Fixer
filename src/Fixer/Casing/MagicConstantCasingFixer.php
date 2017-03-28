@@ -26,21 +26,6 @@ final class MagicConstantCasingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $magicConstants = $this->getMagicConstants();
-        $magicConstantTokens = $this->getMagicConstantTokens();
-
-        foreach ($tokens as $token) {
-            if ($token->isGivenKind($magicConstantTokens)) {
-                $token->setContent($magicConstants[$token->getId()]);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -55,6 +40,21 @@ final class MagicConstantCasingFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound($this->getMagicConstantTokens());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $magicConstants = $this->getMagicConstants();
+        $magicConstantTokens = $this->getMagicConstantTokens();
+
+        foreach ($tokens as $token) {
+            if ($token->isGivenKind($magicConstantTokens)) {
+                $token->setContent($magicConstants[$token->getId()]);
+            }
+        }
     }
 
     /**
