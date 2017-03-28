@@ -1,0 +1,32 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-18T15:58:41Z
+
+don't you need the PHP version test and token count > 0 test to fix all cases of calling the fix method while not a candidate?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-18T16:02:13Z
+
+I do, should be done globally.
+
+For now, we assume that one will always call `isCandidate`, which may not happen.
+We need to always check restrictions in `fix`, while `isCandidate` should be only quick check that is helpfull, but is optional.
+
+what do you think @SpacePossum about always call `isCandidate` in `fix` method ?
+Then, we could remove `isCandidate` at v3 or maybe keep it for custom runners (like integrations into IDEs)
+
+In the end, the method was not provided for some feature, only for performance boost.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T11:28:51Z
+
+Maybe keeping the `isCandidate` method is the best route and indeed call it from the `fix` method.
+For performance we should not no longer call `isCandidate` than when fixing, but just `fix`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-24T19:58:33Z
+
+@SpacePossum , reworked
