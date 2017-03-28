@@ -961,6 +961,10 @@ class Tokens extends \SplFixedArray
             $this->registerFoundToken($token);
         }
 
+        if (defined('T_HH_ERROR') && $this->isTokenKindFound(T_HH_ERROR)) {
+            throw new \ParseError('Parsing error, encountered "T_HH_ERROR".');
+        }
+
         $this->rewind();
         $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
