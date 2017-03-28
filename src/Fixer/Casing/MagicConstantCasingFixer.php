@@ -26,7 +26,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $magicConstants = $this->getMagicConstants();
         $magicConstantTokens = $this->getMagicConstantTokens();
