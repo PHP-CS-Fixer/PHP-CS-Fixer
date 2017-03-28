@@ -314,7 +314,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $finder = Finder::create()
             ->files()
             ->name('*.php')
-            ->in(__DIR__ . '/../../src')
+            ->in(__DIR__.'/../../src')
             ->exclude(array(
                 'Resources',
             ))
@@ -349,7 +349,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $finder = Finder::create()
             ->files()
             ->name('*.php')
-            ->in(__DIR__ . '/..')
+            ->in(__DIR__.'/..')
             ->exclude(array(
                 'Fixtures',
             ))
