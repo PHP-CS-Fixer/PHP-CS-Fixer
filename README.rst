@@ -508,7 +508,7 @@ Choose from the list of available rules:
 
   PHP keywords MUST be in lower case.
 
-* **magic_constant_casing**
+* **magic_constant_casing** [@Symfony]
 
   Magic constants should be referred to using the correct casing.
 
