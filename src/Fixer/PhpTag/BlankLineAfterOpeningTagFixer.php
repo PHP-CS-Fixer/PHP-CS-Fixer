@@ -27,7 +27,35 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.',
+            array(new CodeSample("<?php \$a = 1;\n\$b = 1;"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run before the NoBlankLinesBeforeNamespaceFixer
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OPEN_TAG);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
@@ -59,33 +87,5 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
         if (!$tokens[1]->isWhitespace() && false === strpos($tokens[1]->getContent(), "\n")) {
             $tokens->insertAt(1, new Token(array(T_WHITESPACE, $lineEnding)));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.',
-            array(new CodeSample("<?php \$a = 1;\n\$b = 1;"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run before the NoBlankLinesBeforeNamespaceFixer
-        return 1;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_OPEN_TAG);
     }
 }

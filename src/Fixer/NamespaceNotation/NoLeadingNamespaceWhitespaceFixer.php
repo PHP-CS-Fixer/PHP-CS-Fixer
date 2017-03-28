@@ -36,7 +36,24 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'The namespace declaration line shouldn\'t contain leading whitespace.',
+            array(
+                new CodeSample(
+                    '<?php
+ namespace Test8a;
+    namespace Test8b;'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
@@ -69,23 +86,6 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
                 $beforeNamespace->setContent(substr($beforeNamespace->getContent(), 0, $lastNewline + 1));
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'The namespace declaration line shouldn\'t contain leading whitespace.',
-            array(
-                new CodeSample(
-                    '<?php
- namespace Test8a;
-    namespace Test8b;'
-                ),
-            )
-        );
     }
 
     private static function endsWithWhitespace($str)

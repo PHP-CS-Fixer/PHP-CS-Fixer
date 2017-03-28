@@ -27,31 +27,6 @@ final class SelfAccessorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        for ($i = 0, $c = $tokens->count(); $i < $c; ++$i) {
-            if (!$tokens[$i]->isClassy() || $tokensAnalyzer->isAnonymousClass($i)) {
-                continue;
-            }
-
-            $nameIndex = $tokens->getNextTokenOfKind($i, array(array(T_STRING)));
-            $startIndex = $tokens->getNextTokenOfKind($nameIndex, array('{'));
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
-
-            $name = $tokens[$nameIndex]->getContent();
-
-            $this->replaceNameOccurrences($tokens, $name, $startIndex, $endIndex);
-
-            // continue after the class declaration
-            $i = $endIndex;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -80,6 +55,31 @@ class Sample
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        for ($i = 0, $c = $tokens->count(); $i < $c; ++$i) {
+            if (!$tokens[$i]->isClassy() || $tokensAnalyzer->isAnonymousClass($i)) {
+                continue;
+            }
+
+            $nameIndex = $tokens->getNextTokenOfKind($i, array(array(T_STRING)));
+            $startIndex = $tokens->getNextTokenOfKind($nameIndex, array('{'));
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+
+            $name = $tokens[$nameIndex]->getContent();
+
+            $this->replaceNameOccurrences($tokens, $name, $startIndex, $endIndex);
+
+            // continue after the class declaration
+            $i = $endIndex;
+        }
     }
 
     /**

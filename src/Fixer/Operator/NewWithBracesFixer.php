@@ -27,7 +27,26 @@ final class NewWithBracesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'All instances created with new keyword must be followed by braces.',
+            array(new CodeSample('<?php $x = new X;'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_NEW);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $nextTokenKinds = null;
 
@@ -121,25 +140,6 @@ final class NewWithBracesFixer extends AbstractFixer
 
             $this->insertBracesAfter($tokens, $tokens->getPrevMeaningfulToken($nextIndex));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'All instances created with new keyword must be followed by braces.',
-            array(new CodeSample('<?php $x = new X;'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_NEW);
     }
 
     /**

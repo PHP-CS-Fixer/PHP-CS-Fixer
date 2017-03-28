@@ -36,25 +36,6 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isClassy()) {
-                continue;
-            }
-
-            $startBraceIndex = $tokens->getNextTokenOfKind($index, array('{'));
-            if (!$tokens[$startBraceIndex + 1]->isWhitespace()) {
-                continue;
-            }
-
-            $this->fixWhitespace($tokens[$startBraceIndex + 1]);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -73,6 +54,25 @@ final class Sample
                 ),
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isClassy()) {
+                continue;
+            }
+
+            $startBraceIndex = $tokens->getNextTokenOfKind($index, array('{'));
+            if (!$tokens[$startBraceIndex + 1]->isWhitespace()) {
+                continue;
+            }
+
+            $this->fixWhitespace($tokens[$startBraceIndex + 1]);
+        }
     }
 
     /**

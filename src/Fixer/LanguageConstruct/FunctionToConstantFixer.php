@@ -57,27 +57,6 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = $tokens->count() - 4; $index > 0; --$index) {
-            $candidate = $this->getReplaceCandidate($tokens, $index);
-            if (null === $candidate) {
-                continue;
-            }
-
-            $this->fixFunctionCallToConstant(
-                $tokens,
-                $index,
-                $candidate[0], // brace open
-                $candidate[1], // brace close
-                $candidate[2]  // replacement
-            );
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -114,6 +93,27 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = $tokens->count() - 4; $index > 0; --$index) {
+            $candidate = $this->getReplaceCandidate($tokens, $index);
+            if (null === $candidate) {
+                continue;
+            }
+
+            $this->fixFunctionCallToConstant(
+                $tokens,
+                $index,
+                $candidate[0], // brace open
+                $candidate[1], // brace close
+                $candidate[2]  // replacement
+            );
+        }
     }
 
     /**

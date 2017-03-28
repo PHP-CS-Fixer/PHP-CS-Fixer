@@ -26,27 +26,6 @@ final class NoUnusedImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $useDeclarationsIndexes = $tokensAnalyzer->getImportUseIndexes();
-
-        if (0 === count($useDeclarationsIndexes)) {
-            return;
-        }
-
-        $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
-        $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
-        $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
-        $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
-
-        $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
-        $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -90,6 +69,27 @@ final class NoUnusedImportsFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $useDeclarationsIndexes = $tokensAnalyzer->getImportUseIndexes();
+
+        if (0 === count($useDeclarationsIndexes)) {
+            return;
+        }
+
+        $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
+        $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
+        $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
+        $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
+
+        $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
+        $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
+    }
+
+    /**
      * @param string $content
      * @param array  $useDeclarations
      *
@@ -100,7 +100,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $usages = array();
 
         foreach ($useDeclarations as $shortName => $useDeclaration) {
-            $usages[$shortName] = (bool) preg_match('/(?<![\$\\\\])\b'.preg_quote($shortName).'\b/i', $content);
+            $usages[$shortName] = (bool) preg_match('/(?<![\$\\\\])(?<!->)\b'.preg_quote($shortName).'\b/i', $content);
         }
 
         return $usages;

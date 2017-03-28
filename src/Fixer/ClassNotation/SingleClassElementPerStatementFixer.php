@@ -37,23 +37,6 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $analyzer = new TokensAnalyzer($tokens);
-        $elements = array_reverse($analyzer->getClassyElements(), true);
-
-        foreach ($elements as $index => $element) {
-            if (!in_array($element['type'], $this->configuration['elements'], true)) {
-                continue; // not in configuration
-            }
-
-            $this->fixElement($tokens, $index);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
@@ -88,6 +71,23 @@ final class Example
                 ),
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $analyzer = new TokensAnalyzer($tokens);
+        $elements = array_reverse($analyzer->getClassyElements(), true);
+
+        foreach ($elements as $index => $element) {
+            if (!in_array($element['type'], $this->configuration['elements'], true)) {
+                continue; // not in configuration
+            }
+
+            $this->fixElement($tokens, $index);
+        }
     }
 
     /**

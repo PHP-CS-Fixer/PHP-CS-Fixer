@@ -30,18 +30,6 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $token) {
-            if ($token->isKeyword() && !$token->isGivenKind(self::$excludedTokens)) {
-                $token->setContent(strtolower($token->getContent()));
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -71,5 +59,17 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getKeywords());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if ($token->isKeyword() && !$token->isGivenKind(self::$excludedTokens)) {
+                $token->setContent(strtolower($token->getContent()));
+            }
+        }
     }
 }

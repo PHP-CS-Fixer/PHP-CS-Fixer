@@ -26,19 +26,6 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        // skip first as it cannot be a white space token
-        for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
-            if ($tokens[$i]->isWhitespace()) {
-                $this->fixWhitespaceToken($tokens, $i);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -62,6 +49,19 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // skip first as it cannot be a white space token
+        for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
+            if ($tokens[$i]->isWhitespace()) {
+                $this->fixWhitespaceToken($tokens, $i);
+            }
+        }
     }
 
     /**

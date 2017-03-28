@@ -61,19 +61,6 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $callBack = $this->callBack;
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind($this->candidateTokenType)) {
-                $this->$callBack($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -100,6 +87,19 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound($this->candidateTokenType);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $callBack = $this->callBack;
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind($this->candidateTokenType)) {
+                $this->$callBack($tokens, $index);
+            }
+        }
     }
 
     /**

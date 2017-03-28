@@ -30,7 +30,15 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, PhpTokens $phpTokens)
+    public function isCandidate(PhpTokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, PhpTokens $phpTokens)
     {
         /** @var PhpToken $docCommentToken */
         foreach ($phpTokens->findGivenKind(T_DOC_COMMENT) as $index => $docCommentToken) {
@@ -45,14 +53,6 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             $this->fixAnnotations($tokens);
             $docCommentToken->setContent($tokens->getCode());
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(PhpTokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**

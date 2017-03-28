@@ -27,19 +27,6 @@ final class HashToSlashCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
-            $originalContent = $tokens[$i]->isGivenKind(T_COMMENT) ? $tokens[$i]->getContent() : null;
-            if (null !== $originalContent && '#' === $originalContent[0]) {
-                $tokens[$i]->setContent('//'.substr($originalContent, 1));
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -54,5 +41,18 @@ final class HashToSlashCommentFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
+            $originalContent = $tokens[$i]->isGivenKind(T_COMMENT) ? $tokens[$i]->getContent() : null;
+            if (null !== $originalContent && '#' === $originalContent[0]) {
+                $tokens[$i]->setContent('//'.substr($originalContent, 1));
+            }
+        }
     }
 }

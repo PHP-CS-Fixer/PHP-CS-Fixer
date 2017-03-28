@@ -22,31 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class StrictComparisonFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        static $map = array(
-            T_IS_EQUAL => array(
-                'id' => T_IS_IDENTICAL,
-                'content' => '===',
-            ),
-            T_IS_NOT_EQUAL => array(
-                'id' => T_IS_NOT_IDENTICAL,
-                'content' => '!==',
-            ),
-        );
-
-        foreach ($tokens as $index => $token) {
-            $tokenId = $token->getId();
-
-            if (isset($map[$tokenId])) {
-                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content']));
-            }
-        }
-    }
-
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -71,5 +46,30 @@ final class StrictComparisonFixer extends AbstractFixer
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        static $map = array(
+            T_IS_EQUAL => array(
+                'id' => T_IS_IDENTICAL,
+                'content' => '===',
+            ),
+            T_IS_NOT_EQUAL => array(
+                'id' => T_IS_NOT_IDENTICAL,
+                'content' => '!==',
+            ),
+        );
+
+        foreach ($tokens as $index => $token) {
+            $tokenId = $token->getId();
+
+            if (isset($map[$tokenId])) {
+                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content']));
+            }
+        }
     }
 }

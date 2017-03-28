@@ -26,26 +26,6 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokensAnalyzer->isUnarySuccessorOperator($index)) {
-                $tokens->removeLeadingWhitespace($index);
-                continue;
-            }
-
-            if ($tokensAnalyzer->isUnaryPredecessorOperator($index)) {
-                $tokens->removeTrailingWhitespace($index);
-                continue;
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -60,5 +40,25 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            if ($tokensAnalyzer->isUnarySuccessorOperator($index)) {
+                $tokens->removeLeadingWhitespace($index);
+                continue;
+            }
+
+            if ($tokensAnalyzer->isUnaryPredecessorOperator($index)) {
+                $tokens->removeTrailingWhitespace($index);
+                continue;
+            }
+        }
     }
 }

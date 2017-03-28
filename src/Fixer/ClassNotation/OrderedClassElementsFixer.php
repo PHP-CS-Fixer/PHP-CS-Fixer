@@ -127,34 +127,6 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($i = 1, $count = $tokens->count(); $i < $count; ++$i) {
-            if (!$tokens[$i]->isClassy()) {
-                continue;
-            }
-
-            $i = $tokens->getNextTokenOfKind($i, array('{'));
-            $elements = $this->getElements($tokens, $i);
-
-            if (!$elements) {
-                continue;
-            }
-
-            $sorted = $this->sortElements($elements);
-            $endIndex = $elements[count($elements) - 1]['end'];
-
-            if ($sorted !== $elements) {
-                $this->sortTokens($tokens, $i, $endIndex, $sorted);
-            }
-
-            $i = $endIndex;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -205,6 +177,34 @@ final class Example
         // must run before MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer and SpaceAfterSemicolonFixer.
         // must run after ProtectedToPrivateFixer.
         return 65;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($i = 1, $count = $tokens->count(); $i < $count; ++$i) {
+            if (!$tokens[$i]->isClassy()) {
+                continue;
+            }
+
+            $i = $tokens->getNextTokenOfKind($i, array('{'));
+            $elements = $this->getElements($tokens, $i);
+
+            if (!$elements) {
+                continue;
+            }
+
+            $sorted = $this->sortElements($elements);
+            $endIndex = $elements[count($elements) - 1]['end'];
+
+            if ($sorted !== $elements) {
+                $this->sortTokens($tokens, $i, $endIndex, $sorted);
+            }
+
+            $i = $endIndex;
+        }
     }
 
     /**

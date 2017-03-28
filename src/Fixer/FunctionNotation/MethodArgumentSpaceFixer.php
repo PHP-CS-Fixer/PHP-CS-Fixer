@@ -30,20 +30,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class MethodArgumentSpaceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            $token = $tokens[$index];
-
-            if ($token->equals('(') && !$tokens[$index - 1]->isGivenKind(T_ARRAY)) {
-                $this->fixFunction($tokens, $index);
-            }
-        }
-    }
-
-    /**
      * Method to insert space after comma and remove space before comma.
      *
      * @param Tokens $tokens
@@ -85,6 +71,20 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('(');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = $tokens->count() - 1; $index > 0; --$index) {
+            $token = $tokens[$index];
+
+            if ($token->equals('(') && !$tokens[$index - 1]->isGivenKind(T_ARRAY)) {
+                $this->fixFunction($tokens, $index);
+            }
+        }
     }
 
     /**
