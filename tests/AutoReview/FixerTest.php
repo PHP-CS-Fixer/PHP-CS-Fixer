@@ -30,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @coversNothing
  * @group auto-review
  */
-class FixerTest extends \PHPUnit_Framework_TestCase
+final class FixerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param FixerInterface $fixer

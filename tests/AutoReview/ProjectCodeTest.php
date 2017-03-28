@@ -314,7 +314,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $finder = Finder::create()
             ->files()
             ->name('*.php')
-            ->in(__DIR__ . '/../src')
+            ->in(__DIR__ . '/../../src')
             ->exclude(array(
                 'Resources',
             ))
@@ -349,7 +349,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $finder = Finder::create()
             ->files()
             ->name('*.php')
-            ->in(__DIR__)
+            ->in(__DIR__ . '/..')
             ->exclude(array(
                 'Fixtures',
             ))
@@ -358,8 +358,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         $names = array_map(
             function (SplFileInfo $file) {
                 return sprintf(
-                    '%s\\%s%s%s',
-                    __NAMESPACE__,
+                    'PhpCsFixer\\Tests\\%s%s%s',
                     strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
                     $file->getRelativePath() ? '\\' : '',
                     $file->getBasename('.'.$file->getExtension())

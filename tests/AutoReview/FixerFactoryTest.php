@@ -30,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @coversNothing
  * @group auto-review
  */
-class FixerFactoryTest extends \PHPUnit_Framework_TestCase
+final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFixersPriorityEdgeFixers()
     {
