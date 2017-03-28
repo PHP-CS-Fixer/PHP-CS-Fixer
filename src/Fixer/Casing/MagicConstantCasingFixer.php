@@ -73,14 +73,11 @@ final class MagicConstantCasingFixer extends AbstractFixer
                 T_CLASS_C => '__CLASS__',
                 T_METHOD_C => '__METHOD__',
                 T_NS_C => '__NAMESPACE__',
+                CT::T_CLASS_CONSTANT => 'class',
             );
 
             if (defined('T_TRAIT_C')) {
                 $magicConstants[T_TRAIT_C] = '__TRAIT__';
-            }
-
-            if (PHP_VERSION_ID >= 50500) {
-                $magicConstants[CT::T_CLASS_CONSTANT] = 'class';
             }
         }
 
