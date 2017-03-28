@@ -78,19 +78,6 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $callback = $this->fixCallback;
-        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
-                $this->$callback($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -127,6 +114,19 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound($this->candidateTokenKind);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $callback = $this->fixCallback;
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
+            if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
+                $this->$callback($tokens, $index);
+            }
+        }
     }
 
     /**

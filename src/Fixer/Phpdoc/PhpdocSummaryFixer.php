@@ -28,31 +28,6 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-            $end = $this->findShortDescriptionEnd($doc->getLines());
-
-            if (null !== $end) {
-                $line = $doc->getLine($end);
-                $content = rtrim($line->getContent());
-
-                if (!$this->isCorrectlyFormatted($content)) {
-                    $line->setContent($content.'.'.$this->whitespacesConfig->getLineEnding());
-                    $token->setContent($doc->getContent());
-                }
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -72,6 +47,31 @@ function foo () {}
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $doc = new DocBlock($token->getContent());
+            $end = $this->findShortDescriptionEnd($doc->getLines());
+
+            if (null !== $end) {
+                $line = $doc->getLine($end);
+                $content = rtrim($line->getContent());
+
+                if (!$this->isCorrectlyFormatted($content)) {
+                    $line->setContent($content.'.'.$this->whitespacesConfig->getLineEnding());
+                    $token->setContent($doc->getContent());
+                }
+            }
+        }
     }
 
     /**

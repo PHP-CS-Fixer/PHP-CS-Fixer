@@ -37,7 +37,36 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+           'Converts `pow()` to the `**` operator. Requires PHP >= 5.6.',
+            array(
+                new VersionSpecificCodeSample(
+                    "<?php\n pow(\$a, 1);",
+                    new VersionSpecification(50600)
+                ),
+            ),
+            null,
+            null,
+            null,
+            'Risky when the function `pow()` is overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must be run before BinaryOperatorSpacesFixer
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $candidates = $this->findPowCalls($tokens);
 
@@ -68,35 +97,6 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
                 $arguments
             );
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-           'Converts `pow()` to the `**` operator. Requires PHP >= 5.6.',
-            array(
-                new VersionSpecificCodeSample(
-                    "<?php\n pow(\$a, 1);",
-                    new VersionSpecification(50600)
-                ),
-            ),
-            null,
-            null,
-            null,
-            'Risky when the function `pow()` is overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must be run before BinaryOperatorSpacesFixer
-        return 1;
     }
 
     /**

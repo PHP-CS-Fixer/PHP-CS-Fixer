@@ -26,7 +26,26 @@ final class PreIncrementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Pre incrementation/decrementation should be used if possible.',
+            array(new CodeSample("<?php\n\$a++;\n\$b--;"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_INC, T_DEC));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -50,25 +69,6 @@ final class PreIncrementFixer extends AbstractFixer
                 $token->clear();
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Pre incrementation/decrementation should be used if possible.',
-            array(new CodeSample("<?php\n\$a++;\n\$b--;"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_INC, T_DEC));
     }
 
     /**

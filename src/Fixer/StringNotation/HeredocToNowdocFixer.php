@@ -26,7 +26,35 @@ final class HeredocToNowdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Convert `heredoc` to `nowdoc` where possible.',
+            array(
+                new CodeSample(
+<<<'EOF'
+<?php $a = <<<"TEST"
+Foo
+TEST;
+
+EOF
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_START_HEREDOC);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_START_HEREDOC) || false !== strpos($token->getContent(), "'")) {
@@ -55,34 +83,6 @@ final class HeredocToNowdocFixer extends AbstractFixer
             $content = str_replace(array('\\\\', '\\$'), array('\\', '$'), $content);
             $tokens[$index + 1]->setContent($content);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Convert `heredoc` to `nowdoc` where possible.',
-            array(
-                new CodeSample(
-<<<'EOF'
-<?php $a = <<<"TEST"
-Foo
-TEST;
-
-EOF
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_START_HEREDOC);
     }
 
     /**

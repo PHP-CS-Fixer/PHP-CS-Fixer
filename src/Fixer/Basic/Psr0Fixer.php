@@ -52,7 +52,38 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
+            array(
+                new FileSpecificCodeSample(
+                    '<?php
+namespace PhpCsFixer\FIXER\Basic;
+class InvalidName {}
+',
+                    new \SplFileInfo(__FILE__)
+                ),
+                new FileSpecificCodeSample(
+                    '<?php
+namespace PhpCsFixer\FIXER\Basic;
+class InvalidName {}
+',
+                    new \SplFileInfo(__FILE__),
+                    array('dir' => realpath(__DIR__.'/../..'))
+                ),
+            ),
+            null,
+            'One could set up `dir` where the code is placed under project location.',
+            self::$defaultConfiguration,
+            'This fixer may change you class name, which will break the code that is depended on old name.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $namespace = false;
         $namespaceIndex = 0;
@@ -140,36 +171,5 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
                 $tokens[$classyIndex]->setContent(str_replace('/', '_', $filename));
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
-            array(
-                new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
-                    new \SplFileInfo(__FILE__)
-                ),
-                new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
-                    new \SplFileInfo(__FILE__),
-                    array('dir' => realpath(__DIR__.'/../..'))
-                ),
-            ),
-            null,
-            'One could set up `dir` where the code is placed under project location.',
-            self::$defaultConfiguration,
-            'This fixer may change you class name, which will break the code that is depended on old name.'
-        );
     }
 }

@@ -25,21 +25,6 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $token->setContent(preg_replace(
-                    '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(\w.*)$~m', '$1\\\\$2',
-                    $token->getContent()
-                ));
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -78,5 +63,20 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if ($token->isGivenKind(T_DOC_COMMENT)) {
+                $token->setContent(preg_replace(
+                    '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(\w.*)$~m', '$1\\\\$2',
+                    $token->getContent()
+                ));
+            }
+        }
     }
 }

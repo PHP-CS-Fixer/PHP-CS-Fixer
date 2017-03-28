@@ -72,36 +72,6 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = $tokensAnalyzer->getClassyElements();
-
-        foreach (array_reverse($elements, true) as $index => $element) {
-            if (!in_array($element['type'], $this->configuration, true)) {
-                continue;
-            }
-
-            switch ($element['type']) {
-                case 'method':
-                    $this->fixMethodVisibility($tokens, $index);
-
-                    break;
-                case 'property':
-                    $this->fixPropertyVisibility($tokens, $index);
-
-                    break;
-                case 'const':
-                    $this->fixConstVisibility($tokens, $index);
-
-                    break;
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -143,6 +113,36 @@ class Sample
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        foreach (array_reverse($elements, true) as $index => $element) {
+            if (!in_array($element['type'], $this->configuration, true)) {
+                continue;
+            }
+
+            switch ($element['type']) {
+                case 'method':
+                    $this->fixMethodVisibility($tokens, $index);
+
+                    break;
+                case 'property':
+                    $this->fixPropertyVisibility($tokens, $index);
+
+                    break;
+                case 'const':
+                    $this->fixConstVisibility($tokens, $index);
+
+                    break;
+            }
+        }
     }
 
     /**

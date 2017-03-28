@@ -67,41 +67,6 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        if (null === $this->headerComment) {
-            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
-        }
-
-        // figure out where the comment should be placed
-        $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens);
-
-        // check if there is already a comment
-        $headerCurrentIndex = $this->findHeaderCommentCurrentIndex($tokens, $headerNewIndex - 1);
-
-        if (null === $headerCurrentIndex) {
-            if ('' === $this->headerComment) {
-                return; // header not found and none should be set, return
-            }
-
-            $this->insertHeader($tokens, $headerNewIndex);
-        } elseif ($this->headerComment !== $tokens[$headerCurrentIndex]->getContent()) {
-            $tokens->clearTokenAndMergeSurroundingWhitespace($headerCurrentIndex);
-            if ('' === $this->headerComment) {
-                return; // header found and cleared, none should be set, return
-            }
-
-            $this->insertHeader($tokens, $headerNewIndex);
-        } else {
-            $headerNewIndex = $headerCurrentIndex;
-        }
-
-        $this->fixWhiteSpaceAroundHeader($tokens, $headerNewIndex);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -171,6 +136,41 @@ echo 1;
     public function isCandidate(Tokens $tokens)
     {
         return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        if (null === $this->headerComment) {
+            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
+        }
+
+        // figure out where the comment should be placed
+        $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens);
+
+        // check if there is already a comment
+        $headerCurrentIndex = $this->findHeaderCommentCurrentIndex($tokens, $headerNewIndex - 1);
+
+        if (null === $headerCurrentIndex) {
+            if ('' === $this->headerComment) {
+                return; // header not found and none should be set, return
+            }
+
+            $this->insertHeader($tokens, $headerNewIndex);
+        } elseif ($this->headerComment !== $tokens[$headerCurrentIndex]->getContent()) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($headerCurrentIndex);
+            if ('' === $this->headerComment) {
+                return; // header found and cleared, none should be set, return
+            }
+
+            $this->insertHeader($tokens, $headerNewIndex);
+        } else {
+            $headerNewIndex = $headerCurrentIndex;
+        }
+
+        $this->fixWhiteSpaceAroundHeader($tokens, $headerNewIndex);
     }
 
     /**

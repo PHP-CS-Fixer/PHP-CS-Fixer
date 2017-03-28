@@ -28,19 +28,6 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        // min. offset 4 as minimal candidate is @: <?php\n/** @inheritdoc */class min{}
-        for ($index = 1, $count = count($tokens) - 4; $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind(array(T_CLASS, T_INTERFACE))) {
-                $index = $this->fixClassy($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -68,6 +55,19 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound(array(T_CLASS, T_INTERFACE));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // min. offset 4 as minimal candidate is @: <?php\n/** @inheritdoc */class min{}
+        for ($index = 1, $count = count($tokens) - 4; $index < $count; ++$index) {
+            if ($tokens[$index]->isGivenKind(array(T_CLASS, T_INTERFACE))) {
+                $index = $this->fixClassy($tokens, $index);
+            }
+        }
     }
 
     /**

@@ -121,31 +121,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        static $searchSequence = array(
-            array(T_VARIABLE, '$this'),
-            array(T_OBJECT_OPERATOR, '->'),
-            array(T_STRING),
-        );
-
-        $index = 1;
-        $candidate = $tokens->findSequence($searchSequence, $index);
-        while (null !== $candidate) {
-            end($candidate);
-            $index = $this->getAssertCandidate($tokens, key($candidate));
-            if (is_array($index)) {
-                $index = $this->fixAssert($tokens, $index);
-            }
-
-            ++$index;
-            $candidate = $tokens->findSequence($searchSequence, $index);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -179,6 +154,31 @@ $this->assertTrue(is_nan($a));
     {
         // should be run after the PhpUnitConstructFixer.
         return -15;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        static $searchSequence = array(
+            array(T_VARIABLE, '$this'),
+            array(T_OBJECT_OPERATOR, '->'),
+            array(T_STRING),
+        );
+
+        $index = 1;
+        $candidate = $tokens->findSequence($searchSequence, $index);
+        while (null !== $candidate) {
+            end($candidate);
+            $index = $this->getAssertCandidate($tokens, key($candidate));
+            if (is_array($index)) {
+                $index = $this->fixAssert($tokens, $index);
+            }
+
+            ++$index;
+            $candidate = $tokens->findSequence($searchSequence, $index);
+        }
     }
 
     /**

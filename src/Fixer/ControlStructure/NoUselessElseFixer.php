@@ -33,7 +33,29 @@ final class NoUselessElseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'There should not be useless `else` cases.',
+            array(
+                new CodeSample("<?php\nif (\$a) {\n    return 1;\n} else {\n    return 2;\n}"),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run before NoWhitespaceInBlankLineFixer, NoExtraConsecutiveBlankLinesFixer, BracesFixer and after NoEmptyStatementFixer.
+        return 25;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_ELSE)) {
@@ -54,28 +76,6 @@ final class NoUselessElseFixer extends AbstractFixer
             // clean up `else` if possible
             $this->fixElse($tokens, $index);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'There should not be useless `else` cases.',
-            array(
-                new CodeSample("<?php\nif (\$a) {\n    return 1;\n} else {\n    return 2;\n}"),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run before NoWhitespaceInBlankLineFixer, NoExtraConsecutiveBlankLinesFixer, BracesFixer and after NoEmptyStatementFixer.
-        return 25;
     }
 
     /**

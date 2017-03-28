@@ -44,7 +44,38 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replace deprecated `ereg` regular expression functions with preg.',
+            array(new CodeSample('<?php $x = ereg(\'[A-Z]\');')),
+            null,
+            null,
+            null,
+            'Risky if the `ereg` funcion is overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $end = $tokens->count() - 1;
 
@@ -99,37 +130,6 @@ final class EregToPregFixer extends AbstractFixer
                 $tokens[$match[0]]->setContent($map[1]);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replace deprecated `ereg` regular expression functions with preg.',
-            array(new CodeSample('<?php $x = ereg(\'[A-Z]\');')),
-            null,
-            null,
-            null,
-            'Risky if the `ereg` funcion is overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
     }
 
     /**

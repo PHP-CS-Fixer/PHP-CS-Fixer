@@ -27,7 +27,37 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'A case should be followed by a colon and not a semicolon.',
+            array(
+                new CodeSample(
+'<?php
+    switch ($a) {
+        case 1;
+            break;
+        default;
+            break;
+    }
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(array(T_CASE, T_DEFAULT))) {
@@ -54,35 +84,5 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
                 $tokens->overrideAt($colonIndex, ':');
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'A case should be followed by a colon and not a semicolon.',
-            array(
-                new CodeSample(
-'<?php
-    switch ($a) {
-        case 1;
-            break;
-        default;
-            break;
-    }
-'
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
     }
 }

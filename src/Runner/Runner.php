@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Runner;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
@@ -162,7 +163,12 @@ final class Runner
 
         try {
             foreach ($this->fixers as $fixer) {
-                if (!$fixer->supports($file) || !$fixer->isCandidate($tokens)) {
+                // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
+                // thus we need to check it and conditionally skip fixing
+                if (
+                    !$fixer instanceof AbstractFixer &&
+                    (!$fixer->supports($file) || !$fixer->isCandidate($tokens))
+                ) {
                     continue;
                 }
 

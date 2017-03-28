@@ -102,55 +102,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        // Checks if specific statements are set and uses them in this case.
-        $loops = array_intersect_key(self::$loops, array_flip($this->controlStatements));
-
-        foreach ($tokens as $index => $token) {
-            if (!$token->equals('(')) {
-                continue;
-            }
-
-            $blockStartIndex = $index;
-            $index = $tokens->getPrevMeaningfulToken($index);
-            $token = $tokens[$index];
-
-            foreach ($loops as $loop) {
-                if (!$token->isGivenKind($loop['lookupTokens'])) {
-                    continue;
-                }
-
-                $blockEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $blockStartIndex);
-                $blockEndNextIndex = $tokens->getNextMeaningfulToken($blockEndIndex);
-
-                if (!$tokens[$blockEndNextIndex]->equalsAny($loop['neededSuccessors'])) {
-                    continue;
-                }
-
-                if (array_key_exists('forbiddenContents', $loop)) {
-                    $forbiddenTokenIndex = $tokens->getNextTokenOfKind($blockStartIndex, $loop['forbiddenContents']);
-                    // A forbidden token is found and is inside the parenthesis.
-                    if (null !== $forbiddenTokenIndex && $forbiddenTokenIndex < $blockEndIndex) {
-                        continue;
-                    }
-                }
-
-                if ($tokens[$blockStartIndex - 1]->isWhitespace() || $tokens[$blockStartIndex - 1]->isComment()) {
-                    $tokens->clearTokenAndMergeSurroundingWhitespace($blockStartIndex);
-                } else {
-                    // Adds a space to prevent broken code like `return2`.
-                    $tokens->overrideAt($blockStartIndex, array(T_WHITESPACE, ' '));
-                }
-
-                $tokens->clearTokenAndMergeSurroundingWhitespace($blockEndIndex);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -196,5 +147,54 @@ yield(2);
     public function getPriority()
     {
         return 30;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // Checks if specific statements are set and uses them in this case.
+        $loops = array_intersect_key(self::$loops, array_flip($this->controlStatements));
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->equals('(')) {
+                continue;
+            }
+
+            $blockStartIndex = $index;
+            $index = $tokens->getPrevMeaningfulToken($index);
+            $token = $tokens[$index];
+
+            foreach ($loops as $loop) {
+                if (!$token->isGivenKind($loop['lookupTokens'])) {
+                    continue;
+                }
+
+                $blockEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $blockStartIndex);
+                $blockEndNextIndex = $tokens->getNextMeaningfulToken($blockEndIndex);
+
+                if (!$tokens[$blockEndNextIndex]->equalsAny($loop['neededSuccessors'])) {
+                    continue;
+                }
+
+                if (array_key_exists('forbiddenContents', $loop)) {
+                    $forbiddenTokenIndex = $tokens->getNextTokenOfKind($blockStartIndex, $loop['forbiddenContents']);
+                    // A forbidden token is found and is inside the parenthesis.
+                    if (null !== $forbiddenTokenIndex && $forbiddenTokenIndex < $blockEndIndex) {
+                        continue;
+                    }
+                }
+
+                if ($tokens[$blockStartIndex - 1]->isWhitespace() || $tokens[$blockStartIndex - 1]->isComment()) {
+                    $tokens->clearTokenAndMergeSurroundingWhitespace($blockStartIndex);
+                } else {
+                    // Adds a space to prevent broken code like `return2`.
+                    $tokens->overrideAt($blockStartIndex, array(T_WHITESPACE, ' '));
+                }
+
+                $tokens->clearTokenAndMergeSurroundingWhitespace($blockEndIndex);
+            }
+        }
     }
 }

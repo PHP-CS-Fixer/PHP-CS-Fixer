@@ -25,20 +25,6 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $token = $tokens[$index];
-
-            if ($token->isGivenKind(T_NAMESPACE)) {
-                $this->fixLinesBeforeNamespace($tokens, $index, 2);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -56,5 +42,19 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_NAMESPACE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            $token = $tokens[$index];
+
+            if ($token->isGivenKind(T_NAMESPACE)) {
+                $this->fixLinesBeforeNamespace($tokens, $index, 2);
+            }
+        }
     }
 }

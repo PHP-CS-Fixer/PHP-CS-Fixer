@@ -95,33 +95,6 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $searchFor = array_keys($this->configuration);
-
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType($searchFor);
-
-            if (empty($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                $annotation->getTag()->setName($this->configuration[$annotation->getTag()->getName()]);
-            }
-
-            $token->setContent($doc->getContent());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -159,5 +132,32 @@ final class Example
             'Array that maps current annotations into new ones.',
             self::$defaultConfiguration
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $searchFor = array_keys($this->configuration);
+
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $doc = new DocBlock($token->getContent());
+            $annotations = $doc->getAnnotationsOfType($searchFor);
+
+            if (empty($annotations)) {
+                continue;
+            }
+
+            foreach ($annotations as $annotation) {
+                $annotation->getTag()->setName($this->configuration[$annotation->getTag()->getName()]);
+            }
+
+            $token->setContent($doc->getContent());
+        }
     }
 }

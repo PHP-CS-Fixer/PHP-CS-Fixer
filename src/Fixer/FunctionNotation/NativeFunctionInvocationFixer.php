@@ -85,63 +85,6 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $functionNames = $this->getFunctionNames();
-
-        $indexes = array();
-
-        for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            $token = $tokens[$index];
-
-            $tokenContent = $token->getContent();
-
-            // test if we are at a function call
-            if (!$token->isGivenKind(T_STRING)) {
-                continue;
-            }
-
-            $next = $tokens->getNextMeaningfulToken($index);
-            if (!$tokens[$next]->equals('(')) {
-                continue;
-            }
-
-            $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$functionNamePrefix]->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
-                continue;
-            }
-
-            if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
-                // skip if the call is to a constructor or to a function in a namespace other than the default
-                $prev = $tokens->getPrevMeaningfulToken($functionNamePrefix);
-                if ($tokens[$prev]->isGivenKind(array(T_STRING, T_NEW))) {
-                    continue;
-                }
-            }
-
-            $lowerFunctionName = \strtolower($tokenContent);
-
-            if (!\in_array($lowerFunctionName, $functionNames, true)) {
-                continue;
-            }
-
-            // do not bother if previous token is already namespace separator
-            if ($tokens[$index - 1]->isGivenKind(T_NS_SEPARATOR)) {
-                continue;
-            }
-
-            $indexes[] = $index;
-        }
-
-        $indexes = \array_reverse($indexes);
-        foreach ($indexes as $index) {
-            $tokens->insertAt($index, new Token(array(T_NS_SEPARATOR, '\\')));
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         $riskyDescription = <<<'TXT'
@@ -205,6 +148,63 @@ function baz($options)
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $functionNames = $this->getFunctionNames();
+
+        $indexes = array();
+
+        for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
+            $token = $tokens[$index];
+
+            $tokenContent = $token->getContent();
+
+            // test if we are at a function call
+            if (!$token->isGivenKind(T_STRING)) {
+                continue;
+            }
+
+            $next = $tokens->getNextMeaningfulToken($index);
+            if (!$tokens[$next]->equals('(')) {
+                continue;
+            }
+
+            $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$functionNamePrefix]->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
+                continue;
+            }
+
+            if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
+                // skip if the call is to a constructor or to a function in a namespace other than the default
+                $prev = $tokens->getPrevMeaningfulToken($functionNamePrefix);
+                if ($tokens[$prev]->isGivenKind(array(T_STRING, T_NEW))) {
+                    continue;
+                }
+            }
+
+            $lowerFunctionName = \strtolower($tokenContent);
+
+            if (!\in_array($lowerFunctionName, $functionNames, true)) {
+                continue;
+            }
+
+            // do not bother if previous token is already namespace separator
+            if ($tokens[$index - 1]->isGivenKind(T_NS_SEPARATOR)) {
+                continue;
+            }
+
+            $indexes[] = $index;
+        }
+
+        $indexes = \array_reverse($indexes);
+        foreach ($indexes as $index) {
+            $tokens->insertAt($index, new Token(array(T_NS_SEPARATOR, '\\')));
+        }
     }
 
     /**

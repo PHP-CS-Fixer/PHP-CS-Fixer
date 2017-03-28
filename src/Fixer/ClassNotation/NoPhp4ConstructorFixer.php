@@ -27,7 +27,55 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Convert PHP4-style constructors to `__construct`.',
+            array(
+               new CodeSample('<?php
+class Foo
+{
+    public function Foo($bar)
+    {
+    }
+}'),
+            ),
+            null,
+            null,
+            null,
+            'Risky when old style constructor being fixed is overridden overrides parent one.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must run before OrderedClassElementsFixer
+        return 75;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_CLASS);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $classes = array_keys($tokens->findGivenKind(T_CLASS));
@@ -79,54 +127,6 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
             $this->fixConstructor($tokens, $className, $classStart, $classEnd);
             $this->fixParent($tokens, $classStart, $classEnd);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Convert PHP4-style constructors to `__construct`.',
-            array(
-               new CodeSample('<?php
-class Foo
-{
-    public function Foo($bar)
-    {
-    }
-}'),
-            ),
-            null,
-            null,
-            null,
-            'Risky when old style constructor being fixed is overridden overrides parent one.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must run before OrderedClassElementsFixer
-        return 75;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_CLASS);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
     }
 
     /**

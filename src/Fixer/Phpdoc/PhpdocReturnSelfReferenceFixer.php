@@ -94,19 +94,6 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
-            if ('method' === $element['type']) {
-                $this->fixMethod($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -140,6 +127,19 @@ class Sample
     public function isCandidate(Tokens $tokens)
     {
         return count($tokens) > 10 && $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound(array(T_CLASS, T_INTERFACE));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
+            if ('method' === $element['type']) {
+                $this->fixMethod($tokens, $index);
+            }
+        }
     }
 
     /**

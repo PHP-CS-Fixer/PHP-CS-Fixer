@@ -76,33 +76,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        // last and first tokens cannot be an operator
-        for ($index = $tokens->count() - 2; $index >= 0; --$index) {
-            if (!$tokensAnalyzer->isBinaryOperator($index)) {
-                continue;
-            }
-
-            $isDeclare = $this->isDeclareStatement($tokens, $index);
-            if (false !== $isDeclare) {
-                $index = $isDeclare; // skip `declare(foo ==bar)`, see `declare_equal_normalize`
-            } else {
-                $this->fixWhiteSpaceAroundOperator($tokens, $index);
-            }
-
-            // previous of binary operator is now never an operator / previous of declare statement cannot be an operator
-            --$index;
-        }
-
-        $this->runHelperFixers($file, $tokens);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -169,6 +142,33 @@ $foo = array(
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        // last and first tokens cannot be an operator
+        for ($index = $tokens->count() - 2; $index >= 0; --$index) {
+            if (!$tokensAnalyzer->isBinaryOperator($index)) {
+                continue;
+            }
+
+            $isDeclare = $this->isDeclareStatement($tokens, $index);
+            if (false !== $isDeclare) {
+                $index = $isDeclare; // skip `declare(foo ==bar)`, see `declare_equal_normalize`
+            } else {
+                $this->fixWhiteSpaceAroundOperator($tokens, $index);
+            }
+
+            // previous of binary operator is now never an operator / previous of declare statement cannot be an operator
+            --$index;
+        }
+
+        $this->runHelperFixers($file, $tokens);
     }
 
     /**

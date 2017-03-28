@@ -25,22 +25,6 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_RETURN)) {
-                continue;
-            }
-
-            if ($this->needFixing($tokens, $index)) {
-                $this->clear($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -76,6 +60,22 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_RETURN)) {
+                continue;
+            }
+
+            if ($this->needFixing($tokens, $index)) {
+                $this->clear($tokens, $index);
+            }
+        }
     }
 
     /**

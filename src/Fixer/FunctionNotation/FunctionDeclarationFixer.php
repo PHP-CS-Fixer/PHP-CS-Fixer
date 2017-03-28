@@ -39,7 +39,40 @@ final class FunctionDeclarationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Spaces should be properly placed in a function declaration.',
+            array(
+                new CodeSample(
+'<?php
+
+function  foo  ($bar, $baz)
+{
+    return false;
+}
+'
+                ),
+                new CodeSample(
+'<?php
+
+class Foo
+{
+    public static function  bar ($baz)
+    {
+        return false;
+    }
+}
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -112,39 +145,6 @@ final class FunctionDeclarationFixer extends AbstractFixer
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Spaces should be properly placed in a function declaration.',
-            array(
-                new CodeSample(
-'<?php
-
-function  foo  ($bar, $baz)
-{
-    return false;
-}
-'
-                ),
-                new CodeSample(
-'<?php
-
-class Foo
-{
-    public static function  bar ($baz)
-    {
-        return false;
-    }
-}
-'
-                ),
-            )
-        );
     }
 
     private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end)

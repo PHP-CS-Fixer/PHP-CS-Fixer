@@ -70,23 +70,6 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $analyzer = new TokensAnalyzer($tokens);
-        $elements = array_reverse($analyzer->getClassyElements(), true);
-
-        foreach ($elements as $index => $element) {
-            if (!in_array($element['type'], $this->configuration, true)) {
-                continue; // not in configuration
-            }
-
-            $this->fixElement($tokens, $index);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
@@ -124,6 +107,23 @@ final class Example
             'List of strings which element should be modified, possible values: `const`, `property`.',
             self::$defaultConfiguration
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $analyzer = new TokensAnalyzer($tokens);
+        $elements = array_reverse($analyzer->getClassyElements(), true);
+
+        foreach ($elements as $index => $element) {
+            if (!in_array($element['type'], $this->configuration, true)) {
+                continue; // not in configuration
+            }
+
+            $this->fixElement($tokens, $index);
+        }
     }
 
     /**
