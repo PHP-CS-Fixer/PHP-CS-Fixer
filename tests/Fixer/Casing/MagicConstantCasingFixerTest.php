@@ -96,6 +96,32 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
+     * @requires PHP 5.5
+     * @dataProvider provideFixCases55
+     */
+    public function testFix55($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCases55()
+    {
+        return array(
+            array(
+                '<?php echo Exception::class;',
+                '<?php echo Exception::CLASS;',
+            ),
+            array(
+                '<?php echo Exception::class;',
+                '<?php echo Exception::ClAss;',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @requires PHP 7.0
      * @dataProvider provideFixCases70
      */

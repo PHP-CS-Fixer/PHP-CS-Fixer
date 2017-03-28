@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Casing;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -76,6 +77,10 @@ final class MagicConstantCasingFixer extends AbstractFixer
 
             if (defined('T_TRAIT_C')) {
                 $magicConstants[T_TRAIT_C] = '__TRAIT__';
+            }
+
+            if (PHP_VERSION_ID >= 50500) {
+                $magicConstants[CT::T_CLASS_CONSTANT] = 'class';
             }
         }
 
