@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Cache;
 
-use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
@@ -161,8 +160,6 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
         $hash = crc32('hello');
 
         $cache->set($file, $hash);
-
-        /* @var Cache $cached */
         $cached = Cache::fromJson($cache->toJson());
 
         $this->assertTrue($cached->getSignature()->equals($signature));
@@ -186,7 +183,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
                 ToolInfo::getVersion(),
                 array(
                     // value encoded in ANSI, not UTF
-                    'header_comment' => array('header' => 'Dariusz '.base64_decode('UnVtafFza2k=')),
+                    'header_comment' => array('header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)),
                 )
             )),
         );
