@@ -1,0 +1,254 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-27T10:44:45Z
+
+👍 Looks nice, could you add a screenshot of the result? Thanks :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-27T11:15:33Z
+
+lint failure example:
+![screenshot from 2017-02-27 12-10-44](https://cloud.githubusercontent.com/assets/10462973/23359373/3f0118b8-fce6-11e6-8e13-0c67d3df82b5.png)
+
+broken fixer example:
+![screenshot from 2017-02-27 12-11-25](https://cloud.githubusercontent.com/assets/10462973/23359380/40daca62-fce6-11e6-80c1-ec423b298cb7.png)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-27T12:42:12Z
+
+I find the stacktrace hard to read. Wouldn't it be easier with functions and files on the same line (and thus without the _Function_/_File_ label column), maybe with different colors? What about showing `class::method()` instead of just `method`?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-27T12:45:17Z
+
+The problem is that it might be closures (and in theory functions) and we get the file and not the class, so making it `class::method()` will be hard if possible at all.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-27T12:50:28Z
+
+Are your sure? [Documentation seems to say otherwise](http://php.net/manual/en/function.debug-backtrace.php#refsect1-function.debug-backtrace-returnvalues).
+
+Edit: also, I would use different colors for _Details_ and _Trace_ to distinguish them from the rest of the output.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-27T13:12:45Z
+
+ah, indeed you are right;
+https://3v4l.org/rTa9C
+
+will update
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-01T07:18:18Z
+
+updated output
+
+![output](https://cloud.githubusercontent.com/assets/10462973/23449591/909fca58-fe57-11e6-9508-2c96050f0226.png)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-01T08:28:55Z
+
+I'd like to make a few suggestions regarding the output.
+
+The _Details_ section could be simplified by:
+* displaying the exception class, message and code on a single line like Symfony does, e.g. `[FooException] Bar (123)`;
+* removing the exception file location, which is redundant with the stacktrace.
+
+I still find hard to read the stacktrace. I think it would be better to have each file/function on a single line like regular stacktraces, e.g. `Foo->bar /path/to/Foo.php:123`, with different colors for the code part and the location part. Lines will be longer but most people have large enough screens, I suppose.
+
+Those changes would even remove the need to have section titles, empty line separation should be enough.
+
+What do you think?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-01T09:35:34Z
+
+> [FooException] Bar (123);
+
+This would create long lines when we keep the namespace of the exception and the exception message is typically longer than `Bar`, so on that
+
+> have large enough screens
+
+true, however when ever I get more pixels I add more consoles rather than make the consoles wider ;)
+
+>removing the exception file location, which is redundant with the stacktrace.
+
+fair point, however running with `-v` will not give the trace, so the file location would be unknown. I give it a thought.
+
+Thanks for the suggestions :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-01T09:47:52Z
+
+> This would create long lines when we keep the namespace
+
+True, what about using an empty line between class and message then (if I remember correctly, Symfony actually displays exceptions that way):
+```
+[Some\Namespaced\FooException]
+
+Some message that we could wrap at e.g. 80 characters if it's too long. (123)
+```
+
+> when ever I get more pixels I add more consoles rather than make the consoles wider
+
+Well, same for me actually, but I still want to give it a try :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-01T10:16:49Z
+
+fair points, however you example doesn't show the file where the exception is thrown, only class, message and line number :)
+Keep in mind the stack and details are only for us dev's here, lint exceptions do not come with a stack
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-01T11:05:52Z
+
+oh awesome, on HHVM the linenumbers are resolved with diff. values \o/
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-02T08:43:03Z
+
+I played a little with your branch, here's what I got:
+
+![One-line stacktrace](https://cloud.githubusercontent.com/assets/1736542/23499060/c9e908a0-ff2a-11e6-8bd9-e27fd6a77903.png)
+
+or
+
+![Multiline stacktrace](https://cloud.githubusercontent.com/assets/1736542/23499061/c9ef125e-ff2a-11e6-810a-82c3194c1588.png)
+
+The exception part is a bit scary and maybe too big, but I like the stacktrace. I think it can still be improved though, for example with the `->` in white to easily distinguish class from method, and maybe replace `:` with `at line`.
+
+What do you think?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-02T09:37:36Z
+
+I like the second version and agree on all points :)
+Can you PR my PR with the changes or talk me through how you got that result?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-02T09:52:55Z
+
+Cool! Well I made pure _quick & dirty_ changes just to get the result so I must clean a bit before opening a PR 😅. I can't do it right now but if you want to do it in the meantine, go ahead, I just changed some `writeln()` calls, used basic `<comment>` and `<info>` coloring and inverted method and files parts in `outputTrace()`.
+
+Edit: I also think we can hide the exception code when it's `0`.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-03T07:14:50Z
+
+Thanks @SpacePossum :)
+
+By the way, I checked how Symfony displays exceptions, just to make sure it wouldn't be easier to just reuse it. The display is closer to the first version I proposed above. But `Application::renderException()` does not seem to support `\Throwable` so we can't use it anyway.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-03T08:04:15Z
+
+thanks for checking @julienfalque :+1:  :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-03T09:39:04Z
+
+for that purpose any throwable could be converted into `FatalThrowableError` exception
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-03T09:44:26Z
+
+Ah you're right, didn't know that. Shall we use it then?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-03T11:03:00Z
+
+if it would allow us to reuse the code instead of writing our own - why not ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-03T20:33:14Z
+
+Capturing the output as generated by SF for each error/exception raised and than reformatting for our need is probably more work than writing our own logic for the output.
+As much as I (try to) like the stand-alone Console component of SF to apply DRY, this is another example that might not fit. Happy to be proven otherwise, till than I think we are on good direction to provide the output wanted.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-06T20:39:10Z
+
+Why the output that Symfony provides us out of the box is not matching our requirements ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-06T21:17:09Z
+
+maybe I misunderstood, what part of SF exception output should we consider to reuse?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-06T21:23:05Z
+
+What I was answering to:
+
+>> But `Application::renderException()` does not seem to support `\Throwable` so we can't use it anyway.
+>
+> any throwable could be converted into `FatalThrowableError` exception (so we could reuse `renderException`
+
+Why can't we reuse code from Symfony components and need to do it on our own ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-07T07:22:10Z
+
+https://github.com/symfony/symfony/blob/2.8/src/Symfony/Component/Console/Application.php#L641
+
+- output of the trace is based on verbosity level of the output, not on application logic
+- length of trace cannot be controlled
+- prints out details about the command, making it not suitable to be called multiple times
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-24T18:58:20Z
+
+I like the proposed changes. Please resolve raised issues from my PR.
+Also, changing base branch to master, as this is not a bugfix
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-29T06:29:28Z
+
+hmm I don't get git on this, on a rebase on 2.1 it markes all changes on 2.1 as in conflict with the commits here even if those files are not touched in the commits of this branch.
+Shall I create a new branch? btw. I get the same on all my branches that started of from 2.1
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-29T07:48:54Z
+
+1. please don't create new branch (even if you would like to recreate the branch from scratch, you could still reuse original branch name to not have to open new PR)
+2. your issue is because you try to rebase on 2.1, while base branch is... master. just rebase on master (this is not a bugfix, so base branch shall not be 2.1)
+3. could you squash commit of yours leaving @julienfalque there? then squash my commit into anything
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-29T08:05:51Z
+
+ah yes, I forgot the target is master because of the branch name :man_facepalming:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-29T22:50:37Z
+
+ping @SpacePossum , could you rebase at Thursday please ?
