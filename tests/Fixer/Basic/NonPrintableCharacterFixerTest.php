@@ -78,6 +78,14 @@ echo "Hello'.pack('CCC', 0xe2, 0x80, 0xaf).'World'.pack('CC', 0xc2, 0xa0).'!";',
                     echo $p;
                 }',
             ),
+            array(
+                '<?php echo "$a[0] ${a}";',
+                '<?php echo "$a'.pack('CCC', 0xe2, 0x80, 0x8b).'[0]'.pack('CCC', 0xe2, 0x80, 0x8b).' ${a'.pack('CCC', 0xe2, 0x80, 0x8b).'}";',
+            ),
+            array(
+                '<?php echo \'12345\';?>abc<?php ?>',
+                '<?php echo \'123'.pack('CCC', 0xe2, 0x80, 0x8b).'45\';?>a'.pack('CCC', 0xe2, 0x80, 0x8b).'bc<?php ?>',
+            ),
         );
     }
 }
