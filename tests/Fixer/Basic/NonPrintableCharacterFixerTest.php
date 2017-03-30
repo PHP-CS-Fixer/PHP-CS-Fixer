@@ -58,6 +58,26 @@ echo "Hello World !";',
 // ec'.pack('CCC', 0xe2, 0x80, 0x8b).'ho
 echo "Hello'.pack('CCC', 0xe2, 0x80, 0xaf).'World'.pack('CC', 0xc2, 0xa0).'!";',
             ),
+            array(
+                '<?php
+                
+                /**
+                 * @param string $p Param
+                 */
+                function f(string $p) 
+                {
+                    echo $p;
+                }',
+                '<?php
+                
+                /**
+                 * @param '.pack('CCC', 0xe2, 0x80, 0x8b).'string $p Param
+                 */
+                function f(string $p) 
+                {
+                    echo $p;
+                }',
+            ),
         );
     }
 }
