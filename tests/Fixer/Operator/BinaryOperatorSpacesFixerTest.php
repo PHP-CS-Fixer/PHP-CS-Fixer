@@ -1467,7 +1467,7 @@ $b;',
         );
     }
 
-    public function testDoNotTouchEqualsAndArrawByConfig()
+    public function testDoNotTouchEqualsAndArrowByConfig()
     {
         $this->fixer->configure(array(
             'align_equals' => null,
@@ -1488,6 +1488,26 @@ $b;',
                     5 =>  1,
                      6 => 7,
                 );
+            '
+        );
+    }
+
+    /**
+     * @requires PHP 7.1
+     */
+    public function testAlignArrayDestruction()
+    {
+        $this->fixer->configure(array('align_equals' => true));
+        $this->doTest(
+            '<?php
+                $c = [$d] = $e[1];
+                function A(){}[$a] = $a[$c];
+                $b                 = 1;
+            ',
+            '<?php
+                $c = [$d] = $e[1];
+                function A(){}[$a] = $a[$c];
+                $b = 1;
             '
         );
     }
