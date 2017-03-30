@@ -79,6 +79,11 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
             T_INLINE_HTML,
             T_WHITESPACE,
             T_COMMENT,
+            T_ENCAPSED_AND_WHITESPACE,
+            T_END_HEREDOC,
+            T_OPEN_TAG,
+            T_DOC_COMMENT,
+            T_START_HEREDOC,
         ));
     }
 
