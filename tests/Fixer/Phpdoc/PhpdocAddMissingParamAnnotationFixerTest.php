@@ -241,6 +241,48 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      function f11($caseSensitive) {}
 ',
             ),
+            array(
+                '<?php
+    /** @return string */
+    function hello($string)
+    {
+        return $string;
+    }',
+            ),
+            array(
+                '<?php
+    /** @return string
+     * @param mixed $string
+     */
+    function hello($string)
+    {
+        return $string;
+    }',
+                '<?php
+    /** @return string
+     */
+    function hello($string)
+    {
+        return $string;
+    }',
+            ),
+            array(
+                '<?php
+    /**
+     * @param mixed $string
+     * @return string */
+    function hello($string)
+    {
+        return $string;
+    }',
+                '<?php
+    /**
+     * @return string */
+    function hello($string)
+    {
+        return $string;
+    }',
+            ),
         );
     }
 
