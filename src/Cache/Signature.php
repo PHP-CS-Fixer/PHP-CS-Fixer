@@ -76,7 +76,7 @@ final class Signature implements SignatureInterface
 
     private static function utf8Encode(array $data)
     {
-        if (!function_exists('utf8_encode') || !function_exists('mb_detect_encoding')) {
+        if (!function_exists('mb_detect_encoding')) {
             return $data;
         }
 
