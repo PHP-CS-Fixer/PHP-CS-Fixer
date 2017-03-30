@@ -106,7 +106,14 @@ function f9(string $foo, $bar, $baz) {}',
                 continue;
             }
 
-            if (false !== stripos($token->getContent(), 'inheritdoc')) {
+            $tokenContent = $token->getContent();
+
+            if (false !== stripos($tokenContent, 'inheritdoc')) {
+                continue;
+            }
+
+            // ignore one-line phpdocs like `/** foo */`, as there is no place to put new annotations
+            if (false === strpos($tokenContent, "\n")) {
                 continue;
             }
 
@@ -149,7 +156,7 @@ function f9(string $foo, $bar, $baz) {}',
                 continue;
             }
 
-            $doc = new DocBlock($token->getContent());
+            $doc = new DocBlock($tokenContent);
             $lastParamLine = null;
 
             foreach ($doc->getAnnotationsOfType('param') as $annotation) {
