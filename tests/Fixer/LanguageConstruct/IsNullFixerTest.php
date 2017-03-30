@@ -160,6 +160,48 @@ FIXED;
             array(
                 '<?php is_null()?>',
             ),
+
+            /* edge cases: is_null wrapped into a binary operations */
+            array(
+                '<?php $result = (false === (null === $a)); ?>',
+                '<?php $result = (false === is_null($a)); ?>',
+            ),
+            array(
+                '<?php $result = ((null === $a) === false); ?>',
+                '<?php $result = (is_null($a) === false); ?>',
+            ),
+            array(
+                '<?php $result = (false !== (null === $a)); ?>',
+                '<?php $result = (false !== is_null($a)); ?>',
+            ),
+            array(
+                '<?php $result = ((null === $a) !== false); ?>',
+                '<?php $result = (is_null($a) !== false); ?>',
+            ),
+            array(
+                '<?php $result = (false == (null === $a)); ?>',
+                '<?php $result = (false == is_null($a)); ?>',
+            ),
+            array(
+                '<?php $result = ((null === $a) == false); ?>',
+                '<?php $result = (is_null($a) == false); ?>',
+            ),
+            array(
+                '<?php $result = (false != (null === $a)); ?>',
+                '<?php $result = (false != is_null($a)); ?>',
+            ),
+            array(
+                '<?php $result = ((null === $a) != false); ?>',
+                '<?php $result = (is_null($a) != false); ?>',
+            ),
+            array(
+                '<?php $result = (false <> (null === $a)); ?>',
+                '<?php $result = (false <> is_null($a)); ?>',
+            ),
+            array(
+                '<?php $result = ((null === $a) <> false); ?>',
+                '<?php $result = (is_null($a) <> false); ?>',
+            ),
         );
     }
 }
