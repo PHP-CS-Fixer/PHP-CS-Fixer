@@ -14,6 +14,8 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
@@ -25,12 +27,6 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DescribeCommandTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @group legacy
-     * @expectedDeprecation Arguments #5 and #6 of FixerDefinition::__construct() are deprecated and will be removed in 3.0, use argument #4 instead.
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.
-     */
     public function testExecuteOutput()
     {
         $expected = <<<'EOT'
@@ -38,9 +34,8 @@ Description of Foo/bar rule.
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer is configurable.
-Option "things" enables fixing things as well.
-Default configuration: ['things' => false].
+Fixer is configurable using following options:
+* things (bool): enables fixing things as well; defaults to false
 
 Fixing examples:
  * Example #1.
@@ -72,12 +67,6 @@ EOT;
         );
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Arguments #5 and #6 of FixerDefinition::__construct() are deprecated and will be removed in 3.0, use argument #4 instead.
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.
-     */
     public function testExecuteStatusCode()
     {
         if (!method_exists('Symfony\Component\Console\Tester\CommandTester', 'getStatusCode')) {
@@ -125,11 +114,14 @@ EOT;
     {
         $fixer = $this->prophesize();
         $fixer->willImplement('PhpCsFixer\Fixer\DefinedFixerInterface');
-        $fixer->willImplement('PhpCsFixer\Fixer\ConfigurableFixerInterface');
+        $fixer->willImplement('PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface');
 
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(false);
+        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver(array(
+            new FixerOption('things', 'Enables fixing things as well.', false, false, array('bool')),
+        )));
         $fixer->getDefinition()->willReturn(new FixerDefinition(
             'Fixes stuff.',
             array(
@@ -142,8 +134,6 @@ EOT;
                 ),
             ),
             'Replaces bad stuff with good stuff.',
-            'Option "things" enables fixing things as well.',
-            array('things' => false),
             'Can break stuff.'
         ));
 
