@@ -92,7 +92,7 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $index => $token) {
+        foreach ($tokens as $token) {
             $token->setContent(strtr($token->getContent(), $this->symbolsReplace));
         }
     }
