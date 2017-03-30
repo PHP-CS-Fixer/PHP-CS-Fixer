@@ -231,7 +231,7 @@ $foo = array(
                 $tokens->clearEmptyTokens();
             }
 
-            $helper->fix($file, $tokens);
+            $helper->fix($tokens);
         }
     }
 }

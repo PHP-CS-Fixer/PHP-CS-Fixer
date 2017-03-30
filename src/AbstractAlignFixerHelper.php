@@ -35,7 +35,7 @@ abstract class AbstractAlignFixerHelper
      */
     protected $deepestLevel = 0;
 
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function fix(Tokens $tokens)
     {
         // This fixer works partially on Tokens and partially on string representation of code.
         // During the process of fixing internal state of single Token may be affected by injecting ALIGNABLE_PLACEHOLDER to its content.
