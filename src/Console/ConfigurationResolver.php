@@ -542,8 +542,8 @@ final class ConfigurationResolver
     {
         if (null === $this->format) {
             $this->format = null === $this->options['format']
-                ? $format = $this->getConfig()->getFormat()
-                : $format = $this->options['format'];
+                ? $this->getConfig()->getFormat()
+                : $this->options['format'];
         }
 
         return $this->format;

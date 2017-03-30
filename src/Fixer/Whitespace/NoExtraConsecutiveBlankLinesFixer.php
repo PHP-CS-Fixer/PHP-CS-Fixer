@@ -111,6 +111,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
                     break;
                 case 'square_brace_block':
                     $this->tokenKindCallbackMap[CT::T_ARRAY_SQUARE_BRACE_OPEN] = 'fixStructureOpenCloseIfMultiLine'; // typeless '[' tokens should not be fixed (too rare)
+                    break;
             }
         }
     }
