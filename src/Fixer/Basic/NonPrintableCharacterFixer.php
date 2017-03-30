@@ -73,18 +73,18 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(
-            T_STRING,
-            T_STRING_VARNAME,
-            T_INLINE_HTML,
-            T_WHITESPACE,
-            T_COMMENT,
-            T_ENCAPSED_AND_WHITESPACE,
-            T_END_HEREDOC,
-            T_OPEN_TAG,
-            T_DOC_COMMENT,
-            T_START_HEREDOC,
-        ));
+        return count($tokens) > 1 && $tokens->isAnyTokenKindsFound(array(
+             T_STRING,
+             T_STRING_VARNAME,
+             T_INLINE_HTML,
+             T_WHITESPACE,
+             T_COMMENT,
+             T_ENCAPSED_AND_WHITESPACE,
+             T_END_HEREDOC,
+             T_OPEN_TAG,
+             T_DOC_COMMENT,
+             T_START_HEREDOC,
+         ));
     }
 
     /**
@@ -94,9 +94,6 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
     {
         foreach ($tokens as $index => $token) {
             $token->setContent(strtr($token->getContent(), $this->symbolsReplace));
-            if ($token->isEmpty()) {
-                $token->remove();
-            }
         }
     }
 }
