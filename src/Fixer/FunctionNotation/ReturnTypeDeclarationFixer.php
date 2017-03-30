@@ -72,27 +72,37 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
         $oneSpaceBefore = 'one' === $this->configuration['space_before'];
 
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(CT::T_TYPE_COLON)) {
+            if (!$tokens[$index]->isGivenKind(CT::T_TYPE_COLON)) {
                 continue;
             }
 
             $previousToken = $tokens[$index - 1];
 
             if ($previousToken->isWhitespace()) {
-                if ($oneSpaceBefore) {
-                    $previousToken->setContent(' ');
-                } else {
-                    $previousToken->clear();
+                if (!$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                    if ($oneSpaceBefore) {
+                        $previousToken->setContent(' ');
+                    } else {
+                        $previousToken->clear();
+                    }
                 }
             } elseif ($oneSpaceBefore) {
-                $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
+                $tokenWasAdded = $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
+
+                if ($tokenWasAdded) {
+                    ++$limit;
+                }
+
                 ++$index;
             }
 
             ++$index;
-            $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
+
+            $tokenWasAdded = $tokens->ensureWhitespaceAtIndex($index, 0, ' ');
+
+            if ($tokenWasAdded) {
+                ++$limit;
+            }
         }
     }
 

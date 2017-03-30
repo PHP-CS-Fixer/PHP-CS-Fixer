@@ -106,7 +106,9 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
         }
 
         if ($tokens[$index - 1]->isWhitespace()) {
-            $tokens[$index - 1]->setContent(' ');
+            if (!$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                $tokens[$index - 1]->setContent(' ');
+            }
         } else {
             $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
         }
@@ -118,7 +120,10 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
      */
     private function removeWhitespaceAroundToken(Tokens $tokens, $index)
     {
-        $tokens->removeLeadingWhitespace($index);
+        if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isComment()) {
+            $tokens->removeLeadingWhitespace($index);
+        }
+
         $tokens->removeTrailingWhitespace($index);
     }
 }

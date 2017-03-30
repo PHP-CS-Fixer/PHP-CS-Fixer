@@ -53,6 +53,14 @@ final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
     list($a, /* $b */, $c, ) = foo();
 ',
             ),
+            array(
+                '<?php
+list(
+$a#
+,#
+#
+) = $a;',
+            ),
         );
     }
 }

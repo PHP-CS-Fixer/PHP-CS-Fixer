@@ -37,6 +37,26 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 '<?php
+    switch (1) {
+        case (1 #
+)#
+ :
+         echo 1;
+    }
+?>
+',
+            ),
+            array(
+                '<?php
+    switch (1) {
+        case 1 #
+            : echo 1;
+    }
+?>
+',
+            ),
+            array(
+                '<?php
                 switch ($a) {
                     case 42:
                         break;
@@ -209,7 +229,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         echo "leave alone";
                         break;
                     }
-                    case ($a < 2)/* test */: {
+                    case ($a < 2)/* test */ : {
                         echo "fix 1";
                         break;
                     }
@@ -220,7 +240,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                     case /**/(/**/ // test
                         4
                         /**/)//
-                        /**/: {
+                        /**/ : {
                         echo "fix 3";
                         break;
                     }

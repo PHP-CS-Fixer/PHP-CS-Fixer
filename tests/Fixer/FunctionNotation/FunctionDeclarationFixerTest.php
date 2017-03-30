@@ -322,6 +322,14 @@ function foo() /* bar */
                 null,
                 self::$configurationClosureSpacingNone,
             ),
+            array(
+                '<?php function #
+foo#
+ (#
+ ) #
+{#
+}#',
+            ),
         );
     }
 

@@ -74,7 +74,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
             $i = $this->skipNonArrayElements($i, $tokens);
             $currentToken = $tokens[$i];
             $prevIndex = $tokens->getPrevNonWhitespace($i - 1);
-            if ($currentToken->equals(',') && !$tokens[$prevIndex]->equals(array(T_END_HEREDOC))) {
+            if ($currentToken->equals(',') && !$tokens[$prevIndex]->equals(array(T_END_HEREDOC)) && !$tokens[$prevIndex]->isComment()) {
                 $tokens->removeLeadingWhitespace($i);
             }
         }

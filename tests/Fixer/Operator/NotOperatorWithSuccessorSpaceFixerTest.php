@@ -55,6 +55,19 @@ final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */ true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !  /* some comment */ true);',
             ),
+            'comment case' => array(
+                '<?php
+                $a=#
+! #
+$b;
+                ',
+                '<?php
+                $a=#
+!
+#
+$b;
+                ',
+            ),
         );
     }
 }
