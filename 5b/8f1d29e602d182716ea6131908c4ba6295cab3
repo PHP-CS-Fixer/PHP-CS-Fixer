@@ -1,0 +1,47 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-23T09:06:28Z
+
+PR should be ready.
+Happy to take review findings on these bug fixes!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-23T09:19:07Z
+
+👍 great work :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T20:42:27Z
+
+~40 files, ~800 lines, hard for careful review here... are you confident about this PR?
+
+please rebase anyway
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-28T21:58:01Z
+
+Yeah I'm sure about this one,
+for the review please just focus on the changes of the Fixers.
+The other tests are nice, however if those pass than those pass and are of value to add to the repo.
+Will rebase soon!
+
+Alternative I'm happy to open PR's for each fixer + its test and have one PR for all tests passing without changes to their fixers.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T22:10:15Z
+
+> Alternative I'm happy to open PR's for each fixer + its test and have one PR for all tests passing without changes to their fixers.
+
+Nah, I agree that it wouldn't bring much value, just current PR is not sth that could be properly reviewed in 5 minutes ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-29T06:13:42Z
+
+rebase :)
+Yeah this won't a 5 minutes one, sorry about that.
+However it is important as the Fixers touched do break valid code so need updating.
