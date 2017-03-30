@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-24T17:08:29Z
+
+I like the idea.
+Anyone willing to review this PR ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T20:44:50Z
+
+@julienfalque , could you make a review please?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-03-29T06:52:56Z
+
+> Could you also write a test for isInstalledByComposer() returning false when not installed through Composer (if possible)?
+
+Not feasible, https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.1.2/src/ToolInfo.php#L76 will always be true in the test environment and can't be mocked without writing production code just for the purpose of mocking.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-29T07:11:41Z
+
+Unless I'm missing something, I think it can work with `new ToolInfo('script_outside_vendor_dir')` like you did in the last test.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-03-29T09:31:47Z
+
+Ok, tests now run both on Windows and Linux.
+The main difference is that composer creates binaries under `vendor/bin` in different ways: on Linux is just a symlink, and on Windows it's a special executable, not a symlink, so we need to uniform the method to find `composer.json` according to this distinction.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-29T13:04:25Z
+
+Is it really important to rely on Composer to detect PHP-CS-Fixer version? Wouldn't it be easier to put it in a constant?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-03-29T13:05:29Z
+
+Yes, if we want to expose `require: dev-master` commit
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-03-29T13:54:35Z
+
+What about now?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-29T14:24:51Z
+
+Now code is more simple ~but Composer detection will always fail for custom `bin-dir`~ sorry misread: the path with `vendor` part hardcoded is only internal so 👍
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-03-29T14:26:01Z
+
+Why? The code now only looks for `ToolInfo.php` parents, no matter where you want your binaries.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-29T15:07:57Z
+
+👍
