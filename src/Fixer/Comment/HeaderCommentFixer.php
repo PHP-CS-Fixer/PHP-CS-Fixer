@@ -148,13 +148,10 @@ echo 1;
      */
     protected function createConfigurationDefinition()
     {
-        $whitespaceConfig = $this->whitespacesConfig;
-        $headerCommentType = self::HEADER_COMMENT;
-
         $header = new FixerOptionBuilder('header', 'Proper header content.');
         $header
             ->setAllowedTypes(array('string'))
-            ->setNormalizer(function (Options $options, $value) use ($whitespaceConfig, $headerCommentType) {
+            ->setNormalizer(function (Options $options, $value) {
                 if ('' === trim($value)) {
                     return '';
                 }
