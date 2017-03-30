@@ -335,4 +335,41 @@ EOT
 
         $this->fixer->configure(array('foo'));
     }
+
+    /**
+     * @param array  $config
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider providePHP71Cases
+     * @requires PHP 7.1
+     */
+    public function testPHP71($config, $expected, $input)
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP71Cases()
+    {
+        return array(
+            'Config "default".' => array(
+                array('inside', 'outside'),
+                '<?php [ $a ] = $a;
+if ($controllerName = $request->attributes->get(1)) {
+    return false;
+}
+[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+$a = $b[0];
+',
+                '<?php [ $a ] = $a;
+if ($controllerName = $request->attributes->get(1)) {
+    return false;
+}
+[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+$a = $b   [0];
+',
+            ),
+        );
+    }
 }

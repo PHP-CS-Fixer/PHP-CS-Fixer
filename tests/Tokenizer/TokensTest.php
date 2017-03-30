@@ -670,25 +670,7 @@ PHP;
      */
     public function testFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
     {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($source);
-
-        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex, true));
-        $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex, false));
-
-        $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
-        $this->assertInternalType('array', $detectedType);
-        $this->assertArrayHasKey('type', $detectedType);
-        $this->assertArrayHasKey('isStart', $detectedType);
-        $this->assertSame($type, $detectedType['type']);
-        $this->assertTrue($detectedType['isStart']);
-
-        $detectedType = Tokens::detectBlockType($tokens[$expectedIndex]);
-        $this->assertInternalType('array', $detectedType);
-        $this->assertArrayHasKey('type', $detectedType);
-        $this->assertArrayHasKey('isStart', $detectedType);
-        $this->assertSame($type, $detectedType['type']);
-        $this->assertFalse($detectedType['isStart']);
+        $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
     public function provideFindBlockEndCases()
@@ -701,6 +683,29 @@ PHP;
             array(6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1),
             array(5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3),
             array(4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2),
+            array(6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5),
+        );
+    }
+
+    /**
+     * @param int    $expectedIndex
+     * @param string $source
+     * @param int    $type
+     * @param int    $searchIndex
+     *
+     * @requires PHP 7.1
+     * @dataProvider provideFindBlockEndCases71
+     */
+    public function testFindBlockEnd71($expectedIndex, $source, $type, $searchIndex)
+    {
+        $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    public function provideFindBlockEndCases71()
+    {
+        return array(
+            array(10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5),
+            array(3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1),
         );
     }
 
@@ -736,6 +741,35 @@ PHP;
 
         $this->setExpectedException('ParseError');
         Tokens::fromCode('<?php# this will cause T_HH_ERROR');
+    }
+
+    /**
+     * @param int    $expectedIndex
+     * @param string $source
+     * @param int    $type
+     * @param int    $searchIndex
+     */
+    public function assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+
+        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex, true));
+        $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex, false));
+
+        $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
+        $this->assertInternalType('array', $detectedType);
+        $this->assertArrayHasKey('type', $detectedType);
+        $this->assertArrayHasKey('isStart', $detectedType);
+        $this->assertSame($type, $detectedType['type']);
+        $this->assertTrue($detectedType['isStart']);
+
+        $detectedType = Tokens::detectBlockType($tokens[$expectedIndex]);
+        $this->assertInternalType('array', $detectedType);
+        $this->assertArrayHasKey('type', $detectedType);
+        $this->assertArrayHasKey('isStart', $detectedType);
+        $this->assertSame($type, $detectedType['type']);
+        $this->assertFalse($detectedType['isStart']);
     }
 
     /**
