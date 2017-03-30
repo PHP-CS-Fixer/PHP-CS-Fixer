@@ -103,6 +103,7 @@ final class FixCommand extends Command
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file.'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
+                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, or estimating).'),
                 )
             )
             ->setDescription('Fixes a directory or a file.')
@@ -135,6 +136,7 @@ final class FixCommand extends Command
                 'diff' => $input->getOption('diff'),
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
+                'show-progress' => $input->getOption('show-progress'),
             ),
             getcwd()
         );
@@ -169,12 +171,23 @@ final class FixCommand extends Command
             }
         }
 
-        $showProgress = $resolver->getProgress();
+        $progressType = $resolver->getProgress();
+        $finder = $resolver->getFinder();
+
+        if ('none' === $progressType || null === $stdErr) {
+            $progressOutput = new NullOutput();
+        } elseif ('run-in' === $progressType) {
+            $progressOutput = new ProcessOutput($stdErr, $this->eventDispatcher, null);
+        } else {
+            $finder = new \ArrayIterator(iterator_to_array($finder));
+            $progressOutput = new ProcessOutput($stdErr, $this->eventDispatcher, count($finder));
+        }
+
         $runner = new Runner(
-            $resolver->getFinder(),
+            $finder,
             $resolver->getFixers(),
             $resolver->getDiffer(),
-            $showProgress ? $this->eventDispatcher : null,
+            'none' !== $progressType ? $this->eventDispatcher : null,
             $this->errorsManager,
             $resolver->getLinter(),
             $resolver->isDryRun(),
@@ -182,11 +195,6 @@ final class FixCommand extends Command
             $resolver->getDirectory(),
             $resolver->shouldStopOnViolation()
         );
-
-        $progressOutput = $showProgress && $stdErr
-            ? new ProcessOutput($stdErr, $this->eventDispatcher)
-            : new NullOutput()
-        ;
 
         $this->stopwatch->start('fixFiles');
         $changed = $runner->fix();

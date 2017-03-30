@@ -52,11 +52,40 @@ final class ProcessOutput implements ProcessOutputInterface
      */
     private $output;
 
-    public function __construct(OutputInterface $output, EventDispatcher $dispatcher)
+    /**
+     * @var int|null
+     */
+    private $files;
+
+    /**
+     * @var int
+     */
+    private $processedFiles = 0;
+
+    /**
+     * @var int|null
+     */
+    private $symbolsPerLine;
+
+    /**
+     * @param OutputInterface $output
+     * @param EventDispatcher $dispatcher
+     * @param int|null        $nbFiles
+     */
+    public function __construct(OutputInterface $output, EventDispatcher $dispatcher, $nbFiles)
     {
         $this->output = $output;
         $this->eventDispatcher = $dispatcher;
         $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
+
+        if (null !== $nbFiles) {
+            $this->files = $nbFiles;
+
+            //   80               (lines max length)
+            // - total length x 2 (e.g. "  1 / 123" => 6 digits and padding spaces)
+            // - 11               (extra spaces, parentheses and percentage characters, e.g. " x / x (100%)")
+            $this->symbolsPerLine = 80 - strlen((string) $this->files) * 2 - 11;
+        }
     }
 
     public function __destruct()
@@ -68,6 +97,26 @@ final class ProcessOutput implements ProcessOutputInterface
     {
         $status = self::$eventStatusMap[$event->getStatus()];
         $this->output->write($this->output->isDecorated() ? sprintf($status['format'], $status['symbol']) : $status['symbol']);
+
+        if (null !== $this->files) {
+            ++$this->processedFiles;
+            $symbolsOnCurrentLine = $this->processedFiles % $this->symbolsPerLine;
+            $isLast = $this->processedFiles === $this->files;
+
+            if (0 === $symbolsOnCurrentLine || $isLast) {
+                $this->output->write(sprintf(
+                    '%s %'.strlen((string) $this->files).'d / %d (%3d%%)',
+                    $isLast && 0 !== $symbolsOnCurrentLine ? str_repeat(' ', $this->symbolsPerLine - $symbolsOnCurrentLine) : '',
+                    $this->processedFiles,
+                    $this->files,
+                    round($this->processedFiles / $this->files * 100)
+                ));
+
+                if (!$isLast) {
+                    $this->output->writeln('');
+                }
+            }
+        }
     }
 
     public function printLegend()
