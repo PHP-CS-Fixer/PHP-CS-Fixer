@@ -1,0 +1,85 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-14T11:31:46Z
+
+Question to community:
+Do we want to have that kind of progress indicator ? (ignore implementation details)
+If so, do we want to have option to decide which one we want to use, or just have one of them ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-03-18T21:29:15Z
+
+> Do we want to have that kind of progress indicator
+
+Maybe. Would be cool to have it as optional.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-19T08:29:53Z
+
+What about adding an option like `--show-progress` that would enable showing the number of files and the progress percentage? By default lines length would still be limited to 80 characters, without further informations.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-27T18:18:20Z
+
+IMO, we should:
+1. add new option for command
+- `new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Specify progress indicator.')` (no default value !)
+- possible values are: `none, run-in, estimating` (means none, current way, new way); feel free to propose other naming; would be good to document the difference between them
+- if option is not provided in CLI command run, it shall fallback to `ConfigInterface::getHideProgress : bool`, which means `run-in` or `none`
+- resolving which `ProgressOutput` shall be use needs to be done via `ConfigurationResolver::getProgress`, which will return `ProcessOutputInterface` now instead of boolean flag
+
+2. Update config
+- `Config::getProgress() : ProcessOutputInterface` shall be added, but without touching interface
+- in `ConfigurationResolver` we should detect if the method is there, if so we shall use it, if not we shall use `ConfigInterface::getHideProgress`
+
+3. new `ProgressOutput` class
+- as finder may be any `iterable`, it may not be rewindable, having that in mind, if we gonna use new progress class in given run I would conditionally transform finder to regular array, so it will become countable (not all `iterables` are `countable` !). I know it will increase memory usage for big projects, we should mention it in user documentation of progress types.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-28T13:47:58Z
+
+Sounds good to me. ~Should `ConfigInterface::getHideProgress` be deprecated?~
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T19:15:40Z
+
+if you want to deprecate sth you need to say that this is abandoned or shall be done other way. here, it's the second case. but to say "do it in another way", you need to provide that way. new interface perhaps
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-29T21:52:07Z
+
+New option added, but I didn't implement it exactly like you suggested: the `ProcessOutputInterface` instance is still created in the `FixCommand`.
+
+Also, with `run-in` option output is still limited to 80 characters per line but without the numbers so it has no impact on memory.
+
+I used the values you suggested for the option, but I would replace `run-in` with `simple` and `estimating` with `full`, what do you think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-29T22:42:33Z
+
+`run-in` name had sense when it would represent current output.
+
+but you did changed it (thus the name may not be the best as you suggested, as the format is different) - not sure is it good to change current output instead of providing different progress type.
+
+name should follow the representation. I am very against `full`, as it's full in what way? use full screen, `run-in` use only 40% of full type, or what? and then, even if one would be able to provide reasoning why `full` may be an OK name for current types, then I will add one-liner progress `bar`, which works completly different than `full`/`estimating`
+
+also, readme update is missing
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-30T06:22:28Z
+
+Updated README file and reverted `run-in` to original single-line rendering.
+
+> I am very against full, as it's full in what way?
+
+Sure, doesn't really make sense, let's keep current options 👍
+
+Edit: Damn, just noticed I forgot to add the note about memory impact for `estimating`, will add it soon.
