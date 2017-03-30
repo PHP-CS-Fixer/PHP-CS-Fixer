@@ -351,16 +351,16 @@ EOT
     }
 
     /**
-     * @param array  $config
+     * @param array  $configuration
      * @param string $expected
      * @param string $input
      *
      * @dataProvider providePHP71Cases
      * @requires PHP 7.1
      */
-    public function testPHP71($config, $expected, $input)
+    public function testPHP71(array $configuration, $expected, $input)
     {
-        $this->fixer->configure($config);
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -368,7 +368,7 @@ EOT
     {
         return array(
             'Config "default".' => array(
-                array('inside', 'outside'),
+                array('positions' => array('inside', 'outside')),
                 '<?php [ $a ] = $a;
 if ($controllerName = $request->attributes->get(1)) {
     return false;
