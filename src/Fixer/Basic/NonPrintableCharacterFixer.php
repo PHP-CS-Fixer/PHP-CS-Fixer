@@ -73,7 +73,13 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
      */
     public function isCandidate(Tokens $tokens)
     {
-        return true;
+        return $tokens->isAnyTokenKindsFound(array(
+            T_STRING,
+            T_STRING_VARNAME,
+            T_INLINE_HTML,
+            T_WHITESPACE,
+            T_COMMENT,
+        ));
     }
 
     /**
@@ -83,6 +89,9 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
     {
         foreach ($tokens as $index => $token) {
             $token->setContent(strtr($token->getContent(), $this->symbolsReplace));
+            if ($token->isEmpty()) {
+                $token->remove();
+            }
         }
     }
 }
