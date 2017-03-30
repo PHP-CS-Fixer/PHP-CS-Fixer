@@ -1,0 +1,89 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-03T13:19:09Z
+
+Some good reviewing is needed for this.
+For example:
+```php
+$a = [$b] = [$c] = [$d] = []; // makes no sense, but valid syntax (it lints), so needs to be dealt with
+[[$a,$b],[$c,$d]] = $array; // what are the inner pairs?
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-13T10:32:06Z
+
+Could anyone take a look at this please?
+cc @GrahamCampbell @localheinz @stof @sstok (and anyone willing to do so!)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-23T13:19:35Z
+
+note to self: https://wiki.php.net/rfc/list_reference_assignment is approved for PHP7.2, would be good to add supported for that into this PR as well to prevent re-doing it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-15T16:52:50Z
+
+@SpacePossum is that RFC supported in this PR already ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-15T17:37:21Z
+
+It is not I'm afraid, will pick this one up soon again!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-15T17:38:46Z
+
+Cool. Just wanted to be sure should this be merged or not yet. Ok, then
+v2.1.3 i hope ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-23T18:49:34Z
+
+I've added tests for the 7.2 case.
+I'm going blind for this PR, so any new input from the community is welcome.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-23T19:31:47Z
+
+Sadly, this needs to be done old way.
+
+New way: while parsing `string` into `Tokens`, we transform tokens by transformers to distinguish them.
+Old way: while parsing, we keep same token, and then we ask `TokensAnalyser` to distinguish token.
+
+Reasoning:
+We do support 7.1 currently. Running code on 7.1, you changed the output of `Tokens::fromCode(...)`, which is a BC breaker.
+
+Following TDD, we should keep new test cases in `...FixerTest` files, but make them passing not by adding new `Transformer`, but by doing old-style `TokensAnalyser` checking.
+Then, don't throw away nice work of yours about new `Transformer` - instead open it as new PR (that would also remove that newly introduced `TokensAnalyser` part), and we will target it against v3.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-24T07:06:59Z
+
+not sure I follow, I didn't introduce new BC features, just fixed what we already have?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-24T08:07:09Z
+
+aaaah, my bad.
+I misunderstand your change, I thought that you added `CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN`, but it was already there.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-24T08:25:13Z
+
+I do introduce `BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE` on the Tokens class, not sure if this a BC breaking feature
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-24T17:00:20Z
+
+Yes, you didn't introduced new `CT`, I have misread the PR ;)
