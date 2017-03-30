@@ -26,6 +26,20 @@ final class NonPrintableCharacterFixer extends AbstractFixer
 {
     private $symbolsReplace;
 
+    private static $tokens = array(
+        T_STRING,
+        T_STRING_VARNAME,
+        T_INLINE_HTML,
+        T_WHITESPACE,
+        T_COMMENT,
+        T_ENCAPSED_AND_WHITESPACE,
+        T_CONSTANT_ENCAPSED_STRING,
+        T_END_HEREDOC,
+        T_OPEN_TAG,
+        T_DOC_COMMENT,
+        T_START_HEREDOC,
+    );
+
     public function __construct()
     {
         parent::__construct();
@@ -54,8 +68,6 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
                 ),
             ),
             null,
-            null,
-            null,
             'Risky when strings contain intended invisible characters.'
         );
     }
@@ -73,18 +85,7 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
      */
     public function isCandidate(Tokens $tokens)
     {
-        return count($tokens) > 1 && $tokens->isAnyTokenKindsFound(array(
-             T_STRING,
-             T_STRING_VARNAME,
-             T_INLINE_HTML,
-             T_WHITESPACE,
-             T_COMMENT,
-             T_ENCAPSED_AND_WHITESPACE,
-             T_END_HEREDOC,
-             T_OPEN_TAG,
-             T_DOC_COMMENT,
-             T_START_HEREDOC,
-         ));
+        return count($tokens) > 1 && $tokens->isAnyTokenKindsFound(self::$tokens);
     }
 
     /**
@@ -93,7 +94,9 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
-            $token->setContent(strtr($token->getContent(), $this->symbolsReplace));
+            if (in_array($token->getId(), self::$tokens, true)) {
+                $token->setContent(strtr($token->getContent(), $this->symbolsReplace));
+            }
         }
     }
 }
