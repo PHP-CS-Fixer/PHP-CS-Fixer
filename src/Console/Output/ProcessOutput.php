@@ -53,7 +53,7 @@ final class ProcessOutput implements ProcessOutputInterface
     private $output;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $files;
 
@@ -63,7 +63,7 @@ final class ProcessOutput implements ProcessOutputInterface
     private $processedFiles = 0;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $symbolsPerLine;
 
