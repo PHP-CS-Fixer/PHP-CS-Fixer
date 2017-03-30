@@ -583,4 +583,20 @@ echo fn_a();
 EOF;
         $this->doTest($expected);
     }
+
+    public function testFixWithComments()
+    {
+        $input = '<?php
+use#
+\#
+Exception#
+#
+;
+echo 1;';
+
+        $expected = '<?php
+echo 1;';
+
+        $this->doTest($expected, $input);
+    }
 }

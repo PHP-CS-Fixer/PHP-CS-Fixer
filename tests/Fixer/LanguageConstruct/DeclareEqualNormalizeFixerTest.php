@@ -68,6 +68,25 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
                 '<?php declare ( ticks=1 );declare( ticks =1)  ?>',
                 array('space' => 'single'),
             ),
+            'minimal case add whitespace comments, single' => array(
+                '<?php declare(ticks#
+= #
+1#
+);',
+                '<?php declare(ticks#
+=#
+1#
+);',
+                array('space' => 'single'),
+            ),
+            'minimal case add whitespace comments, none' => array(
+                '<?php declare(ticks#
+=#
+1#
+);',
+                null,
+                array('space' => 'none'),
+            ),
         );
     }
 

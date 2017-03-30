@@ -86,11 +86,13 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
 
             if ($token->equals(')')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+
                 continue;
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+
                 continue;
             }
 
@@ -112,7 +114,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
         if ($tokens[$index - 1]->isWhitespace()) {
             $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
 
-            if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC)))) {
+            if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC))) && !$tokens[$prevIndex]->isComment()) {
                 $tokens[$index - 1]->clear();
             }
         }

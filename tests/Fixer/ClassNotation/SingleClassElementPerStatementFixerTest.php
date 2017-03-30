@@ -585,6 +585,33 @@ EOT
 class Foo { public function doThis() { global $one1, $two2, $three3; } protected $foo = 1, $bar, $baz=2; private $acme2 =array(); }
 EOT
             ),
+            array(
+                '<?php
+class Foo
+{
+    const A = 1;
+    const #
+B#
+=#
+2#
+;#
+}
+
+echo Foo::A, Foo::B;
+',
+                '<?php
+class Foo
+{
+    const A = 1,#
+B#
+=#
+2#
+;#
+}
+
+echo Foo::A, Foo::B;
+',
+            ),
         );
     }
 

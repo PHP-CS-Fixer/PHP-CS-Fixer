@@ -75,7 +75,7 @@ EOT
 EOT
             ),
             array(
-                '<?php function foo ($bar /* a */ /* b */, $c) {}',
+                '<?php function foo ($bar /* a */  /* b */ , $c) {}',
                 '<?php function foo ($bar /* a */ = /* b */ 1, $c) {}',
             ),
             array(
@@ -149,6 +149,18 @@ EOT
             array(
                 '<?php $fnc = function ($a, $b) use ($c) {};',
                 '<?php $fnc = function ($a = 1, $b) use ($c) {};',
+            ),
+            array(
+                '<?php function bFunction($foo#
+ #
+ #
+ ,#
+$bar) {}',
+                '<?php function bFunction($foo#
+ =#
+ null#
+ ,#
+$bar) {}',
             ),
         );
     }

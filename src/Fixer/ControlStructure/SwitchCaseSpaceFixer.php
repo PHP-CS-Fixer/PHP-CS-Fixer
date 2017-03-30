@@ -81,9 +81,12 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
             }
 
             $valueIndex = $tokens->getPrevNonWhitespace($colonIndex);
-            if (2 + $valueIndex === $colonIndex) {
-                $tokens[$valueIndex + 1]->clear();
+            // skip if there is no space between the colon and previous token or is space after comment
+            if ($valueIndex === $colonIndex - 1 || $tokens[$valueIndex]->isComment()) {
+                continue;
             }
+
+            $tokens[$valueIndex + 1]->clear();
         }
     }
 }

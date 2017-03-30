@@ -72,16 +72,45 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
                 '<?php function foo(int $a):string {}',
             ),
             array(
-                '<?php function foo(int $a)/**/: /**/string {}',
-                '<?php function foo(int $a)/**/:/**/string {}',
+                '<?php function foo(int $c)/**/ : /**/ string {}',
             ),
             array(
                 '<?php function foo(int $a): string {}',
                 '<?php function foo(int $a)  :  string {}',
             ),
             array(
-                '<?php function foo(int $a) /**/: /**/ string {}',
-                '<?php function foo(int $a) /**/ : /**/ string {}',
+                '<?php function foo(int $e)#
+: #
+#
+string {}',
+                '<?php function foo(int $e)#
+:#
+#
+string {}',
+            ),
+            array(
+                '<?php
+                    function foo1(int $a): string {}
+                    function foo2(int $a): string {}
+                    function foo3(int $a): string {}
+                    function foo4(int $a): string {}
+                    function foo5(int $a): string {}
+                    function foo6(int $a): string {}
+                    function foo7(int $a): string {}
+                    function foo8(int $a): string {}
+                    function foo9(int $a): string {}
+                ',
+                '<?php
+                    function foo1(int $a):string {}
+                    function foo2(int $a):string {}
+                    function foo3(int $a):string {}
+                    function foo4(int $a):string {}
+                    function foo5(int $a):string {}
+                    function foo6(int $a):string {}
+                    function foo7(int $a):string {}
+                    function foo8(int $a):string {}
+                    function foo9(int $a):string {}
+                ',
             ),
         );
     }

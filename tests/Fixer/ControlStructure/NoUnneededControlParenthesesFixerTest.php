@@ -389,6 +389,18 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 ',
                 'switch_case',
             ),
+            array(
+                '<?php while ($x) { while ($y) { break#
+#
+2#
+#
+; } }',
+                '<?php while ($x) { while ($y) { break#
+(#
+2#
+)#
+; } }',
+            ),
         );
     }
 

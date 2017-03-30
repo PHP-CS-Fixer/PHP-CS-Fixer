@@ -65,16 +65,38 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveCommentsAlone()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideCommentCases
+     */
+    public function testCommentsCases($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCommentCases()
+    {
+        return array(
+            array(
+                '<?php
 
 $withComments[0] // here is a comment
     [1] // and here is another
-    [2] = 3;
-EOF;
-        $this->doTest($expected);
+    [2] = 3;',
+            ),
+            array(
+                '<?php
+$a = $b[# z
+ 1#z
+ ];',
+                '<?php
+$a = $b[ # z
+ 1#z
+ ];',
+            ),
+        );
     }
 
     public function testLeaveComplexString()

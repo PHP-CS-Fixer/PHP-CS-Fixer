@@ -45,6 +45,15 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
                 '<?php $x = array /* comment */ (1,  "2", 3);',
                 '<?php $x = array /* comment */ (1  ,  "2", 3);',
             ),
+            //old style array with comments
+            array(
+                '<?php $x = array(1#
+,#
+"2", 3);',
+                '<?php $x = array(1#
+,#
+"2"  , 3);',
+            ),
 
             //short array
             array(
