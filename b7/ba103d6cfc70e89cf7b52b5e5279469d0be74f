@@ -1,0 +1,67 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T07:01:05Z
+
+Hi!
+Thanks for the PR, looks like a good improvement. Please note that the README file is generated. Therefore please update the [readme command](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.1/src/Console/Command/ReadmeCommand.php#L113).
+
+---------------------------------------------------------------------------
+
+by mhitza at 2017-03-24T14:31:08Z
+
+Should I change the commit with @julienfalque 's suggestion or just close the PR as @SpacePossum suggested?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-24T15:56:27Z
+
+I would be happy with a rephrasing of this instruction.
+Anyone want to make a suggestion?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-24T16:06:21Z
+
+What about:
+
+```
+To install PHP-CS-Fixer, `install Composer <https://getcomposer.org/download/>`_ and issue the following command:
+
+.. code-block:: bash
+
+    $ composer global require friendsofphp/php-cs-fixer
+
+Then make sure you have the global Composer binaries directory in your ``PATH``. This directory is platform-dependent, see `Composer documentation <https://getcomposer.org/doc/03-cli.md#composer-home>`_ for details. Example for some Unix systems:
+
+.. code-block:: bash
+
+    $ export PATH="$PATH:$HOME/.composer/vendor/bin"
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T20:40:00Z
+
+ping @mhitza, could you follow @julienfalque suggestion ?
+
+---------------------------------------------------------------------------
+
+by mhitza at 2017-03-30T18:30:46Z
+
+@keradus updated the Readme command with @julienfalque 's suggestion
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-30T19:07:31Z
+
+@mhitza You still need to update the README file itself:
+
+```
+$ php php-cs-fixer readme > README.rst
+```
+
+---------------------------------------------------------------------------
+
+by mhitza at 2017-03-30T19:13:05Z
+
+@julienfalque regenerated README.rst with the command you gave me
