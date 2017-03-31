@@ -27,11 +27,9 @@ final class NonPrintableCharacterFixer extends AbstractFixer
     private $symbolsReplace;
 
     private static $tokens = array(
-        T_NUM_STRING,
         T_STRING_VARNAME,
         T_INLINE_HTML,
         T_VARIABLE,
-        T_WHITESPACE,
         T_COMMENT,
         T_ENCAPSED_AND_WHITESPACE,
         T_CONSTANT_ENCAPSED_STRING,
