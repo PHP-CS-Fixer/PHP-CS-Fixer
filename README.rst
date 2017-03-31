@@ -727,7 +727,7 @@ Choose from the list of available rules:
 
   Remove trailing whitespace at the end of blank lines.
 
-* **non_printable_character**
+* **non_printable_character** [@Symfony:risky]
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.

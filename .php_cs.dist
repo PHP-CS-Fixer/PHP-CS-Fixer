@@ -26,7 +26,6 @@ return PhpCsFixer\Config::create()
         'no_unreachable_default_argument_value' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,
-        'non_printable_character' => true,
         'ordered_class_elements' => true,
         'ordered_imports' => true,
         'php_unit_strict' => true,
