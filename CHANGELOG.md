@@ -3,6 +3,32 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.1.3
+--------------------
+
+* bug #2358 Cache - Deal with signature encoding (keradus, GrahamCampbell)
+* bug #2475 Add shorthand array destructing support (SpacePossum, keradus)
+* bug #2595 NoUnusedImportsFixer - Fix import usage detection with properties (julienfalque)
+* bug #2605 PhpdocAddMissingParamAnnotationFixer, PhpdocOrderFixer - fix priority issue (SpacePossum)
+* bug #2607 Fixers - better comments handling (SpacePossum)
+* bug #2612 BracesFixer - Fix early bracket close for do-while loop inside an if without brackets (felixgomez)
+* bug #2614 Ensure that '*Fixer::fix()' won't crash when running on non-candidate collection (keradus)
+* bug #2630 HeaderCommentFixer - Fix trailing whitespace not removed after <?php (julienfalque)
+* bug #2637 ToolInfo - use static dir check for composer discovery (Slamdunk)
+* bug #2639 SemicolonAfterInstructionFixer - Handle alternative syntax (SpacePossum)
+* bug #2645 HHVM: handle T_HH_ERROR (keradus)
+* bug #2653 IsNullFixer - fix edge case (localheinz, kalessil)
+* bug #2654 PhpdocAddMissingParamAnnotationFixer - handle one-line docblocks (keradus)
+* minor #2594 Travis - generate coverage report at 7.1 and clean up build matrix (keradus)
+* minor #2613 HeaderCommentFixer - add missing case for exception raising (keradus)
+* minor #2615 Add DescribeCommand test (julienfalque)
+* minor #2616 Exclude more tests in phar version (keradus)
+* minor #2618 Update README.rst (mhitza)
+* minor #2620 Finder - Remove `*.twig` as default (SpacePossum)
+* minor #2641 Cookbook - remove information about levels (keradus)
+* minor #2644 DescribeCommandTest - fix test execution on decorated console (keradus)
+* minor #2655 AppVeyor - Cache Composer Installation (julienfalque)
+
 Changelog for v2.1.2
 --------------------
 

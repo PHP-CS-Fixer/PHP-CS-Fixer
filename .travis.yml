@@ -95,8 +95,8 @@ before_deploy:
     # ensure that deps will work on lowest supported PHP version
     - composer config platform.php 2> /dev/null || composer config platform.php 5.3.6
 
-    # install suggested packages
-    - composer require $DEFAULT_COMPOSER_FLAGS --prefer-stable symfony/polyfill-mbstring
+    # require suggested packages
+    - composer require --no-update symfony/polyfill-mbstring
 
     # update deps to highest possible for lowest supported PHP version
     - composer update $DEFAULT_COMPOSER_FLAGS --no-dev --prefer-stable
