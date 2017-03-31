@@ -728,6 +728,13 @@ Choose from the list of available rules:
 
   Remove trailing whitespace at the end of blank lines.
 
+* **non_printable_character**
+
+  Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
+  invisible unicode symbols.
+
+  *Risky rule: risky when strings contain intended invisible characters.*
+
 * **normalize_index_brace** [@Symfony]
 
   Array index should always be written by using square braces.
