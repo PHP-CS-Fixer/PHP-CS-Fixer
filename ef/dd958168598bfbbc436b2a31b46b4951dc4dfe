@@ -1,0 +1,95 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-16T12:26:08Z
+
+Hi !
+Thanks for raising it that fast !
+It's a great start for a fixer !
+
+IMO, we should make it configurable, allowing to fix any of 3 types:
+- comments (remove odd whitespaces inside comments)
+- whitespaces (remove odd whitespaces from other whitespaces)
+- strings (so case you found initial issue)
+
+that way one may want to fix only whitespaces or whitespaces+comments, but not strings (he could desire odd chars in them in edge cases)
+
+also, be aware that if token would be empty after dropping odd spaces - we should remove whole token (could happen only for `T_WHITESPACE` token)
+
+---------------------------------------------------------------------------
+
+by ivan1986 at 2017-03-16T12:53:32Z
+
+@keradus IMO does not need to configure it - if we found this symbols in the code it's a copy-paste mistake or we do some real strange.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-17T07:12:12Z
+
+Nice fixer idea, love to see this in.
+I was thinking about proposed configuration and just thinking out loud here, maybe we could make generic 'NonPrintableCharacterFixer' (name can change of course) ?
+We could than merge the 'line_ending' fixer in this as well.
+
+Than we could add configuration of character mapping, for example:
+* `\r\n` => `\n`
+* `\r` => ''
+* `0xe2` => ' '
+
+We allow configuration for 'T_ENCAPSED_AND_WHITESPACE, T_END_HEREDOC, T_OPEN_TAG, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, T_START_HEREDOC, any thing else' to give control about what should be fixed (making the fixer risky by configuration).
+
+WDYT?
+
+---------------------------------------------------------------------------
+
+by ivan1986 at 2017-03-17T10:50:49Z
+
+@SpacePossum change name, about tokens - a good solution would be to process all text in one strtr, but I do not know how to do it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-17T11:06:09Z
+
+> a good solution would be to process all text in one strtr, but I do not know how to do it.
+
+it's not a good solution. it's slow solution that will have to revisit all content even if we don't want to modify most of it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-20T12:54:48Z
+
+@SpacePossum , about your idea - it may indeed be nice to have next `General***` fixer that could be used inside different fixers, like we already do eg with `GeneralPhpdocAnnotationRemoveFixer`.
+Then, this one, tabs to spaces, line endings, could be rewritten to use that `General***`.
+But let us keep it outside of scope of this PR.
+
+---------------------------------------------------------------------------
+
+by ivan1986 at 2017-03-30T09:14:37Z
+
+added remove empty tokens
+added isAnyTokenKindsFound
+I not sure about type tokens list in isAnyTokenKindsFound, please check it and if it wrong tell me correct list for fix
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-30T12:54:29Z
+
+please fix deprecations
+
+---------------------------------------------------------------------------
+
+by ivan1986 at 2017-03-30T15:25:17Z
+
+broken only in php 7.2 because <7.2 in composer
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-30T15:37:07Z
+
+That's not true. Read the error log.
+Failing because of trailing whitespaces in:
+> ./tests/Fixer/Basic/NonPrintableCharacterFixerTest.php:62: ./tests/Fixer/Basic/NonPrintableCharacterFixerTest.php:66: function f(string $p) ./tests/Fixer/Basic/NonPrintableCharacterFixerTest.php:71: ./tests/Fixer/Basic/NonPrintableCharacterFixerTest.php:75: function f(string $p)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-30T15:37:12Z
+
+@ivan1986 Actually Travis build fails because there are trailing whitespaces like [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2603/files#diff-ae2304b53b736acede7e556747d7a9f0R72) (quite ironic 😁)
