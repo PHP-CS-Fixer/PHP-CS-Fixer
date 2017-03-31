@@ -38,7 +38,7 @@
         "symfony/phpunit-bridge": "^3.2.2"
     },
     "suggest": {
-        "ext-mbstring": "For handling non-UTF8 characters in cache singature.",
+        "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
         "ext-xml": "For better performance.",
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
