@@ -56,14 +56,13 @@ Then, just run ``php-cs-fixer``.
 Globally (Composer)
 ~~~~~~~~~~~~~~~~~~~
 
-To install PHP CS Fixer, install Composer and issue the following command:
+To install PHP CS Fixer, `install Composer <https://getcomposer.org/download/>`_ and issue the following command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global require friendsofphp/php-cs-fixer
+    $ composer global require friendsofphp/php-cs-fixer
 
-Then make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
-you're good to go:
+Then make sure you have the global Composer binaries directory in your ``PATH``. This directory is platform-dependent, see `Composer documentation <https://getcomposer.org/doc/03-cli.md#composer-home>`_ for details. Example for some Unix systems:
 
 .. code-block:: bash
 
