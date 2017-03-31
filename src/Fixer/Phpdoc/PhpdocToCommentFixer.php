@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -78,10 +79,12 @@ foreach($connections as $key => $sqlite) {
             T_WHILE,
             T_FOR,
         );
+
         static $languageStructures = array(
             T_LIST,
             T_PRINT,
             T_ECHO,
+            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
         );
 
         foreach ($tokens as $index => $token) {
@@ -94,6 +97,7 @@ foreach($connections as $key => $sqlite) {
 
             if (null === $nextToken || $nextToken->equals('}')) {
                 $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+
                 continue;
             }
 
@@ -194,7 +198,13 @@ foreach($connections as $key => $sqlite) {
      */
     private function isValidLanguageConstruct(Tokens $tokens, Token $docsToken, $languageConstructIndex)
     {
-        $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, array(')'));
+        $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)
+            ? array(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE)
+            : ')'
+        ;
+
+        $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, array($endKind));
+
         $docsContent = $docsToken->getContent();
 
         for ($index = $languageConstructIndex + 1; $index < $endIndex; ++$index) {
