@@ -3,6 +3,37 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.2.0
+--------------------
+
+* bug #2640 NoExtraConsecutiveBlankLinesFixer - Fix single indent characters not working (ntzm)
+* feature #2220 Doctrine annotation fixers (julienfalque)
+* feature #2431 MethodArgumentSpaceFixer: allow to retain multiple spaces after comma (Slamdunk)
+* feature #2459 BracesFixer - Add option for keeping opening brackets on the same line (jtojnar, SpacePossum)
+* feature #2486 Add FunctionToConstantFixer (SpacePossum, keradus)
+* feature #2505 FunctionDeclarationFixer - Make space after anonymous function configurable (jtojnar, keradus)
+* feature #2509 FullOpeningTagFixer - Ensure opening PHP tag is lowercase (jtojnar)
+* feature #2532 FixCommand - add stop-on-violation option (keradus)
+* feature #2591 Improve process output (julienfalque)
+* feature #2603 Add InvisibleSymbols Fixer (ivan1986, keradus)
+* feature #2642 Add MagicConstantCasingFixer (ntzm)
+* feature #2657 PhpdocToCommentFixer - Allow phpdoc for language constructs (ceeram, SpacePossum)
+* minor #2500 Configuration resolver (julienfalque, SpacePossum, keradus)
+* minor #2566 Show more details on errors and exceptions. (SpacePossum, julienfalque)
+* minor #2597 HHVM - bump required version to 3.18 (keradus)
+* minor #2606 FixCommand - fix missing comment close tag (keradus)
+* minor #2623 OrderedClassElementsFixer - remove dead code (SpacePossum)
+* minor #2625 Update Symfony and Symfony:risky rulesets (keradus)
+* minor #2626 TernaryToNullCoalescingFixer - adjust ruleset membership and description (keradus)
+* minor #2635 ProjectCodeTest - watch that all classes have dedicated tests (keradus)
+* minor #2647 DescribeCommandTest - remove deprecated code usage (julienfalque)
+* minor #2648 Move non-code covering tests to AutoReview subnamespace (keradus)
+* minor #2652 NoSpacesAroundOffsetFixerTest - fix deprecation (keradus)
+* minor #2656 Code grooming (keradus)
+* minor #2659 Travis - speed up preparation for phar building (keradus)
+* minor #2660 Fixed typo in suggest for ext-mbstring (pascal-hofmann)
+* minor #2661 NonPrintableCharacterFixer - include into Symfony:risky ruleset (keradus)
+
 Changelog for v2.1.3
 --------------------
 
