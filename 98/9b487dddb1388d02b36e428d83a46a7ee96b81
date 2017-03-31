@@ -1,0 +1,56 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-04T22:20:29Z
+
+@localheinz, please, could you take a look at this ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-12T23:05:11Z
+
+@localheinz, please, could you take a look at this ?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-13T11:10:22Z
+
+We probably need to force UTF8 encoding when we encode the json, so decode is straightforward.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-13T11:25:06Z
+
+if you could send a fix basing on my test it would be great
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-13T11:30:16Z
+
+@keradus
+
+Apologies for the delay!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-13T11:52:16Z
+
+nothing to be sorry about ;)
+if @GrahamCampbell has a proposal how to fix it I would appreciate a ready for merge PR ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-13T12:08:43Z
+
+Is 2.0 a better target for this?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-13T12:26:25Z
+
+Ok, how does this look: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2463.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-01-13T12:27:15Z
+
+Tests pass on my machine for that other PR.
