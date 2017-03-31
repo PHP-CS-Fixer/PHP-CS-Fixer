@@ -235,7 +235,7 @@ final class IntegrationCaseFactory
             $decoded = json_decode($encoded, true);
 
             if (JSON_ERROR_NONE !== json_last_error()) {
-                throw new \InvalidArgumentException(sprintf('Malformed JSON: "%s".', $encoded));
+                throw new \InvalidArgumentException(sprintf('Malformed JSON: "%s", error: "%s".', $encoded, json_last_error_msg()));
             }
         }
 
