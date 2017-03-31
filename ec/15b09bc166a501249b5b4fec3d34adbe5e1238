@@ -1,0 +1,40 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-31T13:26:38Z
+
+wow, we just released this, thanks !
+probably too much Singapore in my mind :D
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-03-31T13:33:46Z
+
+👍
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-03-31T13:34:38Z
+
+> fabbot.io — The rules contain unknown fixers (non_printable_character).
+
+Does this mean fabbot.io is executing our .php_cs file? If so, that's definitely a bad idea, since someone can send a PR and execute arbitrary code on their servers.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-31T13:35:51Z
+
+it's ok as fabbot runs it in virtualized sandbox
+in the end, it's not up to me or you, but up to fabbot.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-03-31T13:37:51Z
+
+What sort of information could be leaked from the sandbox is the real question I guess.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-31T13:39:00Z
+
+It's up to the infrastructure and fabbot.io decided they are prepared enough to do this.
+If you want, raise a concern directly to them, not here.
