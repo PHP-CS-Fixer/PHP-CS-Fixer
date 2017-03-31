@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by ceeram at 2017-03-31T08:51:40Z
+
+Nice. Thanks for finishing this.
+
+Op 31 mrt. 2017 8:19 a.m. schreef "SpacePossum" <notifications@github.com>:
+
+> closes #2634 <https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/2634>
+> replaces #2636 <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2636>
+>
+> rebase the work of @ceeram <https://github.com/ceeram> and add supported
+> for short array destructing syntax
+> ------------------------------
+> You can view, comment on, or merge this pull request online at:
+>
+>   https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2657
+> Commit Summary
+>
+>    - Allow phpdoc for language constructs, fixes #2634
+>    - Short array destructing support.
+>
+> File Changes
+>
+>    - *M* src/Fixer/Phpdoc/PhpdocToCommentFixer.php
+>    <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2657/files#diff-0>
+>    (29)
+>    - *M* tests/Fixer/Phpdoc/PhpdocToCommentFixerTest.php
+>    <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2657/files#diff-1>
+>    (62)
+>
+> Patch Links:
+>
+>    - https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2657.patch
+>    - https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2657.diff
+>
+> —
+> You are receiving this because you were mentioned.
+> Reply to this email directly, view it on GitHub
+> <https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2657>, or mute the
+> thread
+> <https://github.com/notifications/unsubscribe-auth/AAGzWIp8oMVnpoD4FDP0-UCCFj03cHEDks5rrJrzgaJpZM4MvREH>
+> .
+>
