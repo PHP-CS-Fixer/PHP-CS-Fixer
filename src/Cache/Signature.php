@@ -43,7 +43,7 @@ final class Signature implements SignatureInterface
     {
         $this->phpVersion = $phpVersion;
         $this->fixerVersion = $fixerVersion;
-        $this->rules = $rules;
+        $this->rules = self::utf8Encode($rules);
     }
 
     public function getPhpVersion()
@@ -72,5 +72,20 @@ final class Signature implements SignatureInterface
         }
 
         return true;
+    }
+
+    private static function utf8Encode(array $data)
+    {
+        if (!function_exists('mb_detect_encoding')) {
+            return $data;
+        }
+
+        array_walk_recursive($data, function (&$item) {
+            if (is_string($item) && !mb_detect_encoding($item, 'utf-8', true)) {
+                $item = utf8_encode($item);
+            }
+        });
+
+        return $data;
     }
 }
