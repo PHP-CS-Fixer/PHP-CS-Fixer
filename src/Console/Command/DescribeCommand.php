@@ -169,7 +169,8 @@ final class DescribeCommand extends Command
                     $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
                 }
 
-                $line .= ': '.lcfirst(preg_replace('/\.$/', '', $option->getDescription())).'; ';
+                $description = preg_replace('/(`.+?`)/', '<info>$1</info>', $option->getDescription());
+                $line .= ': '.lcfirst(preg_replace('/\.$/', '', $description)).'; ';
                 if ($option->hasDefault()) {
                     $line .= sprintf(
                         'defaults to <comment>%s</comment>',

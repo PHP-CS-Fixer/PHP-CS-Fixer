@@ -38,7 +38,7 @@ Fixes stuff.
 Replaces bad stuff with good stuff.
 
 Fixer is configurable using following options:
-* things (bool): enables fixing things as well; defaults to false
+* things (bool): enables fixing `things` as well; defaults to false
 
 Fixing examples:
  * Example #1.
@@ -119,7 +119,7 @@ EOT;
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(false);
         $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver(array(
-            new FixerOption('things', 'Enables fixing things as well.', false, false, array('bool')),
+            new FixerOption('things', 'Enables fixing `things` as well.', false, false, array('bool')),
         )));
         $fixer->getDefinition()->willReturn(new FixerDefinition(
             'Fixes stuff.',
