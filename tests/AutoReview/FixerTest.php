@@ -108,7 +108,10 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     {
         $reflection = new \ReflectionClass($fixer);
 
-        $this->assertTrue($reflection->isFinal(), sprintf('Fixer "%s" must be declared "final".', $fixer->getName()));
+        $this->assertTrue(
+            $reflection->isFinal(),
+            sprintf('Fixer "%s" must be declared "final".', $fixer->getName())
+        );
     }
 
     /**
