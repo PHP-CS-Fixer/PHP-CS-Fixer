@@ -22,7 +22,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\AbstractAlignFixerHelper
+ * @covers \PhpCsFixer\AbstractAlignFixerHelper
  * @covers \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper
  * @covers \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper
  * @covers \PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer
