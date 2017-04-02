@@ -18,6 +18,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer
  */
 final class MethodSeparationFixerTest extends AbstractFixerTestCase
 {

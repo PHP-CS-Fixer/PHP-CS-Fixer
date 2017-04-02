@@ -16,6 +16,8 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixer
  */
 final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {

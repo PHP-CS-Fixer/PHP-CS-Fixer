@@ -16,6 +16,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer
  */
 final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 {

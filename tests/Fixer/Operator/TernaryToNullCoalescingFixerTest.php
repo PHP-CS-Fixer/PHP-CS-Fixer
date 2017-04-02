@@ -17,9 +17,10 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *
- * @requires PHP 7.0
- *
  * @internal
+ *
+ * @requires PHP 7.0
+ * @covers \PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer
  */
 final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
 {

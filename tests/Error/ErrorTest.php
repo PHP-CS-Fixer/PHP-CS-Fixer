@@ -16,6 +16,8 @@ use PhpCsFixer\Error\Error;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Error\Error
  */
 final class ErrorTest extends \PHPUnit_Framework_TestCase
 {

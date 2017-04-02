@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer
  */
 final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
 {

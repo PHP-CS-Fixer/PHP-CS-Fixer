@@ -16,9 +16,11 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
+ * @author SpacePossum
+ *
  * @internal
  *
- * @author SpacePossum
+ * @covers \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
  */
 final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {

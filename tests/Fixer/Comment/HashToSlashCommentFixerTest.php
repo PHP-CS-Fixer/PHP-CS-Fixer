@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\HashToSlashCommentFixer
  */
 final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
 {

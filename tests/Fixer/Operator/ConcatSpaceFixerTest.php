@@ -19,6 +19,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\ConcatSpaceFixer
  */
 final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 {

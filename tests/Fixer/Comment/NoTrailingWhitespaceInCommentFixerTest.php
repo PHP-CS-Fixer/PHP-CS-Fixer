@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer
  */
 final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 {

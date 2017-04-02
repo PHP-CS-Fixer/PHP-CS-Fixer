@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Ceeram <ceeram@cakephp.org>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer
  */
 final class PhpdocIndentFixerTest extends AbstractFixerTestCase
 {

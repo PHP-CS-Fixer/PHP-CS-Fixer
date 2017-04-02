@@ -20,6 +20,8 @@ use PhpCsFixer\Report\ReportSummary;
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Report\JunitReporter
  */
 final class JunitReporterTest extends \PHPUnit_Framework_TestCase
 {

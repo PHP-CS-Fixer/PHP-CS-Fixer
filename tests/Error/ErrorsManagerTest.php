@@ -17,6 +17,8 @@ use PhpCsFixer\Error\ErrorsManager;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Error\ErrorsManager
  */
 final class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
 {

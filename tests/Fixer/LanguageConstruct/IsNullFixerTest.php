@@ -19,6 +19,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {

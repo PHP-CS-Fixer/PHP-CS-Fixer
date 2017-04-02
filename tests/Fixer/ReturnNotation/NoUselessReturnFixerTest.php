@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ReturnNotation\NoUselessReturnFixer
  */
 final class NoUselessReturnFixerTest extends AbstractFixerTestCase
 {

@@ -19,6 +19,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer
  */
 final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 {

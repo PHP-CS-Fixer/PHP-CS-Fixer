@@ -19,6 +19,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer
  */
 final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
 {

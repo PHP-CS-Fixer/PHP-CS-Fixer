@@ -19,6 +19,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Javier Spagnoletti <phansys@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer
  */
 final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCase
 {

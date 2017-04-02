@@ -19,6 +19,8 @@ use PhpCsFixer\DocBlock\Tag;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\DocBlock\Tag
  */
 final class TagTest extends \PHPUnit_Framework_TestCase
 {

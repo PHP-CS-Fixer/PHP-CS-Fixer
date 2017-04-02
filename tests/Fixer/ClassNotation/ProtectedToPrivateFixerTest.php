@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer
  */
 final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
 {

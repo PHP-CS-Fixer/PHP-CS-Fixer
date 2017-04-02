@@ -18,6 +18,8 @@ use PhpCsFixer\FixerNameValidator;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerNameValidator
  */
 final class FixerNameValidatorTest extends \PHPUnit_Framework_TestCase
 {

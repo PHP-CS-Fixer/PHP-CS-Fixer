@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer
  */
 final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 {

@@ -19,6 +19,8 @@ use PhpCsFixer\Report\TextReporter;
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Report\TextReporter
  */
 final class TextReporterTest extends \PHPUnit_Framework_TestCase
 {
