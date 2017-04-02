@@ -19,6 +19,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\HeaderCommentFixer
  */
 final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {

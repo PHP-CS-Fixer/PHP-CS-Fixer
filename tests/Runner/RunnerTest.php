@@ -25,6 +25,8 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Runner\Runner
  */
 final class RunnerTest extends \PHPUnit_Framework_TestCase
 {

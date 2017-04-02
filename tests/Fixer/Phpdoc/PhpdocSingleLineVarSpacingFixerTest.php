@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocSingleLineVarSpacingFixer
  */
 final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
 {

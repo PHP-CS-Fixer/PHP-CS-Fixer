@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Matteo Beccati <matteo@beccati.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Alias\EregToPregFixer
  */
 final class EregToPregFixerTest extends AbstractFixerTestCase
 {

@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Farhad Safarov <farhad.safarov@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer
  */
 final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCase
 {

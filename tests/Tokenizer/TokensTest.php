@@ -20,6 +20,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Tokens
  */
 final class TokensTest extends \PHPUnit_Framework_TestCase
 {

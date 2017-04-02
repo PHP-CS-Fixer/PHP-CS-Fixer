@@ -21,6 +21,8 @@ use PhpCsFixer\Utils;
  * @author Odín del Río <odin.drp@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Utils
  */
 final class UtilsTest extends \PHPUnit_Framework_TestCase
 {

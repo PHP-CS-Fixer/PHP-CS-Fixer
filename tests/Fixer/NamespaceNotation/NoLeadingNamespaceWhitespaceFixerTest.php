@@ -20,6 +20,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer
  */
 final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
 {

@@ -19,6 +19,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\IncludeFixer
  */
 final class IncludeFixerTest extends AbstractFixerTestCase
 {

@@ -20,6 +20,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer
  */
 final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 {

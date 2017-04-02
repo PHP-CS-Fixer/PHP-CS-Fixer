@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Matteo Beccati <matteo@beccati.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer
  */
 final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 {

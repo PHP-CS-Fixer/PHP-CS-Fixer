@@ -18,6 +18,8 @@ use PhpCsFixer\Cache\Signature;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Cache\Signature
  */
 final class SignatureTest extends \PHPUnit_Framework_TestCase
 {

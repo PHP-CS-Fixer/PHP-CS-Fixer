@@ -18,6 +18,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ * @covers \PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer
  */
 final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 {

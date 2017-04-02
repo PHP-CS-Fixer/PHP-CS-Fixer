@@ -18,6 +18,8 @@ use PhpCsFixer\Console\Application;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Console\Application
  */
 final class ApplicationTest extends \PHPUnit_Framework_TestCase
 {

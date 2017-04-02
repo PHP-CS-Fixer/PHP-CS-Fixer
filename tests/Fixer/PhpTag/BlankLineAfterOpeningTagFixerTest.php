@@ -20,6 +20,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
  */
 final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {

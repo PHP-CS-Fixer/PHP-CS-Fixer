@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\TrailingCommaInMultilineArrayFixer
  */
 final class TrailingCommaInMultilineArrayFixerTest extends AbstractFixerTestCase
 {

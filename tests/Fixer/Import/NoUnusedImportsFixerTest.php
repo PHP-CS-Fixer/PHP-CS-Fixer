@@ -16,6 +16,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
  */
 final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 {

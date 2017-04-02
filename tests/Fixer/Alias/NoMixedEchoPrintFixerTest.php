@@ -19,6 +19,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer
  */
 final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {

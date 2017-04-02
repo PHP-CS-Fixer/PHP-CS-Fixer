@@ -16,6 +16,9 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractDoctrineAnnotationFixer
+ * @covers \PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixer
  */
 final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {

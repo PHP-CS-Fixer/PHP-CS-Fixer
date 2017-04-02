@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Vincent Klaiber <hello@vinkla.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpTag\NoShortEchoTagFixer
  */
 final class NoShortEchoTagFixerTest extends AbstractFixerTestCase
 {

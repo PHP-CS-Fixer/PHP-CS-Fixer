@@ -21,6 +21,8 @@ use PhpCsFixer\ToolInfo;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Cache\Cache
  */
 final class CacheTest extends \PHPUnit_Framework_TestCase
 {

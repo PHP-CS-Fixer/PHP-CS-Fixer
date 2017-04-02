@@ -20,6 +20,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoUnneededControlParenthesesFixer
  */
 final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 {

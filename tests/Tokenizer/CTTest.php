@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Tokenizer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\CT
  */
 final class CTTest extends \PHPUnit_Framework_TestCase
 {

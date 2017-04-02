@@ -19,6 +19,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer
  */
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {

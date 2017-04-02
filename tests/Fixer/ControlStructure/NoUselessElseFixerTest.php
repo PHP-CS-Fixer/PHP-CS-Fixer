@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer
  */
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {

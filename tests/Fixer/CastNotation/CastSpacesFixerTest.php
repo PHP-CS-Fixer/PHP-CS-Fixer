@@ -16,6 +16,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\CastSpacesFixer
  */
 final class CastSpacesFixerTest extends AbstractFixerTestCase
 {

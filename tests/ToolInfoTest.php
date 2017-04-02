@@ -18,6 +18,8 @@ use PhpCsFixer\ToolInfo;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\ToolInfo
  */
 final class ToolInfoTest extends \PHPUnit_Framework_TestCase
 {

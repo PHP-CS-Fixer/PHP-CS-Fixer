@@ -19,6 +19,8 @@ use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolver
  */
 final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 {

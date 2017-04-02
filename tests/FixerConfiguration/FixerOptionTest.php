@@ -16,6 +16,8 @@ use PhpCsFixer\FixerConfiguration\FixerOption;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerConfiguration\FixerOption
  */
 final class FixerOptionTest extends \PHPUnit_Framework_TestCase
 {

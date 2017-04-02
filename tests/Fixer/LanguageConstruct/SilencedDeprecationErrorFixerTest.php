@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Jules Pietri <jules@heahprod.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\SilencedDeprecationErrorFixer
  */
 final class SilencedDeprecationErrorFixerTest extends AbstractFixerTestCase
 {
