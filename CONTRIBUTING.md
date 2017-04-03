@@ -12,6 +12,7 @@
  * Make changes.
  * If you are adding functionality or fixing a bug - add a test!
  * Fix project itself: `php php-cs-fixer fix`.
+ * Make sure there is no trailing spaces in code: `./check_trailing_spaces.sh`.
  * Regenerate readme: `php php-cs-fixer readme > README.rst`. Do not modify `README.rst` manually!
  * Check if tests pass: `phpunit` [(4.x or 5.x)](https://phpunit.de/manual/current/en/installation.html)
 
