@@ -30,20 +30,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class MethodArgumentSpaceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            $token = $tokens[$index];
-
-            if ($token->equals('(') && !$tokens[$index - 1]->isGivenKind(T_ARRAY)) {
-                $this->fixFunction($tokens, $index);
-            }
-        }
-    }
-
-    /**
      * Method to insert space after comma and remove space before comma.
      *
      * @param Tokens $tokens
@@ -90,6 +76,20 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
     /**
      * {@inheritdoc}
      */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = $tokens->count() - 1; $index > 0; --$index) {
+            $token = $tokens[$index];
+
+            if ($token->equals('(') && !$tokens[$index - 1]->isGivenKind(T_ARRAY)) {
+                $this->fixFunction($tokens, $index);
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createConfigurationDefinition()
     {
         $keepMultipleSpacesAfterComma = new FixerOptionBuilder('keep_multiple_spaces_after_comma', 'Whether keep multiple spaces after comma.');
@@ -117,11 +117,13 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
 
             if ($token->equals(')')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+
                 continue;
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+
                 continue;
             }
 
@@ -143,7 +145,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         if ($tokens[$index - 1]->isWhitespace()) {
             $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
 
-            if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC)))) {
+            if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC))) && !$tokens[$prevIndex]->isComment()) {
                 $tokens[$index - 1]->clear();
             }
         }

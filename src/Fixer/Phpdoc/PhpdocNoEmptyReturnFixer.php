@@ -35,31 +35,6 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType('return');
-
-            if (empty($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                $this->fixAnnotation($doc, $annotation);
-            }
-
-            $token->setContent($doc->getContent());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -92,6 +67,31 @@ function foo() {}
     {
         // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
         return 10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $doc = new DocBlock($token->getContent());
+            $annotations = $doc->getAnnotationsOfType('return');
+
+            if (empty($annotations)) {
+                continue;
+            }
+
+            foreach ($annotations as $annotation) {
+                $this->fixAnnotation($doc, $annotation);
+            }
+
+            $token->setContent($doc->getContent());
+        }
     }
 
     /**

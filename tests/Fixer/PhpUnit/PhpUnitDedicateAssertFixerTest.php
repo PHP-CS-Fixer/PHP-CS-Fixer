@@ -85,6 +85,23 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
             '<?php $this->assertTrue(\IS_FLOAT($a));',
         );
 
+        $cases[] = array(
+            '<?php $this->assertInternalType(#
+\'float\'#
+, #
+$a#
+#
+)#
+;',
+            '<?php $this->assertTrue(#
+\IS_FLOAT#
+(#
+$a#
+)#
+)#
+;',
+        );
+
         return $cases;
     }
 

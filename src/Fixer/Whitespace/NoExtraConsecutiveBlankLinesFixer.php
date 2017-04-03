@@ -111,19 +111,8 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
                     break;
                 case 'square_brace_block':
                     $this->tokenKindCallbackMap[CT::T_ARRAY_SQUARE_BRACE_OPEN] = 'fixStructureOpenCloseIfMultiLine'; // typeless '[' tokens should not be fixed (too rare)
+                    break;
             }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $this->tokens = $tokens;
-        $this->tokensAnalyzer = new TokensAnalyzer($this->tokens);
-        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
-            $this->fixByToken($tokens[$index], $index);
         }
     }
 
@@ -281,6 +270,18 @@ class Foo
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $this->tokens = $tokens;
+        $this->tokensAnalyzer = new TokensAnalyzer($this->tokens);
+        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
+            $this->fixByToken($tokens[$index], $index);
+        }
     }
 
     /**

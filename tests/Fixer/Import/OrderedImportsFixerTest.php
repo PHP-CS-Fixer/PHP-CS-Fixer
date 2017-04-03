@@ -602,15 +602,44 @@ EOF;
         );
     }
 
-    public function testCodeWithComments()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideCommentCases
+     */
+    public function testCodeWithComments($expected, $input = null)
     {
-        $this->doTest(
-            '<?php
-                use A\C1 /* A */;
-                use /* B */ B\C2;',
-            '<?php
-                use /* B */ B\C2;
-                use A\C1 /* A */;'
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCommentCases()
+    {
+        return array(
+            array(
+                '<?php
+                    use A\C1 /* A */;
+                    use /* B */ B\C2;',
+                '<?php
+                    use /* B */ B\C2;
+                    use A\C1 /* A */;',
+            ),
+            array(
+                '<?php
+                    use#
+A\C1;
+                    use B#
+\C2#
+#
+;',
+                '<?php
+                    use#
+B#
+\C2#
+#
+;
+                    use A\C1;',
+            ),
         );
     }
 

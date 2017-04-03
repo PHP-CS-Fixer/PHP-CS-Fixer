@@ -35,6 +35,7 @@ class Tokens extends \SplFixedArray
     const BLOCK_TYPE_DYNAMIC_VAR_BRACE = 6;
     const BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE = 7;
     const BLOCK_TYPE_GROUP_IMPORT_BRACE = 8;
+    const BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE = 9;
 
     /**
      * Static class cache.
@@ -218,6 +219,10 @@ class Tokens extends \SplFixedArray
             self::BLOCK_TYPE_GROUP_IMPORT_BRACE => array(
                 'start' => array(CT::T_GROUP_IMPORT_BRACE_OPEN, '{'),
                 'end' => array(CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'),
+            ),
+            self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => array(
+                'start' => array(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['),
+                'end' => array(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'),
             ),
         );
     }
@@ -700,7 +705,7 @@ class Tokens extends \SplFixedArray
     /**
      * Find a sequence of meaningful tokens and returns the array of their locations.
      *
-     * @param array      $sequence      an array of tokens (same format used by getNextTokenOfKind)
+     * @param array      $sequence      an array of tokens (kinds) (same format used by getNextTokenOfKind)
      * @param int        $start         start index, defaulting to the start of the file
      * @param int        $end           end index, defaulting to the end of the file
      * @param bool|array $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
@@ -959,6 +964,10 @@ class Tokens extends \SplFixedArray
         $this->foundTokenKinds = array();
         foreach ($this as $index => $token) {
             $this->registerFoundToken($token);
+        }
+
+        if (defined('T_HH_ERROR') && $this->isTokenKindFound(T_HH_ERROR)) {
+            throw new \ParseError('Parsing error, encountered "T_HH_ERROR".');
         }
 
         $this->rewind();

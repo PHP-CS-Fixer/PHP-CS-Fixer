@@ -25,7 +25,26 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Single-line whitespace before closing semicolon are prohibited.',
+            array(new CodeSample('<?php $this->foo() ;'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(';');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->equals(';') || !$tokens[$index - 1]->isWhitespace(" \t")) {
@@ -41,24 +60,5 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
                 $tokens[$index - 1]->clear();
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Single-line whitespace before closing semicolon are prohibited.',
-            array(new CodeSample('<?php $this->foo() ;'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(';');
     }
 }

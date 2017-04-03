@@ -151,6 +151,27 @@ OVERRIDDEN;
                     public function &doubleval($a);
                 }',
             ),
+            array(
+                '<?php $a = #
+#
+#
+(int) #
+ (
+#
+ $b#
+ )#
+ ;#',
+                '<?php $a = #
+#
+\
+#
+intval#
+ (
+#
+ $b#
+ )#
+ ;#',
+            ),
         );
     }
 }

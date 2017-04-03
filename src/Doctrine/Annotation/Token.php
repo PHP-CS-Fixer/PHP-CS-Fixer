@@ -19,7 +19,7 @@ use Doctrine\Common\Annotations\DocLexer;
  *
  * @internal
  */
-class Token
+final class Token
 {
     /**
      * @var int

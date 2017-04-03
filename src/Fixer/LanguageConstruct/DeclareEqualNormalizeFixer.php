@@ -45,23 +45,6 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $callback = $this->callback;
-        for ($index = 0, $count = $tokens->count(); $index < $count - 6; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_DECLARE)) {
-                continue;
-            }
-
-            while (!$tokens[++$index]->equals('='));
-
-            $this->$callback($tokens, $index);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -76,6 +59,23 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DECLARE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $callback = $this->callback;
+        for ($index = 0, $count = $tokens->count(); $index < $count - 6; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_DECLARE)) {
+                continue;
+            }
+
+            while (!$tokens[++$index]->equals('='));
+
+            $this->$callback($tokens, $index);
+        }
     }
 
     /**
@@ -106,7 +106,9 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
         }
 
         if ($tokens[$index - 1]->isWhitespace()) {
-            $tokens[$index - 1]->setContent(' ');
+            if (!$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                $tokens[$index - 1]->setContent(' ');
+            }
         } else {
             $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
         }
@@ -118,7 +120,10 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
      */
     private function removeWhitespaceAroundToken(Tokens $tokens, $index)
     {
-        $tokens->removeLeadingWhitespace($index);
+        if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isComment()) {
+            $tokens->removeLeadingWhitespace($index);
+        }
+
         $tokens->removeTrailingWhitespace($index);
     }
 }

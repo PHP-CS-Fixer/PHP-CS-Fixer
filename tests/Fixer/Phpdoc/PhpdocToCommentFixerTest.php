@@ -518,6 +518,20 @@ function getNumberFormatter()
 ',
         );
 
+        $cases[] = array(
+            '<?php
+
+class A
+{
+    public function b()
+    {
+        /** @var int $c */
+        print($c = 0);
+    }
+}
+',
+        );
+
         return $cases;
     }
 
@@ -535,6 +549,54 @@ trait DocBlocks
 {
     public function test() {}
 }',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideCases71
+     * @requires PHP 7.1
+     */
+    public function testFix71($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCases71()
+    {
+        return array(
+            array(
+                '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @var int $a */
+[$a] = $b;
+
+/* @var int $c */
+[$a] = $c;
+                ',
+                '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @var int $a */
+[$a] = $b;
+
+/** @var int $c */
+[$a] = $c;
+                ',
+            ),
+            array(
+                '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/**
+ * @var int $a
+ */
+[$a] = $b;
+                ',
             ),
         );
     }

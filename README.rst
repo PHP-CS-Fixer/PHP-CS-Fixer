@@ -36,7 +36,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.1.2/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.2.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -56,14 +56,13 @@ Then, just run ``php-cs-fixer``.
 Globally (Composer)
 ~~~~~~~~~~~~~~~~~~~
 
-To install PHP CS Fixer, install Composer and issue the following command:
+To install PHP CS Fixer, `install Composer <https://getcomposer.org/download/>`_ and issue the following command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global require friendsofphp/php-cs-fixer
+    $ composer global require friendsofphp/php-cs-fixer
 
-Then make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
-you're good to go:
+Then make sure you have the global Composer binaries directory in your ``PATH``. This directory is platform-dependent, see `Composer documentation <https://getcomposer.org/doc/03-cli.md#composer-home>`_ for details. Example for some Unix systems:
 
 .. code-block:: bash
 
@@ -186,6 +185,18 @@ The ``--allow-risky`` option allows you to set whether risky rules may run. Defa
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
 The ``--stop-on-violation`` flag stops execution upon first file that needs to be fixed.
+
+The ``--show-progress`` option allows you to choose the way process progress is rendered:
+
+* ``none``: disables progress output;
+* ``run-in``: simple single-line progress output;
+* ``evaluating``: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects.
+
+If the option is not provided, it defaults to ``run-in`` unless a config file that disables output is used, in which case it defaults to ``none``. This option has no effect if the verbosity of the command is less than ``verbose``.
+
+.. code-block:: bash
+
+    $ php php-cs-fixer.phar fix --verbose --show-progress=evaluating
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -508,6 +519,10 @@ Choose from the list of available rules:
 
   PHP keywords MUST be in lower case.
 
+* **magic_constant_casing** [@Symfony]
+
+  Magic constants should be referred to using the correct casing.
+
 * **mb_str_functions**
 
   Replace non multibyte-safe functions with corresponding mb function.
@@ -715,6 +730,13 @@ Choose from the list of available rules:
 * **no_whitespace_in_blank_line** [@Symfony]
 
   Remove trailing whitespace at the end of blank lines.
+
+* **non_printable_character** [@Symfony:risky]
+
+  Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
+  invisible unicode symbols.
+
+  *Risky rule: risky when strings contain intended invisible characters.*
 
 * **normalize_index_brace** [@Symfony]
 

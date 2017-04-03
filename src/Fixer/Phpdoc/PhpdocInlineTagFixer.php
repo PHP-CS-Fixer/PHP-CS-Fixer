@@ -25,7 +25,35 @@ final class PhpdocInlineTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Fix phpdoc inline tags, make inheritdoc always inline.',
+            array(new CodeSample(
+'<?php
+/**
+ * @{TUTORIAL}
+ * {{ @link }}
+ * {@examples}
+ * @inheritdocs
+ */
+'
+            ))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -62,33 +90,5 @@ final class PhpdocInlineTagFixer extends AbstractFixer
 
             $token->setContent($content);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Fix phpdoc inline tags, make inheritdoc always inline.',
-            array(new CodeSample(
-'<?php
-/**
- * @{TUTORIAL}
- * {{ @link }}
- * {@examples}
- * @inheritdocs
- */
-'
-            ))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 }

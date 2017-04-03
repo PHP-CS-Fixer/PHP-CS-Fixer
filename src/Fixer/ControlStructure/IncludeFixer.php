@@ -27,14 +27,6 @@ final class IncludeFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $this->clearIncludies($tokens, $this->findIncludies($tokens));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -60,11 +52,22 @@ include_once("sample4.php");
         return $tokens->isAnyTokenKindsFound(array(T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE));
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $this->clearIncludies($tokens, $this->findIncludies($tokens));
+    }
+
     private function clearIncludies(Tokens $tokens, array $includies)
     {
         foreach (array_reverse($includies) as $includy) {
             if ($includy['end'] && !$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
-                $tokens->removeLeadingWhitespace($includy['end']);
+                $afterEndIndex = $tokens->getNextNonWhitespace($includy['end']);
+                if (null === $afterEndIndex || !$tokens[$afterEndIndex]->isComment()) {
+                    $tokens->removeLeadingWhitespace($includy['end']);
+                }
             }
 
             $braces = $includy['braces'];
@@ -73,13 +76,15 @@ include_once("sample4.php");
                 $nextToken = $tokens[$tokens->getNextMeaningfulToken($braces['close'])];
 
                 if ($nextToken->equalsAny(array(';', array(T_CLOSE_TAG)))) {
-                    $tokens->removeLeadingWhitespace($braces['open']);
-                    $tokens->removeTrailingWhitespace($braces['open']);
-                    $tokens->removeLeadingWhitespace($braces['close']);
-                    $tokens->removeTrailingWhitespace($braces['close']);
+                    $this->removeWhitespaceAroundIfPossible($tokens, $braces['open']);
+                    $this->removeWhitespaceAroundIfPossible($tokens, $braces['close']);
+                    $tokens->clearTokenAndMergeSurroundingWhitespace($braces['open']);
+                    $tokens->clearTokenAndMergeSurroundingWhitespace($braces['close']);
 
-                    $tokens[$braces['open']] = new Token(array(T_WHITESPACE, ' '));
-                    $tokens[$braces['close']]->clear();
+                    $nextSiblingIndex = $tokens->getNonEmptySibling($includy['begin'], 1);
+                    if (!$tokens[$nextSiblingIndex]->isWhitespace()) {
+                        $tokens->insertAt($nextSiblingIndex, new Token(array(T_WHITESPACE, ' ')));
+                    }
                 }
             }
 
@@ -133,5 +138,22 @@ include_once("sample4.php");
         }
 
         return $includies;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function removeWhitespaceAroundIfPossible(Tokens $tokens, $index)
+    {
+        $nextIndex = $tokens->getNextNonWhitespace($index);
+        if (null === $nextIndex || !$tokens[$nextIndex]->isComment()) {
+            $tokens->removeLeadingWhitespace($index);
+        }
+
+        $prevIndex = $tokens->getPrevNonWhitespace($index);
+        if (null === $prevIndex || !$tokens[$prevIndex]->isComment()) {
+            $tokens->removeTrailingWhitespace($index);
+        }
     }
 }

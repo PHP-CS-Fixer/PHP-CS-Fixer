@@ -72,7 +72,54 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Removes unneeded parentheses around control statements.',
+            array(
+                new CodeSample(
+                    '<?php
+while ($x) { while ($y) { break (2); } }
+clone($a);
+while ($y) { continue (2); }
+echo("foo");
+print("foo");
+return (1 + 2);
+switch ($a) { case($x); }
+yield(2);
+'
+                ),
+                new CodeSample(
+                    '<?php
+while ($x) { while ($y) { break (2); } }
+clone($a);
+while ($y) { continue (2); }
+echo("foo");
+print("foo");
+return (1 + 2);
+switch ($a) { case($x); }
+yield(2);
+',
+                    array('statements' => array('break', 'continue'))
+                ),
+            )
+        );
+    }
+
+    /**
+     * Should be run before no_trailing_whitespace.
+     *
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return 30;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // Checks if specific statements are set and uses them in this case.
         $loops = array_intersect_key(self::$loops, array_flip($this->configuration['statements']));
@@ -116,53 +163,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
                 $tokens->clearTokenAndMergeSurroundingWhitespace($blockEndIndex);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Removes unneeded parentheses around control statements.',
-            array(
-                new CodeSample(
-                    '<?php
-while ($x) { while ($y) { break (2); } }
-clone($a);
-while ($y) { continue (2); }
-echo("foo");
-print("foo");
-return (1 + 2);
-switch ($a) { case($x); }
-yield(2);
-'
-                ),
-                new CodeSample(
-                    '<?php
-while ($x) { while ($y) { break (2); } }
-clone($a);
-while ($y) { continue (2); }
-echo("foo");
-print("foo");
-return (1 + 2);
-switch ($a) { case($x); }
-yield(2);
-',
-                    array('statements' => array('break', 'continue'))
-                ),
-            )
-        );
-    }
-
-    /**
-     * Should be run before no_trailing_whitespace.
-     *
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 30;
     }
 
     /**

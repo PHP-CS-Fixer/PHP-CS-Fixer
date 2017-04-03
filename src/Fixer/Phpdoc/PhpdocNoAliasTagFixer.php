@@ -43,33 +43,6 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements Configuration
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $searchFor = array_keys($this->configuration['replacements']);
-
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType($searchFor);
-
-            if (empty($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                $annotation->getTag()->setName($this->configuration['replacements'][$annotation->getTag()->getName()]);
-            }
-
-            $token->setContent($doc->getContent());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -104,6 +77,33 @@ final class Example
                 ),
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $searchFor = array_keys($this->configuration['replacements']);
+
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $doc = new DocBlock($token->getContent());
+            $annotations = $doc->getAnnotationsOfType($searchFor);
+
+            if (empty($annotations)) {
+                continue;
+            }
+
+            foreach ($annotations as $annotation) {
+                $annotation->getTag()->setName($this->configuration['replacements'][$annotation->getTag()->getName()]);
+            }
+
+            $token->setContent($doc->getContent());
+        }
     }
 
     /**

@@ -27,36 +27,6 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-
-            // don't process single line docblocks
-            if (1 === count($doc->getLines())) {
-                continue;
-            }
-
-            $annotations = $doc->getAnnotationsOfType(array('param', 'return', 'type', 'var'));
-
-            // only process docblocks where the first meaningful annotation is @type or @var
-            if (!isset($annotations[0]) || !in_array($annotations[0]->getTag()->getName(), array('type', 'var'), true)) {
-                continue;
-            }
-
-            $this->fixLine($doc->getLine($annotations[0]->getStart()));
-
-            $token->setContent($doc->getContent());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -85,6 +55,36 @@ final class Foo
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $doc = new DocBlock($token->getContent());
+
+            // don't process single line docblocks
+            if (1 === count($doc->getLines())) {
+                continue;
+            }
+
+            $annotations = $doc->getAnnotationsOfType(array('param', 'return', 'type', 'var'));
+
+            // only process docblocks where the first meaningful annotation is @type or @var
+            if (!isset($annotations[0]) || !in_array($annotations[0]->getTag()->getName(), array('type', 'var'), true)) {
+                continue;
+            }
+
+            $this->fixLine($doc->getLine($annotations[0]->getStart()));
+
+            $token->setContent($doc->getContent());
+        }
     }
 
     private function fixLine(Line $line)

@@ -388,6 +388,26 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testPropertyName()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+$foo->bar = null;
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+$foo->bar = null;
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testNamespacePart()
     {
         $expected = <<<'EOF'
@@ -562,5 +582,21 @@ new CLassD();
 echo fn_a();
 EOF;
         $this->doTest($expected);
+    }
+
+    public function testFixWithComments()
+    {
+        $input = '<?php
+use#
+\#
+Exception#
+#
+;
+echo 1;';
+
+        $expected = '<?php
+echo 1;';
+
+        $this->doTest($expected, $input);
     }
 }

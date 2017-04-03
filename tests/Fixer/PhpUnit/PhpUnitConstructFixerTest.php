@@ -79,6 +79,16 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
             array('<?php $sth->assertSame(true, $foo);'),
             array('<?php $this->assertSame($b, null);'),
             array(
+                '<?php $this->assertNull(/*bar*/ $a);',
+                '<?php $this->assertSame(null /*foo*/, /*bar*/ $a);',
+            ),
+            array(
+                '<?php $this->assertSame(null === $eventException ? $exception : $eventException, $event->getException());',
+            ),
+            array(
+                '<?php $this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
+            ),
+            array(
                 '<?php
     $this->assertTrue(
         $a,
@@ -92,14 +102,18 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     );',
             ),
             array(
-                '<?php $this->assertNull(/*bar*/ $a);',
-                '<?php $this->assertSame(null /*foo*/, /*bar*/ $a);',
-            ),
-            array(
-                '<?php $this->assertSame(null === $eventException ? $exception : $eventException, $event->getException());',
-            ),
-            array(
-                '<?php $this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
+                '<?php
+    $this->assertTrue(#
+        #
+        $a,#
+        "foo" . $bar#
+    );',
+                '<?php
+    $this->assertSame(#
+        true,#
+        $a,#
+        "foo" . $bar#
+    );',
             ),
         );
 

@@ -26,7 +26,26 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Standardize spaces around ternary operator.',
+            array(new CodeSample('<?php $a = $a   ?1 :0;'))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAllTokenKindsFound(array('?', ':'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $ternaryLevel = 0;
 
@@ -67,25 +86,6 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 --$ternaryLevel;
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Standardize spaces around ternary operator.',
-            array(new CodeSample('<?php $a = $a   ?1 :0;'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound(array('?', ':'));
     }
 
     /**

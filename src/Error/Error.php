@@ -47,21 +47,20 @@ final class Error
     private $filePath;
 
     /**
-     * @param int    $type
-     * @param string $filePath
+     * @var \Throwable|null
      */
-    public function __construct($type, $filePath)
+    private $source;
+
+    /**
+     * @param int             $type
+     * @param string          $filePath
+     * @param \Throwable|null $source
+     */
+    public function __construct($type, $filePath, $source = null)
     {
         $this->type = $type;
         $this->filePath = $filePath;
-    }
-
-    /**
-     * @return int
-     */
-    public function getType()
-    {
-        return $this->type;
+        $this->source = $source;
     }
 
     /**
@@ -70,5 +69,21 @@ final class Error
     public function getFilePath()
     {
         return $this->filePath;
+    }
+
+    /**
+     * @return \Throwable|null
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

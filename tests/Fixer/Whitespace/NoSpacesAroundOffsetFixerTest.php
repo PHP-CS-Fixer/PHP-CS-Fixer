@@ -65,16 +65,38 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveCommentsAlone()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideCommentCases
+     */
+    public function testCommentsCases($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCommentCases()
+    {
+        return array(
+            array(
+                '<?php
 
 $withComments[0] // here is a comment
     [1] // and here is another
-    [2] = 3;
-EOF;
-        $this->doTest($expected);
+    [2] = 3;',
+            ),
+            array(
+                '<?php
+$a = $b[# z
+ 1#z
+ ];',
+                '<?php
+$a = $b[ # z
+ 1#z
+ ];',
+            ),
+        );
     }
 
     public function testLeaveComplexString()
@@ -348,5 +370,42 @@ EOT
         );
 
         $this->fixer->configure(array('positions' => array('foo')));
+    }
+
+    /**
+     * @param array  $configuration
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider providePHP71Cases
+     * @requires PHP 7.1
+     */
+    public function testPHP71(array $configuration, $expected, $input)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP71Cases()
+    {
+        return array(
+            'Config "default".' => array(
+                array('positions' => array('inside', 'outside')),
+                '<?php [ $a ] = $a;
+if ($controllerName = $request->attributes->get(1)) {
+    return false;
+}
+[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+$a = $b[0];
+',
+                '<?php [ $a ] = $a;
+if ($controllerName = $request->attributes->get(1)) {
+    return false;
+}
+[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+$a = $b   [0];
+',
+            ),
+        );
     }
 }

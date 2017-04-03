@@ -31,113 +31,6 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            if (false !== stripos($token->getContent(), 'inheritdoc')) {
-                continue;
-            }
-
-            $index = $tokens->getNextMeaningfulToken($index);
-
-            if (null === $index) {
-                return;
-            }
-
-            while ($tokens[$index]->isGivenKind(array(
-                T_ABSTRACT,
-                T_FINAL,
-                T_PRIVATE,
-                T_PROTECTED,
-                T_PUBLIC,
-                T_STATIC,
-                T_VAR,
-            ))) {
-                $index = $tokens->getNextMeaningfulToken($index);
-            }
-
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
-                continue;
-            }
-
-            $openIndex = $tokens->getNextTokenOfKind($index, array('('));
-            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
-
-            $arguments = array();
-
-            foreach ($this->getArguments($tokens, $openIndex, $index) as $start => $end) {
-                $argumentInfo = $this->prepareArgumentInformation($tokens, $start, $end);
-
-                if (!$this->configuration['only_untyped'] || '' === $argumentInfo['type']) {
-                    $arguments[$argumentInfo['name']] = $argumentInfo;
-                }
-            }
-
-            if (!count($arguments)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-            $lastParamLine = null;
-
-            foreach ($doc->getAnnotationsOfType('param') as $annotation) {
-                $pregMatched = preg_match('/^[^$]+(\$\w+).*$/s', $annotation->getContent(), $matches);
-
-                if (1 === $pregMatched) {
-                    unset($arguments[$matches[1]]);
-                }
-
-                $lastParamLine = max($lastParamLine, $annotation->getEnd());
-            }
-
-            if (!count($arguments)) {
-                continue;
-            }
-
-            $lines = $doc->getLines();
-            $linesCount = count($lines);
-
-            preg_match('/^(\s*).*$/', $lines[$linesCount - 1]->getContent(), $matches);
-            $indent = $matches[1];
-
-            $newLines = array();
-
-            foreach ($arguments as $argument) {
-                $type = $argument['type'] ?: 'mixed';
-
-                if ('?' !== $type[0] && 'null' === strtolower($argument['default'])) {
-                    $type = 'null|'.$type;
-                }
-
-                $newLines[] = new Line(sprintf(
-                    '%s* @param %s %s%s',
-                    $indent,
-                    $type,
-                    $argument['name'],
-                    $this->whitespacesConfig->getLineEnding()
-                ));
-            }
-
-            array_splice(
-                $lines,
-                $lastParamLine ? $lastParamLine + 1 : $linesCount - 1,
-                0,
-                $newLines
-            );
-
-            $token->setContent(implode('', $lines));
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -199,6 +92,120 @@ function f9(string $foo, $bar, $baz) {}',
     public function isRisky()
     {
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $tokenContent = $token->getContent();
+
+            if (false !== stripos($tokenContent, 'inheritdoc')) {
+                continue;
+            }
+
+            // ignore one-line phpdocs like `/** foo */`, as there is no place to put new annotations
+            if (false === strpos($tokenContent, "\n")) {
+                continue;
+            }
+
+            $index = $tokens->getNextMeaningfulToken($index);
+
+            if (null === $index) {
+                return;
+            }
+
+            while ($tokens[$index]->isGivenKind(array(
+                T_ABSTRACT,
+                T_FINAL,
+                T_PRIVATE,
+                T_PROTECTED,
+                T_PUBLIC,
+                T_STATIC,
+                T_VAR,
+            ))) {
+                $index = $tokens->getNextMeaningfulToken($index);
+            }
+
+            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+
+            $openIndex = $tokens->getNextTokenOfKind($index, array('('));
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+
+            $arguments = array();
+
+            foreach ($this->getArguments($tokens, $openIndex, $index) as $start => $end) {
+                $argumentInfo = $this->prepareArgumentInformation($tokens, $start, $end);
+
+                if (!$this->configuration['only_untyped'] || '' === $argumentInfo['type']) {
+                    $arguments[$argumentInfo['name']] = $argumentInfo;
+                }
+            }
+
+            if (!count($arguments)) {
+                continue;
+            }
+
+            $doc = new DocBlock($tokenContent);
+            $lastParamLine = null;
+
+            foreach ($doc->getAnnotationsOfType('param') as $annotation) {
+                $pregMatched = preg_match('/^[^$]+(\$\w+).*$/s', $annotation->getContent(), $matches);
+
+                if (1 === $pregMatched) {
+                    unset($arguments[$matches[1]]);
+                }
+
+                $lastParamLine = max($lastParamLine, $annotation->getEnd());
+            }
+
+            if (!count($arguments)) {
+                continue;
+            }
+
+            $lines = $doc->getLines();
+            $linesCount = count($lines);
+
+            preg_match('/^(\s*).*$/', $lines[$linesCount - 1]->getContent(), $matches);
+            $indent = $matches[1];
+
+            $newLines = array();
+
+            foreach ($arguments as $argument) {
+                $type = $argument['type'] ?: 'mixed';
+
+                if ('?' !== $type[0] && 'null' === strtolower($argument['default'])) {
+                    $type = 'null|'.$type;
+                }
+
+                $newLines[] = new Line(sprintf(
+                    '%s* @param %s %s%s',
+                    $indent,
+                    $type,
+                    $argument['name'],
+                    $this->whitespacesConfig->getLineEnding()
+                ));
+            }
+
+            array_splice(
+                $lines,
+                $lastParamLine ? $lastParamLine + 1 : $linesCount - 1,
+                0,
+                $newLines
+            );
+
+            $token->setContent(implode('', $lines));
+        }
     }
 
     /**

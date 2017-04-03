@@ -20,7 +20,7 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
  *
  * @internal
  */
-class Tokens extends \SplFixedArray
+final class Tokens extends \SplFixedArray
 {
     /**
      * @param PhpToken $input

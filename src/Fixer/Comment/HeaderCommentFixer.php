@@ -50,41 +50,6 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurationDef
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        if (null === $this->configuration['header']) {
-            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
-        }
-
-        // figure out where the comment should be placed
-        $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens);
-
-        // check if there is already a comment
-        $headerCurrentIndex = $this->findHeaderCommentCurrentIndex($tokens, $headerNewIndex - 1);
-
-        if (null === $headerCurrentIndex) {
-            if ('' === $this->configuration['header']) {
-                return; // header not found and none should be set, return
-            }
-
-            $this->insertHeader($tokens, $headerNewIndex);
-        } elseif ($this->getHeaderAsComment() !== $tokens[$headerCurrentIndex]->getContent()) {
-            $tokens->clearTokenAndMergeSurroundingWhitespace($headerCurrentIndex);
-            if ('' === $this->configuration['header']) {
-                return; // header found and cleared, none should be set, return
-            }
-
-            $this->insertHeader($tokens, $headerNewIndex);
-        } else {
-            $headerNewIndex = $headerCurrentIndex;
-        }
-
-        $this->fixWhiteSpaceAroundHeader($tokens, $headerNewIndex);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -146,15 +111,47 @@ echo 1;
     /**
      * {@inheritdoc}
      */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        if (null === $this->configuration['header']) {
+            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
+        }
+
+        // figure out where the comment should be placed
+        $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens);
+
+        // check if there is already a comment
+        $headerCurrentIndex = $this->findHeaderCommentCurrentIndex($tokens, $headerNewIndex - 1);
+
+        if (null === $headerCurrentIndex) {
+            if ('' === $this->configuration['header']) {
+                return; // header not found and none should be set, return
+            }
+
+            $this->insertHeader($tokens, $headerNewIndex);
+        } elseif ($this->getHeaderAsComment() !== $tokens[$headerCurrentIndex]->getContent()) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($headerCurrentIndex);
+            if ('' === $this->configuration['header']) {
+                return; // header found and cleared, none should be set, return
+            }
+
+            $this->insertHeader($tokens, $headerNewIndex);
+        } else {
+            $headerNewIndex = $headerCurrentIndex;
+        }
+
+        $this->fixWhiteSpaceAroundHeader($tokens, $headerNewIndex);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createConfigurationDefinition()
     {
-        $whitespaceConfig = $this->whitespacesConfig;
-        $headerCommentType = self::HEADER_COMMENT;
-
         $header = new FixerOptionBuilder('header', 'Proper header content.');
         $header
             ->setAllowedTypes(array('string'))
-            ->setNormalizer(function (Options $options, $value) use ($whitespaceConfig, $headerCommentType) {
+            ->setNormalizer(function (Options $options, $value) {
                 if ('' === trim($value)) {
                     return '';
                 }
@@ -306,7 +303,14 @@ echo 1;
 
         // fix lines before header comment
         $expectedLineCount = 'both' === $this->configuration['separate'] || 'top' === $this->configuration['separate'] ? 2 : 1;
-        $lineBreakCount = $this->getLineBreakCount($tokens, $tokens->getPrevNonWhitespace($headerIndex), $headerIndex);
+        $prev = $tokens->getPrevNonWhitespace($headerIndex);
+
+        $regex = '/[\t ]$/';
+        if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && preg_match($regex, $tokens[$prev]->getContent())) {
+            $tokens[$prev]->setContent(preg_replace($regex, $lineEnding, $tokens[$prev]->getContent()));
+        }
+
+        $lineBreakCount = $this->getLineBreakCount($tokens, $prev, $headerIndex);
         if ($lineBreakCount < $expectedLineCount) {
             // because of the way the insert index was determined for header comment there cannot be an empty token here
             $tokens->insertAt($headerIndex, new Token(array(T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount - $lineBreakCount))));

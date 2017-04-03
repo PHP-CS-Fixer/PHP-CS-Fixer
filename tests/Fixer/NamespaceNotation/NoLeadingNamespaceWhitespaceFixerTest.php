@@ -45,10 +45,16 @@ final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
             // with newline
             array("<?php\nnamespace Test1;"),
             array("<?php\n\nnamespace Test2;"),
-            array("<?php\nnamespace Test3;", "<?php\n namespace Test3;"),
+            array(
+                "<?php\nnamespace Test3;",
+                "<?php\n namespace Test3;",
+            ),
             // without newline
             array('<?php namespace Test4;'),
-            array('<?php namespace Test5;', '<?php  namespace Test5;'),
+            array(
+                '<?php namespace Test5;',
+                '<?php  namespace Test5;',
+            ),
             // multiple namespaces with newline
             array(
                 '<?php
@@ -94,8 +100,12 @@ use Exception;
             ),
             // multiple namespaces without newline
             array('<?php namespace Test11a; namespace Test11b;'),
-            array('<?php namespace Test12a; namespace Test12b;', '<?php    namespace Test12a;  namespace Test12b;'),
-            array('<?php namespace Test13a; namespace Test13b;', '<?php namespace Test13a;  namespace Test13b;'),
+            array(
+                '<?php namespace Test12a; namespace Test12b;',
+                '<?php    namespace Test12a;  namespace Test12b;', ),
+            array(
+                '<?php namespace Test13a; namespace Test13b;',
+                '<?php namespace Test13a;  namespace Test13b;', ),
             // namespaces without spaces in between
             array(
                 '<?php
@@ -116,6 +126,14 @@ namespace Test15a;namespace Test15b;',
 '.implode("\n", $manySpaces),
                 '<?php
 '.implode('', $manySpaces),
+            ),
+            array(
+                '<?php
+#
+namespace TestComment;',
+                '<?php
+#
+  namespace TestComment;',
             ),
         );
     }

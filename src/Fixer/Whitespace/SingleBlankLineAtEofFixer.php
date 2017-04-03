@@ -31,18 +31,6 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $count = $tokens->count();
-
-        if ($count && !$tokens[$count - 1]->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
-            $tokens->ensureWhitespaceAtIndex($count - 1, 1, $this->whitespacesConfig->getLineEnding());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -66,5 +54,17 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $count = $tokens->count();
+
+        if ($count && !$tokens[$count - 1]->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
+            $tokens->ensureWhitespaceAtIndex($count - 1, 1, $this->whitespacesConfig->getLineEnding());
+        }
     }
 }

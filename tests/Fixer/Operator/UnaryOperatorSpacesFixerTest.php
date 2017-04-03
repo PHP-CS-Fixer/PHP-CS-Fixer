@@ -36,6 +36,11 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     {
         $cases = array(
             array(
+                '<?php $a= 1;$a#
+++#
+;#',
+            ),
+            array(
                 '<?php $a++;',
                 '<?php $a ++;',
             ),

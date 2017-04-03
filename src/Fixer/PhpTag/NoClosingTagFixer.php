@@ -28,7 +28,26 @@ final class NoClosingTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'The closing `?>` tag MUST be omitted from files containing only PHP.',
+            array(new CodeSample("<?php\nclass Sample\n{\n}\n?>"))
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_CLOSE_TAG);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         if (count($tokens) < 2 || !$tokens->isMonolithicPhp()) {
             return;
@@ -49,24 +68,5 @@ final class NoClosingTagFixer extends AbstractFixer
         if (!$tokens[$prevIndex]->equalsAny(array(';', '}', array(T_OPEN_TAG)))) {
             $tokens->insertAt($prevIndex + 1, new Token(';'));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'The closing `?>` tag MUST be omitted from files containing only PHP.',
-            array(new CodeSample("<?php\nclass Sample\n{\n}\n?>"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_CLOSE_TAG);
     }
 }

@@ -26,18 +26,6 @@ final class TrimArraySpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
-            if ($tokens[$index]->isGivenKind(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN))) {
-                self::fixArray($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -52,6 +40,18 @@ final class TrimArraySpacesFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
+            if ($tokens[$index]->isGivenKind(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN))) {
+                self::fixArray($tokens, $index);
+            }
+        }
     }
 
     /**

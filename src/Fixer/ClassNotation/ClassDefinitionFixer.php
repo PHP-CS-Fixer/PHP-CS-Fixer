@@ -35,19 +35,6 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurationD
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        // -4, one for count to index, 3 because min. of tokens for a classy location.
-        for ($index = $tokens->getSize() - 4; $index > 0; --$index) {
-            if ($tokens[$index]->isClassy()) {
-                $this->fixClassyDefinition($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -122,6 +109,19 @@ interface Bar extends
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // -4, one for count to index, 3 because min. of tokens for a classy location.
+        for ($index = $tokens->getSize() - 4; $index > 0; --$index) {
+            if ($tokens[$index]->isClassy()) {
+                $this->fixClassyDefinition($tokens, $index);
+            }
+        }
     }
 
     /**
@@ -277,7 +277,9 @@ interface Bar extends
         }
 
         if ($tokens[$openIndex - 1]->isWhitespace()) {
-            $tokens[$openIndex - 1]->setContent($spacing);
+            if (' ' !== $spacing || !$tokens[$tokens->getPrevNonWhitespace($openIndex - 1)]->isComment()) {
+                $tokens[$openIndex - 1]->setContent($spacing);
+            }
 
             return $openIndex;
         }
@@ -362,20 +364,28 @@ interface Bar extends
     {
         for ($i = $endIndex; $i >= $startIndex; --$i) {
             if ($tokens[$i]->isWhitespace()) {
-                if (
-                    $tokens[$i + 1]->equalsAny(array(',', '(', ')'))
-                    || $tokens[$i - 1]->equals('(')
-                ) {
-                    $tokens[$i]->clear();
-                } elseif (
-                    !$tokens[$i + 1]->isComment()
-                    && !($tokens[$i - 1]->isGivenKind(T_COMMENT)
-                        && ('#' === substr($tokens[$i - 1]->getContent(), 0, 1) || '//' === substr($tokens[$i - 1]->getContent(), 0, 2)))
-                ) {
-                    $tokens[$i]->setContent(' ');
+                $prevNonWhite = $tokens->getPrevNonWhitespace($i);
+                $nextNonWhite = $tokens->getNextNonWhitespace($i);
+
+                if ($tokens[$prevNonWhite]->isComment() || $tokens[$nextNonWhite]->isComment()) {
+                    $content = $tokens[$prevNonWhite]->getContent();
+                    if (!('#' === $content || '//' === substr($content, 0, 2))) {
+                        $content = $tokens[$nextNonWhite]->getContent();
+                        if (!('#' === $content || '//' === substr($content, 0, 2))) {
+                            $tokens[$i]->setContent(' ');
+                        }
+                    }
+
+                    continue;
                 }
 
-                --$i;
+                if ($tokens[$i + 1]->equalsAny(array(',', '(', ')')) || $tokens[$i - 1]->equals('(')) {
+                    $tokens[$i]->clear();
+
+                    continue;
+                }
+
+                $tokens[$i]->setContent(' ');
 
                 continue;
             }

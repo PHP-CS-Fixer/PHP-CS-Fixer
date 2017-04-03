@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -48,58 +49,6 @@ final class PhpdocToCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        static $controlStructures = array(
-            T_FOREACH,
-            T_IF,
-            T_SWITCH,
-            T_WHILE,
-            T_FOR,
-        );
-
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $nextIndex = $tokens->getNextMeaningfulToken($index);
-            $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
-
-            if (null === $nextToken || $nextToken->equals('}')) {
-                $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
-                continue;
-            }
-
-            if ($this->isStructuralElement($nextToken)) {
-                continue;
-            }
-
-            if ($nextToken->isGivenKind($controlStructures) && $this->isValidControl($tokens, $token, $nextIndex)) {
-                continue;
-            }
-
-            if ($nextToken->isGivenKind(T_VARIABLE) && $this->isValidVariable($tokens, $nextIndex)) {
-                continue;
-            }
-
-            if ($nextToken->isGivenKind(T_LIST) && $this->isValidList($tokens, $token, $nextIndex)) {
-                continue;
-            }
-
-            // First docblock after open tag can be file-level docblock, so its left as is.
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind(array(T_OPEN_TAG, T_NAMESPACE))) {
-                continue;
-            }
-
-            $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -116,6 +65,66 @@ foreach($connections as $key => $sqlite) {
                 ),
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        static $controlStructures = array(
+            T_FOREACH,
+            T_IF,
+            T_SWITCH,
+            T_WHILE,
+            T_FOR,
+        );
+
+        static $languageStructures = array(
+            T_LIST,
+            T_PRINT,
+            T_ECHO,
+            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+        );
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
+
+            if (null === $nextToken || $nextToken->equals('}')) {
+                $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+
+                continue;
+            }
+
+            if ($this->isStructuralElement($nextToken)) {
+                continue;
+            }
+
+            if ($nextToken->isGivenKind($controlStructures) && $this->isValidControl($tokens, $token, $nextIndex)) {
+                continue;
+            }
+
+            if ($nextToken->isGivenKind(T_VARIABLE) && $this->isValidVariable($tokens, $nextIndex)) {
+                continue;
+            }
+
+            if ($nextToken->isGivenKind($languageStructures) && $this->isValidLanguageConstruct($tokens, $token, $nextIndex)) {
+                continue;
+            }
+
+            // First docblock after open tag can be file-level docblock, so its left as is.
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prevIndex]->isGivenKind(array(T_OPEN_TAG, T_NAMESPACE))) {
+                continue;
+            }
+
+            $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+        }
     }
 
     /**
@@ -179,20 +188,26 @@ foreach($connections as $key => $sqlite) {
     }
 
     /**
-     * Checks variable assignments through `list()` calls for correct docblock usage.
+     * Checks variable assignments through `list()`, `print()` etc. calls for correct docblock usage.
      *
      * @param Tokens $tokens
-     * @param Token  $docsToken docs Token
-     * @param int    $listIndex index of variable Token
+     * @param Token  $docsToken              docs Token
+     * @param int    $languageConstructIndex index of variable Token
      *
      * @return bool
      */
-    private function isValidList(Tokens $tokens, Token $docsToken, $listIndex)
+    private function isValidLanguageConstruct(Tokens $tokens, Token $docsToken, $languageConstructIndex)
     {
-        $endIndex = $tokens->getNextTokenOfKind($listIndex, array(')'));
+        $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)
+            ? array(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE)
+            : ')'
+        ;
+
+        $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, array($endKind));
+
         $docsContent = $docsToken->getContent();
 
-        for ($index = $listIndex + 1; $index < $endIndex; ++$index) {
+        for ($index = $languageConstructIndex + 1; $index < $endIndex; ++$index) {
             $token = $tokens[$index];
 
             if (

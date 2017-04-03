@@ -534,4 +534,35 @@ const F=1; }',
             ),
         );
     }
+
+    public function testCommentCases()
+    {
+        $expected = '<?php
+class A
+{#
+public static function#
+AB#
+(#
+)#
+{#
+}#
+}
+        ';
+
+        $input = '<?php
+class A
+{#
+static#
+#
+function#
+AB#
+(#
+)#
+{#
+}#
+}
+        ';
+
+        $this->doTest($expected, $input);
+    }
 }

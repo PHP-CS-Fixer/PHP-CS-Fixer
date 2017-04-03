@@ -27,7 +27,42 @@ final class FullOpeningTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokensOrg)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'PHP code must use the long `<?php` tags or short-echo `<?=` tags and not other tag variations.',
+            array(
+                new CodeSample(
+'<?
+
+echo "Hello!";
+'
+                ),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must run before all Token-based fixers
+        return 98;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokensOrg)
     {
         $content = $tokensOrg->generateCode();
 
@@ -91,40 +126,5 @@ final class FullOpeningTagFixer extends AbstractFixer
         }
 
         $tokensOrg->overrideRange(0, $tokensOrg->count() - 1, $tokens);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'PHP code must use the long `<?php` tags or short-echo `<?=` tags and not other tag variations.',
-            array(
-                new CodeSample(
-'<?
-
-echo "Hello!";
-'
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must run before all Token-based fixers
-        return 98;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return true;
     }
 }

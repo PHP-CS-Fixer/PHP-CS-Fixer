@@ -28,23 +28,6 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($i = 0, $l = $tokens->count(); $i < $l; ++$i) {
-            if (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
-                continue;
-            }
-
-            $startIndex = $tokens->getNextTokenOfKind($i, array('('));
-            $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
-
-            $this->fixFunctionDefinition($tokens, $startIndex, $i);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -75,6 +58,23 @@ function example($foo = "two words", $bar) {}
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($i = 0, $l = $tokens->count(); $i < $l; ++$i) {
+            if (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+
+            $startIndex = $tokens->getNextTokenOfKind($i, array('('));
+            $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+
+            $this->fixFunctionDefinition($tokens, $startIndex, $i);
+        }
     }
 
     /**
@@ -122,6 +122,7 @@ function example($foo = "two words", $bar) {}
 
             if ($token->equals('=')) {
                 $i = $tokens->getPrevMeaningfulToken($i);
+
                 continue;
             }
 
@@ -154,7 +155,7 @@ function example($foo = "two words", $bar) {}
     private function removeDefaultArgument(Tokens $tokens, $startIndex, $endIndex)
     {
         for ($i = $startIndex; $i <= $endIndex;) {
-            $tokens[$i]->clear();
+            $tokens->clearTokenAndMergeSurroundingWhitespace($i);
             $this->clearWhitespacesBeforeIndex($tokens, $i);
             $i = $tokens->getNextMeaningfulToken($i);
         }
@@ -195,10 +196,14 @@ function example($foo = "two words", $bar) {}
      */
     private function clearWhitespacesBeforeIndex(Tokens $tokens, $index)
     {
-        $token = $tokens[$index - 1];
+        $prevIndex = $tokens->getNonEmptySibling($index, -1);
+        if (!$tokens[$prevIndex]->isWhitespace()) {
+            return;
+        }
 
-        if ($token->isGivenKind(T_WHITESPACE)) {
-            $token->clear();
+        $prevNonWhiteIndex = $tokens->getPrevNonWhitespace($prevIndex);
+        if (null === $prevNonWhiteIndex || !$tokens[$prevNonWhiteIndex]->isComment()) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
         }
     }
 }

@@ -27,28 +27,6 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $end = count($tokens) - 3; // min. number of tokens to form a class candidate to fix
-        for ($index = 0; $index < $end; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
-                continue;
-            }
-
-            $classOpen = $tokens->getNextTokenOfKind($index, array('{'));
-            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
-
-            if (!$this->skipClass($tokens, $index, $classOpen, $classClose)) {
-                $this->fixClass($tokens, $classOpen, $classClose);
-            }
-
-            $index = $classClose;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -82,6 +60,28 @@ final class Sample
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_CLASS);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $end = count($tokens) - 3; // min. number of tokens to form a class candidate to fix
+        for ($index = 0; $index < $end; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+                continue;
+            }
+
+            $classOpen = $tokens->getNextTokenOfKind($index, array('{'));
+            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+
+            if (!$this->skipClass($tokens, $index, $classOpen, $classClose)) {
+                $this->fixClass($tokens, $classOpen, $classClose);
+            }
+
+            $index = $classClose;
+        }
     }
 
     /**

@@ -29,27 +29,6 @@ final class NoEmptyCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = 1, $count = count($tokens); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_COMMENT)) {
-                continue;
-            }
-
-            list($blockStart, $index, $isEmpty) = $this->getCommentBlock($tokens, $index);
-            if (false === $isEmpty) {
-                continue;
-            }
-
-            for ($i = $blockStart; $i <= $index; ++$i) {
-                $tokens->clearTokenAndMergeSurroundingWhitespace($i);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run after PhpdocToCommentFixer and before NoExtraConsecutiveBlankLinesFixer, NoTrailingWhitespaceFixer and NoWhitespaceInBlankLineFixer.
@@ -73,6 +52,27 @@ final class NoEmptyCommentFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = 1, $count = count($tokens); $index < $count; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_COMMENT)) {
+                continue;
+            }
+
+            list($blockStart, $index, $isEmpty) = $this->getCommentBlock($tokens, $index);
+            if (false === $isEmpty) {
+                continue;
+            }
+
+            for ($i = $blockStart; $i <= $index; ++$i) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($i);
+            }
+        }
     }
 
     /**
