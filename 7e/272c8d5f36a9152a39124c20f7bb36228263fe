@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T11:50:16Z
+
+could you point the logic change please? i see only reformatting
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-03T12:02:43Z
+
+There is no logic change, only breaking down the `$params` array into decidated arguments to avoid the PHPUnit 5.7.18 regression case, which occurs when a test argument is an array that mixes objects with scalars.
+
+This increases the number of test arguments but removes the need to use `call_user_func_array`, which is an improvement to me.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T12:05:21Z
+
+ok, good for me, but it's not a fix, just small refactoring/cleaning ;)
+:+1: but please adjust title
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T19:23:42Z
+
+I have changed base branch to 2.2
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-03T20:36:17Z
+
+all green
+granted; after the fix on PHPUnit all value left in this PR is:
+- comment copy
+- PHPDoc type hint tweaks
+- easier to read and maintain utest
+
+not sure if enough to validate all the changes in the PR, I think it is, but I'm OK to drop as well
