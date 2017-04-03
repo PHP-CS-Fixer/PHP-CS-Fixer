@@ -1,0 +1,63 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-29T17:50:44Z
+
+hmm odd we never spotted that before, good catch!
+is there a way we can fix the layout without the `&nbsp;`, it feels odd to mix HTML with MD.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-03-29T18:17:49Z
+
+You can surround the whole table with pipes:
+
+```
+| heading | foo |
+| ------- | --- |
+| foo     | bar |
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-29T19:15:11Z
+
+worth I try I would say :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-29T22:34:46Z
+
+looking good :)
+thanks!
+
+note: needs a backport from master to 2.1 after merging
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-29T23:11:09Z
+
+opening pipe on left side, but not closing pipe on right side ?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-03-30T12:04:19Z
+
+Shall I convert the other tables as well?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-30T12:22:40Z
+
+@ntzm I'd say yes, for consistency.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T14:38:01Z
+
+ping @ntzm
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-04-03T14:45:05Z
+
+Oops, I'll fix those in an hour or so
