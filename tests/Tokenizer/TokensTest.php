@@ -773,6 +773,35 @@ PHP;
     }
 
     /**
+     * @param int    $expectedIndex
+     * @param string $source
+     * @param int    $type
+     * @param int    $searchIndex
+     */
+    public function assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+
+        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex, true));
+        $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex, false));
+
+        $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
+        $this->assertInternalType('array', $detectedType);
+        $this->assertArrayHasKey('type', $detectedType);
+        $this->assertArrayHasKey('isStart', $detectedType);
+        $this->assertSame($type, $detectedType['type']);
+        $this->assertTrue($detectedType['isStart']);
+
+        $detectedType = Tokens::detectBlockType($tokens[$expectedIndex]);
+        $this->assertInternalType('array', $detectedType);
+        $this->assertArrayHasKey('type', $detectedType);
+        $this->assertArrayHasKey('isStart', $detectedType);
+        $this->assertSame($type, $detectedType['type']);
+        $this->assertFalse($detectedType['isStart']);
+    }
+
+    /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */
