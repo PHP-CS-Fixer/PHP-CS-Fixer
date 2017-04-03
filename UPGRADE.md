@@ -50,7 +50,7 @@ Exit codes
 Exit codes for `fix` command have been changed and are build using the following bit flags:
 
 | 1.x bit | 2.0 bit | Description                                                 | Note                                                             |
-| ------- | ------- | ----------------------------------------------------------- | ---------------------------------------------------------------- |
+| -------:| -------:| ----------------------------------------------------------- | ---------------------------------------------------------------- |
 | 0       | 0       | OK                                                          |                                                                  |
 | 1       | 1       | General error (or PHP/HHVM minimal requirement not matched) | no longer used for other states, never combined with other flags |
 |         | 4       | Some files have invalid syntax                              | flag was added, works only in dry-run mode                       |
