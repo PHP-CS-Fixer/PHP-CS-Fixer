@@ -42,15 +42,32 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string     $source
      * @param null|array $expected
-     * @param array      $params
+     * @param Token[]    $sequence
+     * @param int        $start
+     * @param int|null   $end
+     * @param bool|array $caseSensitive
      *
      * @dataProvider provideFindSequence
      */
-    public function testFindSequence($source, array $expected = null, array $params)
-    {
+    public function testFindSequence(
+        $source,
+        array $expected = null,
+        array $sequence,
+        $start = 0,
+        $end = null,
+        $caseSensitive = true
+    ) {
         $tokens = Tokens::fromCode($source);
 
-        $this->assertEqualsTokensArray($expected, call_user_func_array(array($tokens, 'findSequence'), $params));
+        $this->assertEqualsTokensArray(
+            $expected,
+            $tokens->findSequence(
+                $sequence,
+                $start,
+                $end,
+                $caseSensitive
+            )
+        );
     }
 
     public function provideFindSequence()
@@ -59,183 +76,199 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
             array(
                 '<?php $x = 1;',
                 null,
-                array(array(
+                array(
                     new Token(';'),
-                ), 7),
+                ),
+                7,
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 2;',
                 null,
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$y'),
-                )),
+                ),
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 3;',
                 array(
                     0 => new Token(array(T_OPEN_TAG, '<?php ')),
                     1 => new Token(array(T_VARIABLE, '$x')),
                 ),
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$x'),
-                )),
+                ),
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 4;',
                 array(
                     3 => new Token('='),
-                    5 => new Token(array(T_LNUMBER, '1')),
+                    5 => new Token(array(T_LNUMBER, '4')),
                     6 => new Token(';'),
                 ),
-                array(array(
+                array(
                     '=',
-                    array(T_LNUMBER, '1'),
+                    array(T_LNUMBER, '4'),
                     ';',
-                )),
+                ),
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 5;',
                 array(
                     0 => new Token(array(T_OPEN_TAG, '<?php ')),
                     1 => new Token(array(T_VARIABLE, '$x')),
                 ),
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$x'),
-                ), 0),
+                ),
+                0,
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 6;',
                 null,
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$x'),
-                ), 1),
+                ),
+                1,
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 7;',
                 array(
                     3 => new Token('='),
-                    5 => new Token(array(T_LNUMBER, '1')),
+                    5 => new Token(array(T_LNUMBER, '7')),
                     6 => new Token(';'),
                 ),
-                array(array(
+                array(
                     '=',
-                    array(T_LNUMBER, '1'),
+                    array(T_LNUMBER, '7'),
                     ';',
-                ), 3, 6),
+                ),
+                3,
+                6,
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 8;',
                 null,
-                array(array(
+                array(
                     '=',
-                    array(T_LNUMBER, '1'),
+                    array(T_LNUMBER, '8'),
                     ';',
-                ), 4, 6),
+                ),
+                4,
+                6,
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 9;',
                 null,
-                array(array(
+                array(
                     '=',
-                    array(T_LNUMBER, '1'),
+                    array(T_LNUMBER, '9'),
                     ';',
-                ), 3, 5),
+                ),
+                3,
+                5,
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 10;',
                 array(
                     0 => new Token(array(T_OPEN_TAG, '<?php ')),
                     1 => new Token(array(T_VARIABLE, '$x')),
                 ),
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$x'),
-                ), 0, 1, true),
+                ),
+                0,
+                1,
+                true,
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 11;',
                 null,
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$X'),
-                ), 0, 1, true),
+                ),
+                0,
+                1,
+                true,
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 12;',
                 null,
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$X'),
-                ), 0, 1, array(true, true)),
+                ),
+                0,
+                1,
+                array(1, true),
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 13;',
                 array(
                     0 => new Token(array(T_OPEN_TAG, '<?php ')),
                     1 => new Token(array(T_VARIABLE, '$x')),
                 ),
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$X'),
-                ), 0, 1, false),
+                ),
+                0,
+                1,
+                false,
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 14;',
                 array(
                     0 => new Token(array(T_OPEN_TAG, '<?php ')),
                     1 => new Token(array(T_VARIABLE, '$x')),
                 ),
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$X'),
-                ), 0, 1, array(true, false)),
+                ),
+                0,
+                1,
+                array(1, false),
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 15;',
                 array(
                     0 => new Token(array(T_OPEN_TAG, '<?php ')),
                     1 => new Token(array(T_VARIABLE, '$x')),
                 ),
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$X'),
-                ), 0, 1, array(1 => false)),
+                ),
+                0,
+                1,
+                array(1 => false),
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 16;',
                 null,
-                array(array(
+                array(
                     array(T_OPEN_TAG),
                     array(T_VARIABLE, '$X'),
-                ), 0, 1, array(2 => false)),
+                ),
+                0,
+                1,
+                array(2 => false),
             ),
-
             array(
-                '<?php $x = 1;',
+                '<?php $x = 17;',
                 null,
-                array(array(
+                array(
                     array(T_VARIABLE, '$X'),
                     '=',
-                ), 0, 10),
+                ),
+                0,
+                10,
             ),
         );
     }
