@@ -33,6 +33,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         $indent = $this->whitespacesConfig->getIndent();
         $lineEnding = $this->whitespacesConfig->getLineEnding();
+
         for ($index = 1; $index < count($tokens); ++$index) {
             if ($tokens[$index]->equals(array(T_OBJECT_OPERATOR))) {
                 if ($this->needLineBreak($index - 1, $tokens)) {
@@ -40,11 +41,14 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                     --$index;
                     continue;
                 }
+
                 $prev = $tokens[$index - 1];
                 $currentWhitespaces = $this->isLineBreak($prev);
+
                 if ($currentWhitespaces !== false) {
                     $prevMeaningIndex = $tokens->getPrevMeaningfulToken($index);
                     $rightWhitespaces = $this->getRightIndents($prevMeaningIndex, $tokens, $indent);
+
                     if ($currentWhitespaces !== $rightWhitespaces) {
                         $prev->setContent($lineEnding.$rightWhitespaces);
                     }
@@ -92,6 +96,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         for ($i = $index; $i >= 0; --$i) {
             $currentWhitespaces = $this->isLineBreak($tokens[$i]);
+
             if ($currentWhitespaces !== false) {
                 if ($tokens[$i + 1]->equals(array(T_OBJECT_OPERATOR))) {
                     return $currentWhitespaces;
@@ -114,6 +119,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         $prevMeaningful = $tokens->getPrevMeaningfulToken($index);
         $isComment = false;
+
         for ($i = $index; $i > $prevMeaningful; --$i) {
             if ($tokens[$i]->equals(array(T_OBJECT_OPERATOR)) || $this->isLineBreak($tokens[$i]) !== false) {
                 if ($isComment) {
@@ -122,6 +128,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
                 return false;
             }
+
             if ($tokens[$i]->equalsAny(array(array(T_COMMENT), array(T_DOC_COMMENT), array(T_START_HEREDOC)))) {
                 $isComment = true;
             }
@@ -139,6 +146,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         $matches = array();
         $content = $token->getContent();
+
         if (preg_match('/\R(\s*)/', $content, $matches)) {
             if (!isset($matches[1])) {
                 false;
