@@ -705,7 +705,7 @@ class Tokens extends \SplFixedArray
     /**
      * Find a sequence of meaningful tokens and returns the array of their locations.
      *
-     * @param array      $sequence      an array of tokens (same format used by getNextTokenOfKind)
+     * @param array      $sequence      an array of tokens (kinds) (same format used by getNextTokenOfKind)
      * @param int        $start         start index, defaulting to the start of the file
      * @param int        $end           end index, defaulting to the end of the file
      * @param bool|array $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
