@@ -41,25 +41,29 @@ cache:
         - $HOME/.composer
 
 before_install:
+    # Stop on first error.
+    - set -e
+
     # check phpdbg
     - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export TASK_TESTS_COVERAGE=0; }
 
-    # turn off XDebug
-    - phpenv config-rm xdebug.ini || return 0
+    # Turn off Xdebug. Ignores failure on HHVM builds due to missing xdebug.ini.
+    - phpenv config-rm xdebug.ini || true
 
     # validate tasks configuration
-    - if [ $TASK_TESTS == 0 ] && [ $TASK_TESTS_COVERAGE == 1 ]; then travis_terminate 1; fi
+    - if ((!TASK_TESTS && TASK_TESTS_COVERAGE)); then travis_terminate 1; fi
 
     # for building a tag release we don't need to run SCA tools, collect code coverage or self-fix CS
-    - if [ $TRAVIS_TAG ]; then export TASK_SCA=0; fi
-    - if [ $TRAVIS_TAG ]; then export TASK_TESTS_COVERAGE=0; fi
-    - if [ $TRAVIS_TAG ]; then export TASK_CS=0; fi
+    - if [[ -n $TRAVIS_TAG ]]; then export TASK_SCA=0 TASK_TESTS_COVERAGE=0 TASK_CS=0; fi
 
     # Composer: boost installation
     - composer global show -ND 2>&1 | grep "hirak/prestissimo" || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
 
     # Composer: enforce given Symfony components version
-    - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"^2[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'
+    - |
+      if [[ -n $SYMFONY_VERSION ]]; then
+        sed -i 's|"symfony/\([^"]*\)": "^2[^"]*"|"symfony/\1": "'"$SYMFONY_VERSION"'"|g' composer.json
+      fi
 
     # display tasks configuration for a job
     - set | grep ^TASK | sort
@@ -69,18 +73,39 @@ install:
     - composer info -D | sort
 
 script:
-    - if [ $TASK_SCA == 1 ]; then php php-cs-fixer fix --rules declare_strict_types,native_function_invocation -q; fi
-    - if [ $TASK_SCA == 1 ]; then files_with_trailing_spaces=`find . -type f -not -path "./.git/*" -not -path "./vendor/*" -not -path "./tests/Fixtures/*" -exec egrep -nH " $" {} \;` && [[ $files_with_trailing_spaces ]] && echo $files_with_trailing_spaces && travis_terminate 1 || echo "No trailing spaces detected."; fi
+    - |
+      if ((TASK_SCA)); then
+        php php-cs-fixer fix --rules declare_strict_types,native_function_invocation -q
 
-    - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 0 ]; then vendor/bin/phpunit --verbose; fi
-    - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml; fi
+        files_with_trailing_spaces="$(
+          find . -type f \
+            -not -path './.git/*' \
+            -not -path './vendor/*' \
+            -not -path './tests/Fixtures/*' \
+            -exec egrep -nH ' $' {} \;
+          )"
+        if [[ -n $files_with_trailing_spaces ]]; then
+          echo "$files_with_trailing_spaces"
+          travis_terminate 1
+        else echo No trailing spaces detected.
+        fi
+      fi
 
-    - if [ $TASK_SCA == 1 ]; then git checkout . -q; fi
+    - |
+      if ((TASK_TESTS)); then
+        if ((!TASK_TESTS_COVERAGE)); then
+          vendor/bin/phpunit --verbose
+        else
+          phpdbg -qrr vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
+        fi
+      fi
 
-    - if [ $TASK_CS == 1 ]; then php php-cs-fixer --diff --dry-run -v fix; fi
+    - if ((TASK_SCA)); then git checkout . -q; fi
+
+    - if ((TASK_CS)); then php php-cs-fixer --diff --dry-run -v fix; fi
 
 after_success:
-    - if [ $TASK_TESTS_COVERAGE == 1 ]; then php vendor/bin/coveralls -v; fi
+    - if ((TASK_TESTS_COVERAGE)); then vendor/bin/coveralls -v; fi
 
 before_deploy:
     # install box2
