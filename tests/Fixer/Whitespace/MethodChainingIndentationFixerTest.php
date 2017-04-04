@@ -25,8 +25,8 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param mixed      $expected
-     * @param null|mixed $input
+     * @param string      $expected
+     * @param null|string $input
      */
     public function testFix($expected, $input = null)
     {
