@@ -135,15 +135,15 @@ class Tokens extends \SplFixedArray
             foreach ($array as $key => $val) {
                 $tokens[$key] = $val;
             }
+        } else {
+            $index = 0;
 
-            return $tokens;
+            foreach ($array as $val) {
+                $tokens[$index++] = $val;
+            }
         }
 
-        $index = 0;
-
-        foreach ($array as $val) {
-            $tokens[$index++] = $val;
-        }
+        $tokens->generateCode(); // regenerate code to calculate code hash
 
         return $tokens;
     }

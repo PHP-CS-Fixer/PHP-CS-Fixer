@@ -803,11 +803,12 @@ PHP;
     {
         $code = '<?php echo 1;';
 
-        $tokens = Tokens::fromCode($code);
-        $this->assertTrue($tokens->isTokenKindFound(T_OPEN_TAG));
+        $tokens1 = Tokens::fromCode($code);
+        $tokens2 = Tokens::fromArray($tokens1->toArray());
 
-        $tokens2 = Tokens::fromArray($tokens->toArray());
+        $this->assertTrue($tokens1->isTokenKindFound(T_OPEN_TAG));
         $this->assertTrue($tokens2->isTokenKindFound(T_OPEN_TAG));
+        $this->assertSame($tokens1->getCodeHash(), $tokens2->getCodeHash());
     }
 
     public function testFromArrayEmpty()
