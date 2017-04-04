@@ -99,7 +99,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     }
 
     /**
-     * @param int $index
+     * @param int    $index
      * @param Tokens $tokens
      *
      * @return bool
@@ -111,11 +111,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
         for ($i = $index; $i > $prevMeaningful; --$i) {
             if ($tokens[$i]->equals(array(T_OBJECT_OPERATOR)) || $this->isLineBreak($tokens[$i]) !== false) {
-                if ($isComment) {
-                    return true;
-                }
-
-                return false;
+                return $isComment;
             }
 
             if ($tokens[$i]->equalsAny(array(array(T_COMMENT), array(T_DOC_COMMENT), array(T_START_HEREDOC)))) {
