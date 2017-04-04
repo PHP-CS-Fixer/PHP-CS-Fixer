@@ -48,7 +48,6 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $indent = $this->whitespacesConfig->getIndent();
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 1; $index < count($tokens); ++$index) {
@@ -64,7 +63,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
                 if ($currentWhitespaces !== false) {
                     $prevMeaningIndex = $tokens->getPrevMeaningfulToken($index);
-                    $rightWhitespaces = $this->getRightIndents($prevMeaningIndex, $tokens, $indent);
+                    $rightWhitespaces = $this->getRightIndents($prevMeaningIndex, $tokens);
 
                     if ($currentWhitespaces !== $rightWhitespaces) {
                         $prev->setContent($lineEnding.$rightWhitespaces);
@@ -77,12 +76,13 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     /**
      * @param int    $index
      * @param Tokens $tokens
-     * @param mixed  $indent
      *
      * @return string
      */
-    private function getRightIndents($index, Tokens $tokens, $indent)
+    private function getRightIndents($index, Tokens $tokens)
     {
+        $indent = $this->whitespacesConfig->getIndent();
+
         for ($i = $index; $i >= 0; --$i) {
             $currentWhitespaces = $this->isLineBreak($tokens[$i]);
 
