@@ -38,15 +38,6 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
-    {
-        // fixer is idempotent
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
