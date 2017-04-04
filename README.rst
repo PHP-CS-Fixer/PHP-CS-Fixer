@@ -541,7 +541,7 @@ Choose from the list of available rules:
 
 * **method_chaining_indentation**
 
-  Method chaining MUST be indented with one tab.
+  Method chaining MUST be properly indented.
 
 * **method_separation** [@Symfony]
 
