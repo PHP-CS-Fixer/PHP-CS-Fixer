@@ -99,7 +99,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     }
 
     /**
-     * @param $index
+     * @param int $index
      * @param Tokens $tokens
      *
      * @return bool
