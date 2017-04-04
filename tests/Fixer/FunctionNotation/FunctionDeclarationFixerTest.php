@@ -209,6 +209,20 @@ foo () {}',
                 self::$configurationClosureSpacingNone,
             ),
             array(
+                '<?php function _function# 
+                () {
+                }',
+                null,
+                self::$configurationClosureSpacingNone,
+            ),
+            array(
+                '<?php function _function# 
+                () {
+                }',
+                null,
+                array('closure_function_spacing' => 'one'),
+            ),
+            array(
                 '<?php function foo($a, $b = true) {}',
                 '<?php function foo($a, $b = true){}',
                 self::$configurationClosureSpacingNone,
