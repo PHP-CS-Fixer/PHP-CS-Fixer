@@ -29,7 +29,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $indent = $this->whitespacesConfig->getIndent();
         $lineEnding = $this->whitespacesConfig->getLineEnding();
