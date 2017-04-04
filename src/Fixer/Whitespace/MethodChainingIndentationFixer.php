@@ -61,7 +61,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                 $prev = $tokens[$index - 1];
                 $currentWhitespaces = $this->isLineBreak($prev);
 
-                if ($currentWhitespaces !== false) {
+                if (false !== $currentWhitespaces) {
                     $prevMeaningIndex = $tokens->getPrevMeaningfulToken($index);
                     $rightWhitespaces = $this->getRightIndents($prevMeaningIndex, $tokens);
 
@@ -110,7 +110,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $isComment = false;
 
         for ($i = $index; $i > $prevMeaningful; --$i) {
-            if ($tokens[$i]->equals(array(T_OBJECT_OPERATOR)) || $this->isLineBreak($tokens[$i]) !== false) {
+            if ($tokens[$i]->equals(array(T_OBJECT_OPERATOR)) || false !== $this->isLineBreak($tokens[$i])) {
                 return $isComment;
             }
 
