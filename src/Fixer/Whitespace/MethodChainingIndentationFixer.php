@@ -133,10 +133,6 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $content = $token->getContent();
 
         if (preg_match('/\R(\s*)/', $content, $matches)) {
-            if (!isset($matches[1])) {
-                false;
-            }
-
             return $matches[1];
         }
 
