@@ -776,6 +776,66 @@ PHP;
         Tokens::fromCode('<?php# this will cause T_HH_ERROR');
     }
 
+    public function testEmptyTokens()
+    {
+        $code = '';
+        $tokens = Tokens::fromCode($code);
+
+        $this->assertCount(0, $tokens);
+        $this->assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+    }
+
+    public function testEmptyTokensMultiple()
+    {
+        $code = '';
+
+        $tokens = Tokens::fromCode($code);
+        $tokens->insertAt(0, new Token(array(T_WHITESPACE, ' ')));
+        $this->assertCount(1, $tokens);
+        $this->assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+
+        $tokens2 = Tokens::fromCode($code);
+        $this->assertCount(0, $tokens2);
+        $this->assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+    }
+
+    public function testFromArray()
+    {
+        $code = '<?php echo 1;';
+
+        $tokens1 = Tokens::fromCode($code);
+        $tokens2 = Tokens::fromArray($tokens1->toArray());
+
+        $this->assertTrue($tokens1->isTokenKindFound(T_OPEN_TAG));
+        $this->assertTrue($tokens2->isTokenKindFound(T_OPEN_TAG));
+        $this->assertSame($tokens1->getCodeHash(), $tokens2->getCodeHash());
+    }
+
+    public function testFromArrayEmpty()
+    {
+        $tokens = Tokens::fromArray(array());
+        $this->assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+    }
+
+    public function testClone()
+    {
+        $code = '<?php echo 1;';
+        $tokens = Tokens::fromCode($code);
+
+        $tokensClone = clone $tokens;
+
+        $this->assertTrue($tokens->isTokenKindFound(T_OPEN_TAG));
+        $this->assertTrue($tokensClone->isTokenKindFound(T_OPEN_TAG));
+
+        $count = count($tokens);
+        $this->assertCount($count, $tokensClone);
+
+        for ($i = 0; $i < $count; ++$i) {
+            $this->assertTrue($tokens[$i]->equals($tokensClone[$i]));
+            $this->assertNotSame($tokens[$i], $tokensClone[$i]);
+        }
+    }
+
     /**
      * @param int    $expectedIndex
      * @param string $source
