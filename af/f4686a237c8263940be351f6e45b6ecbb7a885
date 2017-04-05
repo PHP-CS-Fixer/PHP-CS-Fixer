@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-05T14:18:07Z
+
+👍 (AppVeyor failures unrelated, probably due to recent Symfony releases).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-05T14:40:32Z
+
+Nice catch;
+however this should still be fixed:
+
+```php
+<?php function A(){  } ?>
+```
+
+so I think the code needs to be updated.
+
+--edit
+oh wait, that is another issue ^_^, nevermind
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-04-05T14:53:00Z
+
+You're right @SpacePossum
