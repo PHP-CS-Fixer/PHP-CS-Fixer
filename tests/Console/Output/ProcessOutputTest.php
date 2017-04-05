@@ -146,7 +146,7 @@ final class ProcessOutputTest extends \PHPUnit_Framework_TestCase
                 array(
                     array(FixerFileProcessedEvent::STATUS_NO_CHANGES, 66),
                 ),
-                "................................................................. 65 / 66 ( 98%)\n".
+                '................................................................. 65 / 66 ( 98%)'.PHP_EOL.
                 '.                                                                 66 / 66 (100%)',
             ),
             array(
@@ -166,8 +166,8 @@ final class ProcessOutputTest extends \PHPUnit_Framework_TestCase
                     array(FixerFileProcessedEvent::STATUS_UNKNOWN),
                     array(FixerFileProcessedEvent::STATUS_NO_CHANGES, 15),
                 ),
-                "...................E......EFFF.................................  63 / 189 ( 33%)\n".
-                ".................S............................................. 126 / 189 ( 67%)\n".
+                '...................E......EFFF.................................  63 / 189 ( 33%)'.PHP_EOL.
+                '.................S............................................. 126 / 189 ( 67%)'.PHP_EOL.
                 '....I.I........................................?............... 189 / 189 (100%)',
             ),
         );
