@@ -1,0 +1,117 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-20T13:03:30Z
+
+That check should be enabled for all rules, not only that few.
+I assume you have fixed part when it's failing without that extra check, but we should add them globally for performance as well.
+
+I would propose a solution after initial discussion it #2614 :
+
+globally:
+```diff
+-public function fix(...)
++protected function fixTokens(...)
+```
+
+then, in `AbstractFixer`:
+```php
+public function fix(...)
+{
+    if (0 < $tokens->count() && $this->isCandidate(...)) {
+        $this->fixTokens(...);
+    }
+}
+```
+
+then, also, we could drop other usages of `->isCandidate` in our source
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T16:51:38Z
+
+That makes total sense. I've removed the `Fixers` leaving the `Tokens` update to handle empty string correctly.
+
+Btw.: `fromArray` does not run the transformers nor set the tokens types found like `fromCode` does, maybe we should make this the same or update the docs?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-24T19:57:42Z
+
+then, I applied mentioned solution in #2614
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-26T13:30:25Z
+
+#2614 deals with `fix` being depended on `candidate` method, this PR fixes `Tokens::fromCode('')` case only.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-26T13:33:52Z
+
+I know, that's why I sent that PR to fix what we agreed on already. I still need to investigate that `fromArray` case
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-30T18:33:25Z
+
+Currently, this PR does not fix any bug during cloning.
+
+Added test that prove cloning works is nice, adding `=array()` initialization for property (which is needed for new test) is nice, but I don't see any bug fix here.
+3rd thing done here is change of handling empty string passed to `fromCode`, I commented it separately as code comment.
+
+--------------------------------
+
+> Btw.: `fromArray` does not run the transformers nor set the tokens types found like `fromCode` does, maybe we should make this the same or update the docs?
+
+- if `fromArray` would accept result of `token_get_all`, it shall call transformers, but it accepts only `Token[]`, which shall be ready for use instances, so already after transforming
+- during investigating your question I discovered that `fromArray` is wrongly not calling `$this->registerFoundToken($token);` nor `->changeCodeHash(...)`
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T14:39:29Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T19:23:33Z
+
+I have changed base branch to 2.2
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-04T13:29:39Z
+
+This PR:
+- proves bug when using `Tokens::fromCode('')` by utest
+- fixes bug (see above)
+
+Add tests for the following cases currently not covered:
+- creating multiple Tokens by `Tokens::fromCode('')`
+- Tokens cloning
+- `Tokens::fromArray` combined with `isTokenKindFound`
+- `Tokens::fromArray(array());`
+
+This leaves the case @keradus found:
+>during investigating your question I discovered that fromArray is wrongly not calling [...] ->changeCodeHash(...)
+
+I'm not sure if this should but part of this PR. It will take me some time to reproduce and fix that case. Any help is welcome on this.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-04T14:56:31Z
+
+:+1: for PR, I will send proposal for `I'm not sure if this should but part of this PR. It will take me some time to reproduce and fix that case. Any help is welcome on this.` tonight
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-04T19:41:26Z
+
+@SpacePossum , please check out last commit in this PR
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-05T05:53:42Z
+
+thanks @keradus looks good! I think this is ready now :)
