@@ -53,7 +53,7 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
             }
 
             $prev = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prev]->equalsAny(array(';', '}', ':', array(T_OPEN_TAG)))) {
+            if ($tokens[$prev]->equalsAny(array(';', '{', '}', ':', array(T_OPEN_TAG)))) {
                 continue;
             }
 

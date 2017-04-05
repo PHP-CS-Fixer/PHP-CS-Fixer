@@ -73,7 +73,12 @@ A is equal to 5
 <?php case 1: ?>
 ...
 <?php endswitch ?>',
-                ),
+            ),
+            array(
+'<?php if ($a == 5) { ?>
+A is equal to 5
+<?php } ?>',
+            ),
         );
     }
 
