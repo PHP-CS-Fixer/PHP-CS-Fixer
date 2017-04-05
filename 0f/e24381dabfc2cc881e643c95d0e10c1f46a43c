@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-04-03T09:57:58Z
+
+https://www.martinfowler.com/bliki/CallSuper.html
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-04T06:59:34Z
+
+>https://www.martinfowler.com/bliki/CallSuper.html
+
+not sure how related, we don't force anyone through our public API to call `super::` at some point I think?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-04T07:02:40Z
+
+LGTM :+1:
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-04-04T07:04:09Z
+
+```java
+public class AlphaTestCase  extends TestCase
+{
+  final protected void setUp() throws Exception {
+    alphaProjectSetup();
+    doSetUp();
+  }
+  protected void doSetUp() throws Exception {
+  }
+}
+```
+> While this works, it runs into the problem of confusing anyone who is familiar JUnit. Every project they've been on, every book they've read says they should override setUp, not this new-fangled doSetUp. This is a good case to use final, since there's such a high chance that people will get confused. But even with final, the confusion a different setup method causes is very painful.
+
+It can be also read as: it is confusing to have two methods, but you if need to, at least you enforce consistency between abstract classes and implementations.
