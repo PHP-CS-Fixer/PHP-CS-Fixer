@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.2.1
+--------------------
+
+* bug #2621 Tokenizer - fix edge cases with empty code, registered found tokens and code hash (SpacePossum, keradus)
+* bug #2674 SemicolonAfterInstructionFixer - Fix case where block ends with an opening curly brace (ntzm)
+* bug #2675 ProcessOutputTest - update tests to pass on newest Symfony components under Windows (keradus)
+* minor #2651 Fix UPGRADE.md table syntax so it works in GitHub (ntzm, keradus)
+* minor #2665 Travis - Improve trailing spaces detection (julienfalque)
+* minor #2666 TransformersTest - move test to auto-review group (keradus)
+* minor #2668 add covers annotation (keradus)
+* minor #2669 TokensTest - grooming (SpacePossum)
+* minor #2670 AbstractFixer: use applyFix instead of fix (Slamdunk)
+* minor #2677 README: Correct progressbar option support (Laurens Stötzel)
+
 Changelog for v2.2.0
 --------------------
 
