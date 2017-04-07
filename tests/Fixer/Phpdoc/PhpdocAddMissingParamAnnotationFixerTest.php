@@ -20,6 +20,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer
  */
 final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCase

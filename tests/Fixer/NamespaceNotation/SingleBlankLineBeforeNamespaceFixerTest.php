@@ -19,6 +19,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\AbstractLinesBeforeNamespaceFixer
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer
  */
 final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCase

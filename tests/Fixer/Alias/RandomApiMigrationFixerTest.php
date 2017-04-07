@@ -19,6 +19,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer
  */
 final class RandomApiMigrationFixerTest extends AbstractFixerTestCase

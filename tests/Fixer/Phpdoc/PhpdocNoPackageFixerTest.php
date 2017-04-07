@@ -19,6 +19,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\AbstractProxyFixer
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoPackageFixer
  */
 final class PhpdocNoPackageFixerTest extends AbstractFixerTestCase

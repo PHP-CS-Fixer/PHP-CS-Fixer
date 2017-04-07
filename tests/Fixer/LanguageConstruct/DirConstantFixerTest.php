@@ -19,6 +19,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer
  */
 final class DirConstantFixerTest extends AbstractFixerTestCase
