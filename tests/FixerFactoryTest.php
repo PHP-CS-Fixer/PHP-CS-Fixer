@@ -20,6 +20,8 @@ use PhpCsFixer\RuleSet;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerFactory
  */
 final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
 {

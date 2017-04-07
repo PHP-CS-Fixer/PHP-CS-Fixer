@@ -21,6 +21,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\TokensAnalyzer
  */
 final class TokensAnalyzerTest extends \PHPUnit_Framework_TestCase
 {

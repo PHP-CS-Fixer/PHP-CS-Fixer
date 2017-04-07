@@ -20,6 +20,8 @@ use Prophecy\Prophecy;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerDefinition\VersionSpecificCodeSample
  */
 final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
 {

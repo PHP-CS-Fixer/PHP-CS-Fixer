@@ -20,6 +20,8 @@ use PhpCsFixer\Report\XmlReporter;
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Report\XmlReporter
  */
 final class XmlReporterTest extends \PHPUnit_Framework_TestCase
 {

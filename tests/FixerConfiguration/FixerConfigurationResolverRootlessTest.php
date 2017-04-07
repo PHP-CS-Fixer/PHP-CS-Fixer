@@ -17,6 +17,8 @@ use PhpCsFixer\FixerConfiguration\FixerOption;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless
  */
 final class FixerConfigurationResolverRootlessTest extends \PHPUnit_Framework_TestCase
 {

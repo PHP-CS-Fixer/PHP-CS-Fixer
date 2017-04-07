@@ -24,6 +24,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Console\Command\DescribeCommand
  */
 final class DescribeCommandTest extends \PHPUnit_Framework_TestCase
 {

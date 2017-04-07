@@ -20,6 +20,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer
  */
 final class ArraySyntaxFixerTest extends AbstractFixerTestCase
 {

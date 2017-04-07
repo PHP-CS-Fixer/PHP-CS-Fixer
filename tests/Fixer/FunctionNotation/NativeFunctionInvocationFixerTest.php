@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer
  */
 final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 {

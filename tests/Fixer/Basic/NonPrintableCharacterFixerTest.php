@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Ivan Boprzenkov <ivan.borzenkov@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer
  */
 final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 {

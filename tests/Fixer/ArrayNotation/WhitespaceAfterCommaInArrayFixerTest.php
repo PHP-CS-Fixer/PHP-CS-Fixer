@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Adam Marczuk <adam@marczuk.info>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer
  */
 final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
 {

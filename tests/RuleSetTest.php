@@ -19,6 +19,8 @@ use PhpCsFixer\RuleSet;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\RuleSet
  */
 final class RuleSetTest extends \PHPUnit_Framework_TestCase
 {

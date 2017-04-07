@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author ntzm
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer
  */
 final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 {

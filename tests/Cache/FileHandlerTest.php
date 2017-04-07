@@ -20,6 +20,8 @@ use PhpCsFixer\Cache\Signature;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Cache\FileHandler
  */
 final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 {

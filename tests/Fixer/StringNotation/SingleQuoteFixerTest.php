@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer
  */
 final class SingleQuoteFixerTest extends AbstractFixerTestCase
 {

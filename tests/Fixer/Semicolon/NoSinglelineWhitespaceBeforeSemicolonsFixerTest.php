@@ -20,6 +20,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer
  */
 final class NoSinglelineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {

@@ -18,6 +18,8 @@ use PhpCsFixer\Tokenizer\Token;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Token
  */
 final class TokenTest extends \PHPUnit_Framework_TestCase
 {

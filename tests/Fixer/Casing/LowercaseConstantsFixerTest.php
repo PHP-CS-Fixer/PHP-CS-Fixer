@@ -19,6 +19,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer
  */
 final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
 {

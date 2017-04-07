@@ -18,6 +18,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ * @covers \PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer
  */
 final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {

@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Javier Spagnoletti <phansys@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer
  */
 final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
 {

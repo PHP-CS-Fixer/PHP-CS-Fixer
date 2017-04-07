@@ -19,6 +19,8 @@ use PhpCsFixer\DocBlock\Line;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\DocBlock\Line
  */
 final class LineTest extends \PHPUnit_Framework_TestCase
 {
