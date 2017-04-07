@@ -18,6 +18,8 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerDefinition\VersionSpecification
  */
 final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
 {

@@ -20,6 +20,8 @@ use PhpCsFixer\DocBlock\TagComparator;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\DocBlock\TagComparator
  */
 final class TagComparatorTest extends \PHPUnit_Framework_TestCase
 {

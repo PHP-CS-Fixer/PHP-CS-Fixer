@@ -23,6 +23,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Config
  */
 final class ConfigTest extends \PHPUnit_Framework_TestCase
 {

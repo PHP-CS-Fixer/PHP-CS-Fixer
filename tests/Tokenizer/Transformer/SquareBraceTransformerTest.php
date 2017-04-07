@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
  */
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {

@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer
  */
 final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
 {

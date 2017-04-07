@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
  */
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {

@@ -18,6 +18,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \AbstractPhpdocTypesFixer
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocScalarFixer
  */
 final class PhpdocScalarFixerTest extends AbstractFixerTestCase
 {

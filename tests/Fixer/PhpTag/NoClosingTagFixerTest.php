@@ -16,6 +16,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer
  */
 final class NoClosingTagFixerTest extends AbstractFixerTestCase
 {
@@ -50,24 +52,39 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
     public function provideCasesWithFullOpenTag()
     {
         return array(
-            array('<?php echo \'Foo\';', '<?php echo \'Foo\'; ?>'),
-            array('<?php echo \'Foo\';', '<?php echo \'Foo\';?>'),
-            array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
-            array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
-            array('<?php
+            array(
+                '<?php echo \'Foo\';',
+                '<?php echo \'Foo\'; ?>',
+            ),
+            array(
+                '<?php echo \'Foo\';',
+                '<?php echo \'Foo\';?>',
+            ),
+            array(
+                '<?php echo \'Foo\'; ?> PLAIN TEXT',
+            ),
+            array(
+                'PLAIN TEXT<?php echo \'Foo\'; ?>',
+            ),
+            array(
+                '<?php
 
 echo \'Foo\';',
-                  '<?php
+                '<?php
 
 echo \'Foo\';
 
 ?>',
             ),
-            array('<?php echo \'Foo\'; ?>
+            array(
+                '<?php echo \'Foo\'; ?>
 <p><?php echo \'this is a template\'; ?></p>
 <?php echo \'Foo\'; ?>',
             ),
-            array('<?php echo "foo";', '<?php echo "foo" ?>'),
+            array(
+                '<?php echo "foo";',
+                '<?php echo "foo" ?>',
+            ),
             array(
                 '<?php
 class foo
@@ -140,13 +157,18 @@ if (true) {
             array(
                 '<? echo \'Foo\';',
                 '<? echo \'Foo\';?>',
-                ),
-            array('<? echo \'Foo\'; ?>
+            ),
+            array(
+                '<? echo \'Foo\'; ?>
 <p><? echo \'this is a template\'; ?></p>
 <? echo \'Foo\'; ?>',
             ),
-            array('<? /**/', '<? /**/?>'),
-            array('<?= "somestring"; ?> <?= "anotherstring"; ?>'),
+            array(
+                '<? /**/', '<? /**/?>',
+            ),
+            array(
+                '<?= "somestring"; ?> <?= "anotherstring"; ?>',
+            ),
             array(
                 '<?= 1;',
                 '<?= 1; ?>',

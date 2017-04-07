@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\CT;
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer
  */
 final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
 {

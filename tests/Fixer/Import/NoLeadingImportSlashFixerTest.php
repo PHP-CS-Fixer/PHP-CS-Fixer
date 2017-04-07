@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer
  */
 final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 {

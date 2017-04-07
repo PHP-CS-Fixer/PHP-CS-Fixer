@@ -16,6 +16,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractPsrAutoloadingFixer
+ * @covers \PhpCsFixer\Fixer\Basic\Psr0Fixer
  */
 final class Psr0FixerTest extends AbstractFixerTestCase
 {

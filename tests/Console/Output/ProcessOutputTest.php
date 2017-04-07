@@ -18,6 +18,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Console\Output\ProcessOutput
  */
 final class ProcessOutputTest extends \PHPUnit_Framework_TestCase
 {

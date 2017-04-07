@@ -20,6 +20,8 @@ use Prophecy\Argument;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Cache\FileCacheManager
  */
 final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
 {

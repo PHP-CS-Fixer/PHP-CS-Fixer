@@ -17,6 +17,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Import\OrderedImportsFixer
  */
 final class OrderedImportsFixerTest extends AbstractFixerTestCase
 {

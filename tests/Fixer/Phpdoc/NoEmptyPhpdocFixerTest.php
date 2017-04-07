@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer
  */
 final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 {

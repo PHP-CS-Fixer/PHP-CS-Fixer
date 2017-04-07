@@ -18,6 +18,8 @@ use PhpCsFixer\Cache\Directory;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Cache\Directory
  */
 final class DirectoryTest extends \PHPUnit_Framework_TestCase
 {

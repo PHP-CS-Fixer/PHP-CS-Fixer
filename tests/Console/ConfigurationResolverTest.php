@@ -23,6 +23,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Console\ConfigurationResolver
  */
 final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 {

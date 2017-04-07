@@ -18,6 +18,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ * @covers \PhpCsFixer\Fixer\Alias\PowToExponentiationFixer
  */
 final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 {

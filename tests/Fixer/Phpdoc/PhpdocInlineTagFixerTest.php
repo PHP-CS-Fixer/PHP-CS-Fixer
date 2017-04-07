@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * Test PhpdocInlineTagFixer.
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer
  */
 final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
 {

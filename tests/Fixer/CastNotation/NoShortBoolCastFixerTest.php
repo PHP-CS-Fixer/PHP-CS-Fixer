@@ -16,6 +16,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer
  */
 final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
 {

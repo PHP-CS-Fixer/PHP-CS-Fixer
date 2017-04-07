@@ -21,6 +21,11 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractAlignFixerHelper
+ * @covers \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper
+ * @covers \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper
+ * @covers \PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer
  */
 final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {

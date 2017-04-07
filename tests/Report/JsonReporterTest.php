@@ -20,6 +20,8 @@ use PhpCsFixer\Report\ReportSummary;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Report\JsonReporter
  */
 final class JsonReporterTest extends \PHPUnit_Framework_TestCase
 {
