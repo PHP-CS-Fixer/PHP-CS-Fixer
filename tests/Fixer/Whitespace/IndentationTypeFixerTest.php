@@ -270,4 +270,58 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 
         return $cases;
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideDoubleSpaceCases
+     */
+    public function testDoubleSpace($expected, $input = null)
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('  '));
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDoubleSpaceCases()
+    {
+        return array(
+            array(
+                '<?php
+    echo ALPHA;',
+                "<?php
+\t\techo ALPHA;",
+            ),
+            array(
+                '<?php
+  /**
+   * Test that tabs in docblocks are converted to spaces.
+   *
+   * @test
+   *
+   * @return
+   */',
+                "<?php
+\t/**
+\t * Test that tabs in docblocks are converted to spaces.
+\t *
+\t * @test
+\t *
+\t * @return
+\t */",
+            ),
+            // Issue #2650
+            array(
+                '<?php
+switch($myvar) {
+  case 1:
+    echo "Got case 1";
+    break;
+  default:
+    echo "Got default case";
+}',
+            ),
+        );
+    }
 }
