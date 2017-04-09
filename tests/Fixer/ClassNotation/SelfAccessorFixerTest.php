@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer
  */
 final class SelfAccessorFixerTest extends AbstractFixerTestCase
 {

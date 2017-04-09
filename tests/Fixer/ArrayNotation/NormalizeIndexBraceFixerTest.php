@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer
  */
 final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
 {

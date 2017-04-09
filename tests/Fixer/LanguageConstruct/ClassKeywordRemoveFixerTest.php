@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordRemoveFixer
  */
 final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 {

@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\ElseifFixer
  */
 final class ElseifFixerTest extends AbstractFixerTestCase
 {

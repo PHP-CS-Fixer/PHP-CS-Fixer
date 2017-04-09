@@ -21,6 +21,8 @@ use Symfony\Component\Console\Output\StreamOutput;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Console\Output\ErrorOutput
  */
 final class ErrorOutputTest extends \PHPUnit_Framework_TestCase
 {

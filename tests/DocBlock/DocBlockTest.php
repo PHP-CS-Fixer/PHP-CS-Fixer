@@ -18,6 +18,8 @@ use PhpCsFixer\DocBlock\DocBlock;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\DocBlock\DocBlock
  */
 final class DocBlockTest extends \PHPUnit_Framework_TestCase
 {

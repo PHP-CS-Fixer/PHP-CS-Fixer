@@ -19,6 +19,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Ceeram <ceeram@cakephp.org>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
  */
 final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {

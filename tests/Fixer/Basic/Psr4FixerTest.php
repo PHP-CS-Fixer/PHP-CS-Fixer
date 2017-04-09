@@ -18,6 +18,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractPsrAutoloadingFixer
+ * @covers \PhpCsFixer\Fixer\Basic\Psr4Fixer
  */
 final class Psr4FixerTest extends AbstractFixerTestCase
 {

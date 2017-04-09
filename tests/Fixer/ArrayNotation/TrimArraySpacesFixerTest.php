@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Jared Henderson <jared@netrivet.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer
  */
 final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
 {

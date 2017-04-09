@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer
  */
 final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
 {

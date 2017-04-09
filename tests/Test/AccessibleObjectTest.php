@@ -19,6 +19,8 @@ use PhpCsFixer\Tests\Fixtures\Test\AccessibleObjectTest\DummyClass;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Test\AccessibleObject
  */
 final class AccessibleObjectTest extends \PHPUnit_Framework_TestCase
 {

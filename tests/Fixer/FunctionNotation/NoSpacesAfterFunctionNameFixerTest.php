@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Varga Bence <vbence@czentral.org>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer
  */
 final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 {

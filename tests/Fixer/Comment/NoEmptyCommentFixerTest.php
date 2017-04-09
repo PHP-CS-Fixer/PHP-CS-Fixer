@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
  */
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {

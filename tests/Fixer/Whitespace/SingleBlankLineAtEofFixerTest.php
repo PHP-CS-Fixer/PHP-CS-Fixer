@@ -19,6 +19,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer
  */
 final class SingleBlankLineAtEofFixerTest extends AbstractFixerTestCase
 {

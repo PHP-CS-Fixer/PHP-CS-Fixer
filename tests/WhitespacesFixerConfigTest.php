@@ -18,6 +18,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\WhitespacesFixerConfig
  */
 final class WhitespacesFixerConfigTest extends \PHPUnit_Framework_TestCase
 {

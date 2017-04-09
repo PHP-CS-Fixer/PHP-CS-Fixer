@@ -18,6 +18,8 @@ use PhpCsFixer\Cache\NullCacheManager;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Cache\NullCacheManager
  */
 final class NullCacheManagerTest extends \PHPUnit_Framework_TestCase
 {

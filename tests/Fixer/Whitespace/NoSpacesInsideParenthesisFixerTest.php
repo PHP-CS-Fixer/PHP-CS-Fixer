@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Marc Aubé
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
  */
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {

@@ -17,6 +17,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
  */
 final class PhpdocAlignFixerTest extends AbstractFixerTestCase
 {

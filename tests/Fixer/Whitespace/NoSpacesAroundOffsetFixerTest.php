@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Javier Spagnoletti <phansys@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer
  */
 final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
 {

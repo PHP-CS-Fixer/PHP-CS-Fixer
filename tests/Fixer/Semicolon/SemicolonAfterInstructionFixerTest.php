@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer
  */
 final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
 {
@@ -73,7 +75,12 @@ A is equal to 5
 <?php case 1: ?>
 ...
 <?php endswitch ?>',
-                ),
+            ),
+            array(
+'<?php if ($a == 5) { ?>
+A is equal to 5
+<?php } ?>',
+            ),
         );
     }
 

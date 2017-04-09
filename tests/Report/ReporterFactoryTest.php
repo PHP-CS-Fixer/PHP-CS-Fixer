@@ -19,6 +19,8 @@ use PhpCsFixer\Test\AccessibleObject;
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Report\ReporterFactory
  */
 final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
 {

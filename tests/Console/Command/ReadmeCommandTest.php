@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\AutoReview;
+namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -21,10 +21,9 @@ use Symfony\Component\Console\Output\BufferedOutput;
  *
  * @internal
  *
- * @coversNothing
- * @group auto-review
+ * @covers \PhpCsFixer\Console\Command\ReadmeCommand
  */
-final class ReadmeTest extends \PHPUnit_Framework_TestCase
+final class ReadmeCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testIfReadmeFileIsCorrect()
     {
@@ -38,7 +37,7 @@ final class ReadmeTest extends \PHPUnit_Framework_TestCase
 
         $app->get('readme')->run($input, $output);
 
-        $fileContent = file_get_contents(__DIR__.'/../../README.rst');
+        $fileContent = file_get_contents(__DIR__.'/../../../README.rst');
 
         $this->assertSame(
             $output->fetch(),

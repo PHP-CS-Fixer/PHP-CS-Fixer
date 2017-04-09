@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Roland Franssen <franssen.roland@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixer
  */
 final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
 {

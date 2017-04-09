@@ -20,6 +20,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\LineEndingFixer
  */
 final class LineEndingFixerTest extends AbstractFixerTestCase
 {

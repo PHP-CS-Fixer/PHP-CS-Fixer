@@ -61,7 +61,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
         }
     }
 
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    final public function fix(\SplFileInfo $file, Tokens $tokens)
     {
         if (0 < $tokens->count() && $this->isCandidate($tokens) && $this->supports($file)) {
             $this->applyFix($file, $tokens);

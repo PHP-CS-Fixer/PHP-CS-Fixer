@@ -17,6 +17,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer
  */
 final class NoExtraConsecutiveBlankLinesFixerTest extends AbstractFixerTestCase
 {

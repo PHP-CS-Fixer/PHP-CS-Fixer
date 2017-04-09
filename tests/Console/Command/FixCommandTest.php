@@ -20,6 +20,8 @@ use PhpCsFixer\Test\AccessibleObject;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Console\Command\FixCommand
  */
 final class FixCommandTest extends \PHPUnit_Framework_TestCase
 {
