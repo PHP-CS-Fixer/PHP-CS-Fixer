@@ -93,6 +93,12 @@ $foo
 ->bar1()
 ->bar2();',
             ),
+            array(
+                '<?php $foo
+    ->bar();',
+                '<?php $foo
+->bar();'
+            )
         );
     }
 
