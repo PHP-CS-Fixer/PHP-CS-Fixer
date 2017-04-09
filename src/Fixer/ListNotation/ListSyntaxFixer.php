@@ -30,7 +30,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     private $candidateTokenKind;
-    private $fixCallback;
 
     /**
      * Use 'syntax' => 'long'|'short'.
@@ -43,8 +42,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
     {
         parent::configure($configuration);
 
-        $this->resolveCandidateTokenKind();
-        $this->resolveFixCallback();
+        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN : T_LIST;
     }
 
     /**
@@ -91,10 +89,13 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $callback = $this->fixCallback;
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
-                $this->$callback($tokens, $index);
+                if (T_LIST === $this->candidateTokenKind) {
+                    $this->fixToShortSyntax($tokens, $index);
+                } else {
+                    $this->fixToLongSyntax($tokens, $index);
+                }
             }
         }
     }
@@ -148,15 +149,5 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
         $tokens->overrideAt($closeIndex, array(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'));
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
-    }
-
-    private function resolveFixCallback()
-    {
-        $this->fixCallback = sprintf('fixTo%sSyntax', ucfirst($this->configuration['syntax']));
-    }
-
-    private function resolveCandidateTokenKind()
-    {
-        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN : T_LIST;
     }
 }
