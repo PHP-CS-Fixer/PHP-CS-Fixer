@@ -86,7 +86,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         for ($i = $index; $i >= 0; --$i) {
             $currentWhitespaces = $this->isLineBreak($tokens[$i]);
 
-            if ($currentWhitespaces !== false) {
+            if (false !== $currentWhitespaces) {
                 if ($tokens[$i + 1]->equals(array(T_OBJECT_OPERATOR))) {
                     return $currentWhitespaces;
                 }
