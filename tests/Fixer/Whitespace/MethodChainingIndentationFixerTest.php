@@ -97,8 +97,8 @@ $foo
                 '<?php $foo
     ->bar();',
                 '<?php $foo
-->bar();'
-            )
+->bar();',
+            ),
         );
     }
 
