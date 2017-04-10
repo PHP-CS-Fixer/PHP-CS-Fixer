@@ -147,14 +147,13 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @Bar
  * })
  * @Foo\z
- */','
+ */', '
 /**
  * @Foo(x={
  * @Bar
  * })
  * @Foo\z
- */
- '),
+ */'),
             array('
 /**
  * Description with a single " character.
