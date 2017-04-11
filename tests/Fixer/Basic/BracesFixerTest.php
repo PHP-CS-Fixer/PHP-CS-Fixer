@@ -25,6 +25,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class BracesFixerTest extends AbstractFixerTestCase
 {
     private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => 'same'];
+    private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => 'next'];
 
     public function testInvalidConfigurationClassyConstructs()
     {
@@ -214,12 +215,40 @@ final class BracesFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
+    $a = function()
+    {
+        $a = 1;
+        while (false);
+    };',
+                '<?php
+    $a = function() {
+        $a = 1;
+        while (false);
+    };',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
     $a = function() {
         $a = 1;
         for ($i=0;$i<5;++$i);
     };',
                 null,
                 self::$configurationOopPositionSameLine,
+            ],
+            [
+                '<?php
+    $a = function()
+    {
+        $a = 1;
+        for ($i=0;$i<5;++$i);
+    };',
+                '<?php
+    $a = function() {
+        $a = 1;
+        for ($i=0;$i<5;++$i);
+    };',
+                self::$configurationCtrlStructPositionNextLine,
             ],
             [
                 '<?php
@@ -259,6 +288,25 @@ final class BracesFixerTest extends AbstractFixerTestCase
         $b = 2;
     }',
                 self::$configurationOopPositionSameLine,
+            ],
+            [
+                '<?php
+    if (true)
+    {
+        $a = 1;
+    }
+    else
+    {
+        $b = 2;
+    }',
+                '<?php
+    if (true) {
+        $a = 1;
+    }
+    else {
+        $b = 2;
+    }',
+                self::$configurationCtrlStructPositionNextLine,
             ],
             [
                 '<?php
