@@ -240,11 +240,17 @@ class Foo
             $prevIndex = $tokens->getPrevNonWhitespace($index);
             $prevToken = $tokens[$prevIndex];
 
+            $indent = $this->detectIndent($tokens, $index);
+
             if (!$prevToken->equals('}')) {
                 continue;
             }
 
-            $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
+            if ($this->configuration['position_after_control_structures'] === self::LINE_NEXT) {
+                $tokens->ensureWhitespaceAtIndex($index - 1, 1, $this->whitespacesConfig->getLineEnding().$indent);
+            } else {
+                $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
+            }
         }
     }
 
@@ -457,7 +463,10 @@ class Foo
 
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
                 }
-            } elseif ($token->isGivenKind($controlTokens) && $this->configuration['position_after_control_structures'] === self::LINE_NEXT) {
+            } elseif (
+                ($token->isGivenKind($controlTokens) || $token->isGivenKind(array(T_FUNCTION)) && $tokensAnalyzer->isLambda($index))
+                && $this->configuration['position_after_control_structures'] === self::LINE_NEXT
+            ) {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $this->whitespacesConfig->getLineEnding().$indent);
             } else {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
@@ -519,6 +528,8 @@ class Foo
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
+            $indent = $this->detectIndent($tokens, $index);
+
             // Declare tokens don't follow the same rules are other control statements
             if ($token->isGivenKind(T_DECLARE)) {
                 $this->fixDeclareStatement($tokens, $index);
@@ -526,7 +537,11 @@ class Foo
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
 
                 if (!$tokens[$nextNonWhitespaceIndex]->equals(':')) {
-                    $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
+                    if ($this->configuration['position_after_control_structures'] === self::LINE_NEXT && !$tokens[$nextNonWhitespaceIndex]->equals('(')) {
+                        $tokens->ensureWhitespaceAtIndex($index + 1, 0, $this->whitespacesConfig->getLineEnding().$indent);
+                    } else {
+                        $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
+                    }
                 }
 
                 $prevToken = $tokens[$index - 1];
