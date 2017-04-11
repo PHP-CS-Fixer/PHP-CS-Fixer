@@ -12,11 +12,9 @@
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * Base class for Doctrine annotation fixer tests.
- *
  * @internal
  */
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase

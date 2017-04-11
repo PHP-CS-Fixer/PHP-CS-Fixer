@@ -3,6 +3,47 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.3.2
+--------------------
+
+* bug #2682 DoctrineAnnotationIndentationFixer - fix handling nested annotations (edhgoose, julienfalque)
+* bug #2700 Fix Doctrine Annotation end detection (julienfalque)
+* bug #2715 OrderedImportsFixer - handle indented groups (pilgerone)
+* bug #2732 HeaderCommentFixer - fix handling blank lines (s7b4)
+* bug #2745 Fix Doctrine Annotation newlines (julienfalque)
+* bug #2752 FixCommand - fix typo in warning message (mnapoli)
+* bug #2757 GeckoPHPUnit is not dev dependency (keradus)
+* bug #2759 Update gitattributes (SpacePossum)
+* bug #2763 Fix describe command with PSR-0 fixer (julienfalque)
+* bug #2768 Tokens::ensureWhitespaceAtIndex - clean up comment check, add check for T_OPEN (SpacePossum)
+* bug #2783 Tokens::ensureWhitespaceAtIndex - Fix handling line endings (SpacePossum)
+* minor #2304 DX: use PHPMD (keradus)
+* minor #2663 Use colors for keywords in commands output (julienfalque, keradus)
+* minor #2706 Update README (SpacePossum)
+* minor #2714 README.rst - fix wrong value in example (mleko)
+* minor #2718 Remove old Symfony exception message expectation (julienfalque)
+* minor #2721 Update phpstorm article link to a fresh blog post (valeryan)
+* minor #2725 Use method chaining for configuration definitions (julienfalque)
+* minor #2727 PHPUnit - use speedtrap (keradus)
+* minor #2728 SelfUpdateCommand - verify that it's possible to replace current file (keradus)
+* minor #2729 DescribeCommand - add decorated output test (julienfalque)
+* minor #2731 BracesFixer - properly pass config in utest dataProvider (keradus)
+* minor #2738 Upgrade tests to use new, namespaced PHPUnit TestCase class (keradus)
+* minor #2742 Code cleanup (GrahamCampbell, keradus)
+* minor #2743 Fixing example and description for GeneralPhpdocAnnotationRemoveFixer (kubawerlos)
+* minor #2744 AbstractDoctrineAnnotationFixerTestCase - split fixers test cases (julienfalque)
+* minor #2755 Fix compatibility with PHPUnit 5.4.x (keradus)
+* minor #2758 Readme - improve CI integration guidelines (keradus)
+* minor #2769 Psr0Fixer - remove duplicated example (julienfalque)
+* minor #2774 AssertTokens Trait (keradus)
+* minor #2775 NoExtraConsecutiveBlankLinesFixer - remove duplicate code sample. (SpacePossum)
+* minor #2778 AutoReview - watch that code samples are unique (keradus)
+* minor #2787 Add warnings about missing dom ext and require json ext (keradus)
+* minor #2792 Use composer-require-checker (keradus)
+* minor #2796 Update .gitattributes (SpacePossum)
+* minor #2797 Update .gitattributes (SpacePossum)
+* minor #2800 PhpdocTypesFixerTest - Fix typo in covers annotation (SpacePossum)
+
 Changelog for v2.3.1
 --------------------
 
@@ -17,6 +58,41 @@ Changelog for v2.3.0
 * feature #2708 Add PhpUnitTestClassRequiresCoversFixer (keradus)
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
+
+Changelog for v2.2.4
+--------------------
+
+* bug #2682 DoctrineAnnotationIndentationFixer - fix handling nested annotations (edhgoose, julienfalque)
+* bug #2700 Fix Doctrine Annotation end detection (julienfalque)
+* bug #2715 OrderedImportsFixer - handle indented groups (pilgerone)
+* bug #2732 HeaderCommentFixer - fix handling blank lines (s7b4)
+* bug #2745 Fix Doctrine Annotation newlines (julienfalque)
+* bug #2752 FixCommand - fix typo in warning message (mnapoli)
+* bug #2757 GeckoPHPUnit is not dev dependency (keradus)
+* bug #2759 Update gitattributes (SpacePossum)
+* bug #2763 Fix describe command with PSR-0 fixer (julienfalque)
+* bug #2768 Tokens::ensureWhitespaceAtIndex - clean up comment check, add check for T_OPEN (SpacePossum)
+* bug #2783 Tokens::ensureWhitespaceAtIndex - Fix handling line endings (SpacePossum)
+* minor #2663 Use colors for keywords in commands output (julienfalque, keradus)
+* minor #2706 Update README (SpacePossum)
+* minor #2714 README.rst - fix wrong value in example (mleko)
+* minor #2721 Update phpstorm article link to a fresh blog post (valeryan)
+* minor #2727 PHPUnit - use speedtrap (keradus)
+* minor #2728 SelfUpdateCommand - verify that it's possible to replace current file (keradus)
+* minor #2729 DescribeCommand - add decorated output test (julienfalque)
+* minor #2731 BracesFixer - properly pass config in utest dataProvider (keradus)
+* minor #2738 Upgrade tests to use new, namespaced PHPUnit TestCase class (keradus)
+* minor #2743 Fixing example and description for GeneralPhpdocAnnotationRemoveFixer (kubawerlos)
+* minor #2744 AbstractDoctrineAnnotationFixerTestCase - split fixers test cases (julienfalque)
+* minor #2755 Fix compatibility with PHPUnit 5.4.x (keradus)
+* minor #2758 Readme - improve CI integration guidelines (keradus)
+* minor #2769 Psr0Fixer - remove duplicated example (julienfalque)
+* minor #2775 NoExtraConsecutiveBlankLinesFixer - remove duplicate code sample. (SpacePossum)
+* minor #2778 AutoReview - watch that code samples are unique (keradus)
+* minor #2787 Add warnings about missing dom ext and require json ext (keradus)
+* minor #2792 Use composer-require-checker (keradus)
+* minor #2796 Update .gitattributes (SpacePossum)
+* minor #2800 PhpdocTypesFixerTest - Fix typo in covers annotation (SpacePossum)
 
 Changelog for v2.2.3
 --------------------

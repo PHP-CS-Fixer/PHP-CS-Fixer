@@ -21,8 +21,6 @@ use PhpCsFixer\Tokenizer\Tokens as PhpTokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * Base class for Doctrine annotation fixers.
- *
  * @internal
  */
 abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
@@ -51,7 +49,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                 $this->configuration['ignored_tags']
             );
             $this->fixAnnotations($tokens);
-            $docCommentToken->setContent($tokens->getCode());
+            $phpTokens[$index] = new PhpToken([T_DOC_COMMENT, $tokens->getCode()]);
         }
     }
 

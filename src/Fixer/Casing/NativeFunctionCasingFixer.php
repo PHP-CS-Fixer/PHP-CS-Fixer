@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Casing;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -61,6 +62,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             $next = $tokens->getNextMeaningfulToken($index);
             if (!$tokens[$next]->equals('(')) {
                 $index = $next;
+
                 continue;
             }
 
@@ -83,7 +85,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index]->setContent($nativeFunctionNames[$lower]);
+            $tokens[$index] = new Token([T_STRING, $nativeFunctionNames[$lower]]);
             $index = $next;
         }
     }

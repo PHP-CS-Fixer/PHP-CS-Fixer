@@ -49,7 +49,10 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     {
         return new FixerDefinition(
             'Equal sign in declare statement should be surrounded by spaces or not following configuration.',
-            [new CodeSample("<?php\ndeclare(ticks =  1);")]
+            [
+                new CodeSample("<?php\ndeclare(ticks =  1);"),
+                new CodeSample("<?php\ndeclare(ticks=1);", ['space' => 'single']),
+            ]
         );
     }
 
@@ -98,14 +101,16 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     private function ensureWhitespaceAroundToken(Tokens $tokens, $index)
     {
         if ($tokens[$index + 1]->isWhitespace()) {
-            $tokens[$index + 1]->setContent(' ');
+            if (' ' !== $tokens[$index + 1]->getContent()) {
+                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+            }
         } else {
             $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
         }
 
         if ($tokens[$index - 1]->isWhitespace()) {
-            if (!$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
-                $tokens[$index - 1]->setContent(' ');
+            if (' ' !== $tokens[$index - 1]->getContent() && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
             $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));

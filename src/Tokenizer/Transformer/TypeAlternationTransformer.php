@@ -65,6 +65,6 @@ final class TypeAlternationTransformer extends AbstractTransformer
             return;
         }
 
-        $token->override([CT::T_TYPE_ALTERNATION, '|']);
+        $tokens[$index] = new Token([CT::T_TYPE_ALTERNATION, '|']);
     }
 }

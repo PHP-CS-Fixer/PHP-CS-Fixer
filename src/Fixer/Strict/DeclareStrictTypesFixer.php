@@ -94,38 +94,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $endIndex
-     */
-    private function fixWhiteSpaceAroundSequence(Tokens $tokens, $endIndex)
-    {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        // start index of the sequence is always 1 here, 0 is always open tag
-        // transform "<?php\n" to "<?php " if needed
-        if (false !== strpos($tokens[0]->getContent(), "\n")) {
-            $tokens[0]->setContent(trim($tokens[0]->getContent()).' ');
-        }
-
-        if ($endIndex === count($tokens) - 1) {
-            return; // no more tokens afters sequence, single_blank_line_at_eof might add a line
-        }
-
-        if (!$tokens[1 + $endIndex]->isWhitespace()) {
-            $tokens->insertAt(1 + $endIndex, new Token([T_WHITESPACE, $lineEnding]));
-
-            return;
-        }
-
-        $content = $tokens[1 + $endIndex]->getContent();
-        if (false !== strpos($content, "\n")) {
-            return;
-        }
-
-        $tokens[1 + $endIndex]->setContent($lineEnding.ltrim($content));
-    }
-
-    /**
      * @return Token[]
      */
     private function getDeclareStrictTypeSequence()
@@ -160,7 +128,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         /** @var Token $token */
         foreach ($sequence as $index => $token) {
             if ($token->isGivenKind(T_STRING)) {
-                $tokens[$index]->setContent(strtolower($token->getContent()));
+                $tokens[$index] = new Token([T_STRING, strtolower($token->getContent())]);
 
                 break;
             }
@@ -178,7 +146,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         // start index of the sequence is always 1 here, 0 is always open tag
         // transform "<?php\n" to "<?php " if needed
         if (false !== strpos($tokens[0]->getContent(), "\n")) {
-            $tokens[0]->setContent(trim($tokens[0]->getContent()).' ');
+            $tokens[0] = new Token([$tokens[0]->getId(), trim($tokens[0]->getContent()).' ']);
         }
 
         if ($endIndex === count($tokens) - 1) {
@@ -197,6 +165,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             return;
         }
 
-        $tokens[1 + $endIndex]->setContent($lineEnding.ltrim($content));
+        $tokens[1 + $endIndex] = new Token([T_WHITESPACE, $lineEnding.ltrim($content)]);
     }
 }

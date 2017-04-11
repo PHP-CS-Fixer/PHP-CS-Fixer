@@ -67,6 +67,22 @@ final class RuleSetTest extends TestCase
         );
     }
 
+    public function testBuildInSetDefinitionNames()
+    {
+        $setNames = RuleSet::create()->getSetDefinitionNames();
+
+        $this->assertInternalType('array', $setNames);
+        $this->assertNotEmpty($setNames);
+
+        $i = 0;
+        foreach ($setNames as $index => $setName) {
+            $this->assertSame($i, $index);
+            $this->assertInternalType('string', $setName);
+            $this->assertSame('@', substr($setName, 0, 1));
+            ++$i;
+        }
+    }
+
     public function testResolveRulesWithInvalidSet()
     {
         $this->setExpectedException(
@@ -132,7 +148,8 @@ final class RuleSetTest extends TestCase
                 'line_ending' => true,
                 'lowercase_constants' => true,
                 'lowercase_keywords' => true,
-                'method_argument_space' => true,
+                'method_argument_space' => ['ensure_fully_multiline' => true],
+                'no_break_comment' => true,
                 'no_closing_tag' => true,
                 'no_spaces_after_function_name' => true,
                 'no_spaces_inside_parenthesis' => true,
@@ -171,7 +188,8 @@ final class RuleSetTest extends TestCase
                 'line_ending' => true,
                 'lowercase_constants' => true,
                 'lowercase_keywords' => true,
-                'method_argument_space' => true,
+                'method_argument_space' => ['ensure_fully_multiline' => true],
+                'no_break_comment' => true,
                 'no_closing_tag' => true,
                 'no_spaces_after_function_name' => true,
                 'no_spaces_inside_parenthesis' => true,
@@ -258,7 +276,8 @@ final class RuleSetTest extends TestCase
             $fixerNames,
             sprintf(
                 'Set should only contain %s fixers, got: \'%s\'.',
-                $safe ? 'safe' : 'risky', implode('\', \'', $fixerNames)
+                $safe ? 'safe' : 'risky',
+                implode('\', \'', $fixerNames)
             )
         );
     }

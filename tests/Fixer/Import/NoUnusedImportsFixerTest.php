@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
@@ -160,6 +160,22 @@ $c = new Bar\Fooz();
 $d = new Bbb();
 $e = new FQCN_Babo();
 $f = new FQCN_XYZ();
+EOF;
+
+        $this->doTest($expected, $input);
+
+        $expected = <<<'EOF'
+<?php namespace App\Http\Controllers;
+
+
+EOF;
+
+        $input = <<<'EOF'
+<?php namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 EOF;
 
         $this->doTest($expected, $input);

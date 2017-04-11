@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\CastNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
@@ -21,18 +21,50 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class CastSpacesFixerTest extends AbstractFixerTestCase
 {
+    public function testInvalidConfigMissingKey()
+    {
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '#^\[cast_spaces\] Invalid configuration: The option "a" does not exist\. Defined options are: "space"\.$#'
+        );
+
+        $this->fixer->configure(['a' => 1]);
+    }
+
+    public function testInvalidConfigValue()
+    {
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '#^\[cast_spaces\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "single"\.$#'
+        );
+
+        $this->fixer->configure(['space' => 'double']);
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider testFixCastsProvider
+     * @dataProvider provideSingleSpaceCases
      */
-    public function testFixCasts($expected, $input = null)
+    public function testFixCastsWithDefaultConfiguration($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function testFixCastsProvider()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideSingleSpaceCases
+     */
+    public function testFixCastsSingleSpace($expected, $input = null)
+    {
+        $this->fixer->configure(['space' => 'single']);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideSingleSpaceCases()
     {
         return [
             [
@@ -82,6 +114,73 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
                 "<?php \$bar = (int)\n \$foo;",
             ],
             [
+                "<?php \$bar = (int)\r\n \$foo;",
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideNoneSpaceFix
+     */
+    public function testFixCastsNoneSpace($expected, $input = null)
+    {
+        $this->fixer->configure(['space' => 'none']);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideNoneSpaceFix()
+    {
+        return [
+            [
+                '<?php echo "( int ) $foo";',
+            ],
+            [
+                '<?php $bar = (int)$foo;',
+                '<?php $bar = ( int)$foo;',
+            ],
+            [
+                '<?php $bar = (int)$foo;',
+                '<?php $bar = (	int)$foo;',
+            ],
+            [
+                '<?php $bar = (int)$foo;',
+                '<?php $bar = (int)	$foo;',
+            ],
+            [
+                '<?php $bar = (string)(int)$foo;',
+                '<?php $bar = ( string )( int )$foo;',
+            ],
+            [
+                '<?php $bar = (string)(int)$foo;',
+            ],
+            [
+                '<?php $bar = (string)(int)$foo;',
+                '<?php $bar = ( string   )    (   int )$foo;',
+            ],
+            [
+                '<?php $bar = (string)$foo;',
+                '<?php $bar = ( string )   $foo;',
+            ],
+            [
+                '<?php $bar = (float)Foo::bar();',
+                '<?php $bar = (float )Foo::bar();',
+            ],
+            [
+                '<?php $bar = Foo::baz((float)Foo::bar());',
+                '<?php $bar = Foo::baz((float )Foo::bar());',
+            ],
+            [
+                '<?php $bar = $query["params"] = (array)$query["params"];',
+            ],
+            [
+                '<?php $bar = (int)$foo;',
+                "<?php \$bar = (int)\n \$foo;",
+            ],
+            [
+                '<?php $bar = (int)$foo;',
                 "<?php \$bar = (int)\r\n \$foo;",
             ],
         ];

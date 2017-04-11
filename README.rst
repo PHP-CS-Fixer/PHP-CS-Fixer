@@ -36,7 +36,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.2/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -236,9 +236,20 @@ Choose from the list of available rules:
   Ensure there is no code on the same line as the PHP open tag and it is
   followed by a blank line.
 
-* **blank_line_before_return** [@Symfony]
+* **blank_line_before_return**
 
-  An empty line feed should precede a return statement.
+  An empty line feed should precede a return statement (deprecated, use
+  ``blank_line_before_statement`` instead).
+
+* **blank_line_before_statement** [@Symfony]
+
+  An empty line feed must precede any configured statement.
+
+  Configuration options:
+
+  - ``statements`` (``array``): list of statements which must be must be preceded by
+    an empty line; defaults to ``['break', 'continue', 'declare', 'return',
+    'throw', 'try']``
 
 * **braces** [@PSR2, @Symfony]
 
@@ -249,6 +260,12 @@ Choose from the list of available rules:
 
   - ``allow_single_line_closure`` (``bool``): whether single line lambda notation
     should be allowed; defaults to ``false``
+  - ``position_after_anonymous_constructs`` (``'next'``, ``'same'``): whether the
+    opening brace should be placed on "next" or "same" line after anonymous
+    constructs (anonymous classes and lambda functions); defaults to ``'same'``
+  - ``position_after_control_structures`` (``'next'``, ``'same'``): whether the opening
+    brace should be placed on "next" or "same" line after control
+    structures; defaults to ``'same'``
   - ``position_after_functions_and_oop_constructs`` (``'next'``, ``'same'``): whether
     the opening brace should be placed on "next" or "same" line after
     classy constructs (non-anonymous classes, interfaces, traits, methods
@@ -256,7 +273,12 @@ Choose from the list of available rules:
 
 * **cast_spaces** [@Symfony]
 
-  A single space should be between cast and variable.
+  A single space or none should be between cast and variable.
+
+  Configuration options:
+
+  - ``space`` (``'none'``, ``'single'``): spacing to apply between cast and variable;
+    defaults to ``'single'``
 
 * **class_definition** [@PSR2, @Symfony]
 
@@ -299,7 +321,7 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply around the equal sign;
     defaults to ``'none'``
 
-* **declare_strict_types** [@PHP70Migration:risky]
+* **declare_strict_types** [@PHP70Migration:risky, @PHP71Migration:risky]
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
 
@@ -311,6 +333,35 @@ Choose from the list of available rules:
   constant.
 
   *Risky rule: risky when the function ``dirname()`` is overridden.*
+
+* **doctrine_annotation_array_assignment**
+
+  Doctrine annotations must use configured operator for assignment in
+  arrays.
+
+  Configuration options:
+
+  - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
+    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
+    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
+    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
+    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
+    'license', 'link', 'method', 'package', 'param', 'property',
+    'property-read', 'property-write', 'return', 'see', 'since', 'source',
+    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
+    'version', 'after', 'afterClass', 'backupGlobals',
+    'backupStaticAttributes', 'before', 'beforeClass',
+    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
+    'coversNothing', 'dataProvider', 'depends', 'expectedException',
+    'expectedExceptionCode', 'expectedExceptionMessage',
+    'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
+    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
+    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
+    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
+    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+  - ``operator`` (``':'``, ``'='``): the operator to use; defaults to ``'='``
 
 * **doctrine_annotation_braces**
 
@@ -367,6 +418,8 @@ Choose from the list of available rules:
     'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
     'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
     'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+  - ``indent_mixed_lines`` (``bool``): whether to indent lines that have content
+    before closing parenthesis; defaults to ``false``
 
 * **doctrine_annotation_spaces**
 
@@ -459,6 +512,7 @@ Choose from the list of available rules:
 * **hash_to_slash_comment** [@Symfony]
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
+  DEPRECATED: Use "single_line_comment_style" instead.
 
 * **header_comment**
 
@@ -541,10 +595,15 @@ Choose from the list of available rules:
 * **method_argument_space** [@PSR2, @Symfony]
 
   In method arguments and method call, there MUST NOT be a space before
-  each comma and there MUST be one space after each comma.
+  each comma and there MUST be one space after each comma. Argument lists
+  MAY be split across multiple lines, where each subsequent line is
+  indented once. When doing so, the first item in the list MUST be on the
+  next line, and there MUST be only one argument per line.
 
   Configuration options:
 
+  - ``ensure_fully_multiline`` (``bool``): ensure every argument of a multiline
+    argument list is on its own line; defaults to ``false``
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
@@ -597,6 +656,16 @@ Choose from the list of available rules:
 
   There should be no blank lines before a namespace declaration.
 
+* **no_break_comment** [@PSR2, @Symfony]
+
+  There must be a comment when fall-through is intentional in a non-empty
+  case body.
+
+  Configuration options:
+
+  - ``comment_text`` (``string``): the text to use in the added comment and to
+    detect it; defaults to ``'no break'``
+
 * **no_closing_tag** [@PSR2, @Symfony]
 
   The closing ``?>`` tag MUST be omitted from files containing only PHP.
@@ -645,6 +714,10 @@ Choose from the list of available rules:
 * **no_multiline_whitespace_before_semicolons**
 
   Multi-line whitespace before closing semicolon are prohibited.
+
+* **no_null_property_initialization**
+
+  Properties MUST not be explicitly initialized with ``null``.
 
 * **no_php4_constructor**
 
@@ -736,12 +809,17 @@ Choose from the list of available rules:
 
   Remove trailing whitespace at the end of blank lines.
 
-* **non_printable_character** [@Symfony:risky]
+* **non_printable_character** [@Symfony:risky, @PHP70Migration, @PHP71Migration]
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.
 
   *Risky rule: risky when strings contain intended invisible characters.*
+
+  Configuration options:
+
+  - ``use_escape_sequences_in_strings`` (``bool``): whether characters should be
+    replaced with escape sequences in strings; defaults to ``false``
 
 * **normalize_index_brace** [@Symfony]
 
@@ -845,8 +923,12 @@ Choose from the list of available rules:
 
 * **phpdoc_align** [@Symfony]
 
-  All items of the @param, @throws, @return, @var, and @type phpdoc tags
-  must be aligned vertically.
+  All items of the given phpdoc tags must be aligned vertically.
+
+  Configuration options:
+
+  - ``tags`` (``array``): the tags that should be aligned; defaults to ``['param',
+    'return', 'throws', 'type', 'var']``
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 
@@ -964,7 +1046,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``dir`` (``string``): the directory where the project code is placed; required
+  - ``dir`` (``string``): the directory where the project code is placed; defaults
+    to ``''``
 
 * **psr4** [@Symfony:risky]
 
@@ -1049,6 +1132,16 @@ Choose from the list of available rules:
   Each namespace use MUST go on its own line and there MUST be one blank
   line after the use statements block.
 
+* **single_line_comment_style**
+
+  Single-line comments and multi-line comments with only one line of
+  actual content should use the ``//`` syntax.
+
+  Configuration options:
+
+  - ``comment_types`` (``array``): list of comment types to fix; defaults to
+    ``['asterisk', 'hash']``
+
 * **single_quote** [@Symfony]
 
   Convert double quotes to single quotes for simple strings.
@@ -1113,6 +1206,14 @@ Choose from the list of available rules:
   - ``elements`` (``array``): the structural elements to fix (PHP >= 7.1 required
     for ``const``); defaults to ``['property', 'method']``
 
+* **void_return** [@PHP71Migration:risky]
+
+  Add void return type to functions with missing or empty return
+  statements, but priority is given to ``@return`` annotations. Requires
+  PHP >= 7.1.
+
+  *Risky rule: modifies the signature of functions.*
+
 * **whitespace_after_comma_in_array** [@Symfony]
 
   In array declaration, there MUST be a whitespace after each comma.
@@ -1127,7 +1228,7 @@ fixed but without actually modifying them:
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.1/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.2/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -1239,7 +1340,7 @@ Then, add the following command to your CI:
 .. code-block:: bash
 
     $ IFS=$'\n'; COMMIT_SCA_FILES=($(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")); unset IFS
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection "${COMMIT_SCA_FILES[@]}"
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection -- "${COMMIT_SCA_FILES[@]}"
 
 Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
@@ -1249,7 +1350,7 @@ Exit codes
 Exit code is build using following bit flags:
 
 *  0 OK.
-*  1 General error (or PHP/HHVM minimal requirement not matched).
+*  1 General error (or PHP minimal requirement not matched).
 *  4 Some files have invalid syntax (only in dry-run mode).
 *  8 Some files need fixing (only in dry-run mode).
 * 16 Configuration error of the application.

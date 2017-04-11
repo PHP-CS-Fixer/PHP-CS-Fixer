@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
@@ -25,7 +25,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider provideFixCases
      */

@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
@@ -38,6 +38,9 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
     {
         return [
             [
+                '<?php
+                use A\B;
+                ',
                 '<?php
                 use \A\B;
                 ',
@@ -79,8 +82,8 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                use \C;
-                use \C\X;
+                use C;
+                use C\X;
 
                 namespace Foo {
                     use A;

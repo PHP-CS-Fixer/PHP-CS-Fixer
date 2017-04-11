@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -54,6 +55,20 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 '
+                ),
+                new CodeSample(
+                    '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomeTest()
+    {
+        $this->assertAttributeEquals(a(), b());
+        $this->assertAttributeNotEquals(a(), b());
+        $this->assertEquals(a(), b());
+        $this->assertNotEquals(a(), b());
+    }
+}',
+                    ['assertions' => ['assertEquals']]
                 ),
             ],
             null,
@@ -101,7 +116,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
 
                 $sequenceIndexes = array_keys($sequence);
-                $tokens[$sequenceIndexes[2]]->setContent($methodAfter);
+                $tokens[$sequenceIndexes[2]] = new Token([T_STRING, $methodAfter]);
 
                 $index = $sequenceIndexes[3];
             }

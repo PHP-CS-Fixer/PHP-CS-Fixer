@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author SpacePossum
@@ -78,6 +78,9 @@ final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
             [
                 '<?php // a',
                 '<?php # a',
+            ],
+            [
+                '<?php /* start-end */',
             ],
         ];
     }

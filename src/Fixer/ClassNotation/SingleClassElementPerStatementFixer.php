@@ -170,11 +170,13 @@ final class Example
 
             if ($token->equals(')')) {
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i, false);
+
                 continue;
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $i, false);
+
                 continue;
             }
 
@@ -182,12 +184,12 @@ final class Example
                 continue;
             }
 
-            $token->setContent(';');
+            $tokens[$i] = new Token(';');
             if ($tokens[$i + 1]->isWhitespace()) {
-                $tokens[$i + 1]->clear();
+                $tokens->clearAt($i + 1);
             }
 
-            if ($divisionContent) {
+            if (null !== $divisionContent && '' !== $divisionContent) {
                 $tokens->insertAt($i + 1, new Token([T_WHITESPACE, $divisionContent]));
             }
 

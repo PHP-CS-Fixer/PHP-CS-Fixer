@@ -228,7 +228,7 @@ Require ``friendsofphp/php-cs-fixer`` as a ``dev`` dependency:
 Then, add the following command to your CI:
 
     $ IFS=\$'\\n'; COMMIT_SCA_FILES=($(git diff --name-only --diff-filter=ACMRTUXB "\${COMMIT_RANGE}")); unset IFS
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection "\${COMMIT_SCA_FILES[@]}"
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection -- "\${COMMIT_SCA_FILES[@]}"
 
 Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
@@ -238,7 +238,7 @@ Exit codes
 Exit code is build using following bit flags:
 
 *  0 OK.
-*  1 General error (or PHP/HHVM minimal requirement not matched).
+*  1 General error (or PHP minimal requirement not matched).
 *  4 Some files have invalid syntax (only in dry-run mode).
 *  8 Some files need fixing (only in dry-run mode).
 * 16 Configuration error of the application.
@@ -282,11 +282,20 @@ EOF
                 ['', ' ', '[$1]', '[', ']', ''],
             ];
 
-            $str = preg_replace(
-                $replaces[0],
-                $replaces[1],
-                var_export($value, true)
-            );
+            $str = var_export($value, true);
+            do {
+                $strNew = preg_replace(
+                    $replaces[0],
+                    $replaces[1],
+                    $str
+                );
+
+                if ($strNew === $str) {
+                    break;
+                }
+
+                $str = $strNew;
+            } while (true);
         } else {
             $str = var_export($value, true);
         }
@@ -299,7 +308,7 @@ EOF
      *
      * @param FixerOptionInterface $option
      *
-     * @return array|null
+     * @return null|array
      */
     public static function getDisplayableAllowedValues(FixerOptionInterface $option)
     {
@@ -312,8 +321,8 @@ EOF
 
             usort($allowed, function ($valueA, $valueB) {
                 return strcasecmp(
-                    HelpCommand::toString($valueA),
-                    HelpCommand::toString($valueB)
+                    self::toString($valueA),
+                    self::toString($valueB)
                 );
             });
 
@@ -338,10 +347,14 @@ EOF
             return $version;
         }
 
-        $currentMajor = (int) Application::VERSION;
-        $changelogFile = __DIR__.'/../../../CHANGELOG.md';
-        $changelog = @file_get_contents($changelogFile);
+        $changelogFile = self::getChangeLogFile();
+        if (null === $changelogFile) {
+            $version = Application::VERSION;
 
+            return $version;
+        }
+
+        $changelog = @file_get_contents($changelogFile);
         if (false === $changelog) {
             $error = error_get_last();
 
@@ -352,7 +365,7 @@ EOF
             ));
         }
 
-        for ($i = $currentMajor; $i > 0; --$i) {
+        for ($i = (int) Application::VERSION; $i > 0; --$i) {
             if (1 === preg_match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
                 $version = $matches[1];
 
@@ -373,6 +386,16 @@ EOF
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $output->getFormatter()->setStyle('url', new OutputFormatterStyle('blue'));
+    }
+
+    /**
+     * @return null|string
+     */
+    private static function getChangeLogFile()
+    {
+        $changelogFile = __DIR__.'/../../../CHANGELOG.md';
+
+        return is_file($changelogFile) ? $changelogFile : null;
     }
 
     /**

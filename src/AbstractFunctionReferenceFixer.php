@@ -16,8 +16,6 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Base class for function reference fixers.
- *
  * @internal
  *
  * @author Vladimir Reznichenko <kalessil@gmail.com>
@@ -53,9 +51,9 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
      * @param string   $functionNameToSearch
      * @param Tokens   $tokens
      * @param int      $start
-     * @param int|null $end
+     * @param null|int $end
      *
-     * @return int[]|null returns $functionName, $openParenthesis, $closeParenthesis packed into array
+     * @return null|int[] returns $functionName, $openParenthesis, $closeParenthesis packed into array
      */
     protected function find($functionNameToSearch, Tokens $tokens, $start = 0, $end = null)
     {
@@ -130,6 +128,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 
             if (null !== $blockDefinitionProbe && true === $blockDefinitionProbe['isStart']) {
                 $paramContentIndex = $tokens->findBlockEnd($blockDefinitionProbe['type'], $paramContentIndex);
+
                 continue;
             }
 

@@ -20,12 +20,12 @@ namespace PhpCsFixer\Linter;
 final class TokenizerLintingResult implements LintingResultInterface
 {
     /**
-     * @var \ParseError|null
+     * @var null|\ParseError
      */
     private $error;
 
     /**
-     * @param \ParseError|null $error
+     * @param null|\ParseError $error
      */
     public function __construct(\ParseError $error = null)
     {

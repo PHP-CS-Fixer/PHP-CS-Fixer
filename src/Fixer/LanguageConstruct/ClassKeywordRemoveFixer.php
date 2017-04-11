@@ -156,9 +156,9 @@ $className = Baz::class;
      */
     private function replaceClassKeywordsSection(Tokens $tokens, $startIndex, $endIndex)
     {
-        $CTClassTokens = $tokens->findGivenKind(CT::T_CLASS_CONSTANT, $startIndex, $endIndex);
-        if (!empty($CTClassTokens)) {
-            $this->replaceClassKeyword($tokens, current(array_keys($CTClassTokens)));
+        $ctClassTokens = $tokens->findGivenKind(CT::T_CLASS_CONSTANT, $startIndex, $endIndex);
+        if (!empty($ctClassTokens)) {
+            $this->replaceClassKeyword($tokens, current(array_keys($ctClassTokens)));
             $this->replaceClassKeywordsSection($tokens, $startIndex, $endIndex);
         }
     }
@@ -193,6 +193,7 @@ $className = Baz::class;
         foreach ($this->imports as $alias => $import) {
             if ($classString === $alias) {
                 $classImport = $import;
+
                 break;
             }
 
@@ -201,13 +202,14 @@ $className = Baz::class;
 
             if (0 === strcmp($namespaceToTest, substr($import, -strlen($namespaceToTest)))) {
                 $classImport = $import;
+
                 break;
             }
         }
 
         for ($i = $classBeginIndex; $i <= $classIndex; ++$i) {
             if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))) {
-                $tokens[$i]->clear();
+                $tokens->clearAt($i);
             }
         }
 

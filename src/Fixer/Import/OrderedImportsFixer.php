@@ -176,7 +176,7 @@ use function CCC\AA;
         foreach ($usesOrder as $index => $use) {
             $declarationTokens = Tokens::fromCode('<?php use '.$use['namespace'].';');
             $declarationTokens->clearRange(0, 2); // clear `<?php use `
-            $declarationTokens[count($declarationTokens) - 1]->clear(); // clear `;`
+            $declarationTokens->clearAt(count($declarationTokens) - 1); // clear `;`
             $declarationTokens->clearEmptyTokens();
 
             $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
@@ -184,8 +184,9 @@ use function CCC\AA;
                 // a group import must start with `use` and cannot be part of comma separated import list
                 $prev = $tokens->getPrevMeaningfulToken($index);
                 if ($tokens[$prev]->equals(',')) {
-                    $tokens[$prev]->setContent(';');
+                    $tokens[$prev] = new Token(';');
                     $tokens->insertAt($prev + 1, new Token([T_USE, 'use']));
+
                     if (!$tokens[$prev + 2]->isWhitespace()) {
                         $tokens->insertAt($prev + 2, new Token([T_WHITESPACE, ' ']));
                     }
@@ -295,8 +296,6 @@ use function CCC\AA;
     }
 
     /**
-     * Prepare namespace for sorting.
-     *
      * @param string $namespace
      *
      * @return string
@@ -344,6 +343,7 @@ use function CCC\AA;
                         for ($k = 0; $k < $namespaceTokensCount; ++$k) {
                             if ($namespaceTokens[$k]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                                 $namespace .= '{';
+
                                 break;
                             }
 
@@ -481,15 +481,12 @@ use function CCC\AA;
      */
     private function sortByAlgorithm($indexes)
     {
-        switch ($this->configuration['sortAlgorithm']) {
-            case self::SORT_ALPHA:
-                uasort($indexes, [$this, 'sortAlphabetically']);
-                break;
-            case self::SORT_LENGTH:
-                uasort($indexes, [$this, 'sortByLength']);
-                break;
-            default:
-                throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
+        if (self::SORT_ALPHA === $this->configuration['sortAlgorithm']) {
+            uasort($indexes, [$this, 'sortAlphabetically']);
+        } elseif (self::SORT_LENGTH === $this->configuration['sortAlgorithm']) {
+            uasort($indexes, [$this, 'sortByLength']);
+        } else {
+            throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
         }
 
         return $indexes;

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -46,10 +47,16 @@ final class TokenTest extends TestCase
         return $prototype;
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::clear is deprecated and will be removed in 3.0.
+     */
     public function testClear()
     {
         $token = $this->getForeachToken();
         $token->clear();
+
+        Tokens::setLegacyMode(false);
 
         $this->assertSame('', $token->getContent());
         $this->assertNull($token->getId());
@@ -139,26 +146,20 @@ final class TokenTest extends TestCase
         ];
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isEmpty is deprecated and will be removed in 3.0.
+     */
     public function testIsEmpty()
     {
         $braceToken = $this->getBraceToken();
         $this->assertFalse($braceToken->isEmpty());
 
-        $braceToken->setContent('');
-        $this->assertTrue($braceToken->isEmpty());
+        $emptyToken = new Token('');
+        $this->assertTrue($emptyToken->isEmpty());
 
         $whitespaceToken = new Token([T_WHITESPACE, ' ']);
         $this->assertFalse($whitespaceToken->isEmpty());
-
-        $whitespaceToken->setContent('');
-        $this->assertTrue($whitespaceToken->isEmpty());
-
-        $whitespaceToken->override([null, '']);
-        $this->assertTrue($whitespaceToken->isEmpty());
-
-        $whitespaceToken = new Token([T_WHITESPACE, ' ']);
-        $whitespaceToken->clear();
-        $this->assertTrue($whitespaceToken->isEmpty());
     }
 
     public function testIsGivenKind()
@@ -279,24 +280,34 @@ final class TokenTest extends TestCase
         ];
     }
 
-    public function testPropertiesOfArrayToken()
+    /**
+     * @param mixed       $prototype
+     * @param null|int    $expectedId
+     * @param null|string $expectedContent
+     * @param null|bool   $expectedIsArray
+     * @param null|string $expectedExceptionClass
+     *
+     * @dataProvider provideCreatingTokenCases
+     */
+    public function testCreatingToken($prototype, $expectedId, $expectedContent, $expectedIsArray, $expectedExceptionClass = null)
     {
-        $prototype = $this->getForeachTokenPrototype();
-        $token = $this->getForeachToken();
+        $this->setExpectedException($expectedExceptionClass);
 
-        $this->assertSame($prototype[0], $token->getId());
-        $this->assertSame($prototype[1], $token->getContent());
-        $this->assertTrue($token->isArray());
+        $token = new Token($prototype);
+        $this->assertSame($expectedId, $token->getId());
+        $this->assertSame($expectedContent, $token->getContent());
+        $this->assertSame($expectedIsArray, $token->isArray());
     }
 
-    public function testPropertiesOfNonArrayToken()
+    public function provideCreatingTokenCases()
     {
-        $prototype = $this->getBraceTokenPrototype();
-        $token = $this->getBraceToken();
-
-        $this->assertSame($prototype, $token->getContent());
-        $this->assertNull($token->getId());
-        $this->assertFalse($token->isArray());
+        return [
+            [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
+            ['(', null, '(', false],
+            [123, null, null, null, 'InvalidArgumentException'],
+            [false, null, null, null, 'InvalidArgumentException'],
+            [null, null, null, null, 'InvalidArgumentException'],
+        ];
     }
 
     public function testEqualsDefaultIsCaseSensitive()

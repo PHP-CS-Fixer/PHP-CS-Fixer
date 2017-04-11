@@ -13,55 +13,23 @@
 namespace PhpCsFixer\Test;
 
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\Tests\Test\IntegrationCase as BaseIntegrationCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @TODO 3.0 While removing, `gecko-packages/gecko-php-unit` shall be moved from `require` to `require-dev` and removed from `.composer-require-checker.json`.
+ * @TODO 3.0 While removing, remove from `.composer-require-checker.json`.
+ * @TODO 3.0 While removing, remove loading `tests/Test` from `autoload` section of `composer.json`.
+ *
+ * @deprecated since v2.4
  */
 final class IntegrationCase
 {
     /**
-     * @var array
+     * @var BaseIntegrationCase
      */
-    private $config;
-
-    /**
-     * @var string
-     */
-    private $expectedCode;
-
-    /**
-     * @var string
-     */
-    private $fileName;
-
-    /**
-     * @var string|null
-     */
-    private $inputCode;
-
-    /**
-     * Env requirements (possible keys: php, hhvm).
-     *
-     * @var array
-     */
-    private $requirements;
-
-    /**
-     * @var RuleSet
-     */
-    private $ruleset;
-
-    /**
-     * Settings how to perform the test (possible keys: none in base class, use as extension point for custom IntegrationTestCase).
-     *
-     * @var array
-     */
-    private $settings;
-
-    /**
-     * @var string
-     */
-    private $title;
+    private $base;
 
     /**
      * @param string      $fileName
@@ -71,7 +39,7 @@ final class IntegrationCase
      * @param array       $config
      * @param RuleSet     $ruleset
      * @param string      $expectedCode
-     * @param string|null $inputCode
+     * @param null|string $inputCode
      */
     public function __construct(
         $fileName,
@@ -83,82 +51,73 @@ final class IntegrationCase
         $expectedCode,
         $inputCode
     ) {
-        $this->fileName = $fileName;
-        $this->title = $title;
-        $this->settings = $settings;
-        $this->requirements = $requirements;
-        $this->config = $config;
-        $this->ruleset = $ruleset;
-        $this->expectedCode = $expectedCode;
-        $this->inputCode = $inputCode;
+        $this->base = new BaseIntegrationCase(
+            $fileName,
+            $title,
+            $settings,
+            $requirements,
+            $config,
+            $ruleset,
+            $expectedCode,
+            $inputCode
+        );
+        @trigger_error(
+            sprintf(
+                'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.',
+                __CLASS__
+            ),
+            E_USER_DEPRECATED
+        );
     }
 
     public function hasInputCode()
     {
-        return null !== $this->inputCode;
+        return $this->base->hasInputCode();
     }
 
     public function getConfig()
     {
-        return $this->config;
+        return $this->base->getConfig();
     }
 
     public function getExpectedCode()
     {
-        return $this->expectedCode;
+        return $this->base->getExpectedCode();
     }
 
     public function getFileName()
     {
-        return $this->fileName;
+        return $this->base->getFileName();
     }
 
     public function getInputCode()
     {
-        return $this->inputCode;
+        return $this->base->getInputCode();
     }
 
-    /**
-     * @param string $name
-     *
-     * @return mixed
-     */
     public function getRequirement($name)
     {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Requirement key must be a string, got "%s".',
-                is_object($name) ? get_class($name) : gettype($name).'#'.$name));
-        }
-
-        if (!array_key_exists($name, $this->requirements)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unknown requirement key "%s", expected any of "%s".',
-                $name, implode('","', array_keys($this->requirements)))
-            );
-        }
-
-        return $this->requirements[$name];
+        return $this->base->getRequirement($name);
     }
 
     public function getRequirements()
     {
-        return $this->requirements;
+        return $this->base->getRequirements();
     }
 
     public function getRuleset()
     {
-        return $this->ruleset;
+        return $this->base->getRuleset();
     }
 
     public function getSettings()
     {
-        return $this->settings;
+        return $this->base->getSettings();
     }
 
     public function getTitle()
     {
-        return $this->title;
+        return $this->base->getTitle();
     }
 
     /**
@@ -176,6 +135,8 @@ final class IntegrationCase
             E_USER_DEPRECATED
         );
 
-        return isset($this->settings['checkPriority']) ? $this->settings['checkPriority'] : true;
+        $settings = $this->base->getSettings();
+
+        return isset($settings['checkPriority']) ? $settings['checkPriority'] : true;
     }
 }

@@ -35,39 +35,36 @@ final class ProjectCodeTest extends TestCase
      * @var string[]
      */
     private static $classesWithoutTests = [
-        \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-        \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-        \PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class,
-        \PhpCsFixer\Console\Command\HelpCommand::class,
-        \PhpCsFixer\Console\Command\DescribeNameNotFoundException::class,
         \PhpCsFixer\Console\Command\SelfUpdateCommand::class,
         \PhpCsFixer\Console\Output\NullOutput::class,
         \PhpCsFixer\Differ\DiffConsoleFormatter::class,
-        \PhpCsFixer\Differ\NullDiffer::class,
-        \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-        \PhpCsFixer\Differ\SebastianBergmannShortDiffer::class,
-        \PhpCsFixer\Doctrine\Annotation\Token::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
-        \PhpCsFixer\FixerDefinition\FileSpecificCodeSample::class,
         \PhpCsFixer\FixerFileProcessedEvent::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
         \PhpCsFixer\Indicator\PhpUnitIndicator::class,
-        \PhpCsFixer\Linter\LintingException::class,
         \PhpCsFixer\Linter\ProcessLintingResult::class,
         \PhpCsFixer\Linter\TokenizerLintingResult::class,
-        \PhpCsFixer\Linter\UnavailableLinterException::class,
         \PhpCsFixer\Report\ReportSummary::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
         \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
-        \PhpCsFixer\Test\IntegrationCaseFactory::class,
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
+
+    public function testThatClassesWithoutTestsVarIsProper()
+    {
+        $unknownClasses = array_filter(
+            self::$classesWithoutTests,
+            function ($class) { return !class_exists($class) && !trait_exists($class); }
+        );
+
+        $this->assertSame([], $unknownClasses);
+    }
 
     /**
      * @param string $className
@@ -94,12 +91,6 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
-        // HHVM knows better which interfaces you implements
-        // https://github.com/facebook/hhvm/issues/5890
-        if (defined('HHVM_VERSION') && interface_exists('Stringish')) {
-            $this->markTestSkipped('Skipped as HHVM violate inheritance tree with `Stringish` interface.');
-        }
-
         $rc = new \ReflectionClass($className);
 
         $doc = false !== $rc->getDocComment()
@@ -146,7 +137,6 @@ final class ProjectCodeTest extends TestCase
         $exceptionMethodsPerClass = [
             \PhpCsFixer\Config::class => ['create'],
             \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class => ['fixSpace'],
-            \PhpCsFixer\Fixer\Import\OrderedImportsFixer::class => ['sortingCallBack'],
         ];
 
         $definedMethods = $this->getPublicMethodNames($rc);
@@ -182,7 +172,10 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($className);
 
         if (\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class === $className) {
-            $this->markTestIncomplete('Public properties of fixer \'PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer\' will be remove on 3.0.');
+            $this->markTestIncomplete(sprintf(
+                'Public properties of fixer `%s` will be removed on 3.0.',
+                \PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class
+            ));
         }
 
         $this->assertEmpty(
@@ -242,13 +235,13 @@ final class ProjectCodeTest extends TestCase
      *
      * @dataProvider provideTestClasses
      */
-    public function testThatTestClassesAreAbstractOrFinal($className)
+    public function testThatTestClassesAreTraitOrAbstractOrFinal($className)
     {
         $rc = new \ReflectionClass($className);
 
         $this->assertTrue(
-            $rc->isAbstract() || $rc->isFinal(),
-            sprintf('Test class %s should be abstract or final.', $className)
+            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal(),
+            sprintf('Test class %s should be trait, abstract or final.', $className)
         );
     }
 

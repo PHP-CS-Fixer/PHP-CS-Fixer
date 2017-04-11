@@ -54,7 +54,8 @@ final class ErrorOutputTest extends TestCase
         // based on the platform/console/terminal used
         $displayed = str_replace(PHP_EOL, "\n", $displayed);
 
-        $startWith = sprintf('
+        $startWith = sprintf(
+            '
 Files that were not fixed due to errors reported during %s:
    1) %s',
             $process,
@@ -62,7 +63,8 @@ Files that were not fixed due to errors reported during %s:
         );
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $startWith .= sprintf('
+            $startWith .= sprintf(
+                '
 
                             '.'
         [%s]  '.'
@@ -76,7 +78,8 @@ Files that were not fixed due to errors reported during %s:
         }
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_DEBUG) {
-            $startWith .= sprintf('
+            $startWith .= sprintf(
+                '
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest->getErrorAndLineNumber()
         in %s at line %d
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest->provideTestCases()

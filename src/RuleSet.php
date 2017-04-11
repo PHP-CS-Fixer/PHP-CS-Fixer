@@ -38,7 +38,8 @@ final class RuleSet implements RuleSetInterface
             'line_ending' => true,
             'lowercase_constants' => true,
             'lowercase_keywords' => true,
-            'method_argument_space' => true,
+            'method_argument_space' => ['ensure_fully_multiline' => true],
+            'no_break_comment' => true,
             'no_closing_tag' => true,
             'no_spaces_after_function_name' => true,
             'no_spaces_inside_parenthesis' => true,
@@ -59,7 +60,9 @@ final class RuleSet implements RuleSetInterface
                 'align_equals' => false,
             ],
             'blank_line_after_opening_tag' => true,
-            'blank_line_before_return' => true,
+            'blank_line_before_statement' => [
+                'statements' => ['return'],
+            ],
             'braces' => [
                 'allow_single_line_closure' => true,
             ],
@@ -72,6 +75,7 @@ final class RuleSet implements RuleSetInterface
             'include' => true,
             'lowercase_cast' => true,
             'magic_constant_casing' => true,
+            'method_argument_space' => true,
             'method_separation' => true,
             'native_function_casing' => true,
             'new_with_braces' => true,
@@ -156,6 +160,9 @@ final class RuleSet implements RuleSetInterface
         ],
         '@PHP70Migration' => [
             '@PHP56Migration' => true,
+            'non_printable_character' => [
+                'use_escape_sequences_in_strings' => true,
+            ],
             'random_api_migration' => [
                 'mt_rand' => 'random_int',
                 'rand' => 'random_int',
@@ -172,6 +179,10 @@ final class RuleSet implements RuleSetInterface
                 'method',
                 'property',
             ],
+        ],
+        '@PHP71Migration:risky' => [
+            '@PHP70Migration:risky' => true,
+            'void_return' => true,
         ],
     ];
 
@@ -252,8 +263,6 @@ final class RuleSet implements RuleSetInterface
     }
 
     /**
-     * Get definition of set.
-     *
      * @param string $name name of set
      *
      * @return array

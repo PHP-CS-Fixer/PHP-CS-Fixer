@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -58,7 +59,7 @@ final class LowercaseConstantsFixer extends AbstractFixer
                 $this->isNeighbourAccepted($tokens, $tokens->getPrevMeaningfulToken($index)) &&
                 $this->isNeighbourAccepted($tokens, $tokens->getNextMeaningfulToken($index))
             ) {
-                $token->setContent(strtolower($token->getContent()));
+                $tokens[$index] = new Token([$token->getId(), strtolower($token->getContent())]);
             }
         }
     }

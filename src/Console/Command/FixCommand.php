@@ -46,29 +46,21 @@ final class FixCommand extends Command
     const EXIT_STATUS_FLAG_EXCEPTION_IN_APP = 64;
 
     /**
-     * EventDispatcher instance.
-     *
      * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
-     * ErrorsManager instance.
-     *
      * @var ErrorsManager
      */
     private $errorsManager;
 
     /**
-     * Stopwatch instance.
-     *
      * @var Stopwatch
      */
     private $stopwatch;
 
     /**
-     * Config instance.
-     *
      * @var ConfigInterface
      */
     private $defaultConfig;

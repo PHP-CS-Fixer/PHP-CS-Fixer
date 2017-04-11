@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -149,7 +150,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
         );
 
         if ($count) {
-            $tokens[$tokenIndex]->setContent($content);
+            $tokens[$tokenIndex] = new Token([T_DOC_COMMENT, $content]);
         }
     }
 

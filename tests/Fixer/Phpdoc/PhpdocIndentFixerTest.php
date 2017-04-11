@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
@@ -379,6 +379,15 @@ function write(\$name) {}
 // comment
 $foo = $bar;
 ',
+        ];
+
+        $cases[] = [
+            '<?php
+function foo()
+{
+    $foo->bar(/** oops */$baz);
+    $foo->bar($a,/** oops */$baz);
+}',
         ];
 
         return $cases;

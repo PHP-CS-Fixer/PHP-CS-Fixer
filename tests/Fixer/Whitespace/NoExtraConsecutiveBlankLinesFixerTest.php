@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -929,6 +929,135 @@ class Foo
                 ['tokens' => ['square_brace_block']],
                 "<?php \$c = \$b[0];\r\n\r\n\r\n\$a = [\r\n\t1,\r\n2];",
                 "<?php \$c = \$b[0];\r\n\r\n\r\n\$a = [\r\n\r\n\t1,\r\n2];",
+            ],
+        ];
+    }
+
+    /**
+     * @param array       $config
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideSwitchCases
+     */
+    public function testInSwitchStatement(array $config, $expected, $input = null)
+    {
+        $this->fixer->configure(['tokens' => $config]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideSwitchCases()
+    {
+        return [
+            [
+                [
+                    'break',
+                    'continue',
+                    'extra',
+                    'return',
+                    'throw',
+                ],
+                '<?php
+                    /** a  */
+                    switch ($a) {
+                        case 1:
+                            break;
+                        case 2:
+                            continue;
+                        case 3:
+                            return 1;
+                        case 4:
+                            throw $e;
+                        case 5:
+                            throw new \Exception();
+                        case Token::STRING_TYPE:
+                            echo 123;
+
+                            return new ConstantNode($token->getValue());
+                        case 7:
+                            return new ConstantNode($token->getValue());
+                        case 8:
+                            return 8;
+                        default:
+                            echo 1;
+                    }',
+                '<?php
+                    /** a  */
+                    switch ($a) {
+                        case 1:
+                            break;
+
+                        case 2:
+                            continue;
+
+                        case 3:
+                            return 1;
+
+                        case 4:
+                            throw $e;
+
+                        case 5:
+                            throw new \Exception();
+
+                        case Token::STRING_TYPE:
+                            echo 123;
+
+                            return new ConstantNode($token->getValue());
+
+                        case 7:
+                            return new ConstantNode($token->getValue());
+        '.'
+                        case 8:
+                            return 8;
+                        '.'
+                        default:
+                            echo 1;
+                    }',
+            ],
+            [
+                [
+                    'switch',
+                    'case',
+                    'default',
+                ],
+                '<?php
+                    switch($a) {
+                        case 0:
+                        case 1:
+                        default:
+                            return 1;
+                    }',
+                '<?php
+                    switch($a) {
+
+                        case 0:
+
+                        case 1:
+
+                        default:
+
+                            return 1;
+                    }',
+            ],
+            [
+                [
+                    'switch',
+                    'case',
+                    'default',
+                ],
+                '<?php
+                    switch($a) { case 2: echo 3;
+                    default: return 1;}
+
+
+                    // above stays empty',
+                '<?php
+                    switch($a) { case 2: echo 3;
+
+                    default: return 1;}
+
+
+                    // above stays empty',
             ],
         ];
     }

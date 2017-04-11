@@ -16,10 +16,10 @@ use PhpCsFixer\FileRemoval;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessUtils;
+use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * Handle PHP code linting process.
+ * Handle PHP code linting using separated process of `php -l _file_`.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -30,26 +30,24 @@ final class ProcessLinter implements LinterInterface
     /**
      * Temporary file for code linting.
      *
-     * @var string|null
+     * @var null|string
      */
     private $temporaryFile;
 
     /**
-     * PHP executable.
+     * Path of PHP executable.
      *
      * @var string
      */
     private $executable;
 
     /**
-     * Files removal handler.
-     *
      * @var FileRemoval
      */
     private $fileRemoval;
 
     /**
-     * @param string|null $executable PHP executable, null for autodetection
+     * @param null|string $executable PHP executable, null for autodetection
      */
     public function __construct($executable = null)
     {
@@ -112,8 +110,6 @@ final class ProcessLinter implements LinterInterface
     }
 
     /**
-     * Create process that lint PHP file.
-     *
      * @param string $path path to file
      *
      * @return Process
@@ -125,7 +121,7 @@ final class ProcessLinter implements LinterInterface
             return $this->createProcessForSource(file_get_contents($path));
         }
 
-        $process = new Process($this->prepareCommand($path));
+        $process = $this->prepareProcess($path);
         $process->setTimeout(null);
         $process->start();
 
@@ -154,22 +150,12 @@ final class ProcessLinter implements LinterInterface
     }
 
     /**
-     * Prepare command that will lint a file.
-     *
      * @param string $path
      *
-     * @return string
+     * @return Process
      */
-    private function prepareCommand($path)
+    private function prepareProcess($path)
     {
-        $executable = ProcessUtils::escapeArgument($this->executable);
-
-        if (defined('HHVM_VERSION')) {
-            $executable .= ' --php';
-        }
-
-        $path = ProcessUtils::escapeArgument($path);
-
-        return sprintf('%s -l %s', $executable, $path);
+        return ProcessBuilder::create(['-l', $path])->setPrefix($this->executable)->getProcess();
     }
 }

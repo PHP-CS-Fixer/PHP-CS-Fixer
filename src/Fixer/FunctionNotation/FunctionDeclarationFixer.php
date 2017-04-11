@@ -62,21 +62,17 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
                 new CodeSample(
 '<?php
 
-function  foo  ($bar, $baz)
-{
-    return false;
-}
-'
-                ),
-                new CodeSample(
-'<?php
-
 class Foo
 {
-    public static function  bar ($baz)
+    public static function  bar   ( $baz , $foo )
     {
         return false;
     }
+}
+
+function  foo  ($bar, $baz)
+{
+    return false;
 }
 '
                 ),
@@ -150,14 +146,14 @@ $f = function () {};
             // remove whitespace before (
             // eg: `function foo () {}` => `function foo() {}`
             if (!$isLambda && $tokens[$startParenthesisIndex - 1]->isWhitespace() && !$tokens[$tokens->getPrevNonWhitespace($startParenthesisIndex - 1)]->isComment()) {
-                $tokens[$startParenthesisIndex - 1]->clear();
+                $tokens->clearAt($startParenthesisIndex - 1);
             }
 
             if ($isLambda && self::SPACING_NONE === $this->configuration['closure_function_spacing']) {
                 // optionally remove whitespace after T_FUNCTION of a closure
                 // eg: `function () {}` => `function() {}`
                 if ($tokens[$index + 1]->isWhitespace()) {
-                    $tokens[$index + 1]->clear();
+                    $tokens->clearAt($index + 1);
                 }
             } else {
                 // otherwise, enforce whitespace after T_FUNCTION
@@ -193,12 +189,12 @@ $f = function () {};
     {
         // remove single-line whitespace before )
         if ($tokens[$end - 1]->isWhitespace($this->singleLineWhitespaceOptions)) {
-            $tokens[$end - 1]->clear();
+            $tokens->clearAt($end - 1);
         }
 
         // remove single-line whitespace after (
         if ($tokens[$start + 1]->isWhitespace($this->singleLineWhitespaceOptions)) {
-            $tokens[$start + 1]->clear();
+            $tokens->clearAt($start + 1);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractAlignFixerHelper;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -43,6 +44,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
             if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH])) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
                 continue;
             }
 
@@ -52,6 +54,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
                 $index = $until;
 
                 $this->injectArrayAlignmentPlaceholders($tokens, $from, $until);
+
                 continue;
             }
 
@@ -66,26 +69,30 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
                 $index = $until;
 
                 $this->injectArrayAlignmentPlaceholders($tokens, $from + 1, $until - 1);
+
                 continue;
             }
 
             if ($token->isGivenKind(T_DOUBLE_ARROW)) {
                 $tokenContent = sprintf(self::ALIGNABLE_PLACEHOLDER, $this->currentLevel).$token->getContent();
 
-                $nextToken = $tokens[$index + 1];
+                $nextIndex = $index + 1;
+                $nextToken = $tokens[$nextIndex];
                 if (!$nextToken->isWhitespace()) {
                     $tokenContent .= ' ';
                 } elseif ($nextToken->isWhitespace(" \t")) {
-                    $nextToken->setContent(' ');
+                    $tokens[$nextIndex] = new Token([T_WHITESPACE, ' ']);
                 }
 
-                $token->setContent($tokenContent);
+                $tokens[$index] = new Token([T_DOUBLE_ARROW, $tokenContent]);
+
                 continue;
             }
 
             if ($token->equals(';')) {
                 ++$this->deepestLevel;
                 ++$this->currentLevel;
+
                 continue;
             }
 

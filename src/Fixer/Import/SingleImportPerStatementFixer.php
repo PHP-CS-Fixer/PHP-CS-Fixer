@@ -99,7 +99,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
      */
     private function getGroupDeclaration(Tokens $tokens, $index)
     {
-        $groupPrefix = 'use';
+        $groupPrefix = '';
         $comment = '';
         for ($i = $index + 1; ; ++$i) {
             if ($tokens[$i]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
@@ -152,7 +152,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
             $token = $tokens[$i];
 
             if ($token->equalsAny([',', [CT::T_GROUP_IMPORT_BRACE_CLOSE]])) {
-                $statements[] = $statement.';';
+                $statements[] = 'use'.$statement.';';
                 $statement = $groupPrefix;
 
                 continue;
@@ -160,8 +160,15 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
 
             if ($token->isWhitespace()) {
                 $j = $tokens->getNextMeaningfulToken($i);
+
                 if ($tokens[$j]->equals([T_AS])) {
                     $statement .= ' as ';
+                    $i += 2;
+                } elseif ($tokens[$j]->equals([T_FUNCTION])) {
+                    $statement = ' function'.$statement;
+                    $i += 2;
+                } elseif ($tokens[$j]->equals([T_CONST])) {
+                    $statement = ' const'.$statement;
                     $i += 2;
                 }
 
@@ -196,12 +203,12 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
 
         $tokens->clearRange($index, $groupCloseIndex);
         if ($tokens[$endIndex]->equals(';')) {
-            $tokens[$endIndex]->clear();
+            $tokens->clearAt($endIndex);
         }
 
         $ending = $this->whitespacesConfig->getLineEnding();
         $importTokens = Tokens::fromCode('<?php '.implode($ending, $statements));
-        $importTokens[0]->clear();
+        $importTokens->clearAt(0);
         $importTokens->clearEmptyTokens();
 
         $tokens->insertAt($index, $importTokens);
@@ -221,14 +228,14 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
                 continue;
             }
 
-            $tokens->overrideAt($i, new Token(';'));
+            $tokens[$i] = new Token(';');
             $i = $tokens->getNextMeaningfulToken($i);
             $tokens->insertAt($i, new Token([T_USE, 'use']));
             $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
 
             $indent = $this->detectIndent($tokens, $index);
             if ($tokens[$i - 1]->isWhitespace()) {
-                $tokens[$i - 1]->setContent($ending.$indent);
+                $tokens[$i - 1] = new Token([T_WHITESPACE, $ending.$indent]);
 
                 continue;
             }
