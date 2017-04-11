@@ -295,7 +295,7 @@ EOF
 
         if (null !== $allowed) {
             $allowed = array_filter($allowed, function ($value) {
-                return !is_callable($value);
+                return !($value instanceof \Closure);
             });
 
             usort($allowed, function ($valueA, $valueB) {
