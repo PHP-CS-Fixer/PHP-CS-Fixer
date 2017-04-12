@@ -271,36 +271,25 @@ final class RuleSet implements RuleSetInterface
     private function resolveSet()
     {
         $rules = $this->set;
-        $hasSet = null;
 
-        // expand sets
-        do {
-            $hasSet = false;
+        $resolveRulesRecursively = function ($ruleSet, $parentValue) use (&$resolveRulesRecursively) {
+            $parsedRules = [];
 
-            $tmpRules = $rules;
-            $rules = array();
+            foreach ($ruleSet as $name => $value) {
+                $value = $parentValue ? $value : false;
 
-            foreach ($tmpRules as $name => $value) {
-                if (!$hasSet && '@' === $name[0]) {
-                    $hasSet = true;
-                    $set = $this->getSetDefinition($name);
-
-                    foreach ($set as $nestedName => $nestedValue) {
-                        // if set value is false then disable all fixers in set, if not then get value from set item
-                        $rules[$nestedName] = $value ? $nestedValue : false;
-                    }
-
+                if ('@' === $name[0]) {
+                    $parsedRules = array_merge($parsedRules, $resolveRulesRecursively($this->getSetDefinition($name), $value));
                     continue;
                 }
 
-                $rules[$name] = $value;
+                $parsedRules[$name] = $value;
             }
-        } while ($hasSet);
 
-        // filter out all rules that are off
-        $rules = array_filter($rules);
+            return $parsedRules;
+        };
 
-        $this->rules = $rules;
+        $this->rules = array_filter($resolveRulesRecursively($rules, true));
 
         return $this;
     }
