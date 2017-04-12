@@ -273,7 +273,7 @@ final class RuleSet implements RuleSetInterface
         $rules = $this->set;
 
         $resolveRulesRecursively = function ($ruleSet, $parentValue) use (&$resolveRulesRecursively) {
-            $parsedRules = [];
+            $parsedRules = array();
 
             foreach ($ruleSet as $name => $value) {
                 $value = $parentValue ? $value : false;
