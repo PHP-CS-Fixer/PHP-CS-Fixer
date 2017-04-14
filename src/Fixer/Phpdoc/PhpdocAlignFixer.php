@@ -37,7 +37,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
 
         $indent = '(?P<indent>(?: {2}|\t)*)';
         // e.g. @param <hint> <$var>
-        $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
+        $paramTag = '(?P<tag>param|property)\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
         // e.g. @return <hint>
         $otherTags = '(?P<tag2>return|throws|var|type)\s+(?P<hint2>[^\s]+?)';
         // optional <desc>
@@ -53,7 +53,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     public function getDefinition()
     {
         return new FixerDefinition(
-            'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.',
+            'All items of the @param, @throws, @return, @var, @type and @property phpdoc tags must be aligned vertically.',
             array(new CodeSample('<?php
 /**
  * @param  EngineInterface $templating

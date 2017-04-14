@@ -32,6 +32,9 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param int             $code       An HTTP response status code
      * @param bool            $debug
      * @param mixed           &$reference A parameter passed by reference
+     *
+     * @property int             $foo
+     * @property EngineInterface $bar A nice property
      */
 
 EOF;
@@ -44,6 +47,9 @@ EOF;
      * @param  int  $code       An HTTP response status code
      * @param    bool         $debug
      * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @property    int $foo
+     * @property  EngineInterface    $bar    A nice property
      */
 
 EOF;
