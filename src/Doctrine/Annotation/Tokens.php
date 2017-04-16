@@ -188,8 +188,22 @@ final class Tokens extends \SplFixedArray
      */
     public function getAnnotationEnd($index)
     {
-        $currentIndex = $this->getNextMeaningfulToken($index + 1);
-        if (null !== $currentIndex && $this[$currentIndex]->isType(DocLexer::T_OPEN_PARENTHESIS)) {
+        $currentIndex = null;
+
+        if (isset($this[$index + 2])) {
+            if ($this[$index + 2]->isType(DocLexer::T_OPEN_PARENTHESIS)) {
+                $currentIndex = $index + 2;
+            } elseif (
+                isset($this[$index + 3])
+                && $this[$index + 2]->isType(DocLexer::T_NONE)
+                && $this[$index + 3]->isType(DocLexer::T_OPEN_PARENTHESIS)
+                && preg_match('/^(\n\s*\*\s*)*\s*$/', $this[$index + 2]->getContent())
+            ) {
+                $currentIndex = $index + 3;
+            }
+        }
+
+        if (null !== $currentIndex) {
             $level = 0;
             for ($max = count($this); $currentIndex < $max; ++$currentIndex) {
                 if ($this[$currentIndex]->isType(DocLexer::T_OPEN_PARENTHESIS)) {
