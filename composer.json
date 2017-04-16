@@ -48,6 +48,9 @@
     "config": {
         "sort-packages": true
     },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*"
+    },
     "autoload": {
         "psr-4": { "PhpCsFixer\\": "src/" }
     },
