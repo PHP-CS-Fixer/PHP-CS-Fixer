@@ -1706,6 +1706,34 @@ echo $a;',
             ),
             array(
                 '<?php
+if (1==1) {
+    $a = 1;
+    // test
+    $b = 2;
+}',
+                '<?php
+if (1==1) {
+ $a = 1;
+  // test
+  $b = 2;
+}',
+            ),
+            array(
+                '<?php
+if (1==1) {
+    $a = 1;
+    # test
+    $b = 2;
+}',
+                '<?php
+if (1==1) {
+ $a = 1;
+  # test
+  $b = 2;
+}',
+            ),
+            array(
+                '<?php
 if ($test) { // foo
     echo 1;
 }

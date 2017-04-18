@@ -332,7 +332,10 @@ $negative = function ($item) {
                         (
                             !$nextNonWhitespaceNestToken->isComment() ||
                             (
-                                substr($nextNonWhitespaceNestToken->getContent(), 0, 2) === '//' &&
+                                (
+                                    substr($nextNonWhitespaceNestToken->getContent(), 0, 2) === '//' ||
+                                    substr($nextNonWhitespaceNestToken->getContent(), 0, 1) === '#'
+                                ) &&
                                 strpos($tokens[$nestIndex + 1]->getContent(), $this->whitespacesConfig->getLineEnding()) !== false
                             )
                         ) &&
