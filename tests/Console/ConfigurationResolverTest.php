@@ -977,11 +977,11 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 array('@Foo' => true, '@Bar' => false),
             ),
             '@A - @E (set in set)' => array(
-                array('AA' => true, 'AB' => true), // , 'AC' => false
+                array('AA' => true), // 'AB' => false, 'AC' => false
                 array('@A' => true, '@E' => false),
             ),
             '@A + @E (set in set)' => array(
-                array('AA' => true, 'AB' => true, 'AC' => 'b', 'Z' => true),
+                array('AA' => true, 'AB' => '_AB', 'AC' => 'b', 'Z' => true),
                 array('@A' => true, '@E' => true),
             ),
             'Set reconfigure rule in other set, reconfigure rule.' => array(
@@ -1196,6 +1196,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             ),
             '@E' => array(
                 '@D' => true,
+                'AB' => '_AB',
                 'Z' => true,
             ),
             '@Foo' => array('A' => true, 'B' => true, 'C' => true, 'D' => 12),

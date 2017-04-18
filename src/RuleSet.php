@@ -317,6 +317,8 @@ final class RuleSet implements RuleSetInterface
                 $rules = array_merge($rules, $set);
             } elseif (!$setValue) {
                 $rules[$name] = false;
+            } else {
+                $rules[$name] = $value;
             }
         }
 
