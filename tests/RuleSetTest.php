@@ -283,6 +283,18 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testInvalidConfigNestedSets()
+    {
+        $this->setExpectedExceptionRegExp(
+            '\UnexpectedValueException',
+            '#^Nested rule set "@PSR1" configuration must be a boolean\.$#'
+        );
+
+        $set = new RuleSet(
+            array('@PSR1' => array('@PSR2' => 'no'))
+        );
+    }
+
     private function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);

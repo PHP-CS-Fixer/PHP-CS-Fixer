@@ -23,10 +23,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  *
  * @covers \PhpCsFixer\Console\ConfigurationResolver
+ * @covers \PhpCsFixer\RuleSet::resolveSet
+ * @covers \PhpCsFixer\RuleSet::resolveSubset
  */
 final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 {
@@ -961,6 +964,26 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function provideResolveRulesCases()
     {
         return array(
+            '@Foo + C\' -D' => array(
+                array('A' => true, 'B' => true, 'C' => 56),
+                array('@Foo' => true, 'C' => 56, 'D' => false),
+            ),
+            '@Foo + @Bar' => array(
+                array('A' => true, 'B' => true, 'D' => 34, 'E' => true),
+                array('@Foo' => true, '@Bar' => true),
+            ),
+            '@Foo - @Bar' => array(
+                array('B' => true),
+                array('@Foo' => true, '@Bar' => false),
+            ),
+            '@A - @E (set in set)' => array(
+                array('AA' => true, 'AB' => true), // , 'AC' => false
+                array('@A' => true, '@E' => false),
+            ),
+            '@A + @E (set in set)' => array(
+                array('AA' => true, 'AB' => true, 'AC' => 'b', 'Z' => true),
+                array('@A' => true, '@E' => true),
+            ),
             'Set reconfigure rule in other set, reconfigure rule.' => array(
                 array(
                     'AA' => true,
@@ -1171,6 +1194,12 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             '@D' => array(
                 'AC' => 'b',
             ),
+            '@E' => array(
+                '@D' => true,
+                'Z' => true,
+            ),
+            '@Foo' => array('A' => true, 'B' => true, 'C' => true, 'D' => 12),
+            '@Bar' => array('A' => true, 'C' => false, 'D' => 34, 'E' => true, 'F' => false),
         );
 
         $ruleSet = new RuleSet();
