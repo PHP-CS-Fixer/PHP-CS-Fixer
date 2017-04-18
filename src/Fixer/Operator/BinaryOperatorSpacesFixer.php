@@ -137,13 +137,13 @@ $foo = array(
         $alignDoubleArrows = new FixerOptionBuilder('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.');
         $alignDoubleArrows
             ->setDefault(false)
-            ->setAllowedValues(array(true, false, null))
+            ->setAllowedValues(array(true, false, null, 'min'))
         ;
 
         $alignEquals = new FixerOptionBuilder('align_equals', 'Whether to apply, remove or ignore equals alignment.');
         $alignEquals
             ->setDefault(false)
-            ->setAllowedValues(array(true, false, null))
+            ->setAllowedValues(array(true, false, null, 'min'))
         ;
 
         return new FixerConfigurationResolver(array(
@@ -159,22 +159,28 @@ $foo = array(
     private function fixWhiteSpaceAroundOperator(Tokens $tokens, $index)
     {
         if ($tokens[$index]->isGivenKind(T_DOUBLE_ARROW)) {
-            if (true === $this->configuration['align_double_arrow']) {
+            if (true === $this->configuration['align_double_arrow']
+                    || 'min' === $this->configuration['align_double_arrow']) {
                 if (!isset($this->alignFixerHelpers['align_double_arrow'])) {
                     $this->alignFixerHelpers['align_double_arrow'] = new AlignDoubleArrowFixerHelper();
                 }
 
-                return;
+                if (true === $this->configuration['align_double_arrow']) {
+                    return;
+                }
             } elseif (null === $this->configuration['align_double_arrow']) {
                 return; // configured not to touch the whitespace around the operator
             }
         } elseif ($tokens[$index]->equals('=')) {
-            if (true === $this->configuration['align_equals']) {
+            if (true === $this->configuration['align_equals']
+                    || 'min' === $this->configuration['align_equals']) {
                 if (!isset($this->alignFixerHelpers['align_equals'])) {
                     $this->alignFixerHelpers['align_equals'] = new AlignEqualsFixerHelper();
                 }
 
-                return;
+                if (true === $this->configuration['align_equals']) {
+                    return;
+                }
             } elseif (null === $this->configuration['align_equals']) {
                 return; // configured not to touch the whitespace around the operator
             }
