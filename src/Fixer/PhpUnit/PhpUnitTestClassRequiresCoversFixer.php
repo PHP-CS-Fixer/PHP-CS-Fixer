@@ -24,8 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @tofo Before revealing feature let wait for https://github.com/sebastianbergmann/phpunit/pull/2560
  */
 final class PhpUnitTestClassRequiresCoversFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
