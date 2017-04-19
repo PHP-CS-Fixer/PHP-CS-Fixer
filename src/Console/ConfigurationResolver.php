@@ -212,6 +212,7 @@ final class ConfigurationResolver
                     continue;
                 }
 
+                $configFile = realpath($configFile);
                 $config = include $configFile;
 
                 // verify that the config has an instance of Config
@@ -339,23 +340,32 @@ final class ConfigurationResolver
             if (1 === count($this->options['path']) && '-' === $this->options['path'][0]) {
                 $this->path = $this->options['path'];
             } else {
-                $this->path = array_map(
-                    function ($path) use ($cwd, $filesystem) {
-                        $absolutePath = $filesystem->isAbsolutePath($path)
-                            ? $path
-                            : $cwd.DIRECTORY_SEPARATOR.$path;
+                $this->path = array();
+                foreach ($this->options['path'] as $path) {
+                    if ('' === $path) {
+                        @trigger_error('Passing an empty string as path is deprecated and support will be removed in 3.0. Pass a dot (\'.\') instead to specify the CWD.', E_USER_DEPRECATED);
+                    }
 
-                        if (!file_exists($absolutePath)) {
-                            throw new InvalidConfigurationException(sprintf(
-                                'The path "%s" is not readable.',
-                                $path
-                            ));
-                        }
+                    $absolutePath = $filesystem->isAbsolutePath($path)
+                        ? $path
+                        : $cwd.DIRECTORY_SEPARATOR.$path;
 
-                        return $absolutePath;
-                    },
-                    $this->options['path']
-                );
+                    $path = @realpath($absolutePath);
+                    if (false === $path) {
+                        throw new InvalidConfigurationException(sprintf(
+                            'The path "%s" is not readable.',
+                            $absolutePath
+                        ));
+                    }
+
+                    if (isset($this->path[$path])) {
+                        continue;
+                    }
+
+                    $this->path[$path] = true;
+                }
+
+                $this->path = array_keys($this->path);
             }
         }
 
@@ -699,13 +709,7 @@ final class ConfigurationResolver
 
         $isIntersectionPathMode = self::PATH_MODE_INTERSECTION === $this->options['path-mode'];
 
-        $paths = array_filter(array_map(
-            function ($path) {
-                return realpath($path);
-            },
-            $this->getPath()
-        ));
-
+        $paths = $this->getPath();
         if (!count($paths)) {
             if ($isIntersectionPathMode) {
                 return new \ArrayIterator(array());
