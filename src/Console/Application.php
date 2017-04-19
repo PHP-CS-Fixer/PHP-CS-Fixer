@@ -14,9 +14,11 @@ namespace PhpCsFixer\Console;
 
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Command\ReadmeCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Command\ListCommand;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -28,9 +30,6 @@ final class Application extends BaseApplication
 {
     const VERSION = '2.2.4-DEV';
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         error_reporting(-1);
@@ -43,6 +42,9 @@ final class Application extends BaseApplication
         $this->add(new SelfUpdateCommand());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLongVersion()
     {
         $version = parent::getLongVersion().' by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>';
@@ -53,5 +55,13 @@ final class Application extends BaseApplication
         }
 
         return $version;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDefaultCommands()
+    {
+        return array(new HelpCommand(), new ListCommand());
     }
 }
