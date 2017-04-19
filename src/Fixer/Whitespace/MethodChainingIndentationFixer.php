@@ -51,7 +51,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 1; $index < count($tokens); ++$index) {
-            if ($tokens[$index]->equals(array(T_OBJECT_OPERATOR))) {
+            if ($tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
                 if ($this->needLineBreak($index - 1, $tokens)) {
                     $tokens[$index - 1]->setContent($tokens[$index - 1]->getContent().$lineEnding);
                     --$index;
@@ -59,7 +59,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                 }
 
                 $prev = $tokens[$index - 1];
-                $currentWhitespaces = $this->isLineBreak($prev);
+                $currentWhitespaces = $this->getLineBreak($prev);
 
                 if (false !== $currentWhitespaces) {
                     $prevMeaningIndex = $tokens->getPrevMeaningfulToken($index);
@@ -77,17 +77,17 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      * @param int    $index
      * @param Tokens $tokens
      *
-     * @return string
+     * @return string|bool
      */
     private function getRightIndents($index, Tokens $tokens)
     {
         $indent = $this->whitespacesConfig->getIndent();
 
         for ($i = $index; $i >= 0; --$i) {
-            $currentWhitespaces = $this->isLineBreak($tokens[$i]);
+            $currentWhitespaces = $this->getLineBreak($tokens[$i]);
 
             if (false !== $currentWhitespaces) {
-                if ($tokens[$i + 1]->equals(array(T_OBJECT_OPERATOR))) {
+                if ($tokens[$i + 1]->isGivenKind(T_OBJECT_OPERATOR)) {
                     return $currentWhitespaces;
                 }
 
@@ -110,11 +110,11 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $isComment = false;
 
         for ($i = $index; $i > $prevMeaningful; --$i) {
-            if ($tokens[$i]->equals(array(T_OBJECT_OPERATOR)) || false !== $this->isLineBreak($tokens[$i])) {
+            if ($tokens[$i]->isGivenKind(T_OBJECT_OPERATOR) || false !== $this->getLineBreak($tokens[$i])) {
                 return $isComment;
             }
 
-            if ($tokens[$i]->equalsAny(array(array(T_COMMENT), array(T_DOC_COMMENT), array(T_START_HEREDOC)))) {
+            if ($tokens[$i]->isComment()) {
                 $isComment = true;
             }
         }
@@ -127,12 +127,9 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      *
      * @return string|bool
      */
-    private function isLineBreak(Token $token)
+    private function getLineBreak(Token $token)
     {
-        $matches = array();
-        $content = $token->getContent();
-
-        if (preg_match('/\R(\s*)/', $content, $matches)) {
+        if (preg_match('/\R(\s*)/', $token->getContent(), $matches)) {
             return $matches[1];
         }
 

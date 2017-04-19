@@ -99,6 +99,12 @@ $foo
                 '<?php $foo
 ->bar();',
             ),
+            array(
+                '<?php $foo->bar()->baz()
+    ->qux();',
+                '<?php $foo->bar()->baz()
+->qux();',
+            ),
         );
     }
 
