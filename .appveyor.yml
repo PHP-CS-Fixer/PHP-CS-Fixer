@@ -30,7 +30,6 @@ install:
     - echo extension=php_openssl.dll >> php.ini
     - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/download/1.4.1/composer.phar)
     - cd C:\projects\php-cs-fixer
-    - git config --global github.accesstoken 5e7538aa415005c606ea68de2bbbade0409b4b8c
     - php C:\tools\composer.phar global show -ND 2>1 | findstr "hirak/prestissimo" || php C:\tools\composer.phar global require hirak/prestissimo
 
 before_test:
