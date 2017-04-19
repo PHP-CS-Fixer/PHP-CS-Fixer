@@ -1004,7 +1004,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
      * @group legacy
      * @expectedDeprecation Expected "yes" or "no" for option "allow-risky", other values are deprecated and support will be removed in 3.0. Got "yes please", this implicitly set the option to "false".
      */
-    public function testFixme()
+    public function testDeprecationOfPassingOtherThanNoOrYes()
     {
         $resolver = new ConfigurationResolver(
             $this->config,
