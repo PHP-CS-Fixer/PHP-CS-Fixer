@@ -1477,11 +1477,11 @@ EOF
     }
 
     /**
+     * @param string      $expected
+     * @param string|null $input
+     *
      * @dataProvider provide70CasesByLength
      * @requires PHP 7.0
-     *
-     * @param mixed $expected
-     * @param mixed $input
      */
     public function test70ByLength($expected, $input = null)
     {
@@ -1535,8 +1535,8 @@ use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
      * @dataProvider provide70TypesOrderAndLength
      * @requires PHP 7.0
      *
-     * @param mixed $expected
-     * @param mixed $input
+     * @param string      $expected
+     * @param string|null $input
      */
     public function test70TypesOrderAndLength($expected, $input = null)
     {
@@ -1594,14 +1594,15 @@ use function some\f\{fn_c, fn_d, fn_e};
      * @dataProvider provide70TypesOrderAndAlphabet
      * @requires PHP 7.0
      *
-     * @param mixed $expected
-     * @param mixed $input
+     * @param string      $expected
+     * @param string|null $input
+     * @param string[]    $importOrder
      */
-    public function test70TypesOrderAndAlphabet($expected, $input = null)
+    public function test70TypesOrderAndAlphabet($expected, $input = null, array $importOrder = null)
     {
         $this->fixer->configure(array(
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-            'importsOrder' => array(OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION),
+            'importsOrder' => $importOrder,
         ));
 
         $this->doTest($expected, $input);
@@ -1655,6 +1656,7 @@ use Aaa\Bbb;
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
 ',
+                array(OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION),
             ),
         );
     }

@@ -161,6 +161,9 @@ final class RuleSet implements RuleSetInterface
             ),
             'ternary_to_null_coalescing' => true,
         ),
+        '@PHP70Migration:risky' => array(
+            'declare_strict_types' => true,
+        ),
         '@PHP71Migration' => array(
             '@PHP70Migration' => true,
             'visibility_required' => array(
