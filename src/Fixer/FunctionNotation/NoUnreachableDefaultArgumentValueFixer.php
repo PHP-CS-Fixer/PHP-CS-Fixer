@@ -32,13 +32,13 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'In function arguments there must not be arguments with default values before non-default ones.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 function example($foo = "two words", $bar) {}
 '
                 ),
-            ),
+            ],
             null,
             'Modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).'
         );
@@ -70,7 +70,7 @@ function example($foo = "two words", $bar) {}
                 continue;
             }
 
-            $startIndex = $tokens->getNextTokenOfKind($i, array('('));
+            $startIndex = $tokens->getNextTokenOfKind($i, ['(']);
             $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
 
             $this->fixFunctionDefinition($tokens, $startIndex, $i);
@@ -102,7 +102,7 @@ function example($foo = "two words", $bar) {}
                 continue;
             }
 
-            $endIndex = $tokens->getPrevTokenOfKind($lastArgumentIndex, array(','));
+            $endIndex = $tokens->getPrevTokenOfKind($lastArgumentIndex, [',']);
             $endIndex = $tokens->getPrevMeaningfulToken($endIndex);
             $this->removeDefaultArgument($tokens, $i, $endIndex);
         }
@@ -167,14 +167,14 @@ function example($foo = "two words", $bar) {}
     {
         $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
-        if (!$nextToken->equals(array(T_STRING, 'null'), false)) {
+        if (!$nextToken->equals([T_STRING, 'null'], false)) {
             return false;
         }
 
         $variableIndex = $tokens->getPrevMeaningfulToken($index);
 
-        $searchTokens = array(',', '(', array(T_STRING), array(CT::T_ARRAY_TYPEHINT), array(T_CALLABLE));
-        $typehintKinds = array(T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE);
+        $searchTokens = [',', '(', [T_STRING], [CT::T_ARRAY_TYPEHINT], [T_CALLABLE]];
+        $typehintKinds = [T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE];
 
         $prevIndex = $tokens->getPrevTokenOfKind($variableIndex, $searchTokens);
 

@@ -35,7 +35,7 @@ final class ImportTransformer extends AbstractTransformer
      */
     public function getCustomTokens()
     {
-        return array(CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT);
+        return [CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT];
     }
 
     /**
@@ -51,17 +51,17 @@ final class ImportTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        if (!$token->isGivenKind(array(T_CONST, T_FUNCTION))) {
+        if (!$token->isGivenKind([T_CONST, T_FUNCTION])) {
             return;
         }
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
         if ($prevToken->isGivenKind(T_USE)) {
-            $token->override(array(
+            $token->override([
                 $token->isGivenKind(T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
                 $token->getContent(),
-            ));
+            ]);
         }
     }
 }

@@ -36,8 +36,8 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php echo 'DateTime'
 # a
  /* b */?>
@@ -46,8 +46,8 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 DateTime:: # a
  /* b */ class?>
 ',
-            ),
-            array(
+            ],
+            [
                 "<?php
                 use Foo\\Bar\\Thing;
 
@@ -58,8 +58,8 @@ DateTime:: # a
 
                 echo Thing::class;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 use Foo\\Bar;
             '."
@@ -70,8 +70,8 @@ DateTime:: # a
             '.'
                 echo Bar\Thing::class;
                 ',
-            ),
-            array(
+            ],
+            [
                 "<?php
                 use Foo\\Bar\\Thing as Alias;
 
@@ -82,8 +82,8 @@ DateTime:: # a
 
                 echo Alias::class;
                 ',
-            ),
-            array(
+            ],
+            [
                 "<?php
                 use Foo\\Bar\\Dummy;
                 use Foo\\Bar\\Thing as Alias;
@@ -98,24 +98,24 @@ DateTime:: # a
                 echo Dummy::class;
                 echo Alias::class;
                 ',
-            ),
-            array(
+            ],
+            [
                 "<?php
                 echo 'DateTime';
                 ",
                 '<?php
                 echo \DateTime::class;
                 ',
-            ),
-            array(
+            ],
+            [
                 "<?php
                 echo 'Thing';
                 ",
                 '<?php
                 echo Thing::class;
                 ',
-            ),
-            array(
+            ],
+            [
                 "<?php
                 class Foo {
                     public function amazingFunction() {
@@ -130,8 +130,8 @@ DateTime:: # a
                     }
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 "<?php
                 namespace A\\B;
 
@@ -146,8 +146,8 @@ DateTime:: # a
 
                 echo Bar::class;
                 ',
-            ),
-            array(
+            ],
+            [
                 "<?php
 
                 namespace A\\B {
@@ -198,8 +198,8 @@ DateTime:: # a
                     var_dump(D::class);
                 }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -216,8 +216,8 @@ DateTime:: # a
 
     public function provideFixCases70()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php
                 use Foo\\Bar\\{ClassA, ClassB, ClassC as C};
                 use function Foo\\Bar\\{fn_a, fn_b, fn_c};
@@ -234,7 +234,7 @@ DateTime:: # a
                 echo ClassB::class;
                 echo C::class;
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

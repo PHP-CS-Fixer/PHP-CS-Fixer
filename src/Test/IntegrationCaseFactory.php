@@ -47,13 +47,13 @@ final class IntegrationCaseFactory
             }
 
             $match = array_merge(
-                array(
+                [
                     'config' => null,
                     'settings' => null,
                     'requirements' => null,
                     'expect' => null,
                     'input' => null,
-                ),
+                ],
                 $match
             );
 
@@ -85,10 +85,10 @@ final class IntegrationCaseFactory
      */
     private function determineConfig($config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'indent' => '    ',
             'lineEnding' => "\n",
-        ));
+        ]);
 
         if (!is_string($parsed['indent'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -116,10 +116,10 @@ final class IntegrationCaseFactory
      */
     private function determineRequirements($config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'hhvm' => true,
             'php' => PHP_VERSION_ID,
-        ));
+        ]);
 
         if (!is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -159,9 +159,9 @@ final class IntegrationCaseFactory
      */
     private function determineSettings($config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'checkPriority' => true,
-        ));
+        ]);
 
         if (!is_bool($parsed['checkPriority'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -230,7 +230,7 @@ final class IntegrationCaseFactory
     {
         // content is optional if template is provided
         if (!$encoded && null !== $template) {
-            $decoded = array();
+            $decoded = [];
         } else {
             $decoded = json_decode($encoded, true);
 

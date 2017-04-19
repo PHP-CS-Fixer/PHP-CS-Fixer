@@ -26,7 +26,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer
 {
     private $symbolsReplace;
 
-    private static $tokens = array(
+    private static $tokens = [
         T_STRING_VARNAME,
         T_INLINE_HTML,
         T_VARIABLE,
@@ -34,18 +34,18 @@ final class NonPrintableCharacterFixer extends AbstractFixer
         T_ENCAPSED_AND_WHITESPACE,
         T_CONSTANT_ENCAPSED_STRING,
         T_DOC_COMMENT,
-    );
+    ];
 
     public function __construct()
     {
         parent::__construct();
-        $this->symbolsReplace = array(
+        $this->symbolsReplace = [
             pack('CCC', 0xe2, 0x80, 0x8b) => '', // ZWSP
             pack('CCC', 0xe2, 0x80, 0x87) => ' ', // FIGURE SPACE
             pack('CCC', 0xe2, 0x80, 0xaf) => ' ', // NBSP
             pack('CCC', 0xe2, 0x81, 0xa0) => '', // WORD JOINER
             pack('CC', 0xc2, 0xa0) => ' ', // NO-BREAK SPACE
-        );
+        ];
     }
 
     /**
@@ -55,14 +55,14 @@ final class NonPrintableCharacterFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.',
-            array(
+            [
                 new CodeSample(
 '<?php
 
 echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'World'.pack('CC', 0xc2, 0xa0).'!";
 '
                 ),
-            ),
+            ],
             null,
             'Risky when strings contain intended invisible characters.'
         );

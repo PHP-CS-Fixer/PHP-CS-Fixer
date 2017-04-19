@@ -36,20 +36,20 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 use \A\B;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $a = function(\B\C $a) use ($b){
 
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 namespace NS;
                 use A\B;
@@ -58,8 +58,8 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 namespace NS;
                 use \A\B;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 namespace NS{
                     use A\B;
@@ -76,8 +76,8 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use \C\D;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 use \C;
                 use \C\X;
@@ -114,8 +114,8 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     new X();
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 namespace Foo\Bar;
                 use Baz;
@@ -126,15 +126,15 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 use \Baz;
                 class Foo implements Baz {}
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 trait SomeTrait {
                     use \A;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 namespace NS{
                     use A\B;
@@ -157,15 +157,15 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use \C\D;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 trait Foo {}
                 class Bar {
                     use \Foo;
                 }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

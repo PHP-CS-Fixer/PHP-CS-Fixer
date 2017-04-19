@@ -36,52 +36,52 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo __LINE__;',
                 '<?php echo __line__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __FILE__;',
                 '<?php echo __FILe__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __DIR__;',
                 '<?php echo __dIr__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __FUNCTION__;',
                 '<?php echo __fUncTiOn__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __CLASS__;',
                 '<?php echo __clasS__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __METHOD__;',
                 '<?php echo __mEthoD__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __NAMESPACE__;',
                 '<?php echo __namespace__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __TRAIT__;',
                 '<?php echo __trait__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __TRAIT__;',
                 '<?php echo __trAIt__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo Exception::class;',
                 '<?php echo Exception::CLASS;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo Exception::class;',
                 '<?php echo Exception::ClAss;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -98,8 +98,8 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases70()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 class Bar
                 {
@@ -109,7 +109,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \Bar::__line__;
                 }',
-            ),
-        );
+            ],
+        ];
     }
 }

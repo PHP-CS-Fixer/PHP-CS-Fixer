@@ -38,7 +38,7 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imp
     {
         return new FixerDefinition(
             'Multi-line whitespace before closing semicolon are prohibited.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 function foo () {
@@ -47,7 +47,7 @@ function foo () {
 }
 '
                 ),
-            )
+            ]
         );
     }
 

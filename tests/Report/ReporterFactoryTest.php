@@ -82,7 +82,7 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
         $builder->registerReporter($r2);
         $builder->registerReporter($r3);
 
-        $this->assertSame(array('r1', 'r2', 'r3'), $builder->getFormats());
+        $this->assertSame(['r1', 'r2', 'r3'], $builder->getFormats());
     }
 
     public function testRegisterReportWithOccupiedFormat()

@@ -29,7 +29,7 @@ final class NoTrailingCommaInListCallFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove trailing commas in list function calls.',
-            array(new CodeSample("<?php\nlist(\$a, \$b,) = foo();"))
+            [new CodeSample("<?php\nlist(\$a, \$b,) = foo();")]
         );
     }
 

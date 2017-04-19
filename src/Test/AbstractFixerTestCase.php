@@ -88,7 +88,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getTestFile($filename = __FILE__)
     {
-        static $files = array();
+        static $files = [];
 
         if (!isset($files[$filename])) {
             $files[$filename] = new \SplFileInfo($filename);
@@ -191,7 +191,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
     {
         foreach ($expectedTokens as $index => $expectedToken) {
             $inputToken = $inputTokens[$index];
-            $option = array('JSON_PRETTY_PRINT');
+            $option = ['JSON_PRETTY_PRINT'];
             $this->assertTrue(
                 $expectedToken->equals($inputToken),
                 sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson($option), $inputToken->toJson($option))
@@ -244,7 +244,7 @@ abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
 
         try {
             $fixers = $this->createFixerFactory()
-                ->useRuleSet(new RuleSet(array($this->getFixerName() => true)))
+                ->useRuleSet(new RuleSet([$this->getFixerName() => true]))
                 ->getFixers()
             ;
         } catch (\UnexpectedValueException $e) {

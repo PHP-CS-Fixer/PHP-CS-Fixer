@@ -38,8 +38,8 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 
 $a = function(){
@@ -48,8 +48,8 @@ $a = function(){
                 '<?php $a = function(){
                     echo 1;
                 };',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
  class SomeClass
@@ -58,15 +58,15 @@ $a = function(){
      const FOO = "bar";
  }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = true; ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = true; ?>
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 $foo = true;
@@ -74,8 +74,8 @@ $foo = true;
                 '<?php
 $foo = true;
 ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 $foo = true;
@@ -84,29 +84,29 @@ $bar = false;
                 '<?php $foo = true;
 $bar = false;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 $foo = true;
 ?>
 Html here
 <?php $bar = false;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foo = true;
 ?>
 Html here
 <?php $bar = false;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?= $bar;
 $foo = $bar;
 ?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -124,15 +124,15 @@ $foo = $bar;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\r\n\$foo = true;\r\n",
                 "<?php \$foo = true;\r\n",
-            ),
-            array(
+            ],
+            [
                 "<?php\r\n\r\n\$foo = true;\r\n",
                 "<?php\r\n\$foo = true;\r\n",
-            ),
-        );
+            ],
+        ];
     }
 }

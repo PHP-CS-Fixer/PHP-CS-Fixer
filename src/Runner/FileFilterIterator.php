@@ -37,7 +37,7 @@ final class FileFilterIterator extends \FilterIterator
     /**
      * @var array<string,bool>
      */
-    private $visitedElements = array();
+    private $visitedElements = [];
 
     public function __construct(
         \Iterator $iterator,

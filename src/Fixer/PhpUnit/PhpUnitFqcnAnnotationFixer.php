@@ -29,7 +29,7 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHPUnit annotations should be a FQCNs including a root namespace.',
-            array(new CodeSample(
+            [new CodeSample(
 '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,7 +44,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 '
-            ))
+            )]
         );
     }
 

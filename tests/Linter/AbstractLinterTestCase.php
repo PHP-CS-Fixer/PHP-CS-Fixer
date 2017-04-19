@@ -44,15 +44,15 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function provideLintFileCases()
     {
-        return array(
-            array(
+        return [
+            [
                 __DIR__.'/../Fixtures/Linter/valid.php',
-            ),
-            array(
+            ],
+            [
                 __DIR__.'/../Fixtures/Linter/invalid.php',
                 '/syntax error, unexpected.*T_ECHO.*line 5/',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -76,11 +76,11 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function provideLintSourceCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo 123;',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     print "line 2";
                     print "line 3";
@@ -88,8 +88,8 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
                     echo echo;
                 ',
                 '/syntax error, unexpected.*T_ECHO.*line 5/',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

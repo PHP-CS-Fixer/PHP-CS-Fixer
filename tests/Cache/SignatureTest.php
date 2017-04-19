@@ -41,10 +41,10 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
     {
         $php = PHP_VERSION;
         $version = '2.0';
-        $rules = array(
+        $rules = [
             'foo',
             'bar',
-        );
+        ];
 
         $signature = new Signature(
             $php,
@@ -61,10 +61,10 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
     {
         $php = PHP_VERSION;
         $version = '2.0';
-        $rules = array(
+        $rules = [
             'foo',
             'bar',
-        );
+        ];
 
         $signature = new Signature(
             $php,
@@ -85,10 +85,10 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
     {
         $php = PHP_VERSION;
         $version = '2.0';
-        $rules = array(
+        $rules = [
             'foo',
             'bar',
-        );
+        ];
 
         $signature = new Signature(
             $php,

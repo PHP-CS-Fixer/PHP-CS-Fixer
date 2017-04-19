@@ -41,10 +41,10 @@ final class CTTest extends \PHPUnit_Framework_TestCase
 
     public function provideCTs()
     {
-        $cases = array();
+        $cases = [];
 
         foreach ($this->getConstants() as $name => $value) {
-            $cases[] = array($name, $value);
+            $cases[] = [$name, $value];
         }
 
         return $cases;

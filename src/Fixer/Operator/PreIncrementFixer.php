@@ -30,7 +30,7 @@ final class PreIncrementFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Pre incrementation/decrementation should be used if possible.',
-            array(new CodeSample("<?php\n\$a++;\n\$b--;"))
+            [new CodeSample("<?php\n\$a++;\n\$b--;")]
         );
     }
 
@@ -39,7 +39,7 @@ final class PreIncrementFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_INC, T_DEC));
+        return $tokens->isAnyTokenKindsFound([T_INC, T_DEC]);
     }
 
     /**
@@ -52,19 +52,19 @@ final class PreIncrementFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(array(T_INC, T_DEC)) || !$tokensAnalyzer->isUnarySuccessorOperator($index)) {
+            if (!$token->isGivenKind([T_INC, T_DEC]) || !$tokensAnalyzer->isUnarySuccessorOperator($index)) {
                 continue;
             }
 
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
-            if (!$nextToken->equalsAny(array(';', ')'))) {
+            if (!$nextToken->equalsAny([';', ')'])) {
                 continue;
             }
 
             $startIndex = $this->findStart($tokens, $index);
 
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($startIndex)];
-            if ($prevToken->equalsAny(array(';', '{', '}', array(T_OPEN_TAG)))) {
+            if ($prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
                 $tokens->insertAt($startIndex, clone $token);
                 $token->clear();
             }
@@ -88,7 +88,7 @@ final class PreIncrementFixer extends AbstractFixer
                 $index = $tokens->findBlockEnd($blockType['type'], $index, false);
                 $token = $tokens[$index];
             }
-        } while (!$token->equalsAny(array('$', array(T_VARIABLE))));
+        } while (!$token->equalsAny(['$', [T_VARIABLE]]));
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $tokens[$prevIndex];
@@ -109,7 +109,7 @@ final class PreIncrementFixer extends AbstractFixer
                 return $this->findStart($tokens, $prevIndex);
             }
 
-            $index = $tokens->getTokenNotOfKindSibling($prevIndex, -1, array(array(T_NS_SEPARATOR), array(T_STRING)));
+            $index = $tokens->getTokenNotOfKindSibling($prevIndex, -1, [[T_NS_SEPARATOR], [T_STRING]]);
             $index = $tokens->getNextMeaningfulToken($index);
         }
 

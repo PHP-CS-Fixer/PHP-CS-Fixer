@@ -44,15 +44,15 @@ final class WhitespacesFixerConfigTest extends \PHPUnit_Framework_TestCase
 
     public function provideTestCases()
     {
-        return array(
-            array('    ', "\n"),
-            array("\t", "\n"),
-            array('    ', "\r\n"),
-            array("\t", "\r\n"),
-            array('    ', 'asd', '/lineEnding/'),
-            array('    ', array(), '/lineEnding/'),
-            array('std', "\n", '/indent/'),
-            array(array(), "\n", '/indent/'),
-        );
+        return [
+            ['    ', "\n"],
+            ["\t", "\n"],
+            ['    ', "\r\n"],
+            ["\t", "\r\n"],
+            ['    ', 'asd', '/lineEnding/'],
+            ['    ', [], '/lineEnding/'],
+            ['std', "\n", '/indent/'],
+            [[], "\n", '/indent/'],
+        ];
     }
 }

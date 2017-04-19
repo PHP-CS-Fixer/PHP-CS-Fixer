@@ -40,12 +40,12 @@ final class NoShortEchoTagFixerTest extends AbstractFixerTestCase
 
     public function provideClosingTagExamples()
     {
-        return array(
-            array('<?php echo \'Foo\';', '<?= \'Foo\';'),
-            array('<?php echo \'Foo\'; ?> PLAIN TEXT', '<?= \'Foo\'; ?> PLAIN TEXT'),
-            array('PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?= \'Foo\'; ?>'),
-            array('<?php echo \'Foo\'; ?> <?php echo \'Bar\'; ?>', '<?= \'Foo\'; ?> <?= \'Bar\'; ?>'),
-            array('<?php echo foo();', '<?=foo();'),
-        );
+        return [
+            ['<?php echo \'Foo\';', '<?= \'Foo\';'],
+            ['<?php echo \'Foo\'; ?> PLAIN TEXT', '<?= \'Foo\'; ?> PLAIN TEXT'],
+            ['PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?= \'Foo\'; ?>'],
+            ['<?php echo \'Foo\'; ?> <?php echo \'Bar\'; ?>', '<?= \'Foo\'; ?> <?= \'Bar\'; ?>'],
+            ['<?php echo foo();', '<?=foo();'],
+        ];
     }
 }

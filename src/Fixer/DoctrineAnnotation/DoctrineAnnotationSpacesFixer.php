@@ -34,11 +34,11 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     {
         return new FixerDefinition(
             'Fixes spaces in Doctrine annotations.',
-            array(
+            [
                 new CodeSample("<?php\n/**\n * @Foo ( )\n */\nclass Bar {}"),
                 new CodeSample("<?php\n/**\n * @Foo(\"bar\" ,\"baz\")\n */\nclass Bar {}"),
                 new CodeSample("<?php\n/**\n * @Foo(foo = \"foo\", bar = {\"foo\":\"foo\", \"bar\"=\"bar\"})\n */\nclass Bar {}"),
-            ),
+            ],
             'There must not be any space around parentheses; commas must be preceded by no space and followed by one space; there must be no space around named arguments assignment operator; there must be one space around array assignment operator.'
         );
     }
@@ -69,28 +69,28 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
 
         $aroundParentheses = new FixerOptionBuilder('around_parentheses', 'Whether to fix spaces around parentheses.');
         $options[] = $aroundParentheses
-            ->setAllowedTypes(array('bool'))
+            ->setAllowedTypes(['bool'])
             ->setDefault(true)
             ->getOption()
         ;
 
         $aroundCommas = new FixerOptionBuilder('around_commas', 'Whether to fix spaces around commas.');
         $options[] = $aroundCommas
-            ->setAllowedTypes(array('bool'))
+            ->setAllowedTypes(['bool'])
             ->setDefault(true)
             ->getOption()
         ;
 
         $aroundArgumentAssignments = new FixerOptionBuilder('around_argument_assignments', 'Whether to fix spaces around argument assignment operator.');
         $options[] = $aroundArgumentAssignments
-            ->setAllowedTypes(array('bool'))
+            ->setAllowedTypes(['bool'])
             ->setDefault(true)
             ->getOption()
         ;
 
         $aroundArrayAssignments = new FixerOptionBuilder('around_array_assignments', 'Whether to fix spaces around array assignment operators.');
         $options[] = $aroundArrayAssignments
-            ->setAllowedTypes(array('bool'))
+            ->setAllowedTypes(['bool'])
             ->setDefault(true)
             ->getOption()
         ;
@@ -143,7 +143,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                 continue;
             }
 
-            if (!$token->isType(array(DocLexer::T_OPEN_PARENTHESIS, DocLexer::T_CLOSE_PARENTHESIS))) {
+            if (!$token->isType([DocLexer::T_OPEN_PARENTHESIS, DocLexer::T_CLOSE_PARENTHESIS])) {
                 continue;
             }
 
@@ -218,7 +218,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         $arguments = $this->configuration['around_argument_assignments'];
         $arrays = $this->configuration['around_array_assignments'];
 
-        $scopes = array();
+        $scopes = [];
         foreach ($tokens as $index => $token) {
             $endScopeType = end($scopes);
             if (false !== $endScopeType && $token->isType($endScopeType)) {
@@ -250,7 +250,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                 continue;
             }
 
-            if ($arrays && DocLexer::T_CLOSE_CURLY_BRACES === $endScopeType && $token->isType(array(DocLexer::T_EQUALS, DocLexer::T_COLON))) {
+            if ($arrays && DocLexer::T_CLOSE_CURLY_BRACES === $endScopeType && $token->isType([DocLexer::T_EQUALS, DocLexer::T_COLON])) {
                 $token = $tokens[$index + 1];
                 if (!$token->isType(DocLexer::T_NONE)) {
                     $tokens->insertAt($index + 1, $token = new Token());

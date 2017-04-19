@@ -47,15 +47,15 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
             ->lintSource(Argument::type('string'))
             ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
 
-        $fixers = array(
+        $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
             new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
-        );
+        ];
 
-        $expectedChangedInfo = array(
-            'appliedFixers' => array('visibility_required'),
+        $expectedChangedInfo = [
+            'appliedFixers' => ['visibility_required'],
             'diff' => '',
-        );
+        ];
 
         $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
@@ -108,10 +108,10 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
         $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid';
         $runner = new Runner(
             Finder::create()->in($path),
-            array(
+            [
                 new Fixer\ClassNotation\VisibilityRequiredFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
-            ),
+            ],
             new NullDiffer(),
             null,
             $errorsManager,

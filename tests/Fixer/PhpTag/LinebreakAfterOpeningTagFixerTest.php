@@ -38,8 +38,8 @@ final class LinebreakAfterOpeningTagFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 $a = function(){
                     echo 1;
@@ -47,22 +47,22 @@ $a = function(){
                 '<?php $a = function(){
                     echo 1;
                 };',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = true; ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = true; ?>
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 
 $foo = true;
 ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foo = true;
 $bar = false;
@@ -70,18 +70,18 @@ $bar = false;
                 '<?php $foo = true;
 $bar = false;
 ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = true; ?>
 Html here
 <?php $bar = false; ?>',
-            ),
-            array(
+            ],
+            [
                 '<?= $bar;
 $foo = $bar;
 ?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -99,11 +99,11 @@ $foo = $bar;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\$foo = true;\n",
                 "<?php \$foo = true;\n",
-            ),
-        );
+            ],
+        ];
     }
 }

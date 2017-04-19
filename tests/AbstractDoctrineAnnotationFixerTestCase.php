@@ -38,10 +38,10 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
      */
     public function getInvalidConfigurationCases()
     {
-        return array(
-            array(array('foo' => 'bar')),
-            array(array('ignored_tags' => 'foo')),
-        );
+        return [
+            [['foo' => 'bar']],
+            [['ignored_tags' => 'foo']],
+        ];
     }
 
     /**

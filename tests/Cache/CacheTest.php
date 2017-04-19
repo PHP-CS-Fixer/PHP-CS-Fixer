@@ -132,22 +132,22 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
      */
     public function providerMissingData()
     {
-        $data = array(
+        $data = [
             'php' => '7.1.2',
             'version' => '2.0',
-            'rules' => array(
+            'rules' => [
                 'foo' => true,
                 'bar' => false,
-            ),
-            'hashes' => array(),
-        );
+            ],
+            'hashes' => [],
+        ];
 
         return array_map(function ($missingKey) use ($data) {
             unset($data[$missingKey]);
 
-            return array(
+            return [
                 $data,
-            );
+            ];
         }, array_keys($data));
     }
 
@@ -171,24 +171,24 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function provideCanConvertToAndFromJsonCases()
     {
-        return array(
-            array(new Signature(
+        return [
+            [new Signature(
                 PHP_VERSION,
                 '2.0',
-                array(
+                [
                     'foo' => true,
                     'bar' => true,
-                )
-            )),
-            array(new Signature(
+                ]
+            )],
+            [new Signature(
                 PHP_VERSION,
                 ToolInfo::getVersion(),
-                array(
+                [
                     // value encoded in ANSI, not UTF
-                    'header_comment' => array('header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)),
-                )
-            )),
-        );
+                    'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],
+                ]
+            )],
+        ];
     }
 
     /**

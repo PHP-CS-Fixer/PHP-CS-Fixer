@@ -32,7 +32,7 @@ final class LowercaseConstantsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The PHP constants `true`, `false`, and `null` MUST be in lower case.',
-            array(new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;"))
+            [new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;")]
         );
     }
 
@@ -71,7 +71,7 @@ final class LowercaseConstantsFixer extends AbstractFixer
      */
     private function isNeighbourAccepted(Tokens $tokens, $index)
     {
-        static $forbiddenTokens = array(
+        static $forbiddenTokens = [
             T_AS,
             T_CLASS,
             T_CONST,
@@ -87,11 +87,11 @@ final class LowercaseConstantsFixer extends AbstractFixer
             T_USE,
             CT::T_USE_TRAIT,
             CT::T_USE_LAMBDA,
-        );
+        ];
 
         $token = $tokens[$index];
 
-        if ($token->equalsAny(array('{', '}'))) {
+        if ($token->equalsAny(['{', '}'])) {
             return false;
         }
 

@@ -39,19 +39,19 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixer
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     $foo->bar() // test
 ;',
                 '<?php
                     $foo->bar() // test
                     ;',
-            ),
-            array(
+            ],
+            [
                 "<?php echo(1) // test\n;",
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $foo->bar() # test
 ;',
@@ -60,11 +60,11 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixer
 
 
                 ;',
-            ),
-            array(
+            ],
+            [
                 "<?php\n;",
-            ),
-            array(
+            ],
+            [
                 '<?php
 $this
     ->setName(\'readme1\')
@@ -76,8 +76,8 @@ $this
     ->setDescription(\'Generates the README\')
 ;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $this
     ->setName(\'readme2\')
@@ -89,29 +89,29 @@ $this
     ->setDescription(\'Generates the README\')
     ;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php echo "$this->foo(\'with param containing ;\') ;" ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo();',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo() ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo(\'with param containing ;\') ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo(\'with param containing ) ; \') ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo("with param containing ) ; ")  ; ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo("with semicolon in string) ; "); ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $this
     ->example();',
@@ -120,8 +120,8 @@ $this
     ->example()
 
     ;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -139,10 +139,10 @@ $this
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php echo(1) // test\r\n;",
-            ),
-        );
+            ],
+        ];
     }
 }

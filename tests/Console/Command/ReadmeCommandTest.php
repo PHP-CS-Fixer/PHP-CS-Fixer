@@ -31,7 +31,7 @@ final class ReadmeCommandTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Unsupported symfony/console version, Symfony\Component\Console\Output\BufferedOutput was added in 2.4.');
         }
 
-        $input = new ArrayInput(array('readme'));
+        $input = new ArrayInput(['readme']);
         $output = new BufferedOutput();
         $app = new Application();
 

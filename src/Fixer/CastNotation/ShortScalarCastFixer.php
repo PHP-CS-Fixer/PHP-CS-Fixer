@@ -30,7 +30,7 @@ final class ShortScalarCastFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Cast `(boolean)` and `(integer)` should be written as `(bool)` and `(int)`, `(double)` and `(real)` as `(float)`.',
-            array(new CodeSample("<?php\n\$a = (boolean) \$b;\n\$a = (integer) \$b;\n\$a = (double) \$b;\n\$a = (real) \$b;"))
+            [new CodeSample("<?php\n\$a = (boolean) \$b;\n\$a = (integer) \$b;\n\$a = (double) \$b;\n\$a = (real) \$b;")]
         );
     }
 
@@ -47,12 +47,12 @@ final class ShortScalarCastFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $castMap = array(
+        static $castMap = [
             'boolean' => 'bool',
             'integer' => 'int',
             'double' => 'float',
             'real' => 'float',
-        );
+        ];
 
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             if (!$tokens[$index]->isCast()) {

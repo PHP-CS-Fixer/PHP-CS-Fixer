@@ -46,16 +46,16 @@ final class FixCommandTest extends \PHPUnit_Framework_TestCase
 
     public function provideCalculateExitStatusCases()
     {
-        return array(
-            array(0, true, false, false, false),
-            array(0, false, false, false, false),
-            array(8, true, true, false, false),
-            array(0, false, true, false, false),
-            array(4, true, false, true, false),
-            array(0, false, false, true, false),
-            array(12, true, true, true, false),
-            array(0, false, true, true, false),
-            array(76, true, true, true, true),
-        );
+        return [
+            [0, true, false, false, false],
+            [0, false, false, false, false],
+            [8, true, true, false, false],
+            [0, false, true, false, false],
+            [4, true, false, true, false],
+            [0, false, false, true, false],
+            [12, true, true, true, false],
+            [0, false, true, true, false],
+            [76, true, true, true, true],
+        ];
     }
 }

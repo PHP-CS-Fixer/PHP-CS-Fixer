@@ -32,17 +32,17 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, array(
+            $config, [
                 'rules' => 'cast_spaces,braces',
-            ),
+            ],
             getcwd()
         );
 
         $this->assertArraySubset(
-            array(
+            [
                 'cast_spaces' => true,
                 'braces' => true,
-            ),
+            ],
             $configResolver->getRules()
         );
     }
@@ -51,19 +51,19 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, array(
+            $config, [
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
-            ),
+            ],
             getcwd()
         );
 
         $this->assertArraySubset(
-            array(
-                'array_syntax' => array(
+            [
+                'array_syntax' => [
                     'syntax' => 'short',
-                ),
+                ],
                 'cast_spaces' => true,
-            ),
+            ],
             $configResolver->getRules()
         );
     }
@@ -74,9 +74,9 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, array(
+            $config, [
                 'rules' => '{blah',
-            ),
+            ],
             getcwd()
         );
         $configResolver->getRules();
@@ -88,15 +88,15 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
         $command = new FixCommand();
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-            array(
-                'path' => array($customConfigFile),
+            [
+                'path' => [$customConfigFile],
                 '--dry-run' => true,
                 '--config' => $customConfigFile,
-            ),
-            array(
+            ],
+            [
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            )
+            ]
         );
         $this->assertStringMatchesFormat(
             sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
@@ -203,15 +203,15 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function provideRegisterCustomFixersCases()
     {
-        $fixers = array(
+        $fixers = [
             new \PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer(),
             new \PhpCsFixer\Fixer\ControlStructure\IncludeFixer(),
-        );
+        ];
 
-        $cases = array(
-            array($fixers, $fixers),
-            array($fixers, new \ArrayIterator($fixers)),
-        );
+        $cases = [
+            [$fixers, $fixers],
+            [$fixers, new \ArrayIterator($fixers)],
+        ];
 
         return $cases;
     }

@@ -32,7 +32,7 @@ final class NoClosingTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The closing `?>` tag MUST be omitted from files containing only PHP.',
-            array(new CodeSample("<?php\nclass Sample\n{\n}\n?>"))
+            [new CodeSample("<?php\nclass Sample\n{\n}\n?>")]
         );
     }
 
@@ -65,7 +65,7 @@ final class NoClosingTagFixer extends AbstractFixer
         $closeTags[$index]->clear();
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->equalsAny(array(';', '}', array(T_OPEN_TAG)))) {
+        if (!$tokens[$prevIndex]->equalsAny([';', '}', [T_OPEN_TAG]])) {
             $tokens->insertAt($prevIndex + 1, new Token(';'));
         }
     }

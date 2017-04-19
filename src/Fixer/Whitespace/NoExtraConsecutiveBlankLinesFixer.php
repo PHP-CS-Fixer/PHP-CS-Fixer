@@ -35,7 +35,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     /**
      * @var string[]
      */
-    private static $availableTokens = array(
+    private static $availableTokens = [
         'break',
         'continue',
         'extra',
@@ -47,7 +47,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
         'curly_brace_block',
         'parenthesis_brace_block',
         'square_brace_block',
-    );
+    ];
 
     /**
      * @var array<int, string> key is token id, value is name of callback
@@ -76,8 +76,8 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     {
         parent::configure($configuration);
 
-        $this->tokenKindCallbackMap = array();
-        $this->tokenEqualsMap = array();
+        $this->tokenKindCallbackMap = [];
+        $this->tokenEqualsMap = [];
         foreach ($this->configuration['tokens'] as $item) {
             switch ($item) {
                 case 'break':
@@ -121,7 +121,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     {
         return new FixerDefinition(
             'Removes extra blank lines and/or blank lines following configuration.',
-            array(
+            [
                 new CodeSample(
 '<?php
 
@@ -141,7 +141,7 @@ switch ($foo) {
     case 42:
         break;
 }',
-                    array('tokens' => array('break'))
+                    ['tokens' => ['break']]
                 ),
                 new CodeSample(
 '<?php
@@ -152,7 +152,7 @@ for ($i = 0; $i < 9000; ++$i) {
 
     }
 }',
-                    array('tokens' => array('continue'))
+                    ['tokens' => ['continue']]
                 ),
                 new CodeSample(
 '<?php
@@ -162,7 +162,7 @@ for ($i = 0; $i < 9000; ++$i) {
     echo $i;
 
 }',
-                    array('tokens' => array('curly_brace_block'))
+                    ['tokens' => ['curly_brace_block']]
                 ),
                 new CodeSample(
 '<?php
@@ -171,7 +171,7 @@ $foo = array("foo");
 
 
 $bar = "bar";',
-                    array('tokens' => array('extra'))
+                    ['tokens' => ['extra']]
                 ),
                 new CodeSample(
 '<?php
@@ -181,7 +181,7 @@ $foo = array(
     "foo"
 
 );',
-                    array('tokens' => array('parenthesis_brace_block'))
+                    ['tokens' => ['parenthesis_brace_block']]
                 ),
                 new CodeSample(
 '<?php
@@ -191,7 +191,7 @@ function foo($bar)
     return $bar;
 
 }',
-                    array('tokens' => array('return'))
+                    ['tokens' => ['return']]
                 ),
                 new CodeSample(
 '<?php
@@ -201,7 +201,7 @@ $foo = [
     "foo"
 
 ];',
-                    array('tokens' => array('square_brace_block'))
+                    ['tokens' => ['square_brace_block']]
                 ),
                 new CodeSample(
 '<?php
@@ -211,7 +211,7 @@ function foo($bar)
     throw new \Exception("Hello!");
 
 }',
-                    array('tokens' => array('throw'))
+                    ['tokens' => ['throw']]
                 ),
                 new CodeSample(
 '<?php
@@ -221,7 +221,7 @@ function foo($bar)
     throw new \Exception("Hello!");
 
 }',
-                    array('tokens' => array('throw'))
+                    ['tokens' => ['throw']]
                 ),
                 new CodeSample(
 '<?php
@@ -235,7 +235,7 @@ use Baz\Bar;
 class Bar
 {
 }',
-                    array('tokens' => array('use'))
+                    ['tokens' => ['use']]
                 ),
                 new CodeSample(
 '<?php
@@ -246,9 +246,9 @@ class Foo
 
     use Baz;
 }',
-                    array('tokens' => array('use_trait'))
+                    ['tokens' => ['use_trait']]
                 ),
-            )
+            ]
         );
     }
 
@@ -290,10 +290,10 @@ class Foo
 
         $tokens = new FixerOptionBuilder('tokens', 'List of tokens to fix.');
         $tokens = $tokens
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
                 $generator->allowedValueIsSubsetOf(self::$availableTokens),
-            ))
+            ])
             ->setNormalizer(function (Options $options, $tokens) {
                 foreach ($tokens as &$token) {
                     if ('useTrait' === $token) {
@@ -306,11 +306,11 @@ class Foo
 
                 return $tokens;
             })
-            ->setDefault(array('extra'))
+            ->setDefault(['extra'])
             ->getOption()
         ;
 
-        return new FixerConfigurationResolverRootless('tokens', array($tokens));
+        return new FixerConfigurationResolverRootless('tokens', [$tokens]);
     }
 
     private function fixByToken(Token $token, $index)
@@ -338,7 +338,7 @@ class Foo
 
     private function removeBetweenUse($index)
     {
-        $next = $this->tokens->getNextTokenOfKind($index, array(';', T_CLOSE_TAG));
+        $next = $this->tokens->getNextTokenOfKind($index, [';', T_CLOSE_TAG]);
         if (null === $next || $this->tokens[$next]->isGivenKind(T_CLOSE_TAG)) {
             return;
         }

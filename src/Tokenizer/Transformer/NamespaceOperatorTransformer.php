@@ -31,7 +31,7 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
      */
     public function getCustomTokens()
     {
-        return array(CT::T_NAMESPACE_OPERATOR);
+        return [CT::T_NAMESPACE_OPERATOR];
     }
 
     /**
@@ -55,7 +55,7 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
-            $token->override(array(CT::T_NAMESPACE_OPERATOR, $token->getContent()));
+            $token->override([CT::T_NAMESPACE_OPERATOR, $token->getContent()]);
         }
     }
 }

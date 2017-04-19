@@ -125,7 +125,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     public function provideFixerDefinitionsCases()
     {
         return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+            return [$fixer];
         }, $this->getAllFixers());
     }
 
@@ -152,7 +152,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         });
 
         return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+            return [$fixer];
         }, $fixers);
     }
 

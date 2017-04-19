@@ -36,79 +36,79 @@ final class PreIncrementFixerTest extends AbstractFixerTestCase
 
     public function provideExamples()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php ++$a;',
                 '<?php $a++;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++$$a;',
                 '<?php $$a++;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++${"a"};',
                 '<?php ${"a"}++;',
-            ),
-            array(
+            ],
+            [
                 '<?php --$a;',
                 '<?php $a--;',
-            ),
-            array(
+            ],
+            [
                 '<?php foo(); ++$a;',
                 '<?php foo(); $a++;',
-            ),
-            array(
+            ],
+            [
                 '<?php if (true) { ++$a; }',
                 '<?php if (true) { $a++; }',
-            ),
-            array(
+            ],
+            [
                 '<?php if (true) {} ++$a;',
                 '<?php if (true) {} $a++;',
-            ),
-            array(
+            ],
+            [
                 '<?php for ($i = 0; $i < $count; ++$i) {}',
                 '<?php for ($i = 0; $i < $count; $i++) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php ++$a->foo;',
                 '<?php $a->foo++;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++$a->{"foo"};',
                 '<?php $a->{"foo"}++;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++$a->$b;',
                 '<?php $a->$b++;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++Foo\Bar::$bar;',
                 '<?php Foo\Bar::$bar++;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++$a::$bar;',
                 '<?php $a::$bar++;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++$a[0];',
                 '<?php $a[0]++;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++$a[$b];',
                 '<?php $a[$b]++;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
                 '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
-            ),
+            ],
 
-            array('<?php $a = $b++;'),
-            array('<?php $a + $b++;'),
-            array('<?php $a++ + $b;'),
-            array('<?php foo($b++);'),
-            array('<?php foo($a, $b++);'),
-            array('<?php $a[$b++];'),
-            array('<?php echo $a++;'),
-        );
+            ['<?php $a = $b++;'],
+            ['<?php $a + $b++;'],
+            ['<?php $a++ + $b;'],
+            ['<?php foo($b++);'],
+            ['<?php foo($a, $b++);'],
+            ['<?php $a[$b++];'],
+            ['<?php echo $a++;'],
+        ];
     }
 }

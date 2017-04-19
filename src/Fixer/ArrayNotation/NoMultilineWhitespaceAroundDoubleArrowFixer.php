@@ -32,7 +32,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Operator `=>` should not be surrounded by multi-line whitespaces.',
-            array(new CodeSample("<?php\n\$a = array(1\n\n=> 2);"))
+            [new CodeSample("<?php\n\$a = array(1\n\n=> 2);")]
         );
     }
 

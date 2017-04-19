@@ -40,11 +40,11 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     {
         return new FixerDefinition(
            'Converts `pow()` to the `**` operator.',
-            array(
+            [
                 new CodeSample(
                     "<?php\n pow(\$a, 1);"
                 ),
-            ),
+            ],
             null,
             'Risky when the function `pow()` is overridden.'
         );
@@ -102,7 +102,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
      */
     private function findPowCalls(Tokens $tokens)
     {
-        $candidates = array();
+        $candidates = [];
 
         // Minimal candidate to fix is seven tokens: pow(x,x);
         $end = count($tokens) - 6;
@@ -135,8 +135,8 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         // find the argument separator ',' directly after the last token of the first argument;
         // replace it with T_POW '**'
         $tokens->overrideAt(
-            $tokens->getNextTokenOfKind(reset($arguments), array(',')),
-            new Token(array(T_POW, '**'))
+            $tokens->getNextTokenOfKind(reset($arguments), [',']),
+            new Token([T_POW, '**'])
         );
 
         // clean up the function call tokens prt. I
@@ -173,11 +173,11 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
      */
     private function isParenthesisNeeded(Tokens $tokens, $argumentStartIndex, $argumentEndIndex)
     {
-        static $allowedKinds = array(
+        static $allowedKinds = [
             T_DNUMBER, T_LNUMBER, T_VARIABLE, T_STRING, T_OBJECT_OPERATOR, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_CAST,
             T_INT_CAST, T_INC, T_DEC, T_NS_SEPARATOR, T_WHITESPACE, T_DOUBLE_COLON, T_LINE, T_COMMENT, T_DOC_COMMENT,
             CT::T_NAMESPACE_OPERATOR,
-        );
+        ];
 
         for ($i = $argumentStartIndex; $i <= $argumentEndIndex; ++$i) {
             if ($tokens[$i]->isGivenKind($allowedKinds) || $tokens[$i]->isEmpty()) {

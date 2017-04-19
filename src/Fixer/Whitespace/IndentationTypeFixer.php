@@ -32,8 +32,8 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     {
         return new FixerDefinition(
             'Code MUST use configured indentation type.',
-            array(new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
-        ));
+            [new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
+        ]);
     }
 
     /**
@@ -49,7 +49,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE));
+        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]);
     }
 
     /**

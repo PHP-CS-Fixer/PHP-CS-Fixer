@@ -36,89 +36,89 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a= 1;$a#
 ++#
 ;#',
-            ),
-            array(
+            ],
+            [
                 '<?php $a++;',
                 '<?php $a ++;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a--;',
                 '<?php $a --;',
-            ),
-            array(
+            ],
+            [
                 '<?php ++$a;',
                 '<?php ++ $a;',
-            ),
-            array(
+            ],
+            [
                 '<?php --$a;',
                 '<?php -- $a;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = !$b;',
                 '<?php $a = ! $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = !!$b;',
                 '<?php $a = ! ! $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = ~$b;',
                 '<?php $a = ~ $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = &$b;',
                 '<?php $a = & $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a=&$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a * -$b;',
                 '<?php $a * - $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a *-$b;',
                 '<?php $a *- $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a*-$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php function &foo(){}',
                 '<?php function & foo(){}',
-            ),
-            array(
+            ],
+            [
                 '<?php function &foo(){}',
                 '<?php function &   foo(){}',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
                 '<?php function foo(& $a, array & $b, Bar & $c) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo($a, ...$b) {}',
                 '<?php function foo($a, ... $b) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo(&...$a) {}',
                 '<?php function foo(& ... $a) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo(array ...$a) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php foo(...$a);',
                 '<?php foo(... $a);',
-            ),
-            array(
+            ],
+            [
                 '<?php foo($a, ...$b);',
                 '<?php foo($a, ... $b);',
-            ),
-        );
+            ],
+        ];
     }
 }

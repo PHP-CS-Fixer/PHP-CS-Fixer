@@ -102,21 +102,21 @@ final class ConfigurationResolver
     /**
      * @var array
      */
-    private $options = array(
+    private $options = [
         'allow-risky' => null,
         'cache-file' => null,
         'config' => null,
         'diff' => null,
         'dry-run' => null,
         'format' => null,
-        'path' => array(),
+        'path' => [],
         'path-mode' => self::PATH_MODE_OVERRIDE,
         'rules' => null,
         'show-progress' => null,
         'stop-on-violation' => null,
         'using-cache' => null,
         'verbosity' => null,
-    );
+    ];
 
     private $cacheFile;
     private $cacheManager;
@@ -391,7 +391,7 @@ final class ConfigurationResolver
         if (null === $this->progress) {
             if (OutputInterface::VERBOSITY_VERBOSE <= $this->options['verbosity'] && 'txt' === $this->getFormat()) {
                 $progressType = $this->options['show-progress'];
-                $progressTypes = array('none', 'run-in', 'estimating');
+                $progressTypes = ['none', 'run-in', 'estimating'];
 
                 if (null === $progressType) {
                     $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'run-in';
@@ -525,7 +525,7 @@ final class ConfigurationResolver
                 throw new InvalidConfigurationException(sprintf('Cannot read config file "%s".', $configFile));
             }
 
-            return array($configFile);
+            return [$configFile];
         }
 
         $path = $this->getPath();
@@ -540,10 +540,10 @@ final class ConfigurationResolver
             $configDir = $path[0];
         }
 
-        $candidates = array(
+        $candidates = [
             $configDir.DIRECTORY_SEPARATOR.'.php_cs',
             $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
-        );
+        ];
 
         if ($configDir !== $this->cwd) {
             $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs';
@@ -639,7 +639,7 @@ final class ConfigurationResolver
             return $rules;
         }
 
-        $rules = array();
+        $rules = [];
 
         foreach (array_map('trim', explode(',', $this->options['rules'])) as $rule) {
             if ('' === $rule) {
@@ -699,10 +699,10 @@ final class ConfigurationResolver
     private function resolveFinder()
     {
         if ($this->isStdIn()) {
-            return new \ArrayIterator(array(new StdinFileInfo()));
+            return new \ArrayIterator([new StdinFileInfo()]);
         }
 
-        $modes = array(self::PATH_MODE_OVERRIDE, self::PATH_MODE_INTERSECTION);
+        $modes = [self::PATH_MODE_OVERRIDE, self::PATH_MODE_INTERSECTION];
 
         if (!in_array(
             $this->options['path-mode'],
@@ -727,16 +727,16 @@ final class ConfigurationResolver
 
         if (!count($paths)) {
             if ($isIntersectionPathMode) {
-                return new \ArrayIterator(array());
+                return new \ArrayIterator([]);
             }
 
             return $this->iterableToTraversable($this->getConfig()->getFinder());
         }
 
-        $pathsByType = array(
-            'file' => array(),
-            'dir' => array(),
-        );
+        $pathsByType = [
+            'file' => [],
+            'dir' => [],
+        ];
 
         foreach ($paths as $path) {
             if (is_file($path)) {

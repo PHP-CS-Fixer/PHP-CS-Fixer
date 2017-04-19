@@ -53,17 +53,17 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
     {
         return new FixerDefinition(
             'PHP arrays should be declared using the configured syntax.',
-            array(
+            [
                 new CodeSample(
                     "<?php\n[1,2];",
-                    array('syntax' => 'long')
+                    ['syntax' => 'long']
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\narray(1,2);",
                     new VersionSpecification(50400),
-                    array('syntax' => 'short')
+                    ['syntax' => 'short']
                 ),
-            )
+            ]
         );
     }
 
@@ -104,12 +104,12 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
     {
         $syntax = new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` array syntax.');
         $syntax = $syntax
-            ->setAllowedValues(array('long', 'short'))
+            ->setAllowedValues(['long', 'short'])
             ->setDefault('long')
             ->getOption()
         ;
 
-        return new FixerConfigurationResolver(array($syntax));
+        return new FixerConfigurationResolver([$syntax]);
     }
 
     /**
@@ -123,7 +123,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
         $tokens->overrideAt($index, '(');
         $tokens->overrideAt($closeIndex, ')');
 
-        $tokens->insertAt($index, new Token(array(T_ARRAY, 'array')));
+        $tokens->insertAt($index, new Token([T_ARRAY, 'array']));
     }
 
     /**
@@ -132,11 +132,11 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
      */
     private function fixToShortArraySyntax(Tokens $tokens, $index)
     {
-        $openIndex = $tokens->getNextTokenOfKind($index, array('('));
+        $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
-        $tokens->overrideAt($openIndex, array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['));
-        $tokens->overrideAt($closeIndex, array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+        $tokens->overrideAt($openIndex, [CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']);
+        $tokens->overrideAt($closeIndex, [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
     }
