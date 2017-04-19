@@ -166,8 +166,8 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     /**
      * copy paste from GeckoPackages/GeckoPHPUnit StringsAssertTrait, to replace with Trait when possible.
      *
-     * @param mixed $actual
-     * @param mixed $message
+     * @param mixed  $actual
+     * @param string $message
      */
     private static function assertStringIsNotEmpty($actual, $message = '')
     {
