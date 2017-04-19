@@ -21,6 +21,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @coversNothing
  */
 final class TextDiffTest extends \PHPUnit_Framework_TestCase
 {
