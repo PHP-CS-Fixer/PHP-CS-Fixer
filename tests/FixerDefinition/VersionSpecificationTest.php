@@ -25,7 +25,7 @@ final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorRequiresEitherMinimumOrMaximum()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         new VersionSpecification();
     }
@@ -37,7 +37,7 @@ final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorRejectsInvalidMinimum($minimum)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         new VersionSpecification($minimum);
     }
@@ -49,7 +49,7 @@ final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorRejectsInvalidMaximum($maximum)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         new VersionSpecification(
             PHP_VERSION_ID,
@@ -75,7 +75,7 @@ final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorRejectsMaximumLessThanMinimum()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         new VersionSpecification(
             PHP_VERSION_ID,

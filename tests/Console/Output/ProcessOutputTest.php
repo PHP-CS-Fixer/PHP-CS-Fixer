@@ -33,7 +33,7 @@ final class ProcessOutputTest extends \PHPUnit_Framework_TestCase
     {
         $processOutput = new ProcessOutput(
             $output = new BufferedOutput(),
-            $this->prophesize('Symfony\Component\EventDispatcher\EventDispatcher')->reveal(),
+            $this->prophesize(\Symfony\Component\EventDispatcher\EventDispatcher::class)->reveal(),
             null
         );
 
@@ -110,7 +110,7 @@ final class ProcessOutputTest extends \PHPUnit_Framework_TestCase
 
         $processOutput = new ProcessOutput(
             $output = new BufferedOutput(),
-            $this->prophesize('Symfony\Component\EventDispatcher\EventDispatcher')->reveal(),
+            $this->prophesize(\Symfony\Component\EventDispatcher\EventDispatcher::class)->reveal(),
             $nbFiles
         );
 

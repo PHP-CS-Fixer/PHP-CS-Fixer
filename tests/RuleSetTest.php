@@ -29,7 +29,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $ruleSet = RuleSet::create();
 
-        $this->assertInstanceOf('PhpCsFixer\RuleSet', $ruleSet);
+        $this->assertInstanceOf(\PhpCsFixer\RuleSet::class, $ruleSet);
     }
 
     /**
@@ -69,7 +69,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
     public function testResolveRulesWithInvalidSet()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             'Set "@foo" does not exist.'
         );
 
@@ -81,7 +81,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
     public function testResolveRulesWithMissingRuleValue()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             'Missing value for "braces" rule/set.'
         );
 
@@ -198,7 +198,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
         $ruleSet = RuleSet::create();
 
         $method = new \ReflectionMethod(
-            'PhpCsFixer\RuleSet',
+            \PhpCsFixer\RuleSet::class,
             'getSetDefinition'
         );
 
@@ -287,7 +287,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
     public function testInvalidConfigNestedSets()
     {
         $this->setExpectedExceptionRegExp(
-            '\UnexpectedValueException',
+            \UnexpectedValueException::class,
             '#^Nested rule set "@PSR1" configuration must be a boolean\.$#'
         );
 
@@ -453,7 +453,7 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
         $ruleSet = new RuleSet();
 
         $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             '#^Rule "_not_exists" is not in the set\.$#'
         );
 

@@ -150,7 +150,7 @@ final class UtilsTest extends \PHPUnit_Framework_TestCase
     public function testCalculateTrailingWhitespaceIndentFail()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             'The given token must be whitespace, got "T_STRING".'
         );
 

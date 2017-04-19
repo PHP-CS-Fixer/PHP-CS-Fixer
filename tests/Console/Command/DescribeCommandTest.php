@@ -83,7 +83,7 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedException('InvalidArgumentException', 'Rule Foo/bar not found.');
+        $this->setExpectedException(\InvalidArgumentException::class, 'Rule Foo/bar not found.');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
@@ -99,7 +99,7 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp('RuntimeException', '/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $this->setExpectedExceptionRegExp(\RuntimeException::class, '/^Not enough arguments( \(missing: "name"\))?\.$/');
         $commandTester->execute([
             'command' => $command->getName(),
         ]);
@@ -111,8 +111,8 @@ EOT;
     private function execute()
     {
         $fixer = $this->prophesize();
-        $fixer->willImplement('PhpCsFixer\Fixer\DefinedFixerInterface');
-        $fixer->willImplement('PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface');
+        $fixer->willImplement(\PhpCsFixer\Fixer\DefinedFixerInterface::class);
+        $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface::class);
 
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
@@ -143,8 +143,8 @@ EOT;
             $things = true;
         });
         $fixer->fix(
-            Argument::type('SplFileInfo'),
-            Argument::type('PhpCsFixer\Tokenizer\Tokens')
+            Argument::type(\SplFileInfo::class),
+            Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
         )->will(function (array $arguments) use (&$things) {
             $arguments[1][3]->setContent($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'');
         });

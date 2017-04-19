@@ -26,14 +26,14 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 {
     public function testWithoutOptions()
     {
-        $this->setExpectedException('LogicException', 'Options cannot be empty.');
+        $this->setExpectedException(\LogicException::class, 'Options cannot be empty.');
 
         $configuration = new FixerConfigurationResolver([]);
     }
 
     public function testWithDuplicatesOptions()
     {
-        $this->setExpectedException('LogicException', 'The "foo" option is defined multiple times.');
+        $this->setExpectedException(\LogicException::class, 'The "foo" option is defined multiple times.');
 
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar-1.'),
@@ -69,7 +69,7 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             new FixerOption('foo', 'Bar.'),
         ]);
 
-        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\MissingOptionsException');
+        $this->setExpectedException(\Symfony\Component\OptionsResolver\Exception\MissingOptionsException::class);
         $configuration->resolve([]);
     }
 
@@ -96,7 +96,7 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             $configuration->resolve(['foo' => 1])
         );
 
-        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
+        $this->setExpectedException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
         $this->assertSame(
             ['foo' => 1],
             $configuration->resolve(['foo' => '1'])
@@ -114,7 +114,7 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             $configuration->resolve(['foo' => true])
         );
 
-        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
+        $this->setExpectedException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
         $this->assertSame(
             ['foo' => 1],
             $configuration->resolve(['foo' => 1])
@@ -127,7 +127,7 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
             new FixerOption('bar', 'Bar.'),
         ]);
 
-        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException');
+        $this->setExpectedException(\Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException::class);
         $configuration->resolve(['foo' => 'foooo']);
     }
 

@@ -32,7 +32,7 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
     public function testLintFile($file, $errorRegExp = null)
     {
         if (null !== $errorRegExp) {
-            $this->setExpectedExceptionRegExp('\PhpCsFixer\Linter\LintingException', $errorRegExp);
+            $this->setExpectedExceptionRegExp(\PhpCsFixer\Linter\LintingException::class, $errorRegExp);
         }
 
         $linter = $this->createLinter();
@@ -64,7 +64,7 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
     public function testLintSource($source, $errorRegExp = null)
     {
         if (null !== $errorRegExp) {
-            $this->setExpectedExceptionRegExp('\PhpCsFixer\Linter\LintingException', $errorRegExp);
+            $this->setExpectedExceptionRegExp(\PhpCsFixer\Linter\LintingException::class, $errorRegExp);
         }
 
         $linter = $this->createLinter();

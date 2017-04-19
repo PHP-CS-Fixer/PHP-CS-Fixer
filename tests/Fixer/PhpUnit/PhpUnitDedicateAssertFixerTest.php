@@ -269,7 +269,7 @@ $a#
     public function testInvalidConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[php_unit_dedicate_assert\] Invalid configuration: The option "functions" .*\.$/'
         );
 

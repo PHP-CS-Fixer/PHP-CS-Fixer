@@ -238,7 +238,7 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
         return [
             [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
             [['false'], ['bool'], '*   @return            false', '*   @return            bool'],
-            [['RUNTIMEEEEeXCEPTION'], ['Throwable'], "\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
             [['string'], ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'],
         ];
     }
@@ -246,7 +246,7 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function testGetTypesOnBadTag()
     {
         $this->setExpectedException(
-            'RuntimeException',
+            \RuntimeException::class,
             'This tag does not support types'
         );
 
@@ -258,7 +258,7 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function testSetTypesOnBadTag()
     {
         $this->setExpectedException(
-            'RuntimeException',
+            \RuntimeException::class,
             'This tag does not support types'
         );
 

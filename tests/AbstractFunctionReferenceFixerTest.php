@@ -35,7 +35,7 @@ final class AbstractFunctionReferenceFixerTest extends \PHPUnit_Framework_TestCa
     public function testCountArguments($code, $openIndex, $closeIndex, array $arguments)
     {
         $tokens = Tokens::fromCode($code);
-        $mock = new AccessibleObject($this->getMockForAbstractClass('\\PhpCsFixer\\AbstractFunctionReferenceFixer'));
+        $mock = new AccessibleObject($this->getMockForAbstractClass(\PhpCsFixer\AbstractFunctionReferenceFixer::class));
 
         $this->assertSame(count($arguments), $mock->countArguments($tokens, $openIndex, $closeIndex));
         $this->assertSame($arguments, $mock->getArguments($tokens, $openIndex, $closeIndex));

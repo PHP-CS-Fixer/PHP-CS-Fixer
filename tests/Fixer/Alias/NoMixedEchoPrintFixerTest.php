@@ -300,7 +300,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     public function testWrongConfig($wrongConfig, $expectedMessage)
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             $expectedMessage
         );
 

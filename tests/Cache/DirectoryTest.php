@@ -25,16 +25,16 @@ final class DirectoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Directory');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Directory::class);
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsDirectoryInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Directory');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Directory::class);
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\DirectoryInterface'));
+        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\DirectoryInterface::class));
     }
 
     public function testGetRelativePathToReturnsFileIfAboveLevelOfDirectoryName()

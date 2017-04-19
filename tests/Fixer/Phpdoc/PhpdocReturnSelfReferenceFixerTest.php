@@ -184,7 +184,7 @@ class F
     public function testInvalidConfiguration(array $configuration, $message)
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/'))
         );
 

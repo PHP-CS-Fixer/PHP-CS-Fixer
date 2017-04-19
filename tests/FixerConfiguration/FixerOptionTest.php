@@ -52,7 +52,7 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
     {
         $option = new FixerOption('foo', 'Bar.');
 
-        $this->setExpectedException('LogicException', 'No default value defined.');
+        $this->setExpectedException(\LogicException::class, 'No default value defined.');
         $option->getDefault();
     }
 
@@ -84,7 +84,7 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $allowedTypes);
         $this->assertCount(1, $allowedTypes);
         $this->assertArrayHasKey(0, $allowedTypes);
-        $this->assertInstanceOf('Closure', $allowedTypes[0]);
+        $this->assertInstanceOf(\Closure::class, $allowedTypes[0]);
     }
 
     public function testGetNormalizers()
@@ -93,12 +93,12 @@ final class FixerOptionTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($option->getNormalizer());
 
         $option = new FixerOption('foo', 'Bar.', true, null, null, null, function () {});
-        $this->assertInstanceOf('Closure', $option->getNormalizer());
+        $this->assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 
     public function testRequiredWithDefaultValue()
     {
-        $this->setExpectedException('LogicException', 'Required options cannot have a default value.');
+        $this->setExpectedException(\LogicException::class, 'Required options cannot have a default value.');
 
         new FixerOption('foo', 'Bar.', true, false);
     }

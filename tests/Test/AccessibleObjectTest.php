@@ -35,7 +35,7 @@ final class AccessibleObjectTest extends \PHPUnit_Framework_TestCase
     {
         $object = AccessibleObject::create(new \stdClass());
 
-        $this->assertInstanceOf('PhpCsFixer\Test\AccessibleObject', $object);
+        $this->assertInstanceOf(\PhpCsFixer\Test\AccessibleObject::class, $object);
     }
 
     public function testGet()

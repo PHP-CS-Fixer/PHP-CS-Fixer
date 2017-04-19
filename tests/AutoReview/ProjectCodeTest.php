@@ -34,37 +34,37 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
      * @var string[]
      */
     private static $classesWithoutTests = [
-        'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-        'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-        'PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException',
-        'PhpCsFixer\Console\Command\CommandHelp',
-        'PhpCsFixer\Console\Command\DescribeNameNotFoundException',
-        'PhpCsFixer\Console\Command\SelfUpdateCommand',
-        'PhpCsFixer\Console\Output\NullOutput',
-        'PhpCsFixer\Differ\DiffConsoleFormatter',
-        'PhpCsFixer\Differ\NullDiffer',
-        'PhpCsFixer\Differ\SebastianBergmannDiffer',
-        'PhpCsFixer\Differ\SebastianBergmannShortDiffer',
-        'PhpCsFixer\Doctrine\Annotation\Token',
-        'PhpCsFixer\Doctrine\Annotation\Tokens',
-        'PhpCsFixer\FileRemoval',
-        'PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator',
-        'PhpCsFixer\FixerDefinition\FileSpecificCodeSample',
-        'PhpCsFixer\FixerFileProcessedEvent',
-        'PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper',
-        'PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper',
-        'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer',
-        'PhpCsFixer\Linter\LintingException',
-        'PhpCsFixer\Linter\ProcessLintingResult',
-        'PhpCsFixer\Linter\TokenizerLintingResult',
-        'PhpCsFixer\Linter\UnavailableLinterException',
-        'PhpCsFixer\Report\ReportSummary',
-        'PhpCsFixer\Runner\FileCachingLintingIterator',
-        'PhpCsFixer\Runner\FileFilterIterator',
-        'PhpCsFixer\Runner\FileLintingIterator',
-        'PhpCsFixer\StdinFileInfo',
-        'PhpCsFixer\Test\IntegrationCaseFactory',
-        'PhpCsFixer\Tokenizer\Transformers',
+        \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
+        \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+        \PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class,
+        \PhpCsFixer\Console\Command\CommandHelp::class,
+        \PhpCsFixer\Console\Command\DescribeNameNotFoundException::class,
+        \PhpCsFixer\Console\Command\SelfUpdateCommand::class,
+        \PhpCsFixer\Console\Output\NullOutput::class,
+        \PhpCsFixer\Differ\DiffConsoleFormatter::class,
+        \PhpCsFixer\Differ\NullDiffer::class,
+        \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+        \PhpCsFixer\Differ\SebastianBergmannShortDiffer::class,
+        \PhpCsFixer\Doctrine\Annotation\Token::class,
+        \PhpCsFixer\Doctrine\Annotation\Tokens::class,
+        \PhpCsFixer\FileRemoval::class,
+        \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
+        \PhpCsFixer\FixerDefinition\FileSpecificCodeSample::class,
+        \PhpCsFixer\FixerFileProcessedEvent::class,
+        \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
+        \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
+        \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
+        \PhpCsFixer\Linter\LintingException::class,
+        \PhpCsFixer\Linter\ProcessLintingResult::class,
+        \PhpCsFixer\Linter\TokenizerLintingResult::class,
+        \PhpCsFixer\Linter\UnavailableLinterException::class,
+        \PhpCsFixer\Report\ReportSummary::class,
+        \PhpCsFixer\Runner\FileCachingLintingIterator::class,
+        \PhpCsFixer\Runner\FileFilterIterator::class,
+        \PhpCsFixer\Runner\FileLintingIterator::class,
+        \PhpCsFixer\StdinFileInfo::class,
+        \PhpCsFixer\Test\IntegrationCaseFactory::class,
+        \PhpCsFixer\Tokenizer\Transformers::class,
     ];
 
     /**
@@ -82,7 +82,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
-        $this->assertTrue(is_subclass_of($testClassName, '\PHPUnit_Framework_TestCase'), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit_Framework_TestCase".', $testClassName));
+        $this->assertTrue(is_subclass_of($testClassName, \PHPUnit_Framework_TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit_Framework_TestCase".', $testClassName));
     }
 
     /**
@@ -109,10 +109,10 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
             || ($doc && count($doc->getAnnotationsOfType('internal')))
             || 0 === count($rc->getInterfaces())
             || in_array($className, [
-                'PhpCsFixer\Finder',
-                'PhpCsFixer\Test\AbstractFixerTestCase',
-                'PhpCsFixer\Test\AbstractIntegrationTestCase',
-                'PhpCsFixer\Tokenizer\Tokens',
+                \PhpCsFixer\Finder::class,
+                \PhpCsFixer\Test\AbstractFixerTestCase::class,
+                \PhpCsFixer\Test\AbstractIntegrationTestCase::class,
+                \PhpCsFixer\Tokenizer\Tokens::class,
             ], true)
         ) {
             return;
@@ -142,9 +142,9 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
 
         // @TODO: should be removed at 3.0
         $exceptionMethodsPerClass = [
-            'PhpCsFixer\Config' => ['create'],
-            'PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer' => ['fixSpace'],
-            'PhpCsFixer\Fixer\Import\OrderedImportsFixer' => ['sortingCallBack'],
+            \PhpCsFixer\Config::class => ['create'],
+            \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class => ['fixSpace'],
+            \PhpCsFixer\Fixer\Import\OrderedImportsFixer::class => ['sortingCallBack'],
         ];
 
         $definedMethods = $this->getPublicMethodNames($rc);
@@ -179,7 +179,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
     {
         $rc = new \ReflectionClass($className);
 
-        if ('PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer' === $className) {
+        if (\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class === $className) {
             $this->markTestIncomplete('Public properties of fixer \'PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer\' will be remove on 3.0.');
         }
 
@@ -207,12 +207,12 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         }, $definedProps);
 
         $exceptionPropsPerClass = [
-            'PhpCsFixer\AbstractPhpdocTypesFixer' => ['tags'],
-            'PhpCsFixer\AbstractAlignFixerHelper' => ['deepestLevel'],
-            'PhpCsFixer\AbstractFixer' => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
-            'PhpCsFixer\AbstractProxyFixer' => ['proxyFixer'],
-            'PhpCsFixer\Test\AbstractFixerTestCase' => ['fixer', 'linter'],
-            'PhpCsFixer\Test\AbstractIntegrationTestCase' => ['linter'],
+            \PhpCsFixer\AbstractPhpdocTypesFixer::class => ['tags'],
+            \PhpCsFixer\AbstractAlignFixerHelper::class => ['deepestLevel'],
+            \PhpCsFixer\AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
+            \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixer'],
+            \PhpCsFixer\Test\AbstractFixerTestCase::class => ['fixer', 'linter'],
+            \PhpCsFixer\Test\AbstractIntegrationTestCase::class => ['linter'],
         ];
 
         $extraProps = array_diff(

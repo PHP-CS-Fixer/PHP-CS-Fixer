@@ -101,7 +101,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     public function testInvalidConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[php_unit_strict\] Invalid configuration: The option "assertions" .*\.$/'
         );
 

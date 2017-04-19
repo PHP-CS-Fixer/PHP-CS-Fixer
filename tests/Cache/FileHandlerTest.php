@@ -40,7 +40,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
         $handler = new FileHandler($file);
 
-        $this->assertInstanceOf('PhpCsFixer\Cache\FileHandlerInterface', $handler);
+        $this->assertInstanceOf(\PhpCsFixer\Cache\FileHandlerInterface::class, $handler);
     }
 
     public function testConstructorSetsFile()
@@ -93,7 +93,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
         $cached = $handler->read();
 
-        $this->assertInstanceOf('PhpCsFixer\Cache\CacheInterface', $cached);
+        $this->assertInstanceOf(\PhpCsFixer\Cache\CacheInterface::class, $cached);
         $this->assertTrue($cached->getSignature()->equals($signature));
     }
 
@@ -101,7 +101,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $file = __DIR__.'/non-existent-directory/.php_cs.cache';
 
-        $this->setExpectedExceptionRegExp('Symfony\Component\Filesystem\Exception\IOException', sprintf(
+        $this->setExpectedExceptionRegExp(\Symfony\Component\Filesystem\Exception\IOException::class, sprintf(
             '#^Failed to write file "%s"(, ".*")?.#',
             preg_quote($file)
         ));

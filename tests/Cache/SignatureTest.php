@@ -25,16 +25,16 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Signature');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsSignatureInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Signature');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\SignatureInterface'));
+        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
     }
 
     public function testConstructorSetsValues()

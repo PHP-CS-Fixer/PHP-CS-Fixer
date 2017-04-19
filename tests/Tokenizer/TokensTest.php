@@ -284,7 +284,7 @@ final class TokensTest extends \PHPUnit_Framework_TestCase
     public function testFindSequenceException($message, array $sequence)
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             $message
         );
 
@@ -738,7 +738,7 @@ PHP;
     public function testFindBlockEndInvalidType()
     {
         $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             '/^Invalid param type: -1\.$/'
         );
 
@@ -750,7 +750,7 @@ PHP;
     public function testFindBlockEndInvalidStart()
     {
         $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             '/^Invalid param \$startIndex - not a proper block start\.$/'
         );
 
@@ -765,7 +765,7 @@ PHP;
             $this->markTestSkipped('Skip tests for PHP compiler when running on non HHVM compiler.');
         }
 
-        $this->setExpectedException('ParseError');
+        $this->setExpectedException(\ParseError::class);
         Tokens::fromCode('<?php# this will cause T_HH_ERROR');
     }
 

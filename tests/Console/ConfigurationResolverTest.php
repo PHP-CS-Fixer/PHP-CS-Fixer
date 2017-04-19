@@ -46,7 +46,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testSetOptionWithUndefinedOption()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
             '/^Unknown option name: "foo"\.$/'
         );
 
@@ -187,7 +187,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
             'The progress type "foo" is not defined, supported are "none", "run-in", "estimating".'
         );
 
@@ -203,7 +203,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertNull($resolver->getConfigFile());
-        $this->assertInstanceOf('\\PhpCsFixer\\ConfigInterface', $resolver->getConfig());
+        $this->assertInstanceOf(\PhpCsFixer\ConfigInterface::class, $resolver->getConfig());
     }
 
     public function testResolveConfigFileByPathOfFile()
@@ -292,7 +292,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
             '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
         );
 
@@ -310,7 +310,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveConfigFileChooseFileWithInvalidFormat()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
             '/^The format "xls" is not defined, supported are json, junit, txt, xml.$/'
         );
 
@@ -328,7 +328,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
             '/^For multiple paths config parameter is required.$/'
         );
 
@@ -946,7 +946,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolveRulesWithUnknownRules()
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
             'The rules contain unknown fixers (bar).'
         );
 
@@ -1017,7 +1017,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(['php_unit_construct' => true], $resolver->getRules());
         $this->assertFalse($resolver->getUsingCache());
         $this->assertNull($resolver->getCacheFile());
-        $this->assertInstanceOf('\PhpCsFixer\Differ\SebastianBergmannDiffer', $resolver->getDiffer());
+        $this->assertInstanceOf(\PhpCsFixer\Differ\SebastianBergmannDiffer::class, $resolver->getDiffer());
         $this->assertSame('json', $resolver->getReporter()->getFormat());
     }
 

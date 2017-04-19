@@ -137,7 +137,7 @@ $a =
     public function testInvalidConfigurationKeys(array $config)
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#'
         );
 
@@ -156,7 +156,7 @@ $a =
     public function testInvalidConfigurationValue()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. (Defined|Known) options are: "functions"\.$#'
         );
 

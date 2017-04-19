@@ -70,7 +70,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigRulesUsingInvalidJson()
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
 
         $config = new Config();
         $configResolver = new ConfigurationResolver(
@@ -176,7 +176,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testRegisterCustomFixersWithInvalidArgument()
     {
         $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             '/^Argument must be an array or a Traversable, got "\w+"\.$/'
         );
 

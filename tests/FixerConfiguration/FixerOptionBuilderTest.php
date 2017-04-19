@@ -55,13 +55,13 @@ final class FixerOptionBuilderTest extends \PHPUnit_Framework_TestCase
             ->setNormalizer(function () {})
             ->getOption()
         ;
-        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerOption', $option);
+        $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOption::class, $option);
         $this->assertSame('foo', $option->getName());
         $this->assertSame('Bar.', $option->getDescription());
         $this->assertTrue($option->hasDefault());
         $this->assertSame('baz', $option->getDefault());
         $this->assertSame(['bool'], $option->getAllowedTypes());
         $this->assertSame([true, false], $option->getAllowedValues());
-        $this->assertInstanceOf('Closure', $option->getNormalizer());
+        $this->assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 }

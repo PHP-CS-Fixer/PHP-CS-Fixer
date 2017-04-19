@@ -728,7 +728,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
     public function testInvalidOrderTypesSize()
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '[ordered_imports] Invalid configuration: Missing sort type "function".'
         );
 
@@ -741,7 +741,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
     public function testInvalidOrderType()
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '[ordered_imports] Invalid configuration: Missing sort type "class".'
         );
 
@@ -760,7 +760,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
     public function testInvalidSortAlgorithm($configuration, $expectedValue)
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             sprintf(
                 '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
                 $expectedValue
@@ -792,7 +792,7 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
                     'sortAlgorithm' => new \stdClass(),
                     'importsOrder' => null,
                 ],
-                'stdClass',
+                \stdClass::class,
             ],
         ];
     }

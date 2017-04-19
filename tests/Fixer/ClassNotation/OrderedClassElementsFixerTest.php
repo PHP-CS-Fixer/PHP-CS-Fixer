@@ -599,7 +599,7 @@ EOT
     public function testWrongConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[ordered_class_elements\] Invalid configuration: The option "order" .*\.$/'
         );
 

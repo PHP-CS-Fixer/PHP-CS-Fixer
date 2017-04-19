@@ -38,7 +38,7 @@ final class TagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $tag->getName());
 
         if ('other' === $expected) {
-            $this->setExpectedException('RuntimeException', 'Cannot set name on unknown tag');
+            $this->setExpectedException(\RuntimeException::class, 'Cannot set name on unknown tag');
         }
 
         $tag->setName($new);

@@ -291,7 +291,7 @@ echo \'bar\';',
     public function testLegacyMisconfiguration()
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '[header_comment] Missing required configuration: The required option "header" is missing.'
         );
 
@@ -307,7 +307,7 @@ echo \'bar\';',
     public function testMisconfiguration($configuration, $exceptionMessage)
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '[header_comment] '.$exceptionMessage
         );
 
@@ -479,7 +479,7 @@ declare(strict_types=1)?>',
 
     public function testWithoutConfiguration()
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException');
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class);
 
         $this->doTest('<?php echo 1;');
     }

@@ -434,7 +434,7 @@ EOF;
     public function testInvalidConfigurationType()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
@@ -444,7 +444,7 @@ EOF;
     public function testInvalidConfigurationValue()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
@@ -458,7 +458,7 @@ EOF;
         }
 
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[visibility_required\] Invalid configuration: "const" option can only be enabled with PHP 7\.1\+\.$/'
         );
 

@@ -28,7 +28,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
      */
     public function testConfigureWithInvalidConfiguration(array $configuration)
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
 
         $this->fixer->configure($configuration);
     }

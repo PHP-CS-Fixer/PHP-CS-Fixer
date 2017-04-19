@@ -114,7 +114,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     public function testInvalidConfig(array $config, $expectedMessage)
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage)
         );
 

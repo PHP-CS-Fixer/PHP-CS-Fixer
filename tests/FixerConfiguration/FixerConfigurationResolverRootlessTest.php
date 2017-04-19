@@ -24,7 +24,7 @@ final class FixerConfigurationResolverRootlessTest extends \PHPUnit_Framework_Te
 {
     public function testMapRootConfigurationTo()
     {
-        $this->setExpectedException('LogicException', 'The "bar" option is not defined.');
+        $this->setExpectedException(\LogicException::class, 'The "bar" option is not defined.');
 
         $configuration = new FixerConfigurationResolverRootless('bar', [
             new FixerOption('foo', 'Bar.'),

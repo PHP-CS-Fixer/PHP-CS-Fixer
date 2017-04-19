@@ -446,7 +446,7 @@ EOF
     public function testWrongConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[no_extra_consecutive_blank_lines\] Invalid configuration: The option "tokens" .*\.$/'
         );
 

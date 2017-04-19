@@ -43,7 +43,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame($factory, $testInstance);
 
-        $ruleSetProphecy = $this->prophesize('PhpCsFixer\RuleSetInterface');
+        $ruleSetProphecy = $this->prophesize(\PhpCsFixer\RuleSetInterface::class);
         $ruleSetProphecy->getRules()->willReturn([]);
         $testInstance = $factory->useRuleSet(
             $ruleSetProphecy->reveal()
@@ -58,7 +58,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = FixerFactory::create();
 
-        $this->assertInstanceOf('PhpCsFixer\FixerFactory', $factory);
+        $this->assertInstanceOf(\PhpCsFixer\FixerFactory::class, $factory);
     }
 
     /**
@@ -121,7 +121,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRegisterFixerWithOccupiedName()
     {
         $this->setExpectedException(
-            'UnexpectedValueException',
+            \UnexpectedValueException::class,
             'Fixer named "non_unique_name" is already registered.'
         );
 
@@ -159,7 +159,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testUseRuleSetWithNonExistingRule()
     {
         $this->setExpectedException(
-            'UnexpectedValueException',
+            \UnexpectedValueException::class,
             'Rule "non_existing_rule" does not exist.'
         );
 
@@ -211,7 +211,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testConflictingFixers(RuleSet $ruleSet)
     {
         $this->setExpectedExceptionRegExp(
-            'UnexpectedValueException',
+            \UnexpectedValueException::class,
             '#^Rule contains conflicting fixers:\n#'
         );
 
@@ -253,7 +253,7 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
     private function createFixerDouble($name, $priority = 0)
     {
         /** @var FixerInterface $fixer */
-        $fixer = $this->prophesize('PhpCsFixer\Fixer\FixerInterface');
+        $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
         $fixer->getName()->willReturn($name);
         $fixer->getPriority()->willReturn($priority);
 

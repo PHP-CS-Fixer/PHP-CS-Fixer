@@ -27,7 +27,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     {
         $key = 'foo';
 
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
             '[native_function_invocation] Invalid configuration: The option "%s" does not exist.',
             $key
         ));
@@ -44,7 +44,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
      */
     public function testConfigureRejectsInvalidConfigurationElement($element)
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
             'Each element must be a non-empty, trimmed string, got "%s" instead.',
             \is_object($element) ? \get_class($element) : \gettype($element)
         ));

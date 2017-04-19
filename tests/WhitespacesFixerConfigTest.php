@@ -33,7 +33,7 @@ final class WhitespacesFixerConfigTest extends \PHPUnit_Framework_TestCase
     public function testCases($indent, $lineEnding, $exceptionRegExp = null)
     {
         if (null !== $exceptionRegExp) {
-            $this->setExpectedExceptionRegExp('InvalidArgumentException', $exceptionRegExp);
+            $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, $exceptionRegExp);
         }
 
         $config = new WhitespacesFixerConfig($indent, $lineEnding);

@@ -90,6 +90,6 @@ final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
      */
     private function createVersionSpecificationMock()
     {
-        return $this->prophesize('PhpCsFixer\FixerDefinition\VersionSpecificationInterface');
+        return $this->prophesize(\PhpCsFixer\FixerDefinition\VersionSpecificationInterface::class);
     }
 }

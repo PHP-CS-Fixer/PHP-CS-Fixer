@@ -28,16 +28,16 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Cache');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Cache');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\CacheInterface'));
+        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheInterface::class));
     }
 
     public function testConstructorSetsValues()
@@ -63,7 +63,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testSetThrowsInvalidArgumentExceptionIfValueIsNotAnInteger()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         $signature = $this->getSignatureDouble();
 
@@ -106,7 +106,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         $json = '{"foo';
 
@@ -120,7 +120,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         $json = json_encode($data);
 
@@ -196,6 +196,6 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
      */
     private function getSignatureDouble()
     {
-        return $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        return $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
     }
 }

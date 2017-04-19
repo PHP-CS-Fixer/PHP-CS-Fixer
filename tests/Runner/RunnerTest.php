@@ -36,16 +36,16 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatFixSuccessfully()
     {
-        $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+        $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $linterProphecy
             ->isAsync()
             ->willReturn(false);
         $linterProphecy
             ->lintFile(Argument::type('string'))
-            ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
         $linterProphecy
             ->lintSource(Argument::type('string'))
-            ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
 
         $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
@@ -130,7 +130,7 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
 
         $error = $errors[0];
 
-        $this->assertInstanceOf('PhpCsFixer\Error\Error', $error);
+        $this->assertInstanceOf(\PhpCsFixer\Error\Error::class, $error);
 
         $this->assertSame(Error::TYPE_INVALID, $error->getType());
         $this->assertSame($pathToInvalidFile, $error->getFilePath());
