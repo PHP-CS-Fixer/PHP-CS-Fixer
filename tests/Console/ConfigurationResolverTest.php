@@ -984,6 +984,14 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 array('AA' => true, 'AB' => '_AB', 'AC' => 'b', 'Z' => true),
                 array('@A' => true, '@E' => true),
             ),
+            '@E + @A (set in set) + rule override' => array(
+                array('AC' => 'd', 'AB' => true, 'Z' => true, 'AA' => true),
+                array('@E' => true, '@A' => true, 'AC' => 'd'),
+            ),
+            'nest single set' => array(
+                array('AC' => 'b', 'AB' => '_AB', 'Z' => 'E'),
+                array('@F' => true),
+            ),
             'Set reconfigure rule in other set, reconfigure rule.' => array(
                 array(
                     'AA' => true,
@@ -1198,6 +1206,10 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 '@D' => true,
                 'AB' => '_AB',
                 'Z' => true,
+            ),
+            '@F' => array(
+                '@E' => true,
+                'Z' => 'E',
             ),
             '@Foo' => array('A' => true, 'B' => true, 'C' => true, 'D' => 12),
             '@Bar' => array('A' => true, 'C' => false, 'D' => 34, 'E' => true, 'F' => false),
