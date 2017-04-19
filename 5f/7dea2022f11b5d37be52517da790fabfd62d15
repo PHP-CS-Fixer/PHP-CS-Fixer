@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------
+
+by Bilge at 2017-02-18T19:48:57Z
+
+This test seems to pass, so does that prove my report is incorrect?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-18T20:11:13Z
+
+I would say so. If not, please extend your report. Maybe sth is missing
+
+---------------------------------------------------------------------------
+
+by Bilge at 2017-02-18T23:29:53Z
+
+In my case I was subtracting `@PSR2`, not `@PSR1`. I don't know if that should make any difference.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-19T08:06:23Z
+
+nope, mechanism is the same
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-21T08:49:10Z
+
+Subtracting set from set with same rule but with diff. config for that rule does not work as expected.
+Removing rule from set does work.
+Please review!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-10T13:46:21Z
+
+AppVeyor fail is not related to the changes made in this PR.
+I think this is one is ready.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-14T13:31:26Z
+
+Sorry, but without https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2545/commits/24981c9b23792403fea2299cda683c1d17f58c85#r105905980 I cannot evaluate is the generated ruleset is properly resolved
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T14:59:25Z
+
+all done
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T19:25:14Z
+
+I have changed base branch to 2.2
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-18T07:39:49Z
+
+After considering all input for reviewers and other members I made a first version of the new code for the set resolving. I know this might not be what everyone wants or expect, however I feel this is the most consistent way of resolving.
+This leave the following for this PR
+- reviews (please do not request logic changes, that discussion has been done)
+- see why some integration tests now fail
+- make a call on the release version, is this a bug fix or feature, I can see both sides but lean to bug fix after all
