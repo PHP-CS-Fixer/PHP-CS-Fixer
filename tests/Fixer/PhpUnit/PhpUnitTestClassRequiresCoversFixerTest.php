@@ -37,11 +37,6 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
     public function provideFixCases()
     {
         return array(
-            'abstract test class' => array(
-                '<?php
-                    abstract class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
-            ),
             'already with annotation: @covers' => array(
                 '<?php
                     /**
@@ -54,14 +49,6 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                 '<?php
                     /**
                      * @coversDefaultClass
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
-            ),
-            'already with annotation: @coversNothing' => array(
-                '<?php
-                    /**
-                     * @coversNothing
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
@@ -79,30 +66,22 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
             ),
-            'without docblock #2' => array(
+            'without docblock #2 (class is final)' => array(
                 '<?php
 
                     /**
                      * @coversNothing
                      */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
                 '<?php
 
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
             ),
-            'without docblock #3 (class is final)' => array(
+            'without docblock #2 (class is abstract)' => array(
                 '<?php
-
-                    /**
-                     * @coversNothing
-                     */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
-                '<?php
-
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                    abstract class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
             ),
             'with docblock but annotation is missing' => array(
