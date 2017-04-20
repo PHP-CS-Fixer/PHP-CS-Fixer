@@ -32,7 +32,7 @@ final class FixerOption implements FixerOptionInterface
     /**
      * @var bool
      */
-    private $isRequired = true;
+    private $isRequired;
 
     /**
      * @var null|string[]

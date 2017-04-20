@@ -301,7 +301,7 @@ final class Tokens extends \SplFixedArray
     public function offsetUnset($index)
     {
         if (!isset($this[$index])) {
-            throw new \OutOfBoundsException('Index %s is invalid or does not exist.');
+            throw new \OutOfBoundsException(sprintf('Index %s is invalid or does not exist.', $index));
         }
 
         $max = count($this) - 1;

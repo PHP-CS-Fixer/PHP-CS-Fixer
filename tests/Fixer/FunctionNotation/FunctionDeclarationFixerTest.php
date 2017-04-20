@@ -45,7 +45,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null, array $configuration = null)
     {
-        if (isset($configuration)) {
+        if (null !== $configuration) {
             $this->fixer->configure($configuration);
         }
 
@@ -345,7 +345,7 @@ foo#
      */
     public function test54($expected, $input = null, array $configuration = null)
     {
-        if (isset($configuration)) {
+        if (null !== $configuration) {
             $this->fixer->configure($configuration);
         }
 
@@ -393,7 +393,7 @@ foo#
      */
     public function test70($expected, $input = null, array $configuration = null)
     {
-        if (isset($configuration)) {
+        if (null !== $configuration) {
             $this->fixer->configure($configuration);
         }
 

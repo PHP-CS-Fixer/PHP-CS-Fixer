@@ -22,7 +22,7 @@ final class IntegrationCase
     /**
      * @var array
      */
-    private $config = array();
+    private $config;
 
     /**
      * @var string
@@ -44,7 +44,7 @@ final class IntegrationCase
      *
      * @var array
      */
-    private $requirements = array();
+    private $requirements;
 
     /**
      * @var RuleSet
@@ -56,7 +56,7 @@ final class IntegrationCase
      *
      * @var array
      */
-    private $settings = array();
+    private $settings;
 
     /**
      * @var string

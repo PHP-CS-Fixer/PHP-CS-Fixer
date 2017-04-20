@@ -138,7 +138,10 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $handler->write($cache);
 
         $this->assertFileExists($file);
-        $this->assertSame($cache->toJson(), file_get_contents($file));
+
+        $actualCacheJson = file_get_contents($file);
+
+        $this->assertSame($cache->toJson(), $actualCacheJson);
     }
 
     /**
