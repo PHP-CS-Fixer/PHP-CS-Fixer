@@ -161,7 +161,7 @@ use function CCC\AA;
         foreach ($namespacesImports as $uses) {
             $usesOrder[] = $this->getNewOrder(array_reverse($uses), $tokens);
         }
-        $usesOrder = call_user_func_array('array_replace', $usesOrder);
+        $usesOrder = array_replace(...$usesOrder);
 
         $usesOrder = array_reverse($usesOrder, true);
         $mapStartToEnd = [];

@@ -60,7 +60,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         foreach (self::$loops as $loop) {
             $types[] = (array) $loop['lookupTokens'];
         }
-        $types = call_user_func_array('array_merge', $types);
+        $types = array_merge(...$types);
 
         return $tokens->isAnyTokenKindsFound($types);
     }

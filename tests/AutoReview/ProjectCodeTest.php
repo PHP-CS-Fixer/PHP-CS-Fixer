@@ -126,7 +126,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         );
 
         if (count($allowedMethods)) {
-            $allowedMethods = array_unique(call_user_func_array('array_merge', $allowedMethods));
+            $allowedMethods = array_unique(array_merge(...array_values($allowedMethods)));
         }
 
         $allowedMethods[] = '__construct';
