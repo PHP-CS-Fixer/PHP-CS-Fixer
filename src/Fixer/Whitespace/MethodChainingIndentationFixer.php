@@ -125,7 +125,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     /**
      * @param Token $token
      *
-     * @return string|bool
+     * @return string|null
      */
     private function getLineBreak(Token $token)
     {
