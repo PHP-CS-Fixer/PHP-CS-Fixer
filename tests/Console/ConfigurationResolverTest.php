@@ -1031,7 +1031,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     {
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('diff' => $differConfig),
+            ['diff' => $differConfig],
             ''
         );
 
@@ -1040,36 +1040,36 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function provideDifferCases()
     {
-        return array(
-            array(
-                '\PhpCsFixer\Differ\NullDiffer',
+        return [
+            [
+                \PhpCsFixer\Differ\NullDiffer::class,
                 false,
-            ),
-            array(
-                '\PhpCsFixer\Differ\SebastianBergmannDiffer',
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
                 true,
-            ),
-            array(
-                '\PhpCsFixer\Differ\SebastianBergmannDiffer',
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
                 'sbd',
-            ),
-            array(
-                '\PhpCsFixer\Differ\SebastianBergmannShortDiffer',
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannShortDiffer::class,
                 'sbd-short',
-            ),
-        );
+            ],
+        ];
     }
 
     public function testUnknownDiffConfiguration()
     {
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('diff' => '_unknown_'),
+            ['diff' => '_unknown_'],
             ''
         );
 
         $this->setExpectedExceptionRegExp(
-            '\PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
             '#^Differ must be "sbd" or "sbd-short", got "_unknown_"\.$#'
         );
 
