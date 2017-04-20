@@ -1658,6 +1658,30 @@ use function some\a\{fn_a, fn_b};
 ',
                 array(OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION),
             ),
+            array(
+                '<?php
+use A\B;
+use some\a\{  ClassA as A,ClassB, ClassC};
+use const some\a\{ConstA,ConstC,ConstB};
+use function some\a\{fn_a,  fn_b,fn_c   };
+',
+                '<?php
+use some\a\{  ClassB,ClassC, ClassA as A};
+use function some\a\{fn_c,  fn_a,fn_b   };
+use A\B;
+use const some\a\{ConstA,ConstB,ConstC};
+',
+            ),
+            array(
+                '<?php
+use Foo\Bar\Baz, Foo\Bir;
+use Foo\Bar\{ClassA,ClassB, ClassC};
+',
+                '<?php
+use Foo\Bar\Baz, Foo\Bir;
+use Foo\Bar\{ClassA, ClassB, ClassC};
+',
+            ),
         );
     }
 }
