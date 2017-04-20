@@ -813,7 +813,7 @@ class Tokens extends \SplFixedArray
         $this->setSize($oldSize + $itemsCnt);
 
         for ($i = $oldSize + $itemsCnt - 1; $i >= $index; --$i) {
-            $this[$i] = isset($this[$i - $itemsCnt]) ? $this[$i - $itemsCnt] : new Token('');
+            $this[$i] = $this->offsetExists($i - $itemsCnt) ? $this[$i - $itemsCnt] : new Token('');
         }
 
         for ($i = 0; $i < $itemsCnt; ++$i) {
