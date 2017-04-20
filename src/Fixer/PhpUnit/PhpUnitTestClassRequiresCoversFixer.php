@@ -64,6 +64,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $phpUnitIndicator = new PhpUnitIndicator();
+
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if (!$tokens[$index]->isGivenKind(T_CLASS)) {
                 continue;
