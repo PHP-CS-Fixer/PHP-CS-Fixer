@@ -259,6 +259,7 @@ final class FixerFactory
     {
         static $conflictMap = array(
             'no_blank_lines_before_namespace' => array('single_blank_line_before_namespace'),
+            'no_short_echo_tag' => array('opening_tag_plus_echo_to_short_echo_tag'),
         );
 
         $fixerName = $fixer->getName();

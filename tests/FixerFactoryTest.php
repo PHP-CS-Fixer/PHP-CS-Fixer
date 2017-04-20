@@ -223,6 +223,8 @@ final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
         return array(
             array(new RuleSet(array('no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true))),
             array(new RuleSet(array('single_blank_line_before_namespace' => true, 'no_blank_lines_before_namespace' => true))),
+            array(new RuleSet(array('no_short_echo_tag' => true, 'opening_tag_plus_echo_to_short_echo_tag' => true))),
+            array(new RuleSet(array('opening_tag_plus_echo_to_short_echo_tag' => true, 'no_short_echo_tag' => true))),
         );
     }
 
