@@ -822,7 +822,8 @@ Choose from the list of available rules:
 
 * **php_unit_test_class_requires_covers**
 
-  PHPUnit test class requires any of ``covers*`` annotation.
+  Adds a default ``@coversNothing`` annotation to PHPUnit test classes that
+  have no ``@covers*`` annotation.
 
 * **phpdoc_add_missing_param_annotation**
 

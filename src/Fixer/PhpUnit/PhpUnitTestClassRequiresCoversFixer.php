@@ -33,7 +33,7 @@ final class PhpUnitTestClassRequiresCoversFixer extends AbstractFixer implements
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHPUnit test class requires any of `covers*` annotation.',
+            'Adds a default `@coversNothing` annotation to PHPUnit test classes that have no `@covers*` annotation.',
             array(
                 new CodeSample(
 '<?php
