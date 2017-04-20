@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-23T17:19:37Z
+
+With appveyor up again this should be all green.
+This is RTM IMHO
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T14:48:32Z
+
+could you show example before and after please ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T19:24:52Z
+
+I have changed base branch to 2.2
+
+please rebase
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-20T10:09:23Z
+
+Travis is sad
