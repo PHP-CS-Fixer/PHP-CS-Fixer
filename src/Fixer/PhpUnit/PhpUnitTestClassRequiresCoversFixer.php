@@ -74,7 +74,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            $index = $tokens[$prevIndex]->isGivenKind(array(T_FINAL, T_ABSTRACT)) ? $prevIndex : $index;
+            $index = $tokens[$prevIndex]->isGivenKind(T_FINAL) ? $prevIndex : $index;
 
             $indent = $tokens[$index - 1]->isGivenKind(T_WHITESPACE)
                 ? (
