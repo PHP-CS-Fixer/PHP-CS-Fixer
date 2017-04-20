@@ -107,7 +107,6 @@ final class ConfigurationResolver
         'cache-file' => null,
         'config' => null,
         'diff' => null,
-        'differ' => null,
         'dry-run' => null,
         'format' => null,
         'path' => array(),
