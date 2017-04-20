@@ -22,22 +22,22 @@ final class ReportSummary
     /**
      * @var bool
      */
-    private $addAppliedFixers = false;
+    private $addAppliedFixers;
 
     /**
      * @var array
      */
-    private $changed = array();
+    private $changed;
 
     /**
      * @var bool
      */
-    private $isDecoratedOutput = false;
+    private $isDecoratedOutput;
 
     /**
      * @var bool
      */
-    private $isDryRun = false;
+    private $isDryRun;
 
     /**
      * @var int

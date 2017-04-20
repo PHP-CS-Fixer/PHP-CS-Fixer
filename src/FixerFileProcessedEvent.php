@@ -41,7 +41,7 @@ final class FixerFileProcessedEvent extends Event
      *
      * @var int
      */
-    private $status = self::STATUS_UNKNOWN;
+    private $status;
 
     /**
      * @param int $status
