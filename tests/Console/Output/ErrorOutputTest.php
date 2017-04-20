@@ -39,7 +39,7 @@ final class ErrorOutputTest extends \PHPUnit_Framework_TestCase
     {
         $source = $error->getSource();
 
-        $output = new StreamOutput(fopen('php://memory', 'w', false));
+        $output = new StreamOutput(fopen('php://memory', 'bw', false));
         $output->setDecorated(false);
         $output->setVerbosity($verbosityLevel);
 

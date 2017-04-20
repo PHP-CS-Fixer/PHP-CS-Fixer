@@ -241,7 +241,7 @@ class Token
      */
     public function getName()
     {
-        if (!isset($this->id)) {
+        if (null === $this->id) {
             return null;
         }
 
