@@ -85,7 +85,7 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         static $escapeChar = null;
 
         if (null === $escapeChar) {
-            $escapeChar = substr(ProcessUtils::escapeArgument('x'), 0, 1);
+            $escapeChar = ProcessUtils::escapeArgument('x')[0];
         }
 
         if ($usedEscapeChar === $escapeChar) {
