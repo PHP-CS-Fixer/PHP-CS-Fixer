@@ -44,6 +44,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         'PhpCsFixer\Differ\DiffConsoleFormatter',
         'PhpCsFixer\Differ\NullDiffer',
         'PhpCsFixer\Differ\SebastianBergmannDiffer',
+        'PhpCsFixer\Differ\SebastianBergmannShortDiffer',
         'PhpCsFixer\Doctrine\Annotation\Token',
         'PhpCsFixer\Doctrine\Annotation\Tokens',
         'PhpCsFixer\FileRemoval',
