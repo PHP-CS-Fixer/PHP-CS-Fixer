@@ -79,7 +79,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $indent = $tokens[$index - 1]->isGivenKind(T_WHITESPACE)
                 ? (
                     false !== strpos($tokens[$index - 1]->getContent(), "\n")
-                    ? preg_replace('/^.*\v*/', '', $tokens[$index - 1]->getContent())
+                    ? preg_replace('/^.*\R*/', '', $tokens[$index - 1]->getContent())
                     : $tokens[$index - 1]->getContent()
                 )
                 : '';
