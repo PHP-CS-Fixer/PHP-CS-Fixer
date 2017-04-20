@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -283,6 +284,182 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testInvalidConfigNestedSets()
+    {
+        $this->setExpectedExceptionRegExp(
+            '\UnexpectedValueException',
+            '#^Nested rule set "@PSR1" configuration must be a boolean\.$#'
+        );
+
+        new RuleSet(
+            array('@PSR1' => array('@PSR2' => 'no'))
+        );
+    }
+
+    public function testGetSetDefinitionNames()
+    {
+        $ruleSet = $this->createRuleSetToTestWith(array());
+
+        $this->assertSame(
+            array_keys(self::getRuleSetDefinitionsToTestWith()),
+            $ruleSet->getSetDefinitionNames()
+        );
+    }
+
+    /**
+     * @param array $expected
+     * @param array $rules
+     *
+     * @dataProvider provideResolveRulesCases
+     */
+    public function testResolveRules(array $expected, array $rules)
+    {
+        $ruleSet = $this->createRuleSetToTestWith($rules);
+
+        $this->assertSameRules($expected, $ruleSet->getRules());
+    }
+
+    public function provideResolveRulesCases()
+    {
+        return array(
+            '@Foo + C\' -D' => array(
+                array('A' => true, 'B' => true, 'C' => 56),
+                array('@Foo' => true, 'C' => 56, 'D' => false),
+            ),
+            '@Foo + @Bar' => array(
+                array('A' => true, 'B' => true, 'D' => 34, 'E' => true),
+                array('@Foo' => true, '@Bar' => true),
+            ),
+            '@Foo - @Bar' => array(
+                array('B' => true),
+                array('@Foo' => true, '@Bar' => false),
+            ),
+            '@A - @E (set in set)' => array(
+                array('AA' => true), // 'AB' => false, 'AC' => false
+                array('@A' => true, '@E' => false),
+            ),
+            '@A + @E (set in set)' => array(
+                array('AA' => true, 'AB' => '_AB', 'AC' => 'b', 'Z' => true),
+                array('@A' => true, '@E' => true),
+            ),
+            '@E + @A (set in set) + rule override' => array(
+                array('AC' => 'd', 'AB' => true, 'Z' => true, 'AA' => true),
+                array('@E' => true, '@A' => true, 'AC' => 'd'),
+            ),
+            'nest single set' => array(
+                array('AC' => 'b', 'AB' => '_AB', 'Z' => 'E'),
+                array('@F' => true),
+            ),
+            'Set reconfigure rule in other set, reconfigure rule.' => array(
+                array(
+                    'AA' => true,
+                    'AB' => true,
+                    'AC' => 'abc',
+                ),
+                array(
+                    '@A' => true,
+                    '@D' => true,
+                    'AC' => 'abc',
+                ),
+            ),
+            'Set reconfigure rule in other set.' => array(
+                array(
+                    'AA' => true,
+                    'AB' => true,
+                    'AC' => 'b',
+                ),
+                array(
+                    '@A' => true,
+                    '@D' => true,
+                ),
+            ),
+            'Set minus two sets minus rule' => array(
+                array(
+                    'AB' => true,
+                ),
+                array(
+                    '@A' => true,
+                    '@B' => false,
+                    '@C' => false,
+                    'AC' => false,
+                ),
+            ),
+            'Set minus two sets' => array(
+                array(
+                    'AB' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                    '@B' => false,
+                    '@C' => false,
+                ),
+            ),
+            'Set minus rule test.' => array(
+                array(
+                    'AA' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                    'AB' => false,
+                ),
+            ),
+            'Set minus set test.' => array(
+                array(
+                    'AB' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                    '@B' => false,
+                ),
+            ),
+            'Set to rules test.' => array(
+                array(
+                    'AA' => true,
+                    'AB' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                ),
+            ),
+            '@A - @C' => array(
+                array(
+                    'AB' => true,
+                    'AC' => 'a',
+                ),
+                array(
+                    '@A' => true,
+                    '@C' => false,
+                ),
+            ),
+            '@A - @D' => array(
+                array(
+                    'AA' => true,
+                    'AB' => true,
+                ),
+                array(
+                    '@A' => true,
+                    '@D' => false,
+                ),
+            ),
+        );
+    }
+
+    public function testGetMissingRuleConfiguration()
+    {
+        $ruleSet = new RuleSet();
+
+        $this->setExpectedExceptionRegExp(
+            'InvalidArgumentException',
+            '#^Rule "_not_exists" is not in the set\.$#'
+        );
+
+        $ruleSet->getRuleConfiguration('_not_exists');
+    }
+
     private function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
@@ -329,5 +506,49 @@ final class RuleSetTest extends \PHPUnit_Framework_TestCase
         }
 
         return true;
+    }
+
+    private function createRuleSetToTestWith(array $rules)
+    {
+        $ruleSet = new RuleSet();
+        $reflection = new AccessibleObject($ruleSet);
+        $reflection->setDefinitions = self::getRuleSetDefinitionsToTestWith();
+        $reflection->set = $rules;
+        $reflection->resolveSet();
+
+        return $ruleSet;
+    }
+
+    private static function getRuleSetDefinitionsToTestWith()
+    {
+        static $testSet = array(
+            '@A' => array(
+                'AA' => true,
+                'AB' => true,
+                'AC' => 'a',
+            ),
+            '@B' => array(
+                'AA' => true,
+            ),
+            '@C' => array(
+                'AA' => false,
+            ),
+            '@D' => array(
+                'AC' => 'b',
+            ),
+            '@E' => array(
+                '@D' => true,
+                'AB' => '_AB',
+                'Z' => true,
+            ),
+            '@F' => array(
+                '@E' => true,
+                'Z' => 'E',
+            ),
+            '@Foo' => array('A' => true, 'B' => true, 'C' => true, 'D' => 12),
+            '@Bar' => array('A' => true, 'C' => false, 'D' => 34, 'E' => true, 'F' => false),
+        );
+
+        return $testSet;
     }
 }
