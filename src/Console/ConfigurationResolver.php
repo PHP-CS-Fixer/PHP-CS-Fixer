@@ -24,6 +24,7 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\SebastianBergmannShortDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -260,11 +261,11 @@ final class ConfigurationResolver
 
                     break;
                 case 'sbd':
-                    $this->differ = new SebastianBergmannDiffer(true);
+                    $this->differ = new SebastianBergmannDiffer();
 
                     break;
                 case 'sbd-short':
-                    $this->differ = new SebastianBergmannDiffer(false);
+                    $this->differ = new SebastianBergmannShortDiffer();
 
                     break;
                 default:

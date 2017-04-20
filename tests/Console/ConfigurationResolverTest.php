@@ -1020,8 +1020,8 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $expected
-     * @param mixed  $differConfig
+     * @param string      $expected
+     * @param string|bool $differConfig
      *
      * @dataProvider provideDifferCases
      */
@@ -1052,7 +1052,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 'sbd',
             ),
             array(
-                '\PhpCsFixer\Differ\SebastianBergmannDiffer',
+                '\PhpCsFixer\Differ\SebastianBergmannShortDiffer',
                 'sbd-short',
             ),
         );

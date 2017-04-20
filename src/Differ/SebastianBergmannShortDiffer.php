@@ -15,9 +15,9 @@ namespace PhpCsFixer\Differ;
 use SebastianBergmann\Diff\Differ;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  */
-final class SebastianBergmannDiffer implements DifferInterface
+final class SebastianBergmannShortDiffer implements DifferInterface
 {
     /**
      * @var Differ
@@ -26,7 +26,7 @@ final class SebastianBergmannDiffer implements DifferInterface
 
     public function __construct()
     {
-        $this->differ = new Differ();
+        $this->differ = new Differ("--- Original\n+++ New\n", false);
     }
 
     /**
