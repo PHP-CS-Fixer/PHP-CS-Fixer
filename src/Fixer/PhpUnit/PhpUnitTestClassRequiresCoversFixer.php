@@ -77,11 +77,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $index = $tokens[$prevIndex]->isGivenKind(T_FINAL) ? $prevIndex : $index;
 
             $indent = $tokens[$index - 1]->isGivenKind(T_WHITESPACE)
-                ? (
-                    false !== strpos($tokens[$index - 1]->getContent(), "\n")
-                    ? preg_replace('/^.*\R*/', '', $tokens[$index - 1]->getContent())
-                    : $tokens[$index - 1]->getContent()
-                )
+                ? preg_replace('/^.*\R*/', '', $tokens[$index - 1]->getContent())
                 : '';
 
             $prevIndex = $tokens->getPrevNonWhitespace($index);
