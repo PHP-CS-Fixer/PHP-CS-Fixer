@@ -1,0 +1,249 @@
+---------------------------------------------------------------------------
+
+by kalessil at 2017-02-27T18:49:06Z
+
+Perhaps v3.0.0 would fit more:
+- then it would be possible to go directly with PHP7 (jumping from PHP 5.3 to 5.6/7.0 is not really makes difference).
+- 2.x branch would still serve needs of slowly migrating legacy systems.
+
+In general, the symfony strategy for migrating to PHP7 would work here as well.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-02-27T18:49:26Z
+
+Kill it with fire.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-27T20:18:39Z
+
+I tend to agree with @kalessil here: I think bumping PHP version requirement is not a breaking change on its own but as we stop testing versions that are currently supported, we might introduce breaking changes later. Composer will help prevent this but it would still be a problem for people that install the tool without Composer and expect it to always work on the platform they use, at least until next major version.
+
+So 👍 for bumping PHP requirement to whatever version we decide, as long as we bump PHP-CS-Fixer to a new major version as well.
+
+Regarding PHP version, I'd vote 7.0. Or at least 5.6 as it is the lowest supported version.
+
+---------------------------------------------------------------------------
+
+by kalessil at 2017-02-27T20:35:11Z
+
++1 once more for PHP7, I'll gladly support migrating language level to PHP7 once the way back is cut.
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-02-27T20:37:30Z
+
+[selfoss](https://github.com/SSilence/selfoss) targets PHP 5.4 (still supported on [Debian](https://wiki.debian.org/PHP#Available_versions)) but since PHP-CS-Fixer is a dev dependency, only run on Travis and dev machines, it should not be a problem. We use [php lint](https://github.com/JakubOnderka/PHP-Parallel-Lint) for checking the syntax on older PHP versions anyway.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-02-27T21:14:59Z
+
+> We use php lint for checking the syntax on older PHP versions anyway.
+
+PHP Lint doesn't do anything at all the same as PHP-CS-Fixer. PHP Lint just checks if the files are valid PHP files, and that's it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-02-27T21:16:37Z
+
+Infact, on php 7, PHP-CS-Fixer actually allows files that fail php linting through without error in some cases. For example, cases where a class property is defined twice. PHP's native linter would flag that normally.
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-02-27T21:39:35Z
+
+@GrahamCampbell PHP-CS-Fixer can warn about some syntax features not supported by older versions. For catching wider range of issues, one should of course use both tools.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-02-27T22:22:39Z
+
+btw, if 7, then 7.1, cause why not, huh?
+
+the benefits of 7, like strict types or primitives used for typehinting could be automatically applied on codebase and we could release "version for php7"  as a phar file easily (without changing the code distributed by composer or git clone).
+we already do some of it on SCA job at Travis, just not build result of it to phar file.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-01T10:45:55Z
+
+Bumping to 5.5.9 for 2.3 sounds good to me. People can lock to version 2.2.* if they can't meet the new PHP requirement. Only thing I wonder, would we keep supporting 2.2 with bug fixes along side the 2.2+ branch?
+
+I'd vote the highest stable PHP major+minor version available when releasing 3.x.
+
+(hmm.. another thing to think about is the the `selfupdate` command which doesn't check PHP version when updating, still :+1: for this though)
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-01T18:33:06Z
+
+I'd go with PHP 7 for next release :+1: , because [promoting 5.5- is](http://php.net/supported-versions.php) promoting unknown security issues.
+
+This would show people it's normal to upgrade to newer PHP.
+
+Also quoting @Seldaek from https://seld.be/notes/php-versions-stats-2016-2-edition :
+
+![update-reqs](https://cloud.githubusercontent.com/assets/924196/23474927/d96f6cbc-feb5-11e6-9b71-00adbc569b63.png)
+
+---------------------------------------------------------------------------
+
+by jtojnar at 2017-03-01T22:18:44Z
+
+@TomasVotruba In this case, it is okay to drop PHP 5 because PHP-CS-Fixer is intended for developers; PHP 5.4 is unfortunately far from being dead. It is [available](https://wiki.debian.org/PHP#Available_versions) on Debian Wheezy which runs on many shared web hostings. Wheezy is supported until [May 2018](https://wiki.debian.org/LTS) and the package was last updated at the [beginning of February](https://packages.qa.debian.org/p/php5/news/20170207T155036Z.html).
+
+Because of the cheap shared hostings many people cannot actually upgrade and we need to maintain backports like https://github.com/fossar/twitteroauth-php54
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-01T22:29:59Z
+
+@jtojnar I don't talk hosting, I talk about the technology - see the link provided.
+
+Also, hosting argument is irrelevant argument, because **they are money oriented**. They will always focus on mainstream and take in account they upgrade costs.
+
+**It's our responsibility to push them further** so common developer doesn't have to be stuck on deprecated technologies and so they don't slow down open-source maturity cyclus.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-19T19:45:54Z
+
+Thanks for the feedback.
+I bumped required version of PHP to 5.6+ for line 2.x.
+Bumping to 7+ will be done during releasing 3.0 (due to introducing PHP7 typehinting - that breaks BC).
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-19T20:20:39Z
+
+@keradus Thanks for bumping to PHP 5.6 :+1:
+
+Let me know when you want to upgrade to PHP 7. I did it in few packages now, getting quite handy so I can help you.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-19T20:30:12Z
+
+Sorry, I didn't get second part.
+Any changes for PHP requirements will be noticed in changelog and composer requirements.
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-19T20:35:40Z
+
+@keradus I meant: Ping me, when you need to upgrade to PHP 7. I can do it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-19T20:42:08Z
+
+take a look at our travis SCA task, we even have some fixers that automates the work ;)
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-19T20:44:56Z
+
+SCA task? Could you share a link?
+
+I have few sniffs that do the work :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-19T20:46:28Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/.travis.yml#L14
+
+if those sniffs are fixers of feel free to share them if they are not duplicating existing ones
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-19T21:06:29Z
+
+E.g. this one: https://github.com/slevomat/coding-standard#slevomatcodingstandardtypehintstypehintdeclaration-
+
+I [used just 2 checkers to upgrade ApiGen](https://github.com/ApiGen/ApiGen/blob/162e508f7ddf2aa480c7c0815640eafe6e9c0a42/easy-coding-standard.neon). Very easy and no manual work :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-19T21:14:00Z
+
+nah, we like to have rules implemented as fixer first, then apply it
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-19T21:16:19Z
+
+It works the same on ECS.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-19T21:17:29Z
+
+ECS Auto Ltd ?
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-19T23:11:22Z
+
+EasyCodingStandard, [check the link](https://github.com/ApiGen/ApiGen/blob/162e508f7ddf2aa480c7c0815640eafe6e9c0a42/easy-coding-standard.neon) I sent you above.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-19T23:21:05Z
+
+so, not related
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-19T23:32:02Z
+
+It works on any code.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-19T23:50:38Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2568#issuecomment-287648073
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2017-03-19T23:52:02Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2568#issuecomment-287645428
+
+---------------------------------------------------------------------------
+
+by kalessil at 2017-03-21T10:43:00Z
+
+A couple more PHP 5.6 tweaks can be applied (I'm on #2534, so no PR this time):
+
+[PHP_5_6_tweaks.patch.txt](https://github.com/FriendsOfPHP/PHP-CS-Fixer/files/857805/PHP_5_6_tweaks.patch.txt)
++
+`call_user_func_array(array($tokens, 'findSequence'), $params)` -> `$tokens->findSequence(...$params)'`
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-21T12:22:46Z
+
+Hi, thanks for patch. Good start, but it doesn't cover all places of syntax sugar that could be used (like `::class` is nice, but should be applied globally)
+
+---------------------------------------------------------------------------
+
+by kalessil at 2017-03-21T12:49:34Z
+
+Right, I didn't touch tests - it's plenty of `::class` cases + 4 Elvis operators there.
+
+EDIT: for tests, I can make a PR but first another issue...
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-21T17:19:17Z
+
+please don't focus on sugar syntax for now, the issue you mentioned will be time spent better.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-03T19:47:08Z
+
+this looks good to me, lets get this rebase and merged, after that the syntax sugar will come in later :)
