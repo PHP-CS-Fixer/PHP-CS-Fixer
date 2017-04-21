@@ -36,7 +36,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.2.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -182,7 +182,7 @@ A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
 Optionally the ``--diff`` can be used to specify the diff. output format; ``--diff=sbd`` (default) or ``--diff=sbd-short``.
 
-The ``--allow-risky`` option allows you to set whether risky rules may run. Default value is taken from config file.
+The ``--allow-risky`` option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
 The ``--stop-on-violation`` flag stops execution upon first file that needs to be fixed.
@@ -830,6 +830,11 @@ Choose from the list of available rules:
     ``['assertAttributeEquals', 'assertAttributeNotEquals', 'assertEquals',
     'assertNotEquals']``
 
+* **php_unit_test_class_requires_covers**
+
+  Adds a default ``@coversNothing`` annotation to PHPUnit test classes that
+  have no ``@covers*`` annotation.
+
 * **phpdoc_add_missing_param_annotation**
 
   Phpdoc should contain @param for all params.
@@ -1190,7 +1195,7 @@ experimental.
         ->setLineEnding("\r\n")
     ;
 
-By using ``--using-cache`` option with yes or no you can set if the caching
+By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
 mechanism should be used.
 
 Caching

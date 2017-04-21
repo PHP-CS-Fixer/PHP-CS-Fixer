@@ -691,56 +691,24 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($resolver->isDryRun());
     }
 
-    public function testResolveUsingCacheWithPositiveConfigAndPositiveOption()
+    /**
+     * @param bool             $expected
+     * @param bool             $configValue
+     * @param bool|string|null $passed
+     *
+     * @dataProvider getResolveBooleanOptions
+     */
+    public function testResolveUsingCacheWithConfigOption($expected, $configValue, $passed)
     {
-        $this->config->setUsingCache(true);
+        $this->config->setUsingCache($configValue);
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            ['using-cache' => 'yes'],
+            ['using-cache' => $passed],
             ''
         );
 
-        $this->assertTrue($resolver->getUsingCache());
-    }
-
-    public function testResolveUsingCacheWithPositiveConfigAndNegativeOption()
-    {
-        $this->config->setUsingCache(true);
-
-        $resolver = new ConfigurationResolver(
-            $this->config,
-            ['using-cache' => 'no'],
-            ''
-        );
-
-        $this->assertFalse($resolver->getUsingCache());
-    }
-
-    public function testResolveUsingCacheWithNegativeConfigAndPositiveOption()
-    {
-        $this->config->setUsingCache(false);
-
-        $resolver = new ConfigurationResolver(
-            $this->config,
-            ['using-cache' => 'yes'],
-            ''
-        );
-
-        $this->assertTrue($resolver->getUsingCache());
-    }
-
-    public function testResolveUsingCacheWithNegativeConfigAndNegativeOption()
-    {
-        $this->config->setUsingCache(false);
-
-        $resolver = new ConfigurationResolver(
-            $this->config,
-            ['using-cache' => 'no'],
-            ''
-        );
-
-        $this->assertFalse($resolver->getUsingCache());
+        $this->assertSame($expected, $resolver->getUsingCache());
     }
 
     public function testResolveUsingCacheWithPositiveConfigAndNoOption()
@@ -828,30 +796,24 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($optionCacheFile, $resolver->getCacheFile());
     }
 
-    public function testResolveAllowRiskyWithPositiveConfigAndPositiveOption()
+    /**
+     * @param bool             $expected
+     * @param bool             $configValue
+     * @param bool|string|null $passed
+     *
+     * @dataProvider getResolveBooleanOptions
+     */
+    public function testResolveAllowRiskyWithConfigOption($expected, $configValue, $passed)
     {
-        $this->config->setRiskyAllowed(true);
+        $this->config->setRiskyAllowed($configValue);
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            ['allow-risky' => 'yes'],
+            ['allow-risky' => $passed],
             ''
         );
 
-        $this->assertTrue($resolver->getRiskyAllowed());
-    }
-
-    public function testResolveAllowRiskyWithPositiveConfigAndNegativeOption()
-    {
-        $this->config->setRiskyAllowed(true);
-
-        $resolver = new ConfigurationResolver(
-            $this->config,
-            ['allow-risky' => 'no'],
-            ''
-        );
-
-        $this->assertFalse($resolver->getRiskyAllowed());
+        $this->assertSame($expected, $resolver->getRiskyAllowed());
     }
 
     public function testResolveAllowRiskyWithNegativeConfigAndPositiveOption()
@@ -1091,6 +1053,37 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($resolver->getUsingCache());
         $this->assertNull($resolver->getCacheFile());
         $this->assertSame('xml', $resolver->getReporter()->getFormat());
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Expected "yes" or "no" for option "allow-risky", other values are deprecated and support will be removed in 3.0. Got "yes please", this implicitly set the option to "false".
+     */
+    public function testDeprecationOfPassingOtherThanNoOrYes()
+    {
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            ['allow-risky' => 'yes please'],
+            ''
+        );
+
+        $this->assertFalse($resolver->getRiskyAllowed());
+    }
+
+    public function getResolveBooleanOptions()
+    {
+        return [
+            [true, true, 'yes'],
+            [true, true, true],
+            [true, false, 'yes'],
+            [true, false, true],
+            [false, true, 'no'],
+            [false, true, false],
+            [false, false, 'no'],
+            [false, false, false],
+            [true, true, null],
+            [false, false, null],
+        ];
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')
