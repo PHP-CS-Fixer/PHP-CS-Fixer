@@ -34,7 +34,7 @@ final class PhpUnitTestClassRequiresCoversFixer extends AbstractFixer implements
     {
         return new FixerDefinition(
             'Adds a default `@coversNothing` annotation to PHPUnit test classes that have no `@covers*` annotation.',
-            array(
+            [
                 new CodeSample(
 '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
@@ -46,7 +46,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -97,19 +97,19 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $doc = new DocBlock($docContent);
 
                 // skip if already has annotation
-                if (!empty($doc->getAnnotationsOfType(array(
+                if (!empty($doc->getAnnotationsOfType([
                     'covers',
                     'coversDefaultClass',
                     'coversNothing',
-                )))) {
+                ]))) {
                     continue;
                 }
             } else {
                 $docIndex = $index;
-                $tokens->insertAt($docIndex, array(
-                    new Token(array(T_DOC_COMMENT, sprintf('/**%s%s */', $this->whitespacesConfig->getLineEnding(), $indent))),
-                    new Token(array(T_WHITESPACE, sprintf('%s%s', $this->whitespacesConfig->getLineEnding(), $indent))),
-                ));
+                $tokens->insertAt($docIndex, [
+                    new Token([T_DOC_COMMENT, sprintf('/**%s%s */', $this->whitespacesConfig->getLineEnding(), $indent)]),
+                    new Token([T_WHITESPACE, sprintf('%s%s', $this->whitespacesConfig->getLineEnding(), $indent)]),
+                ]);
 
                 if (!$tokens[$docIndex - 1]->isGivenKind(T_WHITESPACE)) {
                     $extraNewLines = $this->whitespacesConfig->getLineEnding();
@@ -118,9 +118,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                         $extraNewLines .= $this->whitespacesConfig->getLineEnding();
                     }
 
-                    $tokens->insertAt($docIndex, array(
-                        new Token(array(T_WHITESPACE, $extraNewLines.$indent)),
-                    ));
+                    $tokens->insertAt($docIndex, [
+                        new Token([T_WHITESPACE, $extraNewLines.$indent]),
+                    ]);
                     ++$docIndex;
                 }
 
@@ -132,13 +132,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $lines,
                 count($lines) - 1,
                 0,
-                array(
+                [
                     new Line(sprintf(
                         '%s * @coversNothing%s',
                         $indent,
                         $this->whitespacesConfig->getLineEnding()
                     )),
-                )
+                ]
             );
 
             $tokens[$docIndex]->setContent(implode('', $lines));

@@ -36,7 +36,7 @@ final class PhpUnitIndicator
             return true;
         }
 
-        $braceIndex = $tokens->getNextTokenOfKind($index, array('{'));
+        $braceIndex = $tokens->getNextTokenOfKind($index, ['{']);
         $maybeParentSubNameToken = $tokens[$tokens->getPrevMeaningfulToken($braceIndex)];
 
         if (

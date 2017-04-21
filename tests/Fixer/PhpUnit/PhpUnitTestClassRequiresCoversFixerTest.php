@@ -36,24 +36,24 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
 
     public function provideFixCases()
     {
-        return array(
-            'already with annotation: @covers' => array(
+        return [
+            'already with annotation: @covers' => [
                 '<?php
                     /**
                      * @covers Foo
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'already with annotation: @coversDefaultClass' => array(
+            ],
+            'already with annotation: @coversDefaultClass' => [
                 '<?php
                     /**
                      * @coversDefaultClass
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'without docblock #1' => array(
+            ],
+            'without docblock #1' => [
                 '<?php
 
                     /**
@@ -65,8 +65,8 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
 
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'without docblock #2 (class is final)' => array(
+            ],
+            'without docblock #2 (class is final)' => [
                 '<?php
 
                     /**
@@ -78,13 +78,13 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
 
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'without docblock #2 (class is abstract)' => array(
+            ],
+            'without docblock #2 (class is abstract)' => [
                 '<?php
                     abstract class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'with docblock but annotation is missing' => array(
+            ],
+            'with docblock but annotation is missing' => [
                 '<?php
 
                     /**
@@ -104,15 +104,15 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'with one-line docblock but annotation is missing' => array(
+            ],
+            'with one-line docblock but annotation is missing' => [
                 '<?php
 
                     /** Description. */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'with 2-lines docblock but annotation is missing #1' => array(
+            ],
+            'with 2-lines docblock but annotation is missing #1' => [
                 '<?php
 
                     /** Description.
@@ -126,8 +126,8 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'with 2-lines docblock but annotation is missing #2' => array(
+            ],
+            'with 2-lines docblock but annotation is missing #2' => [
                 '<?php
 
                     /**
@@ -141,8 +141,8 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      * Description. */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'with comment instead of docblock' => array(
+            ],
+            'with comment instead of docblock' => [
                 '<?php
                     /*
                      * @covers Foo
@@ -158,14 +158,14 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ),
-            'not a test class' => array(
+            ],
+            'not a test class' => [
                 '<?php
 
                     class Foo {}
                 ',
-            ),
-            'multiple classes in one file' => array(
+            ],
+            'multiple classes in one file' => [
                 '<?php /** */
 
                     use \PHPUnit\Framework\TestCase;
@@ -217,7 +217,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
 
                     class Baz4 extends TestCase {}
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }
