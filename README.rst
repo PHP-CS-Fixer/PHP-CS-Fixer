@@ -507,6 +507,16 @@ Choose from the list of available rules:
 
   Ensure there is no code on the same line as the PHP open tag.
 
+* **list_syntax**
+
+  List (``array`` destructuring) assignment should be declared using the
+  configured syntax. Requires PHP >= 7.1.
+
+  Configuration options:
+
+  - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short``
+    ``list`` syntax; defaults to ``'long'``
+
 * **lowercase_cast** [@Symfony]
 
   Cast should be written in lower case.
