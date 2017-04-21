@@ -830,6 +830,11 @@ Choose from the list of available rules:
     ``['assertAttributeEquals', 'assertAttributeNotEquals', 'assertEquals',
     'assertNotEquals']``
 
+* **php_unit_test_class_requires_covers**
+
+  Adds a default ``@coversNothing`` annotation to PHPUnit test classes that
+  have no ``@covers*`` annotation.
+
 * **phpdoc_add_missing_param_annotation**
 
   Phpdoc should contain @param for all params.

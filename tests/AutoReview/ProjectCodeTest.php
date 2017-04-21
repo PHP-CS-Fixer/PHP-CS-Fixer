@@ -54,6 +54,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
+        \PhpCsFixer\Indicator\PhpUnitIndicator::class,
         \PhpCsFixer\Linter\LintingException::class,
         \PhpCsFixer\Linter\ProcessLintingResult::class,
         \PhpCsFixer\Linter\TokenizerLintingResult::class,
