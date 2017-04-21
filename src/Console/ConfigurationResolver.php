@@ -442,10 +442,10 @@ final class ConfigurationResolver
     public function getRiskyAllowed()
     {
         if (null === $this->allowRisky) {
-            if (null !== $this->options['allow-risky']) {
-                $this->allowRisky = 'yes' === $this->options['allow-risky'];
-            } else {
+            if (null === $this->options['allow-risky']) {
                 $this->allowRisky = $this->getConfig()->getRiskyAllowed();
+            } else {
+                $this->allowRisky = $this->resolveOptionBooleanValue('allow-risky');
             }
         }
 
@@ -471,7 +471,7 @@ final class ConfigurationResolver
             if (null === $this->options['using-cache']) {
                 $this->usingCache = $this->getConfig()->getUsingCache();
             } else {
-                $this->usingCache = 'yes' === $this->options['using-cache'];
+                $this->usingCache = $this->resolveOptionBooleanValue('using-cache');
             }
         }
 
@@ -802,5 +802,37 @@ final class ConfigurationResolver
         }
 
         $this->options[$name] = $value;
+    }
+
+    /**
+     * @param string $optionName
+     *
+     * @return bool
+     */
+    private function resolveOptionBooleanValue($optionName)
+    {
+        $value = $this->options[$optionName];
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (!is_string($value)) {
+            throw new InvalidConfigurationException(sprintf('Expected boolean or string value for option "%s".', $optionName));
+        }
+
+        if ('yes' === $value) {
+            return true;
+        }
+
+        if ('no' === $value) {
+            return false;
+        }
+
+        @trigger_error(
+            sprintf('Expected "yes" or "no" for option "%s", other values are deprecated and support will be removed in 3.0. Got "%s", this implicitly set the option to "false".', $optionName, $value),
+            E_USER_DEPRECATED
+        );
+
+        return false;
     }
 }
