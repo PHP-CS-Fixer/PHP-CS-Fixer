@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-23T05:01:01Z
+
+please rebase.
+still WIP ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-24T08:40:36Z
+
+depends on https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2475
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-03T18:20:05Z
+
+While waiting for the test results, I'm happy to take review comments on this one as it should as good as done.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T19:05:36Z
+
+nope, Travis is sad
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-03T19:18:01Z
+
+ah yes, the test fail because of missing PHP version constraints.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T19:27:34Z
+
+still failing
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-18T07:56:24Z
+
+>fabbot.io — The rules contain unknown fixers (list_syntax).
+
+well yeah ^_^
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-21T06:16:05Z
+
+@SpacePossum please rebase
