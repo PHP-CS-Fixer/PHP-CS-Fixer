@@ -357,8 +357,15 @@ class Foo
                 if (1 === $nestLevel && $nestToken->equalsAny([';', '}', [T_COMMENT]])) {
                     $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
                     $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
+                    $prevNonWhitespaceNestIndex = $tokens->getPrevNonWhitespace($nestIndex);
+                    $prevNonWhitespaceNestToken = isset($tokens[$prevNonWhitespaceNestIndex]) ? $tokens[$prevNonWhitespaceNestIndex] : null;
 
                     if (
+                        (
+                            !$nestToken->isComment() ||
+                            !$nextNonWhitespaceNestToken->equalsAny(['[', '{', [CT::T_ARRAY_SQUARE_BRACE_OPEN]]) &&
+                            !$prevNonWhitespaceNestToken->equalsAny(['[', ',', [CT::T_ARRAY_SQUARE_BRACE_OPEN]])
+                        ) &&
                         // next Token is not a comment
                         (
                             !$nextNonWhitespaceNestToken->isComment() ||
@@ -406,6 +413,14 @@ class Foo
                             $whitespace = $nextWhitespace.$this->whitespacesConfig->getLineEnding().$indent;
 
                             if (!$nextNonWhitespaceNestToken->equals('}')) {
+                                $whitespace .= $this->whitespacesConfig->getIndent();
+                            }
+
+                            if (
+                                $nestToken->isComment() &&
+                                !$prevNonWhitespaceNestToken->equalsAny([';', '}', '{']) &&
+                                strpos($tokens[$nestIndex - 1]->getContent(), $this->whitespacesConfig->getLineEnding()) === false
+                            ) {
                                 $whitespace .= $this->whitespacesConfig->getIndent();
                             }
                         }
