@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T20:34:06Z
+
+cc @sstok, you have always asked for bumping it, I think it's good moment for doing this (bumping min PHP version)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-03T20:40:03Z
+
+yeah, lets go! :)    :+1:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-04T06:31:15Z
+
+Wouldn't `^2.8|^3.0` be better? As Symfony 3.0 is just Symfony 2.8 with deprecated code removed, if your code is compatible with 3.0, then it is automatically compatible with 2.8.
+
+Anyway, 👍 for idea. Should the code related to old versions of Symfony be dropped in this PR as well?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-04T06:42:52Z
+
+The removal of deprecated code in 3.0 is a good reason to jump to it :)
+It makes sure our code doesn't use deprecated SF code, but also that users of the code in this repo are.
+
+>Should the code related to old versions of Symfony be dropped in this PR as well?
+
+where needed yes, everything else can be done all in time
+
+(note to self; https://github.com/symfony/symfony/pull/17255 can now be used in the tests)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-04T06:47:44Z
+
+The test suite runs on 3.x so deprecated code from 2.x can't be used anyway. Removing the `^2.8` part of the constraint would force every side project to update to 3.x even if their code is compatible with 2.8. And I don't think keeping 2.8 would be a maintenance burden.
