@@ -27,11 +27,11 @@ final class ReadmeCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testIfReadmeFileIsCorrect()
     {
-        if (!class_exists('Symfony\Component\Console\Output\BufferedOutput')) {
+        if (!class_exists(\Symfony\Component\Console\Output\BufferedOutput::class)) {
             $this->markTestSkipped('Unsupported symfony/console version, Symfony\Component\Console\Output\BufferedOutput was added in 2.4.');
         }
 
-        $input = new ArrayInput(array('readme'));
+        $input = new ArrayInput(['readme']);
         $output = new BufferedOutput();
         $app = new Application();
 

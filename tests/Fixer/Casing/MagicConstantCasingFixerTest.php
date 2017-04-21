@@ -36,88 +36,52 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo __LINE__;',
                 '<?php echo __line__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __FILE__;',
                 '<?php echo __FILe__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __DIR__;',
                 '<?php echo __dIr__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __FUNCTION__;',
                 '<?php echo __fUncTiOn__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __CLASS__;',
                 '<?php echo __clasS__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __METHOD__;',
                 '<?php echo __mEthoD__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __NAMESPACE__;',
                 '<?php echo __namespace__;',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 5.4
-     * @dataProvider provideFixCases54
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixCases54()
-    {
-        return array(
-            array(
+            ],
+            [
                 '<?php echo __TRAIT__;',
                 '<?php echo __trait__;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo __TRAIT__;',
                 '<?php echo __trAIt__;',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 5.5
-     * @dataProvider provideFixCases55
-     */
-    public function testFix55($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixCases55()
-    {
-        return array(
-            array(
+            ],
+            [
                 '<?php echo Exception::class;',
                 '<?php echo Exception::CLASS;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo Exception::class;',
                 '<?php echo Exception::ClAss;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -134,8 +98,8 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases70()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 class Bar
                 {
@@ -145,7 +109,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \Bar::__line__;
                 }',
-            ),
-        );
+            ],
+        ];
     }
 }

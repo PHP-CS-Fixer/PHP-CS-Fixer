@@ -38,7 +38,7 @@ final class TagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $tag->getName());
 
         if ('other' === $expected) {
-            $this->setExpectedException('RuntimeException', 'Cannot set name on unknown tag');
+            $this->setExpectedException(\RuntimeException::class, 'Cannot set name on unknown tag');
         }
 
         $tag->setName($new);
@@ -48,18 +48,18 @@ final class TagTest extends \PHPUnit_Framework_TestCase
 
     public function provideNameCases()
     {
-        return array(
-            array('param', 'var', '     * @param Foo $foo'),
-            array('return', 'type', '*   @return            false'),
-            array('thRoWs', 'throws', '*@thRoWs \Exception'),
-            array('THROWSSS', 'throws', "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"),
-            array('other', 'foobar', ' *   @\Foo\Bar(baz = 123)'),
-            array('expectedException', 'baz', '     * @expectedException Exception'),
-            array('property-read', 'property-write', ' * @property-read integer $daysInMonth number of days in the given month'),
-            array('method', 'foo', ' * @method'),
-            array('method', 'hi', ' * @method string getString()'),
-            array('other', 'hello', ' * @method("GET")'),
-        );
+        return [
+            ['param', 'var', '     * @param Foo $foo'],
+            ['return', 'type', '*   @return            false'],
+            ['thRoWs', 'throws', '*@thRoWs \Exception'],
+            ['THROWSSS', 'throws', "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"],
+            ['other', 'foobar', ' *   @\Foo\Bar(baz = 123)'],
+            ['expectedException', 'baz', '     * @expectedException Exception'],
+            ['property-read', 'property-write', ' * @property-read integer $daysInMonth number of days in the given month'],
+            ['method', 'foo', ' * @method'],
+            ['method', 'hi', ' * @method string getString()'],
+            ['other', 'hello', ' * @method("GET")'],
+        ];
     }
 
     /**
@@ -77,18 +77,18 @@ final class TagTest extends \PHPUnit_Framework_TestCase
 
     public function provideValidCases()
     {
-        return array(
-            array(true, '     * @param Foo $foo'),
-            array(true, '*   @return            false'),
-            array(true, '*@throws \Exception'),
-            array(true, ' * @method'),
-            array(true, ' * @method string getString()'),
-            array(true, ' * @property-read integer $daysInMonth number of days in the given month'),
-            array(false, ' * @method("GET")'),
-            array(false, '*@thRoWs \InvalidArgumentException'),
-            array(false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"),
-            array(false, ' *   @\Foo\Bar(baz = 123)'),
-            array(false, '     * @expectedException Exception'),
-        );
+        return [
+            [true, '     * @param Foo $foo'],
+            [true, '*   @return            false'],
+            [true, '*@throws \Exception'],
+            [true, ' * @method'],
+            [true, ' * @method string getString()'],
+            [true, ' * @property-read integer $daysInMonth number of days in the given month'],
+            [false, ' * @method("GET")'],
+            [false, '*@thRoWs \InvalidArgumentException'],
+            [false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"],
+            [false, ' *   @\Foo\Bar(baz = 123)'],
+            [false, '     * @expectedException Exception'],
+        ];
     }
 }

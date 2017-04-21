@@ -30,7 +30,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      */
     public function testFixWithBraces($expected, $input = null)
     {
-        $this->fixer->configure(array('syntax' => 'with_braces'));
+        $this->fixer->configure(['syntax' => 'with_braces']);
         $this->doTest($expected, $input);
     }
 
@@ -39,22 +39,22 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixWithBracesCases()
     {
-        return array(
-            array('
+        return [
+            ['
 /**
  * @Foo()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo   ()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo
  * (
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
@@ -68,19 +68,19 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Foo
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo() */',
                 '/** @Foo */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo(@Bar())
  */', '
 /**
  * @Foo(@Bar)
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar()
@@ -90,8 +90,8 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @Foo(
  *     @Bar
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar(),
@@ -103,8 +103,8 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  *     @Bar,
  *     "baz"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar\Baz()
@@ -114,46 +114,46 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @Foo(
  *     @Bar\Baz
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo() @Bar\Baz()
  */', '
 /**
  * @Foo @Bar\Baz
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("@Bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
  * @Foo("string "" with inner quote")
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(@Bar
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo())@Bar)
  */', '
 /**
  * @Foo)@Bar)
- */'),
-            array('
+ */'],
+            ['
 /**
  * See {@link http://help Help} or {@see BarClass} for details.
- */'),
-            array('
+ */'],
+            ['
 /**
  * @var int
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract
@@ -260,8 +260,8 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @fixme: foo
  * @override
  * @todo: foo
- */'),
-        );
+ */'],
+        ];
     }
 
     /**
@@ -274,7 +274,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     {
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array('syntax' => 'without_braces'));
+        $this->fixer->configure(['syntax' => 'without_braces']);
         $this->doTest($expected, $input);
     }
 
@@ -283,8 +283,8 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixWithoutBracesCases()
     {
-        return array(
-            array('
+        return [
+            ['
 /**
  * Foo.
  *
@@ -298,16 +298,16 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Baz\Bar ( )
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo */',
                 '/** @Foo   () */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo("bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo
  */', '
@@ -315,15 +315,15 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @Foo
  * (
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(@Bar)
  */', '
 /**
  * @Foo(@Bar())
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar
@@ -333,8 +333,8 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @Foo(
  *     @Bar()
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar,
@@ -346,8 +346,8 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  *     @Bar(),
  *     "baz"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar\Baz
@@ -357,46 +357,46 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @Foo(
  *     @Bar\Baz()
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo @Bar\Baz
  */', '
 /**
  * @Foo() @Bar\Baz()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @\Foo @\Bar\Baz
  */', '
 /**
  * @\Foo() @\Bar\Baz()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("@Bar()")
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
  * @Foo("string "" with inner quote")
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo)
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(@Bar()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo
  * @Bar
@@ -406,15 +406,15 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @Foo()
  * @Bar()
  * @Baz()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @FIXME ()
  * @fixme ()
  * @TODO ()
  * @todo ()
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract()
@@ -521,8 +521,8 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @fixme: foo()
  * @override()
  * @todo: foo()
- */'),
-        );
+ */'],
+        ];
     }
 
     /**
@@ -530,12 +530,12 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getInvalidConfigurationCases()
     {
-        return array_merge(parent::getInvalidConfigurationCases(), array(
-            array(array('syntax' => 'foo')),
-            array(array(
+        return array_merge(parent::getInvalidConfigurationCases(), [
+            [['syntax' => 'foo']],
+            [[
                 'syntax' => 'foo',
-                'ignored_tags' => array(),
-            )),
-        ));
+                'ignored_tags' => [],
+            ]],
+        ]);
     }
 }

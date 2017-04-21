@@ -266,10 +266,10 @@ EOF
             // - remove whitespace at array opening
             // - remove trailing array comma and whitespace at array closing
             // - remove numeric array indexes
-            static $replaces = array(
-                array('#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'),
-                array('', ' ', '[$1]', '[', ']', ''),
-            );
+            static $replaces = [
+                ['#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'],
+                ['', ' ', '[$1]', '[', ']', ''],
+            ];
 
             $str = preg_replace(
                 $replaces[0],
@@ -328,13 +328,13 @@ EOF
             }
         );
 
-        $ruleSets = array();
+        $ruleSets = [];
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
-            $ruleSets[$setName] = new RuleSet(array($setName => true));
+            $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
         $getSetsWithRule = function ($rule) use ($ruleSets) {
-            $sets = array();
+            $sets = [];
 
             foreach ($ruleSets as $setName => $ruleSet) {
                 if ($ruleSet->hasRule($rule)) {
@@ -434,7 +434,7 @@ EOF
      */
     private static function wordwrap($string, $width)
     {
-        $result = array();
+        $result = [];
         $currentLine = 0;
         $lineLength = 0;
         foreach (explode(' ', $string) as $word) {

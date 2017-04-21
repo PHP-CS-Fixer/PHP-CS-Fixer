@@ -31,7 +31,7 @@ final class HashToSlashCommentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Single line comments should use double slashes `//` and not hash `#`.',
-            array(new CodeSample('<?php # comment'))
+            [new CodeSample('<?php # comment')]
         );
     }
 

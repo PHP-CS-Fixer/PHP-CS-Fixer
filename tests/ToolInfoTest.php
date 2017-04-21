@@ -40,7 +40,7 @@ final class ToolInfoTest extends \PHPUnit_Framework_TestCase
 
     public function testGetComposerVersionThrowsExceptionIfOutsideComposerScope()
     {
-        $this->setExpectedException('LogicException');
+        $this->setExpectedException(\LogicException::class);
 
         ToolInfo::getComposerVersion();
     }

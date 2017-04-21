@@ -13,9 +13,10 @@ EOF;
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules(array(
+        '@PHP56Migration' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        'array_syntax' => array('syntax' => 'long'),
+        'array_syntax' => array('syntax' => 'short'),
         'combine_consecutive_unsets' => true,
         // one should use PHPUnit methods to set up expected exception instead of annotations
         'general_phpdoc_annotation_remove' => array('expectedException', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp'),

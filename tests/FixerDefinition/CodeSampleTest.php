@@ -26,9 +26,9 @@ final class CodeSampleTest extends \PHPUnit_Framework_TestCase
     public function testConstructorSetsValues()
     {
         $code = '<php echo $foo;';
-        $configuration = array(
+        $configuration = [
             'foo' => 'bar',
-        );
+        ];
 
         $codeSample = new CodeSample(
             $code,

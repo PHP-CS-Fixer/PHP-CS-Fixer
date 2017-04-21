@@ -20,13 +20,8 @@ matrix:
           env: DEPLOY=yes TASK_TESTS_COVERAGE=1
         - php: nightly
           env: TASK_SCA=1 COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1
-        - php: 5.3
-          env: SKIP_LINT_TEST_CASES=1 COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
-        - php: 5.4
-          env: SKIP_LINT_TEST_CASES=1
-        - php: 5.5
-          env: SKIP_LINT_TEST_CASES=1
         - php: 5.6
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
         - php: 7.0
           env: SYMFONY_VERSION="^2.8"
         # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
@@ -88,7 +83,7 @@ before_deploy:
     - php box.phar --version
 
     # ensure that deps will work on lowest supported PHP version
-    - composer config platform.php 2> /dev/null || composer config platform.php 5.3.6
+    - composer config platform.php 2> /dev/null || composer config platform.php 5.6.0
 
     # require suggested packages
     - composer require --no-update symfony/polyfill-mbstring

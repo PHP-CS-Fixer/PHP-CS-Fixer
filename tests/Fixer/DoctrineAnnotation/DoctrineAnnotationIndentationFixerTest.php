@@ -38,8 +38,8 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
      */
     public function getFixCases()
     {
-        return array(
-            array('
+        return [
+            ['
 /**
  * Foo.
  *
@@ -55,8 +55,8 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *
  *    @Foo
  *  @Bar
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo="foo"
@@ -66,8 +66,8 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @Foo(
  * foo="foo"
  *     )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo", bar={
  *     "foo": 1,
@@ -81,8 +81,8 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     "foobar": 2,
  *  "foobarbaz": 3
  * })
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(@Bar({
  *     "FOO": 1,
@@ -96,8 +96,8 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *   "BAR": 2,
  *   "BAZ": 3
  * }))
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar({
@@ -115,22 +115,22 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *   "BAZ": 3
  *  })
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *   @Bar(
  *  "baz"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  *  Foo(
  *      Bar()
  *      "baz"
  *  )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(  @Bar(
  *     "baz"
@@ -140,8 +140,8 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  * @Foo(  @Bar(
  *  "baz"
  * ) )
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
@@ -159,8 +159,8 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  * )
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  *     @abstract
@@ -265,7 +265,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @FIXME
  *     @fixme
  *     @override
- */'),
-        );
+ */'],
+        ];
     }
 }

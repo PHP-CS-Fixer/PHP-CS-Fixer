@@ -23,25 +23,25 @@ final class FixerDefinitionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetSummary()
     {
-        $definition = new FixerDefinition('Foo', array());
+        $definition = new FixerDefinition('Foo', []);
 
         $this->assertSame('Foo', $definition->getSummary());
     }
 
     public function testGetCodeSamples()
     {
-        $definition = new FixerDefinition('', array('Bar', 'Baz'));
+        $definition = new FixerDefinition('', ['Bar', 'Baz']);
 
-        $this->assertSame(array('Bar', 'Baz'), $definition->getCodeSamples());
+        $this->assertSame(['Bar', 'Baz'], $definition->getCodeSamples());
     }
 
     public function testGetDescription()
     {
-        $definition = new FixerDefinition('', array());
+        $definition = new FixerDefinition('', []);
 
         $this->assertNull($definition->getDescription());
 
-        $definition = new FixerDefinition('', array(), 'Foo');
+        $definition = new FixerDefinition('', [], 'Foo');
 
         $this->assertSame('Foo', $definition->getDescription());
     }
@@ -52,15 +52,15 @@ final class FixerDefinitionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetConfigurationDescription()
     {
-        $definition = new FixerDefinition('', array());
+        $definition = new FixerDefinition('', []);
 
         $this->assertNull($definition->getConfigurationDescription());
 
-        $definition = new FixerDefinition('', array(), null, 'Foo');
+        $definition = new FixerDefinition('', [], null, 'Foo');
 
         $this->assertNull($definition->getConfigurationDescription());
 
-        $definition = new FixerDefinition('', array(), null, 'Foo', array());
+        $definition = new FixerDefinition('', [], null, 'Foo', []);
 
         $this->assertSame('Foo', $definition->getConfigurationDescription());
     }
@@ -72,22 +72,22 @@ final class FixerDefinitionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDefaultConfiguration()
     {
-        $definition = new FixerDefinition('', array());
+        $definition = new FixerDefinition('', []);
 
         $this->assertNull($definition->getDefaultConfiguration());
 
-        $definition = new FixerDefinition('', array(), null, null, array('Foo', 'Bar'));
+        $definition = new FixerDefinition('', [], null, null, ['Foo', 'Bar']);
 
-        $this->assertSame(array('Foo', 'Bar'), $definition->getDefaultConfiguration());
+        $this->assertSame(['Foo', 'Bar'], $definition->getDefaultConfiguration());
     }
 
     public function testGetRiskyDescription()
     {
-        $definition = new FixerDefinition('', array());
+        $definition = new FixerDefinition('', []);
 
         $this->assertNull($definition->getRiskyDescription());
 
-        $definition = new FixerDefinition('', array(), null, 'Foo');
+        $definition = new FixerDefinition('', [], null, 'Foo');
 
         $this->assertSame('Foo', $definition->getRiskyDescription());
     }
@@ -98,7 +98,7 @@ final class FixerDefinitionTest extends \PHPUnit_Framework_TestCase
      */
     public function testLegacyGetRiskyDescription()
     {
-        $definition = new FixerDefinition('', array(), null, null, null, 'Foo');
+        $definition = new FixerDefinition('', [], null, null, null, 'Foo');
 
         $this->assertSame('Foo', $definition->getRiskyDescription());
     }

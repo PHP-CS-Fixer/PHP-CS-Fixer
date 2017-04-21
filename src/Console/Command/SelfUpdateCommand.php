@@ -36,11 +36,11 @@ final class SelfUpdateCommand extends Command
     {
         $this
             ->setName('self-update')
-            ->setAliases(array('selfupdate'))
+            ->setAliases(['selfupdate'])
             ->setDefinition(
-                array(
+                [
                     new InputOption('--force', '-f', InputOption::VALUE_NONE, 'Force update to next major version if available.'),
-                )
+                ]
             )
             ->setDescription('Update php-cs-fixer.phar to the latest stable version.')
             ->setHelp(<<<'EOT'
@@ -191,12 +191,12 @@ EOT
      */
     private function getStreamContextOptions($method = 'GET')
     {
-        return array(
-            'http' => array(
+        return [
+            'http' => [
                 'header' => 'User-Agent: FriendsOfPHP/PHP-CS-Fixer',
                 'method' => $method,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -231,6 +231,6 @@ EOT
             $tag[0] = substr($tag[0], 1);
         }
 
-        return array((int) $tag[0], (int) $tag[1], (int) $tag[2]);
+        return [(int) $tag[0], (int) $tag[1], (int) $tag[2]];
     }
 }

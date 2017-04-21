@@ -52,34 +52,34 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
      *
      * @var string[]
      */
-    private static $content = array(
+    private static $content = [
         "     * @param string \$hello\n",
         "     * @param bool \$test Description\n     *        extends over many lines\n",
         "     * @param adkjbadjasbdand \$asdnjkasd\n",
         "     * @throws \Exception asdnjkasd\n     *\n     * asdasdasdasdasdasdasdasd\n     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb\n",
         "     * @return void\n",
-    );
+    ];
 
     /**
      * This represents the start indexes of each annotation.
      *
      * @var int[]
      */
-    private static $start = array(3, 4, 7, 9, 14);
+    private static $start = [3, 4, 7, 9, 14];
 
     /**
      * This represents the start indexes of each annotation.
      *
      * @var int[]
      */
-    private static $end = array(3, 5, 7, 12, 14);
+    private static $end = [3, 5, 7, 12, 14];
 
     /**
      * This represents the tag type of each annotation.
      *
      * @var string[]
      */
-    private static $tags = array('param', 'param', 'param', 'throws', 'return');
+    private static $tags = ['param', 'param', 'param', 'throws', 'return'];
 
     /**
      * @param int    $index
@@ -98,10 +98,10 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     public function provideContent()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$content as $index => $content) {
-            $cases[] = array($index, $content);
+            $cases[] = [$index, $content];
         }
 
         return $cases;
@@ -123,10 +123,10 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     public function provideStartCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$start as $index => $start) {
-            $cases[] = array($index, $start);
+            $cases[] = [$index, $start];
         }
 
         return $cases;
@@ -148,10 +148,10 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     public function provideEndCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$end as $index => $end) {
-            $cases[] = array($index, $end);
+            $cases[] = [$index, $end];
         }
 
         return $cases;
@@ -173,10 +173,10 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     public function provideTags()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$tags as $index => $tag) {
-            $cases[] = array($index, $tag);
+            $cases[] = [$index, $tag];
         }
 
         return $cases;
@@ -202,10 +202,10 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     public function provideRemoveCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$start as $index => $start) {
-            $cases[] = array($index, $start, self::$end[$index]);
+            $cases[] = [$index, $start, self::$end[$index]];
         }
 
         return $cases;
@@ -222,7 +222,7 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function testTypes($expected, $new, $input, $output)
     {
         $line = new Line($input);
-        $tag = new Annotation(array($line));
+        $tag = new Annotation([$line]);
 
         $this->assertSame($expected, $tag->getTypes());
 
@@ -235,22 +235,22 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     public function provideTypesCases()
     {
-        return array(
-            array(array('Foo', 'null'), array('Bar[]'), '     * @param Foo|null $foo', '     * @param Bar[] $foo'),
-            array(array('false'), array('bool'), '*   @return            false', '*   @return            bool'),
-            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
-            array(array('string'), array('string', 'null'), ' * @method string getString()', ' * @method string|null getString()'),
-        );
+        return [
+            [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
+            [['false'], ['bool'], '*   @return            false', '*   @return            bool'],
+            [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['string'], ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'],
+        ];
     }
 
     public function testGetTypesOnBadTag()
     {
         $this->setExpectedException(
-            'RuntimeException',
+            \RuntimeException::class,
             'This tag does not support types'
         );
 
-        $tag = new Annotation(array(new Line(' * @deprecated since 1.2')));
+        $tag = new Annotation([new Line(' * @deprecated since 1.2')]);
 
         $tag->getTypes();
     }
@@ -258,13 +258,13 @@ final class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function testSetTypesOnBadTag()
     {
         $this->setExpectedException(
-            'RuntimeException',
+            \RuntimeException::class,
             'This tag does not support types'
         );
 
-        $tag = new Annotation(array(new Line(' * @author Chuck Norris')));
+        $tag = new Annotation([new Line(' * @author Chuck Norris')]);
 
-        $tag->setTypes(array('string'));
+        $tag->setTypes(['string']);
     }
 
     public function testGetTagsWithTypes()

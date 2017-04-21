@@ -32,11 +32,11 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testLegacyConfigureDefaultToNull()
     {
-        $defaultConfig = array(
+        $defaultConfig = [
             'multiLineExtendsEachSingleLine' => false,
             'singleItemSingleLine' => false,
             'singleLine' => false,
-        );
+        ];
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure($defaultConfig);
@@ -48,17 +48,17 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
     public function testConfigureDefaultToNull()
     {
-        $defaultConfig = array(
+        $defaultConfig = [
             'multiLineExtendsEachSingleLine' => false,
             'singleItemSingleLine' => false,
             'singleLine' => false,
-        );
+        ];
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure($defaultConfig);
         $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
 
-        $fixer->configure(array());
+        $fixer->configure([]);
         $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
     }
 
@@ -71,7 +71,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP 7.0
      */
-    public function testFixingAnonymousClasses($expected, $input, array $config = array())
+    public function testFixingAnonymousClasses($expected, $input, array $config = [])
     {
         $this->fixer->configure($config);
 
@@ -86,7 +86,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingClasses($expected, $input)
     {
-        $this->fixer->configure(array());
+        $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
@@ -113,7 +113,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingInterfaces($expected, $input)
     {
-        $this->fixer->configure(array());
+        $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
@@ -126,11 +126,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingTraits($expected, $input)
     {
-        if (!defined('T_TRAIT')) {
-            $this->markTestSkipped('Test requires traits.');
-        }
-
-        $this->fixer->configure(array());
+        $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
@@ -138,75 +134,75 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigurationKey()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "multiLineExtendsEachSingleLine", "singleItemSingleLine", "singleLine"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
-        $fixer->configure(array('a' => false));
+        $fixer->configure(['a' => false]);
     }
 
     public function testInvalidConfigurationValueType()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[class_definition\] Invalid configuration: The option "singleLine" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
-        $fixer->configure(array('singleLine' => 'z'));
+        $fixer->configure(['singleLine' => 'z']);
     }
 
     public function provideAnonymousClassesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a = new class(0) extends SomeClass implements SomeInterface, D {};',
                 "<?php \$a = new    class(0)     extends\nSomeClass\timplements    SomeInterface, D {};",
-            ),
-            array(
+            ],
+            [
                 '<?php $a = new class(1) extends SomeClass implements SomeInterface, D {};',
                 "<?php \$a = new    class(1)     extends\nSomeClass\timplements    SomeInterface, D {};",
-                array('singleLine' => true),
-            ),
-            array(
+                ['singleLine' => true],
+            ],
+            [
                 "<?php \$a = new class('1a') implements\nA\n{};",
                 "<?php \$a = new class('1a')   implements\nA{};",
-            ),
-            array(
+            ],
+            [
                 "<?php \$a = new class('1a') implements A {};",
                 "<?php \$a = new class('1a')   implements\nA{};",
-                array('singleItemSingleLine' => true),
-            ),
-            array(
+                ['singleItemSingleLine' => true],
+            ],
+            [
                 '<?php $a = new class {};',
                 '<?php $a = new class{};',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = new class {};',
                 "<?php \$a = new class\n{};",
-            ),
-            array(
+            ],
+            [
                 '<?php $a = new class() {};',
                 "<?php \$a = new\n class  (  ){};",
-            ),
-            array(
+            ],
+            [
                 '<?php $a = new class(10, 1, /**/ 2) {};',
                 '<?php $a = new class(  10, 1,/**/2  ){};',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = new class(2) {};',
                 '<?php $a = new    class(2){};',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = new class($this->prop) {};',
                 '<?php $a = new class(   $this->prop   ){};',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = new class($this->prop, $v[3], 4) {};',
                 '<?php $a = new class(   $this->prop,$v[3],   4)         {};',
-            ),
-            'PSR-12 Extends/Implements Parenthesis on the next line.' => array(
+            ],
+            'PSR-12 Extends/Implements Parenthesis on the next line.' => [
                 '<?php
 $instance = new class extends \Foo implements
 \ArrayAccess,
@@ -216,8 +212,8 @@ $instance = new class extends \Foo implements
                 '<?php
 $instance = new class extends \Foo implements
 \ArrayAccess,\Countable,\Serializable{};',
-            ),
-            'PSR-12 Implements Parenthesis on the next line.' => array(
+            ],
+            'PSR-12 Implements Parenthesis on the next line.' => [
                 '<?php
 $instance = new class implements
 \ArrayAccess,
@@ -227,8 +223,8 @@ $instance = new class implements
                 '<?php
 $instance = new class implements
 \ArrayAccess,\Countable,\Serializable{};',
-            ),
-            'PSR-12 Extends Parenthesis on the next line.' => array(
+            ],
+            'PSR-12 Extends Parenthesis on the next line.' => [
                 '<?php
 $instance = new class extends
 ArrayAccess
@@ -238,8 +234,8 @@ $instance = new class
 extends
 ArrayAccess
 {};',
-            ),
-            array(
+            ],
+            [
                 "<?php \$a = new #
 class #
 ( #
@@ -267,8 +263,8 @@ B,C#
 #
 }#
 ;",
-            ),
-            array(
+            ],
+            [
                 "<?php \$a = new #
 class #
 ( #
@@ -293,15 +289,15 @@ A#
 #
 }#
 ;",
-                array('singleItemSingleLine' => true),
-            ),
-            array(
+                ['singleItemSingleLine' => true],
+            ],
+            [
                 '<?php $a = new class() #
 {};',
                 '<?php $a = new class()#
 {};',
-            ),
-        );
+            ],
+        ];
     }
 
     public function provideClassesCases()
@@ -315,52 +311,52 @@ A#
 
     public function provideClassesWithConfigCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php class configA implements B, C\n{}",
                 "<?php class configA implements\nB, C{}",
-                array('singleLine' => true),
-            ),
-            array(
+                ['singleLine' => true],
+            ],
+            [
                 "<?php class configA1 extends B\n{}",
                 "<?php class configA1\n extends\nB{}",
-                array('singleLine' => true),
-            ),
-            array(
+                ['singleLine' => true],
+            ],
+            [
                 "<?php class configA1a extends B\n{}",
                 "<?php class configA1a\n extends\nB{}",
-                array('singleLine' => false, 'singleItemSingleLine' => true),
-            ),
-            array(
+                ['singleLine' => false, 'singleItemSingleLine' => true],
+            ],
+            [
                 "<?php class configA2 extends D implements B, C\n{}",
                 "<?php class configA2 extends D implements\nB,\nC{}",
-                array('singleLine' => true),
-            ),
-            array(
+                ['singleLine' => true],
+            ],
+            [
                 "<?php class configA3 extends D implements B, C\n{}",
                 "<?php class configA3\n extends\nD\n\t implements\nB,\nC{}",
-                array('singleLine' => true),
-            ),
-            array(
+                ['singleLine' => true],
+            ],
+            [
                 "<?php class configA4 extends D implements B, #\nC\n{}",
                 "<?php class configA4\n extends\nD\n\t implements\nB,#\nC{}",
-                array('singleLine' => true),
-            ),
-            array(
+                ['singleLine' => true],
+            ],
+            [
                 "<?php class configA5 implements A\n{}",
                 "<?php class configA5 implements\nA{}",
-                array('singleLine' => false, 'singleItemSingleLine' => true),
-            ),
-            array(
+                ['singleLine' => false, 'singleItemSingleLine' => true],
+            ],
+            [
                 "<?php interface TestWithMultiExtendsMultiLine extends\n    A,\nAb,\n    C,\n    D\n{}",
                 "<?php interface TestWithMultiExtendsMultiLine extends A,\nAb,C,D\n{}",
-                array(
+                [
                     'singleLine' => false,
                     'singleItemSingleLine' => false,
                     'multiLineExtendsEachSingleLine' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     public function provideInterfacesCases()
@@ -370,7 +366,7 @@ A#
             $this->provideClassyExtendingCases('interface')
         );
 
-        $cases[] = array(
+        $cases[] = [
     '<?php
 interface Test extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
@@ -395,7 +391,7 @@ TestInterface3, /**/     TestInterface4   ,
       TestInterface5    ,     '.'
         /**/TestInterface65    {}
             ',
-        );
+        ];
 
         return $cases;
     }
@@ -426,71 +422,71 @@ TestInterface3, /**/     TestInterface4   ,
 
     public function provideClassyDefinitionInfoCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php class A{}',
-                array(
+                [
                     'start' => 1,
                     'classy' => 1,
                     'open' => 4,
                     'extends' => false,
                     'implements' => false,
                     'anonymousClass' => false,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php final class A{}',
-                array(
+                [
                     'start' => 1,
                     'classy' => 3,
                     'open' => 6,
                     'extends' => false,
                     'implements' => false,
                     'anonymousClass' => false,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php abstract /**/ class A{}',
-                array(
+                [
                     'start' => 1,
                     'classy' => 5,
                     'open' => 8,
                     'extends' => false,
                     'implements' => false,
                     'anonymousClass' => false,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php class A extends B {}',
-                array(
+                [
                     'start' => 1,
                     'classy' => 1,
                     'open' => 9,
-                    'extends' => array(
+                    'extends' => [
                             'start' => 5,
                             'numberOfExtends' => 1,
                             'multiLine' => false,
-                        ),
+                        ],
                     'implements' => false,
                     'anonymousClass' => false,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php interface A extends B,C,D {}',
-                array(
+                [
                     'start' => 1,
                     'classy' => 1,
                     'open' => 13,
-                    'extends' => array(
+                    'extends' => [
                             'start' => 5,
                             'numberOfExtends' => 3,
                             'multiLine' => false,
-                        ),
+                        ],
                     'implements' => false,
                     'anonymousClass' => false,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -522,7 +518,7 @@ TestInterface3, /**/     TestInterface4   ,
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        $this->assertTrue($tokens[$expected['start']]->isGivenKind(array(T_IMPLEMENTS, T_EXTENDS)), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+        $this->assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
         $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
         $method->setAccessible(true);
 
@@ -533,39 +529,39 @@ TestInterface3, /**/     TestInterface4   ,
 
     public function provideClassyImplementsInfoCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 class X11 implements    Z   , T,R
 {
 }',
                 'numberOfImplements',
-                array('start' => 5, 'numberOfImplements' => 3, 'multiLine' => false),
-            ),
-            array(
+                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+            ],
+            [
                 '<?php
 class X10 implements    Z   , T,R    //
 {
 }',
                 'numberOfImplements',
-                array('start' => 5, 'numberOfImplements' => 3, 'multiLine' => false),
-            ),
-            array(
+                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+            ],
+            [
                 '<?php class A implements B {}',
                 'numberOfImplements',
-                array('start' => 5, 'numberOfImplements' => 1, 'multiLine' => false),
-            ),
-            array(
+                ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
+            ],
+            [
                 "<?php class A implements B,\n C{}",
                 'numberOfImplements',
-                array('start' => 5, 'numberOfImplements' => 2, 'multiLine' => true),
-            ),
-            array(
+                ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
+            ],
+            [
                 "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
                 'numberOfImplements',
-                array('start' => 5, 'numberOfImplements' => 3, 'multiLine' => false),
-            ),
-            array(
+                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+            ],
+            [
                 '<?php
 namespace A {
     interface C {}
@@ -587,30 +583,30 @@ namespace {
     $a->test();
 }',
                 'numberOfImplements',
-                array('start' => 36, 'numberOfImplements' => 2, 'multiLine' => true),
-            ),
-        );
+                ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => true],
+            ],
+        ];
     }
 
     public function provideClassyImplementsInfoCases7()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
                 'numberOfExtends',
-                array('start' => 12, 'numberOfExtends' => 1, 'multiLine' => true),
-            ),
-            array(
+                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+            ],
+            [
                 "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
                 'numberOfImplements',
-                array('start' => 16, 'numberOfImplements' => 2, 'multiLine' => false),
-            ),
-            array(
+                ['start' => 16, 'numberOfImplements' => 2, 'multiLine' => false],
+            ],
+            [
                 "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
                 'numberOfExtends',
-                array('start' => 12, 'numberOfExtends' => 1, 'multiLine' => true),
-            ),
-        );
+                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+            ],
+        ];
     }
 
     /**
@@ -622,15 +618,15 @@ namespace {
      */
     public function testFixPHP7($expected, $input = null)
     {
-        $this->fixer->configure(array());
+        $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
 
     public function providePHP7Cases()
     {
-        return array(
-            array(
+        return [
+            [
             '<?php
 $a = new class implements
     \RFb,
@@ -644,8 +640,8 @@ $a = new class implements
     \Fcc, \GFddZz
 {
 };',
-            ),
-            array(
+            ],
+            [
             '<?php
 $a = new class implements
     \RFb,
@@ -659,8 +655,8 @@ $a = new class implements
     \Fcc, \GFddZz
 {
 }?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -672,45 +668,45 @@ $a = new class implements
     public function testMessyWhitespaces($expected, $input = null)
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->fixer->configure(array());
+        $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\nclass Aaa implements\r\n\tBbb,\r\n\tCcc,\r\n\tDdd\r\n\t{\r\n\t}",
                 "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",
-            ),
-        );
+            ],
+        ];
     }
 
     private function provideClassyCases($classy)
     {
-        return array(
-            array(
+        return [
+            [
                 sprintf("<?php %s A\n{}", $classy),
                 sprintf('<?php %s    A   {}', $classy),
-            ),
-            array(
+            ],
+            [
                 sprintf("<?php %s B\n{}", $classy),
                 sprintf('<?php %s    B{}', $classy),
-            ),
-            array(
+            ],
+            [
                 sprintf("<?php %s C\n{}", $classy),
                 sprintf("<?php %s\n\tC{}", $classy),
-            ),
-            array(
+            ],
+            [
                 sprintf("<?php %s D //\n{}", $classy),
                 sprintf("<?php %s    D//\n{}", $classy),
-            ),
-            array(
+            ],
+            [
                 sprintf("<?php %s /**/ E //\n{}", $classy),
                 sprintf("<?php %s/**/E//\n{}", $classy),
-            ),
-            array(
+            ],
+            [
                 sprintf(
                     "<?php
 %s A
@@ -728,8 +724,8 @@ $a = new class implements
 %s/**/B //
 /**/ {}', $classy, $classy
                 ),
-            ),
-            array(
+            ],
+            [
                 sprintf('<?php
 namespace {
     %s IndentedNameSpacedClass
@@ -743,26 +739,26 @@ namespace {
     }
 }', $classy
                 ),
-            ),
-        );
+            ],
+        ];
     }
 
     private function provideClassyExtendingCases($classy)
     {
-        return array(
-            array(
+        return [
+            [
                 sprintf("<?php %s AE0 extends B\n{}", $classy),
                 sprintf('<?php %s    AE0    extends B    {}', $classy),
-            ),
-            array(
+            ],
+            [
                 sprintf("<?php %s /**/ AE1 /**/ extends /**/ B /**/\n{}", $classy),
                 sprintf('<?php %s/**/AE1/**/extends/**/B/**/{}', $classy),
-            ),
-            array(
+            ],
+            [
                 sprintf("<?php %s /*%s*/ AE2 extends\nB\n{}", $classy, $classy),
                 sprintf("<?php %s /*%s*/ AE2 extends\nB{}", $classy, $classy),
-            ),
-            array(
+            ],
+            [
                 sprintf('<?php
 %s Test124 extends
 \Exception
@@ -773,28 +769,28 @@ Test124
 
 extends
 \Exception {}', $classy),
-            ),
-        );
+            ],
+        ];
     }
 
     private function provideClassyImplementsCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php class E implements B\n{}",
                 "<?php class    E   \nimplements     B       \t{}",
-            ),
-            array(
+            ],
+            [
                 "<?php abstract class F extends B implements C\n{}",
                 '<?php abstract    class    F    extends     B    implements C {}',
-            ),
-            array(
+            ],
+            [
                 "<?php abstract class G extends       //
 B /*  */ implements C\n{}",
                 '<?php abstract    class     G     extends       //
 B/*  */implements C{}',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Aaa IMPLEMENTS
     \RFb,
@@ -808,8 +804,8 @@ class Aaa IMPLEMENTS
     \Fcc, \GFddZz
 {
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class        //
 X            //
@@ -828,8 +824,8 @@ implements   //
 Z    ,       //
 U            //
 {}           //',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Aaa implements
     PhpCsFixer\Tests\Fixer,
@@ -844,8 +840,8 @@ class Aaa implements
     \Fcc1, \GFdd
 {
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class /**/ Test123 EXtends /**/ \RuntimeException implements
 TestZ
@@ -857,8 +853,8 @@ EXtends  /**/        \RuntimeException    implements
 TestZ
 {
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Aaa implements Ebb, \Ccc
     {
@@ -867,8 +863,8 @@ TestZ
     class Aaa    implements    Ebb,    \Ccc
     {
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class X2 IMPLEMENTS
 Z, //
@@ -882,8 +878,8 @@ Z    , //
 U, D
 {
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     class VeryLongClassNameWithLotsOfLetters extends AnotherVeryLongClassName implements
     VeryLongInterfaceNameThatIDontWantOnTheSameLine
@@ -894,8 +890,8 @@ U, D
     VeryLongInterfaceNameThatIDontWantOnTheSameLine
 {
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class /**/ Test125 //aaa
 extends  /*
@@ -912,8 +908,8 @@ extends  /*
 //
 \Exception        //
 {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Test extends TestInterface8 implements      /*a*/      /*b*/
     TestInterface1,  /* test */
@@ -941,7 +937,7 @@ TestInterface3, /**/     TestInterface4   ,
         /**/TestInterface6c
 {
 }',
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -36,8 +36,8 @@ final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     list($a, $b) = foo();
     list($a, , $c, $d) = foo();
@@ -54,15 +54,15 @@ final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
     list($a , $b , ) = foo();
     list($a, /* $b */, $c, ) = foo();
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 list(
 $a#
 ,#
 #
 ) = $a;',
-            ),
-        );
+            ],
+        ];
     }
 }

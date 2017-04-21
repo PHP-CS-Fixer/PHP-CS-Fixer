@@ -31,7 +31,7 @@ final class NewWithBracesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'All instances created with new keyword must be followed by braces.',
-            array(new CodeSample('<?php $x = new X;'))
+            [new CodeSample('<?php $x = new X;')]
         );
     }
 
@@ -51,7 +51,7 @@ final class NewWithBracesFixer extends AbstractFixer
         static $nextTokenKinds = null;
 
         if (null === $nextTokenKinds) {
-            $nextTokenKinds = array(
+            $nextTokenKinds = [
                 '?',
                 ';',
                 ',',
@@ -70,35 +70,33 @@ final class NewWithBracesFixer extends AbstractFixer
                 '&',
                 '^',
                 '|',
-                array(T_CLASS),
-                array(T_IS_SMALLER_OR_EQUAL),
-                array(T_IS_GREATER_OR_EQUAL),
-                array(T_IS_EQUAL),
-                array(T_IS_NOT_EQUAL),
-                array(T_IS_IDENTICAL),
-                array(T_IS_NOT_IDENTICAL),
-                array(T_CLOSE_TAG),
-                array(T_LOGICAL_AND),
-                array(T_LOGICAL_OR),
-                array(T_LOGICAL_XOR),
-                array(T_BOOLEAN_AND),
-                array(T_BOOLEAN_OR),
-                array(T_SL),
-                array(T_SR),
-                array(T_INSTANCEOF),
-                array(T_AS),
-                array(T_DOUBLE_ARROW),
-                array(CT::T_ARRAY_SQUARE_BRACE_OPEN),
-                array(CT::T_ARRAY_SQUARE_BRACE_CLOSE),
-                array(CT::T_BRACE_CLASS_INSTANTIATION_OPEN),
-                array(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE),
-            );
-            if (defined('T_POW')) {
-                $nextTokenKinds[] = array(T_POW);
-            }
+                [T_CLASS],
+                [T_IS_SMALLER_OR_EQUAL],
+                [T_IS_GREATER_OR_EQUAL],
+                [T_IS_EQUAL],
+                [T_IS_NOT_EQUAL],
+                [T_IS_IDENTICAL],
+                [T_IS_NOT_IDENTICAL],
+                [T_CLOSE_TAG],
+                [T_LOGICAL_AND],
+                [T_LOGICAL_OR],
+                [T_LOGICAL_XOR],
+                [T_BOOLEAN_AND],
+                [T_BOOLEAN_OR],
+                [T_SL],
+                [T_SR],
+                [T_INSTANCEOF],
+                [T_AS],
+                [T_DOUBLE_ARROW],
+                [T_POW],
+                [CT::T_ARRAY_SQUARE_BRACE_OPEN],
+                [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+                [CT::T_BRACE_CLASS_INSTANTIATION_OPEN],
+                [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE],
+            ];
 
             if (defined('T_SPACESHIP')) {
-                $nextTokenKinds[] = array(T_SPACESHIP);
+                $nextTokenKinds[] = [T_SPACESHIP];
             }
         }
 
@@ -148,6 +146,6 @@ final class NewWithBracesFixer extends AbstractFixer
      */
     private function insertBracesAfter(Tokens $tokens, $index)
     {
-        $tokens->insertAt(++$index, array(new Token('('), new Token(')')));
+        $tokens->insertAt(++$index, [new Token('('), new Token(')')]);
     }
 }

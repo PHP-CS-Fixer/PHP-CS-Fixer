@@ -47,7 +47,7 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements Configuration
     {
         return new FixerDefinition(
             'No alias PHPDoc tags should be used.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -73,9 +73,9 @@ final class Example
 {
 }
 ',
-                    array('replacements' => array('link' => 'website'))
+                    ['replacements' => ['link' => 'website']]
                 ),
-            )
+            ]
         );
     }
 
@@ -113,9 +113,9 @@ final class Example
     {
         $replacements = new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.');
         $replacements = $replacements
-            ->setAllowedTypes(array('array'))
+            ->setAllowedTypes(['array'])
             ->setNormalizer(function (Options $options, $value) {
-                $normalizedValue = array();
+                $normalizedValue = [];
 
                 foreach ($value as $from => $to) {
                     if (!is_string($from)) {
@@ -153,15 +153,15 @@ final class Example
 
                 return $normalizedValue;
             })
-            ->setDefault(array(
+            ->setDefault([
                 'property-read' => 'property',
                 'property-write' => 'property',
                 'type' => 'var',
                 'link' => 'see',
-            ))
+            ])
             ->getOption()
         ;
 
-        return new FixerConfigurationResolverRootless('replacements', array($replacements));
+        return new FixerConfigurationResolverRootless('replacements', [$replacements]);
     }
 }

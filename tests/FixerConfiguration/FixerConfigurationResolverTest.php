@@ -26,27 +26,27 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 {
     public function testWithoutOptions()
     {
-        $this->setExpectedException('LogicException', 'Options cannot be empty.');
+        $this->setExpectedException(\LogicException::class, 'Options cannot be empty.');
 
-        $configuration = new FixerConfigurationResolver(array());
+        $configuration = new FixerConfigurationResolver([]);
     }
 
     public function testWithDuplicatesOptions()
     {
-        $this->setExpectedException('LogicException', 'The "foo" option is defined multiple times.');
+        $this->setExpectedException(\LogicException::class, 'The "foo" option is defined multiple times.');
 
-        $configuration = new FixerConfigurationResolver(array(
+        $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar-1.'),
             new FixerOption('foo', 'Bar-2.'),
-        ));
+        ]);
     }
 
     public function testGetOptions()
     {
-        $options = array(
+        $options = [
             new FixerOption('foo', 'Bar.'),
             new FixerOption('baz', 'Qux.'),
-        );
+        ];
         $configuration = new FixerConfigurationResolver($options);
 
         $this->assertSame($options, $configuration->getOptions());
@@ -54,106 +54,106 @@ final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolve()
     {
-        $configuration = new FixerConfigurationResolver(array(
+        $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.'),
-        ));
+        ]);
         $this->assertSame(
-            array('foo' => 'bar'),
-            $configuration->resolve(array('foo' => 'bar'))
+            ['foo' => 'bar'],
+            $configuration->resolve(['foo' => 'bar'])
         );
     }
 
     public function testResolveWithMissingRequiredOption()
     {
-        $configuration = new FixerConfigurationResolver(array(
+        $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.'),
-        ));
+        ]);
 
-        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\MissingOptionsException');
-        $configuration->resolve(array());
+        $this->setExpectedException(\Symfony\Component\OptionsResolver\Exception\MissingOptionsException::class);
+        $configuration->resolve([]);
     }
 
     public function testResolveWithDefault()
     {
-        $configuration = new FixerConfigurationResolver(array(
+        $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', false, 'baz'),
-        ));
+        ]);
 
         $this->assertSame(
-            array('foo' => 'baz'),
-            $configuration->resolve(array())
+            ['foo' => 'baz'],
+            $configuration->resolve([])
         );
     }
 
     public function testResolveWithAllowedTypes()
     {
-        $configuration = new FixerConfigurationResolver(array(
-            new FixerOption('foo', 'Bar.', true, null, array('int')),
-        ));
+        $configuration = new FixerConfigurationResolver([
+            new FixerOption('foo', 'Bar.', true, null, ['int']),
+        ]);
 
         $this->assertSame(
-            array('foo' => 1),
-            $configuration->resolve(array('foo' => 1))
+            ['foo' => 1],
+            $configuration->resolve(['foo' => 1])
         );
 
-        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
+        $this->setExpectedException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
         $this->assertSame(
-            array('foo' => 1),
-            $configuration->resolve(array('foo' => '1'))
+            ['foo' => 1],
+            $configuration->resolve(['foo' => '1'])
         );
     }
 
     public function testResolveWithAllowedValues()
     {
-        $configuration = new FixerConfigurationResolver(array(
-            new FixerOption('foo', 'Bar.', true, null, null, array(true, false)),
-        ));
+        $configuration = new FixerConfigurationResolver([
+            new FixerOption('foo', 'Bar.', true, null, null, [true, false]),
+        ]);
 
         $this->assertSame(
-            array('foo' => true),
-            $configuration->resolve(array('foo' => true))
+            ['foo' => true],
+            $configuration->resolve(['foo' => true])
         );
 
-        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
+        $this->setExpectedException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
         $this->assertSame(
-            array('foo' => 1),
-            $configuration->resolve(array('foo' => 1))
+            ['foo' => 1],
+            $configuration->resolve(['foo' => 1])
         );
     }
 
     public function testResolveWithUndefinedOption()
     {
-        $configuration = new FixerConfigurationResolver(array(
+        $configuration = new FixerConfigurationResolver([
             new FixerOption('bar', 'Bar.'),
-        ));
+        ]);
 
-        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException');
-        $configuration->resolve(array('foo' => 'foooo'));
+        $this->setExpectedException(\Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException::class);
+        $configuration->resolve(['foo' => 'foooo']);
     }
 
     public function testResolveWithNormalizers()
     {
-        $configuration = new FixerConfigurationResolver(array(
+        $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', true, null, null, null, function (Options $options, $value) {
                 return (int) $value;
             }),
-        ));
+        ]);
 
         $this->assertSame(
-            array('foo' => 1),
-            $configuration->resolve(array('foo' => '1'))
+            ['foo' => 1],
+            $configuration->resolve(['foo' => '1'])
         );
 
         $exception = new InvalidOptionsException('');
-        $configuration = new FixerConfigurationResolver(array(
+        $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', true, null, null, null, function (Options $options, $value) use ($exception) {
                 throw $exception;
             }),
-        ));
+        ]);
 
         $catched = null;
         try {
-            $configuration->resolve(array('foo' => '1'));
+            $configuration->resolve(['foo' => '1']);
         } catch (InvalidOptionsException $catched) {
         }
 

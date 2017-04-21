@@ -42,14 +42,14 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a +      /** */
                 $b;',
                 '<?php $a    +      /** */
                 $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php '.'
                     $a
                     + $b
@@ -60,8 +60,8 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                     +$b
                     +  $d;
                 ;',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a
                /***/ + $b
@@ -72,137 +72,151 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                /***/+   $b
             /***/   +$d;
                 ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a + $b;',
                 '<?php $a+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php 1 + $b;',
                 '<?php 1+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php 0.2 + $b;',
                 '<?php 0.2+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a[1] + $b;',
                 '<?php $a[1]+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php FOO + $b;',
                 '<?php FOO+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php foo() + $b;',
                 '<?php foo()+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php ${"foo"} + $b;',
                 '<?php ${"foo"}+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a & $b;',
                 '<?php $a&$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &= $b;',
                 '<?php $a&=$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &= $b;',
                 '<?php $a &=$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &= $b;',
                 '<?php $a&= $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &= $b;',
                 '<?php $a  &=   $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &=
 $b;',
-            ),
+            ],
 
-            array(
+            [
                 '<?php $a
 &= $b;',
                 '<?php $a
 &=$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php (1) and 2;',
                 '<?php (1)and 2;',
-            ),
-            array(
+            ],
+            [
                 '<?php 1 or ($b - $c);',
                 '<?php 1 or($b-$c);',
-            ),
-            array(
+            ],
+            [
                 '<?php "a" xor (2);',
                 '<?php "a"xor(2);',
-            ),
-            array(
+            ],
+            [
                 '<?php $a * -$b;',
                 '<?php $a*-$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = -2 / +5;',
                 '<?php $a=-2/+5;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = &$b;',
                 '<?php $a=&$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a++ + $b;',
                 '<?php $a+++$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php __LINE__ - 1;',
                 '<?php __LINE__-1;',
-            ),
-            array(
+            ],
+            [
                 '<?php `echo 1` + 1;',
                 '<?php `echo 1`+1;',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = 1 //
                     || 2;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php $a =
                     2;',
-            ),
-            array(
+            ],
+            [
                 '<?php declare(ticks=1);',
-            ),
-            array(
+            ],
+            [
                 '<?php declare(ticks =  1);',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = 1;declare(ticks =  1);$b = 1;',
                 '<?php $a=1;declare(ticks =  1);$b=1;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = array("b" => "c", );',
                 '<?php $a = array("b"=>"c", );',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = array("b" => "c", );',
                 '<?php $a = array("b" =>"c", );',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = array("b" => "c", );',
                 '<?php $a = array("b"=> "c", );',
-            ),
-        );
+            ],
+            [
+                '<?php [1, 2] + [3, 4];',
+                '<?php [1, 2]+[3, 4];',
+            ],
+            [
+                '<?php [1, 2] + [3, 4];',
+                '<?php [1, 2]   +   [3, 4];',
+            ],
+            [
+                '<?php [1, 2] + //   '.'
+                [3, 4];',
+                '<?php [1, 2]   + //   '.'
+                [3, 4];',
+            ],
+        ];
     }
 
     /**
@@ -218,26 +232,26 @@ $b;',
 
     public function provideUnalignEqualsCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a = "c";',
                 '<?php $a="c";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "c";',
                 '<?php $a ="c";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "c";',
                 '<?php $a= "c";',
-            ),
-            array(
+            ],
+            [
                 '<?php $d = $c + $a +     //
                 $b;',
                 '<?php $d =    $c+$a+     //
                 $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = 1;
     $bbbb = \'
@@ -248,8 +262,8 @@ $b;',
     $bbbb = \'
     $cccccccc = 3;
     \';',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $ccc = 1;
     $bb = 1;
@@ -344,60 +358,28 @@ $b;',
         $aa    = 2;
         $a[$b] = array();
     }',
-            ),
-        );
+            ],
+        ];
     }
 
     public function testWrongConfigItem()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "align_double_arrow", "align_equals"\.$/'
         );
 
-        $this->fixer->configure(array('foo' => true));
+        $this->fixer->configure(['foo' => true]);
     }
 
     public function testWrongConfigValue()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid. Accepted values are: true, false, null\.$/'
         );
 
-        $this->fixer->configure(array('align_double_arrow' => 123));
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideCases54
-     * @requires PHP 5.4
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCases54()
-    {
-        return array(
-            array(
-                '<?php [1, 2] + [3, 4];',
-                '<?php [1, 2]+[3, 4];',
-            ),
-            array(
-                '<?php [1, 2] + [3, 4];',
-                '<?php [1, 2]   +   [3, 4];',
-            ),
-            array(
-                '<?php [1, 2] + //   '.'
-                [3, 4];',
-                '<?php [1, 2]   + //   '.'
-                [3, 4];',
-            ),
-        );
+        $this->fixer->configure(['align_double_arrow' => 123]);
     }
 
     /**
@@ -413,8 +395,8 @@ $b;',
 
     public function provideUnalignDoubleArrowCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     $data = [
         "foo" => "Bar",
@@ -441,8 +423,8 @@ $b;',
         ),
         "bar"  => array(),
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo" => "Bar",
@@ -473,8 +455,8 @@ $b;',
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo" => "Bar",
@@ -487,8 +469,8 @@ $b;',
         "main" => [array("baz" => "Test")],
         "bar"  => array(),
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = array(
         "foo" => "Bar",
@@ -501,8 +483,8 @@ $b;',
         "main" => array("baz" => "Test"),
         "bar"  => array(),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = array(
         "foo" => "Bar",
@@ -515,8 +497,8 @@ $b;',
         "main" => array(array("baz" => "Test")),
         "bar"  => array(),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
@@ -527,29 +509,29 @@ $b;',
     foreach ($foo as $i  =>  $bar) {
         $var[] = /* Comment */ [$i  =>  $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ([1 => 2] as $k => $v) {
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach (fncCall() as $k => $v){
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $bar) {
@@ -566,8 +548,8 @@ $b;',
             $iaaa => $bar,
         ];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo" => "Bar",
@@ -580,8 +562,8 @@ $b;',
         "main" => [["baz" => "Test", "bar" => "Test2"]],
         "bar"  => [],
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = [
         0 => 1,
@@ -606,8 +588,8 @@ $b;',
             22 => 3,
         ]
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         0 => 1,
@@ -632,8 +614,8 @@ $b;',
             22 => 3,
         )
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $arr = array(
         $a => 1,
@@ -648,8 +630,8 @@ $b;',
         $cccccccc = 3;
         \',
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $arr = [
         $a => 1,
@@ -664,8 +646,8 @@ $b;',
         $cccccccc = 3;
         \',
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     foreach($arr as $k => $v){
         $arr = array($k => 1,
@@ -684,8 +666,8 @@ $b;',
             \',
         );
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         10 => 11,
@@ -704,8 +686,8 @@ $b;',
             =>
                 44,
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         " " => "",    "\t" => "",
@@ -718,8 +700,8 @@ $b;',
         "\n"   => "", "\r"   => "",
         "\0"  => "", "\x0B"    => "",
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return $this->grabAttribsBeforeToken(
         $tokens,
@@ -744,8 +726,8 @@ $b;',
             "static"     => null,
         )
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         self::STATUS_UNKNOWN_0 => array("symbol" => "?", "description" => "unknown"),
@@ -756,8 +738,8 @@ $b;',
         self::STATUS_UNKNOWN_0 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_0    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $array = array(
         "bazab" => b(array(
@@ -782,19 +764,19 @@ $b;',
             10      => 11,
         )),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function foo() {
         yield 1 => 2;
     }',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -805,14 +787,14 @@ $b;',
      */
     public function testFixAlignEquals($expected, $input = null)
     {
-        $this->fixer->configure(array('align_equals' => true));
+        $this->fixer->configure(['align_equals' => true]);
         $this->doTest($expected, $input);
     }
 
     public function provideAlignEqualsCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     $a    = 1;
     $bbbb = \'
@@ -823,8 +805,8 @@ $b;',
     $bbbb = \'
     $ddcccccc1 = 3;
     \';',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $ccc = 1;
     $bb  = 1;
@@ -919,8 +901,8 @@ $b;',
         $aa = 2;
         $a[$b] = array();
     }',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -931,30 +913,30 @@ $b;',
      */
     public function testFixAlignDoubleArrow($expected, $input = null)
     {
-        $this->fixer->configure(array('align_double_arrow' => true));
+        $this->fixer->configure(['align_double_arrow' => true]);
         $this->doTest($expected, $input);
     }
 
     public function provideAlignDoubleArrowCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 switch ($a) {
                     case "prod":
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $array = array(
         "closure" => function ($param1, $param2) {
             return;
         }
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return new JsonResponse(array(
         "result" => "OK",
@@ -977,8 +959,8 @@ $b;',
             )
         ),)
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return new JsonResponse([
         "result" => "OK",
@@ -995,8 +977,8 @@ $b;',
             "foofoo" => 43,
         )),
     ]);',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return new JsonResponse([
         "result" => "OK",
@@ -1015,8 +997,8 @@ $b;',
         ]),
         "baz" => "OK",
     ]);',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
@@ -1043,8 +1025,8 @@ $b;',
         ),
         "bar"  => array(),
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
@@ -1060,60 +1042,60 @@ $b;',
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [array("baz" => "Test")],
         "bar"  => array(),
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = array(
         "foo"  => "Bar",
         "main" => array("baz" => "Test"),
         "bar"  => array(),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = array(
         "foo"  => "Bar",
         "main" => array(array("baz" => "Test")),
         "bar"  => array(),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ([1 => 2] as $k => $v) {
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach (fncCall() as $k => $v){
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $bar) {
@@ -1122,24 +1104,24 @@ $b;',
             $iaaa => $bar,
         ];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [["baz" => "Test", "bar" => "Test2"]],
         "bar"  => [],
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
         "main" => ["baz" => "Test"],
         "bar"  => [],
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = [
         0              => 1,
@@ -1164,8 +1146,8 @@ $b;',
             22 => 3,
         ]
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         0  => 1,
@@ -1178,8 +1160,8 @@ $b;',
             22 => 3,
         )
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $arr = array(
         $a    => 1,
@@ -1194,8 +1176,8 @@ $b;',
         $cccccccc2 = 3;
         \',
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $arr = [
         $a    => 1,
@@ -1210,8 +1192,8 @@ $b;',
         $cccccccc3 = 3;
         \',
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     foreach($arr as $k => $v){
         $arr = array($k => 1,
@@ -1221,8 +1203,8 @@ $b;',
             \',
         );
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         10    => 11,
@@ -1241,8 +1223,8 @@ $b;',
             =>
                 44,
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         " "    => "",    "\t"    => "",
@@ -1255,8 +1237,8 @@ $b;',
         "\n"   => "", "\r"   => "",
         "\0"  => "", "\x0B"    => "",
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return $this->grabAttribsBeforeToken(
         $tokens,
@@ -1281,8 +1263,8 @@ $b;',
             "static" => null,
         )
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         self::STATUS_UNKNOWN_1    => array("symbol" => "?", "description" => "unknown"),
@@ -1293,8 +1275,8 @@ $b;',
         self::STATUS_UNKNOWN_1 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $array = array(
         "bazab" => b(array(
@@ -1319,13 +1301,13 @@ $b;',
             10      => 11,
         )),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $inflect_male = array(
         "aitė\b" => "as",
@@ -1340,60 +1322,60 @@ $b;',
         "iūtė\b" => "ius",
         "utė\b" => "us",
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $formMapper
                     ->add(\'foo\', null, [\'required\' => false])
                     ->add(\'dummy_field\', null, [\'required\' => false])
                 ;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $formMapper
                     ->add(\'foo\', null, array(\'required\' => false))
                     ->add(\'dummy_field\', null, array(\'required\' => false))
                 ;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
     function foo() {}
@@ -1420,8 +1402,8 @@ $b;',
         "b" => 1,
     ];
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         self::STATUS_UNKNOWN_2    => array("symbol" => "?", "description" => "unknown"),
@@ -1432,8 +1414,8 @@ $b;',
         self::STATUS_UNKNOWN_2 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         self::STATUS_UNKNOWN_3    => array((1 + 11)=> "?", "description" => "unknown"),
@@ -1444,8 +1426,8 @@ $b;',
         self::STATUS_UNKNOWN_3 => array((1+11)=> "?", "description" => "unknown"),
         self::STATUS_INVALID_3    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return [
         self::STATUS_UNKNOWN_4    => ["symbol" => "?", "description" => "unknown"],
@@ -1456,8 +1438,8 @@ $b;',
         self::STATUS_UNKNOWN_4 => ["symbol" => "?", "description" => "unknown"],
         self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return [
         self::STATUS_UNKNOWN_7    => [(1 + 11)=> "?", "description" => "unknown"],
@@ -1468,16 +1450,16 @@ $b;',
         self::STATUS_UNKNOWN_7 => [(1+11)=> "?", "description" => "unknown"],
         self::STATUS_INVALID_7    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
     ];',
-            ),
-        );
+            ],
+        ];
     }
 
     public function testDoNotTouchEqualsAndArrowByConfig()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'align_equals' => null,
             'align_double_arrow' => null,
-        ));
+        ]);
 
         $this->doTest(
             '<?php
@@ -1502,7 +1484,7 @@ $b;',
      */
     public function testAlignArrayDestruction()
     {
-        $this->fixer->configure(array('align_equals' => true));
+        $this->fixer->configure(['align_equals' => true]);
         $this->doTest(
             '<?php
                 $c = [$d] = $e[1];
