@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.2.2
+--------------------
+
+* bug #2545 RuleSet - change resolvement (SpacePossum)
+* bug #2686 Commands readme and describe - fix rare casing when not displaying some possible options of configuration (keradus)
+* bug #2711 FixCommand - fix diff optional value handling (keradus)
+* minor #2554 Add short diff. output format (SpacePossum, keradus)
+* minor #2688 AppVeyor - Remove github oauth (keradus)
+* minor #2703 Clean ups - No mixed annotations (SpacePossum)
+* minor #2704 Create PHP70Migration:risky ruleset (keradus)
+* minor #2707 Deprecate other than "yes" or "no" for input options (SpacePossum)
+* minor #2709 code grooming (keradus)
+* minor #2710 Travis - run more rules on TASK_SCA (keradus)
+
 Changelog for v2.2.1
 --------------------
 
