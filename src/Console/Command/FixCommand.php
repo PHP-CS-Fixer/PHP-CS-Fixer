@@ -133,7 +133,7 @@ final class FixCommand extends Command
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
-                'diff' => $input->getOption('diff'),
+                'diff' => $input->hasParameterOption('--diff') ? $input->getOption('diff') : null,
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
