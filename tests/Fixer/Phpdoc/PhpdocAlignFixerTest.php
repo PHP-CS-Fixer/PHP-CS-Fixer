@@ -17,6 +17,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
  */
 final class PhpdocAlignFixerTest extends AbstractFixerTestCase
 {
@@ -458,16 +460,16 @@ EOF;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\t/**\r\n\t * @type Type This is a variable.\r\n\t */",
                 "<?php\r\n\t/**\r\n\t * @type   Type   This is a variable.\r\n\t */",
-            ),
-            array(
+            ],
+            [
                 "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
                 "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
-            ),
-        );
+            ],
+        ];
     }
 
     public function testCanFixBadFormatted()
@@ -524,7 +526,7 @@ EOF;
      * @param string $expected
      * @param string $input
      *
-     * @requires PHP 5.6
+     *
      * @dataProvider provideVariadicCases
      */
     public function testVariadicParams($expected, $input)
@@ -534,8 +536,8 @@ EOF;
 
     public function provideVariadicCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 final class Sample
 {
@@ -562,8 +564,8 @@ final class Sample
     }
 }
 ',
-            ),
-                        array(
+            ],
+                        [
                 '<?php
 final class Sample
 {
@@ -590,7 +592,7 @@ final class Sample
     }
 }
 ',
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -16,13 +16,15 @@ use PhpCsFixer\Finder;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Finder
  */
 final class FinderTest extends \PHPUnit_Framework_TestCase
 {
     public function testThatDefaultFinderDoesNotSpecifyAnyDirectory()
     {
         $this->setExpectedExceptionRegExp(
-            'LogicException',
+            \LogicException::class,
             '/^You must call (?:the in\(\) method)|(?:one of in\(\) or append\(\)) methods before iterating over a Finder\.$/'
         );
 

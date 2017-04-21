@@ -35,9 +35,41 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
     {
-        static $forbiddenSuccessors = array(
+        return new FixerDefinition(
+            'There should not be blank lines between docblock and the documented element.',
+            [
+                new CodeSample(
+                    '<?php
+
+/**
+ * This is the bar class.
+ */
+
+
+class Bar {}
+'
+                ),
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be ran before the SingleBlankLineBeforeNamespaceFixer.
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        static $forbiddenSuccessors = [
             T_DOC_COMMENT,
             T_COMMENT,
             T_WHITESPACE,
@@ -46,7 +78,7 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
             T_GOTO,
             T_CONTINUE,
             T_BREAK,
-        );
+        ];
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -59,38 +91,6 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
                 $this->fixWhitespace($tokens[$index + 1]);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'There should not be blank lines between docblock and the documented element.',
-            array(
-                new CodeSample(
-                    '<?php
-
-/**
- * This is the bar class.
- */
-
-
-class Bar {}
-'
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be ran before the SingleBlankLineBeforeNamespaceFixer.
-        return 1;
     }
 
     /**

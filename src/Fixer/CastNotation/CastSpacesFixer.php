@@ -26,41 +26,11 @@ final class CastSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        static $insideCastSpaceReplaceMap = array(
-            ' ' => '',
-            "\t" => '',
-            "\n" => '',
-            "\r" => '',
-            "\0" => '',
-            "\x0B" => '',
-        );
-
-        foreach ($tokens as $index => $token) {
-            if ($token->isCast()) {
-                $token->setContent(strtr($token->getContent(), $insideCastSpaceReplaceMap));
-
-                // force single whitespace after cast token:
-                if ($tokens[$index + 1]->isWhitespace(" \t")) {
-                    // - if next token is whitespaces that contains only spaces and tabs - override next token with single space
-                    $tokens[$index + 1]->setContent(' ');
-                } elseif (!$tokens[$index + 1]->isWhitespace()) {
-                    // - if next token is not whitespaces that contains spaces, tabs and new lines - append single space to current token
-                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
-                }
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'A single space should be between cast and variable.',
-            array(new CodeSample("<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;"))
+            [new CodeSample("<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;")]
         );
     }
 
@@ -79,5 +49,35 @@ final class CastSpacesFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        static $insideCastSpaceReplaceMap = [
+            ' ' => '',
+            "\t" => '',
+            "\n" => '',
+            "\r" => '',
+            "\0" => '',
+            "\x0B" => '',
+        ];
+
+        foreach ($tokens as $index => $token) {
+            if ($token->isCast()) {
+                $token->setContent(strtr($token->getContent(), $insideCastSpaceReplaceMap));
+
+                // force single whitespace after cast token:
+                if ($tokens[$index + 1]->isWhitespace(" \t")) {
+                    // - if next token is whitespaces that contains only spaces and tabs - override next token with single space
+                    $tokens[$index + 1]->setContent(' ');
+                } elseif (!$tokens[$index + 1]->isWhitespace()) {
+                    // - if next token is not whitespaces that contains spaces, tabs and new lines - append single space to current token
+                    $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+                }
+            }
+        }
     }
 }

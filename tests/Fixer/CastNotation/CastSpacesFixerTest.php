@@ -16,6 +16,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\CastSpacesFixer
  */
 final class CastSpacesFixerTest extends AbstractFixerTestCase
 {
@@ -32,56 +34,56 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
 
     public function testFixCastsProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo "( int ) $foo";',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = (int) $foo;',
                 '<?php $bar = ( int)$foo;',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = (int) $foo;',
                 '<?php $bar = (	int)$foo;',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = (int) $foo;',
                 '<?php $bar = (int)	$foo;',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = (string) (int) $foo;',
                 '<?php $bar = ( string )( int )$foo;',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = (string) (int) $foo;',
                 '<?php $bar = (string)(int)$foo;',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = (string) (int) $foo;',
                 '<?php $bar = ( string   )    (   int )$foo;',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = (string) $foo;',
                 '<?php $bar = ( string )   $foo;',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = (float) Foo::bar();',
                 '<?php $bar = (float )Foo::bar();',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = Foo::baz((float) Foo::bar());',
                 '<?php $bar = Foo::baz((float )Foo::bar());',
-            ),
-            array(
+            ],
+            [
                 '<?php $bar = $query["params"] = (array) $query["params"];',
                 '<?php $bar = $query["params"] = (array)$query["params"];',
-            ),
-            array(
+            ],
+            [
                 "<?php \$bar = (int)\n \$foo;",
-            ),
-            array(
+            ],
+            [
                 "<?php \$bar = (int)\r\n \$foo;",
-            ),
-        );
+            ],
+        ];
     }
 }

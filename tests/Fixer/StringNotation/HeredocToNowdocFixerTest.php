@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer
  */
 final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
 {
@@ -34,15 +36,15 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        return array(
-            array(<<<'EOF'
+        return [
+            [<<<'EOF'
 <?php $a = <<<'TEST'
 Foo $bar \n
 TEST;
 
 EOF
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = <<<'TEST'
 TEST;
 
@@ -52,8 +54,8 @@ EOF
 TEST;
 
 EOF
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = <<<'TEST'
 Foo \\ $bar \n
 TEST;
@@ -65,8 +67,8 @@ Foo \\\\ \$bar \\n
 TEST;
 
 EOF
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = <<<'TEST'
 Foo
 TEST;
@@ -78,36 +80,36 @@ Foo
 TEST;
 
 EOF
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = <<<TEST
 Foo $bar
 TEST;
 
 EOF
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = <<<TEST
 Foo \\$bar
 TEST;
 
 EOF
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = <<<TEST
 Foo \n $bar
 TEST;
 
 EOF
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = <<<TEST
 Foo \x00 $bar
 TEST;
 
 EOF
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php
 $html = <<<   'HTML'
 a
@@ -121,8 +123,8 @@ a
 HTML;
 
 EOF
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = <<<           'TEST'
 Foo
 TEST;
@@ -134,7 +136,7 @@ Foo
 TEST;
 
 EOF
-            ),
-        );
+            ],
+        ];
     }
 }

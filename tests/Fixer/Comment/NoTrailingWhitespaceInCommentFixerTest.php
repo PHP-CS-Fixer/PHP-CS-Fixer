@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer
  */
 final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 {
@@ -34,8 +36,8 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     // This is'.'
     //'.'
@@ -48,8 +50,8 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
     //    '.'
     // multiline comment. '.'
     // ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /*
      * This is another'.'
@@ -64,8 +66,8 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * '.'
      * multiline comment. '.'
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * Summary'.'
@@ -86,7 +88,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * @annotation '.'
      *  Foo '.'
      */',
-            ),
-        );
+            ],
+        ];
     }
 }

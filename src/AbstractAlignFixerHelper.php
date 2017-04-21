@@ -35,7 +35,7 @@ abstract class AbstractAlignFixerHelper
      */
     protected $deepestLevel = 0;
 
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function fix(Tokens $tokens)
     {
         // This fixer works partially on Tokens and partially on string representation of code.
         // During the process of fixing internal state of single Token may be affected by injecting ALIGNABLE_PLACEHOLDER to its content.
@@ -79,17 +79,17 @@ abstract class AbstractAlignFixerHelper
             }
 
             $lines = explode("\n", $tmpCode);
-            $linesWithPlaceholder = array();
+            $linesWithPlaceholder = [];
             $blockSize = 0;
 
-            $linesWithPlaceholder[$blockSize] = array();
+            $linesWithPlaceholder[$blockSize] = [];
 
             foreach ($lines as $index => $line) {
                 if (substr_count($line, $placeholder) > 0) {
                     $linesWithPlaceholder[$blockSize][] = $index;
                 } else {
                     ++$blockSize;
-                    $linesWithPlaceholder[$blockSize] = array();
+                    $linesWithPlaceholder[$blockSize] = [];
                 }
             }
 

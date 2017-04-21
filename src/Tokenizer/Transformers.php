@@ -29,7 +29,7 @@ final class Transformers
      *
      * @var TransformerInterface[]
      */
-    private $items = array();
+    private $items = [];
 
     /**
      * Constructor. Register built in Transformers.

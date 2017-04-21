@@ -19,111 +19,132 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer
  */
 final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider testFixProvider
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $configuration = null)
     {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
     public function testFixProvider()
     {
-        return array(
-            array(
+        return [
+            'default' => [
                 '<?php xyz("", "", "", "");',
                 '<?php xyz("","","","");',
-            ),
-            // test method arguments
-            array(
+            ],
+            'test method arguments' => [
                 '<?php function xyz($a=10, $b=20, $c=30) {}',
                 '<?php function xyz($a=10,$b=20,$c=30) {}',
-            ),
-            // test method arguments with multiple spaces
-            array(
+            ],
+            'test method arguments with multiple spaces' => [
                 '<?php function xyz($a=10, $b=20, $c=30) {}',
                 '<?php function xyz($a=10,         $b=20 , $c=30) {}',
-            ),
-            // test method call
-            array(
+            ],
+            'test method arguments with multiple spaces (kmsac)' => [
+                '<?php function xyz($a=10,         $b=20, $c=30) {}',
+                '<?php function xyz($a=10,         $b=20 , $c=30) {}',
+                ['keep_multiple_spaces_after_comma' => true],
+            ],
+            'test method call (I)' => [
                 '<?php xyz($a=10, $b=20, $c=30);',
                 '<?php xyz($a=10 ,$b=20,$c=30);',
-            ),
-            // test method call with multiple spaces
-            array(
-                '<?php xyz($a=10, $b=20, $c=30);',
-                '<?php xyz($a=10 , $b=20 ,          $c=30);',
-            ),
-            // test method call with tab
-            array(
-                '<?php xyz($a=10, $b=20, $c=30);',
-                "<?php xyz(\$a=10 , \$b=20 ,\t \$c=30);",
-            ),
-            // test method call with \n not affected
-            array(
-                "<?php xyz(\$a=10, \$b=20,\n                    \$c=30);",
-            ),
-            // test method call with \r\n not affected
-            array(
-                "<?php xyz(\$a=10, \$b=20,\r\n                    \$c=30);",
-            ),
-            // test method call
-            array(
+            ],
+            'test method call (II)' => [
                 '<?php xyz($a=10, $b=20, $this->foo(), $c=30);',
                 '<?php xyz($a=10,$b=20 ,$this->foo() ,$c=30);',
-            ),
-            // test method call with multiple spaces
-            array(
+            ],
+            'test method call with multiple spaces (I)' => [
+                '<?php xyz($a=10, $b=20, $c=30);',
+                '<?php xyz($a=10 , $b=20 ,          $c=30);',
+            ],
+            'test method call with multiple spaces (I) (kmsac)' => [
+                '<?php xyz($a=10, $b=20,          $c=30);',
+                '<?php xyz($a=10 , $b=20 ,          $c=30);',
+                ['keep_multiple_spaces_after_comma' => true],
+            ],
+            'test method call with tab' => [
+                '<?php xyz($a=10, $b=20, $c=30);',
+                "<?php xyz(\$a=10 , \$b=20 ,\t \$c=30);",
+            ],
+            'test method call with tab (kmsac)' => [
+                "<?php xyz(\$a=10, \$b=20,\t \$c=30);",
+                "<?php xyz(\$a=10 , \$b=20 ,\t \$c=30);",
+                ['keep_multiple_spaces_after_comma' => true],
+            ],
+            'test method call with \n not affected' => [
+                "<?php xyz(\$a=10, \$b=20,\n                    \$c=30);",
+            ],
+            'test method call with \r\n not affected' => [
+                "<?php xyz(\$a=10, \$b=20,\r\n                    \$c=30);",
+            ],
+            'test method call with multiple spaces (II)' => [
                 '<?php xyz($a=10, $b=20, $this->foo(), $c=30);',
                 '<?php xyz($a=10,$b=20 ,         $this->foo() ,$c=30);',
-            ),
-            // test receiving data in list context with omitted values
-            array(
+            ],
+            'test method call with multiple spaces (II) (kmsac)' => [
+                '<?php xyz($a=10, $b=20,         $this->foo(), $c=30);',
+                '<?php xyz($a=10,$b=20 ,         $this->foo() ,$c=30);',
+                ['keep_multiple_spaces_after_comma' => true],
+            ],
+            'test receiving data in list context with omitted values' => [
                 '<?php list($a, $b, , , $c) = foo();',
                 '<?php list($a, $b,, ,$c) = foo();',
-            ),
-            // test receiving data in list context with omitted values and multiple spaces
-            array(
+            ],
+            'test receiving data in list context with omitted values and multiple spaces' => [
                 '<?php list($a, $b, , , $c) = foo();',
                 '<?php list($a, $b,,    ,$c) = foo();',
-            ),
-            // skip array
-            array(
+            ],
+            'test receiving data in list context with omitted values and multiple spaces (kmsac)' => [
+                '<?php list($a, $b, ,    , $c) = foo();',
+                '<?php list($a, $b,,    ,$c) = foo();',
+                ['keep_multiple_spaces_after_comma' => true],
+            ],
+            'skip array' => [
                 '<?php array(10 , 20 ,30);',
-            ),
-            // list call with trailing comma
-            array(
+            ],
+            'list call with trailing comma' => [
                 '<?php list($path, $mode, ) = foo();',
                 '<?php list($path, $mode,) = foo();',
-            ),
-            //inline comments with spaces
-            array(
+            ],
+            'inline comments with spaces' => [
                 '<?php xyz($a=10, /*comment1*/ $b=2000, /*comment2*/ $c=30);',
                 '<?php xyz($a=10,    /*comment1*/ $b=2000,/*comment2*/ $c=30);',
-            ),
-            // must keep align comments
-            array(
+            ],
+            'inline comments with spaces (kmsac)' => [
+                '<?php xyz($a=10,    /*comment1*/ $b=2000, /*comment2*/ $c=30);',
+                '<?php xyz($a=10,    /*comment1*/ $b=2000,/*comment2*/ $c=30);',
+                ['keep_multiple_spaces_after_comma' => true],
+            ],
+            'must keep align comments' => [
                 '<?php function xyz(
                     $a=10,      //comment1
                     $b=20,      //comment2
                     $c=30) {
                 }',
-            ),
-            array(
+            ],
+            'must keep align comments (2)' => [
                 '<?php function xyz(
                     $a=10,  //comment1
                     $b=2000,//comment2
                     $c=30) {
                 }',
-            ),
-            //multiline comments also must be ignored
-            array(
+            ],
+            'multiline comments also must be ignored (I)' => [
                 '<?php function xyz(
                     $a=10,  /* comment1a
                                comment1b
@@ -133,9 +154,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                         comment 2c */
                     $c=30) {
                 }',
-            ),
-            // multiline comments also must be ignored
-            array(
+            ],
+            'multiline comments also must be ignored (II)' => [
                 '<?php
                     function xyz(
                         $a=10, /* multiline comment
@@ -143,7 +163,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                                 */ $b=2000,
                         $a2=10 /* multiline comment
                                  not at the end of line
-                                */, $b2=2000,
+                                */ , $b2=2000,
                         $c=30) {
                     }',
                 '<?php
@@ -156,9 +176,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                                 */ ,$b2=2000,
                         $c=30) {
                     }',
-            ),
-            // multi line testing method arguments
-            array(
+            ],
+            'multi line testing method arguments' => [
                 '<?php function xyz(
                     $a=10,
                     $b=20,
@@ -169,9 +188,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                     $b=20,
                     $c=30) {
                 }',
-            ),
-            // multi line testing method call
-            array(
+            ],
+            'multi line testing method call' => [
                 '<?php xyz(
                     $a=10,
                     $b=20,
@@ -182,34 +200,34 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                     $b=20,
                     $c=30
                     );',
-            ),
-            // skip arrays but replace arg methods
-            array(
+            ],
+            'skip arrays but replace arg methods' => [
                 '<?php fnc(1, array(2, func2(6, 7) ,4), 5);',
                 '<?php fnc(1,array(2, func2(6,    7) ,4),    5);',
-            ),
-            // ignore commas inside call argument
-            array(
+            ],
+            'skip arrays but replace arg methods (kmsac)' => [
+                '<?php fnc(1, array(2, func2(6,    7) ,4),    5);',
+                '<?php fnc(1,array(2, func2(6,    7) ,4),    5);',
+                ['keep_multiple_spaces_after_comma' => true],
+            ],
+            'ignore commas inside call argument' => [
                 '<?php fnc(1, array(2, 3 ,4), 5);',
-            ),
-            // skip multi line array
-            array(
+            ],
+            'skip multi line array' => [
                 '<?php
                     array(
                         10 ,
                         20,
                         30
                     );',
-            ),
-            // skip short array
-            array(
+            ],
+            'skip short array' => [
                 '<?php
     $foo = ["a"=>"apple", "b"=>"bed" ,"c"=>"car"];
     $bar = ["a" ,"b" ,"c"];
     ',
-            ),
-            // don't change HEREDOC and NOWDOC
-            array(
+            ],
+            'don\'t change HEREDOC and NOWDOC' => [
                 "<?php
     \$this->foo(
         <<<EOTXTa
@@ -223,15 +241,23 @@ EOTXTb
         'foo'
     );
 ",
-            ),
-        );
+            ],
+            [
+                '<?php xyz#
+ (#
+""#
+,#
+$a#
+);',
+            ],
+        ];
     }
 
     /**
      * @param string $expected
      * @param string $input
      *
-     * @requires PHP 5.6
+     *
      * @dataProvider provideFix56Cases
      */
     public function testFix56($expected, $input)
@@ -241,12 +267,12 @@ EOTXTb
 
     public function provideFix56Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php function A($c, ...$a){}',
                 '<?php function A($c ,...$a){}',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

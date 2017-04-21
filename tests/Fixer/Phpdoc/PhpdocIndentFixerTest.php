@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Ceeram <ceeram@cakephp.org>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer
  */
 final class PhpdocIndentFixerTest extends AbstractFixerTestCase
 {
@@ -34,13 +36,13 @@ final class PhpdocIndentFixerTest extends AbstractFixerTestCase
 
     public function provideDocblocks()
     {
-        $cases = array();
+        $cases = [];
 
-        $cases[] = array('<?php /** @var Foo $foo */ ?>');
+        $cases[] = ['<?php /** @var Foo $foo */ ?>'];
 
-        $cases[] = array('<?php /** foo */');
+        $cases[] = ['<?php /** foo */'];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 /**
  * Do not indent
@@ -81,9 +83,9 @@ class DocBlocks
  */
     public function test() {}
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 class DocBlocks
 {
@@ -150,9 +152,9 @@ class DocBlocks
  */
     function test4() {}
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 /**
  * Final class should also not be indented
@@ -175,9 +177,9 @@ final class DocBlocks
  */
     var $oldStyle = false;
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
     if (1) {
         class Foo {
@@ -206,9 +208,9 @@ final class DocBlocks
             function bar() {}
         }
     }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 /**
  * Variable
@@ -293,21 +295,21 @@ $partialFix = true;
     foreach($connections as $sqlite) {
         $sqlite->open();
     }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
     $user = $event->getForm()->getData();  /** @var User $user */
     echo "Success";',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
     $user = $event->getForm()->getData();/** @var User $user */
     echo "Success";',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php
 class DocBlocks
 {
@@ -334,9 +336,9 @@ class DocBlocks
  */
 \tpublic function test() {}
 }",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 /**
  * Used to write a value to a session key.
@@ -353,9 +355,9 @@ function write($name) {}
  */
 function write(\$name) {}
 ",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
     class Foo
     {
@@ -366,9 +368,9 @@ function write(\$name) {}
              */
         }
     }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 /**
  * docs
@@ -377,7 +379,7 @@ function write(\$name) {}
 // comment
 $foo = $bar;
 ',
-        );
+        ];
 
         return $cases;
     }

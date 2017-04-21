@@ -16,6 +16,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer
  */
 final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
 {
@@ -32,8 +34,8 @@ final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
             $c = // lala
                 // cc
@@ -42,8 +44,8 @@ final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
             $c = ! // lala
                 // cc
             !$content;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = \'0\';
 $b = /*
@@ -54,8 +56,8 @@ $a = \'0\';
 $b = !/*
 
     */!$a;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo($a, $b) {
     $c = (bool)$a;
@@ -85,7 +87,7 @@ function foo($a, $b) {
     return !! $a;
 }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

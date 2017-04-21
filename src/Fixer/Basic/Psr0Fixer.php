@@ -13,7 +13,9 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractPsrAutoloadingFixer;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -24,35 +26,41 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Bram Gotink <bram@gotink.me>
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurableFixerInterface
+final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array();
-
-    private $configuration = array();
-
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function getDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        if (isset($configuration['dir'])) {
-            $this->configuration['dir'] = $configuration['dir'];
-        }
+        return new FixerDefinition(
+            'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
+            [
+                new FileSpecificCodeSample(
+                    '<?php
+namespace PhpCsFixer\FIXER\Basic;
+class InvalidName {}
+',
+                    new \SplFileInfo(__FILE__)
+                ),
+                new FileSpecificCodeSample(
+                    '<?php
+namespace PhpCsFixer\FIXER\Basic;
+class InvalidName {}
+',
+                    new \SplFileInfo(__FILE__),
+                    ['dir' => realpath(__DIR__.'/../..')]
+                ),
+            ],
+            null,
+            'This fixer may change your class name, which will break the code that is depended on old name.'
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $namespace = false;
         $namespaceIndex = 0;
@@ -68,7 +76,7 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
                 }
 
                 $namespaceIndex = $tokens->getNextMeaningfulToken($index);
-                $namespaceEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
+                $namespaceEndIndex = $tokens->getNextTokenOfKind($index, [';']);
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
@@ -145,31 +153,14 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    protected function createConfigurationDefinition()
     {
-        return new FixerDefinition(
-            'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
-            array(
-                new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
-                    new \SplFileInfo(__FILE__)
-                ),
-                new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
-                    new \SplFileInfo(__FILE__),
-                    array('dir' => realpath(__DIR__.'/../..'))
-                ),
-            ),
-            null,
-            'One could set up `dir` where the code is placed under project location.',
-            self::$defaultConfiguration,
-            'This fixer may change you class name, which will break the code that is depended on old name.'
-        );
+        $dir = new FixerOptionBuilder('dir', 'The directory where the project code is placed.');
+        $dir = $dir
+            ->setAllowedTypes(['string'])
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver([$dir]);
     }
 }

@@ -28,7 +28,31 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.',
+            [new CodeSample('<?php
+/**
+ * Foo function is great
+ */
+function foo () {}
+')]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -48,30 +72,6 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.',
-            array(new CodeSample('<?php
-/**
- * Foo function is great
- */
-function foo () {}
-'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**

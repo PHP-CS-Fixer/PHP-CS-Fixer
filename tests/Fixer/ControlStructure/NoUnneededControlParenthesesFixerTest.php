@@ -20,6 +20,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoUnneededControlParenthesesFixer
  */
 final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 {
@@ -30,10 +32,12 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         parent::setUpBeforeClass();
 
         $fixer = new NoUnneededControlParenthesesFixer();
-        $fixer->configure(null);
-        $controlStatementsProperty = new \ReflectionProperty($fixer, 'controlStatements');
-        $controlStatementsProperty->setAccessible(true);
-        self::$defaultStatements = $controlStatementsProperty->getValue($fixer);
+        foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+            if ('statements' === $option->getName()) {
+                self::$defaultStatements = $option->getDefault();
+                break;
+            }
+        }
     }
 
     /**
@@ -53,12 +57,13 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|string $fixStatement
      *
-     * @dataProvider provideFixCases55
-     * @requires PHP 5.5
+     * @group legacy
+     * @dataProvider provideFixCases
+     * @expectedDeprecation Passing "statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
      */
-    public function testFix55($expected, $input = null, $fixStatement = null)
+    public function testLegacyFix($expected, $input = null, $fixStatement = null)
     {
-        $this->fixerTest($expected, $input, $fixStatement);
+        $this->fixerTest($expected, $input, $fixStatement, true);
     }
 
     /**
@@ -74,68 +79,83 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->fixerTest($expected, $input, $fixStatement);
     }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|string $fixStatement
+     *
+     * @group legacy
+     * @dataProvider provideFixCases70
+     * @expectedDeprecation Passing "statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
+     * @requires PHP 7.0
+     */
+    public function testLegacyFix70($expected, $input = null, $fixStatement = null)
+    {
+        $this->fixerTest($expected, $input, $fixStatement, true);
+    }
+
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php while ($x) { break; }',
-            ),
-            array(
+            ],
+            [
                 '<?php while ($x) { while ($y) { break 2; } }',
                 '<?php while ($x) { while ($y) { break (2); } }',
-            ),
-            array(
+            ],
+            [
                 '<?php while ($x) { while ($y) { break 2; } }',
                 '<?php while ($x) { while ($y) { break(2); } }',
-            ),
-            array(
+            ],
+            [
                 '<?php while ($x) { continue; }',
-            ),
-            array(
+            ],
+            [
                 '<?php while ($x) { while ($y) { continue 2; } }',
                 '<?php while ($x) { while ($y) { continue (2); } }',
-            ),
-            array(
+            ],
+            [
                 '<?php while ($x) { while ($y) { continue 2; } }',
                 '<?php while ($x) { while ($y) { continue(2); } }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 clone $object;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 clone new Foo();
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $var = clone ($obj1 ?: $obj2);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $var = clone ($obj1 ? $obj1->getSubject() : $obj2);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 clone $object;
                 ',
                 '<?php
                 clone ($object);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 clone new Foo();
                 ',
                 '<?php
                 clone (new Foo());
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 foo(clone $a);
                 foo(clone $a, 1);
@@ -146,36 +166,36 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 foo(clone($a), 1);
                 $a = $b ? clone($b) : $c;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo "foo";
                 print "foo";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo (1 + 2) . $foo;
                 print (1 + 2) . $foo;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo (1 + 2) * 10, "\n";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php echo (1 + 2) * 10, "\n" ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php echo "foo" ?>',
                 '<?php echo ("foo") ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php print "foo" ?>',
                 '<?php print ("foo") ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo "foo";
                 print "foo";
@@ -184,8 +204,8 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 echo ("foo");
                 print ("foo");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo "foo";
                 print "foo";
@@ -194,8 +214,8 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 echo("foo");
                 print("foo");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo 2;
                 print 2;
@@ -204,8 +224,8 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 echo(2);
                 print(2);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo $a ? $b : $c;
                 echo ($a ? $b : $c) ? $d : $e;
@@ -222,66 +242,66 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 echo my_awesome_function("foo");
                 echo $this->getOutput(1);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 return "prod";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 return (1 + 2) * 10;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 return (1 + 2) * 10;
                 ',
                 '<?php
                 return ((1 + 2) * 10);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 return "prod";
                 ',
                 '<?php
                 return ("prod");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 return $x;
                 ',
                 '<?php
                 return($x);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 return 2;
                 ',
                 '<?php
                 return(2);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 return 2?>
                 ',
                 '<?php
                 return(2)?>
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case "prod":
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case "prod":
@@ -295,8 +315,8 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 }
                 ',
                 'switch_case',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case $x;
@@ -307,8 +327,8 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                     case($x);
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case 2;
@@ -319,8 +339,8 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                     case(2);
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $a = 5.1;
                 $b = 1.0;
@@ -388,82 +408,91 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 }
                 ',
                 'switch_case',
-            ),
-        );
-    }
-
-    public function provideFixCases55()
-    {
-        return array(
-            array(
+            ],
+            [
+                '<?php while ($x) { while ($y) { break#
+#
+2#
+#
+; } }',
+                '<?php while ($x) { while ($y) { break#
+(#
+2#
+)#
+; } }',
+            ],
+            [
                 '<?php
                 function foo() { yield "prod"; }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 function foo() { yield (1 + 2) * 10; }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 function foo() { yield (1 + 2) * 10; }
                 ',
                 '<?php
                 function foo() { yield ((1 + 2) * 10); }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 function foo() { yield "prod"; }
                 ',
                 '<?php
                 function foo() { yield ("prod"); }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 function foo() { yield 2; }
                 ',
                 '<?php
                 function foo() { yield(2); }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 function foo() { $a = (yield $x); }
                 ',
                 '<?php
                 function foo() { $a = (yield($x)); }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     public function provideFixCases70()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 $var = clone ($obj1->getSubject() ?? $obj2);
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
      * @param null|string $fixStatement
+     * @param bool        $legacy
      */
-    private function fixerTest($expected, $input = null, $fixStatement = null)
+    private function fixerTest($expected, $input = null, $fixStatement = null, $legacy = false)
     {
         // Default config. Fixes all statements.
-        $this->fixer->configure(self::$defaultStatements);
+        $this->doTest($expected, $input);
+
+        $this->fixer->configure($legacy ? self::$defaultStatements : ['statements' => self::$defaultStatements]);
         $this->doTest($expected, $input);
 
         // Empty array config. Should not fix anything.
-        $this->fixer->configure(array());
+        $this->fixer->configure([]);
         $this->doTest($expected, null);
 
         // Test with only one statement
@@ -479,7 +508,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 }
             }
 
-            $this->fixer->configure(array($statement));
+            $this->fixer->configure($legacy ? [$statement] : ['statements' => [$statement]]);
             $this->doTest(
                 $expected,
                 $withInput ? $input : null

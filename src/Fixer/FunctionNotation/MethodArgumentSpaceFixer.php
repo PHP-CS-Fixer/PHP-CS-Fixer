@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -24,22 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  */
-final class MethodArgumentSpaceFixer extends AbstractFixer
+final class MethodArgumentSpaceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $token = $tokens[$index];
-
-            if ($token->equals('(') && !$tokens[$index - 1]->isGivenKind(T_ARRAY)) {
-                $this->fixFunction($tokens, $index);
-            }
-        }
-    }
-
     /**
      * Method to insert space after comma and remove space before comma.
      *
@@ -59,7 +48,20 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.',
-            array(new CodeSample("<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);"))
+            [
+                new CodeSample(
+                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);",
+                    null
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);",
+                    ['keep_multiple_spaces_after_comma' => false]
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);",
+                    ['keep_multiple_spaces_after_comma' => true]
+                ),
+            ]
         );
     }
 
@@ -69,6 +71,35 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('(');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = $tokens->count() - 1; $index > 0; --$index) {
+            $token = $tokens[$index];
+
+            if ($token->equals('(') && !$tokens[$index - 1]->isGivenKind(T_ARRAY)) {
+                $this->fixFunction($tokens, $index);
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $keepMultipleSpacesAfterComma = new FixerOptionBuilder('keep_multiple_spaces_after_comma', 'Whether keep multiple spaces after comma.');
+        $keepMultipleSpacesAfterComma = $keepMultipleSpacesAfterComma
+            ->setAllowedTypes(['bool'])
+            ->setDefault(false)
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver([$keepMultipleSpacesAfterComma]);
     }
 
     /**
@@ -86,11 +117,13 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
 
             if ($token->equals(')')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+
                 continue;
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+
                 continue;
             }
 
@@ -112,7 +145,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
         if ($tokens[$index - 1]->isWhitespace()) {
             $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
 
-            if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC)))) {
+            if (!$tokens[$prevIndex]->equalsAny([',', [T_END_HEREDOC]]) && !$tokens[$prevIndex]->isComment()) {
                 $tokens[$index - 1]->clear();
             }
         }
@@ -123,7 +156,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
         //  1) multiple spaces after comma
         //  2) no space after comma
         if ($nextToken->isWhitespace()) {
-            if ($this->isCommentLastLineToken($tokens, $index + 2)) {
+            if ($this->configuration['keep_multiple_spaces_after_comma'] || $this->isCommentLastLineToken($tokens, $index + 2)) {
                 return;
             }
 
@@ -134,7 +167,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer
         }
 
         if (!$this->isCommentLastLineToken($tokens, $index + 1)) {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
         }
     }
 

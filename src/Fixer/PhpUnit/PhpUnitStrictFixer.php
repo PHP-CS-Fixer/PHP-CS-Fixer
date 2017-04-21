@@ -13,8 +13,10 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -22,66 +24,75 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var string[]
-     */
-    private static $defaultConfiguration = array(
-        'assertAttributeEquals',
-        'assertAttributeNotEquals',
-        'assertEquals',
-        'assertNotEquals',
-    );
-
-    /**
-     * @var string[]
-     */
-    private $configuration;
-
-    private static $assertionMap = array(
+    private static $assertionMap = [
         'assertAttributeEquals' => 'assertAttributeSame',
         'assertAttributeNotEquals' => 'assertAttributeNotSame',
         'assertEquals' => 'assertSame',
         'assertNotEquals' => 'assertNotSame',
-    );
+    ];
 
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function getDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        foreach ($configuration as $method) {
-            if (!array_key_exists($method, self::$assertionMap)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configured method "%s" cannot be fixed by this fixer.', $method));
-            }
-        }
-
-        $this->configuration = $configuration;
+        return new FixerDefinition(
+            'PHPUnit methods like `assertSame` should be used instead of `assertEquals`.',
+            [
+                new CodeSample(
+'<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomeTest()
+    {
+        $this->assertAttributeEquals(a(), b());
+        $this->assertAttributeNotEquals(a(), b());
+        $this->assertEquals(a(), b());
+        $this->assertNotEquals(a(), b());
+    }
+}
+'
+                ),
+            ],
+            null,
+            'Risky when any of the functions are overridden.'
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function isCandidate(Tokens $tokens)
     {
-        foreach ($this->configuration as $methodBefore) {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($this->configuration['assertions'] as $methodBefore) {
             $methodAfter = self::$assertionMap[$methodBefore];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
                 $sequence = $tokens->findSequence(
-                    array(
-                        array(T_VARIABLE, '$this'),
-                        array(T_OBJECT_OPERATOR, '->'),
-                        array(T_STRING, $methodBefore),
+                    [
+                        [T_VARIABLE, '$this'],
+                        [T_OBJECT_OPERATOR, '->'],
+                        [T_STRING, $methodBefore],
                         '(',
-                    ),
+                    ],
                     $index
                 );
 
@@ -100,51 +111,25 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    protected function createConfigurationDefinition()
     {
-        return new FixerDefinition(
-            'PHPUnit methods like `assertSame` should be used instead of `assertEquals`.',
-            array(
-                new CodeSample(
-'<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $this->assertAttributeEquals(a(), b());
-        $this->assertAttributeNotEquals(a(), b());
-        $this->assertEquals(a(), b());
-        $this->assertNotEquals(a(), b());
-    }
-}
-'
-                ),
-            ),
-            null,
-            'Configure which of the following functions should be replaced `assertAttributeEquals`, `assertAttributeNotEquals`, `assertEquals`, `assertNotEquals`',
-            array(
+        $generator = new FixerOptionValidatorGenerator();
+
+        $assertions = new FixerOptionBuilder('assertions', 'List of assertion methods to fix.');
+        $assertions = $assertions
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
+                $generator->allowedValueIsSubsetOf(array_keys(self::$assertionMap)),
+            ])
+            ->setDefault([
                 'assertAttributeEquals',
                 'assertAttributeNotEquals',
                 'assertEquals',
                 'assertNotEquals',
-            ),
-            'Risky when the any of functions are overridden.'
-        );
-    }
+            ])
+            ->getOption()
+        ;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
+        return new FixerConfigurationResolverRootless('assertions', [$assertions]);
     }
 }

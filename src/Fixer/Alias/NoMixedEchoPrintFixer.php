@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -24,12 +25,12 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  * @author SpacePossum
  */
-final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
-     * @deprecated will not be publicly available on 3.0
+     * @deprecated will be removed in 3.0
      */
-    public static $defaultConfig = array('use' => 'echo');
+    public static $defaultConfig = ['use' => 'echo'];
 
     /**
      * @var string
@@ -46,30 +47,14 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
      */
     public function configure(array $configuration = null)
     {
-        if (null === $configuration) {
-            $configuration = self::$defaultConfig;
+        parent::configure($configuration);
+
+        if ('echo' === $this->configuration['use']) {
+            $this->candidateTokenType = T_PRINT;
+            $this->callBack = 'fixPrintToEcho';
         } else {
-            if (1 !== count($configuration) || !array_key_exists('use', $configuration) || !in_array($configuration['use'], array('print', 'echo'), true)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf(
-                    'Expected array of element "use" with value "echo" or "print", got "%s".',
-                    var_export($configuration, true)
-                ));
-            }
-        }
-
-        $this->resolveConfig($configuration);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $callBack = $this->callBack;
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind($this->candidateTokenType)) {
-                $this->$callBack($tokens, $index);
-            }
+            $this->candidateTokenType = T_ECHO;
+            $this->callBack = 'fixEchoToPrint';
         }
     }
 
@@ -80,13 +65,10 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
     {
         return new FixerDefinition(
             'Either language construct `print` or `echo` should be used.',
-            array(
+            [
                 new CodeSample('<?php print \'example\';'),
-                new CodeSample('<?php echo(\'example\');', array('use' => 'print')),
-            ),
-            null,
-            "The fixer can be configured to change `print` to `echo` `['use' => 'echo']` or `echo` to `print` `['use' => 'print']`.",
-            self::$defaultConfig
+                new CodeSample('<?php echo(\'example\');', ['use' => 'print']),
+            ]
         );
     }
 
@@ -105,6 +87,34 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound($this->candidateTokenType);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $callBack = $this->callBack;
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind($this->candidateTokenType)) {
+                $this->$callBack($tokens, $index);
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $use = new FixerOptionBuilder('use', 'The desired language construct.');
+        $use = $use
+            ->setAllowedValues(['print', 'echo'])
+            ->setDefault('echo')
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolver([$use]);
     }
 
     /**
@@ -127,11 +137,11 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
         }
 
         $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
-        $endTokenIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
+        $endTokenIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
         $canBeConverted = true;
 
         for ($i = $nextTokenIndex; $i < $endTokenIndex; ++$i) {
-            if ($tokens[$i]->equalsAny(array('(', array(CT::T_ARRAY_SQUARE_BRACE_OPEN)))) {
+            if ($tokens[$i]->equalsAny(['(', [CT::T_ARRAY_SQUARE_BRACE_OPEN]])) {
                 $blockType = Tokens::detectBlockType($tokens[$i]);
                 $i = $tokens->findBlockEnd($blockType['type'], $i);
             }
@@ -146,7 +156,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
             return;
         }
 
-        $tokens->overrideAt($index, array(T_PRINT, 'print'));
+        $tokens->overrideAt($index, [T_PRINT, 'print']);
     }
 
     /**
@@ -157,21 +167,10 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny(array(';', '{', '}', array(T_OPEN_TAG)))) {
+        if (!$prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
             return;
         }
 
-        $tokens->overrideAt($index, array(T_ECHO, 'echo'));
-    }
-
-    private function resolveConfig(array $configuration)
-    {
-        if ('echo' === $configuration['use']) {
-            $this->candidateTokenType = T_PRINT;
-            $this->callBack = 'fixPrintToEcho';
-        } else {
-            $this->candidateTokenType = T_ECHO;
-            $this->callBack = 'fixEchoToPrint';
-        }
+        $tokens->overrideAt($index, [T_ECHO, 'echo']);
     }
 }

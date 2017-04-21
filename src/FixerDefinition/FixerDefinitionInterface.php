@@ -29,11 +29,15 @@ interface FixerDefinitionInterface
 
     /**
      * @return null|string $configurationDescription null for non-configurable fixer
+     *
+     * @deprecated will be removed in 3.0
      */
     public function getConfigurationDescription();
 
     /**
      * @return null|array $defaultConfiguration     null for non-configurable fixer
+     *
+     * @deprecated will be removed in 3.0
      */
     public function getDefaultConfiguration();
 

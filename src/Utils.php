@@ -55,7 +55,7 @@ final class Utils
         return preg_replace_callback(
             '/(^|[a-z0-9])([A-Z])/',
             function (array $matches) {
-                return strtolower(strlen($matches[1]) ? $matches[1].'_'.$matches[2] : $matches[2]);
+                return strtolower('' !== $matches[1] ? $matches[1].'_'.$matches[2] : $matches[2]);
             },
             $string
         );
@@ -116,7 +116,7 @@ final class Utils
         }
 
         $str = strrchr(
-            str_replace(array("\r\n", "\r"), "\n", $token->getContent()),
+            str_replace(["\r\n", "\r"], "\n", $token->getContent()),
             "\n"
         );
 

@@ -31,23 +31,11 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $count = $tokens->count();
-
-        if ($count && !$tokens[$count - 1]->isGivenKind(array(T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG))) {
-            $tokens->ensureWhitespaceAtIndex($count - 1, 1, $this->whitespacesConfig->getLineEnding());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'A PHP file without end tag must always end with a single empty line feed.',
-            array(new CodeSample("<?php\n\$a = 1;"))
+            [new CodeSample("<?php\n\$a = 1;")]
         );
     }
 
@@ -66,5 +54,17 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $count = $tokens->count();
+
+        if ($count && !$tokens[$count - 1]->isGivenKind([T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG])) {
+            $tokens->ensureWhitespaceAtIndex($count - 1, 1, $this->whitespacesConfig->getLineEnding());
+        }
     }
 }

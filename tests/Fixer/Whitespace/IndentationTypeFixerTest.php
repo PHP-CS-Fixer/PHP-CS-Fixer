@@ -19,6 +19,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer
  */
 final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
@@ -35,133 +37,133 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $cases = array();
+        $cases = [];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo ALPHA;',
             "<?php
 \t\techo ALPHA;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo BRAVO;',
             "<?php
 \t\techo BRAVO;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo CHARLIE;',
             "<?php
  \t\techo CHARLIE;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo DELTA;',
             "<?php
   \t\techo DELTA;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php
         echo 'ECHO';",
             "<?php
    \t\techo 'ECHO';",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo FOXTROT;',
             "<?php
 \t \techo FOXTROT;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo GOLF;',
             "<?php
 \t  \techo GOLF;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo HOTEL;',
             "<?php
 \t   \techo HOTEL;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo INDIA;',
             "<?php
 \t    echo INDIA;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo JULIET;',
             "<?php
  \t   \techo JULIET;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo KILO;',
             "<?php
   \t  \techo KILO;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo MIKE;',
             "<?php
    \t \techo MIKE;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         echo NOVEMBER;',
             "<?php
     \techo NOVEMBER;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
          echo OSCAR;',
             "<?php
 \t \t echo OSCAR;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
           echo PAPA;',
             "<?php
 \t \t  echo PAPA;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
            echo QUEBEC;',
             "<?php
 \t \t   echo QUEBEC;",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php $x = "a: \t";',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php
 \$x = \"
 \tLike
 \ta
 \tdog\";",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
     /**
      * Test that tabs in docblocks are converted to spaces.
@@ -178,9 +180,9 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t *
 \t * @return
 \t */",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
         /**
          * Test that tabs in docblocks are converted to spaces.
@@ -189,9 +191,9 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t\t/**
 \t\t * Test that tabs in docblocks are converted to spaces.
 \t\t */",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
     /*
      | Test that tabs in comments are converted to spaces    '."\t".'.
@@ -200,9 +202,9 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t/*
 \t | Test that tabs in comments are converted to spaces    \t.
 \t */",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php
     /**
      * This variable
@@ -213,11 +215,11 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t * This variable
 \t * should not be '\t', really!
 \t */",
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php\necho 1;\n?>\r\n\t\$a = ellow;",
-        );
+        ];
 
         return $cases;
     }
@@ -237,23 +239,23 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 
     public function provideMessyWhitespacesCases()
     {
-        $cases = array();
+        $cases = [];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php
 \t\techo KILO;",
             '<?php
         echo KILO;',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php
 \t\t   echo QUEBEC;",
             '<?php
            echo QUEBEC;',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php
 \t/**
 \t * This variable
@@ -264,7 +266,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
      * This variable
      * should not be '\t', really!
      */",
-        );
+        ];
 
         return $cases;
     }

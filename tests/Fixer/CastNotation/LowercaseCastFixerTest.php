@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
  */
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {
@@ -34,28 +36,28 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        $cases = array();
-        foreach (array('boolean', 'bool', 'integer', 'int', 'double', 'float', 'real', 'float', 'string', 'array', 'object', 'unset', 'binary') as $from) {
+        $cases = [];
+        foreach (['boolean', 'bool', 'integer', 'int', 'double', 'float', 'real', 'float', 'string', 'array', 'object', 'unset', 'binary'] as $from) {
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b= (%s)$d;', $from),
                     sprintf('<?php $b= (%s)$d;', strtoupper($from)),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b=( %s) $d;', $from),
                     sprintf('<?php $b=( %s) $d;', ucfirst($from)),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b=(%s ) $d;', $from),
                     sprintf('<?php $b=(%s ) $d;', strtoupper($from)),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b=(  %s  ) $d;', $from),
                     sprintf('<?php $b=(  %s  ) $d;', ucfirst($from)),
-                );
+                ];
         }
 
         return $cases;

@@ -17,6 +17,8 @@ use PhpCsFixer\Test\IntegrationCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Test\IntegrationCase
  */
 final class IntegrationCaseTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,9 +31,9 @@ final class IntegrationCaseTest extends \PHPUnit_Framework_TestCase
         $integrationCase = new IntegrationCase(
             'foo',
             'Foo',
-            array(),
-            array(),
-            array(),
+            [],
+            [],
+            [],
             new RuleSet(),
             'Bar',
             'Baz'

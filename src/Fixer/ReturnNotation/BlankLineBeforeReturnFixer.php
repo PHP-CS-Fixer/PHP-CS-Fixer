@@ -27,51 +27,11 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(T_RETURN)) {
-                continue;
-            }
-
-            $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
-
-            if (!$prevNonWhitespaceToken->equalsAny(array(';', '}'))) {
-                continue;
-            }
-
-            $prevToken = $tokens[$index - 1];
-
-            if ($prevToken->isWhitespace()) {
-                $parts = explode("\n", $prevToken->getContent());
-                $countParts = count($parts);
-
-                if (1 === $countParts) {
-                    $prevToken->setContent(rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding);
-                } elseif (count($parts) <= 2) {
-                    $prevToken->setContent($lineEnding.$prevToken->getContent());
-                }
-            } else {
-                $tokens->insertAt($index, new Token(array(T_WHITESPACE, $lineEnding.$lineEnding)));
-
-                ++$index;
-                ++$limit;
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'An empty line feed should precede a return statement.',
-            array(new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}"))
+            [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}")]
         );
     }
 
@@ -90,5 +50,45 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_RETURN);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(T_RETURN)) {
+                continue;
+            }
+
+            $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
+
+            if (!$prevNonWhitespaceToken->equalsAny([';', '}'])) {
+                continue;
+            }
+
+            $prevToken = $tokens[$index - 1];
+
+            if ($prevToken->isWhitespace()) {
+                $parts = explode("\n", $prevToken->getContent());
+                $countParts = count($parts);
+
+                if (1 === $countParts) {
+                    $prevToken->setContent(rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding);
+                } elseif (count($parts) <= 2) {
+                    $prevToken->setContent($lineEnding.$prevToken->getContent());
+                }
+            } else {
+                $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
+
+                ++$index;
+                ++$limit;
+            }
+        }
     }
 }

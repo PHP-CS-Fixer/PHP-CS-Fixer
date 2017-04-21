@@ -18,6 +18,8 @@ use PhpCsFixer\ToolInfo;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\ToolInfo
  */
 final class ToolInfoTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,5 +31,17 @@ final class ToolInfoTest extends \PHPUnit_Framework_TestCase
     public function testIsInstallAsPhar()
     {
         $this->assertFalse(ToolInfo::isInstalledAsPhar());
+    }
+
+    public function testIsInstalledByComposer()
+    {
+        $this->assertFalse(ToolInfo::isInstalledByComposer());
+    }
+
+    public function testGetComposerVersionThrowsExceptionIfOutsideComposerScope()
+    {
+        $this->setExpectedException(\LogicException::class);
+
+        ToolInfo::getComposerVersion();
     }
 }

@@ -34,32 +34,11 @@ final class PhpdocOrderFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $content = $token->getContent();
-            // move param to start, return to end, leave throws in the middle
-            $content = $this->moveParamAnnotations($content);
-            // we're parsing the content again to make sure the internal
-            // state of the dockblock is correct after the modifications
-            $content = $this->moveReturnAnnotations($content);
-            // persist the content at the end
-            $token->setContent($content);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Annotations in phpdocs should be ordered so that param annotations come first, then throws annotations, then return annotations.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -73,7 +52,7 @@ final class PhpdocOrderFixer extends AbstractFixer
  */
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -89,7 +68,28 @@ final class PhpdocOrderFixer extends AbstractFixer
          * create incorrect annotation grouping while moving the annotations
          * about, we're still ok.
          */
-        return 5;
+        return -2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $content = $token->getContent();
+            // move param to start, return to end, leave throws in the middle
+            $content = $this->moveParamAnnotations($content);
+            // we're parsing the content again to make sure the internal
+            // state of the dockblock is correct after the modifications
+            $content = $this->moveReturnAnnotations($content);
+            // persist the content at the end
+            $token->setContent($content);
+        }
     }
 
     /**
@@ -109,7 +109,7 @@ final class PhpdocOrderFixer extends AbstractFixer
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType(array('throws', 'return'));
+        $others = $doc->getAnnotationsOfType(['throws', 'return']);
 
         if (empty($others)) {
             return $content;
@@ -149,7 +149,7 @@ final class PhpdocOrderFixer extends AbstractFixer
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType(array('param', 'throws'));
+        $others = $doc->getAnnotationsOfType(['param', 'throws']);
 
         // nothing to do if there are no other annotations
         if (empty($others)) {

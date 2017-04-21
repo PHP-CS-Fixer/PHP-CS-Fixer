@@ -19,17 +19,32 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer
  */
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string     $expected
-     * @param string     $input
-     * @param array|null $config
+     * @group legacy
+     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
+     */
+    public function testLegacyFix()
+    {
+        $this->fixer->configure(null);
+        $this->doTest(
+             '<?php declare(ticks=1);',
+            '<?php declare(ticks= 1);'
+        );
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     * @param array  $config
      *
      * @dataProvider provideCases
      */
-    public function testFix($expected, $input, $config)
+    public function testFix($expected, $input, array $config)
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -37,48 +52,70 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            'minimal case remove whitespace (default config)' => array(
+        return [
+            'minimal case remove whitespace (default config)' => [
                 '<?php declare(ticks=1);',
                 '<?php declare(ticks= 1);',
-                null,
-            ),
-            'minimal case remove whitespace (no space config)' => array(
+                [],
+            ],
+            'minimal case remove whitespace (no space config)' => [
                 '<?php declare(ticks=1);',
                 '<?php declare(ticks  =  1);',
-                array('space' => 'none'),
-            ),
-            'minimal case add whitespace' => array(
+                ['space' => 'none'],
+            ],
+            'minimal case add whitespace' => [
                 '<?php declare(ticks = 1);',
                 '<?php declare(ticks=1);',
-                array('space' => 'single'),
-            ),
-            'to much whitespace case add whitespace' => array(
+                ['space' => 'single'],
+            ],
+            'to much whitespace case add whitespace' => [
                 '<?php declare(ticks = 1);',
                 "<?php declare(ticks\n\t =   1);",
-                array('space' => 'single'),
-            ),
-            'repeating case remove whitespace (default config)' => array(
+                ['space' => 'single'],
+            ],
+            'repeating case remove whitespace (default config)' => [
                 '<?php declare(ticks=1);declare(ticks=1)?>',
                 '<?php declare(ticks= 1);declare(ticks= 1)?>',
-                null,
-            ),
-            'repeating case add whitespace' => array(
+                [],
+            ],
+            'repeating case add whitespace' => [
                 '<?php declare ( ticks = 1 );declare( ticks = 1)  ?>',
                 '<?php declare ( ticks=1 );declare( ticks =1)  ?>',
-                array('space' => 'single'),
-            ),
-        );
+                ['space' => 'single'],
+            ],
+            'minimal case add whitespace comments, single' => [
+                '<?php declare(ticks#
+= #
+1#
+);',
+                '<?php declare(ticks#
+=#
+1#
+);',
+                ['space' => 'single'],
+            ],
+            'minimal case add whitespace comments, none' => [
+                '<?php declare(ticks#
+=#
+1#
+);',
+                null,
+                ['space' => 'none'],
+            ],
+        ];
     }
 
     /**
+     * @param array  $config
+     * @param string $expectedMessage
+     *
      * @dataProvider provideInvalidConfig
      */
-    public function testInvalidConfig(array $config)
+    public function testInvalidConfig(array $config, $expectedMessage)
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[declare_equal_normalize] Configuration must define "space" being "single" or "none".'
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage)
         );
 
         $this->fixer->configure($config);
@@ -86,10 +123,15 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 
     public function provideInvalidConfig()
     {
-        return array(
-            array(array()),
-            array(array(1, 2)),
-            array(array('space' => 'tab')),
-        );
+        return [
+            [
+                [1, 2],
+                'The options "0", "1" do not exist.',
+            ],
+            [
+                ['space' => 'tab'],
+                'The option "space" with value "tab" is invalid.',
+            ],
+        ];
     }
 }

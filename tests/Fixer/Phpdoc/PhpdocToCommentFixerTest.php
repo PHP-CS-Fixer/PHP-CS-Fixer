@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Ceeram <ceeram@cakephp.org>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocToCommentFixer
  */
 final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +38,7 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @requires PHP 5.4
+     *
      * @dataProvider provideTraits
      */
     public function testFixTraits($expected, $input = null)
@@ -46,9 +48,9 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
 
     public function provideDocblocks()
     {
-        $cases = array();
+        $cases = [];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 /**
  * Do not convert this
@@ -90,9 +92,9 @@ class DocBlocks
      */
     function testNoVisibility() {}
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php namespace Docs;
 
 /**
@@ -104,9 +106,9 @@ class DocBlocks
  */
 class DocBlocks{}
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 
 /**
@@ -115,9 +117,9 @@ class DocBlocks{}
 
 namespace Foo;
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -132,9 +134,9 @@ abstract class DocBlocks
      */
     abstract public function test();
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -145,9 +147,9 @@ interface DocBlocks
 {
     public function test();
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 namespace NS;
 
@@ -157,9 +159,9 @@ namespace NS;
 final class Foo
 {
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -183,9 +185,9 @@ include "include.php";
  */
 include_once "include_once.php";
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -222,9 +224,9 @@ $d = include_once "include_once.php";
  */
 $loader = require_once __DIR__."/vendor/autoload.php";
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -233,9 +235,9 @@ $first = true;// needed because by default first docblock is never fixed.
  */
 $loader = require_once __DIR__."/../app/autoload.php";
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -246,9 +248,9 @@ $first = true;// needed because by default first docblock is never fixed.
  */
 $foo = createFoo();
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -259,9 +261,9 @@ $first = true;// needed because by default first docblock is never fixed.
  */
 $local = true;
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -270,9 +272,9 @@ $first = true;// needed because by default first docblock is never fixed.
  */
 $local = true;
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -280,9 +282,9 @@ $first = true;// needed because by default first docblock is never fixed.
 foreach($connections as $sqlite) {
     $sqlite->open($path);
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -290,9 +292,9 @@ $first = true;// needed because by default first docblock is never fixed.
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -300,9 +302,9 @@ $first = true;// needed because by default first docblock is never fixed.
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -317,9 +319,9 @@ $first = true;// needed because by default first docblock is never fixed.
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -332,9 +334,9 @@ $first = true;// needed because by default first docblock is never fixed.
 /** there should be no docblock here */
 $sqlite1->open($path);
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -347,27 +349,27 @@ $first = true;// needed because by default first docblock is never fixed.
 /** there should be no docblock here */
 $i++;
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /** @var int $index */
 $index = $a[\'number\'];
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /** @var string $two */
 list($one, $two) = explode("," , $csvLines);
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -380,9 +382,9 @@ $first = true;// needed because by default first docblock is never fixed.
 /** This should be a comment */
 list($one, $two) = explode("," , $csvLines);
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -413,9 +415,9 @@ while ($content = $this->getContent()) {
 for($i = 0, $size = count($people); $i < $size; ++$i) {
     $people[$i][\'salt\'] = mt_rand(000000, 999999);
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -476,18 +478,18 @@ while ($content = $this->getContent()) {
 for($i = 0, $size = count($people); $i < $size; ++$i) {
     $people[$i][\'salt\'] = mt_rand(000000, 999999);
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 /* This should be a comment */
 ',
             '<?php
 /** This should be a comment */
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 /**
  * This is a page level docblock should stay untouched
@@ -495,18 +497,18 @@ for($i = 0, $size = count($people); $i < $size; ++$i) {
 
 echo "Some string";
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /** @var \NumberFormatter $formatter */
 static $formatter;
 ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -516,15 +518,29 @@ function getNumberFormatter()
     static $formatter;
 }
 ',
-        );
+        ];
+
+        $cases[] = [
+            '<?php
+
+class A
+{
+    public function b()
+    {
+        /** @var int $c */
+        print($c = 0);
+    }
+}
+',
+        ];
 
         return $cases;
     }
 
     public function provideTraits()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -535,7 +551,55 @@ trait DocBlocks
 {
     public function test() {}
 }',
-            ),
-        );
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideCases71
+     * @requires PHP 7.1
+     */
+    public function testFix71($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCases71()
+    {
+        return [
+            [
+                '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @var int $a */
+[$a] = $b;
+
+/* @var int $c */
+[$a] = $c;
+                ',
+                '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @var int $a */
+[$a] = $b;
+
+/** @var int $c */
+[$a] = $c;
+                ',
+            ],
+            [
+                '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/**
+ * @var int $a
+ */
+[$a] = $b;
+                ',
+            ],
+        ];
     }
 }

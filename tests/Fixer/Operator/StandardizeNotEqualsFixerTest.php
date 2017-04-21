@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\StandardizeNotEqualsFixer
  */
 final class StandardizeNotEqualsFixerTest extends AbstractFixerTestCase
 {
@@ -34,9 +36,9 @@ final class StandardizeNotEqualsFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array('<?php $a = ($b != $c);'),
-            array('<?php $a = ($b != $c);', '<?php $a = ($b <> $c);'),
-        );
+        return [
+            ['<?php $a = ($b != $c);'],
+            ['<?php $a = ($b != $c);', '<?php $a = ($b <> $c);'],
+        ];
     }
 }

@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer
  */
 final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 {
@@ -41,28 +43,28 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 
     public function provideProcessCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php // foo\n    \$a = 1;",
-                array(
-                    1 => array(T_COMMENT, '// foo'),
-                    2 => array(T_WHITESPACE, "\n    "),
-                ),
-            ),
-            array(
+                [
+                    1 => [T_COMMENT, '// foo'],
+                    2 => [T_WHITESPACE, "\n    "],
+                ],
+            ],
+            [
                 "<?php // foo\n\n ",
-                array(
-                    1 => array(T_COMMENT, '// foo'),
-                    2 => array(T_WHITESPACE, "\n\n "),
-                ),
-            ),
-            array(
+                [
+                    1 => [T_COMMENT, '// foo'],
+                    2 => [T_WHITESPACE, "\n\n "],
+                ],
+            ],
+            [
                 "<?php // foo \r\n ",
-                array(
-                    1 => array(T_COMMENT, '// foo'),
-                    2 => array(T_WHITESPACE, " \r\n "),
-                ),
-            ),
-        );
+                [
+                    1 => [T_COMMENT, '// foo'],
+                    2 => [T_WHITESPACE, " \r\n "],
+                ],
+            ],
+        ];
     }
 }

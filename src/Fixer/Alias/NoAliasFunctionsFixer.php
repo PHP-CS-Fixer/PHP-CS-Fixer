@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoAliasFunctionsFixer extends AbstractFixer
 {
     /** @var string[] stores alias (key) - master (value) functions mapping */
-    private static $aliases = array(
+    private static $aliases = [
         'chop' => 'rtrim',
         'close' => 'closedir',
         'doubleval' => 'floatval',
@@ -43,46 +43,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer
         'show_source' => 'highlight_file',
         'sizeof' => 'count',
         'strchr' => 'strstr',
-    );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        /** @var $token \PhpCsFixer\Tokenizer\Token */
-        foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
-            // check mapping hit
-            $tokenContent = strtolower($token->getContent());
-            if (!isset(self::$aliases[$tokenContent])) {
-                continue;
-            }
-
-            // skip expressions without parameters list
-            $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
-            if (!$nextToken->equals('(')) {
-                continue;
-            }
-
-            // skip expressions which are not function reference
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$prevTokenIndex];
-            if ($prevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF))) {
-                continue;
-            }
-
-            // handle function reference with namespaces
-            if ($prevToken->isGivenKind(array(T_NS_SEPARATOR))) {
-                $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-                $twicePrevToken = $tokens[$twicePrevTokenIndex];
-                if ($twicePrevToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING, CT::T_NAMESPACE_OPERATOR))) {
-                    continue;
-                }
-            }
-
-            $token->setContent(self::$aliases[$tokenContent]);
-        }
-    }
+    ];
 
     /**
      * {@inheritdoc}
@@ -91,7 +52,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Master functions shall be used instead of aliases.',
-            array(
+            [
                 new CodeSample(
 '<?php
 $a = chop($b);
@@ -113,9 +74,7 @@ $a = sizeof($b);
 $a = strchr($haystack, $needle);
 '
                 ),
-            ),
-            null,
-            null,
+            ],
             null,
             'Risky when any of the alias functions are overridden.'
         );
@@ -135,5 +94,44 @@ $a = strchr($haystack, $needle);
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        /** @var $token \PhpCsFixer\Tokenizer\Token */
+        foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
+            // check mapping hit
+            $tokenContent = strtolower($token->getContent());
+            if (!isset(self::$aliases[$tokenContent])) {
+                continue;
+            }
+
+            // skip expressions without parameters list
+            $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
+            if (!$nextToken->equals('(')) {
+                continue;
+            }
+
+            // skip expressions which are not function reference
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+            $prevToken = $tokens[$prevTokenIndex];
+            if ($prevToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF])) {
+                continue;
+            }
+
+            // handle function reference with namespaces
+            if ($prevToken->isGivenKind([T_NS_SEPARATOR])) {
+                $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
+                $twicePrevToken = $tokens[$twicePrevTokenIndex];
+                if ($twicePrevToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING, CT::T_NAMESPACE_OPERATOR])) {
+                    continue;
+                }
+            }
+
+            $token->setContent(self::$aliases[$tokenContent]);
+        }
     }
 }

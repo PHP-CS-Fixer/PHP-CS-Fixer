@@ -21,6 +21,8 @@ use PhpCsFixer\Utils;
  * @author Odín del Río <odin.drp@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Utils
  */
 final class UtilsTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,23 +46,23 @@ final class UtilsTest extends \PHPUnit_Framework_TestCase
      */
     public function provideCamelCaseToUnderscoreCases()
     {
-        return array(
-            array(
+        return [
+            [
                 'dollar_close_curly_braces',
                 'DollarCloseCurlyBraces',
-            ),
-            array(
+            ],
+            [
                 'utf8_encoder_fixer',
                 'utf8EncoderFixer',
-            ),
-            array(
+            ],
+            [
                 'terminated_with_number10',
                 'TerminatedWithNumber10',
-            ),
-            array(
+            ],
+            [
                 'utf8_encoder_fixer',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -77,14 +79,14 @@ final class UtilsTest extends \PHPUnit_Framework_TestCase
 
     public function provideCmpIntCases()
     {
-        return array(
-            array(0,    1,   1),
-            array(0,   -1,  -1),
-            array(-1,  10,  20),
-            array(-1, -20, -10),
-            array(1,   20,  10),
-            array(1,  -10, -20),
-        );
+        return [
+            [0,    1,   1],
+            [0,   -1,  -1],
+            [-1,  10,  20],
+            [-1, -20, -10],
+            [1,   20,  10],
+            [1,  -10, -20],
+        ];
     }
 
     /**
@@ -100,24 +102,24 @@ final class UtilsTest extends \PHPUnit_Framework_TestCase
 
     public function provideSplitLinesCases()
     {
-        return array(
-            array(
-                array("\t aaa\n", " bbb\n", "\t"),
+        return [
+            [
+                ["\t aaa\n", " bbb\n", "\t"],
                 "\t aaa\n bbb\n\t",
-            ),
-            array(
-                array("aaa\r\n", " bbb\r\n"),
+            ],
+            [
+                ["aaa\r\n", " bbb\r\n"],
                 "aaa\r\n bbb\r\n",
-            ),
-            array(
-                array("aaa\r\n", " bbb\n"),
+            ],
+            [
+                ["aaa\r\n", " bbb\n"],
                 "aaa\r\n bbb\n",
-            ),
-            array(
-                array("aaa\r\n\n\n\r\n", " bbb\n"),
+            ],
+            [
+                ["aaa\r\n\n\n\r\n", " bbb\n"],
                 "aaa\r\n\n\n\r\n bbb\n",
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -128,31 +130,31 @@ final class UtilsTest extends \PHPUnit_Framework_TestCase
      */
     public function testCalculateTrailingWhitespaceIndent($spaces, $input)
     {
-        $token = new Token(array(T_WHITESPACE, $input));
+        $token = new Token([T_WHITESPACE, $input]);
 
         $this->assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
 
     public function provideCalculateTrailingWhitespaceIndentCases()
     {
-        return array(
-            array('    ', "\n\n    "),
-            array(' ', "\r\n\r\r\r "),
-            array("\t", "\r\n\t"),
-            array('', "\t\n\r"),
-            array('', "\n"),
-            array('', ''),
-        );
+        return [
+            ['    ', "\n\n    "],
+            [' ', "\r\n\r\r\r "],
+            ["\t", "\r\n\t"],
+            ['', "\t\n\r"],
+            ['', "\n"],
+            ['', ''],
+        ];
     }
 
     public function testCalculateTrailingWhitespaceIndentFail()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             'The given token must be whitespace, got "T_STRING".'
         );
 
-        $token = new Token(array(T_STRING, 'foo'));
+        $token = new Token([T_STRING, 'foo']);
 
         Utils::calculateTrailingWhitespaceIndent($token);
     }

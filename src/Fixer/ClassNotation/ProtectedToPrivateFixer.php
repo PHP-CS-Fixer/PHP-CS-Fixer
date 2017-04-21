@@ -27,33 +27,11 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $end = count($tokens) - 3; // min. number of tokens to form a class candidate to fix
-        for ($index = 0; $index < $end; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
-                continue;
-            }
-
-            $classOpen = $tokens->getNextTokenOfKind($index, array('{'));
-            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
-
-            if (!$this->skipClass($tokens, $index, $classOpen, $classClose)) {
-                $this->fixClass($tokens, $classOpen, $classClose);
-            }
-
-            $index = $classClose;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Converts `protected` variables and methods to `private` where possible.',
-            array(
+            [
                 new CodeSample(
                 '<?php
 final class Sample
@@ -66,7 +44,7 @@ final class Sample
 }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -82,6 +60,28 @@ final class Sample
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_CLASS);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $end = count($tokens) - 3; // min. number of tokens to form a class candidate to fix
+        for ($index = 0; $index < $end; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+                continue;
+            }
+
+            $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
+            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+
+            if (!$this->skipClass($tokens, $index, $classOpen, $classClose)) {
+                $this->fixClass($tokens, $classOpen, $classClose);
+            }
+
+            $index = $classClose;
+        }
     }
 
     /**
@@ -101,7 +101,7 @@ final class Sample
                 continue;
             }
 
-            $tokens->overrideAt($index, array(T_PRIVATE, 'private'));
+            $tokens->overrideAt($index, [T_PRIVATE, 'private']);
         }
     }
 
@@ -128,7 +128,7 @@ final class Sample
             }
         }
 
-        $useIndex = $tokens->getNextTokenOfKind($classIndex, array(array(CT::T_USE_TRAIT)));
+        $useIndex = $tokens->getNextTokenOfKind($classIndex, [[CT::T_USE_TRAIT]]);
 
         return $useIndex && $useIndex < $classCloseIndex;
     }

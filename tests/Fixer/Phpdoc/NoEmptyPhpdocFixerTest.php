@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer
  */
 final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 {
@@ -34,8 +36,8 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     /** a */
 
@@ -74,7 +76,7 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 
                      /** *test* */
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

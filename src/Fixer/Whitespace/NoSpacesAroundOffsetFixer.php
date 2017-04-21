@@ -13,8 +13,10 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -24,54 +26,42 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-final class NoSpacesAroundOffsetFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class NoSpacesAroundOffsetFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var string[]
-     */
-    private $configuration = array();
-
-    /**
-     * Default target/configuration.
-     *
-     * @var string[]
-     */
-    private static $defaultConfiguration = array(
-        'inside',
-        'outside',
-    );
-
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function getDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        foreach ($configuration as $name) {
-            if (!in_array($name, self::$defaultConfiguration, true)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration option "%s".', $name));
-            }
-        }
-
-        $this->configuration = $configuration;
+        return new FixerDefinition(
+            'There MUST NOT be spaces around offset braces.',
+            [
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];"),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", ['positions' => ['inside']]),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", ['positions' => ['outside']]),
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(['[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny(array('[', array(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)))) {
+            if (!$token->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]])) {
                 continue;
             }
 
-            if (in_array('inside', $this->configuration, true)) {
+            if (in_array('inside', $this->configuration['positions'], true)) {
                 if ($token->equals('[')) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
                 } else {
@@ -85,7 +75,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
                 $this->removeWhitespaceToken($tokens[$endIndex - 1]);
             }
 
-            if (in_array('outside', $this->configuration, true)) {
+            if (in_array('outside', $this->configuration['positions'], true)) {
                 $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($index);
                 if ($tokens[$prevNonWhitespaceIndex]->isComment()) {
                     continue;
@@ -99,27 +89,22 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    protected function createConfigurationDefinition()
     {
-        return new FixerDefinition(
-            'There MUST NOT be spaces around offset braces.',
-            array(
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];"),
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", array('inside')),
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", array('outside')),
-            ),
-            null,
-            'Configure if the fixer must fix spaces inside or outside the offset braces or both (default).',
-            self::$defaultConfiguration
-        );
-    }
+        $generator = new FixerOptionValidatorGenerator();
+        $values = ['inside', 'outside'];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array('[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN));
+        $positions = new FixerOptionBuilder('positions', 'Whether spacing should be fixed inside and/or outside the offset braces.');
+        $positions = $positions
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
+                $generator->allowedValueIsSubsetOf($values),
+            ])
+            ->setDefault($values)
+            ->getOption()
+        ;
+
+        return new FixerConfigurationResolverRootless('positions', [$positions]);
     }
 
     /**

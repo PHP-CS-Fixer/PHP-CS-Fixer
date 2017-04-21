@@ -31,7 +31,7 @@ final class ArrayTypehintTransformer extends AbstractTransformer
      */
     public function getCustomTokens()
     {
-        return array(CT::T_ARRAY_TYPEHINT);
+        return [CT::T_ARRAY_TYPEHINT];
     }
 
     /**
@@ -55,7 +55,7 @@ final class ArrayTypehintTransformer extends AbstractTransformer
         $nextToken = $tokens[$nextIndex];
 
         if (!$nextToken->equals('(')) {
-            $token->override(array(CT::T_ARRAY_TYPEHINT, $token->getContent()));
+            $token->override([CT::T_ARRAY_TYPEHINT, $token->getContent()]);
         }
     }
 }

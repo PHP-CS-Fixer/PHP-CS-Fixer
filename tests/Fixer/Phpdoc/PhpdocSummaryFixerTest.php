@@ -19,6 +19,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocSummaryFixer
  */
 final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
 {
@@ -382,11 +384,11 @@ EOF;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\t/**\r\n\t * Hello there.\r\n\t */",
                 "<?php\r\n\t/**\r\n\t * Hello there\r\n\t */",
-            ),
-        );
+            ],
+        ];
     }
 }

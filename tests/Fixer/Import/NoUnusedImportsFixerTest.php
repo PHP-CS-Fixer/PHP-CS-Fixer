@@ -16,6 +16,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
  */
 final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 {
@@ -388,6 +390,26 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testPropertyName()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+$foo->bar = null;
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+$foo->bar = null;
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testNamespacePart()
     {
         $expected = <<<'EOF'
@@ -442,11 +464,11 @@ use b;
 ";
 EOF;
 
-        return array(
-            array($expected1),
-            array($expected2),
-            array($expected3),
-        );
+        return [
+            [$expected1],
+            [$expected2],
+            [$expected3],
+        ];
     }
 
     public function testUseAsLastStatement()
@@ -527,23 +549,23 @@ EOF;
 
     public function provideCloseTagCases()
     {
-        return array(
-            array(
+        return [
+            [
 '<?php
 ?>inline content<?php ?>',
 '<?php
      use A\AA;
      use B\C?>inline content<?php use A\D; use E\F ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php ?>',
                 '<?php use A\B;?>',
-            ),
-            array(
+            ],
+            [
                 '<?php ?>',
                 '<?php use A\B?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -562,5 +584,21 @@ new CLassD();
 echo fn_a();
 EOF;
         $this->doTest($expected);
+    }
+
+    public function testFixWithComments()
+    {
+        $input = '<?php
+use#
+\#
+Exception#
+#
+;
+echo 1;';
+
+        $expected = '<?php
+echo 1;';
+
+        $this->doTest($expected, $input);
     }
 }

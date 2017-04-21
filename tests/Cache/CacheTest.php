@@ -15,26 +15,29 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\ToolInfo;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Cache\Cache
  */
 final class CacheTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Cache');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Cache');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\CacheInterface'));
+        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheInterface::class));
     }
 
     public function testConstructorSetsValues()
@@ -60,7 +63,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testSetThrowsInvalidArgumentExceptionIfValueIsNotAnInteger()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         $signature = $this->getSignatureDouble();
 
@@ -103,7 +106,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         $json = '{"foo';
 
@@ -117,7 +120,7 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         $json = json_encode($data);
 
@@ -129,44 +132,36 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
      */
     public function providerMissingData()
     {
-        $data = array(
-            'php' => '5.5.5',
+        $data = [
+            'php' => '7.1.2',
             'version' => '2.0',
-            'rules' => array(
+            'rules' => [
                 'foo' => true,
                 'bar' => false,
-            ),
-            'hashes' => array(),
-        );
+            ],
+            'hashes' => [],
+        ];
 
         return array_map(function ($missingKey) use ($data) {
             unset($data[$missingKey]);
 
-            return array(
+            return [
                 $data,
-            );
+            ];
         }, array_keys($data));
     }
 
-    public function testCanConvertToAndFromJson()
+    /**
+     * @dataProvider provideCanConvertToAndFromJsonCases
+     */
+    public function testCanConvertToAndFromJson(SignatureInterface $signature)
     {
-        $signature = new Signature(
-            PHP_VERSION,
-            '2.0',
-            array(
-                'foo',
-                'bar',
-            )
-        );
-
         $cache = new Cache($signature);
 
         $file = 'test.php';
         $hash = crc32('hello');
 
         $cache->set($file, $hash);
-
-        /* @var Cache $cached */
         $cached = Cache::fromJson($cache->toJson());
 
         $this->assertTrue($cached->getSignature()->equals($signature));
@@ -174,11 +169,33 @@ final class CacheTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($hash, $cached->get($file));
     }
 
+    public function provideCanConvertToAndFromJsonCases()
+    {
+        return [
+            [new Signature(
+                PHP_VERSION,
+                '2.0',
+                [
+                    'foo' => true,
+                    'bar' => true,
+                ]
+            )],
+            [new Signature(
+                PHP_VERSION,
+                ToolInfo::getVersion(),
+                [
+                    // value encoded in ANSI, not UTF
+                    'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],
+                ]
+            )],
+        ];
+    }
+
     /**
      * @return SignatureInterface
      */
     private function getSignatureDouble()
     {
-        return $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        return $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
     }
 }

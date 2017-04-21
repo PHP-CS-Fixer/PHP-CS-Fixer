@@ -13,9 +13,8 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -31,13 +30,39 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     public function isCandidate(Tokens $tokens)
     {
         // minimal candidate to fix is seven tokens: pow(x,x);
-        return PHP_VERSION_ID >= 50600 && $tokens->count() > 7 && $tokens->isTokenKindFound(T_STRING);
+        return $tokens->count() > 7 && $tokens->isTokenKindFound(T_STRING);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+           'Converts `pow()` to the `**` operator.',
+            [
+                new CodeSample(
+                    "<?php\n pow(\$a, 1);"
+                ),
+            ],
+            null,
+            'Risky when the function `pow()` is overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must be run before BinaryOperatorSpacesFixer
+        return 3;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $candidates = $this->findPowCalls($tokens);
 
@@ -71,42 +96,13 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-           'Converts `pow()` to the `**` operator. Requires PHP >= 5.6.',
-            array(
-                new VersionSpecificCodeSample(
-                    "<?php\n pow(\$a, 1);",
-                    new VersionSpecification(50600)
-                ),
-            ),
-            null,
-            null,
-            null,
-            'Risky when the function `pow()` is overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must be run before BinaryOperatorSpacesFixer
-        return 1;
-    }
-
-    /**
      * @param Tokens $tokens
      *
      * @return array[]
      */
     private function findPowCalls(Tokens $tokens)
     {
-        $candidates = array();
+        $candidates = [];
 
         // Minimal candidate to fix is seven tokens: pow(x,x);
         $end = count($tokens) - 6;
@@ -139,8 +135,8 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         // find the argument separator ',' directly after the last token of the first argument;
         // replace it with T_POW '**'
         $tokens->overrideAt(
-            $tokens->getNextTokenOfKind(reset($arguments), array(',')),
-            new Token(array(T_POW, '**'))
+            $tokens->getNextTokenOfKind(reset($arguments), [',']),
+            new Token([T_POW, '**'])
         );
 
         // clean up the function call tokens prt. I
@@ -177,11 +173,11 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
      */
     private function isParenthesisNeeded(Tokens $tokens, $argumentStartIndex, $argumentEndIndex)
     {
-        static $allowedKinds = array(
+        static $allowedKinds = [
             T_DNUMBER, T_LNUMBER, T_VARIABLE, T_STRING, T_OBJECT_OPERATOR, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_CAST,
             T_INT_CAST, T_INC, T_DEC, T_NS_SEPARATOR, T_WHITESPACE, T_DOUBLE_COLON, T_LINE, T_COMMENT, T_DOC_COMMENT,
             CT::T_NAMESPACE_OPERATOR,
-        );
+        ];
 
         for ($i = $argumentStartIndex; $i <= $argumentEndIndex; ++$i) {
             if ($tokens[$i]->isGivenKind($allowedKinds) || $tokens[$i]->isEmpty()) {

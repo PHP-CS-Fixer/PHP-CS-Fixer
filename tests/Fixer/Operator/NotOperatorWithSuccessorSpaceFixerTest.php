@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Javier Spagnoletti <phansys@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer
  */
 final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
 {
@@ -34,27 +36,40 @@ final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $i = 0; $i++; $foo = ! false || (! true || ! ! false && (2 === (7 -5)));',
                 '<?php $i = 0; $i++; $foo = !false || (!true || !!false && (2 === (7 -5)));',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */ true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !  /* some comment */ true);',
-            ),
-        );
+            ],
+            'comment case' => [
+                '<?php
+                $a=#
+! #
+$b;
+                ',
+                '<?php
+                $a=#
+!
+#
+$b;
+                ',
+            ],
+        ];
     }
 }

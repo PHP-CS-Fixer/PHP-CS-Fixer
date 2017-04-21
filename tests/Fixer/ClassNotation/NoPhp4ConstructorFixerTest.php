@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Matteo Beccati <matteo@beccati.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer
  */
 final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 {
@@ -35,14 +37,14 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 
     public function provide70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a = new class {};',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = new class {}?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a = new Foo() <=> 1;
                     $a = new Foo <=> 1;
@@ -59,13 +61,26 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     $a = new class    extends Bar3 implements Foo, Foo2{};
                     $a = new class {}?>
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
-    public function testSimpleClass()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideSimpleCases
+     */
+    public function testSimpleClass($expected, $input = null)
     {
-        $expected = <<<'EOF'
+        $this->doTest($expected, $input);
+    }
+
+    public function provideSimpleCases()
+    {
+        return [
+            [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -75,9 +90,9 @@ class Foo
         var_dump(1);
     }
 }
-EOF;
-
-        $input = <<<'EOF'
+EOF
+        ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -87,9 +102,40 @@ class Foo
         var_dump(1);
     }
 }
-EOF;
+EOF
+            ],
+            [
+                <<<'EOF'
+<?php
 
-        $this->doTest($expected, $input);
+class Foo
+{
+    public#
+    function#
+__construct#
+    (#
+    $bar#
+    )#
+    {}
+}
+EOF
+        ,
+            <<<'EOF'
+<?php
+
+class Foo
+{
+    public#
+    function#
+Foo#
+    (#
+    $bar#
+    )#
+    {}
+}
+EOF
+            ],
+        ];
     }
 
     public function testNamespaces()

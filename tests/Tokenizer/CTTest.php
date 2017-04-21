@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Tokenizer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\CT
  */
 final class CTTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,10 +41,10 @@ final class CTTest extends \PHPUnit_Framework_TestCase
 
     public function provideCTs()
     {
-        $cases = array();
+        $cases = [];
 
         foreach ($this->getConstants() as $name => $value) {
-            $cases[] = array($name, $value);
+            $cases[] = [$name, $value];
         }
 
         return $cases;
@@ -53,7 +55,7 @@ final class CTTest extends \PHPUnit_Framework_TestCase
         static $constants;
 
         if (null === $constants) {
-            $reflection = new \ReflectionClass('PhpCsFixer\Tokenizer\CT');
+            $reflection = new \ReflectionClass(\PhpCsFixer\Tokenizer\CT::class);
             $constants = $reflection->getConstants();
         }
 

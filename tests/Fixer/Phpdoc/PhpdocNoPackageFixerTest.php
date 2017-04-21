@@ -18,6 +18,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractProxyFixer
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoPackageFixer
  */
 final class PhpdocNoPackageFixerTest extends AbstractFixerTestCase
 {

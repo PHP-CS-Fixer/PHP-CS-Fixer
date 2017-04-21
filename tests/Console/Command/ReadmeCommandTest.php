@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -20,22 +20,24 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Console\Command\ReadmeCommand
  */
-final class ReadmeTest extends \PHPUnit_Framework_TestCase
+final class ReadmeCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testIfReadmeFileIsCorrect()
     {
-        if (!class_exists('Symfony\Component\Console\Output\BufferedOutput')) {
+        if (!class_exists(\Symfony\Component\Console\Output\BufferedOutput::class)) {
             $this->markTestSkipped('Unsupported symfony/console version, Symfony\Component\Console\Output\BufferedOutput was added in 2.4.');
         }
 
-        $input = new ArrayInput(array('readme'));
+        $input = new ArrayInput(['readme']);
         $output = new BufferedOutput();
         $app = new Application();
 
         $app->get('readme')->run($input, $output);
 
-        $fileContent = file_get_contents(__DIR__.'/../README.rst');
+        $fileContent = file_get_contents(__DIR__.'/../../../README.rst');
 
         $this->assertSame(
             $output->fetch(),

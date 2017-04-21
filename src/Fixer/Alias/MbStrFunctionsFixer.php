@@ -25,25 +25,63 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     /**
      * @var array the list of the string-related function names and their mb_ equivalent
      */
-    private static $functions = array(
-        'strlen' => array('alternativeName' => 'mb_strlen', 'argumentCount' => array(1)),
-        'strpos' => array('alternativeName' => 'mb_strpos', 'argumentCount' => array(2, 3)),
-        'strrpos' => array('alternativeName' => 'mb_strrpos', 'argumentCount' => array(2, 3)),
-        'substr' => array('alternativeName' => 'mb_substr', 'argumentCount' => array(2, 3)),
-        'strtolower' => array('alternativeName' => 'mb_strtolower', 'argumentCount' => array(1)),
-        'strtoupper' => array('alternativeName' => 'mb_strtoupper', 'argumentCount' => array(1)),
-        'stripos' => array('alternativeName' => 'mb_stripos', 'argumentCount' => array(2, 3)),
-        'strripos' => array('alternativeName' => 'mb_strripos', 'argumentCount' => array(2, 3)),
-        'strstr' => array('alternativeName' => 'mb_strstr', 'argumentCount' => array(2, 3)),
-        'stristr' => array('alternativeName' => 'mb_stristr', 'argumentCount' => array(2, 3)),
-        'strrchr' => array('alternativeName' => 'mb_strrchr', 'argumentCount' => array(2)),
-        'substr_count' => array('alternativeName' => 'mb_substr_count', 'argumentCount' => array(2, 3, 4)),
-    );
+    private static $functions = [
+        'strlen' => ['alternativeName' => 'mb_strlen', 'argumentCount' => [1]],
+        'strpos' => ['alternativeName' => 'mb_strpos', 'argumentCount' => [2, 3]],
+        'strrpos' => ['alternativeName' => 'mb_strrpos', 'argumentCount' => [2, 3]],
+        'substr' => ['alternativeName' => 'mb_substr', 'argumentCount' => [2, 3]],
+        'strtolower' => ['alternativeName' => 'mb_strtolower', 'argumentCount' => [1]],
+        'strtoupper' => ['alternativeName' => 'mb_strtoupper', 'argumentCount' => [1]],
+        'stripos' => ['alternativeName' => 'mb_stripos', 'argumentCount' => [2, 3]],
+        'strripos' => ['alternativeName' => 'mb_strripos', 'argumentCount' => [2, 3]],
+        'strstr' => ['alternativeName' => 'mb_strstr', 'argumentCount' => [2, 3]],
+        'stristr' => ['alternativeName' => 'mb_stristr', 'argumentCount' => [2, 3]],
+        'strrchr' => ['alternativeName' => 'mb_strrchr', 'argumentCount' => [2]],
+        'substr_count' => ['alternativeName' => 'mb_substr_count', 'argumentCount' => [2, 3, 4]],
+    ];
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replace non multibyte-safe functions with corresponding mb function.',
+            [
+                new CodeSample(
+'<?php
+$a = strlen($a);
+$a = strpos($a, $b);
+$a = strrpos($a, $b);
+$a = substr($a, $b);
+$a = strtolower($a);
+$a = strtoupper($a);
+$a = stripos($a, $b);
+$a = strripos($a, $b);
+$a = strstr($a, $b);
+$a = stristr($a, $b);
+$a = strrchr($a, $b);
+$a = substr_count($a, $b);
+'
+                ),
+            ],
+            null,
+            'Risky when any of the functions are overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach (self::$functions as $functionIdentity => $functionReplacement) {
             $currIndex = 0;
@@ -67,45 +105,5 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
                 $tokens[$functionName]->setContent($functionReplacement['alternativeName']);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replace non multibyte-safe functions with corresponding mb function.',
-            array(
-                new CodeSample(
-'<?php
-$a = strlen($a);
-$a = strpos($a, $b);
-$a = strrpos($a, $b);
-$a = substr($a, $b);
-$a = strtolower($a);
-$a = strtoupper($a);
-$a = stripos($a, $b);
-$a = strripos($a, $b);
-$a = strstr($a, $b);
-$a = stristr($a, $b);
-$a = strrchr($a, $b);
-$a = substr_count($a, $b);
-'
-                ),
-            ),
-            null,
-            null,
-            null,
-            'Risky when the any of functions are overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
     }
 }

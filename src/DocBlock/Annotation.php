@@ -24,7 +24,7 @@ class Annotation
      *
      * @var string[]
      */
-    private static $tags = array(
+    private static $tags = [
         'method',
         'param',
         'property',
@@ -34,7 +34,7 @@ class Annotation
         'throws',
         'type',
         'var',
-    );
+    ];
 
     /**
      * The lines that make up the annotation.

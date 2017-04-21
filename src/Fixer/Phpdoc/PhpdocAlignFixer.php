@@ -50,23 +50,11 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 /**
  * @param  EngineInterface $templating
  * @param string      $format
@@ -74,7 +62,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
  * @param    bool         $debug
  * @param  mixed    &$reference     a parameter passed by reference
  */
-'))
+')]
         );
     }
 
@@ -102,6 +90,18 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_DOC_COMMENT)) {
+                $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
+            }
+        }
+    }
+
+    /**
      * Fix a given docblock.
      *
      * @param string $content
@@ -116,7 +116,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
         $l = count($lines);
 
         for ($i = 0; $i < $l; ++$i) {
-            $items = array();
+            $items = [];
             $matches = $this->getMatches($lines[$i]);
 
             if (null === $matches) {

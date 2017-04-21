@@ -26,18 +26,6 @@ final class NoShortBoolCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = count($tokens) - 1; $index > 1; --$index) {
-            if ($tokens[$index]->equals('!')) {
-                $index = $this->fixShortCast($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run before the CastSpacesFixer
@@ -51,7 +39,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Short cast `bool` using double exclamation mark should not be used.',
-            array(new CodeSample("<?php\n\$a = !!\$b;"))
+            [new CodeSample("<?php\n\$a = !!\$b;")]
         );
     }
 
@@ -61,6 +49,18 @@ final class NoShortBoolCastFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('!');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = count($tokens) - 1; $index > 1; --$index) {
+            if ($tokens[$index]->equals('!')) {
+                $index = $this->fixShortCast($tokens, $index);
+            }
+        }
     }
 
     /**
@@ -101,6 +101,6 @@ final class NoShortBoolCastFixer extends AbstractFixer
             }
         }
 
-        $tokens->insertAt($start, new Token(array(T_BOOL_CAST, '(bool)')));
+        $tokens->insertAt($start, new Token([T_BOOL_CAST, '(bool)']));
     }
 }

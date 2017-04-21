@@ -20,6 +20,8 @@ use PhpCsFixer\Report\XmlReporter;
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Report\XmlReporter
  */
 final class XmlReporterTest extends \PHPUnit_Framework_TestCase
 {
@@ -56,7 +58,7 @@ XML;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(),
+                [],
                 0,
                 0,
                 false,
@@ -82,11 +84,11 @@ XML;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                    ],
+                ],
                 0,
                 0,
                 false,
@@ -114,12 +116,12 @@ XML;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
                         'diff' => 'this text is a diff ;)',
-                    ),
-                ),
+                    ],
+                ],
                 0,
                 0,
                 false,
@@ -149,11 +151,11 @@ XML;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                    ],
+                ],
                 0,
                 0,
                 true,
@@ -183,11 +185,11 @@ XML;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                    ],
+                ],
                 1234,
                 2.5 * 1024 * 1024,
                 false,
@@ -229,16 +231,16 @@ XML;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
                         'diff' => 'this text is a diff ;)',
-                    ),
-                    'anotherFile.php' => array(
-                        'appliedFixers' => array('another_fixer_name_here_1', 'another_fixer_name_here_2'),
+                    ],
+                    'anotherFile.php' => [
+                        'appliedFixers' => ['another_fixer_name_here_1', 'another_fixer_name_here_2'],
                         'diff' => 'another diff here ;)',
-                    ),
-                ),
+                    ],
+                ],
                 1234,
                 2.5 * 1024 * 1024,
                 true,

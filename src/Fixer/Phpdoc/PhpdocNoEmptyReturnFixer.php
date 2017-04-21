@@ -35,7 +35,44 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            '@return void and @return null annotations should be omitted from phpdocs.',
+            [
+                new CodeSample(
+                    '<?php
+/**
+ * @return null
+*/
+function foo() {}
+'
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @return void
+*/
+function foo() {}
+'
+                ),
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
+        return 10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -55,43 +92,6 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
 
             $token->setContent($doc->getContent());
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            '@return void and @return null annotations should be omitted from phpdocs.',
-            array(
-                new CodeSample(
-                    '<?php
-/**
- * @return null
-*/
-function foo() {}
-'
-                ),
-                new CodeSample(
-                    '<?php
-/**
- * @return void
-*/
-function foo() {}
-'
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
-        return 10;
     }
 
     /**

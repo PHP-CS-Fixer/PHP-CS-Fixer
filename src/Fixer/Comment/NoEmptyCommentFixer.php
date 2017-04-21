@@ -29,7 +29,35 @@ final class NoEmptyCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getPriority()
+    {
+        // should be run after PhpdocToCommentFixer and before NoExtraConsecutiveBlankLinesFixer, NoTrailingWhitespaceFixer and NoWhitespaceInBlankLineFixer.
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'There should not be any empty comments.',
+            [new CodeSample("<?php\n//\n#\n/* */\n")]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = 1, $count = count($tokens); $index < $count; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_COMMENT)) {
@@ -45,34 +73,6 @@ final class NoEmptyCommentFixer extends AbstractFixer
                 $tokens->clearTokenAndMergeSurroundingWhitespace($i);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // should be run after PhpdocToCommentFixer and before NoExtraConsecutiveBlankLinesFixer, NoTrailingWhitespaceFixer and NoWhitespaceInBlankLineFixer.
-        return 2;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'There should not be any empty comments.',
-            array(new CodeSample("<?php\n//\n#\n/* */\n"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_COMMENT);
     }
 
     /**
@@ -109,7 +109,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
             }
         }
 
-        return array($start, $index - 1, $empty);
+        return [$start, $index - 1, $empty];
     }
 
     /**

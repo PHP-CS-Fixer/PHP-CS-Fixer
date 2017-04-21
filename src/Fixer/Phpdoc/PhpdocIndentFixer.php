@@ -31,7 +31,7 @@ final class PhpdocIndentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Docblocks should have the same indentation as the documented subject.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 class DocBlocks
 {
 /**
@@ -39,7 +39,7 @@ class DocBlocks
  */
     const INDENT = 1;
 }
-'))
+')]
         );
     }
 
@@ -62,7 +62,15 @@ class DocBlocks
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -82,7 +90,7 @@ class DocBlocks
             if (
                 $prevToken->isGivenKind(T_OPEN_TAG)
                 || ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
-                || $prevToken->equalsAny(array(';', '{'))
+                || $prevToken->equalsAny([';', '{'])
             ) {
                 continue;
             }
@@ -95,14 +103,6 @@ class DocBlocks
             $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
             $token->setContent($this->fixDocBlock($token->getContent(), $indent));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**

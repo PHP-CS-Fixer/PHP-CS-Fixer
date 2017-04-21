@@ -15,6 +15,7 @@ namespace PhpCsFixer\Console\Command;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
@@ -45,9 +46,29 @@ final class DescribeCommand extends Command
     private $setNames;
 
     /**
+     * @var FixerFactory
+     */
+    private $fixerFactory;
+
+    /**
      * @var array<string, FixerInterface>
      */
     private $fixers;
+
+    /**
+     * @param FixerFactory|null $fixerFactory
+     */
+    public function __construct(FixerFactory $fixerFactory = null)
+    {
+        parent::__construct();
+
+        if (null === $fixerFactory) {
+            $fixerFactory = new FixerFactory();
+            $fixerFactory->registerBuiltInFixers();
+        }
+
+        $this->fixerFactory = $fixerFactory;
+    }
 
     /**
      * {@inheritdoc}
@@ -57,9 +78,9 @@ final class DescribeCommand extends Command
         $this
             ->setName('describe')
             ->setDefinition(
-                array(
+                [
                     new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
-                )
+                ]
             )
             ->setDescription('Describe rule / ruleset.')
         ;
@@ -107,7 +128,7 @@ final class DescribeCommand extends Command
         if ($fixer instanceof DefinedFixerInterface) {
             $definition = $fixer->getDefinition();
         } else {
-            $definition = new FixerDefinition('Description is not available.', array());
+            $definition = new FixerDefinition('Description is not available.', []);
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
@@ -127,7 +148,42 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        if ($fixer instanceof ConfigurableFixerInterface) {
+        if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
+            $output->writeln('Fixer is configurable using following options:');
+
+            $configurationDefinition = $fixer->getConfigurationDefinition();
+
+            foreach ($configurationDefinition->getOptions() as $option) {
+                $line = '* <info>'.$option->getName().'</info>';
+
+                $allowed = CommandHelp::getDisplayableAllowedValues($option);
+                if (null !== $allowed) {
+                    foreach ($allowed as &$value) {
+                        $value = CommandHelp::toString($value);
+                    }
+                } else {
+                    $allowed = $option->getAllowedTypes();
+                }
+
+                if (null !== $allowed) {
+                    $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
+                }
+
+                $line .= ': '.lcfirst(preg_replace('/\.$/', '', $option->getDescription())).'; ';
+                if ($option->hasDefault()) {
+                    $line .= sprintf(
+                        'defaults to <comment>%s</comment>',
+                        CommandHelp::toString($option->getDefault())
+                    );
+                } else {
+                    $line .= 'required';
+                }
+
+                $output->writeln($line);
+            }
+
+            $output->writeln('');
+        } elseif ($fixer instanceof ConfigurableFixerInterface) {
             $output->writeln('<comment>Fixer is configurable.</comment>');
 
             if ($definition->getConfigurationDescription()) {
@@ -135,7 +191,7 @@ final class DescribeCommand extends Command
             }
 
             if ($definition->getDefaultConfiguration()) {
-                $output->writeln(sprintf('Default configuration: <comment>%s</comment>.', $this->arrayToText($definition->getDefaultConfiguration())));
+                $output->writeln(sprintf('Default configuration: <comment>%s</comment>.', CommandHelp::toString($definition->getDefaultConfiguration())));
             }
 
             $output->writeln('');
@@ -150,10 +206,10 @@ final class DescribeCommand extends Command
         });
 
         if (!count($codeSamples)) {
-            $output->writeln(array(
+            $output->writeln([
                 'Fixing examples can not be demonstrated on the current PHP version.',
                 '',
-            ));
+            ]);
         } else {
             $output->writeln('Fixing examples:');
 
@@ -181,17 +237,11 @@ final class DescribeCommand extends Command
                 if (null === $codeSample->getConfiguration()) {
                     $output->writeln(sprintf(' * Example #%d.', $index + 1));
                 } else {
-                    $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, $this->arrayToText($codeSample->getConfiguration())));
+                    $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, CommandHelp::toString($codeSample->getConfiguration())));
                 }
                 $output->writeln($diffFormatter->format($diff, '   %s'));
                 $output->writeln('');
             }
-        }
-
-        if (!($fixer instanceof DefinedFixerInterface)) {
-            $output->writeln(sprintf('<question>This rule is not yet described, do you want to help us and describe it?</question>'));
-            $output->writeln('Contribute at <comment>https://github.com/FriendsOfPHP/PHP-CS-Fixer</comment> !');
-            $output->writeln('');
         }
     }
 
@@ -205,7 +255,7 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        $ruleSet = new RuleSet(array($name => true));
+        $ruleSet = new RuleSet([$name => true]);
         $rules = $ruleSet->getRules();
         ksort($rules);
 
@@ -224,37 +274,11 @@ final class DescribeCommand extends Command
                 $rule,
                 $fixers[$rule]->isRisky() ? ' <error>risky</error>' : '',
                 $definition->getSummary(),
-                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", $this->arrayToText($config)) : ''
+                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", CommandHelp::toString($config)) : ''
             );
         }
 
         $output->write($help);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return string
-     */
-    private function arrayToText(array $data)
-    {
-        // Output modifications:
-        // - remove new-lines
-        // - combine multiple whitespaces
-        // - switch array-syntax to short array-syntax
-        // - remove whitespace at array opening
-        // - remove trailing array comma and whitespace at array closing
-        // - remove numeric array indexes
-        static $replaces = array(
-            array('#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'),
-            array('', ' ', '[$1]', '[', ']', ''),
-        );
-
-        return preg_replace(
-            $replaces[0],
-            $replaces[1],
-            var_export($data, true)
-        );
     }
 
     /**
@@ -266,10 +290,8 @@ final class DescribeCommand extends Command
             return $this->fixers;
         }
 
-        $fixerFactory = new FixerFactory();
-        $fixers = array();
-
-        foreach ($fixerFactory->registerBuiltInFixers()->getFixers() as $fixer) {
+        $fixers = [];
+        foreach ($this->fixerFactory->getFixers() as $fixer) {
             $fixers[$fixer->getName()] = $fixer;
         }
 
@@ -325,12 +347,12 @@ final class DescribeCommand extends Command
     private function describeList(OutputInterface $output, $type)
     {
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $describe = array(
+            $describe = [
                 'set' => $this->getSetNames(),
                 'rules' => $this->getFixers(),
-            );
+            ];
         } elseif ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $describe = 'set' === $type ? array('set' => $this->getSetNames()) : array('rules' => $this->getFixers());
+            $describe = 'set' === $type ? ['set' => $this->getSetNames()] : ['rules' => $this->getFixers()];
         } else {
             return;
         }

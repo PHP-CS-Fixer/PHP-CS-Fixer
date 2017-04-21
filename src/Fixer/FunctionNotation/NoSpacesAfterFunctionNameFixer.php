@@ -29,7 +29,35 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.',
+            [new CodeSample("<?php\nrequire ('sample.php');\necho (test (3));\nexit  (1);\n\$func ();")]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must run before FunctionToConstantFixer
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), [T_STRING]));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $functionyTokens = $this->getFunctionyTokenKinds();
         $languageConstructionTokens = $this->getLanguageConstructionTokenKinds();
@@ -78,25 +106,6 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.',
-            array(new CodeSample("<?php\nrequire ('sample.php');\necho (test (3));\nexit  (1);\n\$func ();"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), array(T_STRING)));
-    }
-
-    /**
      * Fixes whitespaces around braces of a function(y) call.
      *
      * @param Tokens $tokens tokens to handle
@@ -115,12 +124,12 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getBraceAfterVariableKinds()
     {
-        static $tokens = array(
+        static $tokens = [
             ')',
             ']',
-            array(CT::T_DYNAMIC_VAR_BRACE_CLOSE),
-            array(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE),
-        );
+            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+        ];
 
         return $tokens;
     }
@@ -132,7 +141,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getFunctionyTokenKinds()
     {
-        static $tokens = array(
+        static $tokens = [
             T_ARRAY,
             T_ECHO,
             T_EMPTY,
@@ -147,7 +156,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             T_REQUIRE_ONCE,
             T_UNSET,
             T_VARIABLE,
-        );
+        ];
 
         return $tokens;
     }
@@ -159,14 +168,14 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getLanguageConstructionTokenKinds()
     {
-        static $languageConstructionTokens = array(
+        static $languageConstructionTokens = [
             T_ECHO,
             T_PRINT,
             T_INCLUDE,
             T_INCLUDE_ONCE,
             T_REQUIRE,
             T_REQUIRE_ONCE,
-        );
+        ];
 
         return $languageConstructionTokens;
     }

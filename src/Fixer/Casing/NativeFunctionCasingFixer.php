@@ -25,7 +25,26 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Function defined by PHP should be called using the correct casing.',
+            [new CodeSample("<?php\nSTRLEN(\$str);")]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $nativeFunctionNames = null;
 
@@ -46,14 +65,14 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             }
 
             $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$functionNamePrefix]->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
+            if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
                 continue;
             }
 
             if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
                 // skip if the call is to a constructor or to a function in a namespace other than the default
                 $prev = $tokens->getPrevMeaningfulToken($functionNamePrefix);
-                if ($tokens[$prev]->isGivenKind(array(T_STRING, T_NEW))) {
+                if ($tokens[$prev]->isGivenKind([T_STRING, T_NEW])) {
                     continue;
                 }
             }
@@ -70,31 +89,12 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Function defined by PHP should be called using the correct casing.',
-            array(new CodeSample("<?php\nSTRLEN(\$str);"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
      * @return array<string, string>
      */
     private function getNativeFunctionNames()
     {
         $allFunctions = get_defined_functions();
-        $functions = array();
+        $functions = [];
         foreach ($allFunctions['internal'] as $function) {
             $functions[strtolower($function)] = $function;
         }

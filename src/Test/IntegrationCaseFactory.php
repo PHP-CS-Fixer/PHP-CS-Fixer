@@ -47,13 +47,13 @@ final class IntegrationCaseFactory
             }
 
             $match = array_merge(
-                array(
+                [
                     'config' => null,
                     'settings' => null,
                     'requirements' => null,
                     'expect' => null,
                     'input' => null,
-                ),
+                ],
                 $match
             );
 
@@ -83,12 +83,12 @@ final class IntegrationCaseFactory
      *
      * @return array
      */
-    protected function determineConfig($config)
+    private function determineConfig($config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'indent' => '    ',
             'lineEnding' => "\n",
-        ));
+        ]);
 
         if (!is_string($parsed['indent'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -114,16 +114,16 @@ final class IntegrationCaseFactory
      *
      * @return array
      */
-    protected function determineRequirements($config)
+    private function determineRequirements($config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'hhvm' => true,
             'php' => PHP_VERSION_ID,
-        ));
+        ]);
 
-        if (!is_int($parsed['php']) || $parsed['php'] < 50306) {
+        if (!is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
-                'Expected int >= 50306 value for "php", got "%s".',
+                'Expected int value like 50509 for "php", got "%s".',
                 is_object($parsed['php']) ? get_class($parsed['php']) : gettype($parsed['php']).'#'.$parsed['php'])
             );
         }
@@ -145,7 +145,7 @@ final class IntegrationCaseFactory
      *
      * @return RuleSet
      */
-    protected function determineRuleset($config)
+    private function determineRuleset($config)
     {
         return new RuleSet($this->parseJson($config));
     }
@@ -157,11 +157,11 @@ final class IntegrationCaseFactory
      *
      * @return array
      */
-    protected function determineSettings($config)
+    private function determineSettings($config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'checkPriority' => true,
-        ));
+        ]);
 
         if (!is_bool($parsed['checkPriority'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -179,7 +179,7 @@ final class IntegrationCaseFactory
      *
      * @return string
      */
-    protected function determineExpectedCode($code, SplFileInfo $file)
+    private function determineExpectedCode($code, SplFileInfo $file)
     {
         $code = $this->determineCode($code, $file, '-out.php');
 
@@ -196,7 +196,7 @@ final class IntegrationCaseFactory
      *
      * @return string|null
      */
-    protected function determineInputCode($code, SplFileInfo $file)
+    private function determineInputCode($code, SplFileInfo $file)
     {
         return $this->determineCode($code, $file, '-in.php');
     }
@@ -230,12 +230,12 @@ final class IntegrationCaseFactory
     {
         // content is optional if template is provided
         if (!$encoded && null !== $template) {
-            $decoded = array();
+            $decoded = [];
         } else {
             $decoded = json_decode($encoded, true);
 
             if (JSON_ERROR_NONE !== json_last_error()) {
-                throw new \InvalidArgumentException(sprintf('Malformed JSON: "%s".', $encoded));
+                throw new \InvalidArgumentException(sprintf('Malformed JSON: "%s", error: "%s".', $encoded, json_last_error_msg()));
             }
         }
 

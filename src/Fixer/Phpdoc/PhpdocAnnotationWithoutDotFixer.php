@@ -23,14 +23,36 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 {
-    private $configuration = array(
-        'tags' => array('throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'),
-    );
+    private $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Phpdocs annotation descriptions should not be a sentence.',
+            [new CodeSample('<?php
+/**
+ * @param string $bar Some string.
+ */
+function foo ($bar) {}
+')]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -46,8 +68,7 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 
             foreach ($annotations as $annotation) {
                 if (
-                    !$annotation->getTag()->valid()
-                    || !in_array($annotation->getTag()->getName(), $this->configuration['tags'], true)
+                    !$annotation->getTag()->valid() || !in_array($annotation->getTag()->getName(), $this->tags, true)
                 ) {
                     continue;
                 }
@@ -76,29 +97,5 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 
             $token->setContent($doc->getContent());
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Phpdocs annotation descriptions should not be a sentence.',
-            array(new CodeSample('<?php
-/**
- * @param string $bar Some string.
- */
-function foo ($bar) {}
-'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 }

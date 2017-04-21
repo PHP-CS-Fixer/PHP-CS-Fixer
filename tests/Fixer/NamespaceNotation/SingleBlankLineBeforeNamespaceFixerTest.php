@@ -18,6 +18,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractLinesBeforeNamespaceFixer
+ * @covers \PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer
  */
 final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {
@@ -37,13 +40,13 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
      */
     public function provideExamples()
     {
-        return array(
-            array("<?php\n\nnamespace X;"),
-            array("<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"),
-            array("<?php\r\n\r\nnamespace X;"),
-            array("<?php\r\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"),
-            array("<?php\n\nfoo();\nnamespace\\bar\\baz();"),
-        );
+        return [
+            ["<?php\n\nnamespace X;"],
+            ["<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"],
+            ["<?php\r\n\r\nnamespace X;"],
+            ["<?php\r\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
+            ["<?php\n\nfoo();\nnamespace\\bar\\baz();"],
+        ];
     }
 
     public function testFixExampleWithCommentTooMuch()

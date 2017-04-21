@@ -18,6 +18,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\ElseifFixer
  */
 final class ElseifFixerTest extends AbstractFixerTestCase
 {
@@ -34,20 +36,20 @@ final class ElseifFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        return array(
-            array('<?php if ($some) { $test = true; } else { $test = false; }'),
-            array(
+        return [
+            ['<?php if ($some) { $test = true; } else { $test = false; }'],
+            [
                 '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
                 '<?php if ($some) { $test = true; } else if ($some !== "test") { $test = false; }',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
                 '<?php if ($some) { $test = true; } else  if ($some !== "test") { $test = false; }',
-            ),
-            array(
+            ],
+            [
                 '<?php $js = \'if (foo.a) { foo.a = "OK"; } else if (foo.b) { foo.b = "OK"; }\';',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                         $x = 1;
@@ -61,8 +63,8 @@ final class ElseifFixerTest extends AbstractFixerTestCase
                     if ($b) {
                         $x = 2;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                     } elseif/**/ ($b) {
@@ -73,8 +75,8 @@ final class ElseifFixerTest extends AbstractFixerTestCase
                     } else /**/ if ($b) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                     } elseif//
@@ -87,11 +89,11 @@ final class ElseifFixerTest extends AbstractFixerTestCase
                         if ($b) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($a) {} /**/elseif ($b){}',
                 '<?php if ($a) {} /**/else if ($b){}',
-            ),
-        );
+            ],
+        ];
     }
 }

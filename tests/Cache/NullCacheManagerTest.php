@@ -18,21 +18,23 @@ use PhpCsFixer\Cache\NullCacheManager;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Cache\NullCacheManager
  */
 final class NullCacheManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\NullCacheManager');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheManagerInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\NullCacheManager');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\CacheManagerInterface'));
+        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
     }
 
     public function testNeedFixingReturnsTrue()

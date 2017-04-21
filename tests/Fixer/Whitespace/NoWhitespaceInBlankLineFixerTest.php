@@ -19,6 +19,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer
  */
 final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
 {
@@ -35,59 +37,59 @@ final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php',
-            ),
-            array(
+            ],
+            [
                 '<?php  ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 ',
                 '<?php
   ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 ',
                 '<?php
      '.'
   ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 $a = 1; ',
                 '<?php
      '.'
 $a = 1; ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $r = 5 +6;                   '.'
 
 $t = true> 9;       '.'
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = 1;   ',
-            ),
-            array(
+            ],
+            [
                 "<?php
 \t\$b = 1;\t\t",
-            ),
-            array(
+            ],
+            [
                 '<?php
     $b = 2;
 ',
                 '<?php
     $b = 2;
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $b = 3;
 
@@ -98,8 +100,8 @@ $t = true> 9;       '.'
     '.'
     '.'
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $b = 4;
 
@@ -112,33 +114,33 @@ $t = true> 9;       '.'
     '.'
     '.'
     $b += 4;',
-            ),
-            array(
+            ],
+            [
                 "<?php\n\n\n\$b = 5;",
                 "<?php\n                \n\t\n\$b = 5;",
-            ),
-            array(
+            ],
+            [
                 "<?php\necho 1;\n?>\n\n\n\n",
-            ),
-            array(
+            ],
+            [
                 "<?php\necho <<<HTML\ndata     \n  \n \t  \n     \nHTML\n;\n//a",
-            ),
-            array(
+            ],
+            [
                 "<?php\n\$sql = 'SELECT * FROM products WHERE description = \"This product\n   \nis nice\"';",
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @const Foo.
      */
     const FOO = "BAR";
 ',
-            ),
-            array(
+            ],
+            [
                 "<?php\n\n    \$a = 1;\n\n    \$b = 2;",
                 "<?php\n\n    \$a = 1;\n    \n    \$b = 2;",
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -156,11 +158,11 @@ $t = true> 9;       '.'
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\r\n    \$a = 1;\r\n\r\n    \$b = 2;",
                 "<?php\r\n\r\n    \$a = 1;\r\n    \r\n    \$b = 2;",
-            ),
-        );
+            ],
+        ];
     }
 }

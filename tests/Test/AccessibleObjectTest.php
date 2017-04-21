@@ -19,6 +19,8 @@ use PhpCsFixer\Tests\Fixtures\Test\AccessibleObjectTest\DummyClass;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Test\AccessibleObject
  */
 final class AccessibleObjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,7 +35,7 @@ final class AccessibleObjectTest extends \PHPUnit_Framework_TestCase
     {
         $object = AccessibleObject::create(new \stdClass());
 
-        $this->assertInstanceOf('PhpCsFixer\Test\AccessibleObject', $object);
+        $this->assertInstanceOf(\PhpCsFixer\Test\AccessibleObject::class, $object);
     }
 
     public function testGet()

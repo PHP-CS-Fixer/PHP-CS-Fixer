@@ -26,23 +26,11 @@ final class TrimArraySpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
-            if ($tokens[$index]->isGivenKind(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN))) {
-                self::fixArray($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Arrays should be formatted like function/method arguments, without leading or trailing single line space.',
-            array(new CodeSample("<?php\n\$sample = array( );\n\$sample = array( 'a', 'b' );"))
+            [new CodeSample("<?php\n\$sample = array( );\n\$sample = array( 'a', 'b' );")]
         );
     }
 
@@ -51,7 +39,19 @@ final class TrimArraySpacesFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN));
+        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
+            if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+                self::fixArray($tokens, $index);
+            }
+        }
     }
 
     /**

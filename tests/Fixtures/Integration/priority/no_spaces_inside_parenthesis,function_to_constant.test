@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_spaces_inside_parenthesis,function_to_constant.
+--RULESET--
+{"no_spaces_inside_parenthesis": true, "function_to_constant": true}
+--EXPECT--
+<?php
+
+echo M_PI;
+
+--INPUT--
+<?php
+
+echo pi( );

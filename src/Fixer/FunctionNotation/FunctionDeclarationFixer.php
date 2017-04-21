@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -26,7 +27,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class FunctionDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class FunctionDeclarationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * @internal
@@ -38,45 +39,9 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
      */
     const SPACING_ONE = 'one';
 
-    private $supportedSpacings = array(self::SPACING_NONE, self::SPACING_ONE);
+    private $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE];
 
     private $singleLineWhitespaceOptions = " \t";
-
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'closure_function_spacing' => self::SPACING_ONE,
-    );
-
-    /**
-     * @param array|null $configuration
-     *
-     * @throws InvalidFixerConfigurationException
-     */
-    public function configure(array $configuration = null)
-    {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        foreach ($configuration as $key => $value) {
-            if (!array_key_exists($key, self::$defaultConfiguration)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $key));
-            }
-
-            if ('closure_function_spacing' === $key && !in_array($value, $this->supportedSpacings, true)) {
-                throw new InvalidFixerConfigurationException(
-                    $this->getName(),
-                    sprintf('Spacing is invalid. Should be one of: "%s".', implode('", "', $this->supportedSpacings))
-                );
-            }
-        }
-
-        $this->configuration = array_merge(self::$defaultConfiguration, $configuration);
-    }
 
     /**
      * {@inheritdoc}
@@ -89,7 +54,46 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Spaces should be properly placed in a function declaration.',
+            [
+                new CodeSample(
+'<?php
+
+function  foo  ($bar, $baz)
+{
+    return false;
+}
+'
+                ),
+                new CodeSample(
+'<?php
+
+class Foo
+{
+    public static function  bar ($baz)
+    {
+        return false;
+    }
+}
+'
+                ),
+                new CodeSample(
+'<?php
+$f = function () {};
+',
+                    ['closure_function_spacing' => self::SPACING_NONE]
+                ),
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -100,13 +104,13 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                 continue;
             }
 
-            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('(', ';', array(T_CLOSE_TAG)));
+            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [T_CLOSE_TAG]]);
             if (!$tokens[$startParenthesisIndex]->equals('(')) {
                 continue;
             }
 
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
-            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'));
+            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{']);
 
             // fix single-line whitespace before {
             // eg: `function foo(){}` => `function foo() {}`
@@ -128,7 +132,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                 // fix whitespace after CT:T_USE_LAMBDA (we might add a token, so do this before determining start and end parenthesis)
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
 
-                $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, array('('));
+                $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, ['(']);
                 $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
 
                 // remove single-line edge whitespaces inside use parentheses
@@ -145,7 +149,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
 
             // remove whitespace before (
             // eg: `function foo () {}` => `function foo() {}`
-            if (!$isLambda && $tokens[$startParenthesisIndex - 1]->isWhitespace()) {
+            if (!$isLambda && $tokens[$startParenthesisIndex - 1]->isWhitespace() && !$tokens[$tokens->getPrevNonWhitespace($startParenthesisIndex - 1)]->isComment()) {
                 $tokens[$startParenthesisIndex - 1]->clear();
             }
 
@@ -175,43 +179,16 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    protected function createConfigurationDefinition()
     {
-        return new FixerDefinition(
-            'Spaces should be properly placed in a function declaration.',
-            array(
-                new CodeSample(
-'<?php
+        $spacing = new FixerOptionBuilder('closure_function_spacing', 'Spacing to use before open parenthesis for closures.');
+        $spacing = $spacing
+            ->setDefault(self::SPACING_ONE)
+            ->setAllowedValues($this->supportedSpacings)
+            ->getOption()
+        ;
 
-function  foo  ($bar, $baz)
-{
-    return false;
-}
-'
-                ),
-                new CodeSample(
-'<?php
-
-class Foo
-{
-    public static function  bar ($baz)
-    {
-        return false;
-    }
-}
-'
-                ),
-                new CodeSample(
-'<?php
-$f = function () {};
-',
-                    array('closure_function_spacing' => self::SPACING_NONE)
-                ),
-            ),
-            null,
-            'The `closure_function_spacing` key configures whether there should be a space character after the `function` keyword of an anonymous function; it can be either "none" or "one".',
-            self::$defaultConfiguration
-        );
+        return new FixerConfigurationResolver([$spacing]);
     }
 
     private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end)

@@ -10,17 +10,20 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\tests\Tokenizer\Transformer;
+namespace PhpCsFixer\tests\AutoReview;
 
 use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
 
 /**
+ * @author SpacePossum
+ *
  * @internal
  *
- * @author SpacePossum
+ * @coversNothing
+ * @group auto-review
  */
-final class TransformersTest extends \PHPUnit_Framework_TestCase
+final class TransformerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param TransformerInterface $transformer
@@ -30,6 +33,7 @@ final class TransformersTest extends \PHPUnit_Framework_TestCase
     public function testTransformersAreFinal(TransformerInterface $transformer)
     {
         $transformerRef = new \ReflectionClass($transformer);
+
         $this->assertTrue(
             $transformerRef->isFinal(),
             sprintf('Transformer "%s" must be declared "final."', $transformer->getName())
@@ -49,9 +53,9 @@ final class TransformersTest extends \PHPUnit_Framework_TestCase
             $transformersItems = $reflection->getProperty('items');
             $transformersItems->setAccessible(true);
             $transformersItems = $transformersItems->getValue($transformers);
-            $transformersArray = array();
+            $transformersArray = [];
             foreach ($transformersItems as $transformer) {
-                $transformersArray[] = array($transformer);
+                $transformersArray[] = [$transformer];
             }
         }
 
