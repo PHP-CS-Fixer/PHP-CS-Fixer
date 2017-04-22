@@ -358,7 +358,7 @@ class Foo
                     $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
                     $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
                     $prevNonWhitespaceNestIndex = $tokens->getPrevNonWhitespace($nestIndex);
-                    $prevNonWhitespaceNestToken = isset($tokens[$prevNonWhitespaceNestIndex]) ? $tokens[$prevNonWhitespaceNestIndex] : null;
+                    $prevNonWhitespaceNestToken = null !== $prevNonWhitespaceNestIndex ? $tokens[$prevNonWhitespaceNestIndex] : null;
 
                     if (
                         (
