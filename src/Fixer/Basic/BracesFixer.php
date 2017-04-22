@@ -366,7 +366,7 @@ class Foo
                             !$nextNonWhitespaceNestToken->equalsAny(['[', '{', [CT::T_ARRAY_SQUARE_BRACE_OPEN], [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]]) &&
                             !$prevNonWhitespaceNestToken->equalsAny(['[', ',', [CT::T_ARRAY_SQUARE_BRACE_OPEN], [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]])
                         ) &&
-                        // next Token is not a comment
+                        // next Token is not a multi line comment
                         (
                             !$nextNonWhitespaceNestToken->isComment() ||
                             (
