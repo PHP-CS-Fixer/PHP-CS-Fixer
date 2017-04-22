@@ -18,9 +18,6 @@ use PhpCsFixer\Doctrine\Annotation\Tokens;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 
-/**
- * Fixes Doctrine annotations indentation.
- */
 final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotationFixer
 {
     /**
