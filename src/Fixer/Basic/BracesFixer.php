@@ -354,7 +354,7 @@ class Foo
                     continue;
                 }
 
-                if (1 === $nestLevel && $nestToken->equalsAny([';', '}', [T_COMMENT]])) {
+                if (1 === $nestLevel && ($nestToken->equalsAny([';', '}']) || $nestToken->isComment())) {
                     $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
                     $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
                     $prevNonWhitespaceNestIndex = $tokens->getPrevNonWhitespace($nestIndex);
