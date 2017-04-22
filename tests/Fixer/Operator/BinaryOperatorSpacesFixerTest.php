@@ -366,7 +366,7 @@ $b;',
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "align_double_arrow", "align_equals"\.$/'
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "align_double_arrow", "align_equals"\.$/'
         );
 
         $this->fixer->configure(['foo' => true]);
