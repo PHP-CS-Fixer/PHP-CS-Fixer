@@ -91,19 +91,12 @@ class Sample
                 continue;
             }
 
-            switch ($element['type']) {
-                case 'method':
-                    $this->fixMethodVisibility($tokens, $index);
-
-                    break;
-                case 'property':
-                    $this->fixPropertyVisibility($tokens, $index);
-
-                    break;
-                case 'const':
-                    $this->fixConstVisibility($tokens, $index);
-
-                    break;
+            if ('method' === $element['type']) {
+                $this->fixMethodVisibility($tokens, $index);
+            } elseif ('property' === $element['type']) {
+                $this->fixPropertyVisibility($tokens, $index);
+            } elseif ('const' === $element['type']) {
+                $this->fixConstVisibility($tokens, $index);
             }
         }
     }

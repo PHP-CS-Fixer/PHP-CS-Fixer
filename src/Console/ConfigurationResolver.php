@@ -253,7 +253,21 @@ final class ConfigurationResolver
     public function getDiffer()
     {
         if (null === $this->differ) {
-            $this->differ = false === $this->options['diff'] ? new NullDiffer() : new SebastianBergmannDiffer();
+            $mapper = array(
+                'null' => function () { return new NullDiffer(); },
+                'sbd' => function () { return new SebastianBergmannDiffer(); },
+            );
+
+            $option = $this->options['diff'] ? 'sbd' : 'null';
+
+            if (!isset($mapper[$option])) {
+                throw new InvalidConfigurationException(sprintf(
+                    'Differ must be "sbd" or "sbd-short", got "%s".',
+                    $this->options['diff']
+                ));
+            }
+
+            $this->differ = $mapper[$option]();
         }
 
         return $this->differ;

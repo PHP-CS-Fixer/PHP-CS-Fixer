@@ -15,4 +15,9 @@
     <rule ref="rulesets/design.xml/GotoStatement" />
 
     <rule ref="rulesets/naming.xml/ConstantNamingConventions" />
+
+    <rule ref="vendor/mi-schi/phpmd-extension/rulesets/cleancode.xml/DataStructureMethods" />
+    <rule ref="vendor/mi-schi/phpmd-extension/rulesets/cleancode.xml/SwitchStatement" />
+
+    <rule ref="vendor/mi-schi/phpmd-extension/rulesets/naming.xml/CommentDescription" />
 </ruleset>
