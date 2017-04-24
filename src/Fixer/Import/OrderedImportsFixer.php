@@ -376,7 +376,7 @@ use function CCC\AA;
                                     continue;
                                 }
 
-                                //if there is any line ending inside the group import, it should be indented properly
+                                // if there is any line ending inside the group import, it should be indented properly
                                 if (
                                     '' === $firstIndent &&
                                     $namespaceTokens[$k2]->isWhitespace() &&
