@@ -19,6 +19,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Vladimir Boliev <voff.web@gmail.com>
  *
  * @internal
+ * @coversNothing
  */
 final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
 {
@@ -35,8 +36,8 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 
     $user->setEmail(\'voff.web@gmail.com\')
@@ -57,8 +58,8 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
                 ->setHashsalt(\'1234\')
   ->setTncAccepted(true);
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foo
     ->bar1() // comment
@@ -82,8 +83,8 @@ comment
         ->bar4()
 ->bar5()
                                 /** buahaha */    ->bar6();',
-            ),
-            array(
+            ],
+            [
             '<?php
 $foo
     ->bar1()
@@ -92,20 +93,20 @@ $foo
 $foo
 ->bar1()
 ->bar2();',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo
     ->bar();',
                 '<?php $foo
 ->bar();',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo->bar()->baz()
     ->qux();',
                 '<?php $foo->bar()->baz()
 ->qux();',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -122,11 +123,11 @@ $foo
 
     public function provideWindowsWhitespaces()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\t->setPassword('233434')\r\n\t->setEmailConfirmed(false)\r\n\t->setEmailConfirmationCode('123456')\r\n\t->setHashsalt('1234')\r\n\t->setTncAccepted(true);",
                 "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\r\n     ->setPassword('233434')\r\n\t\t\t->setEmailConfirmed(false)\r\n\t\t      ->setEmailConfirmationCode('123456')\r\n->setHashsalt('1234')\r\n\t\t->setTncAccepted(true);",
-            ),
-        );
+            ],
+        ];
     }
 }
