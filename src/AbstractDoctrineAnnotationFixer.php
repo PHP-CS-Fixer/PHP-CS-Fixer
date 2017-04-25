@@ -21,8 +21,6 @@ use PhpCsFixer\Tokenizer\Tokens as PhpTokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * Base class for Doctrine annotation fixers.
- *
  * @internal
  */
 abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface

@@ -19,5 +19,9 @@
     <rule ref="vendor/mi-schi/phpmd-extension/rulesets/cleancode.xml/DataStructureMethods" />
     <rule ref="vendor/mi-schi/phpmd-extension/rulesets/cleancode.xml/SwitchStatement" />
 
-    <rule ref="vendor/mi-schi/phpmd-extension/rulesets/naming.xml/CommentDescription" />
+    <rule ref="vendor/mi-schi/phpmd-extension/rulesets/naming.xml/CommentDescription">
+        <properties>
+            <property name="percent" value="70" />
+        </properties>
+    </rule>
 </ruleset>
