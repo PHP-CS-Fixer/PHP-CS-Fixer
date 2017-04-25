@@ -155,23 +155,15 @@ class Foo
      */
     protected function createConfigurationDefinition()
     {
-        $allowSingleLineClosure = new FixerOptionBuilder('allow_single_line_closure', 'Whether single line lambda notation should be allowed.');
-        $allowSingleLineClosure = $allowSingleLineClosure
-            ->setAllowedTypes(['bool'])
-            ->setDefault(false)
-            ->getOption()
-        ;
-
-        $positionAfterFunctionsAndOopConstructs = new FixerOptionBuilder('position_after_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).');
-        $positionAfterFunctionsAndOopConstructs = $positionAfterFunctionsAndOopConstructs
-            ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
-            ->setDefault(self::LINE_NEXT)
-            ->getOption()
-        ;
-
         return new FixerConfigurationResolver([
-            $allowSingleLineClosure,
-            $positionAfterFunctionsAndOopConstructs,
+            (new FixerOptionBuilder('allow_single_line_closure', 'Whether single line lambda notation should be allowed.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder('position_after_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).'))
+                ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
+                ->setDefault(self::LINE_NEXT)
+                ->getOption(),
         ]);
     }
 

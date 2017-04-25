@@ -134,21 +134,15 @@ $foo = array(
      */
     protected function createConfigurationDefinition()
     {
-        $alignDoubleArrows = new FixerOptionBuilder('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.');
-        $alignDoubleArrows
-            ->setDefault(false)
-            ->setAllowedValues([true, false, null])
-        ;
-
-        $alignEquals = new FixerOptionBuilder('align_equals', 'Whether to apply, remove or ignore equals alignment.');
-        $alignEquals
-            ->setDefault(false)
-            ->setAllowedValues([true, false, null])
-        ;
-
         return new FixerConfigurationResolver([
-            $alignDoubleArrows->getOption(),
-            $alignEquals->getOption(),
+            (new FixerOptionBuilder('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.'))
+                ->setDefault(false)
+                ->setAllowedValues([true, false, null])
+                ->getOption(),
+            (new FixerOptionBuilder('align_equals', 'Whether to apply, remove or ignore equals alignment.'))
+                ->setDefault(false)
+                ->setAllowedValues([true, false, null])
+                ->getOption(),
         ]);
     }
 

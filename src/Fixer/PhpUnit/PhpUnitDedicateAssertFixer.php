@@ -156,19 +156,16 @@ $this->assertTrue(is_nan($a));
             'is_scalar',
             'is_string',
         ];
-        $generator = new FixerOptionValidatorGenerator();
 
-        $functions = new FixerOptionBuilder('functions', 'List of assertions to fix.');
-        $functions = $functions
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([
-                $generator->allowedValueIsSubsetOf($values),
-            ])
-            ->setDefault($values)
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('functions', [$functions]);
+        return new FixerConfigurationResolverRootless('functions', [
+            (new FixerOptionBuilder('functions', 'List of assertions to fix.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
+                ])
+                ->setDefault($values)
+                ->getOption(),
+        ]);
     }
 
     /**

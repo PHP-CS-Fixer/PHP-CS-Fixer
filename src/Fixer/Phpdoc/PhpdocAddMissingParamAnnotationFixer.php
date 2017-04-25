@@ -213,14 +213,12 @@ function f9(string $foo, $bar, $baz) {}',
      */
     protected function createConfigurationDefinition()
     {
-        $onlyUntyped = new FixerOptionBuilder('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.');
-        $onlyUntyped = $onlyUntyped
-            ->setDefault(true)
-            ->setAllowedTypes(['bool'])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver([$onlyUntyped]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.'))
+                ->setDefault(true)
+                ->setAllowedTypes(['bool'])
+                ->getOption(),
+        ]);
     }
 
     /**

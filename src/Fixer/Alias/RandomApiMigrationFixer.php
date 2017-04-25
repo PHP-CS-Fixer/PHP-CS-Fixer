@@ -116,39 +116,35 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
      */
     protected function createConfigurationDefinition()
     {
-        $argumentCounts = self::$argumentCounts;
+        return new FixerConfigurationResolverRootless('replacements', [
+            (new FixerOptionBuilder('replacements', 'Mapping between replaced functions with the new ones.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([function ($value) {
+                    foreach ($value as $functionName => $replacement) {
+                        if (!array_key_exists($functionName, self::$argumentCounts)) {
+                            throw new InvalidOptionsException(sprintf(
+                                'Function "%s" is not handled by the fixer.',
+                                $functionName
+                            ));
+                        }
 
-        $replacements = new FixerOptionBuilder('replacements', 'Mapping between replaced functions with the new ones.');
-        $replacements = $replacements
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([function ($value) use ($argumentCounts) {
-                foreach ($value as $functionName => $replacement) {
-                    if (!array_key_exists($functionName, $argumentCounts)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Function "%s" is not handled by the fixer.',
-                            $functionName
-                        ));
+                        if (!is_string($replacement)) {
+                            throw new InvalidOptionsException(sprintf(
+                                'Replacement for function "%s" must be a string, "%s" given.',
+                                $functionName,
+                                is_object($replacement) ? get_class($replacement) : gettype($replacement)
+                            ));
+                        }
                     }
 
-                    if (!is_string($replacement)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Replacement for function "%s" must be a string, "%s" given.',
-                            $functionName,
-                            is_object($replacement) ? get_class($replacement) : gettype($replacement)
-                        ));
-                    }
-                }
-
-                return true;
-            }])
-            ->setDefault([
-                'getrandmax' => 'mt_getrandmax',
-                'rand' => 'mt_rand',
-                'srand' => 'mt_srand',
-            ])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('replacements', [$replacements]);
+                    return true;
+                }])
+                ->setDefault([
+                    'getrandmax' => 'mt_getrandmax',
+                    'rand' => 'mt_rand',
+                    'srand' => 'mt_srand',
+                ])
+                ->getOption(),
+        ]);
     }
 }

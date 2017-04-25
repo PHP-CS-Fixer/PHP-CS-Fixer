@@ -105,14 +105,12 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
      */
     protected function createConfigurationDefinition()
     {
-        $syntax = new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` `list` syntax.');
-        $syntax = $syntax
-            ->setAllowedValues(['long', 'short'])
-            ->setDefault('long')
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver([$syntax]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` `list` syntax.'))
+                ->setAllowedValues(['long', 'short'])
+                ->setDefault('long')
+                ->getOption(),
+        ]);
     }
 
     /**
