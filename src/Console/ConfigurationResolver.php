@@ -24,7 +24,6 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
-use PhpCsFixer\Differ\SebastianBergmannShortDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -254,25 +253,7 @@ final class ConfigurationResolver
     public function getDiffer()
     {
         if (null === $this->differ) {
-            switch ($this->options['diff']) {
-                case false:
-                    $this->differ = new NullDiffer();
-
-                    break;
-                case 'sbd':
-                    $this->differ = new SebastianBergmannDiffer();
-
-                    break;
-                case 'sbd-short':
-                    $this->differ = new SebastianBergmannShortDiffer();
-
-                    break;
-                default:
-                    throw new InvalidConfigurationException(sprintf(
-                        'Differ must be "sbd" or "sbd-short", got "%s".',
-                        $this->options['diff']
-                    ));
-            }
+            $this->differ = false === $this->options['diff'] ? new NullDiffer() : new SebastianBergmannDiffer();
         }
 
         return $this->differ;
