@@ -26,7 +26,7 @@ use Symfony\Component\Console\Application as BaseApplication;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.3.0';
+    const VERSION = '2.3.1-DEV';
 
     /**
      * Constructor.
