@@ -1011,31 +1011,7 @@ final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
                 '\PhpCsFixer\Differ\SebastianBergmannDiffer',
                 true,
             ),
-            array(
-                '\PhpCsFixer\Differ\SebastianBergmannDiffer',
-                'sbd',
-            ),
-            array(
-                '\PhpCsFixer\Differ\SebastianBergmannShortDiffer',
-                'sbd-short',
-            ),
         );
-    }
-
-    public function testUnknownDiffConfiguration()
-    {
-        $resolver = new ConfigurationResolver(
-            $this->config,
-            array('diff' => '_unknown_'),
-            ''
-        );
-
-        $this->setExpectedExceptionRegExp(
-            '\PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '#^Differ must be "sbd" or "sbd-short", got "_unknown_"\.$#'
-        );
-
-        $resolver->getDiffer();
     }
 
     public function testResolveConfigFileOverridesDefault()
