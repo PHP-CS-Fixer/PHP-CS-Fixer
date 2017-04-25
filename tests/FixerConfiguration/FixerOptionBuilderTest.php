@@ -30,13 +30,13 @@ final class FixerOptionBuilderTest extends \PHPUnit_Framework_TestCase
     public function testSetAllowedTypes()
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
-        $this->assertSame($builder, $builder->setAllowedTypes(array('bool')));
+        $this->assertSame($builder, $builder->setAllowedTypes(['bool']));
     }
 
     public function testSetAllowedValues()
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
-        $this->assertSame($builder, $builder->setAllowedValues(array('baz')));
+        $this->assertSame($builder, $builder->setAllowedValues(['baz']));
     }
 
     public function testSetNormalizer()
@@ -50,18 +50,18 @@ final class FixerOptionBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = new FixerOptionBuilder('foo', 'Bar.');
         $option = $builder
             ->setDefault('baz')
-            ->setAllowedTypes(array('bool'))
-            ->setAllowedValues(array(true, false))
+            ->setAllowedTypes(['bool'])
+            ->setAllowedValues([true, false])
             ->setNormalizer(function () {})
             ->getOption()
         ;
-        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerOption', $option);
+        $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOption::class, $option);
         $this->assertSame('foo', $option->getName());
         $this->assertSame('Bar.', $option->getDescription());
         $this->assertTrue($option->hasDefault());
         $this->assertSame('baz', $option->getDefault());
-        $this->assertSame(array('bool'), $option->getAllowedTypes());
-        $this->assertSame(array(true, false), $option->getAllowedValues());
-        $this->assertInstanceOf('Closure', $option->getNormalizer());
+        $this->assertSame(['bool'], $option->getAllowedTypes());
+        $this->assertSame([true, false], $option->getAllowedValues());
+        $this->assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 }

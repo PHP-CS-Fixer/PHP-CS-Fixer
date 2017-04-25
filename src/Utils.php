@@ -116,7 +116,7 @@ final class Utils
         }
 
         $str = strrchr(
-            str_replace(array("\r\n", "\r"), "\n", $token->getContent()),
+            str_replace(["\r\n", "\r"], "\n", $token->getContent()),
             "\n"
         );
 

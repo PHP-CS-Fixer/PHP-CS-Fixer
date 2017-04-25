@@ -31,7 +31,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Removes extra spaces between colon and case value.',
-            array(
+            [
                 new CodeSample(
 '<?php
     switch($a) {
@@ -42,7 +42,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -51,7 +51,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
+        return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
     }
 
     /**
@@ -60,7 +60,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(array(T_CASE, T_DEFAULT))) {
+            if (!$token->isGivenKind([T_CASE, T_DEFAULT])) {
                 continue;
             }
 
@@ -71,7 +71,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
                     ++$ternariesCount;
                 }
 
-                if ($tokens[$colonIndex]->equalsAny(array(':', ';'))) {
+                if ($tokens[$colonIndex]->equalsAny([':', ';'])) {
                     if (0 === $ternariesCount) {
                         break;
                     }

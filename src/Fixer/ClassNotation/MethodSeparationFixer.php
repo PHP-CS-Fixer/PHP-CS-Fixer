@@ -45,7 +45,7 @@ final class MethodSeparationFixer extends AbstractFixer implements WhitespacesAw
     {
         return new FixerDefinition(
             'Methods must be separated with one blank line.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 final class Sample
@@ -59,7 +59,7 @@ final class Sample
 }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -86,7 +86,7 @@ final class Sample
             }
 
             // figure out where the classy starts
-            $classStart = $tokens->getNextTokenOfKind($index, array('{'));
+            $classStart = $tokens->getNextTokenOfKind($index, ['{']);
 
             // figure out where the classy ends
             $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
@@ -115,9 +115,9 @@ final class Sample
 
             $attributes = $tokensAnalyzer->getMethodAttributes($index);
             if (true === $attributes['abstract']) {
-                $methodEnd = $tokens->getNextTokenOfKind($index, array(';'));
+                $methodEnd = $tokens->getNextTokenOfKind($index, [';']);
             } else {
-                $methodStart = $tokens->getNextTokenOfKind($index, array('{'));
+                $methodStart = $tokens->getNextTokenOfKind($index, ['{']);
                 $methodEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStart, true);
             }
 
@@ -138,7 +138,7 @@ final class Sample
                 continue;
             }
 
-            $methodEnd = $tokens->getNextTokenOfKind($index, array(';'));
+            $methodEnd = $tokens->getNextTokenOfKind($index, [';']);
 
             $this->fixSpaceBelowMethod($tokens, $classEnd, $methodEnd);
             $this->fixSpaceAboveMethod($tokens, $classStart, $index);
@@ -167,7 +167,7 @@ final class Sample
      */
     private function fixSpaceAboveMethod(Tokens $tokens, $classStart, $methodIndex)
     {
-        static $methodAttr = array(T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC);
+        static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC];
 
         // find out where the method signature starts
         $firstMethodAttrIndex = $methodIndex;
@@ -244,7 +244,7 @@ final class Sample
         ++$startIndex;
         $numbOfWhiteTokens = $endIndex - $startIndex;
         if (0 === $numbOfWhiteTokens) {
-            $tokens->insertAt($startIndex, new Token(array(T_WHITESPACE, str_repeat($lineEnding, $reqLineCount))));
+            $tokens->insertAt($startIndex, new Token([T_WHITESPACE, str_repeat($lineEnding, $reqLineCount)]));
 
             return;
         }

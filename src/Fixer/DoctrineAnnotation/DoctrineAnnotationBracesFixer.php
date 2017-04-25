@@ -33,16 +33,16 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
     {
         return new FixerDefinition(
             'Doctrine annotations without arguments must use the configured syntax.',
-            array(
+            [
                 new CodeSample(
                     "<?php\n/**\n * @Foo()\n */\nclass Bar {}",
-                    array('syntax' => 'without_braces')
+                    ['syntax' => 'without_braces']
                 ),
                 new CodeSample(
                     "<?php\n/**\n * @Foo\n */\nclass Bar {}",
-                    array('syntax' => 'with_braces')
+                    ['syntax' => 'with_braces']
                 ),
-            )
+            ]
         );
     }
 
@@ -55,7 +55,7 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
 
         $syntax = new FixerOptionBuilder('syntax', 'Whether to add or remove braces.');
         $options[] = $syntax
-            ->setAllowedValues(array('with_braces', 'without_braces'))
+            ->setAllowedValues(['with_braces', 'without_braces'])
             ->setDefault('without_braces')
             ->getOption()
         ;

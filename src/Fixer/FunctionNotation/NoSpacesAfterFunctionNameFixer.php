@@ -33,7 +33,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.',
-            array(new CodeSample("<?php\nrequire ('sample.php');\necho (test (3));\nexit  (1);\n\$func ();"))
+            [new CodeSample("<?php\nrequire ('sample.php');\necho (test (3));\nexit  (1);\n\$func ();")]
         );
     }
 
@@ -51,7 +51,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), array(T_STRING)));
+        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), [T_STRING]));
     }
 
     /**
@@ -124,12 +124,12 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getBraceAfterVariableKinds()
     {
-        static $tokens = array(
+        static $tokens = [
             ')',
             ']',
-            array(CT::T_DYNAMIC_VAR_BRACE_CLOSE),
-            array(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE),
-        );
+            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+        ];
 
         return $tokens;
     }
@@ -141,7 +141,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getFunctionyTokenKinds()
     {
-        static $tokens = array(
+        static $tokens = [
             T_ARRAY,
             T_ECHO,
             T_EMPTY,
@@ -156,7 +156,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             T_REQUIRE_ONCE,
             T_UNSET,
             T_VARIABLE,
-        );
+        ];
 
         return $tokens;
     }
@@ -168,14 +168,14 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getLanguageConstructionTokenKinds()
     {
-        static $languageConstructionTokens = array(
+        static $languageConstructionTokens = [
             T_ECHO,
             T_PRINT,
             T_INCLUDE,
             T_INCLUDE_ONCE,
             T_REQUIRE,
             T_REQUIRE_ONCE,
-        );
+        ];
 
         return $languageConstructionTokens;
     }

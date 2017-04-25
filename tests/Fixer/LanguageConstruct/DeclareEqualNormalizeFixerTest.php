@@ -52,38 +52,38 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            'minimal case remove whitespace (default config)' => array(
+        return [
+            'minimal case remove whitespace (default config)' => [
                 '<?php declare(ticks=1);',
                 '<?php declare(ticks= 1);',
-                array(),
-            ),
-            'minimal case remove whitespace (no space config)' => array(
+                [],
+            ],
+            'minimal case remove whitespace (no space config)' => [
                 '<?php declare(ticks=1);',
                 '<?php declare(ticks  =  1);',
-                array('space' => 'none'),
-            ),
-            'minimal case add whitespace' => array(
+                ['space' => 'none'],
+            ],
+            'minimal case add whitespace' => [
                 '<?php declare(ticks = 1);',
                 '<?php declare(ticks=1);',
-                array('space' => 'single'),
-            ),
-            'to much whitespace case add whitespace' => array(
+                ['space' => 'single'],
+            ],
+            'to much whitespace case add whitespace' => [
                 '<?php declare(ticks = 1);',
                 "<?php declare(ticks\n\t =   1);",
-                array('space' => 'single'),
-            ),
-            'repeating case remove whitespace (default config)' => array(
+                ['space' => 'single'],
+            ],
+            'repeating case remove whitespace (default config)' => [
                 '<?php declare(ticks=1);declare(ticks=1)?>',
                 '<?php declare(ticks= 1);declare(ticks= 1)?>',
-                array(),
-            ),
-            'repeating case add whitespace' => array(
+                [],
+            ],
+            'repeating case add whitespace' => [
                 '<?php declare ( ticks = 1 );declare( ticks = 1)  ?>',
                 '<?php declare ( ticks=1 );declare( ticks =1)  ?>',
-                array('space' => 'single'),
-            ),
-            'minimal case add whitespace comments, single' => array(
+                ['space' => 'single'],
+            ],
+            'minimal case add whitespace comments, single' => [
                 '<?php declare(ticks#
 = #
 1#
@@ -92,17 +92,17 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 =#
 1#
 );',
-                array('space' => 'single'),
-            ),
-            'minimal case add whitespace comments, none' => array(
+                ['space' => 'single'],
+            ],
+            'minimal case add whitespace comments, none' => [
                 '<?php declare(ticks#
 =#
 1#
 );',
                 null,
-                array('space' => 'none'),
-            ),
-        );
+                ['space' => 'none'],
+            ],
+        ];
     }
 
     /**
@@ -114,7 +114,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     public function testInvalidConfig(array $config, $expectedMessage)
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage)
         );
 
@@ -123,15 +123,15 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 
     public function provideInvalidConfig()
     {
-        return array(
-            array(
-                array(1, 2),
+        return [
+            [
+                [1, 2],
                 'The options "0", "1" do not exist.',
-            ),
-            array(
-                array('space' => 'tab'),
+            ],
+            [
+                ['space' => 'tab'],
                 'The option "space" with value "tab" is invalid.',
-            ),
-        );
+            ],
+        ];
     }
 }

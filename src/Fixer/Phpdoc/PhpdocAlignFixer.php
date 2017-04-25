@@ -54,7 +54,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     {
         return new FixerDefinition(
             'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 /**
  * @param  EngineInterface $templating
  * @param string      $format
@@ -62,7 +62,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
  * @param    bool         $debug
  * @param  mixed    &$reference     a parameter passed by reference
  */
-'))
+')]
         );
     }
 
@@ -116,7 +116,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
         $l = count($lines);
 
         for ($i = 0; $i < $l; ++$i) {
-            $items = array();
+            $items = [];
             $matches = $this->getMatches($lines[$i]);
 
             if (null === $matches) {

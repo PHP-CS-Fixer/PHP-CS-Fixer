@@ -74,7 +74,7 @@ class Token
      */
     public static function getCastTokenKinds()
     {
-        static $castTokens = array(T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST);
+        static $castTokens = [T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST];
 
         return $castTokens;
     }
@@ -86,15 +86,7 @@ class Token
      */
     public static function getClassyTokenKinds()
     {
-        static $classTokens = null;
-
-        if (null === $classTokens) {
-            $classTokens = array(T_CLASS, T_INTERFACE);
-
-            if (defined('T_TRAIT')) {
-                $classTokens[] = T_TRAIT;
-            }
-        }
+        static $classTokens = [T_CLASS, T_TRAIT, T_INTERFACE];
 
         return $classTokens;
     }
@@ -208,10 +200,10 @@ class Token
             return $this->content;
         }
 
-        return array(
+        return [
             $this->id,
             $this->content,
-        );
+        ];
     }
 
     /**
@@ -262,7 +254,7 @@ class Token
         static $keywords = null;
 
         if (null === $keywords) {
-            $keywords = self::getTokenKindsForNames(array('T_ABSTRACT', 'T_ARRAY', 'T_AS', 'T_BREAK', 'T_CALLABLE', 'T_CASE',
+            $keywords = self::getTokenKindsForNames(['T_ABSTRACT', 'T_ARRAY', 'T_AS', 'T_BREAK', 'T_CALLABLE', 'T_CASE',
                 'T_CATCH', 'T_CLASS', 'T_CLONE', 'T_CONST', 'T_CONTINUE', 'T_DECLARE', 'T_DEFAULT', 'T_DO',
                 'T_ECHO', 'T_ELSE', 'T_ELSEIF', 'T_EMPTY', 'T_ENDDECLARE', 'T_ENDFOR', 'T_ENDFOREACH',
                 'T_ENDIF', 'T_ENDSWITCH', 'T_ENDWHILE', 'T_EVAL', 'T_EXIT', 'T_EXTENDS', 'T_FINAL',
@@ -272,7 +264,7 @@ class Token
                 'T_NAMESPACE', 'T_NEW', 'T_PRINT', 'T_PRIVATE', 'T_PROTECTED', 'T_PUBLIC', 'T_REQUIRE',
                 'T_REQUIRE_ONCE', 'T_RETURN', 'T_STATIC', 'T_SWITCH', 'T_THROW', 'T_TRAIT', 'T_TRY',
                 'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD',
-            )) + array(
+            ]) + [
                 CT::T_ARRAY_TYPEHINT => CT::T_ARRAY_TYPEHINT,
                 CT::T_CLASS_CONSTANT => CT::T_CLASS_CONSTANT,
                 CT::T_CONST_IMPORT => CT::T_CONST_IMPORT,
@@ -280,7 +272,7 @@ class Token
                 CT::T_NAMESPACE_OPERATOR => CT::T_NAMESPACE_OPERATOR,
                 CT::T_USE_TRAIT => CT::T_USE_TRAIT,
                 CT::T_USE_LAMBDA => CT::T_USE_LAMBDA,
-            );
+            ];
         }
 
         return $keywords;
@@ -298,7 +290,7 @@ class Token
         static $magicConstants = null;
 
         if (null === $magicConstants) {
-            $magicConstants = self::getTokenKindsForNames(array('T_CLASS_C', 'T_DIR', 'T_FILE', 'T_FUNC_C', 'T_LINE', 'T_METHOD_C', 'T_NS_C', 'T_TRAIT_C'));
+            $magicConstants = self::getTokenKindsForNames(['T_CLASS_C', 'T_DIR', 'T_FILE', 'T_FUNC_C', 'T_LINE', 'T_METHOD_C', 'T_NS_C', 'T_TRAIT_C']);
         }
 
         return $magicConstants;
@@ -351,7 +343,7 @@ class Token
      */
     public function isComment()
     {
-        static $commentTokens = array(T_COMMENT, T_DOC_COMMENT);
+        static $commentTokens = [T_COMMENT, T_DOC_COMMENT];
 
         return $this->isGivenKind($commentTokens);
     }
@@ -397,7 +389,7 @@ class Token
      */
     public function isNativeConstant()
     {
-        static $nativeConstantStrings = array('true', 'false', 'null');
+        static $nativeConstantStrings = ['true', 'false', 'null'];
 
         return $this->isArray && in_array(strtolower($this->content), $nativeConstantStrings, true);
     }
@@ -490,13 +482,13 @@ class Token
 
     public function toArray()
     {
-        return array(
+        return [
             'id' => $this->id,
             'name' => $this->getName(),
             'content' => $this->content,
             'isArray' => $this->isArray,
             'changed' => $this->changed,
-        );
+        ];
     }
 
     /**
@@ -510,7 +502,7 @@ class Token
 
         if (null === $options) {
             if (null === $defaultOptions) {
-                $defaultOptions = Utils::calculateBitmask(array('JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK'));
+                $defaultOptions = Utils::calculateBitmask(['JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK']);
             }
 
             $options = $defaultOptions;
@@ -528,7 +520,7 @@ class Token
      */
     private static function getTokenKindsForNames(array $tokenNames)
     {
-        $keywords = array();
+        $keywords = [];
         foreach ($tokenNames as $keywordName) {
             if (defined($keywordName)) {
                 $keyword = constant($keywordName);

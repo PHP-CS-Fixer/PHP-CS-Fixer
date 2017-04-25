@@ -40,7 +40,7 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
     {
         return new FixerDefinition(
             'There should be no empty lines after class opening brace.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 final class Sample
@@ -52,7 +52,7 @@ final class Sample
 }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -66,7 +66,7 @@ final class Sample
                 continue;
             }
 
-            $startBraceIndex = $tokens->getNextTokenOfKind($index, array('{'));
+            $startBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
             if (!$tokens[$startBraceIndex + 1]->isWhitespace()) {
                 continue;
             }

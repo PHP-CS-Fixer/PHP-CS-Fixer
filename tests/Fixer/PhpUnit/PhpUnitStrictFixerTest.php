@@ -34,12 +34,12 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
      */
     public function testLegacyFix($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'assertAttributeEquals',
             'assertAttributeNotEquals',
             'assertEquals',
             'assertNotEquals',
-        ));
+        ]);
         $this->doTest($expected, $input);
     }
 
@@ -53,12 +53,12 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     {
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array('assertions' => array(
+        $this->fixer->configure(['assertions' => [
             'assertAttributeEquals',
             'assertAttributeNotEquals',
             'assertEquals',
             'assertNotEquals',
-        )));
+        ]]);
         $this->doTest($expected, $input);
     }
 
@@ -66,33 +66,33 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     {
         $methodsMap = AccessibleObject::create($this->createFixer())->assertionMap;
 
-        $cases = array(
-            array('<?php $self->foo();'),
-        );
+        $cases = [
+            ['<?php $self->foo();'],
+        ];
 
         foreach ($methodsMap as $methodBefore => $methodAfter) {
-            $cases[] = array("<?php \$sth->$methodBefore(1, 1);");
-            $cases[] = array("<?php \$sth->$methodAfter(1, 1);");
-            $cases[] = array(
+            $cases[] = ["<?php \$sth->$methodBefore(1, 1);"];
+            $cases[] = ["<?php \$sth->$methodAfter(1, 1);"];
+            $cases[] = [
                 "<?php \$this->$methodAfter(1, 2);",
                 "<?php \$this->$methodBefore(1, 2);",
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 "<?php \$this->$methodAfter(1, 2); \$this->$methodAfter(1, 2);",
                 "<?php \$this->$methodBefore(1, 2); \$this->$methodBefore(1, 2);",
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 "<?php \$this->$methodAfter(1, 2, 'descr');",
                 "<?php \$this->$methodBefore(1, 2, 'descr');",
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 "<?php \$this->/*aaa*/$methodAfter \t /**bbb*/  ( /*ccc*/1  , 2);",
                 "<?php \$this->/*aaa*/$methodBefore \t /**bbb*/  ( /*ccc*/1  , 2);",
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 "<?php \$this->$methodAfter(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
                 "<?php \$this->$methodBefore(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
-            );
+            ];
         }
 
         return $cases;
@@ -101,10 +101,10 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     public function testInvalidConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[php_unit_strict\] Invalid configuration: The option "assertions" .*\.$/'
         );
 
-        $this->fixer->configure(array('assertions' => array('__TEST__')));
+        $this->fixer->configure(['assertions' => ['__TEST__']]);
     }
 }

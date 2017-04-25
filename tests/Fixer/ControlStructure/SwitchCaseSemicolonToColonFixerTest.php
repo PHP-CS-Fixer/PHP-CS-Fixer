@@ -36,8 +36,8 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 switch ($a) {
                     case 42:
@@ -50,8 +50,8 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     switch ($a) {
                         case 42:
@@ -76,8 +76,8 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                                     echo 1;
                             }
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case 42:;;// NoEmptyStatementFixer should clean this up (partly)
@@ -90,8 +90,8 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case $b ? "c" : "d" :
@@ -104,8 +104,8 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case $b ? "c" : "d": break;
@@ -116,8 +116,8 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                     case $b ? "c" : "d"; break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case $b ? "c" : "this" ? "is" : "ugly":
@@ -130,8 +130,8 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch($a) {
                     case (int) $a < 1: {
@@ -194,7 +194,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

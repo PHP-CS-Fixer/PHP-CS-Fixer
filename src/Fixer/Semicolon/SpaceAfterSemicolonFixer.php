@@ -30,14 +30,14 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Fix whitespace after a semicolon.',
-            array(new CodeSample(
+            [new CodeSample(
                 '<?php
                     sample();     $test = 1;
                     sample();$test = 2;
                     for ( ;;++$sample) {
                     }
                 '
-            ))
+            )]
         );
     }
 
@@ -60,12 +60,12 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
             }
 
             if (!$tokens[$index + 1]->isWhitespace()) {
-                if (!$tokens[$index + 1]->equalsAny(array(')', array(T_INLINE_HTML)))) {
-                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+                if (!$tokens[$index + 1]->equalsAny([')', [T_INLINE_HTML]])) {
+                    $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
                 }
             } elseif (
                 isset($tokens[$index + 2])
-                && !$tokens[$index + 1]->equals(array(T_WHITESPACE, ' '))
+                && !$tokens[$index + 1]->equals([T_WHITESPACE, ' '])
                 && $tokens[$index + 1]->isWhitespace(" \t")
                 && !$tokens[$index + 2]->isComment()
                 && !$tokens[$index + 2]->equals(')')

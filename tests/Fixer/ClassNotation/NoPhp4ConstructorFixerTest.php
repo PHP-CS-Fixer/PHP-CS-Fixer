@@ -37,14 +37,14 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 
     public function provide70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a = new class {};',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = new class {}?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a = new Foo() <=> 1;
                     $a = new Foo <=> 1;
@@ -61,8 +61,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     $a = new class    extends Bar3 implements Foo, Foo2{};
                     $a = new class {}?>
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -78,8 +78,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 
     public function provideSimpleCases()
     {
-        return array(
-            array(
+        return [
+            [
             <<<'EOF'
 <?php
 
@@ -103,8 +103,8 @@ class Foo
     }
 }
 EOF
-            ),
-            array(
+            ],
+            [
                 <<<'EOF'
 <?php
 
@@ -134,8 +134,8 @@ Foo#
     {}
 }
 EOF
-            ),
-        );
+            ],
+        ];
     }
 
     public function testNamespaces()

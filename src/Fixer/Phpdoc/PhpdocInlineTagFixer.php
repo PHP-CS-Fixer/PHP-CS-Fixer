@@ -29,7 +29,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Fix phpdoc inline tags, make inheritdoc always inline.',
-            array(new CodeSample(
+            [new CodeSample(
 '<?php
 /**
  * @{TUTORIAL}
@@ -38,7 +38,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
  * @inheritdocs
  */
 '
-            ))
+            )]
         );
     }
 

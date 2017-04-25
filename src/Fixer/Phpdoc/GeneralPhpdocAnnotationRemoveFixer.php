@@ -34,7 +34,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     {
         return new FixerDefinition(
             'Configured annotations should be omitted from phpdocs.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -42,9 +42,9 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
  * @author someone
  */
 function foo() {}',
-                    array('annotations' => array('author'))
+                    ['annotations' => ['author']]
                 ),
-            )
+            ]
         );
     }
 
@@ -103,11 +103,11 @@ function foo() {}',
     {
         $annotations = new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["@author"]`.');
         $annotations = $annotations
-            ->setAllowedTypes(array('array'))
-            ->setDefault(array())
+            ->setAllowedTypes(['array'])
+            ->setDefault([])
             ->getOption()
         ;
 
-        return new FixerConfigurationResolverRootless('annotations', array($annotations));
+        return new FixerConfigurationResolverRootless('annotations', [$annotations]);
     }
 }

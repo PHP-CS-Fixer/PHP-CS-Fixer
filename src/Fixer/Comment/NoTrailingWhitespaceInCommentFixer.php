@@ -29,10 +29,10 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There MUST be no trailing spaces inside comments and phpdocs.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 // This is '.'
 // a comment. '.'
-'))
+')]
         );
     }
 
@@ -41,7 +41,7 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT));
+        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
     }
 
     /**

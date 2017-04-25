@@ -27,21 +27,21 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigMissingKey()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '#^\[concat_space\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "spacing"\.$#'
         );
 
-        $this->fixer->configure(array('a' => 1));
+        $this->fixer->configure(['a' => 1]);
     }
 
     public function testInvalidConfigValue()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '#^\[concat_space\] Invalid configuration: The option "spacing" with value "tabs" is invalid\. Accepted values are: "one", "none"\.$#'
         );
 
-        $this->fixer->configure(array('spacing' => 'tabs'));
+        $this->fixer->configure(['spacing' => 'tabs']);
     }
 
     /**
@@ -52,50 +52,50 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
      */
     public function testFixWithoutSpace($expected, $input = null)
     {
-        $this->fixer->configure(array('spacing' => 'none'));
+        $this->fixer->configure(['spacing' => 'none']);
         $this->doTest($expected, $input);
     }
 
     public function provideWithoutSpaceCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $foo = "a".\'b\'."c"."d".$e.($f + 1);',
                 '<?php $foo = "a" . \'b\' ."c". "d" . $e.($f + 1);',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = 1 ."foo";',
                 '<?php $foo = 1 . "foo";',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = "foo". 1;',
                 '<?php $foo = "foo" . 1;',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = "a".
 "b";',
                 '<?php $foo = "a" .
 "b";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "foobar"
     ."baz";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "foobar"
                      //test
                      ."baz";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "foobar"
                      /* test */
                      ."baz";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "foobar" //
     ."baz";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "foobar" //
                             ."baz"//
                             ."cex"/**/
@@ -105,23 +105,23 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                             ."ewer23"           '.'
                             ."dev"      /**  */
                     ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "foobar" //
     ."baz" /**/
     ."something";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "foobar"
     ."baz".      //
     "something";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "foobar"
     ."baz".      /**  */
     "something";',
-            ),
-            array(
+            ],
+            [
                 "<?php
                 \$longString = '*'
                     .'*****'
@@ -142,8 +142,8 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     // Other comment
                     .  '*****';
                 ",
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -154,14 +154,14 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
      */
     public function testFixWithSpace($expected, $input = null)
     {
-        $this->fixer->configure(array('spacing' => 'one'));
+        $this->fixer->configure(['spacing' => 'one']);
         $this->doTest($expected, $input);
     }
 
     public function provideWithSpaceCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     $a =   //
                     $c .   /**/
@@ -178,24 +178,24 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     .   $f   . //
                     $z;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = "a" . \'b\' . "c" . "d" . $e . ($f + 1);',
                 '<?php $foo = "a" . \'b\' ."c". "d"    .  $e.($f + 1);',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = "a" .
 "b";',
                 '<?php $foo = "a".
 "b";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "foobar"
     . "baz";',
                 '<?php $a = "foobar"
     ."baz";',
-            ),
-            array(
+            ],
+            [
                 '<?php echo $a . $b;
                     echo $d . $e .   //
                         $f;
@@ -210,7 +210,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                  <?php
                     echo $c;
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -29,14 +29,14 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     {
         $key = 'foo';
 
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
             '[phpdoc_add_missing_param_annotation] Invalid configuration: The option "%s" does not exist.',
             $key
         ));
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             $key => 'bar',
-        ));
+        ]);
     }
 
     /**
@@ -46,14 +46,14 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      */
     public function testConfigureRejectsInvalidConfigurationValue($value)
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
             'expected to be of type "bool", but is of type "%s".',
             is_object($value) ? get_class($value) : gettype($value)
         ));
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'only_untyped' => $value,
-        ));
+        ]);
     }
 
     /**
@@ -61,13 +61,13 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      */
     public function providerInvalidConfigurationValue()
     {
-        return array(
-            'null' => array(null),
-            'int' => array(1),
-            'array' => array(array()),
-            'float' => array(0.1),
-            'object' => array(new \stdClass()),
-        );
+        return [
+            'null' => [null],
+            'int' => [1],
+            'array' => [[]],
+            'float' => [0.1],
+            'object' => [new \stdClass()],
+        ];
     }
 
     /**
@@ -79,21 +79,21 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      */
     public function testFix($expected, $input = null, array $config = null)
     {
-        $this->fixer->configure($config ? $config : array('only_untyped' => false));
+        $this->fixer->configure($config ?: ['only_untyped' => false]);
 
         $this->doTest($expected, $input);
     }
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     /**
      *
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @param int $foo
@@ -105,8 +105,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param int $foo
      */
     function f1($foo, $bar) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @param int $bar
@@ -118,8 +118,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param int $bar
      */
     function f2($foo, $bar) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @return void
@@ -132,8 +132,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @return void
      */
     function f3($foo, $bar) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
     abstract class Foo {
         /**
@@ -149,8 +149,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
          */
         abstract public function f4a($foo, $bar);
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo {
         /**
@@ -166,8 +166,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
          */
         static final public function f4b($foo, $bar) {}
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo {
         /**
@@ -175,8 +175,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
          */
         private $foo;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @param $bar No type !!
@@ -188,8 +188,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param $bar No type !!
      */
     function f5($foo, $bar) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @param int
@@ -203,8 +203,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param int $bar
      */
     function f6(Foo\Bar $foo, $bar) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @param int $bar
@@ -216,8 +216,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param int $bar
      */
     function f7(string $foo = nuLl, $bar) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @param int $bar
@@ -233,9 +233,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @return void
      */
     function f9(string $foo, $bar, $baz) {}',
-                array('only_untyped' => true),
-            ),
-            array(
+                ['only_untyped' => true],
+            ],
+            [
                 '<?php
     /**
      * @param bool|bool[] $caseSensitive Line 1
@@ -243,16 +243,16 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      */
      function f11($caseSensitive) {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /** @return string */
     function hello($string)
     {
         return $string;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /** @return string
      * @param mixed $string
@@ -268,8 +268,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     {
         return $string;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @param mixed $string
@@ -285,8 +285,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     {
         return $string;
     }',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -299,15 +299,15 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      */
     public function testFix70($expected, $input = null, array $config = null)
     {
-        $this->fixer->configure($config ? $config : array('only_untyped' => false));
+        $this->fixer->configure($config ?: ['only_untyped' => false]);
 
         $this->doTest($expected, $input);
     }
 
     public function provideCases70()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     /**
      * @param int $bar
@@ -319,15 +319,15 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param int $bar
      */
     function f8(string $foo = "null", $bar) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @{inheritdoc}
      */
     function f10(string $foo = "null", $bar) {}',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -340,15 +340,15 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      */
     public function testFix71($expected, $input = null, array $config = null)
     {
-        $this->fixer->configure($config ? $config : array('only_untyped' => false));
+        $this->fixer->configure($config ?: ['only_untyped' => false]);
 
         $this->doTest($expected, $input);
     }
 
     public function provideCases71()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     /**
      * @param int $bar
@@ -360,8 +360,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param int $bar
      */
     function p1(?array $foo = null, $bar) {}',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -374,18 +374,18 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     public function testMessyWhitespaces($expected, $input = null, array $config = null)
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->fixer->configure($config ? $config : array('only_untyped' => false));
+        $this->fixer->configure($config ?: ['only_untyped' => false]);
 
         $this->doTest($expected, $input);
     }
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t * @param null|string \$foo\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
                 "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
-            ),
-        );
+            ],
+        ];
     }
 }

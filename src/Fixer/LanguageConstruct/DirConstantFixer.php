@@ -30,7 +30,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     {
         return new FixerDefinition(
             'Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.',
-            array(new CodeSample("<?php\n\$a = dirname(__FILE__);")),
+            [new CodeSample("<?php\n\$a = dirname(__FILE__);")],
             null,
             'Risky when the function `dirname()` is overridden.'
         );
@@ -66,7 +66,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $fileCandidateRight = $tokens[$fileCandidateRightIndex];
             $fileCandidateLeftIndex = $tokens->getNextMeaningfulToken($openParenthesis);
             $fileCandidateLeft = $tokens[$fileCandidateLeftIndex];
-            if (!$fileCandidateRight->isGivenKind(array(T_FILE)) || !$fileCandidateLeft->isGivenKind(array(T_FILE))) {
+            if (!$fileCandidateRight->isGivenKind([T_FILE]) || !$fileCandidateLeft->isGivenKind([T_FILE])) {
                 continue;
             }
 
@@ -94,7 +94,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $tokens[$openParenthesis]->clear();
 
             // replace constant and remove function name
-            $tokens->overrideAt($fileCandidateLeftIndex, new Token(array(T_DIR, '__DIR__')));
+            $tokens->overrideAt($fileCandidateLeftIndex, new Token([T_DIR, '__DIR__']));
             $tokens[$functionNameIndex]->clear();
         }
     }

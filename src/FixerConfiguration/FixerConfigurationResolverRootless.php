@@ -70,7 +70,7 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
                 $this->root
             ), E_USER_DEPRECATED);
 
-            $options = array($this->root => $options);
+            $options = [$this->root => $options];
         }
 
         return $this->resolver->resolve($options);

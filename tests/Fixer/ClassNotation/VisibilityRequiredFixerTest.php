@@ -434,21 +434,21 @@ EOF;
     public function testInvalidConfigurationType()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
-        $this->fixer->configure(array('elements' => array(null)));
+        $this->fixer->configure(['elements' => [null]]);
     }
 
     public function testInvalidConfigurationValue()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
-        $this->fixer->configure(array('elements' => array('_unknown_')));
+        $this->fixer->configure(['elements' => ['_unknown_']]);
     }
 
     public function testInvalidConfigurationValueForPHPVersion()
@@ -458,11 +458,11 @@ EOF;
         }
 
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[visibility_required\] Invalid configuration: "const" option can only be enabled with PHP 7\.1\+\.$/'
         );
 
-        $this->fixer->configure(array('elements' => array('const')));
+        $this->fixer->configure(['elements' => ['const']]);
     }
 
     /**
@@ -476,7 +476,7 @@ EOF;
      */
     public function testLegacyFixClassConst($expected, $input)
     {
-        $this->fixer->configure(array('const'));
+        $this->fixer->configure(['const']);
         $this->doTest($expected, $input);
     }
 
@@ -489,30 +489,30 @@ EOF;
      */
     public function testFixClassConst($expected, $input)
     {
-        $this->fixer->configure(array('elements' => array('const')));
+        $this->fixer->configure(['elements' => ['const']]);
         $this->doTest($expected, $input);
     }
 
     public function provideClassConstTest()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php class A { public const B=1; }',
                 '<?php class A { const B=1; }',
-            ),
-            array(
+            ],
+            [
                 '<?php class A { public const B=1;public const C=1;/**/public const#a
                 D=1;public const E=1;//
 public const F=1; }',
                 '<?php class A { const B=1;const C=1;/**/const#a
                 D=1;const E=1;//
 const F=1; }',
-            ),
-            array(
+            ],
+            [
                 '<?php class A { private const B=1; protected const C=2; public const D=4; public $a; function A(){} }',
                 '<?php class A { private const B=1; protected const C=2; const D=4; public $a; function A(){} }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     class foo
                     {
@@ -533,8 +533,8 @@ const F=1; }',
                         const SENTENCE = "The value of THREE is ".self::THREE;
                     }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     public function testCommentCases()

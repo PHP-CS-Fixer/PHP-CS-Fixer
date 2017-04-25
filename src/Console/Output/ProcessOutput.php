@@ -28,15 +28,15 @@ final class ProcessOutput implements ProcessOutputInterface
      *
      * @var array
      */
-    private static $eventStatusMap = array(
-        FixerFileProcessedEvent::STATUS_UNKNOWN => array('symbol' => '?', 'format' => '%s', 'description' => 'unknown'),
-        FixerFileProcessedEvent::STATUS_INVALID => array('symbol' => 'I', 'format' => '<bg=red>%s</bg=red>', 'description' => 'invalid file syntax, file ignored'),
-        FixerFileProcessedEvent::STATUS_SKIPPED => array('symbol' => 'S', 'format' => '<fg=cyan>%s</fg=cyan>', 'description' => 'Skipped'),
-        FixerFileProcessedEvent::STATUS_NO_CHANGES => array('symbol' => '.', 'format' => '%s', 'description' => 'no changes'),
-        FixerFileProcessedEvent::STATUS_FIXED => array('symbol' => 'F', 'format' => '<fg=green>%s</fg=green>', 'description' => 'fixed'),
-        FixerFileProcessedEvent::STATUS_EXCEPTION => array('symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'),
-        FixerFileProcessedEvent::STATUS_LINT => array('symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'),
-    );
+    private static $eventStatusMap = [
+        FixerFileProcessedEvent::STATUS_UNKNOWN => ['symbol' => '?', 'format' => '%s', 'description' => 'unknown'],
+        FixerFileProcessedEvent::STATUS_INVALID => ['symbol' => 'I', 'format' => '<bg=red>%s</bg=red>', 'description' => 'invalid file syntax, file ignored'],
+        FixerFileProcessedEvent::STATUS_SKIPPED => ['symbol' => 'S', 'format' => '<fg=cyan>%s</fg=cyan>', 'description' => 'Skipped'],
+        FixerFileProcessedEvent::STATUS_NO_CHANGES => ['symbol' => '.', 'format' => '%s', 'description' => 'no changes'],
+        FixerFileProcessedEvent::STATUS_FIXED => ['symbol' => 'F', 'format' => '<fg=green>%s</fg=green>', 'description' => 'fixed'],
+        FixerFileProcessedEvent::STATUS_EXCEPTION => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
+        FixerFileProcessedEvent::STATUS_LINT => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
+    ];
 
     /**
      * Event dispatcher instance.
@@ -76,7 +76,7 @@ final class ProcessOutput implements ProcessOutputInterface
     {
         $this->output = $output;
         $this->eventDispatcher = $dispatcher;
-        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
+        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
 
         if (null !== $nbFiles) {
             $this->files = $nbFiles;
@@ -90,7 +90,7 @@ final class ProcessOutput implements ProcessOutputInterface
 
     public function __destruct()
     {
-        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, array($this, 'onFixerFileProcessed'));
+        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
     }
 
     public function onFixerFileProcessed(FixerFileProcessedEvent $event)
@@ -121,7 +121,7 @@ final class ProcessOutput implements ProcessOutputInterface
 
     public function printLegend()
     {
-        $symbols = array();
+        $symbols = [];
 
         foreach (self::$eventStatusMap as $status) {
             $symbol = $status['symbol'];

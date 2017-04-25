@@ -32,7 +32,7 @@ final class LowercaseConstantsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The PHP constants `true`, `false`, and `null` MUST be in lower case.',
-            array(new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;"))
+            [new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;")]
         );
     }
 
@@ -71,37 +71,27 @@ final class LowercaseConstantsFixer extends AbstractFixer
      */
     private function isNeighbourAccepted(Tokens $tokens, $index)
     {
-        static $forbiddenTokens = null;
-
-        if (null === $forbiddenTokens) {
-            $forbiddenTokens = array(
-                T_AS,
-                T_CLASS,
-                T_CONST,
-                T_EXTENDS,
-                T_IMPLEMENTS,
-                T_INSTANCEOF,
-                T_INTERFACE,
-                T_NEW,
-                T_NS_SEPARATOR,
-                T_PAAMAYIM_NEKUDOTAYIM,
-                T_USE,
-                CT::T_USE_TRAIT,
-                CT::T_USE_LAMBDA,
-            );
-
-            if (defined('T_TRAIT')) {
-                $forbiddenTokens[] = T_TRAIT;
-            }
-
-            if (defined('T_INSTEADOF')) {
-                $forbiddenTokens[] = T_INSTEADOF;
-            }
-        }
+        static $forbiddenTokens = [
+            T_AS,
+            T_CLASS,
+            T_CONST,
+            T_EXTENDS,
+            T_IMPLEMENTS,
+            T_INSTANCEOF,
+            T_INSTEADOF,
+            T_INTERFACE,
+            T_NEW,
+            T_NS_SEPARATOR,
+            T_PAAMAYIM_NEKUDOTAYIM,
+            T_TRAIT,
+            T_USE,
+            CT::T_USE_TRAIT,
+            CT::T_USE_LAMBDA,
+        ];
 
         $token = $tokens[$index];
 
-        if ($token->equalsAny(array('{', '}'))) {
+        if ($token->equalsAny(['{', '}'])) {
             return false;
         }
 

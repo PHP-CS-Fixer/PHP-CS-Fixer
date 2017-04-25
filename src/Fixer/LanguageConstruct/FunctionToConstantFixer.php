@@ -30,11 +30,11 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     /**
      * @var string[]
      */
-    private static $availableFunctions = array(
+    private static $availableFunctions = [
         'phpversion' => 'PHP_VERSION',
         'php_sapi_name' => 'PHP_SAPI',
         'pi' => 'M_PI',
-    );
+    ];
 
     /**
      * @var array<string, string>
@@ -48,7 +48,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     {
         parent::configure($configuration);
 
-        $this->functionsFixMap = array();
+        $this->functionsFixMap = [];
         foreach ($this->configuration['functions'] as $key) {
             $this->functionsFixMap[$key] = self::$availableFunctions[$key];
         }
@@ -61,7 +61,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     {
         return new FixerDefinition(
             'Replace core functions calls returning constants with the constants.',
-            array(new CodeSample("<?php\necho phpversion();\necho pi();\necho php_sapi_name();")),
+            [new CodeSample("<?php\necho phpversion();\necho pi();\necho php_sapi_name();")],
             null,
             'Risky when any of the configured functions to replace are overridden.'
         );
@@ -125,15 +125,15 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         $functionNames = array_keys(self::$availableFunctions);
         $functions = new FixerOptionBuilder('functions', 'List of function names to fix.');
         $functions = $functions
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
                 $generator->allowedValueIsSubsetOf($functionNames),
-            ))
+            ])
             ->setDefault($functionNames)
             ->getOption()
         ;
 
-        return new FixerConfigurationResolver(array($functions));
+        return new FixerConfigurationResolver([$functions]);
     }
 
     /**
@@ -148,7 +148,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceCloseIndex);
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceOpenIndex);
         $tokens[$index]->clear();
-        $tokens->insertAt($index, new Token(array(T_STRING, $replacementConst)));
+        $tokens->insertAt($index, new Token([T_STRING, $replacementConst]));
     }
 
     /**
@@ -175,14 +175,14 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         }
 
         $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$functionNamePrefix]->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
+        if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
             return null;
         }
 
         if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
             // skip if the call is to a constructor or to a function in a namespace other than the default
             $prevIndex = $tokens->getPrevMeaningfulToken($functionNamePrefix);
-            if ($tokens[$prevIndex]->isGivenKind(array(T_STRING, T_NEW))) {
+            if ($tokens[$prevIndex]->isGivenKind([T_STRING, T_NEW])) {
                 return null;
             }
         }
@@ -193,10 +193,10 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
             return null;
         }
 
-        return array(
+        return [
             $braceOpenIndex,
             $braceCloseIndex,
             $this->functionsFixMap[$lowerContent],
-        );
+        ];
     }
 }

@@ -32,7 +32,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * @var AbstractAlignFixerHelper[]
      */
-    private $alignFixerHelpers = array();
+    private $alignFixerHelpers = [];
 
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     {
         return new FixerDefinition(
             'Binary operators should be surrounded by at least one space.',
-            array(
+            [
                 new CodeSample(
 '<?php
 
@@ -60,7 +60,7 @@ $foo = array(
 $a   = 9000;
 $abc = 90001;
 ',
-                    array('align_equals' => false)
+                    ['align_equals' => false]
                 ),
                 new CodeSample(
 '<?php
@@ -68,7 +68,7 @@ $abc = 90001;
 $a = 9000;
 $abc = 90001;
 ',
-                    array('align_equals' => true)
+                    ['align_equals' => true]
                 ),
                 new CodeSample(
 '<?php
@@ -78,7 +78,7 @@ $foo = array(
     "abc" => 9001,
 );
 ',
-                    array('align_double_arrow' => false)
+                    ['align_double_arrow' => false]
                 ),
                 new CodeSample(
 '<?php
@@ -88,9 +88,9 @@ $foo = array(
     "abc" => 9001,
 );
 ',
-                    array('align_double_arrow' => true)
+                    ['align_double_arrow' => true]
                 ),
-            )
+            ]
         );
     }
 
@@ -137,19 +137,19 @@ $foo = array(
         $alignDoubleArrows = new FixerOptionBuilder('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.');
         $alignDoubleArrows
             ->setDefault(false)
-            ->setAllowedValues(array(true, false, null))
+            ->setAllowedValues([true, false, null])
         ;
 
         $alignEquals = new FixerOptionBuilder('align_equals', 'Whether to apply, remove or ignore equals alignment.');
         $alignEquals
             ->setDefault(false)
-            ->setAllowedValues(array(true, false, null))
+            ->setAllowedValues([true, false, null])
         ;
 
-        return new FixerConfigurationResolver(array(
+        return new FixerConfigurationResolver([
             $alignDoubleArrows->getOption(),
             $alignEquals->getOption(),
-        ));
+        ]);
     }
 
     /**
@@ -187,7 +187,7 @@ $foo = array(
                 $tokens[$index + 1]->setContent(' ');
             }
         } else {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
         }
 
         // fix white space before operator
@@ -197,7 +197,7 @@ $foo = array(
                 $tokens[$index - 1]->setContent(' ');
             }
         } else {
-            $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
         }
     }
 
