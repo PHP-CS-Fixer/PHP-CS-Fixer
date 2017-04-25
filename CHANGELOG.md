@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.3.1
+--------------------
+
+Port of v2.2.3.
+
+* bug #2724 Revert #2554 Add short diff. output format (keradus)
+
 Changelog for v2.3.0
 --------------------
 
