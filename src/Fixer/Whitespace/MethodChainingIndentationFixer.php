@@ -59,7 +59,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                 }
 
                 $prev = $tokens[$index - 1];
-                $currentWhitespaces = $this->getLineBreak($prev);
+                $currentWhitespaces = $this->getLineBreak($prev->getContent());
 
                 if (null !== $currentWhitespaces) {
                     $prevMeaningIndex = $tokens->getPrevMeaningfulToken($index);
@@ -84,7 +84,13 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $indent = $this->whitespacesConfig->getIndent();
 
         for ($i = $index; $i >= 0; --$i) {
-            $currentWhitespaces = $this->getLineBreak($tokens[$i]);
+            if($i>0) {
+                $codeToFindIndents = $tokens->generatePartialCode($i - 1, $i);
+            } else {
+                $codeToFindIndents = $tokens[$i]->getContent();
+            }
+
+            $currentWhitespaces = $this->getLineBreak($codeToFindIndents);
 
             if (null !== $currentWhitespaces) {
                 if ($tokens[$i + 1]->isGivenKind(T_OBJECT_OPERATOR)) {
@@ -110,7 +116,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $isComment = false;
 
         for ($i = $index; $i > $prevMeaningful; --$i) {
-            if ($tokens[$i]->isGivenKind(T_OBJECT_OPERATOR) || null !== $this->getLineBreak($tokens[$i])) {
+            if ($tokens[$i]->isGivenKind(T_OBJECT_OPERATOR) || null !== $this->getLineBreak($tokens[$i]->getContent())) {
                 return $isComment;
             }
 
@@ -123,13 +129,13 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     }
 
     /**
-     * @param Token $token
+     * @param string $content
      *
      * @return string|null
      */
-    private function getLineBreak(Token $token)
+    private function getLineBreak(string $content)
     {
-        if (preg_match('/\R(\s*)/', $token->getContent(), $matches)) {
+        if (preg_match('/\R{1}([ \t]*)$/', $content, $matches)) {
             return $matches[1];
         }
 

@@ -106,6 +106,33 @@ $foo
                 '<?php $foo->bar()->baz()
 ->qux();',
             ],
+//
+            [
+                '<?php
+someCodeHereAndMultipleBreaks();
+
+
+
+$foo
+    ->bar1()
+    ->bar2();'
+            ],
+            [
+                '<?php
+        if (null !== $files) {
+            return $files;
+        }
+
+        $finder = Finder::create()
+            ->files()
+        ;'
+            ],
+            [
+                '<?php
+        $finder = Finder::create()
+            ->files()
+        ;'
+            ],
         ];
     }
 
