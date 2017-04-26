@@ -177,7 +177,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                 'BeforeScenario',
                 'AfterScenario',
                 'BeforeStep',
-                'AfterStep'
+                'AfterStep',
 
                  // PHPCheckStyle
                  'SuppressWarnings',
