@@ -352,8 +352,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
         // do nothing
     }',
                 self::$configurationCtrlStructPositionNextLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         echo 1;
@@ -2877,8 +2877,8 @@ class Foo
 
     public function provideFixMultiLineStructures()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     if (true === true
         && true === true
@@ -2891,8 +2891,8 @@ class Foo
     {
     }',
                 self::$configurationCtrlStructPositionNextLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     foreach (
         $boo as $bar => $fooBarBazBuzz
@@ -2905,8 +2905,8 @@ class Foo
     {
     }',
                 self::$configurationCtrlStructPositionNextLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     $foo = function (
         $baz,
@@ -2921,8 +2921,8 @@ class Foo
     {
     };',
                 self::$configurationCtrlStructPositionNextLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo
     {
@@ -2943,8 +2943,8 @@ class Foo
         }
     }',
                 self::$configurationCtrlStructPositionNextLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true === true
         && true === true
@@ -2957,8 +2957,8 @@ class Foo
     {
     }',
                 self::$configurationCtrlStructPositionNextLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if ($foo)
     {
@@ -2979,8 +2979,8 @@ class Foo
     {
     }',
                 self::$configurationCtrlStructPositionNextLine,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
