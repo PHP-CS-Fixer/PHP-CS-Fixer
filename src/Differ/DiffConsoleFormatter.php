@@ -79,7 +79,7 @@ final class DiffConsoleFormatter
                     "#\n\r|\n#",
                     $isDecorated
                         ? OutputFormatter::escape(rtrim($diff))
-                        : $diff
+                        : rtrim($diff)
                 )
             ))
         );
