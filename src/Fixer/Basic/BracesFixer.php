@@ -443,7 +443,13 @@ class Foo
                 }
 
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
-            } elseif ($token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)) {
+            } elseif (
+                $token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)
+                || (
+                    ($token->isGivenKind($controlTokens) || $token->isGivenKind([T_FUNCTION]) && $tokensAnalyzer->isLambda($index))
+                    && $this->configuration['position_after_control_structures'] === self::LINE_NEXT
+                )
+            ) {
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, [')']);
                 if (null === $closingParenthesisIndex) {
                     continue;
@@ -463,11 +469,6 @@ class Foo
 
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
                 }
-            } elseif (
-                ($token->isGivenKind($controlTokens) || $token->isGivenKind(array(T_FUNCTION)) && $tokensAnalyzer->isLambda($index))
-                && $this->configuration['position_after_control_structures'] === self::LINE_NEXT
-            ) {
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $this->whitespacesConfig->getLineEnding().$indent);
             } else {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
             }
@@ -492,7 +493,7 @@ class Foo
             $tokenAfterParenthesis = $tokens[$tokens->getNextMeaningfulToken($parenthesisEndIndex)];
 
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
-            if ($tokenAfterParenthesis->equals('{')) {
+            if ($tokenAfterParenthesis->equals('{') && $this->configuration['position_after_control_structures'] === self::LINE_SAME) {
                 $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
 
                 continue;
