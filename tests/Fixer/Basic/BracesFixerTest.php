@@ -330,6 +330,31 @@ final class BracesFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
+    try
+    {
+        throw new \Exception();
+    }
+    catch (\LogicException $e)
+    {
+        // do nothing
+    }
+    catch (\Exception $e)
+    {
+        // do nothing
+    }',
+                '<?php
+    try {
+        throw new \Exception();
+    }catch (\LogicException $e) {
+        // do nothing
+    }
+    catch (\Exception $e) {
+        // do nothing
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ),
+            array(
+                '<?php
     if (true) {
         echo 1;
     } elseif (true) {
@@ -2832,6 +2857,130 @@ class Foo
                 self::$configurationOopPositionSameLine,
             ],
         ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $configuration
+     *
+     * @dataProvider provideFixMultiLineStructures
+     */
+    public function testFixMultiLineStructures($expected, $input = null, array $configuration = null)
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixMultiLineStructures()
+    {
+        return array(
+            array(
+                '<?php
+    if (true === true
+        && true === true
+    ) {
+    }',
+                '<?php
+    if(true === true
+        && true === true
+    )
+    {
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ),
+            array(
+                '<?php
+    foreach (
+        $boo as $bar => $fooBarBazBuzz
+    ) {
+    }',
+                '<?php
+    foreach (
+        $boo as $bar => $fooBarBazBuzz
+    )
+    {
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ),
+            array(
+                '<?php
+    $foo = function (
+        $baz,
+        $boo
+    ) {
+    };',
+                '<?php
+    $foo = function (
+        $baz,
+        $boo
+    )
+    {
+    };',
+                self::$configurationCtrlStructPositionNextLine,
+            ),
+            array(
+                '<?php
+    class Foo
+    {
+        public static function bar(
+            $baz,
+            $boo
+        ) {
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public static function bar(
+            $baz,
+            $boo
+        )
+        {
+        }
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ),
+            array(
+                '<?php
+    if (true === true
+        && true === true
+    ) {
+    }',
+                '<?php
+    if(true === true
+        && true === true
+    )
+    {
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ),
+            array(
+                '<?php
+    if ($foo)
+    {
+    }
+    elseif (
+        true === true
+        && true === true
+    ) {
+    }',
+                '<?php
+    if ($foo)
+    {
+    }
+    elseif (
+        true === true
+        && true === true
+    )
+    {
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ),
+        );
     }
 
     /**
