@@ -860,6 +860,11 @@ Choose from the list of available rules:
 
   Fix phpdoc inline tags, make inheritdoc always inline.
 
+* **phpdoc_magic_method_return_annotation**
+   | PHPDoc of magic methods returning ``void`` should not have a ``@return``
+   | annotation.
+   | *Rule is: configurable.*
+
 * **phpdoc_no_access** [@Symfony]
 
   @access annotations should be omitted from phpdocs.
