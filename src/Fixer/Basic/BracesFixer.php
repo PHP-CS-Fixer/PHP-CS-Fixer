@@ -449,7 +449,11 @@ class Foo
                 $token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)
                 || (
                     self::LINE_NEXT === $this->configuration['position_after_control_structures']
-                    && ($token->isGivenKind($controlTokens) || $token->isGivenKind([T_FUNCTION]) && $tokensAnalyzer->isLambda($index))
+                    && (
+                        $token->isGivenKind($controlTokens)
+                        || $token->isGivenKind([T_FUNCTION]) && $tokensAnalyzer->isLambda($index)
+                        || $token->isGivenKind([T_CLASS]) && $tokensAnalyzer->isAnonymousClass($index)
+                    )
                 )
             ) {
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, [')']);
@@ -465,7 +469,11 @@ class Foo
                 } else {
                     if (
                         self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs']
-                        && (self::LINE_NEXT !== $this->configuration['position_after_control_structures'] || $token->isGivenKind($classyAndFunctionTokens) && ! $tokensAnalyzer->isLambda($index))
+                        && (
+                            self::LINE_NEXT !== $this->configuration['position_after_control_structures']
+                            || $token->isGivenKind([T_FUNCTION]) && !$tokensAnalyzer->isLambda($index)
+                            || $token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)
+                        )
                         && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()
                     ) {
                         $ensuredWhitespace = ' ';
