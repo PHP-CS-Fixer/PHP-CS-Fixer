@@ -463,7 +463,11 @@ class Foo
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
                 } else {
-                    if (self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs'] && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()) {
+                    if (
+                        self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs']
+                        && (self::LINE_NEXT !== $this->configuration['position_after_control_structures'] || $token->isGivenKind($classyAndFunctionTokens))
+                        && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()
+                    ) {
                         $ensuredWhitespace = ' ';
                     } else {
                         $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
