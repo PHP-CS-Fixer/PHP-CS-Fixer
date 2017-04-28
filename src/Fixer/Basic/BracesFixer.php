@@ -240,17 +240,17 @@ class Foo
             $prevIndex = $tokens->getPrevNonWhitespace($index);
             $prevToken = $tokens[$prevIndex];
 
-            $indent = $this->detectIndent($tokens, $index);
-
             if (!$prevToken->equals('}')) {
                 continue;
             }
 
-            if ($this->configuration['position_after_control_structures'] === self::LINE_NEXT) {
-                $tokens->ensureWhitespaceAtIndex($index - 1, 1, $this->whitespacesConfig->getLineEnding().$indent);
-            } else {
-                $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
-            }
+            $tokens->ensureWhitespaceAtIndex(
+                $index - 1,
+                1,
+                self::LINE_NEXT === $this->configuration['position_after_control_structures'] ?
+                    $this->whitespacesConfig->getLineEnding().$this->detectIndent($tokens, $index)
+                    : ' '
+            );
         }
     }
 
@@ -446,8 +446,8 @@ class Foo
             } elseif (
                 $token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)
                 || (
-                    ($token->isGivenKind($controlTokens) || $token->isGivenKind([T_FUNCTION]) && $tokensAnalyzer->isLambda($index))
-                    && $this->configuration['position_after_control_structures'] === self::LINE_NEXT
+                    self::LINE_NEXT === $this->configuration['position_after_control_structures']
+                    && ($token->isGivenKind($controlTokens) || $token->isGivenKind([T_FUNCTION]) && $tokensAnalyzer->isLambda($index))
                 )
             ) {
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, [')']);
@@ -493,7 +493,7 @@ class Foo
             $tokenAfterParenthesis = $tokens[$tokens->getNextMeaningfulToken($parenthesisEndIndex)];
 
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
-            if ($tokenAfterParenthesis->equals('{') && $this->configuration['position_after_control_structures'] === self::LINE_SAME) {
+            if ($tokenAfterParenthesis->equals('{') && self::LINE_SAME === $this->configuration['position_after_control_structures']) {
                 $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
 
                 continue;
@@ -529,8 +529,6 @@ class Foo
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            $indent = $this->detectIndent($tokens, $index);
-
             // Declare tokens don't follow the same rules are other control statements
             if ($token->isGivenKind(T_DECLARE)) {
                 $this->fixDeclareStatement($tokens, $index);
@@ -538,11 +536,13 @@ class Foo
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
 
                 if (!$tokens[$nextNonWhitespaceIndex]->equals(':')) {
-                    if ($this->configuration['position_after_control_structures'] === self::LINE_NEXT && !$tokens[$nextNonWhitespaceIndex]->equals('(')) {
-                        $tokens->ensureWhitespaceAtIndex($index + 1, 0, $this->whitespacesConfig->getLineEnding().$indent);
-                    } else {
-                        $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
-                    }
+                    $tokens->ensureWhitespaceAtIndex(
+                        $index + 1,
+                        0,
+                        self::LINE_NEXT === $this->configuration['position_after_control_structures'] && !$tokens[$nextNonWhitespaceIndex]->equals('(') ?
+                            $this->whitespacesConfig->getLineEnding().$this->detectIndent($tokens, $index)
+                            : ' '
+                    );
                 }
 
                 $prevToken = $tokens[$index - 1];
