@@ -60,7 +60,7 @@ install:
     - composer info -D | sort
 
 script:
-    - if [ $TASK_SCA == 1 ]; then php php-cs-fixer fix --rules @PHP70Migration:risky,@PHP71Migration,native_function_invocation -q; fi
+    - if [ $TASK_SCA == 1 ]; then php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,native_function_invocation -q; fi
     - if [ $TASK_SCA == 1 ]; then ./check_trailing_spaces.sh || travis_terminate 1; fi
 
     - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 0 ]; then vendor/bin/phpunit --verbose; fi

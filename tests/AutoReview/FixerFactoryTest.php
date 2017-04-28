@@ -166,6 +166,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['function_to_constant'], $fixers['no_whitespace_in_blank_line']], // tested also in: function_to_constant,no_whitespace_in_blank_line.test
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']], // tested also in: list_syntax,binary_operator_spaces.test
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']], // tested also in: list_syntax,ternary_operator_spaces.test
+            [$fixers['void_return'], $fixers['return_type_declaration']], // tested also in: void_return,return_type_declaration.test
+            [$fixers['void_return'], $fixers['phpdoc_no_empty_return']], // tested also in: void_return,phpdoc_no_empty_return.test
         ];
 
         // prepare bulk tests for phpdoc fixers to test that:
