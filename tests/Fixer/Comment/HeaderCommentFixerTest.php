@@ -265,6 +265,24 @@ echo 1;',
 echo \'bar\';',
                 '<?php echo \'bar\';',
             ),
+            array(
+                array('header' => 'Toe'),
+                '<?php
+
+/*
+ * Toe
+ */
+
+echo \'bar\';',
+                '<?php
+
+/*
+ * Tic
+ * Tac
+ */
+
+echo \'bar\';',
+            ),
         );
     }
 
