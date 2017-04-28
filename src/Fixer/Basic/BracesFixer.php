@@ -465,7 +465,7 @@ class Foo
                 } else {
                     if (
                         self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs']
-                        && (self::LINE_NEXT !== $this->configuration['position_after_control_structures'] || $token->isGivenKind($classyAndFunctionTokens))
+                        && (self::LINE_NEXT !== $this->configuration['position_after_control_structures'] || $token->isGivenKind($classyAndFunctionTokens) && ! $tokensAnalyzer->isLambda($index))
                         && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()
                     ) {
                         $ensuredWhitespace = ' ';
