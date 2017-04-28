@@ -371,11 +371,13 @@ class Foo
                         !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(['"', "'", [T_CONSTANT_ENCAPSED_STRING]]))
                     ) {
                         if (
-                            $nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())
+                            self::LINE_NEXT !== $this->configuration['position_after_control_structures']
+                            && $nextNonWhitespaceNestToken->isGivenKind($this->getControlContinuationTokens())
                             || $nextNonWhitespaceNestToken->isGivenKind(T_CLOSE_TAG)
                             || (
-                                $nextNonWhitespaceNestToken->isGivenKind(T_WHILE) &&
-                                $tokensAnalyzer->isWhilePartOfDoWhile($nextNonWhitespaceNestIndex)
+                                self::LINE_NEXT !== $this->configuration['position_after_control_structures']
+                                && $nextNonWhitespaceNestToken->isGivenKind(T_WHILE)
+                                && $tokensAnalyzer->isWhilePartOfDoWhile($nextNonWhitespaceNestIndex)
                             )
                         ) {
                             $whitespace = ' ';
