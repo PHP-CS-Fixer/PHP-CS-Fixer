@@ -456,13 +456,18 @@ class Foo
                     )
                 )
             ) {
+                $isAnonymousClass = ($token->isGivenKind($classyTokens) && $tokensAnalyzer->isAnonymousClass($index));
+
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, [')']);
-                if (null === $closingParenthesisIndex) {
+                if (null === $closingParenthesisIndex && !$isAnonymousClass) {
                     continue;
                 }
 
-                $prevToken = $tokens[$closingParenthesisIndex - 1];
-                if ($prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
+                if (!$isAnonymousClass) {
+                    $prevToken = $tokens[$closingParenthesisIndex - 1];
+                }
+
+                if (!$isAnonymousClass && $prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
                     if (!$tokens[$startBraceIndex - 2]->isComment()) {
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
