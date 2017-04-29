@@ -266,22 +266,43 @@ echo \'bar\';',
                 '<?php echo \'bar\';',
             ),
             array(
-                array('header' => 'Toe'),
+                array('header' => 'x'),
                 '<?php
 
 /*
- * Toe
+ * x
  */
 
-echo \'bar\';',
+echo \'a\';',
                 '<?php
 
 /*
- * Tic
- * Tac
+ * y
+ * z
  */
 
-echo \'bar\';',
+echo \'a\';',
+            ),
+            array(
+                array('header' => "a\na"),
+                '<?php
+
+/*
+ * a
+ * a
+ */
+
+echo \'x\';',
+                '<?php
+
+
+/*
+ * b
+ * c
+ */
+
+
+echo \'x\';',
             ),
         );
     }
