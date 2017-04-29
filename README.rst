@@ -988,6 +988,13 @@ Choose from the list of available rules:
 
   PHPUnit annotations should be a FQCNs including a root namespace.
 
+* **php_unit_namespaced_test_case** [@PHPUnit54Migration:risky]
+
+  The ``\PHPUnit\Framework\TestCase`` class MUST be used instead of
+  ``\PHPUnit_Framework_TestCase`` class.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of
