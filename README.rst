@@ -969,7 +969,7 @@ Choose from the list of available rules:
   - ``assertions`` (``array``): list of assertion methods to fix; defaults to
     ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
 
-* **php_unit_dedicate_assert** [@Symfony:risky]
+* **php_unit_dedicate_assert** [@Symfony:risky, @PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   PHPUnit assertions like "assertInternalType", "assertFileExists", should
   be used over "assertTrue".
@@ -978,15 +978,59 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``functions`` (``array``): list of assertions to fix; defaults to
-    ``['array_key_exists', 'empty', 'file_exists', 'is_array', 'is_bool',
-    'is_boolean', 'is_callable', 'is_double', 'is_float', 'is_infinite',
-    'is_int', 'is_integer', 'is_long', 'is_nan', 'is_null', 'is_numeric',
-    'is_object', 'is_real', 'is_resource', 'is_scalar', 'is_string']``
+  - ``functions`` (``null``): (deprecated, use ``target`` instead) List of assertions
+    to fix (overrides ``target``); defaults to ``null``
+  - ``target`` (``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``): target version of
+    PHPUnit; defaults to ``'5.0'``
+
+* **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+
+  Usages of ``->setExpectedException*`` methods MUST be replaced by
+  ``->expectException*`` methods.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``target`` (``'5.2'``, ``'5.6'``, ``'newest'``): target version of PHPUnit; defaults to
+    ``'newest'``
 
 * **php_unit_fqcn_annotation** [@Symfony]
 
   PHPUnit annotations should be a FQCNs including a root namespace.
+
+* **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+
+  Usages of ``->getMock`` and
+  ``->getMockWithoutInvokingTheOriginalConstructor`` methods MUST be
+  replaced by ``->createMock`` method.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+* **php_unit_namespaced** [@PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+
+  PHPUnit classes MUST be used in namespaced version, eg
+  ``\PHPUnit\Framework\TestCase`` instead of ``\PHPUnit_Framework_TestCase``.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``target`` (``'4.8'``, ``'5.7'``, ``'6.0'``, ``'newest'``): target version of PHPUnit;
+    defaults to ``'newest'``
+
+* **php_unit_no_expectation_annotation** [@PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+
+  Usages of ``@expectedException*`` annotations MUST be replaced by
+  ``->setExpectedException*`` methods.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``target`` (``'3.2'``, ``'4.3'``, ``'newest'``): target version of PHPUnit; defaults to
+    ``'newest'``
+  - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
 * **php_unit_strict**
 

@@ -17,18 +17,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  */
-final class PhpUnitIndicator
+final class PhpUnitTestCaseIndicator
 {
     public function isPhpUnitClass(Tokens $tokens, $index)
     {
         if (!$tokens[$index]->isGivenKind(T_CLASS)) {
             throw new \LogicException(sprintf('No T_CLASS at given index %d, got %s.', $index, $tokens[$index]->getName()));
-        }
-
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-
-        if ($tokens[$prevIndex]->isGivenKind(T_ABSTRACT)) {
-            return false;
         }
 
         $classNameIndex = $tokens->getNextMeaningfulToken($index);
