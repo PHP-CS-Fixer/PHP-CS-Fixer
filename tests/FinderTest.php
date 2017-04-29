@@ -13,13 +13,14 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Finder;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Finder
  */
-final class FinderTest extends \PHPUnit_Framework_TestCase
+final class FinderTest extends TestCase
 {
     public function testThatDefaultFinderDoesNotSpecifyAnyDirectory()
     {

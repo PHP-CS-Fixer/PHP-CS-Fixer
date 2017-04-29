@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -23,7 +24,7 @@ use PhpCsFixer\DocBlock\Line;
  *
  * @covers \PhpCsFixer\DocBlock\Annotation
  */
-final class AnnotationTest extends \PHPUnit_Framework_TestCase
+final class AnnotationTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.

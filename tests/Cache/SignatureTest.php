@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\Signature;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -21,7 +22,7 @@ use PhpCsFixer\Cache\Signature;
  *
  * @covers \PhpCsFixer\Cache\Signature
  */
-final class SignatureTest extends \PHPUnit_Framework_TestCase
+final class SignatureTest extends TestCase
 {
     public function testIsFinal()
     {

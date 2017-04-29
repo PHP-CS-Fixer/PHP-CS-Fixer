@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\VersionSpecificationInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy;
 
 /**
@@ -23,7 +24,7 @@ use Prophecy\Prophecy;
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecificCodeSample
  */
-final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
+final class VersionSpecificCodeSampleTest extends TestCase
 {
     public function testConstructorSetsValues()
     {

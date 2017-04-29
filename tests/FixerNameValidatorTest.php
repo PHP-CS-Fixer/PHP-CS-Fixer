@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\FixerNameValidator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -21,7 +22,7 @@ use PhpCsFixer\FixerNameValidator;
  *
  * @covers \PhpCsFixer\FixerNameValidator
  */
-final class FixerNameValidatorTest extends \PHPUnit_Framework_TestCase
+final class FixerNameValidatorTest extends TestCase
 {
     /**
      * @param string $name

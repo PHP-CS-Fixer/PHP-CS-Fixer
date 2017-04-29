@@ -17,6 +17,7 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
@@ -26,7 +27,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *
  * @covers \PhpCsFixer\Config
  */
-final class ConfigTest extends \PHPUnit_Framework_TestCase
+final class ConfigTest extends TestCase
 {
     public function testConfigRulesUsingSeparateMethod()
     {

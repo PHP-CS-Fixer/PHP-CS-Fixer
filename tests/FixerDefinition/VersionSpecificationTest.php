@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -21,7 +22,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecification
  */
-final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
+final class VersionSpecificationTest extends TestCase
 {
     public function testConstructorRequiresEitherMinimumOrMaximum()
     {

@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -27,7 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @covers \PhpCsFixer\Console\Command\DescribeCommand
  */
-final class DescribeCommandTest extends \PHPUnit_Framework_TestCase
+final class DescribeCommandTest extends TestCase
 {
     public function testExecuteOutput()
     {

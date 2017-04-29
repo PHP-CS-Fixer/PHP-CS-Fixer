@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\CodeSample;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -21,7 +22,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
  *
  * @covers \PhpCsFixer\FixerDefinition\CodeSample
  */
-final class CodeSampleTest extends \PHPUnit_Framework_TestCase
+final class CodeSampleTest extends TestCase
 {
     public function testConstructorSetsValues()
     {

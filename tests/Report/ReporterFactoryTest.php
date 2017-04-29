@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Test\AccessibleObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -22,7 +23,7 @@ use PhpCsFixer\Test\AccessibleObject;
  *
  * @covers \PhpCsFixer\Report\ReporterFactory
  */
-final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
+final class ReporterFactoryTest extends TestCase
 {
     public function testCreate()
     {

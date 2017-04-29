@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\DocBlock\DocBlock;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -24,7 +25,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @coversNothing
  * @group auto-review
  */
-final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
+final class ProjectCodeTest extends TestCase
 {
     /**
      * This structure contains older classes that are not yet covered by tests.
@@ -82,7 +83,7 @@ final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
-        $this->assertTrue(is_subclass_of($testClassName, '\PHPUnit_Framework_TestCase'), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit_Framework_TestCase".', $testClassName));
+        $this->assertTrue(is_subclass_of($testClassName, '\PHPUnit\Framework\TestCase'), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit\Framework\TestCase".', $testClassName));
     }
 
     /**
