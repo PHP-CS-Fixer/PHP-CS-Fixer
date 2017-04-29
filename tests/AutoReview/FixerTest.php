@@ -172,7 +172,7 @@ final class FixerTest extends TestCase
      */
     private static function assertStringIsNotEmpty($actual, $message = '')
     {
-        self::assertThat($actual, new \PHPUnit_Framework_Constraint_IsType('string'), $message);
+        self::assertInternalType('string', $actual, $message);
         self::assertNotEmpty($actual, $message);
     }
 }
