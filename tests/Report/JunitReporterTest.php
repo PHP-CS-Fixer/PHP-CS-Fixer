@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Report;
 use GeckoPackages\PHPUnit\Constraints\XML\XMLMatchesXSDConstraint;
 use PhpCsFixer\Report\JunitReporter;
 use PhpCsFixer\Report\ReportSummary;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -23,7 +24,7 @@ use PhpCsFixer\Report\ReportSummary;
  *
  * @covers \PhpCsFixer\Report\JunitReporter
  */
-final class JunitReporterTest extends \PHPUnit_Framework_TestCase
+final class JunitReporterTest extends TestCase
 {
     /**
      * @var JunitReporter

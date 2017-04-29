@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -23,7 +24,7 @@ use PhpCsFixer\FixerFactory;
  * @coversNothing
  * @group auto-review
  */
-final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
+final class FixerFactoryTest extends TestCase
 {
     public function testFixersPriorityEdgeFixers()
     {

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\DocBlock\DocBlock;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -24,7 +25,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @coversNothing
  * @group auto-review
  */
-final class ProjectCodeTest extends \PHPUnit_Framework_TestCase
+final class ProjectCodeTest extends TestCase
 {
     /**
      * This structure contains older classes that are not yet covered by tests.

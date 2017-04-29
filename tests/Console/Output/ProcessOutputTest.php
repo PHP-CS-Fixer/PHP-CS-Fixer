@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\ProcessOutput;
 use PhpCsFixer\FixerFileProcessedEvent;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  *
  * @covers \PhpCsFixer\Console\Output\ProcessOutput
  */
-final class ProcessOutputTest extends \PHPUnit_Framework_TestCase
+final class ProcessOutputTest extends TestCase
 {
     /**
      * @param array  $statuses

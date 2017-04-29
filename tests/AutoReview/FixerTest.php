@@ -20,6 +20,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -29,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @coversNothing
  * @group auto-review
  */
-final class FixerTest extends \PHPUnit_Framework_TestCase
+final class FixerTest extends TestCase
 {
     /**
      * @param FixerInterface $fixer

@@ -13,13 +13,14 @@
 namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\FixerDefinition
  */
-final class FixerDefinitionTest extends \PHPUnit_Framework_TestCase
+final class FixerDefinitionTest extends TestCase
 {
     public function testGetSummary()
     {

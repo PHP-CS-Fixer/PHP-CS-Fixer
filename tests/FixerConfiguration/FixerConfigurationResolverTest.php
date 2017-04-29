@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -22,7 +23,7 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolver
  */
-final class FixerConfigurationResolverTest extends \PHPUnit_Framework_TestCase
+final class FixerConfigurationResolverTest extends TestCase
 {
     public function testWithoutOptions()
     {
