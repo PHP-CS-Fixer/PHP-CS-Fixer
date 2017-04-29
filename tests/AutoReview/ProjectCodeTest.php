@@ -83,7 +83,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         $this->assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
-        $this->assertTrue(is_subclass_of($testClassName, '\PHPUnit_Framework_TestCase'), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit_Framework_TestCase".', $testClassName));
+        $this->assertTrue(is_subclass_of($testClassName, '\PHPUnit\Framework\TestCase'), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit\Framework\TestCase".', $testClassName));
     }
 
     /**
