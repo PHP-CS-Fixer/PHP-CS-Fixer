@@ -100,7 +100,6 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     *
      * @dataProvider provideShortSyntaxCases
      */
     public function testFixShortSyntax($expected, $input = null)
