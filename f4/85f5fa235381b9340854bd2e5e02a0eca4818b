@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-24T09:59:35Z
+
+@SpacePossum , @julienfalque , please review and check it out.
+@pilgerone , please retarget your PR for 2.2 branch
+
+---------------------------------------------------------------------------
+
+by pilgerone at 2017-04-24T16:03:07Z
+
+Lesson learnt: don't ever rebase before setting the right target.
+
+All sorted out now I guess. Target and base.
