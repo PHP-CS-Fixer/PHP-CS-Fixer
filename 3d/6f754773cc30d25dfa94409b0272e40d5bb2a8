@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-21T20:56:20Z
+
+Hi!
+
+Thanks for this PR, this is indeed a typo in the docs, well spotted!
+Currently on the stable release branch 2.2 this has been corrected by https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2677 , however it seems that fix was not applied to the master branch.
+(ping @keradus , would you want to merge 2.2 -> master, or take a new PR for master?)
+
+---------------------------------------------------------------------------
+
+by mleko at 2017-04-22T06:13:32Z
+
+This PR and #2677 fix typos in different places.
+
+I checked and it seems #2677 is merged to master
+
+Update:
+02339feee54bf8526872394e0e4214151fa95980 is where 2.2 was merged to master
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-22T06:21:59Z
+
+You are absolutely right!
+Can't believe I missed the typo again  :|
+
+Nice fix, thanks again :)
