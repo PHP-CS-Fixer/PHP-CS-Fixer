@@ -298,6 +298,10 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @fixme ( foo,bar  =  "baz" )
  * @override
  */'],
+            ['
+/**
+ * @Transform /^(\d+)$/
+ */'],
         ];
     }
 
