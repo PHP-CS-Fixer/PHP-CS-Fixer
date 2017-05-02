@@ -461,7 +461,7 @@ class Foo
                     )
                 )
             ) {
-                $isAnonymousClass = ($token->isGivenKind($classyTokens) && $tokensAnalyzer->isAnonymousClass($index));
+                $isAnonymousClass = $token->isGivenKind($classyTokens) && $tokensAnalyzer->isAnonymousClass($index);
 
                 $closingParenthesisIndex = $tokens->getPrevTokenOfKind($startBraceIndex, [')']);
                 if (null === $closingParenthesisIndex && !$isAnonymousClass) {
