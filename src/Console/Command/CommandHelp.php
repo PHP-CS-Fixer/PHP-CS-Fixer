@@ -132,11 +132,11 @@ The example below will add two rules to the default list of PSR2 set rules:
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
-            'array_syntax' => array('syntax' => 'short'),
-        ))
+            'array_syntax' => ['syntax' => 'short'],
+        ])
         ->setFinder(\$finder)
     ;
 
@@ -158,10 +158,10 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
-        ))
+        ])
         ->setFinder(\$finder)
     ;
 
