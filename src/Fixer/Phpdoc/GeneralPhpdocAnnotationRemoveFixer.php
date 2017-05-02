@@ -101,7 +101,7 @@ function foo() {}',
      */
     protected function createConfigurationDefinition()
     {
-        $annotations = new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["@author"]`.');
+        $annotations = new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["author"]`.');
         $annotations = $annotations
             ->setAllowedTypes(array('array'))
             ->setDefault(array())
