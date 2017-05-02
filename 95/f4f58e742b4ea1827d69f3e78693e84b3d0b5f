@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-22T16:34:14Z
+
+Tests still pass so looks like a good clean up to me. Is this possible because the SF deps. version were bumped?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-22T20:37:12Z
+
+yep, dropping old symfony is the reason why we could clean this up
