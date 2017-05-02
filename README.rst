@@ -196,7 +196,7 @@ If the option is not provided, it defaults to ``run-in`` unless a config file th
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix --verbose --show-progress=evaluating
+    $ php php-cs-fixer.phar fix --verbose --show-progress=estimating
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
