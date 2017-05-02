@@ -164,7 +164,11 @@ class Foo
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_NEXT)
                 ->getOption(),
-            (new FixerOptionBuilder('position_after_control_structures', 'whether the opening brace should be placed on "next" or "same" line after control structures not covered by position_after_functions_and_oop_constructs.'))
+            (new FixerOptionBuilder('position_after_control_structures', 'whether the opening brace should be placed on "next" or "same" line after control structures.'))
+                ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
+                ->setDefault(self::LINE_SAME)
+                ->getOption(),
+            (new FixerOptionBuilder('position_after_anonymous_structures', 'whether the opening brace should be placed on "next" or "same" line after anonymous constructs (anonymous classes and lambda functions).'))
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_SAME)
                 ->getOption(),
@@ -448,11 +452,12 @@ class Foo
             } elseif (
                 $token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)
                 || (
-                    self::LINE_NEXT === $this->configuration['position_after_control_structures']
-                    && (
-                        $token->isGivenKind($controlTokens)
-                        || $token->isGivenKind([T_FUNCTION]) && $tokensAnalyzer->isLambda($index)
-                        || $token->isGivenKind([T_CLASS]) && $tokensAnalyzer->isAnonymousClass($index)
+                    self::LINE_NEXT === $this->configuration['position_after_control_structures'] && $token->isGivenKind($controlTokens)
+                    || (self::LINE_NEXT === $this->configuration['position_after_anonymous_structures']
+                        && (
+                            $token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)
+                            || $token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)
+                        )
                     )
                 )
             ) {
@@ -475,8 +480,7 @@ class Foo
                     if (
                         self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs']
                         && (
-                            self::LINE_NEXT !== $this->configuration['position_after_control_structures']
-                            || $token->isGivenKind([T_FUNCTION]) && !$tokensAnalyzer->isLambda($index)
+                            $token->isGivenKind([T_FUNCTION]) && !$tokensAnalyzer->isLambda($index)
                             || $token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)
                         )
                         && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()

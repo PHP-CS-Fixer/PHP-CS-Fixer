@@ -26,6 +26,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
 {
     private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => 'same'];
     private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => 'next'];
+    private static $configurationAnonymousPositionNextLine = ['position_after_anonymous_structures' => 'next'];
 
     public function testInvalidConfigurationClassyConstructs()
     {
@@ -225,7 +226,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         $a = 1;
         while (false);
     };',
-                self::$configurationCtrlStructPositionNextLine,
+                self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -248,7 +249,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         $a = 1;
         for ($i=0;$i<5;++$i);
     };',
-                self::$configurationCtrlStructPositionNextLine,
+                self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -1664,6 +1665,22 @@ function & lambda()
     return function () {
     };
 }',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+
+function & lambda() {
+    return function () {
+    };
+}',
+                '<?php
+
+function & lambda()
+{
+    return function () {
+    };
+}',
                 self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
             ],
             [
@@ -1913,6 +1930,37 @@ function mixedComplex()
         public function getFaxNumbers() {
             if (1)
             {
+                return $this->phoneNumbers->filter(function ($phone) {
+                    $a = 1;
+                    $b = 1;
+                    $c = 1;
+                    return ($phone->getType() === 1) ? true : false;
+                });
+            }
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public function getFaxNumbers()
+        {
+            if (1)
+                return $this->phoneNumbers->filter(function ($phone) {
+                    $a = 1;
+                    $b = 1;
+                    $c = 1;
+                    return ($phone->getType() === 1) ? true : false;
+                });
+        }
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    class Foo {
+        public function getFaxNumbers() {
+            if (1)
+            {
                 return $this->phoneNumbers->filter(function ($phone)
                 {
                     $a = 1;
@@ -1937,7 +1985,7 @@ function mixedComplex()
                 });
         }
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine + self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -2494,7 +2542,7 @@ function foo()
             ],
         ];
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
         ];
     }
@@ -2771,6 +2819,74 @@ function foo()
     }',
                 self::$configurationOopPositionSameLine,
             ],
+            [
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true)
+    {
+        echo 1;
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true){
+        echo 1;
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true)           {
+        echo 1;
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    while ($file = $this->getFile()) {
+    }',
+                '<?php
+    while ($file = $this->getFile())
+    {
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    switch (n) {
+        case label1:
+            echo 1;
+            echo 2;
+            break;
+        default:
+            echo 3;
+            echo 4;
+    }',
+                '<?php
+    switch (n)
+    {
+        case label1:
+            echo 1;
+            echo 2;
+            break;
+        default:
+            echo 3;
+            echo 4;
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
         ];
     }
 
@@ -3015,7 +3131,7 @@ class Foo
     }, $collection));',
                 '<?php
     foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -3050,6 +3166,23 @@ class Foo
     }
 }',
                 self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+class Foo {
+    public static function bar() {
+        return 1;
+    }
+}',
+                '<?php
+class Foo
+{
+    public static function bar()
+    {
+        return 1;
+    }
+}',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -3182,7 +3315,7 @@ class Foo
     )
     {
     };',
-                self::$configurationCtrlStructPositionNextLine,
+                self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -3792,8 +3925,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     function foo($a)
     {
         // foo
-        $foo = new class($a) extends Foo
-        {
+        $foo = new class($a) extends Foo {
             public function bar()
             {
             }
@@ -3811,8 +3943,7 @@ use const some\a\{ConstA, ConstB, ConstC};
                 '<?php
     function foo($a) {
         // foo
-        $foo = new class($a) extends Foo
-        {
+        $foo = new class($a) extends Foo {
             public function bar() {
             }
         };
@@ -3827,6 +3958,44 @@ use const some\a\{ConstA, ConstB, ConstC};
             ],
             [
                 '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo
+        {
+            public function bar()
+            {
+            }
+        };
+    }',
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo { public function bar() {} };
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    function foo($a) {
+        // foo
+        $foo = new class($a) extends Foo
+        {
+            public function bar() {
+            }
+        };
+    }',
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo { public function bar() {} };
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
     foo(1, new class implements Logger {
         public function log($message) {
             log($message);
@@ -3838,6 +4007,18 @@ use const some\a\{ConstA, ConstB, ConstC};
             ],
             [
                 '<?php
+    foo(1, new class implements Logger {
+        public function log($message)
+        {
+            log($message);
+        }
+    }, 3);',
+                '<?php
+    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
     foo(1, new class implements Logger
     {
         public function log($message) {
@@ -3846,7 +4027,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     }, 3);',
                 '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -3858,12 +4039,20 @@ $message = (new class() implements FooInterface{});',
             ],
             [
                 '<?php
+$message = (new class() implements FooInterface {
+});',
+                '<?php
+$message = (new class() implements FooInterface{});',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
 $message = (new class() implements FooInterface
 {
 });',
                 '<?php
 $message = (new class() implements FooInterface{});',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php $message = (new class() {
@@ -3872,11 +4061,17 @@ $message = (new class() implements FooInterface{});',
                 self::$configurationOopPositionSameLine,
             ],
             [
+                '<?php $message = (new class() {
+});',
+                '<?php $message = (new class() {});',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php $message = (new class()
 {
 });',
                 '<?php $message = (new class() {});',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -3900,6 +4095,25 @@ if (1) {
                 '<?php
 if (1)
 {
+    $message = (new class() extends Foo {
+        public function bar()
+        {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+if (1) {
     $message = (new class() extends Foo
     {
         public function bar() {
@@ -3914,7 +4128,67 @@ if (1) {
     public function bar() { echo 1; }
   });
 }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+if (1) {
+    $message = (new class() extends Foo
+    {
+        public function bar() {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+if (1)
+{
+    $message = (new class() extends Foo
+    {
+        public function bar()
+        {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+                self::$configurationCtrlStructPositionNextLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+if (1)
+{
+    $message = (new class() extends Foo
+    {
+        public function bar() {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine + self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -4018,7 +4292,7 @@ if (1) {
     function a() {
     }
                 ',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -4057,7 +4331,7 @@ if (1) {
             return function (int $foo) use ($bar): string { return $bar; };
         }
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
             [
                 '<?php
@@ -4081,6 +4355,16 @@ test();',
             ],
             [
                 '<?php
+use function some\a\{
+     test1,
+    test2
+ };
+test();',
+                null,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
@@ -4096,6 +4380,15 @@ use const some\a\{ConstA, ConstB, ConstC};
 ',
                 null,
                 self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use const some\a\{ConstA, ConstB, ConstC};
+',
+                null,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
         ];
     }
