@@ -454,8 +454,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``annotations`` (``array``): list of annotations to remove, e.g.
-    ``["@author"]``; defaults to ``[]``
+  - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
+    defaults to ``[]``
 
 * **hash_to_slash_comment** [@Symfony]
 
