@@ -95,7 +95,7 @@ The <comment>--show-progress</comment> option allows you to choose the way proce
 
 If the option is not provided, it defaults to <comment>run-in</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
-    <info>$ php %command.full_name% --verbose --show-progress=evaluating</info>
+    <info>$ php %command.full_name% --verbose --show-progress=estimating</info>
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
