@@ -12,18 +12,18 @@ EOF;
 
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
-    ->setRules(array(
+    ->setRules([
         '@PHP56Migration' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        'array_syntax' => array('syntax' => 'short'),
+        'array_syntax' => ['syntax' => 'short'],
         'combine_consecutive_unsets' => true,
         // one should use PHPUnit methods to set up expected exception instead of annotations
-        'general_phpdoc_annotation_remove' => array('expectedException', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp'),
-        'header_comment' => array('header' => $header),
+        'general_phpdoc_annotation_remove' => ['expectedException', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp'],
+        'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
-        'list_syntax' => array('syntax' => 'long'),
-        'no_extra_consecutive_blank_lines' => array('break', 'continue', 'extra', 'return', 'throw', 'use', 'parenthesis_brace_block', 'square_brace_block', 'curly_brace_block'),
+        'list_syntax' => ['syntax' => 'long'],
+        'no_extra_consecutive_blank_lines' => ['break', 'continue', 'extra', 'return', 'throw', 'use', 'parenthesis_brace_block', 'square_brace_block', 'curly_brace_block'],
         'no_short_echo_tag' => true,
         'no_unreachable_default_argument_value' => true,
         'no_useless_else' => true,
@@ -37,7 +37,7 @@ return PhpCsFixer\Config::create()
         'semicolon_after_instruction' => true,
         'strict_comparison' => true,
         'strict_param' => true,
-    ))
+    ])
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->exclude('tests/Fixtures')
