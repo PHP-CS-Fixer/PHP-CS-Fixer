@@ -39,7 +39,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixWithBracesCases()
     {
-        return array(
+        return $this->createTestCases(array(
             array('
 /**
  * @Foo()
@@ -261,7 +261,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @override
  * @todo: foo
  */'),
-        );
+        ));
     }
 
     /**
@@ -283,7 +283,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixWithoutBracesCases()
     {
-        return array(
+        return $this->createTestCases(array(
             array('
 /**
  * Foo.
@@ -522,7 +522,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @override()
  * @todo: foo()
  */'),
-        );
+        ));
     }
 
     /**

@@ -46,7 +46,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAllCases()
     {
-        return array(
+        return $this->createTestCases(array(
             array('
 /**
  * @Foo
@@ -302,7 +302,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 /**
  * @Transform /^(\d+)$/
  */'),
-        );
+        ));
     }
 
     /**
@@ -334,7 +334,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAroundParenthesesOnlyCases()
     {
-        return array(
+        return $this->createTestCases(array(
             array('
 /**
  * @Foo
@@ -541,7 +541,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @fixme ( foo,bar  =  "baz" )
  * @override
  */'),
-        );
+        ));
     }
 
     /**
@@ -573,7 +573,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAroundCommasOnlyCases()
     {
-        return array(
+        return $this->createTestCases(array(
             array('
 /**
  * @Foo
@@ -803,7 +803,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @fixme ( foo,bar  =  "baz" )
  * @override
  */'),
-        );
+        ));
     }
 
     /**
@@ -835,7 +835,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAroundArgumentAssignmentsOnlyCases()
     {
-        return array(
+        return $this->createTestCases(array(
             array('
 /**
  * @Foo (foo="foo", bar="bar")
@@ -1057,7 +1057,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @fixme ( foo,bar  =  "baz" )
  * @override
  */'),
-        );
+        ));
     }
 
     /**
@@ -1089,7 +1089,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAroundArrayAssignmentsOnlyCases()
     {
-        return array(
+        return $this->createTestCases(array(
             array('
 /**
  * @Foo (foo="foo", bar="bar")
@@ -1291,7 +1291,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @fixme ( foo,bar  =  "baz" )
  * @override
  */'),
-        );
+        ));
     }
 
     /**
