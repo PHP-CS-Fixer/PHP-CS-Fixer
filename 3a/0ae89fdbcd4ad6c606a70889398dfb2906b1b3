@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-04-29T17:37:43Z
+
+Might be worth adding a unit test to check tests extend the new class. Would have to rely on tokenizing the files to work out what they extend though (I can't think of any other way to check this).
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-04-29T17:38:50Z
+
+👎 On doing this on 2.2.x. It's not a bug fix.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-29T17:39:07Z
+
+ultimatelly, on newer branch, we will just drop support for old phpunit that provides that class.
+
+it's not a feature as well.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-29T17:49:33Z
+
+> Might be worth adding a unit test to check tests extend the new class.
+
+btw, check out last commit ;)
