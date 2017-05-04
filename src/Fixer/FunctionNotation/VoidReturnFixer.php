@@ -28,11 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class VoidReturnFixer extends AbstractFixer
 {
     /**
-     * @internal
-     */
-    const VOID_RETURN_PATTERN = '/@return\s+void(?!\|)/';
-
-    /**
      * {@inheritdoc}
      */
     public function getDefinition()
@@ -135,7 +130,8 @@ final class VoidReturnFixer extends AbstractFixer
     private function hasReturnAnnotation(Tokens $tokens, $index)
     {
         foreach ($this->findReturnAnnotations($tokens, $index) as $return) {
-            if (0 === preg_match(self::VOID_RETURN_PATTERN, $return->getContent())) {
+            $types = $return->getTypes();
+            if (count($types) > 1 || 'void' !== $types[0]) {
                 return true;
             }
         }
@@ -154,7 +150,8 @@ final class VoidReturnFixer extends AbstractFixer
     private function hasVoidReturnAnnotation(Tokens $tokens, $index)
     {
         foreach ($this->findReturnAnnotations($tokens, $index) as $return) {
-            if (1 === preg_match(self::VOID_RETURN_PATTERN, $return->getContent())) {
+            $types = $return->getTypes();
+            if (1 === count($types) && 'void' === $types[0]) {
                 return true;
             }
         }
