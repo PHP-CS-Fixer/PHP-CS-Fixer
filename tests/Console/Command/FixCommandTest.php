@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Test\AccessibleObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -23,7 +24,7 @@ use PhpCsFixer\Test\AccessibleObject;
  *
  * @covers \PhpCsFixer\Console\Command\FixCommand
  */
-final class FixCommandTest extends \PHPUnit_Framework_TestCase
+final class FixCommandTest extends TestCase
 {
     /**
      * @param int  $expected

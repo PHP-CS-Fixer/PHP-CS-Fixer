@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -24,7 +25,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @covers \PhpCsFixer\Tokenizer\TokensAnalyzer
  */
-final class TokensAnalyzerTest extends \PHPUnit_Framework_TestCase
+final class TokensAnalyzerTest extends TestCase
 {
     public function testGetClassyElements()
     {

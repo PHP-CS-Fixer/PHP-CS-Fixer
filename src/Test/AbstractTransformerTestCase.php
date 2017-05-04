@@ -14,13 +14,14 @@ namespace PhpCsFixer\Test;
 
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-abstract class AbstractTransformerTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractTransformerTestCase extends TestCase
 {
     protected function doTest($source, array $expectedTokens = [], array $observedKinds = [])
     {

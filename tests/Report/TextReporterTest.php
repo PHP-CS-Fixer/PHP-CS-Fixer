@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Report\TextReporter;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -22,7 +23,7 @@ use PhpCsFixer\Report\TextReporter;
  *
  * @covers \PhpCsFixer\Report\TextReporter
  */
-final class TextReporterTest extends \PHPUnit_Framework_TestCase
+final class TextReporterTest extends TestCase
 {
     /** @var TextReporter */
     private $reporter;

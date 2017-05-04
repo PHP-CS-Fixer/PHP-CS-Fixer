@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\NullCacheManager;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -21,7 +22,7 @@ use PhpCsFixer\Cache\NullCacheManager;
  *
  * @covers \PhpCsFixer\Cache\NullCacheManager
  */
-final class NullCacheManagerTest extends \PHPUnit_Framework_TestCase
+final class NullCacheManagerTest extends TestCase
 {
     public function testIsFinal()
     {

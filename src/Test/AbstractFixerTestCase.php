@@ -21,12 +21,13 @@ use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-abstract class AbstractFixerTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractFixerTestCase extends TestCase
 {
     /**
      * @var LinterInterface

@@ -13,13 +13,14 @@
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerOptionBuilder
  */
-final class FixerOptionBuilderTest extends \PHPUnit_Framework_TestCase
+final class FixerOptionBuilderTest extends TestCase
 {
     public function testSetDefault()
     {
