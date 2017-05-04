@@ -45,7 +45,7 @@ final class VoidReturnFixer extends AbstractFixer
                     new VersionSpecification(70100)
                 ),
             ],
-            'Rule is applied only in a PHP 7.1+ environment.',
+            null,
             'Modifies the signature of functions.'
         );
     }
@@ -175,7 +175,7 @@ final class VoidReturnFixer extends AbstractFixer
         $endFuncIndex = $tokens->getPrevTokenOfKind($index, [')']);
         $nextIndex = $tokens->getNextMeaningfulToken($endFuncIndex);
 
-        return $tokens[$nextIndex]->equals([CT::T_TYPE_COLON, ':']);
+        return $tokens[$nextIndex]->isGivenKind(CT::T_TYPE_COLON);
     }
 
     /**
