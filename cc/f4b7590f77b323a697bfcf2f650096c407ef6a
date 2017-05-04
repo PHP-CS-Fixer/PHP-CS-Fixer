@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-27T07:14:00Z
+
+Looks like most slow tests are related to Doctrine Annotation fixers :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-27T08:02:00Z
+
+yep. feel free to try improve their performance ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-27T08:18:54Z
+
+Yep.
