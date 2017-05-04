@@ -2219,7 +2219,9 @@ function foo()
     public function provideFixCommentBeforeBraceCases()
     {
         return array(
-            array('<?php '),
+            array(
+                '<?php ',
+            ),
             array(
                 '<?php
     if ($test) { // foo
@@ -2242,7 +2244,11 @@ function foo()
         echo 1;
     };',
             ),
-            array('<?php ', null, self::$configurationOopPositionSameLine),
+            array(
+                '<?php ',
+                null,
+                self::$configurationOopPositionSameLine,
+            ),
             array(
                 '<?php
     if ($test) { // foo
@@ -2253,7 +2259,6 @@ function foo()
     {
         echo 1;
     }',
-                null,
                 self::$configurationOopPositionSameLine,
             ),
             array(
@@ -2266,7 +2271,6 @@ function foo()
     {
         echo 1;
     };',
-                null,
                 self::$configurationOopPositionSameLine,
             ),
         );
