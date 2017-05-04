@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\JsonReporter;
 use PhpCsFixer\Report\ReportSummary;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -23,7 +24,7 @@ use PhpCsFixer\Report\ReportSummary;
  *
  * @covers \PhpCsFixer\Report\JsonReporter
  */
-final class JsonReporterTest extends \PHPUnit_Framework_TestCase
+final class JsonReporterTest extends TestCase
 {
     /** @var JsonReporter */
     private $reporter;

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -21,7 +22,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @covers \PhpCsFixer\WhitespacesFixerConfig
  */
-final class WhitespacesFixerConfigTest extends \PHPUnit_Framework_TestCase
+final class WhitespacesFixerConfigTest extends TestCase
 {
     /**
      * @param string      $indent

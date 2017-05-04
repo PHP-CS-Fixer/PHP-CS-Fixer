@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -19,7 +21,7 @@ namespace PhpCsFixer\Tests\Tokenizer;
  *
  * @covers \PhpCsFixer\Tokenizer\CT
  */
-final class CTTest extends \PHPUnit_Framework_TestCase
+final class CTTest extends TestCase
 {
     public function testUniqueValues()
     {

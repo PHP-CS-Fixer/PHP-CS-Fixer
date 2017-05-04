@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -23,7 +24,7 @@ use PhpCsFixer\RuleSet;
  *
  * @covers \PhpCsFixer\FixerFactory
  */
-final class FixerFactoryTest extends \PHPUnit_Framework_TestCase
+final class FixerFactoryTest extends TestCase
 {
     public function testInterfaceIsFluent()
     {

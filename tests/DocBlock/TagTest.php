@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\Tag;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -22,7 +23,7 @@ use PhpCsFixer\DocBlock\Tag;
  *
  * @covers \PhpCsFixer\DocBlock\Tag
  */
-final class TagTest extends \PHPUnit_Framework_TestCase
+final class TagTest extends TestCase
 {
     /**
      * @param string $expected

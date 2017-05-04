@@ -14,6 +14,7 @@ namespace PhpCsFixer\tests\AutoReview;
 
 use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author SpacePossum
@@ -23,7 +24,7 @@ use PhpCsFixer\Tokenizer\Transformers;
  * @coversNothing
  * @group auto-review
  */
-final class TransformerTest extends \PHPUnit_Framework_TestCase
+final class TransformerTest extends TestCase
 {
     /**
      * @param TransformerInterface $transformer

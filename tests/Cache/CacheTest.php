@@ -16,6 +16,7 @@ use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -24,7 +25,7 @@ use PhpCsFixer\ToolInfo;
  *
  * @covers \PhpCsFixer\Cache\Cache
  */
-final class CacheTest extends \PHPUnit_Framework_TestCase
+final class CacheTest extends TestCase
 {
     public function testIsFinal()
     {

@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\FileCacheManager;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 /**
@@ -23,7 +24,7 @@ use Prophecy\Argument;
  *
  * @covers \PhpCsFixer\Cache\FileCacheManager
  */
-final class FileCacheManagerTest extends \PHPUnit_Framework_TestCase
+final class FileCacheManagerTest extends TestCase
 {
     public function testIsFinal()
     {

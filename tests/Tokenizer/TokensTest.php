@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -23,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @covers \PhpCsFixer\Tokenizer\Tokens
  */
-final class TokensTest extends \PHPUnit_Framework_TestCase
+final class TokensTest extends TestCase
 {
     public function testReadFromCacheAfterClearing()
     {

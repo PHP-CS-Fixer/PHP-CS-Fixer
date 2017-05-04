@@ -13,13 +13,14 @@
 namespace PhpCsFixer\Tests\Error;
 
 use PhpCsFixer\Error\Error;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Error\Error
  */
-final class ErrorTest extends \PHPUnit_Framework_TestCase
+final class ErrorTest extends TestCase
 {
     public function testThatErrorTypeConstantValuesAreDifferent()
     {
