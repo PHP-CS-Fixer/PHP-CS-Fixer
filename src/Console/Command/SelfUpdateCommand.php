@@ -92,15 +92,22 @@ EOT
             // test if there is a new minor version available
             $remoteTag = $this->getLatestNotMajorUpdateTag($currentVersion);
             if ($currentVersion === $remoteTag) {
-                $output->writeln('<info>no minor update for php-cs-fixer.</info>');
+                $output->writeln('<info>No minor update for php-cs-fixer.</info>');
 
                 return 0;
             }
         }
 
-        $remoteFilename = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar', $remoteTag);
         $localFilename = realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0];
+
+        if (!is_writable($localFilename)) {
+            $output->writeln(sprintf('<error>No permission to update %s file.</error>', $localFilename));
+
+            return 1;
+        }
+
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
+        $remoteFilename = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar', $remoteTag);
 
         try {
             $copyResult = @copy($remoteFilename, $tempFilename);
