@@ -98,7 +98,7 @@ final class VoidReturnFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$startIndex]->equals('{')) {
+            if ($tokens[$startIndex]->equals(';')) {
                 // No function body defined, fallback to PHPDoc.
                 if ($this->hasVoidReturnAnnotation($tokens, $index)) {
                     $this->fixFunctionDefinition($tokens, $startIndex);
@@ -120,7 +120,7 @@ final class VoidReturnFixer extends AbstractFixer
     }
 
     /**
-     * Determine if there is a non-void return annotation in the function's PHPDoc comment.
+     * Determine whether there is a non-void return annotation in the function's PHPDoc comment.
      *
      * @param Tokens $tokens
      * @param int    $index  The index of the function token
@@ -130,8 +130,7 @@ final class VoidReturnFixer extends AbstractFixer
     private function hasReturnAnnotation(Tokens $tokens, $index)
     {
         foreach ($this->findReturnAnnotations($tokens, $index) as $return) {
-            $types = $return->getTypes();
-            if (count($types) > 1 || 'void' !== $types[0]) {
+            if (['void'] !== $return->getTypes()) {
                 return true;
             }
         }
@@ -140,7 +139,7 @@ final class VoidReturnFixer extends AbstractFixer
     }
 
     /**
-     * Determine if there is a void return annotation in the function's PHPDoc comment.
+     * Determine whether there is a void return annotation in the function's PHPDoc comment.
      *
      * @param Tokens $tokens
      * @param int    $index  The index of the function token
@@ -150,8 +149,7 @@ final class VoidReturnFixer extends AbstractFixer
     private function hasVoidReturnAnnotation(Tokens $tokens, $index)
     {
         foreach ($this->findReturnAnnotations($tokens, $index) as $return) {
-            $types = $return->getTypes();
-            if (1 === count($types) && 'void' === $types[0]) {
+            if (['void'] === $return->getTypes()) {
                 return true;
             }
         }
@@ -160,7 +158,7 @@ final class VoidReturnFixer extends AbstractFixer
     }
 
     /**
-     * Determine the function already has a return type hint.
+     * Determine whether the function already has a return type hint.
      *
      * @param Tokens $tokens
      * @param int    $index  The index of the end of the function definition line, EG at { or ;
@@ -176,7 +174,7 @@ final class VoidReturnFixer extends AbstractFixer
     }
 
     /**
-     * Determine if the function has a void return.
+     * Determine whether the function has a void return.
      *
      * @param Tokens $tokens
      * @param int    $startIndex Start of function body
@@ -188,15 +186,16 @@ final class VoidReturnFixer extends AbstractFixer
     {
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             if ($tokens[$i]->isGivenKind(T_YIELD)) {
-                return false; // Do not apply fix as generators cannot return void.
+                return false; // Generators cannot return void.
             }
+
             if (!$tokens[$i]->isGivenKind(T_RETURN)) {
                 continue;
             }
 
             $nextToken = $tokens->getNextMeaningfulToken($i);
             if (!$tokens[$nextToken]->equals(';')) {
-                return false; // Do not apply fix, non-empty return statement found.
+                return false;
             }
         }
 

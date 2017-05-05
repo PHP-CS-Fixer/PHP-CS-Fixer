@@ -56,12 +56,6 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 function foo($param) {}
             '],
             ['<?php
-                /**
-                 * @return void|array
-                 */
-                function foo($param) {}
-            '],
-            ['<?php
                 interface Test {
                     /**
                      * @return array
