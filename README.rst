@@ -249,7 +249,7 @@ Choose from the list of available rules:
 
   - ``allow_single_line_closure`` (``bool``): whether single line lambda notation
     should be allowed; defaults to ``false``
-  - ``position_after_anonymous_structures`` (``'next'``, ``'same'``): whether the
+  - ``position_after_anonymous_constructs`` (``'next'``, ``'same'``): whether the
     opening brace should be placed on "next" or "same" line after anonymous
     constructs (anonymous classes and lambda functions); defaults to ``'same'``
   - ``position_after_control_structures`` (``'next'``, ``'same'``): whether the opening
