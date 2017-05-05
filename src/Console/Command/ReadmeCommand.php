@@ -214,6 +214,7 @@ EOF;
         $help = str_replace('%command.full_name%', 'php-cs-fixer.phar '.$command->getName(), $help);
         $help = str_replace('%command.name%', $command->getName(), $help);
         $help = preg_replace('#</?(comment|info)>#', '``', $help);
+        $help = preg_replace('#`(``.+?``)`#', '$1', $help);
         $help = preg_replace('#^(\s+)``(.+)``$#m', '$1$2', $help);
         $help = preg_replace('#^ \* ``(.+)``(.*?\n)#m', "* **$1**$2\n", $help);
         $help = preg_replace('#^   \\| #m', '  ', $help);
