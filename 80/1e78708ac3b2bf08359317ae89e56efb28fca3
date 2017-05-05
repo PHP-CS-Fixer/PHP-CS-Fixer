@@ -1,0 +1,59 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-18T08:32:32Z
+
+Looks like a nice addition to me, however there is a changes in the output that is less nice IMO.
+Current master
+```
+/-[/home/possum/work/PHP-CS-Fixer]-[git master]
+$ php php-cs-fixer describe array_syntax --no-ansi
+Description of array_syntax rule.
+PHP arrays should be declared using the configured syntax (requires PHP >= 5.4 for short syntax).
+
+Fixer is configurable using following options:
+* syntax ('long', 'short'): whether to use the `long` or `short` array syntax; defaults to 'long'
+```
+
+on this branch
+```
+/-[/home/possum/work/PHP-CS-Fixer]-[git help-keywords-colors]
+$  php php-cs-fixer describe array_syntax --no-ansi
+Description of array_syntax rule.
+PHP arrays should be declared using the configured syntax (requires PHP >= 5.4 for short syntax).
+
+Fixer is configurable using following options:
+* syntax ('long', 'short'): whether to use the long or short array syntax; defaults to 'long'
+```
+
+note the diff in the last line, from "`long` or `short` array syntax;" to "long or short array syntax;", i.e. the back ticks are removed on no color outputs.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-18T21:11:26Z
+
+nice catch @SpacePossum
+yep, I think we shall keep `'` around optoin value
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-19T22:51:00Z
+
+I ended up leaving one backtick (instead of two) around all keywords, even when colors are supported as we have no access to the output instance in `Command::configure()` thus we can't detect color support at that point.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-19T23:12:32Z
+
+could you make new `before/after` screens please?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-19T23:17:18Z
+
+PR description updated.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-03T13:24:08Z
+
+Thanks :)
