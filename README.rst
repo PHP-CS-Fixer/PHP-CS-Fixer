@@ -513,8 +513,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short``
-    ``list`` syntax; defaults to ``'long'``
+  - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
+    syntax; defaults to ``'long'``
 
 * **lowercase_cast** [@Symfony]
 

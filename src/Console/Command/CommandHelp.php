@@ -354,8 +354,10 @@ EOF
                 $description = '[n/a]';
             }
 
-            $description = wordwrap($description, 72, "\n   | ");
-            $description = str_replace('`', '``', $description);
+            $description = implode("\n   | ", self::wordwrap(
+                preg_replace('/(`.+?`)/', '<info>$1</info>', $description),
+                72
+            ));
 
             if (!empty($sets)) {
                 $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description);
@@ -366,7 +368,11 @@ EOF
             if ($fixer->isRisky()) {
                 $help .= sprintf(
                     "   | *Risky rule: %s.*\n",
-                    str_replace('`', '``', lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription())))
+                    preg_replace(
+                        '/(`.+?`)/',
+                        '<info>$1</info>',
+                        lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
+                    )
                 );
             }
 
@@ -399,7 +405,11 @@ EOF
                             $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
                         }
 
-                        $line .= ': '.str_replace('`', '``', lcfirst(preg_replace('/\.$/', '', $option->getDescription()))).'; ';
+                        $line .= ': '.preg_replace(
+                            '/(`.+?`)/',
+                            '<info>$1</info>',
+                            lcfirst(preg_replace('/\.$/', '', $option->getDescription()))
+                        ).'; ';
                         if ($option->hasDefault()) {
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
                         } else {
@@ -420,7 +430,8 @@ EOF
             }
         }
 
-        return $help;
+        // prevent "\</foo>" from being rendered as an escaped literal style tag
+        return preg_replace('#\\\\(</.*?>)#', '<<$1', $help);
     }
 
     /**
