@@ -32,7 +32,7 @@ final class Psr4Fixer extends AbstractPsrAutoloadingFixer
     {
         return new FixerDefinition(
             'Class names should match the file name.',
-            array(
+            [
                 new FileSpecificCodeSample(
                     '<?php
 namespace PhpCsFixer\FIXER\Basic;
@@ -40,7 +40,7 @@ class InvalidName {}
 ',
                     new \SplFileInfo(__FILE__)
                 ),
-            ),
+            ],
             null,
             'This fixer may change you class name, which will break the code that is depended on old name.'
         );

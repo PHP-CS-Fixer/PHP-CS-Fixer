@@ -31,7 +31,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Converts `protected` variables and methods to `private` where possible.',
-            array(
+            [
                 new CodeSample(
                 '<?php
 final class Sample
@@ -44,7 +44,7 @@ final class Sample
 }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -73,7 +73,7 @@ final class Sample
                 continue;
             }
 
-            $classOpen = $tokens->getNextTokenOfKind($index, array('{'));
+            $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
             $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
 
             if (!$this->skipClass($tokens, $index, $classOpen, $classClose)) {
@@ -101,7 +101,7 @@ final class Sample
                 continue;
             }
 
-            $tokens->overrideAt($index, array(T_PRIVATE, 'private'));
+            $tokens->overrideAt($index, [T_PRIVATE, 'private']);
         }
     }
 
@@ -128,7 +128,7 @@ final class Sample
             }
         }
 
-        $useIndex = $tokens->getNextTokenOfKind($classIndex, array(array(CT::T_USE_TRAIT)));
+        $useIndex = $tokens->getNextTokenOfKind($classIndex, [[CT::T_USE_TRAIT]]);
 
         return $useIndex && $useIndex < $classCloseIndex;
     }

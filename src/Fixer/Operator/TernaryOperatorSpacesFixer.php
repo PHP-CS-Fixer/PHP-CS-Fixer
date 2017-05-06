@@ -30,7 +30,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Standardize spaces around ternary operator.',
-            array(new CodeSample('<?php $a = $a   ?1 :0;'))
+            [new CodeSample('<?php $a = $a   ?1 :0;')]
         );
     }
 
@@ -39,7 +39,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound(array('?', ':'));
+        return $tokens->isAllTokenKindsFound(['?', ':']);
     }
 
     /**
@@ -107,6 +107,6 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
         }
 
         $index += $after ? 0 : 1;
-        $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+        $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
     }
 }

@@ -29,7 +29,7 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Replace all `<>` with `!=`.',
-            array(new CodeSample("<?php\n\$a = \$b <> \$c;"))
+            [new CodeSample("<?php\n\$a = \$b <> \$c;")]
         );
     }
 

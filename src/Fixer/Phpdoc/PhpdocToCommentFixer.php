@@ -53,7 +53,7 @@ final class PhpdocToCommentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Docblocks should only be used on structural elements.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 $first = true;// needed because by default first docblock is never fixed.
@@ -63,7 +63,7 @@ foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
 }'
                 ),
-            )
+            ]
         );
     }
 
@@ -72,20 +72,20 @@ foreach($connections as $key => $sqlite) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $controlStructures = array(
+        static $controlStructures = [
             T_FOREACH,
             T_IF,
             T_SWITCH,
             T_WHILE,
             T_FOR,
-        );
+        ];
 
-        static $languageStructures = array(
+        static $languageStructures = [
             T_LIST,
             T_PRINT,
             T_ECHO,
             CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-        );
+        ];
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -96,7 +96,7 @@ foreach($connections as $key => $sqlite) {
             $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
 
             if (null === $nextToken || $nextToken->equals('}')) {
-                $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+                $tokens->overrideAt($index, [T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
 
                 continue;
             }
@@ -119,11 +119,11 @@ foreach($connections as $key => $sqlite) {
 
             // First docblock after open tag can be file-level docblock, so its left as is.
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind(array(T_OPEN_TAG, T_NAMESPACE))) {
+            if ($tokens[$prevIndex]->isGivenKind([T_OPEN_TAG, T_NAMESPACE])) {
                 continue;
             }
 
-            $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+            $tokens->overrideAt($index, [T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
         }
     }
 
@@ -138,7 +138,7 @@ foreach($connections as $key => $sqlite) {
      */
     private function isStructuralElement(Token $token)
     {
-        static $skip = array(
+        static $skip = [
             T_PRIVATE,
             T_PROTECTED,
             T_PUBLIC,
@@ -153,7 +153,7 @@ foreach($connections as $key => $sqlite) {
             T_INCLUDE_ONCE,
             T_FINAL,
             T_STATIC,
-        );
+        ];
 
         return $token->isClassy() || $token->isGivenKind($skip);
     }
@@ -199,11 +199,11 @@ foreach($connections as $key => $sqlite) {
     private function isValidLanguageConstruct(Tokens $tokens, Token $docsToken, $languageConstructIndex)
     {
         $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)
-            ? array(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE)
+            ? [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]
             : ')'
         ;
 
-        $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, array($endKind));
+        $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, [$endKind]);
 
         $docsContent = $docsToken->getContent();
 

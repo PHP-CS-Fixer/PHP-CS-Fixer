@@ -31,7 +31,7 @@ final class ClassConstantTransformer extends AbstractTransformer
      */
     public function getCustomTokens()
     {
-        return array(CT::T_CLASS_CONSTANT);
+        return [CT::T_CLASS_CONSTANT];
     }
 
     /**
@@ -47,10 +47,10 @@ final class ClassConstantTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        if (!$token->equalsAny(array(
-            array(T_CLASS, 'class'),
-            array(T_STRING, 'class'),
-        ), false)) {
+        if (!$token->equalsAny([
+            [T_CLASS, 'class'],
+            [T_STRING, 'class'],
+        ], false)) {
             return;
         }
 
@@ -58,7 +58,7 @@ final class ClassConstantTransformer extends AbstractTransformer
         $prevToken = $tokens[$prevIndex];
 
         if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
-            $token->override(array(CT::T_CLASS_CONSTANT, $token->getContent()));
+            $token->override([CT::T_CLASS_CONSTANT, $token->getContent()]);
         }
     }
 }

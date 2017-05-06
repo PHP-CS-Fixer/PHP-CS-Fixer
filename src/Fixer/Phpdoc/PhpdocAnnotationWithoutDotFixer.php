@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 {
-    private $tags = array('throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type');
+    private $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
 
     /**
      * {@inheritdoc}
@@ -32,12 +32,12 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Phpdocs annotation descriptions should not be a sentence.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 /**
  * @param string $bar Some string.
  */
 function foo ($bar) {}
-'))
+')]
         );
     }
 

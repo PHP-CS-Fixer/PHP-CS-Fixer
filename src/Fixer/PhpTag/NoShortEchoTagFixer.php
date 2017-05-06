@@ -13,9 +13,8 @@
 namespace PhpCsFixer\Fixer\PhpTag;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -31,7 +30,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Replace short-echo `<?=` with long format `<?php echo` syntax.',
-            array(new VersionSpecificCodeSample('<?= "foo";', new VersionSpecification(50400)))
+            [new CodeSample('<?= "foo";')]
         );
     }
 
@@ -72,7 +71,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
                      * @see https://github.com/facebook/hhvm/issues/4809
                      * @see https://github.com/facebook/hhvm/issues/7161
                      */
-                    $HHVM && $token->equals(array(T_ECHO, '<?='))
+                    $HHVM && $token->equals([T_ECHO, '<?='])
                 )
             ) {
                 continue;
@@ -80,13 +79,13 @@ final class NoShortEchoTagFixer extends AbstractFixer
 
             $nextIndex = $i + 1;
 
-            $tokens->overrideAt($i, array(T_OPEN_TAG, '<?php '));
+            $tokens->overrideAt($i, [T_OPEN_TAG, '<?php ']);
 
             if (!$tokens[$nextIndex]->isWhitespace()) {
-                $tokens->insertAt($nextIndex, new Token(array(T_WHITESPACE, ' ')));
+                $tokens->insertAt($nextIndex, new Token([T_WHITESPACE, ' ']));
             }
 
-            $tokens->insertAt($nextIndex, new Token(array(T_ECHO, 'echo')));
+            $tokens->insertAt($nextIndex, new Token([T_ECHO, 'echo']));
         }
     }
 }

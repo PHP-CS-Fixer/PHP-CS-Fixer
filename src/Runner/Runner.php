@@ -113,7 +113,7 @@ final class Runner
      */
     public function fix()
     {
-        $changed = array();
+        $changed = [];
 
         $finder = $this->finder;
         $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
@@ -170,7 +170,7 @@ final class Runner
         $newHash = $oldHash;
         $new = $old;
 
-        $appliedFixers = array();
+        $appliedFixers = [];
 
         try {
             foreach ($this->fixers as $fixer) {
@@ -248,10 +248,10 @@ final class Runner
                 }
             }
 
-            $fixInfo = array(
+            $fixInfo = [
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new),
-            );
+            ];
         }
 
         $this->cacheManager->setFile($name, $new);

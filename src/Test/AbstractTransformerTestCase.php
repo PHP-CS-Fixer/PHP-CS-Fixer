@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
-    protected function doTest($source, array $expectedTokens = array(), array $observedKinds = array())
+    protected function doTest($source, array $expectedTokens = [], array $observedKinds = [])
     {
         $tokens = Tokens::fromCode($source);
 

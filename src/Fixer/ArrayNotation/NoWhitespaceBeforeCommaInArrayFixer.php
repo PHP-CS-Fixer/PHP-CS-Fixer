@@ -30,7 +30,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'In array declaration, there MUST NOT be a whitespace before each comma.',
-            array(new CodeSample('<?php $x = array(1 , "2");'))
+            [new CodeSample('<?php $x = array(1 , "2");')]
         );
     }
 
@@ -39,7 +39,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN));
+        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
     /**
@@ -48,7 +48,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->isGivenKind(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN))) {
+            if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 $this->fixSpacing($index, $tokens);
             }
         }
@@ -66,7 +66,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
             $startIndex = $index;
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
         } else {
-            $startIndex = $tokens->getNextTokenOfKind($index, array('('));
+            $startIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         }
 
@@ -74,7 +74,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
             $i = $this->skipNonArrayElements($i, $tokens);
             $currentToken = $tokens[$i];
             $prevIndex = $tokens->getPrevNonWhitespace($i - 1);
-            if ($currentToken->equals(',') && !$tokens[$prevIndex]->equals(array(T_END_HEREDOC)) && !$tokens[$prevIndex]->isComment()) {
+            if ($currentToken->equals(',') && !$tokens[$prevIndex]->equals([T_END_HEREDOC]) && !$tokens[$prevIndex]->isComment()) {
                 $tokens->removeLeadingWhitespace($i);
             }
         }
@@ -97,7 +97,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
         if ($tokens[$index]->equals(')')) {
             $startIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
             $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
-            if (!$tokens[$startIndex]->isGivenKind(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN))) {
+            if (!$tokens[$startIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 return $startIndex;
             }
         }

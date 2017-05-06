@@ -36,7 +36,7 @@ final class AccessibleObjectTest extends TestCase
     {
         $object = AccessibleObject::create(new \stdClass());
 
-        $this->assertInstanceOf('PhpCsFixer\Test\AccessibleObject', $object);
+        $this->assertInstanceOf(\PhpCsFixer\Test\AccessibleObject::class, $object);
     }
 
     public function testGet()

@@ -30,7 +30,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Unused use statements must be removed.',
-            array(new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();"))
+            [new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();")]
         );
     }
 
@@ -97,7 +97,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
      */
     private function detectUseUsages($content, array $useDeclarations)
     {
-        $usages = array();
+        $usages = [];
 
         foreach ($useDeclarations as $shortName => $useDeclaration) {
             $usages[$shortName] = (bool) preg_match('/(?<![\$\\\\])(?<!->)\b'.preg_quote($shortName).'\b/i', $content);
@@ -136,20 +136,20 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
     private function getNamespaceDeclarations(Tokens $tokens)
     {
-        $namespaces = array();
+        $namespaces = [];
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_NAMESPACE)) {
                 continue;
             }
 
-            $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
+            $declarationEndIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
-            $namespaces[] = array(
+            $namespaces[] = [
                 'name' => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
                 'start' => $index,
                 'end' => $declarationEndIndex,
-            );
+            ];
         }
 
         return $namespaces;
@@ -157,10 +157,10 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
     private function getNamespaceUseDeclarations(Tokens $tokens, array $useIndexes)
     {
-        $uses = array();
+        $uses = [];
 
         foreach ($useIndexes as $index) {
-            $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
+            $declarationEndIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
             $declarationContent = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
             if (
                 false !== strpos($declarationContent, ',')    // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
@@ -184,13 +184,13 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             $shortName = trim($shortName);
 
-            $uses[$shortName] = array(
+            $uses[$shortName] = [
                 'fullName' => trim($fullName),
                 'shortName' => $shortName,
                 'aliased' => $aliased,
                 'start' => $index,
                 'end' => $declarationEndIndex,
-            );
+            ];
         }
 
         return $uses;
@@ -242,7 +242,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
 
         if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
-            $tokens->overrideAt($nextIndex, array(T_WHITESPACE, $prevToken->getContent().$nextToken->getContent()));
+            $tokens->overrideAt($nextIndex, [T_WHITESPACE, $prevToken->getContent().$nextToken->getContent()]);
             $prevToken->clear();
         }
     }

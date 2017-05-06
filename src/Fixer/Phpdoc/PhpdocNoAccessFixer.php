@@ -29,7 +29,7 @@ final class PhpdocNoAccessFixer extends AbstractProxyFixer
     {
         return new FixerDefinition(
             '@access annotations should be omitted from phpdocs.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 class Foo
@@ -41,7 +41,7 @@ class Foo
     private $bar;
 }'
                 ),
-            )
+            ]
         );
     }
 
@@ -51,7 +51,7 @@ class Foo
     protected function createProxyFixer()
     {
         $fixer = new GeneralPhpdocAnnotationRemoveFixer();
-        $fixer->configure(array('annotations' => array('access')));
+        $fixer->configure(['annotations' => ['access']]);
 
         return $fixer;
     }

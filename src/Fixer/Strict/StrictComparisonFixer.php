@@ -26,7 +26,7 @@ final class StrictComparisonFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Comparisons should be strict.',
-            array(new CodeSample("<?php\n\$a = 1== \$b;")),
+            [new CodeSample("<?php\n\$a = 1== \$b;")],
             null,
             'Changing comparisons to strict might change code behavior.'
         );
@@ -37,7 +37,7 @@ final class StrictComparisonFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_IS_EQUAL, T_IS_NOT_EQUAL));
+        return $tokens->isAnyTokenKindsFound([T_IS_EQUAL, T_IS_NOT_EQUAL]);
     }
 
     /**
@@ -53,22 +53,22 @@ final class StrictComparisonFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $map = array(
-            T_IS_EQUAL => array(
+        static $map = [
+            T_IS_EQUAL => [
                 'id' => T_IS_IDENTICAL,
                 'content' => '===',
-            ),
-            T_IS_NOT_EQUAL => array(
+            ],
+            T_IS_NOT_EQUAL => [
                 'id' => T_IS_NOT_IDENTICAL,
                 'content' => '!==',
-            ),
-        );
+            ],
+        ];
 
         foreach ($tokens as $index => $token) {
             $tokenId = $token->getId();
 
             if (isset($map[$tokenId])) {
-                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content']));
+                $tokens->overrideAt($index, [$map[$tokenId]['id'], $map[$tokenId]['content']]);
             }
         }
     }

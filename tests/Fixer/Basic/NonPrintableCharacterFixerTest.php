@@ -36,12 +36,12 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo "Hello World !";',
                 '<?php echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'World'.pack('CC', 0xc2, 0xa0).'!";',
-            ),
-            array(
+            ],
+            [
                 '<?php echo "Hello World !";',
                 '<?php echo "'.
                     pack('CCC', 0xe2, 0x80, 0x8b).
@@ -51,16 +51,16 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
                     pack('CCC', 0xe2, 0x80, 0x8b).
                     pack('CCC', 0xe2, 0x80, 0x8b).
                 'Hello World !";',
-            ),
-            array(
+            ],
+            [
                 '<?php
 // echo
 echo "Hello World !";',
                 '<?php
 // ec'.pack('CCC', 0xe2, 0x80, 0x8b).'ho
 echo "Hello'.pack('CCC', 0xe2, 0x80, 0xaf).'World'.pack('CC', 0xc2, 0xa0).'!";',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
                 /**
@@ -79,15 +79,15 @@ echo "Hello'.pack('CCC', 0xe2, 0x80, 0xaf).'World'.pack('CC', 0xc2, 0xa0).'!";',
                 {
                     echo $p;
                 }',
-            ),
-            array(
+            ],
+            [
                 '<?php echo "$a[0] ${a}";',
                 '<?php echo "$a'.pack('CCC', 0xe2, 0x80, 0x8b).'[0]'.pack('CCC', 0xe2, 0x80, 0x8b).' ${a'.pack('CCC', 0xe2, 0x80, 0x8b).'}";',
-            ),
-            array(
+            ],
+            [
                 '<?php echo \'12345\';?>abc<?php ?>',
                 '<?php echo \'123'.pack('CCC', 0xe2, 0x80, 0x8b).'45\';?>a'.pack('CCC', 0xe2, 0x80, 0x8b).'bc<?php ?>',
-            ),
-        );
+            ],
+        ];
     }
 }

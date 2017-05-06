@@ -31,7 +31,7 @@ final class ElseifFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The keyword `elseif` should be used instead of `else if` so that all control keywords look like single words.',
-            array(new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}"))
+            [new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}")]
         );
     }
 
@@ -40,7 +40,7 @@ final class ElseifFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound(array(T_IF, T_ELSE));
+        return $tokens->isAllTokenKindsFound([T_IF, T_ELSE]);
     }
 
     /**
@@ -67,7 +67,7 @@ final class ElseifFixer extends AbstractFixer
             $tokens[$index + 1]->clear();
 
             // 2. change token from T_ELSE into T_ELSEIF
-            $tokens->overrideAt($index, array(T_ELSEIF, 'elseif'));
+            $tokens->overrideAt($index, [T_ELSEIF, 'elseif']);
 
             // 3. clear succeeding T_IF
             $tokens[$ifTokenIndex]->clear();

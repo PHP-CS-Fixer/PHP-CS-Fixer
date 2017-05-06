@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: list_syntax,binary_operator_spaces.
+--RULESET--
+{"list_syntax": {"syntax":"short"}, "binary_operator_spaces": {"align_equals":false}}
+--REQUIREMENTS--
+{"php": 70100}
+--EXPECT--
+<?php
+$a = [$a] = $b;
+
+--INPUT--
+<?php
+$a =  list  ($a)=$b;

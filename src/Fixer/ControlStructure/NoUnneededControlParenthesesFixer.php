@@ -27,14 +27,15 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    private static $loops = array(
-        'break' => array('lookupTokens' => T_BREAK, 'neededSuccessors' => array(';')),
-        'clone' => array('lookupTokens' => T_CLONE, 'neededSuccessors' => array(';', ':', ',', ')'), 'forbiddenContents' => array('?', ':')),
-        'continue' => array('lookupTokens' => T_CONTINUE, 'neededSuccessors' => array(';')),
-        'echo_print' => array('lookupTokens' => array(T_ECHO, T_PRINT), 'neededSuccessors' => array(';', array(T_CLOSE_TAG))),
-        'return' => array('lookupTokens' => T_RETURN, 'neededSuccessors' => array(';', array(T_CLOSE_TAG))),
-        'switch_case' => array('lookupTokens' => T_CASE, 'neededSuccessors' => array(';', ':')),
-    );
+    private static $loops = [
+        'break' => ['lookupTokens' => T_BREAK, 'neededSuccessors' => [';']],
+        'clone' => ['lookupTokens' => T_CLONE, 'neededSuccessors' => [';', ':', ',', ')'], 'forbiddenContents' => ['?', ':']],
+        'continue' => ['lookupTokens' => T_CONTINUE, 'neededSuccessors' => [';']],
+        'echo_print' => ['lookupTokens' => [T_ECHO, T_PRINT], 'neededSuccessors' => [';', [T_CLOSE_TAG]]],
+        'return' => ['lookupTokens' => T_RETURN, 'neededSuccessors' => [';', [T_CLOSE_TAG]]],
+        'switch_case' => ['lookupTokens' => T_CASE, 'neededSuccessors' => [';', ':']],
+        'yield' => ['lookupTokens' => T_YIELD, 'neededSuccessors' => [';', ')']],
+    ];
 
     /**
      * Dynamic yield option set on constructor.
@@ -43,14 +44,9 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     {
         parent::__construct();
 
-        // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 5.5+
-        if (defined('T_YIELD')) {
-            self::$loops['yield'] = array('lookupTokens' => T_YIELD, 'neededSuccessors' => array(';', ')'));
-        }
-
         // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
         if (defined('T_COALESCE')) {
-            self::$loops['clone']['forbiddenContents'][] = array(T_COALESCE, '??');
+            self::$loops['clone']['forbiddenContents'][] = [T_COALESCE, '??'];
         }
     }
 
@@ -59,12 +55,12 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
      */
     public function isCandidate(Tokens $tokens)
     {
-        $types = array();
+        $types = [];
 
         foreach (self::$loops as $loop) {
             $types[] = (array) $loop['lookupTokens'];
         }
-        $types = call_user_func_array('array_merge', $types);
+        $types = array_merge(...$types);
 
         return $tokens->isAnyTokenKindsFound($types);
     }
@@ -76,7 +72,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     {
         return new FixerDefinition(
             'Removes unneeded parentheses around control statements.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 while ($x) { while ($y) { break (2); } }
@@ -100,9 +96,9 @@ return (1 + 2);
 switch ($a) { case($x); }
 yield(2);
 ',
-                    array('statements' => array('break', 'continue'))
+                    ['statements' => ['break', 'continue']]
                 ),
-            )
+            ]
         );
     }
 
@@ -157,7 +153,7 @@ yield(2);
                     $tokens->clearTokenAndMergeSurroundingWhitespace($blockStartIndex);
                 } else {
                     // Adds a space to prevent broken code like `return2`.
-                    $tokens->overrideAt($blockStartIndex, array(T_WHITESPACE, ' '));
+                    $tokens->overrideAt($blockStartIndex, [T_WHITESPACE, ' ']);
                 }
 
                 $tokens->clearTokenAndMergeSurroundingWhitespace($blockEndIndex);
@@ -172,8 +168,8 @@ yield(2);
     {
         $statements = new FixerOptionBuilder('statements', 'List of control statements to fix.');
         $statements = $statements
-            ->setAllowedTypes(array('array'))
-            ->setDefault(array(
+            ->setAllowedTypes(['array'])
+            ->setDefault([
                 'break',
                 'clone',
                 'continue',
@@ -181,10 +177,10 @@ yield(2);
                 'return',
                 'switch_case',
                 'yield',
-            ))
+            ])
             ->getOption()
         ;
 
-        return new FixerConfigurationResolverRootless('statements', array($statements));
+        return new FixerConfigurationResolverRootless('statements', [$statements]);
     }
 }

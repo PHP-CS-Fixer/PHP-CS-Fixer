@@ -37,8 +37,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
 
     public function providePHPCloseTagCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     if (true) {
                         $b = $a > 2 ? "" : die
@@ -47,8 +47,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 798;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true) {
                         $b = $a > 2 ? "" : die
@@ -57,8 +57,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 798;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true) {
                         if($a) die
@@ -67,8 +67,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 798;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true) {
                         echo 1;
@@ -77,8 +77,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 798;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true) {
                         echo 777;
@@ -87,8 +87,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 778;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true)
                         echo 3;
@@ -97,8 +97,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                         echo 4;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true)
                         echo 3;
@@ -113,8 +113,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     ?><?php
                 echo 4;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true)
     echo 4;
@@ -123,8 +123,8 @@ if (true)
 if (true)
     echo 4;
 else?><?php echo 5;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -216,7 +216,7 @@ else?><?php echo 5;',
 
         $cases = array_merge($cases, $this->generateCases($expected));
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
                 if ($a)
                     echo 1789;
@@ -231,9 +231,9 @@ else?><?php echo 5;',
                     }
                 else
                     echo 4;
-            ', );
+            ', ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
                 if ($a)
                     echo 1789;
@@ -247,7 +247,7 @@ else?><?php echo 5;',
                         return 1;
                 } else
                     echo 4;
-            ', );
+            ', ];
 
         return $cases;
     }
@@ -321,7 +321,7 @@ else?><?php echo 5;',
         $cases = array_merge($cases, $this->generateCases($expected, $input));
 
         // short and not short combined
-        $cases[] = array(
+        $cases[] = [
             '<?php
                 if ($a)
                     return;
@@ -336,9 +336,9 @@ else?><?php echo 5;',
                     echo 10099;
                 }
             ',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
                 if ($a) {
                     GOTO jump;
@@ -357,7 +357,7 @@ else?><?php echo 5;',
 
                 jump:
             ',
-        );
+        ];
 
         return $cases;
     }
@@ -375,8 +375,8 @@ else?><?php echo 5;',
 
     public function provideFixNestedIfs()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     if ($x) {
                         if ($y) {
@@ -399,70 +399,8 @@ else?><?php echo 5;',
                         return 3;
                     }
                 ',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideBefore54FixCases
-     */
-    public function testBefore54Fix($expected, $input = null)
-    {
-        if (PHP_VERSION_ID >= 50400) {
-            $this->markTestSkipped('PHP lower than 5.4 is required.');
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideBefore54FixCases()
-    {
-        $expected =
-            '<?php
-                $a = 1; $b = 0;
-                while(true) {
-                    while(true) {
-                        ++$b;
-                        if ($b > $a) {
-                            %s %%s;
-                        }  //
-                            echo 22;
-                        //
-                    }
-                }
-            ';
-
-        $input =
-            '<?php
-                $a = 1; $b = 0;
-                while(true) {
-                    while(true) {
-                        ++$b;
-                        if ($b > $a) {
-                            %s %%s;
-                        } else {//
-                            echo 22;
-                        }//
-                    }
-                }
-            ';
-
-        $cases = array();
-        foreach (array('continue', 'break') as $stop) {
-            $expectedTemplate = sprintf($expected, $stop);
-            $inputTemplate = sprintf($input, $stop);
-            foreach (array('1+1', '$a', '(1+1)', '($a)') as $value) {
-                $cases[] = array(
-                    sprintf($expectedTemplate, $value),
-                    sprintf($inputTemplate, $value),
-                );
-            }
-        }
-
-        return $cases;
+            ],
+        ];
     }
 
     /**
@@ -478,8 +416,8 @@ else?><?php echo 5;',
 
     public function provideFixEmptyElseCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     if (false)
                         echo 1;
@@ -490,20 +428,20 @@ else?><?php echo 5;',
                         echo 1;
                     else{}
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php if($a){}',
                 '<?php if($a){}else{}',
-            ),
-            array(
+            ],
+            [
                 '<?php if($a){ $a = ($b); }  ',
                 '<?php if($a){ $a = ($b); } else {}',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($a) {;}   if ($a) {;}  /**/ if($a){}',
                 '<?php if ($a) {;} else {} if ($a) {;} else {/**/} if($a){}else{}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if /**/($a) /**/{ //
                         /**/
@@ -524,8 +462,8 @@ else?><?php echo 5;',
                         //
                     }/**/
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                         if ($b) {
@@ -556,8 +494,8 @@ else?><?php echo 5;',
                     } else {//
                     }//
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -572,8 +510,8 @@ else?><?php echo 5;',
 
     public function provideNegativeCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     if ($a0) {
                         //
@@ -581,8 +519,8 @@ else?><?php echo 5;',
                         echo 0;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (false)
                         echo "a";
@@ -590,20 +528,20 @@ else?><?php echo 5;',
 
                     echo "a";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php if($a2){;} else {echo 27;}',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($a3) {test();} else {echo 3;}',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($a4) {$b = function () {};} else {echo 4;}',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($a5) {$b = function () use ($a){};} else {echo 5;}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                         if ($b) return;
@@ -611,8 +549,8 @@ else?><?php echo 5;',
                         echo 1;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                         if ($b) throw new \Exception();
@@ -620,8 +558,8 @@ else?><?php echo 5;',
                         echo 1;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                         if ($b) { throw new \Exception(); }
@@ -629,8 +567,8 @@ else?><?php echo 5;',
                         echo 1;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a = true; // 6
                     if (true === $a)
@@ -640,8 +578,8 @@ else?><?php echo 5;',
 
                     echo "end";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a = true; // 6
                     if (true === $a)
@@ -651,8 +589,8 @@ else?><?php echo 5;',
 
                     echo "end";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a = true; // 6
                     if (true === $a)
@@ -662,8 +600,8 @@ else?><?php echo 5;',
 
                     echo "end";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (false)
                         die;
@@ -676,8 +614,8 @@ else?><?php echo 5;',
                     else
                         echo 7;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $tmp = function($b){$b();};
                     $a =1;
@@ -689,8 +627,8 @@ else?><?php echo 5;',
                         }
                     });
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $tmp = function($b){$b();};
                     $a =1;
@@ -704,8 +642,8 @@ else?><?php echo 5;',
                         }
                     });
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     return function() {
                         if (false) {
@@ -716,8 +654,8 @@ else?><?php echo 5;',
                             echo 1;
                         }
                     };',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     return function() {
                         if (false) {
@@ -728,8 +666,8 @@ else?><?php echo 5;',
                             echo 1;
                         }
                     };',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -753,7 +691,7 @@ else?><?php echo 5;',
 
     public function provideBlockDetectionCases()
     {
-        $cases = array();
+        $cases = [];
 
         $source = '<?php
                     if ($a)
@@ -764,10 +702,10 @@ else?><?php echo 5;',
                     else
                         echo 4;
                     ';
-        $cases[] = array(array(2, 11), $source, 13);
-        $cases[] = array(array(13, 24), $source, 26);
-        $cases[] = array(array(13, 24), $source, 26);
-        $cases[] = array(array(26, 39), $source, 41);
+        $cases[] = [[2, 11], $source, 13];
+        $cases[] = [[13, 24], $source, 26];
+        $cases[] = [[13, 24], $source, 26];
+        $cases[] = [[26, 39], $source, 41];
 
         $source = '<?php
                     if ($a) {
@@ -784,11 +722,11 @@ else?><?php echo 5;',
                     } else
                         echo 1;
                     ';
-        $cases[] = array(array(2, 25), $source, 27);
-        $cases[] = array(array(27, 40), $source, 42);
+        $cases[] = [[2, 25], $source, 27];
+        $cases[] = [[27, 40], $source, 42];
         if (!defined('HHVM_VERSION')) {
             // HHVM 3.6.x tokenizes in a different way
-            $cases[] = array(array(59, 72), $source, 74);
+            $cases[] = [[59, 72], $source, 74];
         }
 
         return $cases;
@@ -807,8 +745,8 @@ else?><?php echo 5;',
 
     public function provideAlternativeSyntaxCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     if ($a == 5):
                         echo 1;
@@ -816,8 +754,8 @@ else?><?php echo 5;',
 
                     endif;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a == 5):
                         return 1;
@@ -825,8 +763,8 @@ else?><?php echo 5;',
                         echo "a is neither 5 nor 6";
                     endif;
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -837,8 +775,8 @@ else?><?php echo 5;',
      */
     private function generateCases($expected, $input = null)
     {
-        $cases = array();
-        foreach (array(
+        $cases = [];
+        foreach ([
             'exit;',
             'exit();',
             'exit(1);',
@@ -863,15 +801,15 @@ else?><?php echo 5;',
             'throw new \Exception;',
             'throw new \Exception();',
             'throw new \Exception((string)12+1);',
-        ) as $case) {
+        ] as $case) {
             if (null === $input) {
-                $cases[] = array(sprintf($expected, $case));
-                $cases[] = array(sprintf($expected, strtoupper($case)));
-                $cases[] = array(sprintf($expected, strtolower($case)));
+                $cases[] = [sprintf($expected, $case)];
+                $cases[] = [sprintf($expected, strtoupper($case))];
+                $cases[] = [sprintf($expected, strtolower($case))];
             } else {
-                $cases[] = array(sprintf($expected, $case), sprintf($input, $case));
-                $cases[] = array(sprintf($expected, strtoupper($case)), sprintf($input, strtoupper($case)));
-                $cases[] = array(sprintf($expected, strtolower($case)), sprintf($input, strtolower($case)));
+                $cases[] = [sprintf($expected, $case), sprintf($input, $case)];
+                $cases[] = [sprintf($expected, strtoupper($case)), sprintf($input, strtoupper($case))];
+                $cases[] = [sprintf($expected, strtolower($case)), sprintf($input, strtolower($case))];
             }
         }
 

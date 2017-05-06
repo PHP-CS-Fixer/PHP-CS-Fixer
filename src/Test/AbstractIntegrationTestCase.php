@@ -125,16 +125,16 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         $factory = new IntegrationCaseFactory();
-        $tests = array();
+        $tests = [];
 
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
             if ('test' !== $file->getExtension()) {
                 continue;
             }
 
-            $tests[] = array(
+            $tests[] = [
                 $factory->create($file),
-            );
+            ];
         }
 
         return $tests;
@@ -193,7 +193,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $errorsManager = new ErrorsManager();
         $fixers = $this->createFixers($case);
         $runner = new Runner(
-            new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
+            new \ArrayIterator([new \SplFileInfo($tmpFile)]),
             $fixers,
             new SebastianBergmannDiffer(),
             null,
@@ -253,7 +253,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             }
 
             $runner = new Runner(
-                new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
+                new \ArrayIterator([new \SplFileInfo($tmpFile)]),
                 array_reverse($fixers),
                 new SebastianBergmannDiffer(),
                 null,
@@ -343,13 +343,13 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (null === $linter) {
             if (getenv('SKIP_LINT_TEST_CASES')) {
-                $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+                $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
                 $linterProphecy
                     ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
                 $linterProphecy
                     ->lintFile(Argument::type('string'))
-                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
                 $linterProphecy
                     ->isAsync()
                     ->willReturn(false);

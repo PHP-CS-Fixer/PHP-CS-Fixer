@@ -29,11 +29,11 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    private static $toTypes = array(
+    private static $toTypes = [
         '$this',
         'static',
         'self',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -42,7 +42,7 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
     {
         return new FixerDefinition(
             'The type of `@return` annotations of methods returning a reference to itself must the configured one.',
-            array(new CodeSample('
+            [new CodeSample('
 <?php
 class Sample
 {
@@ -54,7 +54,7 @@ class Sample
         return $this;
     }
 }'
-            ))
+            )]
         );
     }
 
@@ -63,7 +63,7 @@ class Sample
      */
     public function isCandidate(Tokens $tokens)
     {
-        return count($tokens) > 10 && $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound(array(T_CLASS, T_INTERFACE));
+        return count($tokens) > 10 && $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
 
     /**
@@ -85,20 +85,20 @@ class Sample
     protected function createConfigurationDefinition()
     {
         $toTypes = self::$toTypes;
-        $default = array(
+        $default = [
             'this' => '$this',
             '@this' => '$this',
             '$self' => 'self',
             '@self' => 'self',
             '$static' => 'static',
             '@static' => 'static',
-        );
+        ];
 
         $replacements = new FixerOptionBuilder('replacements', 'Mapping between replaced return types with new ones.');
         $replacements = $replacements
-            ->setAllowedTypes(array('array'))
+            ->setAllowedTypes(['array'])
             ->setNormalizer(function (Options $options, $value) use ($toTypes, $default) {
-                $normalizedValue = array();
+                $normalizedValue = [];
                 foreach ($value as $from => $to) {
                     if (is_string($from)) {
                         $from = strtolower($from);
@@ -129,7 +129,7 @@ class Sample
             ->getOption()
         ;
 
-        return new FixerConfigurationResolverRootless('replacements', array($replacements));
+        return new FixerConfigurationResolverRootless('replacements', [$replacements]);
     }
 
     /**
@@ -138,7 +138,7 @@ class Sample
      */
     private function fixMethod(Tokens $tokens, $index)
     {
-        static $methodModifiers = array(T_STATIC, T_FINAL, T_ABSTRACT, T_PRIVATE, T_PROTECTED, T_PUBLIC);
+        static $methodModifiers = [T_STATIC, T_FINAL, T_ABSTRACT, T_PRIVATE, T_PROTECTED, T_PUBLIC];
 
         // find PHPDoc of method (if any)
         do {
@@ -170,7 +170,7 @@ class Sample
             return; // no return type(s) found
         }
 
-        $newTypes = array();
+        $newTypes = [];
         foreach ($types as $type) {
             $lower = strtolower($type);
             $newTypes[] = isset($this->configuration['replacements'][$lower]) ? $this->configuration['replacements'][$lower] : $type;
