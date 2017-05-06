@@ -165,6 +165,20 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                  'ticket',
                  'uses',
 
+                // Behat
+                'Given',
+                'When',
+                'Then',
+                'Transform',
+                'BeforeSuite',
+                'AfterSuite',
+                'BeforeFeature',
+                'AfterFeature',
+                'BeforeScenario',
+                'AfterScenario',
+                'BeforeStep',
+                'AfterStep',
+
                  // PHPCheckStyle
                  'SuppressWarnings',
 
