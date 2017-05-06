@@ -21,8 +21,8 @@ contribute, and to detect bugs ([Linus'
 Law](http://en.wikipedia.org/wiki/Linus%27s_Law)).
 
 If possible, try to get acquainted with the public interface for the
-[Tokens class](src/Tokenizer/Tokens.php)
-and [Token class](src/Tokenizer/Token.php)
+[Tokens class](/src/Tokenizer/Tokens.php) 
+and [Token class](/src/Tokenizer/Token.php)
 classes.
 
 ## Assumptions
@@ -300,7 +300,7 @@ defined by the PHP compiler. It is the ["List of Parser
 Tokens"](http://php.net/manual/en/tokens.php).
 
 Internally, PHP CS Fixer transforms some of PHP native tokens into custom
-tokens through the use of [Transfomers](src/Tokenizer/Transformer),
+tokens through the use of [Transfomers](/src/Tokenizer/Transformer),
 they aim to help you reason about the changes you may want to do in the
 fixers.
 
