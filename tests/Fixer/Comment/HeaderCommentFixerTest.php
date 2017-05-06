@@ -265,6 +265,45 @@ echo 1;',
 echo \'bar\';',
                 '<?php echo \'bar\';',
             ),
+            array(
+                array('header' => 'x'),
+                '<?php
+
+/*
+ * x
+ */
+
+echo \'a\';',
+                '<?php
+
+/*
+ * y
+ * z
+ */
+
+echo \'a\';',
+            ),
+            array(
+                array('header' => "a\na"),
+                '<?php
+
+/*
+ * a
+ * a
+ */
+
+echo \'x\';',
+                '<?php
+
+
+/*
+ * b
+ * c
+ */
+
+
+echo \'x\';',
+            ),
         );
     }
 
