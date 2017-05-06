@@ -31,7 +31,7 @@ classes.
 * Forked FriendsOfPHP/PHP-CS-Fixer into your own Github Account.
 * Cloned your forked repository locally.
 * Installed the dependencies of PHP CS Fixer using [Composer](https://getcomposer.org/).
-* You have read [`CONTRIBUTING.md`](CONTRIBUTING.md).
+* You have read [`CONTRIBUTING.md`](/CONTRIBUTING.md).
 
 ## Step by step
 
