@@ -31,7 +31,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'A case should be followed by a colon and not a semicolon.',
-            array(
+            [
                 new CodeSample(
 '<?php
     switch ($a) {
@@ -42,7 +42,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -51,7 +51,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
+        return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
     }
 
     /**
@@ -60,7 +60,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(array(T_CASE, T_DEFAULT))) {
+            if (!$token->isGivenKind([T_CASE, T_DEFAULT])) {
                 continue;
             }
 
@@ -71,7 +71,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
                     ++$ternariesCount;
                 }
 
-                if ($tokens[$colonIndex]->equalsAny(array(':', ';'))) {
+                if ($tokens[$colonIndex]->equalsAny([':', ';'])) {
                     if (0 === $ternariesCount) {
                         break;
                     }

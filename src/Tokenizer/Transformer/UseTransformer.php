@@ -33,7 +33,7 @@ final class UseTransformer extends AbstractTransformer
      */
     public function getCustomTokens()
     {
-        return array(CT::T_USE_TRAIT, CT::T_USE_LAMBDA);
+        return [CT::T_USE_TRAIT, CT::T_USE_LAMBDA];
     }
 
     /**
@@ -50,7 +50,7 @@ final class UseTransformer extends AbstractTransformer
     public function process(Tokens $tokens, Token $token, $index)
     {
         if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
-            $token->override(array(CT::T_USE_LAMBDA, $token->getContent()));
+            $token->override([CT::T_USE_LAMBDA, $token->getContent()]);
         }
 
         if (!$token->isClassy()) {
@@ -67,7 +67,7 @@ final class UseTransformer extends AbstractTransformer
         // Skip whole class braces content.
         // That way we can skip whole tokens in class declaration, therefore skip `T_USE` for traits.
 
-        $index = $tokens->getNextTokenOfKind($index, array('{'));
+        $index = $tokens->getNextTokenOfKind($index, ['{']);
         $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
         while ($index < $innerLimit) {
@@ -78,9 +78,9 @@ final class UseTransformer extends AbstractTransformer
             }
 
             if ($this->isUseForLambda($tokens, $index)) {
-                $token->override(array(CT::T_USE_LAMBDA, $token->getContent()));
+                $token->override([CT::T_USE_LAMBDA, $token->getContent()]);
             } else {
-                $token->override(array(CT::T_USE_TRAIT, $token->getContent()));
+                $token->override([CT::T_USE_TRAIT, $token->getContent()]);
             }
         }
     }

@@ -26,12 +26,12 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    private static $assertionMap = array(
+    private static $assertionMap = [
         'assertAttributeEquals' => 'assertAttributeSame',
         'assertAttributeNotEquals' => 'assertAttributeNotSame',
         'assertEquals' => 'assertSame',
         'assertNotEquals' => 'assertNotSame',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurationDef
     {
         return new FixerDefinition(
             'PHPUnit methods like `assertSame` should be used instead of `assertEquals`.',
-            array(
+            [
                 new CodeSample(
 '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
@@ -55,7 +55,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 }
 '
                 ),
-            ),
+            ],
             null,
             'Risky when any of the functions are overridden.'
         );
@@ -87,12 +87,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
                 $sequence = $tokens->findSequence(
-                    array(
-                        array(T_VARIABLE, '$this'),
-                        array(T_OBJECT_OPERATOR, '->'),
-                        array(T_STRING, $methodBefore),
+                    [
+                        [T_VARIABLE, '$this'],
+                        [T_OBJECT_OPERATOR, '->'],
+                        [T_STRING, $methodBefore],
                         '(',
-                    ),
+                    ],
                     $index
                 );
 
@@ -117,19 +117,19 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         $assertions = new FixerOptionBuilder('assertions', 'List of assertion methods to fix.');
         $assertions = $assertions
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
                 $generator->allowedValueIsSubsetOf(array_keys(self::$assertionMap)),
-            ))
-            ->setDefault(array(
+            ])
+            ->setDefault([
                 'assertAttributeEquals',
                 'assertAttributeNotEquals',
                 'assertEquals',
                 'assertNotEquals',
-            ))
+            ])
             ->getOption()
         ;
 
-        return new FixerConfigurationResolverRootless('assertions', array($assertions));
+        return new FixerConfigurationResolverRootless('assertions', [$assertions]);
     }
 }

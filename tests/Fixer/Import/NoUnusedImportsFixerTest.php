@@ -464,11 +464,11 @@ use b;
 ";
 EOF;
 
-        return array(
-            array($expected1),
-            array($expected2),
-            array($expected3),
-        );
+        return [
+            [$expected1],
+            [$expected2],
+            [$expected3],
+        ];
     }
 
     public function testUseAsLastStatement()
@@ -549,23 +549,23 @@ EOF;
 
     public function provideCloseTagCases()
     {
-        return array(
-            array(
+        return [
+            [
 '<?php
 ?>inline content<?php ?>',
 '<?php
      use A\AA;
      use B\C?>inline content<?php use A\D; use E\F ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php ?>',
                 '<?php use A\B;?>',
-            ),
-            array(
+            ],
+            [
                 '<?php ?>',
                 '<?php use A\B?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

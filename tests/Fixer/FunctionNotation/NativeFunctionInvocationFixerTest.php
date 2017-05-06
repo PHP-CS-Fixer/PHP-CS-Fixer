@@ -27,14 +27,14 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     {
         $key = 'foo';
 
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
             '[native_function_invocation] Invalid configuration: The option "%s" does not exist.',
             $key
         ));
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             $key => 'bar',
-        ));
+        ]);
     }
 
     /**
@@ -44,16 +44,16 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
      */
     public function testConfigureRejectsInvalidConfigurationElement($element)
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
             'Each element must be a non-empty, trimmed string, got "%s" instead.',
             \is_object($element) ? \get_class($element) : \gettype($element)
         ));
 
-        $this->fixer->configure(array(
-            'exclude' => array(
+        $this->fixer->configure([
+            'exclude' => [
                 $element,
-            ),
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -61,25 +61,25 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
      */
     public function providerInvalidConfigurationElement()
     {
-        return array(
-            'null' => array(null),
-            'false' => array(false),
-            'true' => array(false),
-            'int' => array(1),
-            'array' => array(array()),
-            'float' => array(0.1),
-            'object' => array(new \stdClass()),
-            'not-trimmed' => array('  json_encode  '),
-        );
+        return [
+            'null' => [null],
+            'false' => [false],
+            'true' => [false],
+            'int' => [1],
+            'array' => [[]],
+            'float' => [0.1],
+            'object' => [new \stdClass()],
+            'not-trimmed' => ['  json_encode  '],
+        ];
     }
 
     public function testConfigureResetsExclude()
     {
-        $this->fixer->configure(array(
-            'exclude' => array(
+        $this->fixer->configure([
+            'exclude' => [
                 'json_encode',
-            ),
-        ));
+            ],
+        ]);
 
         $before = <<<'PHP'
 <?php
@@ -115,7 +115,7 @@ PHP;
 
         $this->doTest($before);
 
-        $this->fixer->configure(array());
+        $this->fixer->configure([]);
 
         $this->doTest($after, $before);
     }
@@ -143,14 +143,14 @@ PHP;
      */
     public function provideCasesWithDefaultConfiguration()
     {
-        return array(
-            array(
+        return [
+            [
 '<?php
 
 \json_encode($foo);
 ',
-            ),
-            array(
+            ],
+            [
 '<?php
 
 \json_encode($foo);
@@ -159,8 +159,8 @@ PHP;
 
 json_encode($foo);
 ',
-            ),
-            array(
+            ],
+            [
 '<?php
 
 class Foo
@@ -171,8 +171,8 @@ class Foo
     }
 }
 ',
-            ),
-            array(
+            ],
+            [
 '<?php
 
 class Foo
@@ -193,8 +193,8 @@ class Foo
     }
 }
 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -205,11 +205,11 @@ class Foo
      */
     public function testFixWithConfiguredExclude($expected, $input = null)
     {
-        $this->fixer->configure(array(
-            'exclude' => array(
+        $this->fixer->configure([
+            'exclude' => [
                 'json_encode',
-            ),
-        ));
+            ],
+        ]);
 
         $this->doTest($expected, $input);
     }
@@ -219,14 +219,14 @@ class Foo
      */
     public function provideCasesWithConfiguredExclude()
     {
-        return array(
-            array(
+        return [
+            [
 '<?php
 
 json_encode($foo);
 ',
-            ),
-            array(
+            ],
+            [
 '<?php
 
 class Foo
@@ -237,7 +237,7 @@ class Foo
     }
 }
 ',
-            ),
-        );
+            ],
+        ];
     }
 }

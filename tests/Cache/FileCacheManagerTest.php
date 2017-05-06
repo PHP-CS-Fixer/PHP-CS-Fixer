@@ -28,23 +28,23 @@ final class FileCacheManagerTest extends TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\FileCacheManager');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\FileCacheManager::class);
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheManagerInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\FileCacheManager');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\FileCacheManager::class);
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\CacheManagerInterface'));
+        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
     }
 
     public function testCreatesCacheIfHandlerReturnedNoCache()
     {
-        $signature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $signature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn(null);
         $handlerProphecy->getFile()->willReturn($this->getFile());
         $handlerProphecy->write(Argument::that(function (CacheInterface $cache) use ($signature) {
@@ -62,17 +62,17 @@ final class FileCacheManagerTest extends TestCase
 
     public function testCreatesCacheIfCachedSignatureIsDifferent()
     {
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(false);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($this->getFile());
         $handlerProphecy->write(Argument::that(function (CacheInterface $cache) use ($signature) {
@@ -90,17 +90,17 @@ final class FileCacheManagerTest extends TestCase
 
     public function testUsesCacheIfCachedSignatureIsEqual()
     {
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($this->getFile());
         $handlerProphecy->write(Argument::is($cache))->willReturn(null);
@@ -119,18 +119,18 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($file))->willReturn(false);
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($this->getFile());
         $handlerProphecy->write(Argument::is($cache))->willReturn(null);
@@ -150,19 +150,19 @@ final class FileCacheManagerTest extends TestCase
         $fileContent = '<?php echo "Hello!"';
         $previousFileContent = '<?php echo "Hello, world!"';
 
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($file))->willReturn(true);
         $cacheProphecy->get(Argument::is($file))->willReturn(crc32($previousFileContent));
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($this->getFile());
         $handlerProphecy->write(Argument::is($cache))->willReturn(null);
@@ -181,19 +181,19 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($file))->willReturn(true);
         $cacheProphecy->get(Argument::is($file))->willReturn(crc32($fileContent));
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($this->getFile());
         $handlerProphecy->write(Argument::is($cache))->willReturn(null);
@@ -214,22 +214,22 @@ final class FileCacheManagerTest extends TestCase
         $relativePathToFile = 'src/hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $directoryProphecy = $this->prophesize('PhpCsFixer\Cache\DirectoryInterface');
+        $directoryProphecy = $this->prophesize(\PhpCsFixer\Cache\DirectoryInterface::class);
         $directoryProphecy->getRelativePathTo(Argument::is($file))->willReturn($relativePathToFile);
 
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($relativePathToFile))->willReturn(true);
         $cacheProphecy->has(Argument::is($relativePathToFile))->willReturn(0);
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
         $handlerProphecy->write(Argument::is($cache))->willReturn(null);
@@ -251,18 +251,18 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->set(Argument::is($file), Argument::is(crc32($fileContent)))->shouldBeCalled();
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
         $handlerProphecy->write(Argument::is($cache))->willReturn(null);
@@ -283,19 +283,19 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($file))->willReturn(false);
         $cacheProphecy->set(Argument::is($file), Argument::is(crc32($fileContent)))->shouldBeCalled();
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
         $handlerProphecy->write(Argument::is($cache))->willReturn(null);
@@ -318,20 +318,20 @@ final class FileCacheManagerTest extends TestCase
         $fileContent = '<?php echo "Hello!"';
         $previousFileContent = '<?php echo "Hello, world!"';
 
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($file))->willReturn(true);
         $cacheProphecy->get(Argument::is($file))->willReturn(crc32($previousFileContent));
         $cacheProphecy->clear(Argument::is($file))->shouldBeCalled();
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
         $handlerProphecy->write(Argument::is($cache))->willReturn(null);
@@ -353,21 +353,21 @@ final class FileCacheManagerTest extends TestCase
         $relativePathToFile = 'src/hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $directoryProphecy = $this->prophesize('PhpCsFixer\Cache\DirectoryInterface');
+        $directoryProphecy = $this->prophesize(\PhpCsFixer\Cache\DirectoryInterface::class);
         $directoryProphecy->getRelativePathTo(Argument::is($file))->willReturn($relativePathToFile);
 
-        $cachedSignature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signatureProphecy = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
-        $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
+        $cacheProphecy = $this->prophesize(\PhpCsFixer\Cache\CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->set(Argument::is($relativePathToFile), Argument::is(crc32($fileContent)))->shouldBeCalled();
         $cache = $cacheProphecy->reveal();
 
-        $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
+        $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
         $handlerProphecy->write(Argument::is($cache))->willReturn(null);

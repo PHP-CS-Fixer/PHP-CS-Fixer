@@ -50,19 +50,19 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     {
         return new FixerDefinition(
             'Concatenation should be spaced according configuration.',
-            array(
+            [
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';"
                 ),
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
-                    array('spacing' => 'none')
+                    ['spacing' => 'none']
                 ),
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
-                    array('spacing' => 'one')
+                    ['spacing' => 'one']
                 ),
-            )
+            ]
         );
     }
 
@@ -94,12 +94,12 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     {
         $spacing = new FixerOptionBuilder('spacing', 'Spacing to apply around concatenation operator.');
         $spacing = $spacing
-            ->setAllowedValues(array('one', 'none'))
+            ->setAllowedValues(['one', 'none'])
             ->setDefault('none')
             ->getOption()
         ;
 
-        return new FixerConfigurationResolver(array($spacing));
+        return new FixerConfigurationResolver([$spacing]);
     }
 
     /**
@@ -112,7 +112,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
             $tokens->removeLeadingWhitespace($index, " \t");
         }
 
-        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(array(T_LNUMBER, T_COMMENT, T_DOC_COMMENT))) {
+        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT])) {
             $tokens->removeTrailingWhitespace($index, " \t");
         }
     }
@@ -137,7 +137,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
         $offsetIndex = $index + $offset;
 
         if (!$tokens[$offsetIndex]->isWhitespace()) {
-            $tokens->insertAt($index + (1 === $offset ?: 0), new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index + (1 === $offset ?: 0), new Token([T_WHITESPACE, ' ']));
 
             return;
         }

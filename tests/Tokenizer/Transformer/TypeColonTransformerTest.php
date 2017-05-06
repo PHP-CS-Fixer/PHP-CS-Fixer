@@ -30,57 +30,57 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
      * @dataProvider provideProcessCases
      * @requires PHP 7.0
      */
-    public function testProcess($source, array $expectedTokens = array())
+    public function testProcess($source, array $expectedTokens = [])
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            array(
+            [
                 CT::T_TYPE_COLON,
-            )
+            ]
         );
     }
 
     public function provideProcessCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php function foo(): array { return []; }',
-                array(
+                [
                     6 => CT::T_TYPE_COLON,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php function & foo(): array { return []; }',
-                array(
+                [
                     8 => CT::T_TYPE_COLON,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php interface F { public function foo(): array; }',
-                array(
+                [
                     14 => CT::T_TYPE_COLON,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php $a=1; $f = function () : array {};',
-                array(
+                [
                     15 => CT::T_TYPE_COLON,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php $a=1; $f = function () use($a) : array {};',
-                array(
+                [
                     20 => CT::T_TYPE_COLON,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php
                     $a = 1 ? [] : [];
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

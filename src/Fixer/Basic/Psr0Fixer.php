@@ -35,7 +35,7 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurati
     {
         return new FixerDefinition(
             'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
-            array(
+            [
                 new FileSpecificCodeSample(
                     '<?php
 namespace PhpCsFixer\FIXER\Basic;
@@ -49,9 +49,9 @@ namespace PhpCsFixer\FIXER\Basic;
 class InvalidName {}
 ',
                     new \SplFileInfo(__FILE__),
-                    array('dir' => realpath(__DIR__.'/../..'))
+                    ['dir' => realpath(__DIR__.'/../..')]
                 ),
-            ),
+            ],
             null,
             'This fixer may change your class name, which will break the code that is depended on old name.'
         );
@@ -76,7 +76,7 @@ class InvalidName {}
                 }
 
                 $namespaceIndex = $tokens->getNextMeaningfulToken($index);
-                $namespaceEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
+                $namespaceEndIndex = $tokens->getNextTokenOfKind($index, [';']);
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
@@ -157,10 +157,10 @@ class InvalidName {}
     {
         $dir = new FixerOptionBuilder('dir', 'The directory where the project code is placed.');
         $dir = $dir
-            ->setAllowedTypes(array('string'))
+            ->setAllowedTypes(['string'])
             ->getOption()
         ;
 
-        return new FixerConfigurationResolver(array($dir));
+        return new FixerConfigurationResolver([$dir]);
     }
 }

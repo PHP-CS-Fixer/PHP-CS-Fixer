@@ -32,7 +32,7 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHP single-line arrays should not have trailing comma.',
-            array(new CodeSample("<?php\n\$a = array('sample',  );"))
+            [new CodeSample("<?php\n\$a = array('sample',  );")]
         );
     }
 
@@ -41,7 +41,7 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN));
+        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
     /**
@@ -73,7 +73,7 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
         $startIndex = $index;
 
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
-            $startIndex = $tokens->getNextTokenOfKind($startIndex, array('('));
+            $startIndex = $tokens->getNextTokenOfKind($startIndex, ['(']);
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         } else {
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);

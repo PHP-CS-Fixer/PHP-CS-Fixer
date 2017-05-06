@@ -54,9 +54,9 @@ final class TransformerTest extends TestCase
             $transformersItems = $reflection->getProperty('items');
             $transformersItems->setAccessible(true);
             $transformersItems = $transformersItems->getValue($transformers);
-            $transformersArray = array();
+            $transformersArray = [];
             foreach ($transformersItems as $transformer) {
-                $transformersArray[] = array($transformer);
+                $transformersArray[] = [$transformer];
             }
         }
 

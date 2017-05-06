@@ -34,14 +34,14 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array('<?php echo \'Foo\';', '<? echo \'Foo\';'),
-            array('<?php echo \'Foo\';', '<?pHp echo \'Foo\';'),
-            array('<?= \'Foo\';'),
-            array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
-            array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
-            array('<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'),
-            array('<?php
+        return [
+            ['<?php echo \'Foo\';', '<? echo \'Foo\';'],
+            ['<?php echo \'Foo\';', '<?pHp echo \'Foo\';'],
+            ['<?= \'Foo\';'],
+            ['<?php echo \'Foo\'; ?> PLAIN TEXT'],
+            ['PLAIN TEXT<?php echo \'Foo\'; ?>'],
+            ['<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'],
+            ['<?php
 
 echo \'Foo\';
 
@@ -51,42 +51,42 @@ echo \'Foo\';
 echo \'Foo\';
 
 ',
-            ),
-            array(
+            ],
+            [
                 "<?php if ('<?php' === '<?') { }",
                 "<? if ('<?php' === '<?') { }",
-            ),
-            array(
+            ],
+            [
                 '<?php // <?php',
                 '<?pHP // <?php',
-            ),
-            array(
+            ],
+            [
                 "<?php
 '<?
 ';",
-            ),
-            array(
+            ],
+            [
                 '<?php
 // Replace all <? with <?php !',
-            ),
-            array(
+            ],
+            [
                 '<?php
 // Replace all <? with <?pHp !',
-            ),
-            array(
+            ],
+            [
                 '<?php
 /**
  * Convert <?= ?> to long-form <?php echo ?> and <?php ?> to <?php ?>
  *
  */',
-            ),
-            array(
+            ],
+            [
                 "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
-            ),
-            array(
+            ],
+            [
                 'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = <<<           "TEST"
 <?Php <?
@@ -101,8 +101,8 @@ TEST;
 
 ?>
 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -119,11 +119,11 @@ TEST;
 
     public function provideFixCasesLT70()
     {
-        return array(
-            array(
+        return [
+            [
                 'foo <?php  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
                 'foo <?  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
-            ),
-        );
+            ],
+        ];
     }
 }

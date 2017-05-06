@@ -26,13 +26,13 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
      *
      * @var array
      */
-    private static $types = array(
+    private static $types = [
         'boolean' => 'bool',
         'double' => 'float',
         'integer' => 'int',
         'real' => 'float',
         'str' => 'string',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
     {
         return new FixerDefinition(
             'Scalar types should always be written in the same form. `int` not `integer`, `bool` not `boolean`, `float` not `real` or `double`.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 /**
  * @param integer $a
  * @param boolean $b
@@ -52,7 +52,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
 function sample($a, $b, $c)
 {
     return sample2($a, $b, $c);
-}'))
+}')]
         );
     }
 

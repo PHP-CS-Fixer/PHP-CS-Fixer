@@ -38,32 +38,32 @@ final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
 
     public function provideExamples()
     {
-        $manySpaces = array();
+        $manySpaces = [];
         for ($i = 1; $i <= 100; ++$i) {
             $manySpaces[] = 'namespace Test'.$i.';';
         }
 
-        return array(
+        return [
             // with newline
-            array("<?php\nnamespace Test1;"),
-            array("<?php\n\nnamespace Test2;"),
-            array(
+            ["<?php\nnamespace Test1;"],
+            ["<?php\n\nnamespace Test2;"],
+            [
                 "<?php\nnamespace Test3;",
                 "<?php\n namespace Test3;",
-            ),
+            ],
             // without newline
-            array('<?php namespace Test4;'),
-            array(
+            ['<?php namespace Test4;'],
+            [
                 '<?php namespace Test5;',
                 '<?php  namespace Test5;',
-            ),
+            ],
             // multiple namespaces with newline
-            array(
+            [
                 '<?php
 namespace Test6a;
 namespace Test6b;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Test7a;
 /* abc */
@@ -71,16 +71,16 @@ namespace Test7b;',
                 '<?php
 namespace Test7a;
 /* abc */namespace Test7b;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Test8a;
 namespace Test8b;',
                 '<?php
  namespace Test8a;
     namespace Test8b;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Test9a;
 class Test {}
@@ -89,8 +89,8 @@ namespace Test9b;',
  namespace Test9a;
 class Test {}
    namespace Test9b;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Test10a;
 use Exception;
@@ -99,45 +99,45 @@ namespace Test10b;',
  namespace Test10a;
 use Exception;
    namespace Test10b;',
-            ),
+            ],
             // multiple namespaces without newline
-            array('<?php namespace Test11a; namespace Test11b;'),
-            array(
+            ['<?php namespace Test11a; namespace Test11b;'],
+            [
                 '<?php namespace Test12a; namespace Test12b;',
-                '<?php    namespace Test12a;  namespace Test12b;', ),
-            array(
+                '<?php    namespace Test12a;  namespace Test12b;', ],
+            [
                 '<?php namespace Test13a; namespace Test13b;',
-                '<?php namespace Test13a;  namespace Test13b;', ),
+                '<?php namespace Test13a;  namespace Test13b;', ],
             // namespaces without spaces in between
-            array(
+            [
                 '<?php
 namespace Test14a{}
 namespace Test14b{}',
                 '<?php
      namespace Test14a{}namespace Test14b{}',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Test15a;
 namespace Test15b;',
                 '<?php
 namespace Test15a;namespace Test15b;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 '.implode("\n", $manySpaces),
                 '<?php
 '.implode('', $manySpaces),
-            ),
-            array(
+            ],
+            [
                 '<?php
 #
 namespace TestComment;',
                 '<?php
 #
   namespace TestComment;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -155,15 +155,15 @@ namespace TestComment;',
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\nnamespace TestW1a{}\r\nnamespace TestW1b{}",
                 "<?php\r\n     namespace TestW1a{}\r\nnamespace TestW1b{}",
-            ),
-            array(
+            ],
+            [
                 "<?php\r\nnamespace Test14a{}\r\nnamespace Test14b{}",
                 "<?php\r\n     namespace Test14a{}namespace Test14b{}",
-            ),
-        );
+            ],
+        ];
     }
 }

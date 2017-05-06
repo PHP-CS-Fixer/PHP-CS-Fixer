@@ -32,7 +32,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Single line @var PHPDoc should have proper spacing.',
-            array(new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();"))
+            [new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();")]
         );
     }
 
@@ -50,7 +50,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT));
+        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
     }
 
     /**
@@ -72,7 +72,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
             $content = $token->getContent();
             $fixedContent = $this->fixTokenContent($content);
             if ($content !== $fixedContent) {
-                $tokens->overrideAt($index, array(T_DOC_COMMENT, $fixedContent));
+                $tokens->overrideAt($index, [T_DOC_COMMENT, $fixedContent]);
             }
         }
     }

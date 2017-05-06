@@ -93,7 +93,7 @@ final class Token
     public function isType($types)
     {
         if (!is_array($types)) {
-            $types = array($types);
+            $types = [$types];
         }
 
         return in_array($this->getType(), $types, true);

@@ -36,27 +36,27 @@ final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $i = 0; $i++; ++$i; $foo = ! false || ( ! true);',
                 '<?php $i = 0; $i++; ++$i; $foo = !false || (!true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; --$i; $foo = ! false || ($i && ! true);',
                 '<?php $i = 0; $i--; --$i; $foo = !false || ($i && !true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && !    true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i &&    !    true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i &&    !    true);',
-            ),
-        );
+            ],
+        ];
     }
 }
