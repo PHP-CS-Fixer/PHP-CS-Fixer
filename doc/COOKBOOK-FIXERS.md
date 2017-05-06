@@ -21,8 +21,8 @@ contribute, and to detect bugs ([Linus'
 Law](http://en.wikipedia.org/wiki/Linus%27s_Law)).
 
 If possible, try to get acquainted with the public interface for the
-[Tokens class](Symfony/CS/Tokenizer/Tokens.php)
-and [Token class](Symfony/CS/Tokenizer/Token.php)
+[Tokens class](/src/Tokenizer/Tokens.php) 
+and [Token class](/src/Tokenizer/Token.php)
 classes.
 
 ## Assumptions
@@ -31,7 +31,7 @@ classes.
 * Forked FriendsOfPHP/PHP-CS-Fixer into your own Github Account.
 * Cloned your forked repository locally.
 * Installed the dependencies of PHP CS Fixer using [Composer](https://getcomposer.org/).
-* You have read [`CONTRIBUTING.md`](CONTRIBUTING.md).
+* You have read [`CONTRIBUTING.md`](/CONTRIBUTING.md).
 
 ## Step by step
 
@@ -43,8 +43,8 @@ We are calling it `remove_comments` (code name), or,
 
 ### Step 1 - Creating files
 
-Create a new file in
-`PHP-CS-Fixer/Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`.
+Create a new file in 
+`src/Fixer/Comment/RemoveCommentsFixer.php`.
 Put this content inside:
 ```php
 <?php
@@ -92,7 +92,7 @@ inheriting from `AbstractFixer`, which fulfills the interface with some
 default behavior.
 
 Now let us create the test file at
-`Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php` . Put this
+`tests/Fixer/Comment/RemoveCommentsFixerTest.php` . Put this
 content inside:
 
 ```php
@@ -128,7 +128,7 @@ final class RemoveCommentsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array();
+        return [];
     }
 }
 ```
@@ -147,30 +147,30 @@ the fixer changes what it should be changing; second, ensuring that
 fixer does not change what is not supposed to change. Thus:
 
 #### Keeping things as they are:
-`Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`@provideFixCases:
+`tests/Fixer/Comment/RemoveCommentsFixerTest.php`@provideFixCases:
 ```php
     ...
     public function provideFixCases()
     {
-        return array(
-            array('<?php echo "This should not be changed";') // Each sub-array is a test
-        );
+        return [
+            ['<?php echo "This should not be changed";'] // Each sub-array is a test
+        ];
     }
     ...
 ```
 
 #### Ensuring things change:
-`Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`@provideFixCases:
+`tests/Fixer/Comment/RemoveCommentsFixerTest.php`@provideFixCases:
 ```php
     ...
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo "This should be changed"; ', // This is expected output
                 '<?php echo "This should be changed"; /* Comment */', // This is input
-            )
-        );
+            ]
+        ];
     }
     ...
 ```
@@ -179,7 +179,7 @@ Note that expected outputs are **always** tested alone to ensure your fixer will
 
 We want to have a failing test to start with, so the test file now looks
 like:
-`Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`
+`tests/Fixer/Comment/RemoveCommentsFixerTest.php`
 ```php
 <?php
 
@@ -213,12 +213,12 @@ final class RemoveCommentsFixerTest extends AbstractFixerTestBase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                '<?php echo "This should be changed"; ', // This is expected output
                '<?php echo "This should be changed"; /* Comment */', // This is input
-            )
-        );
+            ]
+        ];
     }
 }
 ```
@@ -230,7 +230,7 @@ You have defined the behavior of your fixer in tests. Now it is time to
 implement it.
 
 We need first to create one method to describe what this fixer does:
-`Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
+`src/Fixer/Comment/RemoveCommentsFixer.php`:
 ```php
 final class RemoveCommentsFixer extends AbstractFixer
 {
@@ -245,7 +245,7 @@ final class RemoveCommentsFixer extends AbstractFixer
 ```
 
 Next, we must filter what type of tokens we want to fix. Here, we are interested in code that contains `T_COMMENT` tokens:
-`Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
+`src/Fixer/Comment/RemoveCommentsFixer.php`:
 ```php
 final class RemoveCommentsFixer extends AbstractFixer
 {
@@ -261,7 +261,7 @@ final class RemoveCommentsFixer extends AbstractFixer
 ```
 
 For now, let us just make a fixer that applies no modification:
-`Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
+`src/Fixer/Comment/RemoveCommentsFixer.php`:
 ```php
 class RemoveCommentsFixer extends AbstractFixer
 {
@@ -276,7 +276,7 @@ class RemoveCommentsFixer extends AbstractFixer
 }
 ```
 
-Run `$ phpunit Symfony/CS/Tests/Fixer/Contrib/RemoveCommentsFixerTest.php`.
+Run `$ phpunit tests/Fixer/Comment/RemoveCommentsFixerTest.php`.
 You are going to see that the tests fails.
 
 ### Break
@@ -300,7 +300,7 @@ defined by the PHP compiler. It is the ["List of Parser
 Tokens"](http://php.net/manual/en/tokens.php).
 
 Internally, PHP CS Fixer transforms some of PHP native tokens into custom
-tokens through the use of [Transfomers](Symfony/CS/Tokenizer/Transformer),
+tokens through the use of [Transfomers](/src/Tokenizer/Transformer),
 they aim to help you reason about the changes you may want to do in the
 fixers.
 
@@ -311,7 +311,7 @@ one symbol name: `T_COMMENT`.
 
 We do not want all symbols to be analysed. Only `T_COMMENT`. So let us
 iterate the token(s) we are interested in.
-`Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
+`src/Fixer/Comment/RemoveCommentsFixer.php`:
 ```php
 final class RemoveCommentsFixer extends AbstractFixer
 {
@@ -334,7 +334,7 @@ final class RemoveCommentsFixer extends AbstractFixer
 
 OK, now for each `T_COMMENT`, all we need to do is check if the previous
 token is a semicolon.
-`Symfony/CS/Fixer/Contrib/RemoveCommentsFixer.php`:
+`src/Fixer/Comment/RemoveCommentsFixer.php`:
 ```php
 final class RemoveCommentsFixer extends AbstractFixer
 {
@@ -444,18 +444,14 @@ The review usually flows like this:
 caveats. Usually, the person building a fixer is blind about some
 behavior mistakes of fixers. Expect to write few more tests to cater for
 the reviews.
-2. People will discuss the relevance of your fixer. If it is
-something that goes along with Symfony style standards, or PSR-1/PSR-2
-standards, they will ask you to move from Symfony/CS/Fixers/Contrib to
-Symfony/CS/Fixers/{Symfony, PSR2, etc}.
-3. People will also discuss whether your fixer is idempotent or not.
+2. People will also discuss whether your fixer is idempotent or not.
 If they understand that your fixer must always run before or after a
 certain fixer, they will ask you to override a method named
 `getPriority()`. Do not be afraid of asking the reviewer for help on how
 to do it.
-4. People may ask you to rebase your code to unify commits or to get
+3. People may ask you to rebase your code to unify commits or to get
 rid of merge commits.
-5. Go to 1 until no actions are needed anymore.
+4. Go to 1 until no actions are needed anymore.
 
 Your fixer will be incorporated in the next release.
 
@@ -476,11 +472,6 @@ PHP CS Fixer community to partake on the review debates of your fixer.
 
 In any case, we care a lot about what you do and we want to see it being
 part of the application as soon as possible.
-
-#### May I use short arrays (`$a = []`)?
-
-No. Short arrays were introduced in PHP 5.4 and PHP CS Fixer still
-supports PHP 5.3.6.
 
 #### Why am I asked to use `getPrevMeaningfulToken()` instead of `getPrevNonWhitespace()`?
 
