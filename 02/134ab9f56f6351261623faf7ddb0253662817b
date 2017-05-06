@@ -1,0 +1,124 @@
+---------------------------------------------------------------------------
+
+by edhgoose at 2017-04-10T18:22:48Z
+
+Sweet :) Thank you for fixing it!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-10T20:14:31Z
+
+@edhgoose, I understand that you confirm the fix works ?
+
+---------------------------------------------------------------------------
+
+by edhgoose at 2017-04-14T13:37:20Z
+
+Perfectly. Thank you @julienfalque and @keradus!!
+
+---------------------------------------------------------------------------
+
+by edhgoose at 2017-04-14T14:08:12Z
+
+Actually, @julienfalque and @keradus there might be a case where this doesn't work as expected. I don't know if this is a different issue or not, but here's a couple of test cases which demonstrate the problem:
+
+```
+            array('
+/**
+ * @Foo(x={
+ *     @Bar
+ * })
+ */', '
+/**
+ * @Foo(x={
+ * @Bar})
+ */'),
+            array('
+/**
+ * @Foo(x={
+ *     @Bar,
+ *     @Charlie
+ * })
+ */', '
+/**
+ * @Foo(x={
+ * @Bar,
+ * @Charlie})
+ */'),
+            array('
+/**
+ * @Foo(
+ *     x="1",
+ *     y="2"
+ * )
+ */', '
+/**
+ * @Foo(
+ * x="1",
+ * y="2")
+ */'),
+```
+
+I'm not exactly sure what correct behaviour should be, but it appears that the problem is that if the closing bracket of the annotation is on the same line as any other content, then that content is not indented. I'd argue personally that the end of the annotation should be put on the next line, but I don't know how easy that is to do?
+
+Here's the output from PHPUnit for each of the cases:
+
+```
+ /**
+  * @Foo(x={
+- *     @Bar
+- * })
++ * @Bar}) // @Bar should be indented here, and ideally the bracket on the next line
+  */
+ class FooClass
+ {
+ }
+
+  /**
+  * @Foo(x={
+  *     @Bar,
+- *     @Charlie
+- * })
++ * @Charlie}) // @Charlie should be indented here, and ideally the bracket on the next line
+  */
+
+ /**
+  * @Foo(
+  *     x="1",
+- *     y="2"
+- * )
++ * y="2") // y should be indented here, and ideally the bracket on the next line
+  */
+
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-14T15:28:51Z
+
+@edhgoose These results are actually the expected behavior: the fixer currently only changes the indentation, nothing else. Your examples all have data along with closing parentheses/braces, separating them must be done manually for the moment. Having a fixer for that would be great though.
+
+The only change for the indentation fixer I can imagine is a new option to choose what to consider when updating the indentation of such line (e.g. `mixed_lines` => `indent|unindent`).
+
+---------------------------------------------------------------------------
+
+by edhgoose at 2017-04-14T17:20:05Z
+
+Ok, let me have a look at that. Would the intention be that any annotation that has something inside it (i.e. anything beyond `@Foo()`) would be split across multiple lines? Or would you do something else?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-14T19:11:21Z
+
+> Would the intention be that any annotation that has something inside it (i.e. anything beyond `@Foo()`) would be split across multiple lines?
+
+If you're talking about the new fixer: I don't really know. Should the arguments be always accross multiple lines? One per line like method arguments rules from PSR-2? Only if they already contain a line break? Or if they exceed a length limit? What about nested annotations? I think this deserves a dedicated new issue for discussion.
+
+For the indentation one, I would add a new option to change the behavior regarding mixed lines (lines that contain closing parentheses/braces *and* other things). Current behavior is to remove one indentation level for those lines as if they only had the closing tokens. This option would allow you to configure the fixer so that it keeps the same indentation level instead. So your first example would be fixed like this:
+```diff
+ /**
+  * @Foo(x={
+- * @Bar})
++ *     @Bar})
+  */,
+```
