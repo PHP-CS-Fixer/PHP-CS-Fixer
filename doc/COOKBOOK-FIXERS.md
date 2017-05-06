@@ -128,7 +128,7 @@ final class RemoveCommentsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array();
+        return [];
     }
 }
 ```
@@ -152,9 +152,9 @@ fixer does not change what is not supposed to change. Thus:
     ...
     public function provideFixCases()
     {
-        return array(
-            array('<?php echo "This should not be changed";') // Each sub-array is a test
-        );
+        return [
+            ['<?php echo "This should not be changed";'] // Each sub-array is a test
+        ];
     }
     ...
 ```
@@ -165,12 +165,12 @@ fixer does not change what is not supposed to change. Thus:
     ...
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo "This should be changed"; ', // This is expected output
                 '<?php echo "This should be changed"; /* Comment */', // This is input
-            )
-        );
+            ]
+        ];
     }
     ...
 ```
@@ -213,12 +213,12 @@ final class RemoveCommentsFixerTest extends AbstractFixerTestBase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                '<?php echo "This should be changed"; ', // This is expected output
                '<?php echo "This should be changed"; /* Comment */', // This is input
-            )
-        );
+            ]
+        ];
     }
 }
 ```
@@ -472,11 +472,6 @@ PHP CS Fixer community to partake on the review debates of your fixer.
 
 In any case, we care a lot about what you do and we want to see it being
 part of the application as soon as possible.
-
-#### May I use short arrays (`$a = []`)?
-
-No. Short arrays were introduced in PHP 5.4 and PHP CS Fixer still
-supports PHP 5.3.6.
 
 #### Why am I asked to use `getPrevMeaningfulToken()` instead of `getPrevNonWhitespace()`?
 
