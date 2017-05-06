@@ -41,19 +41,29 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
      */
     protected function fixAnnotations(Tokens $tokens)
     {
-        $previousLineBracesDelta = 0;
-        $indentLevel = 0;
-        foreach ($tokens as $index => $token) {
+        $annotationPositions = array();
+        for ($index = 0, $max = count($tokens); $index < $max; ++$index) {
+            if (!$tokens[$index]->isType(DocLexer::T_AT)) {
+                continue;
+            }
+
             $annotationEndIndex = $tokens->getAnnotationEnd($index);
             if (null === $annotationEndIndex) {
                 return;
             }
 
+            $annotationPositions[] = array($index, $annotationEndIndex);
+            $index = $annotationEndIndex;
+        }
+
+        $previousLineBracesDelta = 0;
+        $indentLevel = 0;
+        foreach ($tokens as $index => $token) {
             if (!$token->isType(DocLexer::T_NONE) || false === strpos($token->getContent(), "\n")) {
                 continue;
             }
 
-            if (!$this->indentationCanBeFixed($tokens, $index)) {
+            if (!$this->indentationCanBeFixed($tokens, $index, $annotationPositions)) {
                 continue;
             }
 
@@ -106,16 +116,18 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $newLineTokenIndex
+     * @param Tokens            $tokens
+     * @param int               $newLineTokenIndex
+     * @param array<array<int>> $annotationPositions Pairs of begin and end indexes of main annotations
      *
      * @return bool
      */
-    private function indentationCanBeFixed(Tokens $tokens, $newLineTokenIndex)
+    private function indentationCanBeFixed(Tokens $tokens, $newLineTokenIndex, array $annotationPositions)
     {
-        $atIndex = $tokens->getPreviousTokenOfType(DocLexer::T_AT, $newLineTokenIndex);
-        if (null !== $atIndex && $tokens->getAnnotationEnd($atIndex) > $newLineTokenIndex) {
-            return true;
+        foreach ($annotationPositions as $position) {
+            if ($newLineTokenIndex >= $position[0] && $newLineTokenIndex <= $position[1]) {
+                return true;
+            }
         }
 
         for ($index = $newLineTokenIndex + 1, $max = count($tokens); $index < $max; ++$index) {
