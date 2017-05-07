@@ -19,7 +19,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Vladimir Boliev <voff.web@gmail.com>
  *
  * @internal
- * @coversNothing
+ * @covers \PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer
  */
 final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
 {
@@ -106,7 +106,6 @@ $foo
                 '<?php $foo->bar()->baz()
 ->qux();',
             ],
-//
             [
                 '<?php
 someCodeHereAndMultipleBreaks();
@@ -115,7 +114,7 @@ someCodeHereAndMultipleBreaks();
 
 $foo
     ->bar1()
-    ->bar2();'
+    ->bar2();',
             ],
             [
                 '<?php
@@ -125,13 +124,35 @@ $foo
 
         $finder = Finder::create()
             ->files()
-        ;'
+        ;',
             ],
             [
                 '<?php
         $finder = Finder::create()
             ->files()
-        ;'
+        ;',
+            ],
+            [
+                '<?php
+        $replacements = $replacements
+            ->setAllowedTypes([\'array\'])
+            ->setNormalizer(function (Options $options, $value) use ($toTypes, $default) {
+                return $normalizedValue;
+            })
+            ->setDefault($default)
+            ->setWhitespacesConfig(
+                new WhitespacesFixerConfig($config[\'indent\'], $config[\'lineEnding\'])
+            )
+            ;',
+            ],
+            [
+                '<?php
+        return foo()
+            ->bar (
+                new foo()
+            )
+            ->bar();
+            ',
             ],
         ];
     }

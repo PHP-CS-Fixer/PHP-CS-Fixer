@@ -16,7 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -84,7 +84,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $indent = $this->whitespacesConfig->getIndent();
 
         for ($i = $index; $i >= 0; --$i) {
-            if($i>0) {
+            if ($i > 0) {
                 $codeToFindIndents = $tokens->generatePartialCode($i - 1, $i);
             } else {
                 $codeToFindIndents = $tokens[$i]->getContent();
@@ -93,7 +93,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
             $currentWhitespaces = $this->getLineBreak($codeToFindIndents);
 
             if (null !== $currentWhitespaces) {
-                if ($tokens[$i + 1]->isGivenKind(T_OBJECT_OPERATOR)) {
+                if ($tokens[$i + 1]->isGivenKind(T_OBJECT_OPERATOR) || $this->isMultiLineMethod($i, $index, $tokens)) {
                     return $currentWhitespaces;
                 }
 
@@ -140,5 +140,30 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         }
 
         return null;
+    }
+
+    /**
+     * @param int    $start
+     * @param int    $end
+     * @param Tokens $tokens
+     *
+     * @return bool
+     */
+    private function isMultiLineMethod($start, $end, Tokens $tokens)
+    {
+        $tokenCleanContent = trim($tokens[$end]->getContent());
+        if ($tokenCleanContent === ')') {
+            if (CT::T_BRACE_CLASS_INSTANTIATION_CLOSE === $tokens[$end]->getId() && !$tokens->findGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, $start, $end)) {
+                // src/Tokenizer/Transformer/BraceClassInstantiationTransformer.php
+                return true;
+            }
+
+            $methodStart = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end, false);
+            if ($methodStart < $start) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
