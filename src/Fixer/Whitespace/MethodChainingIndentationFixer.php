@@ -133,7 +133,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      *
      * @return string|null
      */
-    private function getLineBreak(string $content)
+    private function getLineBreak($content)
     {
         if (preg_match('/\R{1}([ \t]*)$/', $content, $matches)) {
             return $matches[1];
