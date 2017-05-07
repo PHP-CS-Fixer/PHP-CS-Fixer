@@ -148,26 +148,24 @@ function baz($options)
      */
     protected function createConfigurationDefinition()
     {
-        $exclude = new FixerOptionBuilder('exclude', 'List of functions to ignore.');
-        $exclude = $exclude
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([function ($value) {
-                foreach ($value as $functionName) {
-                    if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
-                        throw new InvalidOptionsException(\sprintf(
-                            'Each element must be a non-empty, trimmed string, got "%s" instead.',
-                            \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
-                        ));
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('exclude', 'List of functions to ignore.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([function ($value) {
+                    foreach ($value as $functionName) {
+                        if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
+                            throw new InvalidOptionsException(\sprintf(
+                                'Each element must be a non-empty, trimmed string, got "%s" instead.',
+                                \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
+                            ));
+                        }
                     }
-                }
 
-                return true;
-            }])
-            ->setDefault([])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver([$exclude]);
+                    return true;
+                }])
+                ->setDefault([])
+                ->getOption(),
+        ]);
     }
 
     /**

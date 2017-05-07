@@ -121,19 +121,17 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
         $functionNames = array_keys(self::$availableFunctions);
-        $functions = new FixerOptionBuilder('functions', 'List of function names to fix.');
-        $functions = $functions
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([
-                $generator->allowedValueIsSubsetOf($functionNames),
-            ])
-            ->setDefault($functionNames)
-            ->getOption()
-        ;
 
-        return new FixerConfigurationResolver([$functions]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('functions', 'List of function names to fix.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($functionNames),
+                ])
+                ->setDefault($functionNames)
+                ->getOption(),
+        ]);
     }
 
     /**

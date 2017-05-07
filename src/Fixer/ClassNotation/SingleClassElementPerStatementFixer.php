@@ -95,21 +95,17 @@ final class Example
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
-
         $values = ['const', 'property'];
 
-        $elements = new FixerOptionBuilder('elements', 'List of strings which element should be modified.');
-        $elements = $elements
-            ->setDefault($values)
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([
-                $generator->allowedValueIsSubsetOf($values),
-            ])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('elements', [$elements]);
+        return new FixerConfigurationResolverRootless('elements', [
+            (new FixerOptionBuilder('elements', 'List of strings which element should be modified.'))
+                ->setDefault($values)
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
+                ])
+                ->getOption(),
+        ]);
     }
 
     /**

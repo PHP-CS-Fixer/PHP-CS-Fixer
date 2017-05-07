@@ -102,14 +102,12 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
      */
     protected function createConfigurationDefinition()
     {
-        $syntax = new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` array syntax.');
-        $syntax = $syntax
-            ->setAllowedValues(['long', 'short'])
-            ->setDefault('long')
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver([$syntax]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` array syntax.'))
+                ->setAllowedValues(['long', 'short'])
+                ->setDefault('long')
+                ->getOption(),
+        ]);
     }
 
     /**

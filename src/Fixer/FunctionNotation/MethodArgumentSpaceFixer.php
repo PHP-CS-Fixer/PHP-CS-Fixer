@@ -92,14 +92,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      */
     protected function createConfigurationDefinition()
     {
-        $keepMultipleSpacesAfterComma = new FixerOptionBuilder('keep_multiple_spaces_after_comma', 'Whether keep multiple spaces after comma.');
-        $keepMultipleSpacesAfterComma = $keepMultipleSpacesAfterComma
-            ->setAllowedTypes(['bool'])
-            ->setDefault(false)
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver([$keepMultipleSpacesAfterComma]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('keep_multiple_spaces_after_comma', 'Whether keep multiple spaces after comma.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     /**
