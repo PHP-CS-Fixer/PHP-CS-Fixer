@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -31,8 +32,9 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  * @author Darius Matulionis <darius@matulionis.lt>
+ * @author Adriano Pilger <adriano.pilger@gmail.com>
  */
-final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     const IMPORT_TYPE_CLASS = 'class';
 
@@ -314,6 +316,7 @@ use function CCC\AA;
     {
         $indexes = [];
         $originalIndexes = [];
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($i = count($uses) - 1; $i >= 0; --$i) {
             $index = $uses[$i];
@@ -355,6 +358,10 @@ use function CCC\AA;
 
                         // fetch all parts, split up in an array of strings, move comments to the end
                         $parts = [];
+                        $firstIndent = '';
+                        $separator = ', ';
+                        $lastIndent = '';
+
                         for ($k1 = $k + 1; $k1 < $namespaceTokensCount; ++$k1) {
                             $comment = '';
                             $namespacePart = '';
@@ -369,6 +376,17 @@ use function CCC\AA;
                                     continue;
                                 }
 
+                                // if there is any line ending inside the group import, it should be indented properly
+                                if (
+                                    '' === $firstIndent &&
+                                    $namespaceTokens[$k2]->isWhitespace() &&
+                                    false !== strpos($namespaceTokens[$k2]->getContent(), $lineEnding)
+                                ) {
+                                    $lastIndent = $lineEnding;
+                                    $firstIndent = $lineEnding.$this->whitespacesConfig->getIndent();
+                                    $separator = ','.$firstIndent;
+                                }
+
                                 $namespacePart .= $namespaceTokens[$k2]->getContent();
                             }
 
@@ -378,7 +396,7 @@ use function CCC\AA;
                                 $namespacePart .= ' '.$comment;
                             }
 
-                            $parts[] = $namespacePart.', ';
+                            $parts[] = $namespacePart;
 
                             $k1 = $k2;
                         }
@@ -390,7 +408,7 @@ use function CCC\AA;
                         if ($sortedParts === $parts) {
                             $namespace = Tokens::fromArray($namespaceTokens)->generateCode();
                         } else {
-                            $namespace .= substr(implode('', $parts), 0, -2).'}';
+                            $namespace .= $firstIndent.implode($separator, $parts).$lastIndent.'}';
                         }
                     } else {
                         $namespace = Tokens::fromArray($namespaceTokens)->generateCode();

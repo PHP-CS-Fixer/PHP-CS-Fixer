@@ -20,6 +20,7 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Runner\Runner;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Finder\Finder;
 
@@ -28,7 +29,7 @@ use Symfony\Component\Finder\Finder;
  *
  * @covers \PhpCsFixer\Runner\Runner
  */
-final class RunnerTest extends \PHPUnit_Framework_TestCase
+final class RunnerTest extends TestCase
 {
     /**
      * @covers \PhpCsFixer\Runner\Runner::fix

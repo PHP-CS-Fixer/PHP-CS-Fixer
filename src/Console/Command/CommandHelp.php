@@ -95,7 +95,7 @@ The <comment>--show-progress</comment> option allows you to choose the way proce
 
 If the option is not provided, it defaults to <comment>run-in</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
-    <info>$ php %command.full_name% --verbose --show-progress=evaluating</info>
+    <info>$ php %command.full_name% --verbose --show-progress=estimating</info>
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -132,11 +132,11 @@ The example below will add two rules to the default list of PSR2 set rules:
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
-            'array_syntax' => array('syntax' => 'short'),
-        ))
+            'array_syntax' => ['syntax' => 'short'],
+        ])
         ->setFinder(\$finder)
     ;
 
@@ -158,10 +158,10 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
-        ))
+        ])
         ->setFinder(\$finder)
     ;
 
@@ -354,8 +354,10 @@ EOF
                 $description = '[n/a]';
             }
 
-            $description = wordwrap($description, 72, "\n   | ");
-            $description = str_replace('`', '``', $description);
+            $description = implode("\n   | ", self::wordwrap(
+                preg_replace('/(`.+?`)/', '<info>$1</info>', $description),
+                72
+            ));
 
             if (!empty($sets)) {
                 $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description);
@@ -366,7 +368,11 @@ EOF
             if ($fixer->isRisky()) {
                 $help .= sprintf(
                     "   | *Risky rule: %s.*\n",
-                    str_replace('`', '``', lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription())))
+                    preg_replace(
+                        '/(`.+?`)/',
+                        '<info>$1</info>',
+                        lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
+                    )
                 );
             }
 
@@ -399,7 +405,11 @@ EOF
                             $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
                         }
 
-                        $line .= ': '.str_replace('`', '``', lcfirst(preg_replace('/\.$/', '', $option->getDescription()))).'; ';
+                        $line .= ': '.preg_replace(
+                            '/(`.+?`)/',
+                            '<info>$1</info>',
+                            lcfirst(preg_replace('/\.$/', '', $option->getDescription()))
+                        ).'; ';
                         if ($option->hasDefault()) {
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
                         } else {
@@ -420,7 +430,8 @@ EOF
             }
         }
 
-        return $help;
+        // prevent "\</foo>" from being rendered as an escaped literal style tag
+        return preg_replace('#\\\\(</.*?>)#', '<<$1', $help);
     }
 
     /**

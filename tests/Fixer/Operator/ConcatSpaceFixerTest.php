@@ -28,7 +28,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[concat_space\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "spacing"\.$#'
+            '#^\[concat_space\] Invalid configuration: The option "a" does not exist\. Defined options are: "spacing"\.$#'
         );
 
         $this->fixer->configure(['a' => 1]);

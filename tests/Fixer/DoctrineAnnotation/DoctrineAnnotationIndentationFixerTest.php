@@ -38,7 +38,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
      */
     public function getFixCases()
     {
-        return [
+        return $this->createTestCases([
             ['
 /**
  * Foo.
@@ -140,6 +140,19 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  * @Foo(  @Bar(
  *  "baz"
  * ) )
+ */'],
+            ['
+/**
+ * @Foo(x={
+ *     @Bar
+ * })
+ * @Foo\z
+ */', '
+/**
+ * @Foo(x={
+ * @Bar
+ * })
+ * @Foo\z
  */'],
             ['
 /**
@@ -266,6 +279,6 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @fixme
  *     @override
  */'],
-        ];
+        ]);
     }
 }
