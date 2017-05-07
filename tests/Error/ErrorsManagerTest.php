@@ -14,13 +14,14 @@ namespace PhpCsFixer\Tests\Error;
 
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Error\ErrorsManager
  */
-final class ErrorsManagerTest extends \PHPUnit_Framework_TestCase
+final class ErrorsManagerTest extends TestCase
 {
     public function testDefaults()
     {

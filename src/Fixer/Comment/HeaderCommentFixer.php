@@ -298,6 +298,11 @@ echo 1;
                 } else {
                     $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, $missing]));
                 }
+            } elseif ($lineBreakCount > 2) {
+                // remove extra line endings
+                if ($tokens[$headerIndex + 1]->isWhitespace()) {
+                    $tokens[$headerIndex + 1]->setContent($lineEnding.$lineEnding);
+                }
             }
         }
 

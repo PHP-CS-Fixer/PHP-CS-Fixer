@@ -80,7 +80,7 @@ class Token
     }
 
     /**
-     * Get classy tokens kinds: T_CLASS, T_INTERFACE and T_TRAIT (if defined).
+     * Get classy tokens kinds: T_CLASS, T_INTERFACE and T_TRAIT.
      *
      * @return int[]
      */

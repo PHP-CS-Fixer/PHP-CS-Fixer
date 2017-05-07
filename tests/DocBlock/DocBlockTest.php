@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\DocBlock;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -21,7 +22,7 @@ use PhpCsFixer\DocBlock\DocBlock;
  *
  * @covers \PhpCsFixer\DocBlock\DocBlock
  */
-final class DocBlockTest extends \PHPUnit_Framework_TestCase
+final class DocBlockTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.

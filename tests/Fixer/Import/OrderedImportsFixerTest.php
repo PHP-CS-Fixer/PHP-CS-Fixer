@@ -663,16 +663,36 @@ use some\b\{
     ClassG
 };
 use const some\a\{ConstA, ConstB, ConstC};
+use const some\b\{
+    ConstA,
+    ConstB,
+    ConstC
+};
 use function some\a\{fn_a, fn_b, fn_c};
+use function some\b\{
+    fn_a,
+    fn_b,
+    fn_c
+};
 ',
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
+use function some\b\{
+    fn_b,
+    fn_c,
+    fn_a
+};
 use function some\a\{fn_a, fn_b, fn_c};
 use A\B;
+use const some\b\{
+    ConstC,
+    ConstA,
+    ConstB
+};
 use const some\a\{ConstA, ConstB, ConstC};
 use some\b\{
-    ClassF,
-    ClassG
+    ClassG,
+    ClassF
 };
 ',
             ],
@@ -714,6 +734,43 @@ use A\A;use Foo3\Bar\{ClassA};use G\G;use H\H;use Ioo2\Bar\{ClassB};use J\J;use 
 ',
                 '<?php
 use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;use Loo1\Bar\{ClassC};
+',
+            ],
+            [
+                '<?php
+use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
+use Foo\Bir;
+',
+                '<?php
+use Foo\Bar\Baz, Foo\Bir;
+use Foo\Bar\{ClassC, ClassB, ClassA};
+',
+            ],
+            [
+                '<?php
+use Foo\Bar\{ClassA, ClassB, ClassC};
+use Foo\Bir\{
+    ClassD,
+    ClassE,
+    ClassF
+};
+use Foo\Bor\{
+    ClassG,
+    ClassH,
+    ClassI,
+    ClassJ
+};
+',
+                '<?php
+use Foo\Bar\{ClassC, ClassB, ClassA};
+use Foo\Bir\{ClassE, ClassF,
+    ClassD};
+use Foo\Bor\{
+            ClassJ,
+                    ClassI,
+    ClassH,
+                        ClassG
+};
 ',
             ],
         ];

@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\DocBlock\TagComparator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -23,7 +24,7 @@ use PhpCsFixer\DocBlock\TagComparator;
  *
  * @covers \PhpCsFixer\DocBlock\TagComparator
  */
-final class TagComparatorTest extends \PHPUnit_Framework_TestCase
+final class TagComparatorTest extends TestCase
 {
     /**
      * @param string $first

@@ -14,13 +14,14 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Test\IntegrationCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Test\IntegrationCase
  */
-final class IntegrationCaseTest extends \PHPUnit_Framework_TestCase
+final class IntegrationCaseTest extends TestCase
 {
     /**
      * @group legacy

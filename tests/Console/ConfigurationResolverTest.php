@@ -16,6 +16,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -26,7 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @covers \PhpCsFixer\Console\ConfigurationResolver
  */
-final class ConfigurationResolverTest extends \PHPUnit_Framework_TestCase
+final class ConfigurationResolverTest extends TestCase
 {
     /**
      * @var Config

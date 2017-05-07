@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\Signature;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -23,7 +24,7 @@ use PhpCsFixer\Cache\Signature;
  *
  * @covers \PhpCsFixer\Cache\FileHandler
  */
-final class FileHandlerTest extends \PHPUnit_Framework_TestCase
+final class FileHandlerTest extends TestCase
 {
     protected function tearDown()
     {

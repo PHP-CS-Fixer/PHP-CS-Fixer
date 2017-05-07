@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -23,7 +24,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  *
  * @covers \PhpCsFixer\Console\Command\ReadmeCommand
  */
-final class ReadmeCommandTest extends \PHPUnit_Framework_TestCase
+final class ReadmeCommandTest extends TestCase
 {
     public function testIfReadmeFileIsCorrect()
     {

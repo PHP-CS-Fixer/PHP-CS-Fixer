@@ -196,7 +196,7 @@ If the option is not provided, it defaults to ``run-in`` unless a config file th
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix --verbose --show-progress=evaluating
+    $ php php-cs-fixer.phar fix --verbose --show-progress=estimating
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -453,8 +453,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``annotations`` (``array``): list of annotations to remove, e.g.
-    ``["@author"]``; defaults to ``[]``
+  - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
+    defaults to ``[]``
 
 * **hash_to_slash_comment** [@Symfony]
 
@@ -513,8 +513,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short``
-    ``list`` syntax; defaults to ``'long'``
+  - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
+    syntax; defaults to ``'long'``
 
 * **lowercase_cast** [@Symfony]
 
@@ -1152,11 +1152,11 @@ The example below will add two rules to the default list of PSR2 set rules:
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
-            'array_syntax' => array('syntax' => 'short'),
-        ))
+            'array_syntax' => ['syntax' => 'short'],
+        ])
         ->setFinder($finder)
     ;
 
@@ -1178,10 +1178,10 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
-        ))
+        ])
         ->setFinder($finder)
     ;
 
@@ -1297,7 +1297,7 @@ projects for instance).
 .. _php-cs-fixer.phar: http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
-.. _PhpStorm:          http://tzfrs.de/2015/01/automatically-format-code-to-match-psr-standards-with-phpstorm
+.. _PhpStorm:          https://medium.com/@valeryan/how-to-configure-phpstorm-to-use-php-cs-fixer-1844991e521f
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
 .. _contribute:        https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md

@@ -14,13 +14,14 @@ namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOption;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless
  */
-final class FixerConfigurationResolverRootlessTest extends \PHPUnit_Framework_TestCase
+final class FixerConfigurationResolverRootlessTest extends TestCase
 {
     public function testMapRootConfigurationTo()
     {

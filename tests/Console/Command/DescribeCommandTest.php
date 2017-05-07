@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -27,7 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @covers \PhpCsFixer\Console\Command\DescribeCommand
  */
-final class DescribeCommandTest extends \PHPUnit_Framework_TestCase
+final class DescribeCommandTest extends TestCase
 {
     public function testExecuteOutput()
     {
@@ -37,7 +38,7 @@ Fixes stuff.
 Replaces bad stuff with good stuff.
 
 Fixer is configurable using following options:
-* things (bool): enables fixing things as well; defaults to false
+* things (bool): enables fixing `things` as well; defaults to false
 
 Fixing examples:
  * Example #1.
@@ -118,7 +119,7 @@ EOT;
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(false);
         $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
-            new FixerOption('things', 'Enables fixing things as well.', false, false, ['bool']),
+            new FixerOption('things', 'Enables fixing `things` as well.', false, false, ['bool']),
         ]));
         $fixer->getDefinition()->willReturn(new FixerDefinition(
             'Fixes stuff.',
