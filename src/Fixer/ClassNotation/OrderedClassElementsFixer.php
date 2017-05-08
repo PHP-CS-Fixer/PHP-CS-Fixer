@@ -212,34 +212,30 @@ final class Example
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
-
-        $order = new FixerOptionBuilder('order', 'List of strings defining order of elements.');
-        $order = $order
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([
-                $generator->allowedValueIsSubsetOf(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes))),
-            ])
-            ->setDefault([
-                'use_trait',
-                'constant_public',
-                'constant_protected',
-                'constant_private',
-                'property_public',
-                'property_protected',
-                'property_private',
-                'construct',
-                'destruct',
-                'magic',
-                'phpunit',
-                'method_public',
-                'method_protected',
-                'method_private',
-            ])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('order', [$order]);
+        return new FixerConfigurationResolverRootless('order', [
+            (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes))),
+                ])
+                ->setDefault([
+                    'use_trait',
+                    'constant_public',
+                    'constant_protected',
+                    'constant_private',
+                    'property_public',
+                    'property_protected',
+                    'property_private',
+                    'construct',
+                    'destruct',
+                    'magic',
+                    'phpunit',
+                    'method_public',
+                    'method_protected',
+                    'method_private',
+                ])
+                ->getOption(),
+        ]);
     }
 
     /**

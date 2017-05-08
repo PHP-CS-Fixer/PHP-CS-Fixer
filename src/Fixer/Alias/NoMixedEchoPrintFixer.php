@@ -107,14 +107,12 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
      */
     protected function createConfigurationDefinition()
     {
-        $use = new FixerOptionBuilder('use', 'The desired language construct.');
-        $use = $use
-            ->setAllowedValues(['print', 'echo'])
-            ->setDefault('echo')
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver([$use]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('use', 'The desired language construct.'))
+                ->setAllowedValues(['print', 'echo'])
+                ->setDefault('echo')
+                ->getOption(),
+        ]);
     }
 
     /**

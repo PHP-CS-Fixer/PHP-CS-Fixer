@@ -113,26 +113,22 @@ class Sample
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
+        return new FixerConfigurationResolverRootless('elements', [
+            (new FixerOptionBuilder('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(['property', 'method', 'const']),
+                ])
+                ->setNormalizer(function (Options $options, $value) {
+                    if (PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
+                        throw new InvalidOptionsException('"const" option can only be enabled with PHP 7.1+.');
+                    }
 
-        $elements = new FixerOptionBuilder('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).');
-        $elements = $elements
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([
-                $generator->allowedValueIsSubsetOf(['property', 'method', 'const']),
-            ])
-            ->setNormalizer(function (Options $options, $value) {
-                if (PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
-                    throw new InvalidOptionsException('"const" option can only be enabled with PHP 7.1+.');
-                }
-
-                return $value;
-            })
-            ->setDefault(['property', 'method'])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('elements', [$elements]);
+                    return $value;
+                })
+                ->setDefault(['property', 'method'])
+                ->getOption(),
+        ]);
     }
 
     /**

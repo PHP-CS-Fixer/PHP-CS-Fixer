@@ -155,12 +155,10 @@ class InvalidName {}
      */
     protected function createConfigurationDefinition()
     {
-        $dir = new FixerOptionBuilder('dir', 'The directory where the project code is placed.');
-        $dir = $dir
-            ->setAllowedTypes(['string'])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver([$dir]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('dir', 'The directory where the project code is placed.'))
+                ->setAllowedTypes(['string'])
+                ->getOption(),
+        ]);
     }
 }
