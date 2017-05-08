@@ -238,10 +238,25 @@ EOF;
             },
             $help
         );
+
+        // Transform links
+        // In the console output these have the form
+        //      `description` (<url>http://...</url>)
+        // Make to RST http://www.sphinx-doc.org/en/stable/rest.html#hyperlinks
+        //      `description <http://...>`_
+
+        $help = preg_replace_callback(
+           '#`(.+)`\s?\(<url>(.+)<\/url>\)#',
+            function (array $matches) {
+                return sprintf('`%s <%s>`_', str_replace('\\', '\\\\', $matches[1]), $matches[2]);
+            },
+            $help
+        );
+
         $help = preg_replace('#^                        #m', '  ', $help);
         $help = preg_replace('#\*\* +\[#', '** [', $help);
 
-        $downloadLatestUrl = $this->getLatestDownloadUrl();
+        $downloadLatestUrl = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v%s/php-cs-fixer.phar', HelpCommand::getLatestReleaseVersionFromChangeLog());
         $downloadUrl = 'http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar';
 
         $header = str_replace('%download.version_url%', $downloadLatestUrl, $header);
@@ -250,34 +265,5 @@ EOF;
         $footer = str_replace('%download.url%', $downloadUrl, $footer);
 
         $output->write($header."\n".$help."\n".$footer);
-    }
-
-    private function getLatestDownloadUrl()
-    {
-        $version = $this->getApplication()->getVersion();
-        $changelogFile = __DIR__.'/../../../CHANGELOG.md';
-
-        if (is_file($changelogFile)) {
-            $currentMajor = (int) $version;
-            $changelog = file_get_contents($changelogFile);
-
-            for ($i = $currentMajor; $i > 0; --$i) {
-                preg_match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches);
-
-                if (2 === count($matches)) {
-                    $version = $matches[1];
-                    break;
-                }
-            }
-
-            if (null === $version) {
-                throw new \RuntimeException('Invalid changelog data!');
-            }
-        }
-
-        return sprintf(
-            'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v%s/php-cs-fixer.phar',
-            $version
-        );
     }
 }

@@ -85,6 +85,16 @@ final class FixCommand extends Command
 
     /**
      * {@inheritdoc}
+     *
+     * Override here to only generate the help copy when used.
+     */
+    public function getHelp()
+    {
+        return HelpCommand::getHelpCopy();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -107,7 +117,6 @@ final class FixCommand extends Command
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
-            ->setHelp(CommandHelp::getHelpCopy())
         ;
     }
 
