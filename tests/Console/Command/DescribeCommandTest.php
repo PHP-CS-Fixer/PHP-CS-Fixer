@@ -48,7 +48,6 @@ Fixing examples:
    @@ @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and bad thing';
-%spaces%
    ----------- end diff -----------
 
  * Example #2. Fixing with configuration: ['things' => true].
@@ -58,21 +57,58 @@ Fixing examples:
    @@ @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and good thing';
-%spaces%
    ----------- end diff -----------
 
 
 EOT;
 
-        $this->assertSame(
-            str_replace(array('%spaces%', "\n"), array('   ', PHP_EOL), $expected),
-            $this->execute()->getDisplay()
-        );
+        $this->assertSame($expected, $this->execute(false)->getDisplay(true));
+    }
+
+    public function testExecuteOutputWithDecoration()
+    {
+        $expected = <<<EOT
+\033[32mDescription of\033[39m Foo/bar \033[32mrule\033[39m.
+Fixes stuff.
+Replaces bad stuff with good stuff.
+
+Fixer is configurable using following options:
+* \033[32mthings\033[39m (\033[33mbool\033[39m): enables fixing \033[32m`things`\033[39m as well; defaults to \033[33mfalse\033[39m
+
+Fixing examples:
+ * Example #1.
+\033[33m   ---------- begin diff ----------\033[39m
+   \033[31m--- Original\033[39m
+   \033[32m+++ New\033[39m
+   \033[36m@@ @@\033[39m
+   \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
+   \033[32m+<?php echo 'good stuff and bad thing';\033[39m
+\033[33m   ----------- end diff -----------\033[39m
+
+ * Example #2. Fixing with configuration: \033[33m['things' => true]\033[39m.
+\033[33m   ---------- begin diff ----------\033[39m
+   \033[31m--- Original\033[39m
+   \033[32m+++ New\033[39m
+   \033[36m@@ @@\033[39m
+   \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
+   \033[32m+<?php echo 'good stuff and good thing';\033[39m
+\033[33m   ----------- end diff -----------\033[39m
+
+
+EOT;
+
+        $actual = $this->execute(true)->getDisplay(true);
+
+        if (false !== strpos($actual, "\033[0m")) {
+            $expected = str_replace("\033[39m", "\033[0m", $expected);
+        }
+
+        $this->assertSame($expected, $actual);
     }
 
     public function testExecuteStatusCode()
     {
-        $this->assertSame(0, $this->execute()->getStatusCode());
+        $this->assertSame(0, $this->execute(false)->getStatusCode());
     }
 
     public function testExecuteWithUnknownName()
@@ -107,9 +143,11 @@ EOT;
     }
 
     /**
+     * @param bool $decorated
+     *
      * @return CommandTester
      */
-    private function execute()
+    private function execute($decorated)
     {
         $fixer = $this->prophesize();
         $fixer->willImplement('PhpCsFixer\Fixer\DefinedFixerInterface');
@@ -165,7 +203,7 @@ EOT;
                 'name' => 'Foo/bar',
             ),
             array(
-                'decorated' => false,
+                'decorated' => $decorated,
             )
         );
 
