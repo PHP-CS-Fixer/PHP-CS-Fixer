@@ -113,23 +113,19 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
-
-        $assertions = new FixerOptionBuilder('assertions', 'List of assertion methods to fix.');
-        $assertions = $assertions
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([
-                $generator->allowedValueIsSubsetOf(array_keys(self::$assertionMap)),
-            ])
-            ->setDefault([
-                'assertAttributeEquals',
-                'assertAttributeNotEquals',
-                'assertEquals',
-                'assertNotEquals',
-            ])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('assertions', [$assertions]);
+        return new FixerConfigurationResolverRootless('assertions', [
+            (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$assertionMap)),
+                ])
+                ->setDefault([
+                    'assertAttributeEquals',
+                    'assertAttributeNotEquals',
+                    'assertEquals',
+                    'assertNotEquals',
+                ])
+                ->getOption(),
+        ]);
     }
 }

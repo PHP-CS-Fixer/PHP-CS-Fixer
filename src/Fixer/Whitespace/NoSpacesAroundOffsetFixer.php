@@ -91,20 +91,17 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
         $values = ['inside', 'outside'];
 
-        $positions = new FixerOptionBuilder('positions', 'Whether spacing should be fixed inside and/or outside the offset braces.');
-        $positions = $positions
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([
-                $generator->allowedValueIsSubsetOf($values),
-            ])
-            ->setDefault($values)
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('positions', [$positions]);
+        return new FixerConfigurationResolverRootless('positions', [
+            (new FixerOptionBuilder('positions', 'Whether spacing should be fixed inside and/or outside the offset braces.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
+                ])
+                ->setDefault($values)
+                ->getOption(),
+        ]);
     }
 
     /**
