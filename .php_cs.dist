@@ -37,6 +37,7 @@ return PhpCsFixer\Config::create()
         'semicolon_after_instruction' => true,
         'strict_comparison' => true,
         'strict_param' => true,
+        'method_chaining_indentation' => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
