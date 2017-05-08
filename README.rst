@@ -1126,8 +1126,8 @@ fixed but without actually modifying them:
     $ php php-cs-fixer.phar fix /path/to/code --dry-run
 
 Instead of using command line options to customize the rule, you can save the
-project configuration in a ``.php_cs.dist`` file in the root directory
-of your project. The file must return an instance of ``PhpCsFixer\ConfigInterface``,
+project configuration in a ``.php_cs.dist`` file in the root directory of your project.
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.1/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -1182,8 +1182,7 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ;
 
 You may want to use non-linux whitespaces in your project. Then you need to
-configure them in your config file. Please be aware that this feature is
-experimental.
+configure them in your config file.
 
 .. code-block:: php
 

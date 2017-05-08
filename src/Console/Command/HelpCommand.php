@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
@@ -19,6 +20,10 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
+use Symfony\Component\Console\Command\HelpCommand as BaseHelpCommand;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -27,9 +32,11 @@ use PhpCsFixer\RuleSet;
  *
  * @internal
  */
-final class CommandHelp
+final class HelpCommand extends BaseHelpCommand
 {
     /**
+     * Returns help-copy suitable for console output.
+     *
      * @return string
      */
     public static function getHelpCopy()
@@ -112,8 +119,8 @@ fixed but without actually modifying them:
     <info>$ php %command.full_name% /path/to/code --dry-run</info>
 
 Instead of using command line options to customize the rule, you can save the
-project configuration in a <comment>.php_cs.dist</comment> file in the root directory
-of your project. The file must return an instance of ``PhpCsFixer\ConfigInterface``,
+project configuration in a <comment>.php_cs.dist</comment> file in the root directory of your project.
+The file must return an instance of `PhpCsFixer\ConfigInterface` (<url>%%%CONFIG_INTERFACE_URL%%%</url>)
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -144,7 +151,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
 **NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
 
-See `Symfony\\\\Finder <http://symfony.com/doc/current/components/finder.html>`_
+See `Symfony\Finder` (<url>http://symfony.com/doc/current/components/finder.html</url>)
 online documentation for other `Finder` methods.
 
 You may also use a blacklist for the rules instead of the above shown whitelist approach.
@@ -168,8 +175,7 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ?>
 
 You may want to use non-linux whitespaces in your project. Then you need to
-configure them in your config file. Please be aware that this feature is
-experimental.
+configure them in your config file.
 
     <?php
 
@@ -243,6 +249,12 @@ Exit code is build using following bit flags:
 EOF
         ;
 
+        $template = str_replace(
+            '%%%CONFIG_INTERFACE_URL%%%',
+            sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v%s/src/ConfigInterface.php', self::getLatestReleaseVersionFromChangeLog()),
+            $template
+        );
+
         return str_replace(
            '%%%FIXERS_DETAILS%%%',
             self::getFixersHelp(),
@@ -300,8 +312,8 @@ EOF
 
             usort($allowed, function ($valueA, $valueB) {
                 return strcasecmp(
-                    CommandHelp::toString($valueA),
-                    CommandHelp::toString($valueB)
+                    HelpCommand::toString($valueA),
+                    HelpCommand::toString($valueB)
                 );
             });
 
@@ -313,6 +325,59 @@ EOF
         return $allowed;
     }
 
+    /**
+     * @throws \RuntimeException when failing to parse the change log file
+     *
+     * @return string
+     */
+    public static function getLatestReleaseVersionFromChangeLog()
+    {
+        static $version = null;
+
+        if (null !== $version) {
+            return $version;
+        }
+
+        $currentMajor = (int) Application::VERSION;
+        $changelogFile = __DIR__.'/../../../CHANGELOG.md';
+        $changelog = @file_get_contents($changelogFile);
+
+        if (false === $changelog) {
+            $error = error_get_last();
+
+            throw new \RuntimeException(sprintf(
+                'Failed to read content of the changelog file "%s".%s',
+                $changelogFile,
+                $error ? ' '.$error['message'] : ''
+            ));
+        }
+
+        for ($i = $currentMajor; $i > 0; --$i) {
+            if (1 === preg_match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
+                $version = $matches[1];
+
+                break;
+            }
+        }
+
+        if (null === $version) {
+            throw new \RuntimeException(sprintf('Failed to parse changelog data of "%s".', $changelogFile));
+        }
+
+        return $version;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $output->getFormatter()->setStyle('url', new OutputFormatterStyle('blue'));
+    }
+
+    /**
+     * @return string
+     */
     private static function getFixersHelp()
     {
         $help = '';
