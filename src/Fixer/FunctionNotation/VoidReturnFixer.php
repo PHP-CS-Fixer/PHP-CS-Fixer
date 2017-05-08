@@ -193,8 +193,8 @@ final class VoidReturnFixer extends AbstractFixer
                 continue;
             }
 
-            $nextToken = $tokens->getNextMeaningfulToken($i);
-            if (!$tokens[$nextToken]->equals(';')) {
+            $i = $tokens->getNextMeaningfulToken($i);
+            if (!$tokens[$i]->equals(';')) {
                 return false;
             }
         }
