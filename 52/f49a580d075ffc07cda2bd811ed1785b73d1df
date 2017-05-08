@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-25T07:20:29Z
+
+What is left is fixing the display of the RST formatted URL's in the commandline output.
+I'm planning on making the result of `CommandHelp::getHelpCopy` commandline friendly output only and fix to RST where needed in the readme command. Current the result is a mix of commandline stuff (with `<comment>` tags and such) and RST formatted links, we should return in one format IMO.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-25T08:15:37Z
+
+![new](https://cloud.githubusercontent.com/assets/10462973/25375156/1831fc3e-29a0-11e7-8eb5-0f33d8f5b282.png)
+
+old (top) vs new
