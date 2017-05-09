@@ -154,6 +154,16 @@ $foo
             ->bar();
             ',
             ],
+            [
+                '<?php
+        return new Foo("param", [
+            (new Bar("param1", "param2"))
+                ->Foo([
+                    (new Bar())->foo(),
+                ])
+            ]);
+                ',
+            ],
         ];
     }
 

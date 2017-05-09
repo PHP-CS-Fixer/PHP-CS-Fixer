@@ -153,8 +153,12 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         $tokenCleanContent = trim($tokens[$end]->getContent());
         if (')' === $tokenCleanContent) {
-            if (CT::T_BRACE_CLASS_INSTANTIATION_CLOSE === $tokens[$end]->getId() && !$tokens->findGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, $start, $end)) {
+            if (CT::T_BRACE_CLASS_INSTANTIATION_CLOSE === $tokens[$end]->getId()) {
                 // src/Tokenizer/Transformer/BraceClassInstantiationTransformer.php
+                if ($tokens->findGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, $start, $end)) {
+                    return false;
+                }
+
                 return true;
             }
 
