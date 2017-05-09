@@ -197,7 +197,7 @@ final class Tokens extends \SplFixedArray
                 isset($this[$index + 3])
                 && $this[$index + 2]->isType(DocLexer::T_NONE)
                 && $this[$index + 3]->isType(DocLexer::T_OPEN_PARENTHESIS)
-                && preg_match('/^(\n\s*\*\s*)*\s*$/', $this[$index + 2]->getContent())
+                && preg_match('/^(\R\s*\*\s*)*\s*$/', $this[$index + 2]->getContent())
             ) {
                 $currentIndex = $index + 3;
             }
