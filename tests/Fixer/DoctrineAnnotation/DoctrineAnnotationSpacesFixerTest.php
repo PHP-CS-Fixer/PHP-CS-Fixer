@@ -42,6 +42,22 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
+     * @param string      $expected
+     * @param string|null $input
+     *
+     * @dataProvider getFixAllCases
+     */
+    public function testFixAllWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixAll($expected, $input);
+    }
+
+    /**
      * @return array
      */
     public function getFixAllCases()
@@ -331,6 +347,22 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
+     * @param string      $expected
+     * @param string|null $input
+     *
+     * @dataProvider getFixAroundParenthesesOnlyCases
+     */
+    public function testFixAroundParenthesesOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixAroundParenthesesOnly($expected, $input);
+    }
+
+    /**
      * @return array
      */
     public function getFixAroundParenthesesOnlyCases()
@@ -567,6 +599,22 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
             'around_array_assignments' => false,
         ]);
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param string|null $input
+     *
+     * @dataProvider getFixAroundCommasOnlyCases
+     */
+    public function testFixAroundCommasOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixAroundCommasOnly($expected, $input);
     }
 
     /**
@@ -832,6 +880,22 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
+     * @param string      $expected
+     * @param string|null $input
+     *
+     * @dataProvider getFixAroundArgumentAssignmentsOnlyCases
+     */
+    public function testFixAroundArgumentAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixAroundArgumentAssignmentsOnly($expected, $input);
+    }
+
+    /**
      * @return array
      */
     public function getFixAroundArgumentAssignmentsOnlyCases()
@@ -1083,6 +1147,22 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
             'around_array_assignments' => true,
         ]);
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param string|null $input
+     *
+     * @dataProvider getFixAroundArrayAssignmentsOnlyCases
+     */
+    public function testFixAroundArrayAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixAroundArrayAssignmentsOnly($expected, $input);
     }
 
     /**
