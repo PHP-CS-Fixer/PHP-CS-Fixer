@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-05-07T08:24:33Z
+
+On a related note, I think the diff filter could be replaced with just lowercase d, which includes everything except for deleted files. It's also more future proof.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-07T19:17:30Z
+
+I would keep it as is, lowercased filter was introduced in git v2
