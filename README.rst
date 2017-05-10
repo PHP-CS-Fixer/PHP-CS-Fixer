@@ -1073,6 +1073,11 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
 
+* **switch_case_curly_brace**
+                         Removes unneeded curly braces
+                         after case- and default
+                         statements.
+
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 
   A case should be followed by a colon and not a semicolon.
