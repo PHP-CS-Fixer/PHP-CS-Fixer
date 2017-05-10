@@ -175,7 +175,7 @@ EOT;
         ));
 
         $things = false;
-        $fixer->configure(null)->will(function () use (&$things) {
+        $fixer->configure(array())->will(function () use (&$things) {
             $things = false;
         });
         $fixer->configure(array('things' => true))->will(function () use (&$things) {
