@@ -47,6 +47,15 @@ final class DoctrineAnnotationArrayAssignmentFixer extends AbstractDoctrineAnnot
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must run before DoctrineAnnotationSpacesFixer
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createConfigurationDefinition()
     {
         $options = parent::createConfigurationDefinition()->getOptions();
