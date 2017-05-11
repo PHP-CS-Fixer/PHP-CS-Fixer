@@ -500,11 +500,14 @@ EOF
                             '/(`.+?`)/',
                             '<info>$1</info>',
                             lcfirst(preg_replace('/\.$/', '', $option->getDescription()))
-                        ).'; ';
+                        );
                         if ($option->hasDefault()) {
-                            $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
+                            $default = $option->getDefault();
+                            if (!$default instanceof \Closure) {
+                                $line .= '; defaults to <comment>'.self::toString($default).'</comment>';
+                            }
                         } else {
-                            $line .= 'required';
+                            $line .= '; required';
                         }
 
                         foreach (self::wordwrap($line, 72) as $index => $line) {
