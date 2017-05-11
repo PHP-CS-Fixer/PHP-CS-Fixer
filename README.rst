@@ -367,6 +367,8 @@ Choose from the list of available rules:
     'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
     'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
     'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+  - ``indent_mixed_lines`` (``bool``): whether to indent lines that have content
+    before closing parenthesis; defaults to ``false``
 
 * **doctrine_annotation_spaces**
 
