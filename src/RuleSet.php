@@ -173,6 +173,9 @@ final class RuleSet implements RuleSetInterface
                 'property',
             ),
         ),
+        '@PHP71Migration:risky' => array(
+            '@PHP70Migration:risky' => true,
+        ),
     );
 
     /**
