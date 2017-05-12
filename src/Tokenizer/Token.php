@@ -37,6 +37,13 @@ class Token
     private $id;
 
     /**
+     * Line number from which this token was originally parsed.
+     *
+     * @var int|null
+     */
+    private $originalLineNumber;
+
+    /**
      * If token prototype is an array.
      *
      * @var bool
@@ -51,19 +58,35 @@ class Token
     private $changed = false;
 
     /**
-     * Constructor.
+     * Initializes this instance with the specified token prototype, and optionally, the previous token. When the
+     * previous token is specified, the line number for single-character tokens is derived from the previous token.
      *
-     * @param string|array $token token prototype
+     * @param string|array $token         token prototype
+     * @param Token|null   $previousToken Optional. Previous token.
      */
-    public function __construct($token)
+    public function __construct($token, $previousToken = null)
     {
         if (is_array($token)) {
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
+
+            // Line number may be unspecified for fabricated tokens.
+            if (isset($token[2])) {
+                $this->originalLineNumber = $token[2];
+            }
         } else {
             $this->isArray = false;
             $this->content = $token;
+
+            if ($previousToken) {
+                $this->originalLineNumber = $previousToken->getOriginalLineNumber();
+
+                // When previous line contained one or more newlines, this token must appear that many lines ahead.
+                if ($newlineCount = $previousToken->countNewlines()) {
+                    $this->originalLineNumber += $newlineCount;
+                }
+            }
         }
     }
 
@@ -107,6 +130,16 @@ class Token
     public function clearChanged()
     {
         $this->changed = false;
+    }
+
+    /**
+     * Counts the number of newlines (\n) in whitespace tokens.
+     *
+     * @return int Number of newlines
+     */
+    public function countNewlines()
+    {
+        return $this->isWhitespace() ? substr_count($this->content, "\n") : 0;
     }
 
     /**
@@ -224,6 +257,16 @@ class Token
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Gets the line number from which this token was originally parsed.
+     *
+     * @return int|null Line number
+     */
+    public function getOriginalLineNumber()
+    {
+        return $this->originalLineNumber;
     }
 
     /**
@@ -456,6 +499,16 @@ class Token
         $this->isArray = false;
         $this->id = null;
         $this->content = $prototype;
+    }
+
+    /**
+     * Sets the changed flag to the specified value.
+     *
+     * @param bool $changed true if this token has changed, otherwise false
+     */
+    public function setChanged($changed)
+    {
+        $this->changed = (bool) $changed;
     }
 
     /**

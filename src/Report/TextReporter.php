@@ -62,7 +62,16 @@ final class TextReporter implements ReporterInterface
     {
         return sprintf(
             $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
-            implode(', ', $fixResult['appliedFixers'])
+            implode(
+                '; ',
+                array_map(
+                    function ($fixer, $lines) {
+                        return sprintf('%s line%s %s', $fixer, count($lines) !== 1 ? 's' : '', implode(', ', $lines));
+                    },
+                    array_keys($fixResult['appliedFixers']),
+                    $fixResult['appliedFixers']
+                )
+            )
         );
     }
 

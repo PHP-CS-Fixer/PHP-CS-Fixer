@@ -125,7 +125,7 @@ final class JunitReporter implements ReporterInterface
         if ($shouldAddAppliedFixers) {
             $failureContent = "applied fixers:\n---------------\n";
 
-            foreach ($fixResult['appliedFixers'] as $appliedFixer) {
+            foreach (array_keys($fixResult['appliedFixers']) as $appliedFixer) {
                 $failureContent .= "* {$appliedFixer}\n";
             }
         } else {

@@ -418,6 +418,27 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Finds all changed lines numbers.
+     *
+     * @return int[] Line numbers
+     */
+    public function findChangedLines()
+    {
+        $lines = array();
+
+        foreach ($this as $index => $token) {
+            if ($token->isChanged()) {
+                $lines[] = $this->backtrackToNearestLineNumber($index);
+            }
+        }
+
+        sort($lines);
+
+        // Call to array_values ensures keys are contiguous, especially for JSON output.
+        return array_values(array_unique($lines));
+    }
+
+    /**
      * Find tokens of given kind.
      *
      * @param int|array $possibleKind kind or array of kind
@@ -821,6 +842,9 @@ class Tokens extends \SplFixedArray
                 throw new \InvalidArgumentException('Must not add empty token to collection.');
             }
 
+            // Mark inserted token as changed.
+            $items[$i]->setChanged(true);
+
             $this[$i + $index] = $items[$i];
         }
     }
@@ -955,7 +979,7 @@ class Tokens extends \SplFixedArray
         $this->setSize(count($tokens));
 
         foreach ($tokens as $index => $token) {
-            $this[$index] = new Token($token);
+            $this[$index] = $previousToken = new Token($token, isset($previousToken) ? $previousToken : null);
         }
 
         $transformers = Transformers::create();
@@ -1145,6 +1169,30 @@ class Tokens extends \SplFixedArray
         }
 
         $this[$nextIndex]->clear();
+    }
+
+    /**
+     * Backtracks through the token list to find the line number of the nearest token, including itself, starting at
+     * the specified token index.
+     *
+     * @param int $index Token index
+     *
+     * @return int Line number
+     */
+    private function backtrackToNearestLineNumber($index)
+    {
+        $newlines = 0;
+
+        do {
+            $token = $this[$index];
+            $newlines += $token->countNewlines();
+
+            if (null !== $originalLineNumber = $token->getOriginalLineNumber()) {
+                return $originalLineNumber + $newlines;
+            }
+        } while (--$index > 0);
+
+        return 1;
     }
 
     /**
