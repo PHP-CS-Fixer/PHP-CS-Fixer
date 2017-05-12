@@ -869,6 +869,85 @@ PHP;
     }
 
     /**
+     * @param string $expected   valid PHP code
+     * @param string $input      valid PHP code
+     * @param int    $index      token index
+     * @param int    $offset
+     * @param string $whiteSpace white space
+     *
+     * @dataProvider provideEnsureWhitespaceAtIndexCases
+     */
+    public function testEnsureWhitespaceAtIndex($expected, $input, $index, $offset, $whiteSpace)
+    {
+        $tokens = Tokens::fromCode($input);
+        $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
+
+        $this->assertSame($expected, $tokens->generateCode());
+    }
+
+    public function provideEnsureWhitespaceAtIndexCases()
+    {
+        return array(
+            array(
+                '<?php ',
+                '<?php',
+                0,
+                1,
+                ' ',
+            ),
+            array(
+                "<?php\n",
+                '<?php',
+                0,
+                1,
+                "\n",
+            ),
+            array(
+                "<?php\t",
+                '<?php',
+                0,
+                1,
+                "\t",
+            ),
+            array(
+                '<?php
+//
+ echo $a;',
+                '<?php
+//
+echo $a;',
+                2,
+                1,
+                "\n ",
+            ),
+            array(
+                '<?php
+ echo $a;',
+                '<?php
+echo $a;',
+                0,
+                1,
+                "\n ",
+            ),
+            array(
+                '<?php
+echo $a;',
+                '<?php echo $a;',
+                0,
+                1,
+                "\n",
+            ),
+            array(
+                "<?php\techo \$a;",
+                '<?php echo $a;',
+                0,
+                1,
+                "\t",
+            ),
+        );
+    }
+
+    /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */
