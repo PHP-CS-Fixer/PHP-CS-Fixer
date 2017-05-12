@@ -169,7 +169,7 @@ EOT;
         ));
 
         $things = false;
-        $fixer->configure(null)->will(function () use (&$things) {
+        $fixer->configure([])->will(function () use (&$things) {
             $things = false;
         });
         $fixer->configure(['things' => true])->will(function () use (&$things) {

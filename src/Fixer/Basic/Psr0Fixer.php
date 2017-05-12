@@ -41,7 +41,8 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurati
 namespace PhpCsFixer\FIXER\Basic;
 class InvalidName {}
 ',
-                    new \SplFileInfo(__FILE__)
+                    new \SplFileInfo(__FILE__),
+                    ['dir' => realpath(__DIR__.'/../..')]
                 ),
                 new FileSpecificCodeSample(
                     '<?php
