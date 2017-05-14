@@ -65,6 +65,7 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
+        \PhpCsFixer\Test\Assert\AssertTokensTrait::class,
         \PhpCsFixer\Test\IntegrationCaseFactory::class,
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
