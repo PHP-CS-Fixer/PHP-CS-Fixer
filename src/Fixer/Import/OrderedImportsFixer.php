@@ -480,9 +480,9 @@ use function CCC\AA;
     private function sortByAlgorithm($indexes)
     {
         if (self::SORT_ALPHA === $this->configuration['sortAlgorithm']) {
-            uasort($indexes, array($this, 'sortAlphabetically'));
+            uasort($indexes, [$this, 'sortAlphabetically']);
         } elseif (self::SORT_LENGTH === $this->configuration['sortAlgorithm']) {
-            uasort($indexes, array($this, 'sortByLength'));
+            uasort($indexes, [$this, 'sortByLength']);
         } else {
             throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
         }

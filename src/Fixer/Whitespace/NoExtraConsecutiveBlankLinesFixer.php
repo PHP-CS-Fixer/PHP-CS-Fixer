@@ -76,7 +76,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     {
         parent::configure($configuration);
 
-        static $reprToTokenMap = array(
+        static $reprToTokenMap = [
             'break' => T_BREAK,
             'continue' => T_CONTINUE,
             'extra' => T_WHITESPACE,
@@ -87,9 +87,9 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
             'square_brace_block' => CT::T_ARRAY_SQUARE_BRACE_OPEN,
             'curly_brace_block' => '{',
             'parenthesis_brace_block' => '(',
-        );
+        ];
 
-        static $tokenKindCallbackMap = array(
+        static $tokenKindCallbackMap = [
             T_BREAK => 'fixAfterToken',
             T_CONTINUE => 'fixAfterToken',
             T_WHITESPACE => 'removeMultipleBlankLines',
@@ -98,12 +98,12 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
             T_USE => 'removeBetweenUse',
             CT::T_USE_TRAIT => 'removeBetweenUse',
             CT::T_ARRAY_SQUARE_BRACE_OPEN => 'fixStructureOpenCloseIfMultiLine', // typeless '[' tokens should not be fixed (too rare)
-        );
+        ];
 
-        static $tokenEqualsMap = array(
+        static $tokenEqualsMap = [
             '{' => 'fixStructureOpenCloseIfMultiLine', // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
             '(' => 'fixStructureOpenCloseIfMultiLine', // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
-        );
+        ];
 
         $tokensAssoc = array_flip(array_intersect_key($reprToTokenMap, array_flip($this->configuration['tokens'])));
 

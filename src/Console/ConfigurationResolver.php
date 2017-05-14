@@ -249,10 +249,10 @@ final class ConfigurationResolver
     public function getDiffer()
     {
         if (null === $this->differ) {
-            $mapper = array(
+            $mapper = [
                 'null' => function () { return new NullDiffer(); },
                 'sbd' => function () { return new SebastianBergmannDiffer(); },
-            );
+            ];
 
             $option = $this->options['diff'] ? 'sbd' : 'null';
 

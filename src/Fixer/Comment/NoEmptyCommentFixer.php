@@ -154,11 +154,11 @@ final class NoEmptyCommentFixer extends AbstractFixer
      */
     private function isEmptyComment($content)
     {
-        static $mapper = array(
+        static $mapper = [
             self::TYPE_HASH => '|^#\s*$|', // single line comment starting with '#'
             self::TYPE_SLASH_ASTERISK => '|^/\*\s*\*/$|', // comment starting with '/*' and ending with '*/' (but not a PHPDoc)
             self::TYPE_DOUBLE_SLASH => '|^//\s*$|', // single line comment starting with '//'
-        );
+        ];
 
         $type = $this->getCommentType($content);
 
