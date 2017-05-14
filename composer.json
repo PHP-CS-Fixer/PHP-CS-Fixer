@@ -32,6 +32,8 @@
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.1",
         "justinrainbow/json-schema": "^5.0",
+        "mi-schi/phpmd-extension": "^4.2",
+        "phpmd/phpmd": "^2.4.3",
         "phpunit/phpunit": "^4.8.35 || ^5.4.3",
         "satooshi/php-coveralls": "^1.0",
         "symfony/phpunit-bridge": "^3.2.2"

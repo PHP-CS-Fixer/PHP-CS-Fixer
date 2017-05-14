@@ -295,8 +295,6 @@ use function CCC\AA;
     }
 
     /**
-     * Prepare namespace for sorting.
-     *
      * @param string $namespace
      *
      * @return string
@@ -481,15 +479,12 @@ use function CCC\AA;
      */
     private function sortByAlgorithm($indexes)
     {
-        switch ($this->configuration['sortAlgorithm']) {
-            case self::SORT_ALPHA:
-                uasort($indexes, [$this, 'sortAlphabetically']);
-                break;
-            case self::SORT_LENGTH:
-                uasort($indexes, [$this, 'sortByLength']);
-                break;
-            default:
-                throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
+        if (self::SORT_ALPHA === $this->configuration['sortAlgorithm']) {
+            uasort($indexes, [$this, 'sortAlphabetically']);
+        } elseif (self::SORT_LENGTH === $this->configuration['sortAlgorithm']) {
+            uasort($indexes, [$this, 'sortByLength']);
+        } else {
+            throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
         }
 
         return $indexes;

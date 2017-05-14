@@ -100,7 +100,7 @@ class DocBlocks
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$nextIndex - 1]);
             }
 
-            $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
+            $prevToken->setContent($this->fixWhitespaceBeforeDocblock($prevToken->getContent(), $indent));
             $token->setContent($this->fixDocBlock($token->getContent(), $indent));
         }
     }
@@ -119,14 +119,12 @@ class DocBlocks
     }
 
     /**
-     * Fix whitespace before the Docblock.
-     *
      * @param string $content Whitespace before Docblock
      * @param string $indent  Indentation of the documented subject
      *
      * @return string Whitespace including correct indentation for Dockblock after this whitespace
      */
-    private function fixWhitespaceBefore($content, $indent)
+    private function fixWhitespaceBeforeDocblock($content, $indent)
     {
         return rtrim($content, " \t").$indent;
     }

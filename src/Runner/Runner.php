@@ -281,8 +281,6 @@ final class Runner
     }
 
     /**
-     * Dispatch event.
-     *
      * @param string $name
      * @param Event  $event
      */

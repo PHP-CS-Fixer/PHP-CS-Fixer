@@ -76,42 +76,39 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     {
         parent::configure($configuration);
 
-        $this->tokenKindCallbackMap = [];
-        $this->tokenEqualsMap = [];
-        foreach ($this->configuration['tokens'] as $item) {
-            switch ($item) {
-                case 'break':
-                    $this->tokenKindCallbackMap[T_BREAK] = 'fixAfterToken';
-                    break;
-                case 'continue':
-                    $this->tokenKindCallbackMap[T_CONTINUE] = 'fixAfterToken';
-                    break;
-                case 'extra':
-                    $this->tokenKindCallbackMap[T_WHITESPACE] = 'removeMultipleBlankLines';
-                    break;
-                case 'return':
-                    $this->tokenKindCallbackMap[T_RETURN] = 'fixAfterToken';
-                    break;
-                case 'throw':
-                    $this->tokenKindCallbackMap[T_THROW] = 'fixAfterToken';
-                    break;
-                case 'use':
-                    $this->tokenKindCallbackMap[T_USE] = 'removeBetweenUse';
-                    break;
-                case 'use_trait':
-                    $this->tokenKindCallbackMap[CT::T_USE_TRAIT] = 'removeBetweenUse';
-                    break;
-                case 'curly_brace_block':
-                    $this->tokenEqualsMap['{'] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
-                    break;
-                case 'parenthesis_brace_block':
-                    $this->tokenEqualsMap['('] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
-                    break;
-                case 'square_brace_block':
-                    $this->tokenKindCallbackMap[CT::T_ARRAY_SQUARE_BRACE_OPEN] = 'fixStructureOpenCloseIfMultiLine'; // typeless '[' tokens should not be fixed (too rare)
-                    break;
-            }
-        }
+        static $reprToTokenMap = [
+            'break' => T_BREAK,
+            'continue' => T_CONTINUE,
+            'extra' => T_WHITESPACE,
+            'return' => T_RETURN,
+            'throw' => T_THROW,
+            'use' => T_USE,
+            'use_trait' => CT::T_USE_TRAIT,
+            'square_brace_block' => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+            'curly_brace_block' => '{',
+            'parenthesis_brace_block' => '(',
+        ];
+
+        static $tokenKindCallbackMap = [
+            T_BREAK => 'fixAfterToken',
+            T_CONTINUE => 'fixAfterToken',
+            T_WHITESPACE => 'removeMultipleBlankLines',
+            T_RETURN => 'fixAfterToken',
+            T_THROW => 'fixAfterToken',
+            T_USE => 'removeBetweenUse',
+            CT::T_USE_TRAIT => 'removeBetweenUse',
+            CT::T_ARRAY_SQUARE_BRACE_OPEN => 'fixStructureOpenCloseIfMultiLine', // typeless '[' tokens should not be fixed (too rare)
+        ];
+
+        static $tokenEqualsMap = [
+            '{' => 'fixStructureOpenCloseIfMultiLine', // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
+            '(' => 'fixStructureOpenCloseIfMultiLine', // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
+        ];
+
+        $tokensAssoc = array_flip(array_intersect_key($reprToTokenMap, array_flip($this->configuration['tokens'])));
+
+        $this->tokenKindCallbackMap = array_intersect_key($tokenKindCallbackMap, $tokensAssoc);
+        $this->tokenEqualsMap = array_intersect_key($tokenEqualsMap, $tokensAssoc);
     }
 
     /**
