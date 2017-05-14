@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-15T17:40:14Z
+
+OK, whatever I will do it will crash on 5.3. I guess we need to wait with that for dropping of 5.3
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-24T05:46:13Z
+
+You dislike `switch` that much : D
+Anyway, all good. You sure you don't want to add more rules like `GotoStatement` and such?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-24T08:35:37Z
+
+> You dislike switch that much : D
+
+> I'm not a big fan of replacing switches with array maps but this looks like a nice addition :)
+
+for me it's combination of `goto` with `==` (when you cannot enforce using `===`). see the issues we had recently with `case false` and `null` value
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-24T08:37:43Z
+
+> Anyway, all good. You sure you don't want to add more rules like `GotoStatement` and such?
+
+feel free to propose (eg just a list) more of them.
+
+I remember that I have locally few more rules that could be applied on 2.3 branch (due to dropped old PHP versions)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-24T10:46:04Z
+
+all good, however the tests fail ~~because of missing env. var to ignore the PHP constraint.~~
