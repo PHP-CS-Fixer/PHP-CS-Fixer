@@ -258,7 +258,7 @@ final class ConfigurationResolver
 
             if (!isset($mapper[$option])) {
                 throw new InvalidConfigurationException(sprintf(
-                    'Differ must be "sbd" or "sbd-short", got "%s".',
+                    'Differ must be "sbd" or "null", got "%s".',
                     $this->options['diff']
                 ));
             }
