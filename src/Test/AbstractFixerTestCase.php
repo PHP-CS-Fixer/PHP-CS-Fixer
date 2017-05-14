@@ -18,6 +18,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -29,6 +30,8 @@ use Prophecy\Argument;
  */
 abstract class AbstractFixerTestCase extends TestCase
 {
+    use AssertTokensTrait;
+
     /**
      * @var LinterInterface
      */
@@ -185,29 +188,6 @@ abstract class AbstractFixerTestCase extends TestCase
             $this->linter->lintSource($source)->check();
         } catch (\Exception $e) {
             return $e->getMessage()."\n\nSource:\n$source";
-        }
-    }
-
-    private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
-    {
-        foreach ($expectedTokens as $index => $expectedToken) {
-            $inputToken = $inputTokens[$index];
-            $option = ['JSON_PRETTY_PRINT'];
-            $this->assertTrue(
-                $expectedToken->equals($inputToken),
-                sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson($option), $inputToken->toJson($option))
-            );
-        }
-
-        $this->assertSame($expectedTokens->count(), $inputTokens->count(), 'The collection must have the same length than the expected one.');
-
-        $foundTokenKinds = array_keys(AccessibleObject::create($expectedTokens)->foundTokenKinds);
-
-        foreach ($foundTokenKinds as $tokenKind) {
-            $this->assertTrue(
-                $inputTokens->isTokenKindFound($tokenKind),
-                sprintf('The token kind %s must be found in fixed tokens collection.', $tokenKind)
-            );
         }
     }
 
