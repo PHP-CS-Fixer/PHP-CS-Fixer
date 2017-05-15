@@ -126,7 +126,7 @@ EOT
                 if ($details) {
                     $output->writeln(sprintf(
                         '<info>Details</info> %s',
-                        $output->isDecorated()? OutputFormatter::escape($details) : $details
+                        $output->isDecorated() ? OutputFormatter::escape($details) : $details
                     ));
                 }
             }
