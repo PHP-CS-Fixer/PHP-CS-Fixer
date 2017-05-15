@@ -117,24 +117,20 @@ $this->assertNotSame(null, $d);
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
-
-        $assertions = new FixerOptionBuilder('assertions', 'List of assertion methods to fix.');
-        $assertions = $assertions
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([
-                $generator->allowedValueIsSubsetOf(array_keys(self::$assertionFixers)),
-            ])
-            ->setDefault([
-                'assertEquals',
-                'assertSame',
-                'assertNotEquals',
-                'assertNotSame',
-            ])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('assertions', [$assertions]);
+        return new FixerConfigurationResolverRootless('assertions', [
+            (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$assertionFixers)),
+                ])
+                ->setDefault([
+                    'assertEquals',
+                    'assertSame',
+                    'assertNotEquals',
+                    'assertNotSame',
+                ])
+                ->getOption(),
+        ]);
     }
 
     /**

@@ -166,21 +166,19 @@ yield(2);
      */
     protected function createConfigurationDefinition()
     {
-        $statements = new FixerOptionBuilder('statements', 'List of control statements to fix.');
-        $statements = $statements
-            ->setAllowedTypes(['array'])
-            ->setDefault([
-                'break',
-                'clone',
-                'continue',
-                'echo_print',
-                'return',
-                'switch_case',
-                'yield',
-            ])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('statements', [$statements]);
+        return new FixerConfigurationResolverRootless('statements', [
+            (new FixerOptionBuilder('statements', 'List of control statements to fix.'))
+                ->setAllowedTypes(['array'])
+                ->setDefault([
+                    'break',
+                    'clone',
+                    'continue',
+                    'echo_print',
+                    'return',
+                    'switch_case',
+                    'yield',
+                ])
+                ->getOption(),
+        ]);
     }
 }

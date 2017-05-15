@@ -46,29 +46,21 @@ final class FixCommand extends Command
     const EXIT_STATUS_FLAG_EXCEPTION_IN_APP = 64;
 
     /**
-     * EventDispatcher instance.
-     *
      * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
-     * ErrorsManager instance.
-     *
      * @var ErrorsManager
      */
     private $errorsManager;
 
     /**
-     * Stopwatch instance.
-     *
      * @var Stopwatch
      */
     private $stopwatch;
 
     /**
-     * Config instance.
-     *
      * @var ConfigInterface
      */
     private $defaultConfig;
@@ -81,6 +73,16 @@ final class FixCommand extends Command
         $this->errorsManager = new ErrorsManager();
         $this->eventDispatcher = new EventDispatcher();
         $this->stopwatch = new Stopwatch();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Override here to only generate the help copy when used.
+     */
+    public function getHelp()
+    {
+        return HelpCommand::getHelpCopy();
     }
 
     /**
@@ -107,7 +109,6 @@ final class FixCommand extends Command
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
-            ->setHelp(CommandHelp::getHelpCopy())
         ;
     }
 
@@ -156,7 +157,7 @@ final class FixCommand extends Command
             if (null !== $passedConfig && null !== $passedRules) {
                 $stdErr->writeln([
                     sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'When passing both "--config" and "--rules" the rules within the configuration file are not used.'),
-                    sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Passing both options is deprecated; version v3.0 PHP-CS-Fixer will exit with an configuration error code.'),
+                    sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Passing both options is deprecated; version v3.0 PHP-CS-Fixer will exit with a configuration error code.'),
                 ]);
             }
 

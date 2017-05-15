@@ -101,13 +101,11 @@ function foo() {}',
      */
     protected function createConfigurationDefinition()
     {
-        $annotations = new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["author"]`.');
-        $annotations = $annotations
-            ->setAllowedTypes(['array'])
-            ->setDefault([])
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('annotations', [$annotations]);
+        return new FixerConfigurationResolverRootless('annotations', [
+            (new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["author"]`.'))
+                ->setAllowedTypes(['array'])
+                ->setDefault([])
+                ->getOption(),
+        ]);
     }
 }

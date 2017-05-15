@@ -65,37 +65,27 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
      */
     protected function createConfigurationDefinition()
     {
-        $options = parent::createConfigurationDefinition()->getOptions();
-
-        $aroundParentheses = new FixerOptionBuilder('around_parentheses', 'Whether to fix spaces around parentheses.');
-        $options[] = $aroundParentheses
-            ->setAllowedTypes(['bool'])
-            ->setDefault(true)
-            ->getOption()
-        ;
-
-        $aroundCommas = new FixerOptionBuilder('around_commas', 'Whether to fix spaces around commas.');
-        $options[] = $aroundCommas
-            ->setAllowedTypes(['bool'])
-            ->setDefault(true)
-            ->getOption()
-        ;
-
-        $aroundArgumentAssignments = new FixerOptionBuilder('around_argument_assignments', 'Whether to fix spaces around argument assignment operator.');
-        $options[] = $aroundArgumentAssignments
-            ->setAllowedTypes(['bool'])
-            ->setDefault(true)
-            ->getOption()
-        ;
-
-        $aroundArrayAssignments = new FixerOptionBuilder('around_array_assignments', 'Whether to fix spaces around array assignment operators.');
-        $options[] = $aroundArrayAssignments
-            ->setAllowedTypes(['bool'])
-            ->setDefault(true)
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver($options);
+        return new FixerConfigurationResolver(array_merge(
+            parent::createConfigurationDefinition()->getOptions(),
+            [
+                (new FixerOptionBuilder('around_parentheses', 'Whether to fix spaces around parentheses.'))
+                    ->setAllowedTypes(['bool'])
+                    ->setDefault(true)
+                    ->getOption(),
+                (new FixerOptionBuilder('around_commas', 'Whether to fix spaces around commas.'))
+                    ->setAllowedTypes(['bool'])
+                    ->setDefault(true)
+                    ->getOption(),
+                (new FixerOptionBuilder('around_argument_assignments', 'Whether to fix spaces around argument assignment operator.'))
+                    ->setAllowedTypes(['bool'])
+                    ->setDefault(true)
+                    ->getOption(),
+                (new FixerOptionBuilder('around_array_assignments', 'Whether to fix spaces around array assignment operators.'))
+                    ->setAllowedTypes(['bool'])
+                    ->setDefault(true)
+                    ->getOption(),
+            ]
+        ));
     }
 
     /**

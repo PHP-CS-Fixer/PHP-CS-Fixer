@@ -19,7 +19,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 
 /**
- * Handle PHP code linting process.
+ * Handle PHP code linting using separated process of `php -l _file_`.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -35,15 +35,13 @@ final class ProcessLinter implements LinterInterface
     private $temporaryFile;
 
     /**
-     * PHP executable.
+     * Path of PHP executable.
      *
      * @var string
      */
     private $executable;
 
     /**
-     * Files removal handler.
-     *
      * @var FileRemoval
      */
     private $fileRemoval;
@@ -112,8 +110,6 @@ final class ProcessLinter implements LinterInterface
     }
 
     /**
-     * Create process that lint PHP file.
-     *
      * @param string $path path to file
      *
      * @return Process

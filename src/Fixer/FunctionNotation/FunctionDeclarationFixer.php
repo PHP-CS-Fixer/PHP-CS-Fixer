@@ -181,14 +181,12 @@ $f = function () {};
      */
     protected function createConfigurationDefinition()
     {
-        $spacing = new FixerOptionBuilder('closure_function_spacing', 'Spacing to use before open parenthesis for closures.');
-        $spacing = $spacing
-            ->setDefault(self::SPACING_ONE)
-            ->setAllowedValues($this->supportedSpacings)
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver([$spacing]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('closure_function_spacing', 'Spacing to use before open parenthesis for closures.'))
+                ->setDefault(self::SPACING_ONE)
+                ->setAllowedValues($this->supportedSpacings)
+                ->getOption(),
+        ]);
     }
 
     private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end)

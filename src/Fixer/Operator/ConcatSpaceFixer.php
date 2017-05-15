@@ -92,14 +92,12 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
      */
     protected function createConfigurationDefinition()
     {
-        $spacing = new FixerOptionBuilder('spacing', 'Spacing to apply around concatenation operator.');
-        $spacing = $spacing
-            ->setAllowedValues(['one', 'none'])
-            ->setDefault('none')
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver([$spacing]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('spacing', 'Spacing to apply around concatenation operator.'))
+                ->setAllowedValues(['one', 'none'])
+                ->setDefault('none')
+                ->getOption(),
+        ]);
     }
 
     /**

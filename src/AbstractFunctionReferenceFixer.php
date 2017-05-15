@@ -16,8 +16,6 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Base class for function reference fixers.
- *
  * @internal
  *
  * @author Vladimir Reznichenko <kalessil@gmail.com>

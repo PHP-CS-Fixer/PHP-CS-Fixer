@@ -201,44 +201,38 @@ use function CCC\AA;
     {
         $supportedSortTypes = $this->supportedSortTypes;
 
-        $sortAlgorithm = new FixerOptionBuilder('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length');
-        $sortAlgorithm
-            ->setAllowedValues($this->supportedSortAlgorithms)
-            ->setDefault(self::SORT_ALPHA)
-        ;
-
-        $importsOrder = new FixerOptionBuilder('importsOrder', 'Defines the order of import types.');
-        $importsOrder
-            ->setAllowedTypes(['array', 'null'])
-            ->setAllowedValues([function ($value) use ($supportedSortTypes) {
-                if (null !== $value) {
-                    $missing = array_diff($supportedSortTypes, $value);
-                    if (count($missing)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Missing sort %s "%s".',
-                            1 === count($missing) ? 'type' : 'types',
-                            implode('", "', $missing)
-                        ));
-                    }
-
-                    $unknown = array_diff($value, $supportedSortTypes);
-                    if (count($unknown)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Unknown sort %s "%s".',
-                            1 === count($unknown) ? 'type' : 'types',
-                            implode('", "', $unknown)
-                        ));
-                    }
-                }
-
-                return true;
-            }])
-            ->setDefault(null)
-        ;
-
         return new FixerConfigurationResolver([
-            $sortAlgorithm->getOption(),
-            $importsOrder->getOption(),
+            (new FixerOptionBuilder('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length'))
+                ->setAllowedValues($this->supportedSortAlgorithms)
+                ->setDefault(self::SORT_ALPHA)
+                ->getOption(),
+            (new FixerOptionBuilder('importsOrder', 'Defines the order of import types.'))
+                ->setAllowedTypes(['array', 'null'])
+                ->setAllowedValues([function ($value) use ($supportedSortTypes) {
+                    if (null !== $value) {
+                        $missing = array_diff($supportedSortTypes, $value);
+                        if (count($missing)) {
+                            throw new InvalidOptionsException(sprintf(
+                                'Missing sort %s "%s".',
+                                1 === count($missing) ? 'type' : 'types',
+                                implode('", "', $missing)
+                            ));
+                        }
+
+                        $unknown = array_diff($value, $supportedSortTypes);
+                        if (count($unknown)) {
+                            throw new InvalidOptionsException(sprintf(
+                                'Unknown sort %s "%s".',
+                                1 === count($unknown) ? 'type' : 'types',
+                                implode('", "', $unknown)
+                            ));
+                        }
+                    }
+
+                    return true;
+                }])
+                ->setDefault(null)
+                ->getOption(),
         ]);
     }
 
@@ -301,8 +295,6 @@ use function CCC\AA;
     }
 
     /**
-     * Prepare namespace for sorting.
-     *
      * @param string $namespace
      *
      * @return string
@@ -487,15 +479,12 @@ use function CCC\AA;
      */
     private function sortByAlgorithm($indexes)
     {
-        switch ($this->configuration['sortAlgorithm']) {
-            case self::SORT_ALPHA:
-                uasort($indexes, [$this, 'sortAlphabetically']);
-                break;
-            case self::SORT_LENGTH:
-                uasort($indexes, [$this, 'sortByLength']);
-                break;
-            default:
-                throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
+        if (self::SORT_ALPHA === $this->configuration['sortAlgorithm']) {
+            uasort($indexes, [$this, 'sortAlphabetically']);
+        } elseif (self::SORT_LENGTH === $this->configuration['sortAlgorithm']) {
+            uasort($indexes, [$this, 'sortByLength']);
+        } else {
+            throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
         }
 
         return $indexes;

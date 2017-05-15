@@ -127,28 +127,19 @@ interface Bar extends
      */
     protected function createConfigurationDefinition()
     {
-        $multiLineExtendsEachSingleLine = new FixerOptionBuilder('multiLineExtendsEachSingleLine', 'Whether definitions should be multiline.');
-        $multiLineExtendsEachSingleLine
-            ->setAllowedTypes(['bool'])
-            ->setDefault(false)
-        ;
-
-        $singleItemSingleLine = new FixerOptionBuilder('singleItemSingleLine', 'Whether definitions should be single line when including a single item.');
-        $singleItemSingleLine
-            ->setAllowedTypes(['bool'])
-            ->setDefault(false)
-        ;
-
-        $singleLine = new FixerOptionBuilder('singleLine', 'Whether definitions should be single line.');
-        $singleLine
-            ->setAllowedTypes(['bool'])
-            ->setDefault(false)
-        ;
-
         return new FixerConfigurationResolver([
-            $multiLineExtendsEachSingleLine->getOption(),
-            $singleItemSingleLine->getOption(),
-            $singleLine->getOption(),
+            (new FixerOptionBuilder('multiLineExtendsEachSingleLine', 'Whether definitions should be multiline.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder('singleItemSingleLine', 'Whether definitions should be single line when including a single item.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder('singleLine', 'Whether definitions should be single line.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
         ]);
     }
 

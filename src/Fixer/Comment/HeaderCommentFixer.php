@@ -148,41 +148,29 @@ echo 1;
      */
     protected function createConfigurationDefinition()
     {
-        $header = new FixerOptionBuilder('header', 'Proper header content.');
-        $header
-            ->setAllowedTypes(['string'])
-            ->setNormalizer(function (Options $options, $value) {
-                if ('' === trim($value)) {
-                    return '';
-                }
-
-                return $value;
-            })
-        ;
-
-        $commentType = new FixerOptionBuilder('commentType', 'Comment syntax type.');
-        $commentType
-            ->setAllowedValues([self::HEADER_PHPDOC, self::HEADER_COMMENT])
-            ->setDefault(self::HEADER_COMMENT)
-        ;
-
-        $location = new FixerOptionBuilder('location', 'The location of the inserted header.');
-        $location
-            ->setAllowedValues(['after_open', 'after_declare_strict'])
-            ->setDefault('after_declare_strict')
-        ;
-
-        $separate = new FixerOptionBuilder('separate', 'Whether the header should be separated from the file content with a new line.');
-        $separate
-            ->setAllowedValues(['both', 'top', 'bottom', 'none'])
-            ->setDefault('both')
-        ;
-
         return new FixerConfigurationResolver([
-            $commentType->getOption(),
-            $header->getOption(),
-            $location->getOption(),
-            $separate->getOption(),
+            (new FixerOptionBuilder('header', 'Proper header content.'))
+                ->setAllowedTypes(['string'])
+                ->setNormalizer(function (Options $options, $value) {
+                    if ('' === trim($value)) {
+                        return '';
+                    }
+
+                    return $value;
+                })
+                ->getOption(),
+            (new FixerOptionBuilder('commentType', 'Comment syntax type.'))
+                ->setAllowedValues([self::HEADER_PHPDOC, self::HEADER_COMMENT])
+                ->setDefault(self::HEADER_COMMENT)
+                ->getOption(),
+            (new FixerOptionBuilder('location', 'The location of the inserted header.'))
+                ->setAllowedValues(['after_open', 'after_declare_strict'])
+                ->setDefault('after_declare_strict')
+                ->getOption(),
+            (new FixerOptionBuilder('separate', 'Whether the header should be separated from the file content with a new line.'))
+                ->setAllowedValues(['both', 'top', 'bottom', 'none'])
+                ->setDefault('both')
+                ->getOption(),
         ]);
     }
 
@@ -206,8 +194,6 @@ echo 1;
     }
 
     /**
-     * Find the header comment index.
-     *
      * @param Tokens $tokens
      * @param int    $headerNewIndex
      *
@@ -297,6 +283,11 @@ echo 1;
                     $tokens[$headerIndex + 1]->setContent($missing.$tokens[$headerIndex + 1]->getContent());
                 } else {
                     $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, $missing]));
+                }
+            } elseif ($lineBreakCount > 2) {
+                // remove extra line endings
+                if ($tokens[$headerIndex + 1]->isWhitespace()) {
+                    $tokens[$headerIndex + 1]->setContent($lineEnding.$lineEnding);
                 }
             }
         }
