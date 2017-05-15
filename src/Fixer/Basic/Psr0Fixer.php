@@ -44,14 +44,6 @@ class InvalidName {}
                     new \SplFileInfo(__FILE__),
                     array('dir' => realpath(__DIR__.'/../..'))
                 ),
-                new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
-                    new \SplFileInfo(__FILE__),
-                    array('dir' => realpath(__DIR__.'/../..'))
-                ),
             ),
             null,
             'This fixer may change your class name, which will break the code that is depended on old name.'
