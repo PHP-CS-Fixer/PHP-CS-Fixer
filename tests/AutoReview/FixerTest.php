@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
@@ -49,10 +50,8 @@ final class FixerTest extends TestCase
         $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixer->getName()));
 
         $dummyFileInfo = new StdinFileInfo();
-        $sampleCounter = 0;
-        foreach ($samples as $sample) {
-            ++$sampleCounter;
-            $this->assertInstanceOf('PhpCsFixer\FixerDefinition\CodeSampleInterface', $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+        foreach ($samples as $sampleCounter => $sample) {
+            $this->assertInstanceOf(CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
             $code = $sample->getCode();
             $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
 
@@ -77,6 +76,15 @@ final class FixerTest extends TestCase
                 $tokens
             );
             $this->assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixer->getName(), $sampleCounter));
+
+            $duplicatedCodeSamples = array_keys(array_filter(
+                array_slice($samples, 0, $sampleCounter),
+                function (CodeSampleInterface $item) use ($sample) { return $this->areObjectGettersEqual($sample, $item); }
+            ));
+            $this->assertEmpty(
+                $duplicatedCodeSamples,
+                sprintf('[%s] Code sample #%d duplicates #%d.', $fixer->getName(), $sampleCounter, array_pop($duplicatedCodeSamples))
+            );
         }
 
         if ($fixer->isRisky()) {
@@ -155,6 +163,53 @@ final class FixerTest extends TestCase
         return array_map(function (FixerInterface $fixer) {
             return array($fixer);
         }, $fixers);
+    }
+
+    private function getPublicGetterNames($obj)
+    {
+        $classReflection = new \ReflectionClass($obj);
+
+        $methods = array_filter(
+            array_map(
+                function (\ReflectionMethod $reflectionMethod) { return $reflectionMethod->getName(); },
+                $classReflection->getMethods(\ReflectionMethod::IS_PUBLIC)
+            ),
+            function ($methodName) { return 'get' === substr($methodName, 0, 3); }
+        );
+
+        sort($methods);
+
+        return $methods;
+    }
+
+    private function getPublicGetterValues($obj, array $getters)
+    {
+        $values = [];
+
+        foreach ($getters as $getter) {
+            $values[$getter] = $obj->$getter();
+        }
+
+        return $values;
+    }
+
+    private function areObjectGettersEqual(CodeSampleInterface $left, CodeSampleInterface $right)
+    {
+        $leftGetters = $this->getPublicGetterNames($left);
+        $rightGetters = $this->getPublicGetterNames($right);
+
+        if ($leftGetters !== $rightGetters) {
+            return false;
+        }
+
+        $leftValues = $this->getPublicGetterValues($left, $leftGetters);
+        $rightValues = $this->getPublicGetterValues($right, $rightGetters);
+
+        if ($leftValues !== $rightValues) {
+            return false;
+        }
+
+        return true;
     }
 
     private function getAllFixers()
