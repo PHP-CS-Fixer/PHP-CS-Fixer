@@ -77,13 +77,14 @@ final class FixerTest extends TestCase
             );
             $this->assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixer->getName(), $sampleCounter));
 
-            $duplicatedCodeSamples = array_keys(array_filter(
+            $duplicatedCodeSample = array_search(
+                $sample,
                 array_slice($samples, 0, $sampleCounter),
-                function (CodeSampleInterface $item) use ($sample) { return $this->areObjectGettersEqual($sample, $item); }
-            ));
+                false
+            );
             $this->assertEmpty(
-                $duplicatedCodeSamples,
-                sprintf('[%s] Code sample #%d duplicates #%d.', $fixer->getName(), $sampleCounter, array_pop($duplicatedCodeSamples))
+                $duplicatedCodeSample,
+                sprintf('[%s] Code sample #%d duplicates #%d.', $fixer->getName(), $sampleCounter, $duplicatedCodeSample)
             );
         }
 
@@ -163,53 +164,6 @@ final class FixerTest extends TestCase
         return array_map(function (FixerInterface $fixer) {
             return array($fixer);
         }, $fixers);
-    }
-
-    private function getPublicGetterNames($obj)
-    {
-        $classReflection = new \ReflectionClass($obj);
-
-        $methods = array_filter(
-            array_map(
-                function (\ReflectionMethod $reflectionMethod) { return $reflectionMethod->getName(); },
-                $classReflection->getMethods(\ReflectionMethod::IS_PUBLIC)
-            ),
-            function ($methodName) { return 'get' === substr($methodName, 0, 3); }
-        );
-
-        sort($methods);
-
-        return $methods;
-    }
-
-    private function getPublicGetterValues($obj, array $getters)
-    {
-        $values = [];
-
-        foreach ($getters as $getter) {
-            $values[$getter] = $obj->$getter();
-        }
-
-        return $values;
-    }
-
-    private function areObjectGettersEqual(CodeSampleInterface $left, CodeSampleInterface $right)
-    {
-        $leftGetters = $this->getPublicGetterNames($left);
-        $rightGetters = $this->getPublicGetterNames($right);
-
-        if ($leftGetters !== $rightGetters) {
-            return false;
-        }
-
-        $leftValues = $this->getPublicGetterValues($left, $leftGetters);
-        $rightValues = $this->getPublicGetterValues($right, $rightGetters);
-
-        if ($leftValues !== $rightValues) {
-            return false;
-        }
-
-        return true;
     }
 
     private function getAllFixers()
