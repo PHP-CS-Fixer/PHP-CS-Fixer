@@ -252,8 +252,6 @@ final class RuleSet implements RuleSetInterface
     }
 
     /**
-     * Get definition of set.
-     *
      * @param string $name name of set
      *
      * @return array

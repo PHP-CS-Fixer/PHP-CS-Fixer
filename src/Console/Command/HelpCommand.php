@@ -312,8 +312,8 @@ EOF
 
             usort($allowed, function ($valueA, $valueB) {
                 return strcasecmp(
-                    HelpCommand::toString($valueA),
-                    HelpCommand::toString($valueB)
+                    self::toString($valueA),
+                    self::toString($valueB)
                 );
             });
 

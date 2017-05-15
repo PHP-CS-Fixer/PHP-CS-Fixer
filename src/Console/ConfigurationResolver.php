@@ -200,8 +200,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * Returns config instance.
-     *
      * @return ConfigInterface
      */
     public function getConfig()
@@ -234,8 +232,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * Returns config file path.
-     *
      * @return null|string
      */
     public function getConfigFile()
@@ -253,7 +249,21 @@ final class ConfigurationResolver
     public function getDiffer()
     {
         if (null === $this->differ) {
-            $this->differ = false === $this->options['diff'] ? new NullDiffer() : new SebastianBergmannDiffer();
+            $mapper = [
+                'null' => function () { return new NullDiffer(); },
+                'sbd' => function () { return new SebastianBergmannDiffer(); },
+            ];
+
+            $option = $this->options['diff'] ? 'sbd' : 'null';
+
+            if (!isset($mapper[$option])) {
+                throw new InvalidConfigurationException(sprintf(
+                    'Differ must be "sbd" or "null", got "%s".',
+                    $this->options['diff']
+                ));
+            }
+
+            $this->differ = $mapper[$option]();
         }
 
         return $this->differ;
@@ -279,8 +289,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * Returns fixers.
-     *
      * @return FixerInterface[] An array of FixerInterface
      */
     public function getFixers()
