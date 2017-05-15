@@ -219,16 +219,6 @@ function foo($bar)
                 new CodeSample(
 '<?php
 
-function foo($bar)
-{
-    throw new \Exception("Hello!");
-
-}',
-                    array('tokens' => array('throw'))
-                ),
-                new CodeSample(
-'<?php
-
 namespace Foo;
 
 use Bar\Baz;
