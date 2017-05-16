@@ -82,7 +82,7 @@ final class FixerTest extends TestCase
                 array_slice($samples, 0, $sampleCounter),
                 false
             );
-            $this->assertEmpty(
+            $this->assertFalse(
                 $duplicatedCodeSample,
                 sprintf('[%s] Code sample #%d duplicates #%d.', $fixer->getName(), $sampleCounter, $duplicatedCodeSample)
             );
