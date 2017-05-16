@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
@@ -49,10 +50,8 @@ final class FixerTest extends TestCase
         $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixer->getName()));
 
         $dummyFileInfo = new StdinFileInfo();
-        $sampleCounter = 0;
-        foreach ($samples as $sample) {
-            ++$sampleCounter;
-            $this->assertInstanceOf(\PhpCsFixer\FixerDefinition\CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+        foreach ($samples as $sampleCounter => $sample) {
+            $this->assertInstanceOf(CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
             $code = $sample->getCode();
             $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
 
@@ -77,6 +76,16 @@ final class FixerTest extends TestCase
                 $tokens
             );
             $this->assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixer->getName(), $sampleCounter));
+
+            $duplicatedCodeSample = array_search(
+                $sample,
+                array_slice($samples, 0, $sampleCounter),
+                false
+            );
+            $this->assertFalse(
+                $duplicatedCodeSample,
+                sprintf('[%s] Code sample #%d duplicates #%d.', $fixer->getName(), $sampleCounter, $duplicatedCodeSample)
+            );
         }
 
         if ($fixer->isRisky()) {
