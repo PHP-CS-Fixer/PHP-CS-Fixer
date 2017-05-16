@@ -134,7 +134,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                 '<?php function xyz(
                     $a=10,      //comment1
                     $b=20,      //comment2
-                    $c=30) {
+                    $c=30
+                ) {
                 }',
             ],
             'must keep align comments (2)' => [
@@ -181,12 +182,15 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                 '<?php function xyz(
                     $a=10,
                     $b=20,
-                    $c=30) {
+                    $c=30
+                ) {
                 }',
-                '<?php function xyz(
+                '<?php
+                function xyz(
                     $a=10 ,
                     $b=20,
-                    $c=30) {
+                    $c=30
+                ) {
                 }',
             ],
             'multi line testing method call' => [

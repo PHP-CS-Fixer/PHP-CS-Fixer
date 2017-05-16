@@ -38,8 +38,7 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
                 new CodeSample('<?php
 function foo( $bar, $baz )
 {
-}'
-                ),
+}'),
             ]
         );
     }
