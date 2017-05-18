@@ -1,0 +1,127 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-15T06:48:19Z
+
+Follow up on (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2771#issuecomment-301386231)
+
+It turns out we never dealt with `<?php` correctly (note that this must be the only content of the file, so no white space in it what so ever).
+This PR fixes assuring with space after a open tag that already has trailing white space (i.e. T_OPEN_TAG followed by T_WHITESPACE).
+
+Fixing the rare case of a while with only `<?php` will require a new token transformer.
+(https://3v4l.org/LvoW5 shows the case with short tags enabled, so not helpful here)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-15T07:32:11Z
+
+btw. this method doesn't play well with cleared tokens I think, but lets schedule that tweak for a next PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-15T14:30:36Z
+
+@SpacePossum , is it ready? is there a need to push part of this fix into 2.2 line ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-15T14:37:15Z
+
+~the test still fail :|  (src is good, just not the test)~
+tests are green ;)
+
+good to go
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-15T20:34:17Z
+
+btw. @julienfalque is right, the fix in Tokens should end up in the 2.x line before we release a new 2.x version
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-15T20:56:39Z
+
+That's why I asked https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2774#issuecomment-301492813 ;)
+
+please backport src/Tokenizer/Tokens.php and related tests (without trait usage) into 2.2 line
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-16T06:22:43Z
+
+@keradus do you want a new PR for the 2.x line?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-16T09:30:46Z
+
+In original PR targeted for 2.2 you complained you cannot use `assertTokens`.
+At master branch you could use `assertTokens`, but it reveals bug in original solution on 2.2 line.
+Thus, one PR fixing bug shall be targetted on 2.2 (without using of `assertTokens`), while on master there should be only `assertTokens` applied (as test will be already there due to 2.2 bugfix)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-18T10:43:14Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-18T11:40:06Z
+
+what about
+> Thus, one PR fixing bug shall be targetted on 2.2 (without using of `assertTokens`), while on master there should be only `assertTokens` applied (as test will be already there due to 2.2 bugfix)
+
+?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-18T11:42:09Z
+
+>Thus, one PR fixing bug shall be targetted on 2.2 (without using of assertTokens),
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2783
+
+>while on master there should be only assertTokens applied (as test will be already there due to 2.2 bugfix)
+
+sure, but the fixed test needs to be on master as well
+
+the other way would be _not_ fixing the test, but fixing the Tokenizer for not correctly parsing `<?php` to T_OPEN_TAG but to T_INLINE_HTML, that would be a BC break so...
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-18T11:46:38Z
+
+tests will be on master, when you will rebase your PR after I will merge new PR to 2.2 line
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-18T11:52:09Z
+
+>tests will be on master, when you will rebase your PR after I will merge new PR to 2.2 line
+
+>Thus, one PR fixing bug shall be targetted on 2.2 (without using of assertTokens),
+>while on master there should be only assertTokens applied (as test will be already there due to 2.2 bugfix)
+
+if on 2.2 there is only the bug fix of the method in Tokens and on master only the change from content check vs assertTokens check where do the fixed test cases come from?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-18T12:47:15Z
+
+bugfix in src deserves tests update as well, otherwise if wouldn't pass, right?
+2.2
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-18T12:53:25Z
+
+#2783 is merged, please rebase and squash all to one commit of yours
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-18T15:19:54Z
+
+All green, good to go.
+All that is left is your commit @keradus so you could reopen https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2771 and merge just your commit without me a `commiter`
+:+1:
