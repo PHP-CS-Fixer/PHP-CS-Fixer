@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PhpCsFixer\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class TokensTest extends TestCase
 {
+    use AssertTokensTrait;
+
     public function testReadFromCacheAfterClearing()
     {
         $code = '<?php echo 1;';
@@ -873,7 +876,7 @@ PHP;
         $tokens = Tokens::fromCode($input);
         $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
 
-        $this->assertSame($expected, $tokens->generateCode());
+        $this->assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
     public function provideEnsureWhitespaceAtIndexCases()
