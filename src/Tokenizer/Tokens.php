@@ -322,20 +322,39 @@ class Tokens extends \SplFixedArray
      */
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
-        $removeLastCommentLine = function (Token $token, $indexOffset) {
+        $removeLastCommentLine = function (Token $token, $indexOffset, $whitespace) {
             if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
-                $token->setContent(rtrim($token->getContent()));
+                if (0 === strpos($whitespace, "\r\n")) {
+                    $token->setContent(rtrim($token->getContent())."\r\n");
+
+                    return strlen($whitespace) > 2 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
+                        ? substr($whitespace, 2)
+                        : ''
+                    ;
+                }
+
+                $token->setContent(rtrim($token->getContent()).$whitespace[0]);
+
+                return strlen($whitespace) > 1 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
+                    ? substr($whitespace, 1)
+                    : ''
+                ;
             }
+
+            return $whitespace;
         };
 
         if ($this[$index]->isWhitespace()) {
-            $removeLastCommentLine($this[$index - 1], $indexOffset);
+            $whitespace = $removeLastCommentLine($this[$index - 1], $indexOffset, $whitespace);
             $this->overrideAt($index, [T_WHITESPACE, $whitespace]);
 
             return false;
         }
 
-        $removeLastCommentLine($this[$index], $indexOffset);
+        $whitespace = $removeLastCommentLine($this[$index], $indexOffset, $whitespace);
+        if ('' === $whitespace) {
+            return false;
+        }
 
         $this->insertAt(
             $index + $indexOffset,
