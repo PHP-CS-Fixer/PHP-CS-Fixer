@@ -508,13 +508,20 @@ final class ConfigurationResolver
     private function computeConfigFiles()
     {
         $configFile = $this->options['config'];
+        $autolocate = false;
 
         if (null !== $configFile) {
-            if (false === file_exists($configFile) || false === is_readable($configFile)) {
+            if (false === file_exists($configFile)) {
+                if ('-' === $configFile) {
+                    $autolocate = true;
+                } else {
+                    throw new InvalidConfigurationException(sprintf('Cannot find config file "%s".', $configFile));
+                }
+            } elseif (false === is_readable($configFile)) {
                 throw new InvalidConfigurationException(sprintf('Cannot read config file "%s".', $configFile));
+            } else {
+                return [$configFile];
             }
-
-            return [$configFile];
         }
 
         $path = $this->getPath();
@@ -533,6 +540,18 @@ final class ConfigurationResolver
             $configDir.DIRECTORY_SEPARATOR.'.php_cs',
             $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
         ];
+        if (true === $autolocate) {
+            $configDirsDone = [$configDir];
+            for (
+                $checkDir = realpath($configDir.DIRECTORY_SEPARATOR.'..');
+                $checkDir !== false && is_dir($checkDir) && !in_array($checkDir, $configDirsDone, true);
+                $checkDir = realpath($checkDir.DIRECTORY_SEPARATOR.'..')
+            ) {
+                $candidates[] = $checkDir.DIRECTORY_SEPARATOR.'.php_cs';
+                $candidates[] = $checkDir.DIRECTORY_SEPARATOR.'.php_cs.dist';
+                $configDirsDone[] = $checkDir;
+            }
+        }
 
         if ($configDir !== $this->cwd) {
             $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs';

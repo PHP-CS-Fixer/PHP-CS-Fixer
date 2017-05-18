@@ -1,0 +1,7 @@
+<?php
+
+if (!class_exists('Test6Config')) {
+    class Test6Config extends PhpCsFixer\Config {}
+}
+
+return Test6Config::create();
