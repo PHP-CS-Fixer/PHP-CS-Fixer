@@ -34,6 +34,10 @@ final class XmlReporter implements ReporterInterface
      */
     public function generate(ReportSummary $reportSummary)
     {
+        if (!extension_loaded('dom')) {
+            throw new \RuntimeException('Cannot generate report! `ext-dom` is not available!');
+        }
+
         $dom = new \DOMDocument('1.0', 'UTF-8');
         // new nodes should be added to this or existing children
         $root = $dom->createElement('report');
