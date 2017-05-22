@@ -299,7 +299,7 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply around the equal sign;
     defaults to ``'none'``
 
-* **declare_strict_types** [@PHP70Migration:risky]
+* **declare_strict_types** [@PHP70Migration:risky, @PHP71Migration:risky]
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
 
@@ -1112,6 +1112,14 @@ Choose from the list of available rules:
 
   - ``elements`` (``array``): the structural elements to fix (PHP >= 7.1 required
     for ``const``); defaults to ``['property', 'method']``
+
+* **void_return** [@PHP71Migration:risky]
+
+  Add void return type to functions with missing or empty return
+  statements, but priority is given to ``@return`` annotations. Requires
+  PHP >= 7.1.
+
+  *Risky rule: modifies the signature of functions.*
 
 * **whitespace_after_comma_in_array** [@Symfony]
 
