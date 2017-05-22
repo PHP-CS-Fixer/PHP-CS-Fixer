@@ -1,0 +1,215 @@
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-01T18:58:51Z
+
+Thanks for the review!  Just pushed up requested changes.  FYI, this checks off the first checkbox in #2090.
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-01T19:09:07Z
+
+Any tips on how to fix the `fabbot.io` check?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-01T19:37:28Z
+
+Ignore fabbot.io, it's not marked as `Required` hook.
+(under the hood - fabbot has not been upgraded yet to use newest PHP CS Fixer, that's why it is unaware of rules we are using)
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-01T21:00:56Z
+
+Thanks for the review! Just pushed up requested changes.  Some notes though:
+* Found that `__destruct` and `__clone` produce syntax errors if void return type is added, so good finds!
+* I added several other magic methods to the blacklist as they should return something even though adding void return type doesn't cause a syntax error.  Let me know if I shouldn't do this.
+* I added tests that include all magic methods just so everyone is clear on expected behavior.
+* While converting to `\PhpCsFixer\Tokenizer\Token::equals`, I used case insensitive when comparing to the void token in `fixFunctionDefinition`.  My reasoning was incase someone was using something like `Void` instead of `void`.  Let me know if this is wrong and it should always be lowercase.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-05-01T21:02:15Z
+
+> I added several other magic methods to the blacklist as they should return something even though adding void return type doesn't cause a syntax error. Let me know if I shouldn't do this.
+
+👎 Only add the ones that don't work. Interesting that destruct doesn't work.
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-01T21:13:54Z
+
+Looks like Travis build broke because `\PhpCsFixer\AbstractFixer::createConfigurationDefinition` doesn't return anything because it just throws errors, expecting to be overridden.  So, it is getting void return type, but none of the overrides get it.  Any suggestions?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-02T06:28:01Z
+
+> 👎 Only add the ones that don't work.
+
+Why? If the intended behavior of the fixer is to not touch those methods, it should be covered as well.
+
+---
+For the methods that only throw exceptions without any `return`/`yield` statement, maybe the fixer should just ignore them?
+
+What about checking `@return` annotation?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-05-02T08:49:32Z
+
+> If the intended behavior of the fixer is to not touch those methods, it should be covered as well.
+
+"If". I don't see why it shouldn't fix methods that can be fixed.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-02T09:09:09Z
+
+Actually the methods that are blacklisted because _"void return type does not make sense"_ (`__get`, `__isset`, `__sleep`, `__toString`, `__set_state` and `__debugInfo`) are all supposed to return something. That means they should contain a `return` statement and thus will be ignored by the fixer anyway so yes, 👍 for not blacklisting them and not having specific test cases.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-05-02T10:03:06Z
+
+Ok, looks good. 👍
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-02T17:05:54Z
+
+> For the methods that only throw exceptions without any return/yield statement, maybe the fixer should just ignore them?
+
+> What about checking @return annotation?
+
+I like both of these suggestions, but I went with the `@return` annotation to give developers a way to override this fixer.
+
+Changes for this new review:
+* Added `static` on `$blacklistFuncNames`
+* Removed tests and blacklist for all magic methods except for the three that cause syntax errors.
+* Updated description about annotations.
+* I raised the priority to 15 to get ahead of the PhpdocNoEmptyReturnFixer so we can use those annotations prior to their removal.
+* Now functions are skipped if they have a return annotation other than `@return void`.
+* Now functions with no bodies (EG: interface/abstract), but have `@return void` annotation will receive the void return fix.
+
+Please closely review `findReturnAnnotations`, I mostly grabbed that from another fixer and I'm not 100% sure I got it right.
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-02T17:21:30Z
+
+Ran this on my test project and _I think_ I found a valid use case to @GrahamCampbell's argument about not modifying the return type:
+
+```php
+interface InterfaceA {
+    public function foo(): string
+}
+
+class Test implements InterfaceA {
+    public function foo(): string
+    {
+        throw new LogicException('Not implemented yet');
+    }
+}
+```
+Currently the fixer will change `: string` to `: void` even though `foo` method's signature is correct and the `LogicException` is thrown properly without a fatal error.  With the current fixer code though, this can be fixed by adding an annotation.
+
+Should we expect the developer to add the annotation or do we want to remove this feature of the fixer?
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-02T17:28:28Z
+
+I guess a third option would to also implement @julienfalque's 2nd suggestion and skip methods that only throw exceptions, but I'm not entirely sure how to do that safely (EG: if the throw is in an if statement, etc).  Suggestions or code samples are welcomed.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-02T17:41:47Z
+
+Yes I think it's better to ignore this case as it only throws an exception. Maybe you can look only for `throw` statements that are *not* inside a control structure as you cannot be sure those will be executed?
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-02T22:32:51Z
+
+So, I'm having a hard time coming up with a way to check for unconditional throws in a method with no returns/yields.  I could make a dumb check to see if the first statement in the function body is a throw.
+
+At this point though, I'm more in favor of not editing existing return type hints.  What are the reviewers thoughts?  Or does anyone want to jump into the code to help wrap this up?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-03T07:02:48Z
+
+>  I'm more in favor of not editing existing return type hints
+
+if there is already a typehint for output, don't modify it.
+responsibility of this fixer is to add void typehint, not to modify typehint
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-03T16:35:22Z
+
+Ready for review again, the return type check is now in the main loop so it will skip functions with return type hints earlier now.
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-03T22:46:47Z
+
+Updated
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-04T09:44:44Z
+
+damn, you squashed commits :( now I have no easy way to only look at code changed since my last comment :(
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-04T19:23:14Z
+
+Latest round of updates pushed, not squished ;)
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-05T15:21:06Z
+
+Updated PR, thanks!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-06T19:15:32Z
+
+:+1: but minors
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-08T03:22:06Z
+
+Rebased and pushed - note that after the rebase, the README regenerated slightly different.
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-08T17:12:49Z
+
+Woot, thanks for the approval and thanks for iterating on this so many times with me.
+
+Anything else I need to do to get this merged?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-09T07:29:43Z
+
+@mrmark Nope, everything looks good IMO :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-09T10:23:38Z
+
+@mrmark , thanks for great work here ;)
+think of this PR as finished even if not merged, I will merge it later.
+
+---------------------------------------------------------------------------
+
+by mrmark at 2017-05-09T15:18:54Z
+
+Great, thanks all!
