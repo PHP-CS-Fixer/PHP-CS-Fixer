@@ -1,6 +1,6 @@
 #!/bin/bash
 
-files_with_trailing_spaces=$(find . -type f -not -path "./.git/*" -not -path "./vendor/*" -not -path "./tests/Fixtures/*" -exec egrep -nH " $" {} \;)
+files_with_trailing_spaces=$(find . -type f -not -path "./.git/*" -not -path "./dev-tools/vendor/*" -not -path "./vendor/*" -not -path "./tests/Fixtures/*" -exec egrep -nH " $" {} \;)
 
 if [[ $files_with_trailing_spaces ]]
 then
