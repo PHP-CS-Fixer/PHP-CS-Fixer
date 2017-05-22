@@ -63,6 +63,7 @@ final class VersionSpecification implements VersionSpecificationInterface
         if (null !== $this->minimum && $version < $this->minimum) {
             return false;
         }
+
         if (null !== $this->maximum && $version > $this->maximum) {
             return false;
         }

@@ -24,6 +24,7 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\SebastianBergmannShortDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -106,6 +107,7 @@ final class ConfigurationResolver
         'cache-file' => null,
         'config' => null,
         'diff' => null,
+        'differ' => false,
         'dry-run' => null,
         'format' => null,
         'path' => array(),
@@ -253,7 +255,21 @@ final class ConfigurationResolver
     public function getDiffer()
     {
         if (null === $this->differ) {
-            $this->differ = false === $this->options['diff'] ? new NullDiffer() : new SebastianBergmannDiffer();
+            if (false !== $this->options['differ']) {
+                // 'diff' value does not matter here
+                if ('sbd' === $this->options['differ']) {
+                    $this->differ = new SebastianBergmannDiffer();
+                } elseif ('sbd-short' === $this->options['differ']) {
+                    $this->differ = new SebastianBergmannShortDiffer();
+                } else {
+                    throw new InvalidConfigurationException(sprintf(
+                        'Differ must be "sbd" or "sbd-short", got "%s".',
+                        $this->options['differ']
+                    ));
+                }
+            } else {
+                $this->differ = false === $this->options['diff'] ? new NullDiffer() : new SebastianBergmannDiffer();
+            }
         }
 
         return $this->differ;
@@ -459,6 +475,9 @@ final class ConfigurationResolver
         return $this->usingCache;
     }
 
+    /**
+     * @return \Traversable
+     */
     public function getFinder()
     {
         if (null === $this->finder) {
@@ -487,6 +506,9 @@ final class ConfigurationResolver
         return $this->isDryRun;
     }
 
+    /**
+     * @return bool
+     */
     public function shouldStopOnViolation()
     {
         return $this->options['stop-on-violation'];
@@ -564,6 +586,9 @@ final class ConfigurationResolver
         return $this->format;
     }
 
+    /**
+     * @return RuleSet
+     */
     private function getRuleSet()
     {
         if (null === $this->ruleSet) {
@@ -589,7 +614,7 @@ final class ConfigurationResolver
     }
 
     /**
-     * @param iterable $iterable
+     * @param \Traversable|array $iterable
      *
      * @return \Traversable
      */
@@ -676,6 +701,8 @@ final class ConfigurationResolver
 
     /**
      * Apply path on config instance.
+     *
+     * @return \Traversable
      */
     private function resolveFinder()
     {

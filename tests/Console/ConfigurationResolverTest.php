@@ -953,7 +953,20 @@ final class ConfigurationResolverTest extends TestCase
 
         $options = $definition->getOptions();
         $this->assertSame(
-            array('path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress'),
+            array(
+                'path-mode',
+                'allow-risky',
+                'config',
+                'dry-run',
+                'rules',
+                'using-cache',
+                'cache-file',
+                'diff',
+                'differ',
+                'format',
+                'stop-on-violation',
+                'show-progress',
+            ),
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -985,16 +998,16 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param string      $expected
-     * @param string|bool $differConfig
+     * @param string $expected
+     * @param array  $config
      *
      * @dataProvider provideDifferCases
      */
-    public function testResolveDiffer($expected, $differConfig)
+    public function testResolveDiffer($expected, array $config)
     {
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('diff' => $differConfig),
+            $config,
             ''
         );
 
@@ -1006,13 +1019,45 @@ final class ConfigurationResolverTest extends TestCase
         return array(
             array(
                 '\PhpCsFixer\Differ\NullDiffer',
-                false,
+                array('diff' => false),
             ),
             array(
                 '\PhpCsFixer\Differ\SebastianBergmannDiffer',
-                true,
+                array('diff' => true),
+            ),
+            array(
+                '\PhpCsFixer\Differ\SebastianBergmannDiffer',
+                array('diff' => true, 'differ' => 'sbd'),
+            ),
+            array(
+                '\PhpCsFixer\Differ\SebastianBergmannDiffer',
+                array('differ' => 'sbd'),
+            ),
+            array(
+                '\PhpCsFixer\Differ\SebastianBergmannShortDiffer',
+                array('diff' => true, 'differ' => 'sbd-short'),
+            ),
+            array(
+                '\PhpCsFixer\Differ\SebastianBergmannShortDiffer',
+                array('differ' => 'sbd-short'),
             ),
         );
+    }
+
+    public function testUnknownDiffConfiguration()
+    {
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array('differ' => '_unknown_'),
+            ''
+        );
+
+        $this->setExpectedExceptionRegExp(
+            '\PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            '#^Differ must be "sbd" or "sbd-short", got "_unknown_"\.$#'
+        );
+
+        $resolver->getDiffer();
     }
 
     public function testResolveConfigFileOverridesDefault()

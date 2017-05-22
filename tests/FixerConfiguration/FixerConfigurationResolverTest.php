@@ -29,14 +29,14 @@ final class FixerConfigurationResolverTest extends TestCase
     {
         $this->setExpectedException('LogicException', 'Options cannot be empty.');
 
-        $configuration = new FixerConfigurationResolver(array());
+        new FixerConfigurationResolver(array());
     }
 
     public function testWithDuplicatesOptions()
     {
         $this->setExpectedException('LogicException', 'The "foo" option is defined multiple times.');
 
-        $configuration = new FixerConfigurationResolver(array(
+        new FixerConfigurationResolver(array(
             new FixerOption('foo', 'Bar-1.'),
             new FixerOption('foo', 'Bar-2.'),
         ));
