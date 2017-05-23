@@ -73,7 +73,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         foreach ($tokens as $token) {
             if ($token->isGivenKind(T_DOC_COMMENT)) {
                 $token->setContent(preg_replace(
-                    '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(\w.*)$~m', '$1\\\\$2',
+                    '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(\w.*)$~m',
+                    '$1\\\\$2',
                     $token->getContent()
                 ));
             }
