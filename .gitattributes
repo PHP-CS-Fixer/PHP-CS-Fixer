@@ -8,6 +8,7 @@
 benchmark.sh export-ignore
 box.json export-ignore
 check_trailing_spaces.sh export-ignore
+phpmd.xml export-ignore
 phpunit.xml.dist export-ignore
 *       text=auto eol=lf
 *.php   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4 diff=php
