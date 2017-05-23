@@ -60,7 +60,7 @@ before_script:
 
 script:
     - if [ $TASK_SCA == 1 ]; then ./check_trailing_spaces.sh || travis_terminate 1; fi
-    - if [ $TASK_SCA == 1 ] && [ -n "$COMMIT_SCA_FILES" ]; then vendor/bin/phpmd `echo $COMMIT_SCA_FILES | sed 's/ /,/g'` text phpmd.xml --exclude src/Resources,tests/Fixtures || travis_terminate 1; fi;
+    - if [ $TASK_SCA == 1 ] && [ -n "$COMMIT_SCA_FILES" ]; then vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^(src/Resources|tests/Fixtures)" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi;
     - if [ $TASK_SCA == 1 ]; then php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,native_function_invocation -q; fi
     - if [ $TASK_SCA == 1 ]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS --no-dev --prefer-stable; fi
     - if [ $TASK_SCA == 1 ]; then $HOME/.composer/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json || travis_terminate 1; fi
