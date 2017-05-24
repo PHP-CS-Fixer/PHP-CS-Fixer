@@ -117,7 +117,6 @@ final class IntegrationCaseFactory
     private function determineRequirements($config)
     {
         $parsed = $this->parseJson($config, [
-            'hhvm' => true,
             'php' => PHP_VERSION_ID,
         ]);
 
@@ -125,13 +124,6 @@ final class IntegrationCaseFactory
             throw new \InvalidArgumentException(sprintf(
                 'Expected int value like 50509 for "php", got "%s".',
                 is_object($parsed['php']) ? get_class($parsed['php']) : gettype($parsed['php']).'#'.$parsed['php'])
-            );
-        }
-
-        if (!is_bool($parsed['hhvm'])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Expected bool value for "hhvm", got "%s".',
-                is_object($parsed['hhvm']) ? get_class($parsed['hhvm']) : gettype($parsed['hhvm']).'#'.$parsed['hhvm'])
             );
         }
 

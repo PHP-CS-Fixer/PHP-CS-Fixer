@@ -380,12 +380,7 @@ PHP;
      */
     public function testShortOpenTagMonolithicPhpDetection($source, $monolithic)
     {
-        /*
-         * short_open_tag setting is ignored by HHVM
-         * @see https://github.com/facebook/hhvm/issues/4758
-         */
-        if (!ini_get('short_open_tag') && !defined('HHVM_VERSION')) {
-            // Short open tag is parsed as T_INLINE_HTML
+        if (!ini_get('short_open_tag')) {
             $monolithic = false;
         }
 
@@ -761,16 +756,6 @@ PHP;
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
-    }
-
-    public function testParsingWithHHError()
-    {
-        if (!defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for PHP compiler when running on non HHVM compiler.');
-        }
-
-        $this->setExpectedException(\ParseError::class);
-        Tokens::fromCode('<?php# this will cause T_HH_ERROR');
     }
 
     public function testEmptyTokens()

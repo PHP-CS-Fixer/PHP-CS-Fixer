@@ -121,19 +121,6 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
      */
     private function fixEchoToPrint(Tokens $tokens, $index)
     {
-        /*
-         * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-         *
-         * @see https://github.com/facebook/hhvm/issues/4809
-         * @see https://github.com/facebook/hhvm/issues/7161
-         */
-        if (
-            defined('HHVM_VERSION')
-            && 0 === strpos($tokens[$index]->getContent(), '<?=')
-        ) {
-            return;
-        }
-
         $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
         $endTokenIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
         $canBeConverted = true;

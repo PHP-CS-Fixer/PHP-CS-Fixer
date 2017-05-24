@@ -95,12 +95,6 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
-        // HHVM knows better which interfaces you implements
-        // https://github.com/facebook/hhvm/issues/5890
-        if (defined('HHVM_VERSION') && interface_exists('Stringish')) {
-            $this->markTestSkipped('Skipped as HHVM violate inheritance tree with `Stringish` interface.');
-        }
-
         $rc = new \ReflectionClass($className);
 
         $doc = false !== $rc->getDocComment()

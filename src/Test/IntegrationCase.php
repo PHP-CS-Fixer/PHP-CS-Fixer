@@ -40,7 +40,7 @@ final class IntegrationCase
     private $inputCode;
 
     /**
-     * Env requirements (possible keys: php, hhvm).
+     * Env requirements (possible keys: php).
      *
      * @var array
      */
