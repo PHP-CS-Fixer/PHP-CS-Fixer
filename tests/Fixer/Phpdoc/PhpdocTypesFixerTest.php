@@ -19,7 +19,7 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \AbstractPhpdocTypesFixer
+ * @covers \PhpCsFixer\AbstractPhpdocTypesFixer
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocTypesFixer
  */
 final class PhpdocTypesFixerTest extends AbstractFixerTestCase
