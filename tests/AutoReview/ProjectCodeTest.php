@@ -183,7 +183,7 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($className);
 
         if (\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class === $className) {
-            $this->markTestIncomplete('Public properties of fixer \'PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer\' will be remove on 3.0.');
+            $this->markTestIncomplete('Public properties of fixer \'PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer\' will be removed on 3.0.');
         }
 
         $this->assertEmpty(
