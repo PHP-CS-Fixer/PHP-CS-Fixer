@@ -55,7 +55,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
      */
     public function isCandidate(Tokens $tokens)
     {
-        $types = [];
+        $types = [[T_DEFAULT]];
 
         foreach (self::$loops as $loop) {
             $types[] = (array) $loop['lookupTokens'];
@@ -122,6 +122,8 @@ yield(2);
 
         foreach ($tokens as $index => $token) {
             if (!$token->equals('(')) {
+                $this->fixCaseDefault($tokens, $index);
+
                 continue;
             }
 
@@ -180,5 +182,42 @@ yield(2);
                 ])
                 ->getOption(),
         ]);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixCaseDefault(Tokens $tokens, $index)
+    {
+        if (!$tokens[$index]->isGivenKind([T_CASE, T_DEFAULT])) {
+            return;
+        }
+
+        $ternariesCount = 0;
+        for ($colonIndex = $index + 1; ; ++$colonIndex) {
+            // We have to skip ternary case for colons.
+            if ($tokens[$colonIndex]->equals('?')) {
+                ++$ternariesCount;
+            }
+
+            if ($tokens[$colonIndex]->equalsAny([':', ';'])) {
+                if (0 === $ternariesCount) {
+                    break;
+                }
+
+                --$ternariesCount;
+            }
+        }
+
+        do {
+            $openBrace = $tokens->getNextMeaningfulToken($colonIndex);
+            if (!$tokens[$openBrace]->equals('{')) {
+                return;
+            }
+
+            $tokens->clearTokenAndMergeSurroundingWhitespace($tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBrace));
+            $tokens->clearTokenAndMergeSurroundingWhitespace($openBrace);
+        } while (true);
     }
 }
