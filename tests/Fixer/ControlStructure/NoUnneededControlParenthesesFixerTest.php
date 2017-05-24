@@ -493,29 +493,19 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         return[
             [
                 '<?php
-
-$c=  1;
-$b = "c";
-$a = 1;
-
 switch($a) {
     case 1 === $a ? true : ${$b} : //
         echo 456;
         break;
-    
+    '.'
 
-    case ${$b}: 
+    case ${$b}: '.'
         echo 123;
         break;
-    
+    '.'
 }
 ',
                 '<?php
-
-$c=  1;
-$b = "c";
-$a = 1;
-
 switch($a) {
     case (1 === $a ? true : ${$b}) : {//
         echo 456;
