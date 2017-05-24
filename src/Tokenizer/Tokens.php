@@ -967,10 +967,6 @@ class Tokens extends \SplFixedArray
             $this->registerFoundToken($token);
         }
 
-        if (defined('T_HH_ERROR') && $this->isTokenKindFound(T_HH_ERROR)) {
-            throw new \ParseError('Parsing error, encountered "T_HH_ERROR".');
-        }
-
         $this->rewind();
         $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
@@ -1077,20 +1073,8 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
-        $isHhvm = defined('HHVM_VERSION');
         for ($index = 1; $index < $size; ++$index) {
-            if (
-                $this[$index]->isGivenKind([T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO])
-                || (
-                    /*
-                     * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-                     *
-                     * @see https://github.com/facebook/hhvm/issues/4809
-                     * @see https://github.com/facebook/hhvm/issues/7161
-                     */
-                    $isHhvm && $this[$index]->equals([T_ECHO, '<?='])
-                )
-            ) {
+            if ($this[$index]->isGivenKind([T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO])) {
                 return false;
             }
         }

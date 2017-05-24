@@ -31,12 +31,8 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         $this->assertTrue($this->createLinter()->isAsync());
     }
 
-    public function testPrepareCommandOnPhp()
+    public function testPrepareCommand()
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for PHP compiler when running on HHVM compiler.');
-        }
-
         $this->assertSame(
             $this->fixEscape('"php" -l "foo.php"'),
             AccessibleObject::create(new ProcessLinter('php'))->prepareCommand('foo.php')
@@ -45,18 +41,6 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         $this->assertSame(
             $this->fixEscape('"C:\Program Files\php\php.exe" -l "foo bar\baz.php"'),
             AccessibleObject::create(new ProcessLinter('C:\Program Files\php\php.exe'))->prepareCommand('foo bar\baz.php')
-        );
-    }
-
-    public function testPrepareCommandOnHhvm()
-    {
-        if (!defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for HHVM compiler when running on PHP compiler.');
-        }
-
-        $this->assertSame(
-            $this->fixEscape('"hhvm" --php -l "foo.php"'),
-            AccessibleObject::create(new ProcessLinter('hhvm'))->prepareCommand('foo.php')
         );
     }
 
