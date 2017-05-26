@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+echo "PHP-CS-Fixer pre commit hook start"
+
+ROOT=$(git rev-parse --show-toplevel)
+PHP_CS_FIXER_CONFIG_FILE="$ROOT/.php_cs"
+
+if [ -f $PHP_CS_FIXER_CONFIG_FILE ]; then
+
+    if [ -f $ROOT/php-cs-fixer ]; then
+        # Special case for PHP-CS-Fixer itself.
+        PHP_CS_FIXER="./php-cs-fixer"
+    elif [[ $OSTYPE =~ msys* || $OSTYPE =~ win* ]]; then
+        PHP_CS_FIXER="bin/php-cs-fixer.bat"
+    else
+        PHP_CS_FIXER="bin/php-cs-fixer"
+    fi
+
+    git status --porcelain | grep -e '^[AM]\(.*\).php$' | cut -c 3- | while read line; do
+        $PHP_CS_FIXER fix --config=$PHP_CS_FIXER_CONFIG_FILE --verbose "$line";
+        git add "$line";
+    done
+else
+    echo ""
+    echo "$PHP_CS_FIXER_CONFIG_FILE is missing, automatic code style fixing skipped"
+    echo ""
+fi
+
+echo "PHP-CS-Fixer pre commit hook finish"
