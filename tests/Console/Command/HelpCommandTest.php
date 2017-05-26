@@ -10,10 +10,17 @@
  * with this source code in the file LICENSE.
  */
 
+namespace PhpCsFixer\Tests\Console\Command;
+
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ *
+ * @covers \PhpCsFixer\Console\Command\DescribeCommand
+ */
 final class HelpCommandTest extends TestCase
 {
     public function testGetLatestReleaseVersionFromChangeLog()
