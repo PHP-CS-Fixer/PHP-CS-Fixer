@@ -753,103 +753,91 @@ else?><?php echo 5;',
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideAlternativeSyntaxCases
+     * @dataProvider provideConditionsWithoutBraces
      */
-    public function testAlternativeSyntax($expected, $input = null)
+    public function testConditionsWithoutBraces($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideAlternativeSyntaxCases()
+    public function provideConditionsWithoutBraces()
     {
-        return array(
-            array(
-                '<?php
-                    if ($a == 5):
-                        echo 1;
-                    else:
-
-                    endif;
-                ',
-            ),
-            array(
-                '<?php
-                    if ($a == 5):
-                        return 1;
-                    else:
-                        echo "a is neither 5 nor 6";
-                    endif;
-                ',
-            ),
-            array(
-                '<?php
-                    if ($a === false)
-                    {
-                        if ($v)
-throw new Exception($i);
-                    }
-                    else
-                        $ret .= $value;
-
-                    return $ret;',
-            ),
-            array(
-                '<?php
-                    if ($a === false)
-                    {
-                        if ($v){}elseif($a)throw new Exception($i);
-                    }
-                    else
-                        $ret .= $value;
-
-                    return $ret;',
-            ),
-            array(
-                '<?php
-                    if ($a === false)
-                    {
-                        if ($v) { $ret = "foo"; }
-                        else
-                            while($i < 1) throw new Exception($i);
-                    }
-                    else
-                        $ret .= $value;
-
-                    return $ret;',
-            ),
-            array(
-                '<?php
-                    if ($a === false)
-                    {
-                        if ($v) { $ret = "foo"; if($d){return 1;}echo $a; }
-                        elseif($y) /** */ /* *//* */ #...
-                            die;
-                    }
-                    else
-                        $ret .= $value;
-
-                    return $ret;',
-                '<?php
-                    if ($a === false)
-                    {
-                        if ($v) { $ret = "foo"; if($d){return 1;}else{echo $a;} }
-                        elseif($y) /** */ /* *//* */ #...
-                            die;
-                    }
-                    else
-                        $ret .= $value;
-
-                    return $ret;',
-            ),
-//            array( Know missed opportunity, complex to fix and very edge case
-//                '<?php
-//                    if($c) die;  echo 1;
-//                ',
-//                '<?php
-//                    if($c) die; else {echo 1;}
-//                '
-//            ),
+        $cases = array();
+        $statements = array(
+            'die;',
+            'throw new Exception($i);',
+            'while($i < 1) throw/*{}*/new Exception($i);',
+            'while($i < 1){throw new Exception($i);}',
+            'do{throw new Exception($i);}while($i < 1);',
+            'foreach($a as $b)throw new Exception($i);',
+            'foreach($a as $b){throw new Exception($i);}',
         );
+
+        $ifTemplate = '<?php
+            if ($a === false)
+            {
+                if ($v) %s
+            }
+            else
+                $ret .= $value;
+
+            return $ret;'
+        ;
+
+        $IfElseIfTemplate = '<?php
+            if ($a === false)
+            {
+                if ($v) { $ret = "foo"; }
+                elseif($a)
+                    %s
+            }
+            else
+                $ret .= $value;
+
+            return $ret;'
+        ;
+
+        $ifElseTemplate = '<?php
+            if ($a === false)
+            {
+                if ($v) { $ret = "foo"; }
+                else
+                    %s
+            }
+            else
+                $ret .= $value;
+
+            return $ret;'
+        ;
+
+        foreach ($statements as $statement) {
+            $cases[] = array(sprintf($ifTemplate, $statement));
+            $cases[] = array(sprintf($ifElseTemplate, $statement));
+            $cases[] = array(sprintf($IfElseIfTemplate, $statement));
+        }
+
+        $cases[] = array(
+            '<?php
+                if ($a === false)
+                {
+                    if ($v) { $ret = "foo"; if($d){return 1;}echo $a;}
+                }
+                else
+                    $ret .= $value;
+
+                return $ret;',
+            '<?php
+                if ($a === false)
+                {
+                    if ($v) { $ret = "foo"; if($d){return 1;}else{echo $a;}}
+                }
+                else
+                    $ret .= $value;
+
+                return $ret;',
+        );
+
+        return $cases;
     }
 
     /**
@@ -868,7 +856,7 @@ throw new Exception($i);
         foreach ($indexes as $index => $expected) {
             $this->assertSame(
                 $expected,
-                $method->invoke($this->fixer, $tokens, $index),
+                $method->invoke($this->fixer, $tokens, $index, 0),
                 sprintf('Failed in condition without braces check for index %d', $index)
             );
         }
@@ -1002,9 +990,7 @@ throw new Exception($i);
                 array(
                     8 => true,  // die
                     9 => true,  // /**/
-                    10 => true, // ;
                     15 => true, // die
-                    17 => true, // ;
                 ),
                 '<?php
                     if ($a)
@@ -1017,9 +1003,7 @@ throw new Exception($i);
                 array(
                     8 => true,  // die
                     9 => true,  // /**/
-                    10 => true, // ;
                     15 => true, // die
-                    17 => true, // ? >;
                 ),
                 '<?php
                     if ($a)

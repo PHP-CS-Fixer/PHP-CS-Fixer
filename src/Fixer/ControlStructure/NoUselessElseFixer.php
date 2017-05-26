@@ -123,7 +123,7 @@ final class NoUselessElseFixer extends AbstractFixer
                 null === $candidateIndex
                 || $tokens[$candidateIndex]->equalsAny(array(';', array(T_CLOSE_TAG), array(T_IF)))
                 || $this->isInConditional($tokens, $candidateIndex, $previousBlockStart)
-                || $this->isInConditionWithoutBraces($tokens, $candidateIndex)
+                || $this->isInConditionWithoutBraces($tokens, $candidateIndex, $previousBlockStart)
             ) {
                 return;
             }
@@ -237,18 +237,25 @@ final class NoUselessElseFixer extends AbstractFixer
     }
 
     /**
+     * For internal use only, as it is not perfect.
+     *
+     * Returns if the token at given index is part of a if/elseif/else statement
+     * without {}. Assumes not passing the last `;`/close tag of the statement, not
+     * out of range index, etc.
+     *
      * @param Tokens $tokens
-     * @param int    $index  Index of the token to check
+     * @param int    $index           Index of the token to check
+     * @param int    $lowerLimitIndex
      *
      * @return bool
      */
-    private function isInConditionWithoutBraces(Tokens $tokens, $index)
+    private function isInConditionWithoutBraces(Tokens $tokens, $index, $lowerLimitIndex)
     {
-        if ($tokens[$index]->isComment() || $tokens[$index]->isWhitespace() || $tokens[$index]->equals(';')) {
-            $index = $tokens->getPrevMeaningfulToken($index);
-        }
-
         do {
+            if ($tokens[$index]->isComment() || $tokens[$index]->isWhitespace()) {
+                $index = $tokens->getPrevMeaningfulToken($index);
+            }
+
             $token = $tokens[$index];
             if ($token->isGivenKind(array(T_IF, T_ELSEIF, T_ELSE))) {
                 return true;
@@ -293,7 +300,7 @@ final class NoUselessElseFixer extends AbstractFixer
             } else {
                 --$index;
             }
-        } while ($index > 0);
+        } while ($index > $lowerLimitIndex);
 
         return false;
     }
