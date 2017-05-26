@@ -293,51 +293,6 @@ else?><?php echo 5;',
 
         $cases = $this->generateCases($expected, $input);
 
-        // short 'if' statements
-        $expected =
-            '<?php
-                while(true) {
-                    while(true) {
-                        if ($a)
-                            %s
-                        '.'
-                            echo 16677;
-                    }
-                }
-            ';
-
-        $input =
-            '<?php
-                while(true) {
-                    while(true) {
-                        if ($a)
-                            %s
-                        else
-                            echo 16677;
-                    }
-                }
-            ';
-
-        $cases = array_merge($cases, $this->generateCases($expected, $input));
-
-        // short and not short combined
-        $cases[] = array(
-            '<?php
-                if ($a)
-                    return;
-                 '.'
-                    echo 10099;
-                '.'
-            ',
-            '<?php
-                if ($a)
-                    return;
-                else {
-                    echo 10099;
-                }
-            ',
-        );
-
         $cases[] = array(
             '<?php
                 if ($a) {
@@ -824,6 +779,253 @@ else?><?php echo 5;',
                     else:
                         echo "a is neither 5 nor 6";
                     endif;
+                ',
+            ),
+            array(
+                '<?php
+                    if ($a === false)
+                    {
+                        if ($v)
+throw new Exception($i);
+                    }
+                    else
+                        $ret .= $value;
+
+                    return $ret;',
+            ),
+            array(
+                '<?php
+                    if ($a === false)
+                    {
+                        if ($v){}elseif($a)throw new Exception($i);
+                    }
+                    else
+                        $ret .= $value;
+
+                    return $ret;',
+            ),
+            array(
+                '<?php
+                    if ($a === false)
+                    {
+                        if ($v) { $ret = "foo"; }
+                        else
+                            while($i < 1) throw new Exception($i);
+                    }
+                    else
+                        $ret .= $value;
+
+                    return $ret;',
+            ),
+            array(
+                '<?php
+                    if ($a === false)
+                    {
+                        if ($v) { $ret = "foo"; if($d){return 1;}echo $a; }
+                        elseif($y) /** */ /* *//* */ #...
+                            die;
+                    }
+                    else
+                        $ret .= $value;
+
+                    return $ret;',
+                '<?php
+                    if ($a === false)
+                    {
+                        if ($v) { $ret = "foo"; if($d){return 1;}else{echo $a;} }
+                        elseif($y) /** */ /* *//* */ #...
+                            die;
+                    }
+                    else
+                        $ret .= $value;
+
+                    return $ret;',
+            ),
+//            array( Know missed opportunity, complex to fix and very edge case
+//                '<?php
+//                    if($c) die;  echo 1;
+//                ',
+//                '<?php
+//                    if($c) die; else {echo 1;}
+//                '
+//            ),
+        );
+    }
+
+    /**
+     * @param string            $input
+     * @param string<int, bool> $indexes
+     *
+     * @dataProvider provideIsInConditionWithoutBracesCases
+     */
+    public function testIsInConditionWithoutBraces($indexes, $input)
+    {
+        $reflection = new \ReflectionObject($this->fixer);
+        $method = $reflection->getMethod('isInConditionWithoutBraces');
+        $method->setAccessible(true);
+
+        $tokens = Tokens::fromCode($input);
+        foreach ($indexes as $index => $expected) {
+            $this->assertSame(
+                $expected,
+                $method->invoke($this->fixer, $tokens, $index),
+                sprintf('Failed in condition without braces check for index %d', $index)
+            );
+        }
+    }
+
+    public function provideIsInConditionWithoutBracesCases()
+    {
+        return array(
+            array(
+                array(
+                    18 => false, // return
+                    25 => false, // return
+                    36 => false, // return
+                ),
+                '<?php
+                    if ($x) {
+                        if ($y) {
+                            return 1;
+                        }
+                            return 2;
+
+                    } else {
+                        return 3;
+                    }
+                ',
+            ),
+            array(
+                array(
+                    0 => false,
+                    29 => false, // throw
+                ),
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        if($a){}else{throw new Exception($i);}
+                ',
+            ),
+            array(
+                array(
+                    0 => false,
+                    38 => true, // throw
+                ),
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        for($i =0;$i < 1;++$i) throw new Exception($i);
+                ',
+            ),
+            array(
+                array(
+                    0 => false,
+                    26 => true, // throw
+                    28 => true, // new
+                    30 => true, // Exception
+                ),
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        while(false){throw new Exception($i);}
+                ',
+            ),
+            array(
+                array(
+                    0 => false,
+                    30 => true, // throw
+                    32 => true, // new
+                    34 => true, // Exception
+                ),
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        foreach($a as $b){throw new Exception($i);}
+                ',
+            ),
+            array(
+                array(
+                    0 => false,
+                    25 => true, // throw
+                    27 => true, // new
+                    29 => true, // Exception
+                ),
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        while(false)throw new Exception($i);
+                ',
+            ),
+            array(
+                array(
+                    26 => true, // throw
+                ),
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    elseif($a)
+                        do{throw new Exception($i);}while(false);
+                ',
+            ),
+            array(
+                array(
+                    4 => false, // 1
+                    13 => true, // if (2nd)
+                    21 => true, // true
+                    33 => true, // while
+                    43 => false, // echo
+                    45 => false, // 2
+                    46 => false, // ;
+                    51 => false, // echo (123)
+                ),
+                '<?php
+                    echo 1;
+                    if ($a) if ($a) while(true)echo 1;
+                    elseif($c) while(true){if($d){echo 2;}};
+                    echo 123;
+                ',
+            ),
+            array(
+                array(
+                    2 => false, // echo
+                    13 => true, // echo
+                    15 => true, // 2
+                    20 => true, // die
+                    23 => false, // echo
+                ),
+                '<?php
+                    echo 1;
+                    if ($a) echo 2;
+                    else die; echo 3;
+                ',
+            ),
+            array(
+                array(
+                    8 => true,  // die
+                    9 => true,  // /**/
+                    10 => true, // ;
+                    15 => true, // die
+                    17 => true, // ;
+                ),
+                '<?php
+                    if ($a)
+                        die/**/;
+                    else
+                        /**/die/**/;#
+                ',
+            ),
+            array(
+                array(
+                    8 => true,  // die
+                    9 => true,  // /**/
+                    10 => true, // ;
+                    15 => true, // die
+                    17 => true, // ? >;
+                ),
+                '<?php
+                    if ($a)
+                        die/**/;
+                    else
+                        /**/die/**/?>
                 ',
             ),
         );

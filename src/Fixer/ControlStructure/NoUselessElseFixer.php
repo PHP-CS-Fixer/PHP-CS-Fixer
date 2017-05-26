@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -107,21 +108,22 @@ final class NoUselessElseFixer extends AbstractFixer
                 $previous,
                 array(
                     ';',
-                    array(T_CLOSE_TAG),
-                    array(T_IF),
                     array(T_BREAK),
+                    array(T_CLOSE_TAG),
                     array(T_CONTINUE),
                     array(T_EXIT),
                     array(T_GOTO),
+                    array(T_IF),
                     array(T_RETURN),
                     array(T_THROW),
                 )
             );
 
             if (
-                null === $candidateIndex ||
-                $tokens[$candidateIndex]->equalsAny(array(';', array(T_CLOSE_TAG), array(T_IF))) ||
-                $this->isInConditional($tokens, $candidateIndex, $previousBlockStart)
+                null === $candidateIndex
+                || $tokens[$candidateIndex]->equalsAny(array(';', array(T_CLOSE_TAG), array(T_IF)))
+                || $this->isInConditional($tokens, $candidateIndex, $previousBlockStart)
+                || $this->isInConditionWithoutBraces($tokens, $candidateIndex)
             ) {
                 return;
             }
@@ -232,5 +234,66 @@ final class NoUselessElseFixer extends AbstractFixer
         $open = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $candidateIndex, false);
 
         return $tokens->getPrevMeaningfulToken($open) > $lowerLimitIndex;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index  Index of the token to check
+     *
+     * @return bool
+     */
+    private function isInConditionWithoutBraces(Tokens $tokens, $index)
+    {
+        if ($tokens[$index]->isComment() || $tokens[$index]->isWhitespace() || $tokens[$index]->equals(';')) {
+            $index = $tokens->getPrevMeaningfulToken($index);
+        }
+
+        do {
+            $token = $tokens[$index];
+            if ($token->isGivenKind(array(T_IF, T_ELSEIF, T_ELSE))) {
+                return true;
+            }
+
+            if ($token->equals(';', '}')) {
+                return false;
+            } elseif ($token->equals('{')) {
+                $index = $tokens->getPrevMeaningfulToken($index);
+
+                // OK if belongs to: for, do, while, foreach
+                // Not OK if belongs to: if, else, elseif
+                if ($tokens[$index]->isGivenKind(T_DO)) {
+                    --$index;
+
+                    continue;
+                }
+
+                if (!$tokens[$index]->equals(')')) {
+                    return false; // like `else {`
+                }
+
+                $index = $tokens->findBlockEnd(
+                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                    $index,
+                    false
+                );
+
+                $index = $tokens->getPrevMeaningfulToken($index);
+                if ($tokens[$index]->isGivenKind(array(T_IF, T_ELSEIF))) {
+                    return false;
+                }
+            } elseif ($token->equals(')')) {
+                $index = $tokens->findBlockEnd(
+                    Tokens::detectBlockType($token)['type'],
+                    $index,
+                    false
+                );
+
+                $index = $tokens->getPrevMeaningfulToken($index);
+            } else {
+                --$index;
+            }
+        } while ($index > 0);
+
+        return false;
     }
 }
