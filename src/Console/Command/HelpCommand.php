@@ -338,10 +338,14 @@ EOF
             return $version;
         }
 
-        $currentMajor = (int) Application::VERSION;
-        $changelogFile = __DIR__.'/../../../CHANGELOG.md';
-        $changelog = @file_get_contents($changelogFile);
+        $changelogFile = self::getChangeLogFile();
+        if (null === $changelogFile) {
+            $version = Application::VERSION;
 
+            return $version;
+        }
+
+        $changelog = @file_get_contents($changelogFile);
         if (false === $changelog) {
             $error = error_get_last();
 
@@ -352,7 +356,7 @@ EOF
             ));
         }
 
-        for ($i = $currentMajor; $i > 0; --$i) {
+        for ($i = (int) Application::VERSION; $i > 0; --$i) {
             if (1 === preg_match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
                 $version = $matches[1];
 
@@ -373,6 +377,21 @@ EOF
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $output->getFormatter()->setStyle('url', new OutputFormatterStyle('blue'));
+    }
+
+    /**
+     * @return string|null
+     */
+    private static function getChangeLogFile()
+    {
+        $changelogFile = __DIR__.'/../../../CHANGELOG.md';
+        if (!is_file($changelogFile)) {
+            return null;
+        }
+
+        $changelogFile = realpath($changelogFile);
+
+        return false === $changelogFile ? null : $changelogFile;
     }
 
     /**
