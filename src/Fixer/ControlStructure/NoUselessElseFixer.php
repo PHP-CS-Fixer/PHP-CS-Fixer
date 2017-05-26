@@ -282,8 +282,9 @@ final class NoUselessElseFixer extends AbstractFixer
                     return false;
                 }
             } elseif ($token->equals(')')) {
+                $type = Tokens::detectBlockType($token);
                 $index = $tokens->findBlockEnd(
-                    Tokens::detectBlockType($token)['type'],
+                    $type['type'],
                     $index,
                     false
                 );
