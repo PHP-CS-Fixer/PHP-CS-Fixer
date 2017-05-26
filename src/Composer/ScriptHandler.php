@@ -14,6 +14,9 @@ namespace PhpCsFixer\Composer;
 
 use Composer\Script\Event;
 
+/**
+ * @author Dmitry Danilson <patchranger+github@gmail.com>
+ */
 class ScriptHandler
 {
     /**
