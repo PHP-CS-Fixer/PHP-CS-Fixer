@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Command\DescribeCommand
+ * @covers \PhpCsFixer\Console\Command\HelpCommand
  */
 final class HelpCommandTest extends TestCase
 {
