@@ -385,13 +385,8 @@ EOF
     private static function getChangeLogFile()
     {
         $changelogFile = __DIR__.'/../../../CHANGELOG.md';
-        if (!is_file($changelogFile)) {
-            return null;
-        }
 
-        $changelogFile = realpath($changelogFile);
-
-        return false === $changelogFile ? null : $changelogFile;
+        return is_file($changelogFile) ? $changelogFile : null;
     }
 
     /**
