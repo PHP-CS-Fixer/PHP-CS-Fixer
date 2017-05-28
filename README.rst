@@ -36,7 +36,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.2/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -299,7 +299,7 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply around the equal sign;
     defaults to ``'none'``
 
-* **declare_strict_types** [@PHP70Migration:risky]
+* **declare_strict_types** [@PHP70Migration:risky, @PHP71Migration:risky]
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
 
@@ -1117,6 +1117,14 @@ Choose from the list of available rules:
   - ``elements`` (``array``): the structural elements to fix (PHP >= 7.1 required
     for ``const``); defaults to ``['property', 'method']``
 
+* **void_return** [@PHP71Migration:risky]
+
+  Add void return type to functions with missing or empty return
+  statements, but priority is given to ``@return`` annotations. Requires
+  PHP >= 7.1.
+
+  *Risky rule: modifies the signature of functions.*
+
 * **whitespace_after_comma_in_array** [@Symfony]
 
   In array declaration, there MUST be a whitespace after each comma.
@@ -1131,7 +1139,7 @@ fixed but without actually modifying them:
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.1/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.2/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -1253,7 +1261,7 @@ Exit codes
 Exit code is build using following bit flags:
 
 *  0 OK.
-*  1 General error (or PHP/HHVM minimal requirement not matched).
+*  1 General error (or PHP minimal requirement not matched).
 *  4 Some files have invalid syntax (only in dry-run mode).
 *  8 Some files need fixing (only in dry-run mode).
 * 16 Configuration error of the application.

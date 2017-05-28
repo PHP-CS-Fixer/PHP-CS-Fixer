@@ -158,14 +158,10 @@ final class ProcessLinter implements LinterInterface
      */
     private function prepareCommand($path)
     {
-        $executable = ProcessUtils::escapeArgument($this->executable);
-
-        if (defined('HHVM_VERSION')) {
-            $executable .= ' --php';
-        }
-
-        $path = ProcessUtils::escapeArgument($path);
-
-        return sprintf('%s -l %s', $executable, $path);
+        return sprintf(
+            '%s -l %s',
+            ProcessUtils::escapeArgument($this->executable),
+            ProcessUtils::escapeArgument($path)
+        );
     }
 }

@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: void_return,return_type_declaration.
+--RULESET--
+{"void_return": true, "return_type_declaration": {"space_before":"one"}}
+--REQUIREMENTS--
+{"php": 70100}
+--EXPECT--
+<?php
+function test() : void {}
+
+--INPUT--
+<?php
+function test() {}

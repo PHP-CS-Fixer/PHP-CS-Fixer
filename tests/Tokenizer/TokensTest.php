@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PhpCsFixer\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class TokensTest extends TestCase
 {
+    use AssertTokensTrait;
+
     public function testReadFromCacheAfterClearing()
     {
         $code = '<?php echo 1;';
@@ -377,12 +380,7 @@ PHP;
      */
     public function testShortOpenTagMonolithicPhpDetection($source, $monolithic)
     {
-        /*
-         * short_open_tag setting is ignored by HHVM
-         * @see https://github.com/facebook/hhvm/issues/4758
-         */
-        if (!ini_get('short_open_tag') && !defined('HHVM_VERSION')) {
-            // Short open tag is parsed as T_INLINE_HTML
+        if (!ini_get('short_open_tag')) {
             $monolithic = false;
         }
 
@@ -760,16 +758,6 @@ PHP;
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
     }
 
-    public function testParsingWithHHError()
-    {
-        if (!defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for PHP compiler when running on non HHVM compiler.');
-        }
-
-        $this->setExpectedException(\ParseError::class);
-        Tokens::fromCode('<?php# this will cause T_HH_ERROR');
-    }
-
     public function testEmptyTokens()
     {
         $code = '';
@@ -873,29 +861,64 @@ PHP;
         $tokens = Tokens::fromCode($input);
         $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
 
-        $this->assertSame($expected, $tokens->generateCode());
+        $this->assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
     public function provideEnsureWhitespaceAtIndexCases()
     {
         return [
             [
+                '<?php $a. $b;',
+                '<?php $a.$b;',
+                2,
+                1,
+                ' ',
+            ],
+            [
+                '<?php $a .$b;',
+                '<?php $a.$b;',
+                2,
+                0,
+                ' ',
+            ],
+            [
+                "<?php\r\n",
                 '<?php ',
-                '<?php',
+                0,
+                1,
+                "\r\n",
+            ],
+            [
+                '<?php  $a.$b;',
+                '<?php $a.$b;',
+                2,
+                -1,
+                ' ',
+            ],
+            [
+                "<?php\t   ",
+                "<?php\n",
+                0,
+                1,
+                "\t   ",
+            ],
+            [
+                '<?php ',
+                '<?php ',
                 0,
                 1,
                 ' ',
             ],
             [
                 "<?php\n",
-                '<?php',
+                '<?php ',
                 0,
                 1,
                 "\n",
             ],
             [
                 "<?php\t",
-                '<?php',
+                '<?php ',
                 0,
                 1,
                 "\t",

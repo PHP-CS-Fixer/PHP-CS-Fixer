@@ -724,10 +724,7 @@ else?><?php echo 5;',
                     ';
         $cases[] = [[2, 25], $source, 27];
         $cases[] = [[27, 40], $source, 42];
-        if (!defined('HHVM_VERSION')) {
-            // HHVM 3.6.x tokenizes in a different way
-            $cases[] = [[59, 72], $source, 74];
-        }
+        $cases[] = [[59, 72], $source, 74];
 
         return $cases;
     }

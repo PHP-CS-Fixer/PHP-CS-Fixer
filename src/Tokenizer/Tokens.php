@@ -322,20 +322,39 @@ class Tokens extends \SplFixedArray
      */
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
-        $removeLastCommentLine = function (Token $token, $indexOffset) {
+        $removeLastCommentLine = function (Token $token, $indexOffset, $whitespace) {
             if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
-                $token->setContent(rtrim($token->getContent()));
+                if (0 === strpos($whitespace, "\r\n")) {
+                    $token->setContent(rtrim($token->getContent())."\r\n");
+
+                    return strlen($whitespace) > 2 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
+                        ? substr($whitespace, 2)
+                        : ''
+                    ;
+                }
+
+                $token->setContent(rtrim($token->getContent()).$whitespace[0]);
+
+                return strlen($whitespace) > 1 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
+                    ? substr($whitespace, 1)
+                    : ''
+                ;
             }
+
+            return $whitespace;
         };
 
         if ($this[$index]->isWhitespace()) {
-            $removeLastCommentLine($this[$index - 1], $indexOffset);
+            $whitespace = $removeLastCommentLine($this[$index - 1], $indexOffset, $whitespace);
             $this->overrideAt($index, [T_WHITESPACE, $whitespace]);
 
             return false;
         }
 
-        $removeLastCommentLine($this[$index], $indexOffset);
+        $whitespace = $removeLastCommentLine($this[$index], $indexOffset, $whitespace);
+        if ('' === $whitespace) {
+            return false;
+        }
 
         $this->insertAt(
             $index + $indexOffset,
@@ -948,10 +967,6 @@ class Tokens extends \SplFixedArray
             $this->registerFoundToken($token);
         }
 
-        if (defined('T_HH_ERROR') && $this->isTokenKindFound(T_HH_ERROR)) {
-            throw new \ParseError('Parsing error, encountered "T_HH_ERROR".');
-        }
-
         $this->rewind();
         $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
@@ -1058,20 +1073,8 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
-        $isHhvm = defined('HHVM_VERSION');
         for ($index = 1; $index < $size; ++$index) {
-            if (
-                $this[$index]->isGivenKind([T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO])
-                || (
-                    /*
-                     * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-                     *
-                     * @see https://github.com/facebook/hhvm/issues/4809
-                     * @see https://github.com/facebook/hhvm/issues/7161
-                     */
-                    $isHhvm && $this[$index]->equals([T_ECHO, '<?='])
-                )
-            ) {
+            if ($this[$index]->isGivenKind([T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO])) {
                 return false;
             }
         }

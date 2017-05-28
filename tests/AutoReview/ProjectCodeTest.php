@@ -65,6 +65,7 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
+        \PhpCsFixer\Test\Assert\AssertTokensTrait::class,
         \PhpCsFixer\Test\IntegrationCaseFactory::class,
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
@@ -94,12 +95,6 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
-        // HHVM knows better which interfaces you implements
-        // https://github.com/facebook/hhvm/issues/5890
-        if (defined('HHVM_VERSION') && interface_exists('Stringish')) {
-            $this->markTestSkipped('Skipped as HHVM violate inheritance tree with `Stringish` interface.');
-        }
-
         $rc = new \ReflectionClass($className);
 
         $doc = false !== $rc->getDocComment()
@@ -182,7 +177,7 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($className);
 
         if (\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class === $className) {
-            $this->markTestIncomplete('Public properties of fixer \'PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer\' will be remove on 3.0.');
+            $this->markTestIncomplete('Public properties of fixer \'PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer\' will be removed on 3.0.');
         }
 
         $this->assertEmpty(
