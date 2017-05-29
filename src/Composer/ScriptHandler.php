@@ -12,7 +12,8 @@
 
 namespace PhpCsFixer\Composer;
 
-use Composer\Script\Event;
+// Including it breaks tests.
+//use Composer\Script\Event;
 
 /**
  * @author Dmitry Danilson <patchranger+github@gmail.com>
@@ -24,7 +25,7 @@ class ScriptHandler
      *
      * @param Event $event
      */
-    public static function enableAutoCSFix(Event $event)
+    public static function enableAutoCSFix($event)
     {
         if (file_exists('./.git')) {
             $phpCsFixerPath = file_exists('./bin/php-cs-fixer')
