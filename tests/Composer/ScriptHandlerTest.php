@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Tests\Composer;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @internal
  *
