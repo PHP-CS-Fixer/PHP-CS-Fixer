@@ -21,4 +21,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ScriptHandlerTest extends TestCase
 {
+    public function testStub()
+    {
+    }
 }
