@@ -35,7 +35,6 @@ final class ProjectCodeTest extends TestCase
      * @var string[]
      */
     private static $classesWithoutTests = [
-        \PhpCsFixer\Composer\SciptHandler::class,
         \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
         \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
         \PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class,
