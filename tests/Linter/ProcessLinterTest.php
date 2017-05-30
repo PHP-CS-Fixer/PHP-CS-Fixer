@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\Test\AccessibleObject;
-use Symfony\Component\Process\ProcessUtils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -38,13 +37,13 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         }
 
         $this->assertSame(
-            $this->fixEscape('"php" -l "foo.php"'),
-            AccessibleObject::create(new ProcessLinter('php'))->prepareCommand('foo.php')
+            $this->fixEscape('"php" "-l" "foo.php"'),
+            AccessibleObject::create(new ProcessLinter('php'))->prepareProcess('foo.php')->getCommandLine()
         );
 
         $this->assertSame(
-            $this->fixEscape('"C:\Program Files\php\php.exe" -l "foo bar\baz.php"'),
-            AccessibleObject::create(new ProcessLinter('C:\Program Files\php\php.exe'))->prepareCommand('foo bar\baz.php')
+            $this->fixEscape('"C:\Program Files\php\php.exe" "-l" "foo bar\baz.php"'),
+            AccessibleObject::create(new ProcessLinter('C:\Program Files\php\php.exe'))->prepareProcess('foo bar\baz.php')->getCommandLine()
         );
     }
 
@@ -55,8 +54,8 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         }
 
         $this->assertSame(
-            $this->fixEscape('"hhvm" --php -l "foo.php"'),
-            AccessibleObject::create(new ProcessLinter('hhvm'))->prepareCommand('foo.php')
+            $this->fixEscape('"hhvm" "--php" "-l" "foo.php"'),
+            AccessibleObject::create(new ProcessLinter('hhvm'))->prepareProcess('foo.php')->getCommandLine()
         );
     }
 
@@ -85,7 +84,7 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         static $escapeChar = null;
 
         if (null === $escapeChar) {
-            $escapeChar = substr(ProcessUtils::escapeArgument('x'), 0, 1);
+            $escapeChar = substr(escapeshellarg('x'), 0, 1);
         }
 
         if ($usedEscapeChar === $escapeChar) {
