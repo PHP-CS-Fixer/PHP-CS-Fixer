@@ -162,7 +162,7 @@ final class ProcessLinter implements LinterInterface
     {
         $arguments = array('-l', $path);
         if (defined('HHVM_VERSION')) {
-            array_unshift($arguemtns, '--php');
+            array_unshift($arguments, '--php');
         }
 
         return ProcessBuilder::create($arguments)->setPrefix($this->executable)->getProcess();
