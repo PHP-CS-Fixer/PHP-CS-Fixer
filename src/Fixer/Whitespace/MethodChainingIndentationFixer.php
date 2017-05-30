@@ -151,8 +151,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     private function isMultiLineMethod($start, $end, Tokens $tokens)
     {
-        $tokenCleanContent = trim($tokens[$end]->getContent());
-        if (')' === $tokenCleanContent) {
+        if (')' === trim($tokens[$end]->getContent())) {
             if (CT::T_BRACE_CLASS_INSTANTIATION_CLOSE === $tokens[$end]->getId()) {
                 // src/Tokenizer/Transformer/BraceClassInstantiationTransformer.php
                 if ($tokens->findGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, $start, $end)) {
