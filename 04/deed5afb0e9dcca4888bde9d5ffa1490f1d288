@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-28T21:35:00Z
+
+works !
+
+```
+D:\GIT\fork\PHP-CS-Fixer ((detached from SpacePossum/2_2_missing_changelog_handling))
+λ php php-cs-fixer readme | head -4
+PHP Coding Standards Fixer
+==========================
+
+The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
+
+D:\GIT\fork\PHP-CS-Fixer ((detached from SpacePossum/2_2_missing_changelog_handling))
+λ php php-cs-fixer.phar readme | head -4
+PHP Coding Standards Fixer
+==========================
+
+The PHP Coding Standards Fixer tool fixes *most* issues in your code when you
+```
