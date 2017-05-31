@@ -256,7 +256,12 @@ Choose from the list of available rules:
 
 * **cast_spaces** [@Symfony]
 
-  A single space should be between cast and variable.
+  A single space or none should be between cast and variable.
+
+  Configuration options:
+
+  - ``space`` (``'none'``, ``'single'``): spacing to apply between cast and variable;
+    defaults to ``'single'``
 
 * **class_definition** [@PSR2, @Symfony]
 
@@ -682,6 +687,10 @@ Choose from the list of available rules:
 
   Multi-line whitespace before closing semicolon are prohibited.
 
+* **no_null_property_initialization**
+
+  Properties MUST not be explicitly initialized with ``null``.
+
 * **no_php4_constructor**
 
   Convert PHP4-style constructors to ``__construct``.
@@ -772,12 +781,17 @@ Choose from the list of available rules:
 
   Remove trailing whitespace at the end of blank lines.
 
-* **non_printable_character** [@Symfony:risky]
+* **non_printable_character** [@Symfony:risky, @PHP70Migration, @PHP71Migration]
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.
 
   *Risky rule: risky when strings contain intended invisible characters.*
+
+  Configuration options:
+
+  - ``use_escape_sequences_in_strings`` (``bool``): whether characters should be
+    replaced with escape sequences in strings; defaults to ``false``
 
 * **normalize_index_brace** [@Symfony]
 
@@ -1004,7 +1018,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``dir`` (``string``): the directory where the project code is placed; required
+  - ``dir`` (``string``): the directory where the project code is placed; defaults
+    to ``''``
 
 * **psr4** [@Symfony:risky]
 

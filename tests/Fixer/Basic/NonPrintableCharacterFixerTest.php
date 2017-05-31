@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
@@ -34,22 +35,36 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCases
+     */
+    public function testFixWithoutEscapeSequences($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'use_escape_sequences_in_strings' => false,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
     public function provideFixCases()
     {
         return [
             [
                 '<?php echo "Hello World !";',
-                '<?php echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'World'.pack('CC', 0xc2, 0xa0).'!";',
+                '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0').'!";',
             ],
             [
                 '<?php echo "Hello World !";',
                 '<?php echo "'.
-                    pack('CCC', 0xe2, 0x80, 0x8b).
-                    pack('CCC', 0xe2, 0x80, 0x8b).
-                    pack('CCC', 0xe2, 0x80, 0x8b).
-                    pack('CCC', 0xe2, 0x80, 0x8b).
-                    pack('CCC', 0xe2, 0x80, 0x8b).
-                    pack('CCC', 0xe2, 0x80, 0x8b).
+                    pack('H*', 'e2808b').
+                    pack('H*', 'e2808b').
+                    pack('H*', 'e2808b').
+                    pack('H*', 'e2808b').
+                    pack('H*', 'e2808b').
+                    pack('H*', 'e2808b').
                 'Hello World !";',
             ],
             [
@@ -57,8 +72,8 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 // echo
 echo "Hello World !";',
                 '<?php
-// ec'.pack('CCC', 0xe2, 0x80, 0x8b).'ho
-echo "Hello'.pack('CCC', 0xe2, 0x80, 0xaf).'World'.pack('CC', 0xc2, 0xa0).'!";',
+// ec'.pack('H*', 'e2808b').'ho
+echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
             ],
             [
                 '<?php
@@ -73,7 +88,7 @@ echo "Hello'.pack('CCC', 0xe2, 0x80, 0xaf).'World'.pack('CC', 0xc2, 0xa0).'!";',
                 '<?php
 
                 /**
-                 * @param '.pack('CCC', 0xe2, 0x80, 0x8b).'string $p Param
+                 * @param '.pack('H*', 'e2808b').'string $p Param
                  */
                 function f(string $p)
                 {
@@ -82,12 +97,122 @@ echo "Hello'.pack('CCC', 0xe2, 0x80, 0xaf).'World'.pack('CC', 0xc2, 0xa0).'!";',
             ],
             [
                 '<?php echo "$a[0] ${a}";',
-                '<?php echo "$a'.pack('CCC', 0xe2, 0x80, 0x8b).'[0]'.pack('CCC', 0xe2, 0x80, 0x8b).' ${a'.pack('CCC', 0xe2, 0x80, 0x8b).'}";',
+                '<?php echo "$a'.pack('H*', 'e2808b').'[0]'.pack('H*', 'e2808b').' ${a'.pack('H*', 'e2808b').'}";',
             ],
             [
                 '<?php echo \'12345\';?>abc<?php ?>',
-                '<?php echo \'123'.pack('CCC', 0xe2, 0x80, 0x8b).'45\';?>a'.pack('CCC', 0xe2, 0x80, 0x8b).'bc<?php ?>',
+                '<?php echo \'123'.pack('H*', 'e2808b').'45\';?>a'.pack('H*', 'e2808b').'bc<?php ?>',
             ],
         ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithEscapeSequencesInStringsCases
+     * @requires PHP 7.0
+     */
+    public function testFixWithEscapeSequencesInStrings($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'use_escape_sequences_in_strings' => true,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithEscapeSequencesInStringsCases()
+    {
+        return [
+            [
+                '<?php
+
+                /**
+                 * @param string $p Param
+                 */
+                function f(string $p)
+                {
+                    echo $p;
+                }',
+                '<?php
+
+                /**
+                 * @param '.pack('H*', 'e2808b').'string $p Param
+                 */
+                function f(string $p)
+                {
+                    echo $p;
+                }',
+            ],
+            [
+                '<?php echo \'FooBar\\\\\';',
+            ],
+            [
+                '<?php echo "Foo\u{200b}Bar";',
+                '<?php echo "Foo'.pack('H*', 'e2808b').'Bar";',
+            ],
+            [
+                '<?php echo "Foo\u{200b}Bar";',
+                '<?php echo \'Foo'.pack('H*', 'e2808b').'Bar\';',
+            ],
+            [
+                '<?php echo "Foo\u{200b} Bar \\\\n \\\\ \$variableToEscape";',
+                '<?php echo \'Foo'.pack('H*', 'e2808b').' Bar \n \ $variableToEscape\';',
+            ],
+            [
+                '<?php echo <<<\'TXT\'
+FooBar\
+TXT;
+',
+            ],
+            [
+                '<?php echo <<<TXT
+Foo\u{200b}Bar
+TXT;
+',
+                '<?php echo <<<TXT
+Foo'.pack('H*', 'e2808b').'Bar
+TXT;
+',
+            ],
+            [
+                '<?php echo <<<TXT
+Foo\u{200b}Bar
+TXT;
+',
+                '<?php echo <<<\'TXT\'
+Foo'.pack('H*', 'e2808b').'Bar
+TXT;
+',
+            ],
+            [
+                '<?php echo <<<TXT
+Foo\u{200b} Bar \\\\n \\\\ \$variableToEscape
+TXT;
+',
+                '<?php echo <<<\'TXT\'
+Foo'.pack('H*', 'e2808b').' Bar \n \ $variableToEscape
+TXT;
+',
+            ],
+            [
+                '<?php echo \'。\';',
+            ],
+        ];
+    }
+
+    /**
+     * @requires PHP <7.0
+     */
+    public function testFixWithEscapeSequencesInStringsLowerThanPhp70()
+    {
+        $this->setExpectedExceptionRegExp(
+            InvalidFixerConfigurationException::class,
+            '/^\[non_printable_character\] Invalid configuration: Escape sequences require PHP 7\.0\+\.$/'
+        );
+
+        $this->fixer->configure([
+            'use_escape_sequences_in_strings' => true,
+        ]);
     }
 }
