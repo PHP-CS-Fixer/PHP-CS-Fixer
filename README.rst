@@ -995,6 +995,11 @@ Choose from the list of available rules:
   - ``space_before`` (``'none'``, ``'one'``): spacing to apply before colon; defaults to
     ``'none'``
 
+* **return_assignment**
+                         Variables should not be
+                         assigned and directly
+                         returned.
+
 * **self_accessor** [@Symfony]
 
   Inside a classy element "self" should be preferred to the class name
