@@ -132,8 +132,8 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
     {
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
-        $tokens->overrideAt($index, '(');
-        $tokens->overrideAt($closeIndex, ')');
+        $tokens[$index] = new Token('(');
+        $tokens[$closeIndex] = new Token(')');
 
         $tokens->insertAt($index, new Token(array(T_ARRAY, 'array')));
     }
@@ -147,8 +147,8 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
         $openIndex = $tokens->getNextTokenOfKind($index, array('('));
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
-        $tokens->overrideAt($openIndex, array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['));
-        $tokens->overrideAt($closeIndex, array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+        $tokens[$openIndex] = new Token(array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['));
+        $tokens[$closeIndex] = new Token(array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
     }

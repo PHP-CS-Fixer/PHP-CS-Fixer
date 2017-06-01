@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
@@ -106,7 +107,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
 
-                $tokens[$functionName]->setContent($functionReplacement['alternativeName']);
+                $tokens[$functionName] = new Token(array(T_STRING, $functionReplacement['alternativeName']));
             }
         }
     }

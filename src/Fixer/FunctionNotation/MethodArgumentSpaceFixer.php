@@ -37,7 +37,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      */
     public function fixSpace(Tokens $tokens, $index)
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
         $this->fixSpace2($tokens, $index);
     }
 
@@ -146,11 +146,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
 
             if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC))) && !$tokens[$prevIndex]->isComment()) {
-                $tokens[$index - 1]->clear();
+                $tokens->clearAt($index - 1);
             }
         }
 
-        $nextToken = $tokens[$index + 1];
+        $nextIndex = $index + 1;
+        $nextToken = $tokens[$nextIndex];
 
         // Two cases for fix space after comma (exclude multiline comments)
         //  1) multiple spaces after comma
@@ -161,7 +162,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             }
 
             $newContent = ltrim($nextToken->getContent(), " \t");
-            $nextToken->setContent('' === $newContent ? ' ' : $newContent);
+            $tokens[$nextIndex] = new Token(array(T_WHITESPACE, '' === $newContent ? ' ' : $newContent));
 
             return;
         }

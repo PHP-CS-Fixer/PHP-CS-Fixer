@@ -50,9 +50,9 @@ final class NormalizeIndexBraceFixer extends AbstractFixer
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
-                $tokens->overrideAt($index, new Token('['));
+                $tokens[$index] = new Token('[');
             } elseif ($token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE)) {
-                $tokens->overrideAt($index, new Token(']'));
+                $tokens[$index] = new Token(']');
             }
         }
     }

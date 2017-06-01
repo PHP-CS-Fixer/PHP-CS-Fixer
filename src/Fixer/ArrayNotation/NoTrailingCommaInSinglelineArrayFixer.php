@@ -84,7 +84,7 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
 
         if ($beforeEndToken->equals(',')) {
             $tokens->removeTrailingWhitespace($beforeEndIndex);
-            $beforeEndToken->clear();
+            $tokens->clearAt($beforeEndIndex);
         }
     }
 }

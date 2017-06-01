@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -101,7 +102,7 @@ final class Sample
                 continue;
             }
 
-            $tokens->overrideAt($index, array(T_PRIVATE, 'private'));
+            $tokens[$index] = new Token(array(T_PRIVATE, 'private'));
         }
     }
 

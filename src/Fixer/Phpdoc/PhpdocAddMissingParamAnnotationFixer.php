@@ -21,6 +21,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -100,6 +101,7 @@ function f9(string $foo, $bar, $baz) {}',
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $mainIndex = $index;
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -204,7 +206,7 @@ function f9(string $foo, $bar, $baz) {}',
                 $newLines
             );
 
-            $token->setContent(implode('', $lines));
+            $tokens[$mainIndex] = new Token(array(T_DOC_COMMENT, implode('', $lines)));
         }
     }
 

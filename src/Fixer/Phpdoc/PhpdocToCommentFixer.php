@@ -96,7 +96,7 @@ foreach($connections as $key => $sqlite) {
             $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
 
             if (null === $nextToken || $nextToken->equals('}')) {
-                $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+                $tokens[$index] = new Token(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
 
                 continue;
             }
@@ -123,7 +123,7 @@ foreach($connections as $key => $sqlite) {
                 continue;
             }
 
-            $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+            $tokens[$index] = new Token(array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
         }
     }
 

@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
@@ -96,7 +97,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index]->setContent($this->fixDocBlock($token->getContent()));
+                $tokens[$index] = new Token(array(T_DOC_COMMENT, $this->fixDocBlock($token->getContent())));
             }
         }
     }

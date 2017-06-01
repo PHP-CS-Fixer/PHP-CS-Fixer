@@ -96,7 +96,7 @@ include_once("sample4.php");
             }
 
             if ($nextToken->isWhitespace()) {
-                $nextToken->setContent(' ');
+                $tokens[$nextIndex] = new Token(array(T_WHITESPACE, ' '));
             } elseif ($braces || $tokens[$nextIndex]->isGivenKind(array(T_VARIABLE, T_CONSTANT_ENCAPSED_STRING, T_COMMENT))) {
                 $tokens->insertAt($includy['begin'] + 1, new Token(array(T_WHITESPACE, ' ')));
             }

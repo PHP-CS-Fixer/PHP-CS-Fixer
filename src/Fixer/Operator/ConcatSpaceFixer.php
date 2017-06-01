@@ -150,6 +150,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
             return;
         }
 
-        $tokens[$offsetIndex]->setContent(' ');
+        $tokens[$offsetIndex] = new Token(array(T_WHITESPACE, ' '));
     }
 }

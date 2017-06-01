@@ -86,7 +86,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$valueIndex + 1]->clear();
+            $tokens->clearAt($valueIndex + 1);
         }
     }
 }

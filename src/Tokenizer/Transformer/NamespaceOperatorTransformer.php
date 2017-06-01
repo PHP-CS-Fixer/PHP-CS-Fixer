@@ -55,7 +55,7 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
-            $token->override(array(CT::T_NAMESPACE_OPERATOR, $token->getContent()));
+            $tokens[$index] = new Token(array(CT::T_NAMESPACE_OPERATOR, $token->getContent()));
         }
     }
 }

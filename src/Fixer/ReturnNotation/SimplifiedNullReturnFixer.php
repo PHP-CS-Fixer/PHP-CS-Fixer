@@ -86,7 +86,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     {
         while (!$tokens[++$index]->equals(';')) {
             if ($this->shouldClearToken($tokens, $index)) {
-                $tokens[$index]->clear();
+                $tokens->clearAt($index);
             }
         }
     }

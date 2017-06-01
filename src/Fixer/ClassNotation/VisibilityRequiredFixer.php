@@ -144,9 +144,8 @@ class Sample
         $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforeMethodToken($tokens, $index));
 
         // force whitespace between function keyword and function name to be single space char
-        $afterToken = $tokens[++$index];
-        if ($afterToken->isWhitespace()) {
-            $afterToken->setContent(' ');
+        if ($tokens[$index + 1]->isWhitespace()) {
+            $tokens[$index + 1] = new Token(array(T_WHITESPACE, ' '));
         }
     }
 

@@ -209,7 +209,7 @@ $className = Baz::class;
 
         for ($i = $classBeginIndex; $i <= $classIndex; ++$i) {
             if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))) {
-                $tokens[$i]->clear();
+                $tokens->clearAt($i);
             }
         }
 

@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -156,7 +157,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
             return;
         }
 
-        $tokens->overrideAt($index, array(T_PRINT, 'print'));
+        $tokens[$index] = new Token(array(T_PRINT, 'print'));
     }
 
     /**
@@ -171,6 +172,6 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
             return;
         }
 
-        $tokens->overrideAt($index, array(T_ECHO, 'echo'));
+        $tokens[$index] = new Token(array(T_ECHO, 'echo'));
     }
 }

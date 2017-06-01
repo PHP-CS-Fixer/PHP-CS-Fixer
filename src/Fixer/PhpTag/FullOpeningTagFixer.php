@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\PhpTag;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -83,7 +84,7 @@ echo "Hello!";
         $tokensOldContent = '';
         $tokensOldContentLength = 0;
 
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_OPEN_TAG)) {
                 $tokenContent = $token->getContent();
 
@@ -118,7 +119,8 @@ echo "Hello!";
                     }
                 }
 
-                $token->setContent($tokenContent);
+                $tokens[$index] = new Token(array($token->getId(), $tokenContent));
+                $token = $tokens[$index];
             }
 
             $tokensOldContent .= $token->getContent();

@@ -34,7 +34,7 @@ final class TokensTest extends TestCase
         $countBefore = $tokens->count();
 
         for ($i = 0; $i < $countBefore; ++$i) {
-            $tokens[$i]->clear();
+            $tokens->clearAt($i);
         }
 
         $tokens = Tokens::fromCode($code);
@@ -295,8 +295,7 @@ final class TokensTest extends TestCase
 
     public function provideFindSequenceExceptions()
     {
-        $emptyToken = new Token('!');
-        $emptyToken->clear();
+        $emptyToken = new Token('');
 
         return array(
             array('Invalid sequence.', array()),
@@ -543,8 +542,7 @@ PHP;
 
     public function getClearTokenAndMergeSurroundingWhitespaceCases()
     {
-        $clearToken = new Token(array(null, ''));
-        $clearToken->clear();
+        $clearToken = new Token('');
 
         return array(
             array(
