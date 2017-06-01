@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\Test\AccessibleObject;
-use Symfony\Component\Process\ProcessUtils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -31,16 +30,37 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         $this->assertTrue($this->createLinter()->isAsync());
     }
 
-    public function testPrepareCommand()
+    /**
+     * @param string $executable
+     * @param string $file
+     * @param string $expected
+     *
+     * @testWith ["php", "foo.php", "'php' '-l' 'foo.php'"]
+     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
+     * @requires OS Linux
+     */
+    public function testPrepareCommandOnPhpOnLinux($executable, $file, $expected)
     {
         $this->assertSame(
-            $this->fixEscape('"php" -l "foo.php"'),
-            AccessibleObject::create(new ProcessLinter('php'))->prepareCommand('foo.php')
+            $expected,
+            AccessibleObject::create(new ProcessLinter($executable))->prepareProcess($file)->getCommandLine()
         );
+    }
 
+    /**
+     * @param string $executable
+     * @param string $file
+     * @param string $expected
+     *
+     * @testWith ["php", "foo.php", "php -l foo.php"]
+     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
+     * @requires OS Win
+     */
+    public function testPrepareCommandOnPhpOnWindows($executable, $file, $expected)
+    {
         $this->assertSame(
-            $this->fixEscape('"C:\Program Files\php\php.exe" -l "foo bar\baz.php"'),
-            AccessibleObject::create(new ProcessLinter('C:\Program Files\php\php.exe'))->prepareCommand('foo bar\baz.php')
+            $expected,
+            AccessibleObject::create(new ProcessLinter($executable))->prepareProcess($file)->getCommandLine()
         );
     }
 
@@ -50,32 +70,5 @@ final class ProcessLinterTest extends AbstractLinterTestCase
     protected function createLinter()
     {
         return new ProcessLinter();
-    }
-
-    /**
-     * Fix escaping character.
-     *
-     * Escape character may be different on various environments.
-     * This method change used escape character into character that is default
-     * for environment.
-     *
-     * @param string $value          value to be fixed
-     * @param string $usedEscapeChar used escape char, may be only ' or "
-     *
-     * @return string
-     */
-    private function fixEscape($value, $usedEscapeChar = '"')
-    {
-        static $escapeChar = null;
-
-        if (null === $escapeChar) {
-            $escapeChar = ProcessUtils::escapeArgument('x')[0];
-        }
-
-        if ($usedEscapeChar === $escapeChar) {
-            return $value;
-        }
-
-        return str_replace($usedEscapeChar, $escapeChar, $value);
     }
 }
