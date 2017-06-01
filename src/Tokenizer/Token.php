@@ -61,9 +61,14 @@ class Token
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
-        } else {
+        } elseif (is_string($token)) {
             $this->isArray = false;
             $this->content = $token;
+        } else {
+            throw new \InvalidArgumentException(sprintf(
+                'Cannot recognize input value as valid Token prototype, got "%s".',
+                is_object($token) ? get_class($token) : gettype($token)
+            ));
         }
     }
 
@@ -217,6 +222,8 @@ class Token
     /**
      * Get token's content.
      *
+     * It shall be used only for getting the content of token, not for checking it against excepted value.
+     *
      * @return string
      */
     public function getContent()
@@ -227,6 +234,8 @@ class Token
     /**
      * Get token's id.
      *
+     * It shall be used only for getting the internal id of token, not for checking it against excepted value.
+     *
      * @return int|null
      */
     public function getId()
@@ -236,6 +245,8 @@ class Token
 
     /**
      * Get token name.
+     *
+     * It shall be used only for getting the name of token, not for checking it against excepted value.
      *
      * @return null|string token name
      */
