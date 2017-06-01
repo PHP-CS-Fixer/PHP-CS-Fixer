@@ -24,7 +24,7 @@ use PhpCsFixer\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @method Token current()
- * @method Token offsetGet()
+ * @method Token offsetGet($index)
  */
 class Tokens extends \SplFixedArray
 {
