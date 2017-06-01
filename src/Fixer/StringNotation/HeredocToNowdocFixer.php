@@ -62,7 +62,7 @@ EOF
             }
 
             if ($tokens[$index + 1]->isGivenKind(T_END_HEREDOC)) {
-                $this->convertToNowdoc($token);
+                $tokens[$index] = $this->convertToNowdoc($token);
                 continue;
             }
 
@@ -79,9 +79,12 @@ EOF
                 continue;
             }
 
-            $this->convertToNowdoc($token);
+            $tokens[$index] = $this->convertToNowdoc($token);
             $content = str_replace(array('\\\\', '\\$'), array('\\', '$'), $content);
-            $tokens[$index + 1]->setContent($content);
+            $tokens[$index + 1] = new Token(array(
+                $tokens[$index + 1]->getId(),
+                $content,
+            ));
         }
     }
 
@@ -89,9 +92,14 @@ EOF
      * Transforms the heredoc start token to nowdoc notation.
      *
      * @param Token $token
+     *
+     * @return $token
      */
     private function convertToNowdoc(Token $token)
     {
-        $token->setContent(preg_replace('/(?<=^<<<)(\s*)"?(.*?)"?$/', '$1\'$2\'', $token->getContent()));
+        return new Token(array(
+            $token->getId(),
+            preg_replace('/(?<=^<<<)(\s*)"?(.*?)"?$/', '$1\'$2\'', $token->getContent()),
+        ));
     }
 }

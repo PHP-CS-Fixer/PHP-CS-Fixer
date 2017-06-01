@@ -136,13 +136,10 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     {
         // find the argument separator ',' directly after the last token of the first argument;
         // replace it with T_POW '**'
-        $tokens->overrideAt(
-            $tokens->getNextTokenOfKind(reset($arguments), array(',')),
-            new Token(array(T_POW, '**'))
-        );
+        $tokens[$tokens->getNextTokenOfKind(reset($arguments), array(','))] = new Token(array(T_POW, '**'));
 
         // clean up the function call tokens prt. I
-        $tokens[$closeParenthesisIndex]->clear();
+        $tokens->clearAt($closeParenthesisIndex);
 
         $added = 0;
         // check if the arguments need to be wrapped in parenthesis
@@ -155,12 +152,12 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         }
 
         // clean up the function call tokens prt. II
-        $tokens[$openParenthesisIndex]->clear();
-        $tokens[$functionNameIndex]->clear();
+        $tokens->clearAt($openParenthesisIndex);
+        $tokens->clearAt($functionNameIndex);
 
         $prev = $tokens->getPrevMeaningfulToken($functionNameIndex);
         if ($tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
-            $tokens[$prev]->clear();
+            $tokens->clearAt($prev);
         }
 
         return $added;
@@ -182,7 +179,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         );
 
         for ($i = $argumentStartIndex; $i <= $argumentEndIndex; ++$i) {
-            if ($tokens[$i]->isGivenKind($allowedKinds) || $tokens[$i]->isEmpty()) {
+            if ($tokens[$i]->isGivenKind($allowedKinds) || $tokens->isEmptyAt($i)) {
                 continue;
             }
 

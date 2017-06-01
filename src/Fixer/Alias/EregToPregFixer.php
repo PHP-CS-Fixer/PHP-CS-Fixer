@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
@@ -124,8 +125,8 @@ final class EregToPregFixer extends AbstractFixer
                 }
 
                 // modify function and argument
-                $tokens[$match[2]]->setContent($quote.$preg.$quote);
-                $tokens[$match[0]]->setContent($map[1]);
+                $tokens[$match[0]] = new Token(array(T_STRING, $map[1]));
+                $tokens[$match[2]] = new Token(array(T_CONSTANT_ENCAPSED_STRING, $quote.$preg.$quote));
             }
         }
     }

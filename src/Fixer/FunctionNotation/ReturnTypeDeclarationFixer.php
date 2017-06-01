@@ -20,6 +20,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -76,14 +77,15 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            $previousToken = $tokens[$index - 1];
+            $previousIndex = $index - 1;
+            $previousToken = $tokens[$previousIndex];
 
             if ($previousToken->isWhitespace()) {
                 if (!$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                     if ($oneSpaceBefore) {
-                        $previousToken->setContent(' ');
+                        $tokens[$previousIndex] = new Token(array(T_WHITESPACE, ' '));
                     } else {
-                        $previousToken->clear();
+                        $tokens->clearAt($previousIndex);
                     }
                 }
             } elseif ($oneSpaceBefore) {

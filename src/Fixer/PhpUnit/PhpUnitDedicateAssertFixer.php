@@ -256,7 +256,7 @@ $this->assertTrue(is_nan($a));
 
         if (is_array(self::$fixMap[$content])) {
             if (false !== self::$fixMap[$content][$isPositive]) {
-                $tokens[$assertCallIndex]->setContent(self::$fixMap[$content][$isPositive]);
+                $tokens[$assertCallIndex] = new Token(array(T_STRING, self::$fixMap[$content][$isPositive]));
                 $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
             }
 
@@ -264,9 +264,9 @@ $this->assertTrue(is_nan($a));
         }
 
         $type = substr($content, 3);
-        $tokens[$assertCallIndex]->setContent($isPositive ? 'assertInternalType' : 'assertNotInternalType');
-        $tokens->overrideAt($testIndex, array(T_CONSTANT_ENCAPSED_STRING, "'".$type."'"));
-        $tokens->overrideAt($testOpenIndex, ',');
+        $tokens[$assertCallIndex] = new Token(array(T_STRING, $isPositive ? 'assertInternalType' : 'assertNotInternalType'));
+        $tokens[$testIndex] = new Token(array(T_CONSTANT_ENCAPSED_STRING, "'".$type."'"));
+        $tokens[$testOpenIndex] = new Token(',');
         $tokens->clearTokenAndMergeSurroundingWhitespace($testCloseIndex);
 
         if (!$tokens[$testOpenIndex + 1]->isWhitespace()) {

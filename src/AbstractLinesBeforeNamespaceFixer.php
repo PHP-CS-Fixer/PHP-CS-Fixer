@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -42,11 +43,13 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
             }
         }
 
-        $previous = $tokens[$index - 1];
+        $previousIndex = $index - 1;
+        $previous = $tokens[$previousIndex];
         if ($previous->isWhitespace()) {
-            $content = $previous->getContent();
-            if (substr_count($content, "\n") !== $expected) {
-                $previous->setContent(str_repeat("\n", $expected));
+            if (0 === $expected) {
+                $tokens->clearAt($previousIndex);
+            } elseif (substr_count($previous->getContent(), "\n") !== $expected) {
+                $tokens[$previousIndex] = new Token(array(T_WHITESPACE, str_repeat("\n", $expected)));
             }
         }
     }

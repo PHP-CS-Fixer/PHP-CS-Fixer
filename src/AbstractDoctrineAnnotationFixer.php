@@ -51,7 +51,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                 $this->configuration['ignored_tags']
             );
             $this->fixAnnotations($tokens);
-            $docCommentToken->setContent($tokens->getCode());
+            $phpTokens[$index] = new PhpToken(array(T_DOC_COMMENT, $tokens->getCode()));
         }
     }
 

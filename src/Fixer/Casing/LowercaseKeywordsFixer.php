@@ -66,9 +66,9 @@ final class LowercaseKeywordsFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if ($token->isKeyword() && !$token->isGivenKind(self::$excludedTokens)) {
-                $token->setContent(strtolower($token->getContent()));
+                $tokens[$index] = new Token(array($token->getId(), strtolower($token->getContent())));
             }
         }
     }

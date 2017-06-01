@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Tokenizer\Token;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -185,7 +186,10 @@ EOT;
             Argument::type('SplFileInfo'),
             Argument::type('PhpCsFixer\Tokenizer\Tokens')
         )->will(function (array $arguments) use (&$things) {
-            $arguments[1][3]->setContent($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'');
+            $arguments[1][3] = new Token(array(
+                $arguments[1][3]->getId(),
+                ($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\''),
+            ));
         });
 
         $fixerFactory = new FixerFactory();

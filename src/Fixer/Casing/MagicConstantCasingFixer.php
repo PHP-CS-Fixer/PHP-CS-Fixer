@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -50,9 +51,9 @@ final class MagicConstantCasingFixer extends AbstractFixer
         $magicConstants = $this->getMagicConstants();
         $magicConstantTokens = $this->getMagicConstantTokens();
 
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if ($token->isGivenKind($magicConstantTokens)) {
-                $token->setContent($magicConstants[$token->getId()]);
+                $tokens[$index] = new Token(array($token->getId(), $magicConstants[$token->getId()]));
             }
         }
     }

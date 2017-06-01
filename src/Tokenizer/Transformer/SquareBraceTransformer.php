@@ -79,8 +79,8 @@ final class SquareBraceTransformer extends AbstractTransformer
     {
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
-        $tokens[$index]->override(array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['));
-        $tokens[$endIndex]->override(array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+        $tokens[$index] = new Token(array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['));
+        $tokens[$endIndex] = new Token(array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
     }
 
     /**
@@ -91,8 +91,8 @@ final class SquareBraceTransformer extends AbstractTransformer
     {
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
-        $tokens[$index]->override(array(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['));
-        $tokens[$endIndex]->override(array(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'));
+        $tokens[$index] = new Token(array(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['));
+        $tokens[$endIndex] = new Token(array(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'));
     }
 
     /**

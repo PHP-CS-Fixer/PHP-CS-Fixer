@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Strict;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -68,7 +69,7 @@ final class StrictComparisonFixer extends AbstractFixer
             $tokenId = $token->getId();
 
             if (isset($map[$tokenId])) {
-                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content']));
+                $tokens[$index] = new Token(array($map[$tokenId]['id'], $map[$tokenId]['content']));
             }
         }
     }

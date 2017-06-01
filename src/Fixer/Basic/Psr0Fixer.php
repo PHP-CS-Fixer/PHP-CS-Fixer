@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -115,19 +116,17 @@ class InvalidName {}
             $filename = basename($path, '.php');
 
             if ($classyName !== $filename) {
-                $tokens[$classyIndex]->setContent($filename);
+                $tokens[$classyIndex] = new Token(array(T_STRING, $filename));
             }
 
             if ($normNamespace !== $dir && strtolower($normNamespace) === strtolower($dir)) {
                 for ($i = $namespaceIndex; $i <= $namespaceEndIndex; ++$i) {
-                    $tokens[$i]->clear();
+                    $tokens->clearAt($i);
                 }
                 $namespace = substr($namespace, 0, -strlen($dir)).str_replace('/', '\\', $dir);
 
                 $newNamespace = Tokens::fromCode('<?php namespace '.$namespace.';');
-                $newNamespace[0]->clear();
-                $newNamespace[1]->clear();
-                $newNamespace[2]->clear();
+                $newNamespace->clearRange(0, 2);
                 $newNamespace->clearEmptyTokens();
 
                 $tokens->insertAt($namespaceIndex, $newNamespace);
@@ -138,7 +137,7 @@ class InvalidName {}
             $filename = substr($path, -strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
-                $tokens[$classyIndex]->setContent(str_replace('/', '_', $filename));
+                $tokens[$classyIndex] = new Token(array(T_STRING, str_replace('/', '_', $filename)));
             }
         }
     }
