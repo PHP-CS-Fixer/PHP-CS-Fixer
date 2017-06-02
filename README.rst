@@ -621,6 +621,10 @@ Choose from the list of available rules:
 
   - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
 
+* **no_extra_whitespace**
+                         Remove extra whitespace
+                         buried inside of any SLOC.
+
 * **no_leading_import_slash** [@Symfony]
 
   Remove leading slashes in use clauses.
