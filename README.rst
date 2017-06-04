@@ -797,6 +797,10 @@ Choose from the list of available rules:
 
   Logical NOT operators (``!``) should have one trailing whitespace.
 
+* **null_property_declaration**
+
+  Simplifies null class property declarations.
+
 * **object_operator_without_whitespace** [@Symfony]
 
   There should not be space before or after object ``T_OBJECT_OPERATOR``
