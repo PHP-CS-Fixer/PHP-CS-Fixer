@@ -279,24 +279,34 @@ final class TokenTest extends TestCase
         ];
     }
 
-    public function testPropertiesOfArrayToken()
+    /**
+     * @param mixed       $prototype
+     * @param null|int    $expectedId
+     * @param null|string $expectedContent
+     * @param null|bool   $expectedIsArray
+     * @param null|string $expectedExceptionClass
+     *
+     * @dataProvider provideCreatingTokenCases
+     */
+    public function testCreatingToken($prototype, $expectedId, $expectedContent, $expectedIsArray, $expectedExceptionClass = null)
     {
-        $prototype = $this->getForeachTokenPrototype();
-        $token = $this->getForeachToken();
+        $this->setExpectedException($expectedExceptionClass);
 
-        $this->assertSame($prototype[0], $token->getId());
-        $this->assertSame($prototype[1], $token->getContent());
-        $this->assertTrue($token->isArray());
+        $token = new Token($prototype);
+        $this->assertSame($expectedId, $token->getId());
+        $this->assertSame($expectedContent, $token->getContent());
+        $this->assertSame($expectedIsArray, $token->isArray());
     }
 
-    public function testPropertiesOfNonArrayToken()
+    public function provideCreatingTokenCases()
     {
-        $prototype = $this->getBraceTokenPrototype();
-        $token = $this->getBraceToken();
-
-        $this->assertSame($prototype, $token->getContent());
-        $this->assertNull($token->getId());
-        $this->assertFalse($token->isArray());
+        return [
+            [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
+            ['(', null, '(', false],
+            [123, null, null, null, 'InvalidArgumentException'],
+            [false, null, null, null, 'InvalidArgumentException'],
+            [null, null, null, null, 'InvalidArgumentException'],
+        ];
     }
 
     public function testEqualsDefaultIsCaseSensitive()
