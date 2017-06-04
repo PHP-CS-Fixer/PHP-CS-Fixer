@@ -323,6 +323,6 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      */
     private function isNewLine(Token $token)
     {
-        return $token->isWhitespace() && (false !== strpos($token->getContent(), "\n"));
+        return $token->isWhitespace() && false !== strpos($token->getContent(), "\n");
     }
 }
