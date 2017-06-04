@@ -286,11 +286,11 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param array|string|mixed $prototype
-     * @param null|int           $expectedId
-     * @param null|string        $expectedContent
-     * @param null|bool          $expectedIsArray
-     * @param null|string        $expectedExceptionClass
+     * @param mixed       $prototype
+     * @param null|int    $expectedId
+     * @param null|string $expectedContent
+     * @param null|bool   $expectedIsArray
+     * @param null|string $expectedExceptionClass
      *
      * @dataProvider provideCreatingTokenCases
      */
