@@ -24,6 +24,7 @@ use PhpCsFixer\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @method Token current()
+ * @method Token offsetGet($index)
  */
 class Tokens extends \SplFixedArray
 {
@@ -913,9 +914,7 @@ class Tokens extends \SplFixedArray
         // If we want to add less tokens than passed range contains then clear
         // not needed tokens.
         if ($itemsCount < $indexToChange) {
-            for ($i = $indexStart + $itemsCount; $i <= $indexEnd; ++$i) {
-                $this[$i]->clear();
-            }
+            $this->clearRange($indexStart + $itemsCount, $indexEnd);
         }
     }
 
