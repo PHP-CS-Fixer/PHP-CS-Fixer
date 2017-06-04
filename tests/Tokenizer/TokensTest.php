@@ -346,12 +346,12 @@ PHP;
      * @dataProvider provideMonolithicPhpDetection
      *
      * @param string $source
-     * @param bool   $monolithic
+     * @param bool   $isMonolithic
      */
-    public function testMonolithicPhpDetection($source, $monolithic)
+    public function testMonolithicPhpDetection($source, $isMonolithic)
     {
         $tokens = Tokens::fromCode($source);
-        $this->assertSame($monolithic, $tokens->isMonolithicPhp());
+        $this->assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
 
     public function provideMonolithicPhpDetection()
@@ -816,6 +816,28 @@ PHP;
     {
         $tokens = Tokens::fromArray(array());
         $this->assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+    }
+
+    /**
+     * @param Token $token
+     * @param bool  $isEmpty
+     *
+     * @dataProvider provideIsEmptyCases
+     */
+    public function testIsEmpty(Token $token, $isEmpty)
+    {
+        $tokens = Tokens::fromArray(array($token));
+        Tokens::clearCache();
+        $this->assertSame($isEmpty, $tokens->isEmptyAt(0), $token->toJson());
+    }
+
+    public function provideIsEmptyCases()
+    {
+        return array(
+            array(new Token(''), true),
+            array(new Token('('), false),
+            array(new Token(array(T_WHITESPACE, ' ')), false),
+        );
     }
 
     public function testClone()

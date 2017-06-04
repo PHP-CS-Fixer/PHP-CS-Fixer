@@ -179,7 +179,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         );
 
         for ($i = $argumentStartIndex; $i <= $argumentEndIndex; ++$i) {
-            if ($tokens[$i]->isGivenKind($allowedKinds) || $tokens[$i]->isEmpty()) {
+            if ($tokens[$i]->isGivenKind($allowedKinds) || $tokens->isEmptyAt($i)) {
                 continue;
             }
 

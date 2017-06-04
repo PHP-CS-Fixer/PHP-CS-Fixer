@@ -754,7 +754,7 @@ class Tokens extends \SplFixedArray
                 }
                 $token = new Token($token);
             }
-            if ($token->isWhitespace() || $token->isComment() || $token->isEmpty()) {
+            if ($token->isWhitespace() || $token->isComment() || '' === $token->getContent()) {
                 throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: %s.', $key));
             }
         }
@@ -860,9 +860,16 @@ class Tokens extends \SplFixedArray
         return false;
     }
 
+    /**
+     * @param int $index
+     *
+     * @return bool
+     */
     public function isEmptyAt($index)
     {
-        return $this[$index]->isEmpty();
+        $token = $this[$index];
+
+        return null === $token->getId() && '' === $token->getContent();
     }
 
     public function clearAt($index)
