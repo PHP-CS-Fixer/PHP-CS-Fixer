@@ -1053,6 +1053,10 @@ Choose from the list of available rules:
 
   Convert double quotes to single quotes for simple strings.
 
+* **snake_case_to_camel_case**
+
+  Convert ``$snake_case`` variables to ``$camelCase``.
+
 * **space_after_semicolon** [@Symfony]
 
   Fix whitespace after a semicolon.
