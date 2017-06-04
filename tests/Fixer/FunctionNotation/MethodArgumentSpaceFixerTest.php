@@ -315,6 +315,30 @@ INPUT
             ,
                 ['ensure_fully_multiline' => true],
             ],
+            'function calls with here doc cannot be anything but multiline' => [
+                <<<'EXPECTED'
+<?php
+str_replace(
+    "\n",
+    PHP_EOL,
+    <<<'TEXT'
+   1) someFile.php
+
+TEXT
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+str_replace("\n", PHP_EOL, <<<'TEXT'
+   1) someFile.php
+
+TEXT
+);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
             'test barely multiline function with blank lines becomes fully-multiline' => [
                 <<<'EXPECTED'
 <?php
