@@ -215,27 +215,21 @@ final class FixerFactory
 
     /**
      * Sort fixers by their priorities.
-     *
-     * @return $this
      */
     private function sortFixers()
     {
         // Schwartzian transform is used to improve the efficiency and avoid
         // `usort(): Array was modified by the user comparison function` warning for mocked objects.
 
-        $data = array_map(function (FixerInterface $fixer) {
-            return [$fixer, $fixer->getPriority()];
-        }, $this->fixers);
-
-        usort($data, function (array $a, array $b) {
-            return Utils::cmpInt($b[1], $a[1]);
-        });
-
-        $this->fixers = array_map(function (array $item) {
-            return $item[0];
-        }, $data);
-
-        return $this;
+        $this->fixers = Utils::stableSort(
+            $this->fixers,
+            function (FixerInterface $fixer) {
+                return $fixer->getPriority();
+            },
+            function ($a, $b) {
+                return Utils::cmpInt($b, $a);
+            }
+        );
     }
 
     /**

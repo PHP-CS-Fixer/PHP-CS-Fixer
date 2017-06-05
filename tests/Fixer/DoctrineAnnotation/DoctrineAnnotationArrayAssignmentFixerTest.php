@@ -24,7 +24,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
 {
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixCases
      */
@@ -35,7 +35,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixCases
      */
@@ -108,7 +108,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixWithColonCases
      */

@@ -174,7 +174,7 @@ class Sample
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array<string, Token|null> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @return array<string, null|Token> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforeMethodToken(Tokens $tokens, $index)
     {
@@ -207,7 +207,7 @@ class Sample
      *
      * @param Tokens                    $tokens      Tokens collection
      * @param int                       $memberIndex token index
-     * @param array<string, Token|null> $attribs     map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @param array<string, null|Token> $attribs     map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function overrideAttribs(Tokens $tokens, $memberIndex, array $attribs)
     {
@@ -242,7 +242,7 @@ class Sample
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array<string, Token|null> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @return array<string, null|Token> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforePropertyToken(Tokens $tokens, $index)
     {
@@ -270,10 +270,10 @@ class Sample
      *
      * @param Tokens                    $tokens          Tokens collection
      * @param int                       $index           token index
-     * @param array<int, string|null>   $tokenAttribsMap token to attribute name map
-     * @param array<string, Token|null> $attribs         array of token attributes
+     * @param array<int, null|string>   $tokenAttribsMap token to attribute name map
+     * @param array<string, null|Token> $attribs         array of token attributes
      *
-     * @return array<string, Token|null> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @return array<string, null|Token> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforeToken(Tokens $tokens, $index, array $tokenAttribsMap, array $attribs)
     {
