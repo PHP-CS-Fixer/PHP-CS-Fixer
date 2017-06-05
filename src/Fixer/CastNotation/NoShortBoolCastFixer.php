@@ -97,7 +97,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
                 !$tokens[$start]->isComment()
                 && !($tokens[$start]->isWhitespace() && $tokens[$start - 1]->isComment())
             ) {
-                $tokens[$start]->clear();
+                $tokens->clearAt($start);
             }
         }
 

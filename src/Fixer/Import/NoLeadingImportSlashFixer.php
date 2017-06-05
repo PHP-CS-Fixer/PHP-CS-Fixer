@@ -75,7 +75,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
             $nextToken = $tokens[$nextTokenIdx];
 
             if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
-                $nextToken->clear();
+                $tokens->clearAt($nextTokenIdx);
             }
         }
     }

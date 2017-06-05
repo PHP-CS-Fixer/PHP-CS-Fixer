@@ -208,8 +208,8 @@ class Foo
                 // we might be moving one white space next to another, these have to be merged
                 $tokens[$i] = $tokens[$i - 1];
                 if ($tokens[$i]->isWhitespace() && $tokens[$i + 1]->isWhitespace()) {
-                    $tokens[$i]->setContent($tokens[$i]->getContent().$tokens[$i + 1]->getContent());
-                    $tokens[$i + 1]->clear();
+                    $tokens[$i] = new Token([T_WHITESPACE, $tokens[$i]->getContent().$tokens[$i + 1]->getContent()]);
+                    $tokens->clearAt($i + 1);
                 }
             }
 
@@ -217,7 +217,7 @@ class Foo
             $c = $tokens[$braceIndex]->getContent();
             if (substr_count($c, "\n") > 1) {
                 // left trim till last line break
-                $tokens[$braceIndex]->setContent(substr($c, strrpos($c, "\n")));
+                $tokens[$braceIndex] = new Token([T_WHITESPACE, substr($c, strrpos($c, "\n"))]);
             }
         }
     }

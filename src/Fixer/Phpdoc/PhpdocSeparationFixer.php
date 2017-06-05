@@ -19,6 +19,7 @@ use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -72,7 +73,7 @@ function fnc($foo, $bar) {}'
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
@@ -81,7 +82,7 @@ function fnc($foo, $bar) {}'
             $this->fixDescription($doc);
             $this->fixAnnotations($doc);
 
-            $token->setContent($doc->getContent());
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 

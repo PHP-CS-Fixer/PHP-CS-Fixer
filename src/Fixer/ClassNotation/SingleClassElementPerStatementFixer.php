@@ -182,9 +182,9 @@ final class Example
                 continue;
             }
 
-            $token->setContent(';');
+            $tokens[$i] = new Token(';');
             if ($tokens[$i + 1]->isWhitespace()) {
-                $tokens[$i + 1]->clear();
+                $tokens->clearAt($i + 1);
             }
 
             if ($divisionContent) {

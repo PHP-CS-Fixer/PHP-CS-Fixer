@@ -81,11 +81,11 @@ function foo( $bar, $baz )
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
             // remove space after opening `(`
-            $this->removeSpaceAroundToken($tokens[$index + 1]);
+            $this->removeSpaceAroundToken($tokens, $index + 1);
 
             // remove space before closing `)` if it is not `list($a, $b, )` case
             if (!$tokens[$tokens->getPrevMeaningfulToken($endIndex)]->equals(',')) {
-                $this->removeSpaceAroundToken($tokens[$endIndex - 1]);
+                $this->removeSpaceAroundToken($tokens, $endIndex - 1);
             }
         }
     }
@@ -93,12 +93,15 @@ function foo( $bar, $baz )
     /**
      * Remove spaces from token at a given index.
      *
-     * @param Token $token
+     * @param Tokens $tokens
+     * @param int    $index
      */
-    private function removeSpaceAroundToken(Token $token)
+    private function removeSpaceAroundToken(Tokens $tokens, $index)
     {
+        $token = $tokens[$index];
+
         if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
-            $token->clear();
+            $tokens->clearAt($index);
         }
     }
 }

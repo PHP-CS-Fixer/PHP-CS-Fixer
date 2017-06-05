@@ -396,7 +396,7 @@ final class RemoveCommentsFixer extends AbstractFixer {
             $prevToken = $tokens[$prevTokenIndex];
 
             if ($prevToken->equals(';')) {
-                $token->clear();
+                $tokens->clearAt($index);
             }
         }
     }

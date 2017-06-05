@@ -89,14 +89,13 @@ include_once("sample4.php");
             }
 
             $nextIndex = $includy['begin'] + 1;
-            $nextToken = $tokens[$nextIndex];
 
-            while ($nextToken->isEmpty()) {
-                $nextToken = $tokens[++$nextIndex];
+            while ($tokens->isEmptyAt($nextIndex)) {
+                ++$nextIndex;
             }
 
-            if ($nextToken->isWhitespace()) {
-                $nextToken->setContent(' ');
+            if ($tokens[$nextIndex]->isWhitespace()) {
+                $tokens[$nextIndex] = new Token([T_WHITESPACE, ' ']);
             } elseif ($braces || $tokens[$nextIndex]->isGivenKind([T_VARIABLE, T_CONSTANT_ENCAPSED_STRING, T_COMMENT])) {
                 $tokens->insertAt($includy['begin'] + 1, new Token([T_WHITESPACE, ' ']));
             }

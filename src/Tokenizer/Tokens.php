@@ -260,7 +260,10 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval)
     {
-        $this->changed = true;
+        if (!$this[$index] || !$this[$index]->equals($newval)) {
+            $this->changed = true;
+        }
+
         $this->registerFoundToken($newval);
         parent::offsetSet($index, $newval);
     }
@@ -288,7 +291,7 @@ class Tokens extends \SplFixedArray
         $index = 0;
 
         for (; $index < $limit; ++$index) {
-            if ($this[$index]->isEmpty()) {
+            if ($this->isEmptyAt($index)) {
                 break;
             }
         }
@@ -299,10 +302,8 @@ class Tokens extends \SplFixedArray
         }
 
         for ($count = $index; $index < $limit; ++$index) {
-            $token = $this[$index];
-
-            if (!$token->isEmpty()) {
-                $this[$count++] = $token;
+            if (!$this->isEmptyAt($index)) {
+                $this[$count++] = $this[$index];
             }
         }
 
@@ -323,10 +324,12 @@ class Tokens extends \SplFixedArray
      */
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
-        $removeLastCommentLine = function (Token $token, $indexOffset, $whitespace) {
+        $removeLastCommentLine = function (Tokens $tokens, $index, $indexOffset, $whitespace) {
+            $token = $tokens[$index];
+
             if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
                 if (0 === strpos($whitespace, "\r\n")) {
-                    $token->setContent(rtrim($token->getContent())."\r\n");
+                    $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
 
                     return strlen($whitespace) > 2 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
                         ? substr($whitespace, 2)
@@ -334,7 +337,7 @@ class Tokens extends \SplFixedArray
                     ;
                 }
 
-                $token->setContent(rtrim($token->getContent()).$whitespace[0]);
+                $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent()).$whitespace[0]]);
 
                 return strlen($whitespace) > 1 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
                     ? substr($whitespace, 1)
@@ -346,13 +349,13 @@ class Tokens extends \SplFixedArray
         };
 
         if ($this[$index]->isWhitespace()) {
-            $whitespace = $removeLastCommentLine($this[$index - 1], $indexOffset, $whitespace);
-            $this->overrideAt($index, [T_WHITESPACE, $whitespace]);
+            $whitespace = $removeLastCommentLine($this, $index - 1, $indexOffset, $whitespace);
+            $this[$index] = new Token([T_WHITESPACE, $whitespace]);
 
             return false;
         }
 
-        $whitespace = $removeLastCommentLine($this[$index], $indexOffset, $whitespace);
+        $whitespace = $removeLastCommentLine($this, $index, $indexOffset, $whitespace);
         if ('' === $whitespace) {
             return false;
         }
@@ -630,13 +633,11 @@ class Tokens extends \SplFixedArray
                 return null;
             }
 
-            $token = $this[$index];
-
-            if ($token->isEmpty()) {
+            if ($this->isEmptyAt($index)) {
                 continue;
             }
 
-            if ($token->equalsAny($tokens)) {
+            if ($this[$index]->equalsAny($tokens)) {
                 continue;
             }
 
@@ -678,7 +679,7 @@ class Tokens extends \SplFixedArray
                 return null;
             }
 
-            if (!$this[$index]->isEmpty()) {
+            if (!$this->isEmptyAt($index)) {
                 return $index;
             }
         }
@@ -741,11 +742,11 @@ class Tokens extends \SplFixedArray
                 if (is_array($token) && !isset($token[1])) {
                     // fake some content as it is required by the Token constructor,
                     // although optional for search purposes
-                    $token[1] = '';
+                    $token[1] = 'DUMMY';
                 }
                 $token = new Token($token);
             }
-            if ($token->isWhitespace() || $token->isComment() || $token->isEmpty()) {
+            if ($token->isWhitespace() || $token->isComment() || '' === $token->getContent()) {
                 throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: %s.', $key));
             }
         }
@@ -852,6 +853,23 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isEmptyAt($index)
+    {
+        $token = $this[$index];
+
+        return null === $token->getId() && '' === $token->getContent();
+    }
+
+    public function clearAt($index)
+    {
+        $this[$index] = new Token('');
+    }
+
+    /**
      * Override token at given index and register it.
      *
      * @param int                $index
@@ -900,7 +918,7 @@ class Tokens extends \SplFixedArray
 
         // Override each items.
         foreach ($items as $itemIndex => $item) {
-            $this->overrideAt($indexStart + $itemIndex, $item);
+            $this[$indexStart + $itemIndex] = $item;
         }
 
         // If we want to add less tokens than passed range contains then clear
@@ -917,7 +935,7 @@ class Tokens extends \SplFixedArray
     public function removeLeadingWhitespace($index, $whitespaces = null)
     {
         if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace($whitespaces)) {
-            $this[$index - 1]->clear();
+            $this->clearAt($index - 1);
         }
     }
 
@@ -928,7 +946,7 @@ class Tokens extends \SplFixedArray
     public function removeTrailingWhitespace($index, $whitespaces = null)
     {
         if (isset($this[$index + 1]) && $this[$index + 1]->isWhitespace($whitespaces)) {
-            $this[$index + 1]->clear();
+            $this->clearAt($index + 1);
         }
     }
 
@@ -1047,7 +1065,7 @@ class Tokens extends \SplFixedArray
     public function clearRange($indexStart, $indexEnd)
     {
         for ($i = $indexStart; $i <= $indexEnd; ++$i) {
-            $this[$i]->clear();
+            $this->clearAt($i);
         }
     }
 
@@ -1104,7 +1122,7 @@ class Tokens extends \SplFixedArray
     public function clearTokenAndMergeSurroundingWhitespace($index)
     {
         $count = count($this);
-        $this[$index]->clear();
+        $this->clearAt($index);
 
         if ($index === $count - 1) {
             return;
@@ -1119,12 +1137,12 @@ class Tokens extends \SplFixedArray
         $prevIndex = $this->getNonEmptySibling($index, -1);
 
         if ($this[$prevIndex]->isWhitespace()) {
-            $this[$prevIndex]->setContent($this[$prevIndex]->getContent().$this[$nextIndex]->getContent());
-        } elseif ($this[$prevIndex + 1]->isEmpty()) {
-            $this[$prevIndex + 1]->override([T_WHITESPACE, $this[$nextIndex]->getContent()]);
+            $this[$prevIndex] = new Token([T_WHITESPACE, $this[$prevIndex]->getContent().$this[$nextIndex]->getContent()]);
+        } elseif ($this->isEmptyAt($prevIndex + 1)) {
+            $this[$prevIndex + 1] = new Token([T_WHITESPACE, $this[$nextIndex]->getContent()]);
         }
 
-        $this[$nextIndex]->clear();
+        $this->clearAt($nextIndex);
     }
 
     /**

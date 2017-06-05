@@ -277,7 +277,7 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0
+     * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0.
      */
     public function testLegacyFixSpace()
     {

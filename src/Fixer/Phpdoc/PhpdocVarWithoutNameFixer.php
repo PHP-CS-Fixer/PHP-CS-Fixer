@@ -17,6 +17,7 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -62,7 +63,7 @@ final class Foo
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
@@ -83,7 +84,7 @@ final class Foo
 
             $this->fixLine($doc->getLine($annotations[0]->getStart()));
 
-            $token->setContent($doc->getContent());
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 

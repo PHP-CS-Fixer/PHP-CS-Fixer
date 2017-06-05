@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -64,19 +65,19 @@ final class ElseifFixer extends AbstractFixer
 
             // now we have T_ELSE following by T_IF so we could fix this
             // 1. clear whitespaces between T_ELSE and T_IF
-            $tokens[$index + 1]->clear();
+            $tokens->clearAt($index + 1);
 
             // 2. change token from T_ELSE into T_ELSEIF
-            $tokens->overrideAt($index, [T_ELSEIF, 'elseif']);
+            $tokens[$index] = new Token([T_ELSEIF, 'elseif']);
 
             // 3. clear succeeding T_IF
-            $tokens[$ifTokenIndex]->clear();
+            $tokens->clearAt($ifTokenIndex);
 
             $beforeIfTokenIndex = $tokens->getPrevNonWhitespace($ifTokenIndex);
 
             // 4. clear extra whitespace after T_IF in T_COMMENT,T_WHITESPACE?,T_IF,T_WHITESPACE sequence
             if ($tokens[$beforeIfTokenIndex]->isComment() && $tokens[$ifTokenIndex + 1]->isWhitespace()) {
-                $tokens[$ifTokenIndex + 1]->clear();
+                $tokens->clearAt($ifTokenIndex + 1);
             }
         }
     }

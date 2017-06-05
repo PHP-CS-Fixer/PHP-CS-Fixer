@@ -280,14 +280,14 @@ echo 1;
             if ($lineBreakCount < $expectedLineCount) {
                 $missing = str_repeat($lineEnding, $expectedLineCount - $lineBreakCount);
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
-                    $tokens[$headerIndex + 1]->setContent($missing.$tokens[$headerIndex + 1]->getContent());
+                    $tokens[$headerIndex + 1] = new Token([T_WHITESPACE, $missing.$tokens[$headerIndex + 1]->getContent()]);
                 } else {
                     $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, $missing]));
                 }
             } elseif ($lineBreakCount > 2) {
                 // remove extra line endings
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
-                    $tokens[$headerIndex + 1]->setContent($lineEnding.$lineEnding);
+                    $tokens[$headerIndex + 1] = new Token([T_WHITESPACE, $lineEnding.$lineEnding]);
                 }
             }
         }
@@ -298,7 +298,7 @@ echo 1;
 
         $regex = '/[\t ]$/';
         if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && preg_match($regex, $tokens[$prev]->getContent())) {
-            $tokens[$prev]->setContent(preg_replace($regex, $lineEnding, $tokens[$prev]->getContent()));
+            $tokens[$prev] = new Token([T_OPEN_TAG, preg_replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
         }
 
         $lineBreakCount = $this->getLineBreakCount($tokens, $prev, $headerIndex);

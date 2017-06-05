@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -208,7 +209,7 @@ $this->assertNotSame(null, $d);
             return null;
         }
 
-        $tokens[$sequenceIndexes[2]]->setContent($map[$firstParameterToken->getContent()]);
+        $tokens[$sequenceIndexes[2]] = new Token([T_STRING, $map[$firstParameterToken->getContent()]]);
         $tokens->clearRange($sequenceIndexes[4], $tokens->getNextNonWhitespace($sequenceIndexes[5]) - 1);
 
         return $sequenceIndexes[5];

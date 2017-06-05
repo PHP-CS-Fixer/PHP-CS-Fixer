@@ -65,8 +65,8 @@ final class PreIncrementFixer extends AbstractFixer
 
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($startIndex)];
             if ($prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+                $tokens->clearAt($index);
                 $tokens->insertAt($startIndex, clone $token);
-                $token->clear();
             }
         }
     }

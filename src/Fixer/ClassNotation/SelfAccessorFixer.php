@@ -124,7 +124,7 @@ class Sample
                 $prevToken->isGivenKind([T_INSTANCEOF, T_NEW]) ||
                 $nextToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)
             ) {
-                $token->setContent('self');
+                $tokens[$i] = new Token([T_STRING, 'self']);
             }
         }
     }

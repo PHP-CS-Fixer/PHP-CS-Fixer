@@ -99,7 +99,9 @@ class Token
      */
     public function clear()
     {
-        $this->override('');
+        $this->content = '';
+        $this->id = null;
+        $this->isArray = false;
     }
 
     /**
@@ -468,19 +470,18 @@ class Token
      */
     public function setContent($content)
     {
-        // setting empty content is clearing the token
-        if ('' === $content) {
-            $this->clear();
-
-            return;
-        }
-
         if ($this->content === $content) {
             return;
         }
 
         $this->changed = true;
         $this->content = $content;
+
+        // setting empty content is clearing the token
+        if ('' === $content) {
+            $this->id = null;
+            $this->isArray = false;
+        }
     }
 
     public function toArray()
