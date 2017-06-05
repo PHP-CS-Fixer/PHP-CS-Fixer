@@ -129,8 +129,8 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
             return;
         }
 
-        $tokens->overrideAt($index, '(');
-        $tokens->overrideAt($closeIndex, ')');
+        $tokens[$index] = new Token('(');
+        $tokens[$closeIndex] = new Token(')');
         $tokens->insertAt($index, new Token([T_LIST, 'list']));
     }
 
@@ -143,8 +143,8 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
         $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
-        $tokens->overrideAt($openIndex, [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
-        $tokens->overrideAt($closeIndex, [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
+        $tokens[$openIndex] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
+        $tokens[$closeIndex] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
     }
