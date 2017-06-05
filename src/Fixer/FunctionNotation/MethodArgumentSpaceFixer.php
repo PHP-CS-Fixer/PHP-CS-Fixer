@@ -186,7 +186,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
         if (!$this->isNewline($tokens[$endFunctionIndex - 1])) {
-            $tokens->addNewlineAndIndent(
+            $this->addNewlineAndIndent(
                 $tokens,
                 $endFunctionIndex,
                 $existingIndentation,
