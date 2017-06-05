@@ -186,7 +186,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
         if (!$this->isNewline($tokens[$endFunctionIndex - 1])) {
-            $this->ensureWhitespaceAtIndex(
+            $tokens->addNewlineAndIndent(
                 $tokens,
                 $endFunctionIndex,
                 $existingIndentation,
@@ -233,7 +233,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         if ($tokens[$index + 2]->isComment()) {
             $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index + 2);
             if (!$this->isNewLine($tokens[$nextMeaningfulTokenIndex - 1])) {
-                $this->ensureWhitespaceAtIndex(
+                $this->addNewlineAndIndent(
                     $tokens,
                     $nextMeaningfulTokenIndex,
                     $indentation,
@@ -244,7 +244,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             return;
         }
 
-        $this->ensureWhitespaceAtIndex($tokens, $index + 1, $indentation, $override);
+        $this->addNewlineAndIndent($tokens, $index + 1, $indentation, $override);
     }
 
     /**
@@ -255,7 +255,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      * @param string $indentation the indentation that should be used
      * @param bool   $override    whether to override the existing character or not
      */
-    private function ensureWhitespaceAtIndex(Tokens $tokens, $index, $indentation, $override)
+    private function addNewlineAndIndent(Tokens $tokens, $index, $indentation, $override)
     {
         $whitespaceToken = new Token([
             T_WHITESPACE,
