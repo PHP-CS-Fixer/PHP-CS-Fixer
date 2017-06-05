@@ -80,7 +80,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
 
             $nextIndex = $i + 1;
 
-            $tokens->overrideAt($i, [T_OPEN_TAG, '<?php ']);
+            $tokens[$i] = new Token([T_OPEN_TAG, '<?php ']);
 
             if (!$tokens[$nextIndex]->isWhitespace()) {
                 $tokens->insertAt($nextIndex, new Token([T_WHITESPACE, ' ']));

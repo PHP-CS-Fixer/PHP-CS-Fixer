@@ -354,7 +354,7 @@ class Foo
             }
         }
 
-        $token->setContent($content);
+        $this->tokens[$index] = new Token([T_WHITESPACE, $content]);
     }
 
     private function fixAfterToken($index)
@@ -423,10 +423,12 @@ class Foo
 
             $pos = strrpos($content, "\n");
             if ($pos + 2 <= strlen($content)) { // preserve indenting where possible
-                $this->tokens[$i]->setContent($ending.substr($content, $pos + 1));
+                $newContent = $ending.substr($content, $pos + 1);
             } else {
-                $this->tokens[$i]->setContent($ending);
+                $newContent = $ending;
             }
+
+            $this->tokens[$i] = new Token([T_WHITESPACE, $newContent]);
         }
     }
 }

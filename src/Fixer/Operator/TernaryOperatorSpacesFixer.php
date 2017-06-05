@@ -59,7 +59,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 if ($nextNonWhitespaceToken->equals(':')) {
                     // for `$a ?: $b` remove spaces between `?` and `:`
                     if ($tokens[$index + 1]->isWhitespace()) {
-                        $tokens[$index + 1]->clear();
+                        $tokens->clearAt($index + 1);
                     }
                 } else {
                     // for `$a ? $b : $c` ensure space after `?`
@@ -100,7 +100,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 false === strpos($tokens[$index]->getContent(), "\n")
                 && !$tokens[$index - 1]->isComment()
             ) {
-                $tokens[$index]->setContent(' ');
+                $tokens[$index] = new Token([T_WHITESPACE, ' ']);
             }
 
             return;

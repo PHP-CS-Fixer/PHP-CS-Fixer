@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -178,6 +179,6 @@ class Sample
         }
 
         $returnsBlock->setTypes($newTypes);
-        $tokens[$docIndex]->setContent($docBlock->getContent());
+        $tokens[$docIndex] = new Token([T_DOC_COMMENT, $docBlock->getContent()]);
     }
 }

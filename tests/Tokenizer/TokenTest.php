@@ -144,21 +144,11 @@ final class TokenTest extends TestCase
         $braceToken = $this->getBraceToken();
         $this->assertFalse($braceToken->isEmpty());
 
-        $braceToken->setContent('');
-        $this->assertTrue($braceToken->isEmpty());
+        $emptyToken = new Token('');
+        $this->assertTrue($emptyToken->isEmpty());
 
         $whitespaceToken = new Token([T_WHITESPACE, ' ']);
         $this->assertFalse($whitespaceToken->isEmpty());
-
-        $whitespaceToken->setContent('');
-        $this->assertTrue($whitespaceToken->isEmpty());
-
-        $whitespaceToken->override([null, '']);
-        $this->assertTrue($whitespaceToken->isEmpty());
-
-        $whitespaceToken = new Token([T_WHITESPACE, ' ']);
-        $whitespaceToken->clear();
-        $this->assertTrue($whitespaceToken->isEmpty());
     }
 
     public function testIsGivenKind()

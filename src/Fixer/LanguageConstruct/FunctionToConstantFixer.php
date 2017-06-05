@@ -145,7 +145,8 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     {
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceCloseIndex);
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceOpenIndex);
-        $tokens[$index]->clear();
+
+        $tokens->clearAt($index);
         $tokens->insertAt($index, new Token([T_STRING, $replacementConst]));
     }
 

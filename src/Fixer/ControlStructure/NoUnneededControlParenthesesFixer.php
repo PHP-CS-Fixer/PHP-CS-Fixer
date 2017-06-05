@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -153,7 +154,7 @@ yield(2);
                     $tokens->clearTokenAndMergeSurroundingWhitespace($blockStartIndex);
                 } else {
                     // Adds a space to prevent broken code like `return2`.
-                    $tokens->overrideAt($blockStartIndex, [T_WHITESPACE, ' ']);
+                    $tokens[$blockStartIndex] = new Token([T_WHITESPACE, ' ']);
                 }
 
                 $tokens->clearTokenAndMergeSurroundingWhitespace($blockEndIndex);

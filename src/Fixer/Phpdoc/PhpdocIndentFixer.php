@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
@@ -84,7 +85,8 @@ class DocBlocks
                 continue;
             }
 
-            $prevToken = $tokens[$index - 1];
+            $prevIndex = $index - 1;
+            $prevToken = $tokens[$prevIndex];
 
             // ignore inline docblocks
             if (
@@ -100,8 +102,14 @@ class DocBlocks
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$nextIndex - 1]);
             }
 
-            $prevToken->setContent($this->fixWhitespaceBeforeDocblock($prevToken->getContent(), $indent));
-            $token->setContent($this->fixDocBlock($token->getContent(), $indent));
+            $newPrevContent = $this->fixWhitespaceBeforeDocblock($prevToken->getContent(), $indent);
+            if ($newPrevContent) {
+                $tokens[$prevIndex] = new Token([$prevToken->getId(), $newPrevContent]);
+            } else {
+                $tokens->clearAt($prevIndex);
+            }
+
+            $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixDocBlock($token->getContent(), $indent)]);
         }
     }
 

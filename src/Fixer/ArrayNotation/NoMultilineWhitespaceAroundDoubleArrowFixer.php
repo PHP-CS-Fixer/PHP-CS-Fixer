@@ -63,18 +63,24 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
                 continue;
             }
 
-            $this->fixWhitespace($tokens[$index - 1]);
+            $this->fixWhitespace($tokens, $index - 1);
             // do not move anything about if there is a comment following the whitespace
             if (!$tokens[$index + 2]->isComment()) {
-                $this->fixWhitespace($tokens[$index + 1]);
+                $this->fixWhitespace($tokens, $index + 1);
             }
         }
     }
 
-    private function fixWhitespace(Token $token)
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixWhitespace(Tokens $tokens, $index)
     {
+        $token = $tokens[$index];
+
         if ($token->isWhitespace() && !$token->isWhitespace(" \t")) {
-            $token->setContent(rtrim($token->getContent()).' ');
+            $tokens[$index] = new Token([T_WHITESPACE, rtrim($token->getContent()).' ']);
         }
     }
 }
