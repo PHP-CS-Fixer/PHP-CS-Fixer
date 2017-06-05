@@ -75,8 +75,6 @@ class Tokens extends \SplFixedArray
     /**
      * @var bool
      *
-     * @internal
-     *
      * @todo remove at 3.0
      */
     private static $isLegacyMode = false;
@@ -1349,6 +1347,6 @@ class Tokens extends \SplFixedArray
         return $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (is_array($token) ? $token[0] : $token)
-            ;
+        ;
     }
 }
