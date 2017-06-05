@@ -70,7 +70,7 @@ final class LowercaseCastFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index]->setContent(strtolower($tokens[$index]->getContent()));
+            $tokens[$index] = new Token(array($tokens[$index]->getId(), strtolower($tokens[$index]->getContent())));
         }
     }
 }

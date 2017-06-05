@@ -58,7 +58,7 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
             return;
         }
 
-        $tokens[$index]->override(array(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('));
-        $tokens[$closeIndex]->override(array(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'));
+        $tokens[$index] = new Token(array(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('));
+        $tokens[$closeIndex] = new Token(array(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'));
     }
 }

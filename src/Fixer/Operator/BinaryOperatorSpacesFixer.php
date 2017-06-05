@@ -184,7 +184,7 @@ $foo = array(
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
             if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
-                $tokens[$index + 1]->setContent(' ');
+                $tokens[$index + 1] = new Token(array(T_WHITESPACE, ' '));
             }
         } else {
             $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
@@ -194,7 +194,7 @@ $foo = array(
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
             if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
-                $tokens[$index - 1]->setContent(' ');
+                $tokens[$index - 1] = new Token(array(T_WHITESPACE, ' '));
             }
         } else {
             $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));

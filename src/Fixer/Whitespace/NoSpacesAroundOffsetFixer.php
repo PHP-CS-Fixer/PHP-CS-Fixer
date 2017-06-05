@@ -20,7 +20,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -69,10 +68,14 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
                 }
 
                 // remove space after opening `[` or `{`
-                $this->removeWhitespaceToken($tokens[$index + 1]);
+                if ($tokens[$index + 1]->isWhitespace(" \t")) {
+                    $tokens->clearAt($index + 1);
+                }
 
                 // remove space before closing `]` or `}`
-                $this->removeWhitespaceToken($tokens[$endIndex - 1]);
+                if ($tokens[$endIndex - 1]->isWhitespace(" \t")) {
+                    $tokens->clearAt($endIndex - 1);
+                }
             }
 
             if (in_array('outside', $this->configuration['positions'], true)) {
@@ -105,17 +108,5 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
         ;
 
         return new FixerConfigurationResolverRootless('positions', array($positions));
-    }
-
-    /**
-     * Removes the token if it is single line whitespace.
-     *
-     * @param Token $token
-     */
-    private function removeWhitespaceToken(Token $token)
-    {
-        if ($token->isWhitespace(" \t")) {
-            $token->clear();
-        }
     }
 }

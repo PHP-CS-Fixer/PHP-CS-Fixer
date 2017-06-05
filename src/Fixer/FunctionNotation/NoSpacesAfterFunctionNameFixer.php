@@ -115,7 +115,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     {
         // remove space before opening brace
         if ($tokens[$index - 1]->isWhitespace()) {
-            $tokens[$index - 1]->clear();
+            $tokens->clearAt($index - 1);
         }
     }
 

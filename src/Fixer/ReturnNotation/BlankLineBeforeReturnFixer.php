@@ -72,16 +72,17 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
                 continue;
             }
 
-            $prevToken = $tokens[$index - 1];
+            $prevIndex = $index - 1;
+            $prevToken = $tokens[$prevIndex];
 
             if ($prevToken->isWhitespace()) {
                 $parts = explode("\n", $prevToken->getContent());
                 $countParts = count($parts);
 
                 if (1 === $countParts) {
-                    $prevToken->setContent(rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding);
+                    $tokens[$prevIndex] = new Token(array(T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding));
                 } elseif (count($parts) <= 2) {
-                    $prevToken->setContent($lineEnding.$prevToken->getContent());
+                    $tokens[$prevIndex] = new Token(array(T_WHITESPACE, $lineEnding.$prevToken->getContent()));
                 }
             } else {
                 $tokens->insertAt($index, new Token(array(T_WHITESPACE, $lineEnding.$lineEnding)));

@@ -69,7 +69,7 @@ final class NoUselessElseFixer extends AbstractFixer
 
             // clean up `else` if it is an empty statement
             $this->fixEmptyElse($tokens, $index);
-            if ($token->isEmpty()) {
+            if ($tokens->isEmptyAt($index)) {
                 continue;
             }
 
