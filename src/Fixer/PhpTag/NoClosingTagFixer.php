@@ -53,12 +53,11 @@ final class NoClosingTagFixer extends AbstractFixer
             return;
         }
 
-        $closeTags = $tokens->findGivenKind(T_CLOSE_TAG);
-
-        if (empty($closeTags)) {
+        if (!$tokens->isTokenKindFound(T_CLOSE_TAG)) {
             return;
         }
 
+        $closeTags = $tokens->findGivenKind(T_CLOSE_TAG);
         $index = key($closeTags);
 
         $tokens->removeLeadingWhitespace($index);
