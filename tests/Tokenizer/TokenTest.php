@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -46,10 +47,16 @@ final class TokenTest extends TestCase
         return $prototype;
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::clear is deprecated and will be removed in 3.0.
+     */
     public function testClear()
     {
         $token = $this->getForeachToken();
         $token->clear();
+
+        Tokens::setLegacyMode(false);
 
         $this->assertSame('', $token->getContent());
         $this->assertNull($token->getId());
@@ -139,6 +146,10 @@ final class TokenTest extends TestCase
         ];
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isEmpty is deprecated and will be removed in 3.0.
+     */
     public function testIsEmpty()
     {
         $braceToken = $this->getBraceToken();

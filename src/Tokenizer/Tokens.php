@@ -68,9 +68,16 @@ class Tokens extends \SplFixedArray
      * was ever seen inside the collection (but may not be part of it any longer).
      * The key is token kind and the value is always true.
      *
-     * @var bool[]
+     * @var array<string|int, int>
      */
     private $foundTokenKinds = [];
+
+    /**
+     * @var bool
+     *
+     * @todo remove at 3.0
+     */
+    private static $isLegacyMode = false;
 
     /**
      * Clone tokens collection.
@@ -80,6 +87,30 @@ class Tokens extends \SplFixedArray
         foreach ($this as $key => $val) {
             $this[$key] = clone $val;
         }
+    }
+
+    /**
+     * @return bool
+     *
+     * @internal
+     *
+     * @todo remove at 3.0
+     */
+    public static function isLegacyMode()
+    {
+        return self::$isLegacyMode;
+    }
+
+    /**
+     * @param bool $isLegacy
+     *
+     * @internal
+     *
+     * @todo remove at 3.0
+     */
+    public static function setLegacyMode($isLegacy)
+    {
+        self::$isLegacyMode = $isLegacy;
     }
 
     /**
@@ -247,6 +278,7 @@ class Tokens extends \SplFixedArray
     public function offsetUnset($index)
     {
         $this->changed = true;
+        $this->unregisterFoundToken($this[$index]);
         parent::offsetUnset($index);
     }
 
@@ -264,6 +296,10 @@ class Tokens extends \SplFixedArray
             $this->changed = true;
         }
 
+        if (isset($this[$index])) {
+            $this->unregisterFoundToken($this[$index]);
+        }
+
         $this->registerFoundToken($newval);
         parent::offsetSet($index, $newval);
     }
@@ -275,8 +311,10 @@ class Tokens extends \SplFixedArray
     {
         $this->changed = false;
 
-        foreach ($this as $token) {
-            $token->clearChanged();
+        if (self::isLegacyMode()) {
+            foreach ($this as $token) {
+                $token->clearChanged();
+            }
         }
     }
 
@@ -324,7 +362,7 @@ class Tokens extends \SplFixedArray
      */
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
-        $removeLastCommentLine = function (Tokens $tokens, $index, $indexOffset, $whitespace) {
+        $removeLastCommentLine = function (self $tokens, $index, $indexOffset, $whitespace) {
             $token = $tokens[$index];
 
             if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
@@ -451,10 +489,18 @@ class Tokens extends \SplFixedArray
             $elements[$kind] = [];
         }
 
-        for ($i = $start; $i < $end; ++$i) {
-            $token = $this[$i];
-            if ($token->isGivenKind($possibleKinds)) {
-                $elements[$token->getId()][$i] = $token;
+        if (!self::isLegacyMode()) {
+            $possibleKinds = array_filter($possibleKinds, function ($kind) {
+                return $this->isTokenKindFound($kind);
+            });
+        }
+
+        if (count($possibleKinds)) {
+            for ($i = $start; $i < $end; ++$i) {
+                $token = $this[$i];
+                if ($token->isGivenKind($possibleKinds)) {
+                    $elements[$token->getId()][$i] = $token;
+                }
             }
         }
 
@@ -600,6 +646,16 @@ class Tokens extends \SplFixedArray
      */
     public function getTokenOfKindSibling($index, $direction, array $tokens = [], $caseSensitive = true)
     {
+        if (!self::isLegacyMode()) {
+            $tokens = array_filter($tokens, function ($token) {
+                return $this->isTokenKindFound($this->extractTokenKind($token));
+            });
+        }
+
+        if (!count($tokens)) {
+            return null;
+        }
+
         while (true) {
             $index += $direction;
 
@@ -746,8 +802,17 @@ class Tokens extends \SplFixedArray
                 }
                 $token = new Token($token);
             }
+
             if ($token->isWhitespace() || $token->isComment() || '' === $token->getContent()) {
                 throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: %s.', $key));
+            }
+        }
+
+        if (!self::isLegacyMode()) {
+            foreach ($sequence as $token) {
+                if (!$this->isTokenKindFound($this->extractTokenKind($token))) {
+                    return null;
+                }
             }
         }
 
@@ -843,9 +908,11 @@ class Tokens extends \SplFixedArray
             return true;
         }
 
-        foreach ($this as $token) {
-            if ($token->isChanged()) {
-                return true;
+        if (self::isLegacyMode()) {
+            foreach ($this as $token) {
+                if ($token->isChanged()) {
+                    return true;
+                }
             }
         }
 
@@ -874,9 +941,14 @@ class Tokens extends \SplFixedArray
      *
      * @param int                $index
      * @param Token|array|string $token token prototype
+     *
+     * @deprecated since 2.4, use offsetSet instead
      */
     public function overrideAt($index, $token)
     {
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use offsetSet instead.', E_USER_DEPRECATED);
+        self::$isLegacyMode = true;
+
         $this[$index]->override($token);
         $this->registerFoundToken($token);
     }
@@ -1018,7 +1090,7 @@ class Tokens extends \SplFixedArray
     public function isAllTokenKindsFound(array $tokenKinds)
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (!array_key_exists($tokenKind, $this->foundTokenKinds)) {
+            if (empty($this->foundTokenKinds[$tokenKind])) {
                 return false;
             }
         }
@@ -1036,7 +1108,7 @@ class Tokens extends \SplFixedArray
     public function isAnyTokenKindsFound(array $tokenKinds)
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (array_key_exists($tokenKind, $this->foundTokenKinds)) {
+            if (!empty($this->foundTokenKinds[$tokenKind])) {
                 return true;
             }
         }
@@ -1053,7 +1125,21 @@ class Tokens extends \SplFixedArray
      */
     public function isTokenKindFound($tokenKind)
     {
-        return array_key_exists($tokenKind, $this->foundTokenKinds);
+        return !empty($this->foundTokenKinds[$tokenKind]);
+    }
+
+    /**
+     * @param int|string $tokenKind
+     *
+     * @return int
+     */
+    public function countTokenKind($tokenKind)
+    {
+        if (self::isLegacyMode()) {
+            throw new \RuntimeException(sprintf('%s is not available in legacy mode.', __METHOD__));
+        }
+
+        return isset($this->foundTokenKinds[$tokenKind]) ? $this->foundTokenKinds[$tokenKind] : 0;
     }
 
     /**
@@ -1085,18 +1171,26 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
-        // If code is not monolithic there is a great chance that first or last token is `T_INLINE_HTML`:
-        if ($this[0]->isGivenKind(T_INLINE_HTML) || $this[$size - 1]->isGivenKind(T_INLINE_HTML)) {
+        if (self::isLegacyMode()) {
+            // If code is not monolithic there is a great chance that first or last token is `T_INLINE_HTML`:
+            if ($this[0]->isGivenKind(T_INLINE_HTML) || $this[$size - 1]->isGivenKind(T_INLINE_HTML)) {
+                return false;
+            }
+
+            for ($index = 1; $index < $size; ++$index) {
+                if ($this[$index]->isGivenKind([T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO])) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        if ($this->isTokenKindFound(T_INLINE_HTML)) {
             return false;
         }
 
-        for ($index = 1; $index < $size; ++$index) {
-            if ($this[$index]->isGivenKind([T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO])) {
-                return false;
-            }
-        }
-
-        return true;
+        return 1 >= ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO));
     }
 
     /**
@@ -1218,11 +1312,41 @@ class Tokens extends \SplFixedArray
      */
     private function registerFoundToken($token)
     {
-        $tokenKind = $token instanceof Token
+        $tokenKind = $this->extractTokenKind($token);
+
+        if (!isset($this->foundTokenKinds[$tokenKind])) {
+            $this->foundTokenKinds[$tokenKind] = 0;
+        }
+
+        ++$this->foundTokenKinds[$tokenKind];
+    }
+
+    /**
+     * Register token as found.
+     *
+     * @param Token|array|string $token token prototype
+     */
+    private function unregisterFoundToken($token)
+    {
+        $tokenKind = $this->extractTokenKind($token);
+
+        if (!isset($this->foundTokenKinds[$tokenKind])) {
+            return;
+        }
+
+        --$this->foundTokenKinds[$tokenKind];
+    }
+
+    /**
+     * @param Token|array|string $token token prototype
+     *
+     * @return int|string
+     */
+    private function extractTokenKind($token)
+    {
+        return $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (is_array($token) ? $token[0] : $token)
         ;
-
-        $this->foundTokenKinds[$tokenKind] = true;
     }
 }
