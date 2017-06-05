@@ -73,7 +73,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
      * @dataProvider providerFixWithBreak
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithBreak($expected, $input = null)
     {
@@ -169,7 +169,7 @@ while (true) {
      * @dataProvider providerFixWithContinue
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithContinue($expected, $input = null)
     {
@@ -267,7 +267,7 @@ while (true) {
      * @dataProvider providerFixWithDeclare
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithDeclare($expected, $input = null)
     {
@@ -310,7 +310,7 @@ declare(ticks=1);',
      * @dataProvider providerFixWithDo
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithDo($expected, $input = null)
     {
@@ -350,7 +350,7 @@ do {
      * @dataProvider providerFixWithFor
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithFor($expected, $input = null)
     {
@@ -382,7 +382,7 @@ do {
      * @dataProvider providerFixWithIf
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithIf($expected, $input = null)
     {
@@ -397,7 +397,7 @@ do {
      * @dataProvider providerFixWithForEach
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithForEach($expected, $input = null)
     {
@@ -462,7 +462,7 @@ if ($foo) { }',
      * @dataProvider providerFixWithInclude
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithInclude($expected, $input = null)
     {
@@ -499,7 +499,7 @@ include "foo.php";',
      * @dataProvider providerFixWithIncludeOnce
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithIncludeOnce($expected, $input = null)
     {
@@ -536,7 +536,7 @@ include_once "foo.php";',
      * @dataProvider providerFixWithRequire
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithRequire($expected, $input = null)
     {
@@ -573,7 +573,7 @@ require "foo.php";',
      * @dataProvider providerFixWithRequireOnce
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithRequireOnce($expected, $input = null)
     {
@@ -610,7 +610,7 @@ require_once "foo.php";',
      * @dataProvider providerFixWithReturn
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithReturn($expected, $input = null)
     {
@@ -769,7 +769,7 @@ function foo()
      * @dataProvider providerFixWithSwitch
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithSwitch($expected, $input = null)
     {
@@ -815,7 +815,7 @@ switch ($foo) {
      * @dataProvider providerFixWithThrow
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithThrow($expected, $input = null)
     {
@@ -858,7 +858,7 @@ if (false) {
      * @dataProvider providerFixWithTry
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithTry($expected, $input = null)
     {
@@ -907,7 +907,7 @@ try {
      * @dataProvider providerFixWithWhile
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithWhile($expected, $input = null)
     {
@@ -970,7 +970,7 @@ do {
      *
      * @param string[]    $statements
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function testFixWithMultipleConfigStatements(array $statements, $expected, $input = null)
     {

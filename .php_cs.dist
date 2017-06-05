@@ -38,6 +38,7 @@ return PhpCsFixer\Config::create()
         'php_unit_test_class_requires_covers' => true,
         'phpdoc_add_missing_param_annotation' => true,
         'phpdoc_order' => true,
+        'phpdoc_types_order' => true,
         'semicolon_after_instruction' => true,
         'single_line_comment_style' => true,
         'strict_comparison' => true,

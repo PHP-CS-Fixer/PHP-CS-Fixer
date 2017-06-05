@@ -126,4 +126,36 @@ final class Utils
 
         return ltrim($str, "\n");
     }
+
+    /**
+     * Sorts the given values using a Schwartzian transform and a custom
+     * comparison function. Order of equal elements is maintained. Only
+     * supports integer keys.
+     *
+     * @param mixed[]  $elements
+     * @param callable $getComparedValue a callable that takes a single element and returns the value to compare
+     * @param callable $compareValues    a callable that compares two values
+     *
+     * @return mixed[]
+     */
+    public static function stableSort(array $elements, callable $getComparedValue, callable $compareValues)
+    {
+        array_walk($elements, function (&$element, $index) use ($getComparedValue) {
+            $element = [$element, $index, $getComparedValue($element)];
+        });
+
+        usort($elements, function ($a, $b) use ($compareValues) {
+            $comparison = $compareValues($a[2], $b[2]);
+
+            if (0 !== $comparison) {
+                return $comparison;
+            }
+
+            return self::cmpInt($a[1], $b[1]);
+        });
+
+        return array_map(function (array $item) {
+            return $item[0];
+        }, $elements);
+    }
 }

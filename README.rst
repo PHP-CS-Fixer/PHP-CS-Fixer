@@ -1031,6 +1031,17 @@ Choose from the list of available rules:
 
   The correct case must be used for standard PHP types in phpdoc.
 
+* **phpdoc_types_order**
+
+  Sorts PHPDoc types.
+
+  Configuration options:
+
+  - ``null_position`` (``'always_first'``, ``'always_last'``, ``'default'``): forces the
+    position of ``null``; defaults to ``'always_first'``
+  - ``sort_algorithm`` (``'alpha'``, ``'none'``): the sorting algorithm to apply;
+    defaults to ``'none'``
+
 * **phpdoc_var_without_name** [@Symfony]
 
   @var and @type annotations should not contain the variable name.
