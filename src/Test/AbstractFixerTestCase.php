@@ -51,6 +51,17 @@ abstract class AbstractFixerTestCase extends TestCase
     {
         $this->linter = $this->getLinter();
         $this->fixer = $this->createFixer();
+
+        // @todo remove at 3.0 together with env var itself
+        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
+            Tokens::setLegacyMode(true);
+        }
+    }
+
+    protected function tearDown()
+    {
+        // @todo remove at 3.0
+        Tokens::setLegacyMode(false);
     }
 
     /**
