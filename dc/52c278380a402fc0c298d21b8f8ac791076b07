@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by shmax at 2017-05-28T21:58:22Z
+
+👍 for the quick PR!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-29T09:19:22Z
+
+did you drop or move some test cases ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-29T11:24:15Z
+
+yes, I moved these cases:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2807/files#diff-36575c3d3501696daa2da706f9912c92L297
+
+as these are no longer fixed, these are now part of;
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2807/files#diff-36575c3d3501696daa2da706f9912c92R776
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-01T16:56:01Z
+
+Looks pretty good. 👍
