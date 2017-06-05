@@ -245,12 +245,15 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
 
             return;
         }
-        $method = $override ? 'overrideAt' : 'insertAt';
 
-        $tokens->$method($index + 1, new Token([
-            T_WHITESPACE,
-            $this->whitespacesConfig->getLineEnding().$indentation,
-        ]));
+        call_user_func(
+            [$tokens, $override ? 'overrideAt' : 'insertAt'],
+            $index + 1,
+            new Token([
+                T_WHITESPACE,
+                $this->whitespacesConfig->getLineEnding().$indentation,
+            ])
+        );
     }
 
     /**
