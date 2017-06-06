@@ -40,7 +40,9 @@ return PhpCsFixer\Config::create()
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
+            ->ignoreDotFiles(false)
             ->exclude('tests/Fixtures')
             ->in(__DIR__)
+            ->name('.php_cs.dist')
     )
 ;
