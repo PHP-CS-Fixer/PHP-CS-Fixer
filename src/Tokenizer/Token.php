@@ -503,7 +503,7 @@ class Token
 
         // setting empty content is clearing the token
         if ('' === $content) {
-            @trigger_error(__METHOD__.' shall not be use to clear token, use Tokens::clearAt instead.', E_USER_DEPRECATED);
+            @trigger_error(__METHOD__.' shall not be used to clear token, use Tokens::clearAt instead.', E_USER_DEPRECATED);
             $this->id = null;
             $this->isArray = false;
         }
