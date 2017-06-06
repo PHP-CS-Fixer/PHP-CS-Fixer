@@ -248,7 +248,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
     }
 
     /**
-     * Makes sure there is a whitespace at the given location
+     * Makes sure there is a whitespace at the given location.
      *
      * @param Tokens $tokens      The token stream to modify
      * @param int    $index       where to insert the whitespace
