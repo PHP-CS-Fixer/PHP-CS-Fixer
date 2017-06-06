@@ -113,14 +113,14 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('keep_multiple_spaces_after_comma', 'Whether keep multiple spaces after comma.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO should be true at 3.0
+                ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder(
                 'ensure_fully_multiline',
                 'Ensure every argument of a multiline argument list is on its own line'
             ))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false)
+                ->setDefault(false) // @TODO should be true at 3.0
                 ->getOption(),
         ]);
     }
