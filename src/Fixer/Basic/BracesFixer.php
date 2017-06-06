@@ -594,6 +594,12 @@ class Foo
         return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $parenthesisEndIndex
+     *
+     * @return int
+     */
     private function findStatementEnd(Tokens $tokens, $parenthesisEndIndex)
     {
         $nextIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
