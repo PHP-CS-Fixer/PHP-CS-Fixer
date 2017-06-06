@@ -20,7 +20,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @deprecated
+ * @deprecated since 2.4, replaced by BlankLineBeforeControlStatementFixer
+ *
+ * @todo To be removed at 3.0
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
@@ -51,6 +53,9 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Whi
      */
     protected function createProxyFixer()
     {
-        return new BlankLineBeforeControlStatementFixer();
+        $fixer = new BlankLineBeforeControlStatementFixer();
+        $fixer->configure(['statements' => ['return']]);
+
+        return $fixer;
     }
 }

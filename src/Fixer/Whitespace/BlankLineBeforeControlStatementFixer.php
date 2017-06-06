@@ -13,9 +13,11 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -25,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
  */
-final class BlankLineBeforeControlStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class BlankLineBeforeControlStatementFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @var array
@@ -68,60 +70,11 @@ final class BlankLineBeforeControlStatementFixer extends AbstractFixer implement
      */
     public function configure(array $configuration = null)
     {
-        if (null === $configuration) {
-            $configuration = self::$defaultConfiguration;
-        }
+        parent::configure($configuration);
 
-        foreach ($configuration as $controlStatement) {
-            if (!is_string($controlStatement) || !array_key_exists($controlStatement, self::$tokenMap)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf(
-                    'Expected one of "%s", got "%s".',
-                    implode('", "', array_keys(self::$tokenMap)),
-                    is_object($controlStatement) ? get_class($controlStatement) : gettype($controlStatement)
-                ));
-            }
-
-            $this->fixTokenMap[$controlStatement] = self::$tokenMap[$controlStatement];
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(array_values($this->fixTokenMap))) {
-                continue;
-            }
-
-            $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
-
-            if (!$prevNonWhitespaceToken->equalsAny([';', '}'])) {
-                continue;
-            }
-
-            $prevToken = $tokens[$index - 1];
-
-            if ($prevToken->isWhitespace()) {
-                $parts = explode("\n", $prevToken->getContent());
-                $countParts = count($parts);
-
-                if (1 === $countParts) {
-                    $prevToken->setContent(rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding);
-                } elseif (count($parts) <= 2) {
-                    $prevToken->setContent($lineEnding.$prevToken->getContent());
-                }
-            } else {
-                $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
-
-                ++$index;
-                ++$limit;
-            }
+        $this->fixTokenMap = [];
+        foreach ($this->configuration['statements'] as $key) {
+            $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
     }
 
@@ -150,7 +103,7 @@ switch ($foo) {
         break;
 }',
                     [
-                        'break',
+                        'statements' => ['break'],
                     ]
                 ),
                 new CodeSample(
@@ -162,7 +115,7 @@ foreach ($foo as $bar) {
     }
 }',
                     [
-                        'continue',
+                        'statements' => ['continue'],
                     ]
                 ),
                 new CodeSample(
@@ -173,7 +126,7 @@ do {
 } while ($i > 0);
 ',
                     [
-                        'do',
+                        'statements' => ['do'],
                     ]
                 ),
                 new CodeSample(
@@ -183,7 +136,7 @@ if (true) {
     $foo = $bar;
 }',
                     [
-                        'if',
+                        'statements' => ['if'],
                     ]
                 ),
                 new CodeSample(
@@ -194,7 +147,7 @@ if (true) {
     return;
 }',
                     [
-                        'return',
+                        'statements' => ['return'],
                     ]
                 ),
                 new CodeSample(
@@ -205,7 +158,7 @@ switch ($a) {
         break;
 }',
                     [
-                        'switch',
+                        'statements' => ['switch'],
                     ]
                 ),
                 new CodeSample(
@@ -215,7 +168,7 @@ if (null === $a) {
     throw new \UnexpectedValueException("A cannot be null");
 }',
                     [
-                        'throw',
+                        'statements' => ['throw'],
                     ]
                 ),
                 new CodeSample(
@@ -227,15 +180,10 @@ try {
     $a = -1;
 }',
                     [
-                        'try',
+                        'statements' => ['try'],
                     ]
                 ),
             ],
-            null,
-            sprintf(
-                'Provide an array with any of "%s".',
-                implode('", "', array_keys(self::$tokenMap))
-            ),
             self::$defaultConfiguration
         );
     }
@@ -255,5 +203,64 @@ try {
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound(array_values($this->fixTokenMap));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(array_values($this->fixTokenMap))) {
+                continue;
+            }
+
+            $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
+
+            if (!$prevNonWhitespaceToken->equalsAny([';', '}'])) {
+                continue;
+            }
+
+            $prevIndex = $index - 1;
+            $prevToken = $tokens[$prevIndex];
+
+            if ($prevToken->isWhitespace()) {
+                $parts = explode("\n", $prevToken->getContent());
+                $countParts = count($parts);
+
+                if (1 === $countParts) {
+                    $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
+                } elseif (count($parts) <= 2) {
+                    $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
+                }
+            } else {
+                $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
+
+                ++$index;
+                ++$limit;
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('statements', 'List of control statements to fix.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$tokenMap)),
+                ])
+                ->setDefault([
+                    'return',
+                ])
+                ->getOption(),
+        ]);
     }
 }

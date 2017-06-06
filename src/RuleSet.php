@@ -61,7 +61,7 @@ final class RuleSet implements RuleSetInterface
             ],
             'blank_line_after_opening_tag' => true,
             'blank_line_before_control_statement' => [
-                'return',
+                'statements' => ['return'],
             ],
             'braces' => [
                 'allow_single_line_closure' => true,

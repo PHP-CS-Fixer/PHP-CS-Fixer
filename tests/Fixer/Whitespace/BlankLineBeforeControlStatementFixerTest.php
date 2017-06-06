@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -31,38 +32,10 @@ final class BlankLineBeforeControlStatementFixerTest extends AbstractFixerTestCa
      */
     public function testConfigureRejectsInvalidControlStatement($controlStatement)
     {
-        $controlStatements = [
-            'break',
-            'continue',
-            'declare',
-            'do',
-            'else',
-            'elseif',
-            'for',
-            'foreach',
-            'if',
-            'include',
-            'include_once',
-            'require',
-            'require_once',
-            'return',
-            'switch',
-            'throw',
-            'try',
-            'while',
-        ];
-
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            sprintf(
-                'Expected one of "%s", got "%s".',
-                implode('", "', $controlStatements),
-                is_object($controlStatement) ? get_class($controlStatement) : gettype($controlStatement)
-            )
-        );
+        $this->setExpectedException(InvalidFixerConfigurationException::class);
 
         $this->fixer->configure([
-            $controlStatement,
+            'statements' => [$controlStatement],
         ]);
     }
 
@@ -103,7 +76,7 @@ final class BlankLineBeforeControlStatementFixerTest extends AbstractFixerTestCa
     public function testFixWithBreak($expected, $input = null)
     {
         $this->fixer->configure([
-            'break',
+            'statements' => ['break'],
         ]);
 
         $this->doTest($expected, $input);
@@ -199,7 +172,7 @@ while (true) {
     public function testFixWithContinue($expected, $input = null)
     {
         $this->fixer->configure([
-            'continue',
+            'statements' => ['continue'],
         ]);
 
         $this->doTest($expected, $input);
@@ -286,7 +259,7 @@ while (true) {
     public function testFixWithDeclare($expected, $input = null)
     {
         $this->fixer->configure([
-            'declare',
+            'statements' => ['declare'],
         ]);
 
         $this->doTest($expected, $input);
@@ -325,7 +298,7 @@ declare(ticks=1);',
     public function testFixWithDo($expected, $input = null)
     {
         $this->fixer->configure([
-            'do',
+            'statements' => ['do'],
         ]);
 
         $this->doTest($expected, $input);
@@ -365,7 +338,7 @@ do {
     public function testFixWithElse($expected, $input = null)
     {
         $this->fixer->configure([
-            'else',
+            'statements' => ['else'],
         ]);
 
         $this->doTest($expected, $input);
@@ -436,7 +409,7 @@ else
     public function testFixWithElseIf($expected, $input = null)
     {
         $this->fixer->configure([
-            'elseif',
+            'statements' => ['elseif'],
         ]);
 
         $this->doTest($expected, $input);
@@ -507,7 +480,7 @@ elseif ($b)
     public function testFixWithIf($expected, $input = null)
     {
         $this->fixer->configure([
-            'if',
+            'statements' => ['if'],
         ]);
 
         $this->doTest($expected, $input);
@@ -550,7 +523,7 @@ if (true) {
     public function testFixWithInclude($expected, $input = null)
     {
         $this->fixer->configure([
-            'include',
+            'statements' => ['include'],
         ]);
 
         $this->doTest($expected, $input);
@@ -587,7 +560,7 @@ include "foo.php";',
     public function testFixWithIncludeOnce($expected, $input = null)
     {
         $this->fixer->configure([
-            'include_once',
+            'statements' => ['include_once'],
         ]);
 
         $this->doTest($expected, $input);
@@ -624,7 +597,7 @@ include_once "foo.php";',
     public function testFixWithRequire($expected, $input = null)
     {
         $this->fixer->configure([
-            'require',
+            'statements' => ['require'],
         ]);
 
         $this->doTest($expected, $input);
@@ -661,7 +634,7 @@ require "foo.php";',
     public function testFixWithRequireOnce($expected, $input = null)
     {
         $this->fixer->configure([
-            'require_once',
+            'statements' => ['require_once'],
         ]);
 
         $this->doTest($expected, $input);
@@ -698,7 +671,7 @@ require_once "foo.php";',
     public function testFixWithReturn($expected, $input = null)
     {
         $this->fixer->configure([
-            'return',
+            'statements' => ['return'],
         ]);
 
         $this->doTest($expected, $input);
@@ -857,7 +830,7 @@ function foo()
     public function testFixWithSwitch($expected, $input = null)
     {
         $this->fixer->configure([
-            'switch',
+            'statements' => ['switch'],
         ]);
 
         $this->doTest($expected, $input);
@@ -903,7 +876,7 @@ switch ($foo) {
     public function testFixWithThrow($expected, $input = null)
     {
         $this->fixer->configure([
-            'throw',
+            'statements' => ['throw'],
         ]);
 
         $this->doTest($expected, $input);
@@ -946,7 +919,7 @@ if (false) {
     public function testFixWithTry($expected, $input = null)
     {
         $this->fixer->configure([
-            'try',
+            'statements' => ['try'],
         ]);
 
         $this->doTest($expected, $input);
@@ -995,7 +968,7 @@ try {
     public function testFixWithWhile($expected, $input = null)
     {
         $this->fixer->configure([
-            'while',
+            'statements' => ['while'],
         ]);
 
         $this->doTest($expected, $input);
