@@ -23,6 +23,7 @@ matrix:
         - php: 5.6
           env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
         - php: 7.0
+          env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1
 
 cache:
     directories:

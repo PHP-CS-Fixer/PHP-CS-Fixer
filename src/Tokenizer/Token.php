@@ -59,6 +59,10 @@ class Token
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
+
+            if ($token[0] && '' === $token[1]) {
+                throw new \InvalidArgumentException('Cannot set empty content for id-based Token.');
+            }
         } elseif (is_string($token)) {
             $this->isArray = false;
             $this->content = $token;
@@ -96,9 +100,14 @@ class Token
      * Clear token at given index.
      *
      * Clearing means override token by empty string.
+     *
+     * @deprecated since 2.4
      */
     public function clear()
     {
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Tokens::setLegacyMode(true);
+
         $this->content = '';
         $this->id = null;
         $this->isArray = false;
@@ -109,6 +118,9 @@ class Token
      */
     public function clearChanged()
     {
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Tokens::setLegacyMode(true);
+
         $this->changed = false;
     }
 
@@ -359,9 +371,13 @@ class Token
      * Check if token is empty, e.g. because of clearing.
      *
      * @return bool
+     *
+     * @deprecated since 2.4
      */
     public function isEmpty()
     {
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+
         return null === $this->id && ('' === $this->content || null === $this->content);
     }
 
@@ -441,9 +457,14 @@ class Token
      * If called on Token inside Tokens collection please use `Tokens::overrideAt` instead.
      *
      * @param Token|array|string $other token prototype
+     *
+     * @deprecated since 2.4
      */
     public function override($other)
     {
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Tokens::setLegacyMode(true);
+
         $prototype = $other instanceof self ? $other->getPrototype() : $other;
 
         if ($this->equals($prototype)) {
@@ -470,6 +491,9 @@ class Token
      */
     public function setContent($content)
     {
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Tokens::setLegacyMode(true);
+
         if ($this->content === $content) {
             return;
         }
@@ -479,6 +503,7 @@ class Token
 
         // setting empty content is clearing the token
         if ('' === $content) {
+            @trigger_error(__METHOD__.' shall not be used to clear token, use Tokens::clearAt instead.', E_USER_DEPRECATED);
             $this->id = null;
             $this->isArray = false;
         }

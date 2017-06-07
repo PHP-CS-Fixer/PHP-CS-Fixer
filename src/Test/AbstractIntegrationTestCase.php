@@ -97,6 +97,17 @@ abstract class AbstractIntegrationTestCase extends TestCase
     protected function setUp()
     {
         $this->linter = $this->getLinter();
+
+        // @todo remove at 3.0 together with env var itself
+        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
+            Tokens::setLegacyMode(true);
+        }
+    }
+
+    protected function tearDown()
+    {
+        // @todo remove at 3.0
+        Tokens::setLegacyMode(false);
     }
 
     /**
