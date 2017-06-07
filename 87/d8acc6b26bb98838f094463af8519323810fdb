@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-05T09:31:47Z
+
+> Please add tests that cover `Tokens` changes regarding "immutable mode".
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2818/commits/9b63057380de9a557b7bbc8affcca64a8bc1b92e
