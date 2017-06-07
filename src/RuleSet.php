@@ -72,6 +72,7 @@ final class RuleSet implements RuleSetInterface
             'include' => true,
             'lowercase_cast' => true,
             'magic_constant_casing' => true,
+            'method_argument_space' => true,
             'method_separation' => true,
             'native_function_casing' => true,
             'new_with_braces' => true,
