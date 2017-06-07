@@ -35,10 +35,6 @@ final class ProjectCodeTest extends TestCase
      * @var string[]
      */
     private static $classesWithoutTests = array(
-        'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-        'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-        'PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException',
-        'PhpCsFixer\Console\Command\DescribeNameNotFoundException',
         'PhpCsFixer\Console\Command\SelfUpdateCommand',
         'PhpCsFixer\Console\Output\NullOutput',
         'PhpCsFixer\Differ\DiffConsoleFormatter',
@@ -54,10 +50,8 @@ final class ProjectCodeTest extends TestCase
         'PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper',
         'PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper',
         'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer',
-        'PhpCsFixer\Linter\LintingException',
         'PhpCsFixer\Linter\ProcessLintingResult',
         'PhpCsFixer\Linter\TokenizerLintingResult',
-        'PhpCsFixer\Linter\UnavailableLinterException',
         'PhpCsFixer\Report\ReportSummary',
         'PhpCsFixer\Runner\FileCachingLintingIterator',
         'PhpCsFixer\Runner\FileFilterIterator',
