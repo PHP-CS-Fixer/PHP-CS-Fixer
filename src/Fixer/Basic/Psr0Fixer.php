@@ -92,7 +92,7 @@ class InvalidName {}
             $path = str_replace('\\', '/', $file->getRealPath());
             $dir = dirname($path);
 
-            if (isset($this->configuration['dir'])) {
+            if ('' !== $this->configuration['dir']) {
                 $dir = substr($dir, strlen(realpath($this->configuration['dir'])) + 1);
 
                 if (false === $dir) {
@@ -150,6 +150,7 @@ class InvalidName {}
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('dir', 'The directory where the project code is placed.'))
                 ->setAllowedTypes(['string'])
+                ->setDefault('')
                 ->getOption(),
         ]);
     }
