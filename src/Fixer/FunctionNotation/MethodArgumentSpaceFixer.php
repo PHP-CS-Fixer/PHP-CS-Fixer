@@ -270,7 +270,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         ]);
 
         if ($override) {
-            $tokens->overrideAt($index, $whitespaceToken);
+            $tokens[$index] = $whitespaceToken;
 
             return;
         }
