@@ -14,6 +14,7 @@ namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -109,14 +110,31 @@ EOT
         $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
         $remoteFilename = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar', $remoteTag);
 
+        $details = null;
         try {
-            $copyResult = @copy($remoteFilename, $tempFilename);
-            if (false === $copyResult) {
-                $output->writeln(sprintf('<error>Unable to download new version %s from the server.</error>', $remoteTag));
+            $copyResult = copy($remoteFilename, $tempFilename);
+        } catch (\Exception $e) {
+            $copyResult = false;
+            $details = $e->getMessage();
+        }
 
-                return 1;
+        if (false === $copyResult) {
+            $output->writeln(sprintf('<error>Unable to download new version %s from the server.</error>', $remoteTag));
+            if ($output->isVerbose()) {
+                $output->writeln(sprintf('<info>Tried to download from</info> %s', $remoteFilename));
+                $output->writeln(sprintf('<info>To temporary file</info> %s', $tempFilename));
+                if ($details) {
+                    $output->writeln(sprintf(
+                        '<info>Details</info> %s',
+                        $output->isDecorated() ? OutputFormatter::escape($details) : $details
+                    ));
+                }
             }
 
+            return 1;
+        }
+
+        try {
             chmod($tempFilename, 0777 & ~umask());
 
             // test the phar validity
