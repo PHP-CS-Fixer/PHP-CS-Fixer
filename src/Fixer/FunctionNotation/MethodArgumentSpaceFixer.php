@@ -67,10 +67,17 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                     ['ensure_fully_multiline' => true]
                 ),
                 new CodeSample(
-                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);",
+                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample(1,  2);",
                     [
                         'ensure_fully_multiline' => true,
                         'keep_multiple_spaces_after_comma' => true,
+                    ]
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample(1,  2);",
+                    [
+                        'ensure_fully_multiline' => true,
+                        'keep_multiple_spaces_after_comma' => false,
                     ]
                 ),
             ]
