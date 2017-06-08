@@ -120,6 +120,11 @@ class Sample
                 continue;
             }
 
+            // skip tokens that are part of class property
+            if ($prevToken->isGivenKind(T_OBJECT_OPERATOR)) {
+                continue;
+            }
+
             if (
                 $prevToken->isGivenKind(array(T_INSTANCEOF, T_NEW)) ||
                 $nextToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)
