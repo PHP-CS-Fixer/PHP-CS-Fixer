@@ -118,6 +118,10 @@ final class TokenTest extends TestCase
                 42,
                 '42',
             ),
+            'different' => array(
+                42,
+                9001,
+            ),
             'array-containing-equal-but-not-same' => array(
                 42,
                 array(
