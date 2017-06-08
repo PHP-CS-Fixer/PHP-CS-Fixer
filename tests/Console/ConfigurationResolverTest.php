@@ -1032,6 +1032,34 @@ final class ConfigurationResolverTest extends TestCase
         $this->assertSame('xml', $resolver->getReporter()->getFormat());
     }
 
+    public function getAutolocatePaths()
+    {
+        return [
+            ['file0.php'],
+            ['subdir1/file1.php'],
+            ['subdir1/subdir2/file2.php'],
+        ];
+    }
+
+    /**
+     * @dataProvider getAutolocatePaths
+     *
+     * @param mixed $relativePath
+     */
+    public function testAutolocateConfigFile($relativePath)
+    {
+        $dir = str_replace('/', DIRECTORY_SEPARATOR, dirname(__DIR__).'/Fixtures/ConfigurationResolverConfigFile/case_9');
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            [
+                'path' => [$dir.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $relativePath)],
+                'config' => '-',
+            ],
+            ''
+        );
+        $this->assertSame($dir.DIRECTORY_SEPARATOR.'.php_cs.dist', $resolver->getConfigFile());
+    }
+
     /**
      * @group legacy
      * @expectedDeprecation Expected "yes" or "no" for option "allow-risky", other values are deprecated and support will be removed in 3.0. Got "yes please", this implicitly set the option to "false".
