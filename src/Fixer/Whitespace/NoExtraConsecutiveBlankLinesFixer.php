@@ -423,13 +423,13 @@ class Foo
             return; // not found, early return
         }
 
+        $ending = $this->whitespacesConfig->getLineEnding();
+
         for ($i = $end; $i < $tokenCount && $this->tokens[$i]->isWhitespace(); ++$i) {
             $content = $this->tokens[$i]->getContent();
             if (substr_count($content, "\n") < 1) {
                 continue;
             }
-
-            $ending = $this->whitespacesConfig->getLineEnding();
 
             $pos = strrpos($content, "\n");
             if ($pos + 2 <= strlen($content)) { // preserve indenting where possible
