@@ -250,6 +250,11 @@ EOTXTb
 $a#
 );',
             ],
+            [
+                "<?php xyz(\$a=10,\n\$b=20);",
+                "<?php xyz(\$a=10,   \n\$b=20);",
+                ['keep_multiple_spaces_after_comma' => true],
+            ],
         ];
     }
 
