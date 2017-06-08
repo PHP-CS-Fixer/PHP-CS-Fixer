@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-08T17:45:33Z
+
+please make the `if` statement one line and this is a solid bug fix ready to be merged :)
+
+---------------------------------------------------------------------------
+
+by mnabialek at 2017-06-08T17:58:52Z
+
+@SpacePossum  Done, builds in progress. You really like to use so long lines, don't you?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-08T18:07:36Z
+
+haha well the alternative would indeed be multi line but we have CS rules on those as well.
+Thanks for updating, all good :+1:
