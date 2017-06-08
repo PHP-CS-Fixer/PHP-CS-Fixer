@@ -116,8 +116,7 @@ class Sample
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($i)];
 
             // skip tokens that are part of a fully qualified name or used in class property access
-            if ($prevToken->isGivenKind(array(T_NS_SEPARATOR, T_OBJECT_OPERATOR)) ||
-                $nextToken->isGivenKind(T_NS_SEPARATOR)) {
+            if ($prevToken->isGivenKind(array(T_NS_SEPARATOR, T_OBJECT_OPERATOR)) || $nextToken->isGivenKind(T_NS_SEPARATOR)) {
                 continue;
             }
 
