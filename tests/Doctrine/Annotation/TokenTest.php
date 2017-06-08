@@ -61,8 +61,8 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider providerIsType
      *
-     * @param mixed $type
-     * @param mixed $types
+     * @param int       $type
+     * @param int|int[] $types
      */
     public function testIsTypeReturnsTrue($type, $types)
     {
@@ -79,11 +79,11 @@ final class TokenTest extends TestCase
     public function providerIsType()
     {
         return array(
-            'same' => array(
+            'same-value' => array(
                 42,
                 42,
             ),
-            'array-containing-same' => array(
+            'array-with-value' => array(
                 42,
                 array(
                     42,
@@ -96,8 +96,8 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider providerIsNotType
      *
-     * @param mixed $type
-     * @param mixed $types
+     * @param int       $type
+     * @param int|int[] $types
      */
     public function testIsTypeReturnsFalse($types, $type)
     {
@@ -114,18 +114,13 @@ final class TokenTest extends TestCase
     public function providerIsNotType()
     {
         return array(
-            'equal-but-not-same' => array(
-                42,
-                '42',
-            ),
-            'different' => array(
+            'different-value' => array(
                 42,
                 9001,
             ),
-            'array-containing-equal-but-not-same' => array(
+            'array-without-value' => array(
                 42,
                 array(
-                    '42',
                     9001,
                 ),
             ),
