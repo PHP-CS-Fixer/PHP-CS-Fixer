@@ -61,8 +61,8 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider providerIsType
      *
-     * @param int       $type
-     * @param int|int[] $types
+     * @param mixed $type
+     * @param mixed $types
      */
     public function testIsTypeReturnsTrue($type, $types)
     {
@@ -96,8 +96,8 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider providerIsNotType
      *
-     * @param int       $type
-     * @param int|int[] $types
+     * @param mixed $type
+     * @param mixed $types
      */
     public function testIsTypeReturnsFalse($types, $type)
     {
