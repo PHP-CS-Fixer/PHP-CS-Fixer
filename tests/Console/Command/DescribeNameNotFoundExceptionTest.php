@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Command\DescribeNameNotFoundException;
-use PHPUnit\Framework;
 use PHPUnit\Framework\TestCase;
 
 /**
