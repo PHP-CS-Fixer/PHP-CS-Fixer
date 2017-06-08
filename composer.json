@@ -57,6 +57,14 @@
         "psr-4": { "PhpCsFixer\\Tests\\": "tests/" }
     },
     "bin": ["php-cs-fixer"],
+    "scripts": {
+        "post-install-cmd": [
+            "PhpCsFixer\\Composer\\ScriptHandler::enableAutoCSFix"
+        ],
+        "post-update-cmd": [
+            "PhpCsFixer\\Composer\\ScriptHandler::enableAutoCSFix"
+        ]
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.4-dev"
