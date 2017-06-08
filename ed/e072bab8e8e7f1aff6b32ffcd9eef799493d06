@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-08T10:15:06Z
+
+I'm not familiar with it. What does it change ?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-08T10:16:58Z
+
+@keradus
+
+Uses all of the columns available (if detectable) on the screen! Kind of nice if we have a lot of tests, which we do.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-08T10:18:26Z
+
+hm...
+@julienfalque , that approach shall be applied for `estimating` reporter as well (like `wide-estimating` or sth)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-08T10:19:17Z
+
+@localheinz would it work on 4.8.x ? like if the feature was introduced in 5|6, would the xml value be just ignored on phpunit 4?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-08T10:21:03Z
+
+It does, output is from `phpunit/phpunit:^4.8.35`, see
+
+```
+$ composer info | grep phpunit/phpunit
+
+phpunit/phpunit                   4.8.35 The PHP Unit Testing framework.
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-08T10:56:53Z
+
+great to hear !
