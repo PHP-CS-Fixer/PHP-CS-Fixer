@@ -111,7 +111,7 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php class Foo { protected $foo; function bar() { return $this->foo::find(2); } }',
-            ),            
+            ),
         );
     }
 
