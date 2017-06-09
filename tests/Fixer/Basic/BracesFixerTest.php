@@ -3648,4 +3648,17 @@ if (true)
     {
         $this->doTest($expected, $input);
     }
+
+    public function testStructureSeparatedByTags()
+    {
+        $this->doTest(
+            '<?php for ($i = 0; $i < 20; $i++) {
+    ?>
+<?php
+} ?>',
+            '<?php for ($i = 0; $i < 20; $i++) {
+?>
+<?php 
+} ?>');
+    }
 }
