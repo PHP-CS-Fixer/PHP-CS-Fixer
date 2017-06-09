@@ -35,17 +35,12 @@ final class ProjectCodeTest extends TestCase
      * @var string[]
      */
     private static $classesWithoutTests = [
-        \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-        \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-        \PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class,
-        \PhpCsFixer\Console\Command\DescribeNameNotFoundException::class,
         \PhpCsFixer\Console\Command\SelfUpdateCommand::class,
         \PhpCsFixer\Console\Output\NullOutput::class,
         \PhpCsFixer\Differ\DiffConsoleFormatter::class,
         \PhpCsFixer\Differ\NullDiffer::class,
         \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
         \PhpCsFixer\Differ\SebastianBergmannShortDiffer::class,
-        \PhpCsFixer\Doctrine\Annotation\Token::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
@@ -55,10 +50,8 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
         \PhpCsFixer\Indicator\PhpUnitIndicator::class,
-        \PhpCsFixer\Linter\LintingException::class,
         \PhpCsFixer\Linter\ProcessLintingResult::class,
         \PhpCsFixer\Linter\TokenizerLintingResult::class,
-        \PhpCsFixer\Linter\UnavailableLinterException::class,
         \PhpCsFixer\Report\ReportSummary::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
         \PhpCsFixer\Runner\FileFilterIterator::class,
