@@ -592,6 +592,45 @@ UNAFFECTED
                 null,
                 ['ensure_fully_multiline' => true],
             ],
+            'test ungodly code' => [
+            <<<'UNAFFECTED'
+<?php
+$a = function#
+(#
+#
+$a#
+#
+,#
+#
+$b,$c#
+#
+)#
+use ($b,
+$c,$d) {
+};
+UNAFFECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test list' => [
+            <<<'UNAFFECTED'
+<?php
+// no fix
+list($a,
+    $b, $c) = $a;
+isset($a,
+$b, $c);
+unset($a,
+$b, $c);
+array(1,
+    2,3
+);
+UNAFFECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+            ],
         ];
     }
 

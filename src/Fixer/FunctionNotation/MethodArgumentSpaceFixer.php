@@ -105,7 +105,9 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 if (!$meaningfulTokenBeforeParenthesis->isKeyword()
                     || $meaningfulTokenBeforeParenthesis->isGivenKind(T_LIST)) {
                     if ($this->fixFunction($tokens, $index) && $this->configuration['ensure_fully_multiline']) {
-                        $this->ensureFunctionFullyMultiline($tokens, $index);
+                        if (!$meaningfulTokenBeforeParenthesis->isGivenKind(T_LIST)) {
+                            $this->ensureFunctionFullyMultiline($tokens, $index);
+                        }
                     }
                 }
             }
