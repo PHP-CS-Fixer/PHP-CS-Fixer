@@ -200,7 +200,11 @@ final class RuleSet implements RuleSetInterface
             '@PHP70Migration:risky' => true,
             'void_return' => true,
         ],
+        '@PHPUnit52Migration:risky' => [
+            'php_unit_expectation' => true,
+        ],
         '@PHPUnit54Migration:risky' => [
+            '@PHPUnit52Migration:risky' => true,
             'php_unit_namespaced_test_case' => true,
         ],
     ];

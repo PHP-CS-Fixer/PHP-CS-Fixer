@@ -984,6 +984,13 @@ Choose from the list of available rules:
     'is_int', 'is_integer', 'is_long', 'is_nan', 'is_null', 'is_numeric',
     'is_object', 'is_real', 'is_resource', 'is_scalar', 'is_string']``
 
+* **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky]
+
+  The ``->setExpectedExpception`` MUST be replaced by ``->expectException*``
+  methods.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
 * **php_unit_fqcn_annotation** [@Symfony]
 
   PHPUnit annotations should be a FQCNs including a root namespace.
