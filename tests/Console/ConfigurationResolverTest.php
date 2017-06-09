@@ -187,9 +187,9 @@ final class ConfigurationResolverTest extends TestCase
             ''
         );
 
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            'The progress type "foo" is not defined, supported are "none", "run-in", "estimating".'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "run-in", "estimating".'
         );
 
         $resolver->getProgress();
@@ -475,7 +475,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveIntersectionOfPaths($expected, $configFinder, array $path, $pathMode, $config = null)
     {
         if ($expected instanceof \Exception) {
-            $this->setExpectedException(get_class($expected));
+            $this->expectException(get_class($expected));
         }
 
         if (null !== $configFinder) {
@@ -908,9 +908,9 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveRulesWithUnknownRules()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            'The rules contain unknown fixers (bar).'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessage('The rules contain unknown fixers (bar).'
         );
 
         $resolver = new ConfigurationResolver(

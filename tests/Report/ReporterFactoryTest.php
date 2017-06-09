@@ -88,9 +88,9 @@ final class ReporterFactoryTest extends TestCase
 
     public function testRegisterReportWithOccupiedFormat()
     {
-        $this->setExpectedException(
-            'UnexpectedValueException',
-            'Reporter for format "non_unique_name" is already registered.'
+        $this->expectException(
+            'UnexpectedValueException');
+        $this->expectExceptionMessage('Reporter for format "non_unique_name" is already registered.'
         );
 
         $factory = new ReporterFactory();
@@ -103,9 +103,9 @@ final class ReporterFactoryTest extends TestCase
 
     public function testGetNonRegisteredReport()
     {
-        $this->setExpectedException(
-            'UnexpectedValueException',
-            'Reporter for format "non_registered_format" is not registered.'
+        $this->expectException(
+            'UnexpectedValueException');
+        $this->expectExceptionMessage('Reporter for format "non_registered_format" is not registered.'
         );
 
         $builder = new ReporterFactory();

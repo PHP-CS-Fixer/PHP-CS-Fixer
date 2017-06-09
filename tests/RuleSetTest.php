@@ -69,9 +69,9 @@ final class RuleSetTest extends TestCase
 
     public function testResolveRulesWithInvalidSet()
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            'Set "@foo" does not exist.'
+        $this->expectException(
+            'InvalidArgumentException');
+        $this->expectExceptionMessage('Set "@foo" does not exist.'
         );
 
         RuleSet::create(array(
@@ -81,9 +81,9 @@ final class RuleSetTest extends TestCase
 
     public function testResolveRulesWithMissingRuleValue()
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            'Missing value for "braces" rule/set.'
+        $this->expectException(
+            'InvalidArgumentException');
+        $this->expectExceptionMessage('Missing value for "braces" rule/set.'
         );
 
         RuleSet::create(array(

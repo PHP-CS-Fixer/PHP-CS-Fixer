@@ -121,7 +121,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedException('InvalidArgumentException', 'Rule Foo/bar not found.');
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('Rule Foo/bar not found.');
         $commandTester->execute(array(
             'command' => $command->getName(),
             'name' => 'Foo/bar',

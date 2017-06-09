@@ -790,9 +790,9 @@ use Foo\Bor\{
 
     public function testInvalidOrderTypesSize()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_imports] Invalid configuration: Missing sort type "function".'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".'
         );
 
         $this->fixer->configure(array(
@@ -803,9 +803,9 @@ use Foo\Bor\{
 
     public function testInvalidOrderType()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_imports] Invalid configuration: Missing sort type "class".'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".'
         );
 
         $this->fixer->configure(array(
@@ -822,9 +822,9 @@ use Foo\Bor\{
      */
     public function testInvalidSortAlgorithm($configuration, $expectedValue)
     {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            sprintf(
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessage(sprintf(
                 '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
                 $expectedValue
             )

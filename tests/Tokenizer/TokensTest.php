@@ -284,9 +284,9 @@ final class TokensTest extends TestCase
      */
     public function testFindSequenceException($message, array $sequence)
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            $message
+        $this->expectException(
+            'InvalidArgumentException');
+        $this->expectExceptionMessage($message
         );
 
         $tokens = Tokens::fromCode('<?php $x = 1;');
@@ -773,7 +773,7 @@ PHP;
             $this->markTestSkipped('Skip tests for PHP compiler when running on non HHVM compiler.');
         }
 
-        $this->setExpectedException('ParseError');
+        $this->expectException('ParseError');
         Tokens::fromCode('<?php# this will cause T_HH_ERROR');
     }
 

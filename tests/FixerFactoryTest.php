@@ -121,9 +121,9 @@ final class FixerFactoryTest extends TestCase
      */
     public function testRegisterFixerWithOccupiedName()
     {
-        $this->setExpectedException(
-            'UnexpectedValueException',
-            'Fixer named "non_unique_name" is already registered.'
+        $this->expectException(
+            'UnexpectedValueException');
+        $this->expectExceptionMessage('Fixer named "non_unique_name" is already registered.'
         );
 
         $factory = new FixerFactory();
@@ -159,9 +159,9 @@ final class FixerFactoryTest extends TestCase
      */
     public function testUseRuleSetWithNonExistingRule()
     {
-        $this->setExpectedException(
-            'UnexpectedValueException',
-            'Rule "non_existing_rule" does not exist.'
+        $this->expectException(
+            'UnexpectedValueException');
+        $this->expectExceptionMessage('Rule "non_existing_rule" does not exist.'
         );
 
         $factory = FixerFactory::create()
