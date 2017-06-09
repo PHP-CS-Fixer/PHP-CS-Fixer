@@ -433,9 +433,9 @@ EOF;
 
     public function testInvalidConfigurationType()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
         $this->fixer->configure(array('elements' => array(null)));
@@ -443,9 +443,9 @@ EOF;
 
     public function testInvalidConfigurationValue()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
         $this->fixer->configure(array('elements' => array('_unknown_')));
@@ -457,9 +457,9 @@ EOF;
             $this->markTestSkipped('PHP version to high.');
         }
 
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Invalid configuration: "const" option can only be enabled with PHP 7\.1\+\.$/'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration: "const" option can only be enabled with PHP 7\.1\+\.$/'
         );
 
         $this->fixer->configure(array('elements' => array('const')));

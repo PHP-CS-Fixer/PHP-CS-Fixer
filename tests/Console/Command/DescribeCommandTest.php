@@ -138,7 +138,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp('RuntimeException', '/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessageRegExp('/^Not enough arguments( \(missing: "name"\))?\.$/');
         $commandTester->execute(array(
             'command' => $command->getName(),
         ));

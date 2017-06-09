@@ -211,9 +211,9 @@ final class FixerFactoryTest extends TestCase
      */
     public function testConflictingFixers(RuleSet $ruleSet)
     {
-        $this->setExpectedExceptionRegExp(
-            'UnexpectedValueException',
-            '#^Rule contains conflicting fixers:\n#'
+        $this->expectException(
+            'UnexpectedValueException');
+        $this->expectExceptionMessageRegExp('#^Rule contains conflicting fixers:\n#'
         );
 
         FixerFactory::create()->registerBuiltInFixers()->useRuleSet($ruleSet);

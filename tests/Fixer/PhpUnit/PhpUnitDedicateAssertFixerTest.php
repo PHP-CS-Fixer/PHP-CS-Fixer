@@ -268,9 +268,9 @@ $a#
 
     public function testInvalidConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[php_unit_dedicate_assert\] Invalid configuration: The option "functions" .*\.$/'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "functions" .*\.$/'
         );
 
         $this->fixer->configure(array('functions' => array('_unknown_')));

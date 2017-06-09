@@ -745,9 +745,9 @@ PHP;
 
     public function testFindBlockEndInvalidType()
     {
-        $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
-            '/^Invalid param type: -1\.$/'
+        $this->expectException(
+            'InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('/^Invalid param type: -1\.$/'
         );
 
         Tokens::clearCache();
@@ -757,9 +757,9 @@ PHP;
 
     public function testFindBlockEndInvalidStart()
     {
-        $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
-            '/^Invalid param \$startIndex - not a proper block start\.$/'
+        $this->expectException(
+            'InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('/^Invalid param \$startIndex - not a proper block start\.$/'
         );
 
         Tokens::clearCache();

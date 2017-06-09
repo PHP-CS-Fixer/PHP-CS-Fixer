@@ -46,9 +46,9 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testSetOptionWithUndefinedOption()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '/^Unknown option name: "foo"\.$/'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessageRegExp('/^Unknown option name: "foo"\.$/'
         );
 
         new ConfigurationResolver(
@@ -292,9 +292,9 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessageRegExp('#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
         );
 
         $dirBase = $this->getFixtureDir();
@@ -310,9 +310,9 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithInvalidFormat()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '/^The format "xls" is not defined, supported are json, junit, txt, xml.$/'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are json, junit, txt, xml.$/'
         );
 
         $dirBase = $this->getFixtureDir();
@@ -328,9 +328,9 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '/^For multiple paths config parameter is required.$/'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessageRegExp('/^For multiple paths config parameter is required.$/'
         );
 
         $dirBase = $this->getFixtureDir();

@@ -26,9 +26,9 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfiguration()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[return_type_declaration\] Invalid configuration: The option "s" does not exist. (Known|Defined) options are: "space_before".$#'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('#^\[return_type_declaration\] Invalid configuration: The option "s" does not exist. (Known|Defined) options are: "space_before".$#'
         );
 
         $this->fixer->configure(array('s' => 9000));

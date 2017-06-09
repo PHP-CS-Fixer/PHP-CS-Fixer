@@ -287,9 +287,9 @@ final class RuleSetTest extends TestCase
 
     public function testInvalidConfigNestedSets()
     {
-        $this->setExpectedExceptionRegExp(
-            '\UnexpectedValueException',
-            '#^Nested rule set "@PSR1" configuration must be a boolean\.$#'
+        $this->expectException(
+            '\UnexpectedValueException');
+        $this->expectExceptionMessageRegExp('#^Nested rule set "@PSR1" configuration must be a boolean\.$#'
         );
 
         new RuleSet(
@@ -453,9 +453,9 @@ final class RuleSetTest extends TestCase
     {
         $ruleSet = new RuleSet();
 
-        $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
-            '#^Rule "_not_exists" is not in the set\.$#'
+        $this->expectException(
+            'InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('#^Rule "_not_exists" is not in the set\.$#'
         );
 
         $ruleSet->getRuleConfiguration('_not_exists');

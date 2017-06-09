@@ -709,9 +709,9 @@ EOT
 
     public function testWrongConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/'
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/'
         );
 
         $this->fixer->configure(array('elements' => array('foo')));
