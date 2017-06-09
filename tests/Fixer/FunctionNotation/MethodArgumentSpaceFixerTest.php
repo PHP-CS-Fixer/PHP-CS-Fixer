@@ -588,6 +588,9 @@ if (true &&
     // do whatever
 }
 UNAFFECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
             ],
         ];
     }
