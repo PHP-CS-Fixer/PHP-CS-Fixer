@@ -352,7 +352,11 @@ class Tokens extends \SplFixedArray
 
         if ($this[$index]->isWhitespace()) {
             $whitespace = $removeLastCommentLine($this, $index - 1, $indexOffset, $whitespace);
-            $this[$index] = new Token(array(T_WHITESPACE, $whitespace));
+            if ('' === $whitespace) {
+                $this->clearAt($index);
+            } else {
+                $this[$index] = new Token(array(T_WHITESPACE, $whitespace));
+            }
 
             return false;
         }
