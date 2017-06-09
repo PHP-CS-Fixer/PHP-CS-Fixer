@@ -286,7 +286,9 @@ final class TokenTest extends TestCase
      */
     public function testCreatingToken($prototype, $expectedId, $expectedContent, $expectedIsArray, $expectedExceptionClass = null)
     {
-        $this->expectException($expectedExceptionClass);
+        if ($expectedExceptionClass) {
+            $this->expectException($expectedExceptionClass);
+        }
 
         $token = new Token($prototype);
         $this->assertSame($expectedId, $token->getId());
