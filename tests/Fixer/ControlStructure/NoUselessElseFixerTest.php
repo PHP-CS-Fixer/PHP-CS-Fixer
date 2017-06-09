@@ -722,7 +722,7 @@ else?><?php echo 5;',
             return $ret;'
         ;
 
-        $IfElseIfTemplate = '<?php
+        $ifElseIfTemplate = '<?php
             if ($a === false)
             {
                 if ($v) { $ret = "foo"; }
@@ -751,7 +751,7 @@ else?><?php echo 5;',
         foreach ($statements as $statement) {
             $cases[] = [sprintf($ifTemplate, $statement)];
             $cases[] = [sprintf($ifElseTemplate, $statement)];
-            $cases[] = [sprintf($IfElseIfTemplate, $statement)];
+            $cases[] = [sprintf($ifElseIfTemplate, $statement)];
         }
 
         $cases[] = [
