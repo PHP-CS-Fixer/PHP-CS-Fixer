@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-07T21:41:42Z
+
+Thank you, @julienfalque!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-08T03:43:18Z
+
+@julienfalque
+
+Added a few more tests to cover the yet uncovered exceptions!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-08T10:33:48Z
+
+@julienfalque
+
+Sorted out!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-08T13:47:47Z
+
+@localheinz please remove the not used import;
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/240741611#L880
+
+and this should be good to go :)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-08T18:34:09Z
+
+Thank you, @julienfalque, @keradus, and @SpacePossum!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-08T21:52:13Z
+
+Thank you, @julienfalque, @keradus, and @SpacePossum!
