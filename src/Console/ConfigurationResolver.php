@@ -380,7 +380,7 @@ final class ConfigurationResolver
         if (null === $this->progress) {
             if (OutputInterface::VERBOSITY_VERBOSE <= $this->options['verbosity'] && 'txt' === $this->getFormat()) {
                 $progressType = $this->options['show-progress'];
-                $progressTypes = ['none', 'run-in', 'estimating'];
+                $progressTypes = ['none', 'run-in', 'estimating', 'estimating-max'];
 
                 if (null === $progressType) {
                     $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'run-in';
