@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-15T00:40:03Z
+
+~Note: still having some troubles of running extended PHPMD not from project-based vendor dir~
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-30T09:56:13Z
+
+Can we remove the `--optimize-autoloader` flag from command in .appveyor.yml file as well?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-30T10:08:21Z
+
+good catch
