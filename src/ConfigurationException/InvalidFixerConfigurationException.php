@@ -26,7 +26,7 @@ class InvalidFixerConfigurationException extends InvalidConfigurationException
     /**
      * @param string          $fixerName
      * @param string          $message
-     * @param \Exception|null $previous
+     * @param null|\Exception $previous
      */
     public function __construct($fixerName, $message, \Exception $previous = null)
     {

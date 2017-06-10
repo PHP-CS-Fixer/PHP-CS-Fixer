@@ -25,7 +25,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected PHP code
-     * @param string|null $input    PHP code
+     * @param null|string $input    PHP code
      *
      * @group legacy
      * @dataProvider provideDefaultConfigurationTestCases
@@ -39,7 +39,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
 
     /**
      * @param string      $expected PHP code
-     * @param string|null $input    PHP code
+     * @param null|string $input    PHP code
      *
      * @dataProvider provideDefaultConfigurationTestCases
      */
@@ -71,7 +71,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
 
     /**
      * @param string      $expected      PHP code
-     * @param string|null $input         PHP code
+     * @param null|string $input         PHP code
      * @param array       $configuration
      *
      * @group legacy
@@ -86,7 +86,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
 
     /**
      * @param string      $expected      PHP code
-     * @param string|null $input         PHP code
+     * @param null|string $input         PHP code
      * @param array       $configuration
      *
      * @dataProvider provideTestCases

@@ -139,7 +139,7 @@ $this->assertNotSame(null, $d);
      * @param int    $index
      * @param string $method
      *
-     * @return int|null
+     * @return null|int
      */
     private function fixAssertNegative(Tokens $tokens, $index, $method)
     {
@@ -157,7 +157,7 @@ $this->assertNotSame(null, $d);
      * @param int    $index
      * @param string $method
      *
-     * @return int|null
+     * @return null|int
      */
     private function fixAssertPositive(Tokens $tokens, $index, $method)
     {
@@ -176,7 +176,7 @@ $this->assertNotSame(null, $d);
      * @param int                   $index
      * @param string                $method
      *
-     * @return int|null
+     * @return null|int
      */
     private function fixAssert(array $map, Tokens $tokens, $index, $method)
     {

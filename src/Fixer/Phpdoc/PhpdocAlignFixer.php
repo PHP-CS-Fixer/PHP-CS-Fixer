@@ -266,7 +266,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
      * @param string $line
      * @param bool   $matchCommentOnly
      *
-     * @return string[]|null
+     * @return null|string[]
      */
     private function getMatches($line, $matchCommentOnly = false)
     {

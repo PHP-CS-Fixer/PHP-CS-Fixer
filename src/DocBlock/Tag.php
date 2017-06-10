@@ -41,7 +41,7 @@ class Tag
     /**
      * The cached tag name.
      *
-     * @var string|null
+     * @var null|string
      */
     private $name;
 

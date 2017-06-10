@@ -140,7 +140,7 @@ EOT
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     private function getLatestTag()
     {

@@ -35,7 +35,7 @@ final class IntegrationCase
     private $fileName;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $inputCode;
 
@@ -71,7 +71,7 @@ final class IntegrationCase
      * @param array       $config
      * @param RuleSet     $ruleset
      * @param string      $expectedCode
-     * @param string|null $inputCode
+     * @param null|string $inputCode
      */
     public function __construct(
         $fileName,

@@ -123,8 +123,8 @@ abstract class AbstractFixerTestCase extends TestCase
      * not test anything.
      *
      * @param string            $expected The expected fixer output
-     * @param string|null       $input    The fixer input, or null if it should intentionally be equal to the output
-     * @param \SplFileInfo|null $file     The file to fix, or null if unneeded
+     * @param null|string       $input    The fixer input, or null if it should intentionally be equal to the output
+     * @param null|\SplFileInfo $file     The file to fix, or null if unneeded
      */
     protected function doTest($expected, $input = null, \SplFileInfo $file = null)
     {
@@ -191,7 +191,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * @param string $source
      *
-     * @return string|null
+     * @return null|string
      */
     protected function lintSource($source)
     {
