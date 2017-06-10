@@ -24,7 +24,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
 {
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixCases
      */

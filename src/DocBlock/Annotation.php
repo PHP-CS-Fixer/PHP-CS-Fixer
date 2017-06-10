@@ -60,14 +60,14 @@ class Annotation
     /**
      * The associated tag.
      *
-     * @var Tag|null
+     * @var null|Tag
      */
     private $tag;
 
     /**
      * The cached types content.
      *
-     * @var string|null
+     * @var null|string
      */
     private $typesContent;
 

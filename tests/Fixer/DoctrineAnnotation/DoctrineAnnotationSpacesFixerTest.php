@@ -24,7 +24,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 {
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAllCases
      */
@@ -43,7 +43,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAllCases
      */
@@ -323,7 +323,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAroundParenthesesOnlyCases
      */
@@ -347,7 +347,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAroundParenthesesOnlyCases
      */
@@ -578,7 +578,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAroundCommasOnlyCases
      */
@@ -602,7 +602,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAroundCommasOnlyCases
      */
@@ -856,7 +856,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAroundArgumentAssignmentsOnlyCases
      */
@@ -880,7 +880,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAroundArgumentAssignmentsOnlyCases
      */
@@ -1126,7 +1126,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAroundArrayAssignmentsOnlyCases
      */
@@ -1150,7 +1150,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixAroundArrayAssignmentsOnlyCases
      */

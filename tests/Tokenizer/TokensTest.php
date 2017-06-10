@@ -47,7 +47,7 @@ final class TokensTest extends TestCase
      * @param null|array $expected
      * @param Token[]    $sequence
      * @param int        $start
-     * @param int|null   $end
+     * @param null|int   $end
      * @param bool|array $caseSensitive
      *
      * @dataProvider provideFindSequence

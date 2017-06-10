@@ -695,7 +695,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param bool             $expected
      * @param bool             $configValue
-     * @param bool|string|null $passed
+     * @param null|bool|string $passed
      *
      * @dataProvider getResolveBooleanOptions
      */
@@ -800,7 +800,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param bool             $expected
      * @param bool             $configValue
-     * @param bool|string|null $passed
+     * @param null|bool|string $passed
      *
      * @dataProvider getResolveBooleanOptions
      */

@@ -47,7 +47,7 @@ interface FixerOptionInterface
     public function getAllowedValues();
 
     /**
-     * @return \Closure|null
+     * @return null|\Closure
      */
     public function getNormalizer();
 }

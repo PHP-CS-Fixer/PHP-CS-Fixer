@@ -53,9 +53,9 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
      * @param string   $functionNameToSearch
      * @param Tokens   $tokens
      * @param int      $start
-     * @param int|null $end
+     * @param null|int $end
      *
-     * @return int[]|null returns $functionName, $openParenthesis, $closeParenthesis packed into array
+     * @return null|int[] returns $functionName, $openParenthesis, $closeParenthesis packed into array
      */
     protected function find($functionNameToSearch, Tokens $tokens, $start = 0, $end = null)
     {

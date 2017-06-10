@@ -81,7 +81,7 @@ function foo () {}
      *
      * @param Line[] $lines
      *
-     * @return int|null
+     * @return null|int
      */
     private function findShortDescriptionEnd(array $lines)
     {

@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 final class FileFilterIterator extends \FilterIterator
 {
     /**
-     * @var EventDispatcher|null
+     * @var null|EventDispatcher
      */
     private $eventDispatcher;
 
