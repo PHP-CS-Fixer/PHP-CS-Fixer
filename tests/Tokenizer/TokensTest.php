@@ -284,10 +284,8 @@ final class TokensTest extends TestCase
      */
     public function testFindSequenceException($message, array $sequence)
     {
-        $this->expectException(
-            'InvalidArgumentException');
-        $this->expectExceptionMessage($message
-        );
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage($message);
 
         $tokens = Tokens::fromCode('<?php $x = 1;');
         $tokens->findSequence($sequence);
@@ -745,10 +743,8 @@ PHP;
 
     public function testFindBlockEndInvalidType()
     {
-        $this->expectException(
-            'InvalidArgumentException');
-        $this->expectExceptionMessageRegExp('/^Invalid param type: -1\.$/'
-        );
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('/^Invalid param type: -1\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
@@ -757,10 +753,8 @@ PHP;
 
     public function testFindBlockEndInvalidStart()
     {
-        $this->expectException(
-            'InvalidArgumentException');
-        $this->expectExceptionMessageRegExp('/^Invalid param \$startIndex - not a proper block start\.$/'
-        );
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('/^Invalid param \$startIndex - not a proper block start\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');

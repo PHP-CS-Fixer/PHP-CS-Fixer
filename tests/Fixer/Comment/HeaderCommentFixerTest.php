@@ -329,10 +329,8 @@ echo \'x\';',
      */
     public function testLegacyMisconfiguration()
     {
-        $this->expectException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
-        $this->expectExceptionMessage('[header_comment] Missing required configuration: The required option "header" is missing.'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessage('[header_comment] Missing required configuration: The required option "header" is missing.');
 
         $this->fixer->configure(null);
     }
@@ -345,10 +343,8 @@ echo \'x\';',
      */
     public function testMisconfiguration($configuration, $exceptionMessage)
     {
-        $this->expectException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
-        $this->expectExceptionMessage('[header_comment] '.$exceptionMessage
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessage('[header_comment] '.$exceptionMessage);
 
         $this->fixer->configure($configuration);
     }

@@ -121,10 +121,8 @@ final class FixerFactoryTest extends TestCase
      */
     public function testRegisterFixerWithOccupiedName()
     {
-        $this->expectException(
-            'UnexpectedValueException');
-        $this->expectExceptionMessage('Fixer named "non_unique_name" is already registered.'
-        );
+        $this->expectException('UnexpectedValueException');
+        $this->expectExceptionMessage('Fixer named "non_unique_name" is already registered.');
 
         $factory = new FixerFactory();
 
@@ -159,10 +157,8 @@ final class FixerFactoryTest extends TestCase
      */
     public function testUseRuleSetWithNonExistingRule()
     {
-        $this->expectException(
-            'UnexpectedValueException');
-        $this->expectExceptionMessage('Rule "non_existing_rule" does not exist.'
-        );
+        $this->expectException('UnexpectedValueException');
+        $this->expectExceptionMessage('Rule "non_existing_rule" does not exist.');
 
         $factory = FixerFactory::create()
             ->registerBuiltInFixers()
@@ -211,10 +207,8 @@ final class FixerFactoryTest extends TestCase
      */
     public function testConflictingFixers(RuleSet $ruleSet)
     {
-        $this->expectException(
-            'UnexpectedValueException');
-        $this->expectExceptionMessageRegExp('#^Rule contains conflicting fixers:\n#'
-        );
+        $this->expectException('UnexpectedValueException');
+        $this->expectExceptionMessageRegExp('#^Rule contains conflicting fixers:\n#');
 
         FixerFactory::create()->registerBuiltInFixers()->useRuleSet($ruleSet);
     }

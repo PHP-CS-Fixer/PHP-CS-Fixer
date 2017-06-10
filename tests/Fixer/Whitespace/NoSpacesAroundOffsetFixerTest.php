@@ -366,10 +366,8 @@ EOT
 
     public function testWrongConfig()
     {
-        $this->expectException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
-        $this->expectExceptionMessageRegExp('/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/');
 
         $this->fixer->configure(array('positions' => array('foo')));
     }

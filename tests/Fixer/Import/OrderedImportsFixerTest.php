@@ -790,10 +790,8 @@ use Foo\Bor\{
 
     public function testInvalidOrderTypesSize()
     {
-        $this->expectException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
-        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".');
 
         $this->fixer->configure(array(
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -803,10 +801,8 @@ use Foo\Bor\{
 
     public function testInvalidOrderType()
     {
-        $this->expectException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
-        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".');
 
         $this->fixer->configure(array(
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -822,13 +818,11 @@ use Foo\Bor\{
      */
     public function testInvalidSortAlgorithm($configuration, $expectedValue)
     {
-        $this->expectException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
         $this->expectExceptionMessage(sprintf(
-                '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
-                $expectedValue
-            )
-        );
+            '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
+            $expectedValue
+        ));
 
         $this->fixer->configure($configuration);
     }

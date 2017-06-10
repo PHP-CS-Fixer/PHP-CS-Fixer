@@ -24,8 +24,7 @@ final class FinderTest extends TestCase
 {
     public function testThatDefaultFinderDoesNotSpecifyAnyDirectory()
     {
-        $this->expectException(
-            'LogicException');
+        $this->expectException('LogicException');
         $this->expectExceptionMessageRegExp('/^You must call (?:the in\(\) method)|(?:one of in\(\) or append\(\)) methods before iterating over a Finder\.$/'
         );
 

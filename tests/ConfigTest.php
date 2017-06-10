@@ -176,10 +176,8 @@ final class ConfigTest extends TestCase
 
     public function testRegisterCustomFixersWithInvalidArgument()
     {
-        $this->expectException(
-            'InvalidArgumentException');
-        $this->expectExceptionMessageRegExp('/^Argument must be an array or a Traversable, got "\w+"\.$/'
-        );
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('/^Argument must be an array or a Traversable, got "\w+"\.$/');
 
         $config = new Config();
         $config->registerCustomFixers('foo');
