@@ -299,7 +299,7 @@ EOF
      *
      * @param FixerOptionInterface $option
      *
-     * @return array|null
+     * @return null|array
      */
     public static function getDisplayableAllowedValues(FixerOptionInterface $option)
     {
@@ -380,7 +380,7 @@ EOF
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     private static function getChangeLogFile()
     {

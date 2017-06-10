@@ -197,7 +197,7 @@ echo 1;
      * @param Tokens $tokens
      * @param int    $headerNewIndex
      *
-     * @return int|null
+     * @return null|int
      */
     private function findHeaderCommentCurrentIndex(Tokens $tokens, $headerNewIndex)
     {

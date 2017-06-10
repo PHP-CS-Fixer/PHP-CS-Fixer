@@ -18,18 +18,18 @@ namespace PhpCsFixer\FixerDefinition;
 final class VersionSpecification implements VersionSpecificationInterface
 {
     /**
-     * @var int|null
+     * @var null|int
      */
     private $minimum;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $maximum;
 
     /**
-     * @param int|null $minimum
-     * @param int|null $maximum
+     * @param null|int $minimum
+     * @param null|int $maximum
      *
      * @throws \InvalidArgumentException
      */

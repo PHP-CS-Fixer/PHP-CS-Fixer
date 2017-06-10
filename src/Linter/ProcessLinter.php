@@ -30,7 +30,7 @@ final class ProcessLinter implements LinterInterface
     /**
      * Temporary file for code linting.
      *
-     * @var string|null
+     * @var null|string
      */
     private $temporaryFile;
 
@@ -47,7 +47,7 @@ final class ProcessLinter implements LinterInterface
     private $fileRemoval;
 
     /**
-     * @param string|null $executable PHP executable, null for autodetection
+     * @param null|string $executable PHP executable, null for autodetection
      */
     public function __construct($executable = null)
     {

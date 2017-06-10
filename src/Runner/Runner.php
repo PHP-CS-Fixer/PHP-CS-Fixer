@@ -45,7 +45,7 @@ final class Runner
     private $directory;
 
     /**
-     * @var EventDispatcher|null
+     * @var null|EventDispatcher
      */
     private $eventDispatcher;
 
