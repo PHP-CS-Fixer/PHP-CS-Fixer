@@ -241,6 +241,24 @@ final class AnnotationTest extends TestCase
             array(array('false'), array('bool'), '*   @return            false', '*   @return            bool'),
             array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
             array(array('string'), array('string', 'null'), ' * @method string getString()', ' * @method string|null getString()'),
+            array(
+                array('array<int, string>', 'null'),
+                array('null', 'array<int, string>'),
+                ' * @method array<int, string>|null getStrings()',
+                ' * @method null|array<int, string> getStrings()',
+            ),
+            array(
+                array('array<int, string>', '\ArrayObject<int, string>', 'null'),
+                array('null', 'array<int, string>', '\ArrayObject<int, string>'),
+                ' * @method array<int, string>|\ArrayObject<int, string>|null getStrings()',
+                ' * @method null|array<int, string>|\ArrayObject<int, string> getStrings()',
+            ),
+            array(
+                array('array<int, array<int, string>>', 'null'),
+                array('null', 'array<int, array<int, string>>'),
+                ' * @method array<int, array<int, string>>|null getStrings()',
+                ' * @method null|array<int, array<int, string>> getStrings()',
+            ),
         );
     }
 
