@@ -39,7 +39,8 @@ final class TagTest extends TestCase
         $this->assertSame($expected, $tag->getName());
 
         if ('other' === $expected) {
-            $this->setExpectedException('RuntimeException', 'Cannot set name on unknown tag');
+            $this->expectException('RuntimeException');
+            $this->expectExceptionMessage('Cannot set name on unknown tag');
         }
 
         $tag->setName($new);

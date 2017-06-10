@@ -121,7 +121,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedException('InvalidArgumentException', 'Rule Foo/bar not found.');
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('Rule Foo/bar not found.');
         $commandTester->execute(array(
             'command' => $command->getName(),
             'name' => 'Foo/bar',
@@ -137,7 +138,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp('RuntimeException', '/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessageRegExp('/^Not enough arguments( \(missing: "name"\))?\.$/');
         $commandTester->execute(array(
             'command' => $command->getName(),
         ));

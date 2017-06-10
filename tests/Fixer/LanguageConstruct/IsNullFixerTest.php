@@ -28,10 +28,8 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     {
         $fixer = new IsNullFixer();
 
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[is_null] Invalid configuration: The option "yoda" does not exist.'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessage('[is_null] Invalid configuration: The option "yoda" does not exist.');
         $fixer->configure(array('yoda' => true));
     }
 
@@ -39,10 +37,8 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     {
         $fixer = new IsNullFixer();
 
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[is_null] Invalid configuration: The option "use_yoda_style" with value -1 is expected to be of type "bool", but is of type "integer".'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessage('[is_null] Invalid configuration: The option "use_yoda_style" with value -1 is expected to be of type "bool", but is of type "integer".');
         $fixer->configure(array('use_yoda_style' => -1));
     }
 

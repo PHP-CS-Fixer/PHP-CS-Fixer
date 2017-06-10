@@ -26,7 +26,7 @@ final class VersionSpecificationTest extends TestCase
 {
     public function testConstructorRequiresEitherMinimumOrMaximum()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         new VersionSpecification();
     }
@@ -38,7 +38,7 @@ final class VersionSpecificationTest extends TestCase
      */
     public function testConstructorRejectsInvalidMinimum($minimum)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         new VersionSpecification($minimum);
     }
@@ -50,7 +50,7 @@ final class VersionSpecificationTest extends TestCase
      */
     public function testConstructorRejectsInvalidMaximum($maximum)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         new VersionSpecification(
             PHP_VERSION_ID,
@@ -76,7 +76,7 @@ final class VersionSpecificationTest extends TestCase
 
     public function testConstructorRejectsMaximumLessThanMinimum()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         new VersionSpecification(
             PHP_VERSION_ID,

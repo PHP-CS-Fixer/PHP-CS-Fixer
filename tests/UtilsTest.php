@@ -150,10 +150,8 @@ final class UtilsTest extends TestCase
 
     public function testCalculateTrailingWhitespaceIndentFail()
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            'The given token must be whitespace, got "T_STRING".'
-        );
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
 
         $token = new Token(array(T_STRING, 'foo'));
 

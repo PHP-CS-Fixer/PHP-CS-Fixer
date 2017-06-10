@@ -69,10 +69,8 @@ final class RuleSetTest extends TestCase
 
     public function testResolveRulesWithInvalidSet()
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            'Set "@foo" does not exist.'
-        );
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('Set "@foo" does not exist.');
 
         RuleSet::create(array(
             '@foo' => true,
@@ -81,10 +79,8 @@ final class RuleSetTest extends TestCase
 
     public function testResolveRulesWithMissingRuleValue()
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            'Missing value for "braces" rule/set.'
-        );
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('Missing value for "braces" rule/set.');
 
         RuleSet::create(array(
             'braces',
@@ -287,10 +283,8 @@ final class RuleSetTest extends TestCase
 
     public function testInvalidConfigNestedSets()
     {
-        $this->setExpectedExceptionRegExp(
-            '\UnexpectedValueException',
-            '#^Nested rule set "@PSR1" configuration must be a boolean\.$#'
-        );
+        $this->expectException('\UnexpectedValueException');
+        $this->expectExceptionMessageRegExp('#^Nested rule set "@PSR1" configuration must be a boolean\.$#');
 
         new RuleSet(
             array('@PSR1' => array('@PSR2' => 'no'))
@@ -453,10 +447,8 @@ final class RuleSetTest extends TestCase
     {
         $ruleSet = new RuleSet();
 
-        $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
-            '#^Rule "_not_exists" is not in the set\.$#'
-        );
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('#^Rule "_not_exists" is not in the set\.$#');
 
         $ruleSet->getRuleConfiguration('_not_exists');
     }

@@ -746,7 +746,7 @@ $b;',
      */
     public function testIsMultiLineArrayException($source, $tokenIndex)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);

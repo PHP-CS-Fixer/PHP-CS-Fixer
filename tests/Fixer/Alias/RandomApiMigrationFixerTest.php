@@ -26,20 +26,16 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
     public function testConfigureCheckSearchFunction()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer.$#'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer.$#');
 
         $this->fixer->configure(array('replacements' => array('is_null' => 'random_int')));
     }
 
     public function testConfigureCheckReplacementType()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given.$#'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given.$#');
 
         $this->fixer->configure(array('replacements' => array('rand' => null)));
     }

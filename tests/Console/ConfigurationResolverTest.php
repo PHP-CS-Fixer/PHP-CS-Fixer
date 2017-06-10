@@ -46,10 +46,8 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testSetOptionWithUndefinedOption()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '/^Unknown option name: "foo"\.$/'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessageRegExp('/^Unknown option name: "foo"\.$/');
 
         new ConfigurationResolver(
             $this->config,
@@ -187,10 +185,8 @@ final class ConfigurationResolverTest extends TestCase
             ''
         );
 
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            'The progress type "foo" is not defined, supported are "none", "run-in", "estimating".'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "run-in", "estimating".');
 
         $resolver->getProgress();
     }
@@ -292,10 +288,8 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessageRegExp('#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#');
 
         $dirBase = $this->getFixtureDir();
 
@@ -310,10 +304,8 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithInvalidFormat()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '/^The format "xls" is not defined, supported are json, junit, txt, xml.$/'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are json, junit, txt, xml.$/');
 
         $dirBase = $this->getFixtureDir();
 
@@ -328,10 +320,8 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '/^For multiple paths config parameter is required.$/'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessageRegExp('/^For multiple paths config parameter is required.$/');
 
         $dirBase = $this->getFixtureDir();
 
@@ -475,7 +465,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveIntersectionOfPaths($expected, $configFinder, array $path, $pathMode, $config = null)
     {
         if ($expected instanceof \Exception) {
-            $this->setExpectedException(get_class($expected));
+            $this->expectException(get_class($expected));
         }
 
         if (null !== $configFinder) {
@@ -908,10 +898,8 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveRulesWithUnknownRules()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            'The rules contain unknown fixers (bar).'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->expectExceptionMessage('The rules contain unknown fixers (bar).');
 
         $resolver = new ConfigurationResolver(
             $this->config,

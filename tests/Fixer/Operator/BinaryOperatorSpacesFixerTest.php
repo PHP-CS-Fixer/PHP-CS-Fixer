@@ -350,20 +350,16 @@ $b;',
 
     public function testWrongConfigItem()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "align_double_arrow", "align_equals"\.$/'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "align_double_arrow", "align_equals"\.$/');
 
         $this->fixer->configure(array('foo' => true));
     }
 
     public function testWrongConfigValue()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid. Accepted values are: true, false, null\.$/'
-        );
+        $this->expectException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid. Accepted values are: true, false, null\.$/');
 
         $this->fixer->configure(array('align_double_arrow' => 123));
     }
