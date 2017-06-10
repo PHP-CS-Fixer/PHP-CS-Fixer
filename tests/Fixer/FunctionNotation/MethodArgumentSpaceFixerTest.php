@@ -593,7 +593,25 @@ UNAFFECTED
                 ['ensure_fully_multiline' => true],
             ],
             'test ungodly code' => [
-            <<<'UNAFFECTED'
+            <<<'EXPECTED'
+<?php
+$a = function#
+(#
+#
+$a#
+#
+,#
+#
+$b,
+    $c#
+#
+)#
+use ($b,
+$c,$d) {
+};
+EXPECTED
+            ,
+            <<<'INPUT'
 <?php
 $a = function#
 (#
@@ -608,9 +626,8 @@ $b,$c#
 use ($b,
 $c,$d) {
 };
-UNAFFECTED
+INPUT
             ,
-                null,
                 ['ensure_fully_multiline' => true],
             ],
             'test list' => [
