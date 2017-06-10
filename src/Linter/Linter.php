@@ -27,7 +27,7 @@ final class Linter implements LinterInterface
     private $sublinter;
 
     /**
-     * @param string|null $executable PHP executable, null for autodetection
+     * @param null|string $executable PHP executable, null for autodetection
      */
     public function __construct($executable = null)
     {

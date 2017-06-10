@@ -33,7 +33,7 @@ class DocBlock
     /**
      * The array of annotations.
      *
-     * @var Annotation[]|null
+     * @var null|Annotation[]
      */
     private $annotations;
 
@@ -74,7 +74,7 @@ class DocBlock
      *
      * @param int $pos
      *
-     * @return Line|null
+     * @return null|Line
      */
     public function getLine($pos)
     {
@@ -117,7 +117,7 @@ class DocBlock
      *
      * @param int $pos
      *
-     * @return Annotation|null
+     * @return null|Annotation
      */
     public function getAnnotation($pos)
     {

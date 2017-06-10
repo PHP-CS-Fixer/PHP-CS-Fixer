@@ -24,7 +24,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
 {
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixWithBracesCases
      */
@@ -266,7 +266,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider getFixWithoutBracesCases
      */

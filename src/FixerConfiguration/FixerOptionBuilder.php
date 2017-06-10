@@ -45,7 +45,7 @@ final class FixerOptionBuilder
     private $allowedValues;
 
     /**
-     * @var \Closure|null
+     * @var null|\Closure
      */
     private $normalizer;
 

@@ -47,14 +47,14 @@ final class Error
     private $filePath;
 
     /**
-     * @var \Throwable|null
+     * @var null|\Throwable
      */
     private $source;
 
     /**
      * @param int             $type
      * @param string          $filePath
-     * @param \Throwable|null $source
+     * @param null|\Throwable $source
      */
     public function __construct($type, $filePath, $source = null)
     {
@@ -72,7 +72,7 @@ final class Error
     }
 
     /**
-     * @return \Throwable|null
+     * @return null|\Throwable
      */
     public function getSource()
     {

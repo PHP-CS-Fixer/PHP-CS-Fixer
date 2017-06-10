@@ -85,7 +85,7 @@ class Tokens extends \SplFixedArray
     /**
      * Clear cache - one position or all of them.
      *
-     * @param string|null $key position to clear, when null clear all
+     * @param null|string $key position to clear, when null clear all
      */
     public static function clearCache($key = null)
     {
@@ -439,7 +439,7 @@ class Tokens extends \SplFixedArray
      *
      * @param int|array $possibleKind kind or array of kind
      * @param int       $start        optional offset
-     * @param int|null  $end          optional limit
+     * @param null|int  $end          optional limit
      *
      * @return array array of tokens of given kinds or assoc array of arrays
      */
@@ -517,7 +517,7 @@ class Tokens extends \SplFixedArray
      * @param int         $index       token index
      * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      *
-     * @return int|null
+     * @return null|int
      */
     public function getNextNonWhitespace($index, $whitespaces = null)
     {
@@ -533,7 +533,7 @@ class Tokens extends \SplFixedArray
      * @param array $tokens        possible tokens
      * @param bool  $caseSensitive perform a case sensitive comparison
      *
-     * @return int|null
+     * @return null|int
      */
     public function getNextTokenOfKind($index, array $tokens = array(), $caseSensitive = true)
     {
@@ -547,7 +547,7 @@ class Tokens extends \SplFixedArray
      * @param int         $direction   direction for looking, +1 or -1
      * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      *
-     * @return int|null
+     * @return null|int
      */
     public function getNonWhitespaceSibling($index, $direction, $whitespaces = null)
     {
@@ -574,7 +574,7 @@ class Tokens extends \SplFixedArray
      * @param int         $index       token index
      * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      *
-     * @return int|null
+     * @return null|int
      */
     public function getPrevNonWhitespace($index, $whitespaces = null)
     {
@@ -589,7 +589,7 @@ class Tokens extends \SplFixedArray
      * @param array $tokens        possible tokens
      * @param bool  $caseSensitive perform a case sensitive comparison
      *
-     * @return int|null
+     * @return null|int
      */
     public function getPrevTokenOfKind($index, array $tokens = array(), $caseSensitive = true)
     {
@@ -604,7 +604,7 @@ class Tokens extends \SplFixedArray
      * @param array $tokens        possible tokens
      * @param bool  $caseSensitive perform a case sensitive comparison
      *
-     * @return int|null
+     * @return null|int
      */
     public function getTokenOfKindSibling($index, $direction, array $tokens = array(), $caseSensitive = true)
     {
@@ -630,7 +630,7 @@ class Tokens extends \SplFixedArray
      * @param int   $direction direction for looking, +1 or -1
      * @param array $tokens    possible tokens
      *
-     * @return int|null
+     * @return null|int
      */
     public function getTokenNotOfKindSibling($index, $direction, array $tokens = array())
     {
@@ -659,7 +659,7 @@ class Tokens extends \SplFixedArray
      * @param int $index     token index
      * @param int $direction direction for looking, +1 or -1
      *
-     * @return int|null
+     * @return null|int
      */
     public function getMeaningfulTokenSibling($index, $direction)
     {
@@ -676,7 +676,7 @@ class Tokens extends \SplFixedArray
      * @param int $index     token index
      * @param int $direction direction for looking, +1 or -1
      *
-     * @return int|null
+     * @return null|int
      */
     public function getNonEmptySibling($index, $direction)
     {
@@ -698,7 +698,7 @@ class Tokens extends \SplFixedArray
      *
      * @param int $index token index
      *
-     * @return int|null
+     * @return null|int
      */
     public function getNextMeaningfulToken($index)
     {
@@ -710,7 +710,7 @@ class Tokens extends \SplFixedArray
      *
      * @param int $index token index
      *
-     * @return int|null
+     * @return null|int
      */
     public function getPrevMeaningfulToken($index)
     {
@@ -727,7 +727,7 @@ class Tokens extends \SplFixedArray
      *                                  the ones used in $others. If any is missing, the default case-sensitive
      *                                  comparison is used
      *
-     * @return array|null an array containing the tokens matching the sequence elements, indexed by their position
+     * @return null|array an array containing the tokens matching the sequence elements, indexed by their position
      */
     public function findSequence(array $sequence, $start = 0, $end = null, $caseSensitive = true)
     {

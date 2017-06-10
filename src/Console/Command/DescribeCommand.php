@@ -56,7 +56,7 @@ final class DescribeCommand extends Command
     private $fixers;
 
     /**
-     * @param FixerFactory|null $fixerFactory
+     * @param null|FixerFactory $fixerFactory
      */
     public function __construct(FixerFactory $fixerFactory = null)
     {

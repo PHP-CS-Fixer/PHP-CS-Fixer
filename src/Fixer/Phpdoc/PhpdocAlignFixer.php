@@ -217,7 +217,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
      * @param string $line
      * @param bool   $matchCommentOnly
      *
-     * @return string[]|null
+     * @return null|string[]
      */
     private function getMatches($line, $matchCommentOnly = false)
     {

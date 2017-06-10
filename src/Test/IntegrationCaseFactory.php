@@ -174,7 +174,7 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * @param string|null $code
+     * @param null|string $code
      * @param SplFileInfo $file
      *
      * @return string
@@ -191,10 +191,10 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * @param string|null $code
+     * @param null|string $code
      * @param SplFileInfo $file
      *
-     * @return string|null
+     * @return null|string
      */
     private function determineInputCode($code, SplFileInfo $file)
     {
@@ -202,11 +202,11 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * @param string|null $code
+     * @param null|string $code
      * @param SplFileInfo $file
      * @param string      $suffix
      *
-     * @return string|null
+     * @return null|string
      */
     private function determineCode($code, SplFileInfo $file, $suffix)
     {
@@ -221,8 +221,8 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * @param string|null $encoded
-     * @param array|null  $template
+     * @param null|string $encoded
+     * @param null|array  $template
      *
      * @return array
      */
