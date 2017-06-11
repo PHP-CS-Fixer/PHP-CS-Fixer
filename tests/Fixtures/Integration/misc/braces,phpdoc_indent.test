@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: braces,phpdoc_indent.
+--RULESET--
+{
+    "braces": true,
+    "phpdoc_indent": true
+}
+--EXPECT--
+<?php
+
+function foo()
+{
+    $foo->bar(/** oops */$baz);
+}
