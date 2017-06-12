@@ -384,6 +384,180 @@ final class BracesFixerTest extends AbstractFixerTestCase
                 null,
                 self::$configurationOopPositionSameLine,
             ),
+            array(
+                '<?php
+class Foo
+{
+    public function foo()
+    {
+        foo();
+
+        // baz
+        bar();
+    }
+}',
+                '<?php
+class Foo
+{
+    public function foo(){
+    foo();
+
+    // baz
+    bar();
+    }
+}',
+            ),
+            array(
+                '<?php
+class Foo
+{
+    public function foo($foo)
+    {
+        return $foo // foo
+            ? \'foo\'
+            : \'bar\'
+        ;
+    }
+}',
+            ),
+            array(
+                '<?php
+class Foo
+{
+    /**
+     * Foo.
+     */
+    public $foo;
+
+    /**
+     * Bar.
+     */
+    public $bar;
+}',
+                '<?php
+class Foo {
+  /**
+   * Foo.
+   */
+  public $foo;
+
+  /**
+   * Bar.
+   */
+  public $bar;
+}',
+            ),
+            array(
+                '<?php
+class Foo
+{
+    /*
+     * Foo.
+     */
+    public $foo;
+
+    /*
+     * Bar.
+     */
+    public $bar;
+}',
+                '<?php
+class Foo {
+  /*
+   * Foo.
+   */
+  public $foo;
+
+  /*
+   * Bar.
+   */
+  public $bar;
+}',
+            ),
+            array(
+                '<?php
+if (1==1) {
+    $a = 1;
+    // test
+    $b = 2;
+}',
+                '<?php
+if (1==1) {
+ $a = 1;
+  // test
+  $b = 2;
+}',
+            ),
+            array(
+                '<?php
+if (1==1) {
+    $a = 1;
+    # test
+    $b = 2;
+}',
+                '<?php
+if (1==1) {
+ $a = 1;
+  # test
+  $b = 2;
+}',
+            ),
+            array(
+                '<?php
+if (1==1) {
+    $a = 1;
+    /** @var int $b */
+    $b = a();
+}',
+                '<?php
+if (1==1) {
+    $a = 1;
+    /** @var int $b */
+$b = a();
+}',
+            ),
+            array(
+'<?php
+    if ($b) {
+        if (1==1) {
+            $a = 1;
+            // test
+            $b = 2;
+        }
+    }
+',
+'<?php
+    if ($b) {
+        if (1==1) {
+         $a = 1;
+          // test
+          $b = 2;
+        }
+    }
+',
+            ),
+            array(
+'<?php
+    if ($b) {
+        if (1==1) {
+            $a = 1;
+            /* test */
+            $b = 2;
+            echo 123;//
+        }
+    }
+',
+'<?php
+    if ($b) {
+        if (1==1) {
+         $a = 1;
+          /* test */
+          $b = 2;
+          echo 123;//
+        }
+    }
+',
+            ),
         );
     }
 

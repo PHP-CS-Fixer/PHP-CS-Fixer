@@ -354,13 +354,23 @@ class Foo
                     continue;
                 }
 
-                if (1 === $nestLevel && $nestToken->equalsAny(array(';', '}'))) {
+                if (1 === $nestLevel && (
+                    $nestToken->equalsAny(array(';', '}'))
+                    || (
+                        $nestToken->isComment()
+                        && $tokens[$nestIndex - 1]->isWhitespace()
+                        && preg_match('/\R/', $tokens[$nestIndex - 1]->getContent())
+                    )
+                )) {
                     $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
                     $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
 
                     if (
-                        // next Token is not a comment
-                        !$nextNonWhitespaceNestToken->isComment() &&
+                        // next Token is not a comment on its own line
+                        !($nextNonWhitespaceNestToken->isComment() && (
+                            !$tokens[$nextNonWhitespaceNestIndex - 1]->isWhitespace()
+                            || !preg_match('/\R/', $tokens[$nextNonWhitespaceNestIndex - 1]->getContent())
+                        )) &&
                         // and it is not a `$foo = function () {};` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']', array(CT::T_ARRAY_SQUARE_BRACE_CLOSE)))) &&
                         // and it is not a `Foo::{bar}()` situation
@@ -401,7 +411,7 @@ class Foo
                             }
                         }
 
-                        $tokens->ensureWhitespaceAtIndex($nestIndex + 1, 0, $whitespace);
+                        $this->ensureWhitespaceAtIndexAndIndentMultilineComment($tokens, $nestIndex + 1, $whitespace);
                     }
                 }
 
@@ -429,7 +439,11 @@ class Foo
                     || !($nextToken->isWhitespace() && $nextToken->isWhitespace(" \t"))
                     && 1 === substr_count($nextToken->getContent(), "\n") // preserve blank lines
                 ) {
-                    $tokens->ensureWhitespaceAtIndex($startBraceIndex + 1, 0, $this->whitespacesConfig->getLineEnding().$indent.$this->whitespacesConfig->getIndent());
+                    $this->ensureWhitespaceAtIndexAndIndentMultilineComment(
+                        $tokens,
+                        $startBraceIndex + 1,
+                        $this->whitespacesConfig->getLineEnding().$indent.$this->whitespacesConfig->getIndent()
+                    );
                 }
             }
 
@@ -785,6 +799,42 @@ class Foo
         ) {
             $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param string $whitespace
+     */
+    private function ensureWhitespaceAtIndexAndIndentMultilineComment(Tokens $tokens, $index, $whitespace)
+    {
+        if ($tokens[$index]->isWhitespace()) {
+            $nextTokenIndex = $tokens->getNextNonWhitespace($index);
+            $previousWhitespace = $this->getLastLineIndent($tokens[$index]->getContent());
+        } else {
+            $nextTokenIndex = $index;
+            $previousWhitespace = '';
+        }
+
+        $nextToken = $tokens[$nextTokenIndex];
+        if ($nextToken->isComment()) {
+            $tokens[$nextTokenIndex] = new Token(array(
+                $nextToken->getId(),
+                preg_replace('/(\R)'.$previousWhitespace.'/', '$1'.$this->getLastLineIndent($whitespace), $nextToken->getContent()),
+            ));
+        }
+
+        $tokens->ensureWhitespaceAtIndex($index, 0, $whitespace);
+    }
+
+    /**
+     * @param string $whitespace
+     *
+     * @return string
+     */
+    private function getLastLineIndent($whitespace)
+    {
+        return preg_replace('/^.*\R([^\R]*)$/s', '$1', $whitespace);
     }
 
     /**
