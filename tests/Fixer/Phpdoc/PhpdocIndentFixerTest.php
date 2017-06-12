@@ -381,6 +381,16 @@ $foo = $bar;
 ',
         );
 
+        $cases[] = array(
+            '<?php
+
+function foo()
+{
+    $foo->bar(/** oops */$baz);
+}
+',
+            );
+
         return $cases;
     }
 }
