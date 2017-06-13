@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Differ;
 
 use PhpCsFixer\Differ\SebastianBergmannShortDiffer;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -22,38 +21,10 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \PhpCsFixer\Differ\SebastianBergmannShortDiffer
  */
-final class SebastianBergmannShortDifferTest extends TestCase
+final class SebastianBergmannShortDifferTest extends AbstractDifferTestCase
 {
-    public function testIsDiffer()
-    {
-        $differ = new SebastianBergmannShortDiffer();
-
-        $this->assertInstanceOf('PhpCsFixer\Differ\DifferInterface', $differ);
-    }
-
     public function testDiffReturnsDiff()
     {
-        $old = <<<'PHP'
-<?php
-class Foo extends Bar {
-    function __construct($foo, $bar) {
-        $this->foo = $foo;
-        $this->bar = $bar;
-    }
-}
-PHP;
-
-        $new = <<<'PHP'
-<?php
-class Foo extends Bar {
-    public function __construct($foo, $bar)
-    {
-        $this->foo = $foo;
-        $this->bar = $bar;
-    }
-}
-PHP;
-
         $diff = <<<'TXT'
 --- Original
 +++ New
@@ -65,6 +36,6 @@ TXT;
 
         $differ = new SebastianBergmannShortDiffer();
 
-        $this->assertSame($diff, $differ->diff($old, $new));
+        $this->assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }
 }

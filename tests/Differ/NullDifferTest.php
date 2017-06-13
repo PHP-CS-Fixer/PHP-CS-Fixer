@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Differ;
 
 use PhpCsFixer\Differ\NullDiffer;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -22,40 +21,14 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \PhpCsFixer\Differ\NullDiffer
  */
-final class NullDifferTest extends TestCase
+final class NullDifferTest extends AbstractDifferTestCase
 {
-    public function testIsDiffer()
-    {
-        $differ = new NullDiffer();
-
-        $this->assertInstanceOf('PhpCsFixer\Differ\DifferInterface', $differ);
-    }
-
     public function testDiffReturnsEmptyString()
     {
-        $old = <<<'PHP'
-<?php
-class Foo extends Bar {
-    function __construct($foo, $bar) {
-        $this->foo = $foo;
-        $this->bar = $bar;
-    }
-}
-PHP;
-
-        $new = <<<'PHP'
-<?php
-class Foo extends Bar {
-    public function __construct($foo, $bar)
-    {
-        $this->foo = $foo;
-        $this->bar = $bar;
-    }
-}
-PHP;
+        $diff = '';
 
         $differ = new NullDiffer();
 
-        $this->assertSame('', $differ->diff($old, $new));
+        $this->assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }
 }
