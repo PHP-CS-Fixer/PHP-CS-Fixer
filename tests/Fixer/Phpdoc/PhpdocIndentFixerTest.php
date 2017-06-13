@@ -390,7 +390,7 @@ function foo()
     $foo->bar($a,/** oops */$baz);
 }
 ',
-            );
+        );
 
         return $cases;
     }
