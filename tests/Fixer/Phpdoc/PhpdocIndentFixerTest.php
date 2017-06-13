@@ -383,13 +383,11 @@ $foo = $bar;
 
         $cases[] = array(
             '<?php
-
 function foo()
 {
     $foo->bar(/** oops */$baz);
     $foo->bar($a,/** oops */$baz);
-}
-',
+}',
         );
 
         return $cases;
