@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-08T11:06:18Z
+
+@localheinz , please don't squash your commits, we will do it during merging automatically ;)
+without squashing, it's easier to see the difference instead of taking a look at whole diff again ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-08T11:40:25Z
+
+I faintly guess you agree with my reasoning ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-12T07:58:30Z
+
+@localheinz , please fix travis
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-12T10:14:50Z
+
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/241961977#L330
+:(
