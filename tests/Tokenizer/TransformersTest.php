@@ -28,6 +28,7 @@ final class TransformersTest extends TestCase
     public function testCreateOneTime()
     {
         $transformers = Transformers::create();
+        $this->assertInstanceOf('\PhpCsFixer\Tokenizer\Transformers', $transformers);
         $this->assertSame($transformers, Transformers::create());
     }
 
@@ -35,19 +36,19 @@ final class TransformersTest extends TestCase
     {
         $transformers = Transformers::create();
         $transformersClasses = array(
-            \PhpCsFixer\Tokenizer\Transformer\CurlyBraceTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\UseTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\ImportTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\ArrayTypehintTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\ClassConstantTransformer::class,
-            \PhpCsFixer\Tokenizer\Transformer\ReturnRefTransformer::class,
+            'PhpCsFixer\Tokenizer\Transformer\CurlyBraceTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\UseTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\ImportTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\ArrayTypehintTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\ClassConstantTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\ReturnRefTransformer',
         );
 
         $classes = array();
