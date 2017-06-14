@@ -40,9 +40,8 @@ final class ReadmeCommandTest extends TestCase
 
         $fileContent = file_get_contents(__DIR__.'/../../../README.rst');
 
-        $this->assertSame(
-            $output->fetch(),
-            $fileContent,
+        $this->assertTrue(
+            $output->fetch() === $fileContent,
             'README.rst file is not up to date! Do not modify it manually! Regenerate readme with command: `php php-cs-fixer readme > README.rst`.'
         );
     }
