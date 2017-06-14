@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-31T08:11:16Z
+
+Note to self: this new fixer must run before `doctrine_annotation_spaces` once #2770 is merged.
