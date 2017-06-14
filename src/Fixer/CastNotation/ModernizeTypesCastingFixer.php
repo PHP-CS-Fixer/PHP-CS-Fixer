@@ -37,8 +37,8 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     $a = doubleval($b);
     $a = strval ($b);
     $a = boolval($b);
-'),
-            ],
+'
+            )],
             null,
             'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
         );

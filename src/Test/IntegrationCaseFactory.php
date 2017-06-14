@@ -93,15 +93,15 @@ final class IntegrationCaseFactory
         if (!is_string($parsed['indent'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected string value for "indent", got "%s".',
-                is_object($parsed['indent']) ? get_class($parsed['indent']) : gettype($parsed['indent']).'#'.$parsed['indent'])
-            );
+                is_object($parsed['indent']) ? get_class($parsed['indent']) : gettype($parsed['indent']).'#'.$parsed['indent']
+            ));
         }
 
         if (!is_string($parsed['lineEnding'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected string value for "lineEnding", got "%s".',
-                is_object($parsed['lineEnding']) ? get_class($parsed['lineEnding']) : gettype($parsed['lineEnding']).'#'.$parsed['lineEnding'])
-            );
+                is_object($parsed['lineEnding']) ? get_class($parsed['lineEnding']) : gettype($parsed['lineEnding']).'#'.$parsed['lineEnding']
+            ));
         }
 
         return $parsed;
@@ -123,8 +123,8 @@ final class IntegrationCaseFactory
         if (!is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected int value like 50509 for "php", got "%s".',
-                is_object($parsed['php']) ? get_class($parsed['php']) : gettype($parsed['php']).'#'.$parsed['php'])
-            );
+                is_object($parsed['php']) ? get_class($parsed['php']) : gettype($parsed['php']).'#'.$parsed['php']
+            ));
         }
 
         return $parsed;
@@ -158,8 +158,8 @@ final class IntegrationCaseFactory
         if (!is_bool($parsed['checkPriority'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected bool value for "checkPriority", got "%s".',
-                is_object($parsed['checkPriority']) ? get_class($parsed['checkPriority']) : gettype($parsed['checkPriority']).'#'.$parsed['checkPriority'])
-            );
+                is_object($parsed['checkPriority']) ? get_class($parsed['checkPriority']) : gettype($parsed['checkPriority']).'#'.$parsed['checkPriority']
+            ));
         }
 
         return $parsed;

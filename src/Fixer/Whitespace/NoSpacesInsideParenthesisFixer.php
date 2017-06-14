@@ -35,7 +35,8 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
             'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.',
             [
                 new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}"),
-                new CodeSample('<?php
+                new CodeSample(
+                    '<?php
 function foo( $bar, $baz )
 {
 }'
