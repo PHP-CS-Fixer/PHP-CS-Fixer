@@ -34,23 +34,23 @@ final class TransformersTest extends TestCase
 
     public function testTransform()
     {
-        $transformers = Transformers::create();
         $transformersClasses = array(
-            'PhpCsFixer\Tokenizer\Transformer\CurlyBraceTransformer',
-            'PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer',
-            'PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer',
-            'PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer',
-            'PhpCsFixer\Tokenizer\Transformer\UseTransformer',
-            'PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer',
-            'PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer',
-            'PhpCsFixer\Tokenizer\Transformer\ImportTransformer',
             'PhpCsFixer\Tokenizer\Transformer\ArrayTypehintTransformer',
-            'PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer',
-            'PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer',
             'PhpCsFixer\Tokenizer\Transformer\ClassConstantTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\CurlyBraceTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\ImportTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer',
             'PhpCsFixer\Tokenizer\Transformer\ReturnRefTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\UseTransformer',
+            'PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer',
         );
 
+        $transformers = Transformers::create();
         $classes = array();
         foreach ($transformersClasses as $class) {
             $this->assertTrue(class_exists($class, false), sprintf('Failed transformer "%s" is loaded by Transformers.', $class));
@@ -72,6 +72,6 @@ final class TransformersTest extends TestCase
             unset($classes[get_class($transformer)]);
         }
 
-        $this->assertCount(0, $classes);
+        $this->assertCount(0, $classes, sprintf("Following transformers are not loaded:\n%s", implode("\n", array_keys($classes))));
     }
 }
