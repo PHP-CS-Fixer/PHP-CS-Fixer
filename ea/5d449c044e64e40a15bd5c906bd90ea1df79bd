@@ -1,0 +1,770 @@
+---------------------------------------------------------------------------
+
+by greg0ire at 2016-12-31T18:24:44Z
+
+I'm kind of stuck with this strange message :
+
+```
+1) PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest::testFix with data set "argument after multiline comment" ('<?php\nfunction xyz(\n    $a=10...0) {\n}', '<?php\nfunction xyz(\n    $a=10..
+Code build on input code must match expected code.
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+ <?php
+ function xyz(
+     $a=10, /* multiline comment
+              not at the end of line
+-            */
++            */
+     $b=2000,
+     $a2=10 /* multiline comment
+              not at the end of line
+             */,
+     $b2=2000,
+     $c=30) {
+ }
+
+/home/greg/dev/PHP-CS-Fixer/src/Test/AbstractFixerTestCase.php:138
+/home/greg/dev/PHP-CS-Fixer/tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php:32
+```
+
+I can't spot what the problem is.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2016-12-31T19:52:23Z
+
+> I can't spot what the problem is.
+
+The 2nd line has an extra space on it in that diff. After the `/`, though not in your copy/paste of it there. I guess GitHub trimmed it.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-01T00:43:49Z
+
+Thanks! It seems to be a bug with neovim : when I run `! phpunit %` from it I don't see the space.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-01T17:20:46Z
+
+Question : should it be the responsability of this fixer to reindent things properly?
+
+Consider this code snippet :
+
+```php
+<?php
+functionCall(array(
+    'array1' => 'array2'
+)
+);
+```
+
+Currently, the fixer produces this :
+
+```php
+<?php
+functionCall(
+    array(
+    'array1' => 'array2'
+    )
+);
+```
+
+Is it its responsability to properly reindent this? Or is there some other fixer that should take care of this?
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-03T18:45:33Z
+
+> Is it its responsability to properly reindent this? Or is there some other fixer that should take care of this?
+
+@SpacePossum @GrahamCampbell can you please advise on this?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-04T10:39:04Z
+
+>Is it its responsability to properly reindent this? Or is there some other fixer that should take care of this?
+
+I would say no, other fixers should take care of that.
+This _does_ mean you need to get the priority right for the fixer (which means tests (FixerFactoryTest and integration/fixture tests))
+
+>make the fixer optional? @SpacePossum you talked about this, what did you mean exactly? How can a fixer be optional?
+
+IIRC I was talking about not creating a new fixer, but add the functionality of the fixer to an existing fixer.
+I think there a clear advantages for doing that, but than again not my call ;)
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-04T10:43:20Z
+
+> I would say no, other fixers should take care of that.
+This does mean you need to get the priority right for the fixer (which means tests (FixerFactoryTest and integration/fixture tests))
+
+Thanks for your insight, I'll try to have a look at that.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-05T17:13:45Z
+
+@SpacePossum when I create a file with
+
+```php
+<?php
+
+functionCall(
+    array(
+    'array1' => 'array2',
+    )
+);
+```
+
+and run `php-cs-fixer fix --level=psr2 myfile.php`, nothing gets fixed. Is indenting outside php-cs-fixer's scope ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-06T06:31:32Z
+
+>Is indenting outside php-cs-fixer's scope ?
+
+not out of scope, but this case is prop. like https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/770 (so a feature is missing)
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-07T18:37:47Z
+
+@SpacePossum : ok so let's keep things atomic (if that's what is meant in the cookbook), and let the indention be handled by some other fixer someday. I'm done, this is ready for review.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-07T18:45:02Z
+
+> ERROR: Empty checksums are no longer allowed by default for non-secure sources. Please ask the maintainer to add checksums to this package. In the meantime if you need this package to work correctly, please enable the feature allowEmptyChecksums, provide the runtime switch '--allow-empty-checksums', or pass in checksums at runtime (recommended - see 'choco install -?' / 'choco upgrade -?' for details). It is strongly advised against allowing empty checksums for non-internal HTTP/FTP sources.
+
+Looks like you have to add checksums for `http://windows.php.net/downloads/releases/archives/php-7.0.9-nts-Win32-VC14-x64.zip`
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-07T18:49:17Z
+
+Or ignore them like in #2443
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2017-01-10T10:36:05Z
+
+Looks good, thanks for this PR! :+1:
+
+I would separate the fixer update and the CS fix of the project onto two separated commit, but the decision goes to the maintainer.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-10T10:40:29Z
+
+@keradus please review this
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-10T13:51:55Z
+
+sadly, not a chance soon.
+anyone else is willing ?
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-27T13:43:18Z
+
+>  anyone else is willing ?
+
+*crickets*
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-16T21:02:20Z
+
+5 months later, with changes all over the codebase, this was of course very painful to rebase. I made a separate, ultra mergeable PR so that this does not happen again : #2779
+I don't know if I will ever finish this one, but I sure won't touch it until #2779 is merged.
+Also, maybe you should use phpcs to prevent contributors to introduce violations that you cannot fix (yet)?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-17T09:36:41Z
+
+I'm very sorry that the rebase was complicated.
+
+Unfortunately we try to avoid fixing code style violations without implementing a fixer so we are not going to merge #2779 for now. As it does not include the fixer, it would not prevent new violations to be introduced until this PR is merged as well anyway.
+
+Also we don't want to use another code style tool as it might have unwanted rules, and most wanted rules are probably covered by PHP CS Fixer itself.
+
+So please, let's focus on this PR for now, we'll try to review it more often so you don't need to handle a new epic rebase :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-17T09:56:24Z
+
+PR title:
+> Add newline argument fixer
+
+Where is that new fixer?
+
+Instead, one of existing fixers were modified. It now does more that it claims to do in definition.
+It was supposed to only remove spaces before comma/add single space after it. Now, it adds new lines. It's nice to add missing new lines in general, but it's not the purpose of that fixer. And then it started to touch arrays as well. That violates fixer defined behaviour. It's a bc breaker.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-17T09:59:46Z
+
+@keradus here is the rationale behind not creating a new fixer : https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2435#issuecomment-269795217
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-17T10:03:50Z
+
+> Also we don't want to use another code style tool as it might have unwanted rules
+
+I think using phpcs with the PSR2 standard would by definition not have any unwanted rules, right?
+
+> So please, let's focus on this PR for now, we'll try to review it more often so you don't need to handle a new epic rebase :)
+
+Ok, first things first : should I use a new fixer or modify an existing one? @keradus @SpacePossum , you seem to have conflicting opinions on the matter, which should it be?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-17T10:04:17Z
+
+from that comment:
+
+> remove some from the current and add a new fixer
+
+So, make new fixer that will have nothing in common with existing one, so there would not be 2 fixers with partially same functionality. Existing one is removing the space before `,`, add one after `,` when needed, New one is adding `\n` when needed, but not removing spaces before `,`.
+Or...
+
+> or add more to the current fixer by configuration option
+
+have a config option, so by default behaviour of existing fixer will be the same, and then it could be altered by providing different configuration.
+
+-------------------------
+
+2 ways to go was proposed, none was choosen.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-17T10:05:00Z
+
+> @keradus @SpacePossum , you seem to have conflicting opinions on the matter, which should it be?
+
+no, that is exactly the same opinion we presented. you just didn't pick it.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-17T10:06:10Z
+
+Ok, I don't think I have it in me to achieve this properly, I think someone else will do a better job, sorry.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-17T10:11:59Z
+
+You just need to run `ensureFunctionFullyMultiline` conditionally if `$this->configuration['multiline']` (or sth like this), second config for handling arrays together with methods.
+Take a look on others configurable fixers, it's easy to apply that solution
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-17T10:24:59Z
+
+Ok I thought for a moment I had to rewrite it all. Maybe I will take a look at that and finish it.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-17T17:36:28Z
+
+I updated the TODO list
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-18T23:10:12Z
+
+please avoid squashing commits. now, it's very hard to figure out what is the lates change and to see latest changes one need to read whole diff again...
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-22T21:28:21Z
+
+> please avoid squashing commits. now, it's very hard to figure out what is the lates change and to see latest changes one need to read whole diff again...
+
+@keradus GH has this feature that lets you view changes since your last page view, but it can only be used once. I will refrain from squashing commits from now on.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-23T16:08:27Z
+
+@julienfalque I will probably have some time to spend on this tonight, if you can create the PR to my repo before, that would be great, and of course, not a big deal if you can't :)
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-23T17:42:44Z
+
+Nevermind @julienfalque I did something similar (remove the test data instead of altering it, called the first method with different arguments), and if fails indeed.
+
+<details>
+
+```
+There were 2 failures:
+
+1) PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest::testFixWithDifferentLineEndings with data set "test indentation is preserved" ('<?php\nif (true) {\n    functio...  );\n}', '<?php\nif (true) {\n    functio...  );\n}', array(true))
+Code build on input code must match expected code.
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+ <?php
+ if (true) {
+     functionCall(
+         'a',
++
+         'b',
+         'c'
+     );
+ }
+
+/home/greg/dev/PHP-CS-Fixer/src/Test/AbstractFixerTestCase.php:143
+/home/greg/dev/PHP-CS-Fixer/tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php:58
+/home/greg/dev/PHP-CS-Fixer/tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php:78
+
+2) PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest::testFixWithDifferentLineEndings with data set "test with deeply nested arguments" ('<?php\nfoo(\n    'a',\n    'b',\n...  ]\n);', '<?php\nfoo('a',\n    'b',\n    [...   ]);', array(true))
+Code build on input code must match expected code.
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+         baz(
++
+             'g',
+             ['h',
+                 'i',
+             ]
++
+         ),
+     ]
+ );
+
+/home/greg/dev/PHP-CS-Fixer/src/Test/AbstractFixerTestCase.php:143
+/home/greg/dev/PHP-CS-Fixer/tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php:58
+/home/greg/dev/PHP-CS-Fixer/tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php:78
+```
+
+</details>
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-23T17:59:41Z
+
+@julienfalque fixed by changing the `ltrim` call. I also reworked `fixNewLine` to decrease its indention.
+@keradus @julienfalque please review and tell me to squash if necessary.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-23T18:29:42Z
+
+Let's trigger a new build : https://twitter.com/packagist/status/867084819276148736
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-23T18:39:42Z
+
+All green :)
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-29T16:27:57Z
+
+I rebased yesterday evening. Can you please review again and test @julienfalque ?
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-30T18:09:12Z
+
+The build seems to fail because of this deprecation:
+
+```
+The Symfony\Component\Process\ProcessUtils::escapeArgument() method is deprecated since version 3.3 and will be removed in 4.0. Use a command line array or give env vars to the Process::start/run() method instead: 13x
+
+    5x in ProcessLinterTest::testPrepareCommand from PhpCsFixer\Tests\Linter
+
+    4x in ProcessLinterTest::testLintFile from PhpCsFixer\Tests\Linter
+
+    4x in ProcessLinterTest::testLintSource from PhpCsFixer\Tests\Linter
+```
+
+That's because symfony 3.3.0 is out.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-05-30T18:13:45Z
+
+See https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2812
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-03T16:54:42Z
+
+I think the actual expected fix is
+
+```php
+<?php
+functionCall(
+    'a', /* comment */
+    'b',
+    'c'
+);
+```
+The space between 'a', /* comment */ is added by `fixSpace2`, that I did not write, so I guess it is right in inserting this space?
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-03T17:30:48Z
+
+@julienfalque please review again :)
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-06T13:31:28Z
+
+Rebased and green. Please review again.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-06T13:56:50Z
+
+@julienfalque sorry, should be ok now.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-07T16:21:39Z
+
+>  julienfalque approved these changes a day ago
+
+This made me so happy! @keradus , hopefully final review and merge?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-07T16:47:34Z
+
+old, not resolved:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2440/files#r117374636
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-07T17:00:54Z
+
+2 comments + red travis
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-07T17:44:24Z
+
+I think the new code samples are wrong regarding the `keep_multiple_spaces_after_comma` option. See #2431 for details about it.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-07T17:50:25Z
+
+@keradus pushed new examples and fix Travis
+@julienfalque I don't understand what you mean, sorry.
+
+Here is the output for the samples I added if that helps. The last line is the most important here IMO, it shows that `keep_multiple_spaces_after_comma` still works for non multiline things:
+
+<details>
+
+` * Example #5. Fixing with configuration: ['ensure_fully_multiline' => true, 'keep_multiple_spaces_after_comma' => true].`
+
+```diff
+    <?php
+   -function sample($a=10,
+   -    $b=20,$c=30) {}
+   -sample(1,
+   -    2);
+   +function sample(
+   +    $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+   +sample(
+   +    1,
+   +    2
+   +);
+    sample(1,  2);
+```
+
+` * Example #6. Fixing with configuration: ['ensure_fully_multiline' => true, 'keep_multiple_spaces_after_comma' => false].`
+```diff
+    <?php
+   -function sample($a=10,
+   -    $b=20,$c=30) {}
+   -sample(1,
+   -    2);
+   -sample(1,  2);
+   +function sample(
+   +    $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+   +sample(
+   +    1,
+   +    2
+   +);
+   +sample(1, 2);
+```
+
+</details>
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-07T17:55:04Z
+
+Oh right, with the last line they are valid, sorry. Is it possible to update them with something more visible? I bet I'm not the last one to miss it 😋
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-07T18:02:31Z
+
+Are you happier with this @julienfalque ?
+
+<details>
+
+```
+ * Example #5. Fixing with configuration: ['ensure_fully_multiline' => true, 'keep_multiple_spaces_after_comma' => true].
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ @@
+    <?php
+   -function sample($a=10,
+   -    $b=20,$c=30) {}
+   -sample(1,
+   -    2);
+   +function sample(
+   +    $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+   +sample(
+   +    1,
+   +    2
+   +);
+    sample('foo',    'foobarbaz', 'baz');
+    sample('foobar', 'bar',       'baz');
+   ----------- end diff -----------
+
+ * Example #6. Fixing with configuration: ['ensure_fully_multiline' => true, 'keep_multiple_spaces_after_comma' => false].
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ @@
+    <?php
+   -function sample($a=10,
+   -    $b=20,$c=30) {}
+   -sample(1,
+   -    2);
+   -sample('foo',    'foobarbaz', 'baz');
+   -sample('foobar', 'bar',       'baz');
+   +function sample(
+   +    $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+   +sample(
+   +    1,
+   +    2
+   +);
+   +sample('foo', 'foobarbaz', 'baz');
+   +sample('foobar', 'bar', 'baz');
+   ----------- end diff -----------
+
+```
+</details>
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-07T18:51:18Z
+
+Better, thanks :)
+I'm not sure about leaving trailing spaces when there is a newline though. Shouldn't `keep_multiple_spaces_after_comma` apply only for single-line arguments lists?
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-07T19:27:47Z
+
+> I'm not sure about leaving trailing spaces when there is a newline though.
+
+It doesn't AFAIK. What makes you think trailing spaces are left?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-07T20:19:40Z
+
+I ran the following command on your branch:
+```
+$ ./php-cs-fixer describe method_argument_space
+```
+Here is the output I got for the code sample 5:
+```
+ * Example #5. Fixing with configuration: ['ensure_fully_multiline' => true, 'keep_multiple_spaces_after_comma' => true].
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ @@
+    <?php
+   -function sample($a=10,
+   -    $b=20,$c=30) {}
+   -sample(1,
+   -    2);
+   +function sample(
+   +    $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+   +sample(
+   +    1,
+   +    2
+   +);
+    sample('foo',    'foobarbaz', 'baz');
+    sample('foobar', 'bar',       'baz');
+```
+
+If you select the multiline `sample` function, you'll see that it still has two trailing spaces after the first argument. Anyway I just tried adding a similar test case on master branch and it failed as well. So I think the bug lies in `keep_multiple_spaces_after_comma` rather than in the changes introduced here.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-07T20:39:40Z
+
+See #2827. I tried applying the patch to your branch and it fixed the issue as well. So the bug is not introduced by this PR and you don't need to worry about it :)
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-08T06:07:44Z
+
+a) good catch! And b) glad to read that!
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-08T21:26:26Z
+
+Rebased on your PR. Please review again <sup>(and <sup>merge <sup>?</sup></sup>)</sup>
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-09T05:58:56Z
+
+Looking better and better, almost there!
+
+For test coverage completeness, please add the following 2 cases, I would like to see what the fixer does :)
+
+```php
+<?php
+$a = function#
+(#
+#
+$a#
+#
+,#
+#
+$b,$c#
+#
+)#
+use ($b,
+$c,$d) {
+};
+```
+
+```php
+<?php
+// no fix
+list($a,
+    $b, $c) = $a;
+isset($a,
+$b, $c);
+unset($a,
+$b, $c);
+array(1,
+    2,3
+);
+```
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-09T06:13:34Z
+
+@SpacePossum done. The first piece of code is unaffected, and I slightly changed the code so that the second isn't affected too, because of your `no fix` comment.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-09T06:53:48Z
+
+@SpacePossum should the first piece of code be affected and if yes, what should be the output?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-09T07:09:34Z
+
+I theory;
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2440/files/7be5f5234f1b132dff8866c2db435378bea84c9c..582a8f0ad1ef6c0c5c37364951bbda2238105fb8#diff-c2d4cc2096dd614d141880c5036ee9b0R605
+
+this one should've been made multi line I think?
+
+(I don't care about multi line-ing the `use ()` part, its not part of PSR either and can be done later in other PR if someone really wants it (i.e. not out of `completeness` reasons ;) ))
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-09T07:12:22Z
+
+> this one should've been made multi line I think?
+
+I think so too, not sure why it wasn't fixed...
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-12T12:18:28Z
+
+Please review again :pray:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-12T12:56:35Z
+
+@greg0ire please guide me with answer so I wouldn't need to dig inside diff ;)
+
+>  for multiline array arguments
+
+Does fixer in this PR touch whitespaces in arrays or not?
+If yes, does fixer touch them on master ?
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-06-12T13:43:22Z
+
+> Does fixer in this PR touch whitespaces in arrays or not?
+
+@keradus it doesn't, and proves it :sunglasses: :
+
+```
+            'arrays with whitespace inside' => [
+                <<<'UNAFFECTED'
+<?php
+$a = array/**/(  1);
+$a = array/**/( 12,
+7);
+$a = array/***/(123,  7);
+$a = array (        1,
+2);
+UNAFFECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+```
+
+>  If yes, does fixer touch them on master ?
+
+N/A
