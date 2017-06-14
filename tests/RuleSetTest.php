@@ -132,7 +132,7 @@ final class RuleSetTest extends TestCase
                 'line_ending' => true,
                 'lowercase_constants' => true,
                 'lowercase_keywords' => true,
-                'method_argument_space' => true,
+                'method_argument_space' => ['ensure_fully_multiline' => true],
                 'no_closing_tag' => true,
                 'no_spaces_after_function_name' => true,
                 'no_spaces_inside_parenthesis' => true,
@@ -171,7 +171,7 @@ final class RuleSetTest extends TestCase
                 'line_ending' => true,
                 'lowercase_constants' => true,
                 'lowercase_keywords' => true,
-                'method_argument_space' => true,
+                'method_argument_space' => ['ensure_fully_multiline' => true],
                 'no_closing_tag' => true,
                 'no_spaces_after_function_name' => true,
                 'no_spaces_inside_parenthesis' => true,
@@ -258,7 +258,8 @@ final class RuleSetTest extends TestCase
             $fixerNames,
             sprintf(
                 'Set should only contain %s fixers, got: \'%s\'.',
-                $safe ? 'safe' : 'risky', implode('\', \'', $fixerNames)
+                $safe ? 'safe' : 'risky',
+                implode('\', \'', $fixerNames)
             )
         );
     }
