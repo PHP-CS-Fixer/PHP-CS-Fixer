@@ -92,7 +92,7 @@ class DocBlocks
             if (
                 $prevToken->isGivenKind(T_OPEN_TAG)
                 || ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
-                || $prevToken->equalsAny(array(';', '{'))
+                || $prevToken->equalsAny(array(';', ',', '{', '('))
             ) {
                 continue;
             }
