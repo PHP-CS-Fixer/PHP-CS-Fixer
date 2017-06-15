@@ -38,11 +38,11 @@ final class ReadmeCommandTest extends TestCase
 
         $app->get('readme')->run($input, $output);
 
-        $fileContent = file_get_contents(__DIR__.'/../../../README.rst');
+        $fileContent = file_get_contents(__DIR__.'/../../../README.md');
 
         $this->assertTrue(
             $output->fetch() === $fileContent,
-            'README.rst file is not up to date! Do not modify it manually! Regenerate readme with command: `php php-cs-fixer readme > README.rst`.'
+            'README.md file is not up to date! Do not modify it manually! Regenerate readme with command: `php php-cs-fixer readme > README.md`.'
         );
     }
 }
