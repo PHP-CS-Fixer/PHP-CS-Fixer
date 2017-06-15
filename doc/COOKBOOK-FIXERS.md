@@ -135,7 +135,7 @@ The files are created, one thing is still missing though: we need to
 update the README.md. Fortunately, PHP CS Fixer can help you here.
 Execute the following command in your command shell:
 
-`$ php php-cs-fixer readme > README.rst`
+`$ php php-cs-fixer readme > README.md`
 
 ### Step 2 - Using tests to define fixers behavior
 
