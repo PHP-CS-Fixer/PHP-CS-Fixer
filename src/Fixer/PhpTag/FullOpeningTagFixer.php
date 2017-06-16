@@ -78,7 +78,7 @@ echo "Hello!";
          * > echo '<? ';
          * with
          * > echo '<?php ';
-        */
+         */
         $tokens = Tokens::fromCode($newContent);
 
         $tokensOldContent = '';
