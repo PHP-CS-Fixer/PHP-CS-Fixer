@@ -53,10 +53,18 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
-        \PhpCsFixer\Test\Assert\AssertTokensTrait::class,
-        \PhpCsFixer\Test\IntegrationCaseFactory::class,
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
+
+    public function testThatClassesWithoutTestsVarIsProper()
+    {
+        $unknownClasses = array_filter(
+            self::$classesWithoutTests,
+            function ($class) { return !class_exists($class) && !trait_exists($class); }
+        );
+
+        $this->assertSame([], $unknownClasses);
+    }
 
     /**
      * @param string $className
@@ -227,13 +235,13 @@ final class ProjectCodeTest extends TestCase
      *
      * @dataProvider provideTestClasses
      */
-    public function testThatTestClassesAreAbstractOrFinal($className)
+    public function testThatTestClassesAreTraitOrAbstractOrFinal($className)
     {
         $rc = new \ReflectionClass($className);
 
         $this->assertTrue(
-            $rc->isAbstract() || $rc->isFinal(),
-            sprintf('Test class %s should be abstract or final.', $className)
+            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal(),
+            sprintf('Test class %s should be trait, abstract or final.', $className)
         );
     }
 

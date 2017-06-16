@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Adam Marczuk <adam@marczuk.info>

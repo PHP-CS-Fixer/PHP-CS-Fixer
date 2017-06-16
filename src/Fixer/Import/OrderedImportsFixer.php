@@ -343,6 +343,7 @@ use function CCC\AA;
                         for ($k = 0; $k < $namespaceTokensCount; ++$k) {
                             if ($namespaceTokens[$k]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                                 $namespace .= '{';
+
                                 break;
                             }
 

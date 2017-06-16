@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -780,6 +780,59 @@ switch ($foo) {
 
 a:
 echo \'foo\';',
+            ],
+            [
+                '<?php
+switch ($foo) {
+    case "bar":
+        if (1) {
+        } else {
+        }
+
+        $aaa = new Bar();
+        break;
+    default:
+        $aaa = new Baz();
+}',
+            ],
+            [
+                '<?php
+switch ($foo) {
+    case 1:
+?>
+<?php
+// no break
+    default:
+?>
+<?php
+}',
+                '<?php
+switch ($foo) {
+    case 1:
+?>
+<?php
+    default:
+?>
+<?php
+}',
+            ],
+            [
+                '<?php
+switch ($foo) {
+    case 1:
+?>
+<?php
+// no break
+default:
+?>
+<?php }',
+                '<?php
+switch ($foo) {
+    case 1:
+?>
+<?php default:
+?>
+<?php }',
             ],
         ];
     }

@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Test;
+namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\RuleSet;
 use Symfony\Component\Finder\SplFileInfo;

@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -260,6 +260,14 @@ use FooB;',
 ,#
 #
 FooB;',
+            ],
+            [
+                '<?php use some\b\ClassB;
+use function some\b\CC as C;
+use function some\b\D;
+use const some\b\E;
+use function some\b\A\B;',
+                '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
             ],
         ];
     }

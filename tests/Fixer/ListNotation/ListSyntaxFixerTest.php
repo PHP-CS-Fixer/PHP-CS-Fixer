@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ListNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @requires PHP 7.1

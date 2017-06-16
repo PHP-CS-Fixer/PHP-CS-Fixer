@@ -207,6 +207,18 @@ automatically fix anything:
 
 Choose from the list of available rules:
 
+* **align_multiline_comment**
+
+  Each line of multi-line DocComments must have an asterisk [PSR-5] and
+  must be aligned with the first one.
+
+  Configuration options:
+
+  - ``comment_type`` (``'all_multiline'``, ``'phpdocs_like'``, ``'phpdocs_only'``): whether
+    to fix PHPDoc comments only (``phpdocs_only``), any multi-line comment
+    whose lines all start with an asterisk (``phpdocs_like``) or any
+    multi-line comment (``all_multiline``); defaults to ``'phpdocs_only'``
+
 * **array_syntax**
 
   PHP arrays should be declared using the configured syntax.
@@ -236,9 +248,20 @@ Choose from the list of available rules:
   Ensure there is no code on the same line as the PHP open tag and it is
   followed by a blank line.
 
-* **blank_line_before_return** [@Symfony]
+* **blank_line_before_return**
 
-  An empty line feed should precede a return statement.
+  An empty line feed should precede a return statement (deprecated, use
+  ``blank_line_before_statement`` instead).
+
+* **blank_line_before_statement** [@Symfony]
+
+  An empty line feed must precede any configured statement.
+
+  Configuration options:
+
+  - ``statements`` (``array``): list of statements which must be must be preceded by
+    an empty line; defaults to ``['break', 'continue', 'declare', 'return',
+    'throw', 'try']``
 
 * **braces** [@PSR2, @Symfony]
 
@@ -249,6 +272,12 @@ Choose from the list of available rules:
 
   - ``allow_single_line_closure`` (``bool``): whether single line lambda notation
     should be allowed; defaults to ``false``
+  - ``position_after_anonymous_constructs`` (``'next'``, ``'same'``): whether the
+    opening brace should be placed on "next" or "same" line after anonymous
+    constructs (anonymous classes and lambda functions); defaults to ``'same'``
+  - ``position_after_control_structures`` (``'next'``, ``'same'``): whether the opening
+    brace should be placed on "next" or "same" line after control
+    structures; defaults to ``'same'``
   - ``position_after_functions_and_oop_constructs`` (``'next'``, ``'same'``): whether
     the opening brace should be placed on "next" or "same" line after
     classy constructs (non-anonymous classes, interfaces, traits, methods

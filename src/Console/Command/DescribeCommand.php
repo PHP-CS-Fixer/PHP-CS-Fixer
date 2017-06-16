@@ -92,6 +92,7 @@ final class DescribeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('name');
+
         try {
             if ('@' === $name[0]) {
                 $this->describeSet($output, $name);
@@ -105,7 +106,7 @@ final class DescribeCommand extends Command
             $this->describeList($output, $e->getType());
 
             throw new \InvalidArgumentException(sprintf(
-                '%s %s not found.%s',
+                '%s "%s" not found.%s',
                 ucfirst($e->getType()),
                 $name,
                 null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
@@ -151,11 +152,12 @@ final class DescribeCommand extends Command
         }
 
         if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
-            $output->writeln('Fixer is configurable using following options:');
-
             $configurationDefinition = $fixer->getConfigurationDefinition();
+            $options = $configurationDefinition->getOptions();
 
-            foreach ($configurationDefinition->getOptions() as $option) {
+            $output->writeln(sprintf('Fixer is configurable using following option%s:', 1 === count($options) ? '' : 's'));
+
+            foreach ($options as $option) {
                 $line = '* <info>'.$option->getName().'</info>';
 
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
@@ -179,7 +181,7 @@ final class DescribeCommand extends Command
                         HelpCommand::toString($option->getDefault())
                     );
                 } else {
-                    $line .= 'required';
+                    $line .= '<comment>required</comment>';
                 }
 
                 $output->writeln($line);
@@ -226,28 +228,30 @@ final class DescribeCommand extends Command
             foreach ($codeSamples as $index => $codeSample) {
                 $old = $codeSample->getCode();
                 $tokens = Tokens::fromCode($old);
+
                 if ($fixer instanceof ConfigurableFixerInterface) {
                     $configuration = $codeSample->getConfiguration();
-
-                    if (null === $configuration) {
-                        $configuration = [];
-                    }
-
-                    $fixer->configure($configuration);
+                    $fixer->configure(null === $configuration ? [] : $configuration);
                 }
 
                 $file = $codeSample instanceof FileSpecificCodeSampleInterface
                     ? $codeSample->getSplFileInfo()
                     : new StdinFileInfo();
-                $fixer->fix($file, $tokens);
-                $new = $tokens->generateCode();
-                $diff = $differ->diff($old, $new);
 
-                if (null === $codeSample->getConfiguration()) {
-                    $output->writeln(sprintf(' * Example #%d.', $index + 1));
+                $fixer->fix($file, $tokens);
+
+                $diff = $differ->diff($old, $tokens->generateCode());
+
+                if ($fixer instanceof ConfigurableFixerInterface) {
+                    if (null === $configuration) {
+                        $output->writeln(sprintf(' * Example #%d. Fixing with the <comment>default</comment> configuration.', $index + 1));
+                    } else {
+                        $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, HelpCommand::toString($codeSample->getConfiguration())));
+                    }
                 } else {
-                    $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, HelpCommand::toString($codeSample->getConfiguration())));
+                    $output->writeln(sprintf(' * Example #%d.', $index + 1));
                 }
+
                 $output->writeln($diffFormatter->format($diff, '   %s'));
                 $output->writeln('');
             }

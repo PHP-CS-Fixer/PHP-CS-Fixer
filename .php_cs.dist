@@ -16,7 +16,9 @@ return PhpCsFixer\Config::create()
         '@PHP56Migration' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
+        'align_multiline_comment' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'blank_line_before_statement' => true,
         'combine_consecutive_unsets' => true,
         // one should use PHPUnit methods to set up expected exception instead of annotations
         'general_phpdoc_annotation_remove' => ['expectedException', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp'],
