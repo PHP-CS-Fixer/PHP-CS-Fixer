@@ -51,6 +51,9 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 '<?php
+                use A\B;
+                ',
+                '<?php
                 use \A\B;
                 ',
             ),
@@ -91,8 +94,8 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php
-                use \C;
-                use \C\X;
+                use C;
+                use C\X;
 
                 namespace Foo {
                     use A;
