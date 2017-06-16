@@ -256,7 +256,12 @@ Choose from the list of available rules:
 
 * **cast_spaces** [@Symfony]
 
-  A single space should be between cast and variable.
+  A single space or none should be between cast and variable.
+
+  Configuration options:
+
+  - ``space`` (``'none'``, ``'single'``): spacing to apply between cast and variable;
+    defaults to ``'single'``
 
 * **class_definition** [@PSR2, @Symfony]
 
@@ -1004,7 +1009,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``dir`` (``string``): the directory where the project code is placed; required
+  - ``dir`` (``string``): the directory where the project code is placed; defaults
+    to ``''``
 
 * **psr4** [@Symfony:risky]
 

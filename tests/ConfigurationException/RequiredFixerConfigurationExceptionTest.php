@@ -32,7 +32,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
             'I cannot do that, Dave.'
         );
 
-        $this->assertInstanceOf('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException', $exception);
+        $this->assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class, $exception);
     }
 
     public function testDefaults()
