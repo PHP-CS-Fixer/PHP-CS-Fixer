@@ -56,26 +56,29 @@ class Foo {
                 continue;
             }
 
-            $varTokenIndex = $tokens->getNextMeaningfulToken($index);
+            while (true) {
+                $varTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$varTokenIndex]->isGivenKind(T_VARIABLE)) {
-                continue;
+                if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
+                    break;
+                }
+
+                $index = $tokens->getNextMeaningfulToken($index);
+
+                if ($tokens[$index]->equals('=')) {
+                    $valueTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
+
+                    if ($tokens[$index]->equals([T_STRING, 'null'], false)) {
+                        $tokens->clearRange($varTokenIndex + 1, $valueTokenIndex);
+                    }
+
+                    ++$index;
+                }
+
+                if (!$tokens[$index]->equals(',')) {
+                    break;
+                }
             }
-
-            $equalsTokenIndex = $tokens->getNextMeaningfulToken($varTokenIndex);
-
-            if (!$tokens[$equalsTokenIndex]->equals('=')) {
-                continue;
-            }
-
-            $valueTokenIndex = $tokens->getNextMeaningfulToken($equalsTokenIndex);
-            $valueToken = $tokens[$valueTokenIndex];
-
-            if ($valueToken->equals([T_STRING, 'null'], false)) {
-                $tokens->clearRange($varTokenIndex + 1, $valueTokenIndex);
-            }
-
-            $index = $valueTokenIndex;
         }
     }
 }

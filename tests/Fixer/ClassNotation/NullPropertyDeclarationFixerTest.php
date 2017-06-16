@@ -54,12 +54,24 @@ final class NullPropertyDeclarationFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { var $bar = null; }',
             ],
             [
+                '<?php class Foo { VAR $bar; }',
+                '<?php class Foo { VAR $bar = null; }',
+            ],
+            [
                 '<?php class Foo { public $bar; }',
                 '<?php class Foo { public $bar = NULL; }',
             ],
             [
-                '<?php class Foo { public $bar; }',
-                '<?php class Foo { public $bar = nuLL; }',
+                '<?php class Foo { PUblic $bar; }',
+                '<?php class Foo { PUblic $bar = nuLL; }',
+            ],
+            [
+                '<?php trait Foo { public $bar; }',
+                '<?php trait Foo { public $bar = nuLL; }',
+            ],
+            [
+                '<?php class Foo {/* */public/* */$bar;/* */}',
+                '<?php class Foo {/* */public/* */$bar/* */=/* */null;/* */}',
             ],
             [
                 '<?php class Foo { public $bar; protected $baz; }',
@@ -70,6 +82,80 @@ final class NullPropertyDeclarationFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php class Foo { public function bar() { return null; } }',
+            ],
+            [
+                '<?php class Foo { protected $bar, $baz, $qux; }',
+                '<?php class Foo { protected $bar = null, $baz = null, $qux = null; }',
+            ],
+            [
+                '<?php class Foo { protected $bar, $baz = \'baz\', $qux; }',
+                '<?php class Foo { protected $bar, $baz = \'baz\', $qux = null; }',
+            ],
+            [
+                '<?php trait Foo { public $bar; } abstract class Bar { protected $bar, $baz = \'baz\', $qux; }',
+                '<?php trait Foo { public $bar = null; } abstract class Bar { protected $bar, $baz = \'baz\', $qux = null; }',
+            ],
+            [
+                '<?php class Foo { public function foo() { return null; } public $bar; public function baz() { return null; } }',
+                '<?php class Foo { public function foo() { return null; } public $bar = null; public function baz() { return null; } }',
+            ],
+            [
+                "<?php class#\nFoo#\n{#\nprotected#\n\$bar,#\n\$baz,#\n\$qux;#\n}",
+                "<?php class#\nFoo#\n{#\nprotected#\n\$bar#\n=#\nnull,#\n\$baz#\n=#\nnull,#\n\$qux#\n=#\nnull;#\n}",
+            ],
+            [
+                '<?php class Foo { const FOO = null; }',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP 7.0
+     * @dataProvider providePhp70Cases
+     */
+    public function testFixPhp70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp70Cases()
+    {
+        return [
+            [
+                '<?php new class () { public $bar; };',
+                '<?php new class () { public $bar = null; };',
+            ],
+            [
+                '<?php class Foo { public function foo() { return new class() { private $bar; }; } }',
+                '<?php class Foo { public function foo() { return new class() { private $bar = null; }; } }',
+            ],
+            [
+                '<?php class Foo { public function foo() { return new class() { private $bar; }; } } trait Baz { public $baz; }',
+                '<?php class Foo { public function foo() { return new class() { private $bar = null; }; } } trait Baz { public $baz = null; }',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP 7.1
+     * @dataProvider providePhp71Cases
+     */
+    public function testFixPhp71($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp71Cases()
+    {
+        return [
+            [
+                '<?php class Foo { public const FOO = null; }',
             ],
         ];
     }
