@@ -81,7 +81,7 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurationDefini
                 strtr($token->getContent(), self::INSIDE_CAST_SPACE_REPLACE_MAP),
             ]);
 
-            if ($this->configuration['space'] === 'single') {
+            if ('single' === $this->configuration['space']) {
                 // force single whitespace after cast token:
                 if ($tokens[$index + 1]->isWhitespace(" \t")) {
                     // - if next token is whitespaces that contains only spaces and tabs - override next token with single space
