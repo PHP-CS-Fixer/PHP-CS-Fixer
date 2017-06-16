@@ -135,7 +135,6 @@ final class ProjectCodeTest extends TestCase
         $exceptionMethodsPerClass = array(
             'PhpCsFixer\Config' => array('create'),
             'PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer' => array('fixSpace'),
-            'PhpCsFixer\Fixer\Import\OrderedImportsFixer' => array('sortingCallBack'),
         );
 
         $definedMethods = $this->getPublicMethodNames($rc);
