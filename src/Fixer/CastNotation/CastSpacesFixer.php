@@ -90,11 +90,13 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurationDefini
                     // - if next token is not whitespaces that contains spaces, tabs and new lines - append single space to current token
                     $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
                 }
-            } else {
-                // force no whitespace after cast token:
-                if ($tokens[$index + 1]->isWhitespace()) {
-                    $tokens->clearAt($index + 1);
-                }
+
+                continue;
+            }
+
+            // force no whitespace after cast token:
+            if ($tokens[$index + 1]->isWhitespace()) {
+                $tokens->clearAt($index + 1);
             }
         }
     }
