@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Basic;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -89,9 +90,9 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (in_array($token->getId(), self::$tokens, true)) {
-                $token->setContent(strtr($token->getContent(), $this->symbolsReplace));
+                $tokens[$index] = new Token([$token->getId(), strtr($token->getContent(), $this->symbolsReplace)]);
             }
         }
     }

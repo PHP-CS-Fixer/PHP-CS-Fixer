@@ -176,14 +176,14 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
         $added = 0;
         for ($i = $start + 1; $i < $end; $i += 2) {
             if ($tokens[$i]->isWhitespace() && $tokens[$to + 1]->isWhitespace()) {
-                $tokens[$to + 1]->setContent($tokens[$to + 1]->getContent().$tokens[$i]->getContent());
+                $tokens[$to + 1] = new Token([T_WHITESPACE, $tokens[$to + 1]->getContent().$tokens[$i]->getContent()]);
             } else {
                 $tokens->insertAt(++$to, clone $tokens[$i]);
                 ++$end;
                 ++$added;
             }
 
-            $tokens[$i + 1]->clear();
+            $tokens->clearAt($i + 1);
         }
 
         return $added;

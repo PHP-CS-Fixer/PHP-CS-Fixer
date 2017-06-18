@@ -32,7 +32,7 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 {
     /**
-     * @var array<string, mixed>|null
+     * @var null|array<string, mixed>
      */
     protected $configuration;
 
@@ -42,7 +42,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
     protected $whitespacesConfig;
 
     /**
-     * @var FixerConfigurationResolverInterface|null
+     * @var null|FixerConfigurationResolverInterface
      */
     private $configurationDefinition;
 

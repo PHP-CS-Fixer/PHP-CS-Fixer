@@ -33,7 +33,8 @@ final class ConfigTest extends TestCase
     {
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, [
+            $config,
+            [
                 'rules' => 'cast_spaces,braces',
             ],
             getcwd()
@@ -52,7 +53,8 @@ final class ConfigTest extends TestCase
     {
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, [
+            $config,
+            [
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
             ],
             getcwd()
@@ -75,7 +77,8 @@ final class ConfigTest extends TestCase
 
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, [
+            $config,
+            [
                 'rules' => '{blah',
             ],
             getcwd()

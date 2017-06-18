@@ -18,6 +18,7 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -54,7 +55,7 @@ function foo () {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
@@ -68,7 +69,7 @@ function foo () {}
 
                 if (!$this->isCorrectlyFormatted($content)) {
                     $line->setContent($content.'.'.$this->whitespacesConfig->getLineEnding());
-                    $token->setContent($doc->getContent());
+                    $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
                 }
             }
         }
@@ -80,7 +81,7 @@ function foo () {}
      *
      * @param Line[] $lines
      *
-     * @return int|null
+     * @return null|int
      */
     private function findShortDescriptionEnd(array $lines)
     {

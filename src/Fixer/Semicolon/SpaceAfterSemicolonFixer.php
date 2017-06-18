@@ -70,7 +70,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
                 && !$tokens[$index + 2]->isComment()
                 && !$tokens[$index + 2]->equals(')')
             ) {
-                $tokens[$index + 1]->setContent(' ');
+                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
             }
         }
     }

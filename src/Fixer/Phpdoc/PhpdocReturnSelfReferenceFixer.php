@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -42,7 +43,8 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
     {
         return new FixerDefinition(
             'The type of `@return` annotations of methods returning a reference to itself must the configured one.',
-            [new CodeSample('
+            [new CodeSample(
+                '
 <?php
 class Sample
 {
@@ -178,6 +180,6 @@ class Sample
         }
 
         $returnsBlock->setTypes($newTypes);
-        $tokens[$docIndex]->setContent($docBlock->getContent());
+        $tokens[$docIndex] = new Token([T_DOC_COMMENT, $docBlock->getContent()]);
     }
 }

@@ -77,7 +77,7 @@ final class TypeColonTransformer extends AbstractTransformer
         }
 
         if ($prevToken->isGivenKind([T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA])) {
-            $token->override([CT::T_TYPE_COLON, ':']);
+            $tokens[$index] = new Token([CT::T_TYPE_COLON, ':']);
         }
     }
 }

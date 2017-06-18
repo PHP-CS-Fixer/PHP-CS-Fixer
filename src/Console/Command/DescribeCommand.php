@@ -56,7 +56,7 @@ final class DescribeCommand extends Command
     private $fixers;
 
     /**
-     * @param FixerFactory|null $fixerFactory
+     * @param null|FixerFactory $fixerFactory
      */
     public function __construct(FixerFactory $fixerFactory = null)
     {
@@ -106,7 +106,9 @@ final class DescribeCommand extends Command
 
             throw new \InvalidArgumentException(sprintf(
                 '%s %s not found.%s',
-                ucfirst($e->getType()), $name, null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
+                ucfirst($e->getType()),
+                $name,
+                null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
             ));
         }
     }

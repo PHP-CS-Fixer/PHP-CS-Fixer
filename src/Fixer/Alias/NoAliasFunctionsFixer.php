@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -131,7 +132,7 @@ $a = strchr($haystack, $needle);
                 }
             }
 
-            $token->setContent(self::$aliases[$tokenContent]);
+            $tokens[$index] = new Token([T_STRING, self::$aliases[$tokenContent]]);
         }
     }
 }

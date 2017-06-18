@@ -62,7 +62,8 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
                 continue;
             }
 
-            $beforeNamespace = $tokens[$index - 1];
+            $beforeNamespaceIndex = $index - 1;
+            $beforeNamespace = $tokens[$beforeNamespaceIndex];
 
             if (!$beforeNamespace->isWhitespace()) {
                 if (!self::endsWithWhitespace($beforeNamespace->getContent())) {
@@ -78,12 +79,12 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
                 $beforeBeforeNamespace = $tokens[$index - 2];
 
                 if (self::endsWithWhitespace($beforeBeforeNamespace->getContent())) {
-                    $beforeNamespace->clear();
+                    $tokens->clearAt($beforeNamespaceIndex);
                 } else {
-                    $beforeNamespace->setContent(' ');
+                    $tokens[$beforeNamespaceIndex] = new Token([T_WHITESPACE, ' ']);
                 }
             } else {
-                $beforeNamespace->setContent(substr($beforeNamespace->getContent(), 0, $lastNewline + 1));
+                $tokens[$beforeNamespaceIndex] = new Token([T_WHITESPACE, substr($beforeNamespace->getContent(), 0, $lastNewline + 1)]);
             }
         }
     }

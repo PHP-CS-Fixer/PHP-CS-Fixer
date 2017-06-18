@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractAlignFixerHelper;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -72,14 +73,15 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
             if ($token->isGivenKind(T_DOUBLE_ARROW)) {
                 $tokenContent = sprintf(self::ALIGNABLE_PLACEHOLDER, $this->currentLevel).$token->getContent();
 
-                $nextToken = $tokens[$index + 1];
+                $nextIndex = $index + 1;
+                $nextToken = $tokens[$nextIndex];
                 if (!$nextToken->isWhitespace()) {
                     $tokenContent .= ' ';
                 } elseif ($nextToken->isWhitespace(" \t")) {
-                    $nextToken->setContent(' ');
+                    $tokens[$nextIndex] = new Token([T_WHITESPACE, ' ']);
                 }
 
-                $token->setContent($tokenContent);
+                $tokens[$index] = new Token([T_DOUBLE_ARROW, $tokenContent]);
                 continue;
             }
 

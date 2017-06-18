@@ -75,7 +75,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $namespaceCandidate = $tokens[$namespaceCandidateIndex];
             if ($namespaceCandidate->isGivenKind(T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($namespaceCandidateIndex);
-                $namespaceCandidate->clear();
+                $tokens->clearAt($namespaceCandidateIndex);
             }
 
             // closing parenthesis removed with leading spaces
@@ -83,7 +83,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
                 $tokens->removeLeadingWhitespace($closeParenthesis);
             }
 
-            $tokens[$closeParenthesis]->clear();
+            $tokens->clearAt($closeParenthesis);
 
             // opening parenthesis removed with trailing and leading spaces
             if (!$tokens[$tokens->getNextNonWhitespace($openParenthesis)]->isComment()) {
@@ -91,11 +91,11 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             }
 
             $tokens->removeTrailingWhitespace($openParenthesis);
-            $tokens[$openParenthesis]->clear();
+            $tokens->clearAt($openParenthesis);
 
             // replace constant and remove function name
-            $tokens->overrideAt($fileCandidateLeftIndex, new Token([T_DIR, '__DIR__']));
-            $tokens[$functionNameIndex]->clear();
+            $tokens[$fileCandidateLeftIndex] = new Token([T_DIR, '__DIR__']);
+            $tokens->clearAt($functionNameIndex);
         }
     }
 }

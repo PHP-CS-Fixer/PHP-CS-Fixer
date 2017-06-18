@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -90,8 +91,12 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
             for ($l = $lStart; $l < $lMax; ++$l) {
                 $lines[$l] = preg_replace('/^\h+$/', '', $lines[$l]);
             }
-
-            $tokens[$index]->setContent(implode($this->whitespacesConfig->getLineEnding(), $lines));
+            $content = implode($this->whitespacesConfig->getLineEnding(), $lines);
+            if ('' !== $content) {
+                $tokens[$index] = new Token([T_WHITESPACE, $content]);
+            } else {
+                $tokens->clearAt($index);
+            }
         }
     }
 }

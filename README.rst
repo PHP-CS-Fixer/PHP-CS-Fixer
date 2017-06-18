@@ -312,6 +312,35 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the function ``dirname()`` is overridden.*
 
+* **doctrine_annotation_array_assignment**
+
+  Doctrine annotations must use configured operator for assignment in
+  arrays.
+
+  Configuration options:
+
+  - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
+    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
+    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
+    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
+    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
+    'license', 'link', 'method', 'package', 'param', 'property',
+    'property-read', 'property-write', 'return', 'see', 'since', 'source',
+    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
+    'version', 'after', 'afterClass', 'backupGlobals',
+    'backupStaticAttributes', 'before', 'beforeClass',
+    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
+    'coversNothing', 'dataProvider', 'depends', 'expectedException',
+    'expectedExceptionCode', 'expectedExceptionMessage',
+    'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
+    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
+    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
+    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
+    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+  - ``operator`` (``':'``, ``'='``): the operator to use; defaults to ``'='``
+
 * **doctrine_annotation_braces**
 
   Doctrine annotations without arguments must use the configured syntax.
@@ -367,6 +396,8 @@ Choose from the list of available rules:
     'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
     'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
     'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+  - ``indent_mixed_lines`` (``bool``): whether to indent lines that have content
+    before closing parenthesis; defaults to ``false``
 
 * **doctrine_annotation_spaces**
 
@@ -541,10 +572,15 @@ Choose from the list of available rules:
 * **method_argument_space** [@PSR2, @Symfony]
 
   In method arguments and method call, there MUST NOT be a space before
-  each comma and there MUST be one space after each comma.
+  each comma and there MUST be one space after each comma. Argument lists
+  MAY be split across multiple lines, where each subsequent line is
+  indented once. When doing so, the first item in the list MUST be on the
+  next line, and there MUST be only one argument per line.
 
   Configuration options:
 
+  - ``ensure_fully_multiline`` (``bool``): ensure every argument of a multiline
+    argument list is on its own line; defaults to ``false``
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
@@ -849,8 +885,12 @@ Choose from the list of available rules:
 
 * **phpdoc_align** [@Symfony]
 
-  All items of the @param, @throws, @return, @var, and @type phpdoc tags
-  must be aligned vertically.
+  All items of the given phpdoc tags must be aligned vertically.
+
+  Configuration options:
+
+  - ``tags`` (``array``): the tags that should be aligned; defaults to ``['param',
+    'return', 'throws', 'type', 'var']``
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 

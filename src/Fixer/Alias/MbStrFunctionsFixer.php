@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -102,7 +103,7 @@ $a = substr_count($a, $b);
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
 
-                $tokens[$functionName]->setContent($functionReplacement['alternativeName']);
+                $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
             }
         }
     }

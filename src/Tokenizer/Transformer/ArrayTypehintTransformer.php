@@ -55,7 +55,7 @@ final class ArrayTypehintTransformer extends AbstractTransformer
         $nextToken = $tokens[$nextIndex];
 
         if (!$nextToken->equals('(')) {
-            $token->override([CT::T_ARRAY_TYPEHINT, $token->getContent()]);
+            $tokens[$index] = new Token([CT::T_ARRAY_TYPEHINT, $token->getContent()]);
         }
     }
 }

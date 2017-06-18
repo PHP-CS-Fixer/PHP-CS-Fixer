@@ -98,14 +98,16 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     private function ensureWhitespaceAroundToken(Tokens $tokens, $index)
     {
         if ($tokens[$index + 1]->isWhitespace()) {
-            $tokens[$index + 1]->setContent(' ');
+            if (' ' !== $tokens[$index + 1]->getContent()) {
+                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+            }
         } else {
             $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
         }
 
         if ($tokens[$index - 1]->isWhitespace()) {
-            if (!$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
-                $tokens[$index - 1]->setContent(' ');
+            if (' ' !== $tokens[$index - 1]->getContent() && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
             $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
