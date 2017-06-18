@@ -881,6 +881,8 @@ PHP;
         $tokens = Tokens::fromCode($input);
         $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
 
+        $this->assertTrue($tokens->isChanged(), 'Tokens collection must be marked as changed after fixing.');
+        $tokens->clearEmptyTokens();
         $this->assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
