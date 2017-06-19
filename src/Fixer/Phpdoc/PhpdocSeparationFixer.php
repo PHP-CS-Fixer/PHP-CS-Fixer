@@ -16,7 +16,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\TagComparator;
-use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -25,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class PhpdocSeparationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class PhpdocSeparationFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
