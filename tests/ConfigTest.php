@@ -17,6 +17,7 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
@@ -26,23 +27,24 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *
  * @covers \PhpCsFixer\Config
  */
-final class ConfigTest extends \PHPUnit_Framework_TestCase
+final class ConfigTest extends TestCase
 {
     public function testConfigRulesUsingSeparateMethod()
     {
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, array(
+            $config,
+            [
                 'rules' => 'cast_spaces,braces',
-            ),
+            ],
             getcwd()
         );
 
         $this->assertArraySubset(
-            array(
+            [
                 'cast_spaces' => true,
                 'braces' => true,
-            ),
+            ],
             $configResolver->getRules()
         );
     }
@@ -51,32 +53,34 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, array(
+            $config,
+            [
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
-            ),
+            ],
             getcwd()
         );
 
         $this->assertArraySubset(
-            array(
-                'array_syntax' => array(
+            [
+                'array_syntax' => [
                     'syntax' => 'short',
-                ),
+                ],
                 'cast_spaces' => true,
-            ),
+            ],
             $configResolver->getRules()
         );
     }
 
     public function testConfigRulesUsingInvalidJson()
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException');
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
 
         $config = new Config();
         $configResolver = new ConfigurationResolver(
-            $config, array(
+            $config,
+            [
                 'rules' => '{blah',
-            ),
+            ],
             getcwd()
         );
         $configResolver->getRules();
@@ -88,15 +92,15 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
         $command = new FixCommand();
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-            array(
-                'path' => array($customConfigFile),
+            [
+                'path' => [$customConfigFile],
                 '--dry-run' => true,
                 '--config' => $customConfigFile,
-            ),
-            array(
+            ],
+            [
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            )
+            ]
         );
         $this->assertStringMatchesFormat(
             sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
@@ -176,7 +180,7 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testRegisterCustomFixersWithInvalidArgument()
     {
         $this->setExpectedExceptionRegExp(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             '/^Argument must be an array or a Traversable, got "\w+"\.$/'
         );
 
@@ -203,15 +207,15 @@ final class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function provideRegisterCustomFixersCases()
     {
-        $fixers = array(
+        $fixers = [
             new \PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer(),
             new \PhpCsFixer\Fixer\ControlStructure\IncludeFixer(),
-        );
+        ];
 
-        $cases = array(
-            array($fixers, $fixers),
-            array($fixers, new \ArrayIterator($fixers)),
-        );
+        $cases = [
+            [$fixers, $fixers],
+            [$fixers, new \ArrayIterator($fixers)],
+        ];
 
         return $cases;
     }

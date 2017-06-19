@@ -30,7 +30,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove leading slashes in use clauses.',
-            array(new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;"))
+            [new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;")]
         );
     }
 
@@ -56,12 +56,12 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $foundNamespace = $tokens->findGivenKind(T_NAMESPACE);
-        if (empty($foundNamespace)) {
+        if (!$tokens->isTokenKindFound(T_NAMESPACE)) {
             return;
         }
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $foundNamespace = $tokens->findGivenKind(T_NAMESPACE);
         $firstNamespaceIdx = key($foundNamespace);
 
         $usesIdxs = $tokensAnalyzer->getImportUseIndexes();
@@ -75,7 +75,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
             $nextToken = $tokens[$nextTokenIdx];
 
             if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
-                $nextToken->clear();
+                $tokens->clearAt($nextTokenIdx);
             }
         }
     }

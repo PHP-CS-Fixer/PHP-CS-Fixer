@@ -56,7 +56,7 @@ final class DescribeCommand extends Command
     private $fixers;
 
     /**
-     * @param FixerFactory|null $fixerFactory
+     * @param null|FixerFactory $fixerFactory
      */
     public function __construct(FixerFactory $fixerFactory = null)
     {
@@ -78,9 +78,9 @@ final class DescribeCommand extends Command
         $this
             ->setName('describe')
             ->setDefinition(
-                array(
+                [
                     new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
-                )
+                ]
             )
             ->setDescription('Describe rule / ruleset.')
         ;
@@ -106,7 +106,9 @@ final class DescribeCommand extends Command
 
             throw new \InvalidArgumentException(sprintf(
                 '%s %s not found.%s',
-                ucfirst($e->getType()), $name, null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
+                ucfirst($e->getType()),
+                $name,
+                null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
             ));
         }
     }
@@ -128,7 +130,7 @@ final class DescribeCommand extends Command
         if ($fixer instanceof DefinedFixerInterface) {
             $definition = $fixer->getDefinition();
         } else {
-            $definition = new FixerDefinition('Description is not available.', array());
+            $definition = new FixerDefinition('Description is not available.', []);
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
@@ -156,10 +158,10 @@ final class DescribeCommand extends Command
             foreach ($configurationDefinition->getOptions() as $option) {
                 $line = '* <info>'.$option->getName().'</info>';
 
-                $allowed = CommandHelp::getDisplayableAllowedValues($option);
+                $allowed = HelpCommand::getDisplayableAllowedValues($option);
                 if (null !== $allowed) {
                     foreach ($allowed as &$value) {
-                        $value = CommandHelp::toString($value);
+                        $value = HelpCommand::toString($value);
                     }
                 } else {
                     $allowed = $option->getAllowedTypes();
@@ -169,11 +171,12 @@ final class DescribeCommand extends Command
                     $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
                 }
 
-                $line .= ': '.lcfirst(preg_replace('/\.$/', '', $option->getDescription())).'; ';
+                $description = preg_replace('/(`.+?`)/', '<info>$1</info>', $option->getDescription());
+                $line .= ': '.lcfirst(preg_replace('/\.$/', '', $description)).'; ';
                 if ($option->hasDefault()) {
                     $line .= sprintf(
                         'defaults to <comment>%s</comment>',
-                        CommandHelp::toString($option->getDefault())
+                        HelpCommand::toString($option->getDefault())
                     );
                 } else {
                     $line .= 'required';
@@ -191,7 +194,7 @@ final class DescribeCommand extends Command
             }
 
             if ($definition->getDefaultConfiguration()) {
-                $output->writeln(sprintf('Default configuration: <comment>%s</comment>.', CommandHelp::toString($definition->getDefaultConfiguration())));
+                $output->writeln(sprintf('Default configuration: <comment>%s</comment>.', HelpCommand::toString($definition->getDefaultConfiguration())));
             }
 
             $output->writeln('');
@@ -206,10 +209,10 @@ final class DescribeCommand extends Command
         });
 
         if (!count($codeSamples)) {
-            $output->writeln(array(
+            $output->writeln([
                 'Fixing examples can not be demonstrated on the current PHP version.',
                 '',
-            ));
+            ]);
         } else {
             $output->writeln('Fixing examples:');
 
@@ -224,7 +227,13 @@ final class DescribeCommand extends Command
                 $old = $codeSample->getCode();
                 $tokens = Tokens::fromCode($old);
                 if ($fixer instanceof ConfigurableFixerInterface) {
-                    $fixer->configure($codeSample->getConfiguration());
+                    $configuration = $codeSample->getConfiguration();
+
+                    if (null === $configuration) {
+                        $configuration = [];
+                    }
+
+                    $fixer->configure($configuration);
                 }
 
                 $file = $codeSample instanceof FileSpecificCodeSampleInterface
@@ -237,7 +246,7 @@ final class DescribeCommand extends Command
                 if (null === $codeSample->getConfiguration()) {
                     $output->writeln(sprintf(' * Example #%d.', $index + 1));
                 } else {
-                    $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, CommandHelp::toString($codeSample->getConfiguration())));
+                    $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, HelpCommand::toString($codeSample->getConfiguration())));
                 }
                 $output->writeln($diffFormatter->format($diff, '   %s'));
                 $output->writeln('');
@@ -255,7 +264,7 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        $ruleSet = new RuleSet(array($name => true));
+        $ruleSet = new RuleSet([$name => true]);
         $rules = $ruleSet->getRules();
         ksort($rules);
 
@@ -274,7 +283,7 @@ final class DescribeCommand extends Command
                 $rule,
                 $fixers[$rule]->isRisky() ? ' <error>risky</error>' : '',
                 $definition->getSummary(),
-                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", CommandHelp::toString($config)) : ''
+                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", HelpCommand::toString($config)) : ''
             );
         }
 
@@ -290,7 +299,7 @@ final class DescribeCommand extends Command
             return $this->fixers;
         }
 
-        $fixers = array();
+        $fixers = [];
         foreach ($this->fixerFactory->getFixers() as $fixer) {
             $fixers[$fixer->getName()] = $fixer;
         }
@@ -347,12 +356,12 @@ final class DescribeCommand extends Command
     private function describeList(OutputInterface $output, $type)
     {
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $describe = array(
+            $describe = [
                 'set' => $this->getSetNames(),
                 'rules' => $this->getFixers(),
-            );
+            ];
         } elseif ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $describe = 'set' === $type ? array('set' => $this->getSetNames()) : array('rules' => $this->getFixers());
+            $describe = 'set' === $type ? ['set' => $this->getSetNames()] : ['rules' => $this->getFixers()];
         } else {
             return;
         }

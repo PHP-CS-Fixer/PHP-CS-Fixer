@@ -24,7 +24,7 @@ class Annotation
      *
      * @var string[]
      */
-    private static $tags = array(
+    private static $tags = [
         'method',
         'param',
         'property',
@@ -34,7 +34,7 @@ class Annotation
         'throws',
         'type',
         'var',
-    );
+    ];
 
     /**
      * The lines that make up the annotation.
@@ -60,14 +60,14 @@ class Annotation
     /**
      * The associated tag.
      *
-     * @var Tag|null
+     * @var null|Tag
      */
     private $tag;
 
     /**
-     * The cached types content.
+     * Lazy loaded, cached types content.
      *
-     * @var string|null
+     * @var null|string
      */
     private $typesContent;
 

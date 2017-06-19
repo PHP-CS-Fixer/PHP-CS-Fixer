@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Report\ReporterFactory;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -21,8 +22,10 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @coversNothing
  */
-final class TextDiffTest extends \PHPUnit_Framework_TestCase
+final class TextDiffTest extends TestCase
 {
     /**
      * @param string $expected
@@ -36,18 +39,18 @@ final class TextDiffTest extends \PHPUnit_Framework_TestCase
         $command = new FixCommand();
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-            array(
-                'path' => array(__DIR__.'/Fixtures/FixCommand/TextDiffTestInput.php'),
+            [
+                'path' => [__DIR__.'/Fixtures/FixCommand/TextDiffTestInput.php'],
                 '--diff' => true,
                 '--dry-run' => true,
                 '--format' => $format,
                 '--rules' => 'cast_spaces',
                 '--using-cache' => 'no',
-            ),
-            array(
+            ],
+            [
                 'decorated' => $isDecorated,
                 'verbosity' => OutputInterface::VERBOSITY_NORMAL,
-            )
+            ]
         );
 
         if ($isDecorated !== $commandTester->getOutput()->isDecorated()) {
@@ -67,15 +70,15 @@ final class TextDiffTest extends \PHPUnit_Framework_TestCase
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
 %A$output->writeln('<error>'.(int) $output.'</error>');%A
 TEST;
-        $cases = array();
-        foreach (array('txt', 'xml', 'junit') as $format) {
-            $cases[] = array($expected, $format, true);
-            $cases[] = array($expected, $format, false);
+        $cases = [];
+        foreach (['txt', 'xml', 'junit'] as $format) {
+            $cases[] = [$expected, $format, true];
+            $cases[] = [$expected, $format, false];
         }
 
         $expected = substr(json_encode($expected), 1, -1);
-        $cases[] = array($expected, 'json', true);
-        $cases[] = array($expected, 'json', false);
+        $cases[] = [$expected, 'json', true];
+        $cases[] = [$expected, 'json', false];
 
         return $cases;
     }
@@ -90,7 +93,7 @@ TEST;
         sort($formats);
 
         $this->assertSame(
-            array('json', 'junit', 'txt', 'xml'),
+            ['json', 'junit', 'txt', 'xml'],
             $formats
         );
     }

@@ -15,7 +15,7 @@ do
     git checkout $BRANCH &> /dev/null &&
     git reset --hard &> /dev/null &&
     echo -n $BRANCH
-    (for i in {1..10}; do php php-cs-fixer fix . ; done) | grep -i fixed | awk '
+    (for i in {1..10}; do php php-cs-fixer fix --dry-run 2> /dev/null ; done) | grep -i seconds | awk '
     {
         total += $5;
         ++count;

@@ -12,7 +12,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 Requirements
 ------------
 
-PHP needs to be a minimum version of PHP 5.3.6.
+PHP needs to be a minimum version of PHP 5.6.0.
 
 Installation
 ------------
@@ -36,7 +36,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.2.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.2/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -181,7 +181,7 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 A combination of ``--dry-run`` and ``--diff`` will
 display a summary of proposed fixes, leaving your files unchanged.
 
-The ``--allow-risky`` option allows you to set whether risky rules may run. Default value is taken from config file.
+The ``--allow-risky`` option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
 The ``--stop-on-violation`` flag stops execution upon first file that needs to be fixed.
@@ -196,7 +196,7 @@ If the option is not provided, it defaults to ``run-in`` unless a config file th
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix --verbose --show-progress=evaluating
+    $ php php-cs-fixer.phar fix --verbose --show-progress=estimating
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -209,8 +209,7 @@ Choose from the list of available rules:
 
 * **array_syntax**
 
-  PHP arrays should be declared using the configured syntax (requires PHP
-  >= 5.4 for short syntax).
+  PHP arrays should be declared using the configured syntax.
 
   Configuration options:
 
@@ -275,7 +274,7 @@ Choose from the list of available rules:
 
 * **class_keyword_remove**
 
-  Converts ``::class`` keywords to FQCN strings. Requires PHP >= 5.5.
+  Converts ``::class`` keywords to FQCN strings.
 
 * **combine_consecutive_unsets**
 
@@ -300,7 +299,7 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply around the equal sign;
     defaults to ``'none'``
 
-* **declare_strict_types**
+* **declare_strict_types** [@PHP70Migration:risky, @PHP71Migration:risky]
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
 
@@ -312,6 +311,35 @@ Choose from the list of available rules:
   constant.
 
   *Risky rule: risky when the function ``dirname()`` is overridden.*
+
+* **doctrine_annotation_array_assignment**
+
+  Doctrine annotations must use configured operator for assignment in
+  arrays.
+
+  Configuration options:
+
+  - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
+    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
+    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
+    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
+    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
+    'license', 'link', 'method', 'package', 'param', 'property',
+    'property-read', 'property-write', 'return', 'see', 'since', 'source',
+    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
+    'version', 'after', 'afterClass', 'backupGlobals',
+    'backupStaticAttributes', 'before', 'beforeClass',
+    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
+    'coversNothing', 'dataProvider', 'depends', 'expectedException',
+    'expectedExceptionCode', 'expectedExceptionMessage',
+    'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
+    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
+    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
+    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
+    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+  - ``operator`` (``':'``, ``'='``): the operator to use; defaults to ``'='``
 
 * **doctrine_annotation_braces**
 
@@ -368,6 +396,8 @@ Choose from the list of available rules:
     'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
     'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
     'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+  - ``indent_mixed_lines`` (``bool``): whether to indent lines that have content
+    before closing parenthesis; defaults to ``false``
 
 * **doctrine_annotation_spaces**
 
@@ -454,8 +484,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``annotations`` (``array``): list of annotations to remove, e.g.
-    ``["@author"]``; defaults to ``[]``
+  - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
+    defaults to ``[]``
 
 * **hash_to_slash_comment** [@Symfony]
 
@@ -507,6 +537,16 @@ Choose from the list of available rules:
 
   Ensure there is no code on the same line as the PHP open tag.
 
+* **list_syntax**
+
+  List (``array`` destructuring) assignment should be declared using the
+  configured syntax. Requires PHP >= 7.1.
+
+  Configuration options:
+
+  - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
+    syntax; defaults to ``'long'``
+
 * **lowercase_cast** [@Symfony]
 
   Cast should be written in lower case.
@@ -532,10 +572,15 @@ Choose from the list of available rules:
 * **method_argument_space** [@PSR2, @Symfony]
 
   In method arguments and method call, there MUST NOT be a space before
-  each comma and there MUST be one space after each comma.
+  each comma and there MUST be one space after each comma. Argument lists
+  MAY be split across multiple lines, where each subsequent line is
+  indented once. When doing so, the first item in the list MUST be on the
+  next line, and there MUST be only one argument per line.
 
   Configuration options:
 
+  - ``ensure_fully_multiline`` (``bool``): ensure every argument of a multiline
+    argument list is on its own line; defaults to ``false``
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
@@ -820,6 +865,11 @@ Choose from the list of available rules:
     ``['assertAttributeEquals', 'assertAttributeNotEquals', 'assertEquals',
     'assertNotEquals']``
 
+* **php_unit_test_class_requires_covers**
+
+  Adds a default ``@coversNothing`` annotation to PHPUnit test classes that
+  have no ``@covers*`` annotation.
+
 * **phpdoc_add_missing_param_annotation**
 
   Phpdoc should contain @param for all params.
@@ -831,8 +881,12 @@ Choose from the list of available rules:
 
 * **phpdoc_align** [@Symfony]
 
-  All items of the @param, @throws, @return, @var, and @type phpdoc tags
-  must be aligned vertically.
+  All items of the given phpdoc tags must be aligned vertically.
+
+  Configuration options:
+
+  - ``tags`` (``array``): the tags that should be aligned; defaults to ``['param',
+    'return', 'throws', 'type', 'var']``
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 
@@ -929,7 +983,7 @@ Choose from the list of available rules:
 
 * **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
 
-  Converts ``pow()`` to the ``**`` operator. Requires PHP >= 5.6.
+  Converts ``pow()`` to the ``**`` operator.
 
   *Risky rule: risky when the function ``pow()`` is overridden.*
 
@@ -1099,6 +1153,14 @@ Choose from the list of available rules:
   - ``elements`` (``array``): the structural elements to fix (PHP >= 7.1 required
     for ``const``); defaults to ``['property', 'method']``
 
+* **void_return** [@PHP71Migration:risky]
+
+  Add void return type to functions with missing or empty return
+  statements, but priority is given to ``@return`` annotations. Requires
+  PHP >= 7.1.
+
+  *Risky rule: modifies the signature of functions.*
+
 * **whitespace_after_comma_in_array** [@Symfony]
 
   In array declaration, there MUST be a whitespace after each comma.
@@ -1112,8 +1174,8 @@ fixed but without actually modifying them:
     $ php php-cs-fixer.phar fix /path/to/code --dry-run
 
 Instead of using command line options to customize the rule, you can save the
-project configuration in a ``.php_cs.dist`` file in the root directory
-of your project. The file must return an instance of ``PhpCsFixer\ConfigInterface``,
+project configuration in a ``.php_cs.dist`` file in the root directory of your project.
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.2/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -1134,11 +1196,11 @@ The example below will add two rules to the default list of PSR2 set rules:
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
-            'array_syntax' => array('syntax' => 'short'),
-        ))
+            'array_syntax' => ['syntax' => 'short'],
+        ])
         ->setFinder($finder)
     ;
 
@@ -1160,16 +1222,15 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
-        ))
+        ])
         ->setFinder($finder)
     ;
 
 You may want to use non-linux whitespaces in your project. Then you need to
-configure them in your config file. Please be aware that this feature is
-experimental.
+configure them in your config file.
 
 .. code-block:: php
 
@@ -1180,7 +1241,7 @@ experimental.
         ->setLineEnding("\r\n")
     ;
 
-By using ``--using-cache`` option with yes or no you can set if the caching
+By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
 mechanism should be used.
 
 Caching
@@ -1226,7 +1287,7 @@ Then, add the following command to your CI:
 .. code-block:: bash
 
     $ IFS=$'\n'; COMMIT_SCA_FILES=($(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")); unset IFS
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection "${COMMIT_SCA_FILES[@]}"
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection -- "${COMMIT_SCA_FILES[@]}"
 
 Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
@@ -1236,7 +1297,7 @@ Exit codes
 Exit code is build using following bit flags:
 
 *  0 OK.
-*  1 General error (or PHP/HHVM minimal requirement not matched).
+*  1 General error (or PHP minimal requirement not matched).
 *  4 Some files have invalid syntax (only in dry-run mode).
 *  8 Some files need fixing (only in dry-run mode).
 * 16 Configuration error of the application.
@@ -1279,7 +1340,7 @@ projects for instance).
 .. _php-cs-fixer.phar: http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
-.. _PhpStorm:          http://tzfrs.de/2015/01/automatically-format-code-to-match-psr-standards-with-phpstorm
+.. _PhpStorm:          https://medium.com/@valeryan/how-to-configure-phpstorm-to-use-php-cs-fixer-1844991e521f
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
 .. _contribute:        https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md

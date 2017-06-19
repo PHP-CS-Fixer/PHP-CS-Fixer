@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -21,7 +23,7 @@ use PhpCsFixer\Tokenizer\Token;
  *
  * @covers \PhpCsFixer\Tokenizer\Token
  */
-final class TokenTest extends \PHPUnit_Framework_TestCase
+final class TokenTest extends TestCase
 {
     public function getBraceToken()
     {
@@ -40,15 +42,21 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function getForeachTokenPrototype()
     {
-        static $prototype = array(T_FOREACH, 'foreach');
+        static $prototype = [T_FOREACH, 'foreach'];
 
         return $prototype;
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::clear is deprecated and will be removed in 3.0.
+     */
     public function testClear()
     {
         $token = $this->getForeachToken();
         $token->clear();
+
+        Tokens::setLegacyMode(false);
 
         $this->assertSame('', $token->getContent());
         $this->assertNull($token->getId());
@@ -80,17 +88,17 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function provideIsCastCases()
     {
-        return array(
-            array($this->getBraceToken(), false),
-            array($this->getForeachToken(), false),
-            array(new Token(array(T_ARRAY_CAST, '(array)', 1)), true),
-            array(new Token(array(T_BOOL_CAST, '(bool)', 1)), true),
-            array(new Token(array(T_DOUBLE_CAST, '(double)', 1)), true),
-            array(new Token(array(T_INT_CAST, '(int)', 1)), true),
-            array(new Token(array(T_OBJECT_CAST, '(object)', 1)), true),
-            array(new Token(array(T_STRING_CAST, '(string)', 1)), true),
-            array(new Token(array(T_UNSET_CAST, '(unset)', 1)), true),
-        );
+        return [
+            [$this->getBraceToken(), false],
+            [$this->getForeachToken(), false],
+            [new Token([T_ARRAY_CAST, '(array)', 1]), true],
+            [new Token([T_BOOL_CAST, '(bool)', 1]), true],
+            [new Token([T_DOUBLE_CAST, '(double)', 1]), true],
+            [new Token([T_INT_CAST, '(int)', 1]), true],
+            [new Token([T_OBJECT_CAST, '(object)', 1]), true],
+            [new Token([T_STRING_CAST, '(string)', 1]), true],
+            [new Token([T_UNSET_CAST, '(unset)', 1]), true],
+        ];
     }
 
     /**
@@ -106,16 +114,13 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function provideIsClassyCases()
     {
-        $cases = array(
-            array($this->getBraceToken(), false),
-            array($this->getForeachToken(), false),
-            array(new Token(array(T_CLASS, 'class', 1)), true),
-            array(new Token(array(T_INTERFACE, 'interface', 1)), true),
-        );
-
-        if (defined('T_TRAIT')) {
-            $cases[] = array(new Token(array(T_TRAIT, 'trait', 1)), true);
-        }
+        $cases = [
+            [$this->getBraceToken(), false],
+            [$this->getForeachToken(), false],
+            [new Token([T_CLASS, 'class', 1]), true],
+            [new Token([T_INTERFACE, 'interface', 1]), true],
+            [new Token([T_TRAIT, 'trait', 1]), true],
+        ];
 
         return $cases;
     }
@@ -133,34 +138,28 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function provideIsCommentCases()
     {
-        return array(
-            array($this->getBraceToken(), false),
-            array($this->getForeachToken(), false),
-            array(new Token(array(T_COMMENT, '/* comment */', 1)), true),
-            array(new Token(array(T_DOC_COMMENT, '/** docs */', 1)), true),
-        );
+        return [
+            [$this->getBraceToken(), false],
+            [$this->getForeachToken(), false],
+            [new Token([T_COMMENT, '/* comment */', 1]), true],
+            [new Token([T_DOC_COMMENT, '/** docs */', 1]), true],
+        ];
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isEmpty is deprecated and will be removed in 3.0.
+     */
     public function testIsEmpty()
     {
         $braceToken = $this->getBraceToken();
         $this->assertFalse($braceToken->isEmpty());
 
-        $braceToken->setContent('');
-        $this->assertTrue($braceToken->isEmpty());
+        $emptyToken = new Token('');
+        $this->assertTrue($emptyToken->isEmpty());
 
-        $whitespaceToken = new Token(array(T_WHITESPACE, ' '));
+        $whitespaceToken = new Token([T_WHITESPACE, ' ']);
         $this->assertFalse($whitespaceToken->isEmpty());
-
-        $whitespaceToken->setContent('');
-        $this->assertTrue($whitespaceToken->isEmpty());
-
-        $whitespaceToken->override(array(null, ''));
-        $this->assertTrue($whitespaceToken->isEmpty());
-
-        $whitespaceToken = new Token(array(T_WHITESPACE, ' '));
-        $whitespaceToken->clear();
-        $this->assertTrue($whitespaceToken->isEmpty());
     }
 
     public function testIsGivenKind()
@@ -170,15 +169,15 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($braceToken->isGivenKind(T_FOR));
         $this->assertFalse($braceToken->isGivenKind(T_FOREACH));
-        $this->assertFalse($braceToken->isGivenKind(array(T_FOR)));
-        $this->assertFalse($braceToken->isGivenKind(array(T_FOREACH)));
-        $this->assertFalse($braceToken->isGivenKind(array(T_FOR, T_FOREACH)));
+        $this->assertFalse($braceToken->isGivenKind([T_FOR]));
+        $this->assertFalse($braceToken->isGivenKind([T_FOREACH]));
+        $this->assertFalse($braceToken->isGivenKind([T_FOR, T_FOREACH]));
 
         $this->assertFalse($foreachToken->isGivenKind(T_FOR));
         $this->assertTrue($foreachToken->isGivenKind(T_FOREACH));
-        $this->assertFalse($foreachToken->isGivenKind(array(T_FOR)));
-        $this->assertTrue($foreachToken->isGivenKind(array(T_FOREACH)));
-        $this->assertTrue($foreachToken->isGivenKind(array(T_FOR, T_FOREACH)));
+        $this->assertFalse($foreachToken->isGivenKind([T_FOR]));
+        $this->assertTrue($foreachToken->isGivenKind([T_FOREACH]));
+        $this->assertTrue($foreachToken->isGivenKind([T_FOR, T_FOREACH]));
     }
 
     public function testIsKeywords()
@@ -196,33 +195,30 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsMagicConstant($tokenId, $content, $isConstant = true)
     {
-        $token = new Token(array($tokenId, $content));
+        $token = new Token([$tokenId, $content]);
         $this->assertSame($isConstant, $token->isMagicConstant());
     }
 
     public function provideMagicConstantCases()
     {
-        $cases = array(
-            array(T_CLASS_C, '__CLASS__'),
-            array(T_DIR, '__DIR__'),
-            array(T_FILE, '__FILE__'),
-            array(T_FUNC_C, '__FUNCTION__'),
-            array(T_LINE, '__LINE__'),
-            array(T_METHOD_C, '__METHOD__'),
-            array(T_NS_C, '__NAMESPACE__'),
-        );
-
-        if (defined('T_TRAIT_C')) {
-            $cases[] = array(T_TRAIT_C, '__TRAIT__');
-        }
+        $cases = [
+            [T_CLASS_C, '__CLASS__'],
+            [T_DIR, '__DIR__'],
+            [T_FILE, '__FILE__'],
+            [T_FUNC_C, '__FUNCTION__'],
+            [T_LINE, '__LINE__'],
+            [T_METHOD_C, '__METHOD__'],
+            [T_NS_C, '__NAMESPACE__'],
+            [T_TRAIT_C, '__TRAIT__'],
+        ];
 
         foreach ($cases as $case) {
-            $cases[] = array($case[0], strtolower($case[1]));
+            $cases[] = [$case[0], strtolower($case[1])];
         }
 
-        foreach (array($this->getForeachToken(), $this->getBraceToken()) as $token) {
-            $cases[] = array($token->getId(), $token->getContent(), false);
-            $cases[] = array($token->getId(), strtolower($token->getContent()), false);
+        foreach ([$this->getForeachToken(), $this->getBraceToken()] as $token) {
+            $cases[] = [$token->getId(), $token->getContent(), false];
+            $cases[] = [$token->getId(), strtolower($token->getContent()), false];
         }
 
         return $cases;
@@ -241,15 +237,15 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function provideIsNativeConstantCases()
     {
-        return array(
-            array($this->getBraceToken(), false),
-            array($this->getForeachToken(), false),
-            array(new Token(array(T_STRING, 'null', 1)), true),
-            array(new Token(array(T_STRING, 'false', 1)), true),
-            array(new Token(array(T_STRING, 'true', 1)), true),
-            array(new Token(array(T_STRING, 'tRuE', 1)), true),
-            array(new Token(array(T_STRING, 'TRUE', 1)), true),
-        );
+        return [
+            [$this->getBraceToken(), false],
+            [$this->getForeachToken(), false],
+            [new Token([T_STRING, 'null', 1]), true],
+            [new Token([T_STRING, 'false', 1]), true],
+            [new Token([T_STRING, 'true', 1]), true],
+            [new Token([T_STRING, 'tRuE', 1]), true],
+            [new Token([T_STRING, 'TRUE', 1]), true],
+        ];
     }
 
     /**
@@ -270,46 +266,56 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function provideIsWhitespaceCases()
     {
-        return array(
-            array($this->getBraceToken(), false),
-            array($this->getForeachToken(), false),
-            array(new Token(' '), true),
-            array(new Token("\t "), true),
-            array(new Token("\t "), false, ' '),
-            array(new Token(array(T_WHITESPACE, "\r", 1)), true),
-            array(new Token(array(T_WHITESPACE, "\0", 1)), true),
-            array(new Token(array(T_WHITESPACE, "\x0B", 1)), true),
-            array(new Token(array(T_WHITESPACE, "\n", 1)), true),
-            array(new Token(array(T_WHITESPACE, "\n", 1)), false, " \t"),
-        );
+        return [
+            [$this->getBraceToken(), false],
+            [$this->getForeachToken(), false],
+            [new Token(' '), true],
+            [new Token("\t "), true],
+            [new Token("\t "), false, ' '],
+            [new Token([T_WHITESPACE, "\r", 1]), true],
+            [new Token([T_WHITESPACE, "\0", 1]), true],
+            [new Token([T_WHITESPACE, "\x0B", 1]), true],
+            [new Token([T_WHITESPACE, "\n", 1]), true],
+            [new Token([T_WHITESPACE, "\n", 1]), false, " \t"],
+        ];
     }
 
-    public function testPropertiesOfArrayToken()
+    /**
+     * @param mixed       $prototype
+     * @param null|int    $expectedId
+     * @param null|string $expectedContent
+     * @param null|bool   $expectedIsArray
+     * @param null|string $expectedExceptionClass
+     *
+     * @dataProvider provideCreatingTokenCases
+     */
+    public function testCreatingToken($prototype, $expectedId, $expectedContent, $expectedIsArray, $expectedExceptionClass = null)
     {
-        $prototype = $this->getForeachTokenPrototype();
-        $token = $this->getForeachToken();
+        $this->setExpectedException($expectedExceptionClass);
 
-        $this->assertSame($prototype[0], $token->getId());
-        $this->assertSame($prototype[1], $token->getContent());
-        $this->assertTrue($token->isArray());
+        $token = new Token($prototype);
+        $this->assertSame($expectedId, $token->getId());
+        $this->assertSame($expectedContent, $token->getContent());
+        $this->assertSame($expectedIsArray, $token->isArray());
     }
 
-    public function testPropertiesOfNonArrayToken()
+    public function provideCreatingTokenCases()
     {
-        $prototype = $this->getBraceTokenPrototype();
-        $token = $this->getBraceToken();
-
-        $this->assertSame($prototype, $token->getContent());
-        $this->assertNull($token->getId());
-        $this->assertFalse($token->isArray());
+        return [
+            [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
+            ['(', null, '(', false],
+            [123, null, null, null, 'InvalidArgumentException'],
+            [false, null, null, null, 'InvalidArgumentException'],
+            [null, null, null, null, 'InvalidArgumentException'],
+        ];
     }
 
     public function testEqualsDefaultIsCaseSensitive()
     {
-        $token = new Token(array(T_FUNCTION, 'function', 1));
+        $token = new Token([T_FUNCTION, 'function', 1]);
 
-        $this->assertTrue($token->equals(array(T_FUNCTION, 'function')));
-        $this->assertFalse($token->equals(array(T_FUNCTION, 'Function')));
+        $this->assertTrue($token->equals([T_FUNCTION, 'function']));
+        $this->assertFalse($token->equals([T_FUNCTION, 'Function']));
     }
 
     /**
@@ -328,45 +334,45 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
     public function provideEquals()
     {
         $brace = $this->getBraceToken();
-        $function = new Token(array(T_FUNCTION, 'function', 1));
+        $function = new Token([T_FUNCTION, 'function', 1]);
 
-        return array(
-            array($brace, false, '!'),
-            array($brace, false, '!', false),
-            array($brace, true, '('),
-            array($brace, true, '(', false),
-            array($function, false, '('),
-            array($function, false, '(', false),
+        return [
+            [$brace, false, '!'],
+            [$brace, false, '!', false],
+            [$brace, true, '('],
+            [$brace, true, '(', false],
+            [$function, false, '('],
+            [$function, false, '(', false],
 
-            array($function, false, array(T_NAMESPACE)),
-            array($function, false, array(T_NAMESPACE), false),
-            array($function, false, array(T_VARIABLE, 'function')),
-            array($function, false, array(T_VARIABLE, 'function'), false),
-            array($function, false, array(T_VARIABLE, 'Function')),
-            array($function, false, array(T_VARIABLE, 'Function'), false),
-            array($function, true, array(T_FUNCTION)),
-            array($function, true, array(T_FUNCTION), false),
-            array($function, true, array(T_FUNCTION, 'function')),
-            array($function, true, array(T_FUNCTION, 'function'), false),
-            array($function, false, array(T_FUNCTION, 'Function')),
-            array($function, true, array(T_FUNCTION, 'Function'), false),
-            array($function, false, array(T_FUNCTION, 'junction'), false),
+            [$function, false, [T_NAMESPACE]],
+            [$function, false, [T_NAMESPACE], false],
+            [$function, false, [T_VARIABLE, 'function']],
+            [$function, false, [T_VARIABLE, 'function'], false],
+            [$function, false, [T_VARIABLE, 'Function']],
+            [$function, false, [T_VARIABLE, 'Function'], false],
+            [$function, true, [T_FUNCTION]],
+            [$function, true, [T_FUNCTION], false],
+            [$function, true, [T_FUNCTION, 'function']],
+            [$function, true, [T_FUNCTION, 'function'], false],
+            [$function, false, [T_FUNCTION, 'Function']],
+            [$function, true, [T_FUNCTION, 'Function'], false],
+            [$function, false, [T_FUNCTION, 'junction'], false],
 
-            array($function, true, new Token(array(T_FUNCTION, 'function'))),
-            array($function, false, new Token(array(T_FUNCTION, 'Function'))),
-            array($function, true, new Token(array(T_FUNCTION, 'Function')), false),
+            [$function, true, new Token([T_FUNCTION, 'function'])],
+            [$function, false, new Token([T_FUNCTION, 'Function'])],
+            [$function, true, new Token([T_FUNCTION, 'Function']), false],
 
             // if it is an array any additional field is checked too
-            array($function, false, array(T_FUNCTION, 'function', 'unexpected')),
-        );
+            [$function, false, [T_FUNCTION, 'function', 'unexpected']],
+        ];
     }
 
     public function testEqualsAnyDefaultIsCaseSensitive()
     {
-        $token = new Token(array(T_FUNCTION, 'function', 1));
+        $token = new Token([T_FUNCTION, 'function', 1]);
 
-        $this->assertTrue($token->equalsAny(array(array(T_FUNCTION, 'function'))));
-        $this->assertFalse($token->equalsAny(array(array(T_FUNCTION, 'Function'))));
+        $this->assertTrue($token->equalsAny([[T_FUNCTION, 'function']]));
+        $this->assertFalse($token->equalsAny([[T_FUNCTION, 'Function']]));
     }
 
     /**
@@ -378,7 +384,7 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
      */
     public function testEqualsAny($equalsAny, array $other, $caseSensitive = true)
     {
-        $token = new Token(array(T_FUNCTION, 'function', 1));
+        $token = new Token([T_FUNCTION, 'function', 1]);
 
         $this->assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
@@ -388,16 +394,16 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
         $brace = $this->getBraceToken();
         $foreach = $this->getForeachToken();
 
-        return array(
-            array(false, array()),
-            array(false, array($brace)),
-            array(false, array($brace, $foreach)),
-            array(true, array($brace, $foreach, array(T_FUNCTION))),
-            array(true, array($brace, $foreach, array(T_FUNCTION, 'function'))),
-            array(false, array($brace, $foreach, array(T_FUNCTION, 'Function'))),
-            array(true, array($brace, $foreach, array(T_FUNCTION, 'Function')), false),
-            array(false, array(array(T_VARIABLE, 'junction'), array(T_FUNCTION, 'junction')), false),
-        );
+        return [
+            [false, []],
+            [false, [$brace]],
+            [false, [$brace, $foreach]],
+            [true, [$brace, $foreach, [T_FUNCTION]]],
+            [true, [$brace, $foreach, [T_FUNCTION, 'function']]],
+            [false, [$brace, $foreach, [T_FUNCTION, 'Function']]],
+            [true, [$brace, $foreach, [T_FUNCTION, 'Function']], false],
+            [false, [[T_VARIABLE, 'junction'], [T_FUNCTION, 'junction']], false],
+        ];
     }
 
     /**
@@ -414,20 +420,20 @@ final class TokenTest extends \PHPUnit_Framework_TestCase
 
     public function provideIsKeyCaseSensitive()
     {
-        return array(
-            array(true, true, 0),
-            array(true, true, 1),
-            array(true, array(), 0),
-            array(true, array(true), 0),
-            array(true, array(false, true), 1),
-            array(true, array(false, true, false), 1),
-            array(true, array(false), 10),
+        return [
+            [true, true, 0],
+            [true, true, 1],
+            [true, [], 0],
+            [true, [true], 0],
+            [true, [false, true], 1],
+            [true, [false, true, false], 1],
+            [true, [false], 10],
 
-            array(false, false, 10),
-            array(false, array(false), 0),
-            array(false, array(true, false), 1),
-            array(false, array(true, false, true), 1),
-            array(false, array(1 => false), 1),
-        );
+            [false, false, 10],
+            [false, [false], 0],
+            [false, [true, false], 1],
+            [false, [true, false, true], 1],
+            [false, [1 => false], 1],
+        ];
     }
 }

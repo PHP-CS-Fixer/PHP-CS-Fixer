@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\StringNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -29,7 +30,7 @@ final class SingleQuoteFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Convert double quotes to single quotes for simple strings.',
-            array(new CodeSample('<?php $a = "sample";'))
+            [new CodeSample('<?php $a = "sample";')]
         );
     }
 
@@ -46,12 +47,13 @@ final class SingleQuoteFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
             }
 
             $content = $token->getContent();
+
             if (
                 '"' === $content[0] &&
                 false === strpos($content, "'") &&
@@ -59,8 +61,8 @@ final class SingleQuoteFixer extends AbstractFixer
                 !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
             ) {
                 $content = substr($content, 1, -1);
-                $content = str_replace(array('\\"', '\\$'), array('"', '$'), $content);
-                $token->setContent('\''.$content.'\'');
+                $content = str_replace(['\\"', '\\$'], ['"', '$'], $content);
+                $tokens[$index] = new Token([T_CONSTANT_ENCAPSED_STRING, '\''.$content.'\'']);
             }
         }
     }

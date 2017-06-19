@@ -19,6 +19,8 @@ use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Tokenizer\Token;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -27,7 +29,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @covers \PhpCsFixer\Console\Command\DescribeCommand
  */
-final class DescribeCommandTest extends \PHPUnit_Framework_TestCase
+final class DescribeCommandTest extends TestCase
 {
     public function testExecuteOutput()
     {
@@ -37,7 +39,7 @@ Fixes stuff.
 Replaces bad stuff with good stuff.
 
 Fixer is configurable using following options:
-* things (bool): enables fixing things as well; defaults to false
+* things (bool): enables fixing `things` as well; defaults to false
 
 Fixing examples:
  * Example #1.
@@ -47,7 +49,6 @@ Fixing examples:
    @@ @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and bad thing';
-%spaces%
    ----------- end diff -----------
 
  * Example #2. Fixing with configuration: ['things' => true].
@@ -57,21 +58,52 @@ Fixing examples:
    @@ @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and good thing';
-%spaces%
    ----------- end diff -----------
 
 
 EOT;
 
-        $this->assertSame(
-            str_replace(array('%spaces%', "\n"), array('   ', PHP_EOL), $expected),
-            $this->execute()->getDisplay()
-        );
+        $this->assertSame($expected, $this->execute(false)->getDisplay(true));
+    }
+
+    public function testExecuteOutputWithDecoration()
+    {
+        $expected = <<<EOT
+\033[32mDescription of\033[39m Foo/bar \033[32mrule\033[39m.
+Fixes stuff.
+Replaces bad stuff with good stuff.
+
+Fixer is configurable using following options:
+* \033[32mthings\033[39m (\033[33mbool\033[39m): enables fixing \033[32m`things`\033[39m as well; defaults to \033[33mfalse\033[39m
+
+Fixing examples:
+ * Example #1.
+\033[33m   ---------- begin diff ----------\033[39m
+   \033[31m--- Original\033[39m
+   \033[32m+++ New\033[39m
+   \033[36m@@ @@\033[39m
+   \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
+   \033[32m+<?php echo 'good stuff and bad thing';\033[39m
+\033[33m   ----------- end diff -----------\033[39m
+
+ * Example #2. Fixing with configuration: \033[33m['things' => true]\033[39m.
+\033[33m   ---------- begin diff ----------\033[39m
+   \033[31m--- Original\033[39m
+   \033[32m+++ New\033[39m
+   \033[36m@@ @@\033[39m
+   \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
+   \033[32m+<?php echo 'good stuff and good thing';\033[39m
+\033[33m   ----------- end diff -----------\033[39m
+
+
+EOT;
+
+        $this->assertSame($expected, $this->execute(true)->getDisplay(true));
     }
 
     public function testExecuteStatusCode()
     {
-        $this->assertSame(0, $this->execute()->getStatusCode());
+        $this->assertSame(0, $this->execute(false)->getStatusCode());
     }
 
     public function testExecuteWithUnknownName()
@@ -83,11 +115,11 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedException('InvalidArgumentException', 'Rule Foo/bar not found.');
-        $commandTester->execute(array(
+        $this->setExpectedException(\InvalidArgumentException::class, 'Rule Foo/bar not found.');
+        $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
-        ));
+        ]);
     }
 
     public function testExecuteWithoutName()
@@ -99,54 +131,59 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp('RuntimeException', '/^Not enough arguments( \(missing: "name"\))?\.$/');
-        $commandTester->execute(array(
+        $this->setExpectedExceptionRegExp(\RuntimeException::class, '/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $commandTester->execute([
             'command' => $command->getName(),
-        ));
+        ]);
     }
 
     /**
+     * @param bool $decorated
+     *
      * @return CommandTester
      */
-    private function execute()
+    private function execute($decorated)
     {
         $fixer = $this->prophesize();
-        $fixer->willImplement('PhpCsFixer\Fixer\DefinedFixerInterface');
-        $fixer->willImplement('PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface');
+        $fixer->willImplement(\PhpCsFixer\Fixer\DefinedFixerInterface::class);
+        $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface::class);
 
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(false);
-        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver(array(
-            new FixerOption('things', 'Enables fixing things as well.', false, false, array('bool')),
-        )));
+        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
+            new FixerOption('things', 'Enables fixing `things` as well.', false, false, ['bool']),
+        ]));
         $fixer->getDefinition()->willReturn(new FixerDefinition(
             'Fixes stuff.',
-            array(
+            [
                 new CodeSample(
                     '<?php echo \'bad stuff and bad thing\';'
                 ),
                 new CodeSample(
                     '<?php echo \'bad stuff and bad thing\';',
-                    array('things' => true)
+                    ['things' => true]
                 ),
-            ),
+            ],
             'Replaces bad stuff with good stuff.',
             'Can break stuff.'
         ));
 
         $things = false;
-        $fixer->configure(null)->will(function () use (&$things) {
+        $fixer->configure([])->will(function () use (&$things) {
             $things = false;
         });
-        $fixer->configure(array('things' => true))->will(function () use (&$things) {
+        $fixer->configure(['things' => true])->will(function () use (&$things) {
             $things = true;
         });
         $fixer->fix(
-            Argument::type('SplFileInfo'),
-            Argument::type('PhpCsFixer\Tokenizer\Tokens')
+            Argument::type(\SplFileInfo::class),
+            Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
         )->will(function (array $arguments) use (&$things) {
-            $arguments[1][3]->setContent($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'');
+            $arguments[1][3] = new Token([
+                $arguments[1][3]->getId(),
+                ($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\''),
+            ]);
         });
 
         $fixerFactory = new FixerFactory();
@@ -159,13 +196,13 @@ EOT;
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-            array(
+            [
                 'command' => $command->getName(),
                 'name' => 'Foo/bar',
-            ),
-            array(
-                'decorated' => false,
-            )
+            ],
+            [
+                'decorated' => $decorated,
+            ]
         );
 
         return $commandTester;

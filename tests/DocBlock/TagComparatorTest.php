@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\DocBlock\TagComparator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -23,7 +24,7 @@ use PhpCsFixer\DocBlock\TagComparator;
  *
  * @covers \PhpCsFixer\DocBlock\TagComparator
  */
-final class TagComparatorTest extends \PHPUnit_Framework_TestCase
+final class TagComparatorTest extends TestCase
 {
     /**
      * @param string $first
@@ -42,16 +43,16 @@ final class TagComparatorTest extends \PHPUnit_Framework_TestCase
 
     public function provideComparatorCases()
     {
-        return array(
-            array('return', 'return', true),
-            array('param', 'param', true),
-            array('return', 'param', false),
-            array('var', 'foo', false),
-            array('api', 'deprecated', false),
-            array('author', 'copyright', true),
-            array('author', 'since', false),
-            array('link', 'see', true),
-            array('category', 'package', true),
-        );
+        return [
+            ['return', 'return', true],
+            ['param', 'param', true],
+            ['return', 'param', false],
+            ['var', 'foo', false],
+            ['api', 'deprecated', false],
+            ['author', 'copyright', true],
+            ['author', 'since', false],
+            ['link', 'see', true],
+            ['category', 'package', true],
+        ];
     }
 }

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -23,15 +24,15 @@ use Symfony\Component\Console\Output\BufferedOutput;
  *
  * @covers \PhpCsFixer\Console\Command\ReadmeCommand
  */
-final class ReadmeCommandTest extends \PHPUnit_Framework_TestCase
+final class ReadmeCommandTest extends TestCase
 {
     public function testIfReadmeFileIsCorrect()
     {
-        if (!class_exists('Symfony\Component\Console\Output\BufferedOutput')) {
+        if (!class_exists(\Symfony\Component\Console\Output\BufferedOutput::class)) {
             $this->markTestSkipped('Unsupported symfony/console version, Symfony\Component\Console\Output\BufferedOutput was added in 2.4.');
         }
 
-        $input = new ArrayInput(array('readme'));
+        $input = new ArrayInput(['readme']);
         $output = new BufferedOutput();
         $app = new Application();
 
@@ -39,9 +40,8 @@ final class ReadmeCommandTest extends \PHPUnit_Framework_TestCase
 
         $fileContent = file_get_contents(__DIR__.'/../../../README.rst');
 
-        $this->assertSame(
-            $output->fetch(),
-            $fileContent,
+        $this->assertTrue(
+            $output->fetch() === $fileContent,
             'README.rst file is not up to date! Do not modify it manually! Regenerate readme with command: `php php-cs-fixer readme > README.rst`.'
         );
     }

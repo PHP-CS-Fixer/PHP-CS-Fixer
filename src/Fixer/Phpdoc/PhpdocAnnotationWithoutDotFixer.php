@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -23,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 {
-    private $tags = array('throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type');
+    private $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
 
     /**
      * {@inheritdoc}
@@ -32,12 +33,12 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Phpdocs annotation descriptions should not be a sentence.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 /**
  * @param string $bar Some string.
  */
 function foo ($bar) {}
-'))
+')]
         );
     }
 
@@ -54,7 +55,7 @@ function foo ($bar) {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
@@ -95,7 +96,7 @@ function foo ($bar) {}
                 $startLine->setContent($content);
             }
 
-            $token->setContent($doc->getContent());
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 }

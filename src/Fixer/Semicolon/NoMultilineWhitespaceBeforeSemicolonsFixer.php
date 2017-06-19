@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -38,7 +39,7 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imp
     {
         return new FixerDefinition(
             'Multi-line whitespace before closing semicolon are prohibited.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 function foo () {
@@ -47,7 +48,7 @@ function foo () {
 }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -63,16 +64,17 @@ function foo () {
                 continue;
             }
 
-            $previous = $tokens[$index - 1];
+            $previousIndex = $index - 1;
+            $previous = $tokens[$previousIndex];
             if (!$previous->isWhitespace() || false === strpos($previous->getContent(), "\n")) {
                 continue;
             }
 
             $content = $previous->getContent();
             if (("\n" === $content[0] || "\r" === $content[0]) && $tokens[$index - 2]->isComment()) {
-                $previous->setContent($lineEnding);
+                $tokens[$previousIndex] = new Token([$previous->getId(), $lineEnding]);
             } else {
-                $previous->clear();
+                $tokens->clearAt($previousIndex);
             }
         }
     }

@@ -15,8 +15,6 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
- * Base class for Doctrine annotation fixer tests.
- *
  * @internal
  */
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
@@ -28,7 +26,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
      */
     public function testConfigureWithInvalidConfiguration(array $configuration)
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
 
         $this->fixer->configure($configuration);
     }
@@ -38,24 +36,42 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
      */
     public function getInvalidConfigurationCases()
     {
-        return array(
-            array(array('foo' => 'bar')),
-            array(array('ignored_tags' => 'foo')),
-        );
+        return [
+            [['foo' => 'bar']],
+            [['ignored_tags' => 'foo']],
+        ];
     }
 
     /**
-     * {@inheritdoc}
+     * @param array<array<string>> $commentCases
+     *
+     * @return array
      */
-    protected function doTest($expected, $input = null, \SplFileInfo $file = null)
+    protected function createTestCases(array $commentCases)
     {
-        parent::doTest($this->withClassDocBlock($expected), $this->withClassDocBlock($input), $file);
+        $cases = [];
+        foreach ($commentCases as $commentCase) {
+            $cases[] = [
+                $this->withClassDocBlock($commentCase[0]),
+                isset($commentCase[1]) ? $this->withClassDocBlock($commentCase[1]) : null,
+            ];
 
-        parent::doTest($this->withPropertyDocBlock($expected), $this->withPropertyDocBlock($input), $file);
+            $cases[] = [
+                $this->withPropertyDocBlock($commentCase[0]),
+                isset($commentCase[1]) ? $this->withPropertyDocBlock($commentCase[1]) : null,
+            ];
 
-        parent::doTest($this->withMethodDocBlock($expected), $this->withMethodDocBlock($input), $file);
+            $cases[] = [
+                $this->withMethodDocBlock($commentCase[0]),
+                isset($commentCase[1]) ? $this->withMethodDocBlock($commentCase[1]) : null,
+            ];
 
-        parent::doTest($this->withWrongElementDocBlock($expected), null, $file);
+            $cases[] = [
+                $this->withWrongElementDocBlock($commentCase[0]),
+            ];
+        }
+
+        return $cases;
     }
 
     /**
@@ -121,17 +137,15 @@ $foo = bar();', $comment, false);
     }
 
     /**
-     * @param string      $php
-     * @param string|null $comment
-     * @param bool        $indent
+     * @param string $php
+     * @param string $comment
+     * @param bool   $indent
      *
-     * @return string|null
+     * @return string
      */
     private function with($php, $comment, $indent)
     {
-        if (null === $comment) {
-            return null;
-        }
+        $comment = trim($comment);
 
         if ($indent) {
             $comment = str_replace("\n", "\n    ", $comment);

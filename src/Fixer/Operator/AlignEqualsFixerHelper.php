@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractAlignFixerHelper;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -31,7 +32,7 @@ final class AlignEqualsFixerHelper extends AbstractAlignFixerHelper
             $token = $tokens[$index];
 
             if ($token->equals('=')) {
-                $token->setContent(sprintf(self::ALIGNABLE_PLACEHOLDER, $this->deepestLevel).$token->getContent());
+                $tokens[$index] = new Token(sprintf(self::ALIGNABLE_PLACEHOLDER, $this->deepestLevel).$token->getContent());
                 continue;
             }
 

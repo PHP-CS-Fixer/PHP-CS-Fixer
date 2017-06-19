@@ -16,8 +16,6 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Base class for function reference fixers.
- *
  * @internal
  *
  * @author Vladimir Reznichenko <kalessil@gmail.com>
@@ -53,9 +51,9 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
      * @param string   $functionNameToSearch
      * @param Tokens   $tokens
      * @param int      $start
-     * @param int|null $end
+     * @param null|int $end
      *
-     * @return int[]|null returns $functionName, $openParenthesis, $closeParenthesis packed into array
+     * @return null|int[] returns $functionName, $openParenthesis, $closeParenthesis packed into array
      */
     protected function find($functionNameToSearch, Tokens $tokens, $start = 0, $end = null)
     {
@@ -63,7 +61,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         $end = null === $end ? $tokens->count() : $end;
 
         // find raw sequence which we can analyse for context
-        $candidateSequence = array(array(T_STRING, $functionNameToSearch), '(');
+        $candidateSequence = [[T_STRING, $functionNameToSearch], '('];
         $matches = $tokens->findSequence($candidateSequence, $start, $end, false);
         if (null === $matches) {
             // not found, simply return without further attempts
@@ -76,7 +74,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         // first criteria check: shall look like function call
         $functionNamePrefix = $tokens->getPrevMeaningfulToken($functionName);
         $functionNamePrecedingToken = $tokens[$functionNamePrefix];
-        if ($functionNamePrecedingToken->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF))) {
+        if ($functionNamePrecedingToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF])) {
             // this expression is differs from expected, resume
             return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
         }
@@ -85,7 +83,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         if ($functionNamePrecedingToken->isGivenKind(T_NS_SEPARATOR)) {
             $namespaceCandidate = $tokens->getPrevMeaningfulToken($functionNamePrefix);
             $namespaceCandidateToken = $tokens[$namespaceCandidate];
-            if ($namespaceCandidateToken->isGivenKind(array(T_NEW, T_STRING, CT::T_NAMESPACE_OPERATOR))) {
+            if ($namespaceCandidateToken->isGivenKind([T_NEW, T_STRING, CT::T_NAMESPACE_OPERATOR])) {
                 // here can be added complete namespace scan
                 // this expression is differs from expected, resume
                 return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
@@ -95,7 +93,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         // final step: find closing parenthesis
         $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
 
-        return array($functionName, $openParenthesis, $closeParenthesis);
+        return [$functionName, $openParenthesis, $closeParenthesis];
     }
 
     /**
@@ -114,7 +112,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
      */
     protected function getArguments(Tokens $tokens, $openParenthesis, $closeParenthesis)
     {
-        $arguments = array();
+        $arguments = [];
         $firstSensibleToken = $tokens->getNextMeaningfulToken($openParenthesis);
         if ($tokens[$firstSensibleToken]->equals(')')) {
             return $arguments;

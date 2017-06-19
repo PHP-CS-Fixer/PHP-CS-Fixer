@@ -27,7 +27,7 @@ final class Cache implements CacheInterface
     /**
      * @var array
      */
-    private $hashes = array();
+    private $hashes = [];
 
     public function __construct(SignatureInterface $signature)
     {
@@ -58,8 +58,8 @@ final class Cache implements CacheInterface
         if (!is_int($hash)) {
             throw new \InvalidArgumentException(sprintf(
                 'Value needs to be an integer, got "%s".',
-                is_object($hash) ? get_class($hash) : gettype($hash))
-            );
+                is_object($hash) ? get_class($hash) : gettype($hash)
+            ));
         }
 
         $this->hashes[$file] = $hash;
@@ -72,12 +72,12 @@ final class Cache implements CacheInterface
 
     public function toJson()
     {
-        $json = json_encode(array(
+        $json = json_encode([
             'php' => $this->getSignature()->getPhpVersion(),
             'version' => $this->getSignature()->getFixerVersion(),
             'rules' => $this->getSignature()->getRules(),
             'hashes' => $this->hashes,
-        ));
+        ]);
 
         if (false === $json) {
             throw new \UnexpectedValueException(sprintf(
@@ -108,12 +108,12 @@ final class Cache implements CacheInterface
             ));
         }
 
-        $requiredKeys = array(
+        $requiredKeys = [
             'php',
             'version',
             'rules',
             'hashes',
-        );
+        ];
 
         $missingKeys = array_diff_key(array_flip($requiredKeys), $data);
 

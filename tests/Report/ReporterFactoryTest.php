@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Test\AccessibleObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -22,13 +23,13 @@ use PhpCsFixer\Test\AccessibleObject;
  *
  * @covers \PhpCsFixer\Report\ReporterFactory
  */
-final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
+final class ReporterFactoryTest extends TestCase
 {
     public function testCreate()
     {
         $factory = ReporterFactory::create();
 
-        $this->assertInstanceOf('PhpCsFixer\Report\ReporterFactory', $factory);
+        $this->assertInstanceOf(\PhpCsFixer\Report\ReporterFactory::class, $factory);
     }
 
     public function testInterfaceIsFluent()
@@ -82,13 +83,13 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
         $builder->registerReporter($r2);
         $builder->registerReporter($r3);
 
-        $this->assertSame(array('r1', 'r2', 'r3'), $builder->getFormats());
+        $this->assertSame(['r1', 'r2', 'r3'], $builder->getFormats());
     }
 
     public function testRegisterReportWithOccupiedFormat()
     {
         $this->setExpectedException(
-            'UnexpectedValueException',
+            \UnexpectedValueException::class,
             'Reporter for format "non_unique_name" is already registered.'
         );
 
@@ -103,7 +104,7 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
     public function testGetNonRegisteredReport()
     {
         $this->setExpectedException(
-            'UnexpectedValueException',
+            \UnexpectedValueException::class,
             'Reporter for format "non_registered_format" is not registered.'
         );
 
@@ -114,7 +115,7 @@ final class ReporterFactoryTest extends \PHPUnit_Framework_TestCase
 
     private function createReporterDouble($format)
     {
-        $reporter = $this->prophesize('PhpCsFixer\Report\ReporterInterface');
+        $reporter = $this->prophesize(\PhpCsFixer\Report\ReporterInterface::class);
         $reporter->getFormat()->willReturn($format);
 
         return $reporter->reveal();

@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\Signature;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -23,7 +24,7 @@ use PhpCsFixer\Cache\Signature;
  *
  * @covers \PhpCsFixer\Cache\FileHandler
  */
-final class FileHandlerTest extends \PHPUnit_Framework_TestCase
+final class FileHandlerTest extends TestCase
 {
     protected function tearDown()
     {
@@ -40,7 +41,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
         $handler = new FileHandler($file);
 
-        $this->assertInstanceOf('PhpCsFixer\Cache\FileHandlerInterface', $handler);
+        $this->assertInstanceOf(\PhpCsFixer\Cache\FileHandlerInterface::class, $handler);
     }
 
     public function testConstructorSetsFile()
@@ -79,10 +80,10 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $signature = new Signature(
             PHP_VERSION,
             '2.0',
-            array(
+            [
                 'foo',
                 'bar',
-            )
+            ]
         );
 
         $cache = new Cache($signature);
@@ -93,7 +94,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
         $cached = $handler->read();
 
-        $this->assertInstanceOf('PhpCsFixer\Cache\CacheInterface', $cached);
+        $this->assertInstanceOf(\PhpCsFixer\Cache\CacheInterface::class, $cached);
         $this->assertTrue($cached->getSignature()->equals($signature));
     }
 
@@ -101,7 +102,7 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $file = __DIR__.'/non-existent-directory/.php_cs.cache';
 
-        $this->setExpectedExceptionRegExp('Symfony\Component\Filesystem\Exception\IOException', sprintf(
+        $this->setExpectedExceptionRegExp(\Symfony\Component\Filesystem\Exception\IOException::class, sprintf(
             '#^Failed to write file "%s"(, ".*")?.#',
             preg_quote($file)
         ));
@@ -109,10 +110,10 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $cache = new Cache(new Signature(
             PHP_VERSION,
             '2.0',
-            array(
+            [
                 'foo',
                 'bar',
-            )
+            ]
         ));
 
         $handler = new FileHandler($file);
@@ -127,10 +128,10 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $cache = new Cache(new Signature(
             PHP_VERSION,
             '2.0',
-            array(
+            [
                 'foo',
                 'bar',
-            )
+            ]
         ));
 
         $handler = new FileHandler($file);
@@ -138,7 +139,10 @@ final class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $handler->write($cache);
 
         $this->assertFileExists($file);
-        $this->assertSame($cache->toJson(), file_get_contents($file));
+
+        $actualCacheJson = file_get_contents($file);
+
+        $this->assertSame($cache->toJson(), $actualCacheJson);
     }
 
     /**

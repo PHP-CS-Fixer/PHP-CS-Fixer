@@ -30,14 +30,14 @@ final class NotOperatorWithSpaceFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Logical NOT operators (`!`) should have leading and trailing whitespaces.',
-            array(new CodeSample(
+            [new CodeSample(
 '<?php
 
 if (!$bar) {
     echo "Help!";
 }
 '
-            ))
+            )]
         );
     }
 
@@ -68,11 +68,11 @@ if (!$bar) {
 
             if ($token->equals('!')) {
                 if (!$tokens[$index + 1]->isWhitespace()) {
-                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+                    $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
                 }
 
                 if (!$tokens[$index - 1]->isWhitespace()) {
-                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+                    $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
                 }
             }
         }

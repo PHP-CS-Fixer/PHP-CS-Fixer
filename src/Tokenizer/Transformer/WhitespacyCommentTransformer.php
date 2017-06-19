@@ -30,7 +30,7 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
      */
     public function getCustomTokens()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -60,12 +60,12 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
 
         $whitespaces = substr($content, strlen($trimmedContent));
 
-        $token->setContent($trimmedContent);
+        $tokens[$index] = new Token([$token->getId(), $trimmedContent]);
 
         if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {
-            $tokens[$index + 1]->setContent($whitespaces.$tokens[$index + 1]->getContent());
+            $tokens[$index + 1] = new Token([T_WHITESPACE, $whitespaces.$tokens[$index + 1]->getContent()]);
         } else {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, $whitespaces)));
+            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, $whitespaces]));
         }
     }
 }

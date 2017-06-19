@@ -15,11 +15,13 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -29,7 +31,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @coversNothing
  * @group auto-review
  */
-final class FixerTest extends \PHPUnit_Framework_TestCase
+final class FixerTest extends TestCase
 {
     /**
      * @param FixerInterface $fixer
@@ -38,7 +40,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFixerDefinitions(FixerInterface $fixer)
     {
-        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
 
         $definition = $fixer->getDefinition();
 
@@ -48,10 +50,8 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixer->getName()));
 
         $dummyFileInfo = new StdinFileInfo();
-        $sampleCounter = 0;
-        foreach ($samples as $sample) {
-            ++$sampleCounter;
-            $this->assertInstanceOf('PhpCsFixer\FixerDefinition\CodeSampleInterface', $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+        foreach ($samples as $sampleCounter => $sample) {
+            $this->assertInstanceOf(CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
             $code = $sample->getCode();
             $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
 
@@ -76,6 +76,16 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
                 $tokens
             );
             $this->assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixer->getName(), $sampleCounter));
+
+            $duplicatedCodeSample = array_search(
+                $sample,
+                array_slice($samples, 0, $sampleCounter),
+                false
+            );
+            $this->assertFalse(
+                $duplicatedCodeSample,
+                sprintf('[%s] Code sample #%d duplicates #%d.', $fixer->getName(), $sampleCounter, $duplicatedCodeSample)
+            );
         }
 
         if ($fixer->isRisky()) {
@@ -119,13 +129,13 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFixersAreDefined(FixerInterface $fixer)
     {
-        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
     }
 
     public function provideFixerDefinitionsCases()
     {
         return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+            return [$fixer];
         }, $this->getAllFixers());
     }
 
@@ -138,7 +148,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     {
         $configurationDefinition = $fixer->getConfigurationDefinition();
 
-        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface', $configurationDefinition);
+        $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
             $this->assertNotEmpty($option->getDescription());
@@ -152,7 +162,7 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
         });
 
         return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+            return [$fixer];
         }, $fixers);
     }
 
@@ -166,12 +176,12 @@ final class FixerTest extends \PHPUnit_Framework_TestCase
     /**
      * copy paste from GeckoPackages/GeckoPHPUnit StringsAssertTrait, to replace with Trait when possible.
      *
-     * @param mixed $actual
-     * @param mixed $message
+     * @param mixed  $actual
+     * @param string $message
      */
     private static function assertStringIsNotEmpty($actual, $message = '')
     {
-        self::assertThat($actual, new \PHPUnit_Framework_Constraint_IsType('string'), $message);
+        self::assertInternalType('string', $actual, $message);
         self::assertNotEmpty($actual, $message);
     }
 }

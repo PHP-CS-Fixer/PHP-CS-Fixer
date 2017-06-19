@@ -17,6 +17,7 @@ use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -39,7 +40,7 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
     {
         return new FixerDefinition(
             '@return void and @return null annotations should be omitted from phpdocs.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -56,7 +57,7 @@ function foo() {}
 function foo() {}
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -74,7 +75,7 @@ function foo() {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
@@ -90,7 +91,7 @@ function foo() {}
                 $this->fixAnnotation($doc, $annotation);
             }
 
-            $token->setContent($doc->getContent());
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 

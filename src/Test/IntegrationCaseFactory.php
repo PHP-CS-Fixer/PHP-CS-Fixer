@@ -47,13 +47,13 @@ final class IntegrationCaseFactory
             }
 
             $match = array_merge(
-                array(
+                [
                     'config' => null,
                     'settings' => null,
                     'requirements' => null,
                     'expect' => null,
                     'input' => null,
-                ),
+                ],
                 $match
             );
 
@@ -85,23 +85,23 @@ final class IntegrationCaseFactory
      */
     private function determineConfig($config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'indent' => '    ',
             'lineEnding' => "\n",
-        ));
+        ]);
 
         if (!is_string($parsed['indent'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected string value for "indent", got "%s".',
-                is_object($parsed['indent']) ? get_class($parsed['indent']) : gettype($parsed['indent']).'#'.$parsed['indent'])
-            );
+                is_object($parsed['indent']) ? get_class($parsed['indent']) : gettype($parsed['indent']).'#'.$parsed['indent']
+            ));
         }
 
         if (!is_string($parsed['lineEnding'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected string value for "lineEnding", got "%s".',
-                is_object($parsed['lineEnding']) ? get_class($parsed['lineEnding']) : gettype($parsed['lineEnding']).'#'.$parsed['lineEnding'])
-            );
+                is_object($parsed['lineEnding']) ? get_class($parsed['lineEnding']) : gettype($parsed['lineEnding']).'#'.$parsed['lineEnding']
+            ));
         }
 
         return $parsed;
@@ -116,23 +116,15 @@ final class IntegrationCaseFactory
      */
     private function determineRequirements($config)
     {
-        $parsed = $this->parseJson($config, array(
-            'hhvm' => true,
+        $parsed = $this->parseJson($config, [
             'php' => PHP_VERSION_ID,
-        ));
+        ]);
 
-        if (!is_int($parsed['php']) || $parsed['php'] < 50306) {
+        if (!is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
-                'Expected int >= 50306 value for "php", got "%s".',
-                is_object($parsed['php']) ? get_class($parsed['php']) : gettype($parsed['php']).'#'.$parsed['php'])
-            );
-        }
-
-        if (!is_bool($parsed['hhvm'])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Expected bool value for "hhvm", got "%s".',
-                is_object($parsed['hhvm']) ? get_class($parsed['hhvm']) : gettype($parsed['hhvm']).'#'.$parsed['hhvm'])
-            );
+                'Expected int value like 50509 for "php", got "%s".',
+                is_object($parsed['php']) ? get_class($parsed['php']) : gettype($parsed['php']).'#'.$parsed['php']
+            ));
         }
 
         return $parsed;
@@ -159,22 +151,22 @@ final class IntegrationCaseFactory
      */
     private function determineSettings($config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'checkPriority' => true,
-        ));
+        ]);
 
         if (!is_bool($parsed['checkPriority'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected bool value for "checkPriority", got "%s".',
-                is_object($parsed['checkPriority']) ? get_class($parsed['checkPriority']) : gettype($parsed['checkPriority']).'#'.$parsed['checkPriority'])
-            );
+                is_object($parsed['checkPriority']) ? get_class($parsed['checkPriority']) : gettype($parsed['checkPriority']).'#'.$parsed['checkPriority']
+            ));
         }
 
         return $parsed;
     }
 
     /**
-     * @param string|null $code
+     * @param null|string $code
      * @param SplFileInfo $file
      *
      * @return string
@@ -191,10 +183,10 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * @param string|null $code
+     * @param null|string $code
      * @param SplFileInfo $file
      *
-     * @return string|null
+     * @return null|string
      */
     private function determineInputCode($code, SplFileInfo $file)
     {
@@ -202,11 +194,11 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * @param string|null $code
+     * @param null|string $code
      * @param SplFileInfo $file
      * @param string      $suffix
      *
-     * @return string|null
+     * @return null|string
      */
     private function determineCode($code, SplFileInfo $file, $suffix)
     {
@@ -221,8 +213,8 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * @param string|null $encoded
-     * @param array|null  $template
+     * @param null|string $encoded
+     * @param null|array  $template
      *
      * @return array
      */
@@ -230,7 +222,7 @@ final class IntegrationCaseFactory
     {
         // content is optional if template is provided
         if (!$encoded && null !== $template) {
-            $decoded = array();
+            $decoded = [];
         } else {
             $decoded = json_decode($encoded, true);
 

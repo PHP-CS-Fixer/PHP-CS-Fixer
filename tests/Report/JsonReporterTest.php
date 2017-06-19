@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\JsonReporter;
 use PhpCsFixer\Report\ReportSummary;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -23,7 +24,7 @@ use PhpCsFixer\Report\ReportSummary;
  *
  * @covers \PhpCsFixer\Report\JsonReporter
  */
-final class JsonReporterTest extends \PHPUnit_Framework_TestCase
+final class JsonReporterTest extends TestCase
 {
     /** @var JsonReporter */
     private $reporter;
@@ -56,7 +57,7 @@ JSON;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(),
+                [],
                 0,
                 0,
                 false,
@@ -87,11 +88,11 @@ JSON;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                    ],
+                ],
                 5 * 1000,
                 2 * 1024 * 1024,
                 false,
@@ -123,12 +124,12 @@ JSON;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
                         'diff' => 'this text is a diff ;)',
-                    ),
-                ),
+                    ],
+                ],
                 5 * 1000,
                 2 * 1024 * 1024,
                 false,
@@ -160,11 +161,11 @@ JSON;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                    ],
+                ],
                 5 * 1000,
                 2 * 1024 * 1024,
                 true,
@@ -195,11 +196,11 @@ JSON;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                    ],
+                ],
                 1234,
                 2.5 * 1024 * 1024,
                 false,
@@ -237,16 +238,16 @@ JSON;
 
         $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
                         'diff' => 'this text is a diff ;)',
-                    ),
-                    'anotherFile.php' => array(
-                        'appliedFixers' => array('another_fixer_name_here'),
+                    ],
+                    'anotherFile.php' => [
+                        'appliedFixers' => ['another_fixer_name_here'],
                         'diff' => 'another diff here ;)',
-                    ),
-                ),
+                    ],
+                ],
                 1234,
                 2.5 * 1024 * 1024,
                 true,
@@ -271,7 +272,7 @@ JSON;
         $validator = new \JsonSchema\Validator();
         $validator->validate(
             $data,
-            (object) array('$ref' => 'file://'.realpath($jsonPath))
+            (object) ['$ref' => 'file://'.realpath($jsonPath)]
         );
 
         $this->assertTrue(

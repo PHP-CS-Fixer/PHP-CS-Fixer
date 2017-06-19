@@ -36,8 +36,8 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     // This is'.'
     //'.'
@@ -50,8 +50,8 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
     //    '.'
     // multiline comment. '.'
     // ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /*
      * This is another'.'
@@ -66,8 +66,8 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * '.'
      * multiline comment. '.'
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * Summary'.'
@@ -88,7 +88,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * @annotation '.'
      *  Foo '.'
      */',
-            ),
-        );
+            ],
+        ];
     }
 }

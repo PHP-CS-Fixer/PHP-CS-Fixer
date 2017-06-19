@@ -31,7 +31,7 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     {
         return new FixerDefinition(
             'An empty line feed should precede a return statement.',
-            array(new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}"))
+            [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}")]
         );
     }
 
@@ -68,23 +68,24 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
 
             $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
-            if (!$prevNonWhitespaceToken->equalsAny(array(';', '}'))) {
+            if (!$prevNonWhitespaceToken->equalsAny([';', '}'])) {
                 continue;
             }
 
-            $prevToken = $tokens[$index - 1];
+            $prevIndex = $index - 1;
+            $prevToken = $tokens[$prevIndex];
 
             if ($prevToken->isWhitespace()) {
                 $parts = explode("\n", $prevToken->getContent());
                 $countParts = count($parts);
 
                 if (1 === $countParts) {
-                    $prevToken->setContent(rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding);
+                    $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
                 } elseif (count($parts) <= 2) {
-                    $prevToken->setContent($lineEnding.$prevToken->getContent());
+                    $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
                 }
             } else {
-                $tokens->insertAt($index, new Token(array(T_WHITESPACE, $lineEnding.$lineEnding)));
+                $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
 
                 ++$index;
                 ++$limit;

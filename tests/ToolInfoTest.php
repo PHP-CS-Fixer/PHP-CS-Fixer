@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author SpacePossum
@@ -21,7 +22,7 @@ use PhpCsFixer\ToolInfo;
  *
  * @covers \PhpCsFixer\ToolInfo
  */
-final class ToolInfoTest extends \PHPUnit_Framework_TestCase
+final class ToolInfoTest extends TestCase
 {
     public function testGetVersion()
     {
@@ -40,7 +41,7 @@ final class ToolInfoTest extends \PHPUnit_Framework_TestCase
 
     public function testGetComposerVersionThrowsExceptionIfOutsideComposerScope()
     {
-        $this->setExpectedException('LogicException');
+        $this->setExpectedException(\LogicException::class);
 
         ToolInfo::getComposerVersion();
     }

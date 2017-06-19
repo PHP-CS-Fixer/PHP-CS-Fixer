@@ -37,8 +37,8 @@ final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCas
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 class Foo
 {
@@ -57,8 +57,8 @@ class Foo
     private static $baz1 = array(array(1,2), array(3, 4)), $baz2 = array(1,2,3);
     private static $aaa1 = 1, $aaa2 = array(2, 2), $aaa3 = 3;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo
 {
@@ -76,8 +76,8 @@ class Foo
 
 echo Foo::A, Foo::B;
 ',
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -88,8 +88,8 @@ EOT
 
 class Foo { protected static $foo = 1,$bar,$baz=2 ; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -99,8 +99,8 @@ class Bar
 {
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -111,8 +111,8 @@ EOT
 
 class Foo { protected static $foo = 1, $bar,  $baz=2 ; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -123,8 +123,8 @@ EOT
 
 class Foo { const ONE = 1, TWO = 2; protected static $foo = 1, $bar,  $baz=2 ; const THREE = 3; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -143,8 +143,8 @@ class Foo {
    $baz=2;
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -169,8 +169,8 @@ class Foo {
    $baz=2;
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -199,8 +199,8 @@ class Foo {
     private $var = false;
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -233,8 +233,8 @@ class Foo {
     }
 }
 EOT
-            ),
-            'line_breaks_1' => array(
+            ],
+            'line_breaks_1' => [
                 <<<'EOT'
 <?php
 
@@ -272,8 +272,8 @@ class Foo
     }
 }
 EOT
-            ),
-            'line_breaks_2' => array(
+            ],
+            'line_breaks_2' => [
                 <<<'EOT'
 <?php
 
@@ -305,8 +305,8 @@ class Foo
     }
 }
 EOT
-            ),
-            'line_breaks_3' => array(
+            ],
+            'line_breaks_3' => [
                 <<<'EOT'
 <?php
 
@@ -338,8 +338,8 @@ class Foo
     }
 }
 EOT
-            ),
-            'line_breaks_4' => array(
+            ],
+            'line_breaks_4' => [
                 <<<'EOT'
 <?php
 
@@ -370,8 +370,8 @@ class Foo
     }
 }
 EOT
-            ),
-            'line_breaks_5' => array(
+            ],
+            'line_breaks_5' => [
                 <<<'EOT'
 <?php
 
@@ -396,8 +396,8 @@ class Foo
     }
 }
 EOT
-            ),
-            'line_breaks_6' => array(
+            ],
+            'line_breaks_6' => [
                 <<<'EOT'
 <?php
 
@@ -422,8 +422,8 @@ class Foo
     }
 }
 EOT
-            ),
-            'whitespace_1' => array(
+            ],
+            'whitespace_1' => [
                 <<<'EOT'
 <?php
 
@@ -444,8 +444,8 @@ class Foo {    public $one = 1; public $bar = null,$initialized = false,$configu
     }
 }
 EOT
-            ),
-            'whitespace_2' => array(
+            ],
+            'whitespace_2' => [
                 <<<'EOT'
 <?php
 
@@ -466,8 +466,8 @@ class Foo {    public $one = 1;  public $bar = null,$initialized = false,$config
     }
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -478,8 +478,8 @@ EOT
 
 class Foo { protected static $foo = 1, $bar, $baz=1; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -490,8 +490,8 @@ EOT
 
 class Foo {   protected static $foo = 1, $bar, $baz=1; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -502,8 +502,8 @@ EOT
 
 class Foo { protected $foo = 1, $bar, $baz=2; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -514,8 +514,8 @@ EOT
 
 class Foo { var $foo = 1, $bar, $baz=2; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -526,8 +526,8 @@ EOT
 
 class Foo { var $foo = 1, $bar; public function doSomething1() {} var $baz=2; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -538,8 +538,8 @@ EOT
 
 class Foo { var $foo = 1, $bar; public function doSomething2() { global $one, $two, $three; } var $baz=2; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -550,8 +550,8 @@ EOT
 
 class Foo { public function doSomething3() {} protected $foo = 1, $bar, $baz=2; }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -562,8 +562,8 @@ EOT
 
 class Foo { public function doSomethingElse() {} protected $foo = 1, $bar, $baz=2; private $acme =array(); }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -574,8 +574,8 @@ EOT
 
 class Foo { public function doSomewhere() {} protected $foo = 1, $bar, $baz=2; private $acme1 =array(); }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -586,8 +586,8 @@ EOT
 
 class Foo { public function doThis() { global $one1, $two2, $three3; } protected $foo = 1, $bar, $baz=2; private $acme2 =array(); }
 EOT
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo
 {
@@ -613,8 +613,8 @@ B#
 
 echo Foo::A, Foo::B;
 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -657,15 +657,15 @@ class Foo
 }
 EOT;
 
-        $this->fixer->configure(array('elements' => $configuration));
+        $this->fixer->configure(['elements' => $configuration]);
         $this->doTest($expected, $input);
     }
 
     public function provideConfigurationCases()
     {
-        return array(
-            array(
-                array('const', 'property'),
+        return [
+            [
+                ['const', 'property'],
                 <<<'EOT'
 <?php
 
@@ -677,9 +677,9 @@ class Foo
     protected static $bar = 2;
 }
 EOT
-            ),
-            array(
-                array('const'),
+            ],
+            [
+                ['const'],
                 <<<'EOT'
 <?php
 
@@ -690,9 +690,9 @@ class Foo
     protected static $foo = 1, $bar = 2;
 }
 EOT
-            ),
-            array(
-                array('property'),
+            ],
+            [
+                ['property'],
                 <<<'EOT'
 <?php
 
@@ -703,18 +703,18 @@ class Foo
     protected static $bar = 2;
 }
 EOT
-            ),
-        );
+            ],
+        ];
     }
 
     public function testWrongConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/'
         );
 
-        $this->fixer->configure(array('elements' => array('foo')));
+        $this->fixer->configure(['elements' => ['foo']]);
     }
 
     /**
@@ -731,8 +731,8 @@ EOT
 
     public function providePHP71Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     class Token {
                         const PUBLIC_CONST = 0;
@@ -750,8 +750,8 @@ EOT
                         public const PUBLIC_CONST_TWO = 0, TEST_71 = 0;
                     }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -769,11 +769,11 @@ EOT
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
                 "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0, BBB=1;\r\n\t}",
-            ),
-        );
+            ],
+        ];
     }
 }

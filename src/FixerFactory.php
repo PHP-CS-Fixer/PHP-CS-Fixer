@@ -39,18 +39,14 @@ final class FixerFactory
     private $nameValidator;
 
     /**
-     * Fixers.
-     *
      * @var FixerInterface[]
      */
-    private $fixers = array();
+    private $fixers = [];
 
     /**
-     * Fixers by name.
-     *
      * @var FixerInterface[] Associative array of fixers with names as keys
      */
-    private $fixersByName = array();
+    private $fixersByName = [];
 
     public function __construct()
     {
@@ -79,8 +75,6 @@ final class FixerFactory
     }
 
     /**
-     * Get fixers.
-     *
      * @return FixerInterface[]
      */
     public function getFixers()
@@ -91,8 +85,6 @@ final class FixerFactory
     }
 
     /**
-     * Register all built in fixers.
-     *
      * @return $this
      */
     public function registerBuiltInFixers()
@@ -100,7 +92,7 @@ final class FixerFactory
         static $builtInFixers = null;
 
         if (null === $builtInFixers) {
-            $builtInFixers = array();
+            $builtInFixers = [];
 
             foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Fixer') as $file) {
                 $relativeNamespace = $file->getRelativePath();
@@ -119,8 +111,6 @@ final class FixerFactory
     }
 
     /**
-     * Register fixers.
-     *
      * @param FixerInterface[] $fixers
      *
      * @return $this
@@ -135,8 +125,6 @@ final class FixerFactory
     }
 
     /**
-     * Register fixer.
-     *
      * @param FixerInterface $fixer
      * @param bool           $isCustom
      *
@@ -169,9 +157,9 @@ final class FixerFactory
      */
     public function useRuleSet(RuleSetInterface $ruleSet)
     {
-        $fixers = array();
-        $fixersByName = array();
-        $fixerConflicts = array();
+        $fixers = [];
+        $fixersByName = [];
+        $fixerConflicts = [];
 
         $fixerNames = array_keys($ruleSet->getRules());
         foreach ($fixerNames as $name) {
@@ -236,7 +224,7 @@ final class FixerFactory
         // `usort(): Array was modified by the user comparison function` warning for mocked objects.
 
         $data = array_map(function (FixerInterface $fixer) {
-            return array($fixer, $fixer->getPriority());
+            return [$fixer, $fixer->getPriority()];
         }, $this->fixers);
 
         usort($data, function (array $a, array $b) {
@@ -253,17 +241,17 @@ final class FixerFactory
     /**
      * @param FixerInterface $fixer
      *
-     * @return string[]|null
+     * @return null|string[]
      */
     private function getFixersConflicts(FixerInterface $fixer)
     {
-        static $conflictMap = array(
-            'no_blank_lines_before_namespace' => array('single_blank_line_before_namespace'),
-        );
+        static $conflictMap = [
+            'no_blank_lines_before_namespace' => ['single_blank_line_before_namespace'],
+        ];
 
         $fixerName = $fixer->getName();
 
-        return array_key_exists($fixerName, $conflictMap) ? $conflictMap[$fixerName] : array();
+        return array_key_exists($fixerName, $conflictMap) ? $conflictMap[$fixerName] : [];
     }
 
     /**
@@ -274,7 +262,7 @@ final class FixerFactory
     private function generateConflictMessage(array $fixerConflicts)
     {
         $message = 'Rule contains conflicting fixers:';
-        $report = array();
+        $report = [];
         foreach ($fixerConflicts as $fixer => $fixers) {
             // filter mutual conflicts
             $report[$fixer] = array_filter(

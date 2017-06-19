@@ -32,7 +32,7 @@ final class FixerOption implements FixerOptionInterface
     /**
      * @var bool
      */
-    private $isRequired = true;
+    private $isRequired;
 
     /**
      * @var null|string[]
@@ -45,7 +45,7 @@ final class FixerOption implements FixerOptionInterface
     private $allowedValues;
 
     /**
-     * @var \Closure|null
+     * @var null|\Closure
      */
     private $normalizer;
 
@@ -54,9 +54,9 @@ final class FixerOption implements FixerOptionInterface
      * @param string        $description
      * @param bool          $isRequired
      * @param mixed         $default
-     * @param string[]|null $allowedTypes
-     * @param array|null    $allowedValues
-     * @param \Closure|null $normalizer
+     * @param null|string[] $allowedTypes
+     * @param null|array    $allowedValues
+     * @param null|\Closure $normalizer
      */
     public function __construct(
         $name,
@@ -171,10 +171,6 @@ final class FixerOption implements FixerOptionInterface
      */
     private function unbind(\Closure $closure)
     {
-        if (PHP_VERSION_ID < 50400) {
-            return $closure;
-        }
-
         return $closure->bindTo(null);
     }
 }

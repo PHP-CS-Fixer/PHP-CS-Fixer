@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Report\TextReporter;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -22,7 +23,7 @@ use PhpCsFixer\Report\TextReporter;
  *
  * @covers \PhpCsFixer\Report\TextReporter
  */
-final class TextReporterTest extends \PHPUnit_Framework_TestCase
+final class TextReporterTest extends TestCase
 {
     /** @var TextReporter */
     private $reporter;
@@ -49,7 +50,7 @@ TEXT;
             $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
-                    array(),
+                    [],
                     0,
                     0,
                     false,
@@ -62,7 +63,10 @@ TEXT;
 
     public function testGenerateSimple()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php
 
 TEXT
@@ -72,11 +76,11 @@ TEXT
             $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    ),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here'],
+                        ],
+                    ],
                     0,
                     0,
                     false,
@@ -89,7 +93,10 @@ TEXT
 
     public function testGenerateWithDiff()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php
       ---------- begin diff ----------
 this text is a diff ;)
@@ -103,12 +110,12 @@ TEXT
             $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here'],
                             'diff' => 'this text is a diff ;)',
-                        ),
-                    ),
+                        ],
+                    ],
                     0,
                     0,
                     false,
@@ -121,7 +128,10 @@ TEXT
 
     public function testGenerateWithAppliedFixers()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php (some_fixer_name_here)
 
 TEXT
@@ -131,11 +141,11 @@ TEXT
             $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    ),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here'],
+                        ],
+                    ],
                     0,
                     0,
                     true,
@@ -148,7 +158,10 @@ TEXT
 
     public function testGenerateWithTimeAndMemory()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php
 
 Fixed all files in 1.234 seconds, 2.500 MB memory used
@@ -160,11 +173,11 @@ TEXT
             $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    ),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here'],
+                        ],
+                    ],
                     1234,
                     2.5 * 1024 * 1024,
                     false,
@@ -177,7 +190,10 @@ TEXT
 
     public function testGenerateComplexWithDecoratedOutput()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php (<comment>some_fixer_name_here</comment>)
 <comment>      ---------- begin diff ----------</comment>
 this text is a diff ;)
@@ -198,16 +214,16 @@ TEXT
             $expectedReport,
             $this->reporter->generate(
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here'],
                             'diff' => 'this text is a diff ;)',
-                        ),
-                        'anotherFile.php' => array(
-                            'appliedFixers' => array('another_fixer_name_here'),
+                        ],
+                        'anotherFile.php' => [
+                            'appliedFixers' => ['another_fixer_name_here'],
                             'diff' => 'another diff here ;)',
-                        ),
-                    ),
+                        ],
+                    ],
                     1234,
                     2.5 * 1024 * 1024,
                     true,

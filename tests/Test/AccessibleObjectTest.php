@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\Test\AccessibleObject;
 use PhpCsFixer\Tests\Fixtures\Test\AccessibleObjectTest\DummyClass;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -22,7 +23,7 @@ use PhpCsFixer\Tests\Fixtures\Test\AccessibleObjectTest\DummyClass;
  *
  * @covers \PhpCsFixer\Test\AccessibleObject
  */
-final class AccessibleObjectTest extends \PHPUnit_Framework_TestCase
+final class AccessibleObjectTest extends TestCase
 {
     protected $accessibleObject;
 
@@ -35,7 +36,7 @@ final class AccessibleObjectTest extends \PHPUnit_Framework_TestCase
     {
         $object = AccessibleObject::create(new \stdClass());
 
-        $this->assertInstanceOf('PhpCsFixer\Test\AccessibleObject', $object);
+        $this->assertInstanceOf(\PhpCsFixer\Test\AccessibleObject::class, $object);
     }
 
     public function testGet()

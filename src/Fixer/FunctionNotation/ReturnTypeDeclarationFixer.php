@@ -20,6 +20,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -36,7 +37,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
 
         return new FixerDefinition(
             'There should be one or no space before colon, and one space after it in return type declarations, according to configuration.',
-            array(
+            [
                 new VersionSpecificCodeSample(
                     "<?php\nfunction foo(int \$a):string {};",
                     $versionSpecification
@@ -44,14 +45,14 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
                 new VersionSpecificCodeSample(
                     "<?php\nfunction foo(int \$a):string {};",
                     $versionSpecification,
-                    array('space_before' => 'none')
+                    ['space_before' => 'none']
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction foo(int \$a):string {};",
                     $versionSpecification,
-                    array('space_before' => 'one')
+                    ['space_before' => 'one']
                 ),
-            ),
+            ],
             'Rule is applied only in a PHP 7+ environment.'
         );
     }
@@ -76,14 +77,15 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            $previousToken = $tokens[$index - 1];
+            $previousIndex = $index - 1;
+            $previousToken = $tokens[$previousIndex];
 
             if ($previousToken->isWhitespace()) {
                 if (!$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                     if ($oneSpaceBefore) {
-                        $previousToken->setContent(' ');
+                        $tokens[$previousIndex] = new Token([T_WHITESPACE, ' ']);
                     } else {
-                        $previousToken->clear();
+                        $tokens->clearAt($previousIndex);
                     }
                 }
             } elseif ($oneSpaceBefore) {
@@ -111,13 +113,11 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
      */
     protected function createConfigurationDefinition()
     {
-        $spaceBefore = new FixerOptionBuilder('space_before', 'Spacing to apply before colon.');
-        $spaceBefore = $spaceBefore
-            ->setAllowedValues(array('one', 'none'))
-            ->setDefault('none')
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver(array($spaceBefore));
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('space_before', 'Spacing to apply before colon.'))
+                ->setAllowedValues(['one', 'none'])
+                ->setDefault('none')
+                ->getOption(),
+        ]);
     }
 }

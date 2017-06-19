@@ -14,6 +14,7 @@ namespace PhpCsFixer\tests\AutoReview;
 
 use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author SpacePossum
@@ -23,7 +24,7 @@ use PhpCsFixer\Tokenizer\Transformers;
  * @coversNothing
  * @group auto-review
  */
-final class TransformerTest extends \PHPUnit_Framework_TestCase
+final class TransformerTest extends TestCase
 {
     /**
      * @param TransformerInterface $transformer
@@ -53,9 +54,9 @@ final class TransformerTest extends \PHPUnit_Framework_TestCase
             $transformersItems = $reflection->getProperty('items');
             $transformersItems->setAccessible(true);
             $transformersItems = $transformersItems->getValue($transformers);
-            $transformersArray = array();
+            $transformersArray = [];
             foreach ($transformersItems as $transformer) {
-                $transformersArray[] = array($transformer);
+                $transformersArray[] = [$transformer];
             }
         }
 

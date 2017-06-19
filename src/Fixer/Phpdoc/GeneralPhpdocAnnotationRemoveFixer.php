@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -34,7 +35,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     {
         return new FixerDefinition(
             'Configured annotations should be omitted from phpdocs.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -42,9 +43,9 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
  * @author someone
  */
 function foo() {}',
-                    array('annotations' => array('author'))
+                    ['annotations' => ['author']]
                 ),
-            )
+            ]
         );
     }
 
@@ -75,7 +76,7 @@ function foo() {}',
             return;
         }
 
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
@@ -92,7 +93,7 @@ function foo() {}',
                 $annotation->remove();
             }
 
-            $token->setContent($doc->getContent());
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 
@@ -101,13 +102,11 @@ function foo() {}',
      */
     protected function createConfigurationDefinition()
     {
-        $annotations = new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["@author"]`.');
-        $annotations = $annotations
-            ->setAllowedTypes(array('array'))
-            ->setDefault(array())
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('annotations', array($annotations));
+        return new FixerConfigurationResolverRootless('annotations', [
+            (new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["author"]`.'))
+                ->setAllowedTypes(['array'])
+                ->setDefault([])
+                ->getOption(),
+        ]);
     }
 }

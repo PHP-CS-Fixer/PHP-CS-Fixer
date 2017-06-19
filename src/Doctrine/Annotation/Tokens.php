@@ -30,7 +30,7 @@ final class Tokens extends \SplFixedArray
      *
      * @return self
      */
-    public static function createFromDocComment(PhpToken $input, array $ignoredTags = array())
+    public static function createFromDocComment(PhpToken $input, array $ignoredTags = [])
     {
         if (!$input->isGivenKind(T_DOC_COMMENT)) {
             throw new \InvalidArgumentException('Input must be a T_DOC_COMMENT token.');
@@ -51,7 +51,7 @@ final class Tokens extends \SplFixedArray
             $lexer = new DocLexer();
             $lexer->setInput(substr($content, $nextAtPosition));
 
-            $scannedTokens = array();
+            $scannedTokens = [];
             $index = 0;
             $nbScannedTokensToUse = 0;
             $nbScopes = 0;
@@ -68,7 +68,7 @@ final class Tokens extends \SplFixedArray
                     $nbScannedTokensToUse = 2;
                 }
 
-                if ($index >= 2 && 0 === $nbScopes && !in_array($token['type'], array(DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS), true)) {
+                if ($index >= 2 && 0 === $nbScopes && !in_array($token['type'], [DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS], true)) {
                     break;
                 }
 
@@ -134,7 +134,7 @@ final class Tokens extends \SplFixedArray
      *
      * @param int $index
      *
-     * @return int|null
+     * @return null|int
      */
     public function getNextMeaningfulToken($index)
     {
@@ -146,7 +146,7 @@ final class Tokens extends \SplFixedArray
      *
      * @param int $index
      *
-     * @return int|null
+     * @return null|int
      */
     public function getPreviousMeaningfulToken($index)
     {
@@ -159,7 +159,7 @@ final class Tokens extends \SplFixedArray
      * @param string|string[] $type
      * @param int             $index
      *
-     * @return int|null
+     * @return null|int
      */
     public function getNextTokenOfType($type, $index)
     {
@@ -172,7 +172,7 @@ final class Tokens extends \SplFixedArray
      * @param string|string[] $type
      * @param int             $index
      *
-     * @return int|null
+     * @return null|int
      */
     public function getPreviousTokenOfType($type, $index)
     {
@@ -184,12 +184,26 @@ final class Tokens extends \SplFixedArray
      *
      * @param int $index
      *
-     * @return int|null
+     * @return null|int
      */
     public function getAnnotationEnd($index)
     {
-        $currentIndex = $this->getNextMeaningfulToken($index + 1);
-        if (null !== $currentIndex && $this[$currentIndex]->isType(DocLexer::T_OPEN_PARENTHESIS)) {
+        $currentIndex = null;
+
+        if (isset($this[$index + 2])) {
+            if ($this[$index + 2]->isType(DocLexer::T_OPEN_PARENTHESIS)) {
+                $currentIndex = $index + 2;
+            } elseif (
+                isset($this[$index + 3])
+                && $this[$index + 2]->isType(DocLexer::T_NONE)
+                && $this[$index + 3]->isType(DocLexer::T_OPEN_PARENTHESIS)
+                && preg_match('/^(\R\s*\*\s*)*\s*$/', $this[$index + 2]->getContent())
+            ) {
+                $currentIndex = $index + 3;
+            }
+        }
+
+        if (null !== $currentIndex) {
             $level = 0;
             for ($max = count($this); $currentIndex < $max; ++$currentIndex) {
                 if ($this[$currentIndex]->isType(DocLexer::T_OPEN_PARENTHESIS)) {
@@ -214,7 +228,7 @@ final class Tokens extends \SplFixedArray
      *
      * @param int $index
      *
-     * @return int|null
+     * @return null|int
      */
     public function getArrayEnd($index)
     {
@@ -301,7 +315,7 @@ final class Tokens extends \SplFixedArray
     public function offsetUnset($index)
     {
         if (!isset($this[$index])) {
-            throw new \OutOfBoundsException('Index %s is invalid or does not exist.');
+            throw new \OutOfBoundsException(sprintf('Index %s is invalid or does not exist.', $index));
         }
 
         $max = count($this) - 1;
@@ -319,7 +333,7 @@ final class Tokens extends \SplFixedArray
      * @param int $index
      * @param int $direction
      *
-     * @return int|null
+     * @return null|int
      */
     private function getMeaningfulTokenSibling($index, $direction)
     {
@@ -343,7 +357,7 @@ final class Tokens extends \SplFixedArray
      * @param string|string[] $type
      * @param int             $direction
      *
-     * @return int|null
+     * @return null|int
      */
     private function getTokenOfTypeSibling($index, $type, $direction)
     {

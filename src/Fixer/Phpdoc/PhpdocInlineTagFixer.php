@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -29,7 +30,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Fix phpdoc inline tags, make inheritdoc always inline.',
-            array(new CodeSample(
+            [new CodeSample(
 '<?php
 /**
  * @{TUTORIAL}
@@ -38,7 +39,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
  * @inheritdocs
  */
 '
-            ))
+            )]
         );
     }
 
@@ -55,7 +56,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
@@ -88,7 +89,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
                 $content
             );
 
-            $token->setContent($content);
+            $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
         }
     }
 }

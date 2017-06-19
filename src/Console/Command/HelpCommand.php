@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
@@ -19,6 +20,10 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
+use Symfony\Component\Console\Command\HelpCommand as BaseHelpCommand;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -27,9 +32,11 @@ use PhpCsFixer\RuleSet;
  *
  * @internal
  */
-final class CommandHelp
+final class HelpCommand extends BaseHelpCommand
 {
     /**
+     * Returns help-copy suitable for console output.
+     *
      * @return string
      */
     public static function getHelpCopy()
@@ -82,7 +89,7 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
 display a summary of proposed fixes, leaving your files unchanged.
 
-The <comment>--allow-risky</comment> option allows you to set whether risky rules may run. Default value is taken from config file.
+The <comment>--allow-risky</comment> option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
 The <comment>--stop-on-violation</comment> flag stops execution upon first file that needs to be fixed.
@@ -95,7 +102,7 @@ The <comment>--show-progress</comment> option allows you to choose the way proce
 
 If the option is not provided, it defaults to <comment>run-in</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
-    <info>$ php %command.full_name% --verbose --show-progress=evaluating</info>
+    <info>$ php %command.full_name% --verbose --show-progress=estimating</info>
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
@@ -112,8 +119,8 @@ fixed but without actually modifying them:
     <info>$ php %command.full_name% /path/to/code --dry-run</info>
 
 Instead of using command line options to customize the rule, you can save the
-project configuration in a <comment>.php_cs.dist</comment> file in the root directory
-of your project. The file must return an instance of ``PhpCsFixer\ConfigInterface``,
+project configuration in a <comment>.php_cs.dist</comment> file in the root directory of your project.
+The file must return an instance of `PhpCsFixer\ConfigInterface` (<url>%%%CONFIG_INTERFACE_URL%%%</url>)
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -132,11 +139,11 @@ The example below will add two rules to the default list of PSR2 set rules:
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
-            'array_syntax' => array('syntax' => 'short'),
-        ))
+            'array_syntax' => ['syntax' => 'short'],
+        ])
         ->setFinder(\$finder)
     ;
 
@@ -144,7 +151,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
 **NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
 
-See `Symfony\\\\Finder <http://symfony.com/doc/current/components/finder.html>`_
+See `Symfony\Finder` (<url>http://symfony.com/doc/current/components/finder.html</url>)
 online documentation for other `Finder` methods.
 
 You may also use a blacklist for the rules instead of the above shown whitelist approach.
@@ -158,18 +165,17 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
-        ))
+        ])
         ->setFinder(\$finder)
     ;
 
     ?>
 
 You may want to use non-linux whitespaces in your project. Then you need to
-configure them in your config file. Please be aware that this feature is
-experimental.
+configure them in your config file.
 
     <?php
 
@@ -180,7 +186,7 @@ experimental.
 
     ?>
 
-By using ``--using-cache`` option with yes or no you can set if the caching
+By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
 mechanism should be used.
 
 Caching
@@ -222,7 +228,7 @@ Require ``friendsofphp/php-cs-fixer`` as a ``dev`` dependency:
 Then, add the following command to your CI:
 
     $ IFS=\$'\\n'; COMMIT_SCA_FILES=($(git diff --name-only --diff-filter=ACMRTUXB "\${COMMIT_RANGE}")); unset IFS
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection "\${COMMIT_SCA_FILES[@]}"
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection -- "\${COMMIT_SCA_FILES[@]}"
 
 Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
@@ -232,7 +238,7 @@ Exit codes
 Exit code is build using following bit flags:
 
 *  0 OK.
-*  1 General error (or PHP/HHVM minimal requirement not matched).
+*  1 General error (or PHP minimal requirement not matched).
 *  4 Some files have invalid syntax (only in dry-run mode).
 *  8 Some files need fixing (only in dry-run mode).
 * 16 Configuration error of the application.
@@ -242,6 +248,12 @@ Exit code is build using following bit flags:
 (applies to exit codes of the `fix` command only)
 EOF
         ;
+
+        $template = str_replace(
+            '%%%CONFIG_INTERFACE_URL%%%',
+            sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v%s/src/ConfigInterface.php', self::getLatestReleaseVersionFromChangeLog()),
+            $template
+        );
 
         return str_replace(
            '%%%FIXERS_DETAILS%%%',
@@ -265,10 +277,10 @@ EOF
             // - remove whitespace at array opening
             // - remove trailing array comma and whitespace at array closing
             // - remove numeric array indexes
-            static $replaces = array(
-                array('#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'),
-                array('', ' ', '[$1]', '[', ']', ''),
-            );
+            static $replaces = [
+                ['#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'],
+                ['', ' ', '[$1]', '[', ']', ''],
+            ];
 
             $str = preg_replace(
                 $replaces[0],
@@ -287,7 +299,7 @@ EOF
      *
      * @param FixerOptionInterface $option
      *
-     * @return array|null
+     * @return null|array
      */
     public static function getDisplayableAllowedValues(FixerOptionInterface $option)
     {
@@ -300,8 +312,8 @@ EOF
 
             usort($allowed, function ($valueA, $valueB) {
                 return strcasecmp(
-                    CommandHelp::toString($valueA),
-                    CommandHelp::toString($valueB)
+                    self::toString($valueA),
+                    self::toString($valueB)
                 );
             });
 
@@ -313,6 +325,73 @@ EOF
         return $allowed;
     }
 
+    /**
+     * @throws \RuntimeException when failing to parse the change log file
+     *
+     * @return string
+     */
+    public static function getLatestReleaseVersionFromChangeLog()
+    {
+        static $version = null;
+
+        if (null !== $version) {
+            return $version;
+        }
+
+        $changelogFile = self::getChangeLogFile();
+        if (null === $changelogFile) {
+            $version = Application::VERSION;
+
+            return $version;
+        }
+
+        $changelog = @file_get_contents($changelogFile);
+        if (false === $changelog) {
+            $error = error_get_last();
+
+            throw new \RuntimeException(sprintf(
+                'Failed to read content of the changelog file "%s".%s',
+                $changelogFile,
+                $error ? ' '.$error['message'] : ''
+            ));
+        }
+
+        for ($i = (int) Application::VERSION; $i > 0; --$i) {
+            if (1 === preg_match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
+                $version = $matches[1];
+
+                break;
+            }
+        }
+
+        if (null === $version) {
+            throw new \RuntimeException(sprintf('Failed to parse changelog data of "%s".', $changelogFile));
+        }
+
+        return $version;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $output->getFormatter()->setStyle('url', new OutputFormatterStyle('blue'));
+    }
+
+    /**
+     * @return null|string
+     */
+    private static function getChangeLogFile()
+    {
+        $changelogFile = __DIR__.'/../../../CHANGELOG.md';
+
+        return is_file($changelogFile) ? $changelogFile : null;
+    }
+
+    /**
+     * @return string
+     */
     private static function getFixersHelp()
     {
         $help = '';
@@ -327,13 +406,13 @@ EOF
             }
         );
 
-        $ruleSets = array();
+        $ruleSets = [];
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
-            $ruleSets[$setName] = new RuleSet(array($setName => true));
+            $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
         $getSetsWithRule = function ($rule) use ($ruleSets) {
-            $sets = array();
+            $sets = [];
 
             foreach ($ruleSets as $setName => $ruleSet) {
                 if ($ruleSet->hasRule($rule)) {
@@ -354,8 +433,10 @@ EOF
                 $description = '[n/a]';
             }
 
-            $description = wordwrap($description, 72, "\n   | ");
-            $description = str_replace('`', '``', $description);
+            $description = implode("\n   | ", self::wordwrap(
+                preg_replace('/(`.+?`)/', '<info>$1</info>', $description),
+                72
+            ));
 
             if (!empty($sets)) {
                 $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description);
@@ -366,7 +447,11 @@ EOF
             if ($fixer->isRisky()) {
                 $help .= sprintf(
                     "   | *Risky rule: %s.*\n",
-                    str_replace('`', '``', lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription())))
+                    preg_replace(
+                        '/(`.+?`)/',
+                        '<info>$1</info>',
+                        lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
+                    )
                 );
             }
 
@@ -399,7 +484,11 @@ EOF
                             $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
                         }
 
-                        $line .= ': '.str_replace('`', '``', lcfirst(preg_replace('/\.$/', '', $option->getDescription()))).'; ';
+                        $line .= ': '.preg_replace(
+                            '/(`.+?`)/',
+                            '<info>$1</info>',
+                            lcfirst(preg_replace('/\.$/', '', $option->getDescription()))
+                        ).'; ';
                         if ($option->hasDefault()) {
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
                         } else {
@@ -420,7 +509,8 @@ EOF
             }
         }
 
-        return $help;
+        // prevent "\</foo>" from being rendered as an escaped literal style tag
+        return preg_replace('#\\\\(</.*?>)#', '<<$1', $help);
     }
 
     /**
@@ -433,7 +523,7 @@ EOF
      */
     private static function wordwrap($string, $width)
     {
-        $result = array();
+        $result = [];
         $currentLine = 0;
         $lineLength = 0;
         foreach (explode(' ', $string) as $word) {
