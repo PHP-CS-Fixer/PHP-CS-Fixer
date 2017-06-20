@@ -50,7 +50,7 @@ final class SquareBraceTransformer extends AbstractTransformer
     public function getRequiredPhpVersionId()
     {
         // Short array syntax was introduced in PHP 5.4, but the fixer is smart
-        // enough to handel it even before 5.4.
+        // enough to handle it even before 5.4.
         // Same for array destructing syntax sugar `[` introduced in PHP 7.1.
         return 50000;
     }
