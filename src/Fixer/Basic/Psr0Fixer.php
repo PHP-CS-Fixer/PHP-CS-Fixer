@@ -99,7 +99,7 @@ class InvalidName {}
             $path = str_replace('\\', '/', $file->getRealPath());
             $dir = dirname($path);
 
-            if ($this->configuration['dir']) {
+            if ('' !== $this->configuration['dir']) {
                 $dir = substr($dir, strlen(realpath($this->configuration['dir'])) + 1);
 
                 if (false === $dir) {
