@@ -40,12 +40,12 @@ final class VersionSpecification implements VersionSpecificationInterface
         }
 
         if (null !== $minimum && (!is_int($minimum) || 1 > $minimum)) {
-            throw new \InvalidArgumentException('Minimum needs to be either <null> or an integer greater than 0.');
+            throw new \InvalidArgumentException('Minimum needs to be either null or an integer greater than 0.');
         }
 
         if (null !== $maximum) {
             if (!is_int($maximum) || 1 > $maximum) {
-                throw new \InvalidArgumentException('Maximum needs to be either <null> or an integer greater than 0.');
+                throw new \InvalidArgumentException('Maximum needs to be either null or an integer greater than 0.');
             }
 
             if (null !== $minimum && $maximum < $minimum) {
