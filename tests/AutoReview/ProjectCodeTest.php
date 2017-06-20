@@ -41,7 +41,6 @@ final class ProjectCodeTest extends TestCase
         'PhpCsFixer\Doctrine\Annotation\Tokens',
         'PhpCsFixer\FileRemoval',
         'PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator',
-        'PhpCsFixer\FixerDefinition\FileSpecificCodeSample',
         'PhpCsFixer\FixerFileProcessedEvent',
         'PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper',
         'PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper',
