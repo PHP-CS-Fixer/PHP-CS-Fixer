@@ -1107,6 +1107,11 @@ Choose from the list of available rules:
 
   Replace all ``<>`` with ``!=``.
 
+* **star_to_slash_comment**
+
+  Converts multi-line comments that have only one line of actual content
+  into single-line comments.
+
 * **strict_comparison**
 
   Comparisons should be strict.
