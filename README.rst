@@ -495,6 +495,7 @@ Choose from the list of available rules:
 * **hash_to_slash_comment** [@Symfony]
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
+  DEPRECATED: Use "single_line_comment_style" instead.
 
 * **header_comment**
 
@@ -1094,6 +1095,16 @@ Choose from the list of available rules:
 
   Each namespace use MUST go on its own line and there MUST be one blank
   line after the use statements block.
+
+* **single_line_comment_style**
+
+  Single-line comments and multi-line comments with only one line of
+  actual content should use the ``//`` syntax.
+
+  Configuration options:
+
+  - ``comment_types`` (``array``): list of comment types to fix; defaults to
+    ``['asterisk', 'hash']``
 
 * **single_quote** [@Symfony]
 
