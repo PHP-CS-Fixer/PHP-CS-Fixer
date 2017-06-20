@@ -35,7 +35,7 @@ interface FixerDefinitionInterface
     public function getConfigurationDescription();
 
     /**
-     * @return null|array $defaultConfiguration     null for non-configurable fixer
+     * @return null|array $defaultConfiguration null for non-configurable fixer
      *
      * @deprecated will be removed in 3.0
      */

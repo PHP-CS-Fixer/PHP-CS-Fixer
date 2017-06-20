@@ -28,10 +28,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     private static $assertionFixers = array(
-        'assertSame' => 'fixAssertPositive',
         'assertEquals' => 'fixAssertPositive',
         'assertNotEquals' => 'fixAssertNegative',
         'assertNotSame' => 'fixAssertNegative',
+        'assertSame' => 'fixAssertPositive',
     );
 
     /**
@@ -61,19 +61,19 @@ final class PhpUnitConstructFixer extends AbstractFixer implements Configuration
                 new CodeSample(
                     '<?php
 $this->assertEquals(false, $b);
-$this->assertSame(true, $a);
 $this->assertNotEquals(null, $c);
 $this->assertNotSame(null, $d);
+$this->assertSame(true, $a);
 '
                 ),
                 new CodeSample(
                     '<?php
 $this->assertEquals(false, $b);
-$this->assertSame(true, $a);
 $this->assertNotEquals(null, $c);
 $this->assertNotSame(null, $d);
+$this->assertSame(true, $a);
 ',
-                    array('assertions' => array('assertSame', 'assertNotSame'))
+                    array('assertions' => array('assertNotSame', 'assertSame'))
                 ),
             ),
             null,
