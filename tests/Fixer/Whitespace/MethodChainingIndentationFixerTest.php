@@ -19,6 +19,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Vladimir Boliev <voff.web@gmail.com>
  *
  * @internal
+ *
  * @covers \PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer
  */
 final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase

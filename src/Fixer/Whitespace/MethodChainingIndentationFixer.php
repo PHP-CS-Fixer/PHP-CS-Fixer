@@ -17,6 +17,7 @@ use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -53,20 +54,21 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         for ($index = 1, $count = count($tokens); $index < $count; ++$index) {
             if ($tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
                 if ($this->needLineBreak($index - 1, $tokens)) {
-                    $tokens[$index - 1]->setContent($tokens[$index - 1]->getContent().$lineEnding);
+                    $tokens[$index - 1] = new Token([T_WHITESPACE, $tokens[$index - 1]->getContent().$lineEnding]);
                     --$index;
                     continue;
                 }
 
-                $prev = $tokens[$index - 1];
-                $currentWhitespaces = $this->getLineBreak($prev->getContent());
+                $prevIndex = $index - 1;
+                $prevToken = $tokens[$prevIndex];
+                $currentWhitespaces = $this->getLineBreak($prevToken->getContent());
 
                 if (null !== $currentWhitespaces) {
                     $prevMeaningIndex = $tokens->getPrevMeaningfulToken($index);
                     $rightWhitespaces = $this->getRightIndents($prevMeaningIndex, $tokens);
 
                     if ($currentWhitespaces !== $rightWhitespaces) {
-                        $prev->setContent($lineEnding.$rightWhitespaces);
+                        $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$rightWhitespaces]);
                     }
                 }
             }
