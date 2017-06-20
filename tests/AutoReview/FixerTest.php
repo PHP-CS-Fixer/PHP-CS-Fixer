@@ -163,7 +163,7 @@ final class FixerTest extends TestCase
                 sprintf(
                     $option->hasDefault()
                         ? 'Option `%s` of fixer `%s` is wrongly listed in `$allowedRequiredOptions` structure, as it is not required. If you just changed that option to not be required anymore, please adjust mentioned structure.'
-                        : 'Option `%s` of fixer `%s` shall not be required. If you want to introduce new required option please adjust mentioned `$allowedRequiredOptions`.',
+                        : 'Option `%s` of fixer `%s` shall not be required. If you want to introduce new required option please adjust `$allowedRequiredOptions` structure.',
                     $option->getName(),
                     $fixer->getName()
                 )
