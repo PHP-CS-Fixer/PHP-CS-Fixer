@@ -950,7 +950,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``dir`` (``string``): the directory where the project code is placed; required
+  - ``dir`` (``string``): the directory where the project code is placed; defaults
+    to ``''``
 
 * **psr4** [@Symfony:risky]
 
