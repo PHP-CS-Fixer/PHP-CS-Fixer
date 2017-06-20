@@ -880,13 +880,34 @@ PHP;
     {
         $tokens = Tokens::fromCode($input);
         $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
-
+        $tokens->clearEmptyTokens();
         $this->assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
     public function provideEnsureWhitespaceAtIndexCases()
     {
         return [
+            [
+                '<?php echo 1;',
+                '<?php  echo 1;',
+                1,
+                1,
+                ' ',
+            ],
+            [
+                '<?php echo 7;',
+                '<?php   echo 7;',
+                1,
+                1,
+                ' ',
+            ],
+            [
+                '<?php  ',
+                '<?php  ',
+                1,
+                1,
+                '  ',
+            ],
             [
                 '<?php $a. $b;',
                 '<?php $a.$b;',
