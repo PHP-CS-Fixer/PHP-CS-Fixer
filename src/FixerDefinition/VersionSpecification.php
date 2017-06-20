@@ -49,7 +49,7 @@ final class VersionSpecification implements VersionSpecificationInterface
             }
 
             if (null !== $minimum && $maximum < $minimum) {
-                throw new \InvalidArgumentException('Maximum should not be less than the minimum.');
+                throw new \InvalidArgumentException('Maximum should not be lower than the minimum.');
             }
         }
 
