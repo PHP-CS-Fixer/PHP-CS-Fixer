@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -113,10 +112,6 @@ echo 1;
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (null === $this->configuration['header']) {
-            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
-        }
-
         // figure out where the comment should be placed
         $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens);
 
