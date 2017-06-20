@@ -41,7 +41,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
-        \PhpCsFixer\FixerDefinition\FileSpecificCodeSample::class,
         \PhpCsFixer\FixerFileProcessedEvent::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
@@ -136,7 +135,6 @@ final class ProjectCodeTest extends TestCase
         $exceptionMethodsPerClass = [
             \PhpCsFixer\Config::class => ['create'],
             \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class => ['fixSpace'],
-            \PhpCsFixer\Fixer\Import\OrderedImportsFixer::class => ['sortingCallBack'],
         ];
 
         $definedMethods = $this->getPublicMethodNames($rc);
@@ -172,7 +170,10 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($className);
 
         if (\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class === $className) {
-            $this->markTestIncomplete('Public properties of fixer \'PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer\' will be remove on 3.0.');
+            $this->markTestIncomplete(sprintf(
+                'Public properties of fixer `%s` will be remove on 3.0.',
+                \PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class
+            ));
         }
 
         $this->assertEmpty(
