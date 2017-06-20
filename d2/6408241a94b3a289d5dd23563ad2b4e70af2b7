@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-19T12:51:53Z
+
+It's a bug that it's not called. It should be.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-19T12:54:15Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.2/src/DocBlock/Line.php#L134
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-19T12:58:43Z
+
+Looks good to me but this should target 2.2.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-19T13:43:34Z
+
+Target changed to `2.2` and rebased
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-19T15:00:51Z
+
+@GrahamCampbell can you elaborate on your comment, I wonder about this as well.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-19T15:05:19Z
+
+@SpacePossum it's easy: the whitespace configuration was used, but now the only functionalities that interact with new-lines are:
+
+1. https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.2/src/Fixer/Phpdoc/PhpdocSeparationFixer.php#L104
+1. https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.2/src/Fixer/Phpdoc/PhpdocSeparationFixer.php#L170
+
+A method that find itself the newline style:
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.2/src/DocBlock/Line.php#L134
+
+So everything is ok
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-19T15:23:18Z
+
+thanks @Slamdunk :)
