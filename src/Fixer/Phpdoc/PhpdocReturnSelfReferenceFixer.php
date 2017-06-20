@@ -43,19 +43,51 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
     {
         return new FixerDefinition(
             'The type of `@return` annotations of methods returning a reference to itself must the configured one.',
-            array(new CodeSample('
-<?php
+            array(
+                new CodeSample(
+'<?php
 class Sample
 {
     /**
      * @return this
      */
-    public function test()
+    public function test1()
+    {
+        return $this;
+    }
+
+    /**
+     * @return $self
+     */
+    public function test2()
     {
         return $this;
     }
 }'
-            ))
+                ),
+                new CodeSample(
+'<?php
+class Sample
+{
+    /**
+     * @return this
+     */
+    public function test1()
+    {
+        return $this;
+    }
+
+    /**
+     * @return $self
+     */
+    public function test2()
+    {
+        return $this;
+    }
+}',
+                    array('replacements' => array('this' => 'self'))
+                ),
+            )
         );
     }
 

@@ -61,7 +61,10 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     {
         return new FixerDefinition(
             'Replace core functions calls returning constants with the constants.',
-            array(new CodeSample("<?php\necho phpversion();\necho pi();\necho php_sapi_name();")),
+            array(
+                new CodeSample("<?php\necho phpversion();\necho pi();\necho php_sapi_name();"),
+                new CodeSample("<?php\necho phpversion();\necho pi();", array('functions' => array('phpversion'))),
+            ),
             null,
             'Risky when any of the configured functions to replace are overridden.'
         );

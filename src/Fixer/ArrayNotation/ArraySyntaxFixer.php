@@ -57,8 +57,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
             'PHP arrays should be declared using the configured syntax (requires PHP >= 5.4 for short syntax).',
             array(
                 new CodeSample(
-                    "<?php\n[1,2];",
-                    array('syntax' => 'long')
+                    "<?php\n[1,2];"
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\narray(1,2);",
