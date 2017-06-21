@@ -290,6 +290,14 @@ final class AnnotationTest extends TestCase
                 ' * @method null|gen<int,  gener<string, bool>>|int|array<int, string>|string[] method() foo <a >',
                 array('null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]'),
             ),
+            array(
+                '/** @return    this */',
+                array('this'),
+            ),
+            array(
+                '/** @return $SELF|int */',
+                array('$SELF', 'int'),
+            ),
         );
     }
 
