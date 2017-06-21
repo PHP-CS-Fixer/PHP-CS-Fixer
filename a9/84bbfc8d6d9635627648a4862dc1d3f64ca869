@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-21T06:50:17Z
+
+not 2.2 ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-21T06:53:07Z
+
+nope, this is just to get the test working, the `assertTokens` trait is introduced on 2.3 :)
