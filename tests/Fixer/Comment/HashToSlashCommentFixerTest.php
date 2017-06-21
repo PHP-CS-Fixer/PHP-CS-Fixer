@@ -20,6 +20,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Comment\HashToSlashCommentFixer
+ *
+ * @legacy
  */
 final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
 {
@@ -78,6 +80,9 @@ final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
             [
                 '<?php // a',
                 '<?php # a',
+            ],
+            [
+                '<?php /* start-end */',
             ],
         ];
     }

@@ -19,22 +19,30 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\StarToSlashCommentFixer
+ * @covers \PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer
  */
-final class StarToSlashCommentFixerTest extends AbstractFixerTestCase
+final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
 {
+    public function testInvalidConfigCase1()
+    {
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+
+        $this->fixer->configure(['comment_type' => 'abc']);
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideDefaultCases
+     * @dataProvider provideStarCases
      */
-    public function testDefaults($expected, $input = null)
+    public function testStar($expected, $input = null)
     {
+        $this->fixer->configure(['comment_type' => 'star']);
         $this->doTest($expected, $input);
     }
 
-    public function provideDefaultCases()
+    public function provideStarCases()
     {
         return [
             [
@@ -187,6 +195,112 @@ second line*/',
      * Doc comment
      */',
             ],
+            [
+                '<?php # test',
+            ],
         ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideHashCases
+     */
+    public function testHashCases($expected, $input = null)
+    {
+        $this->fixer->configure(['comment_type' => 'hash']);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideHashCases()
+    {
+        return [
+            [
+                '<h1>This is an <?php //echo 123;?> example</h1>',
+                '<h1>This is an <?php #echo 123;?> example</h1>',
+            ],
+            [
+                '<?php
+                    // test
+                ',
+                '<?php
+                    # test
+                ',
+            ],
+            [
+                '<?php
+                    // test1
+                    //test2
+                    // test3
+                    // test 4
+                ',
+                '<?php
+                    # test1
+                    #test2
+                    # test3
+                    # test 4
+                ',
+            ],
+
+            // Untouched cases
+            [
+                '<?php
+                    //#test
+                ',
+            ],
+            [
+                '<?php
+                    /*
+                        #test
+                    */
+                ',
+            ],
+            [
+                '<?php // a',
+                '<?php # a',
+            ],
+            [
+                '<?php /* start-end */',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testAllCases()
+    {
+        $this->fixer->configure(['comment_type' => 'all']);
+
+        $expected = '<?php
+            // 1
+            // 2
+            /*
+             * 3.a
+             * 3.b
+             */
+            /**
+             * 4
+             */
+            // 5
+        ';
+
+        $input = '<?php
+            /* 1 */
+            /*
+             * 2
+             */
+            /*
+             * 3.a
+             * 3.b
+             */
+            /**
+             * 4
+             */
+            # 5
+        ';
+        $this->doTest($expected, $input);
     }
 }

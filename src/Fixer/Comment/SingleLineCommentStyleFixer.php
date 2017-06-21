@@ -13,7 +13,10 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -22,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class StarToSlashCommentFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class SingleLineCommentStyleFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -30,8 +33,17 @@ final class StarToSlashCommentFixer extends AbstractFixer implements Whitespaces
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Converts multi-line comments that have only one line of actual content into single-line comments.',
-            [new CodeSample("<?php\n/* first comment */\n\$a = 1;\n/*\n * second comment\n */\n\$b = 2;\n/*\n * third\n * comment\n */\n\$c = 3;")]
+            'Converts multi-line comments that have only one line of actual content into single-line comments, and hash comments to slash.',
+            [
+                new CodeSample(
+                    "<?php\n/* first comment */\n\$a = 1;\n/*\n * second comment\n */\n\$b = 2;\n/*\n * third\n * comment\n */\n\$c = 3;",
+                    ['comment_type' => 'star']
+                ),
+                new CodeSample(
+                    '<?php # comment',
+                    ['comment_type' => 'hash']
+                ),
+            ]
         );
     }
 
@@ -49,10 +61,18 @@ final class StarToSlashCommentFixer extends AbstractFixer implements Whitespaces
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
+        $config = $this->configuration['comment_type'];
         foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
             $content = $token->getContent();
             $commentContent = substr($content, 2, -2);
-            if (!$token->isGivenKind(T_COMMENT) || '/*' !== substr($content, 0, 2) || preg_match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)) {
+            if ('star' !== $config && '#' === $content[0]) {
+                $tokens[$index] = new Token([$token->getId(), '//'.substr($content, 1)]);
+                continue;
+            }
+            if ('hash' === $config || '/*' !== substr($content, 0, 2) || preg_match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)) {
                 continue;
             }
             $nextTokenIndex = $index + 1;
@@ -71,5 +91,18 @@ final class StarToSlashCommentFixer extends AbstractFixer implements Whitespaces
             }
             $tokens[$index] = new Token([$token->getId(), $content]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('comment_type', 'Fix star comment `/* */` [`star`], hash comment `#` [`hash`], or both [`all`]'))
+                ->setAllowedValues(['star', 'hash', 'all'])
+                ->setDefault('all')
+                ->getOption(),
+        ]);
     }
 }

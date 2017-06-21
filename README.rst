@@ -495,6 +495,7 @@ Choose from the list of available rules:
 * **hash_to_slash_comment** [@Symfony]
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
+  DEPRECATED: Use "single_line_comment_style" instead.
 
 * **header_comment**
 
@@ -1095,6 +1096,16 @@ Choose from the list of available rules:
   Each namespace use MUST go on its own line and there MUST be one blank
   line after the use statements block.
 
+* **single_line_comment_style**
+
+  Converts multi-line comments that have only one line of actual content
+  into single-line comments, and hash comments to slash.
+
+  Configuration options:
+
+  - ``comment_type`` (``'all'``, ``'hash'``, ``'star'``): fix star comment ``/* */`` [``star``],
+    hash comment ``#`` [``hash``], or both [``all``]; defaults to ``'all'``
+
 * **single_quote** [@Symfony]
 
   Convert double quotes to single quotes for simple strings.
@@ -1106,11 +1117,6 @@ Choose from the list of available rules:
 * **standardize_not_equals** [@Symfony]
 
   Replace all ``<>`` with ``!=``.
-
-* **star_to_slash_comment**
-
-  Converts multi-line comments that have only one line of actual content
-  into single-line comments.
 
 * **strict_comparison**
 
