@@ -19,9 +19,9 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\NullPropertyDeclarationFixer
+ * @covers \PhpCsFixer\Fixer\ClassNotation\NoNullPropertyInitializationFixer
  */
-final class NullPropertyDeclarationFixerTest extends AbstractFixerTestCase
+final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
@@ -68,6 +68,18 @@ final class NullPropertyDeclarationFixerTest extends AbstractFixerTestCase
             [
                 '<?php trait Foo { public $bar; }',
                 '<?php trait Foo { public $bar = nuLL; }',
+            ],
+            [
+                '<?php class Foo { public $bar; }',
+                '<?php class Foo { public $bar = \null; }',
+            ],
+            [
+                '<?php class Foo { public $bar; }',
+                '<?php class Foo { public $bar = \     null; }',
+            ],
+            [
+                '<?php class Foo { public $bar/* oh hai! */; }',
+                '<?php class Foo { public $bar = \/* oh hai! */null; }',
             ],
             [
                 '<?php class Foo {/* */public/* A */$bar/* B *//** C */;/* D */}',

@@ -687,6 +687,10 @@ Choose from the list of available rules:
 
   Multi-line whitespace before closing semicolon are prohibited.
 
+* **no_null_property_initialization**
+
+  Properties MUST not be explicitly initialized with ``null``.
+
 * **no_php4_constructor**
 
   Convert PHP4-style constructors to ``__construct``.
@@ -796,10 +800,6 @@ Choose from the list of available rules:
 * **not_operator_with_successor_space**
 
   Logical NOT operators (``!``) should have one trailing whitespace.
-
-* **null_property_declaration**
-
-  Simplifies null class property declarations.
 
 * **object_operator_without_whitespace** [@Symfony]
 

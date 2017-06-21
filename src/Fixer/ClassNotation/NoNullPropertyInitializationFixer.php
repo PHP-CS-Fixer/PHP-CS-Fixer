@@ -20,7 +20,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author ntzm
  */
-final class NullPropertyDeclarationFixer extends AbstractFixer
+final class NoNullPropertyInitializationFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -28,7 +28,7 @@ final class NullPropertyDeclarationFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Simplifies null class property declarations.',
+            'Properties MUST not be explicitly initialized with `null`.',
             [
                 new CodeSample('<?php
 class Foo {
@@ -68,9 +68,16 @@ class Foo {
                 if ($tokens[$index]->equals('=')) {
                     $index = $tokens->getNextMeaningfulToken($index);
 
+                    if ($tokens[$index]->isGivenKind(T_NS_SEPARATOR)) {
+                        $index = $tokens->getNextMeaningfulToken($index);
+                    }
+
                     if ($tokens[$index]->equals([T_STRING, 'null'], false)) {
                         for ($i = $varTokenIndex + 1; $i <= $index; ++$i) {
-                            if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))) {
+                            if (
+                                !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))
+                                && !$tokens[$i]->isComment()
+                            ) {
                                 $tokens->clearAt($i);
                             }
                         }
