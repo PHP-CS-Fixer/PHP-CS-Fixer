@@ -880,7 +880,7 @@ PHP;
     {
         $tokens = Tokens::fromCode($input);
         $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
-
+        $tokens->clearEmptyTokens();
         $this->assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
