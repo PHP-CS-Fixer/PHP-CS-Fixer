@@ -36,7 +36,7 @@ final class VersionSpecification implements VersionSpecificationInterface
     public function __construct($minimum = null, $maximum = null)
     {
         if (null === $minimum && null === $maximum) {
-            throw new \InvalidArgumentException('Minimum and/or maximum need to be specified.');
+            throw new \InvalidArgumentException('Minimum or maximum need to be specified.');
         }
 
         if (null !== $minimum && (!is_int($minimum) || 1 > $minimum)) {
