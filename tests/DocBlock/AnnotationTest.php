@@ -223,11 +223,6 @@ final class AnnotationTest extends TestCase
     {
         $tag = new Annotation(array(new Line($input)));
 
-        $this->assertSame(
-            implode('|', $expected),
-            implode('|', $tag->getTypes())
-        );
-
         $this->assertSame($expected, $tag->getTypes());
     }
 
