@@ -61,7 +61,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             // analysing cursor shift, so nested expressions kept processed
             $currIndex = $openParenthesis;
 
-            /* ensure __FILE__ is in between (...) */
+            // ensure __FILE__ is in between (...)
             $fileCandidateRightIndex = $tokens->getPrevMeaningfulToken($closeParenthesis);
             $fileCandidateRight = $tokens[$fileCandidateRightIndex];
             $fileCandidateLeftIndex = $tokens->getNextMeaningfulToken($openParenthesis);
