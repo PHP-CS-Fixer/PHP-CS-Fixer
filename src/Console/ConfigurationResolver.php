@@ -661,7 +661,7 @@ final class ConfigurationResolver
             return true;
         }, $rules));
 
-        /** @var string[] $availableFixers */
+        /** @var string[] $configuredFixers */
         $configuredFixers = array_keys($ruleSet->getRules());
 
         /** @var string[] $availableFixers */
