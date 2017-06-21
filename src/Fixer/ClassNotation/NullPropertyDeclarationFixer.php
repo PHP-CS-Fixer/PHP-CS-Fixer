@@ -25,14 +25,6 @@ final class NullPropertyDeclarationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAnyTokenKindsFound([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -44,6 +36,14 @@ class Foo {
 }'),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAnyTokenKindsFound([T_CLASS, T_TRAIT]) && $tokens->isAnyTokenKindsFound([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR]);
     }
 
     /**
@@ -66,10 +66,14 @@ class Foo {
                 $index = $tokens->getNextMeaningfulToken($index);
 
                 if ($tokens[$index]->equals('=')) {
-                    $valueTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
+                    $index = $tokens->getNextMeaningfulToken($index);
 
                     if ($tokens[$index]->equals([T_STRING, 'null'], false)) {
-                        $tokens->clearRange($varTokenIndex + 1, $valueTokenIndex);
+                        for ($i = $varTokenIndex + 1; $i <= $index; ++$i) {
+                            if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))) {
+                                $tokens->clearAt($i);
+                            }
+                        }
                     }
 
                     ++$index;

@@ -70,8 +70,8 @@ final class NullPropertyDeclarationFixerTest extends AbstractFixerTestCase
                 '<?php trait Foo { public $bar = nuLL; }',
             ],
             [
-                '<?php class Foo {/* */public/* */$bar;/* */}',
-                '<?php class Foo {/* */public/* */$bar/* */=/* */null;/* */}',
+                '<?php class Foo {/* */public/* A */$bar/* B *//** C */;/* D */}',
+                '<?php class Foo {/* */public/* A */$bar/* B */=/** C */null;/* D */}',
             ],
             [
                 '<?php class Foo { public $bar; protected $baz; }',
@@ -100,8 +100,36 @@ final class NullPropertyDeclarationFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { public function foo() { return null; } public $bar = null; public function baz() { return null; } }',
             ],
             [
-                "<?php class#\nFoo#\n{#\nprotected#\n\$bar,#\n\$baz,#\n\$qux;#\n}",
-                "<?php class#\nFoo#\n{#\nprotected#\n\$bar#\n=#\nnull,#\n\$baz#\n=#\nnull,#\n\$qux#\n=#\nnull;#\n}",
+                '<?php class#1
+Foo#2
+{#3
+protected#4
+$bar#5
+#6
+,#7
+$baz#8
+#9
+,#10
+$qux#11
+#12
+;#13
+}
+',
+                '<?php class#1
+Foo#2
+{#3
+protected#4
+$bar#5
+=#6
+null,#7
+$baz#8
+=#9
+null,#10
+$qux#11
+=#12
+null;#13
+}
+',
             ],
             [
                 '<?php class Foo { const FOO = null; }',
