@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-14T22:58:42Z
+
+Can we not also include my test case?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-16T21:22:25Z
+
+Do these tests pass on master?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-16T21:29:09Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2861 shows this failing on master.
