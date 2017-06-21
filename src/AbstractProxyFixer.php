@@ -71,7 +71,8 @@ abstract class AbstractProxyFixer extends AbstractFixer
      */
     public function setWhitespacesConfig(WhitespacesFixerConfig $config)
     {
-        return $this->proxyFixer->setWhitespacesConfig($config);
+        parent::setWhitespacesConfig($config);
+        $this->proxyFixer->setWhitespacesConfig($config);
     }
 
     /**
