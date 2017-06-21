@@ -909,6 +909,27 @@ PHP;
     {
         return array(
             array(
+                '<?php echo 1;',
+                '<?php  echo 1;',
+                1,
+                1,
+                ' ',
+            ),
+            array(
+                '<?php echo 7;',
+                '<?php   echo 7;',
+                1,
+                1,
+                ' ',
+            ),
+            array(
+                '<?php  ',
+                '<?php  ',
+                1,
+                1,
+                '  ',
+            ),
+            array(
                 '<?php $a. $b;',
                 '<?php $a.$b;',
                 2,
