@@ -23,11 +23,11 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  */
 final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfigCase1()
+    public function testInvalidConfig()
     {
         $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
 
-        $this->fixer->configure(['comment_type' => 'abc']);
+        $this->fixer->configure(['abc']);
     }
 
     /**
@@ -38,7 +38,7 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
      */
     public function testStar($expected, $input = null)
     {
-        $this->fixer->configure(['comment_type' => 'star']);
+        $this->fixer->configure(['comment_types' => ['star']]);
         $this->doTest($expected, $input);
     }
 
@@ -96,6 +96,14 @@ $a = 1; /* after code */
                 '<?php
    /* first */ /* second */
 ',
+            ],
+            [
+                '<?php
+   /* first */// second',
+                '<?php
+   /* first *//*
+   second
+   */',
             ],
             [
                 '<?php
@@ -209,7 +217,7 @@ second line*/',
      */
     public function testHashCases($expected, $input = null)
     {
-        $this->fixer->configure(['comment_type' => 'hash']);
+        $this->fixer->configure(['comment_types' => ['hash']]);
         $this->doTest($expected, $input);
     }
 
@@ -269,38 +277,45 @@ second line*/',
     /**
      * @param string      $expected
      * @param null|string $input
+     *
+     * @dataProvider provideAllCases
      */
-    public function testAllCases()
+    public function testAllCases($expected, $input = null)
     {
-        $this->fixer->configure(['comment_type' => 'all']);
-
-        $expected = '<?php
-            // 1
-            // 2
-            /*
-             * 3.a
-             * 3.b
-             */
-            /**
-             * 4
-             */
-            // 5
-        ';
-
-        $input = '<?php
-            /* 1 */
-            /*
-             * 2
-             */
-            /*
-             * 3.a
-             * 3.b
-             */
-            /**
-             * 4
-             */
-            # 5
-        ';
         $this->doTest($expected, $input);
+    }
+
+    public function provideAllCases()
+    {
+        return [
+            [
+                '<?php
+    // 1
+    // 2
+    /*
+     * 3.a
+     * 3.b
+     */
+    /**
+     * 4
+     */
+    // 5
+',
+                '<?php
+    /* 1 */
+    /*
+     * 2
+     */
+    /*
+     * 3.a
+     * 3.b
+     */
+    /**
+     * 4
+     */
+    # 5
+',
+            ],
+        ];
     }
 }

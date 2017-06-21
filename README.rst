@@ -1098,13 +1098,13 @@ Choose from the list of available rules:
 
 * **single_line_comment_style**
 
-  Converts multi-line comments that have only one line of actual content
-  into single-line comments, and hash comments to slash.
+  Single-line comments and multi-line comments with only one line of
+  actual content should use the ``//`` syntax.
 
   Configuration options:
 
-  - ``comment_type`` (``'all'``, ``'hash'``, ``'star'``): fix star comment ``/* */`` [``star``],
-    hash comment ``#`` [``hash``], or both [``all``]; defaults to ``'all'``
+  - ``comment_types`` (``array``): list of comment types to fix; defaults to
+    ``['star', 'hash']``
 
 * **single_quote** [@Symfony]
 

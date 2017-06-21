@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractProxyFixer;
-use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 
@@ -24,7 +23,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
  *
  * @deprecated in 2.4, proxy to SingleLineCommentStyleFixer
  */
-final class HashToSlashCommentFixer extends AbstractProxyFixer implements WhitespacesAwareFixerInterface
+final class HashToSlashCommentFixer extends AbstractProxyFixer
 {
     /**
      * {@inheritdoc}
@@ -43,7 +42,7 @@ final class HashToSlashCommentFixer extends AbstractProxyFixer implements Whites
     protected function createProxyFixer()
     {
         $fixer = new SingleLineCommentStyleFixer();
-        $fixer->configure(['comment_type' => 'hash']);
+        $fixer->configure(['comment_types' => ['hash']]);
 
         return $fixer;
     }

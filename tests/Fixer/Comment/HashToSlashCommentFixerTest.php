@@ -20,8 +20,6 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Comment\HashToSlashCommentFixer
- *
- * @legacy
  */
 final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
 {
