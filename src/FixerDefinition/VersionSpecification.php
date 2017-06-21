@@ -36,19 +36,21 @@ final class VersionSpecification implements VersionSpecificationInterface
     public function __construct($minimum = null, $maximum = null)
     {
         if (null === $minimum && null === $maximum) {
-            throw new \InvalidArgumentException('Either minimum or maximum need to be specified');
+            throw new \InvalidArgumentException('Minimum or maximum need to be specified.');
         }
 
         if (null !== $minimum && (!is_int($minimum) || 1 > $minimum)) {
-            throw new \InvalidArgumentException('Minimum needs to be either null or an integer greater than 0');
+            throw new \InvalidArgumentException('Minimum needs to be either null or an integer greater than 0.');
         }
 
-        if (null !== $maximum && (!is_int($maximum) || 1 > $maximum)) {
-            throw new \InvalidArgumentException('Minimum needs to be either null or an integer greater than 0');
-        }
+        if (null !== $maximum) {
+            if (!is_int($maximum) || 1 > $maximum) {
+                throw new \InvalidArgumentException('Maximum needs to be either null or an integer greater than 0.');
+            }
 
-        if (null !== $maximum && null !== $minimum && $maximum < $minimum) {
-            throw new \InvalidArgumentException('Maximum should not be less than the minimum');
+            if (null !== $minimum && $maximum < $minimum) {
+                throw new \InvalidArgumentException('Maximum should not be lower than the minimum.');
+            }
         }
 
         $this->minimum = $minimum;
@@ -63,6 +65,7 @@ final class VersionSpecification implements VersionSpecificationInterface
         if (null !== $this->minimum && $version < $this->minimum) {
             return false;
         }
+
         if (null !== $this->maximum && $version > $this->maximum) {
             return false;
         }
