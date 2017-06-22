@@ -21,7 +21,7 @@ namespace PhpCsFixer\DocBlock;
 class Annotation
 {
     /**
-     * Regex to match any types, shall be use with `x` modifier.
+     * Regex to match any types, shall be used with `x` modifier.
      *
      * @internal
      */
@@ -36,7 +36,7 @@ class Annotation
             |
             (?<generic>
                 (?<simple>
-                    [\\\\@$]?[\\\\\w]+
+                    [@$]?[\\\\\w]+
                 )
                 <(?:(?&simple),\s*)?(?:(?&types)|(?&generic))>
             )
