@@ -246,6 +246,10 @@ final class AnnotationTest extends TestCase
                 array('int[]', 'null', 'int', 'array'),
             ),
             array(
+                ' * @method null|Foo\Bar|\Baz\Bax|int[] method()',
+                array('null', 'Foo\Bar', '\Baz\Bax', 'int[]'),
+            ),
+            array(
                 ' * @method gen<int> method()',
                 array('gen<int>'),
             ),
