@@ -26,24 +26,31 @@ class Annotation
      * @internal
      */
     const REGEX_TYPES = '
-    # <simple> is any non-array, non-generic, non-alternated type, eg `int` or `\Foo`
+    # <scalar> is any non-array, non-generic, non-alternated type, eg `int` or `\Foo`
+    # <array> is array of scalars, eg `int[]` or `\Foo[]`
     # <generic> is generic collection type, like `array<string, int>`, `Collection<Item>` and more complex like `Collection<int, \null|SubCollection<string>>`
-    # <type> is <simple>, <simple>[] or <generic> type, like `int`, `bool[]` or `Collection<ItemKey, ItemVal>`
+    # <type> is <simple>, <array> or <generic> type, like `int`, `bool[]` or `Collection<ItemKey, ItemVal>`
     # <types> is one or more types alternated via `|`, like `int|bool[]|Collection<ItemKey, ItemVal>`
     (?<types>
         (?<type>
-            (?:(?&simple)(?:\[\])?)
+            (?<array>
+                (?&scalar)\[\]
+            )
+            |
+            (?<scalar>
+                [@$]?[\\\\\w]+
+            )
             |
             (?<generic>
-                (?<simple>
-                    [@$]?[\\\\\w]+
-                )
-                <(?:(?&simple),\s*)?(?:(?&types)|(?&generic))>
+                (?&scalar)
+                <
+                    (?:(?&scalar),\s*)?(?:(?&types)|(?&generic))
+                >
             )
         )
         (?:
             \|
-            (?:(?&type)|(?&generic))
+            (?:(?&scalar)|(?&array)|(?&generic))
         )*
     )
     ';
