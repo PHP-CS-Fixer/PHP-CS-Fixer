@@ -290,6 +290,10 @@ final class AnnotationTest extends TestCase
                 array('this'),
             ),
             array(
+                '/** @return    @this */',
+                array('@this'),
+            ),
+            array(
                 '/** @return $SELF|int */',
                 array('$SELF', 'int'),
             ),
