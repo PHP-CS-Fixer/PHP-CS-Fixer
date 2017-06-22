@@ -21,9 +21,32 @@ namespace PhpCsFixer\DocBlock;
 class Annotation
 {
     /**
+     * Regex to match any types, shall be use with `x` modifier.
+     *
      * @internal
      */
-    const REGEX_TYPES = '(?<types>(?<type>(?:(?&simple)(?:\[\])?)|(?<generic>(?<simple>[\\\\@$]?[\\\\\w]+)<(?:(?&simple),\s*)?(?:(?&types)|(?&generic))>))(?:\|(?:(?&type)|(?&generic)))*)';
+    const REGEX_TYPES = '
+    # <simple> is any non-array, non-generic, non-alternated type, eg `int` or `\Foo`
+    # <generic> is generic collection type, like `array<string, int>`, `Collection<Item>` and more complex like `Collection<int, \null|SubCollection<string>>`
+    # <type> is <simple>, <simple>[] or <generic> type, like `int`, `bool[]` or `Collection<ItemKey, ItemVal>`
+    # <types> is one or more types alternated via `|`, like `int|bool[]|Collection<ItemKey, ItemVal>`
+    (?<types>
+        (?<type>
+            (?:(?&simple)(?:\[\])?)
+            |
+            (?<generic>
+                (?<simple>
+                    [\\\\@$]?[\\\\\w]+
+                )
+                <(?:(?&simple),\s*)?(?:(?&types)|(?&generic))>
+            )
+        )
+        (?:
+            \|
+            (?:(?&type)|(?&generic))
+        )*
+    )
+    ';
 
     /**
      * All the annotation tag names with types.
@@ -167,7 +190,7 @@ class Annotation
 
             while ('' !== $content && false !== $content) {
                 preg_match(
-                    '#^'.self::REGEX_TYPES.'$#',
+                    '{^'.self::REGEX_TYPES.'$}x',
                     $content,
                     $matches
                 );
@@ -238,7 +261,7 @@ class Annotation
             }
 
             $matchingResult = preg_match(
-                '#^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.self::REGEX_TYPES.'(?:[ \t].*)?$#s',
+                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.self::REGEX_TYPES.'(?:[ \t].*)?$}sx',
                 $this->lines[0]->getContent(),
                 $matches
             );
