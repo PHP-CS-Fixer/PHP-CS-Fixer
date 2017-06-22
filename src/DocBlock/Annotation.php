@@ -23,7 +23,7 @@ class Annotation
     /**
      * @internal
      */
-    const REGEX_TYPES = '(?<types>(?<type>(?:[\\\\@$]?\w+(?:\[\])?)|(?<generic>[\\\\@$]?\w+<(?:[\\\\@$]?\w+,\s*)?(?:(?&types)|(?&generic))>))(?:\|(?:(?&type)|(?&generic)))*)';
+    const REGEX_TYPES = '(?<types>(?<type>(?:[@$]?[\\\\\w]+(?:\[\])?)|(?<generic>[\\\\@$]?[\\\\\w]+<(?:[\\\\@$]?[\\\\\w]+,\s*)?(?:(?&types)|(?&generic))>))(?:\|(?:(?&type)|(?&generic)))*)';
 
     /**
      * All the annotation tag names with types.
