@@ -205,10 +205,9 @@ class Annotation
                 throw new \RuntimeException('This tag does not support types.');
             }
 
-            $tagSplit = preg_split('/\s*\@'.$name.'\s*/', $this->lines[0]->getContent(), 2);
-            $spaceSplit = preg_split('/\s/', $tagSplit[1], 2);
+            preg_match('/\@'.$name.'\s+(([^\s|<]+(?:<.*?>)?)(?:\|(?2))*)/', $this->lines[0]->getContent(), $matches);
 
-            $this->typesContent = $spaceSplit[0];
+            $this->typesContent = $matches[1];
         }
 
         return $this->typesContent;
