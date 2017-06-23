@@ -203,8 +203,6 @@ final class VoidReturnFixer extends AbstractFixer
     }
 
     /**
-     * Apply the fix to the function definition.
-     *
      * @param Tokens $tokens
      * @param int    $index  The index of the end of the function definition line, EG at { or ;
      */
