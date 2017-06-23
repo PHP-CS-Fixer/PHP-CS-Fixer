@@ -35,15 +35,15 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideStarCases
+     * @dataProvider provideAsteriskCases
      */
-    public function testStar($expected, $input = null)
+    public function testAsterisk($expected, $input = null)
     {
         $this->fixer->configure(['comment_types' => ['asterisk']]);
         $this->doTest($expected, $input);
     }
 
-    public function provideStarCases()
+    public function provideAsteriskCases()
     {
         return [
             [

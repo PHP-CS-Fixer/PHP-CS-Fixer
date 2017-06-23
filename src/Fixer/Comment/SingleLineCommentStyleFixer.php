@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SingleLineCommentStyleFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    private $starEnabled;
+    private $asteriskEnabled;
     private $hashEnabled;
 
     /**
@@ -37,7 +37,7 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
     {
         parent::configure($configuration);
 
-        $this->starEnabled = in_array('asterisk', $this->configuration['comment_types'], true);
+        $this->asteriskEnabled = in_array('asterisk', $this->configuration['comment_types'], true);
         $this->hashEnabled = in_array('hash', $this->configuration['comment_types'], true);
     }
 
@@ -84,7 +84,7 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
                 $tokens[$index] = new Token([$token->getId(), '//'.substr($content, 1)]);
                 continue;
             }
-            if (!$this->starEnabled || '/*' !== substr($content, 0, 2) || preg_match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)) {
+            if (!$this->asteriskEnabled || '/*' !== substr($content, 0, 2) || preg_match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)) {
                 continue;
             }
             $nextTokenIndex = $index + 1;
