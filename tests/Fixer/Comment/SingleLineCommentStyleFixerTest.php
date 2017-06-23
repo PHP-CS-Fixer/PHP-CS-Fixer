@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Test\AbstractFixerTestCase;
 
 /**
@@ -25,7 +26,7 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfig()
     {
-        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->setExpectedException(InvalidFixerConfigurationException::class);
 
         $this->fixer->configure(['abc']);
     }
@@ -38,7 +39,7 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
      */
     public function testStar($expected, $input = null)
     {
-        $this->fixer->configure(['comment_types' => ['star']]);
+        $this->fixer->configure(['comment_types' => ['asterisk']]);
         $this->doTest($expected, $input);
     }
 

@@ -37,7 +37,7 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
     {
         parent::configure($configuration);
 
-        $this->starEnabled = in_array('star', $this->configuration['comment_types'], true);
+        $this->starEnabled = in_array('asterisk', $this->configuration['comment_types'], true);
         $this->hashEnabled = in_array('hash', $this->configuration['comment_types'], true);
     }
 
@@ -51,7 +51,7 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
             [
                 new CodeSample(
                     "<?php\n/* first comment */\n\$a = 1;\n/*\n * second comment\n */\n\$b = 2;\n/*\n * third\n * comment\n */\n\$c = 3;",
-                    ['comment_types' => ['star']]
+                    ['comment_types' => ['asterisk']]
                 ),
                 new CodeSample(
                     '<?php # comment',
@@ -114,9 +114,9 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
             (new FixerOptionBuilder('comment_types', 'List of comment types to fix'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(['star', 'hash']),
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(['asterisk', 'hash']),
                 ])
-                ->setDefault(['star', 'hash'])
+                ->setDefault(['asterisk', 'hash'])
                 ->getOption(),
         ]);
     }

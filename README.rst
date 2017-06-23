@@ -1104,7 +1104,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``comment_types`` (``array``): list of comment types to fix; defaults to
-    ``['star', 'hash']``
+    ``['asterisk', 'hash']``
 
 * **single_quote** [@Symfony]
 
