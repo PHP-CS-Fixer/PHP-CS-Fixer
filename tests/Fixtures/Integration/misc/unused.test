@@ -8,7 +8,6 @@ Integration of fixers: no_unused_imports.
 <?php namespace App\Http\Controllers;
 
 
-
 --INPUT--
 <?php namespace App\Http\Controllers;
 
