@@ -164,6 +164,22 @@ EOF;
 
         $this->doTest($expected, $input);
 
+        $expected = <<<'EOF'
+<?php namespace App\Http\Controllers;
+
+
+EOF;
+
+        $input = <<<'EOF'
+<?php namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+EOF;
+
+        $this->doTest($expected, $input);
+
         // the fixer doesn't support file with multiple namespace - test if we don't remove imports in that case
         $expected = <<<'EOF'
 <?php
