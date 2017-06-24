@@ -1,0 +1,70 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-21T12:22:58Z
+
+:-1: because we don't actually support them ourselves.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-21T12:31:15Z
+
+:+1:
+since PSR 5 does not provide an alternative for something like `array<int, string>`
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-21T12:35:48Z
+
+> since PSR 5 does not provide an alternative
+
+True. I'm :-1: only until I can actually get our fixers updated to support this stuff. Once the current phpdoc PRs have gone through, I can start working on it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2015-11-21T14:27:53Z
+
+@GrahamCampbell , that's why I extracted this into separate request and write:
+
+> We should start supporting generic types in docs.
+
+treat this as feature request.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2015-11-21T15:02:59Z
+
+k ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-09-14T09:54:53Z
+
+please rebase, merge and :shipit:  :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-09-14T10:38:17Z
+
+it's not ready to be merged.
+it's usage examples, but we do not really support them by our phpdoc fixers :(
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-11-14T09:17:18Z
+
+> it's usage examples, but we do not really support them by our phpdoc fixers :(
+
+do these break the tags? I would do this on 2.x and ship it ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2016-11-14T11:35:08Z
+
+It may.
+Before merging we should adjust docblock namespace to properly handle collection types (eg space inside type!) and then ensure all phpdoc fixers playing with type are still working properly
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-22T12:24:57Z
+
+thanks to #2858, rebased on 2.2
