@@ -717,14 +717,14 @@ class Tokens extends \SplFixedArray
     /**
      * Find a sequence of meaningful tokens and returns the array of their locations.
      *
-     * @param array      $sequence      an array of tokens (kinds) (same format used by getNextTokenOfKind)
-     * @param int        $start         start index, defaulting to the start of the file
-     * @param int        $end           end index, defaulting to the end of the file
-     * @param bool|array $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
-     *                                  the ones used in $others. If any is missing, the default case-sensitive
-     *                                  comparison is used
+     * @param array                 $sequence      an array of tokens (kinds) (same format used by getNextTokenOfKind)
+     * @param int                   $start         start index, defaulting to the start of the file
+     * @param int                   $end           end index, defaulting to the end of the file
+     * @param bool|array<int, bool> $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                             the ones used in $others. If any is missing, the default case-sensitive
+     *                                             comparison is used
      *
-     * @return null|array an array containing the tokens matching the sequence elements, indexed by their position
+     * @return null|array<int, Token> an array containing the tokens matching the sequence elements, indexed by their position
      */
     public function findSequence(array $sequence, $start = 0, $end = null, $caseSensitive = true)
     {
