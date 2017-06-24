@@ -191,7 +191,7 @@ class Annotation
     public function getTypes()
     {
         if (null === $this->types) {
-            $this->types = array();
+            $this->types = [];
 
             $content = $this->getTypesContent();
 

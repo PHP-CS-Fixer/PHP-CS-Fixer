@@ -221,87 +221,87 @@ final class AnnotationTest extends TestCase
      */
     public function testTypeParsing($input, array $expected)
     {
-        $tag = new Annotation(array(new Line($input)));
+        $tag = new Annotation([new Line($input)]);
 
         $this->assertSame($expected, $tag->getTypes());
     }
 
     public function provideTypeParsingCases()
     {
-        return array(
-            array(
+        return [
+            [
                 ' * @method int method()',
-                array('int'),
-            ),
-            array(
+                ['int'],
+            ],
+            [
                 ' * @method int[] method()',
-                array('int[]'),
-            ),
-            array(
+                ['int[]'],
+            ],
+            [
                 ' * @method int[]|null method()',
-                array('int[]', 'null'),
-            ),
-            array(
+                ['int[]', 'null'],
+            ],
+            [
                 ' * @method int[]|null|?int|array method()',
-                array('int[]', 'null', '?int', 'array'),
-            ),
-            array(
+                ['int[]', 'null', '?int', 'array'],
+            ],
+            [
                 ' * @method null|Foo\Bar|\Baz\Bax|int[] method()',
-                array('null', 'Foo\Bar', '\Baz\Bax', 'int[]'),
-            ),
-            array(
+                ['null', 'Foo\Bar', '\Baz\Bax', 'int[]'],
+            ],
+            [
                 ' * @method gen<int> method()',
-                array('gen<int>'),
-            ),
-            array(
+                ['gen<int>'],
+            ],
+            [
                 ' * @method int|gen<int> method()',
-                array('int', 'gen<int>'),
-            ),
-            array(
+                ['int', 'gen<int>'],
+            ],
+            [
                 ' * @method \int|\gen<\int, \bool> method()',
-                array('\int', '\gen<\int, \bool>'),
-            ),
-            array(
+                ['\int', '\gen<\int, \bool>'],
+            ],
+            [
                 ' * @method gen<int,  int> method()',
-                array('gen<int,  int>'),
-            ),
-            array(
+                ['gen<int,  int>'],
+            ],
+            [
                 ' * @method gen<int,  bool|string> method()',
-                array('gen<int,  bool|string>'),
-            ),
-            array(
+                ['gen<int,  bool|string>'],
+            ],
+            [
                 ' * @method gen<int,  string[]> method() <> a',
-                array('gen<int,  string[]>'),
-            ),
-            array(
+                ['gen<int,  string[]>'],
+            ],
+            [
                 ' * @method gen<int,  gener<string, bool>> method() foo <a >',
-                array('gen<int,  gener<string, bool>>'),
-            ),
-            array(
+                ['gen<int,  gener<string, bool>>'],
+            ],
+            [
                 ' * @method gen<int,  gener<string, null|bool>> method()',
-                array('gen<int,  gener<string, null|bool>>'),
-            ),
-            array(
+                ['gen<int,  gener<string, null|bool>>'],
+            ],
+            [
                 ' * @method null|gen<int,  gener<string, bool>>|int|string[] method() foo <a >',
-                array('null', 'gen<int,  gener<string, bool>>', 'int', 'string[]'),
-            ),
-            array(
+                ['null', 'gen<int,  gener<string, bool>>', 'int', 'string[]'],
+            ],
+            [
                 ' * @method null|gen<int,  gener<string, bool>>|int|array<int, string>|string[] method() foo <a >',
-                array('null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]'),
-            ),
-            array(
+                ['null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]'],
+            ],
+            [
                 '/** @return    this */',
-                array('this'),
-            ),
-            array(
+                ['this'],
+            ],
+            [
                 '/** @return    @this */',
-                array('@this'),
-            ),
-            array(
+                ['@this'],
+            ],
+            [
                 '/** @return $SELF|int */',
-                array('$SELF', 'int'),
-            ),
-        );
+                ['$SELF', 'int'],
+            ],
+        ];
     }
 
     /**
@@ -328,14 +328,14 @@ final class AnnotationTest extends TestCase
 
     public function provideTypesCases()
     {
-        return array(
-            array(array('Foo', 'null'), array('Bar[]'), '     * @param Foo|null $foo', '     * @param Bar[] $foo'),
-            array(array('false'), array('bool'), '*   @return            false', '*   @return            bool'),
-            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "* \t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "* \t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
-            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "*\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
-            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
-            array(array('string'), array('string', 'null'), ' * @method string getString()', ' * @method string|null getString()'),
-        );
+        return [
+            [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
+            [['false'], ['bool'], '*   @return            false', '*   @return            bool'],
+            [['RUNTIMEEEEeXCEPTION'], ['Throwable'], "* \t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "* \t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['RUNTIMEEEEeXCEPTION'], ['Throwable'], "*\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['RUNTIMEEEEeXCEPTION'], ['Throwable'], "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['string'], ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'],
+        ];
     }
 
     public function testGetTypesOnBadTag()
