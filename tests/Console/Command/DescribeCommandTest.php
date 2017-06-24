@@ -63,6 +63,7 @@ Fixing examples:
 
 
 EOT;
+
         $this->assertSame($expected, $this->execute(false)->getDisplay(true));
     }
 
