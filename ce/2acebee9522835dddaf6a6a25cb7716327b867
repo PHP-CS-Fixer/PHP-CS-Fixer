@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-04T20:04:41Z
+
+I see no reason for configuring this fixer to be honset
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-10T19:20:26Z
+
+ping @ntzm
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-06-12T14:50:47Z
+
+Sorry I haven't got the time to complete this, anyone is free to use all my code without crediting they want it to finish off the feature! Sorry about that
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-12T20:40:12Z
+
+No worries. Too bad you didn't have time to complete this PR but I think that what you already did is great and should be kept so I'm reopening it. If you're ok with that, I'd like to push commits direcly here to add the missing part as soon as I can.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-06-12T21:03:58Z
+
+Oh yeah that's fine sorry!!! Thanks for completing the rest of it 😆
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-21T08:03:57Z
+
+Rebased on master, squashed to 1 commit for each author
+I've fix the candidate check and the comment cases (the fixer was removing comments).
+
+Please review @julienfalque
