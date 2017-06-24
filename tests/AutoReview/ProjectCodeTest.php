@@ -53,7 +53,6 @@ final class ProjectCodeTest extends TestCase
         'PhpCsFixer\Runner\FileLintingIterator',
         'PhpCsFixer\StdinFileInfo',
         'PhpCsFixer\Test\IntegrationCaseFactory',
-        'PhpCsFixer\Tokenizer\Transformers',
     );
 
     /**
