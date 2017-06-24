@@ -175,6 +175,7 @@ EOF;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 EOF;
 
         $this->doTest($expected, $input);
