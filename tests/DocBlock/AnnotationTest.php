@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
@@ -213,6 +214,97 @@ final class AnnotationTest extends TestCase
     }
 
     /**
+     * @param string   $input
+     * @param string[] $expected
+     *
+     * @dataProvider provideTypeParsingCases
+     */
+    public function testTypeParsing($input, array $expected)
+    {
+        $tag = new Annotation(array(new Line($input)));
+
+        $this->assertSame($expected, $tag->getTypes());
+    }
+
+    public function provideTypeParsingCases()
+    {
+        return array(
+            array(
+                ' * @method int method()',
+                array('int'),
+            ),
+            array(
+                ' * @method int[] method()',
+                array('int[]'),
+            ),
+            array(
+                ' * @method int[]|null method()',
+                array('int[]', 'null'),
+            ),
+            array(
+                ' * @method int[]|null|?int|array method()',
+                array('int[]', 'null', '?int', 'array'),
+            ),
+            array(
+                ' * @method null|Foo\Bar|\Baz\Bax|int[] method()',
+                array('null', 'Foo\Bar', '\Baz\Bax', 'int[]'),
+            ),
+            array(
+                ' * @method gen<int> method()',
+                array('gen<int>'),
+            ),
+            array(
+                ' * @method int|gen<int> method()',
+                array('int', 'gen<int>'),
+            ),
+            array(
+                ' * @method \int|\gen<\int, \bool> method()',
+                array('\int', '\gen<\int, \bool>'),
+            ),
+            array(
+                ' * @method gen<int,  int> method()',
+                array('gen<int,  int>'),
+            ),
+            array(
+                ' * @method gen<int,  bool|string> method()',
+                array('gen<int,  bool|string>'),
+            ),
+            array(
+                ' * @method gen<int,  string[]> method() <> a',
+                array('gen<int,  string[]>'),
+            ),
+            array(
+                ' * @method gen<int,  gener<string, bool>> method() foo <a >',
+                array('gen<int,  gener<string, bool>>'),
+            ),
+            array(
+                ' * @method gen<int,  gener<string, null|bool>> method()',
+                array('gen<int,  gener<string, null|bool>>'),
+            ),
+            array(
+                ' * @method null|gen<int,  gener<string, bool>>|int|string[] method() foo <a >',
+                array('null', 'gen<int,  gener<string, bool>>', 'int', 'string[]'),
+            ),
+            array(
+                ' * @method null|gen<int,  gener<string, bool>>|int|array<int, string>|string[] method() foo <a >',
+                array('null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]'),
+            ),
+            array(
+                '/** @return    this */',
+                array('this'),
+            ),
+            array(
+                '/** @return    @this */',
+                array('@this'),
+            ),
+            array(
+                '/** @return $SELF|int */',
+                array('$SELF', 'int'),
+            ),
+        );
+    }
+
+    /**
      * @param string[] $expected
      * @param string[] $new
      * @param string   $input
@@ -236,12 +328,14 @@ final class AnnotationTest extends TestCase
 
     public function provideTypesCases()
     {
-        return [
-            [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
-            [['false'], ['bool'], '*   @return            false', '*   @return            bool'],
-            [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
-            [['string'], ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'],
-        ];
+        return array(
+            array(array('Foo', 'null'), array('Bar[]'), '     * @param Foo|null $foo', '     * @param Bar[] $foo'),
+            array(array('false'), array('bool'), '*   @return            false', '*   @return            bool'),
+            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "* \t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "* \t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
+            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "*\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
+            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
+            array(array('string'), array('string', 'null'), ' * @method string getString()', ' * @method string|null getString()'),
+        );
     }
 
     public function testGetTypesOnBadTag()
