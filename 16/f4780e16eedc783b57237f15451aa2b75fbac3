@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-16T20:55:25Z
+
+ref #2841
+
+tests for annotation itself for now are working, yet there are few more cases when utests are failing for some fixers
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-24T12:23:51Z
+
+nullable types supported
