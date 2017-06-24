@@ -167,6 +167,7 @@ EOF;
         $expected = <<<'EOF'
 <?php namespace App\Http\Controllers;
 
+
 EOF;
 
         $input = <<<'EOF'
