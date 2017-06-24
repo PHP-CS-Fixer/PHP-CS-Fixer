@@ -687,6 +687,10 @@ Choose from the list of available rules:
 
   Multi-line whitespace before closing semicolon are prohibited.
 
+* **no_null_property_initialization**
+
+  Properties MUST not be explicitly initialized with ``null``.
+
 * **no_php4_constructor**
 
   Convert PHP4-style constructors to ``__construct``.
