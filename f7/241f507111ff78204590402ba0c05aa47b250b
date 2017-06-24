@@ -1,0 +1,308 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T09:36:40Z
+
+I was thinking to also add this:
+```diff
+ <?php
+-/*
+- * One liner multilne comment
+- */
++// One liner multilne comment
+ $a = 1;
+```
+WDYT?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-20T09:38:11Z
+
+> ```php
+>  <?php
+> -/* a comment */
+> +// a comment
+>  $a = 1;
+> ```
+
+vs
+
+> MultilineToSingleCommentFixer
+
+where is that multiline ?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T09:57:48Z
+
+> There are only two hard things in Computer Science: cache invalidation and naming things.
+> -- Phil Karlton
+
+`/* */` allows a comment to span on multiple lines, `//` doesn't.
+
+`One-liner` refers to the actual weight of the comment, `multiline comment` refers to the comment type used.
+
+Any suggestion is welcome, I'm really bad at naming things.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-20T10:01:49Z
+
+What about _"Converts multi-line comments that have only one line of actual content into single-line comments."_?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T10:02:40Z
+
+@julienfalque 👍
+
+And what about the fixer name?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-20T10:03:54Z
+
+I have no better suggestion for the fixer name for now :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-20T10:14:14Z
+
+you have 3 types of comments in php - based on stars, slashes and hashes
+we already using that notation, eg in `hash_to_slash_comment` rule
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T10:15:45Z
+
+So, what would you suggest?
+Something like `StarToSlashCommentFixer`?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-20T10:23:03Z
+
+maybe one configurable fixer to update all single line comments to one style (which effectively would deprecate `hash_to_slash_comment`)?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T12:09:34Z
+
+I've renamed the fixer to `StarToSlashCommentFixer` and now it acts like this:
+```diff
+ <?php
+-/* first comment */
++// first comment
+ $a = 1;
+-/*
+- * second comment
+- */
++// second comment
+ $b = 2;
+ /*
+  * third
+  * comment
+  */
+ $c = 3;
+```
+I would appreciate very much a review on the tests to be sure no case is missing.
+
+@SpacePossum don't know the policy for deprecations here, as of yet the two fixers do (slightly) different things so I would keep them both.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-20T12:11:39Z
+
+I like @SpacePossum's suggestion. Then the fixer name could be `SingleLineCommentStyleFixer` or something similar (yes, I find `StarToSlashCommentFixer` kind of weird 😛).
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T13:19:13Z
+
+The idea of merging two similar fixers is good, but it have to be planned.
+Now we have:
+
+- `hash_to_slash_comment` that **always** moves `#` to `//`
+- `star_to_slash_comment` that **sometimes** moves `/* */` to `//`
+
+They are orthogonal and can coexists without repeated code.
+IMHO we can keep them as they are now.
+
+@keradus WDYT?
+In case of deprecaton and merging, what's the correct process to follow?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-20T13:29:20Z
+
+To deprecate a fixer, you should:
+- mark it as `@deprecated since 2.x [...]`;
+- add a `trigger_error('...', E_USER_DEPRECATED)` call in its constructor;
+- update its description to mention that it is deprecated (and suggest the new fixer, if any);
+- mark tests that cover the fixer as `@legacy` (with assertions on the deprecation notice when relevant).
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T13:32:16Z
+
+@julienfalque 👍
+
+I'll start writing the deprecation as soon as @keradus give us a feedback
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-20T14:25:20Z
+
+1. `E_USER_DEPRECATED` in fixer constructor is not good idea. welcome to deprecation hell of fixer factory that will automatically register (via instance creation) of all fixers @julienfalque
+2. I do not know for now how much of the code will be similar, yet idea is similar for sure.
+If both @SpacePossum and @julienfalque are for unified fixer, I would go that way as well.
+3. also, I would allow to change multiline `/*..*/` comments to multiline `//` as well (with an option), but not `/**...*/` docblock comments
+4. currently existing fixer you gonna deprecate shall became proxy fixer in your PR.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T14:29:06Z
+
+> also, I would allow to change multiline `/*..*/` comments to multiline `//` as well (with an option), but not `/**...*/` docblock comments
+
+DocBlock comments are not part of this Fixer
+
+> currently existing fixer you gonna deprecate shall became proxy fixer in your PR.
+
+What happens if someone config both the new fixer and the proxy?
+Or better, what should happen?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-20T14:41:21Z
+
+both of them will be executed, but old fixer will perform no changes
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-20T15:23:17Z
+
+> `E_USER_DEPRECATED` in fixer constructor is not good idea. welcome to deprecation hell of fixer factory that will automatically register (via instance creation) of all fixers
+
+👍 this should be implemented in `FixerFactory` in a separate PR. @Slamdunk please just add the `@deprecated` tag and update the description of the deprecated fixer.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T15:24:40Z
+
+So no code-enforced warning like `trigger_error`? Ok
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-20T15:25:14Z
+
+if you want to, go with separate PR after this one got merged
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-21T09:29:33Z
+
+Pushed changes:
+
+1. renamed `StarToSlashCommentFixer` to `SingleLineCommentStyleFixer`
+1. made it configurable to do `HashToSlashCommentFixer` job too
+1. changed `HashToSlashCommentFixer` to be a proxy for `SingleLineCommentStyleFixer`, with **less** proprity
+1. signed `HashToSlashCommentFixer` deprecated, `HashToSlashCommentFixerTest` legacy
+1. added deprecation description to `HashToSlashCommentFixer`
+
+#### Notes
+
+To implement correctly the [proxy pattern](https://en.wikipedia.org/wiki/Proxy_pattern) `HashToSlashCommentFixer` doesn't extend anymore `AbstractFixer` and implements directly the interfaces needed.
+As such, in order to avoid copy-paste of the trivial code of `getName` method, I moved it to `Utils`, seizing the opportunity to add a test to it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-21T09:46:35Z
+
+> > shall became proxy fixer
+>
+> To implement correctly the proxy pattern ...
+
+Use https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/AbstractProxyFixer.php instead
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-21T09:54:04Z
+
+@keradus Didn't see `AbstractProxyFixer` and I'll use it, but there could be an improvement: `setWhitespacesConfig` is not proxied, I'm going to proxy it too.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-21T10:02:38Z
+
+please doublecheck if there are currently any proxy fixers that are manually implementing `setWhitespacesConfig`
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-21T11:39:41Z
+
+Edits done. I've also proxied `isRisky` and `supports` that previously were missing.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-21T12:20:28Z
+
+please don't squash, now it's hard to see what were last modifications :(
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-21T13:51:20Z
+
+Feedbacks implemented
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-21T13:52:31Z
+
+I just tried running the new fixer on the project itself and it changed this (in `ConfigurationResolver`):
+```diff
+-/* @var string[] $availableFixers */
++// @var string[] $availableFixers
+```
+
+IMO the behavior of the fixer is correct because this comment should have been a DocComment instead of a regular C-style comment, this should be fixer manually.
+
+Could this be a bug in `phpdoc_to_comment` though? Or a conflict between the two fixers?
+
+Anyway can you please add the new fixer to project's `.php_cs.dist`?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-21T14:05:08Z
+
+Those comment were introduced ex-novo by @localheinz in https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/393e0cc9c96275aa40ab370cdc0788bb5c69c99d#diff-62b374855f5961454b817b144c531e27R624 (no previous commit) so yes, they are just a missed-DocComment.
+
+Fixer added to `.php_cs.dist`; those two cases manually moved to DocComments.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-21T14:22:37Z
+
+@keradus sorry for previous squashes, but I'm used to them because I find they make `git blame` and history easier to read, even though I agree should not be used in a WIP.
+So I would appreciate a squash before merge, or if you prefer or find hurdles, I'll rebase and squash it for you.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-21T14:25:08Z
+
+my policy:
+- never squash/ammend in PR
+- always squash during merging PR (except edge cases with multiple authors...)
+
+we started doing the squashing automatically before github started to offer that ;)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-23T09:17:04Z
+
+*star* to *asterisk* done
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-23T09:30:20Z
+
+*star* to *asterisk* done (2)
