@@ -1,0 +1,49 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-23T13:05:27Z
+
+Good catch!
+
+Could you please update/add a test in `DescribeCommandTest`?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-23T13:21:37Z
+
+sure, lets do https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2876 first than to prevent conflicts
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-23T13:22:31Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-23T13:55:30Z
+
+do we need to wait for #2876 to merge this PR ? those are different commands, and `DescribeCommandTest` shall be rather updated in mentioned PR, not here
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-23T13:59:00Z
+
+The updated code is actually a helper method that is used in both `HelpCommand` and `DescribeCommand` thus I think we should update `DescribeCommandTest` here.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-23T15:33:31Z
+
+`DescribeCommandTest` updated to test the changes in this PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-24T12:30:39Z
+
+is there any WIP left?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-24T13:49:45Z
+
+this one is ready, but the tests has conflicts with https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2876
