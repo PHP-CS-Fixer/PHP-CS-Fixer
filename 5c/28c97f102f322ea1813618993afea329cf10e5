@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-02T18:44:17Z
+
+I'm -1 on concept.
+I so no problem developers adding comments so having a rule discouraging those seems wrong to me. I've no idea why this made to PSR2 btw.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-02T18:45:56Z
+
+>Also, I was thinking about removing unnecessary break statements (when they are in the last case body for example) but maybe it's out of scope here.
+
+That should be another fixer IMO, however I would not be in fav. of that one.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-02T18:55:39Z
+
+> having a rule discouraging those seems wrong to me.
+
+It does encourage them: the fixer adds the `// no break` comment when missing, and removes it when it does not make sense (when there is an actual `break` for example).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-03T05:51:15Z
+
+>and removes it when it does not make sense
+
+the detection of this (`make sense`) is missing I guess, i.e. it always removes the comment?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-23T21:34:00Z
+
+This one should be ready for a new review iteration :)
