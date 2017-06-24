@@ -15,7 +15,8 @@ namespace PhpCsFixer\Tests\Console\Command;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
@@ -39,7 +40,7 @@ Fixes stuff.
 Replaces bad stuff with good stuff.
 
 Fixer is configurable using following options:
-* things (bool): enables fixing `things` as well; defaults to false
+* functions (array): list of `function` names to fix; defaults to ['foo', 'test']
 
 Fixing examples:
  * Example #1.
@@ -51,7 +52,7 @@ Fixing examples:
    +<?php echo 'good stuff and bad thing';
    ----------- end diff -----------
 
- * Example #2. Fixing with configuration: ['things' => true].
+ * Example #2. Fixing with configuration: ['functions' => ['foo', 'bar']].
    ---------- begin diff ----------
    --- Original
    +++ New
@@ -74,7 +75,7 @@ Fixes stuff.
 Replaces bad stuff with good stuff.
 
 Fixer is configurable using following options:
-* \033[32mthings\033[39m (\033[33mbool\033[39m): enables fixing \033[32m`things`\033[39m as well; defaults to \033[33mfalse\033[39m
+* \033[32mfunctions\033[39m (\033[33marray\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
 
 Fixing examples:
  * Example #1.
@@ -86,7 +87,7 @@ Fixing examples:
    \033[32m+<?php echo 'good stuff and bad thing';\033[39m
 \033[33m   ----------- end diff -----------\033[39m
 
- * Example #2. Fixing with configuration: \033[33m['things' => true]\033[39m.
+ * Example #2. Fixing with configuration: \033[33m['functions' => ['foo', 'bar']]\033[39m.
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
@@ -157,9 +158,20 @@ EOT;
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(false);
-        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver(array(
-            new FixerOption('things', 'Enables fixing `things` as well.', false, false, array('bool')),
-        )));
+
+        $generator = new FixerOptionValidatorGenerator();
+        $functionNames = array('foo', 'test');
+        $functions = new FixerOptionBuilder('functions', 'List of `function` names to fix.');
+        $functions = $functions
+            ->setAllowedTypes(array('array'))
+            ->setAllowedValues(array(
+                $generator->allowedValueIsSubsetOf($functionNames),
+            ))
+            ->setDefault($functionNames)
+            ->getOption()
+        ;
+
+        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver(array($functions)));
         $fixer->getDefinition()->willReturn(new FixerDefinition(
             'Fixes stuff.',
             array(
@@ -168,7 +180,7 @@ EOT;
                 ),
                 new CodeSample(
                     '<?php echo \'bad stuff and bad thing\';',
-                    array('things' => true)
+                    array('functions' => array('foo', 'bar'))
                 ),
             ),
             'Replaces bad stuff with good stuff.',
@@ -179,9 +191,11 @@ EOT;
         $fixer->configure(array())->will(function () use (&$things) {
             $things = false;
         });
-        $fixer->configure(array('things' => true))->will(function () use (&$things) {
+
+        $fixer->configure(array('functions' => array('foo', 'bar')))->will(function () use (&$things) {
             $things = true;
         });
+
         $fixer->fix(
             Argument::type('SplFileInfo'),
             Argument::type('PhpCsFixer\Tokenizer\Tokens')
