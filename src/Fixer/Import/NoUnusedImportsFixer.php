@@ -256,7 +256,14 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
 
         if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
-            $tokens[$nextIndex] = new Token(array(T_WHITESPACE, $prevToken->getContent().$nextToken->getContent()));
+            $content = $prevToken->getContent().$nextToken->getContent();
+
+            if ($content) {
+                $tokens[$nextIndex] = new Token(array(T_WHITESPACE, $content));
+            } else {
+                $tokens->clearAt($nextIndex);
+            }
+
             $tokens->clearAt($prevIndex);
         }
     }
