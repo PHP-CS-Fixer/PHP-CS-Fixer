@@ -792,12 +792,17 @@ Choose from the list of available rules:
 
   Remove trailing whitespace at the end of blank lines.
 
-* **non_printable_character** [@Symfony:risky]
+* **non_printable_character** [@Symfony:risky, @PHP70Migration, @PHP71Migration]
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.
 
   *Risky rule: risky when strings contain intended invisible characters.*
+
+  Configuration options:
+
+  - ``use_escape_sequences_in_strings`` (``bool``): whether characters should be
+    replaced with escape sequences in strings; defaults to ``false``
 
 * **normalize_index_brace** [@Symfony]
 
