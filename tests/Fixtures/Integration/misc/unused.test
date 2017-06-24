@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: no_unused_imports.
+--RULESET--
+{
+    "no_unused_imports": true
+}
+--EXPECT--
+<?php namespace App\Http\Controllers;
+
+
+--INPUT--
+<?php namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
