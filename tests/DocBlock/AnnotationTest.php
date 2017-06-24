@@ -242,8 +242,8 @@ final class AnnotationTest extends TestCase
                 array('int[]', 'null'),
             ),
             array(
-                ' * @method int[]|null|int|array method()',
-                array('int[]', 'null', 'int', 'array'),
+                ' * @method int[]|null|?int|array method()',
+                array('int[]', 'null', '?int', 'array'),
             ),
             array(
                 ' * @method null|Foo\Bar|\Baz\Bax|int[] method()',

@@ -38,7 +38,7 @@ class Annotation
             )
             |
             (?<simple>
-                [@$]?[\\\\\w]+
+                [@$?]?[\\\\\w]+
             )
             |
             (?<generic>
