@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-23T13:16:25Z
+
+Why do we get phpmd to only run on the changed files? Just get it to check everything?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-23T13:20:22Z
+
+>Why do we get phpmd to only run on the changed files? Just get it to check everything?
+
+performance, there is no need to run it on everything all the time. We run in this case because a PHPMD violation was merged to master, however the should no longer happen when 2.4 because the lowest maintained version (IIRC).
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-23T13:21:29Z
+
+> performance, there is no need to run it on everything all the time
+
+Possible to implement a cache I guess. Sounds like a job for a different CI service, such as scrutinizer.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-23T13:23:17Z
+
+could be done, but would take considerable time and now this little thingy is blocking PR's so maybe in another follow up PR?
