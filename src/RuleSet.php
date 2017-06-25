@@ -39,6 +39,7 @@ final class RuleSet implements RuleSetInterface
             'lowercase_constants' => true,
             'lowercase_keywords' => true,
             'method_argument_space' => ['ensure_fully_multiline' => true],
+            'no_break_comment' => true,
             'no_closing_tag' => true,
             'no_spaces_after_function_name' => true,
             'no_spaces_inside_parenthesis' => true,
@@ -157,6 +158,9 @@ final class RuleSet implements RuleSetInterface
         ],
         '@PHP70Migration' => [
             '@PHP56Migration' => true,
+            'non_printable_character' => [
+                'use_escape_sequences_in_strings' => true,
+            ],
             'random_api_migration' => [
                 'mt_rand' => 'random_int',
                 'rand' => 'random_int',

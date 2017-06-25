@@ -32,7 +32,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
             'I cannot do that, Dave.'
         );
 
-        $this->assertInstanceOf('PhpCsFixer\ConfigurationException\InvalidConfigurationException', $exception);
+        $this->assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, $exception);
     }
 
     public function testDefaults()

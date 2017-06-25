@@ -79,6 +79,9 @@ final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
                 '<?php // a',
                 '<?php # a',
             ],
+            [
+                '<?php /* start-end */',
+            ],
         ];
     }
 }

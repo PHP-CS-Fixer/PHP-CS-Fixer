@@ -16,9 +16,45 @@ namespace PhpCsFixer\DocBlock;
  * This represents an entire annotation from a docblock.
  *
  * @author Graham Campbell <graham@alt-three.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class Annotation
 {
+    /**
+     * Regex to match any types, shall be used with `x` modifier.
+     *
+     * @internal
+     */
+    const REGEX_TYPES = '
+    # <simple> is any non-array, non-generic, non-alternated type, eg `int` or `\Foo`
+    # <array> is array of <simple>, eg `int[]` or `\Foo[]`
+    # <generic> is generic collection type, like `array<string, int>`, `Collection<Item>` and more complex like `Collection<int, \null|SubCollection<string>>`
+    # <type> is <simple>, <array> or <generic> type, like `int`, `bool[]` or `Collection<ItemKey, ItemVal>`
+    # <types> is one or more types alternated via `|`, like `int|bool[]|Collection<ItemKey, ItemVal>`
+    (?<types>
+        (?<type>
+            (?<array>
+                (?&simple)\[\]
+            )
+            |
+            (?<simple>
+                [@$?]?[\\\\\w]+
+            )
+            |
+            (?<generic>
+                (?&simple)
+                <
+                    (?:(?&simple),\s*)?(?:(?&types)|(?&generic))
+                >
+            )
+        )
+        (?:
+            \|
+            (?:(?&simple)|(?&array)|(?&generic))
+        )*
+    )
+    ';
+
     /**
      * All the annotation tag names with types.
      *
@@ -70,6 +106,13 @@ class Annotation
      * @var null|string
      */
     private $typesContent;
+
+    /**
+     * The cached types.
+     *
+     * @var null|string[]
+     */
+    private $types;
 
     /**
      * Create a new line instance.
@@ -147,7 +190,24 @@ class Annotation
      */
     public function getTypes()
     {
-        return explode('|', $this->getTypesContent());
+        if (null === $this->types) {
+            $this->types = [];
+
+            $content = $this->getTypesContent();
+
+            while ('' !== $content && false !== $content) {
+                preg_match(
+                    '{^'.self::REGEX_TYPES.'$}x',
+                    $content,
+                    $matches
+                );
+
+                $this->types[] = $matches['type'];
+                $content = substr($content, strlen($matches['type']) + 1);
+            }
+        }
+
+        return $this->types;
     }
 
     /**
@@ -161,7 +221,7 @@ class Annotation
 
         $this->lines[0]->setContent(preg_replace($pattern, implode('|', $types), $this->lines[0]->getContent(), 1));
 
-        $this->typesContent = null;
+        $this->clearCache();
     }
 
     /**
@@ -172,6 +232,8 @@ class Annotation
         foreach ($this->lines as $line) {
             $line->remove();
         }
+
+        $this->clearCache();
     }
 
     /**
@@ -205,12 +267,23 @@ class Annotation
                 throw new \RuntimeException('This tag does not support types.');
             }
 
-            $tagSplit = preg_split('/\s*\@'.$name.'\s*/', $this->lines[0]->getContent(), 2);
-            $spaceSplit = preg_split('/\s/', $tagSplit[1], 2);
+            $matchingResult = preg_match(
+                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.self::REGEX_TYPES.'(?:[ \t].*)?$}sx',
+                $this->lines[0]->getContent(),
+                $matches
+            );
 
-            $this->typesContent = $spaceSplit[0];
+            $this->typesContent = 1 === $matchingResult
+                ? $matches['types']
+                : '';
         }
 
         return $this->typesContent;
+    }
+
+    private function clearCache()
+    {
+        $this->types = null;
+        $this->typesContent = null;
     }
 }

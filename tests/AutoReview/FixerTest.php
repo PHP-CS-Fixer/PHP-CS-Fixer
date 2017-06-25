@@ -146,12 +146,29 @@ final class FixerTest extends TestCase
      */
     public function testFixerConfigurationDefinitions(ConfigurationDefinitionFixerInterface $fixer)
     {
+        // do not modify this structure without prior discussion
+        static $allowedRequiredOptions = [
+            'header_comment' => ['header' => true],
+        ];
+
         $configurationDefinition = $fixer->getConfigurationDefinition();
 
         $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
             $this->assertNotEmpty($option->getDescription());
+
+            $this->assertSame(
+                !isset($allowedRequiredOptions[$fixer->getName()][$option->getName()]),
+                $option->hasDefault(),
+                sprintf(
+                    $option->hasDefault()
+                        ? 'Option `%s` of fixer `%s` is wrongly listed in `$allowedRequiredOptions` structure, as it is not required. If you just changed that option to not be required anymore, please adjust mentioned structure.'
+                        : 'Option `%s` of fixer `%s` shall not be required. If you want to introduce new required option please adjust `$allowedRequiredOptions` structure.',
+                    $option->getName(),
+                    $fixer->getName()
+                )
+            );
         }
     }
 

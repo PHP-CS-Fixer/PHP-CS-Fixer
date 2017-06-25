@@ -256,7 +256,12 @@ Choose from the list of available rules:
 
 * **cast_spaces** [@Symfony]
 
-  A single space should be between cast and variable.
+  A single space or none should be between cast and variable.
+
+  Configuration options:
+
+  - ``space`` (``'none'``, ``'single'``): spacing to apply between cast and variable;
+    defaults to ``'single'``
 
 * **class_definition** [@PSR2, @Symfony]
 
@@ -490,6 +495,7 @@ Choose from the list of available rules:
 * **hash_to_slash_comment** [@Symfony]
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
+  DEPRECATED: Use "single_line_comment_style" instead.
 
 * **header_comment**
 
@@ -637,6 +643,16 @@ Choose from the list of available rules:
 
   There should be no blank lines before a namespace declaration.
 
+* **no_break_comment** [@PSR2, @Symfony]
+
+  There must be a comment when fall-through is intentional in a non-empty
+  case body.
+
+  Configuration options:
+
+  - ``comment_text`` (``string``): the text to use in the added comment and to
+    detect it; defaults to ``'no break'``
+
 * **no_closing_tag** [@PSR2, @Symfony]
 
   The closing ``?>`` tag MUST be omitted from files containing only PHP.
@@ -685,6 +701,10 @@ Choose from the list of available rules:
 * **no_multiline_whitespace_before_semicolons**
 
   Multi-line whitespace before closing semicolon are prohibited.
+
+* **no_null_property_initialization**
+
+  Properties MUST not be explicitly initialized with ``null``.
 
 * **no_php4_constructor**
 
@@ -776,12 +796,17 @@ Choose from the list of available rules:
 
   Remove trailing whitespace at the end of blank lines.
 
-* **non_printable_character** [@Symfony:risky]
+* **non_printable_character** [@Symfony:risky, @PHP70Migration, @PHP71Migration]
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.
 
   *Risky rule: risky when strings contain intended invisible characters.*
+
+  Configuration options:
+
+  - ``use_escape_sequences_in_strings`` (``bool``): whether characters should be
+    replaced with escape sequences in strings; defaults to ``false``
 
 * **normalize_index_brace** [@Symfony]
 
@@ -1008,7 +1033,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``dir`` (``string``): the directory where the project code is placed; required
+  - ``dir`` (``string``): the directory where the project code is placed; defaults
+    to ``''``
 
 * **psr4** [@Symfony:risky]
 
@@ -1092,6 +1118,16 @@ Choose from the list of available rules:
 
   Each namespace use MUST go on its own line and there MUST be one blank
   line after the use statements block.
+
+* **single_line_comment_style**
+
+  Single-line comments and multi-line comments with only one line of
+  actual content should use the ``//`` syntax.
+
+  Configuration options:
+
+  - ``comment_types`` (``array``): list of comment types to fix; defaults to
+    ``['asterisk', 'hash']``
 
 * **single_quote** [@Symfony]
 

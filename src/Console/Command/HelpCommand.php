@@ -282,11 +282,20 @@ EOF
                 ['', ' ', '[$1]', '[', ']', ''],
             ];
 
-            $str = preg_replace(
-                $replaces[0],
-                $replaces[1],
-                var_export($value, true)
-            );
+            $str = var_export($value, true);
+            do {
+                $strNew = preg_replace(
+                    $replaces[0],
+                    $replaces[1],
+                    $str
+                );
+
+                if ($strNew === $str) {
+                    break;
+                }
+
+                $str = $strNew;
+            } while (true);
         } else {
             $str = var_export($value, true);
         }
