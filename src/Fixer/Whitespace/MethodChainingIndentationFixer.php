@@ -33,7 +33,8 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         return new FixerDefinition(
             'Method chaining MUST be properly indented.',
             [new CodeSample("<?php\n\$user->setEmail('voff.web@gmail.com')\n         ->setPassword('233434');"),
-        ]);
+        ]
+        );
     }
 
     /**
@@ -61,7 +62,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
                 $prevIndex = $index - 1;
                 $prevToken = $tokens[$prevIndex];
-                $currentWhitespaces = $this->getLineBreak($prevToken->getContent());
+                $currentWhitespaces = $this->getCurrentWhitespaces($prevToken->getContent());
 
                 if (null !== $currentWhitespaces) {
                     $prevMeaningIndex = $tokens->getPrevMeaningfulToken($index);
@@ -92,7 +93,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                 $codeToFindIndents = $tokens[$i]->getContent();
             }
 
-            $currentWhitespaces = $this->getLineBreak($codeToFindIndents);
+            $currentWhitespaces = $this->getCurrentWhitespaces($codeToFindIndents);
 
             if (null !== $currentWhitespaces) {
                 if ($tokens[$i + 1]->isGivenKind(T_OBJECT_OPERATOR) || $this->isMultiLineMethod($i, $index, $tokens)) {
@@ -118,7 +119,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $isComment = false;
 
         for ($i = $index; $i > $prevMeaningful; --$i) {
-            if ($tokens[$i]->isGivenKind(T_OBJECT_OPERATOR) || null !== $this->getLineBreak($tokens[$i]->getContent())) {
+            if ($tokens[$i]->isGivenKind(T_OBJECT_OPERATOR) || null !== $this->getCurrentWhitespaces($tokens[$i]->getContent())) {
                 return $isComment;
             }
 
@@ -135,7 +136,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      *
      * @return string|null
      */
-    private function getLineBreak($content)
+    private function getCurrentWhitespaces($content)
     {
         if (1 === preg_match('/\R{1}([ \t]*)$/', $content, $matches)) {
             return $matches[1];
@@ -153,7 +154,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     private function isMultiLineMethod($start, $end, Tokens $tokens)
     {
-        if (')' === $tokens[$end]->getContent()) {
+        if ($tokens[$end]->equalsAny([')', [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE]])) {
             if ($tokens[$end]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)) {
                 // src/Tokenizer/Transformer/BraceClassInstantiationTransformer.php
                 if ($tokens->findGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, $start, $end)) {
