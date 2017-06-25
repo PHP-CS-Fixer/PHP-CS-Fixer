@@ -222,7 +222,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         if ($prevToken->isWhitespace()) {
             $content = rtrim($prevToken->getContent(), " \t");
 
-            if ($content) {
+            if ('' !== $content) {
                 $tokens[$prevIndex] = new Token(array(T_WHITESPACE, $content));
             } else {
                 $tokens->clearAt($prevIndex);
@@ -247,7 +247,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 1
             );
 
-            if ($content) {
+            if ('' !== $content) {
                 $tokens[$nextIndex] = new Token(array(T_WHITESPACE, $content));
             } else {
                 $tokens->clearAt($nextIndex);
@@ -258,7 +258,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
             $content = $prevToken->getContent().$nextToken->getContent();
 
-            if ($content) {
+            if ('' !== $content) {
                 $tokens[$nextIndex] = new Token(array(T_WHITESPACE, $content));
             } else {
                 $tokens->clearAt($nextIndex);
