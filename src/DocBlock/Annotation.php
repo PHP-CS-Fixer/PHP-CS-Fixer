@@ -44,7 +44,7 @@ class Annotation
             (?<generic>
                 (?&simple)
                 <
-                    (?:(?&simple),\s*)?(?:(?&types)|(?&generic))
+                    (?:(?&types),\s*)?(?:(?&types)|(?&generic))
                 >
             )
         )
