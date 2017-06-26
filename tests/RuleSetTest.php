@@ -478,9 +478,7 @@ final class RuleSetTest extends TestCase
      */
     private function sort(array &$data)
     {
-        $keys = array_keys($data);
-
-        if ($this->allInteger($keys)) {
+        if ($this->allIntegerKeys($data)) {
             sort($data);
         } else {
             ksort($data);
@@ -494,14 +492,14 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array $values
+     * @param array $data
      *
      * @return bool
      */
-    private function allInteger(array $values)
+    private function allIntegerKeys(array &$data)
     {
-        foreach ($values as $value) {
-            if (!is_int($value)) {
+        foreach ($data as $key => $value) {
+            if (!is_int($key)) {
                 return false;
             }
         }
