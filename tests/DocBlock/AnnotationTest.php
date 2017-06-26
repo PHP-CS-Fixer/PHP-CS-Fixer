@@ -301,6 +301,10 @@ final class AnnotationTest extends TestCase
                 '/** @return $SELF|int */',
                 array('$SELF', 'int'),
             ),
+            array(
+                '/** @var array<string|int, string>',
+                array('array<string|int, string>'),
+            ),
         );
     }
 
