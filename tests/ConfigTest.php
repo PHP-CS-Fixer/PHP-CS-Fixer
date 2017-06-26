@@ -100,7 +100,7 @@ final class ConfigTest extends TestCase
             )
         );
         $this->assertStringMatchesFormat(
-            sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
+            sprintf('%%ALoaded config custom_config_test from "%s".%%A', realpath($customConfigFile)),
             $commandTester->getDisplay(true)
         );
     }

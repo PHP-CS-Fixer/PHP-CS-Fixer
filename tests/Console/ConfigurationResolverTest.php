@@ -217,7 +217,7 @@ final class ConfigurationResolverTest extends TestCase
             ''
         );
 
-        $this->assertSame($dir.DIRECTORY_SEPARATOR.'.php_cs.dist', $resolver->getConfigFile());
+        $this->assertSame(realpath($dir.DIRECTORY_SEPARATOR.'.php_cs.dist'), $resolver->getConfigFile());
         $this->assertInstanceOf('Test1Config', $resolver->getConfig());
     }
 
@@ -231,7 +231,7 @@ final class ConfigurationResolverTest extends TestCase
             ''
         );
 
-        $this->assertSame($file, $resolver->getConfigFile());
+        $this->assertSame(realpath($file), $resolver->getConfigFile());
         $this->assertInstanceOf('Test4Config', $resolver->getConfig());
     }
 
@@ -251,7 +251,7 @@ final class ConfigurationResolverTest extends TestCase
             $cwdPath
         );
 
-        $this->assertSame($expectedFile, $resolver->getConfigFile());
+        $this->assertSame(realpath($expectedFile), $resolver->getConfigFile());
         $this->assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
@@ -261,28 +261,28 @@ final class ConfigurationResolverTest extends TestCase
 
         return array(
             array(
-                $dirBase.'case_1'.DIRECTORY_SEPARATOR.'.php_cs.dist',
+                $dirBase.'case_1/.php_cs.dist',
                 'Test1Config',
                 $dirBase.'case_1',
             ),
             array(
-                $dirBase.'case_2'.DIRECTORY_SEPARATOR.'.php_cs',
+                $dirBase.'case_2/.php_cs',
                 'Test2Config',
                 $dirBase.'case_2',
             ),
             array(
-                $dirBase.'case_3'.DIRECTORY_SEPARATOR.'.php_cs',
+                $dirBase.'case_3/.php_cs',
                 'Test3Config',
                 $dirBase.'case_3',
             ),
             array(
-                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'.php_cs.dist',
+                $dirBase.'case_6/.php_cs.dist',
                 'Test6Config',
                 $dirBase.'case_6'.DIRECTORY_SEPARATOR.'subdir',
                 $dirBase.'case_6',
             ),
             array(
-                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'.php_cs.dist',
+                $dirBase.'case_6/.php_cs.dist',
                 'Test6Config',
                 $dirBase.'case_6'.DIRECTORY_SEPARATOR.'subdir/empty_file.php',
                 $dirBase.'case_6',
@@ -380,6 +380,64 @@ final class ConfigurationResolverTest extends TestCase
         $this->assertSame(array(__DIR__), $resolver->getPath());
     }
 
+    /**
+     * @param string[] $expected
+     * @param string[] $paths
+     *
+     * @dataProvider provideDoublePaths
+     */
+    public function testResolveDoublePaths(array $expected, array $paths)
+    {
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array(
+                'path' => $paths,
+                'config' => __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php_cs',
+            ),
+            __DIR__
+        );
+
+        $this->assertSame($expected, $resolver->getPath());
+    }
+
+    public function provideDoublePaths()
+    {
+        return array(
+            array(
+                array(__FILE__),
+                array(
+                    __FILE__,
+                    __DIR__.'/../'.basename(__DIR__).'/'.basename(__FILE__),
+                ),
+            ),
+            array(
+                array(__DIR__),
+                array(
+                    '.',
+                    './',
+                ),
+            ),
+        );
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Passing an empty string as path is deprecated and support will be removed in 3.0. Pass a dot ('.') instead to specify the CWD.
+     */
+    public function testResolvePathEmptyStringDeprecation()
+    {
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array(
+                'path' => array(''),
+                'config' => __DIR__,
+            ),
+            __DIR__
+        );
+
+        $resolver->getPath();
+    }
+
     public function testResolvePathWithFileThatIsExcludedDirectlyOverridePathMode()
     {
         $this->config->getFinder()
@@ -467,6 +525,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param array|\Exception $expected
      * @param null|Finder      $configFinder
+     * @param string[]         $path
      * @param string           $pathMode
      * @param null|string      $config
      *
@@ -1073,6 +1132,6 @@ final class ConfigurationResolverTest extends TestCase
 
     private function getFixtureDir()
     {
-        return realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR).'/';
+        return realpath(__DIR__.'/../Fixtures/ConfigurationResolverConfigFile').'/';
     }
 }
