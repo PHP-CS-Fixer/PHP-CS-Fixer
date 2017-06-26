@@ -20,9 +20,11 @@ use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSetInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -32,6 +34,16 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DescribeCommandTest extends TestCase
 {
+    /**
+     * @var Application
+     */
+    private $application;
+
+    protected function setUp()
+    {
+        $this->application = new Application();
+    }
+
     public function testExecuteOutput()
     {
         $expected = <<<'EOT'
@@ -39,11 +51,14 @@ Description of Foo/bar rule.
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer is configurable using following options:
+Fixer applying this rule is risky.
+Can break stuff.
+
+Fixer is configurable using following option:
 * functions (array): list of `function` names to fix; defaults to ['foo', 'test']
 
 Fixing examples:
- * Example #1.
+ * Example #1. Fixing with the default configuration.
    ---------- begin diff ----------
    --- Original
    +++ New
@@ -64,7 +79,7 @@ Fixing examples:
 
 EOT;
 
-        $this->assertSame($expected, $this->execute(false)->getDisplay(true));
+        $this->assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
     }
 
     public function testExecuteOutputWithDecoration()
@@ -74,11 +89,14 @@ EOT;
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer is configurable using following options:
+\033[37;41mFixer applying this rule is risky.\033[39;49m
+Can break stuff.
+
+Fixer is configurable using following option:
 * \033[32mfunctions\033[39m (\033[33marray\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
 
 Fixing examples:
- * Example #1.
+ * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
@@ -99,7 +117,7 @@ Fixing examples:
 
 EOT;
 
-        $actual = $this->execute(true)->getDisplay(true);
+        $actual = $this->execute('Foo/bar', true)->getDisplay(true);
 
         if (false !== strpos($actual, "\033[0m")) {
             $expected = str_replace("\033[39m", "\033[0m", $expected);
@@ -110,31 +128,44 @@ EOT;
 
     public function testExecuteStatusCode()
     {
-        $this->assertSame(0, $this->execute(false)->getStatusCode());
+        $this->assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
 
-    public function testExecuteWithUnknownName()
+    public function testExecuteWithUnknownRuleName()
     {
-        $application = new Application();
-        $application->add(new DescribeCommand(new FixerFactory()));
+        $this->application->add(new DescribeCommand(new FixerFactory()));
 
-        $command = $application->find('describe');
+        $command = $this->application->find('describe');
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedException('InvalidArgumentException', 'Rule Foo/bar not found.');
+        $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Rule "Foo/bar" not found\.$#');
         $commandTester->execute(array(
             'command' => $command->getName(),
             'name' => 'Foo/bar',
         ));
     }
 
+    public function testExecuteWithUnknownSetName()
+    {
+        $this->application->add(new DescribeCommand(new FixerFactory()));
+
+        $command = $this->application->find('describe');
+
+        $commandTester = new CommandTester($command);
+
+        $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Set "@NoSuchSet" not found\.$#');
+        $commandTester->execute(array(
+            'command' => $command->getName(),
+            'name' => '@NoSuchSet',
+        ));
+    }
+
     public function testExecuteWithoutName()
     {
-        $application = new Application();
-        $application->add(new DescribeCommand(new FixerFactory()));
+        $this->application->add(new DescribeCommand(new FixerFactory()));
 
-        $command = $application->find('describe');
+        $command = $this->application->find('describe');
 
         $commandTester = new CommandTester($command);
 
@@ -144,20 +175,72 @@ EOT;
         ));
     }
 
+    public function testGetAlternativeSuggestion()
+    {
+        $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
+        $this->execute('Foo2/bar', false);
+    }
+
     /**
-     * @param bool $decorated
+     * @param bool   $decorated
+     * @param string $expected
+     *
+     * @dataProvider provideDescribeSetCases
+     */
+    public function testDescribeSet($decorated, $expected)
+    {
+        $this->assertSame(
+            $expected,
+            $this->execute('@testSet', $decorated)->getDisplay(true)
+        );
+    }
+
+    public function provideDescribeSetCases()
+    {
+        return array(
+            array(
+                true,
+<<<EOT
+\033[32mDescription of\033[39m @testSet \033[32mset.\033[39m
+
+ * \033[32mFoo/bar\033[39m \033[37;41mrisky\033[39;49m
+   | Fixes stuff.
+   \033[33m| Configuration: ['functions' => ['foo' => 'bar']]\033[39m
+
+
+EOT
+            ),
+            array(
+                false,
+<<<'EOT'
+Description of @testSet set.
+
+ * Foo/bar risky
+   | Fixes stuff.
+   | Configuration: ['functions' => ['foo' => 'bar']]
+
+
+EOT
+            ),
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param bool   $decorated
+     * @param int    $verbosityLevel
      *
      * @return CommandTester
      */
-    private function execute($decorated)
+    private function execute($name, $decorated, $verbosityLevel = OutputInterface::VERBOSITY_NORMAL)
     {
         $fixer = $this->prophesize();
         $fixer->willImplement('PhpCsFixer\Fixer\DefinedFixerInterface');
         $fixer->willImplement('PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface');
 
+        $fixer->configure(array('functions' => array('foo' => 'bar')))->willReturn(null);
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(false);
 
         $generator = new FixerOptionValidatorGenerator();
         $functionNames = array('foo', 'test');
@@ -187,6 +270,8 @@ EOT;
             'Can break stuff.'
         ));
 
+        $fixer->isRisky()->willReturn(true);
+
         $things = false;
         $fixer->configure(array())->will(function () use (&$things) {
             $things = false;
@@ -209,22 +294,64 @@ EOT;
         $fixerFactory = new FixerFactory();
         $fixerFactory->registerFixer($fixer->reveal(), true);
 
-        $application = new Application();
-        $application->add(new DescribeCommand($fixerFactory));
+        $ruleSet = new TestRuleSet();
+        $fixerFactory->useRuleSet($ruleSet);
 
-        $command = $application->find('describe');
+        $this->application->add(new DescribeCommand($fixerFactory, $ruleSet));
+
+        $command = $this->application->find('describe');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             array(
                 'command' => $command->getName(),
-                'name' => 'Foo/bar',
+                'name' => $name,
             ),
             array(
                 'decorated' => $decorated,
+                'verbosity' => $verbosityLevel,
             )
         );
 
         return $commandTester;
+    }
+}
+
+/**
+ * @internal
+ * @coversNothing
+ */
+final class TestRuleSet implements RuleSetInterface
+{
+    private $rules;
+
+    public function __construct(array $set = array())
+    {
+        $this->rules = array('Foo/bar' => array('functions' => array('foo' => 'bar')));
+    }
+
+    public static function create(array $set = array())
+    {
+        return new self();
+    }
+
+    public function getRuleConfiguration($rule)
+    {
+        return $this->rules[$rule];
+    }
+
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
+    public function getSetDefinitionNames()
+    {
+        return array('@testSet');
+    }
+
+    public function hasRule($rule)
+    {
+        return isset($this->rules[$rule]);
     }
 }
