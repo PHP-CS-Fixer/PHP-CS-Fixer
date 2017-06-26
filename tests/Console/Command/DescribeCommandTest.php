@@ -178,7 +178,7 @@ EOT;
     public function testGetAlternativeSuggestion()
     {
         $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
-        $this->execute('Foo2/bar', false)->getDisplay(true);
+        $this->execute('Foo2/bar', false);
     }
 
     /**
@@ -241,7 +241,6 @@ EOT
         $fixer->configure(array('functions' => array('foo' => 'bar')))->willReturn(null);
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(false);
 
         $generator = new FixerOptionValidatorGenerator();
         $functionNames = array('foo', 'test');
