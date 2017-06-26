@@ -39,11 +39,11 @@ Description of Foo/bar rule.
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer is configurable using following options:
+Fixer is configurable using following option:
 * functions (array): list of `function` names to fix; defaults to ['foo', 'test']
 
 Fixing examples:
- * Example #1.
+ * Example #1. Fixing with the default configuration.
    ---------- begin diff ----------
    --- Original
    +++ New
@@ -74,11 +74,11 @@ EOT;
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer is configurable using following options:
+Fixer is configurable using following option:
 * \033[32mfunctions\033[39m (\033[33marray\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
 
 Fixing examples:
- * Example #1.
+ * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
