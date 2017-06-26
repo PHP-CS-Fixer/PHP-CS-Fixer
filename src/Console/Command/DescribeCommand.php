@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSetInterface;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Console\Command\Command;
@@ -56,9 +57,14 @@ final class DescribeCommand extends Command
     private $fixers;
 
     /**
+     * @var RuleSet
+     */
+    private $ruleSet;
+
+    /**
      * @param null|FixerFactory $fixerFactory
      */
-    public function __construct(FixerFactory $fixerFactory = null)
+    public function __construct(FixerFactory $fixerFactory = null, RuleSetInterface $ruleSet = null)
     {
         parent::__construct();
 
@@ -67,6 +73,7 @@ final class DescribeCommand extends Command
             $fixerFactory->registerBuiltInFixers();
         }
 
+        $this->ruleSet = null === $ruleSet ? new RuleSet() : $ruleSet;
         $this->fixerFactory = $fixerFactory;
     }
 
@@ -105,7 +112,7 @@ final class DescribeCommand extends Command
             $this->describeList($output, $e->getType());
 
             throw new \InvalidArgumentException(sprintf(
-                '%s %s not found.%s',
+                '%s "%s" not found.%s',
                 ucfirst($e->getType()), $name, null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
             ));
         }
@@ -265,7 +272,8 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        $ruleSet = new RuleSet(array($name => true));
+        $ruleSetClass = get_class($this->ruleSet);
+        $ruleSet = new $ruleSetClass(array($name => true));
         $rules = $ruleSet->getRules();
         ksort($rules);
 
@@ -320,8 +328,7 @@ final class DescribeCommand extends Command
             return $this->setNames;
         }
 
-        $set = new RuleSet();
-        $this->setNames = $set->getSetDefinitionNames();
+        $this->setNames = $this->ruleSet->getSetDefinitionNames();
         sort($this->setNames);
 
         return $this->setNames;
