@@ -555,4 +555,97 @@ final class RuleSetTest extends TestCase
 
         return $testSet;
     }
+
+    /**
+     * Tests the custom rule set for definition name existance.
+     *
+     * @param string $definitionName
+     * @param array $customSetDefinition
+     *
+     * @dataProvider provideCustomRuleSetDefinitionData
+     */
+    public function testCustomRuleSetWithDefinitionName($definitionName, array $customSetDefinition)
+    {
+        $ruleSet = new RuleSet([], $customSetDefinition);
+        $this->assertArraySubset(array($definitionName), $ruleSet->getSetDefinitionNames());
+    }
+
+    public function provideCustomRuleSetDefinitionData()
+    {
+        return [
+            [
+                '@Custom',
+                [
+                    '@Custom' => [
+                    ]
+                ],
+                '@CustomExtended',
+                [
+                    '@CustomExtended' => [
+                        '@Custom' => true
+                    ],
+                    '@Custom' => [
+                    ]
+                ],
+                '@Custom',
+                [
+                    '@CustomExtended' => [
+                        '@Custom' => true
+                    ],
+                    '@Custom' => [
+                    ]
+                ],
+            ]
+        ];
+    }
+
+    /**
+     * Tests the custom rules set against the rule resolver
+     *
+     * @param array $rules
+     * @param array $customSetDefinition
+     *
+     * @dataProvider provideResolveCustomRuleSetsCases
+     */
+    public function testCustomRuleSetWithResolveRules(array $rules, array $customSetDefinition)
+    {
+        $rulesWithCustomSet = (new RuleSet($rules, $customSetDefinition))->getRules();
+        $ruleWithoutCustomSet = (new RuleSet(['single_line_after_imports' => true]))->getRules();
+
+        $this->assertEquals($ruleWithoutCustomSet, $rulesWithCustomSet);
+    }
+
+    public function provideResolveCustomRuleSetsCases()
+    {
+        return [
+            [
+                [
+                    '@Custom' => true
+                ],
+                [
+                    '@Custom' => [
+                        'single_line_after_imports' => true
+                    ]
+                ]],
+            [
+                [
+                    '@CustomExtended' => true
+                ],
+                [
+                    '@CustomExtended' => [
+                        '@Custom' => true
+                    ],
+                    '@Custom' => [
+                        'single_line_after_imports' => true
+                    ]
+                ]
+            ],
+            [
+                [
+                    'single_line_after_imports' => true
+                ],
+                []
+            ]
+        ];
+    }
 }
