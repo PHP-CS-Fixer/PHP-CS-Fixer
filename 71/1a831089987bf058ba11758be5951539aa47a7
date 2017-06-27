@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by stof at 2017-04-18T14:07:58Z
+
+@SpacePossum my config is at https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/2694#issuecomment-293953049 and I'm using the 2.2.1 release
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-18T14:33:14Z
+
+Your configuration for the Fixer resolves to the `@Symfony` set definition;
+```
+'curly_brace_block',
+'extra',
+'parenthesis_brace_block',
+'square_brace_block',
+'throw',
+'use'
+```
+(https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.2/src/RuleSet.php#L82)
+
+Which explains `but line is not removed after return in this case.`, as `return` is not configured.
+The reason why `throw` is in as default but `return` is not, is because we asked @ the symfony repo what they would like as default;
+https://github.com/symfony/symfony/pull/19167
+
+We never got around making it possible to add the config options specific for switch statements, so I picked the safe option (i.e. do not fix).
+I don't see this feature to be added any time soon TBH, but maybe someone wants to follow op on it.
+
+---------------------------------------------------------------------------
+
+by stof at 2017-04-18T14:35:47Z
+
+Well, I said `-1 for return in a switch` in my comment, but I would have added `-1 for throw in a switch` if I had thought about it too. What I was -1 about was the fact of removing lines between cases due to the last statement of the previous case
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-18T15:04:33Z
+
+Yeah, looking back on the SF PR things may not have been as clear as they could've been.
+For SF project it might be better to configure the fixer to `extra` only in their config file, so cases within `switch` statements are not touched. At least until we've the options to handle `switch` statements in another way.
+To sum up the issue; this is a configuration issue and feature request for dealing with `switch` statements in another matter.
+This PR is still relevant IMO as it adds new configuration options that I think are good, although these are not the requested options.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-22T21:13:01Z
+
+:+1: but:
+- please rebase
+- please say, is it closing #2697 ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-05-22T22:01:39Z
+
+* does not close https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/2697
+* will rebase soon :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-14T09:10:00Z
+
+tests are green
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-27T07:08:30Z
+
+with :+1: from @keradus and approve of @julienfalque this on is RTM right?
