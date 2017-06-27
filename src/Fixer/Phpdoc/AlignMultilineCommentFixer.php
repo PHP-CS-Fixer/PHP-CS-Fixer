@@ -49,7 +49,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Multiline doc comment: enforce asterisk start on each line [PSR-5] and align them.',
+            'Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the one.',
             [
                 new CodeSample(
 '<?php
@@ -128,7 +128,7 @@ with a line not prefixed with asterisk
                 }
 
                 if (!isset($line[0])) {
-                    $line = '*'.$line;
+                    $line = '*';
                 } elseif ('*' !== $line[0]) {
                     $line = '* '.$line;
                 }
@@ -146,7 +146,7 @@ with a line not prefixed with asterisk
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('comment_type', 'Whether to align doc-like multiline comments if all lines start with an asterisk [`phpdocs_like`] or all multile comments  with mixed content on lines that start with an asteristk [`all_multiline`]'))
+            (new FixerOptionBuilder('comment_type', 'Whether to fix PHPDoc comments only (`phpdocs_only`), any multi-line comment whose lines all start with an asterisk (`phpdocs_like`) or any multi-line comment (`all_multiline`).'))
                 ->setAllowedValues(['phpdocs_only', 'phpdocs_like', 'all_multiline'])
                 ->setDefault('phpdocs_only')
                 ->getOption(),

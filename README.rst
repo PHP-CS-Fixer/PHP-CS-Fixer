@@ -209,16 +209,15 @@ Choose from the list of available rules:
 
 * **align_multiline_comment**
 
-  Multiline doc comment: enforce asterisk start on each line [PSR-5] and
-  align them.
+  Each line of multi-line DocComments must have an asterisk [PSR-5] and
+  must be aligned with the one.
 
   Configuration options:
 
   - ``comment_type`` (``'all_multiline'``, ``'phpdocs_like'``, ``'phpdocs_only'``): whether
-    to align doc-like multiline comments if all lines start with an
-    asterisk [``phpdocs_like``] or all multile comments  with mixed content
-    on lines that start with an asteristk [``all_multiline``]; defaults to
-    ``'phpdocs_only'``
+    to fix PHPDoc comments only (``phpdocs_only``), any multi-line comment
+    whose lines all start with an asterisk (``phpdocs_like``) or any
+    multi-line comment (``all_multiline``); defaults to ``'phpdocs_only'``
 
 * **array_syntax**
 
