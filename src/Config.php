@@ -32,6 +32,7 @@ class Config implements ConfigInterface
     private $name;
     private $phpExecutable;
     private $rules = ['@PSR2' => true];
+    private $customRuleSets = [];
     private $usingCache = true;
 
     public function __construct($name = 'default')
@@ -61,6 +62,14 @@ class Config implements ConfigInterface
     public function getCustomFixers()
     {
         return $this->customFixers;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomRuleSets()
+    {
+        return $this->customRuleSets;
     }
 
     /**
@@ -172,6 +181,16 @@ class Config implements ConfigInterface
     public function setCacheFile($cacheFile)
     {
         $this->cacheFile = $cacheFile;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomRuleSets(array $ruleSets)
+    {
+        $this->customRuleSets = $ruleSets;
 
         return $this;
     }
