@@ -15,7 +15,6 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
@@ -25,7 +24,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -37,6 +35,10 @@ final class FixerTest extends TestCase
     // do not modify this structure without prior discussion
     private $allowedRequiredOptions = array(
         'header_comment' => array('header' => true),
+    );
+
+    private $allowedFixersWithoutDefaultCodeSample = array(
+        'general_phpdoc_annotation_remove' => true,
     );
 
     /**
@@ -115,53 +117,8 @@ final class FixerTest extends TestCase
             if (isset($configSamplesProvided['default'])) {
                 reset($configSamplesProvided);
                 $this->assertSame('default', key($configSamplesProvided), sprintf('[%s] First sample must be for the default configuration.', $fixerName));
-            } else {
+            } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
                 $this->assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
-            }
-
-            // test no duplicate configuration sample
-
-            foreach ($configSamplesProvided as $sampleCount => $config) {
-                foreach ($configSamplesProvided as $sampleCount2 => $config2) {
-                    if ($sampleCount === $sampleCount2) {
-                        continue;
-                    }
-
-                    $this->assertNotSame($config, $config2, sprintf('[%s] Has multiple samples with the same configuration, please merges the samples.', $fixerName));
-                }
-            }
-
-            // test that all configuration options are used at least one time in the samples
-
-            /** @var FixerOption[] $options */
-            $options = $fixer->getConfigurationDefinition()->getOptions();
-
-            if (count($options)) {
-                $optionsNames = array();
-
-                foreach ($options as $option) {
-                    $optionsNames[$option->getName()] = 0;
-                }
-
-                foreach ($samples as $sample) {
-                    $config = $sample->getConfiguration();
-
-                    if (is_array($config)) {
-                        foreach ($config as $name => $value) {
-                            $this->assertArrayHasKey($name, $optionsNames, sprintf('[%s] Sample uses unknown option with name "%s", expected any of "%s".', $fixerName, $name, implode('","', array_keys($optionsNames))));
-                            ++$optionsNames[$name];
-                        }
-                    }
-                }
-
-                $optionsNames = array_filter(
-                    $optionsNames,
-                    function ($count) {
-                        return 0 === $count;
-                    }
-                );
-
-                $this->assertCount(0, $optionsNames, sprintf('[%s] No sample with configuration options "%s".', $fixerName, implode('", "', array_keys($optionsNames))));
             }
         }
 
