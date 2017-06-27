@@ -210,7 +210,7 @@ Choose from the list of available rules:
 * **align_multiline_comment**
 
   Each line of multi-line DocComments must have an asterisk [PSR-5] and
-  must be aligned with the one.
+  must be aligned with the first one.
 
   Configuration options:
 

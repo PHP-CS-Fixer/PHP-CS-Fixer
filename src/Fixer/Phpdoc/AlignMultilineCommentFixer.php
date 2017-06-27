@@ -49,7 +49,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the one.',
+            'Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.',
             [
                 new CodeSample(
 '<?php
