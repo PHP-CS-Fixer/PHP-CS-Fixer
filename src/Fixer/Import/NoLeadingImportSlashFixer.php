@@ -56,21 +56,11 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (!$tokens->isTokenKindFound(T_NAMESPACE)) {
-            return;
-        }
-
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $foundNamespace = $tokens->findGivenKind(T_NAMESPACE);
-        $firstNamespaceIdx = key($foundNamespace);
 
         $usesIdxs = $tokensAnalyzer->getImportUseIndexes();
 
         foreach ($usesIdxs as $idx) {
-            if ($idx < $firstNamespaceIdx) {
-                continue;
-            }
-
             $nextTokenIdx = $tokens->getNextNonWhitespace($idx);
             $nextToken = $tokens[$nextTokenIdx];
 
