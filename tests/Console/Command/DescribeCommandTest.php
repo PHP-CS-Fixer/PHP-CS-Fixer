@@ -118,6 +118,7 @@ EOT;
         $actual = $this->execute('Foo/bar', true)->getDisplay(true);
 
         if (false !== strpos($actual, "\033[0m")) {
+            $expected = str_replace("\033[39;49m", "\033[0m", $expected);
             $expected = str_replace("\033[39m", "\033[0m", $expected);
         }
 
