@@ -23,6 +23,7 @@ class Config implements ConfigInterface
 {
     private $cacheFile = '.php_cs.cache';
     private $customFixers = [];
+    private $customRuleSets = [];
     private $finder;
     private $format = 'txt';
     private $hideProgress = false;
@@ -32,7 +33,6 @@ class Config implements ConfigInterface
     private $name;
     private $phpExecutable;
     private $rules = ['@PSR2' => true];
-    private $customRuleSets = [];
     private $usingCache = true;
 
     public function __construct($name = 'default')
