@@ -112,6 +112,10 @@ with a line not prefixed with asterisk
                 continue;
             }
 
+            if ($token->isGivenKind(T_COMMENT) && 'all_multiline' !== $this->configuration['comment_type'] && 1 === preg_match('/\R(?:\R|\s*[^\s\*])/', $token->getContent())) {
+                continue;
+            }
+
             $indentation = $matches[1];
             $lines = preg_split('/\R/', $token->getContent());
             foreach ($lines as $lineNumber => $line) {
@@ -121,9 +125,6 @@ with a line not prefixed with asterisk
 
                 $line = ltrim($line);
                 if ($token->isGivenKind(T_COMMENT) && (!isset($line[0]) || '*' !== $line[0])) {
-                    if ('all_multiline' !== $this->configuration['comment_type']) {
-                        continue 2;
-                    }
                     continue;
                 }
 
