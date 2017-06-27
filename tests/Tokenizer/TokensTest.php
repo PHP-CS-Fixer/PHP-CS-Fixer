@@ -1012,7 +1012,8 @@ echo $a;',
             $this->assertNull($input);
 
             return;
-        } elseif (null === $input) {
+        }
+        if (null === $input) {
             $this->fail('While "input" is <null>, "expected" is not.');
         }
 

@@ -768,6 +768,10 @@ Choose from the list of available rules:
   There MUST NOT be a space after the opening parenthesis. There MUST NOT
   be a space before the closing parenthesis.
 
+* **no_superfluous_elseif**
+
+  Replaces superfluous ``elseif`` with ``if``.
+
 * **no_trailing_comma_in_list_call** [@Symfony]
 
   Remove trailing commas in list function calls.
