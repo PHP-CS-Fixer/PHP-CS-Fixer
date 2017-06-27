@@ -72,10 +72,7 @@ final class FixerTest extends TestCase
                 $this->assertTrue($fixerIsConfigurable, sprintf('[%s] Sample #%d has configuration, but the fixer is not configurable.', $fixerName, $sampleCounter));
                 $this->assertInternalType('array', $config, sprintf('[%s] Sample #%d configuration must be an array or null.', $fixerName, $sampleCounter));
 
-                $sortedConfig = $this->sortConfiguration($config);
-                $this->assertSame($config, $sortedConfig, sprintf('[%s] Please sort the configuration of sample #%d.', $fixerName, $sampleCounter));
-
-                $configSamplesProvided[$sampleCounter] = $sortedConfig;
+                $configSamplesProvided[$sampleCounter] = $config;
             } elseif ($fixerIsConfigurable) {
                 if (!$sample instanceof VersionSpecificCodeSampleInterface) {
                     $this->assertArrayNotHasKey('default', $configSamplesProvided, sprintf('[%s] Multiple non-versioned samples with default configuration.', $fixerName));
@@ -257,30 +254,6 @@ final class FixerTest extends TestCase
         return array_map(function (FixerInterface $fixer) {
             return array($fixer);
         }, $fixers);
-    }
-
-    private function sortConfiguration(array $configuration)
-    {
-        reset($configuration);
-        $key = key($configuration);
-        if (is_string($key)) {
-            $key = strtolower($key);
-            if (false !== strpos(strtolower($key), 'order') || false !== strpos(strtolower($key), 'sort')) {
-                return $configuration;
-            }
-        }
-
-        is_int($key)
-            ? sort($configuration)
-            : ksort($configuration);
-
-        foreach ($configuration as $key => $value) {
-            if (is_array($value)) {
-                $configuration[$key] = $this->sortConfiguration($value);
-            }
-        }
-
-        return $configuration;
     }
 
     private function getAllFixers()

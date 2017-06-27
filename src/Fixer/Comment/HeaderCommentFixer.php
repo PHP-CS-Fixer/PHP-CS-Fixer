@@ -75,8 +75,8 @@ namespace A\B;
 echo 1;
 ',
                     array(
-                        'commentType' => 'PHPDoc',
                         'header' => 'Made with love.',
+                        'commentType' => 'PHPDoc',
                         'location' => 'after_open',
                         'separate' => 'bottom',
                     )
@@ -90,8 +90,8 @@ namespace A\B;
 echo 1;
 ',
                     array(
-                        'commentType' => 'comment',
                         'header' => 'Made with love.',
+                        'commentType' => 'comment',
                         'location' => 'after_declare_strict',
                     )
                 ),
