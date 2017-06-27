@@ -37,16 +37,19 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
      */
     private static $availableTokens = [
         'break',
+        'case',
         'continue',
+        'curly_brace_block',
+        'default',
         'extra',
+        'parenthesis_brace_block',
         'return',
+        'square_brace_block',
+        'switch',
         'throw',
         'use',
         'useTrait',
         'use_trait',
-        'curly_brace_block',
-        'parenthesis_brace_block',
-        'square_brace_block',
     ];
 
     /**
@@ -78,24 +81,30 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
 
         static $reprToTokenMap = [
             'break' => T_BREAK,
+            'case' => T_CASE,
             'continue' => T_CONTINUE,
+            'curly_brace_block' => '{',
+            'default' => T_DEFAULT,
             'extra' => T_WHITESPACE,
+            'parenthesis_brace_block' => '(',
             'return' => T_RETURN,
+            'square_brace_block' => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+            'switch' => T_SWITCH,
             'throw' => T_THROW,
             'use' => T_USE,
             'use_trait' => CT::T_USE_TRAIT,
-            'square_brace_block' => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-            'curly_brace_block' => '{',
-            'parenthesis_brace_block' => '(',
         ];
 
         static $tokenKindCallbackMap = [
             T_BREAK => 'fixAfterToken',
+            T_CASE => 'fixAfterToken',
             T_CONTINUE => 'fixAfterToken',
-            T_WHITESPACE => 'removeMultipleBlankLines',
+            T_DEFAULT => 'fixAfterToken',
             T_RETURN => 'fixAfterToken',
+            T_SWITCH => 'fixAfterToken',
             T_THROW => 'fixAfterToken',
             T_USE => 'removeBetweenUse',
+            T_WHITESPACE => 'removeMultipleBlankLines',
             CT::T_USE_TRAIT => 'removeBetweenUse',
             CT::T_ARRAY_SQUARE_BRACE_OPEN => 'fixStructureOpenCloseIfMultiLine', // typeless '[' tokens should not be fixed (too rare)
         ];
@@ -234,6 +243,18 @@ class Foo
     use Baz;
 }',
                     ['tokens' => ['use_trait']]
+                ),
+                new CodeSample(
+'<?php
+switch($a) {
+
+    case 1:
+
+    default:
+
+        echo 3;
+}',
+                    ['tokens' => ['switch', 'case', 'default']]
                 ),
             ]
         );
