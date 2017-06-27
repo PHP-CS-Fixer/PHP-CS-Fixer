@@ -24,7 +24,7 @@ interface RuleSetInterface
     /**
      * Constructs the set of rules.
      *
-     * @param array $set the set of rules.
+     * @param array $set                  the set of rules
      * @param array $customSetDefinitions the custom set definitions
      */
     public function __construct(array $set = [], array $customSetDefinitions = []);
@@ -32,7 +32,7 @@ interface RuleSetInterface
     /**
      * Static creation for the rule set.
      *
-     * @param array $set the set of rules.
+     * @param array $set                  the set of rules
      * @param array $customSetDefinitions the custom set definitions
      *
      * @return mixed
