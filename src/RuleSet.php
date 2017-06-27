@@ -185,6 +185,13 @@ final class RuleSet implements RuleSetInterface
     ];
 
     /**
+     * The custom set definitions.
+     *
+     * @var array
+     */
+    private $customSetDefinitions = [];
+
+    /**
      * Set that was used to generate group of rules.
      *
      * The key is name of rule or set, value is bool if the rule/set should be used.
@@ -203,7 +210,7 @@ final class RuleSet implements RuleSetInterface
      */
     private $rules;
 
-    public function __construct(array $set = [])
+    public function __construct(array $set = [], array $customSetDefinitions = [])
     {
         foreach ($set as $key => $value) {
             if (is_int($key)) {
@@ -212,12 +219,13 @@ final class RuleSet implements RuleSetInterface
         }
 
         $this->set = $set;
+        $this->customSetDefinitions = $customSetDefinitions;
         $this->resolveSet();
     }
 
-    public static function create(array $set = [])
+    public static function create(array $set = [], array $customSetDefinitions = [])
     {
-        return new self($set);
+        return new self($set, $customSetDefinitions);
     }
 
     /**
@@ -225,7 +233,7 @@ final class RuleSet implements RuleSetInterface
      */
     public function hasRule($rule)
     {
-        return array_key_exists($rule, $this->rules);
+        return array_key_exists($rule, $this->getRules());
     }
 
     /**
@@ -237,11 +245,13 @@ final class RuleSet implements RuleSetInterface
             throw new \InvalidArgumentException(sprintf('Rule "%s" is not in the set.', $rule));
         }
 
-        if ($this->rules[$rule] === true) {
+        $rules = $this->getRules();
+
+        if ($rules[$rule] === true) {
             return null;
         }
 
-        return $this->rules[$rule];
+        return $rules[$rule];
     }
 
     /**
@@ -257,7 +267,7 @@ final class RuleSet implements RuleSetInterface
      */
     public function getSetDefinitionNames()
     {
-        return array_keys($this->setDefinitions);
+        return array_keys(array_replace($this->customSetDefinitions, $this->setDefinitions));
     }
 
     /**
@@ -267,11 +277,13 @@ final class RuleSet implements RuleSetInterface
      */
     private function getSetDefinition($name)
     {
-        if (!isset($this->setDefinitions[$name])) {
+        $setDefinitions = array_replace_recursive($this->customSetDefinitions, $this->setDefinitions);
+
+        if (!isset($setDefinitions[$name])) {
             throw new \InvalidArgumentException(sprintf('Set "%s" does not exist.', $name));
         }
 
-        return $this->setDefinitions[$name];
+        return $setDefinitions[$name];
     }
 
     /**
