@@ -578,7 +578,7 @@ final class ConfigurationResolver
             $rules = $this->parseRules();
             $this->validateRules($rules);
 
-            $this->ruleSet = new RuleSet($rules);
+            $this->ruleSet = new RuleSet($rules, $this->getConfig()->getCustomRuleSets());
         }
 
         return $this->ruleSet;
