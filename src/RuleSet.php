@@ -210,6 +210,9 @@ final class RuleSet implements RuleSetInterface
      */
     private $rules;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(array $set = [], array $customSetDefinitions = [])
     {
         foreach ($set as $key => $value) {
@@ -223,6 +226,9 @@ final class RuleSet implements RuleSetInterface
         $this->resolveSet();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function create(array $set = [], array $customSetDefinitions = [])
     {
         return new self($set, $customSetDefinitions);

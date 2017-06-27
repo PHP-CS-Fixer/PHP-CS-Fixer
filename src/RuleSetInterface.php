@@ -21,8 +21,22 @@ namespace PhpCsFixer;
  */
 interface RuleSetInterface
 {
+    /**
+     * Constructs the set of rules.
+     *
+     * @param array $set the set of rules.
+     * @param array $customSetDefinitions the custom set definitions
+     */
     public function __construct(array $set = [], array $customSetDefinitions = []);
 
+    /**
+     * Static creation for the rule set.
+     *
+     * @param array $set the set of rules.
+     * @param array $customSetDefinitions the custom set definitions
+     *
+     * @return mixed
+     */
     public static function create(array $set = [], array $customSetDefinitions = []);
 
     /**
