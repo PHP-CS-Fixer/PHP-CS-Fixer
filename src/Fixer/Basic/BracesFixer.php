@@ -365,10 +365,6 @@ class Foo
 
                                 break;
                             }
-
-                            if (!$tokens[$i]->isComment()) {
-                                break;
-                            }
                         }
 
                         if ($i === $startBraceIndex) {
