@@ -558,6 +558,25 @@ $b = a();
     }
 ',
             ),
+            array(
+                '<?php
+class A
+{
+    public function B()
+    {/*
+        */
+        $a = 1;
+    }
+}',
+                '<?php
+class A {
+    public function B()
+    {/*
+        */
+      $a = 1;
+    }
+}',
+            ),
         );
     }
 
@@ -3631,7 +3650,7 @@ if ($test) { // foo
     echo 1;
 }
 if (1 === 1) {//a
-$a = "b"; /*d*/
+    $a = "b"; /*d*/
 }//c
 echo $a;
 if ($a === 3) /**/

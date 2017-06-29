@@ -358,8 +358,10 @@ class Foo
                     $nestToken->equalsAny(array(';', '}'))
                     || (
                         $nestToken->isComment()
-                        && $tokens[$nestIndex - 1]->isWhitespace()
-                        && preg_match('/\R/', $tokens[$nestIndex - 1]->getContent())
+                        && (
+                            ($tokens[$nestIndex - 1]->isWhitespace() && preg_match('/\R/', $tokens[$nestIndex - 1]->getContent()))
+                            || $nestIndex - 1 === $startBraceIndex
+                        )
                     )
                 )) {
                     $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
@@ -437,7 +439,7 @@ class Foo
                 if (
                     !$nextNonWhitespaceToken->isComment()
                     || !($nextToken->isWhitespace() && $nextToken->isWhitespace(" \t"))
-                    && 1 === substr_count($nextToken->getContent(), "\n") // preserve blank lines
+                    && ($nextToken->isWhitespace() && 1 === substr_count($nextToken->getContent(), "\n")) // preserve blank lines
                 ) {
                     $this->ensureWhitespaceAtIndexAndIndentMultilineComment(
                         $tokens,
@@ -810,14 +812,13 @@ class Foo
     {
         if ($tokens[$index]->isWhitespace()) {
             $nextTokenIndex = $tokens->getNextNonWhitespace($index);
-            $previousWhitespace = $this->getLastLineIndent($tokens[$index]->getContent());
         } else {
             $nextTokenIndex = $index;
-            $previousWhitespace = '';
         }
 
         $nextToken = $tokens[$nextTokenIndex];
         if ($nextToken->isComment()) {
+            $previousWhitespace = $this->detectIndent($tokens, $nextTokenIndex);
             $tokens[$nextTokenIndex] = new Token(array(
                 $nextToken->getId(),
                 preg_replace('/(\R)'.$previousWhitespace.'/', '$1'.$this->getLastLineIndent($whitespace), $nextToken->getContent()),
