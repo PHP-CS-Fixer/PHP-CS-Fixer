@@ -832,24 +832,17 @@ class Foo
 
         $nextToken = $tokens[$nextTokenIndex];
         if ($nextToken->isComment()) {
-            $previousWhitespace = $this->detectIndent($tokens, $nextTokenIndex);
             $tokens[$nextTokenIndex] = new Token(array(
                 $nextToken->getId(),
-                preg_replace('/(\R)'.$previousWhitespace.'/', '$1'.$this->getLastLineIndent($whitespace), $nextToken->getContent()),
+                preg_replace(
+                    '/(\R)'.$this->detectIndent($tokens, $nextTokenIndex).'/',
+                    '$1'.preg_replace('/^.*\R([^\R]*)$/s', '$1', $whitespace),
+                    $nextToken->getContent()
+                ),
             ));
         }
 
         $tokens->ensureWhitespaceAtIndex($index, 0, $whitespace);
-    }
-
-    /**
-     * @param string $whitespace
-     *
-     * @return string
-     */
-    private function getLastLineIndent($whitespace)
-    {
-        return preg_replace('/^.*\R([^\R]*)$/s', '$1', $whitespace);
     }
 
     /**
