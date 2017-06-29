@@ -836,7 +836,7 @@ class Foo
                 $nextToken->getId(),
                 preg_replace(
                     '/(\R)'.$this->detectIndent($tokens, $nextTokenIndex).'/',
-                    '$1'.preg_replace('/^.*\R([^\R]*)$/s', '$1', $whitespace),
+                    '$1'.preg_replace('/^.*\R([ \t]*)$/s', '$1', $whitespace),
                     $nextToken->getContent()
                 ),
             ));
