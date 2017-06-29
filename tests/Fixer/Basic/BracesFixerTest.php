@@ -577,6 +577,46 @@ class A {
     }
 }',
             ),
+            array(
+                '<?php
+class B
+{
+    public function B()
+    {
+        /*
+            *//**/
+        $a = 1;
+    }
+}',
+                '<?php
+class B {
+    public function B()
+    {
+    /*
+        *//**/
+       $a = 1;
+    }
+}',
+            ),
+            array(
+                '<?php
+class C
+{
+    public function C()
+    {
+        /* */#
+        $a = 1;
+    }
+}',
+                '<?php
+class C {
+    public function C()
+    {
+    /* */#
+       $a = 1;
+    }
+}',
+            ),
         );
     }
 

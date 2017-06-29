@@ -354,16 +354,30 @@ class Foo
                     continue;
                 }
 
-                if (1 === $nestLevel && (
-                    $nestToken->equalsAny(array(';', '}'))
-                    || (
-                        $nestToken->isComment()
-                        && (
-                            ($tokens[$nestIndex - 1]->isWhitespace() && preg_match('/\R/', $tokens[$nestIndex - 1]->getContent()))
-                            || $nestIndex - 1 === $startBraceIndex
-                        )
-                    )
-                )) {
+                $nextLineCanBeIndented = false;
+                if (1 === $nestLevel) {
+                    if ($nestToken->equalsAny(array(';', '}'))) {
+                        $nextLineCanBeIndented = true;
+                    } elseif ($nestToken->isComment()) {
+                        for ($i = $nestIndex - 1; $i > $startBraceIndex; --$i) {
+                            if ($tokens[$i]->isWhitespace()) {
+                                $nextLineCanBeIndented = (bool) preg_match('/\R/', $tokens[$i]->getContent());
+
+                                break;
+                            }
+
+                            if (!$tokens[$i]->isComment()) {
+                                break;
+                            }
+                        }
+
+                        if ($i === $startBraceIndex) {
+                            $nextLineCanBeIndented = true;
+                        }
+                    }
+                }
+
+                if ($nextLineCanBeIndented) {
                     $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
                     $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
 
