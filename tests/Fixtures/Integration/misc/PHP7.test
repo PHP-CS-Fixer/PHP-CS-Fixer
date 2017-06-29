@@ -17,19 +17,25 @@ declare(strict_types=1);
 use some\a\ClassA;
 use some\a\ClassB;
 use some\a\ClassC as C;
+use some\x\ClassB;
 use const some\a\ConstA;
 use const some\a\ConstB;
 use const some\a\ConstC;
+use const some\x\E;
 use function some\a\fn_a;
 use function some\a\fn_b;
 use function some\a\fn_c;
+use function some\x\A\B;
+use function some\x\CC as C;
+use function some\x\D;
 
 function dummyUsage()
 {
     // class' class const
-    echo ClassA::class.ClassB::class.C::class;
+    echo ClassA::class.ClassB::class.C::class.E;
 
     fn_a(fn_b(fn_c()));
+    D();
 
     echo ConstA.ConstB.ConstC;
 }
@@ -131,13 +137,14 @@ declare (strict_types = 1);
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
+use some\x\{ClassB, function CC as C, function D, const E, function A\B};
 
 function dummyUsage()
 {
     // class' class const
-    echo ClassA::class . ClassB::class . C::class;
+    echo ClassA::class . ClassB::class . C::class.E;
 
-    fn_a(fn_b(fn_c()));
+    fn_a(fn_b(fn_c())); D();
 
     echo ConstA . ConstB . ConstC;
 }
