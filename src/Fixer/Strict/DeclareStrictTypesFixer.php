@@ -13,7 +13,10 @@
 namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
@@ -24,8 +27,18 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author SpacePossum
  */
-final class DeclareStrictTypesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class DeclareStrictTypesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @internal
+     */
+    const LINE_NEXT = 'next';
+
+    /**
+     * @internal
+     */
+    const LINE_SAME = 'same';
+
     /**
      * {@inheritdoc}
      */
@@ -67,6 +80,20 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     public function isRisky()
     {
         return true;
+    }
+
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('add_missing', 'Whether to add missing ``declare(strict_types=1)`` to file, and to correct casing.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+            (new FixerOptionBuilder('relocate_to', 'Whether ``declare(strict_types=1)`` should be placed on "next" or "same" line, after the opening ``<?php`` tag, or false if ``declare(strict_types=1)`` should not be moved.'))
+                ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME, false])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     /**
