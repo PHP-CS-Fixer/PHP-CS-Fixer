@@ -53,10 +53,41 @@ jobs:
                 - vendor/bin/phpunit --verbose || travis_terminate 1
                 - php php-cs-fixer --diff --dry-run -v fix
 
+        - &OSX_TEST_JOB
+            stage: Test
+            os: osx
+            language: generic
+            before_install:
+                # Set up OSX environment
+                - travis_retry brew update
+                - travis_retry brew tap homebrew/homebrew-php
+                - travis_retry brew install $phpver || brew outdated $phpver || brew upgrade $phpver
+                - brew link $phpver
+                - travis_retry wget https://raw.githubusercontent.com/composer/getcomposer.org/master/web/installer -O - -q | php -- --install-dir=/usr/local/bin && mv /usr/local/bin/composer.phar /usr/local/bin/composer
+                - travis_retry composer self-update
+
+                # turn off XDebug
+                - phpenv config-rm xdebug.ini || return 0
+
+                # Composer: boost installation
+                - composer global show -ND 2>&1 | grep "hirak/prestissimo" || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
+            install:
+                - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
+                - composer info -D | sort
+            script:
+                - vendor/bin/phpunit --verbose || travis_terminate 1
+                - php php-cs-fixer --diff --dry-run -v fix
+
+            env: phpver=php70
+
         -
             <<: *STANDARD_TEST_JOB
             php: 5.6
             env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
+
+        -
+            <<: *OSX_TEST_JOB
+            env: phpver=php56 COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
 
         -
             <<: *STANDARD_TEST_JOB
@@ -73,6 +104,10 @@ jobs:
                 - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
                 - php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
                 - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/coveralls -v; fi
+
+        -
+            <<: *OSX_TEST_JOB
+            env: phpver=php71
 
         -
             <<: *STANDARD_TEST_JOB
