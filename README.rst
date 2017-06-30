@@ -339,6 +339,15 @@ Choose from the list of available rules:
 
   *Risky rule: forcing strict types will stop non strict code from working.*
 
+  Configuration options:
+
+  - ``add_missing`` (``bool``): whether to add missing ```declare(strict_types=1)```
+    to file, and to correct casing; defaults to ``true``
+  - ``relocate_to`` (``'next'``, ``'same'``, ``false``): whether ```declare(strict_types=1)`````
+    should be placed on "next" or "same" line, after the opening `````<?php`````
+    tag, or false if `````declare(strict_types=1)``` should not be moved;
+    defaults to ``false``
+
 * **dir_constant** [@Symfony:risky]
 
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
