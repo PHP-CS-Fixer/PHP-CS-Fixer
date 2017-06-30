@@ -8,6 +8,7 @@ git:
 cache:
     directories:
         - $HOME/.composer
+        - $HOME/Library/Caches/Homebrew
 
 env:
     global:
