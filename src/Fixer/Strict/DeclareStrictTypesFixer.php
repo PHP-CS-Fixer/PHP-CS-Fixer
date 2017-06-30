@@ -195,11 +195,11 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurati
         }
 
         $nextToken = $tokens[$endIndex + 1];
-        $nextLine  = $nextToken->getContent();
+        $nextLine = $nextToken->getContent();
         $trailingContent = ltrim($nextLine);
         $extraWhitespace = substr($nextLine, 0, strlen($nextLine) - strlen($trailingContent));
 
-        $tokens->ensureWhitespaceAtIndex($endIndex + 1 , 0, $lineEnding.$extraWhitespace);
+        $tokens->ensureWhitespaceAtIndex($endIndex + 1, 0, $lineEnding.$extraWhitespace);
     }
 
     /**
@@ -217,8 +217,8 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurati
 
         if (1 !== $start) {
             $seq = [];
-            for ($i = $start; $i <= $end; $i++) {
-                $seq[$i] = clone($tokens[$i]);
+            for ($i = $start; $i <= $end; ++$i) {
+                $seq[$i] = clone $tokens[$i];
                 $tokens->clearTokenAndMergeSurroundingWhitespace($i);
             }
 
@@ -226,7 +226,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurati
 
             $tokens->clearEmptyTokens();
 
-            $this->insertSequence($tokens, array_values(array_filter($sequence, function ($token){return !$token->isEmpty();})));
+            $this->insertSequence($tokens, array_values(array_filter($sequence, function ($token) {return !$token->isEmpty(); })));
         }
 
         $end = self::LINE_NEXT === $this->configuration['relocate_to'] ? $lineEnding : ' ';
