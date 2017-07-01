@@ -82,7 +82,9 @@ function foo( $bar, $baz )
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
             // remove space after opening `(`
-            $this->removeSpaceAroundToken($tokens, $index + 1);
+            if (!$tokens[$tokens->getNextNonWhitespace($index)]->isComment()) {
+                $this->removeSpaceAroundToken($tokens, $index + 1);
+            }
 
             // remove space before closing `)` if it is not `list($a, $b, )` case
             if (!$tokens[$tokens->getPrevMeaningfulToken($endIndex)]->equals(',')) {
