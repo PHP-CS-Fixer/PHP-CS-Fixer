@@ -119,6 +119,13 @@ $var = [ 1, 2, 3 ];
             array(
                 '<?php list($path, $mode,) = foo();',
             ),
+            array(
+                '<?php
+$a = $b->test(  // do not remove space
+    $e          // between `(` and `)`
+                // and this comment
+);',
+            ),
         );
     }
 }
