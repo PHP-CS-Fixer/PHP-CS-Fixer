@@ -187,7 +187,7 @@ final class Example
                 $tokens->clearAt($i + 1);
             }
 
-            if ($divisionContent) {
+            if (null !== $divisionContent && '' !== $divisionContent) {
                 $tokens->insertAt($i + 1, new Token([T_WHITESPACE, $divisionContent]));
             }
 
