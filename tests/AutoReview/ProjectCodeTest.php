@@ -59,7 +59,7 @@ final class ProjectCodeTest extends TestCase
     public function testThasClassesWithoutTestsVarIsProper()
     {
         $unknownClasses = array_filter(self::$classesWithoutTests, function ($class) { return !class_exists($class); });
-        $this->assertSame(array(), $unknownClasses);
+        $this->assertSame([], $unknownClasses);
     }
 
     /**
