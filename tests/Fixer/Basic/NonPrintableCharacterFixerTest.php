@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
-use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Ivan Boprzenkov <ivan.borzenkov@gmail.com>
