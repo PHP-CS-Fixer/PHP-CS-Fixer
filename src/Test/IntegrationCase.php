@@ -18,6 +18,9 @@ use PhpCsFixer\Tests\Test\IntegrationCase as BaseIntegrationCase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @TODO 3.0 While removing, `gecko-packages/gecko-php-unit` shall be moved from `require` to `require-dev` and removed from `.composer-require-checker.json`.
+ * @TODO 3.0 While removing, remove from `.composer-require-checker.json`.
+ *
  * @deprecated since v2.4, use PhpCsFixer\Tests\Test\IntegrationCase instead
  */
 final class IntegrationCase

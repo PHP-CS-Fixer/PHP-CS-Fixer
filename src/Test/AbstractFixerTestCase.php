@@ -15,7 +15,8 @@ namespace PhpCsFixer\Test;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase as BaseAbstractFixerTestCase;
 
 /**
- * @TODO 3.0 While removing, `gecko-packages/gecko-php-unit` shall be moved from `require` to `require-dev`.
+ * @TODO 3.0 While removing, `gecko-packages/gecko-php-unit` shall be moved from `require` to `require-dev` and removed from `.composer-require-checker.json`.
+ * @TODO 3.0 While removing, remove from `.composer-require-checker.json`.
  *
  * @deprecated since v2.4, use PhpCsFixer\Tests\Test\AbstractFixerTestCase instead
  */
