@@ -38,8 +38,8 @@ final class IncludeFixerTest extends AbstractFixerTestCase
     public function testFixProvider()
     {
         $template = '<?php %s';
-        $tests = array(
-            array(
+        $tests = [
+            [
                 '<?php include # A
 # B
 # C
@@ -56,190 +56,190 @@ final class IncludeFixerTest extends AbstractFixerTestCase
 )# F
 ;# G
 # H',
-            ),
-            array(
+            ],
+            [
                 '<?php include $a;',
                 '<?php include  (  $a  )  ;',
-            ),
-        );
+            ],
+        ];
 
-        foreach (array('require', 'require_once', 'include', 'include_once') as $statement) {
-            $tests[] = array(
+        foreach (['require', 'require_once', 'include', 'include_once'] as $statement) {
+            $tests[] = [
                 sprintf($template.' "foo.php"?>', $statement),
                 sprintf($template.' ("foo.php") ?>', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' /**/"foo.php"// test
                     ?>', $statement),
                 sprintf($template.'/**/ ("foo.php") // test
                     ?>', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' $a;', $statement),
                 sprintf($template.'$a;', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' $a;', $statement),
                 sprintf($template.'            $a;', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' $a; ', $statement),
                 sprintf($template.'            $a   ; ', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template." /**/'foo.php';", $statement),
                 sprintf($template."/**/'foo.php';", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template." 'foo.php';", $statement),
                 sprintf($template."'foo.php';", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template." 'foo.php';", $statement),
                 sprintf($template."           'foo.php';", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template." 'foo.php';", $statement),
                 sprintf($template."('foo.php');", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template." 'foo.php';", $statement),
                 sprintf($template."(           'foo.php');", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template." 'foo.php';", $statement),
                 sprintf($template."          ( 'foo.php' );", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template." '\".__DIR__.\"/../bootstrap.php';", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php // %s foo', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php /* %s foo */', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php /** %s foo */', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.'($a ? $b : $c) . $d;', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' ($a ? $b : $c) . $d;', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php exit("POST must %s \"file\"");', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php ClassCollectionLoader::load(%s($this->getCacheDir().\'classes.map\'), $this->getCacheDir(), $name, $this->debug, false, $extension);', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php $foo = (false === %s($zfLibraryPath."/Zend/Loader/StandardAutoloader.php"));', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' "Buzz/foo-Bar.php";', $statement),
                 sprintf($template.' (  "Buzz/foo-Bar.php" );', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' "$buzz/foo-Bar.php";', $statement),
                 sprintf($template.' (  "$buzz/foo-Bar.php" );', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' "{$buzz}/foo-Bar.php";', $statement),
                 sprintf($template.' (  "{$buzz}/foo-Bar.php" );', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' $foo ? "foo.php" : "bar.php";', $statement),
                 sprintf($template.'($foo ? "foo.php" : "bar.php");', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf($template.' $foo  ?  "foo.php"  :  "bar.php";', $statement),
                 sprintf($template.'($foo  ?  "foo.php"  :  "bar.php");', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf("<?php return %s __DIR__.'foo.php';", $statement),
                 sprintf("<?php return %s  __DIR__.'foo.php';", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf("<?php \$foo = %s __DIR__.('foo.php');", $statement),
                 sprintf("<?php \$foo = %s  __DIR__.('foo.php');", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf("<?php     %s __DIR__.('foo.php');", $statement),
                 sprintf("<?php     %s  (__DIR__.('foo.php'));", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf("<?php     %s __DIR__ . ('foo.php');", $statement),
                 sprintf("<?php     %s  (__DIR__ . ('foo.php'));", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf("<?php %s dirname(__FILE__).'foo.php';", $statement),
                 sprintf("<?php %s (dirname(__FILE__).'foo.php');", $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php %s "foo/".CONSTANT."/bar.php";', $statement),
                 sprintf('<?php %s("foo/".CONSTANT."/bar.php");', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php %s "foo/".CONSTANT."/bar.php"; %s "foo/".CONSTANT."/bar.php";', $statement, $statement),
                 sprintf('<?php %s("foo/".CONSTANT."/bar.php"); %s("foo/".CONSTANT."/bar.php");', $statement, $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php %s "foo/".CONSTANT."/bar.php"; $foo = "bar";', $statement),
                 sprintf('<?php %s("foo/".CONSTANT."/bar.php"); $foo = "bar";', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php %s "foo/".CONSTANT."/bar.php"; foo();', $statement),
                 sprintf('<?php %s("foo/".CONSTANT."/bar.php"); foo();', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php %s "foo/" . CONSTANT . "/bar.php";', $statement),
                 sprintf('<?php %s("foo/" . CONSTANT . "/bar.php");', $statement),
-            );
+            ];
 
-            $tests[] = array(
+            $tests[] = [
                 sprintf('<?php %s SOME_CONST . "file.php"; %s Foo::Bar($baz);', $statement, $statement),
                 sprintf('<?php %s( SOME_CONST . "file.php" ); %s Foo::Bar($baz);', $statement, $statement),
-            );
-            $tests[] = array(
+            ];
+            $tests[] = [
                 sprintf('<?php %s SOME_CONST . "file1.php"; %s Foo::Bar($baz);', $statement, $statement),
                 sprintf('<?php %s          SOME_CONST . "file1.php"; %s Foo::Bar($baz);', $statement, $statement),
-            );
+            ];
         }
 
         return $tests;

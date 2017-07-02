@@ -20,15 +20,9 @@ matrix:
           env: DEPLOY=yes TASK_TESTS_COVERAGE=1
         - php: nightly
           env: TASK_SCA=1 COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1
-        - php: 5.3
-          env: SKIP_LINT_TEST_CASES=1 COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
-        - php: 5.4
-          env: SKIP_LINT_TEST_CASES=1
-        - php: 5.5
-          env: SKIP_LINT_TEST_CASES=1
         - php: 5.6
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
         - php: 7.0
-          env: SYMFONY_VERSION="^2.8"
         # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
         - php: hhvm
           env: SKIP_LINT_TEST_CASES=1
@@ -58,9 +52,6 @@ before_install:
     # Composer: boost installation
     - composer global show -ND 2>&1 | grep "hirak/prestissimo" || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
 
-    # Composer: enforce given Symfony components version
-    - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"^2[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'
-
     # display tasks configuration for a job
     - set | grep ^TASK | sort
 
@@ -69,9 +60,14 @@ install:
     - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
     - composer info -D | sort
 
+before_script:
+    - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
+    - if [ $TASK_SCA == 1 ]; then export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`; fi
+
 script:
-    - if [ $TASK_SCA == 1 ]; then php php-cs-fixer fix --rules @PHP70Migration:risky,@PHP71Migration,native_function_invocation -q; fi
     - if [ $TASK_SCA == 1 ]; then ./check_trailing_spaces.sh || travis_terminate 1; fi
+    - if [ $TASK_SCA == 1 ] && [ -n "$COMMIT_SCA_FILES" ]; then vendor/bin/phpmd `echo $COMMIT_SCA_FILES | sed 's/ /,/g'` text phpmd.xml --exclude src/Resources,tests/Fixtures || travis_terminate 1; fi;
+    - if [ $TASK_SCA == 1 ]; then php php-cs-fixer fix --rules @PHP70Migration:risky,@PHP71Migration,native_function_invocation -q; fi
     - if [ $TASK_SCA == 1 ]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS --no-dev --prefer-stable; fi
     - if [ $TASK_SCA == 1 ]; then $HOME/.composer/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json || travis_terminate 1; fi
     - if [ $TASK_SCA == 1 ]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS; fi
@@ -92,7 +88,7 @@ before_deploy:
     - php box.phar --version
 
     # ensure that deps will work on lowest supported PHP version
-    - composer config platform.php 2> /dev/null || composer config platform.php 5.3.6
+    - composer config platform.php 2> /dev/null || composer config platform.php 5.6.0
 
     # require suggested packages
     - composer require --no-update symfony/polyfill-mbstring

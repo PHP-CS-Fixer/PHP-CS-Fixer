@@ -37,8 +37,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public function provideNoEmptyStatementsCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
                 {
@@ -49,8 +49,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 {
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 abstract class TestClass1 EXTENDS Test implements TestInterface
                 {
@@ -61,8 +61,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 {
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 CLASS TestClass2 extends Test
                 {
@@ -73,8 +73,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 {
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 class TestClass3 implements TestInterface1
                 {
@@ -85,8 +85,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 {
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 class TestClass4
                 {
@@ -97,8 +97,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 {
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 interface TestInterface1
                 {
@@ -109,8 +109,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 {
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 interface TestExtendingInterface extends TestInterface2, TestInterface3 {
                 }
@@ -119,8 +119,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 interface TestExtendingInterface extends TestInterface2, TestInterface3 {
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 namespace Two {
                     $a = 1; {
@@ -133,8 +133,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     };
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 {
                     '.'
@@ -147,16 +147,16 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 };
                 echo 1;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 while($time < $a)
                     ;
                 echo "done waiting.";
                 $b = \Test;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if($a>1){
 
@@ -167,8 +167,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
                     };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if($a>1) {
 
@@ -183,8 +183,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
                     };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     try{
 
@@ -199,12 +199,12 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
                     };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php ',
                 '<?php ;',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     function foo()
                     {
@@ -217,16 +217,16 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                         ; // a
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo(){}',
                 '<?php function foo(){;;}',
-            ),
-            array(
+            ],
+            [
                 '<?php class Test{}',
                 '<?php class Test{};',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for(;;) {
                     }
@@ -235,8 +235,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     for(;;) {
                     };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     foreach($a as $b) {
                     }
@@ -249,8 +249,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     foreach($a as $b => $c) {
                     };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     while($a > 1){
                     }
@@ -263,8 +263,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     do {
                     } while($a>1);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     switch($a) {
                         default : {echo 1;}
@@ -275,8 +275,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                         default : {echo 1;}
                     };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 function test($a, $b) {
                 }
@@ -285,8 +285,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 function test($a, $b) {
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 function foo($n)
                 {
@@ -315,8 +315,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     return $n->{$o};
                 };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 declare(ticks=1) {
                 // entire script here
@@ -329,8 +329,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 };
                 declare(ticks=1);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     namespace A\B\C;
                     use D;
@@ -339,8 +339,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     namespace A\B\C;;;;
                     use D;;;;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     namespace A\B\C;
                     use D;
@@ -349,34 +349,16 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     namespace A\B\C;
                     use D;;;;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     namespace A\B\C;use D;
                 ',
                 '<?php
                     namespace A\B\C;;use D;
                 ',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide54Cases
-     * @requires PHP 5.4
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provide54Cases()
-    {
-        return array(
-            array(
+            ],
+            [
                 '<?php
                     trait TestTrait
                     {
@@ -387,27 +369,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     {
                     };
                 ',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provide55Cases
-     * @requires PHP 5.5
-     */
-    public function testFix55($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provide55Cases()
-    {
-        return array(
-            array(
-            '<?php
+            ],
+            [
+                '<?php
                     try {
                         throw new \Exception("a");
                     } catch (\Exception $e){
@@ -415,7 +379,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     } finally {
                     }  '.'
                 ',
-            '<?php
+                '<?php
                     try {
                         throw new \Exception("a");
                     } catch (\Exception $e){
@@ -423,8 +387,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     } finally {
                     }  ;
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -441,8 +405,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public function providePHP7Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     use function Functional\map;
                     $a = new class {
@@ -451,39 +415,39 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                         }
                     };
                     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     use function Functional\map;
                     $a = new class extends A {
                     };
                     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     use function Functional\map;
                     $a = new class implements B {
                     };
                     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     use function Functional\map;
                     $a = new class extends A implements B {
                     };
                     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a = new class extends \A implements B\C {
                     };
                     ',
-            ),
-            array(
+            ],
+            [
                 '<?php {{}}',
                 '<?php {{}};',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     namespace A\B\C {
 
@@ -494,8 +458,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
                     };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     namespace A{
 
@@ -506,8 +470,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
                     };
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     namespace{
 
@@ -518,8 +482,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
                     };
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -535,27 +499,27 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public function provideCasesWithShortOpenTag()
     {
-        $cases = array();
+        $cases = [];
         /*
          * short_open_tag setting is ignored by HHVM
          * @see https://github.com/facebook/hhvm/issues/4758
          */
         if (ini_get('short_open_tag') || defined('HHVM_VERSION')) {
             $cases[] =
-                array(
+                [
                     '<? ',
                     '<? ;',
-                );
+                ];
         }
 
         // HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
         // test the fixer doesn't break anything
         if (ini_get('short_open_tag') && !defined('HHVM_VERSION')) {
             $cases[] =
-                array(
+                [
                     '<?= ',
                     '<?= ;',
-                );
+                ];
         }
 
         if (count($cases) < 1) {
@@ -578,8 +542,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public function provideFixMultipleSemicolonsCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $foo = 2 ; //
                     '.'
 
@@ -588,35 +552,35 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     ;
 
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = 3; /**/ ',
                 '<?php $foo = 3; /**/; ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = 1;',
                 '<?php $foo = 1;;;',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = 4; ',
                 '<?php $foo = 4;; ;;',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = 5;
 
     ',
                 '<?php $foo = 5;;
 ;
     ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = 6; ',
                 '<?php $foo = 6;; ',
-            ),
-            array(
+            ],
+            [
                 '<?php for ($i = 7; ; ++$i) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     switch($a){
                         case 8;
@@ -629,7 +593,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                             echo 9;
                     }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

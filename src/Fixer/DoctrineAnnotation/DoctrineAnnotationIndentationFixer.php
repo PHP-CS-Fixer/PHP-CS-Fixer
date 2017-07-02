@@ -18,9 +18,6 @@ use PhpCsFixer\Doctrine\Annotation\Tokens;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 
-/**
- * Fixes Doctrine annotations indentation.
- */
 final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotationFixer
 {
     /**
@@ -30,9 +27,9 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     {
         return new FixerDefinition(
             'Doctrine annotations must be indented with four spaces.',
-            array(
+            [
                 new CodeSample("<?php\n/**\n *  @Foo(\n *   foo=\"foo\"\n *  )\n */\nclass Bar {}"),
-            )
+            ]
         );
     }
 
@@ -41,7 +38,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
      */
     protected function fixAnnotations(Tokens $tokens)
     {
-        $annotationPositions = array();
+        $annotationPositions = [];
         for ($index = 0, $max = count($tokens); $index < $max; ++$index) {
             if (!$tokens[$index]->isType(DocLexer::T_AT)) {
                 continue;
@@ -52,7 +49,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
                 return;
             }
 
-            $annotationPositions[] = array($index, $annotationEndIndex);
+            $annotationPositions[] = [$index, $annotationEndIndex];
             $index = $annotationEndIndex;
         }
 
@@ -101,12 +98,12 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
                 break;
             }
 
-            if ($token->isType(array(DocLexer::T_OPEN_PARENTHESIS, DocLexer::T_OPEN_CURLY_BRACES))) {
+            if ($token->isType([DocLexer::T_OPEN_PARENTHESIS, DocLexer::T_OPEN_CURLY_BRACES])) {
                 ++$lineBracesDelta;
                 continue;
             }
 
-            if ($token->isType(array(DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES))) {
+            if ($token->isType([DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES])) {
                 --$lineBracesDelta;
                 continue;
             }

@@ -36,23 +36,23 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 
     public function provideExamples()
     {
-        return array(
+        return [
             // check correct statements aren't changed
-            array('<?php return  ;'),
-            array('<?php return \'null\';'),
-            array('<?php return false;'),
-            array('<?php return (false );'),
-            array('<?php return null === foo();'),
-            array('<?php return array() == null ;'),
+            ['<?php return  ;'],
+            ['<?php return \'null\';'],
+            ['<?php return false;'],
+            ['<?php return (false );'],
+            ['<?php return null === foo();'],
+            ['<?php return array() == null ;'],
 
             // check we modified those that can be changed
-            array('<?php return;', '<?php return null;'),
-            array('<?php return;', '<?php return (null);'),
-            array('<?php return;', '<?php return ( null    );'),
-            array('<?php return;', '<?php return ( (( null)));'),
-            array('<?php return /* hello */;', '<?php return /* hello */ null  ;'),
-            array('<?php return;', '<?php return NULL;'),
-            array('<?php return;', "<?php return\n(\nnull\n)\n;"),
-        );
+            ['<?php return;', '<?php return null;'],
+            ['<?php return;', '<?php return (null);'],
+            ['<?php return;', '<?php return ( null    );'],
+            ['<?php return;', '<?php return ( (( null)));'],
+            ['<?php return /* hello */;', '<?php return /* hello */ null  ;'],
+            ['<?php return;', '<?php return NULL;'],
+            ['<?php return;', "<?php return\n(\nnull\n)\n;"],
+        ];
     }
 }

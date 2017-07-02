@@ -36,51 +36,51 @@ final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a = $a ? 1 : 0;',
                 '<?php $a = $a  ? 1 : 0;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = $a ?
 #
 : $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = $a#
  ? '.'
 #
 1 : 0;',
-            ),
-            array(
+            ],
+            [
                 '<?php $val = (1===1) ? true : false;',
                 '<?php $val = (1===1)?true:false;',
-            ),
-            array(
+            ],
+            [
                 '<?php $val = 1===1 ? true : false;',
                 '<?php $val = 1===1?true:false;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = $b ? 2 : ($bc ? 2 : 3);
 $a = $bc ? 2 : 3;',
                 '<?php
 $a = $b   ?   2  :    ($bc?2:3);
 $a = $bc?2:3;',
-            ),
-            array(
+            ],
+            [
                 '<?php $config = $config ?: new Config();',
                 '<?php $config = $config ? : new Config();',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = $b ? (
         $c + 1
     ) : (
         $d + 1
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = $b
     ? $c
@@ -89,8 +89,8 @@ $a = $b
 $a = $b
     ?$c
     :$d;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = $b  //
     ? $c  /**/
@@ -99,8 +99,8 @@ $a = $b  //
 $a = $b  //
     ?$c  /**/
     :$d;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = ($b
     ? $c
@@ -109,8 +109,8 @@ $a = ($b
         : $f
     )
 );',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = ($b
     ? ($c1 ? $c2 : ($c3a ?: $c3b))
@@ -121,7 +121,7 @@ $a = ($b
     ? ($c1?$c2:($c3a? :$c3b))
     : ($d1?$d2:$d3)
 );',
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -28,7 +28,7 @@ use Symfony\Component\Console\Command\ListCommand;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.2.5-DEV';
+    const VERSION = '2.3.3-DEV';
 
     public function __construct()
     {
@@ -62,6 +62,6 @@ final class Application extends BaseApplication
      */
     protected function getDefaultCommands()
     {
-        return array(new HelpCommand(), new ListCommand());
+        return [new HelpCommand(), new ListCommand()];
     }
 }

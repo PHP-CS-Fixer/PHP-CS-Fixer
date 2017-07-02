@@ -39,52 +39,52 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
         $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
         $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
 
-        return array(
-            'final-extends' => array(
+        return [
+            'final-extends' => [
                 "<?php final class MyClass extends MyAbstractClass { $attributesAndMethodsOriginal }",
-            ),
-            'normal-extends' => array(
+            ],
+            'normal-extends' => [
                 "<?php class MyClass extends MyAbstractClass { $attributesAndMethodsOriginal }",
-            ),
-            'abstract' => array(
+            ],
+            'abstract' => [
                 "<?php abstract class MyAbstractClass { $attributesAndMethodsOriginal }",
-            ),
-            'normal' => array(
+            ],
+            'normal' => [
                 "<?php class MyClass { $attributesAndMethodsOriginal }",
-            ),
-            'trait' => array(
+            ],
+            'trait' => [
                 "<?php trait MyTrait { $attributesAndMethodsOriginal }",
-            ),
-            'final-with-trait' => array(
+            ],
+            'final-with-trait' => [
                 "<?php final class MyClass { use MyTrait; $attributesAndMethodsOriginal }",
-            ),
-            'multiline-comment' => array(
+            ],
+            'multiline-comment' => [
                 '<?php final class MyClass { /* public protected private */ }',
-            ),
-            'inline-comment' => array(
+            ],
+            'inline-comment' => [
                 "<?php final class MyClass { \n // public protected private \n }",
-            ),
-            'final' => array(
+            ],
+            'final' => [
                 "<?php final class MyClass { $attributesAndMethodsFixed }",
                 "<?php final class MyClass { $attributesAndMethodsOriginal }",
-            ),
-            'final-implements' => array(
+            ],
+            'final-implements' => [
                 "<?php final class MyClass implements MyInterface { $attributesAndMethodsFixed }",
                 "<?php final class MyClass implements MyInterface { $attributesAndMethodsOriginal }",
-            ),
-            'final-with-use-before' => array(
+            ],
+            'final-with-use-before' => [
                 "<?php use stdClass; final class MyClass { $attributesAndMethodsFixed }",
                 "<?php use stdClass; final class MyClass { $attributesAndMethodsOriginal }",
-            ),
-            'final-with-use-after' => array(
+            ],
+            'final-with-use-after' => [
                 "<?php final class MyClass { $attributesAndMethodsFixed } use stdClass;",
                 "<?php final class MyClass { $attributesAndMethodsOriginal } use stdClass;",
-            ),
-            'multiple-classes' => array(
+            ],
+            'multiple-classes' => [
                 "<?php final class MyFirstClass { $attributesAndMethodsFixed } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsFixed } ",
                 "<?php final class MyFirstClass { $attributesAndMethodsOriginal } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsOriginal } ",
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -104,8 +104,8 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
         $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
         $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
 
-        return array(
-            'anonymous-class-inside' => array(
+        return [
+            'anonymous-class-inside' => [
                 "<?php
 final class Foo
 {
@@ -132,8 +132,8 @@ final class Foo
     }
 }
 ",
-            ),
-        );
+            ],
+        ];
     }
 
     private function getAttributesAndMethods($original)

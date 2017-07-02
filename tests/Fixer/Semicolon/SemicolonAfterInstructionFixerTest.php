@@ -36,31 +36,31 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a = [1,2,3]; echo $a{1}; ?>',
                 '<?php $a = [1,2,3]; echo $a{1} ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php $a++;//a ?>',
                 '<?php $a++//a ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php $b++; /**/ ?>',
                 '<?php $b++ /**/ ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php echo 123; ?>',
                 '<?php echo 123 ?>',
-            ),
-            array(
+            ],
+            [
                 "<?php echo 123;\n\t?>",
                 "<?php echo 123\n\t?>",
-            ),
-            array('<?php ?>'),
-            array('<?php if($a){}'),
-            array('<?php while($a > $b){}'),
-            array(
+            ],
+            ['<?php ?>'],
+            ['<?php if($a){}'],
+            ['<?php while($a > $b){}'],
+            [
 '<?php if ($a == 5): ?>
 A is equal to 5
 <?php endif; ?>
@@ -75,21 +75,19 @@ A is equal to 5
 <?php case 1: ?>
 ...
 <?php endswitch ?>',
-            ),
-            array(
+            ],
+            [
 '<?php if ($a == 5) { ?>
 A is equal to 5
 <?php } ?>',
-            ),
-        );
+            ],
+        ];
     }
 
     public function testOpenWithEcho()
     {
-        if (50400 > PHP_VERSION_ID && !ini_get('short_open_tag')) {
-            // On PHP <5.4 short echo tag is parsed as T_INLINE_HTML if short_open_tag is disabled
-            // On PHP >=5.4 short echo tag is always parsed properly regardless of short_open_tag  option
-            $this->markTestSkipped('PHP 5.4 (or later) or short_open_tag option is required.');
+        if (!ini_get('short_open_tag')) {
+            $this->markTestSkipped('The short_open_tag option is required to be enabled.');
         }
 
         $this->doTest("<?= '1_'; ?>", "<?= '1_' ?>");

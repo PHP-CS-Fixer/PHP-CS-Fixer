@@ -37,16 +37,16 @@ final class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php namespace A\B?>
                 <?php
                     for($i=0; $i<10; ++$i) {echo $i;}',
-            ),
-            array(
+            ],
+            [
                 '<?php namespace A\B?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 
@@ -59,8 +59,8 @@ namespace A\B;
 
 class C {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 
@@ -70,8 +70,8 @@ class C {}
 namespace A\B;
 class C {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 
@@ -80,8 +80,8 @@ class C {}
                 '<?php
 namespace A\B;  class C {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 
@@ -90,8 +90,8 @@ class C {}
                 '<?php
 namespace A\B;class C {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B {
     class C {
@@ -100,22 +100,22 @@ namespace A\B {
     }
 }
 ',
-            ),
-            array(
+            ],
+            [
                 "<?php\rnamespace A\B;
 
 class C {}\r",
                 "<?php\rnamespace A\B;\r\r\r\r\r\rclass C {}\r",
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 
 namespace\C\func();
 foo();
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Foo;
 ',
@@ -125,8 +125,8 @@ namespace Foo;
 
 
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Foo;
 
@@ -137,8 +137,8 @@ namespace Foo;
 
 
 ?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -156,15 +156,15 @@ namespace Foo;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php namespace A\B;\r\n\r\nclass C {}",
                 "<?php namespace A\B;  class C {}",
-            ),
-            array(
+            ],
+            [
                 "<?php namespace A\B;\r\n\r\nclass C {}",
                 "<?php namespace A\B;\r\n\r\n\r\n\r\n\r\n\r\nclass C {}",
-            ),
-        );
+            ],
+        ];
     }
 }

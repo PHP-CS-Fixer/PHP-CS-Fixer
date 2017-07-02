@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
@@ -39,7 +40,7 @@ final class FixerTest extends TestCase
      */
     public function testFixerDefinitions(FixerInterface $fixer)
     {
-        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
 
         $definition = $fixer->getDefinition();
 
@@ -50,7 +51,7 @@ final class FixerTest extends TestCase
 
         $dummyFileInfo = new StdinFileInfo();
         foreach ($samples as $sampleCounter => $sample) {
-            $this->assertInstanceOf('PhpCsFixer\FixerDefinition\CodeSampleInterface', $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+            $this->assertInstanceOf(CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
             $code = $sample->getCode();
             $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
 
@@ -128,13 +129,13 @@ final class FixerTest extends TestCase
      */
     public function testFixersAreDefined(FixerInterface $fixer)
     {
-        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
     }
 
     public function provideFixerDefinitionsCases()
     {
         return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+            return [$fixer];
         }, $this->getAllFixers());
     }
 
@@ -146,13 +147,13 @@ final class FixerTest extends TestCase
     public function testFixerConfigurationDefinitions(ConfigurationDefinitionFixerInterface $fixer)
     {
         // do not modify this structure without prior discussion
-        static $allowedRequiredOptions = array(
-            'header_comment' => array('header' => true),
-        );
+        static $allowedRequiredOptions = [
+            'header_comment' => ['header' => true],
+        ];
 
         $configurationDefinition = $fixer->getConfigurationDefinition();
 
-        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface', $configurationDefinition);
+        $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
             $this->assertNotEmpty($option->getDescription());
@@ -178,7 +179,7 @@ final class FixerTest extends TestCase
         });
 
         return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+            return [$fixer];
         }, $fixers);
     }
 

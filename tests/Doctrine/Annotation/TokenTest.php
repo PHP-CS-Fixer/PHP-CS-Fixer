@@ -78,19 +78,19 @@ final class TokenTest extends TestCase
      */
     public function providerIsType()
     {
-        return array(
-            'same-value' => array(
+        return [
+            'same-value' => [
                 42,
                 42,
-            ),
-            'array-with-value' => array(
+            ],
+            'array-with-value' => [
                 42,
-                array(
+                [
                     42,
                     9001,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -113,18 +113,18 @@ final class TokenTest extends TestCase
      */
     public function providerIsNotType()
     {
-        return array(
-            'different-value' => array(
+        return [
+            'different-value' => [
                 42,
                 9001,
-            ),
-            'array-without-value' => array(
+            ],
+            'array-without-value' => [
                 42,
-                array(
+                [
                     9001,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     public function testCanModifyContent()

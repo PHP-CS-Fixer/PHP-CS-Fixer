@@ -34,30 +34,30 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         $this->doTest(
             $source,
             $expectedTokens,
-            array(
+            [
                 CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
                 CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-            )
+            ]
         );
     }
 
     public function provideProcessCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo (new Process())->getOutput();',
-                array(
+                [
                     3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
                     9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php echo (new Process())::getOutput();',
-                array(
+                [
                     3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
                     9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

@@ -48,20 +48,20 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
     {
         return new FixerDefinition(
             'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma.',
-            array(
+            [
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);",
                     null
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);",
-                    array('keep_multiple_spaces_after_comma' => false)
+                    ['keep_multiple_spaces_after_comma' => false]
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);",
-                    array('keep_multiple_spaces_after_comma' => true)
+                    ['keep_multiple_spaces_after_comma' => true]
                 ),
-            )
+            ]
         );
     }
 
@@ -92,14 +92,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      */
     protected function createConfigurationDefinition()
     {
-        $keepMultipleSpacesAfterComma = new FixerOptionBuilder('keep_multiple_spaces_after_comma', 'Whether keep multiple spaces after comma.');
-        $keepMultipleSpacesAfterComma = $keepMultipleSpacesAfterComma
-            ->setAllowedTypes(array('bool'))
-            ->setDefault(false)
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver(array($keepMultipleSpacesAfterComma));
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('keep_multiple_spaces_after_comma', 'Whether keep multiple spaces after comma.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -145,7 +143,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         if ($tokens[$index - 1]->isWhitespace()) {
             $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
 
-            if (!$tokens[$prevIndex]->equalsAny(array(',', array(T_END_HEREDOC))) && !$tokens[$prevIndex]->isComment()) {
+            if (!$tokens[$prevIndex]->equalsAny([',', [T_END_HEREDOC]]) && !$tokens[$prevIndex]->isComment()) {
                 $tokens->clearAt($index - 1);
             }
         }
@@ -165,13 +163,13 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             }
 
             $newContent = ltrim($nextToken->getContent(), " \t");
-            $tokens[$nextIndex] = new Token(array(T_WHITESPACE, '' === $newContent ? ' ' : $newContent));
+            $tokens[$nextIndex] = new Token([T_WHITESPACE, '' === $newContent ? ' ' : $newContent]);
 
             return;
         }
 
         if (!$this->isCommentLastLineToken($tokens, $index + 1)) {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
         }
     }
 

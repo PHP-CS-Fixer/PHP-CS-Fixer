@@ -32,7 +32,7 @@ final class HashToSlashCommentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Single line comments should use double slashes `//` and not hash `#`.',
-            array(new CodeSample('<?php # comment'))
+            [new CodeSample('<?php # comment')]
         );
     }
 
@@ -52,7 +52,7 @@ final class HashToSlashCommentFixer extends AbstractFixer
         for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
             $originalContent = $tokens[$i]->isGivenKind(T_COMMENT) ? $tokens[$i]->getContent() : null;
             if (null !== $originalContent && '#' === $originalContent[0]) {
-                $tokens[$i] = new Token(array(T_COMMENT, '//'.substr($originalContent, 1)));
+                $tokens[$i] = new Token([T_COMMENT, '//'.substr($originalContent, 1)]);
             }
         }
     }

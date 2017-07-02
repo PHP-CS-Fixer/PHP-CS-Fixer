@@ -40,25 +40,25 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
     {
         $cases = $this->provideCommonCases();
 
-        $cases[] = array(
+        $cases[] = [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\n", // both cases
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \n |\r\nTEST;\r\n", // both cases
-        );
+        ];
 
         // !T_INLINE_HTML
-        $cases[] = array(
+        $cases[] = [
             "<?php ?>\r\n<?php ?>\r\n",
-        );
+        ];
 
         // !T_CONSTANT_ENCAPSED_STRING
-        $cases[] = array(
+        $cases[] = [
             "<?php \$a=\"a\r\n\";",
-        );
+        ];
 
         return $cases;
     }
@@ -82,60 +82,60 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
             return array_reverse($case);
         }, $this->provideCommonCases());
 
-        $cases[] = array(
+        $cases[] = [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\r\n", // both types
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \r\n |\nTEST;\n", // both types
-        );
+        ];
 
         return $cases;
     }
 
     private function provideCommonCases()
     {
-        return array(
+        return [
             // T_OPEN_TAG
-            array(
+            [
                 "<?php\n \$a = 1;",
                 "<?php\r\n \$a = 1;",
-            ),
+            ],
             // T_WHITESPACE
-            array(
+            [
                 "<?php \n \$a\n= 1;\n",
                 "<?php \r\n \$a\r\n= 1;\r\n",
-            ),
+            ],
             // T_COMMENT
-            array(
+            [
                 "<?php /*\n*/",
                 "<?php /*\r\n*/",
-            ),
+            ],
             // T_DOC_COMMENT
-            array(
+            [
                 "<?php /**\n*/",
                 "<?php /**\r\n*/",
-            ),
+            ],
             // T_START_HEREDOC
-            array(
+            [
                 "<?php \$a = <<<'TEST'\nAA\nTEST;\n",
                 "<?php \$a = <<<'TEST'\r\nAA\r\nTEST;\r\n",
-            ),
-            array(
+            ],
+            [
                 "<?php \$a = <<<TEST\nAAA\nTEST;\n",
                 "<?php \$a = <<<TEST\r\nAAA\r\nTEST;\r\n",
-            ),
+            ],
             // T_ENCAPSED_AND_WHITESPACE
-            array(
+            [
                 "<?php \$a = <<<'TEST'\nAAAA 1\n \$b\nTEST;\n",
                 "<?php \$a = <<<'TEST'\r\nAAAA 1\r\n \$b\r\nTEST;\r\n",
-            ),
-            array(
+            ],
+            [
                 "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
                 "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",
-            ),
-        );
+            ],
+        ];
     }
 }

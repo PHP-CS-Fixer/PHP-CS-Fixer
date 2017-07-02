@@ -37,10 +37,10 @@ final class EncodingFixerTest extends AbstractFixerTestCase
 
     public function provideExamples()
     {
-        return array(
+        return [
             $this->prepareTestCase('test-utf8.case1.php', 'test-utf8.case1-bom.php'),
             $this->prepareTestCase('test-utf8.case2.php', 'test-utf8.case2-bom.php'),
-        );
+        ];
     }
 
     private function prepareTestCase($expectedFilename, $inputFilename = null)
@@ -48,10 +48,10 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         $expectedFile = $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$expectedFilename);
         $inputFile = $inputFilename ? $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;
 
-        return array(
+        return [
             file_get_contents($expectedFile->getRealPath()),
             $inputFile ? file_get_contents($inputFile->getRealPath()) : null,
             $inputFile ?: $expectedFile,
-        );
+        ];
     }
 }

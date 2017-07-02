@@ -39,7 +39,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Short cast `bool` using double exclamation mark should not be used.',
-            array(new CodeSample("<?php\n\$a = !!\$b;"))
+            [new CodeSample("<?php\n\$a = !!\$b;")]
         );
     }
 
@@ -101,6 +101,6 @@ final class NoShortBoolCastFixer extends AbstractFixer
             }
         }
 
-        $tokens->insertAt($start, new Token(array(T_BOOL_CAST, '(bool)')));
+        $tokens->insertAt($start, new Token([T_BOOL_CAST, '(bool)']));
     }
 }

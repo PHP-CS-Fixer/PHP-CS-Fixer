@@ -55,7 +55,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 Requirements
 ------------
 
-PHP needs to be a minimum version of PHP 5.3.6.
+PHP needs to be a minimum version of PHP 5.6.0.
 
 Installation
 ------------

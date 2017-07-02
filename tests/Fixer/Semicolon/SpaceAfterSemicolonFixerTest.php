@@ -36,55 +36,55 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     test1();
                     $a; // test
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php test2();',
-            ),
-            array(
+            ],
+            [
                 '<?php test3(); ',
-            ),
-            array(
+            ],
+            [
                 '<?php test4();   ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     test5();     // test
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php test6();       /* */ //',
-            ),
-            array(
+            ],
+            [
                 '<?php test7a(); /* */',
                 '<?php test7a();/* */',
-            ),
-            array(
+            ],
+            [
                 '<?php test7b(); /* *//**/',
                 '<?php test7b();/* *//**/',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     test8(); $a = 4;
                 ',
                 '<?php
                     test8();     $a = 4;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     test9(); $b = 7;
                 ',
                 '<?php
                     test9();$b = 7;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; ;) {
                     }
@@ -93,8 +93,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;;) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; ; ++$u1) {
                     }
@@ -103,8 +103,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;;++$u1) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; $u2 < 0;) {
                     }
@@ -113,8 +113,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;$u2 < 0;) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; $u3 < 3; ++$u3) {
                     }
@@ -123,8 +123,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;$u3 < 3;++$u3) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u4 = 0; ;) {
                     }
@@ -133,8 +133,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u4 = 0;;) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u5 = 0; ; ++$u5) {
                     }
@@ -143,8 +143,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u5 = 0;;++$u5) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u6 = 0; $u6 < 6;) {
                     }
@@ -153,8 +153,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u6 = 0;$u6 < 6;) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
                     }
@@ -163,8 +163,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u7 = 0;$u7 < 7;++$u7) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; ;    ) {
                     }
@@ -173,8 +173,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;    ;    ) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; ; ++$u1) {
                     }
@@ -183,8 +183,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;    ;    ++$u1) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; $u2 < 0;    ) {
                     }
@@ -193,8 +193,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;    $u2 < 0;    ) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; $u3 < 3; ++$u3) {
                     }
@@ -203,8 +203,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;    $u3 < 3;    ++$u3) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($ui4 = 0; ;    ) {
                     }
@@ -213,8 +213,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($ui4 = 0;    ;    ) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u5 = 0; ; ++$u5) {
                     }
@@ -223,8 +223,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u5 = 0;    ;    ++$u5) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u6 = 0; $u6 < 6;    ) {
                     }
@@ -233,8 +233,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u6 = 0;    $u6 < 6;    ) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
                     }
@@ -243,13 +243,10 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u7 = 0;    $u7 < 7;    ++$u7) {
                     }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testHaltCompiler()
     {
         $this->doTest('<?php

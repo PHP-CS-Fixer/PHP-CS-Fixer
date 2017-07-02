@@ -36,32 +36,32 @@ final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<h1>This is an <?php //echo 123;?> example</h1>',
                 '<h1>This is an <?php #echo 123;?> example</h1>',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     //#test
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     /*
                         #test
                     */
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     // test
                 ',
                 '<?php
                     # test
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     // test1
                     //test2
@@ -74,11 +74,11 @@ final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
                     # test3
                     # test 4
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php // a',
                 '<?php # a',
-            ),
-        );
+            ],
+        ];
     }
 }

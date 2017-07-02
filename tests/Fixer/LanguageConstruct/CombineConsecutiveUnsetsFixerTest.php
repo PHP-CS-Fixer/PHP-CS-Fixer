@@ -36,8 +36,8 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php //1
                     unset($foo/*;*/, /*;*/$bar, $c , $foobar  ,  $foobar2);
                      //test
@@ -50,24 +50,24 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                     unset($foobar  ); /* more comment test*/
                     unset(  $foobar2);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php unset($d , $e);/*unset(    $d2);unset($e   );;*/    ',
                 '<?php unset($d );/*unset(    $d2);unset($e   );;*/    uNseT($e);',
-            ),
-            array(
+            ],
+            [
                 '<?php UNSET($a, $b,$c/**/); ',
                 '<?php UNSET($a); unset($b,$c/**/);',
-            ),
-            array(
+            ],
+            [
               '<?php
               $config = array();
               if ($config) {
               }
               unset($config[\'autoescape_service\'], $config[\'autoescape_service_method\']);
               ',
-            ),
-            array(
+            ],
+            [
                 '<?php //2
                     unset($foo, $bar, $foobar, $foobar2, $foobar3);/*1*/
                     /*2*/
@@ -82,8 +82,8 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                     unset($foobar2);/*4*/
                     /*5*/ unset($foobar3);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     unset($foo3, $bar, $test,$test1);
                         /* c1 */
@@ -100,22 +100,22 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                 // c2
                 unset($test,$test1);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php (unset)$f;',
-            ),
-            array(
+            ],
+            [
                 '<?php unset($x, $b  , $d);  /**/   ?> b',
                 '<?php unset($x);  /**/ unset ($b  , $d) ?> b',
-            ),
-            array(
+            ],
+            [
                 '<?php unset($x) ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php unset($y, $u); ?>',
                 '<?php unset($y);unset($u) ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     unset($a[0], $a[\'a\'], $a["b"], $a->b, $a->b->c, $a->b[0]->c[\'a\']);
                     '.'
@@ -132,7 +132,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                     unset($a->b->c);
                     unset($a->b[0]->c[\'a\']);
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

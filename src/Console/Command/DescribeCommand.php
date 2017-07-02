@@ -78,9 +78,9 @@ final class DescribeCommand extends Command
         $this
             ->setName('describe')
             ->setDefinition(
-                array(
+                [
                     new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
-                )
+                ]
             )
             ->setDescription('Describe rule / ruleset.')
         ;
@@ -128,7 +128,7 @@ final class DescribeCommand extends Command
         if ($fixer instanceof DefinedFixerInterface) {
             $definition = $fixer->getDefinition();
         } else {
-            $definition = new FixerDefinition('Description is not available.', array());
+            $definition = new FixerDefinition('Description is not available.', []);
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
@@ -208,10 +208,10 @@ final class DescribeCommand extends Command
         });
 
         if (!count($codeSamples)) {
-            $output->writeln(array(
+            $output->writeln([
                 'Fixing examples can not be demonstrated on the current PHP version.',
                 '',
-            ));
+            ]);
         } else {
             $output->writeln('Fixing examples:');
 
@@ -228,7 +228,7 @@ final class DescribeCommand extends Command
 
                 if ($fixer instanceof ConfigurableFixerInterface) {
                     $configuration = $codeSample->getConfiguration();
-                    $fixer->configure(null === $configuration ? array() : $configuration);
+                    $fixer->configure(null === $configuration ? [] : $configuration);
                 }
 
                 $file = $codeSample instanceof FileSpecificCodeSampleInterface
@@ -265,7 +265,7 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        $ruleSet = new RuleSet(array($name => true));
+        $ruleSet = new RuleSet([$name => true]);
         $rules = $ruleSet->getRules();
         ksort($rules);
 
@@ -300,7 +300,7 @@ final class DescribeCommand extends Command
             return $this->fixers;
         }
 
-        $fixers = array();
+        $fixers = [];
         foreach ($this->fixerFactory->getFixers() as $fixer) {
             $fixers[$fixer->getName()] = $fixer;
         }
@@ -357,12 +357,12 @@ final class DescribeCommand extends Command
     private function describeList(OutputInterface $output, $type)
     {
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $describe = array(
+            $describe = [
                 'set' => $this->getSetNames(),
                 'rules' => $this->getFixers(),
-            );
+            ];
         } elseif ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $describe = 'set' === $type ? array('set' => $this->getSetNames()) : array('rules' => $this->getFixers());
+            $describe = 'set' === $type ? ['set' => $this->getSetNames()] : ['rules' => $this->getFixers()];
         } else {
             return;
         }

@@ -39,7 +39,7 @@ final class PhpdocOrderFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Annotations in phpdocs should be ordered so that param annotations come first, then throws annotations, then return annotations.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -53,7 +53,7 @@ final class PhpdocOrderFixer extends AbstractFixer
  */
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -89,7 +89,7 @@ final class PhpdocOrderFixer extends AbstractFixer
             // state of the dockblock is correct after the modifications
             $content = $this->moveReturnAnnotations($content);
             // persist the content at the end
-            $tokens[$index] = new Token(array(T_DOC_COMMENT, $content));
+            $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
         }
     }
 
@@ -110,7 +110,7 @@ final class PhpdocOrderFixer extends AbstractFixer
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType(array('throws', 'return'));
+        $others = $doc->getAnnotationsOfType(['throws', 'return']);
 
         if (empty($others)) {
             return $content;
@@ -150,7 +150,7 @@ final class PhpdocOrderFixer extends AbstractFixer
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType(array('param', 'throws'));
+        $others = $doc->getAnnotationsOfType(['param', 'throws']);
 
         // nothing to do if there are no other annotations
         if (empty($others)) {

@@ -30,7 +30,7 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Ensures deprecation notices are silenced.',
-            array(new CodeSample("<?php\ntrigger_error('Warning.', E_USER_DEPRECATED);")),
+            [new CodeSample("<?php\ntrigger_error('Warning.', E_USER_DEPRECATED);")],
             null,
             'Silencing of deprecation errors might cause changes to code behaviour.'
         );
@@ -59,7 +59,7 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
-            if (!$token->equals(array(T_STRING, 'trigger_error'), false)) {
+            if (!$token->equals([T_STRING, 'trigger_error'], false)) {
                 continue;
             }
 
@@ -74,8 +74,8 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
                 continue;
             }
 
-            $end = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextTokenOfKind($index, array(T_STRING, '(')));
-            if ($tokens[$tokens->getPrevMeaningfulToken($end)]->equals(array(T_STRING, 'E_USER_DEPRECATED'))) {
+            $end = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextTokenOfKind($index, [T_STRING, '(']));
+            if ($tokens[$tokens->getPrevMeaningfulToken($end)]->equals([T_STRING, 'E_USER_DEPRECATED'])) {
                 $tokens->insertAt($start, new Token('@'));
             }
         }

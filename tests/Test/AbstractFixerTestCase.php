@@ -18,7 +18,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\Test\AccessibleObject;
+use PhpCsFixer\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -30,6 +30,8 @@ use Prophecy\Argument;
  */
 abstract class AbstractFixerTestCase extends TestCase
 {
+    use AssertTokensTrait;
+
     /**
      * @var LinterInterface
      */
@@ -90,7 +92,7 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     protected function getTestFile($filename = __FILE__)
     {
-        static $files = array();
+        static $files = [];
 
         if (!isset($files[$filename])) {
             $files[$filename] = new \SplFileInfo($filename);
@@ -189,29 +191,6 @@ abstract class AbstractFixerTestCase extends TestCase
         }
     }
 
-    private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
-    {
-        foreach ($expectedTokens as $index => $expectedToken) {
-            $inputToken = $inputTokens[$index];
-            $option = array('JSON_PRETTY_PRINT');
-            $this->assertTrue(
-                $expectedToken->equals($inputToken),
-                sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson($option), $inputToken->toJson($option))
-            );
-        }
-
-        $this->assertSame($expectedTokens->count(), $inputTokens->count(), 'The collection must have the same length than the expected one.');
-
-        $foundTokenKinds = array_keys(AccessibleObject::create($expectedTokens)->foundTokenKinds);
-
-        foreach ($foundTokenKinds as $tokenKind) {
-            $this->assertTrue(
-                $inputTokens->isTokenKindFound($tokenKind),
-                sprintf('The token kind %s must be found in fixed tokens collection.', $tokenKind)
-            );
-        }
-    }
-
     /**
      * @return LinterInterface
      */
@@ -221,10 +200,10 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if (null === $linter) {
             if (getenv('SKIP_LINT_TEST_CASES')) {
-                $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+                $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
                 $linterProphecy
                     ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
 
                 $linter = $linterProphecy->reveal();
             } else {
@@ -246,7 +225,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         try {
             $fixers = $this->createFixerFactory()
-                ->useRuleSet(new RuleSet(array($this->getFixerName() => true)))
+                ->useRuleSet(new RuleSet([$this->getFixerName() => true]))
                 ->getFixers()
             ;
         } catch (\UnexpectedValueException $e) {

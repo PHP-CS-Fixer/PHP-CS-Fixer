@@ -12,7 +12,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 Requirements
 ------------
 
-PHP needs to be a minimum version of PHP 5.3.6.
+PHP needs to be a minimum version of PHP 5.6.0.
 
 Installation
 ------------
@@ -36,7 +36,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.2.4/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.2/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -209,8 +209,7 @@ Choose from the list of available rules:
 
 * **array_syntax**
 
-  PHP arrays should be declared using the configured syntax (requires PHP
-  >= 5.4 for short syntax).
+  PHP arrays should be declared using the configured syntax.
 
   Configuration options:
 
@@ -275,7 +274,7 @@ Choose from the list of available rules:
 
 * **class_keyword_remove**
 
-  Converts ``::class`` keywords to FQCN strings. Requires PHP >= 5.5.
+  Converts ``::class`` keywords to FQCN strings.
 
 * **combine_consecutive_unsets**
 
@@ -506,6 +505,16 @@ Choose from the list of available rules:
 * **linebreak_after_opening_tag**
 
   Ensure there is no code on the same line as the PHP open tag.
+
+* **list_syntax**
+
+  List (``array`` destructuring) assignment should be declared using the
+  configured syntax. Requires PHP >= 7.1.
+
+  Configuration options:
+
+  - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
+    syntax; defaults to ``'long'``
 
 * **lowercase_cast** [@Symfony]
 
@@ -820,6 +829,11 @@ Choose from the list of available rules:
     ``['assertAttributeEquals', 'assertAttributeNotEquals', 'assertEquals',
     'assertNotEquals']``
 
+* **php_unit_test_class_requires_covers**
+
+  Adds a default ``@coversNothing`` annotation to PHPUnit test classes that
+  have no ``@covers*`` annotation.
+
 * **phpdoc_add_missing_param_annotation**
 
   Phpdoc should contain @param for all params.
@@ -929,7 +943,7 @@ Choose from the list of available rules:
 
 * **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
 
-  Converts ``pow()`` to the ``**`` operator. Requires PHP >= 5.6.
+  Converts ``pow()`` to the ``**`` operator.
 
   *Risky rule: risky when the function ``pow()`` is overridden.*
 
@@ -1114,7 +1128,7 @@ fixed but without actually modifying them:
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.2.4/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.3.2/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -1135,11 +1149,11 @@ The example below will add two rules to the default list of PSR2 set rules:
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
-            'array_syntax' => array('syntax' => 'short'),
-        ))
+            'array_syntax' => ['syntax' => 'short'],
+        ])
         ->setFinder($finder)
     ;
 
@@ -1161,10 +1175,10 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
-        ))
+        ])
         ->setFinder($finder)
     ;
 

@@ -30,7 +30,7 @@ final class HeredocToNowdocFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Convert `heredoc` to `nowdoc` where possible.',
-            array(
+            [
                 new CodeSample(
 <<<'EOF'
 <?php $a = <<<"TEST"
@@ -39,7 +39,7 @@ TEST;
 
 EOF
                 ),
-            )
+            ]
         );
     }
 
@@ -80,11 +80,11 @@ EOF
             }
 
             $tokens[$index] = $this->convertToNowdoc($token);
-            $content = str_replace(array('\\\\', '\\$'), array('\\', '$'), $content);
-            $tokens[$index + 1] = new Token(array(
+            $content = str_replace(['\\\\', '\\$'], ['\\', '$'], $content);
+            $tokens[$index + 1] = new Token([
                 $tokens[$index + 1]->getId(),
                 $content,
-            ));
+            ]);
         }
     }
 
@@ -97,9 +97,9 @@ EOF
      */
     private function convertToNowdoc(Token $token)
     {
-        return new Token(array(
+        return new Token([
             $token->getId(),
             preg_replace('/(?<=^<<<)(\s*)"?(.*?)"?$/', '$1\'$2\'', $token->getContent()),
-        ));
+        ]);
     }
 }

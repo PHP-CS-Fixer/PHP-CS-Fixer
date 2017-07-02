@@ -36,8 +36,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 
     public function provideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 <<<'EOT'
 <?php
 
@@ -47,8 +47,8 @@ class Bar
 {
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -59,8 +59,8 @@ EOT
 
 class Foo { private function bar1($x) { return 1; } protected $abc = 'abc'; const C1 = 1; public function baz($y, $z) {} }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -103,8 +103,8 @@ interface FooInterface
     public function def();
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -261,8 +261,8 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     }
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -297,26 +297,8 @@ class Bar
     public function baz() {}
 }
 EOT
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideCases54
-     * @requires PHP 5.4
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCases54()
-    {
-        return array(
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -343,8 +325,8 @@ trait FooTrait
     use BazTrait;
 }
 EOT
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -361,8 +343,8 @@ EOT
 
     public function provideCases71()
     {
-        return array(
-            array(
+        return [
+            [
                 <<<'EOT'
 <?php
 
@@ -387,8 +369,8 @@ class Foo
     public const C3 = 3;
 }
 EOT
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -478,15 +460,15 @@ class Foo
     protected static function protStatFunc() {}
 }
 EOT;
-        $this->fixer->configure(array('order' => $configuration));
+        $this->fixer->configure(['order' => $configuration]);
         $this->doTest($expected, $input);
     }
 
     public function provideConfigurationCases()
     {
-        return array(
-            array(
-                array('use_trait', 'constant', 'property', 'construct', 'method', 'destruct'),
+        return [
+            [
+                ['use_trait', 'constant', 'property', 'construct', 'method', 'destruct'],
                 <<<'EOT'
 <?php
 
@@ -520,9 +502,9 @@ class Foo
     public function __destruct() {}
 }
 EOT
-            ),
-            array(
-                array('public', 'protected', 'private'),
+            ],
+            [
+                ['public', 'protected', 'private'],
                 <<<'EOT'
 <?php
 
@@ -556,9 +538,9 @@ class Foo
     use BazTrait;
 }
 EOT
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     'use_trait',
                     'constant',
                     'property_public_static',
@@ -576,7 +558,7 @@ EOT
                     'method_public',
                     'method_protected',
                     'method_private',
-                ),
+                ],
                 <<<'EOT'
 <?php
 
@@ -610,17 +592,17 @@ class Foo
     private function privFunc() {}
 }
 EOT
-            ),
-        );
+            ],
+        ];
     }
 
     public function testWrongConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[ordered_class_elements\] Invalid configuration: The option "order" .*\.$/'
         );
 
-        $this->fixer->configure(array('order' => array('foo')));
+        $this->fixer->configure(['order' => ['foo']]);
     }
 }

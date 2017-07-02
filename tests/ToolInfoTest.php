@@ -41,7 +41,7 @@ final class ToolInfoTest extends TestCase
 
     public function testGetComposerVersionThrowsExceptionIfOutsideComposerScope()
     {
-        $this->setExpectedException('LogicException');
+        $this->setExpectedException(\LogicException::class);
 
         ToolInfo::getComposerVersion();
     }

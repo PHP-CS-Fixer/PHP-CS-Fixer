@@ -33,8 +33,8 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     {
         return new FixerDefinition(
             'Code MUST use configured indentation type.',
-            array(new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
-        ));
+            [new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
+        ]);
     }
 
     /**
@@ -50,7 +50,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE));
+        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]);
     }
 
     /**
@@ -70,7 +70,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 // change indent to expected one
                 $content = preg_replace('/^    /m', $this->whitespacesConfig->getIndent(), $content);
 
-                $tokens[$index] = new Token(array($token->getId(), $content));
+                $tokens[$index] = new Token([$token->getId(), $content]);
                 continue;
             }
 
@@ -81,7 +81,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 // change indent to expected one
                 $content = str_replace('    ', $this->whitespacesConfig->getIndent(), $content);
 
-                $tokens[$index] = new Token(array(T_WHITESPACE, $content));
+                $tokens[$index] = new Token([T_WHITESPACE, $content]);
             }
         }
     }

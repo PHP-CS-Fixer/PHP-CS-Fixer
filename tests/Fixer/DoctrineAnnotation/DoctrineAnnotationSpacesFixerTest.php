@@ -32,12 +32,12 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     {
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => true,
             'around_commas' => true,
             'around_argument_assignments' => true,
             'around_array_assignments' => true,
-        ));
+        ]);
         $this->doTest($expected, $input);
     }
 
@@ -62,16 +62,16 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAllCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo()
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
@@ -85,8 +85,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Foo ( foo = "foo" ,bar = "bar" )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -98,8 +98,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     foo = "foo" ,
  *     bar = "bar"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar("foo", "bar"),
@@ -111,26 +111,26 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     @Bar ( "foo" ,"bar") ,
  *     @Baz
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo({"bar", "baz"})
  */', '
 /**
  * @Foo( {"bar" ,"baz"} )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="=foo", bar={"foo" : "=foo", "bar" = "=bar"})
  */', '
 /**
  * @Foo(foo = "=foo" ,bar = {"foo" : "=foo", "bar"="=bar"})
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo(foo="foo", bar={"foo" : "foo", "bar" = "bar"}) */',
                 '/** @Foo ( foo = "foo" ,bar = {"foo" : "foo", "bar"="bar"} ) */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -149,8 +149,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"="bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -177,23 +177,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo", "bar"=@Bar\Baz({"foo" : true, "bar" = false}))
  */', '
 /**
  * @Foo   (   foo = "foo", "bar" = @Bar\Baz({"foo":true, "bar"=false})   )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo = "foo" ,bar="bar"
- */'),
-            array('
+ */'],
+            ['
 /**
  * Comment , with a comma.
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
@@ -207,8 +207,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @Foo( foo="string "" with inner quote" ,bar="string "" with inner quote" )
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -313,12 +313,13 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Transform /^(\d+)$/
- */'),
-        ));
+
+ */'],
+        ]);
     }
 
     /**
@@ -329,19 +330,19 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function testFixAroundParenthesesOnly($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_commas' => false,
             'around_argument_assignments' => false,
             'around_array_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => true,
             'around_commas' => false,
             'around_argument_assignments' => false,
             'around_array_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
     }
 
@@ -366,12 +367,12 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAroundParenthesesOnlyCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
@@ -385,40 +386,40 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Foo ( )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("bar")
  */', '
 /**
  * @Foo( "bar" )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("bar", "baz")
  */', '
 /**
  * @Foo( "bar", "baz" )
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo("bar", "baz") */',
                 '/** @Foo( "bar", "baz" ) */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo("bar", "baz")
  */', '
 /**
  * @Foo(     "bar", "baz"     )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("bar", "baz")
  */', '
 /**
  * @Foo    (     "bar", "baz"     )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     "bar",
@@ -431,8 +432,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     "bar",
  *     "baz"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar("baz")
@@ -443,16 +444,16 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * (
  *     @Bar ( "baz" )
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo ( @Bar ( "bar" )
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo ( Bar Baz )
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
@@ -466,8 +467,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @Foo ( "string "" with inner quote" )
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -572,8 +573,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-        ));
+ */'],
+        ]);
     }
 
     /**
@@ -584,19 +585,19 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function testFixAroundCommasOnly($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_argument_assignments' => false,
             'around_array_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => true,
             'around_argument_assignments' => false,
             'around_array_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
     }
 
@@ -621,24 +622,24 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAroundCommasOnlyCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo ()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo( "bar" )
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
@@ -652,19 +653,19 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Foo( "bar" ,"baz")
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo( "bar", "baz") */',
                 '/** @Foo( "bar" ,"baz") */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo( "bar", "baz")
  */', '
 /**
  * @Foo( "bar" , "baz")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     "bar",
@@ -676,8 +677,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     "bar" ,
  *     "baz"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     "bar",
@@ -690,12 +691,12 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     ,
  *     "baz"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("bar ,", "baz,")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar ( "foo", "bar"),
@@ -707,30 +708,30 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     @Bar ( "foo" ,"bar") ,
  *     @Baz
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo({"bar", "baz"})
  */', '
 /**
  * @Foo({"bar" ,"baz"})
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo", bar="bar")
  */', '
 /**
  * @Foo(foo="foo" ,bar="bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo" ,bar="bar"
- */'),
-            array('
+ */'],
+            ['
 /**
  * Comment , with a comma.
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
@@ -744,8 +745,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @Foo(foo="string "" with inner quote" ,bar="string "" with inner quote")
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -850,8 +851,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-        ));
+ */'],
+        ]);
     }
 
     /**
@@ -862,19 +863,19 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function testFixAroundArgumentAssignmentsOnly($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
             'around_array_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
             'around_argument_assignments' => true,
             'around_array_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
     }
 
@@ -899,12 +900,12 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAroundArgumentAssignmentsOnlyCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo (foo="foo", bar="bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
@@ -918,8 +919,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Foo(foo = "foo", bar = "bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -931,19 +932,19 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     foo = "foo",
  *     bar = "bar"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo", bar={"foo" : "foo", "bar"="bar"})
  */', '
 /**
  * @Foo(foo = "foo", bar = {"foo" : "foo", "bar"="bar"})
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo(foo="foo", bar={"foo" : "foo", "bar"="bar"}) */',
                 '/** @Foo(foo = "foo", bar = {"foo" : "foo", "bar"="bar"}) */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -961,8 +962,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"="bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -992,15 +993,15 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo", "bar"=@Bar\Baz({"foo":true, "bar"=false}))
  */', '
 /**
  * @Foo(foo = "foo", "bar" = @Bar\Baz({"foo":true, "bar"=false}))
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
@@ -1014,8 +1015,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @Foo(foo = "string "" with inner quote")
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -1120,8 +1121,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-        ));
+ */'],
+        ]);
     }
 
     /**
@@ -1132,19 +1133,19 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function testFixAroundArrayAssignmentsOnly($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
             'around_argument_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
             'around_argument_assignments' => false,
             'around_array_assignments' => true,
-        ));
+        ]);
         $this->doTest($expected, $input);
     }
 
@@ -1169,38 +1170,38 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getFixAroundArrayAssignmentsOnlyCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo (foo="foo", bar="bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
  * @author John Doe
  *
  * @Foo(foo = "foo", bar = "bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo = "foo",
  *     bar = "bar"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
  */', '
 /**
  * @Foo(foo = "foo", bar = {"foo" : "foo", "bar"="bar"})
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"}) */',
                 '/** @Foo(foo = "foo", bar = {"foo" : "foo", "bar"="bar"}) */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo(
  *     foo = "foo",
@@ -1218,8 +1219,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"="bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo
@@ -1249,23 +1250,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo = "foo", "bar" = @Bar\Baz({"foo" : true, "bar" = false}))
  */', '
 /**
  * @Foo(foo = "foo", "bar" = @Bar\Baz({"foo":true, "bar"=false}))
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
  * @Foo(foo = "string "" with inner quote")
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -1370,8 +1371,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-        ));
+ */'],
+        ]);
     }
 
     /**
@@ -1379,13 +1380,13 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function getInvalidConfigurationCases()
     {
-        return array_merge(parent::getInvalidConfigurationCases(), array(
-            array(array(
+        return array_merge(parent::getInvalidConfigurationCases(), [
+            [[
                 'around_parentheses' => false,
                 'around_commas' => false,
                 'around_argument_assignments' => false,
                 'around_array_assignments' => false,
-            )),
-        ));
+            ]],
+        ]);
     }
 }

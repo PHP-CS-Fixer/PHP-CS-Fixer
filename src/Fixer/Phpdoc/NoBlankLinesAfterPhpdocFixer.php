@@ -39,7 +39,7 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be blank lines between docblock and the documented element.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 
@@ -51,7 +51,7 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
 class Bar {}
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -69,7 +69,7 @@ class Bar {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $forbiddenSuccessors = array(
+        static $forbiddenSuccessors = [
             T_DOC_COMMENT,
             T_COMMENT,
             T_WHITESPACE,
@@ -78,7 +78,7 @@ class Bar {}
             T_GOTO,
             T_CONTINUE,
             T_BREAK,
-        );
+        ];
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -106,7 +106,7 @@ class Bar {}
         if (substr_count($content, "\n") > 1) {
             // the final bit of the whitespace must be the next statement's indentation
             $lines = Utils::splitLines($content);
-            $tokens[$index] = new Token(array(T_WHITESPACE, "\n".end($lines)));
+            $tokens[$index] = new Token([T_WHITESPACE, "\n".end($lines)]);
         }
     }
 }

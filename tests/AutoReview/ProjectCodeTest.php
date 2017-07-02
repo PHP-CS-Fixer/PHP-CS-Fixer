@@ -34,27 +34,29 @@ final class ProjectCodeTest extends TestCase
      *
      * @var string[]
      */
-    private static $classesWithoutTests = array(
-        'PhpCsFixer\Console\Command\SelfUpdateCommand',
-        'PhpCsFixer\Console\Output\NullOutput',
-        'PhpCsFixer\Differ\DiffConsoleFormatter',
-        'PhpCsFixer\Doctrine\Annotation\Tokens',
-        'PhpCsFixer\FileRemoval',
-        'PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator',
-        'PhpCsFixer\FixerFileProcessedEvent',
-        'PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper',
-        'PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper',
-        'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer',
-        'PhpCsFixer\Linter\ProcessLintingResult',
-        'PhpCsFixer\Linter\TokenizerLintingResult',
-        'PhpCsFixer\Report\ReportSummary',
-        'PhpCsFixer\Runner\FileCachingLintingIterator',
-        'PhpCsFixer\Runner\FileFilterIterator',
-        'PhpCsFixer\Runner\FileLintingIterator',
-        'PhpCsFixer\StdinFileInfo',
-        'PhpCsFixer\Test\IntegrationCaseFactory',
-        'PhpCsFixer\Tokenizer\Transformers',
-    );
+    private static $classesWithoutTests = [
+        \PhpCsFixer\Console\Command\SelfUpdateCommand::class,
+        \PhpCsFixer\Console\Output\NullOutput::class,
+        \PhpCsFixer\Differ\DiffConsoleFormatter::class,
+        \PhpCsFixer\Doctrine\Annotation\Tokens::class,
+        \PhpCsFixer\FileRemoval::class,
+        \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
+        \PhpCsFixer\FixerFileProcessedEvent::class,
+        \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
+        \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
+        \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
+        \PhpCsFixer\Indicator\PhpUnitIndicator::class,
+        \PhpCsFixer\Linter\ProcessLintingResult::class,
+        \PhpCsFixer\Linter\TokenizerLintingResult::class,
+        \PhpCsFixer\Report\ReportSummary::class,
+        \PhpCsFixer\Runner\FileCachingLintingIterator::class,
+        \PhpCsFixer\Runner\FileFilterIterator::class,
+        \PhpCsFixer\Runner\FileLintingIterator::class,
+        \PhpCsFixer\StdinFileInfo::class,
+        \PhpCsFixer\Test\Assert\AssertTokensTrait::class,
+        \PhpCsFixer\Test\IntegrationCaseFactory::class,
+        \PhpCsFixer\Tokenizer\Transformers::class,
+    ];
 
     /**
      * @param string $className
@@ -71,14 +73,13 @@ final class ProjectCodeTest extends TestCase
         }
 
         $this->assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
-        $this->assertTrue(is_subclass_of($testClassName, '\PHPUnit\Framework\TestCase'), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit\Framework\TestCase".', $testClassName));
+        $this->assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit\Framework\TestCase".', $testClassName));
     }
 
     /**
      * @param string $className
      *
      * @dataProvider provideSrcClasses
-     * @requires PHP 5.4
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
@@ -98,12 +99,12 @@ final class ProjectCodeTest extends TestCase
             $rc->isInterface()
             || ($doc && count($doc->getAnnotationsOfType('internal')))
             || 0 === count($rc->getInterfaces())
-            || in_array($className, array(
-                'PhpCsFixer\Finder',
-                'PhpCsFixer\Test\AbstractFixerTestCase',
-                'PhpCsFixer\Test\AbstractIntegrationTestCase',
-                'PhpCsFixer\Tokenizer\Tokens',
-            ), true)
+            || in_array($className, [
+                \PhpCsFixer\Finder::class,
+                \PhpCsFixer\Test\AbstractFixerTestCase::class,
+                \PhpCsFixer\Test\AbstractIntegrationTestCase::class,
+                \PhpCsFixer\Tokenizer\Tokens::class,
+            ], true)
         ) {
             return;
         }
@@ -116,25 +117,25 @@ final class ProjectCodeTest extends TestCase
         );
 
         if (count($allowedMethods)) {
-            $allowedMethods = array_unique(call_user_func_array('array_merge', $allowedMethods));
+            $allowedMethods = array_unique(array_merge(...array_values($allowedMethods)));
         }
 
         $allowedMethods[] = '__construct';
         $allowedMethods[] = '__destruct';
         $allowedMethods[] = '__wakeup';
 
-        $exceptionMethods = array(
+        $exceptionMethods = [
             'configure', // due to AbstractFixer::configure
             'getConfigurationDefinition', // due to AbstractFixer::getDefaultConfiguration
             'getDefaultConfiguration', // due to AbstractFixer::getDefaultConfiguration
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
-        );
+        ];
 
         // @TODO: should be removed at 3.0
-        $exceptionMethodsPerClass = array(
-            'PhpCsFixer\Config' => array('create'),
-            'PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer' => array('fixSpace'),
-        );
+        $exceptionMethodsPerClass = [
+            \PhpCsFixer\Config::class => ['create'],
+            \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class => ['fixSpace'],
+        ];
 
         $definedMethods = $this->getPublicMethodNames($rc);
 
@@ -142,7 +143,7 @@ final class ProjectCodeTest extends TestCase
             $definedMethods,
             $allowedMethods,
             $exceptionMethods,
-            isset($exceptionMethodsPerClass[$className]) ? $exceptionMethodsPerClass[$className] : array()
+            isset($exceptionMethodsPerClass[$className]) ? $exceptionMethodsPerClass[$className] : []
         );
 
         sort($extraMethods);
@@ -168,8 +169,11 @@ final class ProjectCodeTest extends TestCase
     {
         $rc = new \ReflectionClass($className);
 
-        if ('PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer' === $className) {
-            $this->markTestIncomplete('Public properties of fixer \'PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer\' will be remove on 3.0.');
+        if (\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class === $className) {
+            $this->markTestIncomplete(sprintf(
+                'Public properties of fixer `%s` will be remove on 3.0.',
+                \PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class
+            ));
         }
 
         $this->assertEmpty(
@@ -181,7 +185,7 @@ final class ProjectCodeTest extends TestCase
             return;
         }
 
-        $allowedProps = array();
+        $allowedProps = [];
         $definedProps = $rc->getProperties(\ReflectionProperty::IS_PROTECTED);
 
         if (false !== $rc->getParentClass()) {
@@ -195,19 +199,19 @@ final class ProjectCodeTest extends TestCase
             return $item->getName();
         }, $definedProps);
 
-        $exceptionPropsPerClass = array(
-            'PhpCsFixer\AbstractPhpdocTypesFixer' => array('tags'),
-            'PhpCsFixer\AbstractAlignFixerHelper' => array('deepestLevel'),
-            'PhpCsFixer\AbstractFixer' => array('configuration', 'configurationDefinition', 'whitespacesConfig'),
-            'PhpCsFixer\AbstractProxyFixer' => array('proxyFixer'),
-            'PhpCsFixer\Test\AbstractFixerTestCase' => array('fixer', 'linter'),
-            'PhpCsFixer\Test\AbstractIntegrationTestCase' => array('linter'),
-        );
+        $exceptionPropsPerClass = [
+            \PhpCsFixer\AbstractPhpdocTypesFixer::class => ['tags'],
+            \PhpCsFixer\AbstractAlignFixerHelper::class => ['deepestLevel'],
+            \PhpCsFixer\AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
+            \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixer'],
+            \PhpCsFixer\Test\AbstractFixerTestCase::class => ['fixer', 'linter'],
+            \PhpCsFixer\Test\AbstractIntegrationTestCase::class => ['linter'],
+        ];
 
         $extraProps = array_diff(
             $definedProps,
             $allowedProps,
-            isset($exceptionPropsPerClass[$className]) ? $exceptionPropsPerClass[$className] : array()
+            isset($exceptionPropsPerClass[$className]) ? $exceptionPropsPerClass[$className] : []
         );
 
         sort($extraProps);
@@ -259,7 +263,7 @@ final class ProjectCodeTest extends TestCase
     {
         return array_map(
             function ($item) {
-                return array($item);
+                return [$item];
             },
             $this->getSrcClasses()
         );
@@ -268,7 +272,7 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcConcreteClasses()
     {
         return array_map(
-            function ($item) { return array($item); },
+            function ($item) { return [$item]; },
             array_filter(
                 $this->getSrcClasses(),
                 function ($className) {
@@ -284,7 +288,7 @@ final class ProjectCodeTest extends TestCase
     {
         return array_map(
             function ($item) {
-                return array($item);
+                return [$item];
             },
             $this->getTestClasses()
         );
@@ -302,9 +306,9 @@ final class ProjectCodeTest extends TestCase
             ->files()
             ->name('*.php')
             ->in(__DIR__.'/../../src')
-            ->exclude(array(
+            ->exclude([
                 'Resources',
-            ))
+            ])
         ;
 
         $names = array_map(
@@ -337,10 +341,10 @@ final class ProjectCodeTest extends TestCase
             ->files()
             ->name('*.php')
             ->in(__DIR__.'/..')
-            ->exclude(array(
+            ->exclude([
                 'Fixtures',
                 'Test',
-            ))
+            ])
         ;
 
         $names = array_map(

@@ -139,11 +139,11 @@ The example below will add two rules to the default list of PSR2 set rules:
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
-            'array_syntax' => array('syntax' => 'short'),
-        ))
+            'array_syntax' => ['syntax' => 'short'],
+        ])
         ->setFinder(\$finder)
     ;
 
@@ -165,10 +165,10 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
-        ))
+        ])
         ->setFinder(\$finder)
     ;
 
@@ -277,10 +277,10 @@ EOF
             // - remove whitespace at array opening
             // - remove trailing array comma and whitespace at array closing
             // - remove numeric array indexes
-            static $replaces = array(
-                array('#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'),
-                array('', ' ', '[$1]', '[', ']', ''),
-            );
+            static $replaces = [
+                ['#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'],
+                ['', ' ', '[$1]', '[', ']', ''],
+            ];
 
             $str = var_export($value, true);
             do {
@@ -321,8 +321,8 @@ EOF
 
             usort($allowed, function ($valueA, $valueB) {
                 return strcasecmp(
-                    HelpCommand::toString($valueA),
-                    HelpCommand::toString($valueB)
+                    self::toString($valueA),
+                    self::toString($valueB)
                 );
             });
 
@@ -415,13 +415,13 @@ EOF
             }
         );
 
-        $ruleSets = array();
+        $ruleSets = [];
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
-            $ruleSets[$setName] = new RuleSet(array($setName => true));
+            $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
         $getSetsWithRule = function ($rule) use ($ruleSets) {
-            $sets = array();
+            $sets = [];
 
             foreach ($ruleSets as $setName => $ruleSet) {
                 if ($ruleSet->hasRule($rule)) {
@@ -532,7 +532,7 @@ EOF
      */
     private static function wordwrap($string, $width)
     {
-        $result = array();
+        $result = [];
         $currentLine = 0;
         $lineLength = 0;
         foreach (explode(' ', $string) as $word) {

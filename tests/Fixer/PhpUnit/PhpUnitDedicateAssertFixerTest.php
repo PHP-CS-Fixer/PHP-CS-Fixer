@@ -33,7 +33,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
     {
         $this->doTest($expected, $input);
 
-        $defaultFunctions = array(
+        $defaultFunctions = [
             'array_key_exists',
             'empty',
             'file_exists',
@@ -55,39 +55,39 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
             'is_resource',
             'is_scalar',
             'is_string',
-        );
+        ];
 
-        $this->fixer->configure(array('functions' => $defaultFunctions));
+        $this->fixer->configure(['functions' => $defaultFunctions]);
         $this->doTest($expected, $input);
     }
 
     public function provideInternalTypeMethods()
     {
-        $cases = array();
+        $cases = [];
 
-        foreach (array('array', 'bool', 'boolean', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string') as $type) {
-            $cases[] = array(
+        foreach (['array', 'bool', 'boolean', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
+            $cases[] = [
                 sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
                 sprintf('<?php $this->assertTrue(is_%s($a));', $type),
-            );
+            ];
 
-            $cases[] = array(
+            $cases[] = [
                 sprintf('<?php $this->assertNotInternalType(\'%s\', $a);', $type),
                 sprintf('<?php $this->assertFalse(is_%s($a));', $type),
-            );
+            ];
         }
 
-        $cases[] = array(
+        $cases[] = [
             '<?php $this->assertInternalType(\'float\', $a, "my message");',
             '<?php $this->assertTrue(is_float( $a), "my message");',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php $this->assertInternalType(\'float\', $a);',
             '<?php $this->assertTrue(\IS_FLOAT($a));',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php $this->assertInternalType(#
 \'float\'#
 , #
@@ -102,7 +102,7 @@ $a#
 )#
 )#
 ;',
-        );
+        ];
 
         return $cases;
     }
@@ -120,8 +120,8 @@ $a#
 
     public function provideDedicatedAssertsCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     $this->assertNan($a);
                     $this->assertNan($a);
@@ -134,8 +134,8 @@ $a#
                     $this->assertTrue(test\is_nan($a));
                     $this->assertTrue(test\a\is_nan($a));
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $this->assertFileExists($a);
                     $this->assertFileNotExists($a);
@@ -148,8 +148,8 @@ $a#
                     $this->assertTrue(\file_exists($a));
                     $this->assertFalse(\file_exists($a));
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $this->assertNull($a);
                     $this->assertNotNull($a);
@@ -162,8 +162,8 @@ $a#
                     $this->assertTrue(\is_null($a));
                     $this->assertFalse(\is_null($a), "my message");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $this->assertEmpty($a);
                     $this->assertNotEmpty($a);
@@ -172,8 +172,8 @@ $a#
                     $this->assertTrue(empty($a));
                     $this->ASSERTFALSE(empty($a));
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $this->assertInfinite($a);
                     $this->assertFinite($a, "my message");
@@ -186,8 +186,8 @@ $a#
                     $this->assertTrue(\is_infinite($a));
                     $this->assertFalse(\is_infinite($a), "my message");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $this->assertArrayHasKey("test", $a);
                     $this->assertArrayNotHasKey($b, $a, $c);
@@ -196,8 +196,8 @@ $a#
                     $this->assertTrue(\array_key_exists("test", $a));
                     $this->ASSERTFALSE(array_key_exists($b, $a), $c);
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -212,14 +212,14 @@ $a#
 
     public function provideNotFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo $this->assertTrue;',
-            ),
-            array(
+            ],
+            [
                 '<?php echo $this->assertTrue?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     const is_null = 1;
                     $this->assertTrue(is_null);
@@ -228,8 +228,8 @@ $a#
                     $this->assertTrue(is_int($a) || \is_bool($b));
                     $this->assertTrue($a&&is_int($a));
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -238,7 +238,7 @@ $a#
      */
     public function testLegacyConfig()
     {
-        $this->fixer->configure(array('file_exists'));
+        $this->fixer->configure(['file_exists']);
         $this->doTest(
             '<?php
                     $this->assertFileExists($a);
@@ -253,7 +253,7 @@ $a#
 
     public function testConfig()
     {
-        $this->fixer->configure(array('functions' => array('file_exists')));
+        $this->fixer->configure(['functions' => ['file_exists']]);
         $this->doTest(
             '<?php
                     $this->assertFileExists($a);
@@ -269,10 +269,10 @@ $a#
     public function testInvalidConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '/^\[php_unit_dedicate_assert\] Invalid configuration: The option "functions" .*\.$/'
         );
 
-        $this->fixer->configure(array('functions' => array('_unknown_')));
+        $this->fixer->configure(['functions' => ['_unknown_']]);
     }
 }
