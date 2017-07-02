@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
-use PhpCsFixer\Test\Assert\AssertTokensTrait;
+use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
