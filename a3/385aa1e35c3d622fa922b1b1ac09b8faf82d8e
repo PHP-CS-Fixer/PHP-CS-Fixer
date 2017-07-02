@@ -1,0 +1,427 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2016-12-11T09:33:34Z
+
+Like the idea :+1:
+
+Maybe its time we can start deprecating fixers. This would be mean removing them from the documentation but adding those to on upgrading file. Triggering deprecation warning when deprecated fixer is configured. Wonder what people think about it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-12T23:16:57Z
+
+Please, at least in `::getDefinition` method of deprecated fixer add `summary` to mention that fixer has been deprecated.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-13T08:13:38Z
+
+@keradus
+
+Incorporated all of the suggested changes, thanks for reviewing!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-01-31T14:21:48Z
+
+@localheinz
+what is the state here? how could we continue here?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-01-31T15:11:34Z
+
+@keradus
+
+Ha, right, need to take a closer look at the extra control statements!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-02-27T11:25:07Z
+
+this fixer is possibly in conflict with the `no_extra_consecutive_blank_lines`
+
+Example input
+```php
+<?php
+if ($c) {
+    echo $b;
+} elseif ($b) {
+    echo $c;
+}
+```
+
+by configuration this fixer fixes to
+```php
+<?php
+if ($c) {
+    echo $b;
+
+} elseif ($b) {
+    echo $c;
+}
+```
+
+by configuration `no_extra_consecutive_blank_lines` (`curly_brace_block`) fixes the fixed output back to the input.
+Not sure how to deal with this, we could do more advanced configuration checking for conflicts.
+
+Maybe for now lets move forward without worrying :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-02-27T12:36:26Z
+
+I think it doesn't make sense to configure both at the same time anyway.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T14:39:59Z
+
+@localheinz could you remove the trailing white space in BlankLineBeforeControlStatementFixer?
+After that and a rebase, I think only https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2384#discussion_r100136355 is left? TBH I think we can do without that case.
+I would really like to do a final review soon and get this in :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T14:46:57Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2384#discussion_r96342585 should be addressed too :)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-03-09T19:18:06Z
+
+Sorry for the delay, picking this up again!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-15T12:01:45Z
+
+Please rebase
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-06T17:51:10Z
+
+Hi @localheinz how are you?
+Your branch is bitten by some refactors I'm afraid, but a rebase shouldn't be very hard.
+Let me know if you going to pick this one up soon, otherwise I'm happy to continue on your great work :)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-04-08T08:53:07Z
+
+@SpacePossum
+
+Ha, if you would like to take over, that would be great!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-06T13:00:33Z
+
+@localheinz , I did squash all your commits into one and rebase it on newest master (during that I had to remove trailing whitespaces as side effect, as I didn't wanted to change my git config to allow them)
+Then, I made some adjustments to make it works with currect codebase.
+
+@SpacePossum @julienfalque , anything critical here? don't be picky, I bet we won't introduce new tests and so on here. I just wanna help finishing and merging this PR.
+Only think I'm currently thinking about is deciding about default configuration and configuration for us in `.php_cs.dist` file.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-06T14:39:23Z
+
+looking good,
+I would leave the default to `return` for now, we can always apply more to own config later after discussion and PR that separately.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-06T20:51:19Z
+
+I rather think about defualt config (not only for our project), to not change it in future that soon (as it would be BC breaker)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-07T02:00:25Z
+
+I still don't have tests for all of control statements, urgh.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-09T01:43:56Z
+
+@keradus
+
+Running the tests fails with
+
+```
+PhpCsFixer\Tokenizer\Token::clearChanged is deprecated and will be removed in 3.0: 15033x
+    6147x in IntegrationTest::testIntegration from PhpCsFixer\Tests
+    5260x in FixerTest::testFixerDefinitions from PhpCsFixer\Tests\AutoReview
+    1119x in DescribeCommandTest::testDescribeCommand from PhpCsFixer\Tests\AutoReview
+    500x in ConfigTest::testCustomConfig from PhpCsFixer\Tests
+    273x in BlankLineBeforeControlStatementFixerTest::testFixWithBreak from PhpCsFixer\Tests\Fixer\Whitespace
+    222x in BlankLineBeforeControlStatementFixerTest::testFixWithContinue from PhpCsFixer\Tests\Fixer\Whitespace
+    156x in BlankLineBeforeControlStatementFixerTest::testFixWithElseIf from PhpCsFixer\Tests\Fixer\Whitespace
+    153x in BlankLineBeforeControlStatementFixerTest::testFixWithWhile from PhpCsFixer\Tests\Fixer\Whitespace
+    132x in BlankLineBeforeControlStatementFixerTest::testFixWithElse from PhpCsFixer\Tests\Fixer\Whitespace
+    120x in BlankLineBeforeControlStatementFixerTest::testFixWithTry from PhpCsFixer\Tests\Fixer\Whitespace
+    111x in BlankLineBeforeReturnFixerTest::testFix from PhpCsFixer\Tests\Fixer\ReturnNotation
+    108x in BlankLineBeforeControlStatementFixerTest::testFixWithDefaultConfiguration from PhpCsFixer\Tests\Fixer\Whitespace
+    108x in BlankLineBeforeControlStatementFixerTest::testFixWithReturn from PhpCsFixer\Tests\Fixer\Whitespace
+    87x in BlankLineBeforeControlStatementFixerTest::testFixWithThrow from PhpCsFixer\Tests\Fixer\Whitespace
+    75x in BlankLineBeforeControlStatementFixerTest::testFixWithSwitch from PhpCsFixer\Tests\Fixer\Whitespace
+    72x in BlankLineBeforeReturnFixerTest::testMessyWhitespaces from PhpCsFixer\Tests\Fixer\ReturnNotation
+    72x in BlankLineBeforeControlStatementFixerTest::testFixWithReturnAndMessyWhitespaces from PhpCsFixer\Tests\Fixer\Whitespace
+    66x in BlankLineBeforeControlStatementFixerTest::testFixWithIf from PhpCsFixer\Tests\Fixer\Whitespace
+    60x in BlankLineBeforeControlStatementFixerTest::testFixWithDo from PhpCsFixer\Tests\Fixer\Whitespace
+    48x in BlankLineBeforeControlStatementFixerTest::testFixWithDeclare from PhpCsFixer\Tests\Fixer\Whitespace
+    36x in BlankLineBeforeControlStatementFixerTest::testFixWithRequireOnce from PhpCsFixer\Tests\Fixer\Whitespace
+    36x in BlankLineBeforeControlStatementFixerTest::testFixWithIncludeOnce from PhpCsFixer\Tests\Fixer\Whitespace
+    36x in BlankLineBeforeControlStatementFixerTest::testFixWithInclude from PhpCsFixer\Tests\Fixer\Whitespace
+    36x in BlankLineBeforeControlStatementFixerTest::testFixWithRequire from PhpCsFixer\Tests\Fixer\Whitespace
+
+PhpCsFixer\Tokenizer\Token::setContent is deprecated and will be removed in 3.0: 59x
+    10x in DescribeCommandTest::testDescribeCommand from PhpCsFixer\Tests\AutoReview
+    10x in FixerTest::testFixerDefinitions from PhpCsFixer\Tests\AutoReview
+    4x in IntegrationTest::testIntegration from PhpCsFixer\Tests
+    3x in BlankLineBeforeControlStatementFixerTest::testFixWithReturn from PhpCsFixer\Tests\Fixer\Whitespace
+    3x in BlankLineBeforeControlStatementFixerTest::testFixWithBreak from PhpCsFixer\Tests\Fixer\Whitespace
+    3x in BlankLineBeforeControlStatementFixerTest::testFixWithContinue from PhpCsFixer\Tests\Fixer\Whitespace
+    3x in BlankLineBeforeReturnFixerTest::testFix from PhpCsFixer\Tests\Fixer\ReturnNotation
+    3x in BlankLineBeforeControlStatementFixerTest::testFixWithDefaultConfiguration from PhpCsFixer\Tests\Fixer\Whitespace
+    2x in BlankLineBeforeReturnFixerTest::testMessyWhitespaces from PhpCsFixer\Tests\Fixer\ReturnNotation
+    2x in BlankLineBeforeControlStatementFixerTest::testFixWithWhile from PhpCsFixer\Tests\Fixer\Whitespace
+    2x in BlankLineBeforeControlStatementFixerTest::testFixWithElse from PhpCsFixer\Tests\Fixer\Whitespace
+    2x in BlankLineBeforeControlStatementFixerTest::testFixWithElseIf from PhpCsFixer\Tests\Fixer\Whitespace
+    2x in BlankLineBeforeControlStatementFixerTest::testFixWithReturnAndMessyWhitespaces from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithTry from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithThrow from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithSwitch from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithIncludeOnce from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithRequireOnce from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithRequire from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithInclude from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithDo from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithDeclare from PhpCsFixer\Tests\Fixer\Whitespace
+    1x in BlankLineBeforeControlStatementFixerTest::testFixWithIf from PhpCsFixer\Tests\Fixer\Whitespace
+```
+
+Not sure, what do I need to adjust here?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-09T05:45:15Z
+
+>PhpCsFixer\Tokenizer\Token::setContent
+
+this one should be replaced with something like;
+`$tokens[$index] = new Token(...);`
+
+>PhpCsFixer\Tokenizer\Token::clearChanged
+
+not sure what changes in this PR triggers that one, I'll have a look
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-09T09:04:28Z
+
+done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-09T09:18:55Z
+
+there is one option for `while`, however I think some people might like to differentiate;
+```php
+<?php
+do {
+    echo 1;
+} while($a); // no empty line above
+```
+
+(https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2384/files#diff-c53d4c3333692f270d9f520f2d4a8c3bR1009 this line whould not be added, btw. should it be added between `while` and `}` and not above `}` ?)
+
+and
+```php
+<?php
+
+echo 1;
+
+while($a) { // line above is wanted
+}
+```
+
+(can be done in a follow up PR)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-09T11:54:55Z
+
+> > PhpCsFixer\Tokenizer\Token::clearChanged
+>
+> not sure what changes in this PR triggers that one, I'll have a look
+
+using `->setContent` causes to use `clearChanged`, as Tokens collection starts to work in legacy mode
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-09T12:36:34Z
+
+check, thanks, that explains the high number of warnings :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-15T09:15:58Z
+
+all green now
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-16T07:14:16Z
+
+TODO
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2384#issuecomment-307339864
+
+and
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2384#issuecomment-306478618
+(would do that as last thing as it produces a lot of changes making reviewing less fun)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-16T08:03:19Z
+
+> there is one option for while, however I think some people might like to differentiate;
+>
+> ```php
+> <?php
+> do {
+>     echo 1;
+> } while($a); // no empty line above
+> ```
+>
+> (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2384/files#diff-c53d4c3333692f270d9f520f2d4a8c3bR1009 this line whould not be added, btw. should it be added between `while` and `}` and not above `}` ?)
+
+I think it's the same as `else`, `elseif`, `catch` and `finally` so like you said, the fixer should not add a line here.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-16T08:08:46Z
+
+updated, fixer no longer adds a line above a T_WHILE if part of do-while
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-20T15:34:23Z
+
+Travis is sad
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-20T15:36:10Z
+
+>Travis is sad
+
+As discussed, PHPMD reports error on code not touched, stopping all other tests from running.
+Lets make a call on default config first, than I deal with the SCA fallout
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-21T11:08:18Z
+
+rebased, squashed, fixed unrelated PHPMD failure, added more tests.
+
+@julienfalque please review again and update your previous preview accordingly. If you want more test cases please provide those explicit cause I'm a bit confused about some suggestions you made in your comments.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-22T21:24:59Z
+
+> If you want more test cases please provide those explicit cause I'm a bit confused about some suggestions you made in your comments.
+
+Some tests don't cover cases like:
+```php
+if ($foo) {
+    for ($i = 0; $i < 9000; ++$i) {
+        foo();
+    }
+}
+```
+which should not be changed, i.e. assert that the fixer does not add a newline before the `for` loop because it is at the beginning of a control structure.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-23T10:19:07Z
+
+The fixer should not add newline after a comment, e.g.:
+```php
+// foo
+if ($foo) { }
+```
+should not be changed.
+
+Reading the code, it already handles such case but it looks like test cases are missing, except for `return`. Could you please add cases for other keywords?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-23T12:05:06Z
+
+added the test, side note I don't see much value in testing all possible code constructs;
+like
+
+```php
+if ($foo) {
+    for ($i = 0; $i < 9000; ++$i) {
+        foo();
+    }
+}
+```
+
+```php
+while ($foo) {
+    for ($i = 0; $i < 9000; ++$i) {
+        foo();
+    }
+}
+```
+
+```php
+do {
+    for ($i = 0; $i < 9000; ++$i) {
+        foo();
+    }
+}while ($foo);
+```
+
+these are just more of the same and the number of combinations is insane
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-23T12:06:48Z
+
+test will fail because I didn't run the fixer on the repo yet, lets finish the discussion about the default configuration and the `number of tests`+1 cycle first
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-23T13:57:10Z
+
+:+1: for default config
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-23T13:58:11Z
+
+> these are just more of the same and the number of combinations is insane
+
+not claiming to do it here, but we already generate test cases from templates providing different keywords ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-28T06:25:54Z
+
+all done, lets :ship: ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-30T17:03:28Z
+
+closes https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1122
+(granted, only the part above a control statement, not after)
