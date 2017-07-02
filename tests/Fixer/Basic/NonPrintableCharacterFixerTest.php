@@ -206,6 +206,11 @@ TXT;
      */
     public function testFixWithEscapeSequencesInStringsLowerThanPhp70()
     {
+        // @TODO remove condition after PHPUnit upgrade (and leave annotation)
+        if (PHP_VERSION_ID >= 70000) {
+            $this->markTestSkipped('PHP version to high.');
+        }
+
         $this->setExpectedExceptionRegExp(
             InvalidFixerConfigurationException::class,
             '/^\[non_printable_character\] Invalid configuration: Escape sequences require PHP 7\.0\+\.$/'
