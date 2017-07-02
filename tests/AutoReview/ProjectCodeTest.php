@@ -56,6 +56,12 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
 
+    public function testThasClassesWithoutTestsVarIsProper()
+    {
+        $unknownClasses = array_filter(self::$classesWithoutTests, function ($class) { return !class_exists($class); });
+        $this->assertSame(array(), $unknownClasses);
+    }
+
     /**
      * @param string $className
      *
