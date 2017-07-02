@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\Fixer\ControlStructure\NoUnneededControlParenthesesFixer;
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>

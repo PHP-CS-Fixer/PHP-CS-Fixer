@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>

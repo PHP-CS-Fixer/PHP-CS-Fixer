@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ReturnNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**

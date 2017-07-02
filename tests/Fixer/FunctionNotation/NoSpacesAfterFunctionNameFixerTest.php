@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Varga Bence <vbence@czentral.org>
