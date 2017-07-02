@@ -17,6 +17,8 @@ use PhpCsFixer\Tests\Test\IntegrationCase as BaseIntegrationCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @deprecated since v2.4, use PhpCsFixer\Tests\Test\IntegrationCase instead
  */
 final class IntegrationCase
 {
@@ -55,6 +57,7 @@ final class IntegrationCase
             $expectedCode,
             $inputCode
         );
+
         @trigger_error(
             sprintf(
                 'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version. Use "%s" instead.',
