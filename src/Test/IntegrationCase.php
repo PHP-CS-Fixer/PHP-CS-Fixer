@@ -57,15 +57,6 @@ final class IntegrationCase
             $expectedCode,
             $inputCode
         );
-
-        @trigger_error(
-            sprintf(
-                'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version. Use "%s" instead.',
-                __CLASS__,
-                get_class($this->base)
-            ),
-            E_USER_DEPRECATED
-        );
     }
 
     public function hasInputCode()
