@@ -156,11 +156,6 @@ final class ProcessLinter implements LinterInterface
      */
     private function prepareProcess($path)
     {
-        $arguments = ['-l', $path];
-        if (defined('HHVM_VERSION')) {
-            array_unshift($arguments, '--php');
-        }
-
-        return ProcessBuilder::create($arguments)->setPrefix($this->executable)->getProcess();
+        return ProcessBuilder::create(['-l', $path])->setPrefix($this->executable)->getProcess();
     }
 }

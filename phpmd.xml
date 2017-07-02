@@ -18,10 +18,10 @@
 
     <rule ref="rulesets/naming.xml/ConstantNamingConventions" />
 
-    <rule ref="vendor/mi-schi/phpmd-extension/rulesets/cleancode.xml/DataStructureMethods" />
-    <rule ref="vendor/mi-schi/phpmd-extension/rulesets/cleancode.xml/SwitchStatement" />
+    <rule ref="../../../../../mi-schi/phpmd-extension/rulesets/cleancode.xml/DataStructureMethods" />
+    <rule ref="../../../../../mi-schi/phpmd-extension/rulesets/cleancode.xml/SwitchStatement" />
 
-    <rule ref="vendor/mi-schi/phpmd-extension/rulesets/naming.xml/CommentDescription">
+    <rule ref="../../../../../mi-schi/phpmd-extension/rulesets/naming.xml/CommentDescription">
         <properties>
             <property name="percent" value="70" />
         </properties>

@@ -87,12 +87,6 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
-        // HHVM knows better which interfaces you implements
-        // https://github.com/facebook/hhvm/issues/5890
-        if (defined('HHVM_VERSION') && interface_exists('Stringish')) {
-            $this->markTestSkipped('Skipped as HHVM violate inheritance tree with `Stringish` interface.');
-        }
-
         $rc = new \ReflectionClass($className);
 
         $doc = false !== $rc->getDocComment()
@@ -175,7 +169,7 @@ final class ProjectCodeTest extends TestCase
 
         if (\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class === $className) {
             $this->markTestIncomplete(sprintf(
-                'Public properties of fixer `%s` will be remove on 3.0.',
+                'Public properties of fixer `%s` will be removed on 3.0.',
                 \PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class
             ));
         }

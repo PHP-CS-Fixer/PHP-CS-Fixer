@@ -23,6 +23,20 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
+    protected function setUp()
+    {
+        // @todo remove at 3.0 together with env var itself
+        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
+            Tokens::setLegacyMode(true);
+        }
+    }
+
+    protected function tearDown()
+    {
+        // @todo remove at 3.0
+        Tokens::setLegacyMode(false);
+    }
+
     protected function doTest($source, array $expectedTokens = [], array $observedKinds = [])
     {
         $tokens = Tokens::fromCode($source);

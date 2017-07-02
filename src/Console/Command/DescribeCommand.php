@@ -92,6 +92,7 @@ final class DescribeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('name');
+
         try {
             if ('@' === $name[0]) {
                 $this->describeSet($output, $name);
@@ -106,7 +107,9 @@ final class DescribeCommand extends Command
 
             throw new \InvalidArgumentException(sprintf(
                 '%s "%s" not found.%s',
-                ucfirst($e->getType()), $name, null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
+                ucfirst($e->getType()),
+                $name,
+                null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
             ));
         }
     }

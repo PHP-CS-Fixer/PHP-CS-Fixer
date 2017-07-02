@@ -170,11 +170,13 @@ final class Example
 
             if ($token->equals(')')) {
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i, false);
+
                 continue;
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $i, false);
+
                 continue;
             }
 

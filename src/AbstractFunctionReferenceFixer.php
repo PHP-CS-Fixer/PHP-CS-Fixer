@@ -128,6 +128,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 
             if (null !== $blockDefinitionProbe && true === $blockDefinitionProbe['isStart']) {
                 $paramContentIndex = $tokens->findBlockEnd($blockDefinitionProbe['type'], $paramContentIndex);
+
                 continue;
             }
 

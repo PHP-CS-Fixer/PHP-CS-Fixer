@@ -41,10 +41,6 @@ final class ProcessLinterTest extends AbstractLinterTestCase
      */
     public function testPrepareCommandOnPhpOnLinux($executable, $file, $expected)
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for PHP compiler when running on HHVM compiler.');
-        }
-
         $this->assertSame(
             $expected,
             AccessibleObject::create(new ProcessLinter($executable))->prepareProcess($file)->getCommandLine()
@@ -65,18 +61,6 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         $this->assertSame(
             $expected,
             AccessibleObject::create(new ProcessLinter($executable))->prepareProcess($file)->getCommandLine()
-        );
-    }
-
-    public function testPrepareCommandOnHhvm()
-    {
-        if (!defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for HHVM compiler when running on PHP compiler.');
-        }
-
-        $this->assertSame(
-            "'hhvm' '--php' '-l' 'foo.php'",
-            AccessibleObject::create(new ProcessLinter('hhvm'))->prepareProcess('foo.php')->getCommandLine()
         );
     }
 

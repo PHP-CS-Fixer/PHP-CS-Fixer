@@ -713,7 +713,9 @@ $a = new class implements
 {}
 
 %s /**/ B //
-/**/\n{}", $classy, $classy
+/**/\n{}",
+                    $classy,
+                    $classy
                 ),
                 sprintf(
                     '<?php
@@ -722,22 +724,28 @@ $a = new class implements
 {}
 
 %s/**/B //
-/**/ {}', $classy, $classy
+/**/ {}',
+                    $classy,
+                    $classy
                 ),
             ],
             [
-                sprintf('<?php
+                sprintf(
+                    '<?php
 namespace {
     %s IndentedNameSpacedClass
 {
     }
-}', $classy
+}',
+                    $classy
                 ),
-                sprintf('<?php
+                sprintf(
+                    '<?php
 namespace {
     %s IndentedNameSpacedClass    {
     }
-}', $classy
+}',
+                    $classy
                 ),
             ],
         ];

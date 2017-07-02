@@ -62,6 +62,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             $next = $tokens->getNextMeaningfulToken($index);
             if (!$tokens[$next]->equals('(')) {
                 $index = $next;
+
                 continue;
             }
 

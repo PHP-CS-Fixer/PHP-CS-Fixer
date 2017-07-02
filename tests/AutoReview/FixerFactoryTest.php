@@ -107,6 +107,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']], // tested also in: no_useless_return,no_whitespace_in_blank_line.test
             [$fixers['no_useless_return'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_useless_return,no_extra_consecutive_blank_lines.test
             [$fixers['no_useless_return'], $fixers['blank_line_before_return']], // tested also in: no_useless_return,blank_line_before_return.test
+            [$fixers['no_useless_return'], $fixers['blank_line_before_statement']], // tested also in: no_useless_return,blank_line_before_statement.test
             [$fixers['no_empty_phpdoc'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_empty_phpdoc,no_extra_consecutive_blank_lines.test
             [$fixers['no_empty_phpdoc'], $fixers['no_trailing_whitespace']], // tested also in: no_empty_phpdoc,no_trailing_whitespace.test
             [$fixers['no_empty_phpdoc'], $fixers['no_whitespace_in_blank_line']], // tested also in: no_empty_phpdoc,no_whitespace_in_blank_line.test
@@ -166,6 +167,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['function_to_constant'], $fixers['no_whitespace_in_blank_line']], // tested also in: function_to_constant,no_whitespace_in_blank_line.test
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']], // tested also in: list_syntax,binary_operator_spaces.test
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']], // tested also in: list_syntax,ternary_operator_spaces.test
+            [$fixers['void_return'], $fixers['return_type_declaration']], // tested also in: void_return,return_type_declaration.test
+            [$fixers['void_return'], $fixers['phpdoc_no_empty_return']], // tested also in: void_return,phpdoc_no_empty_return.test
         ];
 
         // prepare bulk tests for phpdoc fixers to test that:

@@ -48,7 +48,7 @@ use Symfony\Component\Finder\Finder;
  * --SETTINGS--*
  * {"key": "value"} # optional extension point for custom IntegrationTestCase class
  * --REQUIREMENTS--*
- * {"php": 50600**, "hhvm": false***}
+ * {"php": 50600**}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
@@ -56,7 +56,6 @@ use Symfony\Component\Finder\Finder;
  *
  *   * Section or any line in it may be omitted.
  *  ** PHP minimum version. Default to current running php version (no effect).
- * *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
  *
  * @author SpacePossum
  */
@@ -98,6 +97,17 @@ abstract class AbstractIntegrationTestCase extends TestCase
     protected function setUp()
     {
         $this->linter = $this->getLinter();
+
+        // @todo remove at 3.0 together with env var itself
+        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
+            Tokens::setLegacyMode(true);
+        }
+    }
+
+    protected function tearDown()
+    {
+        // @todo remove at 3.0
+        Tokens::setLegacyMode(false);
     }
 
     /**
@@ -171,10 +181,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
      */
     protected function doTest(IntegrationCase $case)
     {
-        if (defined('HHVM_VERSION') && false === $case->getRequirement('hhvm')) {
-            $this->markTestSkipped('HHVM is not supported.');
-        }
-
         if (PHP_VERSION_ID < $case->getRequirement('php')) {
             $this->markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), PHP_VERSION_ID));
         }
