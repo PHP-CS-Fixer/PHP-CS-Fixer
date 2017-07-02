@@ -59,21 +59,25 @@ final class TokensAnalyzer
 
             if (!$inClass) {
                 $inClass = $token->isClassy();
+
                 continue;
             }
 
             if ($token->equals('(')) {
                 ++$bracesLevel;
+
                 continue;
             }
 
             if ($token->equals(')')) {
                 --$bracesLevel;
+
                 continue;
             }
 
             if ($token->equals('{')) {
                 ++$curlyBracesLevel;
+
                 continue;
             }
 
@@ -93,6 +97,7 @@ final class TokensAnalyzer
 
             if (0 === $bracesLevel && $token->isGivenKind(T_VARIABLE)) {
                 $elements[$index] = ['token' => $token, 'type' => 'property'];
+
                 continue;
             }
 
@@ -198,6 +203,7 @@ final class TokensAnalyzer
 
             if ($blockType && $blockType['isStart']) {
                 $index = $tokens->findBlockEnd($blockType['type'], $index);
+
                 continue;
             }
 
@@ -250,16 +256,19 @@ final class TokensAnalyzer
 
             if ($token->isGivenKind([T_STATIC])) {
                 $attributes['static'] = true;
+
                 continue;
             }
 
             if ($token->isGivenKind([T_FINAL])) {
                 $attributes['final'] = true;
+
                 continue;
             }
 
             if ($token->isGivenKind([T_ABSTRACT])) {
                 $attributes['abstract'] = true;
+
                 continue;
             }
 
@@ -267,16 +276,19 @@ final class TokensAnalyzer
 
             if ($token->isGivenKind([T_PRIVATE])) {
                 $attributes['visibility'] = T_PRIVATE;
+
                 continue;
             }
 
             if ($token->isGivenKind([T_PROTECTED])) {
                 $attributes['visibility'] = T_PROTECTED;
+
                 continue;
             }
 
             if ($token->isGivenKind([T_PUBLIC])) {
                 $attributes['visibility'] = T_PUBLIC;
+
                 continue;
             }
 

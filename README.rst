@@ -236,9 +236,20 @@ Choose from the list of available rules:
   Ensure there is no code on the same line as the PHP open tag and it is
   followed by a blank line.
 
-* **blank_line_before_return** [@Symfony]
+* **blank_line_before_return**
 
-  An empty line feed should precede a return statement.
+  An empty line feed should precede a return statement (deprecated, use
+  ``blank_line_before_statement`` instead).
+
+* **blank_line_before_statement** [@Symfony]
+
+  An empty line feed must precede any configured statement.
+
+  Configuration options:
+
+  - ``statements`` (``array``): list of statements which must be must be preceded by
+    an empty line; defaults to ``['break', 'continue', 'declare', 'return',
+    'throw', 'try']``
 
 * **braces** [@PSR2, @Symfony]
 

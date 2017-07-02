@@ -117,6 +117,7 @@ $c = 3;',
             $commentContent = substr($content, 2, -2);
             if ($this->hashEnabled && '#' === $content[0]) {
                 $tokens[$index] = new Token([$token->getId(), '//'.substr($content, 1)]);
+
                 continue;
             }
             if (!$this->asteriskEnabled || '/*' !== substr($content, 0, 2) || 1 === preg_match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)) {

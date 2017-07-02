@@ -71,16 +71,19 @@ final class DoctrineAnnotationArrayAssignmentFixer extends AbstractDoctrineAnnot
         foreach ($tokens as $index => $token) {
             if ($token->isType(DocLexer::T_OPEN_PARENTHESIS)) {
                 $scopes[] = 'annotation';
+
                 continue;
             }
 
             if ($token->isType(DocLexer::T_OPEN_CURLY_BRACES)) {
                 $scopes[] = 'array';
+
                 continue;
             }
 
             if ($token->isType([DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES])) {
                 array_pop($scopes);
+
                 continue;
             }
 

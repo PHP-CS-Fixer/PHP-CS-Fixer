@@ -39,6 +39,7 @@ final class ToolInfo
             foreach ($composerInstalled as $package) {
                 if (self::COMPOSER_PACKAGE_NAME === $package['name']) {
                     $result = $package['version'].'#'.$package['dist']['reference'];
+
                     break;
                 }
             }
