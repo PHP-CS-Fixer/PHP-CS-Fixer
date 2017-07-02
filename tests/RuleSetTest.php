@@ -67,6 +67,22 @@ final class RuleSetTest extends TestCase
         );
     }
 
+    public function testBuildInSetDefinitionNames()
+    {
+        $setNames = RuleSet::create()->getSetDefinitionNames();
+
+        $this->assertInternalType('array', $setNames);
+        $this->assertNotEmpty($setNames);
+
+        $i = 0;
+        foreach ($setNames as $index => $setName) {
+            $this->assertSame($i, $index);
+            $this->assertInternalType('string', $setName);
+            $this->assertSame('@', substr($setName, 0, 1));
+            ++$i;
+        }
+    }
+
     public function testResolveRulesWithInvalidSet()
     {
         $this->setExpectedException(
