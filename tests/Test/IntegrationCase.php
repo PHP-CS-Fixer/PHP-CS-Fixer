@@ -160,22 +160,4 @@ final class IntegrationCase
     {
         return $this->title;
     }
-
-    /**
-     * @return bool
-     *
-     * @deprecated since v2.1, on ~2.1 line IntegrationTest check whether different priorities are required is done automatically, this method will be removed on v3.0
-     */
-    public function shouldCheckPriority()
-    {
-        @trigger_error(
-            sprintf(
-                'The "%s" method is deprecated. You should stop using it, as it will be removed in 3.0 version.',
-                __METHOD__
-            ),
-            E_USER_DEPRECATED
-        );
-
-        return isset($this->settings['checkPriority']) ? $this->settings['checkPriority'] : true;
-    }
 }
