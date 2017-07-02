@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author SpacePossum

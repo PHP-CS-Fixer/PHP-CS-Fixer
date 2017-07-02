@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\NamespaceNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**

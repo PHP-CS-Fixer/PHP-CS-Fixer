@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\Test\IntegrationCase;
+use PhpCsFixer\Test\IntegrationCase as LegacyIntegrationCase;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -29,7 +29,7 @@ final class IntegrationCaseTest extends TestCase
      */
     public function testLegacyShouldCheckPriority()
     {
-        $integrationCase = new IntegrationCase(
+        $integrationCase = new LegacyIntegrationCase(
             'foo',
             'Foo',
             array(),

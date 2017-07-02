@@ -52,9 +52,14 @@ final class ProjectCodeTest extends TestCase
         'PhpCsFixer\Runner\FileFilterIterator',
         'PhpCsFixer\Runner\FileLintingIterator',
         'PhpCsFixer\StdinFileInfo',
-        'PhpCsFixer\Test\IntegrationCaseFactory',
         'PhpCsFixer\Tokenizer\Transformers',
     );
+
+    public function testThatClassesWithoutTestsVarIsProper()
+    {
+        $unknownClasses = array_filter(self::$classesWithoutTests, function ($class) { return !class_exists($class); });
+        $this->assertSame(array(), $unknownClasses);
+    }
 
     /**
      * @param string $className

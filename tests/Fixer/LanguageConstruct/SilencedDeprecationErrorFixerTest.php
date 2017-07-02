@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Jules Pietri <jules@heahprod.com>

@@ -107,7 +107,7 @@ Now let us create the test file at
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Your name <your@email.com>

@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpTag;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
