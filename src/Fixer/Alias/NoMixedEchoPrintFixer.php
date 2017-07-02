@@ -134,6 +134,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
 
             if ($tokens[$i]->equals(',')) {
                 $canBeConverted = false;
+
                 break;
             }
         }

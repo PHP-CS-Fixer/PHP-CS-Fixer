@@ -71,6 +71,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 $content = preg_replace('/^    /m', $this->whitespacesConfig->getIndent(), $content);
 
                 $tokens[$index] = new Token([$token->getId(), $content]);
+
                 continue;
             }
 

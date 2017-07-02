@@ -63,6 +63,7 @@ EOF
 
             if ($tokens[$index + 1]->isGivenKind(T_END_HEREDOC)) {
                 $tokens[$index] = $this->convertToNowdoc($token);
+
                 continue;
             }
 

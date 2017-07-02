@@ -22,20 +22,15 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
+ * @author SpacePossum
  */
-final class BlankLineBeforeControlStatementFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class BlankLineBeforeStatementFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = [
-        'return',
-    ];
-
     /**
      * @var array
      */
@@ -44,8 +39,6 @@ final class BlankLineBeforeControlStatementFixer extends AbstractFixer implement
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
         'do' => T_DO,
-        'else' => T_ELSE,
-        'elseif' => T_ELSEIF,
         'for' => T_FOR,
         'foreach' => T_FOREACH,
         'if' => T_IF,
@@ -73,6 +66,7 @@ final class BlankLineBeforeControlStatementFixer extends AbstractFixer implement
         parent::configure($configuration);
 
         $this->fixTokenMap = [];
+
         foreach ($this->configuration['statements'] as $key) {
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
@@ -84,7 +78,7 @@ final class BlankLineBeforeControlStatementFixer extends AbstractFixer implement
     public function getDefinition()
     {
         return new FixerDefinition(
-            'An empty line feed should precede a control statement.',
+            'An empty line feed must precede any configured statement.',
             [
                 new CodeSample(
                     '<?php
@@ -183,8 +177,7 @@ try {
                         'statements' => ['try'],
                     ]
                 ),
-            ],
-            self::$defaultConfiguration
+            ]
         );
     }
 
@@ -211,11 +204,13 @@ try {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
+        $tokenKinds = array_values($this->fixTokenMap);
+        $analyzer = new TokensAnalyzer($tokens);
 
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(array_values($this->fixTokenMap))) {
+            if (!$token->isGivenKind($tokenKinds) || ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index))) {
                 continue;
             }
 
@@ -229,12 +224,11 @@ try {
             $prevToken = $tokens[$prevIndex];
 
             if ($prevToken->isWhitespace()) {
-                $parts = explode("\n", $prevToken->getContent());
-                $countParts = count($parts);
+                $countParts = substr_count($prevToken->getContent(), "\n");
 
-                if (1 === $countParts) {
+                if (0 === $countParts) {
                     $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
-                } elseif (count($parts) <= 2) {
+                } elseif (1 === $countParts) {
                     $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
                 }
             } else {
@@ -252,13 +246,18 @@ try {
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('statements', 'List of control statements to fix.'))
+            (new FixerOptionBuilder('statements', 'List of statements which must be must be preceded by an empty line.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$tokenMap)),
                 ])
                 ->setDefault([
+                    'break',
+                    'continue',
+                    'declare',
                     'return',
+                    'throw',
+                    'try',
                 ])
                 ->getOption(),
         ]);

@@ -60,7 +60,7 @@ final class RuleSet implements RuleSetInterface
                 'align_equals' => false,
             ],
             'blank_line_after_opening_tag' => true,
-            'blank_line_before_control_statement' => [
+            'blank_line_before_statement' => [
                 'statements' => ['return'],
             ],
             'braces' => [

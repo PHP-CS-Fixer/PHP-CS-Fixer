@@ -13,14 +13,14 @@
 namespace PhpCsFixer\Fixer\ReturnNotation;
 
 use PhpCsFixer\AbstractProxyFixer;
-use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeControlStatementFixer;
+use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @deprecated since 2.4, replaced by BlankLineBeforeControlStatementFixer
+ * @deprecated since 2.4, replaced by BlankLineBeforeStatementFixerTest
  *
  * @todo To be removed at 3.0
  *
@@ -35,7 +35,7 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Whi
     public function getDefinition()
     {
         return new FixerDefinition(
-            'An empty line feed should precede a return statement (deprecated, use `blank_line_before_control_statement` instead).',
+            'An empty line feed should precede a return statement (deprecated, use `blank_line_before_statement` instead).',
             [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}")]
         );
     }
@@ -53,7 +53,7 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Whi
      */
     protected function createProxyFixer()
     {
-        $fixer = new BlankLineBeforeControlStatementFixer();
+        $fixer = new BlankLineBeforeStatementFixer();
         $fixer->configure(['statements' => ['return']]);
 
         return $fixer;
