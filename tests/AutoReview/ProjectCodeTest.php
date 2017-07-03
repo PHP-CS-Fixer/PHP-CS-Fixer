@@ -240,7 +240,7 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($className);
 
         $this->assertTrue(
-            $rc->isAbstract() || $rc->isFinal(),
+            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal(),
             sprintf('Test class %s should be abstract or final.', $className)
         );
     }

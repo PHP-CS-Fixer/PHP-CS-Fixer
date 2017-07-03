@@ -1,10 +1,8 @@
 {
     "symbol-whitelist" : [
         "HHVM_VERSION_ID",
-
-        "PhpCsFixer\\Tests\\Test\\AbstractIntegrationTestCase",
-        "PhpCsFixer\\Tests\\Test\\AbstractFixerTestCase",
-        "PhpCsFixer\\Tests\\Test\\IntegrationCase",
+        "PHPUnit\\Framework\\TestCase", "Prophecy\\Argument",
+        "GeckoPackages\\PHPUnit\\Constraints\\SameStringsConstraint",
 
         "null", "true", "false",
         "static", "self", "parent",
