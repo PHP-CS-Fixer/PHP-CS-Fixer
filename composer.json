@@ -49,9 +49,7 @@
         "sort-packages": true
     },
     "autoload": {
-        "psr-4": {
-            "PhpCsFixer\\": "src/"
-        },
+        "psr-4": { "PhpCsFixer\\": "src/" },
         "classmap": [
             "tests/Test/Assert/AssertTokensTrait.php",
             "tests/Test/AbstractFixerTestCase.php",
