@@ -27,6 +27,8 @@ use Prophecy\Argument;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 abstract class AbstractFixerTestCase extends TestCase
 {
