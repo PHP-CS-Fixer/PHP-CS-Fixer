@@ -18,7 +18,7 @@ use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase as BaseAbstractIntegration
  * @TODO 3.0 While removing, `gecko-packages/gecko-php-unit` shall be moved from `require` to `require-dev` and removed from `.composer-require-checker.json`.
  * @TODO 3.0 While removing, remove from `.composer-require-checker.json`.
  *
- * @deprecated since v2.4, use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase instead
+ * @deprecated since v2.4
  */
 abstract class AbstractIntegrationTestCase extends BaseAbstractIntegrationTestCase
 {
@@ -26,9 +26,8 @@ abstract class AbstractIntegrationTestCase extends BaseAbstractIntegrationTestCa
     {
         @trigger_error(
             sprintf(
-                'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version. Use "%s" instead.',
-                __CLASS__,
-                'PhpCsFixer\Tests\Test\AbstractIntegrationTestCase'
+                'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.',
+                __CLASS__
             ),
             E_USER_DEPRECATED
         );
