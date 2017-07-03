@@ -58,6 +58,8 @@ use Symfony\Component\Finder\Finder;
  *  ** PHP minimum version. Default to current running php version (no effect).
  *
  * @author SpacePossum
+ *
+ * @internal
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {

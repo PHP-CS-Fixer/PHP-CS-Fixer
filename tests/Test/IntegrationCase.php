@@ -16,6 +16,8 @@ use PhpCsFixer\RuleSet;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class IntegrationCase
 {

@@ -49,7 +49,10 @@
         "sort-packages": true
     },
     "autoload": {
-        "psr-4": { "PhpCsFixer\\": "src/" }
+        "psr-4": {
+          "PhpCsFixer\\": "src/",
+          "PhpCsFixer\\Tests\\Test\\": "tests/Test/"
+        }
     },
     "autoload-dev": {
         "psr-4": { "PhpCsFixer\\Tests\\": "tests/" }
