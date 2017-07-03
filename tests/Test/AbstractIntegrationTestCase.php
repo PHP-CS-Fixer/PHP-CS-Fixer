@@ -59,6 +59,8 @@ use Symfony\Component\Finder\Finder;
  * *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
  *
  * @author SpacePossum
+ *
+ * @internal
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {

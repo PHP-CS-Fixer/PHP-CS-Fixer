@@ -340,7 +340,7 @@ final class ProjectCodeTest extends TestCase
 
         $finder = Finder::create()
             ->files()
-            ->name('*Test.php')
+            ->name('*.php')
             ->in(__DIR__.'/..')
             ->exclude(array(
                 'Fixtures',
