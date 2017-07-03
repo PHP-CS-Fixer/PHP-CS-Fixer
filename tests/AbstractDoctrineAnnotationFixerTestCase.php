@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal

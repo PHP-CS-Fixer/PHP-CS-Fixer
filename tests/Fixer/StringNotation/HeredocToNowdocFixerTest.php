@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\StringNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>

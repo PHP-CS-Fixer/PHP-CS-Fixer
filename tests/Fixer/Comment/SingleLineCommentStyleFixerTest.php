@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>

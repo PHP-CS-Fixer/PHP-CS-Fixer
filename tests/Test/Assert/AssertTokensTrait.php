@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Test\Assert;
+namespace PhpCsFixer\Tests\Test\Assert;
 
 use PhpCsFixer\Test\AccessibleObject;
 use PhpCsFixer\Tokenizer\Token;
