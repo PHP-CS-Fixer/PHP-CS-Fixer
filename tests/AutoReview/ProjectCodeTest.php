@@ -241,13 +241,13 @@ final class ProjectCodeTest extends TestCase
      *
      * @dataProvider provideTestClasses
      */
-    public function testThatTestClassesAreAbstractOrFinal($className)
+    public function testThatTestClassesAreTraitOrAbstractOrFinal($className)
     {
         $rc = new \ReflectionClass($className);
 
         $this->assertTrue(
-            $rc->isAbstract() || $rc->isFinal(),
-            sprintf('Test class %s should be abstract or final.', $className)
+            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal(),
+            sprintf('Test class %s should be trait, abstract or final.', $className)
         );
     }
 

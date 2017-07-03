@@ -52,6 +52,7 @@
     "autoload": {
         "psr-4": { "PhpCsFixer\\": "src/" },
         "classmap": [
+            "tests/Test/Assert/AssertTokensTrait.php",
             "tests/Test/AbstractFixerTestCase.php",
             "tests/Test/AbstractIntegrationTestCase.php",
             "tests/Test/IntegrationCase.php",
