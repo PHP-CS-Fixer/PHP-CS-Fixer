@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Matteo Beccati <matteo@beccati.com>

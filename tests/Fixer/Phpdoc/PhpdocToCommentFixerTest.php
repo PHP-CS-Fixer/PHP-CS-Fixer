@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>

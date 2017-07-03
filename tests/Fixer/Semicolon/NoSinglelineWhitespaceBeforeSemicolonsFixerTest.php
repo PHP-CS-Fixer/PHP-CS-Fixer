@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Semicolon;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author John Kelly <wablam@gmail.com>

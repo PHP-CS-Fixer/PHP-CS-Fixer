@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Import;
 
 use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal

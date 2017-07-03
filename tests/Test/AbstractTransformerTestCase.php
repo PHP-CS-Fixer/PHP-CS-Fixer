@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Test;
+namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;

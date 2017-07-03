@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
 use PhpCsFixer\Test\AccessibleObject;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
