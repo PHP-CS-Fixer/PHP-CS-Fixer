@@ -19,6 +19,7 @@ use PhpCsFixer\Tests\Test\IntegrationCase as BaseIntegrationCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @TODO 3.0 While removing, remove from `.composer-require-checker.json`.
+ * @TODO 3.0 While removing, remove loading `tests/Test` from `autoload` section of `composer.json`.
  */
 final class IntegrationCase
 {
