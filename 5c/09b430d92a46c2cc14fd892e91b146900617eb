@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-03T05:46:32Z
+
+Agreed in concept, just wondering how we are going to deal with exposing the integration test cases which we do ship as API. If we move all test related deps. to `dev deps` will the `phar` release still contain usable integration tests logic as we exclude the `dev deps` and the `tests` folder from the release?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-03T05:55:11Z
+
+currently (on 2.2/2.3/master branches), we do not expose `src/Test` folder (that was moved to `tests/Test` and have deprecated (on 2.4) aliases in `src/Test` now) in phar file.
+
+if installed via composer, `src/Test` will still be visible, yet deprecated on 2.4
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-03T08:24:46Z
+
+>Why not moving AccessibleObject as well?
+
+`AccessibleObject` is a nice re-usable class so it might make sense to keep it as support end point
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-03T08:29:02Z
+
+> Why not moving `AccessibleObject` as well?
+
+I was thinking about it for a while, but ultimately I do want to remove it, not just hide it.
+Adding deprecation is nice, but will be separate PR, as we need to solve deprecations first, so stop using it.
