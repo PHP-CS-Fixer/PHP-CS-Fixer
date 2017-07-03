@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 

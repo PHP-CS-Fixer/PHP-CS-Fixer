@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Farhad Safarov <farhad.safarov@gmail.com>
