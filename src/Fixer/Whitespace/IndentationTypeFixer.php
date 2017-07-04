@@ -33,8 +33,10 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     {
         return new FixerDefinition(
             'Code MUST use configured indentation type.',
-            array(new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
-        ));
+            array(
+                new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
+            )
+        );
     }
 
     /**
@@ -71,6 +73,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 $content = preg_replace('/^    /m', $this->whitespacesConfig->getIndent(), $content);
 
                 $tokens[$index] = new Token(array($token->getId(), $content));
+
                 continue;
             }
 

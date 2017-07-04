@@ -62,6 +62,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             // skip T_FOR parenthesis to ignore duplicated `;` like `for ($i = 1; ; ++$i) {...}`
             if ($tokens[$index]->isGivenKind(T_FOR)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextMeaningfulToken($index)) + 1;
+
                 continue;
             }
 
@@ -74,6 +75,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             // A semicolon can always be removed if it follows a semicolon, '{' or opening tag.
             if ($tokens[$previousMeaningfulIndex]->equalsAny(array('{', ';', array(T_OPEN_TAG)))) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+
                 continue;
             }
 

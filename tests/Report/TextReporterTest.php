@@ -63,7 +63,10 @@ TEXT;
 
     public function testGenerateSimple()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php
 
 TEXT
@@ -90,7 +93,10 @@ TEXT
 
     public function testGenerateWithDiff()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php
       ---------- begin diff ----------
 this text is a diff ;)
@@ -122,7 +128,10 @@ TEXT
 
     public function testGenerateWithAppliedFixers()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php (some_fixer_name_here)
 
 TEXT
@@ -149,7 +158,10 @@ TEXT
 
     public function testGenerateWithTimeAndMemory()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php
 
 Fixed all files in 1.234 seconds, 2.500 MB memory used
@@ -178,7 +190,10 @@ TEXT
 
     public function testGenerateComplexWithDecoratedOutput()
     {
-        $expectedReport = str_replace("\n", PHP_EOL, <<<'TEXT'
+        $expectedReport = str_replace(
+            "\n",
+            PHP_EOL,
+            <<<'TEXT'
    1) someFile.php (<comment>some_fixer_name_here</comment>)
 <comment>      ---------- begin diff ----------</comment>
 this text is a diff ;)

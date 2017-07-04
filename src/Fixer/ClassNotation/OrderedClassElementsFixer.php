@@ -93,12 +93,14 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
 
             if (!$parents) {
                 $this->typePosition[$type] = null;
+
                 continue;
             }
 
             foreach ($parents as $parent) {
                 if (isset($this->typePosition[$parent])) {
                     $this->typePosition[$type] = $this->typePosition[$parent];
+
                     continue 2;
                 }
             }
@@ -281,11 +283,13 @@ array('order' => array('method_private', 'method_public'))
 
                 if ($token->isGivenKind(T_STATIC)) {
                     $element['static'] = true;
+
                     continue;
                 }
 
                 if ($token->isGivenKind(array(T_PROTECTED, T_PRIVATE))) {
                     $element['visibility'] = strtolower($token->getContent());
+
                     continue;
                 }
 
@@ -302,6 +306,7 @@ array('order' => array('method_private', 'method_public'))
                 }
 
                 $element['end'] = $this->findElementEnd($tokens, $i);
+
                 break;
             }
 
@@ -404,6 +409,7 @@ array('order' => array('method_private', 'method_public'))
                     if ('phpunit' === $type) {
                         $element['position'] += $phpunitPositions[$element['name']];
                     }
+
                     continue;
                 }
 

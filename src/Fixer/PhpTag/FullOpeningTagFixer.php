@@ -94,6 +94,7 @@ echo "Hello!";
 
                 $tokensOldContent .= $tokenContent;
                 $tokensOldContentLength += strlen($tokenContent);
+
                 continue;
             }
 

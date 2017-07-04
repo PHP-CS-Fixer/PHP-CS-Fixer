@@ -43,7 +43,8 @@ final class SelfUpdateCommand extends Command
                 )
             )
             ->setDescription('Update php-cs-fixer.phar to the latest stable version.')
-            ->setHelp(<<<'EOT'
+            ->setHelp(
+                <<<'EOT'
 The <info>%command.name%</info> command replace your php-cs-fixer.phar by the
 latest version released on:
 <comment>https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases</comment>

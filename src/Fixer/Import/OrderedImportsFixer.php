@@ -350,6 +350,7 @@ use function CCC\AA;
                         for ($k = 0; $k < $namespaceTokensCount; ++$k) {
                             if ($namespaceTokens[$k]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                                 $namespace .= '{';
+
                                 break;
                             }
 
@@ -490,9 +491,11 @@ use function CCC\AA;
         switch ($this->configuration['sortAlgorithm']) {
             case self::SORT_ALPHA:
                 uasort($indexes, array($this, 'sortAlphabetically'));
+
                 break;
             case self::SORT_LENGTH:
                 uasort($indexes, array($this, 'sortByLength'));
+
                 break;
             default:
                 throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));

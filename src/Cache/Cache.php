@@ -58,8 +58,8 @@ final class Cache implements CacheInterface
         if (!is_int($hash)) {
             throw new \InvalidArgumentException(sprintf(
                 'Value needs to be an integer, got "%s".',
-                is_object($hash) ? get_class($hash) : gettype($hash))
-            );
+                is_object($hash) ? get_class($hash) : gettype($hash)
+            ));
         }
 
         $this->hashes[$file] = $hash;

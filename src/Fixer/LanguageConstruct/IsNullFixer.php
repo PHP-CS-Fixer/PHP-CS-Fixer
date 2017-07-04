@@ -117,7 +117,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
                 $tokens->clearAt($inversionCandidateIndex);
             }
 
-            /* before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant */
+            // before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
             $isContainingDangerousConstructs = false;
             for ($paramTokenIndex = $matches[1]; $paramTokenIndex <= $referenceEnd; ++$paramTokenIndex) {
@@ -128,7 +128,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
                 }
             }
 
-            /* edge cases: is_null() followed/preceded by ==, ===, !=, !==, <> */
+            // edge cases: is_null() followed/preceded by ==, ===, !=, !==, <>
             $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
             $parentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
             $parentOperations = array(T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL);

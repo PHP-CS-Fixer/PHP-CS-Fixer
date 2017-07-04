@@ -44,6 +44,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
             if ($token->isGivenKind(array(T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH))) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
                 continue;
             }
 
@@ -53,6 +54,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
                 $index = $until;
 
                 $this->injectArrayAlignmentPlaceholders($tokens, $from, $until);
+
                 continue;
             }
 
@@ -67,6 +69,7 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
                 $index = $until;
 
                 $this->injectArrayAlignmentPlaceholders($tokens, $from + 1, $until - 1);
+
                 continue;
             }
 
@@ -82,12 +85,14 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
                 }
 
                 $tokens[$index] = new Token(array(T_DOUBLE_ARROW, $tokenContent));
+
                 continue;
             }
 
             if ($token->equals(';')) {
                 ++$this->deepestLevel;
                 ++$this->currentLevel;
+
                 continue;
             }
 
