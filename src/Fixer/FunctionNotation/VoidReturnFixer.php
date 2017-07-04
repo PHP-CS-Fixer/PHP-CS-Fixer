@@ -21,6 +21,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Mark Nielsen
@@ -184,7 +185,21 @@ final class VoidReturnFixer extends AbstractFixer
      */
     private function hasVoidReturn(Tokens $tokens, $startIndex, $endIndex)
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($i = $startIndex; $i < $endIndex; ++$i) {
+            if (
+                // skip anonymous classes
+                ($tokens[$i]->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($i)) ||
+                 // skip lambda functions
+                ($tokens[$i]->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($i))
+            ) {
+                $i = $tokens->getNextTokenOfKind($i, ['{']);
+                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+
+                continue;
+            }
+
             if ($tokens[$i]->isGivenKind(T_YIELD)) {
                 return false; // Generators cannot return void.
             }
