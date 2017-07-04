@@ -62,21 +62,17 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
                 new CodeSample(
 '<?php
 
-function  foo  ($bar, $baz)
-{
-    return false;
-}
-'
-                ),
-                new CodeSample(
-'<?php
-
 class Foo
 {
-    public static function  bar ($baz)
+    public static function  bar   ( $baz , $foo )
     {
         return false;
     }
+}
+
+function  foo  ($bar, $baz)
+{
+    return false;
 }
 '
                 ),

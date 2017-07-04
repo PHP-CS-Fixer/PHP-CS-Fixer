@@ -165,6 +165,15 @@ final class Example
 }
 '
                 ),
+                new CodeSample(
+                    '<?php
+class Example
+{
+    public function A(){}
+    private function B(){}
+}',
+                    ['order' => ['method_private', 'method_public']]
+                ),
             ]
         );
     }
