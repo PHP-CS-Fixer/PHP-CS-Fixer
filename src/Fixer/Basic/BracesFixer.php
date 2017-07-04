@@ -456,7 +456,8 @@ class Foo
                 $token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)
                 || (
                     self::LINE_NEXT === $this->configuration['position_after_control_structures'] && $token->isGivenKind($controlTokens)
-                    || (self::LINE_NEXT === $this->configuration['position_after_anonymous_constructs']
+                    || (
+                        self::LINE_NEXT === $this->configuration['position_after_anonymous_constructs']
                         && (
                             $token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)
                             || $token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)
