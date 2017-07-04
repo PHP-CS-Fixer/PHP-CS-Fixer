@@ -32,7 +32,7 @@ final class Transformers
     private $items = [];
 
     /**
-     * Constructor. Register built in Transformers.
+     * Register built in Transformers.
      */
     private function __construct()
     {
@@ -44,8 +44,6 @@ final class Transformers
     }
 
     /**
-     * Create Transformers instance.
-     *
      * @return Transformers
      */
     public static function create()
@@ -74,8 +72,6 @@ final class Transformers
     }
 
     /**
-     * Register Transformer.
-     *
      * @param TransformerInterface $transformer Transformer
      */
     private function registerTransformer(TransformerInterface $transformer)
@@ -85,9 +81,6 @@ final class Transformers
         }
     }
 
-    /**
-     * Register all built in Transformers.
-     */
     private function registerBuiltInTransformers()
     {
         static $registered = false;

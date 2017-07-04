@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -113,10 +112,6 @@ echo 1;
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (null === $this->configuration['header']) {
-            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
-        }
-
         // figure out where the comment should be placed
         $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens);
 
@@ -194,12 +189,10 @@ echo 1;
     }
 
     /**
-     * Find the header comment index.
-     *
      * @param Tokens $tokens
      * @param int    $headerNewIndex
      *
-     * @return int|null
+     * @return null|int
      */
     private function findHeaderCommentCurrentIndex(Tokens $tokens, $headerNewIndex)
     {
@@ -282,14 +275,14 @@ echo 1;
             if ($lineBreakCount < $expectedLineCount) {
                 $missing = str_repeat($lineEnding, $expectedLineCount - $lineBreakCount);
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
-                    $tokens[$headerIndex + 1]->setContent($missing.$tokens[$headerIndex + 1]->getContent());
+                    $tokens[$headerIndex + 1] = new Token([T_WHITESPACE, $missing.$tokens[$headerIndex + 1]->getContent()]);
                 } else {
                     $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, $missing]));
                 }
             } elseif ($lineBreakCount > 2) {
                 // remove extra line endings
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
-                    $tokens[$headerIndex + 1]->setContent($lineEnding.$lineEnding);
+                    $tokens[$headerIndex + 1] = new Token([T_WHITESPACE, $lineEnding.$lineEnding]);
                 }
             }
         }
@@ -300,7 +293,7 @@ echo 1;
 
         $regex = '/[\t ]$/';
         if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && preg_match($regex, $tokens[$prev]->getContent())) {
-            $tokens[$prev]->setContent(preg_replace($regex, $lineEnding, $tokens[$prev]->getContent()));
+            $tokens[$prev] = new Token([T_OPEN_TAG, preg_replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
         }
 
         $lineBreakCount = $this->getLineBreakCount($tokens, $prev, $headerIndex);

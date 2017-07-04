@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class TokensTest extends TestCase
 {
+    use AssertTokensTrait;
+
     public function testReadFromCacheAfterClearing()
     {
         $code = '<?php echo 1;';
@@ -34,7 +37,7 @@ final class TokensTest extends TestCase
         $countBefore = $tokens->count();
 
         for ($i = 0; $i < $countBefore; ++$i) {
-            $tokens[$i]->clear();
+            $tokens->clearAt($i);
         }
 
         $tokens = Tokens::fromCode($code);
@@ -47,7 +50,7 @@ final class TokensTest extends TestCase
      * @param null|array $expected
      * @param Token[]    $sequence
      * @param int        $start
-     * @param int|null   $end
+     * @param null|int   $end
      * @param bool|array $caseSensitive
      *
      * @dataProvider provideFindSequence
@@ -295,8 +298,7 @@ final class TokensTest extends TestCase
 
     public function provideFindSequenceExceptions()
     {
-        $emptyToken = new Token('!');
-        $emptyToken->clear();
+        $emptyToken = new Token('');
 
         return [
             ['Invalid sequence.', []],
@@ -347,12 +349,12 @@ PHP;
      * @dataProvider provideMonolithicPhpDetection
      *
      * @param string $source
-     * @param bool   $monolithic
+     * @param bool   $isMonolithic
      */
-    public function testMonolithicPhpDetection($source, $monolithic)
+    public function testMonolithicPhpDetection($source, $isMonolithic)
     {
         $tokens = Tokens::fromCode($source);
-        $this->assertSame($monolithic, $tokens->isMonolithicPhp());
+        $this->assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
 
     public function provideMonolithicPhpDetection()
@@ -377,12 +379,7 @@ PHP;
      */
     public function testShortOpenTagMonolithicPhpDetection($source, $monolithic)
     {
-        /*
-         * short_open_tag setting is ignored by HHVM
-         * @see https://github.com/facebook/hhvm/issues/4758
-         */
-        if (!ini_get('short_open_tag') && !defined('HHVM_VERSION')) {
-            // Short open tag is parsed as T_INLINE_HTML
+        if (!ini_get('short_open_tag')) {
             $monolithic = false;
         }
 
@@ -534,8 +531,7 @@ PHP;
 
     public function getClearTokenAndMergeSurroundingWhitespaceCases()
     {
-        $clearToken = new Token([null, '']);
-        $clearToken->clear();
+        $clearToken = new Token('');
 
         return [
             [
@@ -760,16 +756,6 @@ PHP;
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
     }
 
-    public function testParsingWithHHError()
-    {
-        if (!defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for PHP compiler when running on non HHVM compiler.');
-        }
-
-        $this->setExpectedException(\ParseError::class);
-        Tokens::fromCode('<?php# this will cause T_HH_ERROR');
-    }
-
     public function testEmptyTokens()
     {
         $code = '';
@@ -809,6 +795,28 @@ PHP;
     {
         $tokens = Tokens::fromArray([]);
         $this->assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+    }
+
+    /**
+     * @param Token $token
+     * @param bool  $isEmpty
+     *
+     * @dataProvider provideIsEmptyCases
+     */
+    public function testIsEmpty(Token $token, $isEmpty)
+    {
+        $tokens = Tokens::fromArray([$token]);
+        Tokens::clearCache();
+        $this->assertSame($isEmpty, $tokens->isEmptyAt(0), $token->toJson());
+    }
+
+    public function provideIsEmptyCases()
+    {
+        return [
+            [new Token(''), true],
+            [new Token('('), false],
+            [new Token([T_WHITESPACE, ' ']), false],
+        ];
     }
 
     public function testClone()
@@ -857,6 +865,141 @@ PHP;
         $this->assertArrayHasKey('isStart', $detectedType);
         $this->assertSame($type, $detectedType['type']);
         $this->assertFalse($detectedType['isStart']);
+    }
+
+    /**
+     * @param string $expected   valid PHP code
+     * @param string $input      valid PHP code
+     * @param int    $index      token index
+     * @param int    $offset
+     * @param string $whiteSpace white space
+     *
+     * @dataProvider provideEnsureWhitespaceAtIndexCases
+     */
+    public function testEnsureWhitespaceAtIndex($expected, $input, $index, $offset, $whiteSpace)
+    {
+        $tokens = Tokens::fromCode($input);
+        $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
+        $tokens->clearEmptyTokens();
+        $this->assertTokens(Tokens::fromCode($expected), $tokens);
+    }
+
+    public function provideEnsureWhitespaceAtIndexCases()
+    {
+        return [
+            [
+                '<?php echo 1;',
+                '<?php  echo 1;',
+                1,
+                1,
+                ' ',
+            ],
+            [
+                '<?php echo 7;',
+                '<?php   echo 7;',
+                1,
+                1,
+                ' ',
+            ],
+            [
+                '<?php  ',
+                '<?php  ',
+                1,
+                1,
+                '  ',
+            ],
+            [
+                '<?php $a. $b;',
+                '<?php $a.$b;',
+                2,
+                1,
+                ' ',
+            ],
+            [
+                '<?php $a .$b;',
+                '<?php $a.$b;',
+                2,
+                0,
+                ' ',
+            ],
+            [
+                "<?php\r\n",
+                '<?php ',
+                0,
+                1,
+                "\r\n",
+            ],
+            [
+                '<?php  $a.$b;',
+                '<?php $a.$b;',
+                2,
+                -1,
+                ' ',
+            ],
+            [
+                "<?php\t   ",
+                "<?php\n",
+                0,
+                1,
+                "\t   ",
+            ],
+            [
+                '<?php ',
+                '<?php ',
+                0,
+                1,
+                ' ',
+            ],
+            [
+                "<?php\n",
+                '<?php ',
+                0,
+                1,
+                "\n",
+            ],
+            [
+                "<?php\t",
+                '<?php ',
+                0,
+                1,
+                "\t",
+            ],
+            [
+                '<?php
+//
+ echo $a;',
+                '<?php
+//
+echo $a;',
+                2,
+                1,
+                "\n ",
+            ],
+            [
+                '<?php
+ echo $a;',
+                '<?php
+echo $a;',
+                0,
+                1,
+                "\n ",
+            ],
+            [
+                '<?php
+echo $a;',
+                '<?php echo $a;',
+                0,
+                1,
+                "\n",
+            ],
+            [
+                "<?php\techo \$a;",
+                '<?php echo $a;',
+                0,
+                1,
+                "\t",
+            ],
+        ];
     }
 
     /**

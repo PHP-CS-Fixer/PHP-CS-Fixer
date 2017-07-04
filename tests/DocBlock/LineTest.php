@@ -134,24 +134,13 @@ final class LineTest extends TestCase
      *
      * @dataProvider provideLines
      */
-    public function testStarOrEndPos($pos)
+    public function testStartOrEndPos($pos)
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        switch ($pos) {
-            case 0:
-                $this->assertTrue($line->isTheStart());
-                $this->assertFalse($line->isTheEnd());
-                break;
-            case 14:
-                $this->assertFalse($line->isTheStart());
-                $this->assertTrue($line->isTheEnd());
-                break;
-            default:
-                $this->assertFalse($line->isTheStart());
-                $this->assertFalse($line->isTheEnd());
-        }
+        $this->assertSame(0 === $pos, $line->isTheStart());
+        $this->assertSame(14 === $pos, $line->isTheEnd());
     }
 
     public function provideLines()

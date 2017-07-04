@@ -32,8 +32,6 @@ final class Token
     private $content;
 
     /**
-     * Constructor.
-     *
      * @param int    $type    The type
      * @param string $content The content
      */
@@ -44,8 +42,6 @@ final class Token
     }
 
     /**
-     * Returns the type.
-     *
      * @return int
      */
     public function getType()
@@ -54,8 +50,6 @@ final class Token
     }
 
     /**
-     * Sets the type.
-     *
      * @param int $type
      */
     public function setType($type)
@@ -64,8 +58,6 @@ final class Token
     }
 
     /**
-     * Returns the content.
-     *
      * @return string
      */
     public function getContent()
@@ -74,8 +66,6 @@ final class Token
     }
 
     /**
-     * Sets the content.
-     *
      * @param string $content
      */
     public function setContent($content)

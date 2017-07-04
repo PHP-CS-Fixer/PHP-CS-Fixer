@@ -105,6 +105,7 @@ class Sample
             ) {
                 $i = $tokens->getNextTokenOfKind($i, ['{']);
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+
                 continue;
             }
 
@@ -115,8 +116,8 @@ class Sample
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($i)];
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($i)];
 
-            // skip tokens that are part of a fully qualified name
-            if ($prevToken->isGivenKind(T_NS_SEPARATOR) || $nextToken->isGivenKind(T_NS_SEPARATOR)) {
+            // skip tokens that are part of a fully qualified name or used in class property access
+            if ($prevToken->isGivenKind([T_NS_SEPARATOR, T_OBJECT_OPERATOR]) || $nextToken->isGivenKind(T_NS_SEPARATOR)) {
                 continue;
             }
 
@@ -124,7 +125,7 @@ class Sample
                 $prevToken->isGivenKind([T_INSTANCEOF, T_NEW]) ||
                 $nextToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)
             ) {
-                $token->setContent('self');
+                $tokens[$i] = new Token([T_STRING, 'self']);
             }
         }
     }

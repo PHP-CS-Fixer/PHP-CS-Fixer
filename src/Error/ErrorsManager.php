@@ -22,8 +22,6 @@ namespace PhpCsFixer\Error;
 final class ErrorsManager
 {
     /**
-     * Errors.
-     *
      * @var Error[]
      */
     private $errors = [];
@@ -75,8 +73,6 @@ final class ErrorsManager
     }
 
     /**
-     * Report error.
-     *
      * @param Error $error
      */
     public function report(Error $error)

@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Import;
 
 use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
@@ -1523,7 +1523,7 @@ EOF
 
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider provide70CasesByLength
      * @requires PHP 7.0
@@ -1581,7 +1581,7 @@ use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
      * @requires PHP 7.0
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      */
     public function test70TypesOrderAndLength($expected, $input = null)
     {
@@ -1640,7 +1640,7 @@ use function some\f\{fn_c, fn_d, fn_e};
      * @requires PHP 7.0
      *
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      * @param string[]    $importOrder
      */
     public function test70TypesOrderAndAlphabet($expected, $input = null, array $importOrder = null)

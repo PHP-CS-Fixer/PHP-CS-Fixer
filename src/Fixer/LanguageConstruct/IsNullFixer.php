@@ -104,7 +104,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
 
                 // get rid of the root namespace when it used and check if the inversion operator provided
                 $tokens->removeTrailingWhitespace($prevTokenIndex);
-                $tokens[$prevTokenIndex]->clear();
+                $tokens->clearAt($prevTokenIndex);
             }
 
             // check if inversion being used, text comparison is due to not existing constant
@@ -114,10 +114,10 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
 
                 // get rid of inverting for proper transformations
                 $tokens->removeTrailingWhitespace($inversionCandidateIndex);
-                $tokens[$inversionCandidateIndex]->clear();
+                $tokens->clearAt($inversionCandidateIndex);
             }
 
-            /* before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant */
+            // before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
             $isContainingDangerousConstructs = false;
             for ($paramTokenIndex = $matches[1]; $paramTokenIndex <= $referenceEnd; ++$paramTokenIndex) {
@@ -128,7 +128,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
                 }
             }
 
-            /* edge cases: is_null() followed/preceded by ==, ===, !=, !==, <> */
+            // edge cases: is_null() followed/preceded by ==, ===, !=, !==, <>
             $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
             $parentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
             $parentOperations = [T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL];
@@ -138,13 +138,13 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
                 if (!$wrapIntoParentheses) {
                     // closing parenthesis removed with leading spaces
                     $tokens->removeLeadingWhitespace($referenceEnd);
-                    $tokens[$referenceEnd]->clear();
+                    $tokens->clearAt($referenceEnd);
                 }
 
                 // opening parenthesis removed with trailing spaces
                 $tokens->removeLeadingWhitespace($matches[1]);
                 $tokens->removeTrailingWhitespace($matches[1]);
-                $tokens[$matches[1]]->clear();
+                $tokens->clearAt($matches[1]);
             }
 
             // sequence which we'll use as a replacement
@@ -169,9 +169,9 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
 
                 if ($wrapIntoParentheses) {
                     $replacement[] = new Token(')');
-                    $tokens[$isNullIndex]->setContent('(');
+                    $tokens[$isNullIndex] = new Token('(');
                 } else {
-                    $tokens[$isNullIndex]->clear();
+                    $tokens->clearAt($isNullIndex);
                     $tokens->removeTrailingWhitespace($referenceEnd);
                 }
 

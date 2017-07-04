@@ -15,10 +15,12 @@ namespace PhpCsFixer\Tests\Console\Command;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Tokenizer\Token;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -30,6 +32,16 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DescribeCommandTest extends TestCase
 {
+    /**
+     * @var Application
+     */
+    private $application;
+
+    protected function setUp()
+    {
+        $this->application = new Application();
+    }
+
     public function testExecuteOutput()
     {
         $expected = <<<'EOT'
@@ -37,11 +49,14 @@ Description of Foo/bar rule.
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer is configurable using following options:
-* things (bool): enables fixing `things` as well; defaults to false
+Fixer applying this rule is risky.
+Can break stuff.
+
+Fixer is configurable using following option:
+* functions (array): list of `function` names to fix; defaults to ['foo', 'test']
 
 Fixing examples:
- * Example #1.
+ * Example #1. Fixing with the default configuration.
    ---------- begin diff ----------
    --- Original
    +++ New
@@ -50,7 +65,7 @@ Fixing examples:
    +<?php echo 'good stuff and bad thing';
    ----------- end diff -----------
 
- * Example #2. Fixing with configuration: ['things' => true].
+ * Example #2. Fixing with configuration: ['functions' => ['foo', 'bar']].
    ---------- begin diff ----------
    --- Original
    +++ New
@@ -62,7 +77,7 @@ Fixing examples:
 
 EOT;
 
-        $this->assertSame($expected, $this->execute(false)->getDisplay(true));
+        $this->assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
     }
 
     public function testExecuteOutputWithDecoration()
@@ -72,11 +87,14 @@ EOT;
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer is configurable using following options:
-* \033[32mthings\033[39m (\033[33mbool\033[39m): enables fixing \033[32m`things`\033[39m as well; defaults to \033[33mfalse\033[39m
+\033[37;41mFixer applying this rule is risky.\033[39;49m
+Can break stuff.
+
+Fixer is configurable using following option:
+* \033[32mfunctions\033[39m (\033[33marray\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
 
 Fixing examples:
- * Example #1.
+ * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
@@ -85,7 +103,7 @@ Fixing examples:
    \033[32m+<?php echo 'good stuff and bad thing';\033[39m
 \033[33m   ----------- end diff -----------\033[39m
 
- * Example #2. Fixing with configuration: \033[33m['things' => true]\033[39m.
+ * Example #2. Fixing with configuration: \033[33m['functions' => ['foo', 'bar']]\033[39m.
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
@@ -97,36 +115,51 @@ Fixing examples:
 
 EOT;
 
-        $this->assertSame($expected, $this->execute(true)->getDisplay(true));
+        $actual = $this->execute('Foo/bar', true)->getDisplay(true);
+
+        $this->assertSame($expected, $actual);
     }
 
     public function testExecuteStatusCode()
     {
-        $this->assertSame(0, $this->execute(false)->getStatusCode());
+        $this->assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
 
-    public function testExecuteWithUnknownName()
+    public function testExecuteWithUnknownRuleName()
     {
-        $application = new Application();
-        $application->add(new DescribeCommand(new FixerFactory()));
+        $this->application->add(new DescribeCommand(new FixerFactory()));
 
-        $command = $application->find('describe');
+        $command = $this->application->find('describe');
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedException(\InvalidArgumentException::class, 'Rule Foo/bar not found.');
+        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Rule "Foo/bar" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
         ]);
     }
 
+    public function testExecuteWithUnknownSetName()
+    {
+        $this->application->add(new DescribeCommand(new FixerFactory()));
+
+        $command = $this->application->find('describe');
+
+        $commandTester = new CommandTester($command);
+
+        $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Set "@NoSuchSet" not found\.$#');
+        $commandTester->execute([
+            'command' => $command->getName(),
+            'name' => '@NoSuchSet',
+        ]);
+    }
+
     public function testExecuteWithoutName()
     {
-        $application = new Application();
-        $application->add(new DescribeCommand(new FixerFactory()));
+        $this->application->add(new DescribeCommand(new FixerFactory()));
 
-        $command = $application->find('describe');
+        $command = $this->application->find('describe');
 
         $commandTester = new CommandTester($command);
 
@@ -136,12 +169,19 @@ EOT;
         ]);
     }
 
+    public function testGetAlternativeSuggestion()
+    {
+        $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
+        $this->execute('Foo2/bar', false);
+    }
+
     /**
-     * @param bool $decorated
+     * @param string $name
+     * @param bool   $decorated
      *
      * @return CommandTester
      */
-    private function execute($decorated)
+    private function execute($name, $decorated)
     {
         $fixer = $this->prophesize();
         $fixer->willImplement(\PhpCsFixer\Fixer\DefinedFixerInterface::class);
@@ -149,10 +189,21 @@ EOT;
 
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(false);
-        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
-            new FixerOption('things', 'Enables fixing `things` as well.', false, false, ['bool']),
-        ]));
+        $fixer->isRisky()->willReturn(true);
+
+        $generator = new FixerOptionValidatorGenerator();
+        $functionNames = ['foo', 'test'];
+        $functions = new FixerOptionBuilder('functions', 'List of `function` names to fix.');
+        $functions = $functions
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
+                $generator->allowedValueIsSubsetOf($functionNames),
+            ])
+            ->setDefault($functionNames)
+            ->getOption()
+        ;
+
+        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([$functions]));
         $fixer->getDefinition()->willReturn(new FixerDefinition(
             'Fixes stuff.',
             [
@@ -161,7 +212,7 @@ EOT;
                 ),
                 new CodeSample(
                     '<?php echo \'bad stuff and bad thing\';',
-                    ['things' => true]
+                    ['functions' => ['foo', 'bar']]
                 ),
             ],
             'Replaces bad stuff with good stuff.',
@@ -169,32 +220,35 @@ EOT;
         ));
 
         $things = false;
-        $fixer->configure(null)->will(function () use (&$things) {
+        $fixer->configure([])->will(function () use (&$things) {
             $things = false;
         });
-        $fixer->configure(['things' => true])->will(function () use (&$things) {
+        $fixer->configure(['functions' => ['foo', 'bar']])->will(function () use (&$things) {
             $things = true;
         });
+
         $fixer->fix(
             Argument::type(\SplFileInfo::class),
             Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
         )->will(function (array $arguments) use (&$things) {
-            $arguments[1][3]->setContent($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'');
+            $arguments[1][3] = new Token([
+                $arguments[1][3]->getId(),
+                ($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\''),
+            ]);
         });
 
         $fixerFactory = new FixerFactory();
         $fixerFactory->registerFixer($fixer->reveal(), true);
 
-        $application = new Application();
-        $application->add(new DescribeCommand($fixerFactory));
+        $this->application->add(new DescribeCommand($fixerFactory));
 
-        $command = $application->find('describe');
+        $command = $this->application->find('describe');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             [
                 'command' => $command->getName(),
-                'name' => 'Foo/bar',
+                'name' => $name,
             ],
             [
                 'decorated' => $decorated,

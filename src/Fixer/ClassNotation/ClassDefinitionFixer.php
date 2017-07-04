@@ -45,21 +45,16 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurationD
 
 class  Foo  extends  Bar  implements  Baz,  BarBaz
 {
-}'
-                ),
-                new CodeSample(
-'<?php
-
-trait  Foo
-{
-}'
-                ),
-                new CodeSample(
-'<?php
+}
 
 final  class  Foo  extends  Bar  implements  Baz,  BarBaz
 {
-}'
+}
+
+trait  Foo
+{
+}
+'
                 ),
                 new VersionSpecificCodeSample(
 '<?php
@@ -267,7 +262,7 @@ interface Bar extends
 
         if ($tokens[$openIndex - 1]->isWhitespace()) {
             if (' ' !== $spacing || !$tokens[$tokens->getPrevNonWhitespace($openIndex - 1)]->isComment()) {
-                $tokens[$openIndex - 1]->setContent($spacing);
+                $tokens[$openIndex - 1] = new Token([T_WHITESPACE, $spacing]);
             }
 
             return $openIndex;
@@ -361,7 +356,7 @@ interface Bar extends
                     if (!('#' === $content || '//' === substr($content, 0, 2))) {
                         $content = $tokens[$nextNonWhite]->getContent();
                         if (!('#' === $content || '//' === substr($content, 0, 2))) {
-                            $tokens[$i]->setContent(' ');
+                            $tokens[$i] = new Token([T_WHITESPACE, ' ']);
                         }
                     }
 
@@ -369,12 +364,12 @@ interface Bar extends
                 }
 
                 if ($tokens[$i + 1]->equalsAny([',', '(', ')']) || $tokens[$i - 1]->equals('(')) {
-                    $tokens[$i]->clear();
+                    $tokens->clearAt($i);
 
                     continue;
                 }
 
-                $tokens[$i]->setContent(' ');
+                $tokens[$i] = new Token([T_WHITESPACE, ' ']);
 
                 continue;
             }
@@ -428,7 +423,10 @@ interface Bar extends
 
             if (!$isOnOwnLine) {
                 if ($tokens[$breakAtIndex - 1]->isWhitespace()) {
-                    $tokens[$breakAtIndex - 1]->setContent($this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent());
+                    $tokens[$breakAtIndex - 1] = new Token([
+                        T_WHITESPACE,
+                        $this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent(),
+                    ]);
                 } else {
                     $tokens->insertAt($breakAtIndex, new Token([T_WHITESPACE, $this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent()]));
                 }

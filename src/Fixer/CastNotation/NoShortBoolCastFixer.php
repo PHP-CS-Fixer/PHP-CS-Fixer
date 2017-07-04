@@ -74,6 +74,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
         for ($i = $index - 1; $i > 1; --$i) {
             if ($tokens[$i]->equals('!')) {
                 $this->fixShortCastToBoolCast($tokens, $i, $index);
+
                 break;
             }
 
@@ -97,7 +98,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
                 !$tokens[$start]->isComment()
                 && !($tokens[$start]->isWhitespace() && $tokens[$start - 1]->isComment())
             ) {
-                $tokens[$start]->clear();
+                $tokens->clearAt($start);
             }
         }
 

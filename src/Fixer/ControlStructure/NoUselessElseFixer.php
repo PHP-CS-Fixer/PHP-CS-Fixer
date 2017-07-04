@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -69,7 +70,7 @@ final class NoUselessElseFixer extends AbstractFixer
 
             // clean up `else` if it is an empty statement
             $this->fixEmptyElse($tokens, $index);
-            if ($token->isEmpty()) {
+            if ($tokens->isEmptyAt($index)) {
                 continue;
             }
 
@@ -107,21 +108,22 @@ final class NoUselessElseFixer extends AbstractFixer
                 $previous,
                 [
                     ';',
-                    [T_CLOSE_TAG],
-                    [T_IF],
                     [T_BREAK],
+                    [T_CLOSE_TAG],
                     [T_CONTINUE],
                     [T_EXIT],
                     [T_GOTO],
+                    [T_IF],
                     [T_RETURN],
                     [T_THROW],
                 ]
             );
 
             if (
-                null === $candidateIndex ||
-                $tokens[$candidateIndex]->equalsAny([';', [T_CLOSE_TAG], [T_IF]]) ||
-                $this->isInConditional($tokens, $candidateIndex, $previousBlockStart)
+                null === $candidateIndex
+                || $tokens[$candidateIndex]->equalsAny([';', [T_CLOSE_TAG], [T_IF]])
+                || $this->isInConditional($tokens, $candidateIndex, $previousBlockStart)
+                || $this->isInConditionWithoutBraces($tokens, $candidateIndex, $previousBlockStart)
             ) {
                 return;
             }
@@ -232,5 +234,74 @@ final class NoUselessElseFixer extends AbstractFixer
         $open = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $candidateIndex, false);
 
         return $tokens->getPrevMeaningfulToken($open) > $lowerLimitIndex;
+    }
+
+    /**
+     * For internal use only, as it is not perfect.
+     *
+     * Returns if the token at given index is part of a if/elseif/else statement
+     * without {}. Assumes not passing the last `;`/close tag of the statement, not
+     * out of range index, etc.
+     *
+     * @param Tokens $tokens
+     * @param int    $index           Index of the token to check
+     * @param int    $lowerLimitIndex
+     *
+     * @return bool
+     */
+    private function isInConditionWithoutBraces(Tokens $tokens, $index, $lowerLimitIndex)
+    {
+        do {
+            if ($tokens[$index]->isComment() || $tokens[$index]->isWhitespace()) {
+                $index = $tokens->getPrevMeaningfulToken($index);
+            }
+
+            $token = $tokens[$index];
+            if ($token->isGivenKind([T_IF, T_ELSEIF, T_ELSE])) {
+                return true;
+            }
+
+            if ($token->equals(';', '}')) {
+                return false;
+            } elseif ($token->equals('{')) {
+                $index = $tokens->getPrevMeaningfulToken($index);
+
+                // OK if belongs to: for, do, while, foreach
+                // Not OK if belongs to: if, else, elseif
+                if ($tokens[$index]->isGivenKind(T_DO)) {
+                    --$index;
+
+                    continue;
+                }
+
+                if (!$tokens[$index]->equals(')')) {
+                    return false; // like `else {`
+                }
+
+                $index = $tokens->findBlockEnd(
+                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                    $index,
+                    false
+                );
+
+                $index = $tokens->getPrevMeaningfulToken($index);
+                if ($tokens[$index]->isGivenKind([T_IF, T_ELSEIF])) {
+                    return false;
+                }
+            } elseif ($token->equals(')')) {
+                $type = Tokens::detectBlockType($token);
+                $index = $tokens->findBlockEnd(
+                    $type['type'],
+                    $index,
+                    false
+                );
+
+                $index = $tokens->getPrevMeaningfulToken($index);
+            } else {
+                --$index;
+            }
+        } while ($index > $lowerLimitIndex);
+
+        return false;
     }
 }

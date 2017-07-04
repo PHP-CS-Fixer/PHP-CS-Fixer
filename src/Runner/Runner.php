@@ -45,7 +45,7 @@ final class Runner
     private $directory;
 
     /**
-     * @var EventDispatcher|null
+     * @var null|EventDispatcher
      */
     private $eventDispatcher;
 
@@ -164,6 +164,8 @@ final class Runner
         }
 
         $old = file_get_contents($file->getRealPath());
+
+        Tokens::setLegacyMode(false);
         $tokens = Tokens::fromCode($old);
         $oldHash = $tokens->getCodeHash();
 
@@ -281,8 +283,6 @@ final class Runner
     }
 
     /**
-     * Dispatch event.
-     *
      * @param string $name
      * @param Event  $event
      */

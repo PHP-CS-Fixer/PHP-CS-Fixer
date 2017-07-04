@@ -2,8 +2,6 @@
 Integration of fixers: no_mixed_echo_print,no_short_echo_tag.
 --RULESET--
 {"no_mixed_echo_print": {"use":"print"}, "no_short_echo_tag": true}
---REQUIREMENTS--
-{"hhvm": false}
 --EXPECT--
 <div><?php print "test" ?></div>
 

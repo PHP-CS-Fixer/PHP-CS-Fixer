@@ -37,8 +37,8 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     $a = doubleval($b);
     $a = strval ($b);
     $a = boolval($b);
-'),
-            ],
+'
+            )],
             null,
             'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
         );
@@ -102,7 +102,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     // get rid of root namespace when it used
                     $tokens->removeTrailingWhitespace($prevTokenIndex);
-                    $tokens[$prevTokenIndex]->clear();
+                    $tokens->clearAt($prevTokenIndex);
                 }
 
                 // perform transformation
@@ -114,12 +114,12 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 if (!$preserveParenthesises) {
                     // closing parenthesis removed with leading spaces
                     $tokens->removeLeadingWhitespace($closeParenthesis);
-                    $tokens[$closeParenthesis]->clear();
+                    $tokens->clearAt($closeParenthesis);
 
                     // opening parenthesis removed with trailing spaces
                     $tokens->removeLeadingWhitespace($openParenthesis);
                     $tokens->removeTrailingWhitespace($openParenthesis);
-                    $tokens[$openParenthesis]->clear();
+                    $tokens->clearAt($openParenthesis);
                 } else {
                     // we'll need to provide a space after a casting operator
                     $tokens->removeTrailingWhitespace($functionName);

@@ -16,15 +16,15 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\TagComparator;
-use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class PhpdocSeparationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class PhpdocSeparationFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -72,7 +72,7 @@ function fnc($foo, $bar) {}'
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
@@ -81,7 +81,7 @@ function fnc($foo, $bar) {}'
             $this->fixDescription($doc);
             $this->fixAnnotations($doc);
 
-            $token->setContent($doc->getContent());
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 
@@ -102,6 +102,7 @@ function fnc($foo, $bar) {}'
 
                 if ($next->containsATag()) {
                     $line->addBlank();
+
                     break;
                 }
             }

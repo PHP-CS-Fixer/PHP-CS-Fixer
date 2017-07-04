@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -81,7 +82,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
             }
 
             if ($tokens[$colonIndex]->equals(';')) {
-                $tokens->overrideAt($colonIndex, ':');
+                $tokens[$colonIndex] = new Token(':');
             }
         }
     }

@@ -13,16 +13,24 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * Removes Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
  *
  * @author Ivan Boprzenkov <ivan.borzenkov@gmail.com>
  */
-final class NonPrintableCharacterFixer extends AbstractFixer
+final class NonPrintableCharacterFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     private $symbolsReplace;
 
@@ -39,12 +47,13 @@ final class NonPrintableCharacterFixer extends AbstractFixer
     public function __construct()
     {
         parent::__construct();
+
         $this->symbolsReplace = [
-            pack('CCC', 0xe2, 0x80, 0x8b) => '', // ZWSP
-            pack('CCC', 0xe2, 0x80, 0x87) => ' ', // FIGURE SPACE
-            pack('CCC', 0xe2, 0x80, 0xaf) => ' ', // NBSP
-            pack('CCC', 0xe2, 0x81, 0xa0) => '', // WORD JOINER
-            pack('CC', 0xc2, 0xa0) => ' ', // NO-BREAK SPACE
+            pack('H*', 'e2808b') => ['', '200b'], // ZWSP U+200B
+            pack('H*', 'e28087') => [' ', '2007'], // FIGURE SPACE U+2007
+            pack('H*', 'e280af') => [' ', '202f'], // NBSP U+202F
+            pack('H*', 'e281a0') => ['', '2060'], // WORD JOINER U+2060
+            pack('H*', 'c2a0') => [' ', 'a0'], // NO-BREAK SPACE U+A0
         ];
     }
 
@@ -57,10 +66,12 @@ final class NonPrintableCharacterFixer extends AbstractFixer
             'Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.',
             [
                 new CodeSample(
-'<?php
-
-echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'World'.pack('CC', 0xc2, 0xa0).'!";
-'
+                    '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0').'!";'
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0').'!";',
+                    new VersionSpecification(70000),
+                    ['use_escape_sequences_in_strings' => true]
                 ),
             ],
             null,
@@ -87,11 +98,72 @@ echo "'.pack('CCC', 0xe2, 0x80, 0x8b).'Hello'.pack('CCC', 0xe2, 0x80, 0x87).'Wor
     /**
      * {@inheritdoc}
      */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('use_escape_sequences_in_strings', 'Whether characters should be replaced with escape sequences in strings.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false) // @TODO change to true in 3.0
+                ->setNormalizer(function (Options $options, $value) {
+                    if (PHP_VERSION_ID < 70000 && $value) {
+                        throw new InvalidOptionsException('Escape sequences require PHP 7.0+.');
+                    }
+
+                    return $value;
+                })
+                ->getOption(),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $token) {
-            if (in_array($token->getId(), self::$tokens, true)) {
-                $token->setContent(strtr($token->getContent(), $this->symbolsReplace));
+        $replacements = [];
+        $escapeSequences = [];
+        foreach ($this->symbolsReplace as $character => list($replacement, $codepoint)) {
+            $replacements[$character] = $replacement;
+            $escapeSequences[$character] = '\u{'.$codepoint.'}';
+        }
+
+        foreach ($tokens as $index => $token) {
+            $content = $token->getContent();
+
+            if (
+                $this->configuration['use_escape_sequences_in_strings']
+                && $token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE])
+            ) {
+                if (!preg_match('/'.implode('|', array_keys($escapeSequences)).'/', $content)) {
+                    continue;
+                }
+
+                $previousToken = $tokens[$index - 1];
+                $stringTypeChanged = false;
+
+                if ($previousToken->isGivenKind(T_START_HEREDOC)) {
+                    $previousTokenContent = $previousToken->getContent();
+
+                    if (false !== strpos($previousTokenContent, '\'')) {
+                        $tokens[$index - 1] = new Token([T_START_HEREDOC, str_replace('\'', '', $previousTokenContent)]);
+                        $stringTypeChanged = true;
+                    }
+                } elseif ("'" === $content[0]) {
+                    $content = preg_replace('/^\'(.*)\'$/', '"$1"', $content);
+                    $stringTypeChanged = true;
+                }
+
+                if ($stringTypeChanged) {
+                    $content = preg_replace('/([\\\\$])/', '\\\\$1', $content);
+                }
+
+                $tokens[$index] = new Token([$token->getId(), strtr($content, $escapeSequences)]);
+
+                continue;
+            }
+
+            if ($token->isGivenKind(self::$tokens)) {
+                $tokens[$index] = new Token([$token->getId(), strtr($content, $replacements)]);
             }
         }
     }

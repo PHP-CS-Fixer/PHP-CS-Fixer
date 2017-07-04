@@ -12,8 +12,9 @@
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Kuanhung Chen <ericj.tw@gmail.com>
@@ -36,8 +37,47 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
         }
+        $indent = '    ';
+        $lineEnding = "\n";
+        if (null !== $input) {
+            if (false !== strpos($input, "\t")) {
+                $indent = "\t";
+            } elseif (preg_match('/\n  \S/', $input)) {
+                $indent = '  ';
+            }
+            if (false !== strpos($input, "\r")) {
+                $lineEnding = "\r\n";
+            }
+        }
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig(
+            $indent,
+            $lineEnding
+        ));
 
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $configuration
+     *
+     * @dataProvider testFixProvider
+     */
+    public function testFixWithDifferentLineEndings(
+        $expected,
+        $input = null,
+        array $configuration = null
+    ) {
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        return $this->testFix(
+            str_replace("\n", "\r\n", $expected),
+            $input,
+            $configuration
+        );
     }
 
     public function testFixProvider()
@@ -250,6 +290,364 @@ EOTXTb
 $a#
 );',
             ],
+            [
+                "<?php xyz(\$a=10,\n\$b=20);",
+                "<?php xyz(\$a=10,   \n\$b=20);",
+                ['keep_multiple_spaces_after_comma' => true],
+            ],
+            'test half-multiline function becomes fully-multiline' => [
+                <<<'EXPECTED'
+<?php
+functionCall(
+    'a',
+    'b',
+    'c'
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+functionCall(
+    'a', 'b',
+    'c'
+);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'function calls with here doc cannot be anything but multiline' => [
+                <<<'EXPECTED'
+<?php
+str_replace(
+    "\n",
+    PHP_EOL,
+    <<<'TEXT'
+   1) someFile.php
+
+TEXT
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+str_replace("\n", PHP_EOL, <<<'TEXT'
+   1) someFile.php
+
+TEXT
+);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test barely multiline function with blank lines becomes fully-multiline' => [
+                <<<'EXPECTED'
+<?php
+functionCall(
+    'a',
+    'b',
+
+    'c'
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+functionCall('a', 'b',
+
+    'c');
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test indentation is preserved' => [
+                <<<'EXPECTED'
+<?php
+if (true) {
+    functionCall(
+        'a',
+        'b',
+        'c'
+    );
+}
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+if (true) {
+    functionCall(
+        'a', 'b',
+        'c'
+    );
+}
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test multiline array arguments do not trigger multiline' => [
+                <<<'EXPECTED'
+<?php
+defraculate(1, array(
+    'a',
+    'b',
+    'c',
+), 42);
+EXPECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test multiline function arguments do not trigger multiline' => [
+                <<<'EXPECTED'
+<?php
+defraculate(1, function () {
+    $a = 42;
+}, 42);
+EXPECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test violation after opening parenthesis' => [
+                <<<'EXPECTED'
+<?php
+defraculate(
+    1,
+    2,
+    3
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+defraculate(
+    1, 2, 3);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test violation after opening parenthesis, indented with two spaces' => [
+                <<<'EXPECTED'
+<?php
+defraculate(
+  1,
+  2,
+  3
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+defraculate(
+  1, 2, 3);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test violation after opening parenthesis, indented with tabs' => [
+                <<<'EXPECTED'
+<?php
+defraculate(
+	1,
+	2,
+	3
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+defraculate(
+	1, 2, 3);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test violation before closing parenthesis' => [
+                <<<'EXPECTED'
+<?php
+defraculate(
+    1,
+    2,
+    3
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+defraculate(1, 2, 3
+);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test violation before closing parenthesis in nested call' => [
+                <<<'EXPECTED'
+<?php
+getSchwifty('rick', defraculate(
+    1,
+    2,
+    3
+), 'morty');
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+getSchwifty('rick', defraculate(1, 2, 3
+), 'morty');
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test with comment between arguments' => [
+                <<<'EXPECTED'
+<?php
+functionCall(
+    'a', /* comment */
+    'b',
+    'c'
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+functionCall(
+    'a',/* comment */'b',
+    'c'
+);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test with deeply nested arguments' => [
+                <<<'EXPECTED'
+<?php
+foo(
+    'a',
+    'b',
+    [
+        'c',
+        'd', bar('e', 'f'),
+        baz(
+            'g',
+            ['h',
+                'i',
+            ]
+        ),
+    ]
+);
+EXPECTED
+            ,
+                <<<'INPUT'
+<?php
+foo('a',
+    'b',
+    [
+        'c',
+        'd', bar('e', 'f'),
+        baz('g',
+            ['h',
+                'i',
+            ]),
+    ]);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'multiline string argument' => [
+                <<<'UNAFFECTED'
+<?php
+$this->with('<?php
+%s
+class FooClass
+{
+}', $comment, false);
+UNAFFECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+            ],
+            'arrays with whitespace inside' => [
+                <<<'UNAFFECTED'
+<?php
+$a = array/**/(  1);
+$a = array/**/( 12,
+7);
+$a = array/***/(123,  7);
+$a = array (        1,
+2);
+UNAFFECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test code that should not be affected (because not a function nor a method)' => [
+            <<<'UNAFFECTED'
+<?php
+if (true &&
+    true
+    ) {
+    // do whatever
+}
+UNAFFECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test ungodly code' => [
+            <<<'EXPECTED'
+<?php
+$a = function#
+(#
+#
+$a#
+#
+,#
+#
+$b,
+    $c#
+#
+)#
+use ($b,
+$c,$d) {
+};
+EXPECTED
+            ,
+            <<<'INPUT'
+<?php
+$a = function#
+(#
+#
+$a#
+#
+,#
+#
+$b,$c#
+#
+)#
+use ($b,
+$c,$d) {
+};
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test list' => [
+            <<<'UNAFFECTED'
+<?php
+// no fix
+list($a,
+    $b, $c) = $a;
+isset($a,
+$b, $c);
+unset($a,
+$b, $c);
+array(1,
+    2,3
+);
+UNAFFECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+            ],
         ];
     }
 
@@ -277,7 +675,7 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0
+     * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0.
      */
     public function testLegacyFixSpace()
     {

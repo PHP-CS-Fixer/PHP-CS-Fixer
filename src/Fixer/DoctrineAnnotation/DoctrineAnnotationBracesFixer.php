@@ -35,8 +35,7 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
             'Doctrine annotations without arguments must use the configured syntax.',
             [
                 new CodeSample(
-                    "<?php\n/**\n * @Foo()\n */\nclass Bar {}",
-                    ['syntax' => 'without_braces']
+                    "<?php\n/**\n * @Foo()\n */\nclass Bar {}"
                 ),
                 new CodeSample(
                     "<?php\n/**\n * @Foo\n */\nclass Bar {}",

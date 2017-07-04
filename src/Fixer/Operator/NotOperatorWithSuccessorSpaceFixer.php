@@ -70,7 +70,7 @@ if (!$bar) {
                 if (!$tokens[$index + 1]->isWhitespace()) {
                     $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
                 } else {
-                    $tokens[$index + 1]->setContent(' ');
+                    $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
                 }
             }
         }

@@ -124,14 +124,14 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param string $spaces
-     * @param string $input
+     * @param string       $spaces
+     * @param string|array $input  token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
     public function testCalculateTrailingWhitespaceIndent($spaces, $input)
     {
-        $token = new Token([T_WHITESPACE, $input]);
+        $token = new Token($input);
 
         $this->assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
@@ -139,11 +139,11 @@ final class UtilsTest extends TestCase
     public function provideCalculateTrailingWhitespaceIndentCases()
     {
         return [
-            ['    ', "\n\n    "],
-            [' ', "\r\n\r\r\r "],
-            ["\t", "\r\n\t"],
-            ['', "\t\n\r"],
-            ['', "\n"],
+            ['    ', [T_WHITESPACE, "\n\n    "]],
+            [' ', [T_WHITESPACE, "\r\n\r\r\r "]],
+            ["\t", [T_WHITESPACE, "\r\n\t"]],
+            ['', [T_WHITESPACE, "\t\n\r"]],
+            ['', [T_WHITESPACE, "\n"]],
             ['', ''],
         ];
     }

@@ -85,9 +85,10 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
             if (!$nextToken->isWhitespace()) {
                 $tokens->insertAt($semicolonIndex + 1, new Token([T_WHITESPACE, $ending.$ending]));
             } else {
-                $nextToken->setContent(
-                    ($nextIndex === $lastIndex ? $ending : $ending.$ending).ltrim($nextToken->getContent())
-                );
+                $tokens[$nextIndex] = new Token([
+                    T_WHITESPACE,
+                    ($nextIndex === $lastIndex ? $ending : $ending.$ending).ltrim($nextToken->getContent()),
+                ]);
             }
         }
     }

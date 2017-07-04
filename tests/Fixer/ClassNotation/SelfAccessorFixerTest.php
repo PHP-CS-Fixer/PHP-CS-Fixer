@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
@@ -112,6 +112,9 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { function bar() {
                     new class() { function baz() { new Foo(); } };
                 } }',
+            ],
+            [
+                '<?php class Foo { protected $foo; function bar() { return $this->foo::find(2); } }',
             ],
         ];
     }

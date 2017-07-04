@@ -12,17 +12,18 @@
 
 namespace PhpCsFixer\Fixer\Comment;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Changes single comments prefixes '#' with '//'.
  *
  * @author SpacePossum
+ *
+ * @deprecated in 2.4, proxy to SingleLineCommentStyleFixer
  */
-final class HashToSlashCommentFixer extends AbstractFixer
+final class HashToSlashCommentFixer extends AbstractProxyFixer
 {
     /**
      * {@inheritdoc}
@@ -30,7 +31,7 @@ final class HashToSlashCommentFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Single line comments should use double slashes `//` and not hash `#`.',
+            sprintf('Single line comments should use double slashes `//` and not hash `#`. DEPRECATED: Use "%s" instead.', $this->proxyFixer->getName()),
             [new CodeSample('<?php # comment')]
         );
     }
@@ -38,21 +39,11 @@ final class HashToSlashCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function createProxyFixer()
     {
-        return $tokens->isTokenKindFound(T_COMMENT);
-    }
+        $fixer = new SingleLineCommentStyleFixer();
+        $fixer->configure(['comment_types' => ['hash']]);
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
-            $originalContent = $tokens[$i]->isGivenKind(T_COMMENT) ? $tokens[$i]->getContent() : null;
-            if (null !== $originalContent && '#' === $originalContent[0]) {
-                $tokens[$i]->setContent('//'.substr($originalContent, 1));
-            }
-        }
+        return $fixer;
     }
 }

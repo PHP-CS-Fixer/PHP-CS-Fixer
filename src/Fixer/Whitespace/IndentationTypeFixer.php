@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -32,8 +33,8 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     {
         return new FixerDefinition(
             'Code MUST use configured indentation type.',
-            [new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
-        ]);
+            [new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}")]
+        );
     }
 
     /**
@@ -69,7 +70,8 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 // change indent to expected one
                 $content = preg_replace('/^    /m', $this->whitespacesConfig->getIndent(), $content);
 
-                $tokens[$index]->setContent($content);
+                $tokens[$index] = new Token([$token->getId(), $content]);
+
                 continue;
             }
 
@@ -80,7 +82,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 // change indent to expected one
                 $content = str_replace('    ', $this->whitespacesConfig->getIndent(), $content);
 
-                $tokens[$index]->setContent($content);
+                $tokens[$index] = new Token([T_WHITESPACE, $content]);
             }
         }
     }

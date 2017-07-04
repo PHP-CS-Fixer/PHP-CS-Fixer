@@ -61,7 +61,10 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     {
         return new FixerDefinition(
             'Replace core functions calls returning constants with the constants.',
-            [new CodeSample("<?php\necho phpversion();\necho pi();\necho php_sapi_name();")],
+            [
+                new CodeSample("<?php\necho phpversion();\necho pi();\necho php_sapi_name();"),
+                new CodeSample("<?php\necho phpversion();\necho pi();", ['functions' => ['phpversion']]),
+            ],
             null,
             'Risky when any of the configured functions to replace are overridden.'
         );
@@ -145,7 +148,8 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     {
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceCloseIndex);
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceOpenIndex);
-        $tokens[$index]->clear();
+
+        $tokens->clearAt($index);
         $tokens->insertAt($index, new Token([T_STRING, $replacementConst]));
     }
 

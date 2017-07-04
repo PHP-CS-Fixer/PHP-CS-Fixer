@@ -110,7 +110,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             }
         }
 
-        $tokens[$ternaryColonIndex]->override([T_COALESCE, '??']);
+        $tokens[$ternaryColonIndex] = new Token([T_COALESCE, '??']);
         $tokens->overrideRange($index, $ternaryFirstOperandIndex - 1, $comments);
     }
 

@@ -216,8 +216,8 @@ class Foo
                 // we might be moving one white space next to another, these have to be merged
                 $tokens[$i] = $tokens[$i - 1];
                 if ($tokens[$i]->isWhitespace() && $tokens[$i + 1]->isWhitespace()) {
-                    $tokens[$i]->setContent($tokens[$i]->getContent().$tokens[$i + 1]->getContent());
-                    $tokens[$i + 1]->clear();
+                    $tokens[$i] = new Token([T_WHITESPACE, $tokens[$i]->getContent().$tokens[$i + 1]->getContent()]);
+                    $tokens->clearAt($i + 1);
                 }
             }
 
@@ -225,7 +225,7 @@ class Foo
             $c = $tokens[$braceIndex]->getContent();
             if (substr_count($c, "\n") > 1) {
                 // left trim till last line break
-                $tokens[$braceIndex]->setContent(substr($c, strrpos($c, "\n")));
+                $tokens[$braceIndex] = new Token([T_WHITESPACE, substr($c, strrpos($c, "\n"))]);
             }
         }
     }
@@ -357,6 +357,7 @@ class Foo
 
                 if ($nestToken->equals(')')) {
                     $nestIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nestIndex, false);
+
                     continue;
                 }
 
@@ -415,11 +416,13 @@ class Foo
 
                 if ($nestToken->equals('}')) {
                     ++$nestLevel;
+
                     continue;
                 }
 
                 if ($nestToken->equals('{')) {
                     --$nestLevel;
+
                     continue;
                 }
             }
@@ -631,6 +634,12 @@ class Foo
         return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $parenthesisEndIndex
+     *
+     * @return int
+     */
     private function findStatementEnd(Tokens $tokens, $parenthesisEndIndex)
     {
         $nextIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
@@ -680,6 +689,7 @@ class Foo
             // if there is some block in statement (eg lambda function) we need to skip it
             if ($token->equals('{')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
                 continue;
             }
 

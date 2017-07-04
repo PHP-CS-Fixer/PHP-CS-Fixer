@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -56,6 +57,7 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
         foreach ($tokens as $token) {
             if ($token->isWhitespace() && false !== strpos($token->getContent(), "\n")) {
                 $newlineFound = true;
+
                 break;
             }
         }
@@ -66,6 +68,6 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
         }
 
         $token = $tokens[0];
-        $token->setContent(rtrim($token->getContent()).$this->whitespacesConfig->getLineEnding());
+        $tokens[0] = new Token([$token->getId(), rtrim($token->getContent()).$this->whitespacesConfig->getLineEnding()]);
     }
 }

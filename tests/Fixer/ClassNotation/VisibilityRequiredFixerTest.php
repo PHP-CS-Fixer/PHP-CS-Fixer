@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -451,8 +451,12 @@ EOF;
         $this->fixer->configure(['elements' => ['_unknown_']]);
     }
 
+    /**
+     * @requires PHP <7.1
+     */
     public function testInvalidConfigurationValueForPHPVersion()
     {
+        // @TODO remove condition after PHPUnit upgrade (and leave annotation)
         if (PHP_VERSION_ID >= 70100) {
             $this->markTestSkipped('PHP version to high.');
         }

@@ -39,21 +39,17 @@ final class ProcessOutput implements ProcessOutputInterface
     ];
 
     /**
-     * Event dispatcher instance.
-     *
      * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
-     * Stream output instance.
-     *
      * @var OutputInterface
      */
     private $output;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $files;
 
@@ -63,14 +59,14 @@ final class ProcessOutput implements ProcessOutputInterface
     private $processedFiles = 0;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $symbolsPerLine;
 
     /**
      * @param OutputInterface $output
      * @param EventDispatcher $dispatcher
-     * @param int|null        $nbFiles
+     * @param null|int        $nbFiles
      */
     public function __construct(OutputInterface $output, EventDispatcher $dispatcher, $nbFiles)
     {

@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
 use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
@@ -163,7 +163,7 @@ FIXED;
                 '<?php is_null()?>',
             ],
 
-            /* edge cases: is_null wrapped into a binary operations */
+            // edge cases: is_null wrapped into a binary operations
             [
                 '<?php $result = (false === (null === $a)); ?>',
                 '<?php $result = (false === is_null($a)); ?>',

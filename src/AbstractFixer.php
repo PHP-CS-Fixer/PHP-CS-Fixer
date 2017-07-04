@@ -32,7 +32,7 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 {
     /**
-     * @var array<string, mixed>|null
+     * @var null|array<string, mixed>
      */
     protected $configuration;
 
@@ -42,7 +42,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
     protected $whitespacesConfig;
 
     /**
-     * @var FixerConfigurationResolverInterface|null
+     * @var null|FixerConfigurationResolverInterface
      */
     private $configurationDefinition;
 
@@ -63,6 +63,10 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 
     final public function fix(\SplFileInfo $file, Tokens $tokens)
     {
+        if ($this instanceof ConfigurableFixerInterface && null === $this->configuration) {
+            throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
+        }
+
         if (0 < $tokens->count() && $this->isCandidate($tokens) && $this->supports($file)) {
             $this->applyFix($file, $tokens);
         }

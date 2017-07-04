@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
-use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**

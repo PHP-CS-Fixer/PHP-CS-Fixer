@@ -126,10 +126,10 @@ final class Example
                     $nextMeaningfulAfterUseIndex = $tokens->getNextMeaningfulToken($insertIndex);
                     if (null !== $nextMeaningfulAfterUseIndex && $tokens[$nextMeaningfulAfterUseIndex]->isGivenKind(T_USE)) {
                         if (substr_count($nextToken->getContent(), "\n") < 2) {
-                            $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
+                            $tokens[$insertIndex] = new Token([T_WHITESPACE, $newline.$indent.ltrim($nextToken->getContent())]);
                         }
                     } else {
-                        $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
+                        $tokens[$insertIndex] = new Token([T_WHITESPACE, $newline.$indent.ltrim($nextToken->getContent())]);
                     }
                 } else {
                     $tokens->insertAt($insertIndex, new Token([T_WHITESPACE, $newline.$indent]));

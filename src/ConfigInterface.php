@@ -23,7 +23,7 @@ interface ConfigInterface
     /**
      * Returns the path to the cache file.
      *
-     * @return string|null Returns null if not using cache
+     * @return null|string Returns null if not using cache
      */
     public function getCacheFile();
 
@@ -75,7 +75,7 @@ interface ConfigInterface
     /**
      * Get configured PHP executable, if any.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getPhpExecutable();
 
@@ -158,7 +158,7 @@ interface ConfigInterface
     /**
      * Set PHP executable.
      *
-     * @param string|null $phpExecutable
+     * @param null|string $phpExecutable
      *
      * @return self
      */

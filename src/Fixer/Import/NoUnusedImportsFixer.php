@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -122,6 +123,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             foreach ($partials as $partial) {
                 if ($partial['start'] <= $index && $index <= $partial['end']) {
                     $allowToAppend = false;
+
                     break;
                 }
             }
@@ -212,13 +214,21 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
 
         if ($tokens[$useDeclaration['end']]->equals(';')) {
-            $tokens[$useDeclaration['end']]->clear();
+            $tokens->clearAt($useDeclaration['end']);
         }
 
-        $prevToken = $tokens[$useDeclaration['start'] - 1];
+        $prevIndex = $useDeclaration['start'] - 1;
+        $prevToken = $tokens[$prevIndex];
 
         if ($prevToken->isWhitespace()) {
-            $prevToken->setContent(rtrim($prevToken->getContent(), " \t"));
+            $content = rtrim($prevToken->getContent(), " \t");
+
+            if ('' !== $content) {
+                $tokens[$prevIndex] = new Token([T_WHITESPACE, $content]);
+            } else {
+                $tokens->clearAt($prevIndex);
+            }
+            $prevToken = $tokens[$prevIndex];
         }
 
         if (!isset($tokens[$useDeclaration['end'] + 1])) {
@@ -238,12 +248,24 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 1
             );
 
-            $nextToken->setContent($content);
+            if ('' !== $content) {
+                $tokens[$nextIndex] = new Token([T_WHITESPACE, $content]);
+            } else {
+                $tokens->clearAt($nextIndex);
+            }
+            $nextToken = $tokens[$nextIndex];
         }
 
         if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
-            $tokens->overrideAt($nextIndex, [T_WHITESPACE, $prevToken->getContent().$nextToken->getContent()]);
-            $prevToken->clear();
+            $content = $prevToken->getContent().$nextToken->getContent();
+
+            if ('' !== $content) {
+                $tokens[$nextIndex] = new Token([T_WHITESPACE, $content]);
+            } else {
+                $tokens->clearAt($nextIndex);
+            }
+
+            $tokens->clearAt($prevIndex);
         }
     }
 

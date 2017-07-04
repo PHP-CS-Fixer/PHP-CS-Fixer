@@ -91,19 +91,12 @@ class Sample
                 continue;
             }
 
-            switch ($element['type']) {
-                case 'method':
-                    $this->fixMethodVisibility($tokens, $index);
-
-                    break;
-                case 'property':
-                    $this->fixPropertyVisibility($tokens, $index);
-
-                    break;
-                case 'const':
-                    $this->fixConstVisibility($tokens, $index);
-
-                    break;
+            if ('method' === $element['type']) {
+                $this->fixMethodVisibility($tokens, $index);
+            } elseif ('property' === $element['type']) {
+                $this->fixPropertyVisibility($tokens, $index);
+            } elseif ('const' === $element['type']) {
+                $this->fixConstVisibility($tokens, $index);
             }
         }
     }
@@ -140,9 +133,8 @@ class Sample
         $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforeMethodToken($tokens, $index));
 
         // force whitespace between function keyword and function name to be single space char
-        $afterToken = $tokens[++$index];
-        if ($afterToken->isWhitespace()) {
-            $afterToken->setContent(' ');
+        if ($tokens[$index + 1]->isWhitespace()) {
+            $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
         }
     }
 
@@ -182,7 +174,7 @@ class Sample
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @return array<string, Token|null> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforeMethodToken(Tokens $tokens, $index)
     {
@@ -213,9 +205,9 @@ class Sample
      *
      * Token at given index is prepended by attributes.
      *
-     * @param Tokens $tokens      Tokens collection
-     * @param int    $memberIndex token index
-     * @param array  $attribs     map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @param Tokens                    $tokens      Tokens collection
+     * @param int                       $memberIndex token index
+     * @param array<string, Token|null> $attribs     map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function overrideAttribs(Tokens $tokens, $memberIndex, array $attribs)
     {
@@ -250,7 +242,7 @@ class Sample
      * @param Tokens $tokens Tokens collection
      * @param int    $index  token index
      *
-     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @return array<string, Token|null> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforePropertyToken(Tokens $tokens, $index)
     {
@@ -276,12 +268,12 @@ class Sample
     /**
      * Grab info about attributes before token at given index.
      *
-     * @param Tokens $tokens          Tokens collection
-     * @param int    $index           token index
-     * @param array  $tokenAttribsMap token to attribute name map
-     * @param array  $attribs         array of token attributes
+     * @param Tokens                    $tokens          Tokens collection
+     * @param int                       $index           token index
+     * @param array<int, string|null>   $tokenAttribsMap token to attribute name map
+     * @param array<string, Token|null> $attribs         array of token attributes
      *
-     * @return array map of grabbed attributes, key is attribute name and value is array of index and clone of Token
+     * @return array<string, Token|null> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
      */
     private function grabAttribsBeforeToken(Tokens $tokens, $index, array $tokenAttribsMap, array $attribs)
     {

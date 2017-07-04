@@ -51,7 +51,7 @@ final class ReturnRefTransformer extends AbstractTransformer
             $token->equals('&')
             && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_FUNCTION)
         ) {
-            $token->override([CT::T_RETURN_REF, '&']);
+            $tokens[$index] = new Token([CT::T_RETURN_REF, '&']);
         }
     }
 }

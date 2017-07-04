@@ -50,7 +50,7 @@ final class SquareBraceTransformer extends AbstractTransformer
     public function getRequiredPhpVersionId()
     {
         // Short array syntax was introduced in PHP 5.4, but the fixer is smart
-        // enough to handel it even before 5.4.
+        // enough to handle it even before 5.4.
         // Same for array destructing syntax sugar `[` introduced in PHP 7.1.
         return 50000;
     }
@@ -79,8 +79,8 @@ final class SquareBraceTransformer extends AbstractTransformer
     {
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
-        $tokens[$index]->override([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']);
-        $tokens[$endIndex]->override([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
+        $tokens[$index] = new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']);
+        $tokens[$endIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
     }
 
     /**
@@ -91,8 +91,8 @@ final class SquareBraceTransformer extends AbstractTransformer
     {
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
 
-        $tokens[$index]->override([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
-        $tokens[$endIndex]->override([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
+        $tokens[$index] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
+        $tokens[$endIndex] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
     }
 
     /**

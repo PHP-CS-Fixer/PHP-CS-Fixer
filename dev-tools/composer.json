@@ -1,0 +1,17 @@
+{
+    "require": {
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "maglnet/composer-require-checker": "^0.1.4",
+        "mi-schi/phpmd-extension": "^4.2",
+        "phpmd/phpmd": "^2.4.3"
+    },
+    "conflict": {
+        "hhvm": "*"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
