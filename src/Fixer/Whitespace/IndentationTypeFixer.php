@@ -33,7 +33,9 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     {
         return new FixerDefinition(
             'Code MUST use configured indentation type.',
-            [new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}")]
+            [
+                new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
+            ]
         );
     }
 
