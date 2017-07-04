@@ -18,6 +18,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase as BaseAbstractFixerTestCase;
  * @TODO 3.0 While removing, `gecko-packages/gecko-php-unit` shall be moved from `require` to `require-dev` and removed from `.composer-require-checker.json`.
  * @TODO 3.0 While removing, remove from `.composer-require-checker.json`.
  * @TODO 3.0 While removing, remove loading `tests/Test` from `autoload` section of `composer.json`.
+ * @TODO 3.0 While removing, remove `tests/Test` files from archive files in .gitattributes.
  */
 abstract class AbstractFixerTestCase extends BaseAbstractFixerTestCase
 {
