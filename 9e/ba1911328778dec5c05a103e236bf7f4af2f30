@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-24T21:37:54Z
+
+Perhapse a better way to write this fixer is to find the end of switch blocks, then backward iterate them?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-25T11:47:01Z
+
+Unrelated to this PR ish, but what about this test case:
+
+```php
+<?php
+
+$foo = 1;
+
+switch ($foo) {
+    case 1:
+?>
+<?php
+    default:
+        echo 'lol';
+}
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-25T15:49:39Z
+
+don't know, tbh don't care, we don't test such cases at all.
+if you care and if it's failing - open a PR.
+from my perspective - we could skip files containing multiple php code mixed with html
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-27T11:44:19Z
+
+Actually the test case suggested by @GrahamCampbell was failing so I added it.
