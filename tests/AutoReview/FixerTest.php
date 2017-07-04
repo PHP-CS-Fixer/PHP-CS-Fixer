@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
@@ -32,6 +32,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class FixerTest extends TestCase
 {
+    // do not modify this structure without prior discussion
+    private $allowedRequiredOptions = array(
+        'header_comment' => array('header' => true),
+    );
+
+    // do not modify this structure without prior discussion
+    private $allowedFixersWithoutDefaultCodeSample = array(
+        'general_phpdoc_annotation_remove' => true,
+    );
+
     /**
      * @param FixerInterface $fixer
      *
@@ -41,31 +51,46 @@ final class FixerTest extends TestCase
     {
         $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
 
+        /** @var DefinedFixerInterface $fixer */
+        $fixerName = $fixer->getName();
         $definition = $fixer->getDefinition();
+        $fixerIsConfigurable = $fixer instanceof ConfigurationDefinitionFixerInterface;
 
-        $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixer->getName()));
+        $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixerName));
 
         $samples = $definition->getCodeSamples();
-        $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixer->getName()));
+        $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));
 
+        $configSamplesProvided = array();
         $dummyFileInfo = new StdinFileInfo();
         foreach ($samples as $sampleCounter => $sample) {
-            $this->assertInstanceOf('PhpCsFixer\FixerDefinition\CodeSampleInterface', $sample, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+            $this->assertInstanceOf('PhpCsFixer\FixerDefinition\CodeSampleInterface', $sample, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+            $this->assertInternalType('int', $sampleCounter);
+
             $code = $sample->getCode();
-            $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixer->getName(), $sampleCounter));
+            $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+
+            $config = $sample->getConfiguration();
+            if (null !== $config) {
+                $this->assertTrue($fixerIsConfigurable, sprintf('[%s] Sample #%d has configuration, but the fixer is not configurable.', $fixerName, $sampleCounter));
+                $this->assertInternalType('array', $config, sprintf('[%s] Sample #%d configuration must be an array or null.', $fixerName, $sampleCounter));
+
+                $configSamplesProvided[$sampleCounter] = $config;
+            } elseif ($fixerIsConfigurable) {
+                if (!$sample instanceof VersionSpecificCodeSampleInterface) {
+                    $this->assertArrayNotHasKey('default', $configSamplesProvided, sprintf('[%s] Multiple non-versioned samples with default configuration.', $fixerName));
+                }
+
+                $configSamplesProvided['default'] = true;
+            }
 
             if ($sample instanceof VersionSpecificCodeSampleInterface && !$sample->isSuitableFor(PHP_VERSION_ID)) {
                 continue;
             }
 
-            $config = $sample->getConfiguration();
-            if (null !== $config) {
-                $this->assertInternalType('array', $config, sprintf('[%s] Sample #%d configuration must be an array or null.', $fixer->getName(), $sampleCounter));
-                if ($fixer instanceof ConfigurableFixerInterface) {
-                    $fixer->configure($config);
-                } else {
-                    $this->assertInternalType('array', $config, sprintf('[%s] Sample #%d has configuration, but the fixer is not configurable.', $fixer->getName(), $sampleCounter));
-                }
+            if ($fixerIsConfigurable) {
+                // always re-configure as the fixer might have been configured with diff. configuration form previous sample
+                $fixer->configure(null === $config ? array() : $config);
             }
 
             Tokens::clearCache();
@@ -74,23 +99,34 @@ final class FixerTest extends TestCase
                 $sample instanceof FileSpecificCodeSampleInterface ? $sample->getSplFileInfo() : $dummyFileInfo,
                 $tokens
             );
-            $this->assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixer->getName(), $sampleCounter));
+
+            $this->assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixerName, $sampleCounter));
 
             $duplicatedCodeSample = array_search(
                 $sample,
                 array_slice($samples, 0, $sampleCounter),
                 false
             );
+
             $this->assertFalse(
                 $duplicatedCodeSample,
-                sprintf('[%s] Code sample #%d duplicates #%d.', $fixer->getName(), $sampleCounter, $duplicatedCodeSample)
+                sprintf('[%s] Sample #%d duplicates #%d.', $fixerName, $sampleCounter, $duplicatedCodeSample)
             );
         }
 
+        if ($fixerIsConfigurable) {
+            if (isset($configSamplesProvided['default'])) {
+                reset($configSamplesProvided);
+                $this->assertSame('default', key($configSamplesProvided), sprintf('[%s] First sample must be for the default configuration.', $fixerName));
+            } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
+                $this->assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
+            }
+        }
+
         if ($fixer->isRisky()) {
-            $this->assertStringIsNotEmpty($definition->getRiskyDescription(), sprintf('[%s] Risky reasoning is required.', $fixer->getName()));
+            $this->assertStringIsNotEmpty($definition->getRiskyDescription(), sprintf('[%s] Risky reasoning is required.', $fixerName));
         } else {
-            $this->assertNull($definition->getRiskyDescription(), sprintf('[%s] Fixer is not risky so no description of it expected.', $fixer->getName()));
+            $this->assertNull($definition->getRiskyDescription(), sprintf('[%s] Fixer is not risky so no description of it expected.', $fixerName));
         }
     }
 
@@ -145,20 +181,16 @@ final class FixerTest extends TestCase
      */
     public function testFixerConfigurationDefinitions(ConfigurationDefinitionFixerInterface $fixer)
     {
-        // do not modify this structure without prior discussion
-        static $allowedRequiredOptions = array(
-            'header_comment' => array('header' => true),
-        );
-
         $configurationDefinition = $fixer->getConfigurationDefinition();
 
         $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface', $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
+            $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerOption', $option);
             $this->assertNotEmpty($option->getDescription());
 
             $this->assertSame(
-                !isset($allowedRequiredOptions[$fixer->getName()][$option->getName()]),
+                !isset($this->allowedRequiredOptions[$fixer->getName()][$option->getName()]),
                 $option->hasDefault(),
                 sprintf(
                     $option->hasDefault()
