@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-04T17:55:38Z
+
+nice.
+how did you spot it @julienfalque ? are there are any test classes left using deprecated base ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-04T18:11:36Z
+
+I rebased another branch with a new test that was still using the deprecated class and forgot to change that until I faced the issue :)
