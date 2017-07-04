@@ -372,11 +372,7 @@ class Foo
                             }
                         }
 
-                        if ($i === $startBraceIndex) {
-                            $nextLineCanBeIndented = true;
-                        }
-
-                        if ($nextLineCanBeIndented) {
+                        if ($nextLineCanBeIndented || $i === $startBraceIndex) {
                             $nextToken = $tokens[$nestIndex + 1];
                             $nextLineCanBeIndented = $nextToken->isWhitespace() && 1 === preg_match('/\R/', $nextToken->getContent());
                         }
