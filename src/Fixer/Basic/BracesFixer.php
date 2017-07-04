@@ -355,8 +355,12 @@ class Foo
                 }
 
                 if (1 === $nestLevel) {
+                    // Next token is the beginning of a line that can be indented when
+                    // the current token is a `;`, a `}` or the opening `{` of current
+                    // scope. Current token may also be a comment that follows `;` or
+                    // `}`, in which case indentation will only be fixed if this
+                    // comment is followed by a newline.
                     $nextLineCanBeIndented = false;
-
                     if ($nestToken->equalsAny(array(';', '}'))) {
                         $nextLineCanBeIndented = true;
                     } elseif ($nestToken->isComment()) {
