@@ -1,0 +1,286 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-11T12:44:30Z
+
+Code looks good, please add test cases that cover new option.
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-04-11T15:35:27Z
+
+I'm having a little trouble getting tests to pass:
+https://github.com/aidantwoods/PHP-CS-Fixer/blob/6834d70dde748a89a250613cd1a5ab2f062c8732/src/Fixer/Basic/BracesFixer.php#L497
+
+the function `fixMissingControlBraces` attempts to correct whitespace on existing braces, causing whitespace to be changed, and then subsequently changed back by my new option. However, this causes a test failure because `$tokens` has now been marked as changed (even though the text ends up being the same).
+
+> `Tokens collection built on expected code must not be marked as changed after fixing.`
+
+The whitespace correction done by `fixMissingControlBraces` should be moved to `fixSpaceAroundToken` as far as I can tell?
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-04-11T15:39:19Z
+
+In one of the new test cases, fixMissingControlBraces causes the following change which causes the failure
+
+```diff
+--- Original
++++ New
+@@ @@
+ <?php
+-if (true)
+-{
++if (true) {
+     $a = 1;
+ }
+-else
+-{
++else {
+     $b = 2;
+ }
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-26T23:38:24Z
+
+> Well that was much easier than expected
+
+> In one of the new test cases, fixMissingControlBraces causes the following change which causes the failure
+
+We are all awaiting for green Travis status ;)
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-04-26T23:48:56Z
+
+> We are all awaiting for green Travis status ;)
+
+Hehe, it seems I spoke a little too soon with
+> Well that was much easier than expected
+
+Could someone advise on the best way to proceed with: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2684#issuecomment-293303840
+
+Being a little new to the repo 😉:
+
+I couldn't really see what the intent of the brace shift was (as-in why it was done in a function that is apparently for adding control braces, and not in one responsible for correcting placement), or where the offending line in that function should be moved to (i.e. moving the line speaks to intent of why it was put there in the first place).
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-04-27T00:11:38Z
+
+I mean, I could just special case the line that's causing trouble so that it doesn't run when my new configuration option is enabled.
+
+Just it tripped me up since the reason for the error wasn't readily apparent – since later functions (actually responsible for correcting brace *position*) were reverting the change to position that this function made.
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-04-27T01:41:47Z
+
+@keradus All green on travis :D
+
+Have rebased on master and just special cased that offending line (as mentioned above)
+
+I'm not sure what's up with the fabbit.io check
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-27T08:09:06Z
+
+> I'm not sure what's up with the fabbit.io check
+
+ignore it, they need to update PHP CS Fixer version they are using
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-04-27T21:37:43Z
+
+Okay, so just to give a little bit more info on the intent of this feature (so any bugs can be identified later).
+
+The aim of this setting is to make all control structures behave with the same rules that we have for functions (in PSR2), mostly this is just placing the brace on the next line e.g.
+
+<img width="822" alt="screen shot 2017-04-27 at 21 59 23" src="https://cloud.githubusercontent.com/assets/3288888/25504376/ac9dbbfa-2b95-11e7-8729-82aace2a9308.png">
+
+Though (as with functions) if the "body of arguments" spans multiple lines, then both the closing brace to the body of arguments and the opening brace for the main body are placed on the next line, separated by a single space:
+e.g. with the `if` statement here
+
+<img width="510" alt="screen shot 2017-04-27 at 22 04 22" src="https://cloud.githubusercontent.com/assets/3288888/25504456/f42790fe-2b95-11e7-85a6-5553a6fc5d65.png">
+
+Anything that doesn't conform to the rules for function opening brace placement when applied across all control structures should be considered a bug.
+
+At present, I don't think that PSR dictates a rule for styling functions with return type hints and a multiline "body of arguments", the already existing behaviour appears to keep the main function body opening brace on the same line as the type hint and the closing brace for the body of arguments. E.g.
+
+```php
+<?php
+
+function foo(
+    $bar,
+    $baz,
+    $boo
+) : int {
+}
+```
+
+I haven't (intentionally) modified the behaviour for this, though I think in a case like this, the placing the opening brace to the main body on the next line may be more in sync with the "next line" look
+
+```php
+<?php
+
+function foo(
+    $bar,
+    $baz,
+    $boo
+) : VeryLongInterfaceName
+{
+}
+```
+
+Though I can't see anywhere obvious to make that change, and it's quite a subtle difference anyway when compared with the changes already made by this option (and arguably this isn't really within this option's scope anyway, so should probably be a separate config setting).
+
+Given all that, I think I'm happy with everything this option does now (as long as there are no bugs anyone can see), or let me know if you'd like more test cases or something like that.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-28T10:17:32Z
+
+> At present, I don't think that PSR dictates a rule for styling functions with return type hints and a multiline "body of arguments"
+
+[Proposed PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md#45-method-and-function-arguments) currently mentions this case and does not seem to strictly forbid the opening brace to be on a new line.
+
+> I think in a case like this, the placing the opening brace to the main body on the next line may be more in sync with the "next line" look
+
+Like you said: this would require a new dedicated option as it changes the default behavior. It should be done in a separate PR, but if you're willing to work on it, go ahead :)
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-04-28T18:15:57Z
+
+Just while I'm poking around that test file, looks like `provideFixCommentBeforeBraceCases` has a few typos (latter tests have four items in the array, so I think the config variable is never actually used).
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-28T18:22:39Z
+
+great catch. boom!
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2731
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-04-28T20:00:34Z
+
+@julienfalque right, https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2684/commits/4f8fe4c44fd2ba45a0431cd420785b370308b941 should complete the requested changes.
+
+Good shout on testing combinations – caught a few bugs!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-28T20:11:15Z
+
+> Good shout
+
+@julienfalque , don't shout at people ;)
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-04-30T19:16:58Z
+
+@julienfalque
+
+> Like you said: this would require a new dedicated option as it changes the default behavior. It should be done in a separate PR, but if you're willing to work on it, go ahead :)
+
+Right, I've gone ahead and implemented this too – the PR is targeted at this branch, just so we don't need to needlessly resolve conflicts (much of the same lines of code are being edited).
+
+Currently here: https://github.com/aidantwoods/PHP-CS-Fixer/pull/1
+
+But I'll create a separate PR targeting this repo's master once this branch is merged
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-05-01T12:08:02Z
+
+@julienfalque, @keradus anything else that needs doing before merge?
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-05-02T10:54:23Z
+
+@julienfalque
+> Anonymous functions and classes are not control structures.
+
+Indeed ;-)
+
+I'd always assumed that PSR2 considered them control structures (given there was no [voting option](http://www.php-fig.org/psr/psr-2/#a3-survey-results) for anonymous functions, and they follow the same brace rules as control structures wrt. space after the `function` keyword, `function (` (much like `if (`, `for (` etc...) and brace on the same line etc...).
+
+I'll split it into two options for clarity though :)
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-05-02T20:35:41Z
+
+@julienfalque
+
+Anonymous and control structures are decoupled!
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-05-04T22:01:55Z
+
+@julienfalque any more changes that need doing before merge? 😉
+
+Have rebased on master (again ;p)
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-05-08T17:52:24Z
+
+Well that made for some very careful rebasing 😜
+
+3 conflicts for this o.0
+
+![screen shot 2017-05-08 at 18 50 34](https://cloud.githubusercontent.com/assets/3288888/25817474/55f08f98-341f-11e7-9516-58f2d7e38bbe.png)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-09T06:26:53Z
+
+Woops :D
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-07-04T22:13:59Z
+
+What's the best thing to do about https://github.com/aidantwoods/PHP-CS-Fixer/pull/1?
+
+It's kinda queued behind this one (to avoid merge conflicts – files are changed in many of the same places).
+
+Shall I submit a separate PR as is, or wait out this one's merge? (Ideally this next one would go through in the same release 😉)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-04T22:18:06Z
+
+This PR will be merged as soon as Travis will be green.
+Please do not push anything to this PR now.
+New PR for sure, doesn't matter would you wait for this one to be merged or not (and then rebase when this PR will be merged).
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-07-04T22:20:33Z
+
+> This PR will be merged as soon as Travis will be green.
+
+Great! :D I'll just wait it out then!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-04T22:36:01Z
+
+20 minutes for php 5.6 and counting...
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-07-04T22:39:31Z
+
+Yeah... that's been happening a lot recently: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2893#issuecomment-312325843
+
+Weird, as it's so much faster on the other builds...
