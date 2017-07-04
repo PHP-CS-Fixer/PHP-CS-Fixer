@@ -37,6 +37,7 @@ final class FixerTest extends TestCase
         'header_comment' => array('header' => true),
     );
 
+    // do not modify this structure without prior discussion
     private $allowedFixersWithoutDefaultCodeSample = array(
         'general_phpdoc_annotation_remove' => true,
     );
