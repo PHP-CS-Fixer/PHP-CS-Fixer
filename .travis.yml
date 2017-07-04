@@ -65,6 +65,9 @@ before_script:
     - if [ $TASK_SCA == 1 ]; then export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`; fi
 
 script:
+    # @TODO remove at 3.0
+    - if [ $TASK_SCA == 1 ]; then git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php | grep -v tests/Test/Assert/AssertTokensTrait.php | grep -v tests/Test/AbstractFixerTestCase.php | grep -v tests/Test/AbstractIntegrationTestCase.php | grep -v tests/Test/IntegrationCase.php | grep -v tests/Test/IntegrationCaseFactory.php && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"; fi
+
     - if [ $TASK_SCA == 1 ]; then ./check_trailing_spaces.sh || travis_terminate 1; fi
     - if [ $TASK_SCA == 1 ] && [ -n "$COMMIT_SCA_FILES" ]; then vendor/bin/phpmd `echo $COMMIT_SCA_FILES | sed 's/ /,/g'` text phpmd.xml --exclude src/Resources,tests/Fixtures || travis_terminate 1; fi;
     - if [ $TASK_SCA == 1 ]; then php php-cs-fixer fix --rules @PHP70Migration:risky,@PHP71Migration,native_function_invocation -q; fi
