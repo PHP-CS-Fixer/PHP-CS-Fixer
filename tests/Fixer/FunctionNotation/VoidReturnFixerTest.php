@@ -112,8 +112,58 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 '<?php function foo() { usort([], new class { public function __invoke($a, $b) {} }); }',
             ],
             [
-                '<?php function foo(): void { (function () {return 1;})(); return; }',
-                '<?php function foo() { (function () {return 1;})(); return; }',
+                '<?php
+                function foo(): void {
+                    $a = function (): void {};
+                }',
+                '<?php
+                function foo() {
+                    $a = function () {};
+                }',
+            ],
+            [
+                '<?php
+                function foo(): void {
+                    (function (): void {
+                        return;
+                    })();
+                }',
+                '<?php
+                function foo() {
+                    (function () {
+                        return;
+                    })();
+                }',
+            ],
+            [
+                '<?php
+                function foo(): void {
+                    (function () {
+                        return 1;
+                    })();
+                }',
+                '<?php
+                function foo() {
+                    (function () {
+                        return 1;
+                    })();
+                }',
+            ],
+            [
+                '<?php
+                function foo(): void {
+                    $b = new class {
+                        public function b1(): void {}
+                        public function b2() { return 2; }
+                    };
+                }',
+                '<?php
+                function foo() {
+                    $b = new class {
+                        public function b1() {}
+                        public function b2() { return 2; }
+                    };
+                }',
             ],
             [
                 '<?php
