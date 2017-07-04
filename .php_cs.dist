@@ -16,6 +16,7 @@ return PhpCsFixer\Config::create()
         '@PHP56Migration' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
+        'align_multiline_comment' => true,
         'array_syntax' => ['syntax' => 'short'],
         'blank_line_before_statement' => true,
         'combine_consecutive_unsets' => true,

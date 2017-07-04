@@ -207,6 +207,18 @@ automatically fix anything:
 
 Choose from the list of available rules:
 
+* **align_multiline_comment**
+
+  Each line of multi-line DocComments must have an asterisk [PSR-5] and
+  must be aligned with the first one.
+
+  Configuration options:
+
+  - ``comment_type`` (``'all_multiline'``, ``'phpdocs_like'``, ``'phpdocs_only'``): whether
+    to fix PHPDoc comments only (``phpdocs_only``), any multi-line comment
+    whose lines all start with an asterisk (``phpdocs_like``) or any
+    multi-line comment (``all_multiline``); defaults to ``'phpdocs_only'``
+
 * **array_syntax**
 
   PHP arrays should be declared using the configured syntax.
