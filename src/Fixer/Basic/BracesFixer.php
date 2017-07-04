@@ -354,8 +354,9 @@ class Foo
                     continue;
                 }
 
-                $nextLineCanBeIndented = false;
                 if (1 === $nestLevel) {
+                    $nextLineCanBeIndented = false;
+
                     if ($nestToken->equalsAny(array(';', '}'))) {
                         $nextLineCanBeIndented = true;
                     } elseif ($nestToken->isComment()) {
@@ -371,9 +372,11 @@ class Foo
                             $nextLineCanBeIndented = true;
                         }
                     }
-                }
 
-                if ($nextLineCanBeIndented) {
+                    if (!$nextLineCanBeIndented) {
+                        continue;
+                    }
+
                     $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
                     $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
 
