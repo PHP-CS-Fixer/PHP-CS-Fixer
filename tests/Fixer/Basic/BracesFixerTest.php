@@ -619,12 +619,12 @@ class C {
             ),
             array(
                 '<?php
-if ($a) {/*
+if ($a) { /*
 */
     echo 1;
 }',
                 '<?php
-if ($a){/*
+if ($a){ /*
 */
 echo 1;
 }',
@@ -3688,7 +3688,7 @@ use const some\a\{ConstA, ConstB, ConstC};
             array(
                 '<?php
 if (1==1) { // test
- $a = 1;
+    $a = 1;
 }
 echo $a;',
                 '<?php

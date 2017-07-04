@@ -360,16 +360,25 @@ class Foo
                     if ($nestToken->equalsAny(array(';', '}'))) {
                         $nextLineCanBeIndented = true;
                     } elseif ($nestToken->isComment()) {
-                        for ($i = $nestIndex - 1; $i > $startBraceIndex; --$i) {
-                            if ($tokens[$i]->isWhitespace()) {
-                                $nextLineCanBeIndented = (bool) preg_match('/\R/', $tokens[$i]->getContent());
+                        for ($i = $nestIndex; $i > $startBraceIndex; --$i) {
+                            if ($tokens[$i]->equalsAny(array(';', '}'))) {
+                                $nextLineCanBeIndented = true;
 
+                                break;
+                            }
+
+                            if (!$tokens[$i]->isWhitespace() && !$tokens[$i]->isComment()) {
                                 break;
                             }
                         }
 
                         if ($i === $startBraceIndex) {
                             $nextLineCanBeIndented = true;
+                        }
+
+                        if ($nextLineCanBeIndented) {
+                            $nextToken = $tokens[$nestIndex + 1];
+                            $nextLineCanBeIndented = $nextToken->isWhitespace() && 1 === preg_match('/\R/', $nextToken->getContent());
                         }
                     }
 
