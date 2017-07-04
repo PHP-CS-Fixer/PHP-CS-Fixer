@@ -102,6 +102,7 @@ function fnc($foo, $bar) {}'
 
                 if ($next->containsATag()) {
                     $line->addBlank();
+
                     break;
                 }
             }

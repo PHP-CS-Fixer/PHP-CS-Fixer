@@ -35,6 +35,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('statements' === $option->getName()) {
                 self::$defaultStatements = $option->getDefault();
+
                 break;
             }
         }
@@ -537,6 +538,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 foreach (explode('_', $statement) as $singleStatement) {
                     if (false !== strpos($input, $singleStatement)) {
                         $withInput = true;
+
                         break;
                     }
                 }

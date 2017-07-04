@@ -105,6 +105,7 @@ class Sample
             ) {
                 $i = $tokens->getNextTokenOfKind($i, array('{'));
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+
                 continue;
             }
 

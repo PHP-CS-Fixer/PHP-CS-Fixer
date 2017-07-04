@@ -84,24 +84,31 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
             switch ($item) {
                 case 'break':
                     $this->tokenKindCallbackMap[T_BREAK] = 'fixAfterToken';
+
                     break;
                 case 'continue':
                     $this->tokenKindCallbackMap[T_CONTINUE] = 'fixAfterToken';
+
                     break;
                 case 'extra':
                     $this->tokenKindCallbackMap[T_WHITESPACE] = 'removeMultipleBlankLines';
+
                     break;
                 case 'return':
                     $this->tokenKindCallbackMap[T_RETURN] = 'fixAfterToken';
+
                     break;
                 case 'throw':
                     $this->tokenKindCallbackMap[T_THROW] = 'fixAfterToken';
+
                     break;
                 case 'use':
                     $this->tokenKindCallbackMap[T_USE] = 'removeBetweenUse';
+
                     break;
                 case 'use_trait':
                     $this->tokenKindCallbackMap[CT::T_USE_TRAIT] = 'removeBetweenUse';
+
                     break;
                 case 'curly_brace_block':
                     $this->tokenEqualsMap['{'] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
@@ -401,6 +408,7 @@ class Foo
             if (false !== strpos($this->tokens[$i]->getContent(), "\n")) {
                 $this->removeEmptyLinesAfterLineWithTokenAt($i);
                 $this->removeEmptyLinesAfterLineWithTokenAt($index);
+
                 break;
             }
         }

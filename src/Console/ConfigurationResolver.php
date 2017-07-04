@@ -653,10 +653,10 @@ final class ConfigurationResolver
             return true;
         }, $rules));
 
-        /* @var string[] $availableFixers */
+        /** @var string[] $configuredFixers */
         $configuredFixers = array_keys($ruleSet->getRules());
 
-        /* @var string[] $availableFixers */
+        /** @var string[] $availableFixers */
         $availableFixers = array_map(function (FixerInterface $fixer) {
             return $fixer->getName();
         }, $this->createFixerFactory()->getFixers());

@@ -123,6 +123,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             foreach ($partials as $partial) {
                 if ($partial['start'] <= $index && $index <= $partial['end']) {
                     $allowToAppend = false;
+
                     break;
                 }
             }

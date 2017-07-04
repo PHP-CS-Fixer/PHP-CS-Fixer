@@ -316,6 +316,7 @@ final class Sample
         for ($i = $commentIndex - 1; $i > 0; --$i) {
             if ($tokens[$i]->isComment()) {
                 $start = $i;
+
                 continue;
             }
 
