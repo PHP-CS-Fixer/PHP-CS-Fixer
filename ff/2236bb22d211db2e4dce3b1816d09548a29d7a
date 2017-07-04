@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-04T11:31:40Z
+
+Thanks for report @bendavies !
+Any particular reason why to use not-released version ? (curiosity only...)
+
+---------------------------------------------------------------------------
+
+by bendavies at 2017-07-04T11:46:20Z
+
+@keradus no problem. because i wanted to use `VoidReturnFixer` in my project :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-04T20:16:51Z
+
+@bendavies , as you allowed us to push to your branch, I pushed the fix directly to it.
+
+---------------------------------------------------------------------------
+
+by bendavies at 2017-07-04T20:36:57Z
+
+@keradus that appears to be the default 😃. Thanks for the fix
