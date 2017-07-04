@@ -166,10 +166,12 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurationDe
         $newlineToken = $tokens[$newlinePosition];
 
         $nbNewlines = substr_count($newlineToken->getContent(), $lineEnding);
-        if ($tokens[$newlinePosition - 1]->isGivenKind(T_OPEN_TAG) && false !== strpos($tokens[$newlinePosition - 1]->getContent(), $lineEnding)) {
+        if ($newlineToken->isGivenKind(T_OPEN_TAG) && preg_match('/\R/', $newlineToken->getContent())) {
+            ++$nbNewlines;
+        } elseif ($tokens[$newlinePosition - 1]->isGivenKind(T_OPEN_TAG) && preg_match('/\R/', $tokens[$newlinePosition - 1]->getContent())) {
             ++$nbNewlines;
 
-            if (false === strpos($newlineToken->getContent(), $lineEnding)) {
+            if (!preg_match('/\R/', $newlineToken->getContent())) {
                 $tokens[$newlinePosition] = new Token([$newlineToken->getId(), $lineEnding.$newlineToken->getContent()]);
             }
         }
@@ -184,14 +186,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurationDe
 
         $tokens->insertAt($newlinePosition, new Token([T_COMMENT, '// '.$this->configuration['comment_text']]));
 
-        if (!$tokens[$newlinePosition - 1]->isGivenKind(T_OPEN_TAG)) {
-            $this->ensureNewLineAt($tokens, $newlinePosition);
-        } else {
-            $tokens->insertAt(
-                $newlinePosition,
-                new Token([T_WHITESPACE, $this->getIndentAt($tokens, $newlinePosition - 1)])
-            );
-        }
+        $this->ensureNewLineAt($tokens, $newlinePosition);
     }
 
     /**
@@ -207,16 +202,27 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurationDe
 
         $whitespaceToken = $tokens[$position - 1];
         if (!$whitespaceToken->isGivenKind(T_WHITESPACE)) {
-            $tokens->insertAt($position, new Token([T_WHITESPACE, $content]));
+            if ($whitespaceToken->isGivenKind(T_OPEN_TAG)) {
+                $content = preg_replace('/\R/', '', $content);
+                if (!preg_match('/\R/', $whitespaceToken->getContent())) {
+                    $tokens[$position - 1] = new Token([T_OPEN_TAG, preg_replace('/\s+$/', $lineEnding, $whitespaceToken->getContent())]);
+                }
+            }
 
-            return $position;
+            if ('' !== $content) {
+                $tokens->insertAt($position, new Token([T_WHITESPACE, $content]));
+
+                return $position;
+            }
+
+            return $position - 1;
         }
 
-        if ($tokens[$position - 2]->isGivenKind(T_OPEN_TAG) && false !== strpos($tokens[$position - 2]->getContent(), $lineEnding)) {
+        if ($tokens[$position - 2]->isGivenKind(T_OPEN_TAG) && preg_match('/\R/', $tokens[$position - 2]->getContent())) {
             $content = preg_replace('/^\R/', '', $content);
         }
 
-        if (false === strpos($whitespaceToken->getContent(), $lineEnding)) {
+        if (!preg_match('/\R/', $whitespaceToken->getContent())) {
             $tokens[$position - 1] = new Token([T_WHITESPACE, $content]);
         }
 
@@ -290,7 +296,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurationDe
     {
         $initialToken = $tokens[$position];
 
-        if ($initialToken->isGivenKind([T_FOR, T_FOREACH, T_WHILE, T_IF, T_ELSE, T_ELSEIF, T_SWITCH, T_FUNCTION])) {
+        if ($initialToken->isGivenKind([T_FOR, T_FOREACH, T_WHILE, T_IF, T_ELSEIF, T_SWITCH, T_FUNCTION])) {
             $position = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                 $tokens->getNextTokenOfKind($position, ['('])
