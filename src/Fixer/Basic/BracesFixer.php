@@ -460,10 +460,7 @@ class Foo
                 // set indent only if it is not a case, when comment is following { on same line
                 if (
                     !$nextNonWhitespaceToken->isComment()
-                    || (
-                        !($nextToken->isWhitespace() && $nextToken->isWhitespace(" \t"))
-                        && ($nextToken->isWhitespace() && 1 === substr_count($nextToken->getContent(), "\n")) // preserve blank lines
-                    )
+                    || ($nextToken->isWhitespace() && 1 === substr_count($nextToken->getContent(), "\n")) // preserve blank lines
                 ) {
                     $this->ensureWhitespaceAtIndexAndIndentMultilineComment(
                         $tokens,
