@@ -143,10 +143,12 @@ final class LineTest extends TestCase
             case 0:
                 $this->assertTrue($line->isTheStart());
                 $this->assertFalse($line->isTheEnd());
+
                 break;
             case 14:
                 $this->assertFalse($line->isTheStart());
                 $this->assertTrue($line->isTheEnd());
+
                 break;
             default:
                 $this->assertFalse($line->isTheStart());

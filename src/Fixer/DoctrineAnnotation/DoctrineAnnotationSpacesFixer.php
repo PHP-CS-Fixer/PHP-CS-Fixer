@@ -223,16 +223,19 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
             $endScopeType = end($scopes);
             if (false !== $endScopeType && $token->isType($endScopeType)) {
                 array_pop($scopes);
+
                 continue;
             }
 
             if ($tokens[$index]->isType(DocLexer::T_AT)) {
                 $scopes[] = DocLexer::T_CLOSE_PARENTHESIS;
+
                 continue;
             }
 
             if ($tokens[$index]->isType(DocLexer::T_OPEN_CURLY_BRACES)) {
                 $scopes[] = DocLexer::T_CLOSE_CURLY_BRACES;
+
                 continue;
             }
 

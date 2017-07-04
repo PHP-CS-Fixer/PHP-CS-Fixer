@@ -195,6 +195,7 @@ $className = Baz::class;
         foreach ($this->imports as $alias => $import) {
             if ($classString === $alias) {
                 $classImport = $import;
+
                 break;
             }
 
@@ -203,6 +204,7 @@ $className = Baz::class;
 
             if (0 === strcmp($namespaceToTest, substr($import, -strlen($namespaceToTest)))) {
                 $classImport = $import;
+
                 break;
             }
         }
