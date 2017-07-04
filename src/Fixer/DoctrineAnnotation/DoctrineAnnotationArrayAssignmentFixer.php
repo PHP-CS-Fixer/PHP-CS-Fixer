@@ -34,8 +34,7 @@ final class DoctrineAnnotationArrayAssignmentFixer extends AbstractDoctrineAnnot
             'Doctrine annotations must use configured operator for assignment in arrays.',
             [
                 new CodeSample(
-                    "<?php\n/**\n * @Foo({bar : \"baz\"})\n */\nclass Bar {}",
-                    ['operator' => '=']
+                    "<?php\n/**\n * @Foo({bar : \"baz\"})\n */\nclass Bar {}"
                 ),
                 new CodeSample(
                     "<?php\n/**\n * @Foo({bar = \"baz\"})\n */\nclass Bar {}",

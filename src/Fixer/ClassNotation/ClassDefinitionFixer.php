@@ -45,21 +45,16 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurationD
 
 class  Foo  extends  Bar  implements  Baz,  BarBaz
 {
-}'
-                ),
-                new CodeSample(
-'<?php
-
-trait  Foo
-{
-}'
-                ),
-                new CodeSample(
-'<?php
+}
 
 final  class  Foo  extends  Bar  implements  Baz,  BarBaz
 {
-}'
+}
+
+trait  Foo
+{
+}
+'
                 ),
                 new VersionSpecificCodeSample(
 '<?php
