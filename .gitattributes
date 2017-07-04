@@ -1,4 +1,3 @@
-/tests export-ignore
 .appveyor.yml export-ignore
 .composer-require-checker.json export-ignore
 .editorconfig export-ignore
