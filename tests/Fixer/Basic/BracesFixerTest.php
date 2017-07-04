@@ -27,6 +27,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => 'same'];
     private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => 'next'];
     private static $configurationAnonymousPositionNextLine = ['position_after_anonymous_constructs' => 'next'];
+    private static $configurationAfterReturnTypeHintNextLine = ['position_after_return_type_hint' => 'next'];
 
     public function testInvalidConfigurationClassyConstructs()
     {
@@ -4670,5 +4671,246 @@ if (true)
     public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
     {
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $configuration
+     *
+     * @dataProvider provideBraceNextLineReturnTypeHint
+     * @requires PHP 7.0
+     */
+    public function testBraceNextLineReturnTypeHint($expected, $input = null, array $configuration = null)
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideBraceNextLineReturnTypeHint()
+    {
+        return [
+            [
+                '<?php
+        function foo($bar): void
+        {
+        }',
+                null,
+            ],
+            [
+                '<?php
+        function foo($bar): void
+        {
+        }',
+                null,
+                self::$configurationAfterReturnTypeHintNextLine,
+            ],
+            [
+                '<?php
+        function foo(
+            $bar,
+            $boo
+        ): void {
+        }',
+                '<?php
+        function foo(
+            $bar,
+            $boo
+        ): void
+        {
+        }',
+            ],
+            [
+                '<?php
+        function foo(
+            $bar,
+            $boo
+        ): void
+        {
+        }',
+                null,
+                self::$configurationAfterReturnTypeHintNextLine,
+            ],
+            [
+                '<?php
+        function foo(
+            $bar,
+            $boo
+        ): void {
+        }',
+                '<?php
+        function foo(
+            $bar,
+            $boo
+        ): void
+        {
+        }',
+                self::$configurationOopPositionSameLine,
+            ],
+            [
+                '<?php
+        function foo(
+            $bar,
+            $boo
+        ): void {
+        }',
+                null,
+                self::$configurationOopPositionSameLine,
+            ],
+            [
+                '<?php
+        function foo(
+            $bar,
+            $boo
+        ): void
+        {
+        }',
+                '<?php
+        function foo(
+            $bar,
+            $boo
+        ): void {
+        }',
+                self::$configurationOopPositionSameLine + self::$configurationAfterReturnTypeHintNextLine,
+            ],
+            [
+                '<?php
+        function foo($bar): void {
+        }',
+                null,
+                self::$configurationOopPositionSameLine,
+            ],
+            [
+                '<?php
+        function foo($bar): void
+        {
+        }',
+                '<?php
+        function foo($bar): void {
+        }',
+                self::$configurationOopPositionSameLine + self::$configurationAfterReturnTypeHintNextLine,
+            ],
+            [
+                '<?php
+        $foo = function ($bar): void
+        {
+        };',
+                null,
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+        $foo = function ($bar): void
+        {
+        };',
+                null,
+                self::$configurationAfterReturnTypeHintNextLine,
+            ],
+            [
+                '<?php
+        $foo = function ($bar): void
+        {
+        };',
+                null,
+                self::$configurationAnonymousPositionNextLine + self::$configurationAfterReturnTypeHintNextLine,
+            ],
+            [
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void {
+        };',
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void
+        {
+        };',
+            ],
+            [
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void {
+        };',
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void
+        {
+        };',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void
+        {
+        };',
+                null,
+                self::$configurationAfterReturnTypeHintNextLine,
+            ],
+            [
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void {
+        };',
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void
+        {
+        };',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void {
+        };',
+                null,
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void
+        {
+        };',
+                '<?php
+        $foo = function (
+            $bar,
+            $boo
+        ): void {
+        };',
+                self::$configurationAnonymousPositionNextLine + self::$configurationAfterReturnTypeHintNextLine,
+            ],
+            [
+                '<?php
+        $foo = function ($bar): void
+        {
+        };',
+                '<?php
+        $foo = function ($bar): void {
+        };',
+                self::$configurationAnonymousPositionNextLine + self::$configurationAfterReturnTypeHintNextLine,
+            ],
+        ];
     }
 }

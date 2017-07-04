@@ -282,6 +282,9 @@ Choose from the list of available rules:
     the opening brace should be placed on "next" or "same" line after
     classy constructs (non-anonymous classes, interfaces, traits, methods
     and non-lambda functions); defaults to ``'next'``
+  - ``position_after_return_type_hint`` (``'next'``, ``'same'``): whether the opening
+    brace following a return type hint should be placed on "next" or "same"
+    line; defaults to ``'same'``
 
 * **cast_spaces** [@Symfony]
 
