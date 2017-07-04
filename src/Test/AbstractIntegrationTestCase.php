@@ -23,7 +23,7 @@ use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase as BaseAbstractIntegration
  */
 abstract class AbstractIntegrationTestCase extends BaseAbstractIntegrationTestCase
 {
-    public function __construct()
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         @trigger_error(
             sprintf(
@@ -32,5 +32,7 @@ abstract class AbstractIntegrationTestCase extends BaseAbstractIntegrationTestCa
             ),
             E_USER_DEPRECATED
         );
+
+        parent::__construct($name, $data, $dataName);
     }
 }
