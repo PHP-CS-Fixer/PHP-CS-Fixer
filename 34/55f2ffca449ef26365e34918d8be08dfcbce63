@@ -1,0 +1,100 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-23T11:28:12Z
+
+expect tests to fail
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-26T19:25:35Z
+
+@julienfalque
+
+since you are the author of the following fixers I would like your input on the following incomplete sample cases:
+
+```
+2) PhpCsFixer\Tests\AutoReview\FixerTest::testFixerDefinitions with data set #94 (PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixer Object (...))
+[doctrine_annotation_braces] No sample with configuration options "ignored_tags".
+Failed asserting that actual size 1 matches expected size 0.
+
+/home/possum/work/PHP-CS-Fixer/tests/AutoReview/FixerTest.php:167
+
+3) PhpCsFixer\Tests\AutoReview\FixerTest::testFixerDefinitions with data set #95 (PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixer Object (...))
+[doctrine_annotation_indentation] No sample with configuration options "ignored_tags".
+Failed asserting that actual size 1 matches expected size 0.
+
+/home/possum/work/PHP-CS-Fixer/tests/AutoReview/FixerTest.php:167
+
+4) PhpCsFixer\Tests\AutoReview\FixerTest::testFixerDefinitions with data set #96 (PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixer Object (...))
+[doctrine_annotation_spaces] No sample with configuration options "ignored_tags", "around_parentheses", "around_commas", "around_argument_assignments", "around_array_assignments".
+Failed asserting that actual size 5 matches expected size 0.
+
+/home/possum/work/PHP-CS-Fixer/tests/AutoReview/FixerTest.php:167
+```
+
+if you've no time or don't find this interesting I can puzzle something together so don't feel pushed ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-26T20:59:41Z
+
+I would add the following samples:
+
+**DoctrineAnnotationBracesFixer**
+
+```php
+new CodeSample(
+    "<?php\n/**\n * @Foo()\n * @Bar()\n */\nclass Bar {}",
+    array('ignored_tags' => array('Bar'))
+),
+```
+
+**DoctrineAnnotationIndentationFixer**
+
+```php
+new CodeSample(
+    "<?php\n/**\n *  @Foo(\n *   foo=\"foo\"\n *  )\n *  @Bar(\n *   bar=\"bar\"\n *  )\n */\nclass Bar {}",
+    array('ignored_tags' => array('Bar'))
+),
+```
+
+**DoctrineAnnotationSpacesFixer**
+
+```php
+new CodeSample(
+    "<?php\n/**\n * @Foo ( foo  = \"foo\" )\n */\nclass Bar {}",
+    array('around_parentheses' => false)
+),
+new CodeSample(
+    "<?php\n/**\n * @Foo ( foo = \"foo\"  ,bar = \"bar\" )\n */\nclass Bar {}",
+    array('around_commas' => false)
+),
+new CodeSample(
+    "<?php\n/**\n * @Foo ( foo  = \"foo\" )\n */\nclass Bar {}",
+    array('around_argument_assignments' => false)
+),
+new CodeSample(
+    "<?php\n/**\n * @Foo ( {\"foo\"  : \"foo\"} )\n */\nclass Bar {}",
+    array('around_array_assignments' => false)
+),
+new CodeSample(
+    "<?php\n/**\n * @Foo ( )\n * @Bar ( )\n */\nclass Bar {}",
+    array('ignored_tags' => array('Bar'))
+),
+```
+
+---
+Thinking about it: some options have been deprecated on master. Adding tests that require to have one sample for each option will lead test builds to always fail once merged on master because the samples will either be missing or use deprecated code. We should anticipate that, not sure how though. Maybe a second PR that targets master and updates the test to ignore deprecated option? WDYT?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-27T07:02:39Z
+
+I've removed the tests that cannot be completed in a sane way, i.e. we cannot compare configuration values to detect double samples, we cannot test that each configuration option is used at least one time as the test cannot see if the option is deprecated.
+I propose to merge as is or to close, as the amount of time and review rounds on this is getting out of hand.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-03T16:42:57Z
+
+I think this one is ready to go?
