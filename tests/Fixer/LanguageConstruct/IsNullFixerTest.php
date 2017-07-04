@@ -163,7 +163,7 @@ FIXED;
                 '<?php is_null()?>',
             ),
 
-            /* edge cases: is_null wrapped into a binary operations */
+            // edge cases: is_null wrapped into a binary operations
             array(
                 '<?php $result = (false === (null === $a)); ?>',
                 '<?php $result = (false === is_null($a)); ?>',

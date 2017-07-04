@@ -274,7 +274,8 @@ final class RuleSetTest extends TestCase
             $fixerNames,
             sprintf(
                 'Set should only contain %s fixers, got: \'%s\'.',
-                $safe ? 'safe' : 'risky', implode('\', \'', $fixerNames)
+                $safe ? 'safe' : 'risky',
+                implode('\', \'', $fixerNames)
             )
         );
     }

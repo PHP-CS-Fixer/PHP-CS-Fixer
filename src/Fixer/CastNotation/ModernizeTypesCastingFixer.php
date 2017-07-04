@@ -30,14 +30,16 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     {
         return new FixerDefinition(
             'Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval` function calls with according type casting operator.',
-            array(new CodeSample(
+            array(
+                new CodeSample(
 '<?php
     $a = intval($b);
     $a = floatval($b);
     $a = doubleval($b);
     $a = strval ($b);
     $a = boolval($b);
-'),
+'
+                ),
             ),
             null,
             'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
