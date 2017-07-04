@@ -35,8 +35,19 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurationDe
         return new FixerDefinition(
             'There must be a comment when fall-through is intentional in a non-empty case body.',
             [
-                new CodeSample("<?php\nswitch (\$foo)\n{    case 1:\n        foo();\n    case 2:\n        bar();\n}"),
-                new CodeSample("<?php\nswitch (\$foo)\n{    case 1:\n        foo();\n        // no break\n        break;\n    case 2:\n        bar();\n}"),
+                new CodeSample(
+                    '<?php
+switch ($foo) {
+    case 1:
+        foo();
+    case 2:
+        bar();
+        // no break
+        break;
+    case 3:
+        baz();
+}'
+                ),
             ],
             'Adds a "no break" comment before fall-through cases, and removes it if there is no fall-through.'
         );

@@ -55,8 +55,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
             [
                 new VersionSpecificCodeSample(
                     "<?php\n[\$sample] = \$array;",
-                    new VersionSpecification(70100),
-                    ['syntax' => 'long']
+                    new VersionSpecification(70100)
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nlist(\$sample) = \$array;",

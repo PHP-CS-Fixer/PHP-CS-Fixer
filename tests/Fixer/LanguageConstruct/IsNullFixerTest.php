@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
 use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>

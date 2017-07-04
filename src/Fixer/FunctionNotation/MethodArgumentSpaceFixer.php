@@ -167,6 +167,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 $this->fixSpace2($tokens, $index);
                 if (!$isMultiline && $this->isNewline($tokens[$index + 1])) {
                     $isMultiline = true;
+
                     break;
                 }
             }
@@ -210,12 +211,14 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             // skip nested method calls and arrays
             if ($token->equals(')')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+
                 continue;
             }
 
             // skip nested arrays
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+
                 continue;
             }
 

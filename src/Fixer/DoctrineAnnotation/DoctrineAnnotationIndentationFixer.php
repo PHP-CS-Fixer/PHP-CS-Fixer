@@ -127,11 +127,13 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
 
             if ($token->isType([DocLexer::T_OPEN_PARENTHESIS, DocLexer::T_OPEN_CURLY_BRACES])) {
                 ++$lineBracesDelta;
+
                 continue;
             }
 
             if ($token->isType([DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES])) {
                 --$lineBracesDelta;
+
                 continue;
             }
         }

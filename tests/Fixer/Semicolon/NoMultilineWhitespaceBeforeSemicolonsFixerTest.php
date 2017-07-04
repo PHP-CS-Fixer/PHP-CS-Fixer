@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Semicolon;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**

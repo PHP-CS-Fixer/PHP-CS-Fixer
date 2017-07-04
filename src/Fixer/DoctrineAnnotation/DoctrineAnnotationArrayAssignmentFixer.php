@@ -34,8 +34,7 @@ final class DoctrineAnnotationArrayAssignmentFixer extends AbstractDoctrineAnnot
             'Doctrine annotations must use configured operator for assignment in arrays.',
             [
                 new CodeSample(
-                    "<?php\n/**\n * @Foo({bar : \"baz\"})\n */\nclass Bar {}",
-                    ['operator' => '=']
+                    "<?php\n/**\n * @Foo({bar : \"baz\"})\n */\nclass Bar {}"
                 ),
                 new CodeSample(
                     "<?php\n/**\n * @Foo({bar = \"baz\"})\n */\nclass Bar {}",
@@ -71,16 +70,19 @@ final class DoctrineAnnotationArrayAssignmentFixer extends AbstractDoctrineAnnot
         foreach ($tokens as $index => $token) {
             if ($token->isType(DocLexer::T_OPEN_PARENTHESIS)) {
                 $scopes[] = 'annotation';
+
                 continue;
             }
 
             if ($token->isType(DocLexer::T_OPEN_CURLY_BRACES)) {
                 $scopes[] = 'array';
+
                 continue;
             }
 
             if ($token->isType([DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES])) {
                 array_pop($scopes);
+
                 continue;
             }
 

@@ -95,6 +95,7 @@ function example($foo = "two words", $bar) {}
 
             if ($token->isGivenKind(T_VARIABLE)) {
                 $lastArgumentIndex = $i;
+
                 continue;
             }
 

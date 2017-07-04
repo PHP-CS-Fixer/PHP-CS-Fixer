@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Marc Aubé
@@ -118,6 +118,13 @@ $var = [ 1, 2, 3 ];
             ],
             [
                 '<?php list($path, $mode,) = foo();',
+            ],
+            [
+                '<?php
+$a = $b->test(  // do not remove space
+    $e          // between `(` and `)`
+                // and this comment
+);',
             ],
         ];
     }

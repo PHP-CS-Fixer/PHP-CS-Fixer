@@ -32,6 +32,16 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DescribeCommandTest extends TestCase
 {
+    /**
+     * @var Application
+     */
+    private $application;
+
+    protected function setUp()
+    {
+        $this->application = new Application();
+    }
+
     public function testExecuteOutput()
     {
         $expected = <<<'EOT'
@@ -39,11 +49,14 @@ Description of Foo/bar rule.
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer is configurable using following options:
+Fixer applying this rule is risky.
+Can break stuff.
+
+Fixer is configurable using following option:
 * functions (array): list of `function` names to fix; defaults to ['foo', 'test']
 
 Fixing examples:
- * Example #1.
+ * Example #1. Fixing with the default configuration.
    ---------- begin diff ----------
    --- Original
    +++ New
@@ -64,7 +77,7 @@ Fixing examples:
 
 EOT;
 
-        $this->assertSame($expected, $this->execute(false)->getDisplay(true));
+        $this->assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
     }
 
     public function testExecuteOutputWithDecoration()
@@ -74,11 +87,14 @@ EOT;
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer is configurable using following options:
+\033[37;41mFixer applying this rule is risky.\033[39;49m
+Can break stuff.
+
+Fixer is configurable using following option:
 * \033[32mfunctions\033[39m (\033[33marray\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
 
 Fixing examples:
- * Example #1.
+ * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
@@ -99,36 +115,51 @@ Fixing examples:
 
 EOT;
 
-        $this->assertSame($expected, $this->execute(true)->getDisplay(true));
+        $actual = $this->execute('Foo/bar', true)->getDisplay(true);
+
+        $this->assertSame($expected, $actual);
     }
 
     public function testExecuteStatusCode()
     {
-        $this->assertSame(0, $this->execute(false)->getStatusCode());
+        $this->assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
 
-    public function testExecuteWithUnknownName()
+    public function testExecuteWithUnknownRuleName()
     {
-        $application = new Application();
-        $application->add(new DescribeCommand(new FixerFactory()));
+        $this->application->add(new DescribeCommand(new FixerFactory()));
 
-        $command = $application->find('describe');
+        $command = $this->application->find('describe');
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedException(\InvalidArgumentException::class, 'Rule Foo/bar not found.');
+        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Rule "Foo/bar" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
         ]);
     }
 
+    public function testExecuteWithUnknownSetName()
+    {
+        $this->application->add(new DescribeCommand(new FixerFactory()));
+
+        $command = $this->application->find('describe');
+
+        $commandTester = new CommandTester($command);
+
+        $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Set "@NoSuchSet" not found\.$#');
+        $commandTester->execute([
+            'command' => $command->getName(),
+            'name' => '@NoSuchSet',
+        ]);
+    }
+
     public function testExecuteWithoutName()
     {
-        $application = new Application();
-        $application->add(new DescribeCommand(new FixerFactory()));
+        $this->application->add(new DescribeCommand(new FixerFactory()));
 
-        $command = $application->find('describe');
+        $command = $this->application->find('describe');
 
         $commandTester = new CommandTester($command);
 
@@ -138,12 +169,19 @@ EOT;
         ]);
     }
 
+    public function testGetAlternativeSuggestion()
+    {
+        $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
+        $this->execute('Foo2/bar', false);
+    }
+
     /**
-     * @param bool $decorated
+     * @param string $name
+     * @param bool   $decorated
      *
      * @return CommandTester
      */
-    private function execute($decorated)
+    private function execute($name, $decorated)
     {
         $fixer = $this->prophesize();
         $fixer->willImplement(\PhpCsFixer\Fixer\DefinedFixerInterface::class);
@@ -151,7 +189,7 @@ EOT;
 
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(false);
+        $fixer->isRisky()->willReturn(true);
 
         $generator = new FixerOptionValidatorGenerator();
         $functionNames = ['foo', 'test'];
@@ -202,16 +240,15 @@ EOT;
         $fixerFactory = new FixerFactory();
         $fixerFactory->registerFixer($fixer->reveal(), true);
 
-        $application = new Application();
-        $application->add(new DescribeCommand($fixerFactory));
+        $this->application->add(new DescribeCommand($fixerFactory));
 
-        $command = $application->find('describe');
+        $command = $this->application->find('describe');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             [
                 'command' => $command->getName(),
-                'name' => 'Foo/bar',
+                'name' => $name,
             ],
             [
                 'decorated' => $decorated,

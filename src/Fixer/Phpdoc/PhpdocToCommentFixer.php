@@ -97,6 +97,7 @@ foreach($connections as $key => $sqlite) {
 
             if (null === $nextToken || $nextToken->equals('}')) {
                 $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
+
                 continue;
             }
 
