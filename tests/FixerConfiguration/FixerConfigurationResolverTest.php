@@ -153,6 +153,7 @@ final class FixerConfigurationResolverTest extends TestCase
         ]);
 
         $catched = null;
+
         try {
             $configuration->resolve(['foo' => '1']);
         } catch (InvalidOptionsException $catched) {

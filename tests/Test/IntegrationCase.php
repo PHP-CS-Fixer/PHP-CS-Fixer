@@ -130,14 +130,16 @@ final class IntegrationCase
         if (!is_string($name)) {
             throw new \InvalidArgumentException(sprintf(
                 'Requirement key must be a string, got "%s".',
-                is_object($name) ? get_class($name) : gettype($name).'#'.$name));
+                is_object($name) ? get_class($name) : gettype($name).'#'.$name
+            ));
         }
 
         if (!array_key_exists($name, $this->requirements)) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown requirement key "%s", expected any of "%s".',
-                $name, implode('","', array_keys($this->requirements)))
-            );
+                $name,
+                implode('","', array_keys($this->requirements))
+            ));
         }
 
         return $this->requirements[$name];

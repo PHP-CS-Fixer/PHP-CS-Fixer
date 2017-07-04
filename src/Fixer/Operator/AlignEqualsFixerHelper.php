@@ -33,26 +33,31 @@ final class AlignEqualsFixerHelper extends AbstractAlignFixerHelper
 
             if ($token->equals('=')) {
                 $tokens[$index] = new Token(sprintf(self::ALIGNABLE_PLACEHOLDER, $this->deepestLevel).$token->getContent());
+
                 continue;
             }
 
             if ($token->isGivenKind(T_FUNCTION)) {
                 ++$this->deepestLevel;
+
                 continue;
             }
 
             if ($token->equals('(')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
                 continue;
             }
 
             if ($token->equals('[')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+
                 continue;
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+
                 continue;
             }
         }

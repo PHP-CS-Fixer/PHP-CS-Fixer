@@ -161,6 +161,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
                 if (null === $item['tag']) {
                     if ($item['desc'][0] === '@') {
                         $lines[$current + $j] = $item['indent'].' * '.$item['desc'].$lineEnding;
+
                         continue;
                     }
 

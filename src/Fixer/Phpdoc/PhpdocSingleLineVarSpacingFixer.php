@@ -62,6 +62,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_DOC_COMMENT)) {
                 $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixTokenContent($token->getContent())]);
+
                 continue;
             }
 

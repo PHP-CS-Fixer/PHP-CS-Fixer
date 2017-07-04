@@ -391,6 +391,7 @@ class Foo
             if (false !== strpos($this->tokens[$i]->getContent(), "\n")) {
                 $this->removeEmptyLinesAfterLineWithTokenAt($i);
                 $this->removeEmptyLinesAfterLineWithTokenAt($index);
+
                 break;
             }
         }
