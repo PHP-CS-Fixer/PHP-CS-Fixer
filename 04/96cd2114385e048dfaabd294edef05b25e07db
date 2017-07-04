@@ -1,0 +1,173 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-16T14:28:49Z
+
+Love the idea!
+
+> Tabs are now counted as 1 space while counting the doc head position, and removed inside the comment in favour of spaces.
+
+I wonder if it would be better to implement `WhitespacesAwareFixerInterface` to leverage `WhitespacesFixerConfig`. If the user wants to indent with tabs, you may use tabs to indent inner lines of the comments, e.g.:
+
+```
+[tab]/*
+[tab] * Foo
+[tab] */
+```
+
+WDYT?
+
+Also, in case the comment starts with `/**`, I think the fixer should add missing `*` on each line as required by [PSR-5](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#3-definitions):
+
+> In case a DocComment spans multiple lines then every line MUST start with an asterisk (*) that SHOULD be aligned with the first asterisk of the opening clause.
+
+_Note: this PR implements #2451._
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-16T15:06:07Z
+
+### Tabs
+Tabs expose some issues in the way this fixer is written at this time.
+Now it:
+
+1. Saves the last new-line position
+1. Counts the number of chars till the `/*` opening "*tag*"
+1. Prepend to each line as many spaces as the chars count.
+
+It is an alignment **relative** to the `/*` opening "*tag*" position.
+This algorithm is easy and straightforward to implement because it ignores the context of possible PHP language structure (ex. the method the docblock is written for), an no indentation count is done, i.e. you can put the comment on any position and not in a multiple of, for example, four.
+
+Therefore, how should we implement Tab handling if the "*position*" is not a multiple of a default value?
+May the user have to configure how many spaces a tab weights?
+And if so, should we by the way fill with spaces if the numbers give us a rest?
+```php
+$a = 123; /*
+*/
+
+// 11 chars before comment, how to indent?
+$a = 123; /*
+>TAB>TAB...*/
+
+// Or
+$a = 123; /*
+>TAB>TAB>TAB.*/
+
+// And if the user has set 8 spaces for a tab in the IDE?
+$a = 123; /*
+>TAB...*/
+```
+### PSR-5
+Regarding PSR-5, this can be an (excellent) option, I'm going to implement it (next week)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-18T12:37:28Z
+
+> ```php
+> $a = 123; /*
+> */
+>
+> // ...
+> ```
+
+Aligning multiline comments that start on the same line as other statements looks weird to me. I think people would either write the multiline comment before the statement or use a single-line comment (i.e. `//`). Do you have examples of actual usage of this?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-18T14:10:58Z
+
+No example for this, I discovered the case in a legacy code and wanted to be sure it was in the tests.
+
+We can skip the case, but the Tab issue remains: what if the user configured tab usage, but the fixer counts indivisible chars number, i.e. a mix of tabs and spaces?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-19T13:01:07Z
+
+So now we have:
+
+1. Default config fixes PHPDoc only, enforcing `*` on every line
+1. With `psr5_multiline_start` to `false` lines not starting with `*` are unchanged
+1. With `fix_multiline_comment` to `true` multiline comments are also fixed, but lines not starting with `*` are **never** changed
+1. PHPDoc / Multiline comments not starting on a new line are never changed
+
+`WhitespacesAwareFixerInterface` is used only for line ending; there is no need to check/use indentation set by the user, because it is copied from the `/**` position.
+
+To me there is only one thing left: what could be an appropriate name for this fixer and its options?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-19T13:49:57Z
+
+> With `psr5_multiline_start` to `false` lines not starting with `*` are unchanged
+
+I would drop this option. Let's promote (_de-facto_) standards and always enable this behavior for DocComments.
+
+> With `fix_multiline_comment` to `true` multiline comments are also fixed
+
+What about `fix_all_multiline_comments`? Current name suggests it only fixes single-line comments by default.
+
+> but lines not starting with * are never changed
+
+I like [@keradus' suggestion](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2857#discussion_r122657200) about fixing those comments only when all their lines start with a `*`. Maybe this would allow you to drop this option as well (sorry 😀).
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-19T14:29:19Z
+
+Ok, what about:
+
+1. Drop `psr5_multiline_start`: DocComment MUST follow PSR-5
+1. Rename `fix_multiline_comment` to `multiline_comment_blocks` which defaults to `false` (`fix` verb should be implicit in options context)
+1. Add `multiline_comment_blocks_mixed_content` which defaults to `false` to fix also multiline comments with mixed content
+
+?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-19T14:31:34Z
+
+`multiline_comment_blocks` would be mandatory in order to get `multiline_comment_blocks_mixed_content` work; code samples will be provided of course.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-19T14:34:53Z
+
+I still think `multiline_comment_blocks_mixed_content` option would be overkill but if you really want to implement it I'm fine so 👍 for your suggestions.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-19T16:03:28Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T07:40:26Z
+
+Changes done.
+Default is `phpdocs_only`, but we can also decide for `phpdocs_like`.
+
+Let me know
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-20T09:27:39Z
+
+@julienfalque 👍
+
+I've also added you as an `@author` and added two optimized, the `\S` and `continue 2`.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-20T10:08:30Z
+
+> I've also added you as an `@author`
+
+This was not required as I never do it myself but thanks :)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-06-27T13:07:27Z
+
+@julienfalque I see your change request is still alive, are there any ther changes pending that I don't notice?
