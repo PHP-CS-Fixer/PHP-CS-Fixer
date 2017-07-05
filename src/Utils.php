@@ -128,9 +128,9 @@ final class Utils
     }
 
     /**
-     * Sorts the given values using a Schwartzian transform and a custom
-     * comparison function. Order of equal elements is maintained. Only
-     * supports integer keys.
+     * Perform stable sorting using provided comparison function.
+     *
+     * Stability is ensured by using Schwartzian transform.
      *
      * @param mixed[]  $elements
      * @param callable $getComparedValue a callable that takes a single element and returns the value to compare
