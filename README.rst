@@ -1041,7 +1041,7 @@ Choose from the list of available rules:
     position of ``null`` (overrides ``sort_algorithm``); defaults to
     ``'always_first'``
   - ``sort_algorithm`` (``'alpha'``, ``'none'``): the sorting algorithm to apply;
-    defaults to ``'none'``
+    defaults to ``'alpha'``
 
 * **phpdoc_var_without_name** [@Symfony]
 

@@ -25,7 +25,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixCases
+     * @dataProvider getFixWithAlphaAlgorithmAndNullAlwaysFirstCases
      */
     public function testFix($expected, $input = null)
     {
@@ -148,7 +148,10 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
      */
     public function testFixWithNullLast($expected, $input = null)
     {
-        $this->fixer->configure(['null_adjustment' => 'always_last']);
+        $this->fixer->configure([
+            'sort_algorithm' => 'none',
+            'null_adjustment' => 'always_last',
+        ]);
 
         $this->doTest($expected, $input);
     }
