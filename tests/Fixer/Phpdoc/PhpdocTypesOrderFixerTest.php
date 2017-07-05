@@ -42,7 +42,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([
             'sort_algorithm' => 'none',
-            'null_position' => 'always_first',
+            'null_adjustment' => 'always_first',
         ]);
 
         $this->doTest($expected, $input);
@@ -148,7 +148,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
      */
     public function testFixWithNullLast($expected, $input = null)
     {
-        $this->fixer->configure(['null_position' => 'always_last']);
+        $this->fixer->configure(['null_adjustment' => 'always_last']);
 
         $this->doTest($expected, $input);
     }
@@ -261,7 +261,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([
             'sort_algorithm' => 'alpha',
-            'null_position' => 'default',
+            'null_adjustment' => 'none',
         ]);
 
         $this->doTest($expected, $input);
@@ -371,7 +371,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([
             'sort_algorithm' => 'alpha',
-            'null_position' => 'always_first',
+            'null_adjustment' => 'always_first',
         ]);
 
         $this->doTest($expected, $input);
@@ -479,7 +479,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([
             'sort_algorithm' => 'alpha',
-            'null_position' => 'always_last',
+            'null_adjustment' => 'always_last',
         ]);
 
         $this->doTest($expected, $input);

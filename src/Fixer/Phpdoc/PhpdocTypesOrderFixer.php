@@ -45,7 +45,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
 /**
  * @param null|string $bar
  */',
-                    ['null_position' => 'always_last']
+                    ['null_adjustment' => 'always_last']
                 ),
                 new CodeSample(
                     '<?php
@@ -61,7 +61,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
  */',
                     [
                         'sort_algorithm' => 'alpha',
-                        'null_position' => 'always_last',
+                        'null_adjustment' => 'always_last',
                     ]
                 ),
                 new CodeSample(
@@ -71,7 +71,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
  */',
                     [
                         'sort_algorithm' => 'alpha',
-                        'null_position' => 'default',
+                        'null_adjustment' => 'none',
                     ]
                 ),
             ]
@@ -96,8 +96,8 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
                 ->setAllowedValues(['alpha', 'none'])
                 ->setDefault('none')
                 ->getOption(),
-            (new FixerOptionBuilder('null_position', 'Forces the position of `null`.'))
-                ->setAllowedValues(['always_first', 'always_last', 'default'])
+            (new FixerOptionBuilder('null_adjustment', 'Forces the position of `null` (overrides `sort_algorithm`).'))
+                ->setAllowedValues(['always_first', 'always_last', 'none'])
                 ->setDefault('always_first')
                 ->getOption(),
         ]);
@@ -166,7 +166,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
             );
         }
 
-        if ('default' !== $this->configuration['null_position']) {
+        if ('none' !== $this->configuration['null_adjustment']) {
             $nulls = [];
             foreach ($types as $index => $type) {
                 if (preg_match('/^\\\?null$/i', $type)) {
@@ -176,7 +176,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
             }
 
             if (count($nulls)) {
-                if ('always_last' === $this->configuration['null_position']) {
+                if ('always_last' === $this->configuration['null_adjustment']) {
                     array_push($types, ...$nulls);
                 } else {
                     array_unshift($types, ...$nulls);

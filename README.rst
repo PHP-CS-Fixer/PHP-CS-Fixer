@@ -1037,8 +1037,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``null_position`` (``'always_first'``, ``'always_last'``, ``'default'``): forces the
-    position of ``null``; defaults to ``'always_first'``
+  - ``null_adjustment`` (``'always_first'``, ``'always_last'``, ``'none'``): forces the
+    position of ``null`` (overrides ``sort_algorithm``); defaults to
+    ``'always_first'``
   - ``sort_algorithm`` (``'alpha'``, ``'none'``): the sorting algorithm to apply;
     defaults to ``'none'``
 
