@@ -643,6 +643,16 @@ echo 1;
 echo 2;
 }',
             ),
+            array(
+                '<?php
+foreach ($foo as $bar) {
+    if (true) {
+    }
+    // comment
+    elseif (false) {
+    }
+}',
+            ),
         );
     }
 
