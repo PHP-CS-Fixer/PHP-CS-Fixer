@@ -51,7 +51,7 @@ class Token
     private $changed = false;
 
     /**
-     * @param string|array $token token prototype
+     * @param array|string $token token prototype
      */
     public function __construct($token)
     {
@@ -129,7 +129,7 @@ class Token
      *
      * If tokens are arrays, then only keys defined in parameter token are checked.
      *
-     * @param Token|array|string $other         token or it's prototype
+     * @param array|string|Token $other         token or it's prototype
      * @param bool               $caseSensitive perform a case sensitive comparison
      *
      * @return bool
@@ -188,7 +188,7 @@ class Token
     /**
      * A helper method used to find out whether or not a certain input token has to be case-sensitively matched.
      *
-     * @param bool|array<int, bool> $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     * @param array<int, bool>|bool $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                             the ones used in $others. If any is missing, the default case-sensitive
      *                                             comparison is used
      * @param int                   $key           the key of the token that has to be looked up
@@ -205,7 +205,7 @@ class Token
     }
 
     /**
-     * @return string|array token prototype
+     * @return array|string token prototype
      */
     public function getPrototype()
     {
@@ -456,7 +456,7 @@ class Token
      *
      * If called on Token inside Tokens collection please use `Tokens::overrideAt` instead.
      *
-     * @param Token|array|string $other token prototype
+     * @param array|string|Token $other token prototype
      *
      * @deprecated since 2.4
      */

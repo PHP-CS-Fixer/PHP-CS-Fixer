@@ -220,7 +220,7 @@ $className = Baz::class;
     }
 
     /**
-     * @param string|false $classImport
+     * @param false|string $classImport
      * @param string       $classString
      *
      * @return string
