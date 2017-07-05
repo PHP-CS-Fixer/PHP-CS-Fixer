@@ -485,7 +485,7 @@ class Foo
                         $tokens->ensureWhitespaceAtIndex(
                             $startBraceIndex - 1,
                             1,
-                            self::LINE_NEXT === $this->configuration['position_after_return_type_hint'] && $token->isGivenKind(T_FUNCTION) && ':' === $tokens[$tokens->getNextNonWhitespace($closingParenthesisIndex)]->getContent() ?
+                            self::LINE_NEXT === $this->configuration['position_after_return_type_hint'] && $token->isGivenKind(T_FUNCTION) && $tokens[$tokens->getNextNonWhitespace($closingParenthesisIndex)]->equals([CT::T_TYPE_COLON, ':']) ?
                                 $this->whitespacesConfig->getLineEnding().$indent
                                 : ' '
                         );
@@ -498,7 +498,7 @@ class Foo
                             || $token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)
                         )
                         && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()
-                        && !(self::LINE_NEXT === $this->configuration['position_after_return_type_hint'] && $token->isGivenKind(T_FUNCTION) && ':' === $tokens[$tokens->getNextNonWhitespace($closingParenthesisIndex)]->getContent())
+                        && !(self::LINE_NEXT === $this->configuration['position_after_return_type_hint'] && $token->isGivenKind(T_FUNCTION) && $tokens[$tokens->getNextNonWhitespace($closingParenthesisIndex)]->equals([CT::T_TYPE_COLON, ':']))
                     ) {
                         $ensuredWhitespace = ' ';
                     } else {
