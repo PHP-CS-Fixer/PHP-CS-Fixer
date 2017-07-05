@@ -137,6 +137,10 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var array<int, array<int, array<int, array<int, array<null|OutputInterface>>>>> */',
                 '<?php /** @var array<int, array<int, array<int, array<int, array<OutputInterface|null>>>>> */',
             ],
+            [
+                '<?php /** @var null|Foo[]|Foo|Foo\Bar|Foo_Bar */',
+                '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
+            ],
         ];
     }
 
@@ -251,6 +255,10 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var array<int, array<int, array<int, array<int, array<OutputInterface|null>>>>> */',
                 '<?php /** @var array<int, array<int, array<int, array<int, array<null|OutputInterface>>>>> */',
             ],
+            [
+                '<?php /** @var Foo[]|Foo|Foo\Bar|Foo_Bar|null */',
+                '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
+            ],
         ];
     }
 
@@ -361,6 +369,10 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var array<int, array<int, array<int, array<int, array<null|OutputInterface>>>>> */',
                 '<?php /** @var array<int, array<int, array<int, array<int, array<OutputInterface|null>>>>> */',
             ],
+            [
+                '<?php /** @var Foo|Foo[]|Foo\Bar|Foo_Bar|null */',
+                '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
+            ],
         ];
     }
 
@@ -468,6 +480,10 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @var array<int, array<int, array<int, array<int, array<null|OutputInterface>>>>> */',
                 '<?php /** @var array<int, array<int, array<int, array<int, array<OutputInterface|null>>>>> */',
+            ],
+            [
+                '<?php /** @var null|Foo|Foo[]|Foo\Bar|Foo_Bar */',
+                '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
             ],
         ];
     }
@@ -578,6 +594,10 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @var array<int, array<int, array<int, array<int, array<OutputInterface|null>>>>> */',
                 '<?php /** @var array<int, array<int, array<int, array<int, array<null|OutputInterface>>>>> */',
+            ],
+            [
+                '<?php /** @var Foo|Foo[]|Foo\Bar|Foo_Bar|null */',
+                '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
             ],
         ];
     }
