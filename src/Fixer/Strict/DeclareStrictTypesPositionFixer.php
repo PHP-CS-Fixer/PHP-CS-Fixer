@@ -13,7 +13,10 @@
 namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
@@ -21,27 +24,34 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Jordi Boggiano <j.boggiano@seld.be>
- * @author SpacePossum
  * @author Aidan Woods
  */
-final class DeclareStrictTypesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class DeclareStrictTypesPositionFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @internal
+     */
+    const LINE_NEXT = 'next';
+
+    /**
+     * @internal
+     */
+    const LINE_SAME = 'same';
+
     /**
      * {@inheritdoc}
      */
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Force strict types declaration in all files. Requires PHP >= 7.0.',
+            'Move the strict type declaration to the configured location. Requires PHP >= 7.0.',
             [
                 new VersionSpecificCodeSample(
-                    '<?php ',
+                    '<?php declare(strict_types=1);',
                     new VersionSpecification(70000)
                 ),
             ],
-            null,
-            'Forcing strict types will stop non strict code from working.'
+            null
         );
     }
 
@@ -67,7 +77,17 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
      */
     public function isRisky()
     {
-        return true;
+        return false;
+    }
+
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('relocate_to', 'Whether ``declare(strict_types=1)`` should be placed on "next" or "same" line, after the opening ``<?php`` tag.'))
+                ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
+                ->setDefault(self::LINE_NEXT)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -78,21 +98,21 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         // check if the declaration is already done
         $searchIndex = $tokens->getNextMeaningfulToken(0);
         $sequence = $this->getDeclareStrictTypeSequence();
-        $sequenceLocation = $tokens->findSequence($sequence, $searchIndex, null, false);
+        $sequenceLocation = $tokens->findSequence(array_merge($sequence, [new Token(';')]), $searchIndex, null, false);
 
-        if (null === $searchIndex) {
-            $this->insertSequence($tokens); // declaration not found, insert one
-        } elseif (null === $sequenceLocation) {
-            $this->insertSequence($tokens); // declaration not found, insert one
-        } else {
-            $this->fixStrictTypesCasing($tokens, $sequenceLocation);
+        if (null === $sequenceLocation) {
+            $sequenceLocation = $tokens->findSequence($sequence, $searchIndex, null, false);
+        }
+
+        if (null !== $sequenceLocation) {
+            $this->fixLocation($tokens, $sequenceLocation);
         }
     }
 
     /**
      * @return Token[]
      */
-    private function getDeclareStrictTypeSequence()
+    protected function getDeclareStrictTypeSequence()
     {
         static $sequence = null;
 
@@ -112,23 +132,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         }
 
         return $sequence;
-    }
-
-    /**
-     * @param Tokens            $tokens
-     * @param array<int, Token> $sequence
-     */
-    private function fixStrictTypesCasing(Tokens $tokens, array $sequence)
-    {
-        /** @var int $index */
-        /** @var Token $token */
-        foreach ($sequence as $index => $token) {
-            if ($token->isGivenKind(T_STRING)) {
-                $tokens[$index] = new Token([T_STRING, strtolower($token->getContent())]);
-
-                break;
-            }
-        }
     }
 
     private function insertSequence(Tokens $tokens, array $sequence = null)
@@ -156,5 +159,36 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         $extraWhitespace = substr($nextLine, 0, strlen($nextLine) - strlen($trailingContent));
 
         $tokens->ensureWhitespaceAtIndex($endIndex + 1, 0, $lineEnding.$extraWhitespace);
+    }
+
+    /**
+     * @param Tokens            $tokens
+     * @param array<int, Token> $sequence
+     */
+    private function fixLocation(Tokens $tokens, array $sequence)
+    {
+        reset($sequence);
+        $start = key($sequence);
+        end($sequence);
+        $end = key($sequence);
+
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
+        if (1 !== $start) {
+            $seq = [];
+            for ($i = $start; $i <= $end; ++$i) {
+                $seq[$i] = clone $tokens[$i];
+                $tokens->clearTokenAndMergeSurroundingWhitespace($i);
+            }
+
+            $sequence = $seq;
+
+            $tokens->clearEmptyTokens();
+
+            $this->insertSequence($tokens, array_values(array_filter($sequence, function ($token) {return $token->getContent() !== ''; })));
+        }
+
+        $end = self::LINE_NEXT === $this->configuration['relocate_to'] ? $lineEnding : ' ';
+        $tokens[0] = new Token([$tokens[0]->getId(), rtrim($tokens[0]->getContent()).$end]);
     }
 }
