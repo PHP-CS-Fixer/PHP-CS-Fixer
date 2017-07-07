@@ -339,14 +339,16 @@ Choose from the list of available rules:
 
   *Risky rule: forcing strict types will stop non strict code from working.*
 
+* **declare_strict_types_position**
+
+  Move the strict type declaration to the configured location. Requires
+  PHP >= 7.0.
+
   Configuration options:
 
-  - ``add_missing`` (``bool``): whether to add missing ```declare(strict_types=1)```
-    to file, and to correct casing; defaults to ``true``
-  - ``relocate_to`` (``'next'``, ``'same'``, ``false``): whether ```declare(strict_types=1)`````
-    should be placed on "next" or "same" line, after the opening `````<?php`````
-    tag, or false if `````declare(strict_types=1)``` should not be moved;
-    defaults to ``false``
+  - ``relocate_to`` (``'next'``, ``'same'``): whether ```declare(strict_types=1)````` should
+    be placed on "next" or "same" line, after the opening `````<?php``` tag;
+    defaults to ``'next'``
 
 * **dir_constant** [@Symfony:risky]
 
