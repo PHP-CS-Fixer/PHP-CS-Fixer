@@ -91,7 +91,7 @@ function foo ($bar) {}
                     ? sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes())))
                     : '';
                 $content = preg_replace_callback(
-                    '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\P{Lu}))(.*)$/',
+                    '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
                     function (array $matches) {
                         return $matches[1].strtolower($matches[2]).$matches[3];
                     },

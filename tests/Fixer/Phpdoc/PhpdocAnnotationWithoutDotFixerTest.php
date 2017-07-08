@@ -46,8 +46,11 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      *
      * @param string|null $str   some string
      * @param string $ip         IPv4 is not lowercased
-     * @param string $a          a
+     * @param string $a          A
+     * @param string $a_string   a string
      * @param string $ab         ab
+     * @param string $t34        T34
+     * @param string $s          S§
      * @param string $genrb      Optional. The path to the "genrb" executable
      * @param string $ellipsis1  Ellipsis is this: ...
      * @param string $ellipsis2  Ellipsis is this: 。。。
@@ -69,7 +72,10 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @param string|null $str   Some string.
      * @param string $ip         IPv4 is not lowercased.
      * @param string $a          A.
+     * @param string $a_string   A string.
      * @param string $ab         Ab.
+     * @param string $t34        T34.
+     * @param string $s          S§.
      * @param string $genrb      Optional. The path to the "genrb" executable
      * @param string $ellipsis1  Ellipsis is this: ...
      * @param string $ellipsis2  Ellipsis is this: 。。。
