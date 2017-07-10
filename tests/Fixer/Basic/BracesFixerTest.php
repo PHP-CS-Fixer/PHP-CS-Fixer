@@ -653,6 +653,44 @@ foreach ($foo as $bar) {
     }
 }',
             ),
+            array(
+                '<?php
+function foo()
+{
+    $bar = 1;                   // multiline ...
+                                // ... comment
+    $baz  = 2;                  // next comment
+}',
+            ),
+            array(
+                '<?php
+function foo()
+{
+    $foo = 1;
+
+    // multiline...
+    // ... comment
+    return $foo;
+}',
+                '<?php
+function foo()
+{
+        $foo = 1;
+
+        // multiline...
+        // ... comment
+        return $foo;
+}',
+            ),
+            array(
+                '<?php
+function foo()
+{
+    $bar = 1;     /* bar */     // multiline ...
+                                // ... comment
+    $baz  = 2;    /* baz */     // next comment
+}',
+            ),
         );
     }
 

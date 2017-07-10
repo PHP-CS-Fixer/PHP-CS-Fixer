@@ -363,7 +363,7 @@ class Foo
                     $nextLineCanBeIndented = false;
                     if ($nestToken->equalsAny(array(';', '}'))) {
                         $nextLineCanBeIndented = true;
-                    } elseif ($nestToken->isComment()) {
+                    } elseif ($this->isCommentWithFixableIndendation($tokens, $nestIndex)) {
                         for ($i = $nestIndex; $i > $startBraceIndex; --$i) {
                             if ($tokens[$i]->equalsAny(array(';', '}'))) {
                                 $nextLineCanBeIndented = true;
@@ -871,5 +871,97 @@ class Foo
         }
 
         return false;
+    }
+
+    /**
+     * Returns whether the token at given index is a comment whose indentation
+     * can be fixed.
+     *
+     * Indentation of a comment is not changed when the comment is part of a
+     * multi-line message whose lines are all single-line comments and at least
+     * one line has meaningful content.
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
+    private function isCommentWithFixableIndendation(Tokens $tokens, $index)
+    {
+        if (!$tokens[$index]->isComment()) {
+            return false;
+        }
+
+        if (0 === strpos($tokens[$index]->getContent(), '/*')) {
+            return true;
+        }
+
+        $firstCommentIndex = $index;
+        while (true) {
+            $i = $this->getSiblingContinuousSingleLineComment($tokens, $firstCommentIndex, false);
+            if (null === $i) {
+                break;
+            }
+
+            $firstCommentIndex = $i;
+        }
+
+        $lastCommentIndex = $index;
+        while (true) {
+            $i = $this->getSiblingContinuousSingleLineComment($tokens, $lastCommentIndex, true);
+            if (null === $i) {
+                break;
+            }
+
+            $lastCommentIndex = $i;
+        }
+
+        if ($firstCommentIndex === $lastCommentIndex) {
+            return true;
+        }
+
+        for ($i = $firstCommentIndex + 1; $i < $lastCommentIndex; ++$i) {
+            if (!$tokens[$i]->isWhitespace() && !$tokens[$i]->isComment()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param bool   $after
+     *
+     * @return int|null
+     */
+    private function getSiblingContinuousSingleLineComment(Tokens $tokens, $index, $after)
+    {
+        $siblingIndex = $index;
+        do {
+            if ($after) {
+                $siblingIndex = $tokens->getNextTokenOfKind($siblingIndex, array(array(T_COMMENT)));
+            } else {
+                $siblingIndex = $tokens->getPrevTokenOfKind($siblingIndex, array(array(T_COMMENT)));
+            }
+
+            if (null === $siblingIndex) {
+                return null;
+            }
+        } while (0 === strpos($tokens[$siblingIndex]->getContent(), '/*'));
+
+        $newLines = 0;
+        for ($i = min($siblingIndex, $index) + 1, $max = max($siblingIndex, $index); $i < $max; ++$i) {
+            if ($tokens[$i]->isWhitespace() && preg_match('/\R/', $tokens[$i]->getContent())) {
+                if (1 === $newLines || preg_match('/\R.*\R/', $tokens[$i]->getContent())) {
+                    return null;
+                }
+
+                ++$newLines;
+            }
+        }
+
+        return $siblingIndex;
     }
 }
