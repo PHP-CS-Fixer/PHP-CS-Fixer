@@ -103,7 +103,7 @@ final class FileHandlerTest extends TestCase
         $file = __DIR__.'/non-existent-directory/.php_cs.cache';
 
         $this->setExpectedExceptionRegExp('Symfony\Component\Filesystem\Exception\IOException', sprintf(
-            '#^Failed to write file "%s"(, ".*")?\.#',
+            '#^Failed to write file "%s", ".*"\.#',
             preg_quote($file)
         ));
 
