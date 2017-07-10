@@ -324,7 +324,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             ),
             array(
                 array('use' => '_invalid_'),
-                '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo".$#',
+                '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo"\.$#',
             ),
         );
     }
