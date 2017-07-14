@@ -100,7 +100,7 @@ EOF
     {
         return new Token(array(
             $token->getId(),
-            preg_replace('/(?<=^<<<)(\s*)"?(.*?)"?$/', '$1\'$2\'', $token->getContent()),
+            preg_replace('/(?<=^<<<)([ \t]*)"?([^\s"]+)"?/', '$1\'$2\'', $token->getContent()),
         ));
     }
 }

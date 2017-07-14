@@ -137,6 +137,15 @@ TEST;
 
 EOF
             ),
+            array(<<<EOF
+<?php echo <<<'TEST'\r\nFoo\r\nTEST;
+
+EOF
+            , <<<EOF
+<?php echo <<<TEST\r\nFoo\r\nTEST;
+
+EOF
+            ),
         );
     }
 }
