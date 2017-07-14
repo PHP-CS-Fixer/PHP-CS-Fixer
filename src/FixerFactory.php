@@ -215,8 +215,6 @@ final class FixerFactory
 
     /**
      * Sort fixers by their priorities.
-     *
-     * @return $this
      */
     private function sortFixers()
     {
@@ -232,8 +230,6 @@ final class FixerFactory
                 return Utils::cmpInt($b, $a);
             }
         );
-
-        return $this;
     }
 
     /**
