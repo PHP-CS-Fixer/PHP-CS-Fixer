@@ -35,6 +35,15 @@ interface ConfigInterface
     public function getCustomFixers();
 
     /**
+     * Get rule sets.
+     *
+     * Keys of array are names of ruleset, values are the rules.
+     *
+     * @return array
+     */
+    public function getCustomRuleSets();
+
+    /**
      * Returns files to scan.
      *
      * @return iterable|\Traversable|string[]
@@ -119,6 +128,18 @@ interface ConfigInterface
      * @return self
      */
     public function setCacheFile($cacheFile);
+
+    /**
+     * Set rule sets.
+     *
+     * Keys of array are names of ruleset names.
+     * Value for rulesets are the rules (@see ConfigInterface::setRules).
+     *
+     * @param array $ruleSets
+     *
+     * @return self
+     */
+    public function setCustomRuleSets(array $ruleSets);
 
     /**
      * @param iterable|\Traversable|string[] $finder

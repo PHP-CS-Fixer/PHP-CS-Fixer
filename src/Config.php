@@ -23,6 +23,7 @@ class Config implements ConfigInterface
 {
     private $cacheFile = '.php_cs.cache';
     private $customFixers = [];
+    private $customRuleSets = [];
     private $finder;
     private $format = 'txt';
     private $hideProgress = false;
@@ -61,6 +62,14 @@ class Config implements ConfigInterface
     public function getCustomFixers()
     {
         return $this->customFixers;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomRuleSets()
+    {
+        return $this->customRuleSets;
     }
 
     /**
@@ -172,6 +181,16 @@ class Config implements ConfigInterface
     public function setCacheFile($cacheFile)
     {
         $this->cacheFile = $cacheFile;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomRuleSets(array $ruleSets)
+    {
+        $this->customRuleSets = $ruleSets;
 
         return $this;
     }
