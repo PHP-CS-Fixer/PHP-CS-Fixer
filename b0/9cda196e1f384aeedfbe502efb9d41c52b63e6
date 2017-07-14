@@ -1,0 +1,104 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2017-06-07T18:36:16Z
+
+@julienfalque
+
+Great idea, like it a lot!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-07T18:36:22Z
+
+> For now, it only moves null to the first position:
+
+👎
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-07T18:42:26Z
+
+@GrahamCampbell Can you be more specific?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-07T18:54:45Z
+
+I don't like the idea of moving null first. Should be alphabetic, or null last imo.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-07T18:59:54Z
+
+I personally prefer having `null` always last, hence the option to enable this behavior. The default value is set to match PHP CS Fixer's own style.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-08T09:21:42Z
+
+@GrahamCampbell, it's so great that we built a tool that is not enforcing everyone to use same ruleset ;)
+
+:+1: for rule and configuration, yet it shall also handle cases like `null|int|bool`
+later, it could be enhanced to more general rule like `int|bool|null` -> `null|int|bool` -> `null|bool|int`
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-24T14:59:00Z
+
+rebased.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-24T14:59:34Z
+
+is it still WIP @julienfalque  ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-25T09:03:37Z
+
+Yes, I still have to implement https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2825#discussion_r121370276.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-28T16:25:34Z
+
+Priority integration test missing. This fixer needs to run after the fixer that changes the case of `null`.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-28T16:26:48Z
+
+Are we missing tests that check that only `null`, with that exact casing, is treated as that type?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-28T18:00:02Z
+
+Handling of `null` is case-insensitive so I don't think there is a priority issue here.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-28T18:01:26Z
+
+> Handling of null is case-insensitive so I don't think there is a priority issue here.
+
+That is a bug. PHPDoc is treated case sensitive in the rest of php-cs-fixer.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-28T18:01:50Z
+
+Apart from in the case of the import fixers checking for references, where we are more conservative.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-05T12:37:46Z
+
+I added a few test cases that show how the fixer behaves when sorting types that end with `[]` or contain `\` or `_`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-05T17:27:09Z
+
+Happy to finally have it ;)
