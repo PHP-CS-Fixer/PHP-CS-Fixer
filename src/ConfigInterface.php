@@ -37,7 +37,7 @@ interface ConfigInterface
     /**
      * Returns files to scan.
      *
-     * @return iterable|\Traversable|string[]
+     * @return iterable|string[]|\Traversable
      */
     public function getFinder();
 
@@ -107,7 +107,7 @@ interface ConfigInterface
      *
      * Name of custom fixer should follow `VendorName/rule_name` convention.
      *
-     * @param iterable|\Traversable|FixerInterface[] $fixers
+     * @param FixerInterface[]|iterable|\Traversable $fixers
      */
     public function registerCustomFixers($fixers);
 
@@ -121,7 +121,7 @@ interface ConfigInterface
     public function setCacheFile($cacheFile);
 
     /**
-     * @param iterable|\Traversable|string[] $finder
+     * @param iterable|string[]|\Traversable $finder
      *
      * @return self
      */
