@@ -215,8 +215,6 @@ final class FixerFactory
 
     /**
      * Sort fixers by their priorities.
-     *
-     * @return $this
      */
     private function sortFixers()
     {
@@ -234,8 +232,6 @@ final class FixerFactory
         $this->fixers = array_map(function (array $item) {
             return $item[0];
         }, $data);
-
-        return $this;
     }
 
     /**
