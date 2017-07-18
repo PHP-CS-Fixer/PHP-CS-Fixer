@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -212,8 +212,8 @@ TXT;
         }
 
         $this->setExpectedExceptionRegExp(
-            InvalidFixerConfigurationException::class,
-            '/^\[non_printable_character\] Invalid configuration: Escape sequences require PHP 7\.0\+\.$/'
+            InvalidForEnvFixerConfigurationException::class,
+            '/^\[non_printable_character\] Invalid configuration for env: Escape sequences require PHP 7\.0\+\.$/'
         );
 
         $this->fixer->configure([

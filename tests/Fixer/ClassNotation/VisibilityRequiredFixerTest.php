@@ -462,7 +462,7 @@ EOF;
         }
 
         $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class,
             '/^\[visibility_required\] Invalid configuration for env: "const" option can only be enabled with PHP 7\.1\+\.$/'
         );
 
