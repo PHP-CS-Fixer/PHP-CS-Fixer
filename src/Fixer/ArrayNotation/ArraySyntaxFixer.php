@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -23,7 +24,6 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -108,7 +108,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
             ->setAllowedValues(array('long', 'short'))
             ->setNormalizer(function (Options $options, $value) {
                 if (PHP_VERSION_ID < 50400 && 'short' === $value) {
-                    throw new InvalidOptionsException(sprintf(
+                    throw new InvalidOptionsForEnvException(sprintf(
                         'Short array syntax is supported from PHP5.4 (your PHP version is %d).',
                         PHP_VERSION_ID
                     ));

@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Test\AccessibleObject;
@@ -59,7 +60,12 @@ final class RuleSetTest extends TestCase
 
         $fixer = $fixers[$ruleName];
         $this->assertInstanceOf('PhpCsFixer\Fixer\ConfigurableFixerInterface', $fixer, sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
-        $fixer->configure($ruleConfig); // test fixer accepts the configuration
+
+        try {
+            $fixer->configure($ruleConfig); // test fixer accepts the configuration
+        } catch (InvalidForEnvFixerConfigurationException $exception) {
+            // ignore
+        }
     }
 
     public function provideAllRulesFromSets()

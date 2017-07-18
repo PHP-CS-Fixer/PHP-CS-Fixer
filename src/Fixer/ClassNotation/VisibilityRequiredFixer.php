@@ -17,6 +17,7 @@ use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
+use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -24,7 +25,6 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -123,7 +123,7 @@ class Sample
             ))
             ->setNormalizer(function (Options $options, $value) {
                 if (PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
-                    throw new InvalidOptionsException('"const" option can only be enabled with PHP 7.1+.');
+                    throw new InvalidOptionsForEnvException('"const" option can only be enabled with PHP 7.1+.');
                 }
 
                 return $value;
