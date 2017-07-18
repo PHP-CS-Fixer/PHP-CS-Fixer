@@ -16,13 +16,13 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -106,7 +106,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 ->setDefault(false) // @TODO change to true in 3.0
                 ->setNormalizer(function (Options $options, $value) {
                     if (PHP_VERSION_ID < 70000 && $value) {
-                        throw new InvalidOptionsException('Escape sequences require PHP 7.0+.');
+                        throw new InvalidOptionsForEnvException('Escape sequences require PHP 7.0+.');
                     }
 
                     return $value;

@@ -35,12 +35,14 @@ final class ProjectCodeTest extends TestCase
      * @var string[]
      */
     private static $classesWithoutTests = [
+        \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class,
         \PhpCsFixer\Console\Command\SelfUpdateCommand::class,
         \PhpCsFixer\Console\Output\NullOutput::class,
         \PhpCsFixer\Differ\DiffConsoleFormatter::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
+        \PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException::class,
         \PhpCsFixer\FixerFileProcessedEvent::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
