@@ -104,7 +104,7 @@ final class FileHandlerTest extends TestCase
 
         $this->setExpectedExceptionRegExp('Symfony\Component\Filesystem\Exception\IOException', sprintf(
             '#^Failed to write file "%s", ".*"\.#',
-            preg_quote($file, "#")
+            preg_quote($file, '#')
         ));
 
         $cache = new Cache(new Signature(
