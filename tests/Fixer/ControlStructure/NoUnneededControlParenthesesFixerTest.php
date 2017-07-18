@@ -346,33 +346,33 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $a = 5.1;
                 $b = 1.0;
                 switch($a) {
-                    case (int) $a < 1 : {
+                    case (int) $a < 1 : '.'
                         echo "leave alone";
                         break;
-                    }
-                    case $a < 2/* test */: {
+                    '.'
+                    case $a < 2/* test */: '.'
                         echo "fix 1";
                         break;
-                    }
-                    case 3 : {
+                    '.'
+                    case 3 : '.'
                         echo "fix 2";
                         break;
-                    }
+                    '.'
                     case /**//**/ // test
                         4
                         /**///
-                        /**/: {
+                        /**/: '.'
                         echo "fix 3";
                         break;
-                    }
-                    case ((int)$b) + 4.1: {
+                    '.'
+                    case ((int)$b) + 4.1: '.'
                         echo "fix 4";
                         break;
-                    }
-                    case ($b + 1) * 2: {
+                    '.'
+                    case ($b + 1) * 2: '.'
                         echo "leave alone";
                         break;
-                    }
+                    '.'
                 }
                 ',
                 '<?php
@@ -473,6 +473,91 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             [
                 '<?php
                 $var = clone ($obj1->getSubject() ?? $obj2);
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideSwitchCases
+     */
+    public function testSwitchCases($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideSwitchCases()
+    {
+        return[
+            [
+                '<?php
+switch($a) {
+    case 1 === $a ? true : ${$b} : //
+        echo 456;
+        break;
+    '.'
+
+    case ${$b}: '.'
+        echo 123;
+        break;
+    '.'
+}
+',
+                '<?php
+switch($a) {
+    case (1 === $a ? true : ${$b}) : {//
+        echo 456;
+        break;
+    }
+
+    case ${$b}: {
+        echo 123;
+        break;
+    }
+}
+',
+            ],
+            [
+                '<?php
+                    switch($a) {
+                        case 0; '.'
+                        '.'
+                        case 1 : /**/
+                        '.'
+                        case 2 ;  // a
+                        '.'
+                        default : '.'
+                            $a = function() {};
+                        '.'
+                    }
+                ',
+                '<?php
+                    switch($a) {
+                        case 0; {
+                        }
+                        case 1 : /**/{
+                        }
+                        case 2 ; {{{ // a
+                        }}}
+                        default : {
+                            $a = function() {};
+                        }
+                    }
+                ',
+            ],
+            [
+'<?php switch ($foo): ?>
+<?php case 1:  ?>
+        ...
+<?php  endswitch ?>
+                ',
+'<?php switch ($foo): ?>
+<?php case 1: { ?>
+        ...
+<?php } endswitch ?>
                 ',
             ],
         ];
