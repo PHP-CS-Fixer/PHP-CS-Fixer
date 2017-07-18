@@ -1,0 +1,301 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-13T10:25:44Z
+
+can you add the utests from 2611 (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2611/files) ?
+(and please copy paste these as well https://github.com/owebia/PHP-CS-Fixer/pull/1/files , thanks :) )
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-13T20:13:06Z
+
+Tests added. Note that I added them to a different provider method as I don't think they were related to `testPreserveLineAfterControlBrace`. All passed without further changes.
+
+I also added test cases (and a fix) for #2608 which is now fixed by this PR as well. Without this last change, this one was only fixed partially: everything was correcly indented, except multiline content of PHPDoc comments.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-21T07:50:20Z
+
+Looks good as far as I can see. 👍
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-21T07:52:49Z
+
+@GrahamCampbell you reported #797, would it be possible for you to somehow check whether this PR fixes your issue?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-21T07:54:11Z
+
+My mac is currently broken, so I am unable to run code easily for now. Taking it in for repair today, so will check on this soon. :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-22T18:45:53Z
+
+Got myself a working Ubuntu environment in the meanwhile. I can confirm that this PR behaves correctly on the issue that I reported. :+1:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-22T18:58:06Z
+
+Thanks for checking @GrahamCampbell!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-29T06:13:18Z
+
+```php
+    public function provideFixControlContinuationBracesCases()
+    {
+        return array(
+            array(
+                '<?php
+class A
+{
+    public function B()
+    {
+        /*
+                */
+      $a = 1;
+    }
+}
+',
+                '<?php
+class A {
+    public function B()
+    {/*
+        */
+      $a = 1;
+    }
+}
+',
+```
+
+Adding the case shows a problem; after fixing and refixing the code changes.
+Note: I didn't test this on current 2.x branches/master
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-29T07:23:34Z
+
+```php
+    public function provideFixControlContinuationBracesCases()
+    {
+        return array(
+            array(
+                '<?php
+class B
+{
+    public function B()
+    {
+        /*
+            *//**/
+        $a = 1;
+    }
+}
+',
+                '<?php
+class B {
+    public function B()
+    {
+    /*
+        *//**/
+       $a = 1;
+    }
+}
+',
+            ),
+            array(
+                '<?php
+class C
+{
+    public function C()
+    {
+        /* */#
+        $a = 1;
+    }
+}
+',
+                '<?php
+class C {
+    public function C()
+    {
+    /* */#
+       $a = 1;
+    }
+}
+',
+            ),
+```
+
+two more cases, not sure if you want to pick up these as well
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-29T07:28:01Z
+
+if you've time, please take a look at the code coverage by the tests as well
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-29T09:53:43Z
+
+Test cases added and fixed.
+
+---------------------------------------------------------------------------
+
+by mooror at 2017-07-04T04:28:56Z
+
+I'm currently using the latest PHP-CS-Fixer via its atom package and experiencing comment indenting problems myself. I am excited to see a possible fix well under way.
+
+Keep up the good work,
+Mooror
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-04T07:09:11Z
+
+please add;
+```php
+    public function provideFixControlContinuationBracesCases()
+    {
+        return array(
+            array(
+'<?php
+if ($a){/*
+*/
+echo 1;
+}
+',
+```
+
+note, this one is fixed correctly
+
+```php
+<?php
+if ($a) { /*
+*/
+echo 1;
+}
+```
+
+i.e. issue is `{` followed by multi line comment directly
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-04T07:31:13Z
+
+Rebased onto 2.2 and added the test case.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-04T07:53:55Z
+
+```php
+    public function provideFixControlContinuationBracesCases()
+    {
+        return array(
+            array(
+'<?php
+if ($a) { /**/ /*
+*/
+    echo 1;
+    echo 2;
+}
+',
+                '<?php
+if ($a){ /**/ /*
+*/
+echo 1;
+echo 2;
+}
+',
+```
+
+sorry, gave you the wrong case :(
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-04T12:16:46Z
+
+Tests updated and fixed.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-04T13:55:58Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2849#discussion_r125471150
+and please throw in some comments to make it easier to follow the code ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-07T08:50:43Z
+
+Fixed the first example you provided. I'm not sure about the second one though: how can you tell the indentation of the second comment line is intended and should not be changed?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-07T09:04:27Z
+
+the second comment line is not of concern of the fixer is it? i.e. it is not related to any braces?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-07T09:52:02Z
+
+It is: the fixer makes sure the braces are properly placed and that their content is properly indented. Here is the fixer's description:
+> The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
+
+In the example above, the second comment was not moved because of the various _"previous token is not a comment"_ checks that prevented anything that follows a comment to be properly indented, which is what this PR tries to fix.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-07T10:01:34Z
+
+the second case I provided shall not be modified (and it's not modified on `2.2@stable`)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-07T10:26:08Z
+
+> it's not modified on `2.2@stable`
+
+Like I said, anything that follows the first comment is not modified on `2.2@stable`. If you try this:
+```php
+function foo()
+{
+    $bar = 1;                   // multiline ...
+                                $foo = 3;
+    $baz  = 2;                  // next comment
+}
+```
+you'll notice that the `$foo` line isn't modified. With the changes in this PR, it will be, but I see no reason to _not_ fix this line when it is a comment.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-07T10:30:45Z
+
+what about skipping any line that is line break + white space* + comment?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-07T10:47:32Z
+
+Then following case would not be changed:
+```php
+function foo()
+{
+        // foo
+    return $foo;
+}
+```
+which looks wrong to me.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-07T10:48:01Z
+
+the thing is that a lot of users align "single-line" comments to make them be kind-of multiline. breaking it is no-go
