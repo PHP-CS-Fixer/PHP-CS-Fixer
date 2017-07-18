@@ -458,6 +458,313 @@ final class BracesFixerTest extends AbstractFixerTestCase
                 null,
                 self::$configurationOopPositionSameLine,
             ],
+            [
+                '<?php
+class Foo
+{
+    public function foo()
+    {
+        foo();
+
+        // baz
+        bar();
+    }
+}',
+                '<?php
+class Foo
+{
+    public function foo(){
+    foo();
+
+    // baz
+    bar();
+    }
+}',
+            ],
+            [
+                '<?php
+class Foo
+{
+    public function foo($foo)
+    {
+        return $foo // foo
+            ? \'foo\'
+            : \'bar\'
+        ;
+    }
+}',
+            ],
+            [
+                '<?php
+class Foo
+{
+    /**
+     * Foo.
+     */
+    public $foo;
+
+    /**
+     * Bar.
+     */
+    public $bar;
+}',
+                '<?php
+class Foo {
+  /**
+   * Foo.
+   */
+  public $foo;
+
+  /**
+   * Bar.
+   */
+  public $bar;
+}',
+            ],
+            [
+                '<?php
+class Foo
+{
+    /*
+     * Foo.
+     */
+    public $foo;
+
+    /*
+     * Bar.
+     */
+    public $bar;
+}',
+                '<?php
+class Foo {
+  /*
+   * Foo.
+   */
+  public $foo;
+
+  /*
+   * Bar.
+   */
+  public $bar;
+}',
+            ],
+            [
+                '<?php
+if (1==1) {
+    $a = 1;
+    // test
+    $b = 2;
+}',
+                '<?php
+if (1==1) {
+ $a = 1;
+  // test
+  $b = 2;
+}',
+            ],
+            [
+                '<?php
+if (1==1) {
+    $a = 1;
+    # test
+    $b = 2;
+}',
+                '<?php
+if (1==1) {
+ $a = 1;
+  # test
+  $b = 2;
+}',
+            ],
+            [
+                '<?php
+if (1==1) {
+    $a = 1;
+    /** @var int $b */
+    $b = a();
+}',
+                '<?php
+if (1==1) {
+    $a = 1;
+    /** @var int $b */
+$b = a();
+}',
+            ],
+            [
+'<?php
+    if ($b) {
+        if (1==1) {
+            $a = 1;
+            // test
+            $b = 2;
+        }
+    }
+',
+'<?php
+    if ($b) {
+        if (1==1) {
+         $a = 1;
+          // test
+          $b = 2;
+        }
+    }
+',
+            ],
+            [
+'<?php
+    if ($b) {
+        if (1==1) {
+            $a = 1;
+            /* test */
+            $b = 2;
+            echo 123;//
+        }
+    }
+',
+'<?php
+    if ($b) {
+        if (1==1) {
+         $a = 1;
+          /* test */
+          $b = 2;
+          echo 123;//
+        }
+    }
+',
+            ],
+            [
+                '<?php
+class A
+{
+    public function B()
+    {/*
+        */
+        $a = 1;
+    }
+}',
+                '<?php
+class A {
+    public function B()
+    {/*
+        */
+      $a = 1;
+    }
+}',
+            ],
+            [
+                '<?php
+class B
+{
+    public function B()
+    {
+        /*
+            *//**/
+        $a = 1;
+    }
+}',
+                '<?php
+class B {
+    public function B()
+    {
+    /*
+        *//**/
+       $a = 1;
+    }
+}',
+            ],
+            [
+                '<?php
+class C
+{
+    public function C()
+    {
+        /* */#
+        $a = 1;
+    }
+}',
+                '<?php
+class C {
+    public function C()
+    {
+    /* */#
+       $a = 1;
+    }
+}',
+            ],
+            [
+                '<?php
+if ($a) { /*
+*/
+    echo 1;
+}',
+                '<?php
+if ($a){ /*
+*/
+echo 1;
+}',
+            ],
+            [
+                '<?php
+if ($a) { /**/ /*
+*/
+    echo 1;
+    echo 2;
+}',
+                '<?php
+if ($a){ /**/ /*
+*/
+echo 1;
+echo 2;
+}',
+            ],
+            [
+                '<?php
+foreach ($foo as $bar) {
+    if (true) {
+    }
+    // comment
+    elseif (false) {
+    }
+}',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $bar = 1;                   // multiline ...
+                                // ... comment
+    $baz  = 2;                  // next comment
+}',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $foo = 1;
+
+    // multiline...
+    // ... comment
+    return $foo;
+}',
+                '<?php
+function foo()
+{
+        $foo = 1;
+
+        // multiline...
+        // ... comment
+        return $foo;
+}',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $bar = 1;     /* bar */     // multiline ...
+                                // ... comment
+    $baz  = 2;    /* baz */     // next comment
+}',
+            ],
         ];
     }
 
@@ -4415,7 +4722,7 @@ use const some\a\{ConstA, ConstB, ConstC};
             [
                 '<?php
 if (1==1) { // test
- $a = 1;
+    $a = 1;
 }
 echo $a;',
                 '<?php
@@ -4429,7 +4736,7 @@ if ($test) { // foo
     echo 1;
 }
 if (1 === 1) {//a
-$a = "b"; /*d*/
+    $a = "b"; /*d*/
 }//c
 echo $a;
 if ($a === 3) /**/
