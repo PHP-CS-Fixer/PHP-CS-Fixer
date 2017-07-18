@@ -4415,7 +4415,7 @@ use const some\a\{ConstA, ConstB, ConstC};
             [
                 '<?php
 if (1==1) { // test
- $a = 1;
+    $a = 1;
 }
 echo $a;',
                 '<?php
@@ -4425,11 +4425,53 @@ echo $a;',
             ],
             [
                 '<?php
+if (1==1) {
+    $a = 1;
+    // test
+    $b = 2;
+}',
+                '<?php
+if (1==1) {
+ $a = 1;
+  // test
+  $b = 2;
+}',
+            ],
+            [
+                '<?php
+if (1==1) {
+    $a = 1;
+    # test
+    $b = 2;
+}',
+                '<?php
+if (1==1) {
+ $a = 1;
+  # test
+  $b = 2;
+}',
+            ],
+            [
+                '<?php
+if (1==1) {
+    $a = 1;
+    /** @var int $b */
+    $b = a();
+}',
+                '<?php
+if (1==1) {
+    $a = 1;
+    /** @var int $b */
+$b = a();
+}',
+            ],
+            [
+                '<?php
 if ($test) { // foo
     echo 1;
 }
 if (1 === 1) {//a
-$a = "b"; /*d*/
+    $a = "b"; /*d*/
 }//c
 echo $a;
 if ($a === 3) /**/

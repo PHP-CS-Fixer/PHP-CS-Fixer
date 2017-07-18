@@ -361,13 +361,29 @@ class Foo
                     continue;
                 }
 
-                if (1 === $nestLevel && $nestToken->equalsAny([';', '}'])) {
+                if (1 === $nestLevel && ($nestToken->equalsAny([';', '}']) || $nestToken->isComment())) {
                     $nextNonWhitespaceNestIndex = $tokens->getNextNonWhitespace($nestIndex);
                     $nextNonWhitespaceNestToken = $tokens[$nextNonWhitespaceNestIndex];
+                    $prevNonWhitespaceNestIndex = $tokens->getPrevNonWhitespace($nestIndex);
+                    $prevNonWhitespaceNestToken = null !== $prevNonWhitespaceNestIndex ? $tokens[$prevNonWhitespaceNestIndex] : null;
 
                     if (
-                        // next Token is not a comment
-                        !$nextNonWhitespaceNestToken->isComment() &&
+                        (
+                            !$nestToken->isComment() ||
+                            !$nextNonWhitespaceNestToken->equalsAny(['[', '{', [CT::T_ARRAY_SQUARE_BRACE_OPEN], [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]]) &&
+                            !$prevNonWhitespaceNestToken->equalsAny(['[', ',', [CT::T_ARRAY_SQUARE_BRACE_OPEN], [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]])
+                        ) &&
+                        // next Token is not a multi line comment
+                        (
+                            !$nextNonWhitespaceNestToken->isComment() ||
+                            (
+                                (
+                                    substr($nextNonWhitespaceNestToken->getContent(), 0, 2) === '//' ||
+                                    substr($nextNonWhitespaceNestToken->getContent(), 0, 1) === '#'
+                                ) &&
+                                strpos($tokens[$nestIndex + 1]->getContent(), $this->whitespacesConfig->getLineEnding()) !== false
+                            )
+                        ) &&
                         // and it is not a `$foo = function () {};` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny([';', ',', ']', [CT::T_ARRAY_SQUARE_BRACE_CLOSE]])) &&
                         // and it is not a `Foo::{bar}()` situation
@@ -406,6 +422,14 @@ class Foo
                             $whitespace = $nextWhitespace.$this->whitespacesConfig->getLineEnding().$indent;
 
                             if (!$nextNonWhitespaceNestToken->equals('}')) {
+                                $whitespace .= $this->whitespacesConfig->getIndent();
+                            }
+
+                            if (
+                                $nestToken->isComment() &&
+                                !$prevNonWhitespaceNestToken->equalsAny([';', '}', '{']) &&
+                                strpos($tokens[$nestIndex - 1]->getContent(), $this->whitespacesConfig->getLineEnding()) === false
+                            ) {
                                 $whitespace .= $this->whitespacesConfig->getIndent();
                             }
                         }
