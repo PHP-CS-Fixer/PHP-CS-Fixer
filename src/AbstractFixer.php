@@ -13,6 +13,7 @@
 namespace PhpCsFixer;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
@@ -20,6 +21,7 @@ use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -128,6 +130,13 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
             throw new RequiredFixerConfigurationException(
                 $this->getName(),
                 sprintf('Missing required configuration: %s', $exception->getMessage()),
+                null,
+                $exception
+            );
+        } catch (InvalidOptionsForEnvException $exception) {
+            throw new InvalidForEnvFixerConfigurationException(
+                $this->getName(),
+                sprintf('Invalid configuration for env: %s', $exception->getMessage()),
                 null,
                 $exception
             );
