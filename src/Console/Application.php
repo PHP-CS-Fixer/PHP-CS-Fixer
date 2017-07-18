@@ -28,7 +28,8 @@ use Symfony\Component\Console\Command\ListCommand;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.4.0-DEV';
+    const VERSION = '2.4.0';
+    const VERSION_CODENAME = 'Silver Gingerbread';
 
     public function __construct()
     {
@@ -47,7 +48,12 @@ final class Application extends BaseApplication
      */
     public function getLongVersion()
     {
-        $version = parent::getLongVersion().' by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>';
+        $version = parent::getLongVersion();
+        if (self::VERSION_CODENAME) {
+            $version .= ' <info>'.self::VERSION_CODENAME.'</info>';
+        }
+        $version .= ' by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>';
+
         $commit = '@git-commit@';
 
         if ('@'.'git-commit@' !== $commit) {

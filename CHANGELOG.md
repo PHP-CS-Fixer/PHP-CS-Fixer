@@ -3,6 +3,35 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.4.0
+--------------------
+
+* bug #2880 NoBreakCommentFixer - fix edge case (julienfalque)
+* bug #2900 VoidReturnFixer - handle functions containing anonymous functions/classes (bendavies, keradus)
+* bug #2902 Fix test classes constructor (julienfalque)
+* feature #2384 Add BlankLineBeforeStatementFixer (localheinz, keradus, SpacePossum)
+* feature #2440 MethodArgumentSpaceFixer - add ensure_fully_multiline option (greg0ire)
+* feature #2649 PhpdocAlignFixer - make fixer configurable (ntzm)
+* feature #2664 Add DoctrineAnnotationArrayAssignmentFixer (julienfalque)
+* feature #2667 Add NoBreakCommentFixer (julienfalque)
+* feature #2684 BracesFixer - new options for braces position after control structures and anonymous constructs (aidantwoods, keradus)
+* feature #2701 NoExtraConsecutiveBlankLinesFixer - Add more configuration options related to switch statements (SpacePossum)
+* feature #2740 Add VoidReturnFixer (mrmark)
+* feature #2765 DoctrineAnnotationIndentationFixer - add option to indent mixed lines (julienfalque)
+* feature #2815 NonPrintableCharacterFixer - Add option to replace with escape sequences (julienfalque, keradus)
+* feature #2822 Add NoNullPropertyInitializationFixer (ntzm, julienfalque, SpacePossum)
+* feature #2825 Add PhpdocTypesOrderFixer (julienfalque, keradus)
+* feature #2856 CastSpacesFixer - add space option (kubawerlos, keradus)
+* feature #2857 Add AlignMultilineCommentFixer (Slamdunk, keradus)
+* feature #2866 Add SingleLineCommentStyleFixer, deprecate HashToSlashCommentFixer (Slamdunk, keradus)
+* minor #2773 Travis - use stages (keradus)
+* minor #2794 Drop HHVM support (keradus, julienfalque)
+* minor #2801 ProjectCodeTest - Fix typo in deprecation message (SpacePossum)
+* minor #2818 Token become immutable, performance optimizations (keradus)
+* minor #2877 Fix PHPMD report (julienfalque)
+* minor #2894 NonPrintableCharacterFixer - fix handling required PHP version on PHPUnit 4.x (keradus)
+* minor #2921 InvalidForEnvFixerConfigurationException - fix handling in tests on 2.4 line (keradus)
+
 Changelog for v2.3.3
 --------------------
 
