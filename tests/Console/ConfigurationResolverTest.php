@@ -294,7 +294,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-            '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
+            '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs\.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
         );
 
         $dirBase = $this->getFixtureDir();
@@ -312,7 +312,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-            '/^The format "xls" is not defined, supported are json, junit, txt, xml.$/'
+            '/^The format "xls" is not defined, supported are "json", "junit", "txt", "xml"\.$/'
         );
 
         $dirBase = $this->getFixtureDir();
@@ -330,7 +330,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-            '/^For multiple paths config parameter is required.$/'
+            '/^For multiple paths config parameter is required\.$/'
         );
 
         $dirBase = $this->getFixtureDir();
