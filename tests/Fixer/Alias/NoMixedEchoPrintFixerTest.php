@@ -312,19 +312,19 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         return [
             [
                 ['a' => 'b'],
-                '#^\[no_mixed_echo_print\] Invalid configuration: The option "a" does not exist\. Defined options are: "use"\.$#',
+                '#^\[no_mixed_echo_print\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "use"\.$#',
             ],
             [
                 ['a' => 'b', 'b' => 'c'],
-                '#^\[no_mixed_echo_print\] Invalid configuration: The options "a", "b" do not exist\. Defined options are: "use"\.$#',
+                '#^\[no_mixed_echo_print\] Invalid configuration: The options "a", "b" do not exist\. (Known|Defined) options are: "use"\.$#',
             ],
             [
                 [1],
-                '#^\[no_mixed_echo_print\] Invalid configuration: The option "0" does not exist\. Defined options are: "use"\.$#',
+                '#^\[no_mixed_echo_print\] Invalid configuration: The option "0" does not exist\. (Known|Defined) options are: "use"\.$#',
             ],
             [
                 ['use' => '_invalid_'],
-                '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo".$#',
+                '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo"\.$#',
             ],
         ];
     }
