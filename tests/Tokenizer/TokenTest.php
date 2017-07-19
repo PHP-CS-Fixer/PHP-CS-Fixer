@@ -436,4 +436,14 @@ final class TokenTest extends TestCase
             [false, [1 => false], 1],
         ];
     }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isChanged is deprecated and will be removed in 3.0.
+     */
+    public function testIsChanged()
+    {
+        $token = new Token([T_WHITESPACE, ' ']);
+        $this->assertFalse($token->isChanged());
+    }
 }
