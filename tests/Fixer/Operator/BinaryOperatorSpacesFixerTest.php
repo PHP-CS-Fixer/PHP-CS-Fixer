@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -22,9 +23,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractAlignFixerHelper
- * @covers \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper
- * @covers \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper
  * @covers \PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer
  */
 final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
@@ -32,10 +30,351 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
+     *
+     * @dataProvider provideWithTabsCases
+     */
+    public function testWithTabs($expected, $input = null, array $configuration = null)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideWithTabsCases()
+    {
+        return [
+            [
+                "<?php function myFunction() {
+\t\$foo         = 1;
+\t\$looooongVar = 2;
+\t\$middleVar   = 1;
+}",
+                "<?php function myFunction() {
+\t\$foo= \t1;
+\t\$looooongVar\t  = 2;
+\t\$middleVar\t= 1;
+}",
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                "<?php class A{
+public function myFunction() {
+\t \$foo         = 1;
+\t \$looooongVar = 2;
+\t \$middleVar   = 1;
+}
+}",
+                "<?php class A{
+public function myFunction() {
+\t \$foo = 1;
+\t \$looooongVar = 2;
+\t \$middleVar = 1;
+}
+}",
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $configuration
+     *
+     * @dataProvider provideTestCases
+     */
+    public function testConfigured($expected, $input = null, array $configuration = null)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestCases()
+    {
+        return [
+            [
+                '<?php
+$this->a
+ = $this->b
+ = 1
+;',
+                                '<?php
+$this->a
+= $this->b
+= 1
+;',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+        $this->newName
+                = $this->path
+                = $this->randomName
+                = $this->remoteFile
+                = $this->tmpContent
+                = null;',
+                '<?php
+        $this->newName
+                =     $this->path
+               =    $this->randomName
+              =   $this->remoteFile
+             =  $this->tmpContent
+            = null;',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+$a//
+     = 1;
+                ',
+                '<?php
+$a//
+     =  1;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE]],
+            ],
+            [
+                '<?php
+    $var = [];
+    foreach ([
+                1 => 2,
+                2 => 3,
+            ] as $k => $v) {
+        $var[] = [$i => $bar];
+    }',
+                '<?php
+    $var = [];
+    foreach ([
+                1=> 2,
+                2   =>3,
+            ] as $k => $v) {
+        $var[] = [$i => $bar];
+    }',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a = array(
+                    1 => 2, 4 => 5,
+                    5 => 2, 6 => 5, 7 => 8, 9 => 10, 11 => 1222,
+                );',
+                '<?php $a = array(
+                    1=>2, 4=>5,
+                    5=>2, 6 =>   5, 7=>8, 9=>10, 11=>1222,
+                );',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a = array(1 => 2, 4 => 5);',
+                '<?php $a = array(1=>2, 4  =>  5);',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a = array(1 => 2, 4 => 5 && $b, 5 => 5 && $b, 6 => 5 && $b, 7 => 5 && $b);',
+                '<?php $a = array(1 => 2, 4 => 5&&$b, 5 => 5  &&  $b, 6 => 5&&  $b, 7 => 5  &&$b);',
+                ['operators' => ['&&' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+                    [1 =>   "foo"];
+                    [2    => "foo"];
+                    [3 => "foo"];
+                ',
+                '<?php
+                    [1 =>   "foo"];
+                    [2    =>"foo"];
+                    [3=>"foo"];
+                ',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            [
+                '<?php
+                    [1 => "foo"];
+                    [2 => "foo"];
+                    [3 => "foo"];
+                ',
+                '<?php
+                    [1 =>   "foo"];
+                    [2    =>"foo"];
+                    [3=>"foo"];
+                ',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a += 1;',
+                '<?php $a+=1;',
+                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            [
+                '<?php $a += 1;',
+                '<?php $a+=1;',
+                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a+=1;',
+                null,
+                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN]],
+            ],
+            [
+                '<?php
+    $ade = $b !==   $a;
+    $b = $b   !==   $a;
+    $c = $b   !== $a;
+                ',
+                '<?php
+    $ade = $b!==   $a;
+    $b = $b!==   $a;
+    $c = $b!==$a;
+                ',
+                ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            [
+                '<?php
+    $aab = $b !== $e;
+    $b = $b   !== $c;
+    $c = $b   !== $d;
+                ',
+                '<?php
+    $aab = $b         !==$e;
+    $b = $b     !==$c;
+    $c = $b             !==$d;
+                ',
+                ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+    $aaa*= 11;
+    $b  *= 21;
+    $c  *=31;
+
+    $d = $e and $f;
+    $d = $g   or    $h;
+                ',
+                '<?php
+    $aaa*= 11;
+    $b *= 21;
+    $c*=31;
+
+    $d = $e   and    $f;
+    $d = $g   or    $h;
+                ',
+                [
+                    'operators' => [
+                        'and' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
+                        '*=' => BinaryOperatorSpacesFixer::ALIGN,
+                        'or' => null,
+                    ],
+                ],
+            ],
+            [
+                '<?php
+    $abc = $b !== $a;
+    $b = $b   !== $a;
+    $c = $b   !== $a;
+                ',
+                '<?php
+    $abc = $b         !==    $a;
+    $b = $b     !==     $a;
+    $c = $b             !==    $a;
+                ',
+                ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a = [
+                    1 => 2,
+                    2 => 3,
+                ];',
+                '<?php $a = [
+                    1=>2,
+                    2  =>   3,
+                ];',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+                    [1 => "foo",
+                     2 => "foo"];
+                ',
+                '<?php
+                    [1 =>   "foo",
+                     2   => "foo"];
+                ',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+                    [1 => "foo"];
+                    $i += 1;
+                ',
+                '<?php
+                    [1 => "foo"];
+                    $i+= 1;
+                ',
+                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a    =   1   +    2; $b = array(
+                    13 =>3,
+                    4  =>  3,
+                    5=>2,
+                );',
+                null,
+                ['default' => null],
+            ],
+            [
+                '<?php $a = 1 + 2; $b = array(
+                    13 => 3,
+                    4  => 3,
+                    5  => 2,
+                );
+                $a = 12 + 1;
+                $a = 13 + 41;
+                ',
+                '<?php $a    =   1   +    2; $b = array(
+                    13 =>3,
+                    4  =>  3,
+                    5=>2,
+                );
+                $a = 12   +  1;
+                $a = 13+41;
+                ',
+                ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
+            ],
+            'do not align with nor touch strings' => [
+                '<?php
+                    \putenv("{$name}= {$value}");
+                $b                     = $c + 1;
+                                    $b = $c - 1;
+                ',
+                '<?php
+                    \putenv("{$name}= {$value}");
+                $b =$c+1;
+                                    $b =$c  -  1;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            'do not align with declare' => [
+                '<?php
+                    declare(ticks=1);
+                    $a = 1;
+                    $b = 1;
+                ',
+                '<?php
+                    declare(ticks=1);
+                    $a   = 1;
+                    $b              = 1;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFixDefaults($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -125,7 +464,6 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                 '<?php $a &=
 $b;',
             ],
-
             [
                 '<?php $a
 &= $b;',
@@ -216,6 +554,18 @@ $b;',
                 '<?php [1, 2]   + //   '.'
                 [3, 4];',
             ],
+            [
+                '<?php $a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;',
+                '<?php $a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;',
+            ],
+            [
+                '<?php
+$c =
+$a
++
+$b;
+',
+            ],
         ];
     }
 
@@ -234,8 +584,8 @@ $b;',
     {
         return [
             [
-                '<?php $a = "c";',
-                '<?php $a="c";',
+                '<?php $a = "c"?>',
+                '<?php $a="c"?>',
             ],
             [
                 '<?php $a = "c";',
@@ -246,9 +596,9 @@ $b;',
                 '<?php $a= "c";',
             ],
             [
-                '<?php $d = $c + $a +     //
+                '<?php $d = $c + $a/**/ +     //
                 $b;',
-                '<?php $d =    $c+$a+     //
+                '<?php $d =    $c+$a/**/+     //
                 $b;',
             ],
             [
@@ -362,24 +712,129 @@ $b;',
         ];
     }
 
-    public function testWrongConfigItem()
+    /**
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true]. Use configuration: ['operators' => ['=>' => 'single_space']] as replacement for ['align_double_arrow' => false].
+     */
+    public function testWrongConfigOldDeprecated()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "align_double_arrow", "align_equals"\.$/'
-        );
-
-        $this->fixer->configure(['foo' => true]);
+        $this->fixer->configure([
+            'align_equals' => true,
+            'align_double_arrow' => false,
+        ]);
     }
 
-    public function testWrongConfigValue()
+    /**
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true].
+     */
+    public function testWrongConfigOldDeprecated2()
+    {
+        $this->fixer->configure([
+            'align_equals' => true,
+            'align_double_arrow' => null,
+        ]);
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=>' => 'align']] as replacement for ['align_double_arrow' => true].
+     */
+    public function testWrongConfigOldDeprecated3()
+    {
+        $this->fixer->configure([
+            'align_equals' => null,
+            'align_double_arrow' => true,
+        ]);
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'single_space']] as replacement for ['align_equals' => false]. Use configuration: ['operators' => ['=>' => 'align']] as replacement for ['align_double_arrow' => true].
+     */
+    public function testWrongConfigOldDeprecated4()
+    {
+        $this->fixer->configure([
+            'align_equals' => false,
+            'align_double_arrow' => true,
+        ]);
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true]. Use configuration: ['operators' => ['=>' => 'align']] as replacement for ['align_double_arrow' => true].
+     */
+    public function testWrongConfigOldDeprecated5()
+    {
+        $this->fixer->configure([
+            'align_equals' => true,
+            'align_double_arrow' => true,
+        ]);
+
+        // simple test to see if the old config is still used
+        $this->doTest(
+            '<?php
+                $a = array(
+                    1  => 2,
+                    2  => 3,
+                );
+
+                $b   = 1;
+                $c   =  2;
+            ',
+            '<?php
+                $a = array(
+                    1 => 2,
+                    2  => 3,
+                );
+
+                $b = 1;
+                $c   =  2;
+            '
+        );
+    }
+
+    public function testWrongConfigOldAndNewMixed()
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid\. Accepted values are: true, false, null\.$/'
+            '/^\[binary_operator_spaces\] Mixing old configuration with new configuration is not allowed\.$/'
         );
 
-        $this->fixer->configure(['align_double_arrow' => 123]);
+        $this->fixer->configure([
+            'align_double_arrow' => true,
+            'operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN],
+        ]);
+    }
+
+    public function testWrongConfigTypeForOperators()
+    {
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "operators" with value true is expected to be of type "array", but is of type "boolean"\.$/'
+        );
+
+        $this->fixer->configure(['operators' => true]);
+    }
+
+    public function testWrongConfigTypeForOperatorsKey()
+    {
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[binary_operator_spaces\] Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/'
+        );
+
+        $this->fixer->configure(['operators' => [123 => 1]]);
+    }
+
+    public function testWrongConfigTypeForOperatorsKeyValue()
+    {
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[binary_operator_spaces\] Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/'
+        );
+
+        $this->fixer->configure(['operators' => ['+' => 'abc']]);
     }
 
     /**
@@ -787,7 +1242,7 @@ $b;',
      */
     public function testFixAlignEquals($expected, $input = null)
     {
-        $this->fixer->configure(['align_equals' => true]);
+        $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]]);
         $this->doTest($expected, $input);
     }
 
@@ -913,7 +1368,7 @@ $b;',
      */
     public function testFixAlignDoubleArrow($expected, $input = null)
     {
-        $this->fixer->configure(['align_double_arrow' => true]);
+        $this->fixer->configure(['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN]]);
         $this->doTest($expected, $input);
     }
 
@@ -940,7 +1395,7 @@ $b;',
                 '<?php
     return new JsonResponse(array(
         "result" => "OK",
-        "html"   => 1, array(
+        "html"   => 1, /**/array(
             "foo"    => "bar",
             "foofoo" => array(
                 "a"  => 1,
@@ -951,7 +1406,7 @@ $b;',
                 '<?php
     return new JsonResponse(array(
         "result" => "OK",
-        "html" => 1, array(
+        "html" => 1, /**/array(
             "foo" => "bar",
             "foofoo" => array(
                 "a" => 1,
@@ -1456,10 +1911,14 @@ $b;',
 
     public function testDoNotTouchEqualsAndArrowByConfig()
     {
-        $this->fixer->configure([
-            'align_equals' => null,
-            'align_double_arrow' => null,
-        ]);
+        $this->fixer->configure(
+            [
+                'operators' => [
+                    '=' => null,
+                    '=>' => null,
+                ],
+            ]
+        );
 
         $this->doTest(
             '<?php
@@ -1480,22 +1939,89 @@ $b;',
     }
 
     /**
-     * @requires PHP 7.1
+     * @requires PHP 7.0
      */
-    public function testAlignArrayDestruction()
+    public function testPHP70Cases()
     {
-        $this->fixer->configure(['align_equals' => true]);
+        $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]]);
         $this->doTest(
-            '<?php
-                $c = [$d] = $e[1];
-                function A(){}[$a] = $a[$c];
-                $b                 = 1;
-            ',
-            '<?php
-                $c = [$d] = $e[1];
-                function A(){}[$a] = $a[$c];
-                $b = 1;
-            '
+            '<?php declare(strict_types=1);
+$a = 1;
+echo 1 <=> 1;
+echo 1 <=> 2;
+echo 2 <=> 1;
+echo 2 <=> 1;
+
+$a = $a  ?? $b;
+$a = $ab ?? $b;
+$a = $ac ?? $b;
+$a = $ad ?? $b;
+$a = $ae ?? $b;
+',
+            '<?php declare(strict_types=1);
+$a = 1;
+echo 1<=>1;
+echo 1 <=>2;
+echo 2<=> 1;
+echo 2  <=>   1;
+
+$a = $a ?? $b;
+$a = $ab   ?? $b;
+$a = $ac    ?? $b;
+$a = $ad  ?? $b;
+$a = $ae?? $b;
+'
         );
+    }
+
+    /**
+     * @requires PHP 7.1
+     *
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $configuration
+     *
+     * @dataProvider providePHP71Cases
+     */
+    public function testPHP71Cases($expected, $input = null, array $configuration = null)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP71Cases()
+    {
+        return [
+            'align array destruction' => [
+                '<?php
+                    $c = [$d] = $e[1];
+                    function A(){}[$a] = $a[$c];
+                    $b                 = 1;
+                ',
+                '<?php
+                    $c = [$d] = $e[1];
+                    function A(){}[$a] = $a[$c];
+                    $b = 1;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
+            ],
+            'align array destruction with assignments' => [
+                '<?php
+                    $d = [
+                        "a" => $a,
+                        "b" => $b,
+                        "c" => $c
+                    ] = $array;
+                ',
+                '<?php
+                    $d = [
+                        "a"=>$a,
+                        "b"   => $b,
+                        "c" =>   $c
+                    ] = $array;
+                ',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+        ];
     }
 }
