@@ -776,4 +776,53 @@ EOT
             ),
         );
     }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testAnonymousClassFixing()
+    {
+        $this->doTest(
+            '<?php
+                $a = new class() {
+                    const PUBLIC_CONST_TWO = 0;
+                    const TEST_70 = 0;
+
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {
+                            const PUBLIC_CONST_TWO = 0;
+                            const TEST_70 = 0;
+                            public function a() {}
+                        };
+                    }
+                }
+            ',
+            '<?php
+                $a = new class() {
+                    const PUBLIC_CONST_TWO = 0, TEST_70 = 0;
+
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {
+                            const PUBLIC_CONST_TWO = 0, TEST_70 = 0;
+                            public function a() {}
+                        };
+                    }
+                }
+            '
+        );
+    }
 }
