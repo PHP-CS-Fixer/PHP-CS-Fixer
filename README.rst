@@ -799,6 +799,11 @@ Choose from the list of available rules:
     ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case',
     'yield']``
 
+* **no_unneeded_curly_braces**
+
+  Removes unneeded curly braces that are superfluous and aren't part of a
+  control structure's body.
+
 * **no_unreachable_default_argument_value**
 
   In function arguments there must not be arguments with default values

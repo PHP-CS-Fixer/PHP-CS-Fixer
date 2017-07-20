@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: no_unneeded_curly_braces,no_useless_return.
+--RULESET--
+{"no_unneeded_curly_braces": true, "no_useless_return": true}
+--EXPECT--
+<?php
+function example($b)
+{
+    if ($b) {
+        return;
+    }
+    // before no useless return fixer
+    //
+}
+
+--INPUT--
+<?php
+function example($b)
+{
+    if ($b) {
+        return;
+    }
+    // before no useless return fixer
+    {{return;}}//
+}

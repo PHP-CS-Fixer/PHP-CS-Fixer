@@ -336,7 +336,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         $errorStr = '';
         foreach ($errors as $error) {
-            $errorStr .= sprintf("%d: %s\n", $error->getType(), $error->getFilePath());
+            $source = $error->getSource();
+            $errorStr .= sprintf("%d: %s%s\n", $error->getType(), $error->getFilePath(), null === $source ? '' : ' '.$source->getMessage());
         }
 
         return $errorStr;
