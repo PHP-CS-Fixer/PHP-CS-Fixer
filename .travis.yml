@@ -22,6 +22,7 @@ matrix:
           env: TASK_SCA=1 COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1
         - php: 5.3
           env: SKIP_LINT_TEST_CASES=1 COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
+          dist: precise
         - php: 5.4
           env: SKIP_LINT_TEST_CASES=1
         - php: 5.5

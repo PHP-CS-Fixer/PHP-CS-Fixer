@@ -156,10 +156,10 @@ final class RuleSet implements RuleSetInterface
         ),
         '@PHP70Migration' => array(
             '@PHP56Migration' => true,
-            'random_api_migration' => array(
+            'random_api_migration' => array('replacements' => array(
                 'mt_rand' => 'random_int',
                 'rand' => 'random_int',
-            ),
+            )),
             'ternary_to_null_coalescing' => true,
         ),
         '@PHP70Migration:risky' => array(
@@ -167,11 +167,11 @@ final class RuleSet implements RuleSetInterface
         ),
         '@PHP71Migration' => array(
             '@PHP70Migration' => true,
-            'visibility_required' => array(
+            'visibility_required' => array('elements' => array(
                 'const',
                 'method',
                 'property',
-            ),
+            )),
         ),
     );
 
