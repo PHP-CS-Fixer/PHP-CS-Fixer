@@ -1,0 +1,16 @@
+checkout:
+    pre:
+        - system_profiler SPSoftwareDataType
+
+dependencies:
+    cache_directories:
+        - ~/.composer
+    pre:
+        - curl -sS https://getcomposer.org/installer | php
+    override:
+        - php composer.phar install --no-interaction --no-progress --optimize-autoloader
+
+test:
+    override:
+        - vendor/bin/phpunit --verbose
+        - php php-cs-fixer --diff --dry-run -v fix
