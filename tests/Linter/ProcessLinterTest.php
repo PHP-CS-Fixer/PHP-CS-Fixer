@@ -37,9 +37,9 @@ final class ProcessLinterTest extends AbstractLinterTestCase
      *
      * @testWith ["php", "foo.php", "'php' '-l' 'foo.php'"]
      *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
-     * @requires OS Linux
+     * @requires OS Linux|Darwin
      */
-    public function testPrepareCommandOnPhpOnLinux($executable, $file, $expected)
+    public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
     {
         $this->assertSame(
             $expected,
@@ -54,7 +54,7 @@ final class ProcessLinterTest extends AbstractLinterTestCase
      *
      * @testWith ["php", "foo.php", "php -l foo.php"]
      *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
-     * @requires OS Win
+     * @requires OS ^Win
      */
     public function testPrepareCommandOnPhpOnWindows($executable, $file, $expected)
     {
