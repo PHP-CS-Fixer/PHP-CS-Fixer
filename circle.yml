@@ -1,0 +1,24 @@
+machine:
+    xcode:
+        version: 8.2
+
+checkout:
+    pre:
+        - system_profiler SPSoftwareDataType
+
+dependencies:
+    cache_directories:
+        - ~/.composer
+        - ~/Library/Caches/Homebrew
+    pre:
+        - brew tap homebrew/homebrew-php
+        - brew install php71
+        - curl -sS https://getcomposer.org/installer | php
+        - php composer.phar global show -ND 2>&1 | grep "hirak/prestissimo" || php composer.phar global require --no-interaction --no-progress --optimize-autoloader hirak/prestissimo
+    override:
+        - php composer.phar install --no-interaction --no-progress --optimize-autoloader
+
+test:
+    override:
+        - vendor/bin/phpunit --verbose
+        - php php-cs-fixer --diff --dry-run -v fix
