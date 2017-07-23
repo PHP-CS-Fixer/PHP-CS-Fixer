@@ -1,6 +1,6 @@
 machine:
-  xcode:
-    version: 8.2
+    xcode:
+        version: 8.2
 
 checkout:
     pre:
