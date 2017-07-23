@@ -1,3 +1,7 @@
+machine:
+    xcode:
+        version: 8.2
+
 checkout:
     pre:
         - system_profiler SPSoftwareDataType
@@ -5,7 +9,10 @@ checkout:
 dependencies:
     cache_directories:
         - ~/.composer
+        - ~/Library/Caches/Homebrew
     pre:
+        - brew tap homebrew/homebrew-php
+        - brew install php71
         - curl -sS https://getcomposer.org/installer | php
     override:
         - php composer.phar install --no-interaction --no-progress --optimize-autoloader
