@@ -28,7 +28,7 @@ use Symfony\Component\Console\Command\ListCommand;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.4.0';
+    const VERSION = '2.4.1-DEV';
     const VERSION_CODENAME = 'Silver Gingerbread';
 
     public function __construct()
