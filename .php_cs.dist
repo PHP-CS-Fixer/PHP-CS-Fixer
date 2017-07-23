@@ -10,7 +10,7 @@ This source file is subject to the MIT license that is bundled
 with this source code in the file LICENSE.
 EOF;
 
-return PhpCsFixer\Config::create()
+$config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules(array(
         '@Symfony' => true,
@@ -41,3 +41,15 @@ return PhpCsFixer\Config::create()
             ->in(__DIR__)
     )
 ;
+
+// special handling of fabbot.io service if it's using too old PHP CS Fixer version
+try {
+    PhpCsFixer\FixerFactory::create()
+        ->registerBuiltInFixers()
+        ->registerCustomFixers($config->getCustomFixers())
+        ->useRuleSet(new PhpCsFixer\RuleSet($config->getRules()));
+} catch (\Exception $e) {
+    $config->setRules(array());
+}
+
+return $config;
