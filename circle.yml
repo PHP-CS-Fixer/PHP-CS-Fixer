@@ -10,6 +10,7 @@ checkout:
 dependencies:
     cache_directories:
         - ~/.composer
+        - ~/Library/Caches/Homebrew
     pre:
         - brew tap homebrew/homebrew-php
         - brew install php71
