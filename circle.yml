@@ -1,3 +1,7 @@
+machine:
+  php:
+    version: 5.6.31
+
 checkout:
     pre:
         - system_profiler SPSoftwareDataType
