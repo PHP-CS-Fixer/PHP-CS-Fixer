@@ -1,0 +1,71 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-07-22T20:37:42Z
+
+Is 2.2 still maintained?
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-07-22T21:53:25Z
+
+> Is 2.2 still maintained?
+
+Who knows 🤷‍♂️
+
+<img width="1013" alt="screen shot 2017-07-22 at 22 47 06" src="https://user-images.githubusercontent.com/3288888/28494754-b905bf0e-6f2f-11e7-89e6-1401efe99118.png">
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-07-22T22:04:58Z
+
+I assumed 2.2.5 was the last 2.2.x release. Meh. :P
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-07-22T23:08:43Z
+
+You know, I think I just noticed why phpunit is breaking on Mac...
+
+OS name is Dar**win** 😆
+
+From http://php.net/manual/en/reserved.constants.php#113172
+<img width="1032" alt="screen shot 2017-07-23 at 00 09 42" src="https://user-images.githubusercontent.com/3288888/28495099-498d69f4-6f3b-11e7-8b9a-81503f6ee552.png">
+<img width="602" alt="screen shot 2017-07-23 at 00 06 24" src="https://user-images.githubusercontent.com/3288888/28495088-cbcc0f16-6f3a-11e7-87ef-b3dd0aadbf0e.png">
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-23T12:15:29Z
+
+I have force-changed your branch and PR is now sent against `circle` branch, so you can see if your work works great on OSX integration.
+Please, fix OSX
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-23T12:52:52Z
+
+buahaha, the error is
+> Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 72 bytes) in /Users/distiller/PHP-CS-Fixer/src/Tokenizer/Tokens.php on line 210
+
+:D
+
+---------------------------------------------------------------------------
+
+by aidantwoods at 2017-07-23T13:11:02Z
+
+> Please, fix OSX
+
+> Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 72 bytes) in /Users/distiller/PHP-CS-Fixer/src/Tokenizer/Tokens.php on line 210
+
+Uhhhhh `sed -i 's/<?php/<?php\'$'\n'"ini_set('memory_limit','1G');/" vendor/bin/phpunit`? ;p
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-23T13:32:11Z
+
+no
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-23T14:40:14Z
+
+if you want, you could update php used by circleci
