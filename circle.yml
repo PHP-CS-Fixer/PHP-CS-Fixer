@@ -12,5 +12,5 @@ dependencies:
 
 test:
     override:
-        - vendor/bin/phpunit --verbose
+        - SKIP_LINT_TEST_CASES=1 vendor/bin/phpunit --verbose
         - php php-cs-fixer --diff --dry-run -v fix
