@@ -2,7 +2,6 @@ machine:
   xcode:
     version: 8.2
 
-
 checkout:
     pre:
         - system_profiler SPSoftwareDataType
