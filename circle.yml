@@ -2,10 +2,6 @@ machine:
   xcode:
     version: 8.2
 
-dependencies:
-  pre:
-    - brew tap homebrew/homebrew-php
-    - brew install php71
 
 checkout:
     pre:
@@ -15,6 +11,8 @@ dependencies:
     cache_directories:
         - ~/.composer
     pre:
+        - brew tap homebrew/homebrew-php
+        - brew install php71
         - curl -sS https://getcomposer.org/installer | php
     override:
         - php composer.phar install --no-interaction --no-progress --optimize-autoloader
