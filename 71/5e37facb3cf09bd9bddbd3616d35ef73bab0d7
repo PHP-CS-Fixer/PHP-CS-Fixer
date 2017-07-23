@@ -1,0 +1,47 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-22T18:37:45Z
+
+@aidantwoods, @GrahamCampbell
+as suggested in linked PR, let us try CircleCI for OSX testing.
+Do you want to propose improvements to configuration ? (eg faster build, tests on PHP matrix instead of only one version)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-07-22T20:34:25Z
+
+> tests on PHP matrix instead of only one version
+
+Best way to approach that is using circleci v2 I think.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-07-22T20:34:51Z
+
+Instead of all the inbrowser config from v1.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-22T22:09:56Z
+
+> Best way to approach that is using circleci v2 I think.
+
+During setup, they claim v2 is not available for osx yet
+
+> Instead of all the inbrowser config from v1.
+
+how you find config file to be in-browser config?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-07-22T22:15:29Z
+
+> how you find config file to be in-browser config?
+
+In v1, there are settings in the browser for some things. They are totally ignored on v2. The in-repo config is truly only used.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-22T22:18:32Z
+
+again, any suggestion to improve the config having in mind that **v2 is not yet available for osx** ?
