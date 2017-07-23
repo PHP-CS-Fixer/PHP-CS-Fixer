@@ -39,7 +39,7 @@ final class ProcessLinterTest extends AbstractLinterTestCase
      *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
      * @requires OS Linux|Darwin
      */
-    public function testPrepareCommandOnPhpOnLinuxAndMac($executable, $file, $expected)
+    public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
     {
         if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('Skip tests for PHP compiler when running on HHVM compiler.');
