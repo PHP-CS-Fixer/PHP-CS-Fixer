@@ -235,7 +235,11 @@ final class NoUnusedImportsFixer extends AbstractFixer
             return;
         }
 
-        $nextIndex = $useDeclaration['end'] + 1;
+        $nextIndex = $tokens->getNonEmptySibling($useDeclaration['end'], 1);
+        if (null === $nextIndex) {
+            return;
+        }
+
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->isWhitespace()) {
