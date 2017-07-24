@@ -48,7 +48,7 @@ try {
         ->registerBuiltInFixers()
         ->registerCustomFixers($config->getCustomFixers())
         ->useRuleSet(new PhpCsFixer\RuleSet($config->getRules()));
-} catch (\Exception $e) {
+} catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
     $config->setRules(array());
 }
 
