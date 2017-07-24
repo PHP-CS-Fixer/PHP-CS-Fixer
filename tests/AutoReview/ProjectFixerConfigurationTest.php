@@ -27,7 +27,7 @@ final class ProjectFixerConfigurationTest extends TestCase
 {
     public function testCreate()
     {
-        $setLocation = __DIR__.'/../.php_cs.dist';
+        $setLocation = __DIR__.'/../../.php_cs.dist';
 
         /** @var \PhpCsFixer\Config $config */
         $config = require $setLocation;
