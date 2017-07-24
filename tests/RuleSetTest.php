@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Test\AccessibleObject;
@@ -34,11 +35,13 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param string $rule
+     * @param string     $ruleName
+     * @param string     $setName
+     * @param bool|array $ruleConfig
      *
      * @dataProvider provideAllRulesFromSets
      */
-    public function testIfAllRulesInSetsExists($rule)
+    public function testIfAllRulesInSetsExists($setName, $ruleName, $ruleConfig)
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -49,38 +52,55 @@ final class RuleSetTest extends TestCase
             $fixers[$fixer->getName()] = $fixer;
         }
 
-        $this->assertArrayHasKey($rule, $fixers);
+        $this->assertArrayHasKey($ruleName, $fixers, sprintf('RuleSet "%s" contains unknown rule.', $setName));
+
+        if (true === $ruleConfig) {
+            return; // rule doesn't need configuration.
+        }
+
+        $fixer = $fixers[$ruleName];
+        $this->assertInstanceOf('PhpCsFixer\Fixer\ConfigurableFixerInterface', $fixer, sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
+
+        try {
+            $fixer->configure($ruleConfig); // test fixer accepts the configuration
+        } catch (InvalidForEnvFixerConfigurationException $exception) {
+            // ignore
+        }
     }
 
     public function provideAllRulesFromSets()
     {
         $cases = array();
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
-            $cases = array_merge($cases, RuleSet::create(array($setName => true))->getRules());
+            foreach (RuleSet::create(array($setName => true))->getRules() as $rule => $config) {
+                $cases[] = array(
+                    $setName,
+                    $rule,
+                    $config,
+                );
+            }
         }
 
-        return array_map(
-            function ($item) {
-                return array($item);
-            },
-            array_keys($cases)
-        );
+        return $cases;
     }
 
-    public function testBuildInSetDefinitionNames()
+    public function testGetBuildInSetDefinitionNames()
     {
         $setNames = RuleSet::create()->getSetDefinitionNames();
 
         $this->assertInternalType('array', $setNames);
         $this->assertNotEmpty($setNames);
+    }
 
-        $i = 0;
-        foreach ($setNames as $index => $setName) {
-            $this->assertSame($i, $index);
-            $this->assertInternalType('string', $setName);
-            $this->assertSame('@', substr($setName, 0, 1));
-            ++$i;
-        }
+    /**
+     * @dataProvider providerSetDefinitionNames
+     *
+     * @param mixed $setName
+     */
+    public function testBuildInSetDefinitionNames($setName)
+    {
+        $this->assertInternalType('string', $setName);
+        $this->assertSame('@', substr($setName, 0, 1));
     }
 
     public function testResolveRulesWithInvalidSet()

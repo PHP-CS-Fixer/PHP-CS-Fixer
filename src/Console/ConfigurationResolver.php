@@ -410,7 +410,7 @@ final class ConfigurationResolver
                 $formats = $reporterFactory->getFormats();
                 sort($formats);
 
-                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, implode(', ', $formats)));
+                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are "%s".', $format, implode('", "', $formats)));
             }
         }
 
@@ -691,9 +691,9 @@ final class ConfigurationResolver
             true
         )) {
             throw new InvalidConfigurationException(sprintf(
-                'The path-mode "%s" is not defined, supported are %s.',
+                'The path-mode "%s" is not defined, supported are "%s".',
                 $this->options['path-mode'],
-                implode(', ', $modes)
+                implode('", "', $modes)
             ));
         }
 
