@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Console\ConfigurationResolver;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +20,8 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  *
- * @covers .php_cs.dist
+ * @coversNothing
+ * @group auto-review
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
