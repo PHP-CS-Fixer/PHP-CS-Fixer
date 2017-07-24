@@ -39,6 +39,7 @@ final class ProjectFixerConfigurationTest extends TestCase
         $this->assertEmpty($config->getCustomFixers());
         $this->assertNotEmpty($config->getRules());
 
+        // call so the fixers get configured to reveal issue (like deprecated configuration used etc.)
         $resolver = new ConfigurationResolver($config, array(), __DIR__);
         $resolver->getFixers();
     }
