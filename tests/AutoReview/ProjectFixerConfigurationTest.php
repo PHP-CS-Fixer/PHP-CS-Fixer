@@ -27,13 +27,8 @@ final class ProjectFixerConfigurationTest extends TestCase
 {
     public function testCreate()
     {
-        $setLocation = __DIR__.'/../../.php_cs.dist';
-
-        $this->assertFileExists($setLocation, 'Failed to find ".php_cs.dist".');
-        $this->assertTrue(is_readable($setLocation), sprintf('Config file "%s" is not readable.', $setLocation));
-
         /** @var \PhpCsFixer\Config $config */
-        $config = require $setLocation;
+        $config = require __DIR__.'/../../.php_cs.dist';
 
         $this->assertInstanceOf('PhpCsFixer\Config', $config);
         $this->assertEmpty($config->getCustomFixers());
