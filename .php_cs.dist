@@ -58,9 +58,7 @@ try {
         ->registerCustomFixers($config->getCustomFixers())
         ->useRuleSet(new PhpCsFixer\RuleSet($config->getRules()));
 } catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
-    $config->setRules([
-        'array_syntax' => ['syntax' => 'short'],
-    ]);
+    $config->setRules([]);
 }
 
 return $config;
