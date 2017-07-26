@@ -115,6 +115,8 @@ class Token
 
     /**
      * Clear internal flag if token was changed.
+     *
+     * @deprecated since 2.4
      */
     public function clearChanged()
     {
@@ -339,9 +341,13 @@ class Token
      * Check if token was changed.
      *
      * @return bool
+     *
+     * @deprecated since 2.4
      */
     public function isChanged()
     {
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+
         return $this->changed;
     }
 
@@ -488,6 +494,8 @@ class Token
 
     /**
      * @param string $content
+     *
+     * @deprecated since 2.4
      */
     public function setContent($content)
     {
