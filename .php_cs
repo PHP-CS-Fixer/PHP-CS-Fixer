@@ -13,7 +13,7 @@ EOF;
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules(array(
-        'array_syntax' => array('syntax' => 'long'),
+        'array_syntax' => array('syntax' => 'short'),
     ))
     ->setFinder(
         PhpCsFixer\Finder::create()
