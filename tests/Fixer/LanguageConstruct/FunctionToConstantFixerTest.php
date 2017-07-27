@@ -126,6 +126,13 @@ $a =
                 '<?php echo phpversion(); echo php_sapi_name(); echo M_PI;',
                 array('functions' => array('pi', 'phpversion')),
             ),
+            'diff argument count than native allows' => array(
+                '<?php
+                    echo phpversion(1);
+                    echo php_sapi_name(1,2);
+                    echo pi(1);
+                ',
+            ),
         );
     }
 
