@@ -36,7 +36,7 @@ final class WhitespacesFixerConfigTest extends TestCase
         if (null !== $exceptionRegExp) {
             $this->setExpectedExceptionRegExp(
                 'InvalidArgumentException',
-                '%^'.preg_quote($exceptionRegExp).'$%'
+                '%^'.preg_quote($exceptionRegExp, '%').'$%'
             );
         }
 
