@@ -185,7 +185,7 @@ final class FixCommand extends Command
             $progressOutput = new ProcessOutput(
                 $stdErr,
                 $this->eventDispatcher,
-                'estimating-max' === $progressType ? $this->getMaxColumns() : null,
+                'estimating-max' === $progressType ? (new Terminal())->getWidth() : null,
                 count($finder)
             );
         }
@@ -280,15 +280,5 @@ final class FixCommand extends Command
         }
 
         return $exitStatus;
-    }
-
-    private function getMaxColumns()
-    {
-        // Terminal was introduced in symfony/console 3.2
-        if (!class_exists(Terminal::class)) {
-            return $this->getApplication()->getTerminalDimensions()[0];
-        }
-
-        return (new Terminal())->getWidth();
     }
 }
