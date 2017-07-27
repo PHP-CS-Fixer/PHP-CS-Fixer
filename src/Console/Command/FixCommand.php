@@ -176,6 +176,7 @@ final class FixCommand extends Command
         $progressType = $resolver->getProgress();
         $finder = $resolver->getFinder();
 
+        // @TODO remove `run-in` and `estimating` in 3.0
         if ('none' === $progressType || null === $stdErr) {
             $progressOutput = new NullOutput();
         } elseif ('run-in' === $progressType) {
