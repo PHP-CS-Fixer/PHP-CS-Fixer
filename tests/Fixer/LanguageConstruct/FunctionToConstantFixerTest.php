@@ -137,6 +137,18 @@ $a =
                             echo __CLASS__;
                         }
                     }
+
+                    trait A
+                    {
+                        public function A() {
+                            var_dump(__CLASS__);
+                        }
+                    }
+
+                    class B
+                    {
+                        use A;
+                    }
                 ',
                 '<?php
                     class A
@@ -147,6 +159,18 @@ $a =
                             echo get_class(/** 1 *//* 2 */);
                             echo GET_Class();
                         }
+                    }
+
+                    trait A
+                    {
+                        public function A() {
+                            var_dump(get_class());
+                        }
+                    }
+
+                    class B
+                    {
+                        use A;
                     }
                 ',
             ],
