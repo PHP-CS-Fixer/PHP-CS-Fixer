@@ -31,7 +31,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
      * @var string[]
      */
     private static $availableFunctions = [
-        'get_class' => 'T_CLASS',
+        'get_class' => '__CLASS__',
         'php_sapi_name' => 'PHP_SAPI',
         'phpversion' => 'PHP_VERSION',
         'pi' => 'M_PI',
