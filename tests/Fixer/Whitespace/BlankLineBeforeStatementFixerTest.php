@@ -23,7 +23,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixerTest
+ * @covers \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer
  */
 final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
 {
