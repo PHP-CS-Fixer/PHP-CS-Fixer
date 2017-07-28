@@ -30,16 +30,26 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     /**
      * @var string[]
      */
-    private static $availableFunctions = [
-        'phpversion' => 'PHP_VERSION',
-        'php_sapi_name' => 'PHP_SAPI',
-        'pi' => 'M_PI',
-    ];
+    private static $availableFunctions;
 
     /**
-     * @var array<string, string>
+     * @var array<string, Token>
      */
     private $functionsFixMap;
+
+    public function __construct()
+    {
+        if (null === self::$availableFunctions) {
+            self::$availableFunctions = [
+                'get_class' => new Token([T_CLASS_C, '__CLASS__']),
+                'php_sapi_name' => new Token([T_STRING, 'PHP_SAPI']),
+                'phpversion' => new Token([T_STRING, 'PHP_VERSION']),
+                'pi' => new Token([T_STRING, 'M_PI']),
+            ];
+        }
+
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -142,15 +152,15 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
      * @param int    $index
      * @param int    $braceOpenIndex
      * @param int    $braceCloseIndex
-     * @param string $replacementConst
+     * @param Token  $replacementConst
      */
-    private function fixFunctionCallToConstant(Tokens $tokens, $index, $braceOpenIndex, $braceCloseIndex, $replacementConst)
+    private function fixFunctionCallToConstant(Tokens $tokens, $index, $braceOpenIndex, $braceCloseIndex, Token $replacementConst)
     {
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceCloseIndex);
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceOpenIndex);
 
         $tokens->clearAt($index);
-        $tokens->insertAt($index, new Token([T_STRING, $replacementConst]));
+        $tokens->insertAt($index, $replacementConst);
     }
 
     /**
@@ -171,6 +181,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
             return null;
         }
 
+        // test if function call without parameters
         $braceCloseIndex = $tokens->getNextMeaningfulToken($braceOpenIndex);
         if (!$tokens[$braceCloseIndex]->equals(')')) {
             return null;
@@ -198,7 +209,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         return [
             $braceOpenIndex,
             $braceCloseIndex,
-            $this->functionsFixMap[$lowerContent],
+            clone $this->functionsFixMap[$lowerContent],
         ];
     }
 }
