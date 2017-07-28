@@ -126,6 +126,30 @@ $a =
                 '<?php echo phpversion(); echo php_sapi_name(); echo M_PI;',
                 ['functions' => ['pi', 'phpversion']],
             ],
+            'get_class => T_CLASS' => [
+                '<?php
+                    class A
+                    {
+                        public function echoClassName($notMe)
+                        {
+                            echo get_class($notMe);
+                            echo T_CLASS/** 1 *//* 2 */;
+                            echo T_CLASS;
+                        }
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        public function echoClassName($notMe)
+                        {
+                            echo get_class($notMe);
+                            echo get_class(/** 1 *//* 2 */);
+                            echo GET_Class();
+                        }
+                    }
+                ',
+            ],
         ];
     }
 

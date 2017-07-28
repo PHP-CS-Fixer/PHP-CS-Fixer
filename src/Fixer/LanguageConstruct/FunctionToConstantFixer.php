@@ -31,8 +31,9 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
      * @var string[]
      */
     private static $availableFunctions = [
-        'phpversion' => 'PHP_VERSION',
+        'get_class' => 'T_CLASS',
         'php_sapi_name' => 'PHP_SAPI',
+        'phpversion' => 'PHP_VERSION',
         'pi' => 'M_PI',
     ];
 
@@ -171,6 +172,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
             return null;
         }
 
+        // test if function call without parameters
         $braceCloseIndex = $tokens->getNextMeaningfulToken($braceOpenIndex);
         if (!$tokens[$braceCloseIndex]->equals(')')) {
             return null;
