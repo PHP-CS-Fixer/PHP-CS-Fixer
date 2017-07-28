@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Test\Assert;
 
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -36,7 +37,11 @@ trait AssertTokensTrait
             $expectedTokenKind = $expectedToken->isArray() ? $expectedToken->getId() : $expectedToken->getContent();
             $this->assertTrue(
                 $inputTokens->isTokenKindFound($expectedTokenKind),
-                sprintf('The token kind %s must be found in fixed tokens collection.', $expectedTokenKind)
+                sprintf(
+                    'The token kind %s (%s) must be found in tokens collection.',
+                    $expectedTokenKind,
+                    is_string($expectedTokenKind) ? $expectedTokenKind : Token::getNameForId($expectedTokenKind)
+                )
             );
         }
 

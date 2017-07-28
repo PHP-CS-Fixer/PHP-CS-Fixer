@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
@@ -445,5 +446,34 @@ final class TokenTest extends TestCase
     {
         $token = new Token([T_WHITESPACE, ' ']);
         $this->assertFalse($token->isChanged());
+    }
+
+    /**
+     * @param null|string $expected
+     * @param int         $id
+     *
+     * @dataProvider provideTokenGetNameCases
+     */
+    public function testTokenGetNameForId($expected, $id)
+    {
+        $this->assertSame($expected, Token::getNameForId($id));
+    }
+
+    public function provideTokenGetNameCases()
+    {
+        return [
+            [
+                null,
+                -1,
+            ],
+            [
+                'T_CLASS',
+                T_CLASS,
+            ],
+            [
+                'CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            ],
+        ];
     }
 }
