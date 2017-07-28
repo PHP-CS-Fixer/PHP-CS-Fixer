@@ -133,8 +133,8 @@ $a =
                         public function echoClassName($notMe)
                         {
                             echo get_class($notMe);
-                            echo T_CLASS/** 1 *//* 2 */;
-                            echo T_CLASS;
+                            echo __CLASS__/** 1 *//* 2 */;
+                            echo __CLASS__;
                         }
                     }
                 ',
