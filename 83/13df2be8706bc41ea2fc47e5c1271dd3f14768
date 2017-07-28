@@ -1,0 +1,97 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-19T17:34:57Z
+
+please add `@deprecated` annotation where it's missing (clearChanged, isChanged, setContent)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-20T07:26:02Z
+
+Done.
+
+Now I'm wondering. Introducing deprecations requires a minor version bump, but this one should have been introduced in 2.4 with other deprecations in the same class. Should I change the target?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-20T07:45:39Z
+
+>requires a minor version bump
+
+Strictly it doesn't, although this might be how SF implements semver.
+Master target now will mean this will in 2.4.x I guess, so all good to me :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-20T07:50:45Z
+
+Bumping minor version when introducing a deprecation *is* a [Semver requirement](http://semver.org/#spec-item-7):
+> Minor version Y (x.Y.z | x > 0) MUST be incremented if new, backwards compatible functionality is introduced to the public API. It MUST be incremented if any public API functionality is marked as deprecated.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-20T08:01:46Z
+
+sorry about that :/
+
+but what why? so if you forgot a deprecation you're not allowed to patch it? semver is weird sometimes
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-20T08:12:03Z
+
+That's why I am wondering: should we follow semver strictly and target 2.5 or merge it as a fix for a 2.4 oversight? I would go for 2.4.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-20T09:50:43Z
+
+2.4 bugfix
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-20T10:18:33Z
+
+we don't want to trigger warning on all those methods?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-20T10:21:16Z
+
+is it missing somewhere ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-20T10:28:39Z
+
+GH UI is playing mind tricks :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-26T06:50:08Z
+
+please rebase @julienfalque
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-26T12:20:52Z
+
+@fabpot, we are experiencing weird behaviour of fabbot.io service.
+
+In `.php_cs` file, we are asking for using `'array_syntax' => array('syntax' => 'short'),` ruleset, yet we get complains that we shall use long form. Could you take a look please?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-26T12:28:11Z
+
+Debug tests reverted. Relevant config file that is not correctly taken into account by fabbot.io can be viewed here: https://github.com/julienfalque/PHP-CS-Fixer/blob/e0f3841c5663652e6a371da3acf2adc68b75a42c/.php_cs
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-26T12:33:35Z
+
+or directly in PR history commit:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2924/commits/e0f3841c5663652e6a371da3acf2adc68b75a42c
+
+together with fabbot report:
+http://fabbot.io/report/FriendsOfPHP/PHP-CS-Fixer/2924/e0f3841c5663652e6a371da3acf2adc68b75a42c
