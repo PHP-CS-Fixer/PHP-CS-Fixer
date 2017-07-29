@@ -80,9 +80,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         $sequence = $this->getDeclareStrictTypeSequence();
         $sequenceLocation = $tokens->findSequence($sequence, $searchIndex, null, false);
 
-        if (null === $searchIndex) {
-            $this->insertSequence($tokens); // declaration not found, insert one
-        } elseif (null === $sequenceLocation) {
+        if (null === $searchIndex || null === $sequenceLocation) {
             $this->insertSequence($tokens); // declaration not found, insert one
         } else {
             $this->fixStrictTypesCasing($tokens, $sequenceLocation);
