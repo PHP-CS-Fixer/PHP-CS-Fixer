@@ -1,0 +1,1 @@
+EXTRA_ARGS=('--path-mode=intersection' '--' "${CHANGED_FILES[@]}")
