@@ -27,13 +27,15 @@ use Symfony\CS\ToolInfo;
  */
 class SelfUpdateCommand extends Command
 {
+    const COMMAND_NAME = 'self-update';
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('self-update')
+            ->setName(self::COMMAND_NAME)
             ->setAliases(array('selfupdate'))
             ->setDefinition(
                 array(
