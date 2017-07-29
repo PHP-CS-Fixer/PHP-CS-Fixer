@@ -163,6 +163,30 @@ EOF;
     }
 
     /**
+     * @requires PHP 7.0
+     */
+    public function testIgnoreAnonymousClass()
+    {
+        $file = $this->getTestFile(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+new class implements Countable {};
+EOF;
+
+        $this->doTest($expected, null, $file);
+
+        $expected = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+new class extends stdClass {};
+EOF;
+
+        $this->doTest($expected, null, $file);
+    }
+
+    /**
      * @param string $filename
      *
      * @dataProvider provideIgnoredCases
