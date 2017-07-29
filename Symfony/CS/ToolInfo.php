@@ -104,6 +104,6 @@ class ToolInfo
 
     private static function getComposerInstalledFile()
     {
-        return __DIR__.'/../../../composer/installed.json';
+        return __DIR__.'/../../../../composer/installed.json';
     }
 }
