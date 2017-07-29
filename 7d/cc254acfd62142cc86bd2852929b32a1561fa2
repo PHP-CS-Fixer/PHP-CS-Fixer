@@ -1,0 +1,72 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-22T14:32:25Z
+
+Hi, thanks for PR !
+please, could you retarget it against 2.2 base branch ?
+
+---------------------------------------------------------------------------
+
+by dg at 2017-07-22T14:34:55Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-22T15:32:25Z
+
+nope, base branch is still master
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-23T15:11:48Z
+
+please fix issues reported by CIs
+
+---------------------------------------------------------------------------
+
+by dg at 2017-07-23T17:38:15Z
+
+Fixed :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-24T09:05:49Z
+
+I have updated your branch with 2.2 to have newest CircleCI config
+
+---------------------------------------------------------------------------
+
+by dg at 2017-07-24T09:14:16Z
+
+@keradus It is a big surprise for me that you can write to my branch. But now I see 3 commits there and I do not know if it's okay.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-24T09:20:36Z
+
+@dg
+On the right side of the PR there is a checkbox to (not) allow maintainers to make changes to you work.
+Just a little FYI for the future ;)
+
+---------------------------------------------------------------------------
+
+by dg at 2017-07-24T09:23:52Z
+
+I see it, great!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-24T09:25:41Z
+
+From a maintainer side, you even have a button "Update branch" (near "Merge PR") so I could merge base branch (here 2.2) to your branch directly from website.
+
+>  But now I see 3 commits there and I do not know if it's okay.
+
+that's perfectly fine, I will squash them during merging
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-24T09:28:03Z
+
+please fix tests ;)
