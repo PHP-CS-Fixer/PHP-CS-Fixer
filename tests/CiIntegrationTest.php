@@ -132,10 +132,15 @@ final class CiIntegrationTest extends TestCase
             $steps[3],
         ), true);
 
-        $this->assertSame(
-            'Loaded config default from ".php_cs.dist".
+        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.1.*.
+Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
+';
+        $executionDetails = 'Loaded config default from ".php_cs.dist".
 S.
-Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error',
+Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error';
+
+        $this->assertRegExp(
+            '/^('.preg_quote($optionalIncompatibilityWarning, '/').')?'.preg_quote($executionDetails, '/').'$/',
             trim($result3['stderr'])
         );
         $this->assertRegExp(
