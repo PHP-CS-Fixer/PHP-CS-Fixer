@@ -1,0 +1,40 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-24T08:53:38Z
+
+> filter out rules unknown to fabbot
+> filter out rules with unknown configuration to fabbot
+
+for now, `.php_cs.dist` is pretty nice example. while I do understand your changes, I'm not sure are the overwhelm in config file is worth it. a lot of logic makes our file not to be an example. IMO when we want to run the rules that are too new for fabbot.io, we could skip all rules (still, letting fabbot perform other proofreading like spell checking). We do check the rules on our side anyway, thus imo simple callback "do PHP CS Fixer based checks if possible or skip them completely is enough. WDYT?
+
+rest of the changes looks like a great idea ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-24T09:05:44Z
+
+makes a lot of sense, maybe a little on your PR to only catch `PhpCsFixer\ConfigurationException\InvalidConfigurationException` ?
+eveything else means something is really wrong I think ;)
+
+I'll clean out this PR soon
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-24T09:07:22Z
+
+yeah, probably we don't need to catch everythink...
+not sure would it be one or two exceptions (2 scenarios: non-existing rule, wrong config for existing rule)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-24T09:19:07Z
+
+you should only need
+`PhpCsFixer\ConfigurationException\InvalidConfigurationException`
+fixer config exception extends from it so should be OK
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-24T11:42:37Z
+
+expect utest to fail until https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2935
