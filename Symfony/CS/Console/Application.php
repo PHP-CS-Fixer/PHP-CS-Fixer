@@ -57,8 +57,7 @@ class Application extends BaseApplication
      */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
-        // setup output
-        $stdErr = false// $output instanceof ConsoleOutputInterface
+        $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
             : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output)
         ;
