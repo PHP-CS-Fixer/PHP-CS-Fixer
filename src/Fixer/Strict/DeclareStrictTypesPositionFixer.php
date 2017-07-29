@@ -83,7 +83,7 @@ final class DeclareStrictTypesPositionFixer extends AbstractFixer implements Con
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('relocate_to', 'Whether ``declare(strict_types=1)`` should be placed on "next" or "same" line, after the opening ``<?php`` tag.'))
+            (new FixerOptionBuilder('relocate_to', 'Whether `declare(strict_types=1)` should be placed on "next" or "same" line, after the opening `<?php` tag.'))
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_NEXT)
                 ->getOption(),

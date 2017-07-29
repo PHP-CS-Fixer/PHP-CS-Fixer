@@ -346,8 +346,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``relocate_to`` (``'next'``, ``'same'``): whether ```declare(strict_types=1)````` should
-    be placed on "next" or "same" line, after the opening `````<?php``` tag;
+  - ``relocate_to`` (``'next'``, ``'same'``): whether ``declare(strict_types=1)`` should
+    be placed on "next" or "same" line, after the opening ``<?php`` tag;
     defaults to ``'next'``
 
 * **dir_constant** [@Symfony:risky]
