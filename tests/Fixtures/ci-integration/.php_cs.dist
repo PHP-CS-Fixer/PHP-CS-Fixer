@@ -1,9 +1,9 @@
 <?php
 
 return PhpCsFixer\Config::create()
-    ->setRules([
+    ->setRules(array(
         '@Symfony' => true,
-    ])
+    ))
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
