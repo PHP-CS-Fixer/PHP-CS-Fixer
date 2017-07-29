@@ -256,11 +256,11 @@ EOF
             $template
         );
 
-        $ciIntegration = [
-            file_get_contents(__DIR__ . '/../../../dev-tools/ci-integration/step1-changed_files.sh'),
-            file_get_contents(__DIR__ . '/../../../dev-tools/ci-integration/step2-extra_args.sh'),
-            file_get_contents(__DIR__ . '/../../../dev-tools/ci-integration/step3-execution.sh'),
-        ];
+        $ciIntegration = array(
+            file_get_contents(__DIR__.'/../../../dev-tools/ci-integration/step1-changed_files.sh'),
+            file_get_contents(__DIR__.'/../../../dev-tools/ci-integration/step2-extra_args.sh'),
+            file_get_contents(__DIR__.'/../../../dev-tools/ci-integration/step3-execution.sh'),
+        );
 
         $template = str_replace(
             '%%%CI_INTEGRATION%%%',
