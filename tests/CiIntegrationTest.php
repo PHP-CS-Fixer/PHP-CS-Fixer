@@ -21,6 +21,7 @@ use Symfony\Component\Process\Process;
  *
  * @internal
  *
+ * @requires OS Linux|Darwin
  * @coversNothing
  */
 final class CiIntegrationTest extends TestCase
