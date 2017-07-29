@@ -506,7 +506,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``functions`` (``array``): list of function names to fix; defaults to
-    ``['phpversion', 'php_sapi_name', 'pi']``
+    ``['get_class', 'php_sapi_name', 'phpversion', 'pi']``
 
 * **function_typehint_space** [@Symfony]
 
