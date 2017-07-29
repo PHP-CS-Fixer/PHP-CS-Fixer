@@ -1,0 +1,11 @@
+<?php
+
+return PhpCsFixer\Config::create()
+    ->setRules(array(
+        '@Symfony' => true,
+    ))
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(__DIR__)
+    )
+;
