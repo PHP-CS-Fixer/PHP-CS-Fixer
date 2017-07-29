@@ -657,9 +657,15 @@ final class ConfigurationResolver
          *
          * @see RuleSet::resolveSet()
          */
-        $ruleSet = RuleSet::create(array_map(function () {
-            return true;
-        }, $rules));
+        $ruleSet = [];
+        foreach ($rules as $key => $value) {
+            if (is_int($key)) {
+                throw new InvalidConfigurationException(sprintf('Missing value for "%s" rule/set.', $value));
+            }
+
+            $ruleSet[$key] = true;
+        }
+        $ruleSet = new RuleSet($ruleSet);
 
         /** @var string[] $configuredFixers */
         $configuredFixers = array_keys($ruleSet->getRules());

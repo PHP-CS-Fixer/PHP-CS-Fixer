@@ -117,3 +117,5 @@ jobs:
                 on:
                     repo: FriendsOfPHP/PHP-CS-Fixer
                     tags: true
+            after_deploy:
+                - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}

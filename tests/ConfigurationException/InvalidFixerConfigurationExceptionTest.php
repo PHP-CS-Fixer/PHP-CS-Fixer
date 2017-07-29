@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\ConfigurationException;
 
-use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PHPUnit\Framework\TestCase;
 
@@ -21,42 +21,48 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\ConfigurationException\InvalidConfigurationException
+ * @covers \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
  */
 final class InvalidFixerConfigurationExceptionTest extends TestCase
 {
     public function testIsInvalidArgumentException()
     {
-        $exception = new InvalidConfigurationException('I cannot do that, Dave.');
+        $exception = new InvalidFixerConfigurationException('foo', 'I cannot do that, Dave.');
 
-        $this->assertInstanceOf('InvalidArgumentException', $exception);
+        $this->assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, $exception);
     }
 
     public function testDefaults()
     {
+        $fixerName = 'hal';
         $message = 'I cannot do that, Dave.';
 
-        $exception = new InvalidConfigurationException($message);
+        $exception = new InvalidFixerConfigurationException(
+            $fixerName,
+            $message
+        );
 
-        $this->assertSame($message, $exception->getMessage());
-        $this->assertSame(FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG, $exception->getCode());
+        $this->assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        $this->assertSame(FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        $this->assertSame($fixerName, $exception->getFixerName());
         $this->assertNull($exception->getPrevious());
     }
 
     public function testConstructorSetsValues()
     {
+        $fixerName = 'hal';
         $message = 'I cannot do that, Dave.';
-        $code = 9000;
         $previous = new \RuntimeException();
 
-        $exception = new InvalidConfigurationException(
+        $exception = new InvalidFixerConfigurationException(
+            $fixerName,
             $message,
-            $code,
             $previous
         );
 
-        $this->assertSame($message, $exception->getMessage());
-        $this->assertSame($code, $exception->getCode());
+        $this->assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        $this->assertSame(FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        $this->assertSame($fixerName, $exception->getFixerName());
         $this->assertSame($previous, $exception->getPrevious());
     }
 }

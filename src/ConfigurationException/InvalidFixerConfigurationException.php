@@ -24,6 +24,11 @@ use PhpCsFixer\Console\Command\FixCommand;
 class InvalidFixerConfigurationException extends InvalidConfigurationException
 {
     /**
+     * @var string
+     */
+    private $fixerName;
+
+    /**
      * @param string          $fixerName
      * @param string          $message
      * @param null|\Exception $previous
@@ -35,5 +40,14 @@ class InvalidFixerConfigurationException extends InvalidConfigurationException
             FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG,
             $previous
         );
+        $this->fixerName = $fixerName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFixerName()
+    {
+        return $this->fixerName;
     }
 }
