@@ -84,10 +84,10 @@ final class CiIntegrationTest extends TestCase
         $result1 = static::executeScript(array(
             $steps[0],
             $steps[1],
-            'echo "${#CHANGED_FILES[@]}";',
-            'echo "${CHANGED_FILES[@]}";',
-            'echo "${CHANGED_FILES[0]}";',
-            'echo "${CHANGED_FILES[1]}";',
+            'echo "${#CHANGED_FILES[@]}"',
+            'echo "${CHANGED_FILES[@]}"',
+            'echo "${CHANGED_FILES[0]}"',
+            'echo "${CHANGED_FILES[1]}"',
         ), true);
 
         $this->assertSame(
@@ -105,6 +105,7 @@ final class CiIntegrationTest extends TestCase
             $steps[1],
             $steps[2],
             'echo "${#EXTRA_ARGS[@]}"',
+            'echo "${EXTRA_ARGS[@]}"',
             'echo "${EXTRA_ARGS[0]}"',
             'echo "${EXTRA_ARGS[1]}"',
             'echo "${EXTRA_ARGS[2]}"',
@@ -114,6 +115,7 @@ final class CiIntegrationTest extends TestCase
         $this->assertSame(
             array(
                 '4',
+                '--path-mode=intersection -- dir a/file.php dir b/file b.php',
                 '--path-mode=intersection',
                 '--',
                 'dir a/file.php',
@@ -129,14 +131,17 @@ final class CiIntegrationTest extends TestCase
             $steps[3],
         ), true);
 
-        $this->assertSame(0, $result3['code']);
-        $this->assertSame('
-Checked all files in 0.004 seconds, 6.000 MB memory used
-', $result3['output']);
-        $this->assertSame('Loaded config default from ".php_cs.dist".
+        $this->assertSame(
+            'Loaded config default from ".php_cs.dist".
 S.
-Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error
-', $result3['stderr']);
+Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error',
+            trim($result3['stderr'])
+        );
+        $this->assertRegExp(
+            '/^Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used$/',
+            trim($result3['output'])
+        );
+        $this->assertSame(0, $result3['code']);
     }
 
     private static function executeCommand($command, $crashOnError)
@@ -145,15 +150,18 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
         $process->run();
 
         $result = array(
+            'code' => $process->getExitCode(),
             'output' => $process->getOutput(),
             'stderr' => $process->getErrorOutput(),
-            'code' => $process->getExitCode(),
         );
 
         if ($crashOnError && 0 !== $result['code']) {
             throw new \RuntimeException(sprintf(
-                "Cannot execute `%s`:\nCode: %s\nExit text: %s\nError output: %s\nDetails:\n%s",
+                "Cannot execute `%s`:\n%s\nCode: %s\nExit text: %s\nError output: %s\nDetails:\n%s",
                 $command,
+                './'.static::$tmpFileName === $command
+                    ? implode('', array_map(function($line) { return "$ $line"; }, file(static::$tmpFilePath)))."\n"
+                    : '',
                 $result['code'],
                 $process->getExitCodeText(),
                 $process->getErrorOutput(),
@@ -166,8 +174,8 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
 
     private static function executeScript(array $scriptParts, $crashOnError)
     {
-        file_put_contents(static::$tmpFilePath, implode("\n", array_merge(array('#!/usr/bin/env bash'), $scriptParts)));
+        file_put_contents(static::$tmpFilePath, implode("\n", array_merge(array('#!/usr/bin/env bash', 'set -e', ''), $scriptParts)));
 
-        return static::executeCommand('./tmp.sh', $crashOnError);
+        return static::executeCommand('./'.static::$tmpFileName, $crashOnError);
     }
 }
