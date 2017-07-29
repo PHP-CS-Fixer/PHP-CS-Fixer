@@ -19,26 +19,50 @@ namespace Symfony\CS;
  */
 class ToolInfo
 {
+    /**
+     * @deprecated
+     */
     const COMPOSER_INSTALLED_FILE = '/../../composer/installed.json';
+
     const COMPOSER_PACKAGE_NAME = 'friendsofphp/php-cs-fixer';
+
+    /**
+     * @internal
+     */
+    const COMPOSER_LEGACY_PACKAGE_NAME = 'fabpot/php-cs-fixer';
+
+    /**
+     * @internal
+     */
+    public static function getComposerInstallationDetails()
+    {
+        static $result;
+
+        if (!self::isInstalledByComposer()) {
+            throw new \LogicException('Cannot get composer version for tool not installed by composer.');
+        }
+
+        if (null === $result) {
+            $composerInstalled = json_decode(file_get_contents(self::getComposerInstalledFile()), true);
+
+            foreach ($composerInstalled as $package) {
+                if (in_array($package['name'], array(self::COMPOSER_PACKAGE_NAME, self::COMPOSER_LEGACY_PACKAGE_NAME), true)) {
+                    $result = $package;
+                    break;
+                }
+            }
+        }
+
+        return $result;
+    }
 
     public static function getComposerVersion()
     {
         static $result;
 
-        if (!self::isInstalledByComposer()) {
-            throw new \LogicException('Can not get composer version for tool not installed by composer.');
-        }
-
         if (null === $result) {
-            $composerInstalled = json_decode(file_get_contents(self::getScriptDir().self::COMPOSER_INSTALLED_FILE), true);
-
-            foreach ($composerInstalled as $package) {
-                if (self::COMPOSER_PACKAGE_NAME === $package['name']) {
-                    $result = $package['version'].'#'.$package['dist']['reference'];
-                    break;
-                }
-            }
+            $package = self::getComposerInstallationDetails();
+            $result = $package['version'].'#'.$package['dist']['reference'];
         }
 
         return $result;
@@ -69,33 +93,14 @@ class ToolInfo
         static $result;
 
         if (null === $result) {
-            $result = !self::isInstalledAsPhar() && file_exists(self::getScriptDir().self::COMPOSER_INSTALLED_FILE);
+            $result = !self::isInstalledAsPhar() && file_exists(self::getComposerInstalledFile());
         }
 
         return $result;
     }
 
-    private static function getScriptDir()
+    private static function getComposerInstalledFile()
     {
-        static $result;
-
-        if (null === $result) {
-            $script = $_SERVER['SCRIPT_NAME'];
-
-            if (is_link($script)) {
-                $linkTarget = readlink($script);
-
-                // If the link target is relative to the link
-                if (false === realpath($linkTarget)) {
-                    $linkTarget = dirname($script).'/'.$linkTarget;
-                }
-
-                $script = $linkTarget;
-            }
-
-            $result = dirname($script);
-        }
-
-        return $result;
+        return __DIR__.'/../../../../composer/installed.json';
     }
 }

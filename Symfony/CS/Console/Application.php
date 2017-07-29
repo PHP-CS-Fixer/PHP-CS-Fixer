@@ -13,6 +13,9 @@
 namespace Symfony\CS\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\CS\Console\Command\FixCommand;
 use Symfony\CS\Console\Command\ReadmeCommand;
 use Symfony\CS\Console\Command\SelfUpdateCommand;
@@ -47,5 +50,32 @@ class Application extends BaseApplication
         }
 
         return $version;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function doRun(InputInterface $input, OutputInterface $output)
+    {
+        $stdErr = $output instanceof ConsoleOutputInterface
+            ? $output->getErrorOutput()
+            : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output)
+        ;
+
+        if (null !== $stdErr) {
+            $warningsDetector = new WarningsDetector();
+            $warningsDetector->detectOldVendor();
+            $warningsDetector->detectOldMajor();
+
+            if (FixCommand::COMMAND_NAME === $this->getCommandName($input)) {
+                $warningsDetector->detectXdebug();
+            }
+
+            foreach ($warningsDetector->getWarnings() as $warning) {
+                $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
+            }
+        }
+
+        return parent::doRun($input, $output);
     }
 }

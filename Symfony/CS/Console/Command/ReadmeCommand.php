@@ -21,13 +21,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReadmeCommand extends Command
 {
+    const COMMAND_NAME = 'readme';
+
     /**
      * @see Command
      */
     protected function configure()
     {
         $this
-            ->setName('readme')
+            ->setName(self::COMMAND_NAME)
             ->setDescription('Generates the README content, based on the fix command help')
         ;
     }
