@@ -51,7 +51,7 @@ final class ReporterFactoryTest extends TestCase
 
         $builder->registerBuiltInReporters();
         $this->assertSame(
-            ['json', 'junit', 'txt', 'xml'],
+            array('json', 'junit', 'txt', 'xml'),
             $builder->getFormats()
         );
     }

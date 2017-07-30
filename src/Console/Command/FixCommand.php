@@ -38,13 +38,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 final class FixCommand extends Command
 {
-    // Exit status 1 is reserved for environment constraints not matched.
-    const EXIT_STATUS_FLAG_HAS_INVALID_FILES = 4;
-    const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
-    const EXIT_STATUS_FLAG_HAS_INVALID_CONFIG = 16;
-    const EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG = 32;
-    const EXIT_STATUS_FLAG_EXCEPTION_IN_APP = 64;
-
     /**
      * EventDispatcher instance.
      *
@@ -247,40 +240,13 @@ final class FixCommand extends Command
             }
         }
 
-        return $this->calculateExitStatus(
+        $exitStatusCalculator = new FixCommandExitStatusCalculator();
+
+        return $exitStatusCalculator->calculate(
             $resolver->isDryRun(),
             count($changed) > 0,
             count($invalidErrors) > 0,
             count($exceptionErrors) > 0
         );
-    }
-
-    /**
-     * @param bool $isDryRun
-     * @param bool $hasChangedFiles
-     * @param bool $hasInvalidErrors
-     * @param bool $hasExceptionErrors
-     *
-     * @return int
-     */
-    private function calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
-    {
-        $exitStatus = 0;
-
-        if ($isDryRun) {
-            if ($hasChangedFiles) {
-                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_CHANGED_FILES;
-            }
-
-            if ($hasInvalidErrors) {
-                $exitStatus |= self::EXIT_STATUS_FLAG_HAS_INVALID_FILES;
-            }
-        }
-
-        if ($hasExceptionErrors) {
-            $exitStatus |= self::EXIT_STATUS_FLAG_EXCEPTION_IN_APP;
-        }
-
-        return $exitStatus;
     }
 }
