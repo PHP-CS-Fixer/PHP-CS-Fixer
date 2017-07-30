@@ -172,6 +172,7 @@ final class ConfigurationResolverTest extends TestCase
             ['none'],
             ['run-in'],
             ['estimating'],
+            ['estimating-max'],
         ];
     }
 
@@ -189,7 +190,7 @@ final class ConfigurationResolverTest extends TestCase
 
         $this->setExpectedException(
             \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-            'The progress type "foo" is not defined, supported are "none", "run-in", "estimating".'
+            'The progress type "foo" is not defined, supported are "none", "run-in", "estimating", "estimating-max".'
         );
 
         $resolver->getProgress();

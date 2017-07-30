@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
@@ -89,8 +90,11 @@ final class ConfigTest extends TestCase
     public function testCustomConfig()
     {
         $customConfigFile = __DIR__.'/Fixtures/.php_cs_custom.php';
-        $command = new FixCommand();
-        $commandTester = new CommandTester($command);
+
+        $application = new Application();
+        $application->add(new FixCommand());
+
+        $commandTester = new CommandTester($application->find('fix'));
         $commandTester->execute(
             [
                 'path' => [$customConfigFile],

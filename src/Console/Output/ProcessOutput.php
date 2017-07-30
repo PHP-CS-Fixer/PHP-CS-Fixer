@@ -64,23 +64,27 @@ final class ProcessOutput implements ProcessOutputInterface
     private $symbolsPerLine;
 
     /**
+     * @TODO make all parameters mandatory (`null` not allowed) in 3.0
+     *
      * @param OutputInterface $output
      * @param EventDispatcher $dispatcher
+     * @param null|int        $width
      * @param null|int        $nbFiles
      */
-    public function __construct(OutputInterface $output, EventDispatcher $dispatcher, $nbFiles)
+    public function __construct(OutputInterface $output, EventDispatcher $dispatcher, $width, $nbFiles)
     {
         $this->output = $output;
         $this->eventDispatcher = $dispatcher;
         $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
+        $this->symbolsPerLine = $width;
 
         if (null !== $nbFiles) {
             $this->files = $nbFiles;
 
-            //   80               (lines max length)
+            //   max number of characters per line
             // - total length x 2 (e.g. "  1 / 123" => 6 digits and padding spaces)
             // - 11               (extra spaces, parentheses and percentage characters, e.g. " x / x (100%)")
-            $this->symbolsPerLine = 80 - strlen((string) $this->files) * 2 - 11;
+            $this->symbolsPerLine = max(1, ($width ?: 80) - strlen((string) $this->files) * 2 - 11);
         }
     }
 
@@ -91,11 +95,21 @@ final class ProcessOutput implements ProcessOutputInterface
 
     public function onFixerFileProcessed(FixerFileProcessedEvent $event)
     {
+        if (
+            null === $this->files
+            && null !== $this->symbolsPerLine
+            && 0 === $this->processedFiles % $this->symbolsPerLine
+            && 0 !== $this->processedFiles
+        ) {
+            $this->output->writeln('');
+        }
+
         $status = self::$eventStatusMap[$event->getStatus()];
         $this->output->write($this->output->isDecorated() ? sprintf($status['format'], $status['symbol']) : $status['symbol']);
 
+        ++$this->processedFiles;
+
         if (null !== $this->files) {
-            ++$this->processedFiles;
             $symbolsOnCurrentLine = $this->processedFiles % $this->symbolsPerLine;
             $isLast = $this->processedFiles === $this->files;
 

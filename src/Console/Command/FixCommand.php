@@ -27,6 +27,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Terminal;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -105,7 +106,7 @@ final class FixCommand extends Command
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file.'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, or estimating).'),
+                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, estimating or estimating-max).'),
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
@@ -175,13 +176,19 @@ final class FixCommand extends Command
         $progressType = $resolver->getProgress();
         $finder = $resolver->getFinder();
 
+        // @TODO remove `run-in` and `estimating` in 3.0
         if ('none' === $progressType || null === $stdErr) {
             $progressOutput = new NullOutput();
         } elseif ('run-in' === $progressType) {
-            $progressOutput = new ProcessOutput($stdErr, $this->eventDispatcher, null);
+            $progressOutput = new ProcessOutput($stdErr, $this->eventDispatcher, null, null);
         } else {
             $finder = new \ArrayIterator(iterator_to_array($finder));
-            $progressOutput = new ProcessOutput($stdErr, $this->eventDispatcher, count($finder));
+            $progressOutput = new ProcessOutput(
+                $stdErr,
+                $this->eventDispatcher,
+                'estimating-max' === $progressType ? (new Terminal())->getWidth() : null,
+                count($finder)
+            );
         }
 
         $runner = new Runner(
