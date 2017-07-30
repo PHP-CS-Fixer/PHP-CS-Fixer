@@ -133,6 +133,54 @@ $a =
                     echo pi(1);
                 ',
             ],
+            'get_class => T_CLASS' => [
+                '<?php
+                    class A
+                    {
+                        public function echoClassName($notMe)
+                        {
+                            echo get_class($notMe);
+                            echo __CLASS__/** 1 *//* 2 */;
+                            echo __CLASS__;
+                        }
+                    }
+
+                    trait A
+                    {
+                        public function A() {
+                            var_dump(__CLASS__);
+                        }
+                    }
+
+                    class B
+                    {
+                        use A;
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        public function echoClassName($notMe)
+                        {
+                            echo get_class($notMe);
+                            echo get_class(/** 1 *//* 2 */);
+                            echo GET_Class();
+                        }
+                    }
+
+                    trait A
+                    {
+                        public function A() {
+                            var_dump(get_class());
+                        }
+                    }
+
+                    class B
+                    {
+                        use A;
+                    }
+                ',
+            ],
         ];
     }
 
