@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -67,6 +68,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $candidates = $this->findPowCalls($tokens);
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $numberOfTokensAdded = 0;
         $previousCloseParenthesisIndex = count($tokens);
@@ -82,7 +84,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
                 $numberOfTokensAdded = 0;
             }
 
-            $arguments = $this->getArguments($tokens, $candidate[1], $candidate[2]);
+            $arguments = $argumentsAnalyzer->getArguments($tokens, $candidate[1], $candidate[2]);
             if (2 !== count($arguments)) {
                 continue;
             }
