@@ -10,9 +10,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
-use PhpCsFixer\Test\AccessibleObject;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 
@@ -21,9 +21,9 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer
  */
-final class AbstractFunctionReferenceFixerTest extends TestCase
+final class ArgumentsAnalyzerTest extends TestCase
 {
     /**
      * @param string $code
@@ -33,13 +33,13 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
      *
      * @dataProvider provideCases
      */
-    public function testCountArguments($code, $openIndex, $closeIndex, array $arguments)
+    public function testArguments($code, $openIndex, $closeIndex, array $arguments)
     {
         $tokens = Tokens::fromCode($code);
-        $mock = new AccessibleObject($this->getMockForAbstractClass('\\PhpCsFixer\\AbstractFunctionReferenceFixer'));
+        $analyzer = new ArgumentsAnalyzer();
 
-        $this->assertSame(count($arguments), $mock->countArguments($tokens, $openIndex, $closeIndex));
-        $this->assertSame($arguments, $mock->getArguments($tokens, $openIndex, $closeIndex));
+        $this->assertSame(count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
+        $this->assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
     public function provideCases()
