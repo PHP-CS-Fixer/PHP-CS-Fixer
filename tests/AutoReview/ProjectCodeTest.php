@@ -348,7 +348,6 @@ final class ProjectCodeTest extends TestCase
             ->in(__DIR__.'/..')
             ->exclude(array(
                 'Fixtures',
-                'functional',
             ))
         ;
 
