@@ -20,7 +20,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @deprecated since 2.4, replaced by BlankLineBeforeStatementFixerTest
+ * @deprecated since 2.4, replaced by BlankLineBeforeStatementFixer
  *
  * @todo To be removed at 3.0
  *
