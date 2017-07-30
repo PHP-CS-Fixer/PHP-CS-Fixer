@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-10T15:59:07Z
+
+>`--columns=<unsigned int > 0|"max">`
+
+:+1: it would be more generic and can be applied for all process output'ers and maybe later for other output as well
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-28T12:48:37Z
+
+what is the roadmap for this PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-28T12:54:52Z
+
+I would say https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2843#discussion_r123894800
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-14T09:20:53Z
+
+ping @julienfalque
