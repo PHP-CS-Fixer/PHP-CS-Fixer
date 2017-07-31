@@ -35,7 +35,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
      *
      * @return bool
      */
-    protected function elseIsSuperfluous(Tokens $tokens, $index)
+    protected function isSuperfluousElse(Tokens $tokens, $index)
     {
         $previousBlockStart = $index;
         do {

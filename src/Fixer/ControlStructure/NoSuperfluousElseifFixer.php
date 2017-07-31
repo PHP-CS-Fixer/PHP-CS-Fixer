@@ -47,7 +47,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if ($this->isElseif($tokens, $index) && $this->elseIsSuperfluous($tokens, $index)) {
+            if ($this->isElseif($tokens, $index) && $this->isSuperfluousElse($tokens, $index)) {
                 $this->convertElseifToIf($tokens, $index);
             }
         }

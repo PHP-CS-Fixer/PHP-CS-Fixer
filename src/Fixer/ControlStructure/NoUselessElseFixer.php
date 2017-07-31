@@ -65,7 +65,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
             }
 
             // clean up `else` if possible
-            if ($this->elseIsSuperfluous($tokens, $index)) {
+            if ($this->isSuperfluousElse($tokens, $index)) {
                 $this->clearElse($tokens, $index);
             }
         }
