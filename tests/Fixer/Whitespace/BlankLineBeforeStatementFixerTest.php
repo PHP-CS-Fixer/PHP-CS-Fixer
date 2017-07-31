@@ -347,6 +347,71 @@ do {
     }
 
     /**
+     * @dataProvider providerFixWithExit
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithExit($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['exit'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+
+    /**
+     * @return array
+     */
+    public function providerFixWithExit()
+    {
+        return [
+            [
+                '<?php
+if ($foo === $bar) {
+    exit();
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    exit();
+}',
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+    exit();
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    exit();
+}',
+            ],
+            [
+                '<?php
+mysqli_connect() or exit();
+',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    $bar = 9001;
+    mysqli_connect() or exit();
+}
+',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider providerFixWithFor
      *
      * @param string      $expected
