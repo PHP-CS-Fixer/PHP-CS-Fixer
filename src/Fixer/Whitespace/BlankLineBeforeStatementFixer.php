@@ -38,6 +38,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'break' => T_BREAK,
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
+        'die' => T_EXIT,
         'do' => T_DO,
         'exit' => T_EXIT,
         'for' => T_FOR,
@@ -111,6 +112,19 @@ foreach ($foo as $bar) {
 }',
                     [
                         'statements' => ['continue'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+if ($foo === false) {
+    die(0);
+} else {
+    $bar = 9000;
+    die(1);
+}
+',
+                    [
+                        'statements' => ['die'],
                     ]
                 ),
                 new CodeSample(

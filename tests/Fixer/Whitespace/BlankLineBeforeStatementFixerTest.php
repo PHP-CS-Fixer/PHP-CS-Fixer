@@ -307,6 +307,71 @@ declare(ticks=1);',
     }
 
     /**
+     * @dataProvider providerFixWithDie
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithDie($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['die'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+
+    /**
+     * @return array
+     */
+    public function providerFixWithDie()
+    {
+        return [
+            [
+                '<?php
+if ($foo === $bar) {
+    die();
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    die();
+}',
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+    die();
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    die();
+}',
+            ],
+            [
+                '<?php
+mysqli_connect() or die();
+',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    $bar = 9001;
+    mysqli_connect() or die();
+}
+',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider providerFixWithDo
      *
      * @param string      $expected
@@ -346,6 +411,7 @@ do {
         ];
     }
 
+
     /**
      * @dataProvider providerFixWithExit
      *
@@ -360,8 +426,6 @@ do {
 
         $this->doTest($expected, $input);
     }
-
-
     /**
      * @return array
      */
