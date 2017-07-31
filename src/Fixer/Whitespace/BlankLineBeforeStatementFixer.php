@@ -128,7 +128,7 @@ do {
                     '<?php
 if ($foo === false) {
     exit(0);
-else {
+} else {
     $bar = 9000;
     exit(1);
 }
