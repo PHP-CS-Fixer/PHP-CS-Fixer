@@ -1141,6 +1141,70 @@ do {
     }
 
     /**
+     * @dataProvider providerFixWithYield
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithYield($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['yield'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @yield array
+     */
+    public function providerFixWithYield()
+    {
+        return [
+            [
+                '<?php
+function foo() {
+    yield $a;
+}',
+            ],
+            [
+                '<?php
+function foo() {
+    yield $a;
+
+    yield $b;
+}',
+                '<?php
+function foo() {
+    yield $a;
+    yield $b;
+}',
+            ],
+            [
+                '<?php
+function foo() {
+    $a = $a;
+
+    yield $a;
+}',
+            ],
+            [
+                '<?php
+function foo() {
+    $a = $a;
+
+    yield $a;
+}',
+                '<?php
+function foo() {
+    $a = $a;
+    yield $a;
+}',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideFixWithMultipleConfigStatements
      *
      * @param string[]    $statements

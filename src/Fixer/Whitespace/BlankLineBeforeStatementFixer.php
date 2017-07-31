@@ -54,6 +54,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'throw' => T_THROW,
         'try' => T_TRY,
         'while' => T_WHILE,
+        'yield' => T_YIELD,
     ];
 
     /**
@@ -214,6 +215,17 @@ try {
 }',
                     [
                         'statements' => ['try'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+
+if (true) {
+    $foo = $bar;
+    yield $foo;
+}',
+                    [
+                        'statements' => ['yield'],
                     ]
                 ),
             ]
