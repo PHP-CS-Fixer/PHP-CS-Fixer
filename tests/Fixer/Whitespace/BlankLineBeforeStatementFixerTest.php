@@ -307,6 +307,68 @@ declare(ticks=1);',
     }
 
     /**
+     * @dataProvider providerFixWithDie
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithDie($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['die'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerFixWithDie()
+    {
+        return [
+            [
+                '<?php
+if ($foo === $bar) {
+    die();
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    die();
+}',
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+    die();
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    die();
+}',
+            ],
+            [
+                '<?php
+mysqli_connect() or die();',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    $bar = 9001;
+    mysqli_connect() or die();
+}',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider providerFixWithDo
      *
      * @param string      $expected
@@ -347,6 +409,68 @@ do {
     }
 
     /**
+     * @dataProvider providerFixWithExit
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithExit($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['exit'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerFixWithExit()
+    {
+        return [
+            [
+                '<?php
+if ($foo === $bar) {
+    exit();
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    exit();
+}',
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+    exit();
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    exit();
+}',
+            ],
+            [
+                '<?php
+mysqli_connect() or exit();',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    $bar = 9001;
+    mysqli_connect() or exit();
+}',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider providerFixWithFor
      *
      * @param string      $expected
@@ -374,6 +498,65 @@ do {
                     echo 1;
                     for(;;){break;}
                 ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider providerFixWithGoto
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithGoto($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['goto'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerFixWithGoto()
+    {
+        return [
+            [
+                '<?php
+a:
+
+if ($foo === $bar) {
+    goto a;
+}',
+            ],
+            [
+                '<?php
+a:
+
+if ($foo === $bar) {
+    echo $baz;
+
+    goto a;
+}',
+                '<?php
+a:
+
+if ($foo === $bar) {
+    echo $baz;
+    goto a;
+}',
+            ],
+            [
+                '<?php
+a:
+
+if ($foo === $bar) {
+    echo $baz;
+
+    goto a;
+}',
             ],
         ];
     }
@@ -961,6 +1144,70 @@ do {
     while($a());
     $worker->work();
 } while (true);',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider providerFixWithYield
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithYield($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['yield'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @yield array
+     */
+    public function providerFixWithYield()
+    {
+        return [
+            [
+                '<?php
+function foo() {
+    yield $a;
+}',
+            ],
+            [
+                '<?php
+function foo() {
+    yield $a;
+
+    yield $b;
+}',
+                '<?php
+function foo() {
+    yield $a;
+    yield $b;
+}',
+            ],
+            [
+                '<?php
+function foo() {
+    $a = $a;
+
+    yield $a;
+}',
+            ],
+            [
+                '<?php
+function foo() {
+    $a = $a;
+
+    yield $a;
+}',
+                '<?php
+function foo() {
+    $a = $a;
+    yield $a;
+}',
             ],
         ];
     }
