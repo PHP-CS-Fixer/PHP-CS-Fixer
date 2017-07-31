@@ -357,16 +357,14 @@ if ($foo === $bar) {
             ],
             [
                 '<?php
-mysqli_connect() or die();
-',
+mysqli_connect() or die();',
             ],
             [
                 '<?php
 if ($foo === $bar) {
     $bar = 9001;
     mysqli_connect() or die();
-}
-',
+}',
             ],
         ];
     }
@@ -461,16 +459,14 @@ if ($foo === $bar) {
             ],
             [
                 '<?php
-mysqli_connect() or exit();
-',
+mysqli_connect() or exit();',
             ],
             [
                 '<?php
 if ($foo === $bar) {
     $bar = 9001;
     mysqli_connect() or exit();
-}
-',
+}',
             ],
         ];
     }
