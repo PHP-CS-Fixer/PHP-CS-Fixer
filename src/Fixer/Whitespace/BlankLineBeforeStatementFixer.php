@@ -122,8 +122,7 @@ if ($foo === false) {
 } else {
     $bar = 9000;
     die(1);
-}
-',
+}',
                     [
                         'statements' => ['die'],
                     ]
@@ -146,8 +145,7 @@ if ($foo === false) {
 } else {
     $bar = 9000;
     exit(1);
-}
-',
+}',
                     [
                         'statements' => ['exit'],
                     ]
@@ -159,8 +157,7 @@ if ($foo === false) {
 } else {
     $bar = 9000;
     goto b;
-}
-',
+}',
                     [
                         'statements' => ['goto'],
                     ]
