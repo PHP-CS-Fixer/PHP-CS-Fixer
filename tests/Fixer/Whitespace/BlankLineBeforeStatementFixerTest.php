@@ -526,7 +526,7 @@ if ($foo === $bar) {
             [
                 '<?php
 a:
-                
+
 if ($foo === $bar) {
     goto a;
 }',
@@ -534,7 +534,7 @@ if ($foo === $bar) {
             [
                 '<?php
 a:
-                
+
 if ($foo === $bar) {
     echo $baz;
 
