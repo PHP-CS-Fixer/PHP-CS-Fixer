@@ -46,10 +46,7 @@ class ToolInfo
             $composerInstalled = json_decode(file_get_contents(self::getComposerInstalledFile()), true);
 
             foreach ($composerInstalled as $package) {
-                if (
-                    self::COMPOSER_PACKAGE_NAME === $package['name'] ||
-                    self::COMPOSER_LEGACY_PACKAGE_NAME === $package['name']
-                ) {
+                if (in_array($package['name'], array(self::COMPOSER_PACKAGE_NAME, self::COMPOSER_LEGACY_PACKAGE_NAME), true)) {
                     $result = $package;
                     break;
                 }
