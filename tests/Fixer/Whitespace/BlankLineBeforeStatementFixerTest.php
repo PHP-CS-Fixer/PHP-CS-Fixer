@@ -474,7 +474,6 @@ if ($foo === $bar) {
             ],
         ];
     }
-
     /**
      * @dataProvider providerFixWithFor
      *
@@ -503,6 +502,56 @@ if ($foo === $bar) {
                     echo 1;
                     for(;;){break;}
                 ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider providerFixWithGoto
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithGoto($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['goto'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+    /**
+     * @return array
+     */
+    public function providerFixWithGoto()
+    {
+        return [
+            [
+                '<?php
+if ($foo === $bar) {
+    goto a;
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    goto a;
+}',
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+    goto a;
+}',
+            ],
+            [
+                '<?php
+if ($foo === $bar) {
+    echo $baz;
+
+    goto a;
+}',
             ],
         ];
     }

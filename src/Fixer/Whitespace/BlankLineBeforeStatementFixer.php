@@ -43,6 +43,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'exit' => T_EXIT,
         'for' => T_FOR,
         'foreach' => T_FOREACH,
+        'goto' => T_GOTO,
         'if' => T_IF,
         'include' => T_INCLUDE,
         'include_once' => T_INCLUDE_ONCE,
@@ -149,6 +150,19 @@ if ($foo === false) {
 ',
                     [
                         'statements' => ['exit'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+if ($foo === false) {
+    goto a;
+} else {
+    $bar = 9000;
+    goto b;
+}
+',
+                    [
+                        'statements' => ['goto'],
                     ]
                 ),
                 new CodeSample(
