@@ -525,18 +525,24 @@ if ($foo === $bar) {
         return [
             [
                 '<?php
+a:
+                
 if ($foo === $bar) {
     goto a;
 }',
             ],
             [
                 '<?php
+a:
+                
 if ($foo === $bar) {
     echo $baz;
 
     goto a;
 }',
                 '<?php
+a:
+
 if ($foo === $bar) {
     echo $baz;
     goto a;
@@ -544,6 +550,8 @@ if ($foo === $bar) {
             ],
             [
                 '<?php
+a:
+
 if ($foo === $bar) {
     echo $baz;
 

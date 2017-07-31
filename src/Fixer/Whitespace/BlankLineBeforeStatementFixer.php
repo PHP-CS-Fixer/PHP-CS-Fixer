@@ -153,6 +153,8 @@ if ($foo === false) {
                 ),
                 new CodeSample(
                     '<?php
+a:
+
 if ($foo === false) {
     goto a;
 } else {
