@@ -321,7 +321,6 @@ declare(ticks=1);',
         $this->doTest($expected, $input);
     }
 
-
     /**
      * @return array
      */
@@ -409,7 +408,6 @@ do {
         ];
     }
 
-
     /**
      * @dataProvider providerFixWithExit
      *
@@ -424,6 +422,7 @@ do {
 
         $this->doTest($expected, $input);
     }
+
     /**
      * @return array
      */
@@ -470,6 +469,7 @@ if ($foo === $bar) {
             ],
         ];
     }
+
     /**
      * @dataProvider providerFixWithFor
      *
@@ -516,6 +516,7 @@ if ($foo === $bar) {
 
         $this->doTest($expected, $input);
     }
+
     /**
      * @return array
      */
