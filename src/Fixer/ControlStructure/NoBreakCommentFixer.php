@@ -133,6 +133,13 @@ switch ($foo) {
                     if (null === $commentPosition) {
                         $this->insertCommentAt($tokens, $i);
                     } else {
+                        $text = $this->configuration['comment_text'];
+
+                        $tokens[$commentPosition] = new Token([
+                            $tokens[$commentPosition]->getId(),
+                            str_ireplace($text, $text, $tokens[$commentPosition]->getContent()),
+                        ]);
+
                         $this->ensureNewLineAt($tokens, $commentPosition);
                     }
                 } elseif (null !== $commentPosition) {
@@ -161,7 +168,7 @@ switch ($foo) {
 
         $text = $this->configuration['comment_text'];
 
-        return preg_match("~^((//|#)\s*$text\s*)|(/\*\*?\s*$text\s*\*/)$~", $token->getContent());
+        return preg_match("~^((//|#)\s*$text\s*)|(/\*\*?\s*$text\s*\*/)$~i", $token->getContent());
     }
 
     /**
