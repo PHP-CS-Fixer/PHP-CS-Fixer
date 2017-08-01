@@ -617,4 +617,70 @@ echo 1;';
 
         $this->doTest($expected, $input);
     }
+
+    public function testWithSameNamespaceImportAndUnusedImport()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Bar\C;
+use Foo\A;
+use Foo\Bar\B;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testWithSameNamespaceImportAndUnusedImportAfterNamespaceStatement()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Foo\Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Foo\A;
+use Foo\Bar\B;
+use Foo\Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
 }
