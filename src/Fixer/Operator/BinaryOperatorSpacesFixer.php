@@ -159,7 +159,8 @@ $foo = array(
                 }
 
                 return;
-            } elseif (null === $this->configuration['align_double_arrow']) {
+            }
+            if (null === $this->configuration['align_double_arrow']) {
                 return; // configured not to touch the whitespace around the operator
             }
         } elseif ($tokens[$index]->equals('=')) {
@@ -169,7 +170,8 @@ $foo = array(
                 }
 
                 return;
-            } elseif (null === $this->configuration['align_equals']) {
+            }
+            if (null === $this->configuration['align_equals']) {
                 return; // configured not to touch the whitespace around the operator
             }
         }
