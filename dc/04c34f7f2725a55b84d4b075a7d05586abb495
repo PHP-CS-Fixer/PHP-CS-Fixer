@@ -1,0 +1,67 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-31T10:22:04Z
+
+What about `die`?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-07-31T11:48:36Z
+
+How about `goto` as well?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-31T12:38:54Z
+
+Not sure about `goto`. We think using it is a bad practice and we don't really want to support it.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-07-31T12:39:43Z
+
+@julienfalque
+
+>Not sure about `goto`. We think using it is a bad practice and we don't really want to support it.
+
+Totally agree, and have no intention of using it, either!
+
+I don't mind removing it, let me know!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-31T12:49:43Z
+
+don't mind about `goto`. if it would not be there, I wouldn't ask for it. But if it's already there, I don't mind keeping it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-31T12:50:43Z
+
+I do love our test set :D (no sarcasm here)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-31T12:53:22Z
+
+Let's keep `goto` then.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-31T12:54:17Z
+
+having said that, please make tests happy ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-31T13:05:11Z
+
+One of 200k assertions is still failing
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-07-31T13:05:39Z
+
+@keradus
+
+Fixing it, give me a moment.
