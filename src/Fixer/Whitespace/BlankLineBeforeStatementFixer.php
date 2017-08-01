@@ -38,9 +38,12 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'break' => T_BREAK,
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
+        'die' => T_EXIT,
         'do' => T_DO,
+        'exit' => T_EXIT,
         'for' => T_FOR,
         'foreach' => T_FOREACH,
+        'goto' => T_GOTO,
         'if' => T_IF,
         'include' => T_INCLUDE,
         'include_once' => T_INCLUDE_ONCE,
@@ -51,6 +54,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'throw' => T_THROW,
         'try' => T_TRY,
         'while' => T_WHILE,
+        'yield' => T_YIELD,
     ];
 
     /**
@@ -114,6 +118,18 @@ foreach ($foo as $bar) {
                 ),
                 new CodeSample(
                     '<?php
+if ($foo === false) {
+    die(0);
+} else {
+    $bar = 9000;
+    die(1);
+}',
+                    [
+                        'statements' => ['die'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
 $i = 0;
 do {
     echo $i;
@@ -121,6 +137,32 @@ do {
 ',
                     [
                         'statements' => ['do'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+if ($foo === false) {
+    exit(0);
+} else {
+    $bar = 9000;
+    exit(1);
+}',
+                    [
+                        'statements' => ['exit'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+a:
+
+if ($foo === false) {
+    goto a;
+} else {
+    $bar = 9000;
+    goto b;
+}',
+                    [
+                        'statements' => ['goto'],
                     ]
                 ),
                 new CodeSample(
@@ -175,6 +217,17 @@ try {
 }',
                     [
                         'statements' => ['try'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+
+if (true) {
+    $foo = $bar;
+    yield $foo;
+}',
+                    [
+                        'statements' => ['yield'],
                     ]
                 ),
             ]
