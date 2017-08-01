@@ -834,6 +834,24 @@ switch ($foo) {
 ?>
 <?php }',
             ],
+            [
+                '<?php
+switch ($foo) {
+    case 1:
+        foo();
+        // no break
+    case 2:
+        bar();
+}',
+                '<?php
+switch ($foo) {
+    case 1:
+        foo();
+        // No break
+    case 2:
+        bar();
+}',
+            ],
         ];
     }
 
@@ -935,10 +953,17 @@ switch ($foo) {
     {
         $cases = $this->provideTestFixCases();
 
+        $replaceCommentText = function ($php) {
+            return strtr($php, [
+                'No break' => 'Fall-through case!',
+                'no break' => 'fall-through case!',
+            ]);
+        };
+
         foreach ($cases as &$case) {
-            $case[0] = str_replace('no break', 'fall-through case!', $case[0]);
+            $case[0] = $replaceCommentText($case[0]);
             if (isset($case[1])) {
-                $case[1] = str_replace('no break', 'fall-through case!', $case[1]);
+                $case[1] = $replaceCommentText($case[1]);
             }
         }
 
