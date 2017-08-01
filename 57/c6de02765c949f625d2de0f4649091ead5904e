@@ -1,0 +1,232 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-28T05:54:32Z
+
+For the record; I disagree this being a bug fix as I left it out by design. I think adding it to the fixer is a break on the single responsibility principle, same as why I always said `no` to request of letting the fixer also `fix` the identification after removing the `else`.
+i.e. I think this should be a new fixer.
+
+That being sad I would like to hear what cases this PR is supposed to fixed;
+```php
+<?php
+if ($a) {
+    echo 1;
+} elseif ($b) {
+    echo 2;
+}
+```
+
+```php
+<?php
+if ($a) {
+    die;
+} elseif ($b) {
+    echo 2;
+}
+```
+
+```php
+<?php
+if ($a) {
+    die;
+} elseif ($b) {
+    echo 2;
+} else {
+    echo 3;
+}
+```
+
+```php
+<?php
+if ($a) {
+    die;
+} elseif ($b) {
+    die;
+} else {
+    echo 3;
+}
+```
+
+```php
+<?php
+if ($a) {
+    echo 1;
+} elseif ($b) {
+    die;
+} else {
+    echo 3;
+}
+```
+
+<?php
+if ($a) {
+    die;
+} elseif ($b) {
+    die;
+} elseif ($c) {
+    echo 1;
+} else {
+    echo 3;
+}
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-28T09:54:26Z
+
+> For the record; I disagree this being a bug fix as I left it out by design.
+
+Ok so let's keep it as new feature.
+
+> I think adding it to the fixer is a break on the single responsibility principle, same as why I always said no to request of letting the fixer also fix the identification after removing the else.
+i.e. I think this should be a new fixer.
+
+IMO adding this behavior to the current fixer makes sense. As most of the logic is shared, I'd like to hear more opinions about this before refactoring.
+
+---
+About the cases you listed, here are the changes the fixer should apply:
+
+```diff
+ <?php
+ if ($a) {
+     echo 1;
+ } elseif ($b) {
+     echo 2;
+ }
+```
+
+```diff
+ <?php
+ if ($a) {
+     die;
+-} elseif ($b) {
++}
++if ($b) {
+     echo 2;
+ }
+```
+
+```diff
+ <?php
+ if ($a) {
+     die;
+-} elseif ($b) {
++}
++if ($b) {
+     echo 2;
+ } else {
+     echo 3;
+ }
+```
+
+```diff
+<?php
+ if ($a) {
+     die;
+-} elseif ($b) {
++}
++if ($b) {
+     die;
+-} else {
++
+     echo 3;
+-}
++
+```
+
+```diff
+ <?php
+ if ($a) {
+     echo 1;
+ } elseif ($b) {
+     die;
+ } else {
+     echo 3;
+ }
+```
+
+I think those cases are already covered though.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-28T10:14:55Z
+
+```
++}
++if ($b) {
+```
+
+I would rather it inserted a newline inbetween those.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-28T10:16:41Z
+
+IMHO there is a big diff. between the fixer and that is why they should be separated;
+the `use else fixer` starts at an `T_ELSE` and only analyzes up to see if all paths lead to a stop.
+
+Your fixer should, IMO, also look down. I.e. not fix:
+
+```php
+<?php
+if ($a) {
+    die;
+} elseif ($b) {
+    echo 2;
+} else {
+    echo 3;
+}
+```
+
+here the `else` statement is not `useless`, so should not be touched by the `useless else fixer`.
+If people want to change these cases that is fine by me, but it would consider it a feature loss if we force people to also change `elseif` statements.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-28T11:29:59Z
+
+> @GrahamCampbell I would rather it inserted a newline inbetween those.
+
+What you want is #2384.
+
+Adding this empty line would be an assumption that most people would add it, which is not true IMO. I guess we could say the same about moving the `if` to the next line but I don't think most people write something like
+```php
+if ($a) {
+    // ...
+} if ($b) {
+    // ...
+}
+```
+---
+> @SpacePossum here the else statement is not useless, so should not be touched by the useless else fixer.
+
+In your example the `else` would not be removed. The fixer would only convert the `elseif` into an `if`, which looks valid to me, unless I am missing something.
+
+> If people want to change these cases that is fine by me, but it would consider it a feature loss if we force people to also change elseif statements.
+
+Current implementation requires to enable an option to fix your example, nothing will change for people that don't want to fix it.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-06-28T11:53:20Z
+
+>In your example the else would not be removed. The fixer would only convert the elseif into an if, which looks valid to me, unless I am missing something.
+
+I'm saying nothing should be touched in the sample by the `no-useless_else`-fixer at all, so no convert of `elseif` as well no matter what.I.e. the fixer is not called `no_useless_else_and_elseif_to_if_splitup_fixer`
+
+>Current implementation requires to enable an option to fix your example, nothing will change for people that don't want to fix it.
+
+With above in mind I'm -1 on adding this to the fixer, including using configuration.
+So I'm -1 on https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2885#discussion_r124260965 where a RFC is done on the PR and agreed on by for this PR to _always_ apply the new `elseif` fixing, even more the comment is incorrect as `just a next case we didn't spot before` is simply not true, it was left out by design.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-06-28T13:37:08Z
+
+> Adding this empty line would be an assumption that most people would add it, which is not true IMO.
+
+I think that most people would, actually.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2017-07-12T19:54:22Z
+
+@SpacePossum For me the `elseif` contains an useless `else` in your sample. So it should be removed by a `NoUselessElseFixer`.
