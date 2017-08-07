@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\CastNotation;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -68,6 +69,8 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
              'boolval' => [T_BOOL_CAST, '(bool)'],
         ];
 
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+
         foreach ($replacement as $functionIdentity => $newToken) {
             $currIndex = 0;
             while (null !== $currIndex) {
@@ -84,7 +87,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 $currIndex = $openParenthesis;
 
                 // indicator that the function is overriden
-                if (1 !== $this->countArguments($tokens, $openParenthesis, $closeParenthesis)) {
+                if (1 !== $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis)) {
                     continue;
                 }
 

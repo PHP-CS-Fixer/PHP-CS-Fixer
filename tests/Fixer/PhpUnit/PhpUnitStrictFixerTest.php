@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
-use PhpCsFixer\Test\AccessibleObject;
+use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**

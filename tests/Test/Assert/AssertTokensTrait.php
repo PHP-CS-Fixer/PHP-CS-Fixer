@@ -12,8 +12,7 @@
 
 namespace PhpCsFixer\Tests\Test\Assert;
 
-use PhpCsFixer\Test\AccessibleObject;
-use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**

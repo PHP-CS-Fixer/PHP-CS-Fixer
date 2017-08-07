@@ -12,11 +12,11 @@
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\Test\AccessibleObject;
 use PHPUnit\Framework\TestCase;
 
 /**

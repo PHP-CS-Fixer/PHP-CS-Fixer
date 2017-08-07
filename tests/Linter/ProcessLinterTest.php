@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Linter\ProcessLinter;
-use PhpCsFixer\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

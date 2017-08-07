@@ -36,6 +36,7 @@ final class ProjectCodeTest extends TestCase
      */
     private static $classesWithoutTests = [
         \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class,
+        \PhpCsFixer\Console\Command\FixCommand::class,
         \PhpCsFixer\Console\Command\SelfUpdateCommand::class,
         \PhpCsFixer\Console\Output\NullOutput::class,
         \PhpCsFixer\Differ\DiffConsoleFormatter::class,
@@ -55,6 +56,7 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
+        \PhpCsFixer\Test\AccessibleObject::class,
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
 
