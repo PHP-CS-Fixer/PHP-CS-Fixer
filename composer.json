@@ -35,8 +35,9 @@
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.0.1",
         "justinrainbow/json-schema": "^5.0",
-        "phpunit/phpunit": "^4.8.35 || ^5.4.3",
-        "satooshi/php-coveralls": "^1.0",
+        "phpspec/prophecy": "1.6.1",
+        "phpunit/phpunit": "5.5.4",
+        "satooshi/php-coveralls": "dev-win",
         "symfony/phpunit-bridge": "^3.2.2"
     },
     "suggest": {
@@ -66,5 +67,8 @@
         "branch-alias": {
             "dev-master": "2.2-dev"
         }
-    }
+    },
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/keradus/php-coveralls" }
+    ]
 }
