@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\ProcessLinter;
-use PhpCsFixer\Test\AccessibleObject;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -28,56 +27,6 @@ final class ProcessLinterTest extends AbstractLinterTestCase
     public function testIsAsync()
     {
         $this->assertTrue($this->createLinter()->isAsync());
-    }
-
-    /**
-     * @param string $executable
-     * @param string $file
-     * @param string $expected
-     *
-     * @testWith ["php", "foo.php", "'php' '-l' 'foo.php'"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
-     * @requires OS Linux|Darwin
-     */
-    public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
-    {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for PHP compiler when running on HHVM compiler.');
-        }
-
-        $this->assertSame(
-            $expected,
-            AccessibleObject::create(new ProcessLinter($executable))->prepareProcess($file)->getCommandLine()
-        );
-    }
-
-    /**
-     * @param string $executable
-     * @param string $file
-     * @param string $expected
-     *
-     * @testWith ["php", "foo.php", "php -l foo.php"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
-     * @requires OS ^Win
-     */
-    public function testPrepareCommandOnPhpOnWindows($executable, $file, $expected)
-    {
-        $this->assertSame(
-            $expected,
-            AccessibleObject::create(new ProcessLinter($executable))->prepareProcess($file)->getCommandLine()
-        );
-    }
-
-    public function testPrepareCommandOnHhvm()
-    {
-        if (!defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for HHVM compiler when running on PHP compiler.');
-        }
-
-        $this->assertSame(
-            "'hhvm' '--php' '-l' 'foo.php'",
-            AccessibleObject::create(new ProcessLinter('hhvm'))->prepareProcess('foo.php')->getCommandLine()
-        );
     }
 
     /**
