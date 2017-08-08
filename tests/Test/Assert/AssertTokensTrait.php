@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Test\Assert;
 
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -24,24 +23,23 @@ trait AssertTokensTrait
 {
     private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
     {
+        $option = ['JSON_PRETTY_PRINT'];
+
         foreach ($expectedTokens as $index => $expectedToken) {
             $inputToken = $inputTokens[$index];
-            $option = ['JSON_PRETTY_PRINT'];
+
             $this->assertTrue(
                 $expectedToken->equals($inputToken),
                 sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson($option), $inputToken->toJson($option))
             );
-        }
 
-        $this->assertSame($expectedTokens->count(), $inputTokens->count(), 'The collection must have the same length than the expected one.');
-
-        $foundTokenKinds = array_keys(AccessibleObject::create($expectedTokens)->foundTokenKinds);
-
-        foreach ($foundTokenKinds as $tokenKind) {
+            $expectedTokenKind = $expectedToken->isArray() ? $expectedToken->getId() : $expectedToken->getContent();
             $this->assertTrue(
-                $inputTokens->isTokenKindFound($tokenKind),
-                sprintf('The token kind %s must be found in fixed tokens collection.', $tokenKind)
+                $inputTokens->isTokenKindFound($expectedTokenKind),
+                sprintf('The token kind %s must be found in fixed tokens collection.', $expectedTokenKind)
             );
         }
+
+        $this->assertSame($expectedTokens->count(), $inputTokens->count(), 'Both collections must have the same length.');
     }
 }
