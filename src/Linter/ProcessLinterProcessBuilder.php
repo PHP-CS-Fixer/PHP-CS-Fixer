@@ -42,7 +42,7 @@ final class ProcessLinterProcessBuilder
      */
     public function build($path)
     {
-        // TODO change at 2.4 to:
+        // @TODO change at 2.4 to:
         // return ProcessBuilder::create(['-l', $path])->setPrefix($this->executable)->getProcess();
 
         $arguments = array('-l', $path);
