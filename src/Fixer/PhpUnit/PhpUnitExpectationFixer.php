@@ -16,10 +16,10 @@ use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Indicator\PhpUnitIndicator;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PhpCsFixer\Indicator\PhpUnitIndicator;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -72,6 +72,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
         $phpUnitIndicator = new PhpUnitIndicator();
 
         $oldMethodSequence = [
@@ -103,7 +104,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
-            $arguments = $this->getArguments($tokens, $openIndex, $closeIndex);
+            $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
             $argumentsCnt = count($arguments);
 
             $argumentsReplacements = ['expectException', 'expectExceptionMessage', 'expectExceptionCode']; // TODO option for MessageRegExp
