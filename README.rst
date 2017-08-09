@@ -804,6 +804,10 @@ Choose from the list of available rules:
   Removes unneeded curly braces that are superfluous and aren't part of a
   control structure's body.
 
+* **no_unneeded_final_method**
+
+  A final class must not have final methods.
+
 * **no_unreachable_default_argument_value**
 
   In function arguments there must not be arguments with default values
