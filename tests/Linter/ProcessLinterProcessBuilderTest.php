@@ -35,9 +35,11 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
     {
+        $builder = new ProcessLinterProcessBuilder($executable);
+
         $this->assertSame(
             $expected,
-            (new ProcessLinterProcessBuilder($executable))->build($file)->getCommandLine()
+            $builder->build($file)->getCommandLine()
         );
     }
 
@@ -52,9 +54,11 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      */
     public function testPrepareCommandOnPhpOnWindows($executable, $file, $expected)
     {
+        $builder = new ProcessLinterProcessBuilder($executable);
+
         $this->assertSame(
             $expected,
-            (new ProcessLinterProcessBuilder($executable))->build($file)->getCommandLine()
+            $builder->build($file)->getCommandLine()
         );
     }
 
@@ -64,9 +68,11 @@ final class ProcessLinterProcessBuilderTest extends TestCase
             $this->markTestSkipped('Skip tests for HHVM compiler when running on PHP compiler.');
         }
 
+        $builder = new ProcessLinterProcessBuilder($executable);
+
         $this->assertSame(
             "'hhvm' '--php' '-l' 'foo.php'",
-            (new ProcessLinterProcessBuilder('hhvm'))->build('foo.php')->getCommandLine()
+            $builder->build('foo.php')->getCommandLine()
         );
     }
 }
