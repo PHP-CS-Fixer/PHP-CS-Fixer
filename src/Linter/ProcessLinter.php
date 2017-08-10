@@ -16,7 +16,6 @@ use PhpCsFixer\FileRemoval;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * Handle PHP code linting process.
@@ -28,6 +27,11 @@ use Symfony\Component\Process\ProcessBuilder;
 final class ProcessLinter implements LinterInterface
 {
     /**
+     * @var FileRemoval
+     */
+    private $fileRemoval;
+
+    /**
      * Temporary file for code linting.
      *
      * @var null|string
@@ -35,18 +39,9 @@ final class ProcessLinter implements LinterInterface
     private $temporaryFile;
 
     /**
-     * PHP executable.
-     *
-     * @var string
+     * @var ProcessLinterProcessBuilder
      */
-    private $executable;
-
-    /**
-     * Files removal handler.
-     *
-     * @var FileRemoval
-     */
-    private $fileRemoval;
+    private $processBuilder;
 
     /**
      * @param null|string $executable PHP executable, null for autodetection
@@ -75,7 +70,7 @@ final class ProcessLinter implements LinterInterface
             }
         }
 
-        $this->executable = $executable;
+        $this->processBuilder = new ProcessLinterProcessBuilder($executable);
 
         $this->fileRemoval = new FileRemoval();
     }
@@ -125,7 +120,7 @@ final class ProcessLinter implements LinterInterface
             return $this->createProcessForSource(file_get_contents($path));
         }
 
-        $process = $this->prepareProcess($path);
+        $process = $this->processBuilder->build($path);
         $process->setTimeout(null);
         $process->start();
 
@@ -151,20 +146,5 @@ final class ProcessLinter implements LinterInterface
         }
 
         return $this->createProcessForFile($this->temporaryFile);
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return Process
-     */
-    private function prepareProcess($path)
-    {
-        $arguments = array('-l', $path);
-        if (defined('HHVM_VERSION')) {
-            array_unshift($arguments, '--php');
-        }
-
-        return ProcessBuilder::create($arguments)->setPrefix($this->executable)->getProcess();
     }
 }
