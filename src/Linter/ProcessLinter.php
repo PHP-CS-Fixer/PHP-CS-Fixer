@@ -16,7 +16,6 @@ use PhpCsFixer\FileRemoval;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * Handle PHP code linting using separated process of `php -l _file_`.
@@ -28,23 +27,21 @@ use Symfony\Component\Process\ProcessBuilder;
 final class ProcessLinter implements LinterInterface
 {
     /**
+     * @var FileRemoval
+     */
+    private $fileRemoval;
+
+    /**
+     * @var ProcessLinterProcessBuilder
+     */
+    private $processBuilder;
+
+    /**
      * Temporary file for code linting.
      *
      * @var null|string
      */
     private $temporaryFile;
-
-    /**
-     * Path of PHP executable.
-     *
-     * @var string
-     */
-    private $executable;
-
-    /**
-     * @var FileRemoval
-     */
-    private $fileRemoval;
 
     /**
      * @param null|string $executable PHP executable, null for autodetection
@@ -73,7 +70,7 @@ final class ProcessLinter implements LinterInterface
             }
         }
 
-        $this->executable = $executable;
+        $this->processBuilder = new ProcessLinterProcessBuilder($executable);
 
         $this->fileRemoval = new FileRemoval();
     }
@@ -121,7 +118,7 @@ final class ProcessLinter implements LinterInterface
             return $this->createProcessForSource(file_get_contents($path));
         }
 
-        $process = $this->prepareProcess($path);
+        $process = $this->processBuilder->build($path);
         $process->setTimeout(null);
         $process->start();
 
@@ -147,15 +144,5 @@ final class ProcessLinter implements LinterInterface
         }
 
         return $this->createProcessForFile($this->temporaryFile);
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return Process
-     */
-    private function prepareProcess($path)
-    {
-        return ProcessBuilder::create(['-l', $path])->setPrefix($this->executable)->getProcess();
     }
 }

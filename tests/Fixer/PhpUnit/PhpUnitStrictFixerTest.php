@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
-use PhpCsFixer\Test\AccessibleObject;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -64,7 +63,12 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        $methodsMap = AccessibleObject::create($this->createFixer())->assertionMap;
+        $methodsMap = [
+            'assertAttributeEquals' => 'assertAttributeSame',
+            'assertAttributeNotEquals' => 'assertAttributeNotSame',
+            'assertEquals' => 'assertSame',
+            'assertNotEquals' => 'assertNotSame',
+        ];
 
         $cases = [
             ['<?php $self->foo();'],
