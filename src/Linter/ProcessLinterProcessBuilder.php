@@ -28,7 +28,7 @@ final class ProcessLinterProcessBuilder
     private $executable;
 
     /**
-     * @param string $executable PHP executable, null for autodetection
+     * @param string $executable PHP executable
      */
     public function __construct($executable)
     {
