@@ -45,7 +45,7 @@ final class Foo {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_CLASS]) && $tokens->isAnyTokenKindsFound([T_FINAL]);
+        return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL]);
     }
 
     /**
