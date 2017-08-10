@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Linter;
 
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Linter\ProcessLinter;
 
 /**
@@ -28,40 +27,6 @@ final class ProcessLinterTest extends AbstractLinterTestCase
     public function testIsAsync()
     {
         $this->assertTrue($this->createLinter()->isAsync());
-    }
-
-    /**
-     * @param string $executable
-     * @param string $file
-     * @param string $expected
-     *
-     * @testWith ["php", "foo.php", "'php' '-l' 'foo.php'"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
-     * @requires OS Linux|Darwin
-     */
-    public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
-    {
-        $this->assertSame(
-            $expected,
-            AccessibleObject::create(new ProcessLinter($executable))->prepareProcess($file)->getCommandLine()
-        );
-    }
-
-    /**
-     * @param string $executable
-     * @param string $file
-     * @param string $expected
-     *
-     * @testWith ["php", "foo.php", "php -l foo.php"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
-     * @requires OS ^Win
-     */
-    public function testPrepareCommandOnPhpOnWindows($executable, $file, $expected)
-    {
-        $this->assertSame(
-            $expected,
-            AccessibleObject::create(new ProcessLinter($executable))->prepareProcess($file)->getCommandLine()
-        );
     }
 
     /**
