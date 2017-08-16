@@ -33,6 +33,7 @@
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.1",
         "justinrainbow/json-schema": "^5.0",
+        "php-cs-fixer/accessible-object": "^1.0",
         "phpunit/phpunit": "^4.8.35 || ^5.4.3",
         "satooshi/php-coveralls": "^1.0",
         "symfony/phpunit-bridge": "^3.2.2"

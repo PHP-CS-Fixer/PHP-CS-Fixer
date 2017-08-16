@@ -12,8 +12,7 @@
 
 namespace PhpCsFixer\Tests\Console\Command;
 
-use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Test\AccessibleObject;
+use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,9 +21,9 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Console\Command\FixCommand
+ * @covers \PhpCsFixer\Console\Command\FixCommandExitStatusCalculator
  */
-final class FixCommandTest extends TestCase
+final class FixCommandExitStatusCalculatorTest extends TestCase
 {
     /**
      * @param int  $expected
@@ -33,19 +32,19 @@ final class FixCommandTest extends TestCase
      * @param bool $hasInvalidErrors
      * @param bool $hasExceptionErrors
      *
-     * @dataProvider provideCalculateExitStatusCases
+     * @dataProvider provideCalculateCases
      */
-    public function testCalculateExitStatus($expected, $isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
+    public function testCalculate($expected, $isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
     {
-        $command = new AccessibleObject(new FixCommand());
+        $calculator = new FixCommandExitStatusCalculator();
 
         $this->assertSame(
             $expected,
-            $command->calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
+            $calculator->calculate($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
         );
     }
 
-    public function provideCalculateExitStatusCases()
+    public function provideCalculateCases()
     {
         return [
             [0, true, false, false, false],

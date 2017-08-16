@@ -31,20 +31,6 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
     }
 
     /**
-     * Count amount of parameters in a function/method reference.
-     *
-     * @param Tokens $tokens
-     * @param int    $openParenthesis
-     * @param int    $closeParenthesis
-     *
-     * @return int
-     */
-    protected function countArguments(Tokens $tokens, $openParenthesis, $closeParenthesis)
-    {
-        return count($this->getArguments($tokens, $openParenthesis, $closeParenthesis));
-    }
-
-    /**
      * Looks up Tokens sequence for suitable candidates and delivers boundaries information,
      * which can be supplied by other methods in this abstract class.
      *
@@ -94,53 +80,5 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
 
         return [$functionName, $openParenthesis, $closeParenthesis];
-    }
-
-    /**
-     * Returns start and end token indexes of arguments.
-     *
-     * Return an array which each index being the first token af an
-     * argument and the value the last. Including non-function tokens
-     * such as comments and white space tokens, but without the separation
-     * tokens like '(', ',' and ')'.
-     *
-     * @param Tokens $tokens
-     * @param int    $openParenthesis
-     * @param int    $closeParenthesis
-     *
-     * @return array<int, int>
-     */
-    protected function getArguments(Tokens $tokens, $openParenthesis, $closeParenthesis)
-    {
-        $arguments = [];
-        $firstSensibleToken = $tokens->getNextMeaningfulToken($openParenthesis);
-        if ($tokens[$firstSensibleToken]->equals(')')) {
-            return $arguments;
-        }
-
-        $paramContentIndex = $openParenthesis + 1;
-        $argumentsStart = $paramContentIndex;
-        for (; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
-            $token = $tokens[$paramContentIndex];
-
-            // skip nested (), [], {} constructs
-            $blockDefinitionProbe = Tokens::detectBlockType($token);
-
-            if (null !== $blockDefinitionProbe && true === $blockDefinitionProbe['isStart']) {
-                $paramContentIndex = $tokens->findBlockEnd($blockDefinitionProbe['type'], $paramContentIndex);
-
-                continue;
-            }
-
-            // if comma matched, increase arguments counter
-            if ($token->equals(',')) {
-                $arguments[$argumentsStart] = $paramContentIndex - 1;
-                $argumentsStart = $paramContentIndex + 1;
-            }
-        }
-
-        $arguments[$argumentsStart] = $paramContentIndex - 1;
-
-        return $arguments;
     }
 }

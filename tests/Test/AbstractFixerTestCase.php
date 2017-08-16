@@ -204,6 +204,27 @@ abstract class AbstractFixerTestCase extends TestCase
         }
     }
 
+    private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
+    {
+        foreach ($expectedTokens as $index => $expectedToken) {
+            $option = ['JSON_PRETTY_PRINT'];
+            $inputToken = $inputTokens[$index];
+
+            $this->assertTrue(
+                $expectedToken->equals($inputToken),
+                sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson($option), $inputToken->toJson($option))
+            );
+
+            $expectedTokenKind = $expectedToken->isArray() ? $expectedToken->getId() : $expectedToken->getContent();
+            $this->assertTrue(
+                $inputTokens->isTokenKindFound($expectedTokenKind),
+                sprintf('The token kind %s must be found in fixed tokens collection.', $expectedTokenKind)
+            );
+        }
+
+        $this->assertSame($expectedTokens->count(), $inputTokens->count(), 'Both collections must have the same length.');
+    }
+
     /**
      * @return LinterInterface
      */

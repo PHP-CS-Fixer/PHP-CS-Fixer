@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\ReporterFactory;
-use PhpCsFixer\Test\AccessibleObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -47,11 +46,14 @@ final class ReporterFactoryTest extends TestCase
     public function testRegisterBuiltInReports()
     {
         $builder = new ReporterFactory();
+
+        $this->assertCount(0, $builder->getFormats());
+
         $builder->registerBuiltInReporters();
-
-        $accessibleFactory = new AccessibleObject($builder);
-
-        $this->assertGreaterThan(0, count($accessibleFactory->reporters));
+        $this->assertSame(
+            ['json', 'junit', 'txt', 'xml'],
+            $builder->getFormats()
+        );
     }
 
     public function testThatCanRegisterAndGetReports()

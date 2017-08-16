@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\ConfigurationException;
 
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
-use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -39,7 +39,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
         $exception = new InvalidConfigurationException($message);
 
         $this->assertSame($message, $exception->getMessage());
-        $this->assertSame(FixCommand::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG, $exception->getCode());
+        $this->assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG, $exception->getCode());
         $this->assertNull($exception->getPrevious());
     }
 
