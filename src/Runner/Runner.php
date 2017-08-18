@@ -134,8 +134,16 @@ final class Runner
             Tokens::clearCache();
 
             if ($fixInfo) {
-                $name = $this->directory->getRelativePathTo($file);
-                $changed[$name] = $fixInfo;
+                $path = $file->getPathname();
+
+                /* workaround for Symfony/Finder setting doubled slash for root folders in
+                SplFileInfo. See `RecursiveDirectoryIterator::current()`. */
+                if (substr($path, 0, 2) === '//') {
+                    $path = substr($path, 1);
+                }
+
+                $path = $this->directory->getRelativePathTo($path);
+                $changed[$path] = $fixInfo;
 
                 if ($this->stopOnViolation) {
                     break;
