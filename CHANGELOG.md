@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.13.2
+---------------------
+
+* minor #2946 Detect extra old installations (keradus)
+
 Changelog for v1.13.1
 ---------------------
 
