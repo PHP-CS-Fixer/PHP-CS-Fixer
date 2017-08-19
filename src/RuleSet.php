@@ -177,7 +177,10 @@ final class RuleSet implements RuleSetInterface
                 'parts' => [
                     'hint',
                 ],
-                'separatorSpaces' => 2,
+                'separatorSpaces' => [
+                    'var' => 2,
+                    'desc' => 2,
+                ],
             ],
             'phpdoc_annotation_without_dot' => false,
             'phpdoc_no_alias_tag' => ['replacements' => [

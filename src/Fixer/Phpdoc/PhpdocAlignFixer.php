@@ -23,6 +23,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -54,6 +56,12 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
     private static $tagsWithName = [
         'param',
         'property',
+    ];
+
+    private static $separatorSpaces = [
+        'hint' => 1,
+        'var' => 1,
+        'desc' => 1,
     ];
 
     /**
@@ -155,13 +163,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             ])
         ;
 
-        $separatorSpaces = new FixerOptionBuilder('separatorSpaces', 'Separator spaces between parts.');
-        $separatorSpaces
-            ->setAllowedTypes(['int'])
-            ->setAllowedValues(range(0, 8))
-            ->setDefault(1)
-        ;
-
         $parts = new FixerOptionBuilder('parts', 'Parts should be aligned.');
         $parts
             ->setAllowedTypes(['array'])
@@ -171,7 +172,34 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             ->setDefault(self::$alignableParts)
         ;
 
-        return new FixerConfigurationResolver([$tags->getOption(), $separatorSpaces->getOption(), $parts->getOption()]);
+        $separatorSpaces = new FixerOptionBuilder('separatorSpaces', 'Separator spaces between parts.');
+        $separatorSpaces
+            ->setAllowedTypes(['array'])
+            ->setNormalizer(function (Options $options, $value) {
+                $separatorSpaces = self::$separatorSpaces;
+                foreach ($value as $part => $spaces) {
+                    if (!isset($separatorSpaces[$part])) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Invalid part: "%s".',
+                            $part
+                        ));
+                    }
+                    if (!is_int($spaces) || $spaces < 0 || $spaces > 8) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Invalid spaces value for $s: "%s".',
+                            $part,
+                            $spaces
+                        ));
+                    }
+                    $separatorSpaces[$part] = $spaces;
+                }
+
+                return $separatorSpaces;
+            })
+            ->setDefault(self::$separatorSpaces)
+        ;
+
+        return new FixerConfigurationResolver([$tags->getOption(), $parts->getOption(), $separatorSpaces->getOption()]);
     }
 
     /**
@@ -185,7 +213,11 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
         $lines = Utils::splitLines($content);
 
         $separatorSpaces = $this->configuration['separatorSpaces'];
-        $separator = str_repeat(' ', $separatorSpaces);
+        $separator = [
+            'hint' => str_repeat(' ', $separatorSpaces['hint']),
+            'var' => str_repeat(' ', $separatorSpaces['var']),
+            'desc' => str_repeat(' ', $separatorSpaces['desc']),
+        ];
 
         $l = count($lines);
 
@@ -235,9 +267,9 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
 
             // relative aligned start positions
             $alignedPositions = [
-                'hint' => $maxLengths['tag'] + $separatorSpaces,
-                'var' => $maxLengths['tag'] + $maxLengths['hint'] + 2 * $separatorSpaces,
-                'desc' => $maxLengths['tag'] + $maxLengths['hint'] + $maxLengths['var'] + ($maxLengths['var'] ? 3 : 2) * $separatorSpaces,
+                'hint' => $maxLengths['tag'] + $separatorSpaces['hint'],
+                'var' => $maxLengths['tag'] + $maxLengths['hint'] + 2 * $separatorSpaces['var'],
+                'desc' => $maxLengths['tag'] + $maxLengths['hint'] + $maxLengths['var'] + ($maxLengths['var'] ? 3 : 2) * $separatorSpaces['desc'],
             ];
 
             $currTag = null;
@@ -263,10 +295,12 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                             $lastLineMatches = [];
                             // has var
                             if (in_array($currTag, self::$tagsWithName, true)) {
-                                preg_match('/^(.+'.$separator.'.+'.$separator.'.+'.$separator.').+$/', $lastLine, $lastLineMatches);
+                                preg_match('/^(.+'.$separator['hint'].'.+'.$separator['var'].'.+'.$separator['desc'].').+$/', $lastLine, $lastLineMatches);
                             } else {
-                                preg_match('/^(.+'.$separator.'.+'.$separator.').+$/', $lastLine, $lastLineMatches);
+                                preg_match('/^(.+'.$separator['hint'].'.+'.$separator['desc'].').+$/', $lastLine, $lastLineMatches);
                             }
+
+                            // add spaces
                             $line .= str_repeat(' ', strlen($lastLineMatches[1]));
                         }
                     }
@@ -292,7 +326,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                 if (in_array('hint', $this->configuration['parts'], true)) {
                     $line .= str_repeat(' ', $alignedPositions['hint'] - strlen($line));
                 } else {
-                    $line .= $separator;
+                    $line .= $separator['hint'];
                 }
 
                 // add hint
@@ -304,7 +338,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                     if (in_array('var', $this->configuration['parts'], true)) {
                         $line .= str_repeat(' ', $alignedPositions['var'] - strlen($line));
                     } else {
-                        $line .= $separator;
+                        $line .= $separator['var'];
                     }
 
                     // add var
@@ -317,7 +351,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                     if (in_array('desc', $this->configuration['parts'], true)) {
                         $line .= str_repeat(' ', $alignedPositions[in_array($item['tag'], self::$tagsWithName, true) ? 'desc' : 'var'] - strlen($line));
                     } else {
-                        $line .= $separator;
+                        $line .= $separator['desc'];
                     }
 
                     // add desc
