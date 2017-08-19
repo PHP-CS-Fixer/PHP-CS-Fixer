@@ -184,6 +184,9 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $lines = Utils::splitLines($content);
 
+        $separatorSpaces = $this->configuration['separatorSpaces'];
+        $separator = str_repeat(' ', $separatorSpaces);
+
         $l = count($lines);
 
         $desiredTagLength = strlen('param');
@@ -232,38 +235,47 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
 
             // relative aligned start positions
             $alignedPositions = [
-                'hint' => $maxLengths['tag'] + $this->configuration['separatorSpaces'],
-                'var' => $maxLengths['tag'] + $maxLengths['hint'] + 2 * $this->configuration['separatorSpaces'],
-                'desc' => $maxLengths['tag'] + $maxLengths['hint'] + $maxLengths['var'] + ($maxLengths['var'] ? 3 : 2) * $this->configuration['separatorSpaces'],
+                'hint' => $maxLengths['tag'] + $separatorSpaces,
+                'var' => $maxLengths['tag'] + $maxLengths['hint'] + 2 * $separatorSpaces,
+                'desc' => $maxLengths['tag'] + $maxLengths['hint'] + $maxLengths['var'] + ($maxLengths['var'] ? 3 : 2) * $separatorSpaces,
             ];
 
             $currTag = null;
 
             // update
             foreach ($items as $j => $item) {
-                // start with indent
-                $line = $item['indent'];
-
-                // add *
-                $line .= ' * ';
+                $linePrefix = $item['indent'].' * ';
+                $line = '';
 
                 // multiline
                 if (null === $item['tag']) {
                     if ($item['desc'][0] !== '@') {
                         // vertical align desc
                         if (in_array('desc', $this->configuration['parts'], true)) {
-                            $line .= str_repeat(' ', $alignedPositions[in_array($currTag, self::$tagsWithName, true) ? 'desc' : 'var'] - (strlen($line) - strlen($item['indent'].' * @')));
+                            // has var
+                            if (in_array($currTag, self::$tagsWithName, true)) {
+                                $line .= str_repeat(' ', $alignedPositions['desc'] - strlen($line) + 1);
+                            } else {
+                                $line .= str_repeat(' ', $alignedPositions['var'] - strlen($line) + 1);
+                            }
+                        } else {
+                            $lastLine = rtrim(substr($lines[$current + $j - 1], strlen($item['indent'].' * ')));
+                            $lastLineMatches = [];
+                            // has var
+                            if (in_array($currTag, self::$tagsWithName, true)) {
+                                preg_match('/^(.+'.$separator.'.+'.$separator.'.+'.$separator.').+$/', $lastLine, $lastLineMatches);
+                            } else {
+                                preg_match('/^(.+'.$separator.'.+'.$separator.').+$/', $lastLine, $lastLineMatches);
+                            }
+                            $line .= str_repeat(' ', strlen($lastLineMatches[1]));
                         }
                     }
 
                     // add desc
                     $line .= $item['desc'];
 
-                    // add line ending
-                    $line .= $lineEnding;
-
                     // add to lines
-                    $lines[$current + $j] = $line;
+                    $lines[$current + $j] = $linePrefix.$line.$lineEnding;
 
                     continue;
                 }
@@ -271,14 +283,16 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                 $currTag = $item['tag'];
 
                 // add @
-                $line .= '@';
+                $linePrefix .= '@';
 
                 // add tag
                 $line .= $item['tag'];
 
                 // vertical align hint
                 if (in_array('hint', $this->configuration['parts'], true)) {
-                    $line .= str_repeat(' ', $alignedPositions['hint'] - (strlen($line) - strlen($item['indent'].' * @')));
+                    $line .= str_repeat(' ', $alignedPositions['hint'] - strlen($line));
+                } else {
+                    $line .= $separator;
                 }
 
                 // add hint
@@ -288,7 +302,9 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                 if (!empty($item['var'])) {
                     // vertical align var
                     if (in_array('var', $this->configuration['parts'], true)) {
-                        $line .= str_repeat(' ', $alignedPositions['var'] - (strlen($line) - strlen($item['indent'].' * @')));
+                        $line .= str_repeat(' ', $alignedPositions['var'] - strlen($line));
+                    } else {
+                        $line .= $separator;
                     }
 
                     // add var
@@ -299,18 +315,17 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                 if (!empty($item['desc'])) {
                     // vertical align desc
                     if (in_array('desc', $this->configuration['parts'], true)) {
-                        $line .= str_repeat(' ', $alignedPositions[in_array($item['tag'], self::$tagsWithName, true) ? 'desc' : 'var'] - (strlen($line) - strlen($item['indent'].' * @')));
+                        $line .= str_repeat(' ', $alignedPositions[in_array($item['tag'], self::$tagsWithName, true) ? 'desc' : 'var'] - strlen($line));
+                    } else {
+                        $line .= $separator;
                     }
 
                     // add desc
                     $line .= $item['desc'];
                 }
 
-                // add line ending
-                $line .= $lineEnding;
-
                 // add to lines
-                $lines[$current + $j] = $line;
+                $lines[$current + $j] = $linePrefix.$line.$lineEnding;
             }
         }
 
