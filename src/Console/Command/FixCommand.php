@@ -39,6 +39,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 final class FixCommand extends Command
 {
+    const COMMAND_NAME = 'fix';
+
     /**
      * @var EventDispatcher
      */
@@ -85,7 +87,7 @@ final class FixCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('fix')
+            ->setName(self::COMMAND_NAME)
             ->setDefinition(
                 [
                     new InputArgument('path', InputArgument::IS_ARRAY, 'The path.'),
@@ -144,10 +146,6 @@ final class FixCommand extends Command
         ;
 
         if (null !== $stdErr) {
-            if (extension_loaded('xdebug')) {
-                $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
-            }
-
             if (null !== $passedConfig && null !== $passedRules) {
                 $stdErr->writeln([
                     sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'When passing both "--config" and "--rules" the rules within the configuration file are not used.'),
