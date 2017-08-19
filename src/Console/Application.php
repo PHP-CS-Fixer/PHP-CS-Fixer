@@ -19,6 +19,9 @@ use PhpCsFixer\Console\Command\ReadmeCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\ListCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -40,6 +43,30 @@ final class Application extends BaseApplication
         $this->add(new FixCommand());
         $this->add(new ReadmeCommand());
         $this->add(new SelfUpdateCommand());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function doRun(InputInterface $input, OutputInterface $output)
+    {
+        $stdErr = $output instanceof ConsoleOutputInterface
+            ? $output->getErrorOutput()
+            : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output)
+        ;
+        if (null !== $stdErr) {
+            $warningsDetector = new WarningsDetector();
+            $warningsDetector->detectOldVendor();
+            $warningsDetector->detectOldMajor();
+            if (FixCommand::COMMAND_NAME === $this->getCommandName($input)) {
+                $warningsDetector->detectXdebug();
+            }
+            foreach ($warningsDetector->getWarnings() as $warning) {
+                $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
+            }
+        }
+
+        return parent::doRun($input, $output);
     }
 
     /**

@@ -24,13 +24,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ReadmeCommand extends Command
 {
+    const COMMAND_NAME = 'readme';
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('readme')
+            ->setName(self::COMMAND_NAME)
             ->setDescription('Generates the README content, based on the fix command help.')
         ;
     }
