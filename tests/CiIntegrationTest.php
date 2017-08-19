@@ -55,14 +55,14 @@ final class CiIntegrationTest extends TestCase
             'git config user.email test',
             'git add .',
             'git commit -m "init" -q',
-        ]), true);
+        ]));
     }
 
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
 
-        static::executeCommand('rm -rf .git', true);
+        static::executeCommand('rm -rf .git');
 
         self::$fileRemoval->delete(static::$tmpFilePath);
     }
@@ -76,7 +76,7 @@ final class CiIntegrationTest extends TestCase
             'git checkout . -q',
             'git clean -fdq',
             'git checkout master -q',
-        ]), true);
+        ]));
     }
 
     public function testIntegration()
@@ -89,7 +89,7 @@ final class CiIntegrationTest extends TestCase
             'echo "echo 1;" >> dir\ b/file\ b.php',
             'git add .',
             'git commit -m "case1" -q',
-        ]), true);
+        ]));
 
         $steps = array(
             'COMMIT_RANGE="master..case1"',
@@ -105,7 +105,7 @@ final class CiIntegrationTest extends TestCase
             'echo "${CHANGED_FILES[@]}"',
             'echo "${CHANGED_FILES[0]}"',
             'echo "${CHANGED_FILES[1]}"',
-        ), true);
+        ));
 
         $this->assertSame(
             array(
@@ -127,7 +127,7 @@ final class CiIntegrationTest extends TestCase
             'echo "${EXTRA_ARGS[1]}"',
             'echo "${EXTRA_ARGS[2]}"',
             'echo "${EXTRA_ARGS[3]}"',
-        ), true);
+        ));
 
         $this->assertSame(
             array(
@@ -146,7 +146,7 @@ final class CiIntegrationTest extends TestCase
             $steps[1],
             $steps[2],
             $steps[3],
-        ), true);
+        ));
 
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.1.*.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
@@ -166,7 +166,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
         $this->assertSame(0, $result3['code']);
     }
 
-    private static function executeCommand($command, $crashOnError)
+    private static function executeCommand($command)
     {
         $process = new Process($command, static::$fixtureDir);
         $process->run();
@@ -177,7 +177,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
             'stderr' => $process->getErrorOutput(),
         );
 
-        if ($crashOnError && 0 !== $result['code']) {
+        if (0 !== $result['code']) {
             throw new \RuntimeException(sprintf(
                 "Cannot execute `%s`:\n%s\nCode: %s\nExit text: %s\nError output: %s\nDetails:\n%s",
                 $command,
@@ -194,10 +194,10 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
         return $result;
     }
 
-    private static function executeScript(array $scriptParts, $crashOnError)
+    private static function executeScript(array $scriptParts)
     {
         file_put_contents(static::$tmpFilePath, implode("\n", array_merge(array('#!/usr/bin/env bash', 'set -e', ''), $scriptParts)));
 
-        return static::executeCommand('./'.static::$tmpFileName, $crashOnError);
+        return static::executeCommand('./'.static::$tmpFileName);
     }
 }
