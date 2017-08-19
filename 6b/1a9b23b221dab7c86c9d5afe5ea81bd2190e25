@@ -1,0 +1,68 @@
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-08-02T18:54:55Z
+
+@eclipxe13 please review
+
+---------------------------------------------------------------------------
+
+by eclipxe13 at 2017-08-02T19:30:20Z
+
+It works great. I add a double check in test just to make sure that a fix inside an anonymous function has been done and no change was made to the upper call, share to you.
+```php
+            'test fix call inside function does not change upper call' => [
+                <<<'EXPECTED'
+<?php
+call_user_func(function ($arguments) {
+    xecho(
+        'a',
+    'b'
+    );
+}, $argv);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+call_user_func(function ($arguments) {
+    xecho('a',
+    'b');
+}, $argv);
+INPUT
+                ,
+                ['ensure_fully_multiline' => true],
+            ],
+```
+PHPUnit pass. I also run the fix on the code base where I found the issue and it works as expected.
+
+I hope it reach the master branch soon.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-08-02T19:43:44Z
+
+Thanks for your thorough testing and bug reports, much appreciated!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-02T20:10:55Z
+
+Please change target branch to 2.4
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-02T20:13:37Z
+
+@greg0ire , probably 2.4 instead of 2.2, as on 2.2 there were no `ensure_fully_multiline` option.
+or, even without this option, some fix has to gone to 2.2 ?
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-08-02T20:15:43Z
+
+No it should be 2.4 indeed I think.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-08-02T20:17:05Z
+
+Should be fine now, sorry for the mixup.
