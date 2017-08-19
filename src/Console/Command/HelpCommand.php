@@ -34,6 +34,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class HelpCommand extends BaseHelpCommand
 {
+    const COMMAND_NAME = 'help';
+
     /**
      * Returns help-copy suitable for console output.
      *

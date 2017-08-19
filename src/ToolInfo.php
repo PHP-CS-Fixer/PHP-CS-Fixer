@@ -25,7 +25,15 @@ final class ToolInfo
 {
     const COMPOSER_PACKAGE_NAME = 'friendsofphp/php-cs-fixer';
 
-    public static function getComposerVersion()
+    /**
+     * @internal
+     */
+    const COMPOSER_LEGACY_PACKAGE_NAME = 'fabpot/php-cs-fixer';
+
+    /**
+     * @internal
+     */
+    public static function getComposerInstallationDetails()
     {
         static $result;
 
@@ -37,12 +45,24 @@ final class ToolInfo
             $composerInstalled = json_decode(file_get_contents(self::getComposerInstalledFile()), true);
 
             foreach ($composerInstalled as $package) {
-                if (self::COMPOSER_PACKAGE_NAME === $package['name']) {
-                    $result = $package['version'].'#'.$package['dist']['reference'];
+                if (in_array($package['name'], [self::COMPOSER_PACKAGE_NAME, self::COMPOSER_LEGACY_PACKAGE_NAME], true)) {
+                    $result = $package;
 
                     break;
                 }
             }
+        }
+
+        return $result;
+    }
+
+    public static function getComposerVersion()
+    {
+        static $result;
+
+        if (null === $result) {
+            $package = self::getComposerInstallationDetails();
+            $result = $package['version'].'#'.$package['dist']['reference'];
         }
 
         return $result;
