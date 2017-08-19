@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-26T17:58:55Z
+
+good point @julienfalque , target branch changed to 2.2
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-26T17:59:30Z
+
+what is up with appveyor now?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-29T01:32:04Z
+
+Please add `tests/Fixtures/Integration/misc/PHP7_2.test` file containing part of 7.2 that are covered by this PR.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-08-17T20:47:47Z
+
+This PR should be ready now.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-19T12:36:13Z
+
+thanks @julienfalque
+I've added more test code to the PHP 7.2 integration test, rebased to remove the merge before that commit  and squashed to one commit for each of us.
