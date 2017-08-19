@@ -40,6 +40,8 @@ use Symfony\CS\Utils;
  */
 class FixCommand extends Command
 {
+    const COMMAND_NAME = 'fix';
+
     const EXIT_STATUS_FLAG_HAS_INVALID_CONFIG = 16;
     const EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG = 32;
 
@@ -104,7 +106,7 @@ class FixCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('fix')
+            ->setName(self::COMMAND_NAME)
             ->setDefinition(
                 array(
                     new InputArgument('path', InputArgument::OPTIONAL, 'The path', null),
@@ -300,10 +302,6 @@ EOF
             ? $output->getErrorOutput()
             : ('txt' === $input->getOption('format') ? $output : null)
         ;
-
-        if (null !== $stdErr && extension_loaded('xdebug')) {
-            $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'You are running php-cs-fixer with xdebug enabled. This has a major impact on runtime performance.'));
-        }
 
         $verbosity = $output->getVerbosity();
 
