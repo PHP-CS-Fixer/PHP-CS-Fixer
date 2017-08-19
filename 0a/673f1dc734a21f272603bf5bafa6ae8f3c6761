@@ -1,0 +1,85 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-07-21T07:02:34Z
+
+For the record, 👎 on this fixer existing.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-07-21T07:03:45Z
+
+Oh, wait. It doesn't do what I thought... maybe it needs renaming?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-21T08:31:02Z
+
+@GrahamCampbell What confused you exactly? The fixer's name looks good to me.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-21T10:39:44Z
+
+as he didn't provided any details, i bet he was thinking about braces in:
+```php
+if (true) {
+    echo "foo";
+}
+```
+
+which are not needed in fact, but we want to keep them (and this fixer is not removing them).
+
+more precise name, yet more ugly, would be sth like `NoBracesOfStatementGroupWithoutControlStructureFixer`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-21T10:53:55Z
+
+>NoBracesOfStatementGroupWithoutControlStructureFixer
+
+how about;
+
+>NoCurlyBracesWithoutControlStructureFixer
+
+?  not sure about the namespace of the fixer though
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-21T12:56:48Z
+
+I'm fine with current name, maybe it's better to make the description more explicit about what is an _unneeded curly brace_ instead? Like _Removes curly braces that are superfluous and don't wrap a control structure's body._ WDYT?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-22T12:55:09Z
+
+Can we please remove fabbot.io as service? It provides no meaning as we tests the CS of the code better.
+I know it is some way to see what version of the fixer fabbot.io uses. However that is not of interest of most contributors and all are effected by the failed check as PR's show as failed, both in on the person PR over as well in the PR overview of the repo.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-22T22:28:45Z
+
+I would rather detect that our cofig is too future-aware and skip fabbot in given situation. Yet, nothing this PR is related to.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-22T23:54:16Z
+
+Can we than remove fabbot.io as being required to pass?
+It is related to this PR, as I feel not acting on fail status of this PR because I assume false negative of fabbot.io while there might be a legit failure of travis.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-23T11:38:55Z
+
+> Can we than remove fabbot.io as being required to pass?
+
+it is not required, required are only AppVeyor and Travis
+your concern is about github ui directly, as they display overall status on top of all integrations, not only required ones.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-23T12:30:15Z
+
+done: #2935
