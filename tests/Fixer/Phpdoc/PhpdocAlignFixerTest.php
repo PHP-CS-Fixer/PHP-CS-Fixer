@@ -203,6 +203,123 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testFixSpaceSeparators()
+    {
+        $this->fixer->configure([
+            'tags' => [
+                'param',
+                'return',
+            ],
+            'separatorSpaces' => [
+                'hint' => 2,
+                'var' => 4,
+                'desc' => 8,
+            ],
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param   string    $param1        lorem ipsum
+     * @return  int       lorem ipsum
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param   string $param1 lorem ipsum
+     * @return int lorem ipsum
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixSpaceSeparatorsWithHintAlignOnly()
+    {
+        $this->fixer->configure([
+            'tags' => [
+                'param',
+                'return',
+            ],
+            'parts' => [
+                'hint',
+            ],
+            'separatorSpaces' => [
+                'hint' => 2,
+                'var' => 4,
+                'desc' => 8,
+            ],
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param  string    $param1        lorem ipsum
+     * @param  int    $param2        lorem ipsum
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param   string $param1 lorem ipsum
+     * @param int     $param2 lorem ipsum
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixMultilineSpaceSeparators()
+    {
+        $this->fixer->configure([
+            'tags' => [
+                'param',
+                'return',
+                'throws',
+            ],
+            'separatorSpaces' => [
+                'hint' => 2,
+                'var' => 4,
+                'desc' => 8,
+            ],
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param   string    $param1        lorem ipsum
+     *                                   foo bar
+     * @throws  Bar       description
+     *                    lorem ipsum
+     * @return  int       lorem ipsum
+     *                    foo bar
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param   string $param1 lorem ipsum
+     *                     foo bar
+     * @throws            Bar description
+     *                       lorem ipsum
+     * @return int lorem ipsum
+     *            foo bar
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testFixOnlyReturn()
     {
         $this->fixer->configure(['tags' => ['return']]);
