@@ -151,6 +151,10 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         for ($i = $groupOpenIndex + 1; $i <= $groupCloseIndex; ++$i) {
             $token = $tokens[$i];
 
+            if ($token->equals(',') && $tokens[$tokens->getNextMeaningfulToken($i)]->equals(array(CT::T_GROUP_IMPORT_BRACE_CLOSE))) {
+                continue;
+            }
+
             if ($token->equalsAny(array(',', array(CT::T_GROUP_IMPORT_BRACE_CLOSE)))) {
                 $statements[] = 'use'.$statement.';';
                 $statement = $groupPrefix;

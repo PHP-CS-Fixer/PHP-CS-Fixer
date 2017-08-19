@@ -273,6 +273,25 @@ use function some\b\A\B;',
     }
 
     /**
+     * @requires PHP 7.0
+     */
+    public function testMessyComments()
+    {
+        $this->doTest(
+            '<?php
+use D\/*1*//*2*//*3*/E;
+use D\/*4*//*5*//*6*//*7*//*8*//*9*/F/*10*//*11*//*12*/;
+',
+            '<?php
+use D\{
+/*1*//*2*//*3*/E,/*4*//*5*//*6*/
+/*7*//*8*//*9*/F/*10*//*11*//*12*/
+};
+'
+        );
+    }
+
+    /**
      * @param string      $expected
      * @param null|string $input
      *
@@ -291,6 +310,36 @@ use function some\b\A\B;',
             array(
                 "<?php\r\n    use FooA;\r\n    use FooB;",
                 "<?php\r\n    use FooA, FooB;",
+            ),
+        );
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provide72Cases
+     * @requires PHP 7.2
+     */
+    public function test72($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provide72Cases()
+    {
+        return array(
+            array(
+                '<?php
+use D\E;
+use D\F;
+use G\H;
+use G\I/*1*//*2*/;
+',
+                '<?php
+use D\{E,F,};
+use G\{H,I/*1*/,/*2*/};
+',
             ),
         );
     }
