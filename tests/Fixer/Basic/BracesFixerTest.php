@@ -2259,8 +2259,8 @@ if ($foo) {
 //    if ($bar === \'bar\') {
 //        return [];
 //    }
-    
-    $bar = \'bar\';
+    '."\n".
+'    $bar = \'bar\';
 } else {
     bar();
 }
@@ -2272,8 +2272,8 @@ if ($foo) {
     foo();
 
 //    bar();
-    
-    $bar = \'bar\';
+    '."\n".
+'    $bar = \'bar\';
 } else {
     bar();
 }
@@ -2284,7 +2284,19 @@ if ($foo) {
 if ($foo) {
     foo();
 //    bar();
-    
+    '."\n".
+'    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+    '."\n".
+'//    bar();
     $bar = \'bar\';
 } else {
     bar();
@@ -2295,20 +2307,8 @@ if ($foo) {
                 '<?php
 if ($foo) {
     foo();
-    
-//    bar();
-    $bar = \'bar\';
-} else {
-    bar();
-}
-',
-            ),
-            array(
-                '<?php
-if ($foo) {
-    foo();
-    
-//    bar();
+    '."\n".
+'//    bar();
 } else {
     bar();
 }
