@@ -364,7 +364,7 @@ class Foo
                     $nextLineCanBeIndented = false;
                     if ($nestToken->equalsAny(array(';', '}'))) {
                         $nextLineCanBeIndented = true;
-                    } elseif ($this->isCommentWithFixableIndendation($tokens, $nestIndex)) {
+                    } elseif ($this->isCommentWithFixableIndentation($tokens, $nestIndex)) {
                         for ($i = $nestIndex; $i > $startBraceIndex; --$i) {
                             if ($tokens[$i]->equalsAny(array(';', '}'))) {
                                 $nextLineCanBeIndented = true;
@@ -890,7 +890,7 @@ class Foo
      *
      * @return bool
      */
-    private function isCommentWithFixableIndendation(Tokens $tokens, $index)
+    private function isCommentWithFixableIndentation(Tokens $tokens, $index)
     {
         if (!$tokens[$index]->isComment()) {
             return false;
