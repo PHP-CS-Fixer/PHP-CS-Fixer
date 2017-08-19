@@ -941,8 +941,8 @@ Choose from the list of available rules:
 
   - ``parts`` (``array``): parts should be aligned; defaults to ``['hint', 'var',
     'desc']``
-  - ``separatorSpaces`` (``0``, ``1``, ``2``, ``3``, ``4``, ``5``, ``6``, ``7``, ``8``): separator spaces between
-    parts; defaults to ``1``
+  - ``separatorSpaces`` (``array``): separator spaces between parts; defaults to
+    ``['hint' => 1, 'var' => 1, 'desc' => 1]``
   - ``tags`` (``array``): the tags that should be aligned; defaults to ``['param',
     'return', 'throws', 'type', 'var']``
 
