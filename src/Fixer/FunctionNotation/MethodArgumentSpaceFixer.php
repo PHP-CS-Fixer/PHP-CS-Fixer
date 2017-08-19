@@ -163,6 +163,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 continue;
             }
 
+            if ($token->equals('}')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
+
+                continue;
+            }
+
             if ($token->equals(',')) {
                 $this->fixSpace2($tokens, $index);
                 if (!$isMultiline && $this->isNewline($tokens[$index + 1])) {
@@ -218,6 +224,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             // skip nested arrays
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+
+                continue;
+            }
+
+            if ($token->equals('}')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
 
                 continue;
             }

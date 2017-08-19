@@ -648,6 +648,39 @@ UNAFFECTED
                 null,
                 ['ensure_fully_multiline' => true],
             ],
+            'test function argument with multiline echo in it' => [
+            <<<'UNAFFECTED'
+<?php
+call_user_func(function ($arguments) {
+    echo 'a',
+      'b';
+}, $argv);
+UNAFFECTED
+            ,
+                null,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test function argument with oneline echo in it' => [
+            <<<'EXPECTED'
+<?php
+call_user_func(
+    function ($arguments) {
+    echo 'a', 'b';
+},
+$argv
+);
+EXPECTED
+            ,
+            <<<'INPUT'
+<?php
+call_user_func(function ($arguments) {
+    echo 'a', 'b';
+},
+$argv);
+INPUT
+            ,
+                ['ensure_fully_multiline' => true],
+            ],
         ];
     }
 
