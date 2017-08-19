@@ -151,6 +151,23 @@ $a = 1;
    //
       //',
             ],
+            'uni code test' => [
+                '<?php
+class A
+{
+    /**
+     * @SWG\Get(
+     *     path="/api/v0/cards",
+     *     operationId="listCards",
+     *     tags={"Банковские карты"},
+     *     summary="Возвращает список банковских карт."
+     *  )
+     */
+    public function indexAction()
+    {
+    }
+}',
+            ],
         ];
     }
 
