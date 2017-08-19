@@ -567,4 +567,41 @@ AB#
 
         $this->doTest($expected, $input);
     }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testAnonymousClassFixing()
+    {
+        $this->doTest(
+            '<?php
+                $a = new class() {
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {public function a() {}};
+                    }
+                }
+            ',
+            '<?php
+                $a = new class() {
+                    function a() {
+                    }
+                };
+
+                class C
+                {
+                    function A()
+                    {
+                        $a = new class() {function a() {}};
+                    }
+                }
+            '
+        );
+    }
 }

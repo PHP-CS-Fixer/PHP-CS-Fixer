@@ -1,0 +1,41 @@
+--TEST--
+PHP 7.2 test.
+--RULESET--
+{
+    "single_import_per_statement": true
+}
+--REQUIREMENTS--
+{"php": 70200}
+--EXPECT--
+<?php
+
+namespace Foo;
+
+use Bar\A;
+use Bar\B;
+
+class C
+{
+    public function A($a, object $b): object {
+        unset($a);
+        return $b;
+    }
+}
+
+--INPUT--
+<?php
+
+namespace Foo;
+
+use Bar\{
+    A,
+    B,
+};
+
+class C
+{
+    public function A($a, object $b): object {
+        unset($a);
+        return $b;
+    }
+}

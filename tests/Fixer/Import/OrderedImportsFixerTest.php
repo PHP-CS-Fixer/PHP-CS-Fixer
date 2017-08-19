@@ -1717,4 +1717,32 @@ use function some\a\{fn_a, fn_b};
             ),
         );
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provide72Cases
+     * @requires PHP 7.2
+     */
+    public function test72($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provide72Cases()
+    {
+        return array(
+            array(
+                '<?php
+use A\{B,};
+use C\{D,E,};
+',
+                '<?php
+use C\{D,E,};
+use A\{B,};
+',
+            ),
+        );
+    }
 }
