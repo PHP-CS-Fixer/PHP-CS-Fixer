@@ -117,7 +117,8 @@ with a line not prefixed with asterisk
             }
 
             $indentation = $matches[1];
-            $lines = preg_split('/\R/', $token->getContent());
+            $lines = preg_split('/\R/u', $token->getContent());
+
             foreach ($lines as $lineNumber => $line) {
                 if (0 === $lineNumber) {
                     continue;
