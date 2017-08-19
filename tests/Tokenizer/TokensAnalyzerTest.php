@@ -66,18 +66,107 @@ PHP;
 
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = array_values($tokensAnalyzer->getClassyElements());
+        $elements = $tokensAnalyzer->getClassyElements();
 
-        $this->assertCount(9, $elements);
-        $this->assertSame('property', $elements[0]['type']);
-        $this->assertSame('property', $elements[1]['type']);
-        $this->assertSame('property', $elements[2]['type']);
-        $this->assertSame('property', $elements[3]['type']);
-        $this->assertSame('const', $elements[4]['type']);
-        $this->assertSame('method', $elements[5]['type']);
-        $this->assertSame('method', $elements[6]['type']);
-        $this->assertSame('method', $elements[7]['type']);
-        $this->assertSame('const', $elements[8]['type']);
+        $this->assertSame(
+            array(
+                9 => array(
+                    'token' => $tokens[9],
+                    'type' => 'property',
+                ),
+                14 => array(
+                    'token' => $tokens[14],
+                    'type' => 'property',
+                ),
+                19 => array(
+                    'token' => $tokens[19],
+                    'type' => 'property',
+                ),
+                28 => array(
+                    'token' => $tokens[28],
+                    'type' => 'property',
+                ),
+                42 => array(
+                    'token' => $tokens[42],
+                    'type' => 'const',
+                ),
+                53 => array(
+                    'token' => $tokens[53],
+                    'type' => 'method',
+                ),
+                83 => array(
+                    'token' => $tokens[83],
+                    'type' => 'method',
+                ),
+                140 => array(
+                    'token' => $tokens[140],
+                    'type' => 'method',
+                ),
+                164 => array(
+                    'token' => $tokens[164],
+                    'type' => 'const',
+                ),
+            ),
+            $elements
+        );
+    }
+
+    public function testGetClassyElementsWithAnonymousClass()
+    {
+        $source = <<<'PHP'
+<?php
+class A {
+    public $A;
+
+    private function B()
+    {
+        return new class(){
+            protected $level1;
+            private function A() {
+                return new class(){private $level2 = 1;};
+            }
+        };
+    }
+
+    private function C() {
+    }
+}
+
+function B() {} // do not count this
+PHP;
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        $this->assertSame(
+            array(
+                9 => array(
+                    'token' => $tokens[9],
+                    'type' => 'property',
+                ),
+                14 => array(
+                    'token' => $tokens[14],
+                    'type' => 'method',
+                ),
+                33 => array(
+                    'token' => $tokens[33],
+                    'type' => 'property',
+                ),
+                38 => array(
+                    'token' => $tokens[38],
+                    'type' => 'method',
+                ),
+                56 => array(
+                    'token' => $tokens[56],
+                    'type' => 'property',
+                ),
+                74 => array(
+                    'token' => $tokens[74],
+                    'type' => 'method',
+                ),
+            ),
+            $elements
+        );
     }
 
     /**

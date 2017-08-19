@@ -28,6 +28,11 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
+     * @var array
+     */
+    private $classyElements;
+
+    /**
      * {@inheritdoc}
      */
     public function isCandidate(PhpTokens $tokens)
@@ -40,6 +45,10 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
      */
     protected function applyFix(\SplFileInfo $file, PhpTokens $phpTokens)
     {
+        // fetch indexes one time, this is safe as we never add or remove a token during fixing
+        $analyzer = new TokensAnalyzer($phpTokens);
+        $this->classyElements = $analyzer->getClassyElements();
+
         /** @var PhpToken $docCommentToken */
         foreach ($phpTokens->findGivenKind(T_DOC_COMMENT) as $index => $docCommentToken) {
             if (!$this->nextElementAcceptsDoctrineAnnotations($phpTokens, $index)) {
@@ -210,8 +219,6 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
-        $analyzer = new TokensAnalyzer($tokens);
-
-        return array_key_exists($index, $analyzer->getClassyElements());
+        return isset($this->classyElements[$index]);
     }
 }
