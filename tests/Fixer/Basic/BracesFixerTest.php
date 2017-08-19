@@ -2259,8 +2259,8 @@ if ($foo) {
 //    if ($bar === \'bar\') {
 //        return [];
 //    }
-    '."\n".
-'    $bar = \'bar\';
+    '.'
+    $bar = \'bar\';
 } else {
     bar();
 }
@@ -2272,31 +2272,7 @@ if ($foo) {
     foo();
 
 //    bar();
-    '."\n".
-'    $bar = \'bar\';
-} else {
-    bar();
-}
-',
-            ),
-            array(
-                '<?php
-if ($foo) {
-    foo();
-//    bar();
-    '."\n".
-'    $bar = \'bar\';
-} else {
-    bar();
-}
-',
-            ),
-            array(
-                '<?php
-if ($foo) {
-    foo();
-    '."\n".
-'//    bar();
+    '.'
     $bar = \'bar\';
 } else {
     bar();
@@ -2307,8 +2283,32 @@ if ($foo) {
                 '<?php
 if ($foo) {
     foo();
-    '."\n".
-'//    bar();
+//    bar();
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+    '.'
+//    bar();
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+    '.'
+//    bar();
 } else {
     bar();
 }
