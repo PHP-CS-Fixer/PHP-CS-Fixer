@@ -36,6 +36,12 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
     private $regex;
     private $regexCommentLine;
 
+    private static $alignableParts = [
+        'hint',
+        'var',
+        'desc',
+    ];
+
     private static $alignableTags = [
         'param',
         'property',
@@ -149,7 +155,23 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             ])
         ;
 
-        return new FixerConfigurationResolver([$tags->getOption()]);
+        $separatorSpaces = new FixerOptionBuilder('separatorSpaces', 'Separator spaces between parts.');
+        $separatorSpaces
+            ->setAllowedTypes(['int'])
+            ->setAllowedValues(range(0, 8))
+            ->setDefault(1)
+        ;
+
+        $parts = new FixerOptionBuilder('parts', 'Parts should be aligned.');
+        $parts
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
+                $generator->allowedValueIsSubsetOf(self::$alignableParts),
+            ])
+            ->setDefault(self::$alignableParts)
+        ;
+
+        return new FixerConfigurationResolver([$tags->getOption(), $separatorSpaces->getOption(), $parts->getOption()]);
     }
 
     /**
@@ -163,6 +185,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
         $lines = Utils::splitLines($content);
 
         $l = count($lines);
+
+        $desiredTagLength = strlen('param');
 
         for ($i = 0; $i < $l; ++$i) {
             $items = [];
@@ -206,6 +230,13 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                 $maxLengths['var'] = max($maxLengths['var'], strlen($item['var']));
             }
 
+            // relative aligned start positions
+            $alignedPositions = [
+                'hint' => $maxLengths['tag'] + $this->configuration['separatorSpaces'],
+                'var' => $maxLengths['tag'] + $maxLengths['hint'] + 2 * $this->configuration['separatorSpaces'],
+                'desc' => $maxLengths['tag'] + $maxLengths['hint'] + $maxLengths['var'] + ($maxLengths['var'] ? 3 : 2) * $this->configuration['separatorSpaces'],
+            ];
+
             $currTag = null;
 
             // update
@@ -219,11 +250,10 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                 // multiline
                 if (null === $item['tag']) {
                     if ($item['desc'][0] !== '@') {
-                        // add spaces
-                        $line .= str_repeat(
-                            ' ',
-                            array_sum($maxLengths) + (in_array($currTag, self::$tagsWithName, true) ? 4 : 3) * $this->configuration['separatorSpaces']
-                        );
+                        // vertical align desc
+                        if (in_array('desc', $this->configuration['parts'], true)) {
+                            $line .= str_repeat(' ', $alignedPositions[in_array($currTag, self::$tagsWithName, true) ? 'desc' : 'var'] - (strlen($line) - strlen($item['indent'].' * @')));
+                        }
                     }
 
                     // add desc
@@ -246,29 +276,20 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                 // add tag
                 $line .= $item['tag'];
 
-                // has hint
-                if (!empty($item['hint'])) {
-                    // vertical align
-                    if ($this->configuration['verticalAlign']) {
-                        $line .= str_repeat(' ', $maxLengths['tag'] - strlen($item['tag']));
-                    }
-
-                    // add separator spaces
-                    $line .= str_repeat(' ', $this->configuration['separatorSpaces']);
-
-                    // add hint
-                    $line .= $item['hint'];
+                // vertical align hint
+                if (in_array('hint', $this->configuration['parts'], true)) {
+                    $line .= str_repeat(' ', $alignedPositions['hint'] - (strlen($line) - strlen($item['indent'].' * @')));
                 }
+
+                // add hint
+                $line .= $item['hint'];
 
                 // has var
                 if (!empty($item['var'])) {
-                    // vertical align
-                    if ($this->configuration['verticalAlign']) {
-                        $line .= str_repeat(' ', $maxLengths['hint'] - strlen($item['hint']));
+                    // vertical align var
+                    if (in_array('var', $this->configuration['parts'], true)) {
+                        $line .= str_repeat(' ', $alignedPositions['var'] - (strlen($line) - strlen($item['indent'].' * @')));
                     }
-
-                    // add separator spaces
-                    $line .= str_repeat(' ', $this->configuration['separatorSpaces']);
 
                     // add var
                     $line .= $item['var'];
@@ -276,18 +297,10 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
 
                 // has desc
                 if (!empty($item['desc'])) {
-                    // vertical align
-                    if ($this->configuration['verticalAlign']) {
-                        // has var
-                        if (!empty($item['var'])) {
-                            $line .= str_repeat(' ', $maxLengths['var'] - strlen($item['var']));
-                        } else {
-                            $line .= str_repeat(' ', $maxLengths['hint'] - strlen($item['hint']));
-                        }
+                    // vertical align desc
+                    if (in_array('desc', $this->configuration['parts'], true)) {
+                        $line .= str_repeat(' ', $alignedPositions[in_array($item['tag'], self::$tagsWithName, true) ? 'desc' : 'var'] - (strlen($line) - strlen($item['indent'].' * @')));
                     }
-
-                    // add separator spaces
-                    $line .= str_repeat(' ', $this->configuration['separatorSpaces']);
 
                     // add desc
                     $line .= $item['desc'];
