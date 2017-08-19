@@ -256,10 +256,11 @@ EOF
             $template
         );
 
+        $ciIntegrationScript = file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES);
         $ciIntegration = array(
-            file_get_contents(__DIR__.'/../../../dev-tools/ci-integration/step1-changed_files.sh'),
-            file_get_contents(__DIR__.'/../../../dev-tools/ci-integration/step2-extra_args.sh'),
-            file_get_contents(__DIR__.'/../../../dev-tools/ci-integration/step3-execution.sh'),
+            $ciIntegrationScript[3],
+            $ciIntegrationScript[4],
+            $ciIntegrationScript[5],
         );
 
         $template = str_replace(

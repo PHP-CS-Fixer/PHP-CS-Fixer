@@ -1,1 +1,0 @@
-IFS=$'\n'; CHANGED_FILES=($(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")); unset IFS

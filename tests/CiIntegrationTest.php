@@ -50,6 +50,7 @@ final class CiIntegrationTest extends TestCase
         self::$fileRemoval->observe(static::$tmpFilePath);
 
         static::executeCommand(implode(' && ', array(
+            'rm -rf .git',
             'git init -q',
             'git config user.name test',
             'git config user.email test',
@@ -91,11 +92,12 @@ final class CiIntegrationTest extends TestCase
             'git commit -m "case1" -q',
         )));
 
+        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../dev-tools/ci-integration.sh')));
         $steps = array(
             'COMMIT_RANGE="master..case1"',
-            file_get_contents(__DIR__.'/../dev-tools/ci-integration/step1-changed_files.sh'),
-            file_get_contents(__DIR__.'/../dev-tools/ci-integration/step2-extra_args.sh'),
-            str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../dev-tools/ci-integration/step3-execution.sh')),
+            $integrationScript[3],
+            $integrationScript[4],
+            $integrationScript[5],
         );
 
         $result1 = static::executeScript(array(

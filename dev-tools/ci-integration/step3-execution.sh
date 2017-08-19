@@ -1,1 +1,0 @@
-vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no "${EXTRA_ARGS[@]}"
