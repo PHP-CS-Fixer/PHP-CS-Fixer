@@ -53,7 +53,7 @@ final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokensAnalyzer->isArray($index)) {
+            if ($tokensAnalyzer->isArray($index) && $tokensAnalyzer->isArrayMultiLine($index)) {
                 $this->fixArray($tokens, $index);
             }
         }
@@ -65,12 +65,6 @@ final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
      */
     private function fixArray(Tokens $tokens, $index)
     {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        if (!$tokensAnalyzer->isArrayMultiLine($index)) {
-            return;
-        }
-
         $startIndex = $index;
 
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
