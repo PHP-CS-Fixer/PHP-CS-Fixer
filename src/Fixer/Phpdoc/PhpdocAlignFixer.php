@@ -190,41 +190,49 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             }
 
             // compute the max length of the tag, hint and variables
-            $tagMax = 0;
-            $hintMax = 0;
-            $varMax = 0;
+            $maxLengths = [
+                'tag' => 0,
+                'hint' => 0,
+                'var' => 0,
+            ];
 
             foreach ($items as $item) {
                 if (null === $item['tag']) {
                     continue;
                 }
 
-                $tagMax = max($tagMax, strlen($item['tag']));
-                $hintMax = max($hintMax, strlen($item['hint']));
-                $varMax = max($varMax, strlen($item['var']));
+                $maxLengths['tag'] = max($maxLengths['tag'], strlen($item['tag']));
+                $maxLengths['hint'] = max($maxLengths['hint'], strlen($item['hint']));
+                $maxLengths['var'] = max($maxLengths['var'], strlen($item['var']));
             }
 
             $currTag = null;
 
             // update
             foreach ($items as $j => $item) {
-                if (null === $item['tag']) {
-                    if ($item['desc'][0] === '@') {
-                        $lines[$current + $j] = $item['indent'].' * '.$item['desc'].$lineEnding;
+                // start with indent
+                $line = $item['indent'];
 
-                        continue;
+                // add *
+                $line .= ' * ';
+
+                // multiline
+                if (null === $item['tag']) {
+                    if ($item['desc'][0] !== '@') {
+                        // add spaces
+                        $line .= str_repeat(
+                            ' ',
+                            array_sum($maxLengths) + (in_array($currTag, self::$tagsWithName, true) ? 4 : 3) * $this->configuration['separatorSpaces']
+                        );
                     }
 
-                    $line =
-                        $item['indent']
-                        .' *  '
-                        .str_repeat(
-                            ' ',
-                            $tagMax + $hintMax + $varMax + (in_array($currTag, self::$tagsWithName, true) ? 3 : 2)
-                        )
-                        .$item['desc']
-                        .$lineEnding;
+                    // add desc
+                    $line .= $item['desc'];
 
+                    // add line ending
+                    $line .= $lineEnding;
+
+                    // add to lines
                     $lines[$current + $j] = $line;
 
                     continue;
@@ -232,30 +240,63 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
 
                 $currTag = $item['tag'];
 
-                $line =
-                    $item['indent']
-                    .' * @'
-                    .$item['tag']
-                    .str_repeat(' ', $tagMax - strlen($item['tag']) + 1)
-                    .$item['hint']
-                ;
+                // add @
+                $line .= '@';
 
-                if (!empty($item['var'])) {
-                    $line .=
-                        str_repeat(' ', $hintMax - strlen($item['hint']) + 1)
-                        .$item['var']
-                        .(
-                            !empty($item['desc'])
-                            ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc'].$lineEnding
-                            : $lineEnding
-                        )
-                    ;
-                } elseif (!empty($item['desc'])) {
-                    $line .= str_repeat(' ', $hintMax - strlen($item['hint']) + 1).$item['desc'].$lineEnding;
-                } else {
-                    $line .= $lineEnding;
+                // add tag
+                $line .= $item['tag'];
+
+                // has hint
+                if (!empty($item['hint'])) {
+                    // vertical align
+                    if ($this->configuration['verticalAlign']) {
+                        $line .= str_repeat(' ', $maxLengths['tag'] - strlen($item['tag']));
+                    }
+
+                    // add separator spaces
+                    $line .= str_repeat(' ', $this->configuration['separatorSpaces']);
+
+                    // add hint
+                    $line .= $item['hint'];
                 }
 
+                // has var
+                if (!empty($item['var'])) {
+                    // vertical align
+                    if ($this->configuration['verticalAlign']) {
+                        $line .= str_repeat(' ', $maxLengths['hint'] - strlen($item['hint']));
+                    }
+
+                    // add separator spaces
+                    $line .= str_repeat(' ', $this->configuration['separatorSpaces']);
+
+                    // add var
+                    $line .= $item['var'];
+                }
+
+                // has desc
+                if (!empty($item['desc'])) {
+                    // vertical align
+                    if ($this->configuration['verticalAlign']) {
+                        // has var
+                        if (!empty($item['var'])) {
+                            $line .= str_repeat(' ', $maxLengths['var'] - strlen($item['var']));
+                        } else {
+                            $line .= str_repeat(' ', $maxLengths['hint'] - strlen($item['hint']));
+                        }
+                    }
+
+                    // add separator spaces
+                    $line .= str_repeat(' ', $this->configuration['separatorSpaces']);
+
+                    // add desc
+                    $line .= $item['desc'];
+                }
+
+                // add line ending
+                $line .= $lineEnding;
+
+                // add to lines
                 $lines[$current + $j] = $line;
             }
         }
