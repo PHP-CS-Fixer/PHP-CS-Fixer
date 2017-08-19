@@ -32,9 +32,9 @@ final class FixerFactoryTest extends TestCase
         $factory->registerBuiltInFixers();
         $fixers = $factory->getFixers();
 
-        $this->assertSame('encoding', $fixers[0]->getName());
-        $this->assertSame('full_opening_tag', $fixers[1]->getName());
-        $this->assertSame('single_blank_line_at_eof', $fixers[count($fixers) - 1]->getName());
+        $this->assertSame('encoding', $fixers[0]->getName(), 'Expected "encoding" fixer to have the highest priority.');
+        $this->assertSame('full_opening_tag', $fixers[1]->getName(), 'Expected "full_opening_tag" fixer has second highest priority.');
+        $this->assertSame('single_blank_line_at_eof', $fixers[count($fixers) - 1]->getName(), 'Expected "single_blank_line_at_eof" to have the lowest priority.');
     }
 
     /**
@@ -169,6 +169,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']], // tested also in: list_syntax,ternary_operator_spaces.test
             [$fixers['void_return'], $fixers['return_type_declaration']], // tested also in: void_return,return_type_declaration.test
             [$fixers['void_return'], $fixers['phpdoc_no_empty_return']], // tested also in: void_return,phpdoc_no_empty_return.test
+            [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_else']], // tested also in: no_unneeded_curly_braces,no_useless_else.test
+            [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_return']], // tested also in: no_unneeded_curly_braces,no_useless_return.test
         ];
 
         // prepare bulk tests for phpdoc fixers to test that:
