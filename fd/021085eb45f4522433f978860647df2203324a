@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-24T11:18:59Z
+
+hmm looking at this again there are some BC break in here.
+More on higher level the values returned by the method or not really helpful as it is (still) not clear which class components belong to which class.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-26T17:06:37Z
+
+This is a BC break indeed: _classy elements_ are class constants, properties and methods, not anonymous classes.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-26T17:45:01Z
+
+Well that is not the BC breaker IMHO, someone ask for _all_ classy elements of a file so anonymous elements are part of that. Same as current when 2 non-anonymous class definitions are in the same file.
+The BC breaker part is introducing `class` as property which should be reverted.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-26T18:48:19Z
+
+> The BC breaker part is introducing class as property which should be reverted.
+
+I understand @julienfalque to have exactly this part in mind, not multiple classes (anon or not) per file
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-26T19:57:08Z
+
+I stand corrected as I indeed misread the comment :+1:
