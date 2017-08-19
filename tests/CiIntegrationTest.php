@@ -49,13 +49,13 @@ final class CiIntegrationTest extends TestCase
         self::$fileRemoval = new FileRemoval();
         self::$fileRemoval->observe(static::$tmpFilePath);
 
-        static::executeCommand(implode(' && ', [
+        static::executeCommand(implode(' && ', array(
             'git init -q',
             'git config user.name test',
             'git config user.email test',
             'git add .',
             'git commit -m "init" -q',
-        ]));
+        )));
     }
 
     public static function tearDownAfterClass()
@@ -71,17 +71,17 @@ final class CiIntegrationTest extends TestCase
     {
         parent::tearDown();
 
-        static::executeCommand(implode(' && ', [
+        static::executeCommand(implode(' && ', array(
             'git reset . -q',
             'git checkout . -q',
             'git clean -fdq',
             'git checkout master -q',
-        ]));
+        )));
     }
 
     public function testIntegration()
     {
-        static::executeCommand(implode(' && ', [
+        static::executeCommand(implode(' && ', array(
             'git checkout -b case1 -q',
             'touch dir\ a/file.php',
             'rm -r dir\ c',
@@ -89,7 +89,7 @@ final class CiIntegrationTest extends TestCase
             'echo "echo 1;" >> dir\ b/file\ b.php',
             'git add .',
             'git commit -m "case1" -q',
-        ]));
+        )));
 
         $steps = array(
             'COMMIT_RANGE="master..case1"',
