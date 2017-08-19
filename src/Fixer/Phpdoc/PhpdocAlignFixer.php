@@ -268,8 +268,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             // relative aligned start positions
             $alignedPositions = [
                 'hint' => $maxLengths['tag'] + $separatorSpaces['hint'],
-                'var' => $maxLengths['tag'] + $maxLengths['hint'] + 2 * $separatorSpaces['var'],
-                'desc' => $maxLengths['tag'] + $maxLengths['hint'] + $maxLengths['var'] + ($maxLengths['var'] ? 3 : 2) * $separatorSpaces['desc'],
+                'var' => $maxLengths['tag'] + $maxLengths['hint'] + $separatorSpaces['hint'] + $separatorSpaces['var'],
+                'desc' => $maxLengths['tag'] + $maxLengths['hint'] + $maxLengths['var'] + $separatorSpaces['hint'] + ($maxLengths['var'] ? $separatorSpaces['var'] : 0) + $separatorSpaces['desc'],
             ];
 
             $currTag = null;
