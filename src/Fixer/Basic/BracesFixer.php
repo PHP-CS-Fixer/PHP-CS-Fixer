@@ -846,6 +846,11 @@ class Foo
 
         $nextToken = $tokens[$nextTokenIndex];
         if ($nextToken->isComment()) {
+            $previousToken = $tokens[$nextTokenIndex - 1];
+            // do not indent comments starting at the beginning of line - non-indented comments should not change indentation
+            if ($previousToken->isWhitespace() && 1 === preg_match('/\R$/', $previousToken->getContent())) {
+                return;
+            }
             $tokens[$nextTokenIndex] = new Token(array(
                 $nextToken->getId(),
                 preg_replace(

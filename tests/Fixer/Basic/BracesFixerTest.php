@@ -2225,6 +2225,95 @@ function D() /**
 }',
                 self::$configurationOopPositionSameLine,
             ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+//        return [];
+//    }
+} else {
+    bar();
+}
+',
+            ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+    //        return [];
+//    }
+} else {
+    bar();
+}
+',
+            ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+//        return [];
+//    }
+    
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+
+//    bar();
+    
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+//    bar();
+    
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+    
+//    bar();
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ),
+            array(
+                '<?php
+if ($foo) {
+    foo();
+    
+//    bar();
+} else {
+    bar();
+}
+',
+            ),
         );
     }
 
