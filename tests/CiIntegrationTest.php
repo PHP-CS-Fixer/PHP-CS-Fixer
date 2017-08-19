@@ -42,21 +42,27 @@ final class CiIntegrationTest extends TestCase
 
         static::$fixtureDir = __DIR__.'/Fixtures/ci-integration';
 
-        static::executeCommand('./setUp.sh', true);
-
         static::$tmpFileName = 'tmp.sh';
         static::$tmpFilePath = static::$fixtureDir.'/'.static::$tmpFileName;
         file_put_contents(static::$tmpFilePath, '');
         chmod(static::$tmpFilePath, 0777);
         self::$fileRemoval = new FileRemoval();
         self::$fileRemoval->observe(static::$tmpFilePath);
+
+        static::executeCommand(implode(' && ', [
+            'git init -q',
+            'git config user.name test',
+            'git config user.email test',
+            'git add .',
+            'git commit -m "init" -q',
+        ]), true);
     }
 
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
 
-        static::executeCommand('./tearDown.sh', true);
+        static::executeCommand('rm -rf .git', true);
 
         self::$fileRemoval->delete(static::$tmpFilePath);
     }
@@ -65,15 +71,25 @@ final class CiIntegrationTest extends TestCase
     {
         parent::tearDown();
 
-        static::executeCommand('git reset .', true);
-        static::executeCommand('git checkout .', true);
-        static::executeCommand('git clean -fd', true);
-        static::executeCommand('git checkout master', true);
+        static::executeCommand(implode(' && ', [
+            'git reset . -q',
+            'git checkout . -q',
+            'git clean -fdq',
+            'git checkout master -q',
+        ]), true);
     }
 
     public function testIntegration()
     {
-        static::executeCommand('git checkout case1', true);
+        static::executeCommand(implode(' && ', [
+            'git checkout -b case1 -q',
+            'touch dir\ a/file.php',
+            'rm -r dir\ c',
+            'echo "" >> dir\ b/file\ b.php',
+            'echo "echo 1;" >> dir\ b/file\ b.php',
+            'git add .',
+            'git commit -m "case1" -q',
+        ]), true);
 
         $steps = array(
             'COMMIT_RANGE="master..case1"',
