@@ -43,72 +43,9 @@ final class TokensAnalyzer
      */
     public function getClassyElements()
     {
-        $tokens = $this->tokens;
+        $this->tokens->rewind();
 
-        $tokens->rewind();
-
-        $elements = [];
-        $inClass = false;
-        $curlyBracesLevel = 0;
-        $bracesLevel = 0;
-
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
-                continue;
-            }
-
-            if (!$inClass) {
-                $inClass = $token->isClassy();
-
-                continue;
-            }
-
-            if ($token->equals('(')) {
-                ++$bracesLevel;
-
-                continue;
-            }
-
-            if ($token->equals(')')) {
-                --$bracesLevel;
-
-                continue;
-            }
-
-            if ($token->equals('{')) {
-                ++$curlyBracesLevel;
-
-                continue;
-            }
-
-            if ($token->equals('}')) {
-                --$curlyBracesLevel;
-
-                if (0 === $curlyBracesLevel) {
-                    $inClass = false;
-                }
-
-                continue;
-            }
-
-            if (1 !== $curlyBracesLevel || !$token->isArray()) {
-                continue;
-            }
-
-            if (0 === $bracesLevel && $token->isGivenKind(T_VARIABLE)) {
-                $elements[$index] = ['token' => $token, 'type' => 'property'];
-
-                continue;
-            }
-
-            if ($token->isGivenKind(T_FUNCTION)) {
-                $elements[$index] = ['token' => $token, 'type' => 'method'];
-            } elseif ($token->isGivenKind(T_CONST)) {
-                $elements[$index] = ['token' => $token, 'type' => 'const'];
-            }
-        }
-
-        return $elements;
+        return $this->findClassyElements($this->tokens, 0);
     }
 
     /**
@@ -576,5 +513,85 @@ final class TokensAnalyzer
         $beforeStartIndex = $tokens->getPrevMeaningfulToken($startIndex);
 
         return $tokens[$beforeStartIndex]->isGivenKind(T_DO);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $start
+     *
+     * @return array
+     */
+    private function findClassyElements(Tokens $tokens, $start)
+    {
+        $elements = [];
+        $inClass = false;
+        $curlyBracesLevel = 0;
+        $bracesLevel = 0;
+
+        for ($index = $start, $count = count($tokens); $index < $count; ++$index) {
+            $token = $tokens[$index];
+
+            if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
+                continue;
+            }
+
+            if (!$inClass) {
+                $inClass = $token->isClassy();
+
+                continue;
+            }
+
+            if ($token->isClassy()) { // anonymous class in class
+                $elements += $this->findClassyElements($tokens, $index);
+
+                continue;
+            }
+
+            if ($token->equals('(')) {
+                ++$bracesLevel;
+
+                continue;
+            }
+
+            if ($token->equals(')')) {
+                --$bracesLevel;
+
+                continue;
+            }
+
+            if ($token->equals('{')) {
+                ++$curlyBracesLevel;
+
+                continue;
+            }
+
+            if ($token->equals('}')) {
+                --$curlyBracesLevel;
+
+                if (0 === $curlyBracesLevel) {
+                    $inClass = false;
+                }
+
+                continue;
+            }
+
+            if (1 !== $curlyBracesLevel || !$token->isArray()) {
+                continue;
+            }
+
+            if (0 === $bracesLevel && $token->isGivenKind(T_VARIABLE)) {
+                $elements[$index] = ['token' => $token, 'type' => 'property'];
+
+                continue;
+            }
+
+            if ($token->isGivenKind(T_FUNCTION)) {
+                $elements[$index] = ['token' => $token, 'type' => 'method'];
+            } elseif ($token->isGivenKind(T_CONST)) {
+                $elements[$index] = ['token' => $token, 'type' => 'const'];
+            }
+        }
+
+        return $elements;
     }
 }

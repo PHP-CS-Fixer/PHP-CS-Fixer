@@ -206,4 +206,51 @@ class F
             ],
         ];
     }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testAnonymousClassFixing()
+    {
+        $this->doTest(
+            '<?php
+                $a = new class() {
+
+                    /** @return $this */
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {
+                            /** @return $this */
+                            public function a() {}
+                        };
+                    }
+                }
+            ',
+            '<?php
+                $a = new class() {
+
+                    /** @return @this */
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {
+                            /** @return @this */
+                            public function a() {}
+                        };
+                    }
+                }
+            '
+        );
+    }
 }
