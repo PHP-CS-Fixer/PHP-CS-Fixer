@@ -176,17 +176,14 @@ final class DescribeCommand extends Command
                 }
 
                 $description = preg_replace('/(`.+?`)/', '<info>$1</info>', $option->getDescription());
-                $line .= ': '.lcfirst(preg_replace('/\.$/', '', $description));
+                $line .= ': '.lcfirst(preg_replace('/\.$/', '', $description)).'; ';
                 if ($option->hasDefault()) {
-                    $default = $option->getDefault();
-                    if (!$default instanceof \Closure) {
-                        $line .= sprintf(
-                            '; defaults to <comment>%s</comment>',
-                            HelpCommand::toString($default)
-                        );
-                    }
+                    $line .= sprintf(
+                        'defaults to <comment>%s</comment>',
+                        HelpCommand::toString($option->getDefault())
+                    );
                 } else {
-                    $line .= '; <comment>required</comment>';
+                    $line .= '<comment>required</comment>';
                 }
 
                 $output->writeln($line);

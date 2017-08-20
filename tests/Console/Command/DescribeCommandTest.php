@@ -24,7 +24,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @internal
@@ -53,9 +52,8 @@ Replaces bad stuff with good stuff.
 Fixer applying this rule is risky.
 Can break stuff.
 
-Fixer is configurable using following options:
+Fixer is configurable using following option:
 * functions (array): list of `function` names to fix; defaults to ['foo', 'test']
-* runtime_default (bool): option with a default value computed at runtime
 
 Fixing examples:
  * Example #1. Fixing with the default configuration.
@@ -92,9 +90,8 @@ Replaces bad stuff with good stuff.
 \033[37;41mFixer applying this rule is risky.\033[39;49m
 Can break stuff.
 
-Fixer is configurable using following options:
+Fixer is configurable using following option:
 * \033[32mfunctions\033[39m (\033[33marray\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
-* \033[32mruntime_default\033[39m (\033[33mbool\033[39m): option with a default value computed at runtime
 
 Fixing examples:
  * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
@@ -196,19 +193,17 @@ EOT;
 
         $generator = new FixerOptionValidatorGenerator();
         $functionNames = ['foo', 'test'];
-        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
-            (new FixerOptionBuilder('functions', 'List of `function` names to fix.'))
-                ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    $generator->allowedValueIsSubsetOf($functionNames),
-                ])
-                ->setDefault($functionNames)
-                ->getOption(),
-            (new FixerOptionBuilder('runtime_default', 'Option with a default value computed at runtime.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(function (Options $options) { })
-                ->getOption(),
-        ]));
+        $functions = new FixerOptionBuilder('functions', 'List of `function` names to fix.');
+        $functions = $functions
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
+                $generator->allowedValueIsSubsetOf($functionNames),
+            ])
+            ->setDefault($functionNames)
+            ->getOption()
+        ;
+
+        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([$functions]));
         $fixer->getDefinition()->willReturn(new FixerDefinition(
             'Fixes stuff.',
             [

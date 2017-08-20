@@ -441,11 +441,11 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``after_argument_assignments`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces after argument assignment operator
+    ignore spaces after argument assignment operator; defaults to ``null``
   - ``after_array_assignments_colon`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces after array assignment ``:`` operator
+    ignore spaces after array assignment ``:`` operator; defaults to ``null``
   - ``after_array_assignments_equals`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces after array assignment ``=`` operator
+    ignore spaces after array assignment ``=`` operator; defaults to ``null``
   - ``around_argument_assignments`` (``bool``): whether to fix spaces around
     argument assignment operator (deprecated, use
     ``before_argument_assignments`` and ``after_argument_assignments`` options
@@ -458,11 +458,11 @@ Choose from the list of available rules:
   - ``around_parentheses`` (``bool``): whether to fix spaces around parentheses;
     defaults to ``true``
   - ``before_argument_assignments`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces before argument assignment operator
+    ignore spaces before argument assignment operator; defaults to ``null``
   - ``before_array_assignments_colon`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces before array ``:`` assignment operator
+    ignore spaces before array ``:`` assignment operator; defaults to ``null``
   - ``before_array_assignments_equals`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces before array ``=`` assignment operator
+    ignore spaces before array ``=`` assignment operator; defaults to ``null``
   - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
     Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
     'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',

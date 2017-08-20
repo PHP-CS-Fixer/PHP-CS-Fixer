@@ -20,7 +20,6 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * Fixes spaces around commas and assignment operators in Doctrine annotations.
@@ -55,6 +54,30 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                 @trigger_error('Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.', E_USER_DEPRECATED);
             }
         }
+
+        if ($this->configuration['around_argument_assignments']) {
+            foreach ([
+                'before_argument_assignments',
+                'after_argument_assignments',
+            ] as $newOption) {
+                if (!array_key_exists($newOption, $configuration)) {
+                    $this->configuration[$newOption] = false;
+                }
+            }
+        }
+
+        if ($this->configuration['around_array_assignments']) {
+            foreach ([
+                'before_array_assignments_equals',
+                'after_array_assignments_equals',
+                'before_array_assignments_colon',
+                'after_array_assignments_colon',
+            ] as $newOption) {
+                if (!array_key_exists($newOption, $configuration)) {
+                    $this->configuration[$newOption] = true;
+                }
+            }
+        }
     }
 
     /**
@@ -79,15 +102,11 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                     ->getOption(),
                 (new FixerOptionBuilder('before_argument_assignments', 'Whether to add, remove or ignore spaces before argument assignment operator.'))
                     ->setAllowedTypes(['null', 'bool'])
-                    ->setDefault(function (Options $options) {
-                        return $options['around_argument_assignments'] ? false : null;
-                    })
+                    ->setDefault(null)
                     ->getOption(),
                 (new FixerOptionBuilder('after_argument_assignments', 'Whether to add, remove or ignore spaces after argument assignment operator.'))
                     ->setAllowedTypes(['null', 'bool'])
-                    ->setDefault(function (Options $options) {
-                        return $options['around_argument_assignments'] ? false : null;
-                    })
+                    ->setDefault(null)
                     ->getOption(),
                 (new FixerOptionBuilder('around_array_assignments', 'Whether to fix spaces around array assignment operators (deprecated, use `before_array_assignments_*` and `after_array_assignments_*` options instead).'))
                     ->setAllowedTypes(['bool'])
@@ -95,27 +114,19 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                     ->getOption(),
                 (new FixerOptionBuilder('before_array_assignments_equals', 'Whether to add, remove or ignore spaces before array `=` assignment operator.'))
                     ->setAllowedTypes(['null', 'bool'])
-                    ->setDefault(function (Options $options) {
-                        return $options['around_array_assignments'] ? true : null;
-                    })
+                    ->setDefault(null)
                     ->getOption(),
                 (new FixerOptionBuilder('after_array_assignments_equals', 'Whether to add, remove or ignore spaces after array assignment `=` operator.'))
                     ->setAllowedTypes(['null', 'bool'])
-                    ->setDefault(function (Options $options) {
-                        return $options['around_array_assignments'] ? true : null;
-                    })
+                    ->setDefault(null)
                     ->getOption(),
                 (new FixerOptionBuilder('before_array_assignments_colon', 'Whether to add, remove or ignore spaces before array `:` assignment operator.'))
                     ->setAllowedTypes(['null', 'bool'])
-                    ->setDefault(function (Options $options) {
-                        return $options['around_array_assignments'] ? true : null;
-                    })
+                    ->setDefault(null)
                     ->getOption(),
                 (new FixerOptionBuilder('after_array_assignments_colon', 'Whether to add, remove or ignore spaces after array assignment `:` operator.'))
                     ->setAllowedTypes(['null', 'bool'])
-                    ->setDefault(function (Options $options) {
-                        return $options['around_array_assignments'] ? true : null;
-                    })
+                    ->setDefault(null)
                     ->getOption(),
             ]
         ));
