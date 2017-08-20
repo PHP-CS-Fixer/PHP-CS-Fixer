@@ -96,8 +96,8 @@ final class CiIntegrationTest extends TestCase
         $steps = array(
             'COMMIT_RANGE="master..random-changes"',
             $integrationScript[3],
-            "$integrationScript[4]; $integrationScript[5] $integrationScript[6]; $integrationScript[7]",
-            $integrationScript[8],
+            $integrationScript[4],
+            $integrationScript[5],
         );
 
         $result1 = static::executeScript(array(
@@ -180,8 +180,8 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
         $steps = array(
             'COMMIT_RANGE="master..changes-to-config-file"',
             $integrationScript[3],
-            "$integrationScript[4]; $integrationScript[5] $integrationScript[6]; $integrationScript[7]",
-            $integrationScript[8],
+            $integrationScript[4],
+            $integrationScript[5],
         );
 
         $result1 = static::executeScript(array(
