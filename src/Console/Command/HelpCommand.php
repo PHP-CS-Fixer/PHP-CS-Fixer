@@ -229,8 +229,7 @@ Require ``friendsofphp/php-cs-fixer`` as a ``dev`` dependency:
 
 Then, add the following command to your CI:
 
-    $ IFS=\$'\\n'; COMMIT_SCA_FILES=($(git diff --name-only --diff-filter=ACMRTUXB "\${COMMIT_RANGE}")); unset IFS
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection -- "\${COMMIT_SCA_FILES[@]}"
+%%%CI_INTEGRATION%%%
 
 Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
@@ -254,6 +253,19 @@ EOF
         $template = str_replace(
             '%%%CONFIG_INTERFACE_URL%%%',
             sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v%s/src/ConfigInterface.php', self::getLatestReleaseVersionFromChangeLog()),
+            $template
+        );
+
+        $ciIntegrationScript = file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES);
+        $ciIntegration = array(
+            $ciIntegrationScript[3],
+            $ciIntegrationScript[4],
+            $ciIntegrationScript[5],
+        );
+
+        $template = str_replace(
+            '%%%CI_INTEGRATION%%%',
+            implode("\n", array_map(function ($line) { return '    $ '.$line; }, $ciIntegration)),
             $template
         );
 
