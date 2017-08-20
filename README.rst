@@ -540,7 +540,7 @@ Choose from the list of available rules:
   - ``separate`` (``'both'``, ``'bottom'``, ``'none'``, ``'top'``): whether the header should be
     separated from the file content with a new line; defaults to ``'both'``
 
-* **heredoc_to_nowdoc**
+* **heredoc_to_nowdoc** [@Laravel]
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
 
@@ -649,7 +649,7 @@ Choose from the list of available rules:
 
   All instances created with new keyword must be followed by braces.
 
-* **no_alias_functions** [@Symfony:risky]
+* **no_alias_functions** [@Symfony:risky, @Laravel]
 
   Master functions shall be used instead of aliases.
 
@@ -1061,7 +1061,7 @@ Choose from the list of available rules:
 
   Pre incrementation/decrementation should be used if possible.
 
-* **protected_to_private** [@Symfony, @Laravel]
+* **protected_to_private** [@Symfony]
 
   Converts ``protected`` variables and methods to ``private`` where possible.
 
