@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-20T18:56:17Z
+
+closing after discussion
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-20T19:17:42Z
+
+are you refering to smalltalk about PR for php-src ?
+those PRs are not one-to-one
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-20T19:30:48Z
+
+oh I mixed up the PR's ;)
+I'm not having a good to day..
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-20T19:52:20Z
+
+cheer up and get well ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-27T15:50:28Z
+
+lemme know if retarget 2.2 or split up (new test to 2.2 rest to master), all good for me
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-27T15:52:44Z
+
+I would split up.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-27T17:24:02Z
+
+~~alrighty, will do~~
+can't do; https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2926#discussion_r130022421
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-21T08:17:32Z
+
+rebased, I think this one is ready.
