@@ -2544,6 +2544,159 @@ function D() /**
 }',
                 self::$configurationOopPositionSameLine,
             ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+//        return [];
+//    }
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+    //        return [];
+//    }
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+//        return [];
+//    }
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    bar();
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+//    bar();
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+    '.'
+//    bar();
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+    '.'
+//    bar();
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $a = 1;
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+// we will return sth
+    return $a;
+}
+',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $a = 1;
+    '.'
+//    bar();
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+    '.'
+//    bar();
+// we will return sth
+    return $a;
+}
+',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $a = 1;
+//    if ($a === \'bar\') {
+//        return [];
+//    }
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+//    if ($a === \'bar\') {
+//        return [];
+//    }
+// we will return sth
+    return $a;
+}
+',
+            ],
         ];
     }
 

@@ -370,7 +370,7 @@ class Foo
                     $nextLineCanBeIndented = false;
                     if ($nestToken->equalsAny([';', '}'])) {
                         $nextLineCanBeIndented = true;
-                    } elseif ($this->isCommentWithFixableIndendation($tokens, $nestIndex)) {
+                    } elseif ($this->isCommentWithFixableIndentation($tokens, $nestIndex)) {
                         for ($i = $nestIndex; $i > $startBraceIndex; --$i) {
                             if ($tokens[$i]->equalsAny([';', '}'])) {
                                 $nextLineCanBeIndented = true;
@@ -868,6 +868,16 @@ class Foo
 
         $nextToken = $tokens[$nextTokenIndex];
         if ($nextToken->isComment()) {
+            $previousToken = $tokens[$nextTokenIndex - 1];
+
+            // do not indent inline comments used to comment out unused code
+            if (
+                0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent())
+                && $previousToken->isWhitespace() && 1 === preg_match('/\R$/', $previousToken->getContent())
+            ) {
+                return;
+            }
+
             $tokens[$nextTokenIndex] = new Token([
                 $nextToken->getId(),
                 preg_replace(
@@ -912,7 +922,7 @@ class Foo
      *
      * @return bool
      */
-    private function isCommentWithFixableIndendation(Tokens $tokens, $index)
+    private function isCommentWithFixableIndentation(Tokens $tokens, $index)
     {
         if (!$tokens[$index]->isComment()) {
             return false;

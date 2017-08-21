@@ -251,30 +251,17 @@ Exit code is build using following bit flags:
 EOF
         ;
 
-        $template = str_replace(
-            '%%%CONFIG_INTERFACE_URL%%%',
-            sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v%s/src/ConfigInterface.php', self::getLatestReleaseVersionFromChangeLog()),
-            $template
-        );
-
-        $ciIntegrationScript = file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES);
-        $ciIntegration = [
-            $ciIntegrationScript[3],
-            $ciIntegrationScript[4],
-            $ciIntegrationScript[5],
-        ];
-
-        $template = str_replace(
-            '%%%CI_INTEGRATION%%%',
-            implode("\n", array_map(function ($line) { return '    $ '.$line; }, $ciIntegration)),
-            $template
-        );
-
-        return str_replace(
-           '%%%FIXERS_DETAILS%%%',
-            self::getFixersHelp(),
-            $template
-        );
+        return strtr($template, [
+            '%%%CONFIG_INTERFACE_URL%%%' => sprintf(
+                'https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v%s/src/ConfigInterface.php',
+                self::getLatestReleaseVersionFromChangeLog()
+            ),
+            '%%%CI_INTEGRATION%%%' => implode("\n", array_map(
+                function ($line) { return '    $ '.$line; },
+                array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
+            )),
+            '%%%FIXERS_DETAILS%%%' => self::getFixersHelp(),
+        ]);
     }
 
     /**
