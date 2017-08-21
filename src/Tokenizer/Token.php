@@ -258,11 +258,27 @@ class Token
             return null;
         }
 
-        if (CT::has($this->id)) {
-            return CT::getName($this->id);
+        return self::getNameForId($this->id);
+    }
+
+    /**
+     * Get token's name.
+     *
+     * It shall be used only for getting the name of token, not for checking it against excepted value.
+     *
+     * @param int $id
+     *
+     * @return null|string token name
+     */
+    public static function getNameForId($id)
+    {
+        if (CT::has($id)) {
+            return CT::getName($id);
         }
 
-        return token_name($this->id);
+        $name = token_name($id);
+
+        return 'UNKNOWN' === $name ? null : $name;
     }
 
     /**

@@ -1002,6 +1002,39 @@ echo $a;',
         ];
     }
 
+    public function testAssertTokensAfterChanging()
+    {
+        $template =
+            '<?php class SomeClass {
+                    %s//
+
+                    public function __construct($name)
+                    {
+                        $this->name = $name;
+                    }
+            }';
+
+        $tokens = Tokens::fromCode(sprintf($template, ''));
+        $commentIndex = $tokens->getNextTokenOfKind(0, [[T_COMMENT]]);
+
+        $tokens->insertAt(
+            $commentIndex,
+            [
+                new Token([T_PRIVATE, 'private']),
+                new Token([T_WHITESPACE, ' ']),
+                new Token([T_VARIABLE, '$name']),
+                new Token(';'),
+            ]
+        );
+
+        $this->assertTrue($tokens->isChanged());
+
+        $expected = Tokens::fromCode(sprintf($template, 'private $name;'));
+        $this->assertFalse($expected->isChanged());
+
+        $this->assertTokens($expected, $tokens);
+    }
+
     /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
