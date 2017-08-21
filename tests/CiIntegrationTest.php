@@ -203,6 +203,38 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                 array('0'),
                 '...',
             ),
+            array(
+                'changes-including-custom-config-file-creation',
+                array(
+                    'echo "" >> dir\ b/file\ b.php',
+                    'echo "echo 1;" >> dir\ b/file\ b.php',
+                    'sed -e \'s/@Symfony/@PSR2/\' .php_cs.dist > .php_cs',
+                    'git add .',
+                    'git commit -m "Random changes including custom config file creation" -q',
+                ),
+                array(
+                    '.php_cs',
+                    'dir b/file b.php',
+                ),
+                array('0'),
+                '...',
+            ),
+            array(
+                'changes-including-composer-lock',
+                array(
+                    'echo "" >> dir\ b/file\ b.php',
+                    'echo "echo 1;" >> dir\ b/file\ b.php',
+                    'touch composer.lock',
+                    'git add .',
+                    'git commit -m "Random changes including composer.lock" -q',
+                ),
+                array(
+                    'composer.lock',
+                    'dir b/file b.php',
+                ),
+                array('0'),
+                '...',
+            ),
         );
     }
 
