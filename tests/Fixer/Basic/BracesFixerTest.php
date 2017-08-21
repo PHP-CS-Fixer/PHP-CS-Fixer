@@ -2314,6 +2314,24 @@ if ($foo) {
 }
 ',
             ),
+            array(
+                '<?php
+function foo()
+{
+    $a = 1;
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+// we will return sth
+    return $a;
+}
+',
+            ),
         );
     }
 
