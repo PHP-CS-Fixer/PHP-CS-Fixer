@@ -441,11 +441,11 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``after_argument_assignments`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces after argument assignment operator; defaults to ``null``
+    ignore spaces after argument assignment operator; defaults to ``false``
   - ``after_array_assignments_colon`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces after array assignment ``:`` operator; defaults to ``null``
+    ignore spaces after array assignment ``:`` operator; defaults to ``true``
   - ``after_array_assignments_equals`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces after array assignment ``=`` operator; defaults to ``null``
+    ignore spaces after array assignment ``=`` operator; defaults to ``true``
   - ``around_argument_assignments`` (``bool``): whether to fix spaces around
     argument assignment operator (deprecated, use
     ``before_argument_assignments`` and ``after_argument_assignments`` options
@@ -458,11 +458,11 @@ Choose from the list of available rules:
   - ``around_parentheses`` (``bool``): whether to fix spaces around parentheses;
     defaults to ``true``
   - ``before_argument_assignments`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces before argument assignment operator; defaults to ``null``
+    ignore spaces before argument assignment operator; defaults to ``false``
   - ``before_array_assignments_colon`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces before array ``:`` assignment operator; defaults to ``null``
+    ignore spaces before array ``:`` assignment operator; defaults to ``true``
   - ``before_array_assignments_equals`` (``null``, ``bool``): whether to add, remove or
-    ignore spaces before array ``=`` assignment operator; defaults to ``null``
+    ignore spaces before array ``=`` assignment operator; defaults to ``true``
   - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
     Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
     'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
