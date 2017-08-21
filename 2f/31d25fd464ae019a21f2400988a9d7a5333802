@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-29T19:21:47Z
+
+While I do like concept to fix this issue, i have no idea would your solution works or not.
+For that, let us test it.
+Having that in mind, I added tests for currently released version (#2947), please let us focus on that PR first, then we will come back to your PR as we will have possibility to add tests
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-20T08:23:01Z
+
+#2947 got merged finally.
+please rebase and add tests to ensure new solution is proper ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-08-20T18:23:14Z
+
+Done.
