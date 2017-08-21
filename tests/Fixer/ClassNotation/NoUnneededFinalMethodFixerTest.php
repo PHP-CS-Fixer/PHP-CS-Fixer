@@ -59,7 +59,6 @@ final class Foo {
                 '<?php final class Foo { public function foo() {} } abstract class Bar { final public function bar() {} }',
                 '<?php final class Foo { final public function foo() {} } abstract class Bar { final public function bar() {} }',
             ],
-
             'non-final' => [
                 '<php class Foo { final public function foo() {} }',
             ],
