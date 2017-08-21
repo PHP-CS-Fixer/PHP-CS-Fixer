@@ -81,10 +81,10 @@ final class CiIntegrationTest extends TestCase
     }
 
     /**
-     * @param string   $branchName,
-     * @param string[] $caseCommands,
-     * @param string[] $expectedResult1Lines,
-     * @param string[] $expectedResult2Lines,
+     * @param string   $branchName
+     * @param string[] $caseCommands
+     * @param string[] $expectedResult1Lines
+     * @param string[] $expectedResult2Lines
      * @param string   $expectedResult3Files
      *
      * @dataProvider getIntegrationCases
