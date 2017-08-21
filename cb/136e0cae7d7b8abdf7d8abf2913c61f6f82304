@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-05-16T14:36:07Z
+
+@stof, could you take a look please ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-05-16T14:40:28Z
+
+/cc @hkdobrev I think you were interested in such options (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2220#issuecomment-284176955).
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-12T07:41:32Z
+
+@stof ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-06-14T09:29:36Z
+
+from #2664 :
+> Note to self: this new fixer must run before doctrine_annotation_spaces once #2770 is merged.
+
+please apply priority in this PR
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-14T19:46:40Z
+
+Added an integration test for the priority requirement.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-18T14:21:06Z
+
+ping @julienfalque
+what is the state here?
+
+ping @stof
+any fixer logic concerns here ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-07-18T15:05:18Z
+
+Rebased to fix conflicts. I think this PR still needs some reviews though.
