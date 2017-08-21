@@ -53,47 +53,48 @@ final class Foo {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $end = count($tokens) - 3; // min. number of tokens to form a class candidate to fix
+        $end = count($tokens);
         for ($index = 0; $index < $end; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_CLASS)) {
                 continue;
             }
 
             $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
-            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
-
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-            if ($prevToken->isGivenKind(T_FINAL)) {
-                $this->fixClass($tokens, $classOpen, $classClose);
-            }
-
-            $index = $classClose;
+            $index = $this->fixClass($tokens, $classOpen, $end, $prevToken->isGivenKind(T_FINAL));
         }
     }
 
     /**
      * @param Tokens $tokens
      * @param int    $classOpenIndex
-     * @param int    $classCloseIndex
+     * @param int    $end
+     * @param bool   $isFinalClass
+     *
+     * @return int
      */
-    private function fixClass(Tokens $tokens, $classOpenIndex, $classCloseIndex)
+    private function fixClass(Tokens $tokens, $classOpenIndex, $end, $isFinalClass)
     {
-        for ($index = $classOpenIndex + 1; $index < $classCloseIndex; ++$index) {
+        for ($index = $classOpenIndex + 1; $index < $end; ++$index) {
+            // Class end
+            if ($tokens[$index]->equals('}')) {
+                return $index;
+            }
+
+            // Skip method content
             if ($tokens[$index]->equals('{')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_FINAL)) {
-                continue;
-            }
+            if ($isFinalClass && $tokens[$index]->isGivenKind(T_FINAL)) {
+                $tokens->clearAt($index);
 
-            $tokens->clearAt($index);
-
-            $nextTokenIndex = $index + 1;
-            if ($tokens[$nextTokenIndex]->isWhitespace()) {
-                $tokens->clearAt($nextTokenIndex);
+                $nextTokenIndex = $index + 1;
+                if ($tokens[$nextTokenIndex]->isWhitespace()) {
+                    $tokens->clearAt($nextTokenIndex);
+                }
             }
         }
     }
