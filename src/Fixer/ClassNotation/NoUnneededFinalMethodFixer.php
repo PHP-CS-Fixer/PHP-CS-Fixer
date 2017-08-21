@@ -67,19 +67,19 @@ final class Foo {
                 continue;
             }
 
-            $index = $this->fixClass($tokens, $classOpen, $tokensCount);
+            $index = $this->fixClass($tokens, $classOpen);
         }
     }
 
     /**
      * @param Tokens $tokens
      * @param int    $classOpenIndex
-     * @param int    $tokensCount
      *
      * @return int
      */
-    private function fixClass(Tokens $tokens, $classOpenIndex, $tokensCount)
+    private function fixClass(Tokens $tokens, $classOpenIndex)
     {
+        $tokensCount = count($tokens);
         for ($index = $classOpenIndex + 1; $index < $tokensCount; ++$index) {
             // Class end
             if ($tokens[$index]->equals('}')) {
