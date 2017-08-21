@@ -2332,6 +2332,52 @@ function foo()
 }
 ',
             ),
+            array(
+                '<?php
+function foo()
+{
+    $a = 1;
+    '.'
+//    bar();
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+    '.'
+//    bar();
+// we will return sth
+    return $a;
+}
+',
+            ),
+            array(
+                '<?php
+function foo()
+{
+    $a = 1;
+//    if ($a === \'bar\') {
+//        return [];
+//    }
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+//    if ($a === \'bar\') {
+//        return [];
+//    }
+// we will return sth
+    return $a;
+}
+',
+            ),
         );
     }
 
