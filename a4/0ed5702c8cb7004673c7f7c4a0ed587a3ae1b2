@@ -1,0 +1,162 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-09T16:25:10Z
+
+Not sure about the rule itself.
+Same way, one could say that `public` in `public function` is unneeded
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-08-10T06:58:47Z
+
+> Not sure about the rule itself.
+> Same way, one could say that `public` in `public` function is unneeded
+
+@keradus you are right; my reasoning is:
+
+1) I want a *standard*, be it with or without final; having final classes with half final methods and half non-final methods is nonsense
+
+2) What standard should we pursue?
+
+Well, visibility needs to be explicit because in this example:
+```php
+class A {
+    protected function foo() {}
+}
+class B extends A {
+    function foo() {}
+}
+```
+PHP has strictly rules about the result, but the developer could be confused by what should be the outcome (hit: `B::foo()` becomes `public`)
+
+On the other side, `final` keyword in a `final` class has no interaction with possible parent classes and as far as I can see there is no misunderstanding of what the outcome is, that is the same with or without final.
+
+So my choise is to raise verbosity for `visibility`, and to reduce verbosity for `final`
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-10T09:18:15Z
+
+why raising verbosity in one place and reducing in another? this looks not consistent
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-08-10T09:21:49Z
+
+Because as I said in one context it helps, in the other it doesn't.
+
+BTW I can make it configurable if you prefer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-10T10:00:12Z
+
+I agree that some enforced standard to have about this is nice.
+While final methods in final class could look superfluous, they follow defensive approach:
+when having final class + final methods, if one drop final from class, then he need to decide which methods he want to open as well. comparing to final only on class level - droping one final would open every method.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-08-10T10:10:22Z
+
+This is a good point.
+
+In our business this can't happen because we adopt two harsh custom fixers:
+1. [All non-abstract classes MUST be final](https://github.com/Slamdunk/php-cs-fixer-extensions/blob/v1.4.0/lib/FinalInternalClassFixer.php)
+1. [All abstract classes MUST have public methods marked ad final](https://github.com/Slamdunk/php-cs-fixer-extensions/blob/v1.4.0/lib/FinalAbstractPublicFixer.php)
+
+To reduce inheritance nightmares and increase template method pattern.
+
+I told you this not advertise something, but to drop some thoughts about the topic.
+We would never benefit from a fixer that marks methods as final in a final class.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-10T10:20:41Z
+
+FYI: #1389 ;)
+
+If you go extra defensive like that, it's cool and not needed for you indeed.
+But when one don't follow that approach and has only some of the class marked as final, he would benefit from it.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-08-10T10:27:33Z
+
+Knew #1389 👍 but never used because it requires an annotation to be written; I use PHP-CS-Fixer in CI to get rid of lazy developers 😸
+
+It seems we all understood the topic, but what about the solution?
+Is it ok for you to make it configurable, with default behaviour as adding the `final` keyword?
+If yes, @julienfalque please help me to find a better fixer name, you words master 🙏
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-10T10:48:43Z
+
+To be honest, not sure... yet ;)
+I do see the value of the fixer, I find your reasoning valid in your case for sure.
+On the other side, I want to promote only good, generic rules. That's the reason why we don't have option to remove `public` before `function`.
+Not claiming this rule in current form is bad, don't take it like that. I just need to think a bit more about it ;)
+
+Other opinions are welcome of course ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-08-11T18:09:22Z
+
+IMO this PR can be merged as is. I don't see the benefits of a defensive approach with `final` keyword on each method when the class itself is `final`. I would not make the fixer configurable, and its name looks good to me :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-18T09:59:06Z
+
+btw, if you would add it to `.php_cs.dist`, what will happen ?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-08-21T08:20:41Z
+
+> btw, if you would add it to `.php_cs.dist`, what will happen ?
+
+Nothing because the only final method here is this one, and is legitime:
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/63661f3add3609e90e4ab8115113e189ae547bb4/src/AbstractFixer.php#L66
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-21T08:51:24Z
+
+please add it to `.php_cs.dist` file
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-08-21T08:51:53Z
+
+Already done
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-21T09:01:48Z
+
+then, my other concert is still in place ;)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-08-21T09:02:42Z
+
+I'm working 🏃
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-21T19:09:54Z
+
+@keradus can you look at the failing utest? https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/266908788#L757 (not sure who to ping)
+
+This PR looks good to me :)
+I would however like to see a utest to be added with multiple candidates in one test/file (like `<?php class A {} class B{}`). Pretty sure the fixer will work correctly, but the added test will prevent regression.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-21T19:11:20Z
+
+you already approved a fix for that failure #2989
