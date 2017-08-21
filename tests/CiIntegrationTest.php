@@ -80,21 +80,32 @@ final class CiIntegrationTest extends TestCase
         )));
     }
 
-    public function testIntegrationWithRandomChanges()
-    {
-        static::executeCommand(implode(' && ', array(
-            'git checkout -b random-changes -q',
-            'touch dir\ a/file.php',
-            'rm -r dir\ c',
-            'echo "" >> dir\ b/file\ b.php',
-            'echo "echo 1;" >> dir\ b/file\ b.php',
-            'git add .',
-            'git commit -m "Random changes" -q',
+    /**
+     * @param string   $branchName,
+     * @param string[] $caseCommands,
+     * @param string[] $expectedResult1Lines,
+     * @param string[] $expectedResult2Lines,
+     * @param string   $expectedResult3Files
+     *
+     * @dataProvider getIntegrationCases
+     */
+    public function testIntegration(
+        $branchName,
+        array $caseCommands,
+        array $expectedResult1Lines,
+        array $expectedResult2Lines,
+        $expectedResult3Files
+    ) {
+        static::executeCommand(implode(' && ', array_merge(
+            array(
+                "git checkout -b $branchName -q",
+            ),
+            $caseCommands
         )));
 
         $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../dev-tools/ci-integration.sh')));
         $steps = array(
-            'COMMIT_RANGE="master..random-changes"',
+            "COMMIT_RANGE=\"master..$branchName\"",
             $integrationScript[3],
             $integrationScript[4],
             $integrationScript[5],
@@ -106,13 +117,7 @@ final class CiIntegrationTest extends TestCase
             'echo "$CHANGED_FILES"',
         ));
 
-        $this->assertSame(
-            array(
-                'dir a/file.php',
-                'dir b/file b.php',
-            ),
-            explode("\n", rtrim($result1['output']))
-        );
+        $this->assertSame($expectedResult1Lines, explode("\n", rtrim($result1['output'])));
 
         $result2 = static::executeScript(array(
             $steps[0],
@@ -126,17 +131,7 @@ final class CiIntegrationTest extends TestCase
             'echo "${EXTRA_ARGS[3]}"',
         ));
 
-        $this->assertSame(
-            array(
-                '4',
-                '--path-mode=intersection -- dir a/file.php dir b/file b.php',
-                '--path-mode=intersection',
-                '--',
-                'dir a/file.php',
-                'dir b/file b.php',
-            ),
-            explode("\n", rtrim($result2['output']))
-        );
+        $this->assertSame($expectedResult2Lines, explode("\n", rtrim($result2['output'])));
 
         $result3 = static::executeScript(array(
             $steps[0],
@@ -148,9 +143,9 @@ final class CiIntegrationTest extends TestCase
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.1.*.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
-        $executionDetails = 'Loaded config default from ".php_cs.dist".
-S.
-Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error';
+        $executionDetails = "Loaded config default from \".php_cs.dist\".
+$expectedResult3Files
+Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error";
 
         $this->assertRegExp(
             '/^('.preg_quote($optionalIncompatibilityWarning, '/').')?'.preg_quote($executionDetails, '/').'$/',
@@ -163,78 +158,52 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
         $this->assertSame(0, $result3['code']);
     }
 
-    public function testIntegrationWithChangesToConfigFile()
+    public function getIntegrationCases()
     {
-        static::executeCommand(implode(' && ', array(
-            'git checkout -b changes-to-config-file -q',
-            'echo "" >> dir\ b/file\ b.php',
-            'echo "echo 1;" >> dir\ b/file\ b.php',
-            // `sed -i ...` is not handled the same on Linux and macOS
-            'sed -e \'s/@Symfony/@PSR2/\' .php_cs.dist > .php_cs.dist.new',
-            'mv .php_cs.dist.new .php_cs.dist',
-            'git add .',
-            'git commit -m "Random changes including config file" -q',
-        )));
-
-        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../dev-tools/ci-integration.sh')));
-        $steps = array(
-            'COMMIT_RANGE="master..changes-to-config-file"',
-            $integrationScript[3],
-            $integrationScript[4],
-            $integrationScript[5],
-        );
-
-        $result1 = static::executeScript(array(
-            $steps[0],
-            $steps[1],
-            'echo "$CHANGED_FILES"',
-        ));
-
-        $this->assertSame(
+        return array(
             array(
-                '.php_cs.dist',
-                'dir b/file b.php',
+                'random-changes',
+                array(
+                    'touch dir\ a/file.php',
+                    'rm -r dir\ c',
+                    'echo "" >> dir\ b/file\ b.php',
+                    'echo "echo 1;" >> dir\ b/file\ b.php',
+                    'git add .',
+                    'git commit -m "Random changes" -q',
+                ),
+                array(
+                    'dir a/file.php',
+                    'dir b/file b.php',
+                ),
+                array(
+                    '4',
+                    '--path-mode=intersection -- dir a/file.php dir b/file b.php',
+                    '--path-mode=intersection',
+                    '--',
+                    'dir a/file.php',
+                    'dir b/file b.php',
+                ),
+                'S.',
             ),
-            explode("\n", rtrim($result1['output']))
+            array(
+                'changes-including-dist-config-file',
+                array(
+                    'echo "" >> dir\ b/file\ b.php',
+                    'echo "echo 1;" >> dir\ b/file\ b.php',
+                    // `sed -i ...` is not handled the same on Linux and macOS
+                    'sed -e \'s/@Symfony/@PSR2/\' .php_cs.dist > .php_cs.dist.new',
+                    'mv .php_cs.dist.new .php_cs.dist',
+                    'git add .',
+                    'git commit -m "Random changes including config file" -q',
+                ),
+                array(
+                    '.php_cs.dist',
+                    'dir b/file b.php',
+                ),
+                array('0'),
+                '...',
+            ),
         );
-
-        $result2 = static::executeScript(array(
-            $steps[0],
-            $steps[1],
-            $steps[2],
-            'echo "$EXTRA_ARGS"',
-            'echo "${EXTRA_ARGS[@]}"',
-            'echo "${EXTRA_ARGS[0]}"',
-            'echo "${EXTRA_ARGS[1]}"',
-            'echo "${EXTRA_ARGS[2]}"',
-            'echo "${EXTRA_ARGS[3]}"',
-        ));
-
-        $this->assertSame('', rtrim($result2['output']));
-
-        $result3 = static::executeScript(array(
-            $steps[0],
-            $steps[1],
-            $steps[2],
-            $steps[3],
-        ));
-
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.1.*.
-Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
-';
-        $executionDetails = 'Loaded config default from ".php_cs.dist".
-...
-Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error';
-
-        $this->assertRegExp(
-            '/^('.preg_quote($optionalIncompatibilityWarning, '/').')?'.preg_quote($executionDetails, '/').'$/',
-            trim($result3['stderr'])
-        );
-        $this->assertRegExp(
-            '/^Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used$/',
-            trim($result3['output'])
-        );
-        $this->assertSame(0, $result3['code']);
     }
 
     private static function executeCommand($command)
