@@ -155,6 +155,16 @@ final class RuleSet implements RuleSetInterface
             'psr4' => true,
             'silenced_deprecation_error' => true,
         ],
+        '@DoctrineAnnotation' => [
+            'doctrine_annotation_array_assignment' => [
+                'operator' => ':',
+            ],
+            'doctrine_annotation_braces' => true,
+            'doctrine_annotation_indentation' => true,
+            'doctrine_annotation_spaces' => [
+                'before_array_assignments_colon' => false,
+            ],
+        ],
         '@PHP56Migration' => [
             'pow_to_exponentiation' => true,
         ],
