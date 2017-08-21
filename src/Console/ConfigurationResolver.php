@@ -184,7 +184,7 @@ final class ConfigurationResolver
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($this->getCacheFile()),
                     new Signature(
-                        PHP_VERSION,
+                        PHP_VERSION_ID,
                         ToolInfo::getVersion(),
                         $this->getRules()
                     ),
