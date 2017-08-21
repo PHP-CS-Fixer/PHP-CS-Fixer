@@ -150,7 +150,7 @@ final class CiIntegrationTest extends TestCase
             $steps[3],
         ]);
 
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.1.*.
+        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.1.*.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
         $executionDetails = 'Loaded config default from ".php_cs.dist".
