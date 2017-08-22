@@ -347,7 +347,7 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the function ``dirname()`` is overridden.*
 
-* **doctrine_annotation_array_assignment**
+* **doctrine_annotation_array_assignment** [@DoctrineAnnotation]
 
   Doctrine annotations must use configured operator for assignment in
   arrays.
@@ -376,7 +376,7 @@ Choose from the list of available rules:
     'startuml', 'fix', 'FIXME', 'fixme', 'override']``
   - ``operator`` (``':'``, ``'='``): the operator to use; defaults to ``'='``
 
-* **doctrine_annotation_braces**
+* **doctrine_annotation_braces** [@DoctrineAnnotation]
 
   Doctrine annotations without arguments must use the configured syntax.
 
@@ -405,7 +405,7 @@ Choose from the list of available rules:
   - ``syntax`` (``'with_braces'``, ``'without_braces'``): whether to add or remove
     braces; defaults to ``'without_braces'``
 
-* **doctrine_annotation_indentation**
+* **doctrine_annotation_indentation** [@DoctrineAnnotation]
 
   Doctrine annotations must be indented with four spaces.
 
@@ -434,7 +434,7 @@ Choose from the list of available rules:
   - ``indent_mixed_lines`` (``bool``): whether to indent lines that have content
     before closing parenthesis; defaults to ``false``
 
-* **doctrine_annotation_spaces**
+* **doctrine_annotation_spaces** [@DoctrineAnnotation]
 
   Fixes spaces in Doctrine annotations.
 
