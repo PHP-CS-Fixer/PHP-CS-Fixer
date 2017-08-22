@@ -84,6 +84,10 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
                 "<?php final class MyFirstClass { $attributesAndMethodsFixed } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsFixed } ",
                 "<?php final class MyFirstClass { $attributesAndMethodsOriginal } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsOriginal } ",
             ),
+            'minimal-set' => array(
+                '<?php final class MyClass { private $v1; }',
+                '<?php final class MyClass { protected $v1; }',
+            ),
         );
     }
 
