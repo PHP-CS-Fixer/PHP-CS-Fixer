@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.5.0
+--------------------
+
+* feature #2770 DoctrineAnnotationSpaces - split assignments options (julienfalque)
+* feature #2843 Add estimating-max progress output type (julienfalque)
+* feature #2885 Add NoSuperfluousElseifFixer (julienfalque)
+* feature #2929 Add NoUnneededCurlyBracesFixer (SpacePossum)
+* feature #2944 FunctionToConstantFixer - handle get_class() -> __CLASS__ as well (SpacePossum)
+* feature #2953 BlankLineBeforeStatementFixer - Add more statements (localheinz, keradus)
+* feature #2972 Add NoUnneededFinalMethodFixer (Slamdunk, keradus)
+* feature #2992 Add Doctrine Annotation ruleset (julienfalque)
+* minor #2926 Token::getNameForId (SpacePossum)
+
 Changelog for v2.4.1
 --------------------
 
