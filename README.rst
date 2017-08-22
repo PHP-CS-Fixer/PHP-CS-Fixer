@@ -219,7 +219,7 @@ Choose from the list of available rules:
     whose lines all start with an asterisk (``phpdocs_like``) or any
     multi-line comment (``all_multiline``); defaults to ``'phpdocs_only'``
 
-* **array_syntax**
+* **array_syntax** [@Laravel]
 
   PHP arrays should be declared using the configured syntax.
 
@@ -228,7 +228,7 @@ Choose from the list of available rules:
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` array
     syntax; defaults to ``'long'``
 
-* **binary_operator_spaces** [@Symfony]
+* **binary_operator_spaces** [@Symfony, @Laravel]
 
   Binary operators should be surrounded by at least one space.
 
@@ -239,11 +239,11 @@ Choose from the list of available rules:
   - ``align_equals`` (``false``, ``null``, ``true``): whether to apply, remove or ignore
     equals alignment; defaults to ``false``
 
-* **blank_line_after_namespace** [@PSR2, @Symfony]
+* **blank_line_after_namespace** [@PSR2, @Symfony, @Laravel]
 
   There MUST be one blank line after the namespace declaration.
 
-* **blank_line_after_opening_tag** [@Symfony]
+* **blank_line_after_opening_tag** [@Symfony, @Laravel]
 
   Ensure there is no code on the same line as the PHP open tag and it is
   followed by a blank line.
@@ -253,7 +253,7 @@ Choose from the list of available rules:
   An empty line feed should precede a return statement (deprecated, use
   ``blank_line_before_statement`` instead).
 
-* **blank_line_before_statement** [@Symfony]
+* **blank_line_before_statement** [@Symfony, @Laravel]
 
   An empty line feed must precede any configured statement.
 
@@ -263,7 +263,7 @@ Choose from the list of available rules:
     an empty line; defaults to ``['break', 'continue', 'declare', 'return',
     'throw', 'try']``
 
-* **braces** [@PSR2, @Symfony]
+* **braces** [@PSR2, @Symfony, @Laravel]
 
   The body of each structure MUST be enclosed by braces. Braces should be
   properly placed. Body of braces should be properly indented.
@@ -283,7 +283,7 @@ Choose from the list of available rules:
     classy constructs (non-anonymous classes, interfaces, traits, methods
     and non-lambda functions); defaults to ``'next'``
 
-* **cast_spaces** [@Symfony]
+* **cast_spaces** [@Symfony, @Laravel]
 
   A single space or none should be between cast and variable.
 
@@ -292,7 +292,7 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply between cast and variable;
     defaults to ``'single'``
 
-* **class_definition** [@PSR2, @Symfony]
+* **class_definition** [@PSR2, @Symfony, @Laravel]
 
   Whitespace around the keywords of a class, trait or interfaces
   definition should be one space.
@@ -314,7 +314,7 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
-* **concat_space** [@Symfony]
+* **concat_space** [@Symfony, @Laravel]
 
   Concatenation should be spaced according configuration.
 
@@ -323,7 +323,7 @@ Choose from the list of available rules:
   - ``spacing`` (``'none'``, ``'one'``): spacing to apply around concatenation operator;
     defaults to ``'none'``
 
-* **declare_equal_normalize** [@Symfony]
+* **declare_equal_normalize** [@Symfony, @Laravel]
 
   Equal sign in declare statement should be surrounded by spaces or not
   following configuration.
@@ -468,12 +468,12 @@ Choose from the list of available rules:
     'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
     'startuml', 'fix', 'FIXME', 'fixme', 'override']``
 
-* **elseif** [@PSR2, @Symfony]
+* **elseif** [@PSR2, @Symfony, @Laravel]
 
   The keyword ``elseif`` should be used instead of ``else if`` so that all
   control keywords look like single words.
 
-* **encoding** [@PSR1, @PSR2, @Symfony]
+* **encoding** [@PSR1, @PSR2, @Symfony, @Laravel]
 
   PHP code MUST use only UTF-8 without BOM (remove BOM).
 
@@ -483,12 +483,12 @@ Choose from the list of available rules:
 
   *Risky rule: risky if the ``ereg`` funcion is overridden.*
 
-* **full_opening_tag** [@PSR1, @PSR2, @Symfony]
+* **full_opening_tag** [@PSR1, @PSR2, @Symfony, @Laravel]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
   other tag variations.
 
-* **function_declaration** [@PSR2, @Symfony]
+* **function_declaration** [@PSR2, @Symfony, @Laravel]
 
   Spaces should be properly placed in a function declaration.
 
@@ -508,7 +508,7 @@ Choose from the list of available rules:
   - ``functions`` (``array``): list of function names to fix; defaults to
     ``['phpversion', 'php_sapi_name', 'pi']``
 
-* **function_typehint_space** [@Symfony]
+* **function_typehint_space** [@Symfony, @Laravel]
 
   Add missing space between function's argument and its typehint.
 
@@ -521,7 +521,7 @@ Choose from the list of available rules:
   - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
     defaults to ``[]``
 
-* **hash_to_slash_comment** [@Symfony]
+* **hash_to_slash_comment** [@Symfony, @Laravel]
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
   DEPRECATED: Use "single_line_comment_style" instead.
@@ -540,16 +540,16 @@ Choose from the list of available rules:
   - ``separate`` (``'both'``, ``'bottom'``, ``'none'``, ``'top'``): whether the header should be
     separated from the file content with a new line; defaults to ``'both'``
 
-* **heredoc_to_nowdoc**
+* **heredoc_to_nowdoc** [@Laravel]
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
 
-* **include** [@Symfony]
+* **include** [@Symfony, @Laravel]
 
   Include/Require and file path should be divided with a single space.
   File path should not be placed under brackets.
 
-* **indentation_type** [@PSR2, @Symfony]
+* **indentation_type** [@PSR2, @Symfony, @Laravel]
 
   Code MUST use configured indentation type.
 
@@ -564,7 +564,7 @@ Choose from the list of available rules:
   - ``use_yoda_style`` (``bool``): whether Yoda style conditions should be used;
     defaults to ``true``
 
-* **line_ending** [@PSR2, @Symfony]
+* **line_ending** [@PSR2, @Symfony, @Laravel]
 
   All PHP files must use same line ending.
 
@@ -582,19 +582,19 @@ Choose from the list of available rules:
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
     syntax; defaults to ``'long'``
 
-* **lowercase_cast** [@Symfony]
+* **lowercase_cast** [@Symfony, @Laravel]
 
   Cast should be written in lower case.
 
-* **lowercase_constants** [@PSR2, @Symfony]
+* **lowercase_constants** [@PSR2, @Symfony, @Laravel]
 
   The PHP constants ``true``, ``false``, and ``null`` MUST be in lower case.
 
-* **lowercase_keywords** [@PSR2, @Symfony]
+* **lowercase_keywords** [@PSR2, @Symfony, @Laravel]
 
   PHP keywords MUST be in lower case.
 
-* **magic_constant_casing** [@Symfony]
+* **magic_constant_casing** [@Symfony, @Laravel]
 
   Magic constants should be referred to using the correct casing.
 
@@ -604,7 +604,7 @@ Choose from the list of available rules:
 
   *Risky rule: risky when any of the functions are overridden.*
 
-* **method_argument_space** [@PSR2, @Symfony]
+* **method_argument_space** [@PSR2, @Symfony, @Laravel]
 
   In method arguments and method call, there MUST NOT be a space before
   each comma and there MUST be one space after each comma. Argument lists
@@ -619,7 +619,7 @@ Choose from the list of available rules:
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
-* **method_separation** [@Symfony]
+* **method_separation** [@Symfony, @Laravel]
 
   Methods must be separated with one blank line.
 
@@ -630,7 +630,7 @@ Choose from the list of available rules:
 
   *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
 
-* **native_function_casing** [@Symfony]
+* **native_function_casing** [@Symfony, @Laravel]
 
   Function defined by PHP should be called using the correct casing.
 
@@ -649,17 +649,17 @@ Choose from the list of available rules:
 
   All instances created with new keyword must be followed by braces.
 
-* **no_alias_functions** [@Symfony:risky]
+* **no_alias_functions** [@Symfony:risky, @Laravel]
 
   Master functions shall be used instead of aliases.
 
   *Risky rule: risky when any of the alias functions are overridden.*
 
-* **no_blank_lines_after_class_opening** [@Symfony]
+* **no_blank_lines_after_class_opening** [@Symfony, @Laravel]
 
   There should be no empty lines after class opening brace.
 
-* **no_blank_lines_after_phpdoc** [@Symfony]
+* **no_blank_lines_after_phpdoc** [@Symfony, @Laravel]
 
   There should not be blank lines between docblock and the documented
   element.
@@ -668,7 +668,7 @@ Choose from the list of available rules:
 
   There should be no blank lines before a namespace declaration.
 
-* **no_break_comment** [@PSR2, @Symfony]
+* **no_break_comment** [@PSR2, @Symfony, @Laravel]
 
   There must be a comment when fall-through is intentional in a non-empty
   case body.
@@ -678,7 +678,7 @@ Choose from the list of available rules:
   - ``comment_text`` (``string``): the text to use in the added comment and to
     detect it; defaults to ``'no break'``
 
-* **no_closing_tag** [@PSR2, @Symfony]
+* **no_closing_tag** [@PSR2, @Symfony, @Laravel]
 
   The closing ``?>`` tag MUST be omitted from files containing only PHP.
 
@@ -686,15 +686,15 @@ Choose from the list of available rules:
 
   There should not be any empty comments.
 
-* **no_empty_phpdoc** [@Symfony]
+* **no_empty_phpdoc** [@Symfony, @Laravel]
 
   There should not be empty PHPDoc blocks.
 
-* **no_empty_statement** [@Symfony]
+* **no_empty_statement** [@Symfony, @Laravel]
 
   Remove useless semicolon statements.
 
-* **no_extra_consecutive_blank_lines** [@Symfony]
+* **no_extra_consecutive_blank_lines** [@Symfony, @Laravel]
 
   Removes extra blank lines and/or blank lines following configuration.
 
@@ -702,15 +702,15 @@ Choose from the list of available rules:
 
   - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
 
-* **no_leading_import_slash** [@Symfony]
+* **no_leading_import_slash** [@Symfony, @Laravel]
 
   Remove leading slashes in use clauses.
 
-* **no_leading_namespace_whitespace** [@Symfony]
+* **no_leading_namespace_whitespace** [@Symfony, @Laravel]
 
   The namespace declaration line shouldn't contain leading whitespace.
 
-* **no_mixed_echo_print** [@Symfony]
+* **no_mixed_echo_print** [@Symfony, @Laravel]
 
   Either language construct ``print`` or ``echo`` should be used.
 
@@ -719,11 +719,11 @@ Choose from the list of available rules:
   - ``use`` (``'echo'``, ``'print'``): the desired language construct; defaults to
     ``'echo'``
 
-* **no_multiline_whitespace_around_double_arrow** [@Symfony]
+* **no_multiline_whitespace_around_double_arrow** [@Symfony, @Laravel]
 
   Operator ``=>`` should not be surrounded by multi-line whitespaces.
 
-* **no_multiline_whitespace_before_semicolons**
+* **no_multiline_whitespace_before_semicolons** [@Laravel]
 
   Multi-line whitespace before closing semicolon are prohibited.
 
@@ -737,7 +737,7 @@ Choose from the list of available rules:
 
   *Risky rule: risky when old style constructor being fixed is overridden or overrides parent one.*
 
-* **no_short_bool_cast** [@Symfony]
+* **no_short_bool_cast** [@Symfony, @Laravel]
 
   Short cast ``bool`` using double exclamation mark should not be used.
 
@@ -745,16 +745,16 @@ Choose from the list of available rules:
 
   Replace short-echo ``<?=`` with long format ``<?php echo`` syntax.
 
-* **no_singleline_whitespace_before_semicolons** [@Symfony]
+* **no_singleline_whitespace_before_semicolons** [@Symfony, @Laravel]
 
   Single-line whitespace before closing semicolon are prohibited.
 
-* **no_spaces_after_function_name** [@PSR2, @Symfony]
+* **no_spaces_after_function_name** [@PSR2, @Symfony, @Laravel]
 
   When making a method or function call, there MUST NOT be a space between
   the method or function name and the opening parenthesis.
 
-* **no_spaces_around_offset** [@Symfony]
+* **no_spaces_around_offset** [@Symfony, @Laravel]
 
   There MUST NOT be spaces around offset braces.
 
@@ -763,28 +763,28 @@ Choose from the list of available rules:
   - ``positions`` (``array``): whether spacing should be fixed inside and/or outside
     the offset braces; defaults to ``['inside', 'outside']``
 
-* **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
+* **no_spaces_inside_parenthesis** [@PSR2, @Symfony, @Laravel]
 
   There MUST NOT be a space after the opening parenthesis. There MUST NOT
   be a space before the closing parenthesis.
 
-* **no_trailing_comma_in_list_call** [@Symfony]
+* **no_trailing_comma_in_list_call** [@Symfony, @Laravel]
 
   Remove trailing commas in list function calls.
 
-* **no_trailing_comma_in_singleline_array** [@Symfony]
+* **no_trailing_comma_in_singleline_array** [@Symfony, @Laravel]
 
   PHP single-line arrays should not have trailing comma.
 
-* **no_trailing_whitespace** [@PSR2, @Symfony]
+* **no_trailing_whitespace** [@PSR2, @Symfony, @Laravel]
 
   Remove trailing whitespace at the end of non-blank lines.
 
-* **no_trailing_whitespace_in_comment** [@PSR2, @Symfony]
+* **no_trailing_whitespace_in_comment** [@PSR2, @Symfony, @Laravel]
 
   There MUST be no trailing spaces inside comments and phpdocs.
 
-* **no_unneeded_control_parentheses** [@Symfony]
+* **no_unneeded_control_parentheses** [@Symfony, @Laravel]
 
   Removes unneeded parentheses around control statements.
 
@@ -794,14 +794,14 @@ Choose from the list of available rules:
     ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case',
     'yield']``
 
-* **no_unreachable_default_argument_value**
+* **no_unreachable_default_argument_value** [@Laravel]
 
   In function arguments there must not be arguments with default values
   before non-default ones.
 
   *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
 
-* **no_unused_imports** [@Symfony]
+* **no_unused_imports** [@Symfony, @Laravel]
 
   Unused use statements must be removed.
 
@@ -809,15 +809,15 @@ Choose from the list of available rules:
 
   There should not be useless ``else`` cases.
 
-* **no_useless_return**
+* **no_useless_return** [@Laravel]
 
   There should not be an empty return statement at the end of a function.
 
-* **no_whitespace_before_comma_in_array** [@Symfony]
+* **no_whitespace_before_comma_in_array** [@Symfony, @Laravel]
 
   In array declaration, there MUST NOT be a whitespace before each comma.
 
-* **no_whitespace_in_blank_line** [@Symfony]
+* **no_whitespace_in_blank_line** [@Symfony, @Laravel]
 
   Remove trailing whitespace at the end of blank lines.
 
@@ -833,7 +833,7 @@ Choose from the list of available rules:
   - ``use_escape_sequences_in_strings`` (``bool``): whether characters should be
     replaced with escape sequences in strings; defaults to ``false``
 
-* **normalize_index_brace** [@Symfony]
+* **normalize_index_brace** [@Symfony, @Laravel]
 
   Array index should always be written by using square braces.
 
@@ -842,11 +842,11 @@ Choose from the list of available rules:
   Logical NOT operators (``!``) should have leading and trailing
   whitespaces.
 
-* **not_operator_with_successor_space**
+* **not_operator_with_successor_space** [@Laravel]
 
   Logical NOT operators (``!``) should have one trailing whitespace.
 
-* **object_operator_without_whitespace** [@Symfony]
+* **object_operator_without_whitespace** [@Symfony, @Laravel]
 
   There should not be space before or after object ``T_OBJECT_OPERATOR``
   ``->``.
@@ -863,7 +863,7 @@ Choose from the list of available rules:
     'property_private', 'construct', 'destruct', 'magic', 'phpunit',
     'method_public', 'method_protected', 'method_private']``
 
-* **ordered_imports**
+* **ordered_imports** [@Laravel]
 
   Ordering use statements.
 
@@ -933,12 +933,16 @@ Choose from the list of available rules:
   - ``only_untyped`` (``bool``): whether to add missing ``@param`` annotations for
     untyped parameters only; defaults to ``true``
 
-* **phpdoc_align** [@Symfony]
+* **phpdoc_align** [@Symfony, @Laravel]
 
   All items of the given phpdoc tags must be aligned vertically.
 
   Configuration options:
 
+  - ``parts`` (``array``): parts should be aligned; defaults to ``['hint', 'var',
+    'desc']``
+  - ``separatorSpaces`` (``array``): separator spaces between parts; defaults to
+    ``['hint' => 1, 'var' => 1, 'desc' => 1]``
   - ``tags`` (``array``): the tags that should be aligned; defaults to ``['param',
     'return', 'throws', 'type', 'var']``
 
@@ -946,19 +950,19 @@ Choose from the list of available rules:
 
   Phpdocs annotation descriptions should not be a sentence.
 
-* **phpdoc_indent** [@Symfony]
+* **phpdoc_indent** [@Symfony, @Laravel]
 
   Docblocks should have the same indentation as the documented subject.
 
-* **phpdoc_inline_tag** [@Symfony]
+* **phpdoc_inline_tag** [@Symfony, @Laravel]
 
   Fix phpdoc inline tags, make inheritdoc always inline.
 
-* **phpdoc_no_access** [@Symfony]
+* **phpdoc_no_access** [@Symfony, @Laravel]
 
   @access annotations should be omitted from phpdocs.
 
-* **phpdoc_no_alias_tag** [@Symfony]
+* **phpdoc_no_alias_tag** [@Symfony, @Laravel]
 
   No alias PHPDoc tags should be used.
 
@@ -973,11 +977,11 @@ Choose from the list of available rules:
   @return void and @return null annotations should be omitted from
   phpdocs.
 
-* **phpdoc_no_package** [@Symfony]
+* **phpdoc_no_package** [@Symfony, @Laravel]
 
   @package and @subpackage annotations should be omitted from phpdocs.
 
-* **phpdoc_no_useless_inheritdoc** [@Symfony]
+* **phpdoc_no_useless_inheritdoc** [@Symfony, @Laravel]
 
   Classy that does not inherit must not have inheritdoc tags.
 
@@ -998,7 +1002,7 @@ Choose from the list of available rules:
     'self', '@self' => 'self', '$static' => 'static', '@static' =>
     'static']``
 
-* **phpdoc_scalar** [@Symfony]
+* **phpdoc_scalar** [@Symfony, @Laravel]
 
   Scalar types should always be written in the same form. ``int`` not
   ``integer``, ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.
@@ -1009,25 +1013,25 @@ Choose from the list of available rules:
   the same type immediately follow each other, and annotations of a
   different type are separated by a single blank line.
 
-* **phpdoc_single_line_var_spacing** [@Symfony]
+* **phpdoc_single_line_var_spacing** [@Symfony, @Laravel]
 
   Single line @var PHPDoc should have proper spacing.
 
-* **phpdoc_summary** [@Symfony]
+* **phpdoc_summary** [@Symfony, @Laravel]
 
   Phpdocs summary should end in either a full stop, exclamation mark, or
   question mark.
 
-* **phpdoc_to_comment** [@Symfony]
+* **phpdoc_to_comment** [@Symfony, @Laravel]
 
   Docblocks should only be used on structural elements.
 
-* **phpdoc_trim** [@Symfony]
+* **phpdoc_trim** [@Symfony, @Laravel]
 
   Phpdocs should start and end with content, excluding the very first and
   last line of the docblocks.
 
-* **phpdoc_types** [@Symfony]
+* **phpdoc_types** [@Symfony, @Laravel]
 
   The correct case must be used for standard PHP types in phpdoc.
 
@@ -1043,7 +1047,7 @@ Choose from the list of available rules:
   - ``sort_algorithm`` (``'alpha'``, ``'none'``): the sorting algorithm to apply;
     defaults to ``'alpha'``
 
-* **phpdoc_var_without_name** [@Symfony]
+* **phpdoc_var_without_name** [@Symfony, @Laravel]
 
   @var and @type annotations should not contain the variable name.
 
@@ -1102,7 +1106,7 @@ Choose from the list of available rules:
   - ``space_before`` (``'none'``, ``'one'``): spacing to apply before colon; defaults to
     ``'none'``
 
-* **self_accessor** [@Symfony]
+* **self_accessor** [@Symfony, @Laravel]
 
   Inside a classy element "self" should be preferred to the class name
   itself.
@@ -1111,7 +1115,7 @@ Choose from the list of available rules:
 
   Instructions must be terminated with a semicolon.
 
-* **short_scalar_cast** [@Symfony]
+* **short_scalar_cast** [@Symfony, @Laravel]
 
   Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
   ``(int)``, ``(double)`` and ``(real)`` as ``(float)``.
@@ -1122,22 +1126,22 @@ Choose from the list of available rules:
 
   *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
 
-* **simplified_null_return**
+* **simplified_null_return** [@Laravel]
 
   A return statement wishing to return ``void`` should not return ``null``.
 
   *Risky rule: risky since PHP 7.1 as ``null`` and ``void`` can be hinted as return type and have different meaning.*
 
-* **single_blank_line_at_eof** [@PSR2, @Symfony]
+* **single_blank_line_at_eof** [@PSR2, @Symfony, @Laravel]
 
   A PHP file without end tag must always end with a single empty line
   feed.
 
-* **single_blank_line_before_namespace** [@Symfony]
+* **single_blank_line_before_namespace** [@Symfony, @Laravel]
 
   There should be exactly one blank line before a namespace declaration.
 
-* **single_class_element_per_statement** [@PSR2, @Symfony]
+* **single_class_element_per_statement** [@PSR2, @Symfony, @Laravel]
 
   There MUST NOT be more than one property or constant declared per
   statement.
@@ -1147,11 +1151,11 @@ Choose from the list of available rules:
   - ``elements`` (``array``): list of strings which element should be modified;
     defaults to ``['const', 'property']``
 
-* **single_import_per_statement** [@PSR2, @Symfony]
+* **single_import_per_statement** [@PSR2, @Symfony, @Laravel]
 
   There MUST be one use keyword per declaration.
 
-* **single_line_after_imports** [@PSR2, @Symfony]
+* **single_line_after_imports** [@PSR2, @Symfony, @Laravel]
 
   Each namespace use MUST go on its own line and there MUST be one blank
   line after the use statements block.
@@ -1166,15 +1170,15 @@ Choose from the list of available rules:
   - ``comment_types`` (``array``): list of comment types to fix; defaults to
     ``['asterisk', 'hash']``
 
-* **single_quote** [@Symfony]
+* **single_quote** [@Symfony, @Laravel]
 
   Convert double quotes to single quotes for simple strings.
 
-* **space_after_semicolon** [@Symfony]
+* **space_after_semicolon** [@Symfony, @Laravel]
 
   Fix whitespace after a semicolon.
 
-* **standardize_not_equals** [@Symfony]
+* **standardize_not_equals** [@Symfony, @Laravel]
 
   Replace all ``<>`` with ``!=``.
 
@@ -1190,15 +1194,15 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
 
-* **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
+* **switch_case_semicolon_to_colon** [@PSR2, @Symfony, @Laravel]
 
   A case should be followed by a colon and not a semicolon.
 
-* **switch_case_space** [@PSR2, @Symfony]
+* **switch_case_space** [@PSR2, @Symfony, @Laravel]
 
   Removes extra spaces between colon and case value.
 
-* **ternary_operator_spaces** [@Symfony]
+* **ternary_operator_spaces** [@Symfony, @Laravel]
 
   Standardize spaces around ternary operator.
 
@@ -1206,20 +1210,20 @@ Choose from the list of available rules:
 
   Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 
-* **trailing_comma_in_multiline_array** [@Symfony]
+* **trailing_comma_in_multiline_array** [@Symfony, @Laravel]
 
   PHP multi-line arrays should have a trailing comma.
 
-* **trim_array_spaces** [@Symfony]
+* **trim_array_spaces** [@Symfony, @Laravel]
 
   Arrays should be formatted like function/method arguments, without
   leading or trailing single line space.
 
-* **unary_operator_spaces** [@Symfony]
+* **unary_operator_spaces** [@Symfony, @Laravel]
 
   Unary operators should be placed adjacent to their operands.
 
-* **visibility_required** [@PSR2, @Symfony, @PHP71Migration]
+* **visibility_required** [@PSR2, @Symfony, @Laravel, @PHP71Migration]
 
   Visibility MUST be declared on all properties and methods; abstract and
   final MUST be declared before the visibility; static MUST be declared
@@ -1238,7 +1242,7 @@ Choose from the list of available rules:
 
   *Risky rule: modifies the signature of functions.*
 
-* **whitespace_after_comma_in_array** [@Symfony]
+* **whitespace_after_comma_in_array** [@Symfony, @Laravel]
 
   In array declaration, there MUST be a whitespace after each comma.
 

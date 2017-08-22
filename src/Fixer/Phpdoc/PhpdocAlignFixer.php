@@ -23,6 +23,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -36,6 +38,12 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
     private $regex;
     private $regexCommentLine;
 
+    private static $alignableParts = [
+        'hint',
+        'var',
+        'desc',
+    ];
+
     private static $alignableTags = [
         'param',
         'property',
@@ -48,6 +56,12 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
     private static $tagsWithName = [
         'param',
         'property',
+    ];
+
+    private static $separatorSpaces = [
+        'hint' => 1,
+        'var' => 1,
+        'desc' => 1,
     ];
 
     /**
@@ -149,7 +163,43 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             ])
         ;
 
-        return new FixerConfigurationResolver([$tags->getOption()]);
+        $parts = new FixerOptionBuilder('parts', 'Parts should be aligned.');
+        $parts
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
+                $generator->allowedValueIsSubsetOf(self::$alignableParts),
+            ])
+            ->setDefault(self::$alignableParts)
+        ;
+
+        $separatorSpaces = new FixerOptionBuilder('separatorSpaces', 'Separator spaces between parts.');
+        $separatorSpaces
+            ->setAllowedTypes(['array'])
+            ->setNormalizer(function (Options $options, $value) {
+                $separatorSpaces = self::$separatorSpaces;
+                foreach ($value as $part => $spaces) {
+                    if (!isset($separatorSpaces[$part])) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Invalid part: "%s".',
+                            $part
+                        ));
+                    }
+                    if (!is_int($spaces) || $spaces < 0 || $spaces > 8) {
+                        throw new InvalidOptionsException(sprintf(
+                            'Invalid spaces value for $s: "%s".',
+                            $part,
+                            $spaces
+                        ));
+                    }
+                    $separatorSpaces[$part] = $spaces;
+                }
+
+                return $separatorSpaces;
+            })
+            ->setDefault(self::$separatorSpaces)
+        ;
+
+        return new FixerConfigurationResolver([$tags->getOption(), $parts->getOption(), $separatorSpaces->getOption()]);
     }
 
     /**
@@ -162,7 +212,16 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $lines = Utils::splitLines($content);
 
+        $separatorSpaces = $this->configuration['separatorSpaces'];
+        $separator = [
+            'hint' => str_repeat(' ', $separatorSpaces['hint']),
+            'var' => str_repeat(' ', $separatorSpaces['var']),
+            'desc' => str_repeat(' ', $separatorSpaces['desc']),
+        ];
+
         $l = count($lines);
+
+        $desiredTagLength = strlen('param');
 
         for ($i = 0; $i < $l; ++$i) {
             $items = [];
@@ -190,73 +249,117 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             }
 
             // compute the max length of the tag, hint and variables
-            $tagMax = 0;
-            $hintMax = 0;
-            $varMax = 0;
+            $maxLengths = [
+                'tag' => 0,
+                'hint' => 0,
+                'var' => 0,
+            ];
 
             foreach ($items as $item) {
                 if (null === $item['tag']) {
                     continue;
                 }
 
-                $tagMax = max($tagMax, strlen($item['tag']));
-                $hintMax = max($hintMax, strlen($item['hint']));
-                $varMax = max($varMax, strlen($item['var']));
+                $maxLengths['tag'] = max($maxLengths['tag'], strlen($item['tag']));
+                $maxLengths['hint'] = max($maxLengths['hint'], strlen($item['hint']));
+                $maxLengths['var'] = max($maxLengths['var'], strlen($item['var']));
             }
+
+            // relative aligned start positions
+            $alignedPositions = [
+                'hint' => $maxLengths['tag'] + $separatorSpaces['hint'],
+                'var' => $maxLengths['tag'] + $maxLengths['hint'] + $separatorSpaces['hint'] + $separatorSpaces['var'],
+                'desc' => $maxLengths['tag'] + $maxLengths['hint'] + $maxLengths['var'] + $separatorSpaces['hint'] + ($maxLengths['var'] ? $separatorSpaces['var'] : 0) + $separatorSpaces['desc'],
+            ];
 
             $currTag = null;
 
             // update
             foreach ($items as $j => $item) {
-                if (null === $item['tag']) {
-                    if ($item['desc'][0] === '@') {
-                        $lines[$current + $j] = $item['indent'].' * '.$item['desc'].$lineEnding;
+                $linePrefix = $item['indent'].' * ';
+                $line = '';
 
-                        continue;
+                // multiline
+                if (null === $item['tag']) {
+                    if ($item['desc'][0] !== '@') {
+                        // vertical align desc
+                        if (in_array('desc', $this->configuration['parts'], true)) {
+                            // has var
+                            if (in_array($currTag, self::$tagsWithName, true)) {
+                                $line .= str_repeat(' ', $alignedPositions['desc'] - strlen($line) + 1);
+                            } else {
+                                $line .= str_repeat(' ', $alignedPositions['var'] - strlen($line) + 1);
+                            }
+                        } else {
+                            $lastLine = rtrim(substr($lines[$current + $j - 1], strlen($item['indent'].' * ')));
+                            $lastLineMatches = [];
+                            // has var
+                            if (in_array($currTag, self::$tagsWithName, true)) {
+                                preg_match('/^(.+'.$separator['hint'].'.+'.$separator['var'].'.+'.$separator['desc'].').+$/', $lastLine, $lastLineMatches);
+                            } else {
+                                preg_match('/^(.+'.$separator['hint'].'.+'.$separator['desc'].').+$/', $lastLine, $lastLineMatches);
+                            }
+
+                            // add spaces
+                            $line .= str_repeat(' ', strlen($lastLineMatches[1]));
+                        }
                     }
 
-                    $line =
-                        $item['indent']
-                        .' *  '
-                        .str_repeat(
-                            ' ',
-                            $tagMax + $hintMax + $varMax + (in_array($currTag, self::$tagsWithName, true) ? 3 : 2)
-                        )
-                        .$item['desc']
-                        .$lineEnding;
+                    // add desc
+                    $line .= $item['desc'];
 
-                    $lines[$current + $j] = $line;
+                    // add to lines
+                    $lines[$current + $j] = $linePrefix.$line.$lineEnding;
 
                     continue;
                 }
 
                 $currTag = $item['tag'];
 
-                $line =
-                    $item['indent']
-                    .' * @'
-                    .$item['tag']
-                    .str_repeat(' ', $tagMax - strlen($item['tag']) + 1)
-                    .$item['hint']
-                ;
+                // add @
+                $linePrefix .= '@';
 
-                if (!empty($item['var'])) {
-                    $line .=
-                        str_repeat(' ', $hintMax - strlen($item['hint']) + 1)
-                        .$item['var']
-                        .(
-                            !empty($item['desc'])
-                            ? str_repeat(' ', $varMax - strlen($item['var']) + 1).$item['desc'].$lineEnding
-                            : $lineEnding
-                        )
-                    ;
-                } elseif (!empty($item['desc'])) {
-                    $line .= str_repeat(' ', $hintMax - strlen($item['hint']) + 1).$item['desc'].$lineEnding;
+                // add tag
+                $line .= $item['tag'];
+
+                // vertical align hint
+                if (in_array('hint', $this->configuration['parts'], true)) {
+                    $line .= str_repeat(' ', $alignedPositions['hint'] - strlen($line));
                 } else {
-                    $line .= $lineEnding;
+                    $line .= $separator['hint'];
                 }
 
-                $lines[$current + $j] = $line;
+                // add hint
+                $line .= $item['hint'];
+
+                // has var
+                if (!empty($item['var'])) {
+                    // vertical align var
+                    if (in_array('var', $this->configuration['parts'], true)) {
+                        $line .= str_repeat(' ', $alignedPositions['var'] - strlen($line));
+                    } else {
+                        $line .= $separator['var'];
+                    }
+
+                    // add var
+                    $line .= $item['var'];
+                }
+
+                // has desc
+                if (!empty($item['desc'])) {
+                    // vertical align desc
+                    if (in_array('desc', $this->configuration['parts'], true)) {
+                        $line .= str_repeat(' ', $alignedPositions[in_array($item['tag'], self::$tagsWithName, true) ? 'desc' : 'var'] - strlen($line));
+                    } else {
+                        $line .= $separator['desc'];
+                    }
+
+                    // add desc
+                    $line .= $item['desc'];
+                }
+
+                // add to lines
+                $lines[$current + $j] = $linePrefix.$line.$lineEnding;
             }
         }
 
