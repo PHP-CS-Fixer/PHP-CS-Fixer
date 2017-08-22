@@ -31,7 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.4.1-DEV';
+    const VERSION = '2.4.1';
     const VERSION_CODENAME = 'Silver Gingerbread';
 
     public function __construct()

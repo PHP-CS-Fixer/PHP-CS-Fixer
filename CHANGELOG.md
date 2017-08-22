@@ -3,6 +3,39 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.4.1
+--------------------
+
+* bug #2925 Improve CI integration suggestion (julienfalque)
+* bug #2928 TokensAnalyzer::getClassyElements - Anonymous class support (SpacePossum)
+* bug #2931 Psr0Fixer, Psr4Fixer - ignore "new class" syntax (dg, keradus)
+* bug #2934 Config - fix handling rule without value (keradus, SpacePossum)
+* bug #2939 NoUnusedImportsFixer - Fix extra blank line (julienfalque)
+* bug #2941 PHP 7.2 - Group imports with trailing comma support (SpacePossum, julienfalque)
+* bug #2954 NoBreakCommentFixer - Disable case sensitivity (julienfalque)
+* bug #2959 MethodArgumentSpaceFixer - Skip body of fixed function (greg0ire)
+* bug #2984 AlignMultilineCommentFixer - handle uni code (SpacePossum)
+* bug #2987 Fix incorrect indentation of comments in `braces` fixer (rob006)
+* minor #2924 Add missing Token deprecations (julienfalque)
+* minor #2927 WhiteSpaceConfig - update message copy and more strict tests (SpacePossum, keradus)
+* minor #2930 Trigger website build (keradus)
+* minor #2932 Integrate CircleCI (keradus, aidantwoods)
+* minor #2933 ProcessLinterTest - Ensure Windows test only runs on Windows, add a Mac test execution (aidantwoods)
+* minor #2935 special handling of fabbot.io service if it's using too old PHP CS Fixer version (keradus)
+* minor #2937 Travis: execute 5.3 job on precise (keradus)
+* minor #2938 Tests fix configuration of project (SpacePossum, keradus)
+* minor #2943 FunctionToConstantFixer - test with diff. arguments than fixable (SpacePossum)
+* minor #2945 BlankLineBeforeStatementFixerTest - Fix covered class (julienfalque)
+* minor #2946 Detect extra old installations (keradus)
+* minor #2947 Test suggested CI integration (keradus)
+* minor #2951 AccessibleObject - remove most of usage (keradus)
+* minor #2952 BlankLineBeforeStatementFixer - Reference fixer instead of test class (localheinz)
+* minor #2955 Travis - stop using old TASK_SCA residue (keradus)
+* minor #2968 AssertTokensTrait - don't use AccessibleObject (keradus)
+* minor #2969 Shrink down AccessibleObject usage (keradus)
+* minor #2982 TrailingCommaInMultilineArrayFixer - simplify isMultilineArray condition (TomasVotruba)
+* minor #2989 CiIntegrationTest - fix min supported PHP versions (keradus)
+
 Changelog for v2.4.0
 --------------------
 
