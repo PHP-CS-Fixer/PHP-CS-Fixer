@@ -174,6 +174,10 @@ final class FixCommand extends Command
         $progressType = $resolver->getProgress();
         $finder = $resolver->getFinder();
 
+        if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
+            $stdErr->writeln('<bg=yellow;fg=black;>Paths from configuration file overridden by paths provided as command arguments.</>');
+        }
+
         if ('none' === $progressType || null === $stdErr) {
             $progressOutput = new NullOutput();
         } elseif ('run-in' === $progressType) {
