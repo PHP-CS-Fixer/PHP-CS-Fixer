@@ -12,8 +12,9 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Diff\Differ;
+use PhpCsFixer\Diff\Output\UnifiedDiffOutputBuilder;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
@@ -220,7 +221,7 @@ final class DescribeCommand extends Command
         } else {
             $output->writeln('Fixing examples:');
 
-            $differ = new SebastianBergmannDiffer();
+            $differ = new Differ(new UnifiedDiffOutputBuilder("--- Original\n+++ New", true));
             $diffFormatter = new DiffConsoleFormatter($output->isDecorated(), sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                 PHP_EOL,

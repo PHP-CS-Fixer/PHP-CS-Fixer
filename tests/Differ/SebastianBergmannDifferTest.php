@@ -28,16 +28,12 @@ final class SebastianBergmannDifferTest extends AbstractDifferTestCase
         $diff = <<<'TXT'
 --- Original
 +++ New
-@@ @@
+@@ -1,3 +1,4 @@
  <?php
  class Foo extends Bar {
 -    function __construct($foo, $bar) {
 +    public function __construct($foo, $bar)
 +    {
-         $this->foo = $foo;
-         $this->bar = $bar;
-     }
- }
 
 TXT;
 
