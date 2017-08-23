@@ -12,7 +12,8 @@
 
 namespace PhpCsFixer\Differ;
 
-use SebastianBergmann\Diff\Differ;
+use PhpCsFixer\Diff\Differ;
+use PhpCsFixer\Diff\Output\UnifiedDiffOutputBuilder;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,7 +27,7 @@ final class SebastianBergmannDiffer implements DifferInterface
 
     public function __construct()
     {
-        $this->differ = new Differ();
+        $this->differ = new Differ(new UnifiedDiffOutputBuilder("--- Original\n+++ New", true));
     }
 
     /**
