@@ -99,6 +99,11 @@ final class ConfigurationResolver
     private $fixers;
 
     /**
+     * @var null|bool
+     */
+    private $configFinderIsOverridden;
+
+    /**
      * @var array
      */
     private $options = array(
@@ -493,6 +498,18 @@ final class ConfigurationResolver
     }
 
     /**
+     * @return bool
+     */
+    public function configFinderIsOverridden()
+    {
+        if (null === $this->configFinderIsOverridden) {
+            $this->resolveFinder();
+        }
+
+        return $this->configFinderIsOverridden;
+    }
+
+    /**
      * Compute file candidates for config file.
      *
      * @return string[]
@@ -685,6 +702,8 @@ final class ConfigurationResolver
      */
     private function resolveFinder()
     {
+        $this->configFinderIsOverridden = false;
+
         if ($this->isStdIn()) {
             return new \ArrayIterator(array(new StdinFileInfo()));
         }
@@ -766,6 +785,10 @@ final class ConfigurationResolver
                     return false;
                 }
             );
+        }
+
+        if (null !== $this->getConfigFile()) {
+            $this->configFinderIsOverridden = true;
         }
 
         if ($currentFinder instanceof SymfonyFinder && null === $nestedFinder) {
