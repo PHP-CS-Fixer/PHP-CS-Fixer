@@ -872,7 +872,7 @@ class Foo
 
             // do not indent inline comments used to comment out unused code
             if (
-                0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent())
+                (0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent()) || $nextToken->getContent() === '//')
                 && $previousToken->isWhitespace() && 1 === preg_match('/\R$/', $previousToken->getContent())
             ) {
                 return;
