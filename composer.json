@@ -62,5 +62,10 @@
     "autoload-dev": {
         "psr-4": { "PhpCsFixer\\Tests\\": "tests/" }
     },
-    "bin": ["php-cs-fixer"]
+    "bin": ["php-cs-fixer"],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.6-dev"
+        }
+    }
 }
