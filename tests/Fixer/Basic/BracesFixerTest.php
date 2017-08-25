@@ -784,7 +784,7 @@ function test()
 {
 //    $closure = function ($callback) use ($query) {
 //        doSomething();
-//        .
+//        '.'
 //        return true;
 //    };
 
