@@ -207,6 +207,13 @@ second line*/',
             [
                 '<?php # test',
             ],
+            [
+                '<?php
+
+/* @var User $user */
+/** @var User $user */
+$user->doSomething();',
+            ],
         ];
     }
 
