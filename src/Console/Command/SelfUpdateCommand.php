@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Console\SelfUpdate\GithubClient;
+use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -69,36 +71,48 @@ EOT
             return 1;
         }
 
-        $remoteTag = $this->getLatestTag();
-        if (null === $remoteTag) {
-            $output->writeln('<error>Unable to determine newest version.</error>');
+        $currentVersion = $this->getApplication()->getVersion();
+        preg_match('/^v?(?<major>\d+)\./', $currentVersion, $matches);
+        $currentMajor = (int) $matches['major'];
+
+        $checker = new NewVersionChecker(new GithubClient());
+
+        try {
+            $latestVersion = $checker->getLatestVersion();
+            $latestVersionOfCurrentMajor = $checker->getLatestVersionOfMajor($currentMajor);
+        } catch (\Exception $exception) {
+            $output->writeln(sprintf(
+                '<error>Unable to determine newest version: %s</error>',
+                $exception->getMessage()
+            ));
 
             return 0;
         }
 
-        $currentVersion = 'v'.$this->getApplication()->getVersion();
-        if ($currentVersion === $remoteTag) {
+        if (1 !== $checker->compareVersions($latestVersion, $currentVersion)) {
             $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
             return 0;
         }
 
-        $remoteVersionParsed = $this->parseVersion($remoteTag);
-        $currentVersionParsed = $this->parseVersion($currentVersion);
+        $remoteTag = $latestVersion;
 
-        if ($remoteVersionParsed[0] > $currentVersionParsed[0] && true !== $input->getOption('force')) {
-            $output->writeln(sprintf('<info>A new major version of php-cs-fixer is available</info> (<comment>%s</comment>)', $remoteTag));
-            $output->writeln(sprintf('<info>Before upgrading please read</info> https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/%s/UPGRADE.md', $remoteTag));
+        if (
+            0 !== $checker->compareVersions($latestVersionOfCurrentMajor, $latestVersion)
+            && true !== $input->getOption('force')
+        ) {
+            $output->writeln(sprintf('<info>A new major version of php-cs-fixer is available</info> (<comment>%s</comment>)', $latestVersion));
+            $output->writeln(sprintf('<info>Before upgrading please read</info> https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/%s/UPGRADE.md', $latestVersion));
             $output->writeln('<info>If you are ready to upgrade run this command with</info> <comment>-f</comment>');
             $output->writeln('<info>Checking for new minor/patch version...</info>');
 
-            // test if there is a new minor version available
-            $remoteTag = $this->getLatestNotMajorUpdateTag($currentVersion);
-            if ($currentVersion === $remoteTag) {
+            if (1 !== $checker->compareVersions($latestVersionOfCurrentMajor, $currentVersion)) {
                 $output->writeln('<info>No minor update for php-cs-fixer.</info>');
 
                 return 0;
             }
+
+            $remoteTag = $latestVersionOfCurrentMajor;
         }
 
         $localFilename = realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0];
@@ -140,107 +154,5 @@ EOT
 
             return 1;
         }
-    }
-
-    /**
-     * @return null|string
-     */
-    private function getLatestTag()
-    {
-        $raw = file_get_contents(
-            'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/releases/latest',
-            null,
-            stream_context_create($this->getStreamContextOptions())
-        );
-
-        if (false === $raw) {
-            return null;
-        }
-
-        $json = json_decode($raw, true);
-
-        if (null === $json) {
-            return null;
-        }
-
-        return $json['tag_name'];
-    }
-
-    /**
-     * @param string $currentTag in format v?\d.\d.\d
-     *
-     * @return string in format v?\d.\d.\d
-     */
-    private function getLatestNotMajorUpdateTag($currentTag)
-    {
-        $currentTagParsed = $this->parseVersion($currentTag);
-        $nextVersionParsed = $currentTagParsed;
-        do {
-            $nextTag = sprintf('v%d.%d.%d', $nextVersionParsed[0], ++$nextVersionParsed[1], 0);
-        } while ($this->hasRemoteTag($nextTag));
-
-        $nextVersionParsed = $this->parseVersion($nextTag);
-        --$nextVersionParsed[1];
-
-        // check if new minor found, otherwise start looking for new patch from the current patch number
-        if ($currentTagParsed[1] === $nextVersionParsed[1]) {
-            $nextVersionParsed[2] = $currentTagParsed[2];
-        }
-
-        do {
-            $nextTag = sprintf('v%d.%d.%d', $nextVersionParsed[0], $nextVersionParsed[1], ++$nextVersionParsed[2]);
-        } while ($this->hasRemoteTag($nextTag));
-
-        return sprintf('v%d.%d.%d', $nextVersionParsed[0], $nextVersionParsed[1], $nextVersionParsed[2] - 1);
-    }
-
-    /**
-     * @param string $method HTTP method
-     *
-     * @return array
-     */
-    private function getStreamContextOptions($method = 'GET')
-    {
-        return array(
-            'http' => array(
-                'header' => 'User-Agent: FriendsOfPHP/PHP-CS-Fixer',
-                'method' => $method,
-            ),
-        );
-    }
-
-    /**
-     * @param string $tag
-     *
-     * @return bool
-     */
-    private function hasRemoteTag($tag)
-    {
-        $url = 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/releases/tags/'.$tag;
-        stream_context_set_default(
-            $this->getStreamContextOptions('HEAD')
-        );
-
-        $headers = get_headers($url);
-        if (!is_array($headers) || count($headers) < 1) {
-            throw new \RuntimeException(sprintf('Failed to get headers for "%s".', $url));
-        }
-
-        return 1 === preg_match('#^HTTP\/\d.\d 200#', $headers[0]);
-    }
-
-    /**
-     * @param string $tag version in format v?\d.\d.\d
-     *
-     * @return int[]
-     */
-    private function parseVersion($tag)
-    {
-        $tag = explode('.', $tag);
-        if ('v' === $tag[0][0]) {
-            $tag[0] = substr($tag[0], 1);
-        }
-
-        return array((int) $tag[0], (int) $tag[1], (int) $tag[2]);
     }
 }
