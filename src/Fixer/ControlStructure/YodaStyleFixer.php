@@ -101,25 +101,20 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      */
     protected function createConfigurationDefinition()
     {
-        $equal = new FixerOptionBuilder('equal', 'Change equal (`==`, `!=`) statements.');
-        $equal = $equal
-            ->setAllowedTypes(['bool', 'null'])
-            ->setDefault(true)
-            ->getOption();
-
-        $identical = new FixerOptionBuilder('identical', 'Change identical (`===`, `!==`) statements.');
-        $identical = $identical
-            ->setAllowedTypes(['bool', 'null'])
-            ->setDefault(true)
-            ->getOption();
-
-        $lessGreater = new FixerOptionBuilder('less_and_greater', 'Change less and greater than (`<`, `<=`, `>`, `>=`) statements.');
-        $lessGreater = $lessGreater
-            ->setAllowedTypes(['bool', 'null'])
-            ->setDefault(null)
-            ->getOption();
-
-        return new FixerConfigurationResolver([$equal, $identical, $lessGreater]);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('equal', 'Change equal (`==`, `!=`) statements.'))
+                ->setAllowedTypes(['bool', 'null'])
+                ->setDefault(true)
+                ->getOption(),
+            (new FixerOptionBuilder('identical', 'Change identical (`===`, `!==`) statements.'))
+                ->setAllowedTypes(['bool', 'null'])
+                ->setDefault(true)
+                ->getOption(),
+            (new FixerOptionBuilder('less_and_greater', 'Change less and greater than (`<`, `<=`, `>`, `>=`) statements.'))
+                ->setAllowedTypes(['bool', 'null'])
+                ->setDefault(null)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -363,8 +358,8 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
     private function getLeftSideCompareFixableInfo(Tokens $tokens, $index)
     {
         return [
-                'start' => $this->findComparisonStart($tokens, $index),
-                'end' => $tokens->getPrevMeaningfulToken($index),
+            'start' => $this->findComparisonStart($tokens, $index),
+            'end' => $tokens->getPrevMeaningfulToken($index),
         ];
     }
 
