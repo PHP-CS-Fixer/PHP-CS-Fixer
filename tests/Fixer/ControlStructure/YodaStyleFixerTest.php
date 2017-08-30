@@ -58,11 +58,6 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
-            'Array destruct by ternary.' => [
-                '<?php list($a) = $c === 1 ? $b : $d;',
-                '<?php list($a) = 1 === $c ? $b : $d;',
-            ],
-
             // Don't fix cases.
             ['<?php $a = 1 === 1;'],
             ['<?php $b = $b === $c;'],
@@ -88,8 +83,8 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
             ['<?php $t = $a == ((array(2)));'],
             // Fix cases.
             'Array destruct by ternary.' => [
-                '<?php list($a) = $c === 1 ? $b : $d;',
-                '<?php list($a) = 1 === $c ? $b : $d;',
+                '<?php list($a) = 11 === $c ? $b : $d;',
+                '<?php list($a) = $c === 11 ? $b : $d;',
             ],
             'Less spacing.' => [
                 '<?php $z=2==$a;$b=$c>1&&$c<=10;',
