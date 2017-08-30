@@ -99,9 +99,9 @@ final class ConfigurationResolver
     private $fixers;
 
     /**
-     * @var bool
+     * @var null|bool
      */
-    private $configFinderOverridden = false;
+    private $configFinderIsOverridden;
 
     /**
      * @var array
@@ -502,7 +502,11 @@ final class ConfigurationResolver
      */
     public function configFinderIsOverridden()
     {
-        return $this->configFinderOverridden;
+        if (null === $this->configFinderIsOverridden) {
+            $this->resolveFinder();
+        }
+
+        return $this->configFinderIsOverridden;
     }
 
     /**
@@ -698,6 +702,8 @@ final class ConfigurationResolver
      */
     private function resolveFinder()
     {
+        $this->configFinderIsOverridden = false;
+
         if ($this->isStdIn()) {
             return new \ArrayIterator(array(new StdinFileInfo()));
         }
@@ -782,7 +788,7 @@ final class ConfigurationResolver
         }
 
         if (null !== $this->getConfigFile()) {
-            $this->configFinderOverridden = true;
+            $this->configFinderIsOverridden = true;
         }
 
         if ($currentFinder instanceof SymfonyFinder && null === $nestedFinder) {
