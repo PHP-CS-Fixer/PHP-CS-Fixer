@@ -76,7 +76,10 @@ EOT
             $latestVersion = $checker->getLatestVersion();
             $latestVersionOfCurrentMajor = $checker->getLatestVersionOfCurrentMajor();
         } catch (\Exception $exception) {
-            $output->writeln('<error>Unable to determine newest version.</error>');
+            $output->writeln(sprintf(
+                '<error>Unable to determine newest version: %s</error>',
+                $exception->getMessage()
+            ));
 
             return 0;
         }
