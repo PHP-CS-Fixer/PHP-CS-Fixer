@@ -55,6 +55,9 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
         }
     }
 
+    /**
+     * @return array
+     */
     public function provideFixCases()
     {
         return [
@@ -73,7 +76,6 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
             ['<?php $l = $c > 2;'],
             ['<?php return $this->myObject->{$index}+$b === "";'],
             ['<?php return $m[2]+1 == 2;'],
-            ['<?php return $n == list($a) = $b;'],
             // https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/693
             ['<?php return array(2) == $o;'],
             ['<?php return $p == array(2);'],
@@ -81,6 +83,11 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
             ['<?php return $r == array($a);'],
             ['<?php $s = ((array(2))) == $a;'],
             ['<?php $t = $a == ((array(2)));'],
+            ['<?php list($a) = $c === array(1) ? $b : $d;'],
+            ['<?php $b = 7 === list($a) = [7];'],
+            ['<?php $a = function(){} === array(0);'],
+            ['<?php $z = $n == list($a) = $b;'],
+            ['<?php return $n == list($a) = $b;'],
             // Fix cases.
             'Array destruct by ternary.' => [
                 '<?php list($a) = 11 === $c ? $b : $d;',
@@ -168,6 +175,14 @@ if ($a == $b) {
     }
 }',
             ],
+            [
+                '<?php $b = list($a) = 7 === [7];', // makes no sense, but valid PHP syntax
+                '<?php $b = list($a) = [7] === 7;',
+            ],
+            [
+                '<?php $a = 1 === function(){};',
+                '<?php $a = function(){} === 1;',
+            ],
         ];
     }
 
@@ -197,6 +212,9 @@ if ($a == $b) {
         $this->doTest($input, $expected);
     }
 
+    /**
+     * @return array<string[]>
+     */
     public function provideLessGreaterCases()
     {
         return [
@@ -212,88 +230,6 @@ if ($a == $b) {
                 '<?php $a = (3 > $b) || $d;',
                 '<?php $a = ($b < 3) || $d;',
             ],
-        ];
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider providePHP56Cases
-     * @requires PHP 5.6
-     */
-    public function testFixPHP56($expected, $input)
-    {
-        $this->fixer->configure(['equal' => true, 'identical' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * Test with the inverse config.
-     *
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider providePHP56Cases
-     * @requires PHP 5.6
-     */
-    public function testFixPHP56Inverse($expected, $input)
-    {
-        $this->fixer->configure(['equal' => false, 'identical' => false]);
-        $this->doTest($input, $expected);
-    }
-
-    public function providePHP56Cases()
-    {
-        return [
-            '5.6 Simple non-Yoda conditions that need to be fixed' => [
-                '<?php $a **= 4 === $b ? 2 : 3;',
-                '<?php $a **= $b === 4 ? 2 : 3;',
-            ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider providePHP7Cases
-     * @requires PHP 7.0
-     */
-    public function testPHP7Cases($expected, $input = null)
-    {
-        $this->fixer->configure(['equal' => true, 'identical' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * Test with the inverse config.
-     *
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider providePHP7Cases
-     * @requires PHP 7.0
-     */
-    public function testPHP7CasesInverse($expected, $input = null)
-    {
-        $this->fixer->configure(['equal' => false, 'identical' => false]);
-
-        if (null === $input) {
-            $this->doTest($expected);
-        } else {
-            $this->doTest($input, $expected);
-        }
-    }
-
-    public function providePHP7Cases()
-    {
-        return [
-            [
-                '<?php $a = $b ?? 1 ?? 2 == $d;',
-                '<?php $a = $b ?? 1 ?? $d == 2;',
-            ],
-            ['<?php $a = $b + 1 <=> $d;'],
         ];
     }
 
@@ -338,17 +274,194 @@ if ($a == $b) {
         $this->fixer->configure($config);
     }
 
-    public function testDefinition()
-    {
-        $fixer = $this->createFixer();
-        $this->assertInstanceOf('PhpCsFixer\FixerDefinition\FixerDefinitionInterface', $fixer->getDefinition());
-    }
-
+    /**
+     * @return array
+     */
     public function provideInvalidConfiguration()
     {
         return [
             [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "integer".'],
             [['_invalid_' => true], 'Invalid configuration: The option "_invalid_" does not exist. Defined options are: "equal", "identical", "less_and_greater".'],
+        ];
+    }
+
+    public function testDefinition()
+    {
+        $this->assertInstanceOf('PhpCsFixer\FixerDefinition\FixerDefinitionInterface', $this->fixer->getDefinition());
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider providePHP56Cases
+     * @requires PHP 5.6
+     */
+    public function testFixPHP56($expected, $input)
+    {
+        $this->fixer->configure(['equal' => true, 'identical' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * Test with the inverse config.
+     *
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider providePHP56Cases
+     * @requires PHP 5.6
+     */
+    public function testFixPHP56Inverse($expected, $input)
+    {
+        $this->fixer->configure(['equal' => false, 'identical' => false]);
+        $this->doTest($input, $expected);
+    }
+
+    /**
+     * @return array<string, string[]>
+     */
+    public function providePHP56Cases()
+    {
+        return [
+            '5.6 Simple non-Yoda conditions that need to be fixed' => [
+                '<?php $a **= 4 === $b ? 2 : 3;',
+                '<?php $a **= $b === 4 ? 2 : 3;',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider providePHP70Cases
+     * @requires PHP 7.0
+     */
+    public function testPHP70Cases($expected, $input = null)
+    {
+        $this->fixer->configure(['equal' => true, 'identical' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * Test with the inverse config.
+     *
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider providePHP70Cases
+     * @requires PHP 7.0
+     */
+    public function testPHP70CasesInverse($expected, $input = null)
+    {
+        $this->fixer->configure(['equal' => false, 'identical' => false]);
+
+        if (null === $input) {
+            $this->doTest($expected);
+        } else {
+            $this->doTest($input, $expected);
+        }
+    }
+
+    /**
+     * @return array<string[]>
+     */
+    public function providePHP70Cases()
+    {
+        return [
+            ['<?php $a = $b + 1 <=> $d;'],
+            ['<?php $b = 7 === [$a] = [7];'],
+            ['<?php [$a] = $c === array(1) ? $b : $d;'],
+            ['<?php $b = 7 === [$a] = [7];'],
+            ['<?php $z = $n == [$a] = $b;'],
+            ['<?php return $n == [$a] = $b;'],
+            [
+                '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === $a;/**/',
+            ],
+            [
+                '<?php $a = $b ?? 1 ?? 2 == $d;',
+                '<?php $a = $b ?? 1 ?? $d == 2;',
+            ],
+            'Array destruct by ternary.' => [
+                '<?php [$a] = 11 === $c ? $b : $d;',
+                '<?php [$a] = $c === 11 ? $b : $d;',
+            ],
+            [
+                '<?php $b = [$a] = 7 === [7];', // makes no sense, but valid PHP syntax
+                '<?php $b = [$a] = [7] === 7;',
+            ],
+            [
+                '<?php $a = 1 === new class(10) extends SomeClass implements SomeInterface {};/**/',
+                '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === 1;/**/',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider providePHP71Cases
+     * @requires PHP 7.1
+     */
+    public function testPHP71Cases($expected, $input = null)
+    {
+        $this->fixer->configure(['equal' => true, 'identical' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * Test with the inverse config.
+     *
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider providePHP71Cases
+     * @requires PHP 7.1
+     */
+    public function testPHP71CasesInverse($expected, $input = null)
+    {
+        $this->fixer->configure(['equal' => false, 'identical' => false]);
+
+        if (null === $input) {
+            $this->doTest($expected);
+        } else {
+            $this->doTest($input, $expected);
+        }
+    }
+
+    /**
+     * @return array<string[]>
+     */
+    public function providePHP71Cases()
+    {
+        return [
+            // no fix cases
+            ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'],
+            ['<?php list(list("x" => $x1, "y" => $y1), list("x" => $x2, "y" => $y2)) = $points;'],
+            ['<?php list("first" => list($x1, $y1), "second" => list($x2, $y2)) = $points;'],
+            ['<?php [$a, $b, $c] = [1, 2, 3];'],
+            ['<?php ["a" => $a, "b" => $b, "c" => $c] = $a[0];'],
+            ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'],
+            ['<?php $b = 7 === [$a] = [7];'], // makes no sense, but valid PHP syntax
+            // fix cases
+            [
+                '<?php list("a" => $a, "b" => $b, "c" => $c) = 1 === $c ? $b : $d;',
+                '<?php list("a" => $a, "b" => $b, "c" => $c) = $c === 1 ? $b : $d;',
+            ],
+            [
+                '<?php list("a" => $a, "b" => $b, "c" => $c) = A::B === $c ? $b : $d;',
+                '<?php list("a" => $a, "b" => $b, "c" => $c) = $c === A::B ? $b : $d;',
+            ],
+            [
+                '<?php list( (2 === $c ? "a" : "b") => $b) = ["a" => 7 === $c ? 5 : 1, "b" => 7];',
+                '<?php list( ($c === 2 ? "a" : "b") => $b) = ["a" => $c === 7 ? 5 : 1, "b" => 7];',
+            ],
+            [
+                '<?php [ (ABC::A === $c ? "a" : "b") => $b] = ["a" => 7 === $c ? 5 : 1, "b" => 7];',
+                '<?php [ ($c === ABC::A ? "a" : "b") => $b] = ["a" => $c === 7 ? 5 : 1, "b" => 7];',
+            ],
         ];
     }
 }

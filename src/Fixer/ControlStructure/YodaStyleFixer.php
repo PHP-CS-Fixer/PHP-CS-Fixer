@@ -66,14 +66,14 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
                 ),
                 new CodeSample(
                     '<?php
-    $a = $b === 1;
-    $b = $c != 1;
-    $c = $c > 3;
+    $b = $c != 1;  // equal
+    $a = 1 === $b; // identical
+    $c = $c > 3;   // less than
 ',
                     [
                         'equal' => true,
                         'identical' => false,
-                        'less_and_greater' => true,
+                        'less_and_greater' => null,
                     ]
                 ),
             ]
@@ -319,7 +319,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             $right = $this->getRightSideCompareFixableInfo($tokens, $index);
             $rightIsVar = $this->isVariable($tokens, $right['start'], $right['end']);
 
-            if ($rightIsVar) {
+            if ($rightIsVar || $this->isListStatement($tokens, $right['start'], $right['end'])) {
                 return ['candidate' => false, 'end' => $index];
             }
 
@@ -329,7 +329,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             $left = $this->getLeftSideCompareFixableInfo($tokens, $index);
             $leftIsVar = $this->isVariable($tokens, $left['start'], $left['end']);
 
-            if ($leftIsVar) {
+            if ($leftIsVar || $this->isListStatement($tokens, $left['start'], $left['end'])) {
                 return ['candidate' => false, 'end' => $index];
             }
 
@@ -375,6 +375,24 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             'start' => $tokens->getNextMeaningfulToken($index),
             'end' => $this->findComparisonEnd($tokens, $index),
         ];
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param int    $end
+     *
+     * @return bool
+     */
+    private function isListStatement(Tokens $tokens, $index, $end)
+    {
+        for ($i = $index; $i <= $end; ++$i) {
+            if ($tokens[$i]->isGivenKind([T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -473,6 +491,10 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             // check if this is the last token
             if ($index === $end) {
                 return $current->isGivenKind($expectString ? T_STRING : T_VARIABLE);
+            }
+
+            if ($current->isGivenKind([T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
+                return false;
             }
 
             $next = $tokens[$tokens->getNextMeaningfulToken($index)];
