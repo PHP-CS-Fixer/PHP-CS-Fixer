@@ -71,7 +71,15 @@ EOT
 
         $checker = new NewVersionChecker('v1.1.0');
 
-        $latestVersion = $checker->getLatestVersion();
+        try {
+            $latestVersion = $checker->getLatestVersion();
+            $latestVersionOfCurrentMajor = $checker->getLatestVersionOfCurrentMajor();
+        } catch (\Exception $exception) {
+            $output->writeln('<error>Unable to determine newest version.</error>');
+
+            return 0;
+        }
+
         if (null === $latestVersion) {
             $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
@@ -79,7 +87,6 @@ EOT
         }
 
         $remoteTag = $latestVersion;
-        $latestVersionOfCurrentMajor = $checker->getLatestVersionOfCurrentMajor();
 
         if ($latestVersionOfCurrentMajor !== $latestVersion && true !== $input->getOption('force')) {
             $output->writeln(sprintf('<info>A new major version of php-cs-fixer is available</info> (<comment>%s</comment>)', $latestVersion));
