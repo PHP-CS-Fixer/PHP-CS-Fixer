@@ -15,6 +15,7 @@
     ],
     "require": {
         "php": "^5.3.6 || >=7.0 <7.2",
+        "composer/semver": "^1.4",
         "ext-json": "*",
         "ext-tokenizer": "*",
         "doctrine/annotations": "^1.2",

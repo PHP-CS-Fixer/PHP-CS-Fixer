@@ -38,6 +38,9 @@ final class NewVersionCheckerTest extends TestCase
     public function getLatestVersionCases()
     {
         return array(
+            array('v1.0.0-alpha', 'v2.4.1'),
+            array('v1.0.0-beta', 'v2.4.1'),
+            array('v1.0.0-RC', 'v2.4.1'),
             array('v1.0.0', 'v2.4.1'),
             array('v1.2.0', 'v2.4.1'),
             array('v1.2.5', 'v2.4.1'),
@@ -48,6 +51,9 @@ final class NewVersionCheckerTest extends TestCase
             array('v2.2.0', 'v2.4.1'),
             array('v2.2.5', 'v2.4.1'),
             array('v2.4.0', 'v2.4.1'),
+            array('v2.4.1-alpha', 'v2.4.1'),
+            array('v2.4.1-beta', 'v2.4.1'),
+            array('v2.4.1-RC', 'v2.4.1'),
             array('v2.4.1', null),
             array('v2.4.2', null),
             array('v2.5.0', null),
@@ -73,6 +79,9 @@ final class NewVersionCheckerTest extends TestCase
     public function getLatestVersionOfCurrentMajorCases()
     {
         return array(
+            array('v1.0.0-alpha', 'v1.13.2'),
+            array('v1.0.0-beta', 'v1.13.2'),
+            array('v1.0.0-RC', 'v1.13.2'),
             array('v1.0.0', 'v1.13.2'),
             array('v1.2.0', 'v1.13.2'),
             array('v1.2.5', 'v1.13.2'),
@@ -80,6 +89,9 @@ final class NewVersionCheckerTest extends TestCase
             array('v2.2.0', 'v2.4.1'),
             array('v2.2.5', 'v2.4.1'),
             array('v2.4.0', 'v2.4.1'),
+            array('v2.4.1-alpha', 'v2.4.1'),
+            array('v2.4.1-beta', 'v2.4.1'),
+            array('v2.4.1-RC', 'v2.4.1'),
             array('v2.4.1', null),
             array('v2.5.0', null),
             array('v3.0.0', null),

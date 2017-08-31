@@ -12,6 +12,10 @@
 
 namespace PhpCsFixer\Console\SelfUpdate;
 
+use Composer\Semver\Comparator;
+use Composer\Semver\Semver;
+use Composer\Semver\VersionParser;
+
 /**
  * @internal
  */
@@ -23,12 +27,17 @@ final class NewVersionChecker
     private $githubClient;
 
     /**
-     * @var int[]
+     * @var VersionParser
+     */
+    private $versionParser;
+
+    /**
+     * @var string
      */
     private $currentVersion;
 
     /**
-     * @var null|array<int[]>
+     * @var null|string[]
      */
     private $availableVersions;
 
@@ -38,12 +47,13 @@ final class NewVersionChecker
      */
     public function __construct($currentVersion, GithubClient $githubClient = null)
     {
-        $this->currentVersion = $this->parseVersion($currentVersion);
+        $this->currentVersion = $currentVersion;
 
         if (null === $githubClient) {
             $githubClient = new GithubClient();
         }
         $this->githubClient = $githubClient;
+        $this->versionParser = new VersionParser();
     }
 
     /**
@@ -67,8 +77,11 @@ final class NewVersionChecker
     {
         $this->retrieveAvailableVersions();
 
+        $currentMajorVersion = (int) $this->versionParser->normalize($this->currentVersion);
+        $semverConstraint = '^'.$currentMajorVersion;
+
         foreach ($this->availableVersions as $availableVersion) {
-            if ($availableVersion[0] === $this->currentVersion[0]) {
+            if (Semver::satisfies($availableVersion, $semverConstraint)) {
                 return $this->returnIfNewer($availableVersion);
             }
         }
@@ -77,17 +90,13 @@ final class NewVersionChecker
     }
 
     /**
-     * @param int[] $newVersion
+     * @param string $newVersion
      *
      * @return null|string
      */
     private function returnIfNewer($newVersion)
     {
-        if (1 === $this->compareVersions($newVersion, $this->currentVersion)) {
-            return 'v'.implode('.', $newVersion);
-        }
-
-        return null;
+        return Comparator::greaterThan($newVersion, $this->currentVersion) ? $newVersion : null;
     }
 
     private function retrieveAvailableVersions()
@@ -97,57 +106,16 @@ final class NewVersionChecker
         }
 
         foreach ($this->githubClient->getTags() as $tag) {
-            $version = $this->parseVersion($tag['name']);
-            if (null !== $version) {
+            $version = $tag['name'];
+
+            try {
+                $this->versionParser->normalize($version);
                 $this->availableVersions[] = $version;
+            } catch (\UnexpectedValueException $exception) {
+                // not a valid version tag
             }
         }
 
-        // sort from newest version to oldest
-        usort($this->availableVersions, array($this, 'compareVersions'));
-        $this->availableVersions = array_reverse($this->availableVersions);
-    }
-
-    /**
-     * @param int[] $versionA
-     * @param int[] $versionB
-     *
-     * @return int
-     */
-    private function compareVersions(array $versionA, array $versionB)
-    {
-        for ($i = 0; $i <= 2; ++$i) {
-            if ($versionA[$i] < $versionB[$i]) {
-                return -1;
-            }
-
-            if ($versionA[$i] > $versionB[$i]) {
-                return 1;
-            }
-        }
-
-        return 0;
-    }
-
-    /**
-     * @param string $tag
-     *
-     * @return null|int[]
-     */
-    private function parseVersion($tag)
-    {
-        if (preg_match(
-            '/^v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)$/',
-            $tag,
-            $matches
-        )) {
-            return array(
-                (int) $matches['major'],
-                (int) $matches['minor'],
-                (int) $matches['patch'],
-            );
-        }
-
-        return null;
+        $this->availableVersions = Semver::rsort($this->availableVersions);
     }
 }
