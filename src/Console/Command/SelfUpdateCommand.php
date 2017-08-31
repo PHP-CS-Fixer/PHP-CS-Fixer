@@ -69,7 +69,7 @@ EOT
             return 1;
         }
 
-        $checker = new NewVersionChecker('v1.1.0');
+        $checker = new NewVersionChecker($this->getApplication()->getVersion());
 
         try {
             $latestVersion = $checker->getLatestVersion();
