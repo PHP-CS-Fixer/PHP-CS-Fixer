@@ -10,13 +10,18 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Console\Command;
+namespace PhpCsFixer\Console\SelfUpdate;
 
 /**
  * @internal
  */
 final class NewVersionChecker
 {
+    /**
+     * @var GithubClient
+     */
+    private $githubClient;
+
     /**
      * @var int[]
      */
@@ -28,11 +33,17 @@ final class NewVersionChecker
     private $availableVersions;
 
     /**
-     * @param string $currentVersion
+     * @param string       $currentVersion
+     * @param GithubClient $githubClient
      */
-    public function __construct($currentVersion)
+    public function __construct($currentVersion, GithubClient $githubClient = null)
     {
         $this->currentVersion = $this->parseVersion($currentVersion);
+
+        if (null === $githubClient) {
+            $githubClient = new GithubClient();
+        }
+        $this->githubClient = $githubClient;
     }
 
     /**
@@ -85,32 +96,7 @@ final class NewVersionChecker
             return;
         }
 
-        $url = 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/tags';
-
-        $result = @file_get_contents(
-            $url,
-            false,
-            stream_context_create(array(
-                'http' => array(
-                    'header' => 'User-Agent: FriendsOfPHP/PHP-CS-Fixer',
-                ),
-            ))
-        );
-
-        if (false === $result) {
-            throw new \RuntimeException(sprintf('Failed to load tags at "%s".', $url));
-        }
-
-        $result = json_decode($result, true);
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \RuntimeException(sprintf(
-                'Failed to read response from "%s" as JSON: %s.',
-                $url,
-                json_last_error_msg()
-            ));
-        }
-
-        foreach ($result as $tag) {
+        foreach ($this->githubClient->getTags() as $tag) {
             $version = $this->parseVersion($tag['name']);
             if (null !== $version) {
                 $this->availableVersions[] = $version;
