@@ -371,25 +371,12 @@ if ($a == $b) {
     {
         return [
             ['<?php $a = $b + 1 <=> $d;'],
-            ['<?php $b = 7 === [$a] = [7];'],
-            ['<?php [$a] = $c === array(1) ? $b : $d;'],
-            ['<?php $b = 7 === [$a] = [7];'],
-            ['<?php $z = $n == [$a] = $b;'],
-            ['<?php return $n == [$a] = $b;'],
             [
                 '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === $a;/**/',
             ],
             [
                 '<?php $a = $b ?? 1 ?? 2 == $d;',
                 '<?php $a = $b ?? 1 ?? $d == 2;',
-            ],
-            'Array destruct by ternary.' => [
-                '<?php [$a] = 11 === $c ? $b : $d;',
-                '<?php [$a] = $c === 11 ? $b : $d;',
-            ],
-            [
-                '<?php $b = [$a] = 7 === [7];', // makes no sense, but valid PHP syntax
-                '<?php $b = [$a] = [7] === 7;',
             ],
             [
                 '<?php $a = 1 === new class(10) extends SomeClass implements SomeInterface {};/**/',
@@ -445,6 +432,11 @@ if ($a == $b) {
             ['<?php ["a" => $a, "b" => $b, "c" => $c] = $a[0];'],
             ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'],
             ['<?php $b = 7 === [$a] = [7];'], // makes no sense, but valid PHP syntax
+            ['<?php $b = 7 === [$a] = [7];'],
+            ['<?php [$a] = $c === array(1) ? $b : $d;'],
+            ['<?php $b = 7 === [$a] = [7];'],
+            ['<?php $z = $n == [$a] = $b;'],
+            ['<?php return $n == [$a] = $b;'],
             // fix cases
             [
                 '<?php list("a" => $a, "b" => $b, "c" => $c) = 1 === $c ? $b : $d;',
@@ -461,6 +453,14 @@ if ($a == $b) {
             [
                 '<?php [ (ABC::A === $c ? "a" : "b") => $b] = ["a" => 7 === $c ? 5 : 1, "b" => 7];',
                 '<?php [ ($c === ABC::A ? "a" : "b") => $b] = ["a" => $c === 7 ? 5 : 1, "b" => 7];',
+            ],
+            'Array destruct by ternary.' => [
+                '<?php [$a] = 11 === $c ? $b : $d;',
+                '<?php [$a] = $c === 11 ? $b : $d;',
+            ],
+                        [
+                '<?php $b = [$a] = 7 === [7];', // makes no sense, but valid PHP syntax
+                '<?php $b = [$a] = [7] === 7;',
             ],
         ];
     }
