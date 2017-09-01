@@ -15,10 +15,10 @@ namespace PhpCsFixer\Console\SelfUpdate;
 /**
  * @internal
  */
-class GithubClient
+final class GithubClient implements GithubClientInterface
 {
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getTags()
     {

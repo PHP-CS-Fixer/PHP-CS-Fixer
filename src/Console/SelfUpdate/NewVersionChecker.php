@@ -22,7 +22,7 @@ use Composer\Semver\VersionParser;
 final class NewVersionChecker
 {
     /**
-     * @var GithubClient
+     * @var GithubClientInterface
      */
     private $githubClient;
 
@@ -42,10 +42,10 @@ final class NewVersionChecker
     private $availableVersions;
 
     /**
-     * @param string       $currentVersion
-     * @param GithubClient $githubClient
+     * @param string                $currentVersion
+     * @param GithubClientInterface $githubClient
      */
-    public function __construct($currentVersion, GithubClient $githubClient)
+    public function __construct($currentVersion, GithubClientInterface $githubClient)
     {
         $this->currentVersion = $currentVersion;
         $this->githubClient = $githubClient;

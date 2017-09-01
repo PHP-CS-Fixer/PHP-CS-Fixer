@@ -102,7 +102,7 @@ final class NewVersionCheckerTest extends TestCase
 
     private function createGithubClientStub()
     {
-        $githubClient = $this->prophesize('PhpCsFixer\Console\SelfUpdate\GithubClient');
+        $githubClient = $this->prophesize('PhpCsFixer\Console\SelfUpdate\GithubClientInterface');
 
         $githubClient->getTags()->willReturn(array(
             array(
