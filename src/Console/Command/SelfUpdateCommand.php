@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Command\Command;
@@ -70,7 +71,10 @@ EOT
             return 1;
         }
 
-        $checker = new NewVersionChecker($this->getApplication()->getVersion());
+        $checker = new NewVersionChecker(
+            $this->getApplication()->getVersion(),
+            new GithubClient()
+        );
 
         try {
             $latestVersion = $checker->getLatestVersion();

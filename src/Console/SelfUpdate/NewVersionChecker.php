@@ -45,13 +45,9 @@ final class NewVersionChecker
      * @param string       $currentVersion
      * @param GithubClient $githubClient
      */
-    public function __construct($currentVersion, GithubClient $githubClient = null)
+    public function __construct($currentVersion, GithubClient $githubClient)
     {
         $this->currentVersion = $currentVersion;
-
-        if (null === $githubClient) {
-            $githubClient = new GithubClient();
-        }
         $this->githubClient = $githubClient;
         $this->versionParser = new VersionParser();
     }
