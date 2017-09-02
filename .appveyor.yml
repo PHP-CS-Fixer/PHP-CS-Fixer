@@ -38,5 +38,5 @@ before_test:
 
 test_script:
     - cd C:\projects\php-cs-fixer
-    - vendor\bin\phpunit --verbose
+    - vendor\bin\phpunit
     - php php-cs-fixer --diff --dry-run -v fix
