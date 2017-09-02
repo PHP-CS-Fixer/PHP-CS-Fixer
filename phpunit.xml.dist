@@ -18,6 +18,7 @@
     convertWarningsToExceptions="true"
     processIsolation="false"
     stopOnFailure="false"
+    verbose="true"
 >
     <testsuites>
         <testsuite>
