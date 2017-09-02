@@ -311,6 +311,10 @@ Choose from the list of available rules:
 
   Converts ``::class`` keywords to FQCN strings.
 
+* **combine_consecutive_issets**
+
+  Using ``isset(X) &&`` multiple times should be done in one call.
+
 * **combine_consecutive_unsets**
 
   Calling ``unset`` on multiple items should be done in one call.
