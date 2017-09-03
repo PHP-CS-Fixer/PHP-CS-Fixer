@@ -52,7 +52,7 @@ jobs:
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
             script:
-                - vendor/bin/phpunit --verbose || travis_terminate 1
+                - vendor/bin/phpunit || travis_terminate 1
                 - php php-cs-fixer --diff --dry-run -v fix
 
         -
@@ -71,8 +71,8 @@ jobs:
                 # for building a tag release we don't need to collect code coverage
                 - if [ $TRAVIS_TAG ]; then export COLLECT_COVERAGE=0; fi
             script:
-                - if [ $COLLECT_COVERAGE == 0 ]; then vendor/bin/phpunit --verbose || travis_terminate 1; fi
-                - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
+                - if [ $COLLECT_COVERAGE == 0 ]; then vendor/bin/phpunit || travis_terminate 1; fi
+                - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
                 - php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
                 - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/coveralls -v; fi
 
@@ -82,7 +82,7 @@ jobs:
             env: COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1 PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1
             script:
                 - php php-cs-fixer fix --rules @PHP70Migration:risky,@PHP71Migration,native_function_invocation -q || travis_terminate 1
-                - vendor/bin/phpunit --verbose || travis_terminate 1
+                - vendor/bin/phpunit || travis_terminate 1
                 - git checkout . -q
                 - php php-cs-fixer --diff --dry-run -v fix
 

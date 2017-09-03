@@ -20,5 +20,5 @@ dependencies:
 
 test:
     override:
-        - vendor/bin/phpunit --verbose
+        - vendor/bin/phpunit
         - php php-cs-fixer --diff --dry-run -v fix
