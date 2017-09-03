@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-28T09:09:12Z
+
+I actually asked you to change base branch of already existing PR instead of creating new PR, but it's fine as well ;)
+closing other PR, as only this one may be merged
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-28T09:11:21Z
+
+LGTM ;)
+
+---------------------------------------------------------------------------
+
+by Jean85 at 2017-08-28T09:11:21Z
+
+No problem ;) I created a new one also because changing the base branch from the web interface was bringing the whole 2.5 branch with it onto 2.2!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-28T09:12:37Z
+
+it's because you change the branch to lower one.
+if you take a look, change a branch is... doing a rebase. `git rebase` of branch is also needed when you rebase the PR targed
