@@ -80,8 +80,8 @@ script:
     - if [ $TASK_SCA == 1 ]; then $HOME/.composer/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json || travis_terminate 1; fi
     - if [ $TASK_SCA == 1 ]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS; fi
 
-    - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 0 ]; then vendor/bin/phpunit --verbose; fi
-    - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml; fi
+    - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 0 ]; then vendor/bin/phpunit; fi
+    - if [ $TASK_TESTS == 1 ] && [ $TASK_TESTS_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --coverage-clover build/logs/clover.xml; fi
 
     - if [ $TASK_SCA == 1 ]; then git checkout . -q; fi
 
