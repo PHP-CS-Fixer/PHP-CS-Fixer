@@ -1,0 +1,15 @@
+{
+    "require": {
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "maglnet/composer-require-checker": "^0.1.5"
+    },
+    "conflict": {
+        "hhvm": "*"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
