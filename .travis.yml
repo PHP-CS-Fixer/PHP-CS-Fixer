@@ -19,7 +19,7 @@ before_install:
     - phpenv config-rm xdebug.ini || return 0
 
     # Composer: boost installation
-    - composer global show -ND 2>&1 | grep "hirak/prestissimo" || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
+    - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
 
 jobs:
     include:
