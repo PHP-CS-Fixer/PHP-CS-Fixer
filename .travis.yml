@@ -129,22 +129,7 @@ jobs:
             env: COMPOSER_FLAGS="--no-dev --prefer-stable"
             install: skip
             script: skip
-            before_deploy:
-                # ensure that deps will work on lowest supported PHP version
-                - composer config platform.php 2> /dev/null || composer config platform.php 5.6.0
-
-                # require suggested packages
-                - composer require --no-update symfony/polyfill-mbstring
-
-                - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
-                - composer info -D | sort
-
-                # install box2
-                - curl -LSs http://box-project.github.io/box2/installer.php | php
-                - php box.phar --version
-
-                # build phar file
-                - php -d phar.readonly=false box.phar build
+            before_deploy: ./dev-tools/build.sh
             deploy:
                 provider: releases
                 api_key:
