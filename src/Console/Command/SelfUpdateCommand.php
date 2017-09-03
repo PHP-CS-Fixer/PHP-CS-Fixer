@@ -71,14 +71,15 @@ EOT
             return 1;
         }
 
-        $checker = new NewVersionChecker(
-            $this->getApplication()->getVersion(),
-            new GithubClient()
-        );
+        $currentVersion = $this->getApplication()->getVersion();
+        preg_match('/^v?(?<major>\d+)\./', $currentVersion, $matches);
+        $currentMajor = (int) $matches['major'];
+
+        $checker = new NewVersionChecker(new GithubClient());
 
         try {
             $latestVersion = $checker->getLatestVersion();
-            $latestVersionOfCurrentMajor = $checker->getLatestVersionOfCurrentMajor();
+            $latestVersionOfCurrentMajor = $checker->getLatestVersionOfMajor($currentMajor);
         } catch (\Exception $exception) {
             $output->writeln(sprintf(
                 '<error>Unable to determine newest version: %s</error>',
@@ -88,7 +89,7 @@ EOT
             return 0;
         }
 
-        if (null === $latestVersion) {
+        if (1 !== $checker->compareVersions($latestVersion, $currentVersion)) {
             $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
             return 0;
@@ -96,13 +97,16 @@ EOT
 
         $remoteTag = $latestVersion;
 
-        if ($latestVersionOfCurrentMajor !== $latestVersion && true !== $input->getOption('force')) {
+        if (
+            0 !== $checker->compareVersions($latestVersionOfCurrentMajor, $latestVersion)
+            && true !== $input->getOption('force')
+        ) {
             $output->writeln(sprintf('<info>A new major version of php-cs-fixer is available</info> (<comment>%s</comment>)', $latestVersion));
             $output->writeln(sprintf('<info>Before upgrading please read</info> https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/%s/UPGRADE.md', $latestVersion));
             $output->writeln('<info>If you are ready to upgrade run this command with</info> <comment>-f</comment>');
             $output->writeln('<info>Checking for new minor/patch version...</info>');
 
-            if (null === $latestVersionOfCurrentMajor) {
+            if (1 !== $checker->compareVersions($latestVersionOfCurrentMajor, $currentVersion)) {
                 $output->writeln('<info>No minor update for php-cs-fixer.</info>');
 
                 return 0;

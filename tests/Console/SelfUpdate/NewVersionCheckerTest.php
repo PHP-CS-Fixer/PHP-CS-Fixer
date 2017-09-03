@@ -22,82 +22,86 @@ use PHPUnit\Framework\TestCase;
  */
 final class NewVersionCheckerTest extends TestCase
 {
-    /**
-     * @param string      $currentVersion
-     * @param null|string $expectedVersion
-     *
-     * @dataProvider getLatestVersionCases
-     */
-    public function testGetLatestVersion($currentVersion, $expectedVersion)
+    public function testGetLatestVersion()
     {
-        $checker = new NewVersionChecker($currentVersion, $this->createGithubClientStub());
+        $checker = new NewVersionChecker($this->createGithubClientStub());
 
-        $this->assertSame($expectedVersion, $checker->getLatestVersion());
+        $this->assertSame('v2.4.1', $checker->getLatestVersion());
     }
 
-    public function getLatestVersionCases()
+    /**
+     * @param int         $majorVersion
+     * @param null|string $expectedVersion
+     *
+     * @dataProvider getLatestVersionOfMajorCases
+     */
+    public function testGetLatestVersionOfMajor($majorVersion, $expectedVersion)
+    {
+        $checker = new NewVersionChecker($this->createGithubClientStub());
+
+        $this->assertSame($expectedVersion, $checker->getLatestVersionOfMajor($majorVersion));
+    }
+
+    public function getLatestVersionOfMajorCases()
     {
         return array(
-            array('v1.0.0-alpha', 'v2.4.1'),
-            array('v1.0.0-beta', 'v2.4.1'),
-            array('v1.0.0-RC', 'v2.4.1'),
-            array('v1.0.0', 'v2.4.1'),
-            array('v1.2.0', 'v2.4.1'),
-            array('v1.2.5', 'v2.4.1'),
-            array('v2.0.0', 'v2.4.1'),
-            array('v2.0.0', 'v2.4.1'),
-            array('v2.0.0', 'v2.4.1'),
-            array('v2.0.0', 'v2.4.1'),
-            array('v2.2.0', 'v2.4.1'),
-            array('v2.2.5', 'v2.4.1'),
-            array('v2.4.0', 'v2.4.1'),
-            array('v2.4.1-alpha', 'v2.4.1'),
-            array('v2.4.1-beta', 'v2.4.1'),
-            array('v2.4.1-RC', 'v2.4.1'),
-            array('v2.4.1', null),
-            array('v2.4.2', null),
-            array('v2.5.0', null),
-            array('v3.0.0', null),
-            array('v3.2.0', null),
-            array('v3.2.5', null),
+            array(1, 'v1.13.2'),
+            array(2, 'v2.4.1'),
+            array(3, null),
         );
     }
 
     /**
-     * @param string      $currentVersion
-     * @param null|string $expectedVersion
+     * @param string $versionA
+     * @param string $versionB
+     * @param int    $expectedResult
      *
-     * @dataProvider getLatestVersionOfCurrentMajorCases
+     * @dataProvider getCompareVersionsCases
      */
-    public function testGetLatestVersionOfCurrentMajor($currentVersion, $expectedVersion)
+    public function testCompareVersions($versionA, $versionB, $expectedResult)
     {
-        $checker = new NewVersionChecker($currentVersion, $this->createGithubClientStub());
+        $checker = new NewVersionChecker($this->createGithubClientStub());
 
-        $this->assertSame($expectedVersion, $checker->getLatestVersionOfCurrentMajor());
+        $this->assertSame(
+            $expectedResult,
+            $checker->compareVersions($versionA, $versionB)
+        );
+        $this->assertSame(
+            -$expectedResult,
+            $checker->compareVersions($versionB, $versionA)
+        );
     }
 
-    public function getLatestVersionOfCurrentMajorCases()
+    public function getCompareVersionsCases()
     {
-        return array(
-            array('v1.0.0-alpha', 'v1.13.2'),
-            array('v1.0.0-beta', 'v1.13.2'),
-            array('v1.0.0-RC', 'v1.13.2'),
-            array('v1.0.0', 'v1.13.2'),
-            array('v1.2.0', 'v1.13.2'),
-            array('v1.2.5', 'v1.13.2'),
-            array('v2.0.0', 'v2.4.1'),
-            array('v2.2.0', 'v2.4.1'),
-            array('v2.2.5', 'v2.4.1'),
-            array('v2.4.0', 'v2.4.1'),
-            array('v2.4.1-alpha', 'v2.4.1'),
-            array('v2.4.1-beta', 'v2.4.1'),
-            array('v2.4.1-RC', 'v2.4.1'),
-            array('v2.4.1', null),
-            array('v2.5.0', null),
-            array('v3.0.0', null),
-            array('v3.2.0', null),
-            array('v3.2.5', null),
-        );
+        $cases = array();
+
+        foreach (array(
+            array('1.0.0-alpha', '1.0.0', -1),
+            array('1.0.0-beta', '1.0.0', -1),
+            array('1.0.0-RC', '1.0.0', -1),
+            array('1.0.0', '1.0.0', 0),
+            array('1.0.0', '1.0.1', -1),
+            array('1.0.0', '1.1.0', -1),
+            array('1.0.0', '2.0.0', -1),
+        ) as $case) {
+            // X.Y.Z vs. X.Y.Z
+            $cases[] = $case;
+
+            // vX.Y.Z vs. X.Y.Z
+            $case[0] = 'v'.$case[0];
+            $cases[] = $case;
+
+            // vX.Y.Z vs. vX.Y.Z
+            $case[1] = 'v'.$case[1];
+            $cases[] = $case;
+
+            // X.Y.Z vs. vX.Y.Z
+            $case[0] = substr($case[0], 1);
+            $cases[] = $case;
+        }
+
+        return $cases;
     }
 
     private function createGithubClientStub()

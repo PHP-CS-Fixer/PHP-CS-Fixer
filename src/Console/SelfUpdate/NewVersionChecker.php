@@ -32,53 +32,47 @@ final class NewVersionChecker
     private $versionParser;
 
     /**
-     * @var string
-     */
-    private $currentVersion;
-
-    /**
      * @var null|string[]
      */
     private $availableVersions;
 
     /**
-     * @param string                $currentVersion
      * @param GithubClientInterface $githubClient
      */
-    public function __construct($currentVersion, GithubClientInterface $githubClient)
+    public function __construct(GithubClientInterface $githubClient)
     {
-        $this->currentVersion = $currentVersion;
         $this->githubClient = $githubClient;
         $this->versionParser = new VersionParser();
     }
 
     /**
-     * Returns the tag of the latest version if newer than the current one.
+     * Returns the tag of the latest version.
      *
-     * @return null|string
+     * @return string
      */
     public function getLatestVersion()
     {
         $this->retrieveAvailableVersions();
 
-        return $this->returnIfNewer($this->availableVersions[0]);
+        return $this->availableVersions[0];
     }
 
     /**
-     * Returns the tag of the latest minor/patch version if newer than the current one.
+     * Returns the tag of the latest minor/patch version of the given major version.
+     *
+     * @param int $majorVersion
      *
      * @return null|string
      */
-    public function getLatestVersionOfCurrentMajor()
+    public function getLatestVersionOfMajor($majorVersion)
     {
         $this->retrieveAvailableVersions();
 
-        $currentMajorVersion = (int) $this->versionParser->normalize($this->currentVersion);
-        $semverConstraint = '^'.$currentMajorVersion;
+        $semverConstraint = '^'.$majorVersion;
 
         foreach ($this->availableVersions as $availableVersion) {
             if (Semver::satisfies($availableVersion, $semverConstraint)) {
-                return $this->returnIfNewer($availableVersion);
+                return $availableVersion;
             }
         }
 
@@ -86,13 +80,28 @@ final class NewVersionChecker
     }
 
     /**
-     * @param string $newVersion
+     * Returns -1, 0, or 1 if the first version is respectively less than,
+     * equal to, or greater than the second.
      *
-     * @return null|string
+     * @param string $versionA
+     * @param string $versionB
+     *
+     * @return int
      */
-    private function returnIfNewer($newVersion)
+    public function compareVersions($versionA, $versionB)
     {
-        return Comparator::greaterThan($newVersion, $this->currentVersion) ? $newVersion : null;
+        $versionA = $this->versionParser->normalize($versionA);
+        $versionB = $this->versionParser->normalize($versionB);
+
+        if (Comparator::lessThan($versionA, $versionB)) {
+            return -1;
+        }
+
+        if (Comparator::greaterThan($versionA, $versionB)) {
+            return 1;
+        }
+
+        return 0;
     }
 
     private function retrieveAvailableVersions()
