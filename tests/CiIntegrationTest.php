@@ -143,12 +143,22 @@ final class CiIntegrationTest extends TestCase
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.1.*.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
+
+        $optionalXdebugWarning = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
+If you need help while solving warnings, ask at https://gitter.im/FriendsOfPHP/PHP-CS-Fixer, we will help you!
+';
+
         $executionDetails = "Loaded config default from \".php_cs.dist\".
 $expectedResult3Files
 Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error";
 
         $this->assertRegExp(
-            '/^('.preg_quote($optionalIncompatibilityWarning, '/').')?'.preg_quote($executionDetails, '/').'$/',
+            sprintf(
+                '/^(%s)?(%s)?%s$/',
+                preg_quote($optionalIncompatibilityWarning, '/'),
+                preg_quote($optionalXdebugWarning, '/'),
+                preg_quote($executionDetails, '/')
+            ),
             trim($result3['stderr'])
         );
         $this->assertRegExp(
