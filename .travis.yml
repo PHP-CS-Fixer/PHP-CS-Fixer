@@ -78,6 +78,16 @@ jobs:
 
         -
             <<: *STANDARD_TEST_JOB
+            php: 7.2
+            env: COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1 PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1
+            script:
+                - php php-cs-fixer fix --rules @PHP70Migration:risky,@PHP71Migration,native_function_invocation -q || travis_terminate 1
+                - vendor/bin/phpunit || travis_terminate 1
+                - git checkout . -q
+                - php php-cs-fixer --diff --dry-run -v fix
+
+        -
+            <<: *STANDARD_TEST_JOB
             php: nightly
             env: COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1 PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1
             script:
