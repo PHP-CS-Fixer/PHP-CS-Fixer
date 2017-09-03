@@ -130,21 +130,18 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
             throw new RequiredFixerConfigurationException(
                 $this->getName(),
                 sprintf('Missing required configuration: %s', $exception->getMessage()),
-                null,
                 $exception
             );
         } catch (InvalidOptionsForEnvException $exception) {
             throw new InvalidForEnvFixerConfigurationException(
                 $this->getName(),
                 sprintf('Invalid configuration for env: %s', $exception->getMessage()),
-                null,
                 $exception
             );
         } catch (ExceptionInterface $exception) {
             throw new InvalidFixerConfigurationException(
                 $this->getName(),
                 sprintf('Invalid configuration: %s', $exception->getMessage()),
-                null,
                 $exception
             );
         }
