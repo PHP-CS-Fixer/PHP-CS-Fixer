@@ -183,7 +183,6 @@ if ($a == $b) {
                 '<?php $a = 1 === function(){};',
                 '<?php $a = function(){} === 1;',
             ],
-            // TODO messy comments and whitespace
             [
                 '<?php
 $z#1
