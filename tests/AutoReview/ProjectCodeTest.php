@@ -255,13 +255,10 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatDataProvidersAreCorrectlyNamed($testClassName, $dataProviderMethodName)
     {
-        $regExp = '/^provide[A-Z]\S+Cases$/';
-
-        $this->assertRegExp($regExp, $dataProviderMethodName, sprintf(
-            'Data provider in "%s" with name "%s" does not match "%s"',
+        $this->assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
+            'Data provider in "%s" with name "%s" is not correctly named"',
             $testClassName,
-            $dataProviderMethodName,
-            $regExp
+            $dataProviderMethodName
         ));
     }
 
