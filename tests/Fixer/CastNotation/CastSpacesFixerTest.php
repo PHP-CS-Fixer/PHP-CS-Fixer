@@ -25,14 +25,14 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider testFixCastsProvider
+     * @dataProvider providerFixCasts
      */
     public function testFixCasts($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function testFixCastsProvider()
+    public function providerFixCasts()
     {
         return array(
             array(

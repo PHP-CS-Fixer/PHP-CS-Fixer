@@ -86,7 +86,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcClasses
+     * @dataProvider provideSrcClassesNotAbuseInterfaces
      * @requires PHP 5.4
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
@@ -98,24 +98,6 @@ final class ProjectCodeTest extends TestCase
         }
 
         $rc = new \ReflectionClass($className);
-
-        $doc = false !== $rc->getDocComment()
-            ? new DocBlock($rc->getDocComment())
-            : null;
-
-        if (
-            $rc->isInterface()
-            || ($doc && count($doc->getAnnotationsOfType('internal')))
-            || 0 === count($rc->getInterfaces())
-            || in_array($className, array(
-                'PhpCsFixer\Finder',
-                'PhpCsFixer\Test\AbstractFixerTestCase',
-                'PhpCsFixer\Test\AbstractIntegrationTestCase',
-                'PhpCsFixer\Tokenizer\Tokens',
-            ), true)
-        ) {
-            return;
-        }
 
         $allowedMethods = array_map(
             function (\ReflectionClass $interface) {
@@ -271,6 +253,38 @@ final class ProjectCodeTest extends TestCase
                 return array($item);
             },
             $this->getSrcClasses()
+        );
+    }
+
+    public function provideSrcClassesNotAbuseInterfaces()
+    {
+        return array_map(
+            function ($item) {
+                return array($item);
+            },
+            array_filter($this->getSrcClasses(), function ($className) {
+                $rc = new \ReflectionClass($className);
+
+                $doc = false !== $rc->getDocComment()
+                    ? new DocBlock($rc->getDocComment())
+                    : null;
+
+                if (
+                    $rc->isInterface()
+                    || ($doc && count($doc->getAnnotationsOfType('internal')))
+                    || 0 === count($rc->getInterfaces())
+                    || in_array($className, array(
+                        'PhpCsFixer\Finder',
+                        'PhpCsFixer\Test\AbstractFixerTestCase',
+                        'PhpCsFixer\Test\AbstractIntegrationTestCase',
+                        'PhpCsFixer\Tokenizer\Tokens',
+                    ), true)
+                ) {
+                    return false;
+                }
+
+                return true;
+            })
         );
     }
 

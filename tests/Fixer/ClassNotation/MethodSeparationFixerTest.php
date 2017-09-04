@@ -36,9 +36,10 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
         $tokens = Tokens::fromCode($code);
         $method = new \ReflectionMethod($this->fixer, 'findCommentBlockStart');
         $method->setAccessible(true);
-        if ($expected !== $result = $method->invoke($this->fixer, $tokens, $index)) {
-            $this->fail(sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson()));
-        }
+
+        $result = $method->invoke($this->fixer, $tokens, $index);
+
+        $this->assertSame($expected, $result, sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson()));
     }
 
     public function provideCommentBlockStartDetectionCases()
