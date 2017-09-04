@@ -97,13 +97,12 @@ final class FileCacheManagerTest extends TestCase
         $signature = $signatureProphecy->reveal();
 
         $cacheProphecy = $this->prophesize('PhpCsFixer\Cache\CacheInterface');
-        $cacheProphecy->getSignature()->willReturn($cachedSignature);
+        $cacheProphecy->getSignature()->shouldBeCalled()->willReturn($cachedSignature);
         $cache = $cacheProphecy->reveal();
 
         $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
-        $handlerProphecy->read()->willReturn($cache);
-        $handlerProphecy->getFile()->willReturn($this->getFile());
-        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handlerProphecy->read()->shouldBeCalled()->willReturn($cache);
+        $handlerProphecy->write(Argument::is($cache))->shouldBeCalled()->willReturn(null);
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
