@@ -30,7 +30,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider testFixProvider
+     * @dataProvider providerFix
      */
     public function testFix($expected, $input = null, array $configuration = null)
     {
@@ -62,7 +62,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider testFixProvider
+     * @dataProvider providerFix
      */
     public function testFixWithDifferentLineEndings(
         $expected,
@@ -80,7 +80,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public function testFixProvider()
+    public function providerFix()
     {
         return [
             'default' => [

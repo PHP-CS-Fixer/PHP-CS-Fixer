@@ -27,14 +27,14 @@ final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider testFixProvider
+     * @dataProvider providerFix
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function testFixProvider()
+    public function providerFix()
     {
         return [
             //old style array

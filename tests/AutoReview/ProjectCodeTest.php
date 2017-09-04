@@ -91,29 +91,11 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcClasses
+     * @dataProvider provideSrcClassesNotAbuseInterfaces
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
         $rc = new \ReflectionClass($className);
-
-        $doc = false !== $rc->getDocComment()
-            ? new DocBlock($rc->getDocComment())
-            : null;
-
-        if (
-            $rc->isInterface()
-            || ($doc && count($doc->getAnnotationsOfType('internal')))
-            || 0 === count($rc->getInterfaces())
-            || in_array($className, [
-                \PhpCsFixer\Finder::class,
-                \PhpCsFixer\Test\AbstractFixerTestCase::class,
-                \PhpCsFixer\Test\AbstractIntegrationTestCase::class,
-                \PhpCsFixer\Tokenizer\Tokens::class,
-            ], true)
-        ) {
-            return;
-        }
 
         $allowedMethods = array_map(
             function (\ReflectionClass $interface) {
@@ -272,6 +254,40 @@ final class ProjectCodeTest extends TestCase
                 return [$item];
             },
             $this->getSrcClasses()
+        );
+    }
+
+    public function provideSrcClassesNotAbuseInterfaces()
+    {
+        return array_map(
+            function ($item) {
+                return [$item];
+            },
+            array_filter($this->getSrcClasses(), function ($className) {
+                $rc = new \ReflectionClass($className);
+
+                $doc = false !== $rc->getDocComment()
+                    ? new DocBlock($rc->getDocComment())
+                    : null;
+
+                if (
+                    $rc->isInterface()
+                    || ($doc && count($doc->getAnnotationsOfType('internal')))
+                    || 0 === count($rc->getInterfaces())
+                    || in_array($className, [
+                        \PhpCsFixer\Finder::class,
+                        \PhpCsFixer\Test\AbstractFixerTestCase::class,
+                        \PhpCsFixer\Test\AbstractIntegrationTestCase::class,
+                        \PhpCsFixer\Tests\Test\AbstractFixerTestCase::class,
+                        \PhpCsFixer\Tests\Test\AbstractIntegrationTestCase::class,
+                        \PhpCsFixer\Tokenizer\Tokens::class,
+                    ], true)
+                ) {
+                    return false;
+                }
+
+                return true;
+            })
         );
     }
 
