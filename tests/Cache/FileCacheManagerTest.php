@@ -45,11 +45,10 @@ final class FileCacheManagerTest extends TestCase
         $signature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
 
         $handlerProphecy = $this->prophesize('PhpCsFixer\Cache\FileHandlerInterface');
-        $handlerProphecy->read()->willReturn(null);
-        $handlerProphecy->getFile()->willReturn($this->getFile());
+        $handlerProphecy->read()->shouldBeCalled()->willReturn(null);
         $handlerProphecy->write(Argument::that(function (CacheInterface $cache) use ($signature) {
             return $cache->getSignature() === $signature;
-        }))->willReturn(null);
+        }))->shouldBeCalled()->willReturn(null);
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
