@@ -253,12 +253,15 @@ final class ProjectCodeTest extends TestCase
      * @param string $testClassName
      * @param string $dataProviderMethodName
      */
-    public function testThatDataProvidersAreNotPrefixedWithTest($testClassName, $dataProviderMethodName)
+    public function testThatDataProvidersAreCorrectlyNamed($testClassName, $dataProviderMethodName)
     {
-        $this->assertNotRegExp('/^test/', $dataProviderMethodName, sprintf(
-            'Data providers should not be prefixed with "test", but "%s()" in "%s" is',
+        $regExp = '/^provide[A-Z]\S+Cases$/';
+
+        $this->assertRegExp($regExp, $dataProviderMethodName, sprintf(
+            'Data provider "%s" in "%s" does not match "%s"',
             $dataProviderMethodName,
-            $testClassName
+            $testClassName,
+            $regExp
         ));
     }
 
