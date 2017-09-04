@@ -26,7 +26,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
@@ -36,7 +36,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
     /**
      * @return array
      */
-    public function getFixCases()
+    public function provideFixCases()
     {
         return $this->createTestCases(array(
             array('

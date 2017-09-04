@@ -471,7 +471,7 @@ EOF;
      *
      * @group legacy
      * @requires PHP 7.1
-     * @dataProvider provideClassConstTest
+     * @dataProvider provideFixClassConstCases
      * @expectedDeprecation Passing "elements" at the root of the configuration is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
      */
     public function testLegacyFixClassConst($expected, $input)
@@ -485,7 +485,7 @@ EOF;
      * @param string $input    PHP source to fix
      *
      * @requires PHP 7.1
-     * @dataProvider provideClassConstTest
+     * @dataProvider provideFixClassConstCases
      */
     public function testFixClassConst($expected, $input)
     {
@@ -493,7 +493,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideClassConstTest()
+    public function provideFixClassConstCases()
     {
         return array(
             array(

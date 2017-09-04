@@ -29,7 +29,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider providerFix
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null, array $configuration = null)
     {
@@ -40,7 +40,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function providerFix()
+    public function provideFixCases()
     {
         return array(
             'default' => array(

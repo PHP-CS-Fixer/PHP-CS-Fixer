@@ -27,9 +27,9 @@ final class NoShortEchoTagFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideClosingTagExamples
+     * @dataProvider provideFixCases
      */
-    public function testOneLineFix($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         if (50400 > PHP_VERSION_ID && !ini_get('short_open_tag')) {
             // On PHP <5.4 short echo tag is parsed as T_INLINE_HTML if short_open_tag is disabled
@@ -40,7 +40,7 @@ final class NoShortEchoTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideClosingTagExamples()
+    public function provideFixCases()
     {
         return array(
             array('<?php echo \'Foo\';', '<?= \'Foo\';'),

@@ -50,7 +50,7 @@ final class TokensTest extends TestCase
      * @param null|int   $end
      * @param bool|array $caseSensitive
      *
-     * @dataProvider provideFindSequence
+     * @dataProvider provideFindSequenceCases
      */
     public function testFindSequence(
         $source,
@@ -73,7 +73,7 @@ final class TokensTest extends TestCase
         );
     }
 
-    public function provideFindSequence()
+    public function provideFindSequenceCases()
     {
         return array(
             array(
@@ -280,7 +280,7 @@ final class TokensTest extends TestCase
      * @param string $message
      * @param array  $sequence
      *
-     * @dataProvider provideFindSequenceExceptions
+     * @dataProvider provideFindSequenceExceptionCases
      */
     public function testFindSequenceException($message, array $sequence)
     {
@@ -293,7 +293,7 @@ final class TokensTest extends TestCase
         $tokens->findSequence($sequence);
     }
 
-    public function provideFindSequenceExceptions()
+    public function provideFindSequenceExceptionCases()
     {
         $emptyToken = new Token('');
 
@@ -343,7 +343,7 @@ PHP;
     }
 
     /**
-     * @dataProvider provideMonolithicPhpDetection
+     * @dataProvider provideMonolithicPhpDetectionCases
      *
      * @param string $source
      * @param bool   $isMonolithic
@@ -354,7 +354,7 @@ PHP;
         $this->assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideMonolithicPhpDetection()
+    public function provideMonolithicPhpDetectionCases()
     {
         return array(
             array("<?php\n", true),
@@ -369,7 +369,7 @@ PHP;
     }
 
     /**
-     * @dataProvider provideShortOpenTagMonolithicPhpDetection
+     * @dataProvider provideShortOpenTagMonolithicPhpDetectionCases
      *
      * @param string $source
      * @param bool   $monolithic
@@ -389,7 +389,7 @@ PHP;
         $this->assertSame($monolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideShortOpenTagMonolithicPhpDetection()
+    public function provideShortOpenTagMonolithicPhpDetectionCases()
     {
         return array(
             array("<?\n", true),
@@ -405,7 +405,7 @@ PHP;
     }
 
     /**
-     * @dataProvider provideShortOpenTagEchoMonolithicPhpDetection
+     * @dataProvider provideShortOpenTagEchoMonolithicPhpDetectionCases
      *
      * @param string $source
      * @param bool   $monolithic
@@ -425,7 +425,7 @@ PHP;
         $this->assertSame($monolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideShortOpenTagEchoMonolithicPhpDetection()
+    public function provideShortOpenTagEchoMonolithicPhpDetectionCases()
     {
         return array(
             array("<?=' ';\n", true),
@@ -530,7 +530,7 @@ PHP;
      * @param Token[] $expected tokens
      * @param int[]   $indexes  to clear
      *
-     * @dataProvider getClearTokenAndMergeSurroundingWhitespaceCases
+     * @dataProvider provideGetClearTokenAndMergeSurroundingWhitespaceCases
      */
     public function testClearTokenAndMergeSurroundingWhitespace($source, array $indexes, array $expected)
     {
@@ -540,7 +540,7 @@ PHP;
         }
     }
 
-    public function getClearTokenAndMergeSurroundingWhitespaceCases()
+    public function provideGetClearTokenAndMergeSurroundingWhitespaceCases()
     {
         $clearToken = new Token('');
 
@@ -728,14 +728,14 @@ PHP;
      * @param int    $searchIndex
      *
      * @requires PHP 7.1
-     * @dataProvider provideFindBlockEndCases71
+     * @dataProvider provideFindBlockEnd71Cases
      */
     public function testFindBlockEnd71($expectedIndex, $source, $type, $searchIndex)
     {
         $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
-    public function provideFindBlockEndCases71()
+    public function provideFindBlockEnd71Cases()
     {
         return array(
             array(10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5),

@@ -32,7 +32,7 @@ final class TextDiffTest extends TestCase
      * @param string $format
      * @param bool   $isDecorated
      *
-     * @dataProvider provideDiffReporting
+     * @dataProvider provideDiffReportingCases
      */
     public function testDiffReportingDecorated($expected, $format, $isDecorated)
     {
@@ -64,7 +64,7 @@ final class TextDiffTest extends TestCase
         $this->assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
-    public function provideDiffReporting()
+    public function provideDiffReportingCases()
     {
         $expected = <<<'TEST'
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
@@ -84,7 +84,7 @@ TEST;
     }
 
     /**
-     * Test to make sure @see TextDiffTest::provideDiffReporting covers all formats.
+     * Test to make sure @see TextDiffTest::provideDiffReportingCases covers all formats.
      */
     public function testAllFormatsCovered()
     {
