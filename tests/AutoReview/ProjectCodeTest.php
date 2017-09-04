@@ -342,26 +342,27 @@ final class ProjectCodeTest extends TestCase
                 continue;
             }
 
-            $dataProviderMethodNames = array_unique(array_reduce(
-                $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
-                function (array $dataProviderMethodNames, \ReflectionMethod $method) {
-                    if (false === $method->getDocComment()) {
-                        return $dataProviderMethodNames;
+            $dataProviderMethodNames = array();
+
+            foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                if (false === $method->getDocComment()) {
+                    continue;
+                }
+
+                $docBlock = new DocBlock($method->getDocComment());
+
+                $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
+
+                foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
+                    if (false === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
+                        continue;
                     }
 
-                    $docBlock = new DocBlock($method->getDocComment());
+                    $dataProviderMethodNames[] = $matches['methodName'];
+                }
+            }
 
-                    return array_merge(
-                        $dataProviderMethodNames,
-                        array_map(function (Annotation $annotation) {
-                            preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $annotation->getContent(), $matches);
-
-                            return $matches['methodName'];
-                        }, $docBlock->getAnnotationsOfType('dataProvider'))
-                    );
-                },
-                array()
-            ));
+            $dataProviderMethodNames = array_unique($dataProviderMethodNames);
 
             foreach ($dataProviderMethodNames as $dataProviderMethodName) {
                 $data[] = array(
