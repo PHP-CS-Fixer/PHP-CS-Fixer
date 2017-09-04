@@ -333,10 +333,10 @@ final class ProjectCodeTest extends TestCase
     {
         $data = array();
 
-        $classNames = $this->getTestClasses();
+        $testClassNames = $this->getTestClasses();
 
-        foreach ($classNames as $className) {
-            $reflection = new \ReflectionClass($className);
+        foreach ($testClassNames as $testClassName) {
+            $reflection = new \ReflectionClass($testClassName);
 
             if (!$reflection->isSubclassOf('PHPUnit\Framework\TestCase')) {
                 continue;
@@ -366,7 +366,7 @@ final class ProjectCodeTest extends TestCase
 
             foreach ($dataProviderMethodNames as $dataProviderMethodName) {
                 $data[] = array(
-                    $className,
+                    $testClassName,
                     $dataProviderMethodName,
                 );
             }
