@@ -27,7 +27,7 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideDocblocks
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
@@ -39,14 +39,14 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @requires PHP 5.4
-     * @dataProvider provideTraits
+     * @dataProvider provideTraitsCases
      */
     public function testFixTraits($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideDocblocks()
+    public function provideFixCases()
     {
         $cases = array();
 
@@ -537,7 +537,7 @@ class A
         return $cases;
     }
 
-    public function provideTraits()
+    public function provideTraitsCases()
     {
         return array(
             array(
@@ -559,7 +559,7 @@ trait DocBlocks
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases71
+     * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
     public function testFix71($expected, $input = null)
@@ -567,7 +567,7 @@ trait DocBlocks
         $this->doTest($expected, $input);
     }
 
-    public function provideCases71()
+    public function provideFix71Cases()
     {
         return array(
             array(

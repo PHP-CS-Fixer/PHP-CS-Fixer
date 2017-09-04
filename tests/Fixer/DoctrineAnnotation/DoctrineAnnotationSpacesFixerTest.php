@@ -26,7 +26,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAllCases
+     * @dataProvider provideFixAllCases
      */
     public function testFixAll($expected, $input = null)
     {
@@ -45,7 +45,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAllCases
+     * @dataProvider provideFixAllCases
      */
     public function testFixAllWithDifferentLineEnding($expected, $input = null)
     {
@@ -60,7 +60,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAllCases()
+    public function provideFixAllCases()
     {
         return $this->createTestCases(array(
             array('
@@ -325,7 +325,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundParenthesesOnlyCases
+     * @dataProvider provideFixAroundParenthesesOnlyCases
      */
     public function testFixAroundParenthesesOnly($expected, $input = null)
     {
@@ -349,7 +349,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundParenthesesOnlyCases
+     * @dataProvider provideFixAroundParenthesesOnlyCases
      */
     public function testFixAroundParenthesesOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -364,7 +364,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAroundParenthesesOnlyCases()
+    public function provideFixAroundParenthesesOnlyCases()
     {
         return $this->createTestCases(array(
             array('
@@ -580,7 +580,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundCommasOnlyCases
+     * @dataProvider provideFixAroundCommasOnlyCases
      */
     public function testFixAroundCommasOnly($expected, $input = null)
     {
@@ -604,7 +604,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundCommasOnlyCases
+     * @dataProvider provideFixAroundCommasOnlyCases
      */
     public function testFixAroundCommasOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -619,7 +619,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAroundCommasOnlyCases()
+    public function provideFixAroundCommasOnlyCases()
     {
         return $this->createTestCases(array(
             array('
@@ -858,7 +858,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundArgumentAssignmentsOnlyCases
+     * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
      */
     public function testFixAroundArgumentAssignmentsOnly($expected, $input = null)
     {
@@ -882,7 +882,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundArgumentAssignmentsOnlyCases
+     * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
      */
     public function testFixAroundArgumentAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -897,7 +897,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAroundArgumentAssignmentsOnlyCases()
+    public function provideFixAroundArgumentAssignmentsOnlyCases()
     {
         return $this->createTestCases(array(
             array('
@@ -1128,7 +1128,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundArrayAssignmentsOnlyCases
+     * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
      */
     public function testFixAroundArrayAssignmentsOnly($expected, $input = null)
     {
@@ -1152,7 +1152,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundArrayAssignmentsOnlyCases
+     * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
      */
     public function testFixAroundArrayAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1167,7 +1167,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAroundArrayAssignmentsOnlyCases()
+    public function provideFixAroundArrayAssignmentsOnlyCases()
     {
         return $this->createTestCases(array(
             array('
@@ -1377,9 +1377,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getInvalidConfigurationCases()
+    public function provideInvalidConfigurationCases()
     {
-        return array_merge(parent::getInvalidConfigurationCases(), array(
+        return array_merge(parent::provideInvalidConfigurationCases(), array(
             array(array(
                 'around_parentheses' => false,
                 'around_commas' => false,

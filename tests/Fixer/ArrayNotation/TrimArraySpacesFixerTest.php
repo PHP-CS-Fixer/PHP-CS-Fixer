@@ -445,7 +445,7 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideExamples55
+     * @dataProvider provideFix55Cases
      * @requires PHP 5.5
      */
     public function testFix55($expected, $input = null)
@@ -453,7 +453,7 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples55()
+    public function provideFix55Cases()
     {
         return array(
             array(

@@ -450,14 +450,14 @@ EOF;
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider providerUseInString
+     * @dataProvider provideFixUseInStringCases
      */
-    public function testUseInString($expected, $input = null)
+    public function testFixUseInString($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function providerUseInString()
+    public function provideFixUseInStringCases()
     {
         $expected1 = <<<'EOF'
 $x=<<<'EOA'

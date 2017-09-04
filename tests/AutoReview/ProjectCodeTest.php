@@ -69,7 +69,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcConcreteClasses
+     * @dataProvider provideSrcConcreteClassCases
      */
     public function testThatSrcClassHaveTestClass($className)
     {
@@ -87,7 +87,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcClassesNotAbuseInterfaces
+     * @dataProvider provideSrcClassesNotAbuseInterfacesCases
      * @requires PHP 5.4
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
@@ -154,7 +154,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcClasses
+     * @dataProvider provideSrcClassCases
      */
     public function testThatSrcClassesNotExposeProperties($className)
     {
@@ -219,7 +219,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideTestClasses
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassesAreAbstractOrFinal($className)
     {
@@ -234,7 +234,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideTestClasses
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassesAreInternal($className)
     {
@@ -248,7 +248,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassNamesAndDataProviderMethodNames
+     * @dataProvider provideDataProviderMethodNameCases
      *
      * @param string $testClassName
      * @param string $dataProviderMethodName
@@ -262,7 +262,7 @@ final class ProjectCodeTest extends TestCase
         ));
     }
 
-    public function provideSrcClasses()
+    public function provideSrcClassCases()
     {
         return array_map(
             function ($item) {
@@ -272,7 +272,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcClassesNotAbuseInterfaces()
+    public function provideSrcClassesNotAbuseInterfacesCases()
     {
         return array_map(
             function ($item) {
@@ -304,7 +304,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcConcreteClasses()
+    public function provideSrcConcreteClassCases()
     {
         return array_map(
             function ($item) { return array($item); },
@@ -319,7 +319,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideTestClasses()
+    public function provideTestClassCases()
     {
         return array_map(
             function ($item) {
@@ -329,7 +329,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideTestClassNamesAndDataProviderMethodNames()
+    public function provideDataProviderMethodNameCases()
     {
         $data = array();
 

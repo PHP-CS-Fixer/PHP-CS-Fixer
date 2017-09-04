@@ -33,14 +33,14 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return array(
             array(
@@ -372,7 +372,7 @@ $b;',
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases54
+     * @dataProvider provideFix54Cases
      * @requires PHP 5.4
      */
     public function testFix54($expected, $input = null)
@@ -380,7 +380,7 @@ $b;',
         $this->doTest($expected, $input);
     }
 
-    public function provideCases54()
+    public function provideFix54Cases()
     {
         return array(
             array(

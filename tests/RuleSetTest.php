@@ -39,7 +39,7 @@ final class RuleSetTest extends TestCase
      * @param string     $setName
      * @param bool|array $ruleConfig
      *
-     * @dataProvider provideAllRulesFromSets
+     * @dataProvider provideAllRulesFromSetsCases
      */
     public function testIfAllRulesInSetsExists($setName, $ruleName, $ruleConfig)
     {
@@ -68,7 +68,7 @@ final class RuleSetTest extends TestCase
         }
     }
 
-    public function provideAllRulesFromSets()
+    public function provideAllRulesFromSetsCases()
     {
         $cases = array();
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
@@ -93,7 +93,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider providerSetDefinitionNames
+     * @dataProvider provideSetDefinitionNameCases
      *
      * @param mixed $setName
      */
@@ -226,7 +226,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider providerSetDefinitionNames
+     * @dataProvider provideSetDefinitionNameCases
      *
      * @param string $setDefinitionName
      */
@@ -259,7 +259,7 @@ final class RuleSetTest extends TestCase
     /**
      * @return array
      */
-    public function providerSetDefinitionNames()
+    public function provideSetDefinitionNameCases()
     {
         $setDefinitionNames = RuleSet::create()->getSetDefinitionNames();
 
@@ -272,7 +272,7 @@ final class RuleSetTest extends TestCase
      * @param array $set
      * @param bool  $safe
      *
-     * @dataProvider provideSafeSets
+     * @dataProvider provideSafeSetCases
      */
     public function testRiskyRulesInSet(array $set, $safe)
     {
@@ -300,7 +300,7 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public function provideSafeSets()
+    public function provideSafeSetCases()
     {
         return array(
             array(array('@PSR1' => true), true),

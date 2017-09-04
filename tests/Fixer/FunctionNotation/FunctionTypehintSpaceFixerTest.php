@@ -27,14 +27,14 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return array(
             array(
@@ -111,7 +111,7 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases56
+     * @dataProvider provideFix56Cases
      * @requires PHP 5.6
      */
     public function testFix56($expected, $input = null)
@@ -119,7 +119,7 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCases56()
+    public function provideFix56Cases()
     {
         return array(
             array(
@@ -143,7 +143,7 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function test70($expected, $input = null)
@@ -151,7 +151,7 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return array(
             array('<?php use function some\test\{fn_a, fn_b, fn_c};'),

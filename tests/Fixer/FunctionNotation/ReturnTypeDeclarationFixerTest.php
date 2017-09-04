@@ -36,7 +36,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 
     /**
      * @group legacy
-     * @dataProvider providerFixWithSpaceBeforeNone
+     * @dataProvider provideFixWithSpaceBeforeNoneCases
      * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      *
      * @param string      $expected
@@ -50,7 +50,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider providerFixWithSpaceBeforeNone
+     * @dataProvider provideFixWithSpaceBeforeNoneCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -63,7 +63,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider providerFixWithSpaceBeforeNone
+     * @dataProvider provideFixWithSpaceBeforeNoneCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -77,7 +77,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function providerFixWithSpaceBeforeNone()
+    public function provideFixWithSpaceBeforeNoneCases()
     {
         return array(
             array(
@@ -132,7 +132,7 @@ string {}',
     }
 
     /**
-     * @dataProvider providerFixWithSpaceBeforeOne
+     * @dataProvider provideFixWithSpaceBeforeOneCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -146,7 +146,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function providerFixWithSpaceBeforeOne()
+    public function provideFixWithSpaceBeforeOneCases()
     {
         return array(
             array(

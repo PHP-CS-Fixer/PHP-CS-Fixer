@@ -59,7 +59,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsType
+     * @dataProvider provideIsTypeCases
      *
      * @param int       $type
      * @param int|int[] $types
@@ -76,7 +76,7 @@ final class TokenTest extends TestCase
     /**
      * @return array
      */
-    public function providerIsType()
+    public function provideIsTypeCases()
     {
         return array(
             'same-value' => array(
@@ -94,7 +94,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsNotType
+     * @dataProvider provideIsNotTypeCases
      *
      * @param int       $type
      * @param int|int[] $types
@@ -111,7 +111,7 @@ final class TokenTest extends TestCase
     /**
      * @return array
      */
-    public function providerIsNotType()
+    public function provideIsNotTypeCases()
     {
         return array(
             'different-value' => array(

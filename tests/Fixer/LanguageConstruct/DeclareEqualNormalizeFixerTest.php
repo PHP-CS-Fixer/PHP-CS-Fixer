@@ -42,7 +42,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
      * @param string $input
      * @param array  $config
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input, array $config)
     {
@@ -50,7 +50,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return array(
             'minimal case remove whitespace (default config)' => array(
@@ -109,7 +109,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
      * @param array  $config
      * @param string $expectedMessage
      *
-     * @dataProvider provideInvalidConfig
+     * @dataProvider provideInvalidConfigCases
      */
     public function testInvalidConfig(array $config, $expectedMessage)
     {
@@ -121,7 +121,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($config);
     }
 
-    public function provideInvalidConfig()
+    public function provideInvalidConfigCases()
     {
         return array(
             array(
