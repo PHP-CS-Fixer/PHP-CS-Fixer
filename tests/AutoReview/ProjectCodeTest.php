@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
@@ -246,6 +247,21 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider provideTestClassNamesAndDataProviderMethodNames
+     *
+     * @param string $testClassName
+     * @param string $dataProviderMethodName
+     */
+    public function testThatDataProvidersAreNotPrefixedWithTest($testClassName, $dataProviderMethodName)
+    {
+        $this->assertNotRegExp('/^test/', $dataProviderMethodName, sprintf(
+            'Data providers should not be prefixed with "test", but "%s()" in "%s" is',
+            $dataProviderMethodName,
+            $testClassName
+        ));
+    }
+
     public function provideSrcClasses()
     {
         return array_map(
@@ -311,6 +327,51 @@ final class ProjectCodeTest extends TestCase
             },
             $this->getTestClasses()
         );
+    }
+
+    public function provideTestClassNamesAndDataProviderMethodNames()
+    {
+        $data = array();
+
+        $classNames = $this->getTestClasses();
+
+        foreach ($classNames as $className) {
+            $reflection = new \ReflectionClass($className);
+
+            if (!$reflection->isSubclassOf('PHPUnit\Framework\TestCase')) {
+                continue;
+            }
+
+            $dataProviderMethodNames = array_unique(array_reduce(
+                $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
+                function (array $dataProviderMethodNames, \ReflectionMethod $method) {
+                    if (false === $method->getDocComment()) {
+                        return $dataProviderMethodNames;
+                    }
+
+                    $docBlock = new DocBlock($method->getDocComment());
+
+                    return array_merge(
+                        $dataProviderMethodNames,
+                        array_map(function (Annotation $annotation) {
+                            preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $annotation->getContent(), $matches);
+
+                            return $matches['methodName'];
+                        }, $docBlock->getAnnotationsOfType('dataProvider'))
+                    );
+                },
+                array()
+            ));
+
+            foreach ($dataProviderMethodNames as $dataProviderMethodName) {
+                $data[] = array(
+                    $className,
+                    $dataProviderMethodName,
+                );
+            }
+        }
+
+        return $data;
     }
 
     private function getSrcClasses()
