@@ -242,7 +242,7 @@ final class FileCacheManagerTest extends TestCase
             $directoryProphecy->reveal()
         );
 
-        $manager->needFixing($file, $fileContent);
+        $this->assertTrue($manager->needFixing($file, $fileContent));
     }
 
     public function testSetFileSetsHashOfFileContent()
