@@ -349,7 +349,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dirBase = $this->getFixtureDir();
 
-        new ConfigurationResolver(
+        $resolver = new ConfigurationResolver(
             $this->config,
             [
                 'config' => $dirBase.'case_1/.php_cs.dist',
@@ -357,6 +357,8 @@ final class ConfigurationResolverTest extends TestCase
             ],
             ''
         );
+
+        $this->assertInstanceOf('PhpCsFixer\Console\ConfigurationResolver', $resolver);
     }
 
     public function testResolvePathRelativeA()
