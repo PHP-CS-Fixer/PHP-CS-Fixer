@@ -258,9 +258,9 @@ final class ProjectCodeTest extends TestCase
         $regExp = '/^provide[A-Z]\S+Cases$/';
 
         $this->assertRegExp($regExp, $dataProviderMethodName, sprintf(
-            'Data provider "%s" in "%s" does not match "%s"',
-            $dataProviderMethodName,
+            'Data provider in "%s" with name "%s" does not match "%s"',
             $testClassName,
+            $dataProviderMethodName,
             $regExp
         ));
     }
