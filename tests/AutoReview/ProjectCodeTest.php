@@ -114,6 +114,8 @@ final class ProjectCodeTest extends TestCase
                 'PhpCsFixer\Tokenizer\Tokens',
             ), true)
         ) {
+            $this->assertTrue(true);
+
             return;
         }
 
