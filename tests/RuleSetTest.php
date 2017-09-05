@@ -319,27 +319,42 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @param array $set
+     * @param bool  $safe
+     *
+     * @dataProvider providePhp70SafeSets
      * @requires PHP 7.0
      */
-    public function testPHP70MigrationSet()
+    public function testPhp70MigrationSet(array $set, $safe)
     {
-        $this->testRiskyRulesInSet(array('@PHP70Migration' => true), true);
+        $this->testRiskyRulesInSet($set, $safe);
+    }
+
+    public function providePhp70SafeSets()
+    {
+        return array(
+            array(array('@PHP70Migration' => true), true),
+            array(array('@PHP70Migration:risky' => true), false),
+        );
     }
 
     /**
-     * @requires PHP 7.0
-     */
-    public function testPHP70MigrationRiskySet()
-    {
-        $this->testRiskyRulesInSet(array('@PHP70Migration:risky' => true), false);
-    }
-
-    /**
+     * @param array $set
+     * @param bool  $safe
+     *
+     * @dataProvider providePhp71SafeSets
      * @requires PHP 7.1
      */
-    public function testPHP71MigrationSet()
+    public function testPhp71MigrationSet(array $set, $safe)
     {
-        $this->testRiskyRulesInSet(array('@PHP71Migration' => true), true);
+        $this->testRiskyRulesInSet($set, $safe);
+    }
+
+    public function providePhp71SafeSets()
+    {
+        return array(
+            array(array('@PHP71Migration' => true), true),
+        );
     }
 
     public function testInvalidConfigNestedSets()
