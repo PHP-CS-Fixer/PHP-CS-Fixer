@@ -216,9 +216,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             }
 
             $fixableCompareInfo = $this->getCompareFixableInfo($tokens, $i, $yoda);
-            if (!$fixableCompareInfo['candidate']) {
-                $i = $fixableCompareInfo['end'];
-
+            if (null === $fixableCompareInfo) {
                 continue;
             }
 
@@ -311,26 +309,22 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      * @param int    $index
      * @param bool   $yoda
      *
-     * @return array
+     * @return null|array
      */
     private function getCompareFixableInfo(Tokens $tokens, $index, $yoda)
     {
         if ($yoda) {
             $right = $this->getRightSideCompareFixableInfo($tokens, $index);
-            $rightIsVar = $this->isVariable($tokens, $right['start'], $right['end']);
-
-            if ($rightIsVar || $this->isListStatement($tokens, $right['start'], $right['end'])) {
-                return ['candidate' => false, 'end' => $index];
+            if ($this->isVariable($tokens, $right['start'], $right['end']) || $this->isListStatement($tokens, $right['start'], $right['end'])) {
+                return null;
             }
 
             $left = $this->getLeftSideCompareFixableInfo($tokens, $index);
             $otherIsVar = $this->isVariable($tokens, $left['start'], $left['end']);
         } else {
             $left = $this->getLeftSideCompareFixableInfo($tokens, $index);
-            $leftIsVar = $this->isVariable($tokens, $left['start'], $left['end']);
-
-            if ($leftIsVar || $this->isListStatement($tokens, $left['start'], $left['end'])) {
-                return ['candidate' => false, 'end' => $index];
+            if ($this->isVariable($tokens, $left['start'], $left['end']) || $this->isListStatement($tokens, $left['start'], $left['end'])) {
+                return null;
             }
 
             $right = $this->getRightSideCompareFixableInfo($tokens, $index);
@@ -339,11 +333,10 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
 
         // edge case handling, for example `$a === 1 === 2;`
         if (!$otherIsVar) {
-            return ['candidate' => false, 'end' => $index];
+            return null;
         }
 
         return [
-            'candidate' => true,
             'left' => $left,
             'right' => $right,
         ];
@@ -565,10 +558,10 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
                 continue;
             }
 
-            return true;
+            break;
         }
 
-        return true; // unreachable statement ATM, kept for SCA and support for PHP changes in the future.
+        return true;
     }
 
     private function resolveConfiguration()
