@@ -1589,7 +1589,7 @@ use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
     }
 
     /**
-     * @dataProvider provideFox70TypesOrderAndLengthCases
+     * @dataProvider provideFix70TypesOrderAndLengthCases
      * @requires PHP 7.0
      *
      * @param string      $expected
@@ -1605,7 +1605,7 @@ use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
         $this->doTest($expected, $input);
     }
 
-    public function provideFox70TypesOrderAndLengthCases()
+    public function provideFix70TypesOrderAndLengthCases()
     {
         return array(
             array(
