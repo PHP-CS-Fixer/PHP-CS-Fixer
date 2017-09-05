@@ -109,7 +109,7 @@ TEST;
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixCasesLT70
+     * @dataProvider provideFixLT70Cases
      * @requires PHP <7.0
      */
     public function testFixLT70($expected, $input = null)
@@ -117,7 +117,7 @@ TEST;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCasesLT70()
+    public function provideFixLT70Cases()
     {
         return array(
             array(

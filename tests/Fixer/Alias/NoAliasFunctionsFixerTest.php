@@ -28,14 +28,14 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         /** @var $aliases string[] */
         $aliases = static::getStaticAttribute('\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer', 'aliases');

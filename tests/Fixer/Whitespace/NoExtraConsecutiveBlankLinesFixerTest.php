@@ -105,7 +105,7 @@ EOF;
      * @param null|string[] $config
      *
      * @group legacy
-     * @dataProvider provideConfigTests
+     * @dataProvider provideWithConfigCases
      * @expectedDeprecation Passing "tokens" at the root of the configuration is deprecated and will not be supported in 3.0, use "tokens" => array(...) option instead.
      */
     public function testLegacyWithConfig(array $lineNumberRemoved, array $config)
@@ -119,7 +119,7 @@ EOF;
      * @param int[]         $lineNumberRemoved Line numbers expected to be removed after fixing
      * @param null|string[] $config
      *
-     * @dataProvider provideConfigTests
+     * @dataProvider provideWithConfigCases
      */
     public function testWithConfig(array $lineNumberRemoved, array $config)
     {
@@ -128,7 +128,7 @@ EOF;
         $this->doTest($this->removeLinesFromString($this->template, $lineNumberRemoved), $this->template);
     }
 
-    public function provideConfigTests()
+    public function provideWithConfigCases()
     {
         $tests = array(
             array(
@@ -892,7 +892,7 @@ class Foo
      * @param string $input
      *
      * @requires PHP 5.4
-     * @dataProvider provideBraceCases54
+     * @dataProvider provideBraces54Cases
      */
     public function testBraces54(array $config = null, $expected, $input)
     {
@@ -900,7 +900,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideBraceCases54()
+    public function provideBraces54Cases()
     {
         return array(
             array(

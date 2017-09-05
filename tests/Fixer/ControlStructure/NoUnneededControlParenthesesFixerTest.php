@@ -72,7 +72,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|string $fixStatement
      *
-     * @dataProvider provideFixCases55
+     * @dataProvider provideFix55Cases
      * @requires PHP 5.5
      */
     public function testFix55($expected, $input = null, $fixStatement = null)
@@ -86,7 +86,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      * @param null|string $fixStatement
      *
      * @group legacy
-     * @dataProvider provideFixCases55
+     * @dataProvider provideFix55Cases
      * @expectedDeprecation Passing "statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
      * @requires PHP 5.5
      */
@@ -100,7 +100,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|string $fixStatement
      *
-     * @dataProvider provideFixCases70
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function testFix70($expected, $input = null, $fixStatement = null)
@@ -114,7 +114,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      * @param null|string $fixStatement
      *
      * @group legacy
-     * @dataProvider provideFixCases70
+     * @dataProvider provideFix70Cases
      * @expectedDeprecation Passing "statements" at the root of the configuration is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
      * @requires PHP 7.0
      */
@@ -453,7 +453,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public function provideFixCases55()
+    public function provideFix55Cases()
     {
         return array(
             array(
@@ -501,7 +501,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public function provideFixCases70()
+    public function provideFix70Cases()
     {
         return array(
             array(

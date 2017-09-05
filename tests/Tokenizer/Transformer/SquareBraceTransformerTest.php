@@ -227,7 +227,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
      * @param string          $source
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcessCases71
+     * @dataProvider provideProcess71Cases
      * @requires PHP 7.1
      */
     public function testProcess71($source, array $expectedTokens)
@@ -244,7 +244,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases71()
+    public function provideProcess71Cases()
     {
         return array(
             array(
@@ -299,7 +299,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
      * @param string          $source
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcessCases72
+     * @dataProvider provideProcess72Cases
      * @requires PHP 7.2
      */
     public function testProcess72($source, array $expectedTokens)
@@ -316,7 +316,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases72()
+    public function provideProcess72Cases()
     {
         return array(
             array(

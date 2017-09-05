@@ -28,14 +28,14 @@ final class IncludeFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider providerFix
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function providerFix()
+    public function provideFixCases()
     {
         $template = '<?php %s';
         $tests = array(

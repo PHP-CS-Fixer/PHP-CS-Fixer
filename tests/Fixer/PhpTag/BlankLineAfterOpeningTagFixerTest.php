@@ -29,7 +29,7 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
@@ -41,14 +41,14 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @requires PHP 5.4
-     * @dataProvider provideCases54
+     * @dataProvider provideFix54Cases
      */
     public function testFix54($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return array(
             array(
@@ -116,7 +116,7 @@ Html here
         );
     }
 
-    public function provideCases54()
+    public function provideFix54Cases()
     {
         return array(
             array(

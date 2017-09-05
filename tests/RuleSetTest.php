@@ -39,7 +39,7 @@ final class RuleSetTest extends TestCase
      * @param string     $setName
      * @param bool|array $ruleConfig
      *
-     * @dataProvider provideAllRulesFromSets
+     * @dataProvider provideAllRulesFromSetsCases
      */
     public function testIfAllRulesInSetsExists($setName, $ruleName, $ruleConfig)
     {
@@ -68,7 +68,7 @@ final class RuleSetTest extends TestCase
         }
     }
 
-    public function provideAllRulesFromSets()
+    public function provideAllRulesFromSetsCases()
     {
         $cases = array();
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
@@ -93,7 +93,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider providerSetDefinitionNames
+     * @dataProvider provideSetDefinitionNameCases
      *
      * @param mixed $setName
      */
@@ -226,7 +226,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider providerSetDefinitionNames
+     * @dataProvider provideSetDefinitionNameCases
      *
      * @param string $setDefinitionName
      */
@@ -259,7 +259,7 @@ final class RuleSetTest extends TestCase
     /**
      * @return array
      */
-    public function providerSetDefinitionNames()
+    public function provideSetDefinitionNameCases()
     {
         $setDefinitionNames = RuleSet::create()->getSetDefinitionNames();
 
@@ -272,15 +272,19 @@ final class RuleSetTest extends TestCase
      * @param array $set
      * @param bool  $safe
      *
-     * @dataProvider provideSafeSets
+     * @dataProvider provideSafeSetCases
      */
     public function testRiskyRulesInSet(array $set, $safe)
     {
-        $fixers = FixerFactory::create()
-            ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet($set))
-            ->getFixers()
-        ;
+        try {
+            $fixers = FixerFactory::create()
+                ->registerBuiltInFixers()
+                ->useRuleSet(new RuleSet($set))
+                ->getFixers()
+            ;
+        } catch (InvalidForEnvFixerConfigurationException $exception) {
+            $this->markTestSkipped($exception->getMessage());
+        }
 
         $fixerNames = array();
         foreach ($fixers as $fixer) {
@@ -300,26 +304,28 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public function provideSafeSets()
+    public function provideSafeSetCases()
     {
-        return array(
-            array(array('@PSR1' => true), true),
-            array(array('@PSR2' => true), true),
-            array(array('@Symfony' => true), true),
+        $sets = array();
+
+        $ruleSet = new RuleSet();
+
+        foreach ($ruleSet->getSetDefinitionNames() as $name) {
+            $sets[$name] = array(
+                array($name => true),
+                strpos($name, ':risky') === false,
+            );
+        }
+
+        $sets['@Symfony:risky_and_@Symfony'] = array(
             array(
-                array(
-                    '@Symfony:risky' => true,
-                    '@Symfony' => false,
-                ),
-                false,
+                '@Symfony:risky' => true,
+                '@Symfony' => false,
             ),
-            array(
-                array(
-                    '@Symfony:risky' => true,
-                ),
-                false,
-            ),
+            false,
         );
+
+        return $sets;
     }
 
     public function testInvalidConfigNestedSets()

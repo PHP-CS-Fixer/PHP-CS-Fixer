@@ -3482,10 +3482,10 @@ declare   (   ticks   =   1   )   {
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide55Cases
+     * @dataProvider provideFix55Cases
      * @requires PHP 5.5
      */
-    public function test55($expected, $input = null, array $configuration = null)
+    public function testFix55($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -3494,7 +3494,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provide55Cases()
+    public function provideFix55Cases()
     {
         return array(
             array(
@@ -3554,10 +3554,10 @@ declare   (   ticks   =   1   )   {
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide56Cases
+     * @dataProvider provideFix56Cases
      * @requires PHP 5.6
      */
-    public function test56($expected, $input = null, array $configuration = null)
+    public function testFix56($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -3566,7 +3566,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provide56Cases()
+    public function provideFix56Cases()
     {
         return array(
             array(
@@ -3591,10 +3591,10 @@ declare   (   ticks   =   1   )   {
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null, array $configuration = null)
+    public function testFix70($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -3603,7 +3603,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return array(
             array(
@@ -3910,7 +3910,7 @@ use const some\a\{ConstA, ConstB, ConstC};
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider providePreserveLineAfterControlBrace
+     * @dataProvider providePreserveLineAfterControlBraceCases
      */
     public function testPreserveLineAfterControlBrace($expected, $input = null, array $configuration = null)
     {
@@ -3921,7 +3921,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         $this->doTest($expected, $input);
     }
 
-    public function providePreserveLineAfterControlBrace()
+    public function providePreserveLineAfterControlBraceCases()
     {
         return array(
             array(
@@ -4103,7 +4103,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
         );
     }
 
-    public function provideDoWhileLoopInsideAnIfWithoutBrackets()
+    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
     {
         return array(
             array(
@@ -4126,7 +4126,7 @@ if (true)
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBrackets
+     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
      */
     public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
     {

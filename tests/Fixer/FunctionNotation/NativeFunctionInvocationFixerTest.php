@@ -38,7 +38,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider providerInvalidConfigurationElement
+     * @dataProvider provideInvalidConfigurationElementCases
      *
      * @param mixed $element
      */
@@ -59,7 +59,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     /**
      * @return array
      */
-    public function providerInvalidConfigurationElement()
+    public function provideInvalidConfigurationElementCases()
     {
         return array(
             'null' => array(null),
@@ -128,7 +128,7 @@ PHP;
     }
 
     /**
-     * @dataProvider provideCasesWithDefaultConfiguration
+     * @dataProvider provideFixWithDefaultConfigurationCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -141,7 +141,7 @@ PHP;
     /**
      * @return array
      */
-    public function provideCasesWithDefaultConfiguration()
+    public function provideFixWithDefaultConfigurationCases()
     {
         return array(
             array(
@@ -198,7 +198,7 @@ class Foo
     }
 
     /**
-     * @dataProvider provideCasesWithConfiguredExclude
+     * @dataProvider provideFixWithConfiguredExcludeCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -217,7 +217,7 @@ class Foo
     /**
      * @return array
      */
-    public function provideCasesWithConfiguredExclude()
+    public function provideFixWithConfiguredExcludeCases()
     {
         return array(
             array(
