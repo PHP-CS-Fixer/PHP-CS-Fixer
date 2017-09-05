@@ -44,7 +44,8 @@
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
     "conflict": {
-        "hhvm": "<3.18"
+        "hhvm": "<3.18",
+        "doctrine/annotations": "~1.5.0"
     },
     "config": {
         "sort-packages": true
