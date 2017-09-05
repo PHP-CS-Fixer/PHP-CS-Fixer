@@ -306,6 +306,8 @@ final class RuleSetTest extends TestCase
             array(array('@PSR1' => true), true),
             array(array('@PSR2' => true), true),
             array(array('@Symfony' => true), true),
+            array(array('@Symfony:risky' => true), false),
+            array(array('@PHP56Migration:risky' => true), false),
             array(
                 array(
                     '@Symfony:risky' => true,
@@ -313,13 +315,31 @@ final class RuleSetTest extends TestCase
                 ),
                 false,
             ),
-            array(
-                array(
-                    '@Symfony:risky' => true,
-                ),
-                false,
-            ),
         );
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testPHP70MigrationSet()
+    {
+        $this->testRiskyRulesInSet(array('@PHP70Migration' => true), true);
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testPHP70MigrationRiskySet()
+    {
+        $this->testRiskyRulesInSet(array('@PHP70Migration:risky' => true), false);
+    }
+
+    /**
+     * @requires PHP 7.1
+     */
+    public function testPHP71MigrationSet()
+    {
+        $this->testRiskyRulesInSet(array('@PHP71Migration' => true), true);
     }
 
     public function testInvalidConfigNestedSets()

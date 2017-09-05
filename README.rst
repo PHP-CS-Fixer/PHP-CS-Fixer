@@ -927,7 +927,7 @@ Choose from the list of available rules:
 
   @var and @type annotations should not contain the variable name.
 
-* **pow_to_exponentiation** [@PHP56Migration, @PHP70Migration, @PHP71Migration]
+* **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky]
 
   Converts ``pow()`` to the ``**`` operator. Requires PHP >= 5.6.
 
@@ -959,7 +959,7 @@ Choose from the list of available rules:
 
   *Risky rule: this fixer may change you class name, which will break the code that is depended on old name.*
 
-* **random_api_migration** [@PHP70Migration, @PHP71Migration]
+* **random_api_migration** [@PHP70Migration:risky]
 
   Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
   analogs.
