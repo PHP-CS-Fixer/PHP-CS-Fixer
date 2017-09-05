@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
-use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -336,29 +336,21 @@ final class ProjectCodeTest extends TestCase
         $testClassNames = $this->getTestClasses();
 
         foreach ($testClassNames as $testClassName) {
-            $reflection = new \ReflectionClass($testClassName);
-
-            if (!$reflection->isSubclassOf('PHPUnit\Framework\TestCase')) {
-                continue;
-            }
-
             $dataProviderMethodNames = array();
+            $tokens = Tokens::fromCode(file_get_contents(
+                str_replace('\\', DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
+            ));
 
-            foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                if (false === $method->getDocComment()) {
-                    continue;
-                }
+            foreach ($tokens as $token) {
+                if ($token->isGivenKind(T_DOC_COMMENT)) {
+                    $docBlock = new DocBlock($token->getContent());
+                    $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
 
-                $docBlock = new DocBlock($method->getDocComment());
-
-                $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
-
-                foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
-                    if (0 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
-                        continue;
+                    foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
+                        if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
+                            $dataProviderMethodNames[] = $matches['methodName'];
+                        }
                     }
-
-                    $dataProviderMethodNames[] = $matches['methodName'];
                 }
             }
 
