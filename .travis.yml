@@ -114,22 +114,14 @@ jobs:
             group: edge
 
         -
-            stage: Phar verification
+            stage: Deployment
             php: 7.1
             install: ./dev-tools/build.sh
             script:
                 - php php-cs-fixer.phar --version
                 - php php-cs-fixer.phar readme
                 - php php-cs-fixer.phar describe header_comment
-                - php php-cs-fixer.phar fix src/Config.php -vvv
-
-        -
-            stage: Deployment
-            php: 7.1
-            env: COMPOSER_FLAGS="--no-dev --prefer-stable"
-            install: skip
-            script: skip
-            before_deploy: ./dev-tools/build.sh
+                - php php-cs-fixer.phar fix src/Config.php -vvv --dry-run --diff
             deploy:
                 provider: releases
                 api_key:
