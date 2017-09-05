@@ -354,7 +354,7 @@ final class ProjectCodeTest extends TestCase
                 $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
 
                 foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
-                    if (false === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
+                    if (0 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
                         continue;
                     }
 
