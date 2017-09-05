@@ -134,6 +134,10 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
                 '<?php return $this->myObject->{$index}->a === "";',
             ],
             [
+                '<?php return "" === $this->myObject->$index->a;',
+                '<?php return $this->myObject->$index->a === "";',
+            ],
+            [
                 '<?php return self::MY_CONST === self::$myVariable;',
                 '<?php return self::$myVariable === self::MY_CONST;',
             ],
