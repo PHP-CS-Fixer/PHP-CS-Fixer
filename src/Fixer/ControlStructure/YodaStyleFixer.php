@@ -516,7 +516,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
 
             // $a-> or a-> (as in $b->a->c)
             if ($current->isGivenKind($expectString ? T_STRING : T_VARIABLE) && $next->isGivenKind(T_OBJECT_OPERATOR)) {
-                $index += 2;
+                $index = $tokens->getNextMeaningfulToken($nextIndex);
                 $expectString = true;
 
                 continue;
