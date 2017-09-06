@@ -37,7 +37,6 @@ final class ProjectCodeTest extends TestCase
      */
     private static $classesWithoutTests = array(
         'PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException',
-        'PhpCsFixer\Console\Command\FixCommand',
         'PhpCsFixer\Console\Command\SelfUpdateCommand',
         'PhpCsFixer\Console\Output\NullOutput',
         'PhpCsFixer\Console\SelfUpdate\GithubClient',

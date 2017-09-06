@@ -1122,6 +1122,22 @@ final class ConfigurationResolverTest extends TestCase
         );
     }
 
+    public function testWithEmptyRules()
+    {
+        $resolver = new ConfigurationResolver(
+            $this->config,
+            array('rules' => ''),
+            ''
+        );
+
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            '/^Empty rules value is not allowed\.$/'
+        );
+
+        $resolver->getRules();
+    }
+
     private function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
