@@ -535,7 +535,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
                     return false;
                 }
 
-                ++$index;
+                $index = $tokens->getNextMeaningfulToken($index);
                 $expectString = true;
 
                 continue;

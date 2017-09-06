@@ -122,6 +122,10 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
                 '<?php return $this->myArray[$index] === "";',
             ],
             [
+                '<?php return "" === $this->myArray[$index]->/*1*//*2*//*3*/a;',
+                '<?php return $this->myArray[$index]->/*1*//*2*//*3*/a === "";',
+            ],
+            [
                 '<?php return "" === $this->myArray[$index]->a;',
                 '<?php return $this->myArray[$index]->a === "";',
             ],
