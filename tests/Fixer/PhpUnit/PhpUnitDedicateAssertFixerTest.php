@@ -27,7 +27,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideInternalTypeMethods
+     * @dataProvider provideInternalTypeMethodsCases
      */
     public function testInternalTypeMethods($expected, $input = null)
     {
@@ -61,7 +61,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideInternalTypeMethods()
+    public function provideInternalTypeMethodsCases()
     {
         $cases = array();
 

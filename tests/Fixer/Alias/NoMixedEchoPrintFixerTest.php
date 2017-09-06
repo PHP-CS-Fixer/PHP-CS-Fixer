@@ -292,7 +292,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideWrongConfig
+     * @dataProvider provideWrongConfigCases
      *
      * @param mixed  $wrongConfig
      * @param string $expectedMessage
@@ -307,7 +307,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($wrongConfig);
     }
 
-    public function provideWrongConfig()
+    public function provideWrongConfigCases()
     {
         return array(
             array(

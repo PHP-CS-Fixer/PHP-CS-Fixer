@@ -27,14 +27,14 @@ final class TrailingCommaInMultilineArrayFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideExamples
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples()
+    public function provideFixCases()
     {
         return array(
             // long syntax tests
@@ -323,7 +323,7 @@ TWIG
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideExamples55
+     * @dataProvider provideFix55Cases
      * @requires PHP 5.5
      */
     public function testFix55($expected, $input = null)
@@ -331,7 +331,7 @@ TWIG
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples55()
+    public function provideFix55Cases()
     {
         return array(
             array(

@@ -27,14 +27,14 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider providerFix
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function providerFix()
+    public function provideFixCases()
     {
         return array(
             'test function call' => array(
@@ -151,15 +151,15 @@ $$e(2);
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide54Cases
+     * @dataProvider provideFix54Cases
      * @requires PHP 5.4
      */
-    public function test54($expected, $input = null)
+    public function testFix54($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provide54Cases()
+    public function provideFix54Cases()
     {
         return array(
             array(
@@ -173,15 +173,15 @@ $$e(2);
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null)
+    public function testFix70($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return array(
             array(

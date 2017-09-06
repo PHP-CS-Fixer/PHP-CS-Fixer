@@ -207,7 +207,7 @@ DateTime:: # a
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixCases70
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function testFix70($expected, $input = null)
@@ -215,7 +215,7 @@ DateTime:: # a
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases70()
+    public function provideFix70Cases()
     {
         return array(
             array(

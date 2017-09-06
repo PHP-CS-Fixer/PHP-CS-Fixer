@@ -73,14 +73,14 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @requires PHP 5.4
-     * @dataProvider provideFixCases54
+     * @dataProvider provideFix54Cases
      */
     public function testFix54($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases54()
+    public function provideFix54Cases()
     {
         return array(
             array(
@@ -99,14 +99,14 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @requires PHP 5.5
-     * @dataProvider provideFixCases55
+     * @dataProvider provideFix55Cases
      */
     public function testFix55($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases55()
+    public function provideFix55Cases()
     {
         return array(
             array(
@@ -125,14 +125,14 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @requires PHP 7.0
-     * @dataProvider provideFixCases70
+     * @dataProvider provideFix70Cases
      */
     public function testFix70($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases70()
+    public function provideFix70Cases()
     {
         return array(
             array(

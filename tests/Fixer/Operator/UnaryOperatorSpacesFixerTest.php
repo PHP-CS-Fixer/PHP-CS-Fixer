@@ -27,14 +27,14 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         $cases = array(
             array(
@@ -109,7 +109,7 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCasesLT54
+     * @dataProvider provideFixLT54Cases
      * @requires PHP <5.4
      */
     public function testFixLT54($expected, $input = null)
@@ -117,7 +117,7 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCasesLT54()
+    public function provideFixLT54Cases()
     {
         return array(
             array(
@@ -131,7 +131,7 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases56
+     * @dataProvider provideFix56Cases
      * @requires PHP 5.6
      */
     public function testFix56($expected, $input = null)
@@ -139,7 +139,7 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCases56()
+    public function provideFix56Cases()
     {
         return array(
             array(

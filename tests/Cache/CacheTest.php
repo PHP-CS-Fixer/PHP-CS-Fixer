@@ -115,7 +115,7 @@ final class CacheTest extends TestCase
     }
 
     /**
-     * @dataProvider providerMissingData
+     * @dataProvider provideMissingDataCases
      *
      * @param array $data
      */
@@ -131,7 +131,7 @@ final class CacheTest extends TestCase
     /**
      * @return array
      */
-    public function providerMissingData()
+    public function provideMissingDataCases()
     {
         $data = array(
             'php' => '5.5.5',
