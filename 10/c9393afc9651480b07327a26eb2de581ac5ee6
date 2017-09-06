@@ -1,0 +1,70 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-04T09:55:05Z
+
+I will have happy merging from 2.2 to master I see... ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-04T09:55:20Z
+
+ping @SpacePossum
+ you requested this, please take a look
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-04T19:50:57Z
+
+please rebase
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-05T21:49:59Z
+
+reason: only 2.5k of 8.5k test are executed in this PR.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-09-05T21:51:08Z
+
+@keradus
+
+Weird, when running tests on this branch with `xdebug` enabled and
+
+```
+$ ./vendor/bin/phpunit --coverage-text
+```
+
+then the output suggests that there are
+
+```
+2479 / 2479 (100%)
+```
+
+tests.
+
+On `2.2` it's
+
+```
+8387 / 8387 ( 100%)
+```
+
+Taking a look tomorrow!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-05T21:51:40Z
+
+wait a sec and take a look
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-05T21:53:57Z
+
+fixed
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-05T22:36:51Z
+
+all green :1st_place_medal: @keradus
