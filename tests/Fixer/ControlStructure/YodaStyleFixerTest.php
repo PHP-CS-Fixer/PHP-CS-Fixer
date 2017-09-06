@@ -225,6 +225,10 @@ $a#4
                 '<?php $i = 2 === $this/*a*//*b*//*c*//*d*//*e*//*f*/->getStuff();',
                 '<?php $i = $this/*a*//*b*//*c*//*d*//*e*//*f*/->getStuff() === 2;',
             ],
+            [
+                '<?php return "" === $this->myObject->{$index}->/*1*//*2*/b;',
+                '<?php return $this->myObject->{$index}->/*1*//*2*/b === "";'
+            ],
         ];
     }
 
