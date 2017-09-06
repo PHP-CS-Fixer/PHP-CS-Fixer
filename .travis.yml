@@ -73,6 +73,7 @@ jobs:
         -
             <<: *STANDARD_TEST_JOB
             php: 5.6
+            env: SYMFONY_VERSION="^2.8"
 
         -
             <<: *STANDARD_TEST_JOB
