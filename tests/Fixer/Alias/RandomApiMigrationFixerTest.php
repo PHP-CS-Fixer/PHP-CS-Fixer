@@ -92,6 +92,26 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return array(
+            array(
+                '<?php random_int(0, getrandmax());',
+                '<?php rand();',
+                array('replacements' => array('rand' => 'random_int')),
+            ),
+            array(
+                '<?php random_int#1
+                #2
+                (0, getrandmax()#3
+                #4
+                )#5
+                ;',
+                '<?php rand#1
+                #2
+                (#3
+                #4
+                )#5
+                ;',
+                array('replacements' => array('rand' => 'random_int')),
+            ),
             array('<?php $smth->srand($a);'),
             array('<?php srandSmth($a);'),
             array('<?php smth_srand($a);'),
