@@ -490,25 +490,26 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
                 return false;
             }
 
-            $next = $tokens[$tokens->getNextMeaningfulToken($index)];
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            $next = $tokens[$nextIndex];
 
             // self:: or ClassName::
             if ($current->isGivenKind(T_STRING) && $next->isGivenKind(T_DOUBLE_COLON)) {
-                $index += 2;
+                $index = $tokens->getNextMeaningfulToken($nextIndex);
 
                 continue;
             }
 
             // \ClassName
             if ($current->isGivenKind(T_NS_SEPARATOR) && $next->isGivenKind(T_STRING)) {
-                ++$index;
+                $index = $nextIndex;
 
                 continue;
             }
 
             // ClassName\
             if ($current->isGivenKind(T_STRING) && $next->isGivenKind(T_NS_SEPARATOR)) {
-                $index += 2;
+                $index = $nextIndex;
 
                 continue;
             }

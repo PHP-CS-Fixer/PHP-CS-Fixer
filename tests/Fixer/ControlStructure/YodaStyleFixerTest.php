@@ -142,12 +142,16 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
                 '<?php return self::$myVariable === self::MY_CONST;',
             ],
             [
+                '<?php return \A/*5*/\/*6*/B\/*7*/C::MY_CONST === \A/*1*//*1*//*1*//*1*//*1*/\/*2*/B/*3*/\C/*4*/::$myVariable;',
+                '<?php return \A/*1*//*1*//*1*//*1*//*1*/\/*2*/B/*3*/\C/*4*/::$myVariable === \A/*5*/\/*6*/B\/*7*/C::MY_CONST;',
+            ],
+            [
                 '<?php return \A\B\C::MY_CONST === \A\B\C::$myVariable;',
                 '<?php return \A\B\C::$myVariable === \A\B\C::MY_CONST;',
             ],
             [
-                '<?php return A\/**//**//**/B::MY_CONST === B\C::$myVariable;',
-                '<?php return B\C::$myVariable === A\/**//**//**/B::MY_CONST;',
+                '<?php return A\/**//**//**/B/*a*//*a*//*a*//*a*/::MY_CONST === B\C::$myVariable;',
+                '<?php return B\C::$myVariable === A\/**//**//**/B/*a*//*a*//*a*//*a*/::MY_CONST;',
             ],
             [
                 '<?php $a = 1 == $$a?>',
