@@ -325,14 +325,14 @@ final class TokenTest extends TestCase
      * @param array|string|Token $other
      * @param bool               $caseSensitive
      *
-     * @dataProvider provideEquals
+     * @dataProvider provideEqualsCases
      */
     public function testEquals(Token $token, $equals, $other, $caseSensitive = true)
     {
         $this->assertSame($equals, $token->equals($other, $caseSensitive));
     }
 
-    public function provideEquals()
+    public function provideEqualsCases()
     {
         $brace = $this->getBraceToken();
         $function = new Token([T_FUNCTION, 'function', 1]);
@@ -381,7 +381,7 @@ final class TokenTest extends TestCase
      * @param array $other
      * @param bool  $caseSensitive
      *
-     * @dataProvider provideEqualsAny
+     * @dataProvider provideEqualsAnyCases
      */
     public function testEqualsAny($equalsAny, array $other, $caseSensitive = true)
     {
@@ -390,7 +390,7 @@ final class TokenTest extends TestCase
         $this->assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
 
-    public function provideEqualsAny()
+    public function provideEqualsAnyCases()
     {
         $brace = $this->getBraceToken();
         $foreach = $this->getForeachToken();
@@ -412,14 +412,14 @@ final class TokenTest extends TestCase
      * @param array|bool $caseSensitive
      * @param int        $key
      *
-     * @dataProvider provideIsKeyCaseSensitive
+     * @dataProvider provideIsKeyCaseSensitiveCases
      */
     public function testIsKeyCaseSensitive($isKeyCaseSensitive, $caseSensitive, $key)
     {
         $this->assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
     }
 
-    public function provideIsKeyCaseSensitive()
+    public function provideIsKeyCaseSensitiveCases()
     {
         return [
             [true, true, 0],

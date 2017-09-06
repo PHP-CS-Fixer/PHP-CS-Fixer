@@ -119,7 +119,7 @@ final class LineTest extends TestCase
      * @param int    $pos
      * @param string $content
      *
-     * @dataProvider provideLines
+     * @dataProvider provideLinesCases
      */
     public function testPosAndContent($pos, $content)
     {
@@ -132,7 +132,7 @@ final class LineTest extends TestCase
     /**
      * @param int $pos
      *
-     * @dataProvider provideLines
+     * @dataProvider provideLinesCases
      */
     public function testStartOrEndPos($pos)
     {
@@ -143,7 +143,7 @@ final class LineTest extends TestCase
         $this->assertSame(14 === $pos, $line->isTheEnd());
     }
 
-    public function provideLines()
+    public function provideLinesCases()
     {
         $cases = [];
 
@@ -158,7 +158,7 @@ final class LineTest extends TestCase
      * @param int  $pos
      * @param bool $useful
      *
-     * @dataProvider provideLinesWithUseful
+     * @dataProvider provideLinesWithUsefulCases
      */
     public function testUseful($pos, $useful)
     {
@@ -168,7 +168,7 @@ final class LineTest extends TestCase
         $this->assertSame($useful, $line->containsUsefulContent());
     }
 
-    public function provideLinesWithUseful()
+    public function provideLinesWithUsefulCases()
     {
         $cases = [];
 
@@ -183,7 +183,7 @@ final class LineTest extends TestCase
      * @param int  $pos
      * @param bool $tag
      *
-     * @dataProvider provideLinesWithTag
+     * @dataProvider provideLinesWithTagCases
      */
     public function testTag($pos, $tag)
     {
@@ -193,7 +193,7 @@ final class LineTest extends TestCase
         $this->assertSame($tag, $line->containsATag());
     }
 
-    public function provideLinesWithTag()
+    public function provideLinesWithTagCases()
     {
         $cases = [];
 

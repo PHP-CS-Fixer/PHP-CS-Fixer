@@ -87,7 +87,7 @@ final class CiIntegrationTest extends TestCase
      * @param string[] $expectedResult2Lines
      * @param string   $expectedResult3Files
      *
-     * @dataProvider getIntegrationCases
+     * @dataProvider provideIntegrationCases
      */
     public function testIntegration(
         $branchName,
@@ -168,7 +168,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
         $this->assertSame(0, $result3['code']);
     }
 
-    public function getIntegrationCases()
+    public function provideIntegrationCases()
     {
         return [
             [

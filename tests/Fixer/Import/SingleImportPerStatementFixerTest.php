@@ -29,14 +29,14 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
             [
@@ -214,7 +214,7 @@ use X ?><?php new X(); // run before white space around semicolon',
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function test70($expected, $input = null)
@@ -222,7 +222,7 @@ use X ?><?php new X(); // run before white space around semicolon',
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return [
             [
@@ -318,15 +318,15 @@ use D\{
      * @param string $expected
      * @param string $input
      *
-     * @dataProvider provide72Cases
+     * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function test72($expected, $input)
+    public function testFix72($expected, $input)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provide72Cases()
+    public function provideFix72Cases()
     {
         return [
             [

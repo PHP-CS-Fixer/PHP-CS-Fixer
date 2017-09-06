@@ -22,7 +22,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -35,7 +35,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
     /**
      * @return array
      */
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
             [
@@ -168,7 +168,7 @@ $bar) {}',
     }
 
     /**
-     * @dataProvider provide56Cases
+     * @dataProvider provideFix56Cases
      *
      * @param string      $expected
      * @param null|string $input
@@ -181,7 +181,7 @@ $bar) {}',
     /**
      * @return array
      */
-    public function provide56cases()
+    public function provideFix56cases()
     {
         return [
             [

@@ -768,14 +768,14 @@ trait SomeReturnInfo {
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixInterfaces
+     * @dataProvider provideFixInterfaceCases
      */
-    public function testFixInterfaces($expected, $input = null)
+    public function testFixInterface($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixInterfaces()
+    public function provideFixInterfaceCases()
     {
         $cases = [];
         $cases[] = [

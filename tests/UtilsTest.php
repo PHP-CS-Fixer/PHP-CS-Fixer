@@ -161,7 +161,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @dataProvider getStableSortCases
+     * @dataProvider provideStableSortCases
      */
     public function testStableSort(
         array $expected,
@@ -175,7 +175,7 @@ final class UtilsTest extends TestCase
         );
     }
 
-    public function getStableSortCases()
+    public function provideStableSortCases()
     {
         return [
             [

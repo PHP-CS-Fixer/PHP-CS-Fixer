@@ -45,7 +45,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider providerFixCasts
+     * @dataProvider provideFixCastsCases
      */
     public function testFixCastsWithDefaultConfiguration($expected, $input = null)
     {
@@ -56,7 +56,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider providerFixCasts
+     * @dataProvider provideFixCastsCases
      */
     public function testFixCastsSingleSpace($expected, $input = null)
     {
@@ -64,7 +64,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function providerFixCasts()
+    public function provideFixCastsCases()
     {
         return [
             [
@@ -123,7 +123,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideNoneSpaceFix
+     * @dataProvider provideNoneSpaceFixCases
      */
     public function testFixCastsNoneSpace($expected, $input = null)
     {
@@ -131,7 +131,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNoneSpaceFix()
+    public function provideNoneSpaceFixCases()
     {
         return [
             [

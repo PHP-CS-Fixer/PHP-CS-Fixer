@@ -113,7 +113,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
     }
 
     /**
-     * @dataProvider getTests
+     * @dataProvider provideIntegrationCases
      *
      * @see doTest()
      *
@@ -129,7 +129,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @return IntegrationCase[][]
      */
-    public function getTests()
+    public function provideIntegrationCases()
     {
         $fixturesDir = realpath(static::getFixturesDir());
         if (!is_dir($fixturesDir)) {

@@ -507,7 +507,7 @@ TestInterface3, /**/     TestInterface4   ,
      * @param array  $expected
      *
      * @requires PHP 7.0
-     * @dataProvider provideClassyImplementsInfoCases7
+     * @dataProvider provideClassyInheritanceInfo7Cases
      */
     public function testClassyInheritanceInfo7($source, $label, array $expected)
     {
@@ -588,7 +588,7 @@ namespace {
         ];
     }
 
-    public function provideClassyImplementsInfoCases7()
+    public function provideClassyInheritanceInfo7Cases()
     {
         return [
             [

@@ -28,7 +28,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider providerInvalidControlStatement
+     * @dataProvider provideInvalidControlStatementCases
      *
      * @param mixed $controlStatement
      */
@@ -44,7 +44,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
     /**
      * @return array
      */
-    public function providerInvalidControlStatement()
+    public function provideInvalidControlStatementCases()
     {
         return [
             'null' => [null],
@@ -59,7 +59,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider providerFixWithReturn
+     * @dataProvider provideFixWithReturnCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -70,7 +70,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider providerFixWithBreak
+     * @dataProvider provideFixWithBreakCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -87,7 +87,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
     /**
      * @return array
      */
-    public function providerFixWithBreak()
+    public function provideFixWithBreakCases()
     {
         return [
             [
@@ -166,7 +166,7 @@ while (true) {
     }
 
     /**
-     * @dataProvider providerFixWithContinue
+     * @dataProvider provideFixWithContinueCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -183,7 +183,7 @@ while (true) {
     /**
      * @return array
      */
-    public function providerFixWithContinue()
+    public function provideFixWithContinueCases()
     {
         return [
             [
@@ -264,7 +264,7 @@ while (true) {
     }
 
     /**
-     * @dataProvider providerFixWithDeclare
+     * @dataProvider provideFixWithDeclareCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -281,7 +281,7 @@ while (true) {
     /**
      * @return array
      */
-    public function providerFixWithDeclare()
+    public function provideFixWithDeclareCases()
     {
         return [
             [
@@ -307,7 +307,7 @@ declare(ticks=1);',
     }
 
     /**
-     * @dataProvider providerFixWithDie
+     * @dataProvider provideFixWithDieCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -324,7 +324,7 @@ declare(ticks=1);',
     /**
      * @return array
      */
-    public function providerFixWithDie()
+    public function provideFixWithDieCases()
     {
         return [
             [
@@ -369,7 +369,7 @@ if ($foo === $bar) {
     }
 
     /**
-     * @dataProvider providerFixWithDo
+     * @dataProvider provideFixWithDoCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -386,7 +386,7 @@ if ($foo === $bar) {
     /**
      * @return array
      */
-    public function providerFixWithDo()
+    public function provideFixWithDoCases()
     {
         return [
             [
@@ -409,7 +409,7 @@ do {
     }
 
     /**
-     * @dataProvider providerFixWithExit
+     * @dataProvider provideFixWithExitCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -426,7 +426,7 @@ do {
     /**
      * @return array
      */
-    public function providerFixWithExit()
+    public function provideFixWithExitCases()
     {
         return [
             [
@@ -471,7 +471,7 @@ if ($foo === $bar) {
     }
 
     /**
-     * @dataProvider providerFixWithFor
+     * @dataProvider provideFixWithForCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -485,7 +485,7 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    public function providerFixWithFor()
+    public function provideFixWithForCases()
     {
         return [
             [
@@ -503,7 +503,7 @@ if ($foo === $bar) {
     }
 
     /**
-     * @dataProvider providerFixWithGoto
+     * @dataProvider provideFixWithGotoCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -520,7 +520,7 @@ if ($foo === $bar) {
     /**
      * @return array
      */
-    public function providerFixWithGoto()
+    public function provideFixWithGotoCases()
     {
         return [
             [
@@ -562,7 +562,7 @@ if ($foo === $bar) {
     }
 
     /**
-     * @dataProvider providerFixWithIf
+     * @dataProvider provideFixWithIfCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -577,7 +577,7 @@ if ($foo === $bar) {
     }
 
     /**
-     * @dataProvider providerFixWithForEach
+     * @dataProvider provideFixWithForEachCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -591,7 +591,7 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    public function providerFixWithForEach()
+    public function provideFixWithForEachCases()
     {
         return [
             [
@@ -611,7 +611,7 @@ if ($foo === $bar) {
     /**
      * @return array
      */
-    public function providerFixWithIf()
+    public function provideFixWithIfCases()
     {
         return [
             [
@@ -642,7 +642,7 @@ if ($foo) { }',
     }
 
     /**
-     * @dataProvider providerFixWithInclude
+     * @dataProvider provideFixWithIncludeCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -659,7 +659,7 @@ if ($foo) { }',
     /**
      * @return array
      */
-    public function providerFixWithInclude()
+    public function provideFixWithIncludeCases()
     {
         return [
             [
@@ -679,7 +679,7 @@ include "foo.php";',
     }
 
     /**
-     * @dataProvider providerFixWithIncludeOnce
+     * @dataProvider provideFixWithIncludeOnceCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -696,7 +696,7 @@ include "foo.php";',
     /**
      * @return array
      */
-    public function providerFixWithIncludeOnce()
+    public function provideFixWithIncludeOnceCases()
     {
         return [
             [
@@ -716,7 +716,7 @@ include_once "foo.php";',
     }
 
     /**
-     * @dataProvider providerFixWithRequire
+     * @dataProvider provideFixWithRequireCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -733,7 +733,7 @@ include_once "foo.php";',
     /**
      * @return array
      */
-    public function providerFixWithRequire()
+    public function provideFixWithRequireCases()
     {
         return [
             [
@@ -753,7 +753,7 @@ require "foo.php";',
     }
 
     /**
-     * @dataProvider providerFixWithRequireOnce
+     * @dataProvider provideFixWithRequireOnceCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -770,7 +770,7 @@ require "foo.php";',
     /**
      * @return array
      */
-    public function providerFixWithRequireOnce()
+    public function provideFixWithRequireOnceCases()
     {
         return [
             [
@@ -790,7 +790,7 @@ require_once "foo.php";',
     }
 
     /**
-     * @dataProvider providerFixWithReturn
+     * @dataProvider provideFixWithReturnCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -807,7 +807,7 @@ require_once "foo.php";',
     /**
      * @return array
      */
-    public function providerFixWithReturn()
+    public function provideFixWithReturnCases()
     {
         return [
             [
@@ -915,7 +915,7 @@ function foo()
     }
 
     /**
-     * @dataProvider providerFixWithReturnAndMessyWhitespaces
+     * @dataProvider provideFixWithReturnAndMessyWhitespacesCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -930,7 +930,7 @@ function foo()
     /**
      * @return array
      */
-    public function providerFixWithReturnAndMessyWhitespaces()
+    public function provideFixWithReturnAndMessyWhitespacesCases()
     {
         return [
             [
@@ -949,7 +949,7 @@ function foo()
     }
 
     /**
-     * @dataProvider providerFixWithSwitch
+     * @dataProvider provideFixWithSwitchCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -966,7 +966,7 @@ function foo()
     /**
      * @return array
      */
-    public function providerFixWithSwitch()
+    public function provideFixWithSwitchCases()
     {
         return [
             [
@@ -995,7 +995,7 @@ switch ($foo) {
     }
 
     /**
-     * @dataProvider providerFixWithThrow
+     * @dataProvider provideFixWithThrowCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -1012,7 +1012,7 @@ switch ($foo) {
     /**
      * @return array
      */
-    public function providerFixWithThrow()
+    public function provideFixWithThrowCases()
     {
         return [
             [
@@ -1038,7 +1038,7 @@ if (false) {
     }
 
     /**
-     * @dataProvider providerFixWithTry
+     * @dataProvider provideFixWithTryCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -1055,7 +1055,7 @@ if (false) {
     /**
      * @return array
      */
-    public function providerFixWithTry()
+    public function provideFixWithTryCases()
     {
         return [
             [
@@ -1087,7 +1087,7 @@ try {
     }
 
     /**
-     * @dataProvider providerFixWithWhile
+     * @dataProvider provideFixWithWhileCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -1104,7 +1104,7 @@ try {
     /**
      * @return array
      */
-    public function providerFixWithWhile()
+    public function provideFixWithWhileCases()
     {
         return [
             [
@@ -1149,7 +1149,7 @@ do {
     }
 
     /**
-     * @dataProvider providerFixWithYield
+     * @dataProvider provideFixWithYieldCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -1166,7 +1166,7 @@ do {
     /**
      * @yield array
      */
-    public function providerFixWithYield()
+    public function provideFixWithYieldCases()
     {
         return [
             [
@@ -1213,7 +1213,7 @@ function foo() {
     }
 
     /**
-     * @dataProvider provideFixWithMultipleConfigStatements
+     * @dataProvider provideFixWithMultipleConfigStatementsCases
      *
      * @param string[]    $statements
      * @param string      $expected
@@ -1226,7 +1226,7 @@ function foo() {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithMultipleConfigStatements()
+    public function provideFixWithMultipleConfigStatementsCases()
     {
         $allStatements = [
             'break',

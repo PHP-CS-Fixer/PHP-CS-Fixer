@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -74,7 +75,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcConcreteClasses
+     * @dataProvider provideSrcConcreteClassCases
      */
     public function testThatSrcClassHaveTestClass($className)
     {
@@ -92,7 +93,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcClassesNotAbuseInterfaces
+     * @dataProvider provideSrcClassesNotAbuseInterfacesCases
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
@@ -152,7 +153,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcClasses
+     * @dataProvider provideSrcClassCases
      */
     public function testThatSrcClassesNotExposeProperties($className)
     {
@@ -220,7 +221,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideTestClasses
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassesAreTraitOrAbstractOrFinal($className)
     {
@@ -235,7 +236,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideTestClasses
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassesAreInternal($className)
     {
@@ -248,7 +249,22 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcClasses()
+    /**
+     * @dataProvider provideDataProviderMethodNameCases
+     *
+     * @param string $testClassName
+     * @param string $dataProviderMethodName
+     */
+    public function testThatDataProvidersAreCorrectlyNamed($testClassName, $dataProviderMethodName)
+    {
+        $this->assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
+            'Data provider in "%s" with name "%s" is not correctly named.',
+            $testClassName,
+            $dataProviderMethodName
+        ));
+    }
+
+    public function provideSrcClassCases()
     {
         return array_map(
             function ($item) {
@@ -258,7 +274,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcClassesNotAbuseInterfaces()
+    public function provideSrcClassesNotAbuseInterfacesCases()
     {
         return array_map(
             function ($item) {
@@ -292,7 +308,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcConcreteClasses()
+    public function provideSrcConcreteClassCases()
     {
         return array_map(
             function ($item) { return [$item]; },
@@ -307,7 +323,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideTestClasses()
+    public function provideTestClassCases()
     {
         return array_map(
             function ($item) {
@@ -315,6 +331,44 @@ final class ProjectCodeTest extends TestCase
             },
             $this->getTestClasses()
         );
+    }
+
+    public function provideDataProviderMethodNameCases()
+    {
+        $data = [];
+
+        $testClassNames = $this->getTestClasses();
+
+        foreach ($testClassNames as $testClassName) {
+            $dataProviderMethodNames = [];
+            $tokens = Tokens::fromCode(file_get_contents(
+                str_replace('\\', DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
+            ));
+
+            foreach ($tokens as $token) {
+                if ($token->isGivenKind(T_DOC_COMMENT)) {
+                    $docBlock = new DocBlock($token->getContent());
+                    $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
+
+                    foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
+                        if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
+                            $dataProviderMethodNames[] = $matches['methodName'];
+                        }
+                    }
+                }
+            }
+
+            $dataProviderMethodNames = array_unique($dataProviderMethodNames);
+
+            foreach ($dataProviderMethodNames as $dataProviderMethodName) {
+                $data[] = [
+                    $testClassName,
+                    $dataProviderMethodName,
+                ];
+            }
+        }
+
+        return $data;
     }
 
     private function getSrcClasses()

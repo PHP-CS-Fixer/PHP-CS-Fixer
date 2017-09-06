@@ -22,7 +22,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
     /**
      * @param array $configuration
      *
-     * @dataProvider getInvalidConfigurationCases
+     * @dataProvider provideInvalidConfigurationCases
      */
     public function testConfigureWithInvalidConfiguration(array $configuration)
     {
@@ -34,7 +34,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
     /**
      * @return array
      */
-    public function getInvalidConfigurationCases()
+    public function provideInvalidConfigurationCases()
     {
         return [
             [['foo' => 'bar']],

@@ -123,14 +123,14 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
      *
      * @param string $expected
      *
-     * @dataProvider provideNoFixCases7
+     * @dataProvider provideNoFix7Cases
      */
     public function testNoFix7($expected)
     {
         $this->doTest($expected);
     }
 
-    public function provideNoFixCases7()
+    public function provideNoFix7Cases()
     {
         return [
             [
