@@ -31,7 +31,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      * @param int    $closeIndex
      * @param array  $arguments
      *
-     * @dataProvider provideCases
+     * @dataProvider provideArgumentsCases
      */
     public function testArguments($code, $openIndex, $closeIndex, array $arguments)
     {
@@ -42,7 +42,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         $this->assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideCases()
+    public function provideArgumentsCases()
     {
         return [
             ['<?php fnc();', 2, 3, []],

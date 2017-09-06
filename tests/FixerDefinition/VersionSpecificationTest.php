@@ -32,7 +32,7 @@ final class VersionSpecificationTest extends TestCase
     }
 
     /**
-     * @dataProvider providerInvalidVersion
+     * @dataProvider provideInvalidVersionCases
      *
      * @param mixed $minimum
      */
@@ -44,7 +44,7 @@ final class VersionSpecificationTest extends TestCase
     }
 
     /**
-     * @dataProvider providerInvalidVersion
+     * @dataProvider provideInvalidVersionCases
      *
      * @param mixed $maximum
      */
@@ -61,7 +61,7 @@ final class VersionSpecificationTest extends TestCase
     /**
      * @return array
      */
-    public function providerInvalidVersion()
+    public function provideInvalidVersionCases()
     {
         return [
             'negative' => [-1],
@@ -85,7 +85,7 @@ final class VersionSpecificationTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsSatisfiedByReturnsTrue
+     * @dataProvider provideIsSatisfiedByReturnsTrueCases
      *
      * @param null|int $minimum
      * @param null|int $maximum
@@ -104,7 +104,7 @@ final class VersionSpecificationTest extends TestCase
     /**
      * @return array
      */
-    public function providerIsSatisfiedByReturnsTrue()
+    public function provideIsSatisfiedByReturnsTrueCases()
     {
         return [
             'version-same-as-maximum' => [null, PHP_VERSION_ID, PHP_VERSION_ID],
@@ -115,7 +115,7 @@ final class VersionSpecificationTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsSatisfiedByReturnsFalse
+     * @dataProvider provideIsSatisfiedByReturnsFalseCases
      *
      * @param null|int $minimum
      * @param null|int $maximum
@@ -134,7 +134,7 @@ final class VersionSpecificationTest extends TestCase
     /**
      * @return array
      */
-    public function providerIsSatisfiedByReturnsFalse()
+    public function provideIsSatisfiedByReturnsFalseCases()
     {
         return [
             'version-greater-than-maximum' => [null, PHP_VERSION_ID, PHP_VERSION_ID + 1],

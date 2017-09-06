@@ -77,7 +77,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param array       $config
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null, array $config = [])
     {
@@ -89,7 +89,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     /**
      * @return array[]
      */
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
             ['<?php $smth->srand($a);'],

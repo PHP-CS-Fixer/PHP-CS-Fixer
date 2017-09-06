@@ -29,7 +29,7 @@ final class TransformerTest extends TestCase
     /**
      * @param TransformerInterface $transformer
      *
-     * @dataProvider provideTransformers
+     * @dataProvider provideTransformerCases
      */
     public function testTransformersAreFinal(TransformerInterface $transformer)
     {
@@ -44,7 +44,7 @@ final class TransformerTest extends TestCase
     /**
      * @return TransformerInterface[]
      */
-    public function provideTransformers()
+    public function provideTransformerCases()
     {
         static $transformersArray = null;
 

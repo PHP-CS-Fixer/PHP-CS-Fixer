@@ -27,9 +27,9 @@ final class NoShortEchoTagFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideClosingTagExamples
+     * @dataProvider provideFixCases
      */
-    public function testOneLineFix($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         if (!ini_get('short_open_tag')) {
             $this->markTestSkipped('The short_open_tag option is required to be enabled.');
@@ -38,7 +38,7 @@ final class NoShortEchoTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideClosingTagExamples()
+    public function provideFixCases()
     {
         return [
             ['<?php echo \'Foo\';', '<?= \'Foo\';'],

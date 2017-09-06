@@ -643,15 +643,15 @@ B#
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null)
+    public function testFix70($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return [
             [
@@ -809,7 +809,7 @@ use Foo\Bor\{
     }
 
     /**
-     * @dataProvider provideInvalidSortAlgorithmConfiguration
+     * @dataProvider provideInvalidSortAlgorithmCases
      *
      * @param array  $configuration
      * @param string $expectedValue
@@ -827,7 +827,7 @@ use Foo\Bor\{
         $this->fixer->configure($configuration);
     }
 
-    public function provideInvalidSortAlgorithmConfiguration()
+    public function provideInvalidSortAlgorithmCases()
     {
         return [
             [
@@ -1525,10 +1525,10 @@ EOF
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70CasesByLength
+     * @dataProvider provideFix70ByLengthCases
      * @requires PHP 7.0
      */
-    public function test70ByLength($expected, $input = null)
+    public function testFix70ByLength($expected, $input = null)
     {
         $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1538,7 +1538,7 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public function provide70CasesByLength()
+    public function provideFix70ByLengthCases()
     {
         return [
             [
@@ -1577,13 +1577,13 @@ use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
     }
 
     /**
-     * @dataProvider provide70TypesOrderAndLength
+     * @dataProvider provideFix70TypesOrderAndLengthCases
      * @requires PHP 7.0
      *
      * @param string      $expected
      * @param null|string $input
      */
-    public function test70TypesOrderAndLength($expected, $input = null)
+    public function testFix70TypesOrderAndLength($expected, $input = null)
     {
         $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1593,7 +1593,7 @@ use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
         $this->doTest($expected, $input);
     }
 
-    public function provide70TypesOrderAndLength()
+    public function provideFix70TypesOrderAndLengthCases()
     {
         return [
             [
@@ -1636,14 +1636,14 @@ use function some\f\{fn_c, fn_d, fn_e};
     }
 
     /**
-     * @dataProvider provide70TypesOrderAndAlphabet
+     * @dataProvider provideFix70TypesOrderAndAlphabetCases
      * @requires PHP 7.0
      *
      * @param string      $expected
      * @param null|string $input
      * @param string[]    $importOrder
      */
-    public function test70TypesOrderAndAlphabet($expected, $input = null, array $importOrder = null)
+    public function testFix70TypesOrderAndAlphabet($expected, $input = null, array $importOrder = null)
     {
         $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -1653,7 +1653,7 @@ use function some\f\{fn_c, fn_d, fn_e};
         $this->doTest($expected, $input);
     }
 
-    public function provide70TypesOrderAndAlphabet()
+    public function provideFix70TypesOrderAndAlphabetCases()
     {
         return [
             [
@@ -1710,15 +1710,15 @@ use function some\a\{fn_a, fn_b};
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide72Cases
+     * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function test72($expected, $input = null)
+    public function testFix72($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provide72Cases()
+    public function provideFix72Cases()
     {
         return [
             [

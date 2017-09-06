@@ -54,7 +54,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsSuitableForVersionUsesVersionSpecification
+     * @dataProvider provideIsSuitableForVersionUsesVersionSpecificationCases
      *
      * @param int  $version
      * @param bool $isSatisfied
@@ -78,7 +78,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     /**
      * @return array
      */
-    public function providerIsSuitableForVersionUsesVersionSpecification()
+    public function provideIsSuitableForVersionUsesVersionSpecificationCases()
     {
         return [
             'is-satisfied' => [PHP_VERSION_ID, true],

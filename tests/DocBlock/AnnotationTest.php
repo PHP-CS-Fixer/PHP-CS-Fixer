@@ -87,7 +87,7 @@ final class AnnotationTest extends TestCase
      * @param int    $index
      * @param string $content
      *
-     * @dataProvider provideContent
+     * @dataProvider provideGetContentCases
      */
     public function testGetContent($index, $content)
     {
@@ -98,7 +98,7 @@ final class AnnotationTest extends TestCase
         $this->assertSame($content, (string) $annotation);
     }
 
-    public function provideContent()
+    public function provideGetContentCases()
     {
         $cases = [];
 
@@ -163,7 +163,7 @@ final class AnnotationTest extends TestCase
      * @param int    $index
      * @param string $tag
      *
-     * @dataProvider provideTags
+     * @dataProvider provideGetTagCases
      */
     public function testGetTag($index, $tag)
     {
@@ -173,7 +173,7 @@ final class AnnotationTest extends TestCase
         $this->assertSame($tag, $annotation->getTag()->getName());
     }
 
-    public function provideTags()
+    public function provideGetTagCases()
     {
         $cases = [];
 

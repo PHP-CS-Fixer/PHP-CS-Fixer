@@ -125,7 +125,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param string $progressType
      *
-     * @dataProvider getProgressTypeCases
+     * @dataProvider provideProgressTypeCases
      */
     public function testResolveProgressWithPositiveConfigAndExplicitProgress($progressType)
     {
@@ -147,7 +147,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param string $progressType
      *
-     * @dataProvider getProgressTypeCases
+     * @dataProvider provideProgressTypeCases
      */
     public function testResolveProgressWithNegativeConfigAndExplicitProgress($progressType)
     {
@@ -166,7 +166,7 @@ final class ConfigurationResolverTest extends TestCase
         $this->assertSame($progressType, $resolver->getProgress());
     }
 
-    public function getProgressTypeCases()
+    public function provideProgressTypeCases()
     {
         return [
             ['none'],
@@ -699,7 +699,7 @@ final class ConfigurationResolverTest extends TestCase
      * @param bool             $configValue
      * @param null|bool|string $passed
      *
-     * @dataProvider getResolveBooleanOptions
+     * @dataProvider provideResolveBooleanOptionCases
      */
     public function testResolveUsingCacheWithConfigOption($expected, $configValue, $passed)
     {
@@ -804,7 +804,7 @@ final class ConfigurationResolverTest extends TestCase
      * @param bool             $configValue
      * @param null|bool|string $passed
      *
-     * @dataProvider getResolveBooleanOptions
+     * @dataProvider provideResolveBooleanOptionCases
      */
     public function testResolveAllowRiskyWithConfigOption($expected, $configValue, $passed)
     {
@@ -1049,7 +1049,7 @@ final class ConfigurationResolverTest extends TestCase
         $this->assertFalse($resolver->getRiskyAllowed());
     }
 
-    public function getResolveBooleanOptions()
+    public function provideResolveBooleanOptionCases()
     {
         return [
             [true, true, 'yes'],
