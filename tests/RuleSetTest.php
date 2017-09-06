@@ -276,11 +276,15 @@ final class RuleSetTest extends TestCase
      */
     public function testRiskyRulesInSet(array $set, $safe)
     {
-        $fixers = FixerFactory::create()
-            ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet($set))
-            ->getFixers()
-        ;
+        try {
+            $fixers = FixerFactory::create()
+                ->registerBuiltInFixers()
+                ->useRuleSet(new RuleSet($set))
+                ->getFixers()
+            ;
+        } catch (InvalidForEnvFixerConfigurationException $exception) {
+            $this->markTestSkipped($exception->getMessage());
+        }
 
         $fixerNames = array();
         foreach ($fixers as $fixer) {
@@ -302,59 +306,26 @@ final class RuleSetTest extends TestCase
 
     public function provideSafeSets()
     {
-        return array(
-            array(array('@PSR1' => true), true),
-            array(array('@PSR2' => true), true),
-            array(array('@Symfony' => true), true),
-            array(array('@Symfony:risky' => true), false),
-            array(array('@PHP56Migration:risky' => true), false),
+        $sets = array();
+
+        $ruleSet = new RuleSet();
+
+        foreach ($ruleSet->getSetDefinitionNames() as $name) {
+            $sets[$name] = array(
+                array($name => true),
+                strpos($name, ':risky') === false,
+            );
+        }
+
+        $sets['@Symfony:risky_and_@Symfony'] = array(
             array(
-                array(
-                    '@Symfony:risky' => true,
-                    '@Symfony' => false,
-                ),
-                false,
+                '@Symfony:risky' => true,
+                '@Symfony' => false,
             ),
+            false,
         );
-    }
 
-    /**
-     * @param array $set
-     * @param bool  $safe
-     *
-     * @dataProvider providePhp70SafeSets
-     * @requires PHP 7.0
-     */
-    public function testPhp70MigrationSet(array $set, $safe)
-    {
-        $this->testRiskyRulesInSet($set, $safe);
-    }
-
-    public function providePhp70SafeSets()
-    {
-        return array(
-            array(array('@PHP70Migration' => true), true),
-            array(array('@PHP70Migration:risky' => true), false),
-        );
-    }
-
-    /**
-     * @param array $set
-     * @param bool  $safe
-     *
-     * @dataProvider providePhp71SafeSets
-     * @requires PHP 7.1
-     */
-    public function testPhp71MigrationSet(array $set, $safe)
-    {
-        $this->testRiskyRulesInSet($set, $safe);
-    }
-
-    public function providePhp71SafeSets()
-    {
-        return array(
-            array(array('@PHP71Migration' => true), true),
-        );
+        return $sets;
     }
 
     public function testInvalidConfigNestedSets()
