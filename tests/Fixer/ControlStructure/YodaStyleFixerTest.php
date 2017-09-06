@@ -227,7 +227,7 @@ $a#4
             ],
             [
                 '<?php return "" === $this->myObject->{$index}->/*1*//*2*/b;',
-                '<?php return $this->myObject->{$index}->/*1*//*2*/b === "";'
+                '<?php return $this->myObject->{$index}->/*1*//*2*/b === "";',
             ],
         ];
     }
