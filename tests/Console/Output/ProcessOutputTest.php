@@ -29,7 +29,7 @@ final class ProcessOutputTest extends TestCase
      * @param string   $expectedOutput
      * @param null|int $width
      *
-     * @dataProvider getProcessProgressOutputCases
+     * @dataProvider provideProcessProgressOutputCases
      */
     public function testProcessProgressOutput(array $statuses, $expectedOutput, $width = null)
     {
@@ -47,7 +47,7 @@ final class ProcessOutputTest extends TestCase
         $this->assertSame($expectedOutput, $output->fetch());
     }
 
-    public function getProcessProgressOutputCases()
+    public function provideProcessProgressOutputCases()
     {
         return [
             [
@@ -177,7 +177,7 @@ final class ProcessOutputTest extends TestCase
      * @param string   $expectedOutput
      * @param null|int $width
      *
-     * @dataProvider getProcessProgressOutputWithNumbersCases
+     * @dataProvider provideProcessProgressOutputWithNumbersCases
      */
     public function testProcessProgressOutputWithNumbers(array $statuses, $expectedOutput, $width = null)
     {
@@ -200,7 +200,7 @@ final class ProcessOutputTest extends TestCase
         $this->assertSame($expectedOutput, $output->fetch());
     }
 
-    public function getProcessProgressOutputWithNumbersCases()
+    public function provideProcessProgressOutputWithNumbersCases()
     {
         return [
             [

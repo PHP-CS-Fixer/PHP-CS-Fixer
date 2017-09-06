@@ -340,7 +340,7 @@ echo 1;'
      * @param null|array $configuration
      * @param string     $exceptionMessage
      *
-     * @dataProvider provideMisconfiguration
+     * @dataProvider provideMisconfigurationCases
      */
     public function testMisconfiguration($configuration, $exceptionMessage)
     {
@@ -352,7 +352,7 @@ echo 1;'
         $this->fixer->configure($configuration);
     }
 
-    public function provideMisconfiguration()
+    public function provideMisconfigurationCases()
     {
         return [
             [[], 'Missing required configuration: The required option "header" is missing.'],

@@ -33,7 +33,7 @@ final class CTTest extends TestCase
      * @param string $name
      * @param int    $value
      *
-     * @dataProvider provideCTs
+     * @dataProvider provideConstantsCases
      */
     public function testConstants($name, $value)
     {
@@ -41,7 +41,7 @@ final class CTTest extends TestCase
         $this->assertNull(@constant($name), 'The CT name must not use native T_* name.');
     }
 
-    public function provideCTs()
+    public function provideConstantsCases()
     {
         $cases = [];
 

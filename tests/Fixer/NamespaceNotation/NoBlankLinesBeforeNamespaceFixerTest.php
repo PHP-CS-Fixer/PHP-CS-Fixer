@@ -25,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideExamples
+     * @dataProvider provideFixCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -38,7 +38,7 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
     /**
      * @return array
      */
-    public function provideExamples()
+    public function provideFixCases()
     {
         return [
             ["<?php\nnamespace X;"],

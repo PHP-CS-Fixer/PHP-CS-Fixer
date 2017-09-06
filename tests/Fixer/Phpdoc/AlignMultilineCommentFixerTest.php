@@ -175,7 +175,7 @@ class A
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideDocLikeMultilineComments
+     * @dataProvider provideDocLikeMultilineCommentsCases
      */
     public function testDocLikeMultilineComments($expected, $input = null)
     {
@@ -183,7 +183,7 @@ class A
         $this->doTest($expected, $input);
     }
 
-    public function provideDocLikeMultilineComments()
+    public function provideDocLikeMultilineCommentsCases()
     {
         return [
             [
@@ -226,7 +226,7 @@ class A
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideMixedContentMultilineComments
+     * @dataProvider provideMixedContentMultilineCommentsCases
      */
     public function testMixedContentMultilineComments($expected, $input = null)
     {
@@ -234,7 +234,7 @@ class A
         $this->doTest($expected, $input);
     }
 
-    public function provideMixedContentMultilineComments()
+    public function provideMixedContentMultilineCommentsCases()
     {
         return [
             [

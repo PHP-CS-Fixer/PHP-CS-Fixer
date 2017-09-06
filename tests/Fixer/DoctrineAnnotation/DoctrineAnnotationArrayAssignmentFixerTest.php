@@ -26,7 +26,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
@@ -37,7 +37,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixCases
+     * @dataProvider provideFixCases
      */
     public function testFixWithEqual($expected, $input = null)
     {
@@ -48,7 +48,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
     /**
      * @return array
      */
-    public function getFixCases()
+    public function provideFixCases()
     {
         return $this->createTestCases([
             ['
@@ -110,7 +110,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithColonCases
+     * @dataProvider provideFixWithColonCases
      */
     public function testFixWithColon($expected, $input = null)
     {
@@ -121,7 +121,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
     /**
      * @return array
      */
-    public function getFixWithColonCases()
+    public function provideFixWithColonCases()
     {
         return $this->createTestCases([
             ['

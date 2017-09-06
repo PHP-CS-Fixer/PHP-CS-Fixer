@@ -179,7 +179,7 @@ class F
      * @param array  $configuration
      * @param string $message
      *
-     * @dataProvider provideInvalidConfiguration
+     * @dataProvider provideInvalidConfigurationCases
      */
     public function testInvalidConfiguration(array $configuration, $message)
     {
@@ -191,7 +191,7 @@ class F
         $this->fixer->configure($configuration);
     }
 
-    public function provideInvalidConfiguration()
+    public function provideInvalidConfigurationCases()
     {
         return [
             [

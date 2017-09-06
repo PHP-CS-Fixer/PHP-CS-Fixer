@@ -187,7 +187,7 @@ $a =
     /**
      * @param array $config
      *
-     * @dataProvider provideInvalidConfiguration
+     * @dataProvider provideInvalidConfigurationKeysCases
      */
     public function testInvalidConfigurationKeys(array $config)
     {
@@ -199,7 +199,7 @@ $a =
         $this->fixer->configure($config);
     }
 
-    public function provideInvalidConfiguration()
+    public function provideInvalidConfigurationKeysCases()
     {
         return [
             [['functions' => ['a']]],

@@ -38,14 +38,14 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider getFixersPriorityCases
+     * @dataProvider provideFixersPriorityCases
      */
     public function testFixersPriority(FixerInterface $first, FixerInterface $second)
     {
         $this->assertLessThan($first->getPriority(), $second->getPriority());
     }
 
-    public function getFixersPriorityCases()
+    public function provideFixersPriorityCases()
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();

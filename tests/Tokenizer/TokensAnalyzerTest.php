@@ -263,7 +263,7 @@ preg_replace_callback(
     /**
      * @param string $source
      *
-     * @dataProvider provideIsLambdaCases70
+     * @dataProvider provideIsLambda70Cases
      * @requires PHP 7.0
      */
     public function testIsLambda70($source, array $expected)
@@ -275,7 +275,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambdaCases70()
+    public function provideIsLambda70Cases()
     {
         return [
             [
@@ -298,7 +298,7 @@ preg_replace_callback(
     /**
      * @param string $source
      *
-     * @dataProvider provideIsLambdaCases71
+     * @dataProvider provideIsLambda71Cases
      * @requires PHP 7.1
      */
     public function testIsLambda71($source, array $expected)
@@ -310,7 +310,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambdaCases71()
+    public function provideIsLambda71Cases()
     {
         return [
             [
@@ -347,7 +347,7 @@ preg_replace_callback(
     /**
      * @param string $source
      *
-     * @dataProvider provideIsUnarySuccessorOperator
+     * @dataProvider provideIsUnarySuccessorOperatorCases
      */
     public function testIsUnarySuccessorOperator($source, array $expected)
     {
@@ -362,7 +362,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsUnarySuccessorOperator()
+    public function provideIsUnarySuccessorOperatorCases()
     {
         return [
             [
@@ -403,7 +403,7 @@ preg_replace_callback(
     /**
      * @param string $source
      *
-     * @dataProvider provideIsUnaryPredecessorOperator
+     * @dataProvider provideIsUnaryPredecessorOperatorCases
      */
     public function testIsUnaryPredecessorOperator($source, array $expected)
     {
@@ -418,7 +418,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsUnaryPredecessorOperator()
+    public function provideIsUnaryPredecessorOperatorCases()
     {
         return [
             [
@@ -487,7 +487,7 @@ preg_replace_callback(
     /**
      * @param string $source
      *
-     * @dataProvider provideIsBinaryOperator
+     * @dataProvider provideIsBinaryOperatorCases
      */
     public function testIsBinaryOperator($source, array $expected)
     {
@@ -502,7 +502,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsBinaryOperator()
+    public function provideIsBinaryOperatorCases()
     {
         $cases = [
             [
@@ -615,7 +615,7 @@ $b;',
     /**
      * @param string $source
      *
-     * @dataProvider provideIsBinaryOperator70
+     * @dataProvider provideIsBinaryOperator70Cases
      * @requires PHP 7.0
      */
     public function testIsBinaryOperator70($source, array $expected)
@@ -631,7 +631,7 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator70()
+    public function provideIsBinaryOperator70Cases()
     {
         return [
             [
@@ -767,7 +767,7 @@ $b;',
      * @param string $source
      * @param int    $tokenIndex
      *
-     * @dataProvider provideArrayExceptions
+     * @dataProvider provideArrayExceptionsCases
      */
     public function testIsNotArray($source, $tokenIndex)
     {
@@ -780,7 +780,7 @@ $b;',
      * @param string $source
      * @param int    $tokenIndex
      *
-     * @dataProvider provideArrayExceptions
+     * @dataProvider provideArrayExceptionsCases
      */
     public function testIsMultiLineArrayException($source, $tokenIndex)
     {
@@ -791,7 +791,7 @@ $b;',
         $tokensAnalyzer->isArrayMultiLine($tokenIndex);
     }
 
-    public function provideArrayExceptions()
+    public function provideArrayExceptionsCases()
     {
         $cases = [
             ['<?php $a;', 1],
@@ -808,7 +808,7 @@ $b;',
      * @param int    $index
      * @param array  $expected
      *
-     * @dataProvider provideGetFunctionProperties
+     * @dataProvider provideGetFunctionPropertiesCases
      */
     public function testGetFunctionProperties($source, $index, array $expected)
     {
@@ -818,7 +818,7 @@ $b;',
         $this->assertSame($expected, $attributes);
     }
 
-    public function provideGetFunctionProperties()
+    public function provideGetFunctionPropertiesCases()
     {
         $defaultAttributes = [
             'visibility' => null,
@@ -955,7 +955,7 @@ SRC;
      * @param string $input
      * @param bool   $perNamespace
      *
-     * @dataProvider getImportUseIndexesCases
+     * @dataProvider provideGetImportUseIndexesCases
      */
     public function testGetImportUseIndexes(array $expected, $input, $perNamespace = false)
     {
@@ -964,7 +964,7 @@ SRC;
         $this->assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
-    public function getImportUseIndexesCases()
+    public function provideGetImportUseIndexesCases()
     {
         return [
             [
@@ -1030,7 +1030,7 @@ EOF
      * @param string $input
      * @param bool   $perNamespace
      *
-     * @dataProvider getImportUseIndexesCasesPHP70
+     * @dataProvider provideGetImportUseIndexesPHP70Cases
      * @requires PHP 7.0
      */
     public function testGetImportUseIndexesPHP70(array $expected, $input, $perNamespace = false)
@@ -1040,7 +1040,7 @@ EOF
         $this->assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
-    public function getImportUseIndexesCasesPHP70()
+    public function provideGetImportUseIndexesPHP70Cases()
     {
         return [
             [

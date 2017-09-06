@@ -207,7 +207,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider provideConflictingFixersRules
+     * @dataProvider provideConflictingFixersCases
      */
     public function testConflictingFixers(RuleSet $ruleSet)
     {
@@ -219,7 +219,7 @@ final class FixerFactoryTest extends TestCase
         FixerFactory::create()->registerBuiltInFixers()->useRuleSet($ruleSet);
     }
 
-    public function provideConflictingFixersRules()
+    public function provideConflictingFixersCases()
     {
         return [
             [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])],

@@ -26,7 +26,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAllCases
+     * @dataProvider provideFixAllCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -48,7 +48,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAllCases
+     * @dataProvider provideFixAllCases
      */
     public function testFixAll($expected, $input = null)
     {
@@ -71,7 +71,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAllCases
+     * @dataProvider provideFixAllCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -90,7 +90,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAllCases
+     * @dataProvider provideFixAllCases
      */
     public function testFixAllWithDifferentLineEnding($expected, $input = null)
     {
@@ -105,7 +105,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAllCases()
+    public function provideFixAllCases()
     {
         return $this->createTestCases([
             ['
@@ -371,7 +371,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundParenthesesOnlyCases
+     * @dataProvider provideFixAroundParenthesesOnlyCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -398,7 +398,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundParenthesesOnlyCases
+     * @dataProvider provideFixAroundParenthesesOnlyCases
      */
     public function testFixAroundParenthesesOnly($expected, $input = null)
     {
@@ -430,7 +430,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundParenthesesOnlyCases
+     * @dataProvider provideFixAroundParenthesesOnlyCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -449,7 +449,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundParenthesesOnlyCases
+     * @dataProvider provideFixAroundParenthesesOnlyCases
      */
     public function testFixAroundParenthesesOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -464,7 +464,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAroundParenthesesOnlyCases()
+    public function provideFixAroundParenthesesOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -680,7 +680,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundCommasOnlyCases
+     * @dataProvider provideFixAroundCommasOnlyCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -707,7 +707,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundCommasOnlyCases
+     * @dataProvider provideFixAroundCommasOnlyCases
      */
     public function testFixAroundCommasOnly($expected, $input = null)
     {
@@ -739,7 +739,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundCommasOnlyCases
+     * @dataProvider provideFixAroundCommasOnlyCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -758,7 +758,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundCommasOnlyCases
+     * @dataProvider provideFixAroundCommasOnlyCases
      */
     public function testFixAroundCommasOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -773,7 +773,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAroundCommasOnlyCases()
+    public function provideFixAroundCommasOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1012,7 +1012,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundArgumentAssignmentsOnlyCases
+     * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -1039,7 +1039,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundArgumentAssignmentsOnlyCases
+     * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -1057,7 +1057,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAroundArgumentAssignmentsOnlyCases()
+    public function provideFixAroundArgumentAssignmentsOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1288,7 +1288,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundArrayAssignmentsOnlyCases
+     * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -1315,7 +1315,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixAroundArrayAssignmentsOnlyCases
+     * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
      * @group legacy
      * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
      * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
@@ -1333,7 +1333,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixAroundArrayAssignmentsOnlyCases()
+    public function provideFixAroundArrayAssignmentsOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1544,7 +1544,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceBeforeArgumentAssignmentOnlyCases
+     * @dataProvider provideFixWithSpaceBeforeArgumentAssignmentOnlyCases
      */
     public function testFixWithSpaceBeforeArgumentAssignmentOnly($expected, $input = null)
     {
@@ -1565,7 +1565,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceBeforeArgumentAssignmentOnlyCases
+     * @dataProvider provideFixWithSpaceBeforeArgumentAssignmentOnlyCases
      */
     public function testFixWithSpaceBeforeArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1577,7 +1577,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArgumentAssignmentOnly($expected, $input);
     }
 
-    public function getFixWithSpaceBeforeArgumentAssignmentOnlyCases()
+    public function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1598,7 +1598,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceBeforeArgumentAssignmentOnlyCases
+     * @dataProvider provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases
      */
     public function testFixWithoutSpaceBeforeArgumentAssignmentOnly($expected, $input = null)
     {
@@ -1619,7 +1619,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceBeforeArgumentAssignmentOnlyCases
+     * @dataProvider provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases
      */
     public function testFixWithoutSpaceBeforeArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1631,7 +1631,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArgumentAssignmentOnly($expected, $input);
     }
 
-    public function getFixWithoutSpaceBeforeArgumentAssignmentOnlyCases()
+    public function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1652,7 +1652,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceAfterArgumentAssignmentOnlyCases
+     * @dataProvider provideFixWithSpaceAfterArgumentAssignmentOnlyCases
      */
     public function testFixWithSpaceAfterArgumentAssignmentOnly($expected, $input = null)
     {
@@ -1673,7 +1673,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceAfterArgumentAssignmentOnlyCases
+     * @dataProvider provideFixWithSpaceAfterArgumentAssignmentOnlyCases
      */
     public function testFixWithSpaceAfterArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1685,7 +1685,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArgumentAssignmentOnly($expected, $input);
     }
 
-    public function getFixWithSpaceAfterArgumentAssignmentOnlyCases()
+    public function provideFixWithSpaceAfterArgumentAssignmentOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1706,7 +1706,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceAfterArgumentAssignmentOnlyCases
+     * @dataProvider provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases
      */
     public function testFixWithoutSpaceAfterArgumentAssignmentOnly($expected, $input = null)
     {
@@ -1727,7 +1727,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceAfterArgumentAssignmentOnlyCases
+     * @dataProvider provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases
      */
     public function testFixWithoutSpaceAfterArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1739,7 +1739,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArgumentAssignmentOnly($expected, $input);
     }
 
-    public function getFixWithoutSpaceAfterArgumentAssignmentOnlyCases()
+    public function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1760,7 +1760,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceBeforeArrayAssignmentEqualOnlyCases
+     * @dataProvider provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases
      */
     public function testFixWithSpaceBeforeArrayAssignmentEqualOnly($expected, $input = null)
     {
@@ -1781,7 +1781,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceBeforeArrayAssignmentEqualOnlyCases
+     * @dataProvider provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases
      */
     public function testFixWithSpaceBeforeArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1793,7 +1793,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public function getFixWithSpaceBeforeArrayAssignmentEqualOnlyCases()
+    public function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1814,7 +1814,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases
+     * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases
      */
     public function testFixWithoutSpaceBeforeArrayAssignmentEqualOnly($expected, $input = null)
     {
@@ -1835,7 +1835,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases
+     * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases
      */
     public function testFixWithoutSpaceBeforeArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1847,7 +1847,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public function getFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases()
+    public function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1868,7 +1868,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceAfterArrayAssignmentEqualOnlyCases
+     * @dataProvider provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases
      */
     public function testFixWithSpaceAfterArrayAssignmentEqualOnly($expected, $input = null)
     {
@@ -1889,7 +1889,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceAfterArrayAssignmentEqualOnlyCases
+     * @dataProvider provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases
      */
     public function testFixWithSpaceAfterArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1901,7 +1901,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public function getFixWithSpaceAfterArrayAssignmentEqualOnlyCases()
+    public function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1922,7 +1922,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases
+     * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases
      */
     public function testFixWithoutSpaceAfterArrayAssignmentEqualOnly($expected, $input = null)
     {
@@ -1943,7 +1943,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases
+     * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases
      */
     public function testFixWithoutSpaceAfterArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1955,7 +1955,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public function getFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases()
+    public function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -1976,7 +1976,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceBeforeArrayAssignmentColonOnlyCases
+     * @dataProvider provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases
      */
     public function testFixWithSpaceBeforeArrayAssignmentColonOnly($expected, $input = null)
     {
@@ -1997,7 +1997,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceBeforeArrayAssignmentColonOnlyCases
+     * @dataProvider provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases
      */
     public function testFixWithSpaceBeforeArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -2009,7 +2009,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArrayAssignmentColonOnly($expected, $input);
     }
 
-    public function getFixWithSpaceBeforeArrayAssignmentColonOnlyCases()
+    public function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -2030,7 +2030,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases
+     * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases
      */
     public function testFixWithoutSpaceBeforeArrayAssignmentColonOnly($expected, $input = null)
     {
@@ -2051,7 +2051,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases
+     * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases
      */
     public function testFixWithoutSpaceBeforeArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -2063,7 +2063,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArrayAssignmentColonOnly($expected, $input);
     }
 
-    public function getFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases()
+    public function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -2084,7 +2084,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceAfterArrayAssignmentColonOnlyCases
+     * @dataProvider provideFixWithSpaceAfterArrayAssignmentColonOnlyCases
      */
     public function testFixWithSpaceAfterArrayAssignmentColonOnly($expected, $input = null)
     {
@@ -2105,7 +2105,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithSpaceAfterArrayAssignmentColonOnlyCases
+     * @dataProvider provideFixWithSpaceAfterArrayAssignmentColonOnlyCases
      */
     public function testFixWithSpaceAfterArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -2117,7 +2117,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArrayAssignmentColonOnly($expected, $input);
     }
 
-    public function getFixWithSpaceAfterArrayAssignmentColonOnlyCases()
+    public function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases()
     {
         return $this->createTestCases([
             ['
@@ -2138,7 +2138,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceAfterArrayAssignmentColonOnlyCases
+     * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases
      */
     public function testFixWithoutSpaceAfterArrayAssignmentColonOnly($expected, $input = null)
     {
@@ -2159,7 +2159,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutSpaceAfterArrayAssignmentColonOnlyCases
+     * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases
      */
     public function testFixWithoutSpaceAfterArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -2171,7 +2171,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArrayAssignmentColonOnly($expected, $input);
     }
 
-    public function getFixWithoutSpaceAfterArrayAssignmentColonOnlyCases()
+    public function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases()
     {
         return $this->createTestCases([
             ['
