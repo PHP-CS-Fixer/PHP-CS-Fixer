@@ -113,7 +113,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 $tokens[$functionName] = new Token(array(T_STRING, $functionReplacement['alternativeName']));
 
                 if (0 === $count && 'random_int' === $functionReplacement['alternativeName']) {
-                    $tokens->insertAt(++$currIndex, array(
+                    $tokens->insertAt($currIndex + 1, array(
                         new Token(array(T_LNUMBER, '0')),
                         new Token(','),
                         new Token(array(T_WHITESPACE, ' ')),
@@ -122,7 +122,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                         new Token(')'),
                     ));
 
-                    $currIndex += 5;
+                    $currIndex += 6;
                 }
             }
         }
