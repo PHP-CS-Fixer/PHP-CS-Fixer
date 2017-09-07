@@ -19,7 +19,7 @@
         "ext-tokenizer": "*",
         "doctrine/annotations": "^1.2",
         "gecko-packages/gecko-php-unit": "^2.0",
-        "sebastian/diff": "^1.4",
+        "sebastian/diff": "^2.0 || ^1.4",
         "symfony/console": "^3.2",
         "symfony/event-dispatcher": "^3.0",
         "symfony/filesystem": "^3.0",
