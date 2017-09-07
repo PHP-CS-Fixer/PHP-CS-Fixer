@@ -305,7 +305,7 @@ $a#4
      * @param array  $config
      * @param string $expectedMessage
      *
-     * @dataProvider provideInvalidConfiguration
+     * @dataProvider provideInvalidConfigurationCases
      * @requires PHPUnit 5.2
      */
     public function testInvalidConfig(array $config, $expectedMessage)
@@ -323,7 +323,7 @@ $a#4
     /**
      * @return array
      */
-    public function provideInvalidConfiguration()
+    public function provideInvalidConfigurationCases()
     {
         return [
             [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "integer".'],
