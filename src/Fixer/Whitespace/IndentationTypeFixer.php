@@ -60,6 +60,8 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $expectedIndent = $this->whitespacesConfig->getIndent();
+
         foreach ($tokens as $index => $token) {
             if ($token->isComment()) {
                 $content = preg_replace('/^(?:(?<! ) {1,3})?\t/m', '\1    ', $token->getContent(), -1, $count);
@@ -70,7 +72,9 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 }
 
                 // change indent to expected one
-                $content = preg_replace('/^    /m', $this->whitespacesConfig->getIndent(), $content);
+                $content = preg_replace_callback('/^(?:    )+/m', function ($matches) use ($expectedIndent) {
+                    return str_replace('    ', $expectedIndent, $matches[0]);
+                }, $content);
 
                 $tokens[$index] = new Token(array($token->getId(), $content));
 

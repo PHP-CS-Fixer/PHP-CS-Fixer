@@ -268,6 +268,19 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
      */",
         );
 
+        $cases[] = array(
+            "<?php
+\t\t/*
+\t\t * multiple indentation
+\t\t * shall be handled properly
+\t\t */",
+            "<?php
+\t\t/*
+\t\t * multiple indentation
+    \t * shall be handled properly
+\t     */",
+        );
+
         return $cases;
     }
 }
