@@ -41,7 +41,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null, array $configuration = null)
     {
@@ -52,7 +52,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return array(
             array(
@@ -340,10 +340,10 @@ foo#
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide54Cases
+     * @dataProvider provideFix54Cases
      * @requires PHP 5.4
      */
-    public function test54($expected, $input = null, array $configuration = null)
+    public function testFix54($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -352,7 +352,7 @@ foo#
         $this->doTest($expected, $input);
     }
 
-    public function provide54Cases()
+    public function provideFix54Cases()
     {
         return array(
             array(
@@ -388,10 +388,10 @@ foo#
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null, array $configuration = null)
+    public function testFix70($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -400,7 +400,7 @@ foo#
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return array(
             array('<?php use function Foo\bar; bar ( 1 );'),

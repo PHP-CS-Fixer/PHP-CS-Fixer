@@ -321,14 +321,14 @@ else?><?php echo 5;',
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixNestedIfs
+     * @dataProvider provideFixNestedIfCases
      */
-    public function testFixNestedIfs($expected, $input = null)
+    public function testFixNestedIf($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNestedIfs()
+    public function provideFixNestedIfCases()
     {
         return array(
             array(
@@ -753,14 +753,14 @@ else?><?php echo 5;',
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideConditionsWithoutBraces
+     * @dataProvider provideConditionsWithoutBracesCases
      */
     public function testConditionsWithoutBraces($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideConditionsWithoutBraces()
+    public function provideConditionsWithoutBracesCases()
     {
         $cases = array();
         $statements = array(

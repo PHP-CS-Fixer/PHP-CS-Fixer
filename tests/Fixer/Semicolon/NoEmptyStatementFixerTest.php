@@ -365,7 +365,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide54Cases
+     * @dataProvider provideFix54Cases
      * @requires PHP 5.4
      */
     public function testFix54($expected, $input = null)
@@ -373,7 +373,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provide54Cases()
+    public function provideFix54Cases()
     {
         return array(
             array(
@@ -395,7 +395,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide55Cases
+     * @dataProvider provideFix55Cases
      * @requires PHP 5.5
      */
     public function testFix55($expected, $input = null)
@@ -403,7 +403,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provide55Cases()
+    public function provideFix55Cases()
     {
         return array(
             array(
@@ -526,14 +526,14 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCasesWithShortOpenTag
+     * @dataProvider provideWithShortOpenTagCases
      */
-    public function testCasesWithShortOpenTag($expected, $input = null)
+    public function testWithShortOpenTag($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCasesWithShortOpenTag()
+    public function provideWithShortOpenTagCases()
     {
         $cases = array();
         /*

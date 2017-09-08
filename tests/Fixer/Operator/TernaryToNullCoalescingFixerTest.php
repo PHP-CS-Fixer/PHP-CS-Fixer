@@ -25,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -35,7 +35,7 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return array(
             // Do not fix cases.

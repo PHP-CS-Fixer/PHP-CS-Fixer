@@ -27,14 +27,14 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return array(
             array(
@@ -305,7 +305,7 @@ EOT
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases54
+     * @dataProvider provideFix54Cases
      * @requires PHP 5.4
      */
     public function testFix54($expected, $input = null)
@@ -313,7 +313,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideCases54()
+    public function provideFix54Cases()
     {
         return array(
             array(
@@ -351,7 +351,7 @@ EOT
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases71
+     * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
     public function testFix71($expected, $input = null)
@@ -359,7 +359,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideCases71()
+    public function provideFix71Cases()
     {
         return array(
             array(

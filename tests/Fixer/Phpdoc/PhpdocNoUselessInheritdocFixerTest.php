@@ -211,7 +211,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide54Cases
+     * @dataProvider provideFix54Cases
      * @requires PHP 5.4
      */
     public function testFix54($expected, $input = null)
@@ -219,7 +219,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provide54Cases()
+    public function provideFix54Cases()
     {
         return array(
             array(
@@ -281,7 +281,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function testFix70($expected, $input = null)
@@ -289,7 +289,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return array(
             array(
