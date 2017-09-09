@@ -187,7 +187,7 @@ final class FixerTest extends TestCase
         $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
-            $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerOption', $option);
+            $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOption::class, $option);
             $this->assertNotEmpty($option->getDescription());
 
             $this->assertSame(

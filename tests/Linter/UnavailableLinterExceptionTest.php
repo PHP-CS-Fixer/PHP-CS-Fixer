@@ -28,7 +28,7 @@ final class UnavailableLinterExceptionTest extends TestCase
     {
         $exception = new UnavailableLinterException();
 
-        $this->assertInstanceOf('RuntimeException', $exception);
+        $this->assertInstanceOf(\RuntimeException::class, $exception);
     }
 
     public function testConstructorSetsValues()
