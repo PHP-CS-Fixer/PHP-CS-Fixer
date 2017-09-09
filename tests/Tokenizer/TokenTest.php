@@ -305,9 +305,9 @@ final class TokenTest extends TestCase
         return [
             [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
             ['(', null, '(', false],
-            [123, null, null, null, 'InvalidArgumentException'],
-            [false, null, null, null, 'InvalidArgumentException'],
-            [null, null, null, null, 'InvalidArgumentException'],
+            [123, null, null, null, \InvalidArgumentException::class],
+            [false, null, null, null, \InvalidArgumentException::class],
+            [null, null, null, null, \InvalidArgumentException::class],
         ];
     }
 

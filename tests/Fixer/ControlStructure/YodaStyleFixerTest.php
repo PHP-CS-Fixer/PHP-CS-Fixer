@@ -310,7 +310,7 @@ $a#4
      */
     public function testInvalidConfig(array $config, $expectedMessage)
     {
-        $this->expectException('\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageRegExp(sprintf(
             '#^\[%s\] %s$#',
             $this->fixer->getName(),
@@ -333,7 +333,7 @@ $a#4
 
     public function testDefinition()
     {
-        $this->assertInstanceOf('PhpCsFixer\FixerDefinition\FixerDefinitionInterface', $this->fixer->getDefinition());
+        $this->assertInstanceOf(\PhpCsFixer\FixerDefinition\FixerDefinitionInterface::class, $this->fixer->getDefinition());
     }
 
     /**

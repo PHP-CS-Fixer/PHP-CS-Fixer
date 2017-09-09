@@ -358,7 +358,7 @@ final class ConfigurationResolverTest extends TestCase
             ''
         );
 
-        $this->assertInstanceOf('PhpCsFixer\Console\ConfigurationResolver', $resolver);
+        $this->assertInstanceOf(\PhpCsFixer\Console\ConfigurationResolver::class, $resolver);
     }
 
     public function testResolvePathRelativeA()

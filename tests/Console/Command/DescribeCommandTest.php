@@ -148,7 +148,7 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Set "@NoSuchSet" not found\.$#');
+        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Set "@NoSuchSet" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => '@NoSuchSet',
@@ -171,7 +171,7 @@ EOT;
 
     public function testGetAlternativeSuggestion()
     {
-        $this->setExpectedExceptionRegExp('InvalidArgumentException', '#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
+        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
         $this->execute('Foo2/bar', false);
     }
 
