@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-07-25T10:59:07Z
+
+I think that idea itself is nice ;)
+what about `space` homoglyphs ? there are few spaces in UTF ;d
+
+---------------------------------------------------------------------------
+
+by mcfedr at 2017-07-25T11:29:18Z
+
+I'm was focusing on homoglyphs that you might have in code, so class names or variable names. I think it would be inappropriate to start editing literal strings in code.
+
+The point was to change symbols you might not notice. Given that spaces are not normally part of a name these would be noticeable.
+
+---------------------------------------------------------------------------
+
+by mcfedr at 2017-07-25T12:07:41Z
+
+Just having a look, you can put weird spaces in a name, this is valid, but its pretty noticeable.
+
+```php
+$replac ements = ...;
+```
+Weird spaces in general, instead of normal spaces, and php cannot parse the file, so I would say its not an issue.
