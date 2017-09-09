@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-04T20:12:20Z
+
+hm... nightly is failing :( (unrelated to my changes IMO)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-04T20:15:28Z
+
+~odd failure ...hhmmm...~
+wait, same as I had, the optional warning in CI tests
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-04T20:36:56Z
+
+7.2 is failing only when apply 7+ fixers...
