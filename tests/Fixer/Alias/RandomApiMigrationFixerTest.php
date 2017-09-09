@@ -92,6 +92,26 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
+            [
+                '<?php random_int(0, getrandmax());',
+                '<?php rand();',
+                ['replacements' => ['rand' => 'random_int']],
+            ],
+            [
+                '<?php random_int#1
+                #2
+                (0, getrandmax()#3
+                #4
+                )#5
+                ;',
+                '<?php rand#1
+                #2
+                (#3
+                #4
+                )#5
+                ;',
+                ['replacements' => ['rand' => 'random_int']],
+            ],
             ['<?php $smth->srand($a);'],
             ['<?php srandSmth($a);'],
             ['<?php smth_srand($a);'],
@@ -108,7 +128,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
             ["<?php 'test'.'srand' . 'in concatenation';"],
             ['<?php "test" . "srand"."in concatenation";'],
             [
-            '<?php
+                '<?php
 class SrandClass
 {
     const srand = 1;
@@ -123,7 +143,8 @@ class SrandClass
 class srand extends SrandClass{
     const srand = "srand";
 }
-', ],
+',
+            ],
             ['<?php mt_srand($a);', '<?php srand($a);'],
             ['<?php \\mt_srand($a);', '<?php \\srand($a);'],
             ['<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'],
