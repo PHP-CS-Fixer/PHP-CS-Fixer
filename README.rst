@@ -1271,6 +1271,19 @@ Choose from the list of available rules:
 
   In array declaration, there MUST be a whitespace after each comma.
 
+* **yoda_style**
+
+  Write conditions in Yoda style or not based on configuration.
+
+  Configuration options:
+
+  - ``equal`` (``bool``, ``null``): change equal (``==``, ``!=``) statements; defaults to
+    ``true``
+  - ``identical`` (``bool``, ``null``): change identical (``===``, ``!==``) statements;
+    defaults to ``true``
+  - ``less_and_greater`` (``bool``, ``null``): change less and greater than (``<``, ``<=``,
+    ``>``, ``>=``) statements; defaults to ``null``
+
 
 The ``--dry-run`` option displays the files that need to be
 fixed but without actually modifying them:
