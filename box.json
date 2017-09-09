@@ -10,9 +10,9 @@
     ],
     "finder": [
         {
-            "name": ["*.php"],
+            "name": ["*.php", "ci-integration.sh"],
             "exclude": ["Test", "test", "Tests", "tests"],
-            "in": ["vendor", "src"]
+            "in": ["dev-tools", "src", "vendor"]
         }
     ],
     "git-commit": "git-commit",

@@ -47,6 +47,7 @@
         "hhvm": "<3.18"
     },
     "config": {
+        "optimize-autoloader": true,
         "sort-packages": true
     },
     "autoload": {
