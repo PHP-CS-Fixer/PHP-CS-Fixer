@@ -619,7 +619,7 @@ final class ConfigurationResolver
 
         $rules = trim($this->options['rules']);
 
-        if ($rules[0] === '{') {
+        if ('{' === $rules[0]) {
             $rules = json_decode($rules, true);
             if (JSON_ERROR_NONE !== json_last_error()) {
                 throw new InvalidConfigurationException(sprintf('Invalid JSON rules input: %s.', json_last_error_msg()));

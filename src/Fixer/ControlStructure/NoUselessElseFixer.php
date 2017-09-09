@@ -263,7 +263,8 @@ final class NoUselessElseFixer extends AbstractFixer
 
             if ($token->equals(';', '}')) {
                 return false;
-            } elseif ($token->equals('{')) {
+            }
+            if ($token->equals('{')) {
                 $index = $tokens->getPrevMeaningfulToken($index);
 
                 // OK if belongs to: for, do, while, foreach

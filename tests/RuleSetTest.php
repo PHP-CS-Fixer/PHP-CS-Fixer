@@ -316,7 +316,7 @@ final class RuleSetTest extends TestCase
         foreach ($ruleSet->getSetDefinitionNames() as $name) {
             $sets[$name] = [
                 [$name => true],
-                strpos($name, ':risky') === false,
+                false === strpos($name, ':risky'),
             ];
         }
 
