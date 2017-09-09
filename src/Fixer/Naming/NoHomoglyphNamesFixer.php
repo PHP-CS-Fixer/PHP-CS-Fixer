@@ -20,8 +20,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Fred Cox <mcfedr@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class HomoglyphNamesFixer extends AbstractFixer
+final class NoHomoglyphNamesFixer extends AbstractFixer
 {
     /**
      * Used the program https://github.com/mcfedr/homoglyph-download
@@ -194,7 +195,7 @@ final class HomoglyphNamesFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Replace accidental usage of non ascii characters in names.',
+            'Replace accidental usage of homoglyphs (non ascii characters) in names.',
             [new CodeSample('<?php $nаmе = \'wrong "a" character\';')],
             null,
             'Renames classes and cannot rename the files. You might have string references to renamed code (`$$name`).'
@@ -222,14 +223,17 @@ final class HomoglyphNamesFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens->findGivenKind([T_VARIABLE, T_STRING]) as $tokensByKind) {
-            /** @var \PhpCsFixer\Tokenizer\Token $token */
-            foreach ($tokensByKind as $idx => $token) {
-                $replaced = preg_replace_callback('/[^[:ascii:]]/u', function ($matches) {
-                    return self::$replacements[$matches[0]];
-                }, $token->getContent());
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind([T_VARIABLE, T_STRING])) {
+                continue;
+            }
 
-                $tokens->offsetSet($idx, new Token([$token->getId(), $replaced]));
+            $replaced = preg_replace_callback('/[^[:ascii:]]/u', function ($matches) {
+                return self::$replacements[$matches[0]];
+            }, $token->getContent(), -1, $count);
+
+            if ($count) {
+                $tokens->offsetSet($index, new Token([$token->getId(), $replaced]));
             }
         }
     }
