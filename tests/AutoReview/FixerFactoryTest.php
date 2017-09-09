@@ -171,6 +171,9 @@ final class FixerFactoryTest extends TestCase
             [$fixers['void_return'], $fixers['phpdoc_no_empty_return']], // tested also in: void_return,phpdoc_no_empty_return.test
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_else']], // tested also in: no_unneeded_curly_braces,no_useless_else.test
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_return']], // tested also in: no_unneeded_curly_braces,no_useless_return.test
+            [$fixers['combine_consecutive_issets'], $fixers['no_multiline_whitespace_before_semicolons']], // tested also in: combine_consecutive_issets,no_multiline_whitespace_before_semicolons.test
+            [$fixers['combine_consecutive_issets'], $fixers['no_trailing_whitespace']], // tested also in: combine_consecutive_issets,no_trailing_whitespace.test
+            [$fixers['combine_consecutive_issets'], $fixers['no_whitespace_in_blank_line']], // tested also in: combine_consecutive_issets,no_whitespace_in_blank_line.test
         ];
 
         // prepare bulk tests for phpdoc fixers to test that:
