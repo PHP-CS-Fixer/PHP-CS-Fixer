@@ -155,11 +155,17 @@ final class RuleSet implements RuleSetInterface
             'psr4' => true,
             'silenced_deprecation_error' => true,
         ],
-        '@PHP56Migration' => [
+        '@PHP56Migration' => [],
+        '@PHP56Migration:risky' => [
             'pow_to_exponentiation' => true,
         ],
         '@PHP70Migration' => [
             '@PHP56Migration' => true,
+            'ternary_to_null_coalescing' => true,
+        ],
+        '@PHP70Migration:risky' => [
+            '@PHP56Migration:risky' => true,
+            'declare_strict_types' => true,
             'non_printable_character' => [
                 'use_escape_sequences_in_strings' => true,
             ],
@@ -167,10 +173,6 @@ final class RuleSet implements RuleSetInterface
                 'mt_rand' => 'random_int',
                 'rand' => 'random_int',
             ]],
-            'ternary_to_null_coalescing' => true,
-        ],
-        '@PHP70Migration:risky' => [
-            'declare_strict_types' => true,
         ],
         '@PHP71Migration' => [
             '@PHP70Migration' => true,
