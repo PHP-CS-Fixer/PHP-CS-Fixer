@@ -50,6 +50,8 @@ try {
         ->useRuleSet(new PhpCsFixer\RuleSet($config->getRules()));
 } catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
     $config->setRules(array());
+} catch (UnexpectedValueException $e) {
+    $config->setRules(array());
 }
 
 return $config;
