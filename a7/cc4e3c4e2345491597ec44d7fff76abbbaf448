@@ -1,0 +1,40 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-05T15:42:03Z
+
+Looks like a good fix (in concept).
+However I wonder, there is a [utest](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.5/tests/RuleSetTest.php#L280) for this preventing risky rules in non-risky tests, so somehow that test does not what it should.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-05T16:15:48Z
+
+@SpacePossum The test is correct, but the `@PHP56Migration` ruleset is not returned by the data provider it uses, which explains why we didn't get any failure.
+
+@kubawerlos As this is a bugfix, can you please update your PR to target 2.2 branch?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-09-05T16:17:03Z
+
+Test was fine, simply didn't test migration sets. Now it does, which also discovered `@PHP70Migration` contained 2 risky fixers.
+
+@julienfalque it is not backward compatible (it renames sets), are you sure you want it in 2.2 branch?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-05T16:32:36Z
+
+@kubawerlos Indeed, you should create an empty `@PHP56Migration` ruleset to avoid breaking configs that use it (which would also happen on master anyway).
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-05T18:36:13Z
+
+please avoid squashing, you just changed sth, but I don't know what as there is only one ticket :( for that, I need to read everything again
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-09-05T18:45:00Z
+
+I have created provider for PHP 7.1 as well as the `PHP71Migration:risky` will be there in newer branches.
