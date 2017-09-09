@@ -19,7 +19,7 @@ before_install:
     - phpenv config-rm xdebug.ini || return 0
 
     # Composer: boost installation
-    - composer global show -ND 2>&1 | grep "hirak/prestissimo" || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
+    - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
 
 jobs:
     include:
@@ -49,6 +49,9 @@ jobs:
             stage: Test
             php: 7.0
             install:
+                # Composer: enforce given Symfony components version
+                - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"^2[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'
+
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
             script:
@@ -81,7 +84,7 @@ jobs:
             php: 7.2
             env: COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1 PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1
             script:
-                - php php-cs-fixer fix --rules @PHP70Migration:risky,@PHP71Migration,native_function_invocation -q || travis_terminate 1
+                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,native_function_invocation -q || travis_terminate 1
                 - vendor/bin/phpunit || travis_terminate 1
                 - git checkout . -q
                 - php php-cs-fixer --diff --dry-run -v fix
@@ -89,9 +92,9 @@ jobs:
         -
             <<: *STANDARD_TEST_JOB
             php: nightly
-            env: COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1 PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1
+            env: COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_IGNORE_ENV=1
             script:
-                - php php-cs-fixer fix --rules @PHP70Migration:risky,@PHP71Migration,native_function_invocation -q || travis_terminate 1
+                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,native_function_invocation -q || travis_terminate 1
                 - vendor/bin/phpunit || travis_terminate 1
                 - git checkout . -q
                 - php php-cs-fixer --diff --dry-run -v fix
@@ -99,25 +102,12 @@ jobs:
         -
             stage: Deployment
             php: 7.1
-            env: COMPOSER_FLAGS="--no-dev --prefer-stable"
-            install: skip
-            script: skip
-            before_deploy:
-                # ensure that deps will work on lowest supported PHP version
-                - composer config platform.php 2> /dev/null || composer config platform.php 5.6.0
-
-                # require suggested packages
-                - composer require --no-update symfony/polyfill-mbstring
-
-                - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
-                - composer info -D | sort
-
-                # install box2
-                - curl -LSs http://box-project.github.io/box2/installer.php | php
-                - php box.phar --version
-
-                # build phar file
-                - php -d phar.readonly=false box.phar build
+            install: ./dev-tools/build.sh
+            script:
+                - php php-cs-fixer.phar --version
+                - php php-cs-fixer.phar readme
+                - php php-cs-fixer.phar describe header_comment
+                - php php-cs-fixer.phar fix src/Config.php -vvv --dry-run --diff
             deploy:
                 provider: releases
                 api_key:
