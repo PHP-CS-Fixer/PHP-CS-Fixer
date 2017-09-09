@@ -111,6 +111,19 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 $currIndex = $openParenthesis;
 
                 $tokens[$functionName] = new Token(array(T_STRING, $functionReplacement['alternativeName']));
+
+                if (0 === $count && 'random_int' === $functionReplacement['alternativeName']) {
+                    $tokens->insertAt($currIndex + 1, array(
+                        new Token(array(T_LNUMBER, '0')),
+                        new Token(','),
+                        new Token(array(T_WHITESPACE, ' ')),
+                        new Token(array(T_STRING, 'getrandmax')),
+                        new Token('('),
+                        new Token(')'),
+                    ));
+
+                    $currIndex += 6;
+                }
             }
         }
     }
