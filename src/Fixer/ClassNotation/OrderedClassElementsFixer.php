@@ -319,7 +319,7 @@ array('order' => array('method_private', 'method_public'))
      * @param Tokens $tokens
      * @param int    $index
      *
-     * @return string|array type or array of type and name
+     * @return array|string type or array of type and name
      */
     private function detectElementType(Tokens $tokens, $index)
     {

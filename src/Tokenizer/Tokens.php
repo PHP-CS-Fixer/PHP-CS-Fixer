@@ -441,7 +441,7 @@ class Tokens extends \SplFixedArray
     /**
      * Find tokens of given kind.
      *
-     * @param int|array $possibleKind kind or array of kind
+     * @param array|int $possibleKind kind or array of kind
      * @param int       $start        optional offset
      * @param null|int  $end          optional limit
      *
@@ -727,7 +727,7 @@ class Tokens extends \SplFixedArray
      * @param array                 $sequence      an array of tokens (kinds) (same format used by getNextTokenOfKind)
      * @param int                   $start         start index, defaulting to the start of the file
      * @param int                   $end           end index, defaulting to the end of the file
-     * @param bool|array<int, bool> $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     * @param array<int, bool>|bool $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                             the ones used in $others. If any is missing, the default case-sensitive
      *                                             comparison is used
      *
@@ -816,7 +816,7 @@ class Tokens extends \SplFixedArray
      * Insert instances of Token inside collection.
      *
      * @param int                  $index start inserting index
-     * @param Tokens|Token[]|Token $items instances of Token to insert
+     * @param Token|Token[]|Tokens $items instances of Token to insert
      */
     public function insertAt($index, $items)
     {
@@ -885,7 +885,7 @@ class Tokens extends \SplFixedArray
      * Override token at given index and register it.
      *
      * @param int                $index
-     * @param Token|array|string $token token prototype
+     * @param array|string|Token $token token prototype
      */
     public function overrideAt($index, $token)
     {
@@ -898,7 +898,7 @@ class Tokens extends \SplFixedArray
      *
      * @param int            $indexStart start overriding index
      * @param int            $indexEnd   end overriding index
-     * @param Tokens|Token[] $items      tokens to insert
+     * @param Token[]|Tokens $items      tokens to insert
      */
     public function overrideRange($indexStart, $indexEnd, $items)
     {
@@ -1252,7 +1252,7 @@ class Tokens extends \SplFixedArray
     /**
      * Register token as found.
      *
-     * @param Token|array|string $token token prototype
+     * @param array|string|Token $token token prototype
      */
     private function registerFoundToken($token)
     {

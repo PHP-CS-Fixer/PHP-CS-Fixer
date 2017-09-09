@@ -227,8 +227,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
                     "Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n%s.\nDiff.:\n%s.",
                     $case->getTitle(),
                     $case->getFileName(),
-                    $changed === null ? '[None]' : implode(',', $changed['appliedFixers']),
-                    $changed === null ? '[None]' : $changed['diff']
+                    null === $changed ? '[None]' : implode(',', $changed['appliedFixers']),
+                    null === $changed ? '[None]' : $changed['diff']
                 )
             );
 
@@ -244,7 +244,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
                 $case->getFileName(),
-                $changed === null ? '[None]' : implode(',', $changed['appliedFixers'])
+                null === $changed ? '[None]' : implode(',', $changed['appliedFixers'])
             )
         );
 

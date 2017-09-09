@@ -37,7 +37,7 @@ final class RuleSetTest extends TestCase
     /**
      * @param string     $ruleName
      * @param string     $setName
-     * @param bool|array $ruleConfig
+     * @param array|bool $ruleConfig
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
@@ -313,7 +313,7 @@ final class RuleSetTest extends TestCase
         foreach ($ruleSet->getSetDefinitionNames() as $name) {
             $sets[$name] = array(
                 array($name => true),
-                strpos($name, ':risky') === false,
+                false === strpos($name, ':risky'),
             );
         }
 

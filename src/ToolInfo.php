@@ -47,6 +47,7 @@ final class ToolInfo
             foreach ($composerInstalled as $package) {
                 if (in_array($package['name'], array(self::COMPOSER_PACKAGE_NAME, self::COMPOSER_LEGACY_PACKAGE_NAME), true)) {
                     $result = $package;
+
                     break;
                 }
             }
