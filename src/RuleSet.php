@@ -151,19 +151,20 @@ final class RuleSet implements RuleSetInterface
             'psr4' => true,
             'silenced_deprecation_error' => true,
         ),
-        '@PHP56Migration' => array(
+        '@PHP56Migration' => array(),
+        '@PHP56Migration:risky' => array(
             'pow_to_exponentiation' => true,
         ),
         '@PHP70Migration' => array(
-            '@PHP56Migration' => true,
+            'ternary_to_null_coalescing' => true,
+        ),
+        '@PHP70Migration:risky' => array(
+            '@PHP56Migration:risky' => true,
+            'declare_strict_types' => true,
             'random_api_migration' => array('replacements' => array(
                 'mt_rand' => 'random_int',
                 'rand' => 'random_int',
             )),
-            'ternary_to_null_coalescing' => true,
-        ),
-        '@PHP70Migration:risky' => array(
-            'declare_strict_types' => true,
         ),
         '@PHP71Migration' => array(
             '@PHP70Migration' => true,

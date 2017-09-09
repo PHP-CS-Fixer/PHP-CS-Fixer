@@ -276,11 +276,15 @@ final class RuleSetTest extends TestCase
      */
     public function testRiskyRulesInSet(array $set, $safe)
     {
-        $fixers = FixerFactory::create()
-            ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet($set))
-            ->getFixers()
-        ;
+        try {
+            $fixers = FixerFactory::create()
+                ->registerBuiltInFixers()
+                ->useRuleSet(new RuleSet($set))
+                ->getFixers()
+            ;
+        } catch (InvalidForEnvFixerConfigurationException $exception) {
+            $this->markTestSkipped($exception->getMessage());
+        }
 
         $fixerNames = array();
         foreach ($fixers as $fixer) {
@@ -302,24 +306,26 @@ final class RuleSetTest extends TestCase
 
     public function provideSafeSetCases()
     {
-        return array(
-            array(array('@PSR1' => true), true),
-            array(array('@PSR2' => true), true),
-            array(array('@Symfony' => true), true),
+        $sets = array();
+
+        $ruleSet = new RuleSet();
+
+        foreach ($ruleSet->getSetDefinitionNames() as $name) {
+            $sets[$name] = array(
+                array($name => true),
+                strpos($name, ':risky') === false,
+            );
+        }
+
+        $sets['@Symfony:risky_and_@Symfony'] = array(
             array(
-                array(
-                    '@Symfony:risky' => true,
-                    '@Symfony' => false,
-                ),
-                false,
+                '@Symfony:risky' => true,
+                '@Symfony' => false,
             ),
-            array(
-                array(
-                    '@Symfony:risky' => true,
-                ),
-                false,
-            ),
+            false,
         );
+
+        return $sets;
     }
 
     public function testInvalidConfigNestedSets()
