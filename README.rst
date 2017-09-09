@@ -560,6 +560,12 @@ Choose from the list of available rules:
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
 
+* **homoglyph_names**
+
+  Replace accidental usage of non ascii characters in names.
+
+  *Risky rule: renames classes and cannot rename the files. You might have string references to renamed code (``$$name``).*
+
 * **include** [@Symfony]
 
   Include/Require and file path should be divided with a single space.
