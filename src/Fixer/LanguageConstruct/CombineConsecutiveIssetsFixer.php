@@ -67,10 +67,10 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
             $issetCloseBraceIndex = end($issetInfo); // ')' token
             $insertLocation = prev($issetInfo) + 1; // one index after the previous meaningful of ')'
 
-            $andAndTokenIndex = $tokens->getNextMeaningfulToken($issetCloseBraceIndex);
+            $booleanAndTokenIndex = $tokens->getNextMeaningfulToken($issetCloseBraceIndex);
 
-            while ($tokens[$andAndTokenIndex]->isGivenKind(T_BOOLEAN_AND)) {
-                $issetIndex = $tokens->getNextMeaningfulToken($andAndTokenIndex);
+            while ($tokens[$booleanAndTokenIndex]->isGivenKind(T_BOOLEAN_AND)) {
+                $issetIndex = $tokens->getNextMeaningfulToken($booleanAndTokenIndex);
                 if (!$tokens[$issetIndex]->isGivenKind(T_ISSET)) {
                     $index = $issetIndex;
 
@@ -84,7 +84,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
                 $clones = $this->getTokenClones($tokens, array_slice($nextIssetInfo, 1, -1));
 
                 // clean up no the tokens of the 'isset' statement we're merging
-                $this->clearTokens($tokens, array_merge($nextIssetInfo, [$issetIndex, $andAndTokenIndex]));
+                $this->clearTokens($tokens, array_merge($nextIssetInfo, [$issetIndex, $booleanAndTokenIndex]));
 
                 // insert the tokens to create the new statement
                 array_unshift($clones, new Token(','), new Token([T_WHITESPACE, ' ']));
@@ -96,7 +96,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
                 $issetCloseBraceIndex += $numberOfTokensInserted;
                 $insertLocation += $numberOfTokensInserted;
 
-                $andAndTokenIndex = $tokens->getNextMeaningfulToken($issetCloseBraceIndex);
+                $booleanAndTokenIndex = $tokens->getNextMeaningfulToken($issetCloseBraceIndex);
             }
         }
     }
