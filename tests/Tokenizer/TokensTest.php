@@ -48,7 +48,7 @@ final class TokensTest extends TestCase
      * @param Token[]    $sequence
      * @param int        $start
      * @param null|int   $end
-     * @param bool|array $caseSensitive
+     * @param array|bool $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
      */
@@ -1033,7 +1033,8 @@ echo $a;',
             $this->assertNull($input);
 
             return;
-        } elseif (null === $input) {
+        }
+        if (null === $input) {
             $this->fail('While "input" is <null>, "expected" is not.');
         }
 

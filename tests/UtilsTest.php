@@ -125,7 +125,7 @@ final class UtilsTest extends TestCase
 
     /**
      * @param string       $spaces
-     * @param string|array $input  token prototype
+     * @param array|string $input  token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */

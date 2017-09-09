@@ -316,7 +316,7 @@ final class TokenTest extends TestCase
     /**
      * @param Token              $token
      * @param string             $equals
-     * @param Token|array|string $other
+     * @param array|string|Token $other
      * @param bool               $caseSensitive
      *
      * @dataProvider provideEqualsCases
@@ -403,7 +403,7 @@ final class TokenTest extends TestCase
 
     /**
      * @param bool       $isKeyCaseSensitive
-     * @param bool|array $caseSensitive
+     * @param array|bool $caseSensitive
      * @param int        $key
      *
      * @dataProvider provideIsKeyCaseSensitiveCases

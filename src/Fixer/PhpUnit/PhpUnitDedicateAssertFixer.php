@@ -282,7 +282,7 @@ $this->assertTrue(is_nan($a));
 
     /**
      * @param Tokens    $tokens
-     * @param int|false $callNSIndex
+     * @param false|int $callNSIndex
      * @param int       $callIndex
      * @param int       $openIndex
      * @param int       $closeIndex

@@ -756,18 +756,18 @@ class Foo
 
     private function getControlContinuationTokensForOpeningToken($openingTokenKind)
     {
-        if ($openingTokenKind === T_IF) {
+        if (T_IF === $openingTokenKind) {
             return array(
                 T_ELSE,
                 T_ELSEIF,
             );
         }
 
-        if ($openingTokenKind === T_DO) {
+        if (T_DO === $openingTokenKind) {
             return array(T_WHILE);
         }
 
-        if ($openingTokenKind === T_TRY) {
+        if (T_TRY === $openingTokenKind) {
             $tokens = array(T_CATCH);
             if (defined('T_FINALLY')) {
                 $tokens[] = T_FINALLY;
@@ -781,11 +781,11 @@ class Foo
 
     private function getFinalControlContinuationTokensForOpeningToken($openingTokenKind)
     {
-        if ($openingTokenKind === T_IF) {
+        if (T_IF === $openingTokenKind) {
             return array(T_ELSE);
         }
 
-        if ($openingTokenKind === T_TRY && defined('T_FINALLY')) {
+        if (T_TRY === $openingTokenKind && defined('T_FINALLY')) {
             return array(T_FINALLY);
         }
 
@@ -849,7 +849,7 @@ class Foo
             $previousToken = $tokens[$nextTokenIndex - 1];
             // do not indent inline comments used to comment out unused code
             if (
-                (0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent()) || $nextToken->getContent() === '//')
+                (0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextToken->getContent())
                 && $previousToken->isWhitespace() && 1 === preg_match('/\R$/', $previousToken->getContent())
             ) {
                 return;
@@ -946,7 +946,7 @@ class Foo
      * @param int    $index
      * @param bool   $after
      *
-     * @return int|null
+     * @return null|int
      */
     private function getSiblingContinuousSingleLineComment(Tokens $tokens, $index, $after)
     {

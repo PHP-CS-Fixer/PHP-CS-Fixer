@@ -65,7 +65,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 $content = preg_replace('/^(?:(?<! ) {1,3})?\t/m', '\1    ', $token->getContent(), -1, $count);
 
                 // Also check for more tabs.
-                while ($count !== 0) {
+                while (0 !== $count) {
                     $content = preg_replace('/^(\ +)?\t/m', '\1    ', $content, -1, $count);
                 }
 
