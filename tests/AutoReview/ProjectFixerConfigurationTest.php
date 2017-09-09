@@ -30,7 +30,7 @@ final class ProjectFixerConfigurationTest extends TestCase
         /** @var \PhpCsFixer\Config $config */
         $config = require __DIR__.'/../../.php_cs.dist';
 
-        $this->assertInstanceOf('PhpCsFixer\Config', $config);
+        $this->assertInstanceOf(\PhpCsFixer\Config::class, $config);
         $this->assertEmpty($config->getCustomFixers());
         $this->assertNotEmpty($config->getRules());
 
