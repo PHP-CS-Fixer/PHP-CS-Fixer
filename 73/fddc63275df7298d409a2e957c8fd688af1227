@@ -1,0 +1,116 @@
+---------------------------------------------------------------------------
+
+by greg0ire at 2017-01-04T08:36:26Z
+
+Nice branch name ^^
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-01-05T13:31:43Z
+
+👍 for the fixer, and 👍 for leaving `less_and_greater` out of the default config
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-01-27T05:49:07Z
+
+What is left here is to decide to add more configuration options for setting which kind of comparisons should be fixed. Based on previous discussions it seems some people would like to target no-vars like `(array(2))` and `self::MY_CONST` while other don't. Like to get some feedback so this fixer can finished :)
+
+---------------------------------------------------------------------------
+
+by orlangur at 2017-03-08T17:46:31Z
+
+@SpacePossum thanks for pointing to this PR, I tried to search for "yoda" and "cond" with no luck and thought `YodaConditionFixer` was renamed to something less predictable.
+
+Why Yoda-style is default one in AutomateEverything era? Most of experienced programmers have got some professional deformation and read `null === $something` better than `$something === null`?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T18:32:21Z
+
+The rationale behind the defaults in this project (and this PR) are based on:
+- current CS in the project
+- expected most used values
+
+I added the options to prevent discussion about what is best and why. With the options everyone can use the fixer as wanted. So lets see what options are missing, what bugs are left in this PR or where other improvements can be made here.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-19T15:54:16Z
+
+Please rebase
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-08-05T06:47:19Z
+
+Any updates on this? Should just conflicts and build be fixed or is there more to this? Thank you!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-19T11:31:01Z
+
+rebased
+@hkdobrev there are a few cases still failing (related to array destruction) and some tests are missing for new PHP syntax features (fixer was written before PHP 7 launched).
+Please let me know if you can help out finishing this :)  (or anybody else, all help is welcome here)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-20T08:18:01Z
+
+Sadly, tests are failing
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-30T17:04:51Z
+
+all green... cause... the test that was failing was because the `expected` and `output` were swapped...
+: D
+
+Anyway, what is left is test cases for all the new syntax stuff PHP7 and up provided.
+Therefor I would ask all people here to come up with nice test cases :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-31T10:41:31Z
+
+TODO: test on multiple repo's to see if all good
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-31T20:58:30Z
+
+@SpacePossum `Symfony` follows yoda, could you please test it on that repo?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-04T11:46:00Z
+
+https://github.com/SpacePossum/symfony/pull/1
+:tada:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-06T17:12:48Z
+
+I found a bug :(
+related to https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2446#discussion_r136873586
+working on it
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-06T17:55:47Z
+
+all done.. I hope
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-06T20:07:06Z
+
+both fabbot and Travis failures are false-negatives, sadly
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-06T21:10:25Z
+
+wow, now we get broken pipe on 5.6? wtf?
