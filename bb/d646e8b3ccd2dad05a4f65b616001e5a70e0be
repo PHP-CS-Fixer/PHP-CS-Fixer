@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-02T15:08:29Z
+
+Did I already saw this fixer / concept somewhere ?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-09-02T21:26:15Z
+
+@keradus
+
+Maybe here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.5/src/Fixer/LanguageConstruct/CombineConsecutiveUnsetsFixer.php?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-03T07:21:09Z
+
+no
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-03T07:21:28Z
+
+I let myself update opening threads with links
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-03T07:23:18Z
+
+@SpacePossum have you pick sth nice from #1982 ? maybe some test cases are nice
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-04T05:42:05Z
+
+@keradus the four tests provided in the other PR are covered here as well in different examples.
