@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Console\Command;
 
-use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +40,7 @@ final class FixCommandTest extends TestCase
         $this->doTestExecute(
             array('--rules' => ''),
             array(
-                'class' => InvalidConfigurationException::class,
+                'class' => 'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
                 'regex' => '#^Empty rules value is not allowed\.$#',
             )
         );
@@ -60,7 +59,7 @@ final class FixCommandTest extends TestCase
             )
         );
 
-        $this->assertSame(0, $cmdTester->getStatusCode(), 'Expected exit code mismatch.');
+        $this->assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
     }
 
     /**
