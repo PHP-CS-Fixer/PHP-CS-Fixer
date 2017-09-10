@@ -175,7 +175,9 @@ final class FixCommand extends Command
         $finder = $resolver->getFinder();
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
-            $stdErr->writeln('<bg=yellow;fg=black;>Paths from configuration file overridden by paths provided as command arguments.</>');
+            $stdErr->writeln(
+                sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file overridden by paths provided as command arguments.')
+            );
         }
 
         if ('none' === $progressType || null === $stdErr) {
