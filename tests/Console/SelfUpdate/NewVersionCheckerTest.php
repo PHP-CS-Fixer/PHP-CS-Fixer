@@ -33,7 +33,7 @@ final class NewVersionCheckerTest extends TestCase
      * @param int         $majorVersion
      * @param null|string $expectedVersion
      *
-     * @dataProvider getLatestVersionOfMajorCases
+     * @dataProvider provideLatestVersionOfMajorCases
      */
     public function testGetLatestVersionOfMajor($majorVersion, $expectedVersion)
     {
@@ -42,7 +42,7 @@ final class NewVersionCheckerTest extends TestCase
         $this->assertSame($expectedVersion, $checker->getLatestVersionOfMajor($majorVersion));
     }
 
-    public function getLatestVersionOfMajorCases()
+    public function provideLatestVersionOfMajorCases()
     {
         return array(
             array(1, 'v1.13.2'),
@@ -56,7 +56,7 @@ final class NewVersionCheckerTest extends TestCase
      * @param string $versionB
      * @param int    $expectedResult
      *
-     * @dataProvider getCompareVersionsCases
+     * @dataProvider provideCompareVersionsCases
      */
     public function testCompareVersions($versionA, $versionB, $expectedResult)
     {
@@ -72,7 +72,7 @@ final class NewVersionCheckerTest extends TestCase
         );
     }
 
-    public function getCompareVersionsCases()
+    public function provideCompareVersionsCases()
     {
         $cases = array();
 
