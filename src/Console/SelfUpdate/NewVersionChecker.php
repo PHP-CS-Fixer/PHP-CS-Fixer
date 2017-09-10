@@ -115,7 +115,10 @@ final class NewVersionChecker
 
             try {
                 $this->versionParser->normalize($version);
-                $this->availableVersions[] = $version;
+
+                if ('stable' === Versionparser::parseStability($version)) {
+                    $this->availableVersions[] = $version;
+                }
             } catch (\UnexpectedValueException $exception) {
                 // not a valid version tag
             }
