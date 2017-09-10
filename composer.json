@@ -17,6 +17,7 @@
         "php": "^5.6 || >=7.0 <7.2",
         "ext-json": "*",
         "ext-tokenizer": "*",
+        "composer/semver": "^1.4",
         "doctrine/annotations": "^1.2",
         "gecko-packages/gecko-php-unit": "^2.0",
         "sebastian/diff": "^1.4",

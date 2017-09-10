@@ -658,6 +658,63 @@ final class ConfigurationResolverTest extends TestCase
         ];
     }
 
+    /**
+     * @param array $options
+     * @param bool  $expectedResult
+     *
+     * @dataProvider provideConfigFinderIsOverriddenCases
+     */
+    public function testConfigFinderIsOverridden(array $options, $expectedResult)
+    {
+        $resolver = new ConfigurationResolver($this->config, $options, '');
+
+        $this->assertSame($expectedResult, $resolver->configFinderIsOverridden());
+
+        $resolver = new ConfigurationResolver($this->config, $options, '');
+        $resolver->getFinder();
+
+        $this->assertSame($expectedResult, $resolver->configFinderIsOverridden());
+    }
+
+    public function provideConfigFinderIsOverriddenCases()
+    {
+        $root = __DIR__.'/../..';
+
+        return [
+            [
+                [
+                    'config' => $root.'/.php_cs.dist',
+                ],
+                false,
+            ],
+            [
+                [
+                    'config' => $root.'/.php_cs.dist',
+                    'path' => [$root.'/src'],
+                ],
+                true,
+            ],
+            [
+                [],
+                false,
+            ],
+            [
+                [
+                    'path' => [$root.'/src'],
+                ],
+                false,
+            ],
+            [
+                [
+                    'config' => $root.'/.php_cs.dist',
+                    'path' => [$root.'/src'],
+                    'path-mode' => ConfigurationResolver::PATH_MODE_INTERSECTION,
+                ],
+                false,
+            ],
+        ];
+    }
+
     public function testResolveIsDryRunViaStdIn()
     {
         $resolver = new ConfigurationResolver(
