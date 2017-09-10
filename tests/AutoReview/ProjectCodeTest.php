@@ -40,6 +40,7 @@ final class ProjectCodeTest extends TestCase
         'PhpCsFixer\Console\Command\FixCommand',
         'PhpCsFixer\Console\Command\SelfUpdateCommand',
         'PhpCsFixer\Console\Output\NullOutput',
+        'PhpCsFixer\Console\SelfUpdate\GithubClient',
         'PhpCsFixer\Console\WarningsDetector',
         'PhpCsFixer\Differ\DiffConsoleFormatter',
         'PhpCsFixer\Doctrine\Annotation\Tokens',
