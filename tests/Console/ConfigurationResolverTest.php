@@ -662,7 +662,7 @@ final class ConfigurationResolverTest extends TestCase
      * @param array $options
      * @param bool  $expectedResult
      *
-     * @dataProvider getConfigFinderIsOverriddenCases
+     * @dataProvider provideConfigFinderIsOverriddenCases
      */
     public function testConfigFinderIsOverridden(array $options, $expectedResult)
     {
@@ -676,7 +676,7 @@ final class ConfigurationResolverTest extends TestCase
         $this->assertSame($expectedResult, $resolver->configFinderIsOverridden());
     }
 
-    public function getConfigFinderIsOverriddenCases()
+    public function provideConfigFinderIsOverriddenCases()
     {
         $root = __DIR__.'/../..';
 
