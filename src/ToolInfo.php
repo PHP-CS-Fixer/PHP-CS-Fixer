@@ -25,14 +25,8 @@ final class ToolInfo
 {
     const COMPOSER_PACKAGE_NAME = 'friendsofphp/php-cs-fixer';
 
-    /**
-     * @internal
-     */
     const COMPOSER_LEGACY_PACKAGE_NAME = 'fabpot/php-cs-fixer';
 
-    /**
-     * @internal
-     */
     public static function getComposerInstallationDetails()
     {
         static $result;

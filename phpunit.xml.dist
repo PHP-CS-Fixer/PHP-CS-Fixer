@@ -23,7 +23,6 @@
     <testsuites>
         <testsuite>
             <directory>./tests</directory>
-            <exclude>./tests/Standalone</exclude>
         </testsuite>
     </testsuites>
 
