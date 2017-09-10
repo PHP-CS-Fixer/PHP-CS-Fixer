@@ -35,7 +35,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
      * - Greek and Coptic
      * - Cyrillic
      * - Cyrillic Supplement
-     * - Letter­like Symbols
+     * - Letterlike Symbols
      * - Latin Numbers
      * - Fullwidth Latin
      *
