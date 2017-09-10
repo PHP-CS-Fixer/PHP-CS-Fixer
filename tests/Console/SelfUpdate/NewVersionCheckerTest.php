@@ -47,7 +47,7 @@ final class NewVersionCheckerTest extends TestCase
         return array(
             array(1, 'v1.13.2'),
             array(2, 'v2.4.1'),
-            array(3, null),
+            array(4, null),
         );
     }
 
@@ -109,6 +109,15 @@ final class NewVersionCheckerTest extends TestCase
         $githubClient = $this->prophesize('PhpCsFixer\Console\SelfUpdate\GithubClientInterface');
 
         $githubClient->getTags()->willReturn(array(
+            array(
+                'name' => 'v3.0.0-RC',
+                'zipball_url' => 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/v3.0.0-RC',
+                'tarball_url' => 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/tarball/v3.0.0-RC',
+                'commit' => array(
+                    'sha' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                    'url' => 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/commits/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                ),
+            ),
             array(
                 'name' => 'v2.4.1',
                 'zipball_url' => 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/v2.4.1',
@@ -305,6 +314,15 @@ final class NewVersionCheckerTest extends TestCase
                 'commit' => array(
                     'sha' => 'f88ef17f44fa442e1dd98deb7da0d943be9c8fa8',
                     'url' => 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/commits/f88ef17f44fa442e1dd98deb7da0d943be9c8fa8',
+                ),
+            ),
+            array(
+                'name' => 'v1.14.0-beta',
+                'zipball_url' => 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/v1.14.0-beta',
+                'tarball_url' => 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/tarball/v1.14.0-beta',
+                'commit' => array(
+                    'sha' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                    'url' => 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/commits/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                 ),
             ),
             array(
