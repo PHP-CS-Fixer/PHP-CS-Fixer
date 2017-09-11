@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-10T10:22:12Z
+
+Travis needs fixing
+I fixed one of the warnings, leaving 2nd for you @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-10T10:26:42Z
+
+thanks @keradus
+test update and rebased on 2.2
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-10T14:23:32Z
+
+not sure what is the issue, works locally:
+```
+~/github/PHP-CS-Fixer$ docker run -it --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:7.2.0RC1-cli php vendor/phpunit/phpunit/phpunit tests/Console/Command/FixCommandTest.php
+PHPUnit 5.7.21 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 7.2.0RC1
+Configuration: /usr/src/myapp/phpunit.xml.dist
+
+Testing PhpCsFixer\Tests\Console\Command\FixCommandTest
+..                                                                                                                              2 / 2 (100%)
+
+Time: 109 ms, Memory: 10.00MB
+
+OK (2 tests, 4 assertions)
+```
