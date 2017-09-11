@@ -635,6 +635,9 @@ final class ConfigurationResolver
         }
 
         $rules = trim($this->options['rules']);
+        if ('' === $rules) {
+            throw new InvalidConfigurationException('Empty rules value is not allowed.');
+        }
 
         if ('{' === $rules[0]) {
             $rules = json_decode($rules, true);

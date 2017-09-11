@@ -751,6 +751,11 @@ Changelog for v2.0.0
 * minor #988 Fixers - no need to search for tokens of given kind in extra loop (keradus)
 * minor #989 No need for loop in Token::equals (keradus)
 
+Changelog for v1.13.3
+---------------------
+
+* minor #3042 Update gitter address (keradus)
+
 Changelog for v1.13.2
 ---------------------
 
