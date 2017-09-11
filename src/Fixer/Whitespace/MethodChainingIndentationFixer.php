@@ -31,9 +31,8 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Method chaining MUST be properly indented.',
-            [new CodeSample("<?php\n\$user->setEmail('voff.web@gmail.com')\n         ->setPassword('233434');"),
-        ]
+            'Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.',
+            [new CodeSample("<?php\n\$user->setEmail('voff.web@gmail.com')\n         ->setPassword('233434');\n")]
         );
     }
 
@@ -53,78 +52,79 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 1, $count = count($tokens); $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
-                if ($this->needLineBreak($index - 1, $tokens)) {
-                    $tokens[$index - 1] = new Token([T_WHITESPACE, $tokens[$index - 1]->getContent().$lineEnding]);
-                    --$index;
-                    continue;
+            if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+                continue;
+            }
+
+            if ($this->canBeMovedToNextLine($index, $tokens)) {
+                $newline = new Token([T_WHITESPACE, $lineEnding]);
+                if ($tokens[$index - 1]->isWhitespace()) {
+                    $tokens[$index - 1] = $newline;
+                } else {
+                    $tokens->insertAt($index, $newline);
+                    ++$index;
                 }
+            }
 
-                $prevIndex = $index - 1;
-                $prevToken = $tokens[$prevIndex];
-                $currentWhitespaces = $this->getCurrentWhitespaces($prevToken->getContent());
+            $currentIndent = $this->getIndentAt($tokens, $index - 1);
+            if (null === $currentIndent) {
+                continue;
+            }
 
-                if (null !== $currentWhitespaces) {
-                    $prevMeaningIndex = $tokens->getPrevMeaningfulToken($index);
-                    $rightWhitespaces = $this->getRightIndents($prevMeaningIndex, $tokens);
-
-                    if ($currentWhitespaces !== $rightWhitespaces) {
-                        $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$rightWhitespaces]);
-                    }
-                }
+            $expectedIndent = $this->getExpectedIndentAt($tokens, $index);
+            if ($currentIndent !== $expectedIndent) {
+                $tokens[$index - 1] = new Token([T_WHITESPACE, $lineEnding.$expectedIndent]);
             }
         }
     }
 
     /**
-     * @param int    $index
      * @param Tokens $tokens
+     * @param int    $index  index of the first token on the line to indent
      *
      * @return string
      */
-    private function getRightIndents($index, Tokens $tokens)
+    private function getExpectedIndentAt(Tokens $tokens, $index)
     {
+        $index = $tokens->getPrevMeaningfulToken($index);
         $indent = $this->whitespacesConfig->getIndent();
 
-        for ($i = $index; $i >= 0; --$i) {
-            if ($i > 0) {
-                $codeToFindIndents = $tokens->generatePartialCode($i - 1, $i);
-            } else {
-                $codeToFindIndents = $tokens[$i]->getContent();
+        for ($i = $index - 1; $i >= 0; --$i) {
+            $currentIndent = $this->getIndentAt($tokens, $i);
+            if (null === $currentIndent) {
+                continue;
             }
 
-            $currentWhitespaces = $this->getCurrentWhitespaces($codeToFindIndents);
-
-            if (null !== $currentWhitespaces) {
-                if ($tokens[$i + 1]->isGivenKind(T_OBJECT_OPERATOR) || $this->isMultiLineMethod($i, $index, $tokens)) {
-                    return $currentWhitespaces;
-                }
-
-                return $currentWhitespaces.$indent;
+            if ($this->currentLineRequiresExtraIndentLevel($tokens, $i, $index)) {
+                return $currentIndent.$indent;
             }
+
+            return $currentIndent;
         }
 
         return $indent;
     }
 
     /**
-     * @param int    $index
+     * @param int    $index  position of the T_OBJECT_OPERATOR token
      * @param Tokens $tokens
      *
      * @return bool
      */
-    private function needLineBreak($index, Tokens $tokens)
+    private function canBeMovedToNextLine($index, Tokens $tokens)
     {
         $prevMeaningful = $tokens->getPrevMeaningfulToken($index);
-        $isComment = false;
+        $hasCommentBefore = false;
 
-        for ($i = $index; $i > $prevMeaningful; --$i) {
-            if ($tokens[$i]->isGivenKind(T_OBJECT_OPERATOR) || null !== $this->getCurrentWhitespaces($tokens[$i]->getContent())) {
-                return $isComment;
+        for ($i = $index - 1; $i > $prevMeaningful; --$i) {
+            if ($tokens[$i]->isComment()) {
+                $hasCommentBefore = true;
+
+                continue;
             }
 
-            if ($tokens[$i]->isComment()) {
-                $isComment = true;
+            if ($tokens[$i]->isWhitespace() && 1 === preg_match('/\R/', $tokens[$i]->getContent())) {
+                return $hasCommentBefore;
             }
         }
 
@@ -132,12 +132,24 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     }
 
     /**
-     * @param string $content
+     * @param Tokens $tokens
+     * @param int    $index  index of the indentation token
      *
-     * @return string|null
+     * @return null|string
      */
-    private function getCurrentWhitespaces($content)
+    private function getIndentAt(Tokens $tokens, $index)
     {
+        $content = '';
+
+        if ($tokens[$index]->isWhitespace()) {
+            $content = $tokens[$index]->getContent();
+            --$index;
+        }
+
+        if ($tokens[$index]->isGivenKind(T_OPEN_TAG)) {
+            $content = $tokens[$index]->getContent().$content;
+        }
+
         if (1 === preg_match('/\R{1}([ \t]*)$/', $content, $matches)) {
             return $matches[1];
         }
@@ -146,30 +158,25 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     }
 
     /**
-     * @param int    $start
-     * @param int    $end
      * @param Tokens $tokens
+     * @param int    $start  index of first meaningful token on previous line
+     * @param int    $end    index of last token on previous line
      *
      * @return bool
      */
-    private function isMultiLineMethod($start, $end, Tokens $tokens)
+    private function currentLineRequiresExtraIndentLevel(Tokens $tokens, $start, $end)
     {
-        if ($tokens[$end]->equalsAny([')', [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE]])) {
-            if ($tokens[$end]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)) {
-                // src/Tokenizer/Transformer/BraceClassInstantiationTransformer.php
-                if ($tokens->findGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, $start, $end)) {
-                    return false;
-                }
-
-                return true;
-            }
-
-            $methodStart = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end, false);
-            if ($methodStart < $start) {
-                return true;
-            }
+        if ($tokens[$start + 1]->isGivenKind(T_OBJECT_OPERATOR)) {
+            return false;
         }
 
-        return false;
+        if ($tokens[$end]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)) {
+            return true;
+        }
+
+        return
+            !$tokens[$end]->equals(')')
+            || $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end, false) >= $start
+        ;
     }
 }

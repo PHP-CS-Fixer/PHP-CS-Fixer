@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -72,7 +72,9 @@ comment
     ->bar4()
     ->bar5()
                                 /** buahaha */
-    ->bar6();',
+    ->bar6()
+                                /** buahaha */
+    ->bar7();',
                 '<?php
 $foo
          ->bar1() // comment
@@ -83,7 +85,8 @@ comment
     // comment
         ->bar4()
 ->bar5()
-                                /** buahaha */    ->bar6();',
+                                /** buahaha */    ->bar6()
+                                /** buahaha */->bar7();',
             ],
             [
             '<?php
@@ -165,6 +168,24 @@ $foo
             ]);
                 ',
             ],
+            [
+                '<?php
+(new Foo(
+    \'argument on line 1\',
+    \'argument on line 2\'
+))
+    ->foo()
+    ->bar()
+;',
+                '<?php
+(new Foo(
+    \'argument on line 1\',
+    \'argument on line 2\'
+))
+  ->foo()
+->bar()
+;',
+            ],
         ];
     }
 
@@ -172,7 +193,7 @@ $foo
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideWindowsWhitespaces
+     * @dataProvider provideWindowsWhitespacesCases
      */
     public function testWindowsWhitespaces($expected, $input = null)
     {
@@ -180,7 +201,7 @@ $foo
         $this->doTest($expected, $input);
     }
 
-    public function provideWindowsWhitespaces()
+    public function provideWindowsWhitespacesCases()
     {
         return [
             [

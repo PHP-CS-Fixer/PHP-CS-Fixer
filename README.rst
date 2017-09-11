@@ -705,7 +705,8 @@ Choose from the list of available rules:
 
 * **method_chaining_indentation**
 
-  Method chaining MUST be properly indented.
+  Method chaining MUST be properly indented. Method chaining with
+  different levels of indentation is not supported.
 
 * **method_separation** [@Symfony]
 
