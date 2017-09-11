@@ -16,6 +16,29 @@ Changelog for v2.5.0
 * feature #2992 Add Doctrine Annotation ruleset (julienfalque)
 * minor #2926 Token::getNameForId (SpacePossum)
 
+Changelog for v2.4.2
+--------------------
+
+* bug #3002 Bugfix braces (mnabialek)
+* bug #3010 Fix handling of Github releases (julienfalque, keradus)
+* bug #3015 Fix exception arguments (julienfalque)
+* bug #3016 Verify phar file (keradus)
+* bug #3021 Risky rules cleanup (kubawerlos)
+* bug #3023 RandomApiMigrationFixer - "rand();" to "random_int(0, getrandmax());" fixing (SpacePossum)
+* bug #3024 ConfigurationResolver - Handle empty "rules" value (SpacePossum, keradus)
+* bug #3031 IndentationTypeFixer - fix handling tabs in indented comments (keradus)
+* minor #2999 Notice when paths from config file are overridden by command arguments (julienfalque, keradus)
+* minor #3007 Add PHP 7.2 to Travis build matrix (Jean85)
+* minor #3009 CiIntegrationTest - run local (SpacePossum)
+* minor #3013 Adjust phpunit configuration (localheinz)
+* minor #3017 Fix: Risky tests (localheinz)
+* minor #3018 Fix: Make sure that data providers are named correctly (localheinz, keradus)
+* minor #3032 .php_cs.dist - handling UnexpectedValueException (keradus)
+* minor #3033 Use ::class (keradus)
+* minor #3034 Follow newest CS (keradus)
+* minor #3036 Drop not existing Standalone group from PHPUnit configuration and duplicated internal tags (keradus)
+* minor #3042 Update gitter address (keradus)
+
 Changelog for v2.4.1
 --------------------
 
@@ -187,6 +210,28 @@ Changelog for v2.3.0
 * feature #2708 Add PhpUnitTestClassRequiresCoversFixer (keradus)
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
+
+Changelog for v2.2.7
+--------------------
+
+* bug #3002 Bugfix braces (mnabialek)
+* bug #3010 Fix handling of Github releases (julienfalque, keradus)
+* bug #3015 Fix exception arguments (julienfalque)
+* bug #3016 Verify phar file (keradus)
+* bug #3021 Risky rules cleanup (kubawerlos)
+* bug #3023 RandomApiMigrationFixer - "rand();" to "random_int(0, getrandmax());" fixing (SpacePossum)
+* bug #3024 ConfigurationResolver - Handle empty "rules" value (SpacePossum, keradus)
+* bug #3031 IndentationTypeFixer - fix handling tabs in indented comments (keradus)
+* minor #2999 Notice when paths from config file are overridden by command arguments (julienfalque, keradus)
+* minor #3007 Add PHP 7.2 to Travis build matrix (Jean85)
+* minor #3009 CiIntegrationTest - run local (SpacePossum)
+* minor #3013 Adjust phpunit configuration (localheinz)
+* minor #3017 Fix: Risky tests (localheinz)
+* minor #3018 Fix: Make sure that data providers are named correctly (localheinz, keradus)
+* minor #3032 .php_cs.dist - handling UnexpectedValueException (keradus)
+* minor #3034 Follow newest CS (keradus)
+* minor #3036 Drop not existing Standalone group from PHPUnit configuration and duplicated internal tags (keradus)
+* minor #3042 Update gitter address (keradus)
 
 Changelog for v2.2.6
 --------------------
@@ -763,6 +808,11 @@ Changelog for v2.0.0
 * minor #981 Tokens - code grooming (keradus)
 * minor #988 Fixers - no need to search for tokens of given kind in extra loop (keradus)
 * minor #989 No need for loop in Token::equals (keradus)
+
+Changelog for v1.13.3
+---------------------
+
+* minor #3042 Update gitter address (keradus)
 
 Changelog for v1.13.2
 ---------------------

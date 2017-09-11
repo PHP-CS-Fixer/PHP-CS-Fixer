@@ -145,7 +145,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 ';
 
         $optionalXdebugWarning = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
-If you need help while solving warnings, ask at https://gitter.im/FriendsOfPHP/PHP-CS-Fixer, we will help you!
+If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
 ';
 
         $executionDetails = "Loaded config default from \".php_cs.dist\".
