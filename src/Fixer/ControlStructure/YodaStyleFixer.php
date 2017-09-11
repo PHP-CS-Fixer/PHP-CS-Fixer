@@ -132,6 +132,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      */
     private function findComparisonEnd(Tokens $tokens, $index)
     {
+        ++$index;
         $count = count($tokens);
         while ($index < $count) {
             $token = $tokens[$index];
@@ -173,6 +174,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      */
     private function findComparisonStart(Tokens $tokens, $index)
     {
+        --$index;
         while (0 <= $index) {
             $token = $tokens[$index];
             if ($this->isOfLowerPrecedence($token)) {
@@ -398,6 +400,10 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      */
     private function isOfLowerPrecedence(Token $token)
     {
+        if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+            return false;
+        }
+
         static $tokens;
 
         if (null === $tokens) {
@@ -422,6 +428,10 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
                 T_SR_EQUAL,     // >>=
                 T_THROW,        // throw
                 T_XOR_EQUAL,    // ^=
+                T_ECHO,
+                T_PRINT,
+                T_OPEN_TAG,
+                T_OPEN_TAG_WITH_ECHO,
             ];
 
             if (defined('T_POW_EQUAL')) {
