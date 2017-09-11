@@ -1,0 +1,67 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-11T09:12:48Z
+
+If one cannot fix one case of rule violation of one rule and on top of that claims project is not following that rule, we shall probably remove `protected_to_private`
+https://github.com/symfony/symfony/pull/24136
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-11T09:53:26Z
+
+also, probably good time to inject:
+```
+        'no_unreachable_default_argument_value' => false,
+        'braces' => array('allow_single_line_closure' => true),
+        'heredoc_to_nowdoc' => false,
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-11T10:07:00Z
+
+I thing `protected_to_private` is an issue on the SF codebase only, not in the whole eco-culture of SF projects (like Silex, Twig, etc.). So it might be good to keep promoting it.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-11T10:08:13Z
+
+```
+        'no_unreachable_default_argument_value' => false,
+        'braces' => array('allow_single_line_closure' => true),
+        'heredoc_to_nowdoc' => false,
+```
+
+IIRC `heredoc_to_nowdoc` was reverted on request by SF community, or rejected.
+
+`no_unreachable_default_argument_value` didn't work out because of reflection (argument guessing on routing IRIC)
+
+:+1: for `braces` config tweaking
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-11T10:17:26Z
+
+thus they shall fix `protected_to_private` case on their repo ;P ok, let keep it for now.
+
+`no_unreachable_default_argument_value` is preventing `ParamConverter`s to work, which a lot of SF apps rely on, I would drop it from ruleset.
+`heredoc_to_nowdoc`, as rejected, shall also be dropped from ruleset.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-11T11:58:49Z
+
+```
+no_unreachable_default_argument_value is preventing ParamConverters to work, which a lot of SF apps rely on, I would drop it from ruleset.
+heredoc_to_nowdoc, as rejected, shall also be dropped from ruleset.
+```
+
+these are not in the set, so no update needed
+
+>thus they shall fix protected_to_private case on their repo ;P ok, let keep it for now.
+
+no update needed
+
+>'braces' => array('allow_single_line_closure' => true),
+
+already in the set, no update needed
