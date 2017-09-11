@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-11T14:04:18Z
+
+please update the issue template as well
+(and tests/CiIntegrationTest.php)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-11T14:06:49Z
+
+template added, tests/ci... not available on 1.13
