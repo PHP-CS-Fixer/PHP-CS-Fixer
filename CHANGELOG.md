@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v1.13.3
+---------------------
+
+* minor #3042 Update gitter address (keradus)
+
 Changelog for v1.13.2
 ---------------------
 
