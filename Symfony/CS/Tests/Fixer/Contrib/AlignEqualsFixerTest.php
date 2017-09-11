@@ -32,6 +32,30 @@ class AlignEqualsFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
+                $a        = 1;
+                $bbbb     = 2;
+                $cccccccc = 3;
+                ',
+                '<?php
+                $a = 1;
+                $bbbb = 2;
+                $cccccccc = 3;
+                ',
+            ),
+            array(
+                '<?php
+                $a        = 1;
+                $bbbb     = 2;
+                $cccccccc = 3;
+                ',
+                '<?php
+                $a = 1;
+                $bbbb = 2;
+                $cccccccc  = 3;
+                ',
+            ),
+            array(
+                '<?php
     $a    = 1;
     $bbbb = \'
     $cccccccc = 3;

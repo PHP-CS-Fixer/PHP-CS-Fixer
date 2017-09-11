@@ -53,8 +53,8 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
         "html"   => 1, array(
             "foo"    => "bar",
             "foofoo" => array(
-                "a"  => 1,
-                "b"  => 2
+                "a" => 1,
+                "b" => 2
             )
         ),)
     );',
@@ -317,11 +317,11 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     $a = array(
-        10    => 11,
-        20    => 22,
-        30    => 33,
+        10 => 11,
+        20 => 22,
+        30 => 33,
         40
-            =>
+           =>
                 44,
     );',
                 '<?php
@@ -337,9 +337,9 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     return array(
-        " "    => "",    "\t"    => "",
-        "\n"   => "", "\r"   => "",
-        "\0"   => "", "\x0B"    => "",
+        " "  => "",    "\t"    => "",
+        "\n" => "", "\r"   => "",
+        "\0" => "", "\x0B"    => "",
     );',
                 '<?php
     return array(
@@ -377,8 +377,8 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     return array(
-        self::STATUS_UNKNOWN    => array("symbol" => "?", "description" => "unknown"),
-        self::STATUS_INVALID    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+        self::STATUS_UNKNOWN => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
                 '<?php
     return array(
@@ -390,13 +390,13 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
                 '<?php
     $array = array(
         "bazab" => b(array(
-            1     => 2,
-            5     => [
-                6     => 7,
-                8     => 9,
+            1 => 2,
+            5 => [
+                6 => 7,
+                8 => 9,
             ],
-            3       => 4,
-            10      => 11,
+            3  => 4,
+            10 => 11,
         )),
     );',
                 '<?php
@@ -516,8 +516,8 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     return array(
-        self::STATUS_UNKNOWN    => array("symbol" => "?", "description" => "unknown"),
-        self::STATUS_INVALID    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+        self::STATUS_UNKNOWN => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
     );',
                 '<?php
     return array(
@@ -528,8 +528,8 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     return array(
-        self::STATUS_UNKNOWN    => array((1+11)=> "?", "description" => "unknown"),
-        self::STATUS_INVALID    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+        self::STATUS_UNKNOWN => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
     );',
                 '<?php
     return array(
@@ -540,8 +540,8 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     return [
-        self::STATUS_UNKNOWN    => ["symbol" => "?", "description" => "unknown"],
-        self::STATUS_INVALID    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+        self::STATUS_UNKNOWN => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
     ];',
                 '<?php
     return [
@@ -552,8 +552,8 @@ class AlignDoubleArrowFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     return [
-        self::STATUS_UNKNOWN    => [(1+11)=> "?", "description" => "unknown"],
-        self::STATUS_INVALID    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
+        self::STATUS_UNKNOWN => [(1+11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
     ];',
                 '<?php
     return [
