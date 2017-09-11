@@ -28,9 +28,9 @@ class FooBar
      * @param string $dummy Some argument description
      */
     public function __construct($dummy)
-    {
+    {{
         $this->fooBar = $this->transformText($dummy);
-    }
+    }}
 
     /**
      * Foo
@@ -105,7 +105,16 @@ implements
     /**
      * @expectedException Exception
      */
-    public function testFooBar()
+    public function testFooBar($a)
     {
+        $b = $a === 1 ? 'a' : 'b';
+        echo $b;;
     }
 }
+
+final class finalClass
+{
+    final function finalMethod(){}
+}
+
+echo 1 ?>
