@@ -824,12 +824,12 @@ Choose from the list of available rules:
     ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case',
     'yield']``
 
-* **no_unneeded_curly_braces**
+* **no_unneeded_curly_braces** [@Symfony]
 
   Removes unneeded curly braces that are superfluous and aren't part of a
   control structure's body.
 
-* **no_unneeded_final_method**
+* **no_unneeded_final_method** [@Symfony]
 
   A final class must not have final methods.
 
@@ -1146,7 +1146,7 @@ Choose from the list of available rules:
   Inside a classy element "self" should be preferred to the class name
   itself.
 
-* **semicolon_after_instruction**
+* **semicolon_after_instruction** [@Symfony]
 
   Instructions must be terminated with a semicolon.
 
@@ -1281,7 +1281,7 @@ Choose from the list of available rules:
 
   In array declaration, there MUST be a whitespace after each comma.
 
-* **yoda_style**
+* **yoda_style** [@Symfony]
 
   Write conditions in Yoda style or not based on configuration.
 
