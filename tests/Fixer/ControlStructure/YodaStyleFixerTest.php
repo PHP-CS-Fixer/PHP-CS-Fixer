@@ -70,15 +70,6 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-function a() {
-    for ($i = 1; $i <= 3; $i++) {
-        echo yield 1 === $i ? 1 : 2;
-    }
-}
-',
-            ],
-            [
-                '<?php
                 echo 3 === $a ? 2 : 4;
                 ',
                 '<?php
@@ -573,6 +564,15 @@ $a#4
             [
                 '<?php $a = 1 === new class(10) extends SomeClass implements SomeInterface {};/**/',
                 '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === 1;/**/',
+            ],
+            [
+                '<?php
+function a() {
+    for ($i = 1; $i <= 3; $i++) {
+        echo yield 1 === $i ? 1 : 2;
+    }
+}
+',
             ],
         ];
     }
