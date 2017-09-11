@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.6.0
+--------------------
+
+* bug #3039 YodaStyleFixer - Fix echo case (SpacePossum, keradus)
+* feature #2446 Add YodaStyleFixer (SpacePossum)
+* feature #2940 Add NoHomoglyphNamesFixer (mcfedr, keradus)
+* feature #3012 Add CombineConsecutiveIssetsFixer (SpacePossum)
+* minor #3037 Update SF rule set (SpacePossum)
+
 Changelog for v2.5.1
 --------------------
 
