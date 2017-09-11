@@ -61,6 +61,143 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
+            [
+                '<?= 1 === $a ? 5 : 7;',
+                '<?= $a === 1 ? 5 : 7;',
+            ],
+            [
+                '<?php print 1 === 1343;',
+            ],
+            [
+                '<?php
+                echo 3 === $a ? 2 : 4;
+                ',
+                '<?php
+                echo $a === 3 ? 2 : 4;
+                ',
+            ],
+            [
+                '<?php 1 === lala($a) ? 1 : 2;',
+                '<?php lala($a) === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php 1 === $a::$a ? 1 : 2;',
+                '<?php $a::$a === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php 1 === (bool) $a ? 8 : 7;',
+                '<?php (bool) $a === 1 ? 8 : 7;',
+            ],
+            [
+                '<?php 1 === new $a ? 1 : 2;',
+                '<?php new $a === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php 1 === "a".$a ? 5 : 6;',
+                '<?php "a".$a === 1 ? 5 : 6;',
+            ],
+            [
+                '<?php 1 === __DIR__.$a ? 5 : 6;',
+                '<?php __DIR__.$a === 1 ? 5 : 6;',
+            ],
+            [
+                '<?php 1 === $a.$b ? 5 : 6;',
+                '<?php $a.$b === 1 ? 5 : 6;',
+            ],
+            [
+                '<?php echo 1 === (object) $a ? 8 : 7;',
+                '<?php echo (object) $a === 1 ? 8 : 7;',
+            ],
+            [
+                '<?php 1===(real)$a?1:2;',
+                '<?php (real)$a===1?1:2;',
+            ],
+            [
+                '<?php echo 1 === (unset) $a ? 8 : 7;',
+                '<?php echo (unset) $a === 1 ? 8 : 7;',
+            ],
+            [
+                '<?php echo 1 === (int) $a ? 8 : 7;',
+                '<?php echo (int) $a === 1 ? 8 : 7;',
+            ],
+            [
+                '<?php echo 1 === (float) $a ? 8 : 7;',
+                '<?php echo (float) $a === 1 ? 8 : 7;',
+            ],
+            [
+                '<?php echo 1 === (string) $a ? 8 : 7;',
+                '<?php echo (string) $a === 1 ? 8 : 7;',
+            ],
+            [
+                '<?php echo 1 === (array) $a ? 8 : 7;',
+                '<?php echo (array) $a === 1 ? 8 : 7;',
+            ],
+            [
+                '<?php echo 1 === (bool) $a ? 8 : 7;',
+                '<?php echo (bool) $a === 1 ? 8 : 7;',
+            ],
+            [
+                '<?php
+if ($a = true === $obj instanceof A) {
+    echo \'A\';
+}',
+                '<?php
+if ($a = $obj instanceof A === true) {
+    echo \'A\';
+}',
+            ],
+            [
+                '<?php echo 1 === !!$a ? 8 : 7;',
+                '<?php echo !!$a === 1 ? 8 : 7;',
+            ],
+            [
+                '<?php 1 === new $a ? 1 : 2;',
+                '<?php new $a === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php $a = 1 === new b ? 1 : 2;',
+                '<?php $a = new b === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php $a = 1 === empty($a) ? 1 : 2;',
+                '<?php $a = empty($a) === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php $b = 1 === clone $a ? 5 : 9;',
+                '<?php $b = clone $a === 1 ? 5 : 9;',
+            ],
+            [
+                '<?php while(1 === $a ? 1 : 2){};',
+                '<?php while($a === 1 ? 1 : 2){};',
+            ],
+            [
+                '<?php $a = 1 === include_once $a ? 1 : 2;',
+                '<?php $a = include_once $a === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php echo 1 === include $a ? 1 : 2;',
+                '<?php echo include $a === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php echo 1 === require_once $a ? 1 : 2;',
+                '<?php echo require_once $a === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php echo 1 === require $a ? 1 : 2;',
+                '<?php echo require $a === 1 ? 1 : 2;',
+            ],
+            [
+                '<?php switch(1 === $a){
+                    case true: echo 1;
+                };',
+                '<?php switch($a === 1){
+                    case true: echo 1;
+                };',
+            ],
+            [
+                '<?php echo 1 === $a ? 1 : 2;',
+                '<?php echo $a === 1 ? 1 : 2;',
+            ],
             // Don't fix cases.
             ['<?php $a = 1 === 1;'],
             ['<?php $b = $b === $c;'],
@@ -427,6 +564,15 @@ $a#4
             [
                 '<?php $a = 1 === new class(10) extends SomeClass implements SomeInterface {};/**/',
                 '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === 1;/**/',
+            ],
+            [
+                '<?php
+function a() {
+    for ($i = 1; $i <= 3; $i++) {
+        echo yield 1 === $i ? 1 : 2;
+    }
+}
+',
             ],
         ];
     }
