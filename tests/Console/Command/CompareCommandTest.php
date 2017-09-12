@@ -39,34 +39,25 @@ final class CompareCommandTest extends TestCase
 
     public function testCompareCommand()
     {
-        $cmdTester = $this->doTestExecute([]);
+        $cmdTester = $this->doTestExecute();
 
         $this->assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
     }
 
     /**
-     * @param array      $arguments
-     * @param null|array $expectedException
-     *
      * @return CommandTester
      */
-    private function doTestExecute(array $arguments, array $expectedException = null)
+    private function doTestExecute()
     {
         $this->application->add(new CompareCommand());
 
         $command = $this->application->find('compare');
         $commandTester = new CommandTester($command);
 
-        if (null !== $expectedException) {
-            $this->setExpectedExceptionRegExp($expectedException['class'], $expectedException['regex']);
-        }
-
         $commandTester->execute(
-            array_merge(
-                ['command' => $command->getName()],
-                $this->getDefaultArguments(),
-                $arguments
-            ),
+            [
+                $command->getName(),
+            ],
             [
                 'interactive' => false,
                 'decorated' => false,
@@ -75,10 +66,5 @@ final class CompareCommandTest extends TestCase
         );
 
         return $commandTester;
-    }
-
-    private function getDefaultArguments()
-    {
-        return [];
     }
 }
