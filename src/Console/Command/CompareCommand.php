@@ -90,6 +90,12 @@ final class CompareCommand extends Command
         );
 
         $configured = $resolver->getFixers();
+
+        $configuredNames = [];
+        foreach ($configured as $configuredFixer) {
+            $configuredNames[] = $configuredFixer->getName();
+        }
+
         $builtIn = $this->fixerFactory->getFixers();
 
         usort($builtIn, function ($a, $b) {
@@ -106,7 +112,7 @@ final class CompareCommand extends Command
 
             $row = [
                 $fixer->getName(),
-                in_array($fixer, $configured) ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
+                in_array($fixer->getName(), $configuredNames, true) ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
             ];
 
             if ($input->getOption('show-risky')) {
