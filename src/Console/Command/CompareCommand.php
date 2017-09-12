@@ -91,6 +91,10 @@ final class CompareCommand extends Command
         $configured = $resolver->getFixers();
         $builtIn = $this->fixerFactory->getFixers();
 
+        usort($builtIn, function ($a, $b) {
+            return strcmp($a->getName(), $b->getName());
+        });
+
         $table = new Table($output);
         $table->setHeaders([
             [new TableCell(sprintf('Found <fg=yellow;>%s built-in</> fixers. Of those, <fg=yellow;>%s are configured</> to actually be used.', count($builtIn), count($configured)), ['colspan' => 3])],
@@ -98,10 +102,10 @@ final class CompareCommand extends Command
         ]);
 
         $body = [];
-        foreach ($this->fixerFactory->getFixers() as $fixer) {
+        foreach ($builtIn as $fixer) {
             $body[] = [
                 $fixer->getName(),
-                in_array($fixer, $configured, true) ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
+                in_array($fixer, $configured) ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
                 $fixer->isRisky() ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
             ];
         }
