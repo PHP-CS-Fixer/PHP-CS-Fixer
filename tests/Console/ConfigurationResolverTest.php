@@ -712,6 +712,14 @@ final class ConfigurationResolverTest extends TestCase
                 ),
                 false,
             ),
+            // scenario when loaded config is not setting custom finder
+            array(
+                array(
+                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_3/.php_cs.dist',
+                    'path' => array($root.'/src'),
+                ),
+                false,
+            ),
         );
     }
 
