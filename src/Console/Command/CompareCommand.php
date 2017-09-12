@@ -68,6 +68,7 @@ final class CompareCommand extends Command
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
                     new InputOption('show-risky', '', InputOption::VALUE_NONE, 'Shows also the riky fixers.'),
                     new InputOption('hide-in-use', '', InputOption::VALUE_NONE, 'Hides all the rules currently configured (and so, used) to highlight only the ones not already in use.'),
+                    new InputOption('dump', '', InputOption::VALUE_NONE, 'Dumps the comparing result in a copy-and-pastable format ready for the .php_cs file.'),
                 ]
             )
             ->setDescription('Compares existent features with the ones actually configured.')
@@ -90,7 +91,8 @@ final class CompareCommand extends Command
             getcwd()
         );
 
-        $configured = $resolver->getRules();
+        $inUse = $resolver->getRules();
+        $configured = $resolver->getConfig()->getRules();
         $builtIn = $this->fixerFactory->getFixers();
 
         usort($builtIn, function ($a, $b) {
@@ -98,6 +100,7 @@ final class CompareCommand extends Command
         });
 
         $rows = [];
+        $dump = [];
         $builtInCount = 0;
         foreach ($builtIn as $fixer) {
             ++$builtInCount;
@@ -107,15 +110,20 @@ final class CompareCommand extends Command
                 continue;
             }
 
+            $isUsed = array_key_exists($fixer->getName(), $inUse);
             $isConfigured = array_key_exists($fixer->getName(), $configured);
 
-            if ($isConfigured && $input->getOption('hide-in-use')) {
+            if (false === $isConfigured && false === $isUsed) {
+                $dump[] = $fixer->getName();
+            }
+
+            if ($isUsed && $input->getOption('hide-in-use')) {
                 continue;
             }
 
             $row = [
                 $fixer->getName(),
-                $isConfigured ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
+                $isUsed ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
             ];
 
             if ($input->getOption('show-risky')) {
@@ -134,7 +142,7 @@ final class CompareCommand extends Command
         }
 
         $table->setHeaders([
-            [new TableCell(sprintf('Found <fg=yellow;>%s built-in</> fixers. Of those, <fg=yellow;>%s are configured</> to actually be used.', $builtInCount, count($configured)), ['colspan' => count($columns)])],
+            [new TableCell(sprintf('Found <fg=yellow;>%s built-in</> fixers. Of those, <fg=yellow;>%s are configured</> to actually be used.', $builtInCount, count($inUse)), ['colspan' => count($columns)])],
             [new TableCell(sprintf(
                 'Show risky: <fg=yellow;>%s</> | Hide in use: <fg=yellow;>%s</>',
                 $input->getOption('show-risky') ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
@@ -146,5 +154,20 @@ final class CompareCommand extends Command
         $table->setRows($rows);
 
         $table->render();
+
+        if ($input->getOption('dump')) {
+            $line = empty($dump)
+                ? 'You are aware of all exsisting rules! Yeah!'
+                : implode('\' => false,'."\n".'\'', $dump);
+
+            $output->writeln(
+                empty($dump)
+                    ? $line
+                    : "\nCopy and paste the following rules in your .php_cs file:\n\n"
+                    .'\\\\ Below the rules I don\'t want to use'."\n"
+                    .'\''.$line.'\' => false'."\n"
+                    .'\\\\ END Rules to never use'."\n"
+            );
+        }
     }
 }
