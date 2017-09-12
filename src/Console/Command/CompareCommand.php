@@ -66,7 +66,7 @@ final class CompareCommand extends Command
             ->setDefinition(
                 [
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
-                    new InputOption('show-risky', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.', false),
+                    new InputOption('show-risky', '', InputOption::VALUE_REQUIRED, 'Shows also the riky fixers.', false),
                     new InputOption('hide-configured', '', InputOption::VALUE_OPTIONAL, 'Hides all the rules currently configured to highlight only the ones not already in use.', false),
                 ]
             )
