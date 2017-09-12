@@ -33,14 +33,4 @@ class Finder extends BaseFinder
             ->exclude('vendor')
         ;
     }
-
-    /**
-     * Check if this finder wasn't extended.
-     *
-     * return bool
-     */
-    public function isOriginal()
-    {
-        return serialize(new self()) === serialize($this);
-    }
 }

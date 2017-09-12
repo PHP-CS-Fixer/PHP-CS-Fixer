@@ -720,6 +720,14 @@ final class ConfigurationResolverTest extends TestCase
                 ),
                 false,
             ),
+            // scenario when loaded config contains not fully defined finder
+            array(
+                array(
+                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_9/.php_cs',
+                    'path' => array($root.'/src'),
+                ),
+                false,
+            ),
         );
     }
 

@@ -790,7 +790,7 @@ final class ConfigurationResolver
             );
         }
 
-        if (null !== $this->getConfigFile() && (!$currentFinder instanceof Finder || !$currentFinder->isOriginal())) {
+        if (null !== $this->getConfigFile() && null !== $nestedFinder) {
             $this->configFinderIsOverridden = true;
         }
 
