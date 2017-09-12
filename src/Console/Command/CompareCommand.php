@@ -66,8 +66,8 @@ final class CompareCommand extends Command
             ->setDefinition(
                 [
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
-                    new InputOption('show-risky', '', InputOption::VALUE_REQUIRED, 'Shows also the riky fixers.', false),
-                    new InputOption('hide-configured', '', InputOption::VALUE_OPTIONAL, 'Hides all the rules currently configured to highlight only the ones not already in use.', false),
+                    new InputOption('show-risky', '', InputOption::VALUE_NONE, 'Shows also the riky fixers.'),
+                    new InputOption('hide-in-use', '', InputOption::VALUE_NONE, 'Hides all the rules currently configured (and so, used) to highlight only the ones not already in use.'),
                 ]
             )
             ->setDescription('Compares existent features with the ones actually configured.')
@@ -80,7 +80,6 @@ final class CompareCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $passedConfig = $input->getOption('config');
-        $hideConfigured = null === $input->getOption('hide-configured') ? true : false;
 
         $resolver = new ConfigurationResolver(
             $this->defaultConfig,
@@ -116,7 +115,7 @@ final class CompareCommand extends Command
 
             $isConfigured = in_array($fixer->getName(), $configuredNames, true);
 
-            if ($isConfigured && $hideConfigured) {
+            if ($isConfigured && $input->getOption('hide-in-use')) {
                 continue;
             }
 
@@ -143,9 +142,9 @@ final class CompareCommand extends Command
         $table->setHeaders([
             [new TableCell(sprintf('Found <fg=yellow;>%s built-in</> fixers. Of those, <fg=yellow;>%s are configured</> to actually be used.', $builtInCount, count($configured)), ['colspan' => count($columns)])],
             [new TableCell(sprintf(
-                'Show risky: <fg=yellow;>%s</>; Hide configured: <fg=yellow;>%s</>',
+                'Show risky: <fg=yellow;>%s</> | Hide in use: <fg=yellow;>%s</>',
                 $input->getOption('show-risky') ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
-                $hideConfigured ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>"
+                $input->getOption('hide-in-use') ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>"
             ), ['colspan' => count($columns)])],
             $columns,
         ]);
