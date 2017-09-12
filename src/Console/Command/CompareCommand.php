@@ -66,6 +66,7 @@ final class CompareCommand extends Command
             ->setDefinition(
                 [
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
+                    new InputOption('show-risky', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.', false),
                 ]
             )
             ->setDescription('Compares existent features with the ones actually configured.')
@@ -95,22 +96,42 @@ final class CompareCommand extends Command
             return strcmp($a->getName(), $b->getName());
         });
 
-        $table = new Table($output);
-        $table->setHeaders([
-            [new TableCell(sprintf('Found <fg=yellow;>%s built-in</> fixers. Of those, <fg=yellow;>%s are configured</> to actually be used.', count($builtIn), count($configured)), ['colspan' => 3])],
-            ['Fixer', 'In use', 'Is risky'],
-        ]);
-
-        $body = [];
+        $rows = [];
+        $builtInCount = 0;
         foreach ($builtIn as $fixer) {
-            $body[] = [
+            if ($fixer->isRisky() && false === $input->getOption('show-risky')) {
+                // Don't show risky fixers if required
+                continue;
+            }
+
+            $row = [
                 $fixer->getName(),
                 in_array($fixer, $configured) ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
-                $fixer->isRisky() ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>",
             ];
+
+            if ($input->getOption('show-risky')) {
+                $row[] = $fixer->isRisky() ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>";
+            }
+
+            $rows[] = $row;
+            ++$builtInCount;
         }
 
-        $table->setRows($body);
+        $table = new Table($output);
+
+        $columns = ['Fixer', 'In use'];
+
+        if ($input->getOption('show-risky')) {
+            $columns[] = 'Is Risky';
+        }
+
+        $table->setHeaders([
+            [new TableCell(sprintf('Found <fg=yellow;>%s built-in</> fixers. Of those, <fg=yellow;>%s are configured</> to actually be used.', $builtInCount, count($configured)), ['colspan' => count($columns)])],
+            [new TableCell(sprintf('Show risky: <fg=yellow;>%s</>', $input->getOption('show-risky') ? "<fg=green;>\xE2\x9C\x94</>" : "<fg=red;>\xE2\x9C\x96</>"), ['colspan' => count($columns)])],
+            $columns,
+        ]);
+
+        $table->setRows($rows);
 
         $table->render();
     }
