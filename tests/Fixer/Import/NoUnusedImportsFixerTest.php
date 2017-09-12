@@ -683,4 +683,47 @@ EOF;
 
         $this->doTest($expected, $input);
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix72Cases
+     * @requires PHP 7.2
+     */
+    public function testFix72($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix72Cases()
+    {
+        return array(
+            array( // TODO test shows lot of cases where imports are not removed while could be
+                '<?php use A\{B,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use C\{D,E,};
+
+    echo ConstA.ConstB.ConstC,ConstF;
+    echo ConstBB.ConstCC;
+    fn_a(ClassA::test, new C());
+',
+                '<?php use A\{B,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use C\{D,E,};
+use Z;
+
+    echo ConstA.ConstB.ConstC,ConstF;
+    echo ConstBB.ConstCC;
+    fn_a(ClassA::test, new C());
+',
+            ),
+        );
+    }
 }
