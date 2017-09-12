@@ -66,7 +66,7 @@ final class CompareCommand extends Command
             ->setDefinition(
                 [
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
-                    new InputOption('show-risky', '', InputOption::VALUE_NONE, 'Shows also the risky fixers.'),
+                    new InputOption('show-risky', '', InputOption::VALUE_NONE, 'Shows also the riky fixers.'),
                     new InputOption('hide-in-use', '', InputOption::VALUE_NONE, 'Hides all the rules currently configured (and so, used) to highlight only the ones not already in use.'),
                 ]
             )
@@ -90,13 +90,7 @@ final class CompareCommand extends Command
             getcwd()
         );
 
-        $configured = $resolver->getFixers();
-
-        $configuredNames = [];
-        foreach ($configured as $configuredFixer) {
-            $configuredNames[] = $configuredFixer->getName();
-        }
-
+        $configured = $resolver->getRules();
         $builtIn = $this->fixerFactory->getFixers();
 
         usort($builtIn, function ($a, $b) {
@@ -113,7 +107,7 @@ final class CompareCommand extends Command
                 continue;
             }
 
-            $isConfigured = in_array($fixer->getName(), $configuredNames, true);
+            $isConfigured = array_key_exists($fixer->getName(), $configured);
 
             if ($isConfigured && $input->getOption('hide-in-use')) {
                 continue;
