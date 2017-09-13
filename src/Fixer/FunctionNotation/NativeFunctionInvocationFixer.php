@@ -61,6 +61,17 @@ function baz($options)
 }',
                     ['exclude' => ['json_encode']]
                 ),
+                new CodeSample(
+                    '<?php
+namespace space1 {
+    echo count([1]);
+}
+namespace {
+    echo count([1]);
+}
+',
+                    ['scope' => 'namespaced']
+                ),
             ],
             null,
             'Risky when any of the functions are overridden.'
@@ -121,8 +132,8 @@ function baz($options)
                 }])
                 ->setDefault([])
                 ->getOption(),
-            (new FixerOptionBuilder('scope', 'Fix functions only if called in given scope.'))
-                ->setAllowedValues(['global', 'namespaced']) // everywhere or within user defined namespaces only
+            (new FixerOptionBuilder('scope', 'Fix functions only if called in given scope, global or within user defined namespaces only.'))
+                ->setAllowedValues(['global', 'namespaced'])
                 ->setDefault('global')
                 ->getOption(),
         ]);
