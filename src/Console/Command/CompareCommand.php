@@ -20,7 +20,6 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -63,6 +62,9 @@ final class CompareCommand extends Command
 
     /** @var array $riskyFixers */
     private $riskyFixers;
+
+    /** @var int $countInherited */
+    private $countInherited = 0;
 
     /** @var array $ruleSets Stores all the RuleSets and the Fixers they have */
     private $ruleSets = [];
@@ -136,11 +138,15 @@ final class CompareCommand extends Command
 
         /** @var FixerInterface $fixer */
         foreach ($this->builtInFixers as $fixer) {
+            if ($isInherited = !empty($this->list[$fixer->getName()]['in_set'])) {
+                ++$this->countInherited;
+            }
+
             $this->list[$fixer->getName()]['name'] = $fixer->getName();
             $this->list[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
             $this->list[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
             $this->list[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
-            $this->list[$fixer->getName()]['is_inherited'] = !empty($this->list[$fixer->getName()]['in_set']);
+            $this->list[$fixer->getName()]['is_inherited'] = $isInherited;
 
             if ($this->isFixerRisky($fixer)) {
                 $this->riskyFixers[] = $fixer->getName();
@@ -198,24 +204,16 @@ final class CompareCommand extends Command
     {
         $table = new Table($output);
 
-        $columns = ['Fixer', 'Is Configured', 'Is Enabled', 'Is Risky', 'Is Inherited', 'In RuleSet'];
+        $columns = [
+            sprintf('Fixer (%s)', count($this->builtInFixers)),
+            sprintf("Configured (%s)\nAre hidden: %s", count($this->configuredFixers), $this->hideConfigured ? self::YES : self::NO),
+            sprintf("Enabled (%s)\nAre hidden: %s", count($this->enabledFixers), $this->hideEnabled ? self::YES : self::NO),
+            sprintf("Risky (%s)\nAre hidden: %s", count($this->riskyFixers), $this->hideRisky ? self::YES : self::NO),
+            sprintf("Inherited (%s)\nAre hidden: %s", $this->countInherited, $this->hideInherited ? self::YES : self::NO),
+            'In RuleSet',
+        ];
 
-        // Displays the totals about found Fixers
-        $totalsLine = sprintf('Found <fg=yellow;>%s built-in</> fixers. Of those, <fg=yellow;>%s are configured</>, <fg=yellow;>%s are enabled</> and <fg=yellow;>%s are risky</>.', count($this->builtInFixers), count($this->configuredFixers), count($this->enabledFixers), count($this->riskyFixers));
-
-        // Displays the visibility set to filter the shown Fixers
-        $visibilityLine = sprintf(
-            'Hide Configured: %s | Hide Enabled: %s | Hide Risky: %s',
-            $this->hideConfigured ? self::YES : self::NO,
-            $this->hideEnabled ? self::YES : self::NO,
-            $this->hideRisky ? self::YES : self::NO
-        );
-
-        $table->setHeaders([
-            [new TableCell($totalsLine, ['colspan' => count($columns)])],
-            [new TableCell($visibilityLine, ['colspan' => count($columns)])],
-            $columns,
-        ]);
+        $table->setHeaders([$columns]);
 
         $table->setRows($this->filterRows());
 
