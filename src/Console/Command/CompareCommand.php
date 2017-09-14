@@ -17,6 +17,7 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
@@ -48,6 +49,9 @@ final class CompareCommand extends Command
     /** @var bool $hideRisky */
     private $hideRisky;
 
+    /** @var bool $hideRisky */
+    private $hideInherited;
+
     /** @var array $builtInFixers */
     private $builtInFixers;
 
@@ -59,6 +63,9 @@ final class CompareCommand extends Command
 
     /** @var array $riskyFixers */
     private $riskyFixers;
+
+    /** @var array $ruleSets Stores all the RuleSets and the Fixers they have */
+    private $ruleSets = [];
 
     /** @var array $list */
     private $list = [];
@@ -95,6 +102,7 @@ final class CompareCommand extends Command
                     new InputOption('hide-configured', '', InputOption::VALUE_NONE, 'Hide fixers that are configured (in the config file or because of inheritance).'),
                     new InputOption('hide-enabled', '', InputOption::VALUE_NONE, 'Hide fixers that are currently enabled (the ones that are not disabled with [\'fixer_name\' => false]).'),
                     new InputOption('hide-risky', '', InputOption::VALUE_NONE, 'Hide fixers that are marked as risky.'),
+                    new InputOption('hide-inherited', '', InputOption::VALUE_NONE, 'Hide fixers that inherited from RuleSets.'),
                     new InputOption('dump', '', InputOption::VALUE_NONE, 'Dumps the comparing result in a copy-and-pastable format ready for the .php_cs file.'),
                 ]
             )
@@ -109,14 +117,30 @@ final class CompareCommand extends Command
     {
         $this->initialize($input, $output);
 
+        /**
+         * @var string
+         * @var RuleSet $set
+         */
+        foreach ($this->ruleSets as $name => $set) {
+            /**
+             * @var string
+             * @var bool   $value
+             */
+            foreach ($set->getRules() as $rule => $value) {
+                if (false === isset($this->list[$rule]['in_set'])) {
+                    $this->list[$rule]['in_set'] = [];
+                }
+                $this->list[$rule]['in_set'][] = $name;
+            }
+        }
+
         /** @var FixerInterface $fixer */
         foreach ($this->builtInFixers as $fixer) {
-            $this->list[$fixer->getName()] = [
-                'name' => $fixer->getName(),
-                'is_configured' => $this->isFixerConfigured($fixer),
-                'is_enabled' => $this->isFixerEnabled($fixer),
-                'is_risky' => $this->isFixerRisky($fixer),
-            ];
+            $this->list[$fixer->getName()]['name'] = $fixer->getName();
+            $this->list[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
+            $this->list[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
+            $this->list[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
+            $this->list[$fixer->getName()]['is_inherited'] = !empty($this->list[$fixer->getName()]['in_set']);
 
             if ($this->isFixerRisky($fixer)) {
                 $this->riskyFixers[] = $fixer->getName();
@@ -149,6 +173,11 @@ final class CompareCommand extends Command
         $this->configuredFixers = $resolver->getConfig()->getRules();
         $this->enabledFixers = $resolver->getRules();
 
+        // Get the RuleSets and their Fixers
+        foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
+            $this->ruleSets[$setName] = new RuleSet([$setName => true]);
+        }
+
         // Order alphabetically
         usort($this->builtInFixers, function (FixerInterface $a, FixerInterface $b) {
             return strcmp($a->getName(), $b->getName());
@@ -157,6 +186,7 @@ final class CompareCommand extends Command
         $this->hideConfigured = $input->getOption('hide-configured');
         $this->hideEnabled = $input->getOption('hide-enabled');
         $this->hideRisky = $input->getOption('hide-risky');
+        $this->hideInherited = $input->getOption('hide-inherited');
     }
 
     /**
@@ -168,7 +198,7 @@ final class CompareCommand extends Command
     {
         $table = new Table($output);
 
-        $columns = ['Fixer', 'Is Configured', 'Is Enabled', 'Is Risky'];
+        $columns = ['Fixer', 'Is Configured', 'Is Enabled', 'Is Risky', 'Is Inherited', 'In RuleSet'];
 
         // Displays the totals about found Fixers
         $totalsLine = sprintf('Found <fg=yellow;>%s built-in</> fixers. Of those, <fg=yellow;>%s are configured</>, <fg=yellow;>%s are enabled</> and <fg=yellow;>%s are risky</>.', count($this->builtInFixers), count($this->configuredFixers), count($this->enabledFixers), count($this->riskyFixers));
@@ -182,7 +212,7 @@ final class CompareCommand extends Command
         );
 
         $table->setHeaders([
-            [new TableCell($totalsLine, ['colspan' => 4])],
+            [new TableCell($totalsLine, ['colspan' => count($columns)])],
             [new TableCell($visibilityLine, ['colspan' => count($columns)])],
             $columns,
         ]);
@@ -200,8 +230,9 @@ final class CompareCommand extends Command
         $hideConfigured = $this->hideConfigured;
         $hideEnabled = $this->hideEnabled;
         $hideRisky = $this->hideRisky;
+        $hideInherited = $this->hideInherited;
 
-        $rows = array_filter($this->list, function (array $fixer) use ($hideConfigured, $hideEnabled, $hideRisky) {
+        $rows = array_filter($this->list, function (array $fixer) use ($hideConfigured, $hideEnabled, $hideRisky, $hideInherited) {
             if ($hideConfigured && $fixer['is_configured']) {
                 return false;
             }
@@ -214,17 +245,28 @@ final class CompareCommand extends Command
                 return false;
             }
 
+            if ($hideInherited && $fixer['is_inherited']) {
+                return false;
+            }
+
             return true;
         });
 
         $this->dump = $rows;
 
         return array_map(function (array $fixer) {
+            $path = '.php_cs';
+            if (isset($fixer['in_set'])) {
+                $path = implode(' > ', array_reverse($fixer['in_set']));
+            }
+
             return [
                 'name' => $fixer['name'],
                 'is_configured' => $fixer['is_configured'] ? self::YES : self::NO,
                 'is_enabled' => $fixer['is_enabled'] ? self::YES : self::NO,
                 'is_risky' => $fixer['is_risky'] ? self::YES : self::NO,
+                'is_inherited' => $fixer['is_inherited'] ? self::YES : self::NO,
+                'in_set' => $path,
             ];
         }, $rows);
     }
