@@ -108,7 +108,7 @@ final class CompareCommand extends Command
                     new InputOption('dump', '', InputOption::VALUE_NONE, 'Dumps the comparing result in a copy-and-pastable format ready for the .php_cs file.'),
                 ]
             )
-            ->setDescription('Compares existent features with the ones actually configured.')
+            ->setDescription('Compares existent Fixers with the ones actually configured or enabled by inheritance.')
         ;
     }
 
