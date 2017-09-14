@@ -298,7 +298,7 @@ final class CompareCommand extends Command
      */
     private function isFixerConfigured(FixerInterface $fixer)
     {
-        return array_key_exists($fixer->getName(), $this->configuredFixers);
+        return isset($this->configuredFixers[$fixer->getName()]);
     }
 
     /**
@@ -318,6 +318,6 @@ final class CompareCommand extends Command
      */
     private function isFixerEnabled(FixerInterface $fixer)
     {
-        return array_key_exists($fixer->getName(), $this->enabledFixers);
+        return isset($this->enabledFixers[$fixer->getName()]);
     }
 }
