@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -126,20 +127,23 @@ yield(2);
         $loops = array_intersect_key(self::$loops, array_flip($this->configuration['statements']));
 
         foreach ($tokens as $index => $token) {
-            if (!$token->equals('(')) {
+            if (!$token->equalsAny(array('(', array(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)))) {
                 continue;
             }
 
             $blockStartIndex = $index;
             $index = $tokens->getPrevMeaningfulToken($index);
-            $token = $tokens[$index];
+            $prevToken = $tokens[$index];
 
             foreach ($loops as $loop) {
-                if (!$token->isGivenKind($loop['lookupTokens'])) {
+                if (!$prevToken->isGivenKind($loop['lookupTokens'])) {
                     continue;
                 }
 
-                $blockEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $blockStartIndex);
+                $blockEndIndex = $tokens->findBlockEnd(
+                    $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION,
+                    $blockStartIndex
+                );
                 $blockEndNextIndex = $tokens->getNextMeaningfulToken($blockEndIndex);
 
                 if (!$tokens[$blockEndNextIndex]->equalsAny($loop['neededSuccessors'])) {
