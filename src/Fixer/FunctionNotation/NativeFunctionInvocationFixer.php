@@ -24,6 +24,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
+ * @author SpacePossum
  */
 final class NativeFunctionInvocationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
@@ -58,11 +59,18 @@ function baz($options)
 
     return json_encode($options);
 }',
-                    [
-                        'exclude' => [
-                            'json_encode',
-                        ],
-                    ]
+                    ['exclude' => ['json_encode']]
+                ),
+                new CodeSample(
+                    '<?php
+namespace space1 {
+    echo count([1]);
+}
+namespace {
+    echo count([1]);
+}
+',
+                    ['scope' => 'namespaced']
                 ),
             ],
             null,
@@ -91,55 +99,14 @@ function baz($options)
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $functionNames = $this->getFunctionNames();
+        $functionNames = $this->getAllInternalFunctionsNormalized();
 
-        $indexes = [];
-
-        for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            $token = $tokens[$index];
-
-            $tokenContent = $token->getContent();
-
-            // test if we are at a function call
-            if (!$token->isGivenKind(T_STRING)) {
-                continue;
+        if ('namespaced' === $this->configuration['scope']) {
+            foreach (array_reverse($this->getUserDefinedNamespaces($tokens)) as $namespace) {
+                $this->fixFunctionCalls($tokens, $functionNames, $namespace['open'], $namespace['close']);
             }
-
-            $next = $tokens->getNextMeaningfulToken($index);
-            if (!$tokens[$next]->equals('(')) {
-                continue;
-            }
-
-            $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
-                continue;
-            }
-
-            if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
-                // skip if the call is to a constructor or to a function in a namespace other than the default
-                $prev = $tokens->getPrevMeaningfulToken($functionNamePrefix);
-                if ($tokens[$prev]->isGivenKind([T_STRING, T_NEW])) {
-                    continue;
-                }
-            }
-
-            $lowerFunctionName = \strtolower($tokenContent);
-
-            if (!\in_array($lowerFunctionName, $functionNames, true)) {
-                continue;
-            }
-
-            // do not bother if previous token is already namespace separator
-            if ($tokens[$index - 1]->isGivenKind(T_NS_SEPARATOR)) {
-                continue;
-            }
-
-            $indexes[] = $index;
-        }
-
-        $indexes = \array_reverse($indexes);
-        foreach ($indexes as $index) {
-            $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+        } else {
+            $this->fixFunctionCalls($tokens, $functionNames, 0, count($tokens) - 1);
         }
     }
 
@@ -165,20 +132,123 @@ function baz($options)
                 }])
                 ->setDefault([])
                 ->getOption(),
+            (new FixerOptionBuilder('scope', 'Fix functions only if called in given scope, global or within user defined namespaces only.'))
+                ->setAllowedValues(['global', 'namespaced'])
+                ->setDefault('global')
+                ->getOption(),
         ]);
+    }
+
+    /**
+     * @param Tokens   $tokens
+     * @param string[] $functionNames
+     * @param int      $start
+     * @param int      $end
+     */
+    private function fixFunctionCalls(Tokens $tokens, array $functionNames, $start, $end)
+    {
+        $insertAtIndexes = [];
+        for ($index = $start; $index < $end; ++$index) {
+            // test if we are at a function call
+            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+                continue;
+            }
+
+            if (!$tokens[$tokens->getNextMeaningfulToken($index)]->equals('(')) {
+                continue;
+            }
+
+            $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
+                continue;
+            }
+
+            if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
+                if ($tokens[$tokens->getPrevMeaningfulToken($functionNamePrefix)]->isGivenKind([T_STRING, T_NEW])) {
+                    continue; // skip if the call is to a constructor or to a function in a namespace other than the default
+                }
+            }
+
+            if (!\in_array(\strtolower($tokens[$index]->getContent()), $functionNames, true)) {
+                continue;
+            }
+
+            if ($tokens[$index - 1]->isGivenKind(T_NS_SEPARATOR)) {
+                continue; // do not bother if previous token is already namespace separator
+            }
+
+            $insertAtIndexes[] = $index;
+        }
+
+        foreach (\array_reverse($insertAtIndexes) as $index) {
+            $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+        }
     }
 
     /**
      * @return string[]
      */
-    private function getFunctionNames()
+    private function getAllInternalFunctionsNormalized()
     {
-        $definedFunctions = \get_defined_functions();
+        static $definedFunctions = null;
+
+        if (null === $definedFunctions) {
+            $definedFunctions = \get_defined_functions();
+            $definedFunctions = $this->normalizeFunctionNames($definedFunctions['internal']);
+        }
 
         return \array_diff(
-            $this->normalizeFunctionNames($definedFunctions['internal']),
+            $definedFunctions,
             \array_unique($this->normalizeFunctionNames($this->configuration['exclude']))
         );
+    }
+
+    /**
+     * @param Tokens $tokens
+     *
+     * @return array<<|array|string, int>>
+     */
+    private function getUserDefinedNamespaces(Tokens $tokens)
+    {
+        $namespaces = [];
+        for ($index = 1, $count = count($tokens); $index < $count; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_NAMESPACE)) {
+                continue;
+            }
+
+            $index = $tokens->getNextMeaningfulToken($index);
+            if ($tokens[$index]->equals('{')) { // global namespace
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+                continue;
+            }
+
+            while (!$tokens[++$index]->equalsAny(['{', ';', [T_CLOSE_TAG]])) {
+                // no-op
+            }
+
+            if ($tokens[$index]->equals('{')) {
+                // namespace ends at block end of `{`
+                $namespaces[] = [
+                    'open' => $index,
+                    'close' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index),
+                ];
+
+                continue;
+            }
+
+            // namespace ends at next T_NAMESPACE or EOF
+            $close = $tokens->getNextTokenOfKind($index, [[T_NAMESPACE]], false);
+            if (null === $close) {
+                $namespaces[] = ['open' => $index, 'close' => count($tokens) - 1];
+
+                break;
+            }
+
+            $namespaces[] = ['open' => $index, 'close' => $close];
+        }
+
+        return $namespaces;
     }
 
     /**

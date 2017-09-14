@@ -664,6 +664,9 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``exclude`` (``array``): list of functions to ignore; defaults to ``[]``
+  - ``scope`` (``'global'``, ``'namespaced'``): fix functions only if called in given
+    scope, global or within user defined namespaces only; defaults to
+    ``'global'``
 
 * **new_with_braces** [@Symfony]
 
