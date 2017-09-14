@@ -260,7 +260,7 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``statements`` (``array``): list of statements which must be must be preceded by
+  - ``statements`` (``array``): list of statements which must be preceded by
     an empty line; defaults to ``['break', 'continue', 'declare', 'return',
     'throw', 'try']``
 
@@ -1106,7 +1106,7 @@ Choose from the list of available rules:
 
   Class names should match the file name.
 
-  *Risky rule: this fixer may change you class name, which will break the code that is depended on old name.*
+  *Risky rule: this fixer may change your class name, which will break the code that is depended on old name.*
 
 * **random_api_migration** [@PHP70Migration:risky, @PHP71Migration:risky]
 
@@ -1401,7 +1401,7 @@ Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or
 Exit codes
 ----------
 
-Exit code is build using following bit flags:
+Exit code is built using following bit flags:
 
 *  0 OK.
 *  1 General error (or PHP minimal requirement not matched).
