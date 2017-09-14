@@ -99,7 +99,7 @@ namespace {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $functionNames = $this->getFunctionNames();
+        $functionNames = $this->getAllInternalFunctionsNormalized();
 
         if ('namespaced' === $this->configuration['scope']) {
             foreach (array_reverse($this->getUserDefinedNamespaces($tokens)) as $namespace) {
@@ -188,7 +188,7 @@ namespace {
     /**
      * @return string[]
      */
-    private function getFunctionNames()
+    private function getAllInternalFunctionsNormalized()
     {
         static $definedFunctions = null;
 

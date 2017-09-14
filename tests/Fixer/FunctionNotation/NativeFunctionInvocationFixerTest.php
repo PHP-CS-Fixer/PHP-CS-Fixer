@@ -179,7 +179,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return \json_encode($foo);
+        return \JSON_ENCODE($foo);
     }
 }
 ',
@@ -189,7 +189,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return json_encode($foo);
+        return JSON_ENCODE($foo);
     }
 }
 ',
@@ -274,7 +274,7 @@ namespace space1 { ?>
             [
                 '<?php
 namespace Bar {
-    echo \strtolower("in 1");
+    echo \strtoLOWER("in 1");
 }
 
 namespace {
@@ -295,7 +295,7 @@ namespace {
 ',
                 '<?php
 namespace Bar {
-    echo strtolower("in 1");
+    echo strtoLOWER("in 1");
 }
 
 namespace {
@@ -317,7 +317,7 @@ namespace {
             ],
             [
                 '<?php
-namespace space1 ?>
+namespace space11 ?>
 
     <?php
 echo \strtolower(__NAMESPACE__);
@@ -325,7 +325,7 @@ namespace space2;
 echo \strtolower(__NAMESPACE__);
 ',
                 '<?php
-namespace space1 ?>
+namespace space11 ?>
 
     <?php
 echo strtolower(__NAMESPACE__);
@@ -339,7 +339,7 @@ echo strtolower(__NAMESPACE__);
             ],
             [
                 '<?php
-namespace Space1;
+namespace Space12;
 
 echo \count([1]);
 
@@ -349,7 +349,7 @@ echo \count([1]);
 ?>
 ',
                 '<?php
-namespace Space1;
+namespace Space12;
 
 echo count([1]);
 
@@ -364,7 +364,7 @@ echo count([1]);
             ],
             [
                 '<?php
-namespace space1 {
+namespace space13 {
     echo \strtolower("in 1");
 }
 
@@ -377,7 +377,7 @@ namespace { // global
 }
 ',
                 '<?php
-namespace space1 {
+namespace space13 {
     echo strtolower("in 1");
 }
 
