@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Strict;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -22,38 +23,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class StrictComparisonFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        static $map = array(
-            T_IS_EQUAL => array(
-                'id' => T_IS_IDENTICAL,
-                'content' => '===',
-            ),
-            T_IS_NOT_EQUAL => array(
-                'id' => T_IS_NOT_IDENTICAL,
-                'content' => '!==',
-            ),
-        );
-
-        foreach ($tokens as $index => $token) {
-            $tokenId = $token->getId();
-
-            if (isset($map[$tokenId])) {
-                $tokens->overrideAt($index, array($map[$tokenId]['id'], $map[$tokenId]['content']));
-            }
-        }
-    }
-
     public function getDefinition()
     {
         return new FixerDefinition(
             'Comparisons should be strict.',
-            array(new CodeSample("<?php\n\$a = 1== \$b;")),
-            null,
-            null,
+            [new CodeSample("<?php\n\$a = 1== \$b;")],
             null,
             'Changing comparisons to strict might change code behavior.'
         );
@@ -64,7 +38,7 @@ final class StrictComparisonFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_IS_EQUAL, T_IS_NOT_EQUAL));
+        return $tokens->isAnyTokenKindsFound([T_IS_EQUAL, T_IS_NOT_EQUAL]);
     }
 
     /**
@@ -73,5 +47,30 @@ final class StrictComparisonFixer extends AbstractFixer
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        static $map = [
+            T_IS_EQUAL => [
+                'id' => T_IS_IDENTICAL,
+                'content' => '===',
+            ],
+            T_IS_NOT_EQUAL => [
+                'id' => T_IS_NOT_IDENTICAL,
+                'content' => '!==',
+            ],
+        ];
+
+        foreach ($tokens as $index => $token) {
+            $tokenId = $token->getId();
+
+            if (isset($map[$tokenId])) {
+                $tokens[$index] = new Token([$map[$tokenId]['id'], $map[$tokenId]['content']]);
+            }
+        }
     }
 }

@@ -12,16 +12,20 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
  */
 final class PhpdocAlignFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {
+        $this->fixer->configure(['tags' => ['param']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -51,17 +55,21 @@ EOF;
 
     public function testFixMultiLineDesc()
     {
+        $this->fixer->configure(['tags' => ['param', 'property']]);
+
         $expected = <<<'EOF'
 <?php
     /**
-     * @param EngineInterface $templating
-     * @param string          $format
-     * @param int             $code       An HTTP response status code
-     *                                    See constants
-     * @param bool            $debug
-     * @param bool            $debug      See constants
-     *                                    See constants
-     * @param mixed           &$reference A parameter passed by reference
+     * @param    EngineInterface $templating
+     * @param    string          $format
+     * @param    int             $code       An HTTP response status code
+     *                                       See constants
+     * @param    bool            $debug
+     * @param    bool            $debug      See constants
+     *                                       See constants
+     * @param    mixed           &$reference A parameter passed by reference
+     * @property mixed           $foo        A foo
+     *                                       See constants
      */
 
 EOF;
@@ -77,6 +85,8 @@ EOF;
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
+     * @property   mixed   $foo     A foo
+     *                               See constants
      */
 
 EOF;
@@ -86,6 +96,8 @@ EOF;
 
     public function testFixMultiLineDescWithThrows()
     {
+        $this->fixer->configure(['tags' => ['param', 'return', 'throws']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -131,6 +143,8 @@ EOF;
 
     public function testFixWithReturnAndThrows()
     {
+        $this->fixer->configure(['tags' => ['param', 'throws', 'return']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -162,6 +176,8 @@ EOF;
      */
     public function testFixThreeParamsWithReturn()
     {
+        $this->fixer->configure(['tags' => ['param', 'return']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -189,6 +205,8 @@ EOF;
 
     public function testFixOnlyReturn()
     {
+        $this->fixer->configure(['tags' => ['return']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -210,6 +228,8 @@ EOF;
 
     public function testReturnWithDollarThis()
     {
+        $this->fixer->configure(['tags' => ['param', 'return']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -233,6 +253,8 @@ EOF;
 
     public function testCustomAnnotationsStayUntouched()
     {
+        $this->fixer->configure(['tags' => ['return']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -256,6 +278,8 @@ EOF;
 
     public function testCustomAnnotationsStayUntouched2()
     {
+        $this->fixer->configure(['tags' => ['var']]);
+
         $expected = <<<'EOF'
 <?php
 
@@ -278,6 +302,8 @@ EOF;
 
     public function testFixWithVar()
     {
+        $this->fixer->configure(['tags' => ['var']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -299,6 +325,8 @@ EOF;
 
     public function testFixWithType()
     {
+        $this->fixer->configure(['tags' => ['type']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -320,6 +348,8 @@ EOF;
 
     public function testFixWithVarAndDescription()
     {
+        $this->fixer->configure(['tags' => ['var']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -345,6 +375,8 @@ EOF;
 
     public function testFixWithVarAndInlineDescription()
     {
+        $this->fixer->configure(['tags' => ['var']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -366,6 +398,8 @@ EOF;
 
     public function testFixWithTypeAndInlineDescription()
     {
+        $this->fixer->configure(['tags' => ['type']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -387,12 +421,16 @@ EOF;
 
     public function testRetainsNewLineCharacters()
     {
+        $this->fixer->configure(['tags' => ['param']]);
+
         // when we're not modifying a docblock, then line endings shouldn't change
         $this->doTest("<?php\r    /**\r     * @param Example Hello there!\r     */\r");
     }
 
     public function testMalformedDocBlock()
     {
+        $this->fixer->configure(['tags' => ['return']]);
+
         $input = <<<'EOF'
 <?php
     /**
@@ -406,6 +444,8 @@ EOF;
 
     public function testDifferentIndentation()
     {
+        $this->fixer->configure(['tags' => ['param', 'return']]);
+
         $expected = <<<'EOF'
 <?php
 /**
@@ -444,13 +484,15 @@ EOF;
     }
 
     /**
+     * @param array       $config
      * @param string      $expected
      * @param null|string $input
      *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(array $config, $expected, $input = null)
     {
+        $this->fixer->configure($config);
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
@@ -458,20 +500,24 @@ EOF;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
+                ['tags' => ['type']],
                 "<?php\r\n\t/**\r\n\t * @type Type This is a variable.\r\n\t */",
                 "<?php\r\n\t/**\r\n\t * @type   Type   This is a variable.\r\n\t */",
-            ),
-            array(
+            ],
+            [
+                ['tags' => ['param', 'return']],
                 "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
                 "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
-            ),
-        );
+            ],
+        ];
     }
 
     public function testCanFixBadFormatted()
     {
+        $this->fixer->configure(['tags' => ['var']]);
+
         $expected = "<?php\n    /**\n     * @var Foo */\n";
 
         $this->doTest($expected);
@@ -479,6 +525,8 @@ EOF;
 
     public function testFixUnicode()
     {
+        $this->fixer->configure(['tags' => ['param', 'return']]);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -520,22 +568,105 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testDoesNotAlignPropertyByDefault()
+    {
+        $expected = <<<'EOF'
+<?php
     /**
+     * @param  int       $foobar Description
+     * @return int
+     * @throws Exception
+     * @var    FooBar
+     * @type   BarFoo
+     * @property     string    $foo   Hello World
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar   Description
+     * @return  int
+     * @throws Exception
+     * @var       FooBar
+     * @type      BarFoo
+     * @property     string    $foo   Hello World
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testAlignsProperty()
+    {
+        $this->fixer->configure(['tags' => ['param', 'property', 'return', 'throws', 'type', 'var']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param    int       $foobar Description
+     * @return   int
+     * @throws   Exception
+     * @var      FooBar
+     * @type     BarFoo
+     * @property string    $foo    Hello World
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar   Description
+     * @return  int
+     * @throws Exception
+     * @var       FooBar
+     * @type      BarFoo
+     * @property     string    $foo   Hello World
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDoesNotAlignWithEmptyConfig()
+    {
+        $this->fixer->configure(['tags' => []]);
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar   Description
+     * @return  int
+     * @throws Exception
+     * @var       FooBar
+     * @type      BarFoo
+     * @property     string    $foo   Hello World
+     */
+EOF;
+
+        $this->doTest($input);
+    }
+
+    /**
+     * @param array  $config
      * @param string $expected
      * @param string $input
      *
-     * @requires PHP 5.6
+     *
      * @dataProvider provideVariadicCases
      */
-    public function testVariadicParams($expected, $input)
+    public function testVariadicParams(array $config, $expected, $input)
     {
+        $this->fixer->configure($config);
+
         $this->doTest($expected, $input);
     }
 
     public function provideVariadicCases()
     {
-        return array(
-            array(
+        return [
+            [
+                ['tags' => ['param']],
                 '<?php
 final class Sample
 {
@@ -562,8 +693,9 @@ final class Sample
     }
 }
 ',
-            ),
-                        array(
+            ],
+            [
+                ['tags' => ['param']],
                 '<?php
 final class Sample
 {
@@ -590,7 +722,7 @@ final class Sample
     }
 }
 ',
-            ),
-        );
+            ],
+        ];
     }
 }

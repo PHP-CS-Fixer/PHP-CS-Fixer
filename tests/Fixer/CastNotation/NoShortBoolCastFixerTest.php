@@ -12,10 +12,12 @@
 
 namespace PhpCsFixer\Tests\Fixer\CastNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer
  */
 final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
 {
@@ -23,17 +25,17 @@ final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
-    public function testFixer($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
             $c = // lala
                 // cc
@@ -42,8 +44,8 @@ final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
             $c = ! // lala
                 // cc
             !$content;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = \'0\';
 $b = /*
@@ -54,8 +56,8 @@ $a = \'0\';
 $b = !/*
 
     */!$a;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo($a, $b) {
     $c = (bool)$a;
@@ -85,7 +87,7 @@ function foo($a, $b) {
     return !! $a;
 }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

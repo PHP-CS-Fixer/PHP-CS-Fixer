@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer
  */
 final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 {
@@ -25,17 +27,17 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     // This is'.'
     //'.'
@@ -48,8 +50,8 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
     //    '.'
     // multiline comment. '.'
     // ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /*
      * This is another'.'
@@ -64,8 +66,8 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * '.'
      * multiline comment. '.'
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * Summary'.'
@@ -86,7 +88,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * @annotation '.'
      *  Foo '.'
      */',
-            ),
-        );
+            ],
+        ];
     }
 }

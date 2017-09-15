@@ -28,29 +28,11 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
-                continue;
-            }
-
-            $this->fixWhitespace($tokens[$index - 1]);
-            // do not move anything about if there is a comment following the whitespace
-            if (!$tokens[$index + 2]->isComment()) {
-                $this->fixWhitespace($tokens[$index + 1]);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Operator `=>` should not be surrounded by multi-line whitespaces.',
-            array(new CodeSample("<?php\n\$a = array(1\n\n=> 2);"))
+            [new CodeSample("<?php\n\$a = array(1\n\n=> 2);")]
         );
     }
 
@@ -71,10 +53,34 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
         return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
     }
 
-    private function fixWhitespace(Token $token)
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
+                continue;
+            }
+
+            $this->fixWhitespace($tokens, $index - 1);
+            // do not move anything about if there is a comment following the whitespace
+            if (!$tokens[$index + 2]->isComment()) {
+                $this->fixWhitespace($tokens, $index + 1);
+            }
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixWhitespace(Tokens $tokens, $index)
+    {
+        $token = $tokens[$index];
+
         if ($token->isWhitespace() && !$token->isWhitespace(" \t")) {
-            $token->setContent(rtrim($token->getContent()).' ');
+            $tokens[$index] = new Token([T_WHITESPACE, rtrim($token->getContent()).' ']);
         }
     }
 }

@@ -13,13 +13,16 @@
 namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\DocBlock;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\DocBlock\DocBlock
  */
-final class DocBlockTest extends \PHPUnit_Framework_TestCase
+final class DocBlockTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.
@@ -65,7 +68,7 @@ final class DocBlockTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(15, $doc->getLines());
 
         foreach ($doc->getLines() as $index => $line) {
-            $this->assertInstanceOf('PhpCsFixer\DocBlock\Line', $line);
+            $this->assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
             $this->assertSame($doc->getLine($index), $line);
         }
 
@@ -80,7 +83,7 @@ final class DocBlockTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(5, $doc->getAnnotations());
 
         foreach ($doc->getAnnotations() as $index => $annotations) {
-            $this->assertInstanceOf('PhpCsFixer\DocBlock\Annotation', $annotations);
+            $this->assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotations);
             $this->assertSame($doc->getAnnotation($index), $annotations);
         }
 

@@ -14,8 +14,9 @@ namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractAlignFixerHelper;
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -26,57 +27,85 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var array<string, bool|null>
-     */
-    private $configuration;
-
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'align_equals' => false,
-        'align_double_arrow' => false,
-    );
-
     /**
      * @var AbstractAlignFixerHelper[]
      */
-    private $alignFixerHelpers = array();
+    private $alignFixerHelpers = [];
 
     /**
-     * Key any of; 'align_equals', 'align_double_arrow'.
-     * Value 'bool': 'false' do unalign, 'true' do align, or 'null': do not modify.
-     *
-     * @param array<string, bool|null> $configuration
+     * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function getDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
+        return new FixerDefinition(
+            'Binary operators should be surrounded by at least one space.',
+            [
+                new CodeSample(
+'<?php
 
-            return;
-        }
+$a   = 9000;
+$abc = 90001;
 
-        foreach ($configuration as $name => $value) {
-            if (!array_key_exists($name, self::$defaultConfiguration)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Unknown configuration option "%s". Expected any of "%s".', $name, implode('", "', array_keys(self::$defaultConfiguration))));
-            }
+$foo = array(
+    "a"   => 9000,
+    "abc" => 9001,
+);
+'
+                ),
+                new CodeSample(
+'<?php
 
-            if (null !== $value && !is_bool($value)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Invalid value type for configuration option "%s". Expected "bool" or "null" got "%s".', $name, is_object($value) ? get_class($value) : gettype($value)));
-            }
-        }
+$a   = 9000;
+$abc = 90001;
+',
+                    ['align_equals' => false]
+                ),
+                new CodeSample(
+'<?php
 
-        $this->configuration = array_merge(self::$defaultConfiguration, $configuration);
+$a = 9000;
+$abc = 90001;
+',
+                    ['align_equals' => true]
+                ),
+                new CodeSample(
+'<?php
+
+$foo = array(
+    "a"   => 9000,
+    "abc" => 9001,
+);
+',
+                    ['align_double_arrow' => false]
+                ),
+                new CodeSample(
+'<?php
+
+$foo = array(
+    "a" => 9000,
+    "abc" => 9001,
+);
+',
+                    ['align_double_arrow' => true]
+                ),
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function isCandidate(Tokens $tokens)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -103,72 +132,18 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    protected function createConfigurationDefinition()
     {
-        return new FixerDefinition(
-            'Binary operators should be surrounded by at least one space.',
-            array(
-                new CodeSample(
-'<?php
-
-$a   = 9000;
-$abc = 90001;
-
-$foo = array(
-    "a"   => 9000,
-    "abc" => 9001,
-);
-'
-                ),
-                new CodeSample(
-'<?php
-
-$a   = 9000;
-$abc = 90001;
-',
-                    array('align_equals' => false)
-                ),
-                new CodeSample(
-'<?php
-
-$a = 9000;
-$abc = 90001;
-',
-                    array('align_equals' => true)
-                ),
-                new CodeSample(
-'<?php
-
-$foo = array(
-    "a"   => 9000,
-    "abc" => 9001,
-);
-',
-                    array('align_double_arrow' => false)
-                ),
-                new CodeSample(
-'<?php
-
-$foo = array(
-    "a" => 9000,
-    "abc" => 9001,
-);
-',
-                    array('align_double_arrow' => true)
-                ),
-            ),
-            null,
-            'Aligns or unaligns `=` in consecutive assignments, or `=>` in array initializations',
-            self::$defaultConfiguration
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return true;
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.'))
+                ->setDefault(false)
+                ->setAllowedValues([true, false, null])
+                ->getOption(),
+            (new FixerOptionBuilder('align_equals', 'Whether to apply, remove or ignore equals alignment.'))
+                ->setDefault(false)
+                ->setAllowedValues([true, false, null])
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -184,7 +159,8 @@ $foo = array(
                 }
 
                 return;
-            } elseif (null === $this->configuration['align_double_arrow']) {
+            }
+            if (null === $this->configuration['align_double_arrow']) {
                 return; // configured not to touch the whitespace around the operator
             }
         } elseif ($tokens[$index]->equals('=')) {
@@ -194,7 +170,8 @@ $foo = array(
                 }
 
                 return;
-            } elseif (null === $this->configuration['align_equals']) {
+            }
+            if (null === $this->configuration['align_equals']) {
                 return; // configured not to touch the whitespace around the operator
             }
         }
@@ -203,20 +180,20 @@ $foo = array(
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
             if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
-                $tokens[$index + 1]->setContent(' ');
+                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
         }
 
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
             if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
-                $tokens[$index - 1]->setContent(' ');
+                $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
         }
     }
 
@@ -250,7 +227,7 @@ $foo = array(
                 $tokens->clearEmptyTokens();
             }
 
-            $helper->fix($file, $tokens);
+            $helper->fix($tokens);
         }
     }
 }

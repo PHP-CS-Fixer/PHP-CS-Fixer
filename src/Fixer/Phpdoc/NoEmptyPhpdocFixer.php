@@ -25,27 +25,11 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            if (preg_match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
-                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'There should not be empty PHPDoc blocks.',
-            array(new CodeSample('<?php /**  */'))
+            [new CodeSample('<?php /**  */')]
         );
     }
 
@@ -65,5 +49,21 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            if (preg_match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            }
+        }
     }
 }

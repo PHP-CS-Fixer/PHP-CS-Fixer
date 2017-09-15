@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -24,58 +25,21 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'spacing' => 'none',
-    );
-
     private $fixCallback;
-
-    /**
-     * Configuration must have one element 'spacing' with value 'none' (default) or 'one'.
-     *
-     * @param null|array $configuration
-     */
-    public function configure(array $configuration = null)
-    {
-        if (null === $configuration) {
-            $this->fixCallback = 'fixConcatenationToNoSpace';
-
-            return;
-        }
-
-        if (!array_key_exists('spacing', $configuration)) {
-            throw new InvalidFixerConfigurationException($this->getName(), 'Missing "spacing" configuration.');
-        }
-
-        switch ($configuration['spacing']) {
-            case 'one':
-                $this->fixCallback = 'fixConcatenationToSingleSpace';
-
-                break;
-            case 'none':
-                $this->fixCallback = 'fixConcatenationToNoSpace';
-
-                break;
-            default:
-                throw new InvalidFixerConfigurationException($this->getName(), '"spacing" configuration must be "one" or "none".');
-        }
-    }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function configure(array $configuration = null)
     {
-        $callBack = $this->fixCallback;
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->equals('.')) {
-                $this->$callBack($tokens, $index);
-            }
+        parent::configure($configuration);
+
+        if ('one' === $this->configuration['spacing']) {
+            $this->fixCallback = 'fixConcatenationToSingleSpace';
+        } else {
+            $this->fixCallback = 'fixConcatenationToNoSpace';
         }
     }
 
@@ -86,23 +50,19 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     {
         return new FixerDefinition(
             'Concatenation should be spaced according configuration.',
-            array(
+            [
                 new CodeSample(
-                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
-                    null
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';"
                 ),
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
-                    array('spacing' => 'none')
+                    ['spacing' => 'none']
                 ),
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
-                    array('spacing' => 'one')
+                    ['spacing' => 'one']
                 ),
-            ),
-            null,
-            "Configuration must have one element 'spacing' with value 'none' (default) or 'one'.",
-            array('spacing' => 'none')
+            ]
         );
     }
 
@@ -115,6 +75,32 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $callBack = $this->fixCallback;
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            if ($tokens[$index]->equals('.')) {
+                $this->$callBack($tokens, $index);
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('spacing', 'Spacing to apply around concatenation operator.'))
+                ->setAllowedValues(['one', 'none'])
+                ->setDefault('none')
+                ->getOption(),
+        ]);
+    }
+
+    /**
      * @param Tokens $tokens
      * @param int    $index  index of concatenation '.' token
      */
@@ -124,7 +110,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
             $tokens->removeLeadingWhitespace($index, " \t");
         }
 
-        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind(array(T_LNUMBER, T_COMMENT, T_DOC_COMMENT))) {
+        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT])) {
             $tokens->removeTrailingWhitespace($index, " \t");
         }
     }
@@ -149,7 +135,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
         $offsetIndex = $index + $offset;
 
         if (!$tokens[$offsetIndex]->isWhitespace()) {
-            $tokens->insertAt($index + (1 === $offset ?: 0), new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index + (1 === $offset ?: 0), new Token([T_WHITESPACE, ' ']));
 
             return;
         }
@@ -162,6 +148,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
             return;
         }
 
-        $tokens[$offsetIndex]->setContent(' ');
+        $tokens[$offsetIndex] = new Token([T_WHITESPACE, ' ']);
     }
 }

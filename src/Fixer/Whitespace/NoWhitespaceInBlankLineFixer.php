@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -26,24 +27,11 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        // skip first as it cannot be a white space token
-        for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
-            if ($tokens[$i]->isWhitespace()) {
-                $this->fixWhitespaceToken($tokens, $i);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Remove trailing whitespace at the end of blank lines.',
-            array(new CodeSample("<?php\n   \n\$a = 1;"))
+            [new CodeSample("<?php\n   \n\$a = 1;")]
         );
     }
 
@@ -62,6 +50,19 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        // skip first as it cannot be a white space token
+        for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
+            if ($tokens[$i]->isWhitespace()) {
+                $this->fixWhitespaceToken($tokens, $i);
+            }
+        }
     }
 
     /**
@@ -90,8 +91,12 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
             for ($l = $lStart; $l < $lMax; ++$l) {
                 $lines[$l] = preg_replace('/^\h+$/', '', $lines[$l]);
             }
-
-            $tokens[$index]->setContent(implode($this->whitespacesConfig->getLineEnding(), $lines));
+            $content = implode($this->whitespacesConfig->getLineEnding(), $lines);
+            if ('' !== $content) {
+                $tokens[$index] = new Token([T_WHITESPACE, $content]);
+            } else {
+                $tokens->clearAt($index);
+            }
         }
     }
 }

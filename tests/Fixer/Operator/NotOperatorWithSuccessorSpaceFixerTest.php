@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer
  */
 final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
 {
@@ -25,36 +27,49 @@ final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $i = 0; $i++; $foo = ! false || (! true || ! ! false && (2 === (7 -5)));',
                 '<?php $i = 0; $i++; $foo = !false || (!true || !!false && (2 === (7 -5)));',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */ true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !  /* some comment */ true);',
-            ),
-        );
+            ],
+            'comment case' => [
+                '<?php
+                $a=#
+! #
+$b;
+                ',
+                '<?php
+                $a=#
+!
+#
+$b;
+                ',
+            ],
+        ];
     }
 }

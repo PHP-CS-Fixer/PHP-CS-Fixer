@@ -26,7 +26,35 @@ final class HeredocToNowdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Convert `heredoc` to `nowdoc` where possible.',
+            [
+                new CodeSample(
+<<<'EOF'
+<?php $a = <<<"TEST"
+Foo
+TEST;
+
+EOF
+                ),
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_START_HEREDOC);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_START_HEREDOC) || false !== strpos($token->getContent(), "'")) {
@@ -34,7 +62,8 @@ final class HeredocToNowdocFixer extends AbstractFixer
             }
 
             if ($tokens[$index + 1]->isGivenKind(T_END_HEREDOC)) {
-                $this->convertToNowdoc($token);
+                $tokens[$index] = $this->convertToNowdoc($token);
+
                 continue;
             }
 
@@ -51,47 +80,27 @@ final class HeredocToNowdocFixer extends AbstractFixer
                 continue;
             }
 
-            $this->convertToNowdoc($token);
-            $content = str_replace(array('\\\\', '\\$'), array('\\', '$'), $content);
-            $tokens[$index + 1]->setContent($content);
+            $tokens[$index] = $this->convertToNowdoc($token);
+            $content = str_replace(['\\\\', '\\$'], ['\\', '$'], $content);
+            $tokens[$index + 1] = new Token([
+                $tokens[$index + 1]->getId(),
+                $content,
+            ]);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Convert `heredoc` to `nowdoc` where possible.',
-            array(
-                new CodeSample(
-<<<'EOF'
-<?php $a = <<<"TEST"
-Foo
-TEST;
-
-EOF
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_START_HEREDOC);
     }
 
     /**
      * Transforms the heredoc start token to nowdoc notation.
      *
      * @param Token $token
+     *
+     * @return $token
      */
     private function convertToNowdoc(Token $token)
     {
-        $token->setContent(preg_replace('/(?<=^<<<)(\s*)"?(.*?)"?$/', '$1\'$2\'', $token->getContent()));
+        return new Token([
+            $token->getId(),
+            preg_replace('/(?<=^<<<)([ \t]*)"?([^\s"]+)"?/', '$1\'$2\'', $token->getContent()),
+        ]);
     }
 }

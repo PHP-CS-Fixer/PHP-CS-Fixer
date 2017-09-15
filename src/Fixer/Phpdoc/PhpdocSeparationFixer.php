@@ -16,34 +16,16 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\TagComparator;
-use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class PhpdocSeparationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class PhpdocSeparationFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-            $this->fixDescription($doc);
-            $this->fixAnnotations($doc);
-
-            $token->setContent($doc->getContent());
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -51,7 +33,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements WhitespacesAw
     {
         return new FixerDefinition(
             'Annotations in phpdocs should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -65,8 +47,16 @@ final class PhpdocSeparationFixer extends AbstractFixer implements WhitespacesAw
  */
 function fnc($foo, $bar) {}'
                 ),
-            )
+            ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return -3;
     }
 
     /**
@@ -75,6 +65,24 @@ function fnc($foo, $bar) {}'
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $doc = new DocBlock($token->getContent());
+            $this->fixDescription($doc);
+            $this->fixAnnotations($doc);
+
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+        }
     }
 
     /**
@@ -94,6 +102,7 @@ function fnc($foo, $bar) {}'
 
                 if ($next->containsATag()) {
                     $line->addBlank();
+
                     break;
                 }
             }

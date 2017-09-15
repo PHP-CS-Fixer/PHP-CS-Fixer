@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Casing;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
  */
 final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
 {
@@ -25,26 +27,23 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideExamples
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples()
+    public function provideFixCases()
     {
-        return array(
-            array('<?php $x = (1 and 2);', '<?php $x = (1 AND 2);'),
-            array('<?php foreach(array(1, 2, 3) as $val) {}', '<?php FOREACH(array(1, 2, 3) AS $val) {}'),
-            array('<?php echo "GOOD AS NEW";'),
-            array('<?php echo X::class ?>', '<?php echo X::ClASs ?>'),
-        );
+        return [
+            ['<?php $x = (1 and 2);', '<?php $x = (1 AND 2);'],
+            ['<?php foreach(array(1, 2, 3) as $val) {}', '<?php FOREACH(array(1, 2, 3) AS $val) {}'],
+            ['<?php echo "GOOD AS NEW";'],
+            ['<?php echo X::class ?>', '<?php echo X::ClASs ?>'],
+        ];
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testHaltCompiler()
     {
         $this->doTest('<?php __HALT_COMPILER();');

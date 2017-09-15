@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Basic;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -36,37 +37,18 @@ final class EncodingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $token = $tokens[0];
-        $content = $token->getContent();
-
-        if (0 === strncmp($content, $this->BOM, 3)) {
-            $newContent = substr($content, 3);
-
-            if (false === $newContent) {
-                $newContent = ''; // substr returns false rather than an empty string when starting at the end
-            }
-
-            $token->setContent($newContent);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'PHP code MUST use only UTF-8 without BOM (remove BOM).',
-            array(
+            [
                 new CodeSample(
 $this->BOM.'<?php
 
 echo "Hello!";
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -85,5 +67,27 @@ echo "Hello!";
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $content = $tokens[0]->getContent();
+
+        if (0 === strncmp($content, $this->BOM, 3)) {
+            $newContent = substr($content, 3);
+
+            if (false === $newContent) {
+                $newContent = ''; // substr returns false rather than an empty string when starting at the end
+            }
+
+            if ('' === $newContent) {
+                $tokens->clearAt(0);
+            } else {
+                $tokens[0] = new Token([$tokens[0]->getId(), $newContent]);
+            }
+        }
     }
 }

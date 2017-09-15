@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Semicolon;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -21,6 +21,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Semicolon\NoMultilineWhitespaceBeforeSemicolonsFixer
  */
 final class NoMultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {
@@ -28,28 +30,28 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixer
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     $foo->bar() // test
 ;',
                 '<?php
                     $foo->bar() // test
                     ;',
-            ),
-            array(
+            ],
+            [
                 "<?php echo(1) // test\n;",
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $foo->bar() # test
 ;',
@@ -58,11 +60,11 @@ final class NoMultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixer
 
 
                 ;',
-            ),
-            array(
+            ],
+            [
                 "<?php\n;",
-            ),
-            array(
+            ],
+            [
                 '<?php
 $this
     ->setName(\'readme1\')
@@ -74,8 +76,8 @@ $this
     ->setDescription(\'Generates the README\')
 ;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $this
     ->setName(\'readme2\')
@@ -87,29 +89,29 @@ $this
     ->setDescription(\'Generates the README\')
     ;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php echo "$this->foo(\'with param containing ;\') ;" ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo();',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo() ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo(\'with param containing ;\') ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo(\'with param containing ) ; \') ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo("with param containing ) ; ")  ; ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php $this->foo("with semicolon in string) ; "); ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $this
     ->example();',
@@ -118,8 +120,8 @@ $this
     ->example()
 
     ;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -137,10 +139,10 @@ $this
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php echo(1) // test\r\n;",
-            ),
-        );
+            ],
+        ];
     }
 }

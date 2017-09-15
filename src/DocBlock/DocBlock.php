@@ -28,12 +28,12 @@ class DocBlock
      *
      * @var Line[]
      */
-    private $lines = array();
+    private $lines = [];
 
     /**
      * The array of annotations.
      *
-     * @var Annotation[]|null
+     * @var null|Annotation[]
      */
     private $annotations;
 
@@ -74,7 +74,7 @@ class DocBlock
      *
      * @param int $pos
      *
-     * @return Line|null
+     * @return null|Line
      */
     public function getLine($pos)
     {
@@ -91,7 +91,7 @@ class DocBlock
     public function getAnnotations()
     {
         if (null === $this->annotations) {
-            $this->annotations = array();
+            $this->annotations = [];
             $total = count($this->lines);
 
             for ($index = 0; $index < $total; ++$index) {
@@ -113,11 +113,9 @@ class DocBlock
     }
 
     /**
-     * Get a single annotation.
-     *
      * @param int $pos
      *
-     * @return Annotation|null
+     * @return null|Annotation
      */
     public function getAnnotation($pos)
     {
@@ -139,7 +137,7 @@ class DocBlock
      */
     public function getAnnotationsOfType($types)
     {
-        $annotations = array();
+        $annotations = [];
         $types = (array) $types;
 
         foreach ($this->getAnnotations() as $annotation) {

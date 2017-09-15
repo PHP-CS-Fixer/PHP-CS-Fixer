@@ -3,6 +3,501 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.6.0
+--------------------
+
+* bug #3039 YodaStyleFixer - Fix echo case (SpacePossum, keradus)
+* feature #2446 Add YodaStyleFixer (SpacePossum)
+* feature #2940 Add NoHomoglyphNamesFixer (mcfedr, keradus)
+* feature #3012 Add CombineConsecutiveIssetsFixer (SpacePossum)
+* minor #3037 Update SF rule set (SpacePossum)
+
+Changelog for v2.5.1
+--------------------
+
+* bug #3002 Bugfix braces (mnabialek)
+* bug #3010 Fix handling of Github releases (julienfalque, keradus)
+* bug #3015 Fix exception arguments (julienfalque)
+* bug #3016 Verify phar file (keradus)
+* bug #3021 Risky rules cleanup (kubawerlos)
+* bug #3023 RandomApiMigrationFixer - "rand();" to "random_int(0, getrandmax());" fixing (SpacePossum)
+* bug #3024 ConfigurationResolver - Handle empty "rules" value (SpacePossum, keradus)
+* bug #3031 IndentationTypeFixer - fix handling tabs in indented comments (keradus)
+* minor #2999 Notice when paths from config file are overridden by command arguments (julienfalque, keradus)
+* minor #3007 Add PHP 7.2 to Travis build matrix (Jean85)
+* minor #3009 CiIntegrationTest - run local (SpacePossum)
+* minor #3013 Adjust phpunit configuration (localheinz)
+* minor #3017 Fix: Risky tests (localheinz)
+* minor #3018 Fix: Make sure that data providers are named correctly (localheinz, keradus)
+* minor #3032 .php_cs.dist - handling UnexpectedValueException (keradus)
+* minor #3033 Use ::class (keradus)
+* minor #3034 Follow newest CS (keradus)
+* minor #3036 Drop not existing Standalone group from PHPUnit configuration and duplicated internal tags (keradus)
+* minor #3042 Update gitter address (keradus)
+
+Changelog for v2.5.0
+--------------------
+
+* feature #2770 DoctrineAnnotationSpaces - split assignments options (julienfalque)
+* feature #2843 Add estimating-max progress output type (julienfalque)
+* feature #2885 Add NoSuperfluousElseifFixer (julienfalque)
+* feature #2929 Add NoUnneededCurlyBracesFixer (SpacePossum)
+* feature #2944 FunctionToConstantFixer - handle get_class() -> __CLASS__ as well (SpacePossum)
+* feature #2953 BlankLineBeforeStatementFixer - Add more statements (localheinz, keradus)
+* feature #2972 Add NoUnneededFinalMethodFixer (Slamdunk, keradus)
+* feature #2992 Add Doctrine Annotation ruleset (julienfalque)
+* minor #2926 Token::getNameForId (SpacePossum)
+
+Changelog for v2.4.2
+--------------------
+
+* bug #3002 Bugfix braces (mnabialek)
+* bug #3010 Fix handling of Github releases (julienfalque, keradus)
+* bug #3015 Fix exception arguments (julienfalque)
+* bug #3016 Verify phar file (keradus)
+* bug #3021 Risky rules cleanup (kubawerlos)
+* bug #3023 RandomApiMigrationFixer - "rand();" to "random_int(0, getrandmax());" fixing (SpacePossum)
+* bug #3024 ConfigurationResolver - Handle empty "rules" value (SpacePossum, keradus)
+* bug #3031 IndentationTypeFixer - fix handling tabs in indented comments (keradus)
+* minor #2999 Notice when paths from config file are overridden by command arguments (julienfalque, keradus)
+* minor #3007 Add PHP 7.2 to Travis build matrix (Jean85)
+* minor #3009 CiIntegrationTest - run local (SpacePossum)
+* minor #3013 Adjust phpunit configuration (localheinz)
+* minor #3017 Fix: Risky tests (localheinz)
+* minor #3018 Fix: Make sure that data providers are named correctly (localheinz, keradus)
+* minor #3032 .php_cs.dist - handling UnexpectedValueException (keradus)
+* minor #3033 Use ::class (keradus)
+* minor #3034 Follow newest CS (keradus)
+* minor #3036 Drop not existing Standalone group from PHPUnit configuration and duplicated internal tags (keradus)
+* minor #3042 Update gitter address (keradus)
+
+Changelog for v2.4.1
+--------------------
+
+* bug #2925 Improve CI integration suggestion (julienfalque)
+* bug #2928 TokensAnalyzer::getClassyElements - Anonymous class support (SpacePossum)
+* bug #2931 Psr0Fixer, Psr4Fixer - ignore "new class" syntax (dg, keradus)
+* bug #2934 Config - fix handling rule without value (keradus, SpacePossum)
+* bug #2939 NoUnusedImportsFixer - Fix extra blank line (julienfalque)
+* bug #2941 PHP 7.2 - Group imports with trailing comma support (SpacePossum, julienfalque)
+* bug #2954 NoBreakCommentFixer - Disable case sensitivity (julienfalque)
+* bug #2959 MethodArgumentSpaceFixer - Skip body of fixed function (greg0ire)
+* bug #2984 AlignMultilineCommentFixer - handle uni code (SpacePossum)
+* bug #2987 Fix incorrect indentation of comments in `braces` fixer (rob006)
+* minor #2924 Add missing Token deprecations (julienfalque)
+* minor #2927 WhiteSpaceConfig - update message copy and more strict tests (SpacePossum, keradus)
+* minor #2930 Trigger website build (keradus)
+* minor #2932 Integrate CircleCI (keradus, aidantwoods)
+* minor #2933 ProcessLinterTest - Ensure Windows test only runs on Windows, add a Mac test execution (aidantwoods)
+* minor #2935 special handling of fabbot.io service if it's using too old PHP CS Fixer version (keradus)
+* minor #2937 Travis: execute 5.3 job on precise (keradus)
+* minor #2938 Tests fix configuration of project (SpacePossum, keradus)
+* minor #2943 FunctionToConstantFixer - test with diff. arguments than fixable (SpacePossum)
+* minor #2945 BlankLineBeforeStatementFixerTest - Fix covered class (julienfalque)
+* minor #2946 Detect extra old installations (keradus)
+* minor #2947 Test suggested CI integration (keradus)
+* minor #2951 AccessibleObject - remove most of usage (keradus)
+* minor #2952 BlankLineBeforeStatementFixer - Reference fixer instead of test class (localheinz)
+* minor #2955 Travis - stop using old TASK_SCA residue (keradus)
+* minor #2968 AssertTokensTrait - don't use AccessibleObject (keradus)
+* minor #2969 Shrink down AccessibleObject usage (keradus)
+* minor #2982 TrailingCommaInMultilineArrayFixer - simplify isMultilineArray condition (TomasVotruba)
+* minor #2989 CiIntegrationTest - fix min supported PHP versions (keradus)
+
+Changelog for v2.4.0
+--------------------
+
+* bug #2880 NoBreakCommentFixer - fix edge case (julienfalque)
+* bug #2900 VoidReturnFixer - handle functions containing anonymous functions/classes (bendavies, keradus)
+* bug #2902 Fix test classes constructor (julienfalque)
+* feature #2384 Add BlankLineBeforeStatementFixer (localheinz, keradus, SpacePossum)
+* feature #2440 MethodArgumentSpaceFixer - add ensure_fully_multiline option (greg0ire)
+* feature #2649 PhpdocAlignFixer - make fixer configurable (ntzm)
+* feature #2664 Add DoctrineAnnotationArrayAssignmentFixer (julienfalque)
+* feature #2667 Add NoBreakCommentFixer (julienfalque)
+* feature #2684 BracesFixer - new options for braces position after control structures and anonymous constructs (aidantwoods, keradus)
+* feature #2701 NoExtraConsecutiveBlankLinesFixer - Add more configuration options related to switch statements (SpacePossum)
+* feature #2740 Add VoidReturnFixer (mrmark)
+* feature #2765 DoctrineAnnotationIndentationFixer - add option to indent mixed lines (julienfalque)
+* feature #2815 NonPrintableCharacterFixer - Add option to replace with escape sequences (julienfalque, keradus)
+* feature #2822 Add NoNullPropertyInitializationFixer (ntzm, julienfalque, SpacePossum)
+* feature #2825 Add PhpdocTypesOrderFixer (julienfalque, keradus)
+* feature #2856 CastSpacesFixer - add space option (kubawerlos, keradus)
+* feature #2857 Add AlignMultilineCommentFixer (Slamdunk, keradus)
+* feature #2866 Add SingleLineCommentStyleFixer, deprecate HashToSlashCommentFixer (Slamdunk, keradus)
+* minor #2773 Travis - use stages (keradus)
+* minor #2794 Drop HHVM support (keradus, julienfalque)
+* minor #2801 ProjectCodeTest - Fix typo in deprecation message (SpacePossum)
+* minor #2818 Token become immutable, performance optimizations (keradus)
+* minor #2877 Fix PHPMD report (julienfalque)
+* minor #2894 NonPrintableCharacterFixer - fix handling required PHP version on PHPUnit 4.x (keradus)
+* minor #2921 InvalidForEnvFixerConfigurationException - fix handling in tests on 2.4 line (keradus)
+
+Changelog for v2.3.3
+--------------------
+
+* bug #2807 NoUselessElseFixer - Fix detection of conditional block (SpacePossum)
+* bug #2809 Phar release - fix readme generation (SpacePossum, keradus)
+* bug #2827 MethodArgumentSpaceFixer - Always remove trailing spaces (julienfalque)
+* bug #2835 SelfAcessorFixer - class property fix (mnabialek)
+* bug #2848 PhpdocIndentFixer - fix edge case with inline phpdoc (keradus)
+* bug #2849 BracesFixer - Fix indentation issues with comments (julienfalque)
+* bug #2851 Tokens - ensureWhitespaceAtIndex (GrahamCampbell, SpacePossum)
+* bug #2854 NoLeadingImportSlashFixer - Removing leading slash from import even when in global space (kubawerlos)
+* bug #2858 Support generic types (keradus)
+* bug #2869 Fix handling required configuration (keradus)
+* bug #2881 NoUnusedImportsFixer - Bug when trying to insert empty token (GrahamCampbell, keradus)
+* bug #2882 DocBlock\Annotation - Fix parsing of collections with multiple key types (julienfalque)
+* bug #2886 NoSpacesInsideParenthesisFixer - Do not remove whitespace if next token is comment (SpacePossum)
+* bug #2888 SingleImportPerStatementFixer - Add support for function and const (SpacePossum)
+* bug #2901 Add missing files to archive files (keradus)
+* bug #2914 HeredocToNowdocFixer - works with CRLF line ending (dg)
+* bug #2920 RuleSet - Update deprecated configuration of fixers (SpacePossum, keradus)
+* minor #1531 Update docs for few generic types (keradus)
+* minor #2793 COOKBOOK-FIXERS.md - update to current version, fix links (keradus)
+* minor #2812 ProcessLinter - compatibility with Symfony 3.3 (keradus)
+* minor #2816 Tokenizer - better docs and validation (keradus)
+* minor #2817 Tokenizer - use future-compatible interface (keradus)
+* minor #2819 Fix benchmark (keradus)
+* minor #2820 MagicConstantCasingFixer - Remove defined check (SpacePossum)
+* minor #2823 Tokenizer - use future-compatible interface (keradus)
+* minor #2824 code grooming (keradus)
+* minor #2826 Exceptions - provide utests (localheinz)
+* minor #2828 Enhancement: Reference phpunit.xsd from phpunit.xml.dist (localheinz)
+* minor #2830 Differs - add tests (localheinz)
+* minor #2832 Fix: Use all the columns (localheinz)
+* minor #2833 Doctrine\Annotation\Token - provide utests (localheinz)
+* minor #2839 Use PHP 7.2 polyfill instead of xml one (keradus)
+* minor #2842 Move null to first position in PHPDoc types (julienfalque)
+* minor #2850 ReadmeCommandTest - Prevent diff output (julienfalque)
+* minor #2859 Fixed typo and dead code removal (GrahamCampbell)
+* minor #2863 FileSpecificCodeSample - add tests (localheinz)
+* minor #2864 WhitespacesAwareFixerInterface clean up (Slamdunk)
+* minor #2865 AutoReview\FixerTest - test configuration samples (SpacePossum, keradus)
+* minor #2867 VersionSpecification - Fix copy-paste typo (SpacePossum)
+* minor #2870 Tokens - ensureWhitespaceAtIndex - Clear tokens before compare. (SpacePossum)
+* minor #2874 LineTest - fix typo (keradus)
+* minor #2875 HelpCommand - recursive layout fix (SpacePossum)
+* minor #2883 DescribeCommand - Show which sample uses the default configuration  (SpacePossum)
+* minor #2887 Housekeeping - Strict whitespace checks (SpacePossum)
+* minor #2895 ProjectCodeTest - check that classes in no-tests exception exist (keradus)
+* minor #2896 Move testing related classes from src to tests (keradus)
+* minor #2904 Reapply CS (keradus)
+* minor #2910 PhpdocAnnotationWithoutDotFixer - Restrict lowercasing (oschwald)
+* minor #2913 Tests - tweaks (SpacePossum, keradus)
+* minor #2916 FixerFactory - drop return in sortFixers(), never used (TomasVotruba)
+
+Changelog for v2.3.2
+--------------------
+
+* bug #2682 DoctrineAnnotationIndentationFixer - fix handling nested annotations (edhgoose, julienfalque)
+* bug #2700 Fix Doctrine Annotation end detection (julienfalque)
+* bug #2715 OrderedImportsFixer - handle indented groups (pilgerone)
+* bug #2732 HeaderCommentFixer - fix handling blank lines (s7b4)
+* bug #2745 Fix Doctrine Annotation newlines (julienfalque)
+* bug #2752 FixCommand - fix typo in warning message (mnapoli)
+* bug #2757 GeckoPHPUnit is not dev dependency (keradus)
+* bug #2759 Update gitattributes (SpacePossum)
+* bug #2763 Fix describe command with PSR-0 fixer (julienfalque)
+* bug #2768 Tokens::ensureWhitespaceAtIndex - clean up comment check, add check for T_OPEN (SpacePossum)
+* bug #2783 Tokens::ensureWhitespaceAtIndex - Fix handling line endings (SpacePossum)
+* minor #2304 DX: use PHPMD (keradus)
+* minor #2663 Use colors for keywords in commands output (julienfalque, keradus)
+* minor #2706 Update README (SpacePossum)
+* minor #2714 README.rst - fix wrong value in example (mleko)
+* minor #2718 Remove old Symfony exception message expectation (julienfalque)
+* minor #2721 Update phpstorm article link to a fresh blog post (valeryan)
+* minor #2725 Use method chaining for configuration definitions (julienfalque)
+* minor #2727 PHPUnit - use speedtrap (keradus)
+* minor #2728 SelfUpdateCommand - verify that it's possible to replace current file (keradus)
+* minor #2729 DescribeCommand - add decorated output test (julienfalque)
+* minor #2731 BracesFixer - properly pass config in utest dataProvider (keradus)
+* minor #2738 Upgrade tests to use new, namespaced PHPUnit TestCase class (keradus)
+* minor #2742 Code cleanup (GrahamCampbell, keradus)
+* minor #2743 Fixing example and description for GeneralPhpdocAnnotationRemoveFixer (kubawerlos)
+* minor #2744 AbstractDoctrineAnnotationFixerTestCase - split fixers test cases (julienfalque)
+* minor #2755 Fix compatibility with PHPUnit 5.4.x (keradus)
+* minor #2758 Readme - improve CI integration guidelines (keradus)
+* minor #2769 Psr0Fixer - remove duplicated example (julienfalque)
+* minor #2774 AssertTokens Trait (keradus)
+* minor #2775 NoExtraConsecutiveBlankLinesFixer - remove duplicate code sample. (SpacePossum)
+* minor #2778 AutoReview - watch that code samples are unique (keradus)
+* minor #2787 Add warnings about missing dom ext and require json ext (keradus)
+* minor #2792 Use composer-require-checker (keradus)
+* minor #2796 Update .gitattributes (SpacePossum)
+* minor #2797 Update .gitattributes (SpacePossum)
+* minor #2800 PhpdocTypesFixerTest - Fix typo in covers annotation (SpacePossum)
+
+Changelog for v2.3.1
+--------------------
+
+Port of v2.2.3.
+
+* bug #2724 Revert #2554 Add short diff. output format (keradus)
+
+Changelog for v2.3.0
+--------------------
+
+* feature #2450 Add ListSyntaxFixer (SpacePossum)
+* feature #2708 Add PhpUnitTestClassRequiresCoversFixer (keradus)
+* minor #2568 Require PHP 5.6+ (keradus)
+* minor #2672 Bump symfony/* deps (keradus)
+
+Changelog for v2.2.7
+--------------------
+
+* bug #3002 Bugfix braces (mnabialek)
+* bug #3010 Fix handling of Github releases (julienfalque, keradus)
+* bug #3015 Fix exception arguments (julienfalque)
+* bug #3016 Verify phar file (keradus)
+* bug #3021 Risky rules cleanup (kubawerlos)
+* bug #3023 RandomApiMigrationFixer - "rand();" to "random_int(0, getrandmax());" fixing (SpacePossum)
+* bug #3024 ConfigurationResolver - Handle empty "rules" value (SpacePossum, keradus)
+* bug #3031 IndentationTypeFixer - fix handling tabs in indented comments (keradus)
+* minor #2999 Notice when paths from config file are overridden by command arguments (julienfalque, keradus)
+* minor #3007 Add PHP 7.2 to Travis build matrix (Jean85)
+* minor #3009 CiIntegrationTest - run local (SpacePossum)
+* minor #3013 Adjust phpunit configuration (localheinz)
+* minor #3017 Fix: Risky tests (localheinz)
+* minor #3018 Fix: Make sure that data providers are named correctly (localheinz, keradus)
+* minor #3032 .php_cs.dist - handling UnexpectedValueException (keradus)
+* minor #3034 Follow newest CS (keradus)
+* minor #3036 Drop not existing Standalone group from PHPUnit configuration and duplicated internal tags (keradus)
+* minor #3042 Update gitter address (keradus)
+
+Changelog for v2.2.6
+--------------------
+
+* bug #2925 Improve CI integration suggestion (julienfalque)
+* bug #2928 TokensAnalyzer::getClassyElements - Anonymous class support (SpacePossum)
+* bug #2931 Psr0Fixer, Psr4Fixer - ignore "new class" syntax (dg, keradus)
+* bug #2934 Config - fix handling rule without value (keradus, SpacePossum)
+* bug #2939 NoUnusedImportsFixer - Fix extra blank line (julienfalque)
+* bug #2941 PHP 7.2 - Group imports with trailing comma support (SpacePossum, julienfalque)
+* bug #2987 Fix incorrect indentation of comments in `braces` fixer (rob006)
+* minor #2927 WhiteSpaceConfig - update message copy and more strict tests (SpacePossum, keradus)
+* minor #2930 Trigger website build (keradus)
+* minor #2932 Integrate CircleCI (keradus, aidantwoods)
+* minor #2933 ProcessLinterTest - Ensure Windows test only runs on Windows, add a Mac test execution (aidantwoods)
+* minor #2935 special handling of fabbot.io service if it's using too old PHP CS Fixer version (keradus)
+* minor #2937 Travis: execute 5.3 job on precise (keradus)
+* minor #2938 Tests fix configuration of project (SpacePossum, keradus)
+* minor #2943 FunctionToConstantFixer - test with diff. arguments than fixable (SpacePossum)
+* minor #2946 Detect extra old installations (keradus)
+* minor #2947 Test suggested CI integration (keradus)
+* minor #2951 AccessibleObject - remove most of usage (keradus)
+* minor #2969 Shrink down AccessibleObject usage (keradus)
+* minor #2982 TrailingCommaInMultilineArrayFixer - simplify isMultilineArray condition (TomasVotruba)
+
+Changelog for v2.2.5
+--------------------
+
+* bug #2807 NoUselessElseFixer - Fix detection of conditional block (SpacePossum)
+* bug #2809 Phar release - fix readme generation (SpacePossum, keradus)
+* bug #2827 MethodArgumentSpaceFixer - Always remove trailing spaces (julienfalque)
+* bug #2835 SelfAcessorFixer - class property fix (mnabialek)
+* bug #2848 PhpdocIndentFixer - fix edge case with inline phpdoc (keradus)
+* bug #2849 BracesFixer - Fix indentation issues with comments (julienfalque)
+* bug #2851 Tokens - ensureWhitespaceAtIndex (GrahamCampbell, SpacePossum)
+* bug #2854 NoLeadingImportSlashFixer - Removing leading slash from import even when in global space (kubawerlos)
+* bug #2858 Support generic types (keradus)
+* bug #2869 Fix handling required configuration (keradus)
+* bug #2881 NoUnusedImportsFixer - Bug when trying to insert empty token (GrahamCampbell, keradus)
+* bug #2882 DocBlock\Annotation - Fix parsing of collections with multiple key types (julienfalque)
+* bug #2886 NoSpacesInsideParenthesisFixer - Do not remove whitespace if next token is comment (SpacePossum)
+* bug #2888 SingleImportPerStatementFixer - Add support for function and const (SpacePossum)
+* bug #2901 Add missing files to archive files (keradus)
+* bug #2914 HeredocToNowdocFixer - works with CRLF line ending (dg)
+* bug #2920 RuleSet - Update deprecated configuration of fixers (SpacePossum, keradus)
+* minor #1531 Update docs for few generic types (keradus)
+* minor #2793 COOKBOOK-FIXERS.md - update to current version, fix links (keradus)
+* minor #2812 ProcessLinter - compatibility with Symfony 3.3 (keradus)
+* minor #2816 Tokenizer - better docs and validation (keradus)
+* minor #2817 Tokenizer - use future-compatible interface (keradus)
+* minor #2819 Fix benchmark (keradus)
+* minor #2824 code grooming (keradus)
+* minor #2826 Exceptions - provide utests (localheinz)
+* minor #2828 Enhancement: Reference phpunit.xsd from phpunit.xml.dist (localheinz)
+* minor #2830 Differs - add tests (localheinz)
+* minor #2832 Fix: Use all the columns (localheinz)
+* minor #2833 Doctrine\Annotation\Token - provide utests (localheinz)
+* minor #2839 Use PHP 7.2 polyfill instead of xml one (keradus)
+* minor #2842 Move null to first position in PHPDoc types (julienfalque)
+* minor #2850 ReadmeCommandTest - Prevent diff output (julienfalque)
+* minor #2859 Fixed typo and dead code removal (GrahamCampbell)
+* minor #2863 FileSpecificCodeSample - add tests (localheinz)
+* minor #2864 WhitespacesAwareFixerInterface clean up (Slamdunk)
+* minor #2865 AutoReview\FixerTest - test configuration samples (SpacePossum, keradus)
+* minor #2867 VersionSpecification - Fix copy-paste typo (SpacePossum)
+* minor #2874 LineTest - fix typo (keradus)
+* minor #2875 HelpCommand - recursive layout fix (SpacePossum)
+* minor #2883 DescribeCommand - Show which sample uses the default configuration  (SpacePossum)
+* minor #2887 Housekeeping - Strict whitespace checks (SpacePossum)
+* minor #2895 ProjectCodeTest - check that classes in no-tests exception exist (keradus)
+* minor #2896 Move testing related classes from src to tests (keradus)
+* minor #2904 Reapply CS (keradus)
+* minor #2910 PhpdocAnnotationWithoutDotFixer - Restrict lowercasing (oschwald)
+* minor #2913 Tests - tweaks (SpacePossum, keradus)
+* minor #2916 FixerFactory - drop return in sortFixers(), never used (TomasVotruba)
+
+Changelog for v2.2.4
+--------------------
+
+* bug #2682 DoctrineAnnotationIndentationFixer - fix handling nested annotations (edhgoose, julienfalque)
+* bug #2700 Fix Doctrine Annotation end detection (julienfalque)
+* bug #2715 OrderedImportsFixer - handle indented groups (pilgerone)
+* bug #2732 HeaderCommentFixer - fix handling blank lines (s7b4)
+* bug #2745 Fix Doctrine Annotation newlines (julienfalque)
+* bug #2752 FixCommand - fix typo in warning message (mnapoli)
+* bug #2757 GeckoPHPUnit is not dev dependency (keradus)
+* bug #2759 Update gitattributes (SpacePossum)
+* bug #2763 Fix describe command with PSR-0 fixer (julienfalque)
+* bug #2768 Tokens::ensureWhitespaceAtIndex - clean up comment check, add check for T_OPEN (SpacePossum)
+* bug #2783 Tokens::ensureWhitespaceAtIndex - Fix handling line endings (SpacePossum)
+* minor #2663 Use colors for keywords in commands output (julienfalque, keradus)
+* minor #2706 Update README (SpacePossum)
+* minor #2714 README.rst - fix wrong value in example (mleko)
+* minor #2721 Update phpstorm article link to a fresh blog post (valeryan)
+* minor #2727 PHPUnit - use speedtrap (keradus)
+* minor #2728 SelfUpdateCommand - verify that it's possible to replace current file (keradus)
+* minor #2729 DescribeCommand - add decorated output test (julienfalque)
+* minor #2731 BracesFixer - properly pass config in utest dataProvider (keradus)
+* minor #2738 Upgrade tests to use new, namespaced PHPUnit TestCase class (keradus)
+* minor #2743 Fixing example and description for GeneralPhpdocAnnotationRemoveFixer (kubawerlos)
+* minor #2744 AbstractDoctrineAnnotationFixerTestCase - split fixers test cases (julienfalque)
+* minor #2755 Fix compatibility with PHPUnit 5.4.x (keradus)
+* minor #2758 Readme - improve CI integration guidelines (keradus)
+* minor #2769 Psr0Fixer - remove duplicated example (julienfalque)
+* minor #2775 NoExtraConsecutiveBlankLinesFixer - remove duplicate code sample. (SpacePossum)
+* minor #2778 AutoReview - watch that code samples are unique (keradus)
+* minor #2787 Add warnings about missing dom ext and require json ext (keradus)
+* minor #2792 Use composer-require-checker (keradus)
+* minor #2796 Update .gitattributes (SpacePossum)
+* minor #2800 PhpdocTypesFixerTest - Fix typo in covers annotation (SpacePossum)
+
+Changelog for v2.2.3
+--------------------
+
+* bug #2724 Revert #2554 Add short diff. output format (keradus)
+
+Changelog for v2.2.2
+--------------------
+
+Warning, this release breaks BC due to introduction of:
+* minor #2554 Add short diff. output format (SpacePossum, keradus)
+That PR was reverted in v2.2.3, which should be used instead of v2.2.2.
+
+* bug #2545 RuleSet - change resolvement (SpacePossum)
+* bug #2686 Commands readme and describe - fix rare casing when not displaying some possible options of configuration (keradus)
+* bug #2711 FixCommand - fix diff optional value handling (keradus)
+* minor #2688 AppVeyor - Remove github oauth (keradus)
+* minor #2703 Clean ups - No mixed annotations (SpacePossum)
+* minor #2704 Create PHP70Migration:risky ruleset (keradus)
+* minor #2707 Deprecate other than "yes" or "no" for input options (SpacePossum)
+* minor #2709 code grooming (keradus)
+* minor #2710 Travis - run more rules on TASK_SCA (keradus)
+
+Changelog for v2.2.1
+--------------------
+
+* bug #2621 Tokenizer - fix edge cases with empty code, registered found tokens and code hash (SpacePossum, keradus)
+* bug #2674 SemicolonAfterInstructionFixer - Fix case where block ends with an opening curly brace (ntzm)
+* bug #2675 ProcessOutputTest - update tests to pass on newest Symfony components under Windows (keradus)
+* minor #2651 Fix UPGRADE.md table syntax so it works in GitHub (ntzm, keradus)
+* minor #2665 Travis - Improve trailing spaces detection (julienfalque)
+* minor #2666 TransformersTest - move test to auto-review group (keradus)
+* minor #2668 add covers annotation (keradus)
+* minor #2669 TokensTest - grooming (SpacePossum)
+* minor #2670 AbstractFixer: use applyFix instead of fix (Slamdunk)
+* minor #2677 README: Correct progressbar option support (Laurens St�tzel)
+
+Changelog for v2.2.0
+--------------------
+
+* bug #2640 NoExtraConsecutiveBlankLinesFixer - Fix single indent characters not working (ntzm)
+* feature #2220 Doctrine annotation fixers (julienfalque)
+* feature #2431 MethodArgumentSpaceFixer: allow to retain multiple spaces after comma (Slamdunk)
+* feature #2459 BracesFixer - Add option for keeping opening brackets on the same line (jtojnar, SpacePossum)
+* feature #2486 Add FunctionToConstantFixer (SpacePossum, keradus)
+* feature #2505 FunctionDeclarationFixer - Make space after anonymous function configurable (jtojnar, keradus)
+* feature #2509 FullOpeningTagFixer - Ensure opening PHP tag is lowercase (jtojnar)
+* feature #2532 FixCommand - add stop-on-violation option (keradus)
+* feature #2591 Improve process output (julienfalque)
+* feature #2603 Add InvisibleSymbols Fixer (ivan1986, keradus)
+* feature #2642 Add MagicConstantCasingFixer (ntzm)
+* feature #2657 PhpdocToCommentFixer - Allow phpdoc for language constructs (ceeram, SpacePossum)
+* minor #2500 Configuration resolver (julienfalque, SpacePossum, keradus)
+* minor #2566 Show more details on errors and exceptions. (SpacePossum, julienfalque)
+* minor #2597 HHVM - bump required version to 3.18 (keradus)
+* minor #2606 FixCommand - fix missing comment close tag (keradus)
+* minor #2623 OrderedClassElementsFixer - remove dead code (SpacePossum)
+* minor #2625 Update Symfony and Symfony:risky rulesets (keradus)
+* minor #2626 TernaryToNullCoalescingFixer - adjust ruleset membership and description (keradus)
+* minor #2635 ProjectCodeTest - watch that all classes have dedicated tests (keradus)
+* minor #2647 DescribeCommandTest - remove deprecated code usage (julienfalque)
+* minor #2648 Move non-code covering tests to AutoReview subnamespace (keradus)
+* minor #2652 NoSpacesAroundOffsetFixerTest - fix deprecation (keradus)
+* minor #2656 Code grooming (keradus)
+* minor #2659 Travis - speed up preparation for phar building (keradus)
+* minor #2660 Fixed typo in suggest for ext-mbstring (pascal-hofmann)
+* minor #2661 NonPrintableCharacterFixer - include into Symfony:risky ruleset (keradus)
+
+Changelog for v2.1.3
+--------------------
+
+* bug #2358 Cache - Deal with signature encoding (keradus, GrahamCampbell)
+* bug #2475 Add shorthand array destructing support (SpacePossum, keradus)
+* bug #2595 NoUnusedImportsFixer - Fix import usage detection with properties (julienfalque)
+* bug #2605 PhpdocAddMissingParamAnnotationFixer, PhpdocOrderFixer - fix priority issue (SpacePossum)
+* bug #2607 Fixers - better comments handling (SpacePossum)
+* bug #2612 BracesFixer - Fix early bracket close for do-while loop inside an if without brackets (felixgomez)
+* bug #2614 Ensure that '*Fixer::fix()' won't crash when running on non-candidate collection (keradus)
+* bug #2630 HeaderCommentFixer - Fix trailing whitespace not removed after <?php (julienfalque)
+* bug #2637 ToolInfo - use static dir check for composer discovery (Slamdunk)
+* bug #2639 SemicolonAfterInstructionFixer - Handle alternative syntax (SpacePossum)
+* bug #2645 HHVM: handle T_HH_ERROR (keradus)
+* bug #2653 IsNullFixer - fix edge case (localheinz, kalessil)
+* bug #2654 PhpdocAddMissingParamAnnotationFixer - handle one-line docblocks (keradus)
+* minor #2594 Travis - generate coverage report at 7.1 and clean up build matrix (keradus)
+* minor #2613 HeaderCommentFixer - add missing case for exception raising (keradus)
+* minor #2615 Add DescribeCommand test (julienfalque)
+* minor #2616 Exclude more tests in phar version (keradus)
+* minor #2618 Update README.rst (mhitza)
+* minor #2620 Finder - Remove `*.twig` as default (SpacePossum)
+* minor #2641 Cookbook - remove information about levels (keradus)
+* minor #2644 DescribeCommandTest - fix test execution on decorated console (keradus)
+* minor #2655 AppVeyor - Cache Composer Installation (julienfalque)
+
+Changelog for v2.1.2
+--------------------
+
+* bug #2580 NoSpacesAfterFunctionNameFixer - Fix after dynamic call (SpacePossum, keradus)
+* bug #2586 NoUnusedImportsFixerTest - handle FQCN import (keradus)
+* bug #2587 NoClosingTagFixerTest - handle file without operations (keradus, SpacePossum)
+* minor #2552 Initial compatibility with PHP 7.2-DEV (keradus)
+* minor #2582 Improve AppVeyor and Travis CI build time (julienfalque)
+* minor #2584 NoUnreachableDefaultArgumentValueFixer - fix typo (chadburrus)
+* minor #2593 PhpUnitFqcnAnnotationFixer - move test to proper namespace (keradus)
+* minor #2596 AppVeyor - update PHP versions (keradus)
+
+Changelog for v2.1.1
+--------------------
+
+* bug #2547 NoUnneededControlParenthesesFixer - Handle T_COALESCE in clone (keksa)
+* bug #2557 BracesFixer - Better comments handling (SpacePossum)
+* bug #2558 require symfony/polyfill-xml (SpacePossum)
+* bug #2560 PhpdocNoAliasTagFixer - Fix circular replacements detection (julienfalque)
+* bug #2567 Filename with spaces usage (jaymecd)
+* bug #2572 NoUnreachableDefaultArgumentValueFixer - Mark as risky (SpacePossum)
+* minor #2533 AppVeyor - adjust phpunit version (keradus)
+* minor #2535 Make .gitignore entries more specific (julienfalque)
+* minor #2541 README.rst - provide download link for latest version (keradus)
+* minor #2562 Add schema.json (keradus)
+* minor #2563 Add deprecation notices tests (julienfalque)
+* minor #2564 Add rules configuration by passing json encode config by CLI (SpacePossum)
+* minor #2569 Make symfony/phpunit-bridge a dev dependency only (julienfalque)
+* minor #2574 Add xml.xsd (keradus)
+
 Changelog for v2.1.0
 --------------------
 
@@ -345,6 +840,16 @@ Changelog for v2.0.0
 * minor #981 Tokens - code grooming (keradus)
 * minor #988 Fixers - no need to search for tokens of given kind in extra loop (keradus)
 * minor #989 No need for loop in Token::equals (keradus)
+
+Changelog for v1.13.3
+---------------------
+
+* minor #3042 Update gitter address (keradus)
+
+Changelog for v1.13.2
+---------------------
+
+* minor #2946 Detect extra old installations (keradus)
 
 Changelog for v1.13.1
 ---------------------

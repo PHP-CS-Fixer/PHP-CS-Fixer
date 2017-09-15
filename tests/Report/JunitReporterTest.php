@@ -12,22 +12,38 @@
 
 namespace PhpCsFixer\Tests\Report;
 
+use GeckoPackages\PHPUnit\Constraints\XML\XMLMatchesXSDConstraint;
 use PhpCsFixer\Report\JunitReporter;
 use PhpCsFixer\Report\ReportSummary;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Report\JunitReporter
  */
-final class JunitReporterTest extends \PHPUnit_Framework_TestCase
+final class JunitReporterTest extends TestCase
 {
-    /** @var JunitReporter */
+    /**
+     * @var JunitReporter
+     */
     private $reporter;
+
+    /**
+     * JUnit XML schema from Jenkins.
+     *
+     * @var string
+     *
+     * @see https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
+     */
+    private $xsd;
 
     protected function setUp()
     {
         $this->reporter = new JunitReporter();
+        $this->xsd = file_get_contents(__DIR__.'/../../doc/junit-10.xsd');
     }
 
     /**
@@ -40,7 +56,7 @@ final class JunitReporterTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerateNoErrors()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="0" errors="0">
@@ -49,9 +65,9 @@ final class JunitReporterTest extends \PHPUnit_Framework_TestCase
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(),
+                [],
                 0,
                 0,
                 false,
@@ -60,13 +76,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateSimple()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0">
@@ -77,13 +93,13 @@ XML;
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                    ],
+                ],
                 0,
                 0,
                 false,
@@ -92,13 +108,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateWithDiff()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0">
@@ -114,14 +130,14 @@ this text is a diff ;)]]></failure>
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
                         'diff' => 'this text is a diff ;)',
-                    ),
-                ),
+                    ],
+                ],
                 0,
                 0,
                 false,
@@ -130,13 +146,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateWithAppliedFixers()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="2" failures="2" errors="0">
@@ -150,13 +166,13 @@ XML;
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
-                    ),
-                ),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
+                    ],
+                ],
                 0,
                 0,
                 true,
@@ -165,13 +181,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateWithTimeAndMemory()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0" time="1.234">
@@ -182,13 +198,13 @@ XML;
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                    ],
+                ],
                 1234,
                 0,
                 false,
@@ -197,13 +213,13 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
     public function testGenerateComplex()
     {
-        $expectedXml = <<<'XML'
+        $expectedReport = <<<'XML'
 <?xml version="1.0"?>
 <testsuites>
   <testsuite assertions="3" errors="0" failures="3" name="PHP CS Fixer" tests="2" time="1.234">
@@ -232,18 +248,18 @@ another diff here ;)</failure>
 </testsuites>
 XML;
 
-        $actualXml = $this->reporter->generate(
+        $actualReport = $this->reporter->generate(
             new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
                         'diff' => 'this text is a diff ;)',
-                    ),
-                    'anotherFile.php' => array(
-                        'appliedFixers' => array('another_fixer_name_here'),
+                    ],
+                    'anotherFile.php' => [
+                        'appliedFixers' => ['another_fixer_name_here'],
                         'diff' => 'another diff here ;)',
-                    ),
-                ),
+                    ],
+                ],
                 1234,
                 0,
                 true,
@@ -252,59 +268,7 @@ XML;
             )
         );
 
-        $this->assertJunitXmlSchema($actualXml);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
-    }
-
-    /**
-     * Validates generated xml report with schema.
-     * Uses JUnit XML schema from Jenkins.
-     *
-     * @see https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
-     *
-     * @param string $xml
-     */
-    private function assertJunitXmlSchema($xml)
-    {
-        $xsdPath = __DIR__.'/../../doc/junit-10.xsd';
-
-        static $errorLevels = array(
-            LIBXML_ERR_WARNING => 'Warning',
-            LIBXML_ERR_ERROR => 'Error',
-            LIBXML_ERR_FATAL => 'Fatal Error',
-        );
-
-        $internal = libxml_use_internal_errors(true);
-
-        $dom = new \DOMDocument();
-
-        $loaded = $dom->loadXML($xml);
-        if (true !== $loaded) {
-            libxml_use_internal_errors($internal);
-            $this->fail(sprintf('XML loading failed, expected "true", got "%s".', var_export($loaded, true)));
-        }
-
-        $dom->schemaValidate($xsdPath);
-
-        $errors = array();
-        foreach (libxml_get_errors() as $error) {
-            $errors[] = sprintf(
-                '%s #%s: %s (%s:%s)',
-                isset($errorLevels[$error->level]) ? $errorLevels[$error->level] : null,
-                $error->code,
-                trim($error->message),
-                $error->file,
-                $error->line
-            );
-        }
-
-        $errors = implode(PHP_EOL, $errors);
-
-        libxml_clear_errors();
-        libxml_use_internal_errors($internal);
-
-        if (strlen($errors) > 0) {
-            $this->fail('Actual xml does not match schema: '.PHP_EOL.$errors);
-        }
+        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
+        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 }

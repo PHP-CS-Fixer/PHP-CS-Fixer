@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -25,49 +27,20 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     /**
      * @var array the list of the string-related function names and their mb_ equivalent
      */
-    private static $functions = array(
-        'strlen' => array('alternativeName' => 'mb_strlen', 'argumentCount' => array(1)),
-        'strpos' => array('alternativeName' => 'mb_strpos', 'argumentCount' => array(2, 3)),
-        'strrpos' => array('alternativeName' => 'mb_strrpos', 'argumentCount' => array(2, 3)),
-        'substr' => array('alternativeName' => 'mb_substr', 'argumentCount' => array(2, 3)),
-        'strtolower' => array('alternativeName' => 'mb_strtolower', 'argumentCount' => array(1)),
-        'strtoupper' => array('alternativeName' => 'mb_strtoupper', 'argumentCount' => array(1)),
-        'stripos' => array('alternativeName' => 'mb_stripos', 'argumentCount' => array(2, 3)),
-        'strripos' => array('alternativeName' => 'mb_strripos', 'argumentCount' => array(2, 3)),
-        'strstr' => array('alternativeName' => 'mb_strstr', 'argumentCount' => array(2, 3)),
-        'stristr' => array('alternativeName' => 'mb_stristr', 'argumentCount' => array(2, 3)),
-        'strrchr' => array('alternativeName' => 'mb_strrchr', 'argumentCount' => array(2)),
-        'substr_count' => array('alternativeName' => 'mb_substr_count', 'argumentCount' => array(2, 3, 4)),
-    );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach (self::$functions as $functionIdentity => $functionReplacement) {
-            $currIndex = 0;
-            while (null !== $currIndex) {
-                // try getting function reference and translate boundaries for humans
-                $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
-                if (null === $boundaries) {
-                    // next function search, as current one not found
-                    continue 2;
-                }
-
-                list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
-                $count = $this->countArguments($tokens, $openParenthesis, $closeParenthesis);
-                if (!in_array($count, $functionReplacement['argumentCount'], true)) {
-                    continue 2;
-                }
-
-                // analysing cursor shift, so nested calls could be processed
-                $currIndex = $openParenthesis;
-
-                $tokens[$functionName]->setContent($functionReplacement['alternativeName']);
-            }
-        }
-    }
+    private static $functions = [
+        'strlen' => ['alternativeName' => 'mb_strlen', 'argumentCount' => [1]],
+        'strpos' => ['alternativeName' => 'mb_strpos', 'argumentCount' => [2, 3]],
+        'strrpos' => ['alternativeName' => 'mb_strrpos', 'argumentCount' => [2, 3]],
+        'substr' => ['alternativeName' => 'mb_substr', 'argumentCount' => [2, 3]],
+        'strtolower' => ['alternativeName' => 'mb_strtolower', 'argumentCount' => [1]],
+        'strtoupper' => ['alternativeName' => 'mb_strtoupper', 'argumentCount' => [1]],
+        'stripos' => ['alternativeName' => 'mb_stripos', 'argumentCount' => [2, 3]],
+        'strripos' => ['alternativeName' => 'mb_strripos', 'argumentCount' => [2, 3]],
+        'strstr' => ['alternativeName' => 'mb_strstr', 'argumentCount' => [2, 3]],
+        'stristr' => ['alternativeName' => 'mb_stristr', 'argumentCount' => [2, 3]],
+        'strrchr' => ['alternativeName' => 'mb_strrchr', 'argumentCount' => [2]],
+        'substr_count' => ['alternativeName' => 'mb_substr_count', 'argumentCount' => [2, 3, 4]],
+    ];
 
     /**
      * {@inheritdoc}
@@ -76,7 +49,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     {
         return new FixerDefinition(
             'Replace non multibyte-safe functions with corresponding mb function.',
-            array(
+            [
                 new CodeSample(
 '<?php
 $a = strlen($a);
@@ -93,11 +66,9 @@ $a = strrchr($a, $b);
 $a = substr_count($a, $b);
 '
                 ),
-            ),
+            ],
             null,
-            null,
-            null,
-            'Risky when the any of functions are overridden.'
+            'Risky when any of the functions are overridden.'
         );
     }
 
@@ -107,5 +78,35 @@ $a = substr_count($a, $b);
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+        foreach (self::$functions as $functionIdentity => $functionReplacement) {
+            $currIndex = 0;
+            while (null !== $currIndex) {
+                // try getting function reference and translate boundaries for humans
+                $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
+                if (null === $boundaries) {
+                    // next function search, as current one not found
+                    continue 2;
+                }
+
+                list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
+                $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
+                if (!in_array($count, $functionReplacement['argumentCount'], true)) {
+                    continue 2;
+                }
+
+                // analysing cursor shift, so nested calls could be processed
+                $currIndex = $openParenthesis;
+
+                $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
+            }
+        }
     }
 }

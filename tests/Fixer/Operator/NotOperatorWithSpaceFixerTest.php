@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer
  */
 final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
 {
@@ -25,36 +27,36 @@ final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $i = 0; $i++; ++$i; $foo = ! false || ( ! true);',
                 '<?php $i = 0; $i++; ++$i; $foo = !false || (!true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; --$i; $foo = ! false || ($i && ! true);',
                 '<?php $i = 0; $i--; --$i; $foo = !false || ($i && !true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i && !    true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
-            ),
-            array(
+            ],
+            [
                 '<?php $i = 0; $i--; $foo = ! false || ($i &&    !    true);',
                 '<?php $i = 0; $i--; $foo = !false || ($i &&    !    true);',
-            ),
-        );
+            ],
+        ];
     }
 }

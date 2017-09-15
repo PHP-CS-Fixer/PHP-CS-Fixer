@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer
  */
 final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 {

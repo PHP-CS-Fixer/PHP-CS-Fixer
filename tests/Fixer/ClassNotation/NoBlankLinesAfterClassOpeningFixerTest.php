@@ -12,13 +12,15 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
  */
 final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
 {
@@ -26,7 +28,7 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
@@ -37,19 +39,19 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @requires PHP 5.4
-     * @dataProvider provideTraits
+     *
+     * @dataProvider provideTraitsCases
      */
     public function testFixTraits($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        $cases = array();
+        $cases = [];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 class Good
 {
@@ -67,8 +69,8 @@ class Good
         //code here
     }
 }',
-        );
-        $cases[] = array(
+        ];
+        $cases[] = [
             '<?php
 class Good
 {
@@ -92,9 +94,9 @@ class Good
         //code here
     }
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 interface Good
 {
@@ -112,10 +114,10 @@ interface Good
      */
     public function firstMethod();
 }',
-        );
+        ];
 
         // check if some fancy whitespaces aren't modified
-        $cases[] = array(
+        $cases[] = [
             '<?php
 class Good
 {public
@@ -127,16 +129,16 @@ class Good
         //code here
     }
 }',
-        );
+        ];
 
         return $cases;
     }
 
-    public function provideTraits()
+    public function provideTraitsCases()
     {
-        $cases = array();
+        $cases = [];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 trait Good
 {
@@ -154,7 +156,7 @@ trait Good
      */
     public function firstMethod() {}
 }',
-        );
+        ];
 
         return $cases;
     }
@@ -174,15 +176,15 @@ trait Good
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
                 "<?php\nclass Foo\n{\n\n    public function bar() {}\n}",
-            ),
-            array(
+            ],
+            [
                 "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
                 "<?php\nclass Foo\n{\r\n\r\n    public function bar() {}\n}",
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocSingleLineVarSpacingFixer
  */
 final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
 {
@@ -25,17 +27,17 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     class A {
                         /** @var MyCass6 $a */
@@ -54,8 +56,8 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
                         public $testB = 7;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     /** @var MyCass1 $test1 description   and more. */
                     $test0 = 1;
@@ -98,8 +100,8 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
                         public $test6 = 6;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class A
 {
@@ -127,7 +129,7 @@ class A
     */
     private $test0 = 0;
 }',
-            ),
-        );
+            ],
+        ];
     }
 }

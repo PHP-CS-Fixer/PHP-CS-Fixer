@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpTag;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -20,6 +20,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer
  */
 final class LinebreakAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {
@@ -27,29 +29,17 @@ final class LinebreakAfterOpeningTagFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 5.4
-     * @dataProvider provideCases54
-     */
-    public function testFix54($expected, $input = null)
+    public function provideFixCases()
     {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCases()
-    {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 $a = function(){
                     echo 1;
@@ -57,22 +47,22 @@ $a = function(){
                 '<?php $a = function(){
                     echo 1;
                 };',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = true; ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = true; ?>
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 
 $foo = true;
 ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foo = true;
 $bar = false;
@@ -80,24 +70,18 @@ $bar = false;
                 '<?php $foo = true;
 $bar = false;
 ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php $foo = true; ?>
 Html here
 <?php $bar = false; ?>',
-            ),
-        );
-    }
-
-    public function provideCases54()
-    {
-        return array(
-            array(
+            ],
+            [
                 '<?= $bar;
 $foo = $bar;
 ?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -115,11 +99,11 @@ $foo = $bar;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\$foo = true;\n",
                 "<?php \$foo = true;\n",
-            ),
-        );
+            ],
+        ];
     }
 }

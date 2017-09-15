@@ -12,17 +12,20 @@
 
 namespace PhpCsFixer\Tests\Fixer\NamespaceNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractLinesBeforeNamespaceFixer
+ * @covers \PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer
  */
 final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideExamples
+     * @dataProvider provideFixCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -35,15 +38,15 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
     /**
      * @return array
      */
-    public function provideExamples()
+    public function provideFixCases()
     {
-        return array(
-            array("<?php\n\nnamespace X;"),
-            array("<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"),
-            array("<?php\r\n\r\nnamespace X;"),
-            array("<?php\r\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"),
-            array("<?php\n\nfoo();\nnamespace\\bar\\baz();"),
-        );
+        return [
+            ["<?php\n\nnamespace X;"],
+            ["<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"],
+            ["<?php\r\n\r\nnamespace X;"],
+            ["<?php\r\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
+            ["<?php\n\nfoo();\nnamespace\\bar\\baz();"],
+        ];
     }
 
     public function testFixExampleWithCommentTooMuch()

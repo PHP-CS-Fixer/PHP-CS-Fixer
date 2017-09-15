@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -27,43 +28,11 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(array(T_CASE, T_DEFAULT))) {
-                continue;
-            }
-
-            $ternariesCount = 0;
-            for ($colonIndex = $index + 1; ; ++$colonIndex) {
-                // We have to skip ternary case for colons.
-                if ($tokens[$colonIndex]->equals('?')) {
-                    ++$ternariesCount;
-                }
-
-                if ($tokens[$colonIndex]->equalsAny(array(':', ';'))) {
-                    if (0 === $ternariesCount) {
-                        break;
-                    }
-
-                    --$ternariesCount;
-                }
-            }
-
-            if ($tokens[$colonIndex]->equals(';')) {
-                $tokens->overrideAt($colonIndex, ':');
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'A case should be followed by a colon and not a semicolon.',
-            array(
+            [
                 new CodeSample(
 '<?php
     switch ($a) {
@@ -74,7 +43,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -83,6 +52,38 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
+        return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind([T_CASE, T_DEFAULT])) {
+                continue;
+            }
+
+            $ternariesCount = 0;
+            for ($colonIndex = $index + 1; ; ++$colonIndex) {
+                // We have to skip ternary case for colons.
+                if ($tokens[$colonIndex]->equals('?')) {
+                    ++$ternariesCount;
+                }
+
+                if ($tokens[$colonIndex]->equalsAny([':', ';'])) {
+                    if (0 === $ternariesCount) {
+                        break;
+                    }
+
+                    --$ternariesCount;
+                }
+            }
+
+            if ($tokens[$colonIndex]->equals(';')) {
+                $tokens[$colonIndex] = new Token(':');
+            }
+        }
     }
 }

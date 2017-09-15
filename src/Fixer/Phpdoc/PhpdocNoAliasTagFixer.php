@@ -13,12 +13,16 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * Case sensitive tag replace fixer (does not process inline tags like {@inheritdoc}).
@@ -27,63 +31,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var array<string, string>
-     */
-    private $configuration;
-
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'property-read' => 'property',
-        'property-write' => 'property',
-        'type' => 'var',
-        'link' => 'see',
-    );
-
-    /**
-     * Key value pairs of string, replace from -> to tags (without '@').
-     *
-     * @param string[]|null $configuration
-     */
-    public function configure(array $configuration = null)
-    {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        $this->configuration = array();
-        foreach ($configuration as $from => $to) {
-            if (!is_string($from)) {
-                throw new InvalidFixerConfigurationException($this->getName(), 'Tag to replace must be a string.');
-            }
-
-            if (!is_string($to)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Tag to replace to from "%s" must be a string.', $from));
-            }
-
-            if (1 !== preg_match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Tag "%s" cannot be replaced by invalid tag "%s".', $from, $to));
-            }
-
-            $this->configuration[trim($from)] = trim($to);
-        }
-
-        foreach ($this->configuration as $from => $to) {
-            if (isset($this->configuration[$to])) {
-                throw new InvalidFixerConfigurationException(
-                    $this->getName(),
-                    sprintf('Cannot change tag "%1$s" to tag "%2$s", as the tag "%2$s" is configured to be replaced to "%3$s".', $from, $to, $this->configuration[$to])
-                );
-            }
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -95,38 +44,11 @@ final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $searchFor = array_keys($this->configuration);
-
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType($searchFor);
-
-            if (empty($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                $annotation->getTag()->setName($this->configuration[$annotation->getTag()->getName()]);
-            }
-
-            $token->setContent($doc->getContent());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'No alias PHPDoc tags should be used.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -152,12 +74,93 @@ final class Example
 {
 }
 ',
-                    array('link' => 'website')
+                    ['replacements' => ['link' => 'website']]
                 ),
-            ),
-            null,
-            'Array that maps current annotations into new ones.',
-            self::$defaultConfiguration
+            ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $searchFor = array_keys($this->configuration['replacements']);
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $doc = new DocBlock($token->getContent());
+            $annotations = $doc->getAnnotationsOfType($searchFor);
+
+            if (empty($annotations)) {
+                continue;
+            }
+
+            foreach ($annotations as $annotation) {
+                $annotation->getTag()->setName($this->configuration['replacements'][$annotation->getTag()->getName()]);
+            }
+
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolverRootless('replacements', [
+            (new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.'))
+                ->setAllowedTypes(['array'])
+                ->setNormalizer(function (Options $options, $value) {
+                    $normalizedValue = [];
+
+                    foreach ($value as $from => $to) {
+                        if (!is_string($from)) {
+                            throw new InvalidOptionsException('Tag to replace must be a string.');
+                        }
+
+                        if (!is_string($to)) {
+                            throw new InvalidOptionsException(sprintf(
+                                'Tag to replace to from "%s" must be a string.',
+                                $from
+                            ));
+                        }
+
+                        if (1 !== preg_match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
+                            throw new InvalidOptionsException(sprintf(
+                                'Tag "%s" cannot be replaced by invalid tag "%s".',
+                                $from,
+                                $to
+                            ));
+                        }
+
+                        $normalizedValue[trim($from)] = trim($to);
+                    }
+
+                    foreach ($normalizedValue as $from => $to) {
+                        if (isset($normalizedValue[$to])) {
+                            throw new InvalidOptionsException(sprintf(
+                                'Cannot change tag "%1$s" to tag "%2$s", as the tag "%2$s" is configured to be replaced to "%3$s".',
+                                $from,
+                                $to,
+                                $normalizedValue[$to]
+                            ));
+                        }
+                    }
+
+                    return $normalizedValue;
+                })
+                ->setDefault([
+                    'property-read' => 'property',
+                    'property-write' => 'property',
+                    'type' => 'var',
+                    'link' => 'see',
+                ])
+                ->getOption(),
+        ]);
     }
 }

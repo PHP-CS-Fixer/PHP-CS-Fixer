@@ -13,13 +13,14 @@
 namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\LinterInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractLinterTestCase extends TestCase
 {
     abstract public function testIsAsync();
 
@@ -32,11 +33,12 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
     public function testLintFile($file, $errorRegExp = null)
     {
         if (null !== $errorRegExp) {
-            $this->setExpectedExceptionRegExp('\PhpCsFixer\Linter\LintingException', $errorRegExp);
+            $this->setExpectedExceptionRegExp(\PhpCsFixer\Linter\LintingException::class, $errorRegExp);
         }
 
         $linter = $this->createLinter();
-        $linter->lintFile($file)->check();
+
+        $this->assertNull($linter->lintFile($file)->check());
     }
 
     /**
@@ -44,15 +46,15 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function provideLintFileCases()
     {
-        return array(
-            array(
+        return [
+            [
                 __DIR__.'/../Fixtures/Linter/valid.php',
-            ),
-            array(
+            ],
+            [
                 __DIR__.'/../Fixtures/Linter/invalid.php',
                 '/syntax error, unexpected.*T_ECHO.*line 5/',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -64,11 +66,12 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
     public function testLintSource($source, $errorRegExp = null)
     {
         if (null !== $errorRegExp) {
-            $this->setExpectedExceptionRegExp('\PhpCsFixer\Linter\LintingException', $errorRegExp);
+            $this->setExpectedExceptionRegExp(\PhpCsFixer\Linter\LintingException::class, $errorRegExp);
         }
 
         $linter = $this->createLinter();
-        $linter->lintSource($source)->check();
+
+        $this->assertNull($linter->lintSource($source)->check());
     }
 
     /**
@@ -76,11 +79,11 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function provideLintSourceCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo 123;',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     print "line 2";
                     print "line 3";
@@ -88,8 +91,8 @@ abstract class AbstractLinterTestCase extends \PHPUnit_Framework_TestCase
                     echo echo;
                 ',
                 '/syntax error, unexpected.*T_ECHO.*line 5/',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

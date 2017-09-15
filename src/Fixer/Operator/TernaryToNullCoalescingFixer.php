@@ -27,27 +27,16 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $issetIndexes = array_keys($tokens->findGivenKind(T_ISSET));
-        while ($issetIndex = array_pop($issetIndexes)) {
-            $this->fixIsset($tokens, $issetIndex);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Use `null` coalescing operator `??` where possible.',
-            array(
+            'Use `null` coalescing operator `??` where possible. Requires PHP >= 7.0.',
+            [
                 new VersionSpecificCodeSample(
                     "<?php\n\$sample = isset(\$a) ? \$a : \$b;",
                     new VersionSpecification(70000)
                 ),
-            )
+            ]
         );
     }
 
@@ -57,6 +46,17 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_ISSET);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $issetIndexes = array_keys($tokens->findGivenKind(T_ISSET));
+        while ($issetIndex = array_pop($issetIndexes)) {
+            $this->fixIsset($tokens, $issetIndex);
+        }
     }
 
     /**
@@ -70,7 +70,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             return;
         }
 
-        $startBraceIndex = $tokens->getNextTokenOfKind($index, array('('));
+        $startBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
         $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
 
         $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken($endBraceIndex);
@@ -85,7 +85,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         }
 
         // search what is inside the middle argument of ternary operator
-        $ternaryColonIndex = $tokens->getNextTokenOfKind($ternaryQuestionMarkIndex, array(':'));
+        $ternaryColonIndex = $tokens->getNextTokenOfKind($ternaryQuestionMarkIndex, [':']);
         $ternaryFirstOperandTokens = $this->getMeaningfulSequence($tokens, $ternaryQuestionMarkIndex, $ternaryColonIndex);
 
         if ($issetTokens->generateCode() !== $ternaryFirstOperandTokens->generateCode()) {
@@ -95,7 +95,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         $ternaryFirstOperandIndex = $tokens->getNextMeaningfulToken($ternaryQuestionMarkIndex);
 
         // preserve comments and spaces
-        $comments = array();
+        $comments = [];
         $commentStarted = false;
         for ($loopIndex = $index; $loopIndex < $ternaryFirstOperandIndex; ++$loopIndex) {
             if ($tokens[$loopIndex]->isComment()) {
@@ -110,7 +110,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             }
         }
 
-        $tokens[$ternaryColonIndex]->override(array(T_COALESCE, '??'));
+        $tokens[$ternaryColonIndex] = new Token([T_COALESCE, '??']);
         $tokens->overrideRange($index, $ternaryFirstOperandIndex - 1, $comments);
     }
 
@@ -125,7 +125,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     private function getMeaningfulSequence(Tokens $tokens, $start, $end)
     {
-        $sequence = array();
+        $sequence = [];
         $index = $start;
         while ($index < $end) {
             $index = $tokens->getNextMeaningfulToken($index);
@@ -149,7 +149,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     private function isHigherPrecedenceAssociativityOperator(Token $token)
     {
-        static $operatorsPerId = array(
+        static $operatorsPerId = [
             T_ARRAY_CAST => true,
             T_BOOLEAN_AND => true,
             T_BOOLEAN_OR => true,
@@ -172,9 +172,9 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             T_SR => true,
             T_STRING_CAST => true,
             T_UNSET_CAST => true,
-        );
+        ];
 
-        static $operatorsPerContent = array(
+        static $operatorsPerContent = [
             '!',
             '%',
             '&',
@@ -186,7 +186,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             '^',
             '|',
             '~',
-        );
+        ];
 
         return isset($operatorsPerId[$token->getId()]) || $token->equalsAny($operatorsPerContent);
     }
@@ -200,12 +200,12 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     private function hasChangingContent(Tokens $tokens)
     {
-        static $operatorsPerId = array(
+        static $operatorsPerId = [
             T_DEC,
             T_INC,
             T_STRING,
             T_YIELD,
-        );
+        ];
 
         foreach ($tokens as $token) {
             if ($token->isGivenKind($operatorsPerId) || $token->equals('(')) {

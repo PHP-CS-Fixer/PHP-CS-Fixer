@@ -27,44 +27,11 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(array(T_CASE, T_DEFAULT))) {
-                continue;
-            }
-
-            $ternariesCount = 0;
-            for ($colonIndex = $index + 1; ; ++$colonIndex) {
-                // We have to skip ternary case for colons.
-                if ($tokens[$colonIndex]->equals('?')) {
-                    ++$ternariesCount;
-                }
-
-                if ($tokens[$colonIndex]->equalsAny(array(':', ';'))) {
-                    if (0 === $ternariesCount) {
-                        break;
-                    }
-
-                    --$ternariesCount;
-                }
-            }
-
-            $valueIndex = $tokens->getPrevNonWhitespace($colonIndex);
-            if (2 + $valueIndex === $colonIndex) {
-                $tokens[$valueIndex + 1]->clear();
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Removes extra spaces between colon and case value.',
-            array(
+            [
                 new CodeSample(
 '<?php
     switch($a) {
@@ -75,7 +42,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -84,6 +51,42 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_CASE, T_DEFAULT));
+        return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind([T_CASE, T_DEFAULT])) {
+                continue;
+            }
+
+            $ternariesCount = 0;
+            for ($colonIndex = $index + 1; ; ++$colonIndex) {
+                // We have to skip ternary case for colons.
+                if ($tokens[$colonIndex]->equals('?')) {
+                    ++$ternariesCount;
+                }
+
+                if ($tokens[$colonIndex]->equalsAny([':', ';'])) {
+                    if (0 === $ternariesCount) {
+                        break;
+                    }
+
+                    --$ternariesCount;
+                }
+            }
+
+            $valueIndex = $tokens->getPrevNonWhitespace($colonIndex);
+            // skip if there is no space between the colon and previous token or is space after comment
+            if ($valueIndex === $colonIndex - 1 || $tokens[$valueIndex]->isComment()) {
+                continue;
+            }
+
+            $tokens->clearAt($valueIndex + 1);
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -48,15 +49,43 @@ final class PhpdocToCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
     {
-        static $controlStructures = array(
+        return new FixerDefinition(
+            'Docblocks should only be used on structural elements.',
+            [
+                new CodeSample(
+                    '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** This should not be a docblock */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}'
+                ),
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        static $controlStructures = [
             T_FOREACH,
             T_IF,
             T_SWITCH,
             T_WHILE,
             T_FOR,
-        );
+        ];
+
+        static $languageStructures = [
+            T_LIST,
+            T_PRINT,
+            T_ECHO,
+            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+        ];
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -67,7 +96,8 @@ final class PhpdocToCommentFixer extends AbstractFixer
             $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
 
             if (null === $nextToken || $nextToken->equals('}')) {
-                $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+                $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
+
                 continue;
             }
 
@@ -83,44 +113,21 @@ final class PhpdocToCommentFixer extends AbstractFixer
                 continue;
             }
 
-            if ($nextToken->isGivenKind(T_LIST) && $this->isValidList($tokens, $token, $nextIndex)) {
+            if ($nextToken->isGivenKind($languageStructures) && $this->isValidLanguageConstruct($tokens, $token, $nextIndex)) {
                 continue;
             }
 
             // First docblock after open tag can be file-level docblock, so its left as is.
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind(array(T_OPEN_TAG, T_NAMESPACE))) {
+            if ($tokens[$prevIndex]->isGivenKind([T_OPEN_TAG, T_NAMESPACE])) {
                 continue;
             }
 
-            $tokens->overrideAt($index, array(T_COMMENT, '/*'.ltrim($token->getContent(), '/*')));
+            $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
         }
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Docblocks should only be used on structural elements.',
-            array(
-                new CodeSample(
-                    '<?php
-$first = true;// needed because by default first docblock is never fixed.
-
-/** This should not be a docblock */
-foreach($connections as $key => $sqlite) {
-    $sqlite->open($path);
-}'
-                ),
-            )
-        );
-    }
-
-    /**
-     * Check if token is a structural element.
-     *
      * @see https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#3-definitions
      *
      * @param Token $token
@@ -129,7 +136,7 @@ foreach($connections as $key => $sqlite) {
      */
     private function isStructuralElement(Token $token)
     {
-        static $skip = array(
+        static $skip = [
             T_PRIVATE,
             T_PROTECTED,
             T_PUBLIC,
@@ -144,7 +151,7 @@ foreach($connections as $key => $sqlite) {
             T_INCLUDE_ONCE,
             T_FINAL,
             T_STATIC,
-        );
+        ];
 
         return $token->isClassy() || $token->isGivenKind($skip);
     }
@@ -179,20 +186,26 @@ foreach($connections as $key => $sqlite) {
     }
 
     /**
-     * Checks variable assignments through `list()` calls for correct docblock usage.
+     * Checks variable assignments through `list()`, `print()` etc. calls for correct docblock usage.
      *
      * @param Tokens $tokens
-     * @param Token  $docsToken docs Token
-     * @param int    $listIndex index of variable Token
+     * @param Token  $docsToken              docs Token
+     * @param int    $languageConstructIndex index of variable Token
      *
      * @return bool
      */
-    private function isValidList(Tokens $tokens, Token $docsToken, $listIndex)
+    private function isValidLanguageConstruct(Tokens $tokens, Token $docsToken, $languageConstructIndex)
     {
-        $endIndex = $tokens->getNextTokenOfKind($listIndex, array(')'));
+        $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)
+            ? [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]
+            : ')'
+        ;
+
+        $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, [$endKind]);
+
         $docsContent = $docsToken->getContent();
 
-        for ($index = $listIndex + 1; $index < $endIndex; ++$index) {
+        for ($index = $languageConstructIndex + 1; $index < $endIndex; ++$index) {
             $token = $tokens[$index];
 
             if (

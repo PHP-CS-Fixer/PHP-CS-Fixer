@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpTag;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Vincent Klaiber <hello@vinkla.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpTag\NoShortEchoTagFixer
  */
 final class NoShortEchoTagFixerTest extends AbstractFixerTestCase
 {
@@ -25,27 +27,25 @@ final class NoShortEchoTagFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideClosingTagExamples
+     * @dataProvider provideFixCases
      */
-    public function testOneLineFix($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
-        if (50400 > PHP_VERSION_ID && !ini_get('short_open_tag')) {
-            // On PHP <5.4 short echo tag is parsed as T_INLINE_HTML if short_open_tag is disabled
-            // On PHP >=5.4 short echo tag is always parsed properly regardless of short_open_tag  option
-            $this->markTestSkipped('PHP 5.4 (or later) or short_open_tag option is required.');
+        if (!ini_get('short_open_tag')) {
+            $this->markTestSkipped('The short_open_tag option is required to be enabled.');
         }
 
         $this->doTest($expected, $input);
     }
 
-    public function provideClosingTagExamples()
+    public function provideFixCases()
     {
-        return array(
-            array('<?php echo \'Foo\';', '<?= \'Foo\';'),
-            array('<?php echo \'Foo\'; ?> PLAIN TEXT', '<?= \'Foo\'; ?> PLAIN TEXT'),
-            array('PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?= \'Foo\'; ?>'),
-            array('<?php echo \'Foo\'; ?> <?php echo \'Bar\'; ?>', '<?= \'Foo\'; ?> <?= \'Bar\'; ?>'),
-            array('<?php echo foo();', '<?=foo();'),
-        );
+        return [
+            ['<?php echo \'Foo\';', '<?= \'Foo\';'],
+            ['<?php echo \'Foo\'; ?> PLAIN TEXT', '<?= \'Foo\'; ?> PLAIN TEXT'],
+            ['PLAIN TEXT<?php echo \'Foo\'; ?>', 'PLAIN TEXT<?= \'Foo\'; ?>'],
+            ['<?php echo \'Foo\'; ?> <?php echo \'Bar\'; ?>', '<?= \'Foo\'; ?> <?= \'Bar\'; ?>'],
+            ['<?php echo foo();', '<?=foo();'],
+        ];
     }
 }

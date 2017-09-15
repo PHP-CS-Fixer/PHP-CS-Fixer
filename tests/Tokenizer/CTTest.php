@@ -12,12 +12,16 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\CT
  */
-final class CTTest extends \PHPUnit_Framework_TestCase
+final class CTTest extends TestCase
 {
     public function testUniqueValues()
     {
@@ -29,7 +33,7 @@ final class CTTest extends \PHPUnit_Framework_TestCase
      * @param string $name
      * @param int    $value
      *
-     * @dataProvider provideCTs
+     * @dataProvider provideConstantsCases
      */
     public function testConstants($name, $value)
     {
@@ -37,12 +41,12 @@ final class CTTest extends \PHPUnit_Framework_TestCase
         $this->assertNull(@constant($name), 'The CT name must not use native T_* name.');
     }
 
-    public function provideCTs()
+    public function provideConstantsCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach ($this->getConstants() as $name => $value) {
-            $cases[] = array($name, $value);
+            $cases[] = [$name, $value];
         }
 
         return $cases;
@@ -53,7 +57,7 @@ final class CTTest extends \PHPUnit_Framework_TestCase
         static $constants;
 
         if (null === $constants) {
-            $reflection = new \ReflectionClass('PhpCsFixer\Tokenizer\CT');
+            $reflection = new \ReflectionClass(\PhpCsFixer\Tokenizer\CT::class);
             $constants = $reflection->getConstants();
         }
 

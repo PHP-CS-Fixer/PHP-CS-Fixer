@@ -26,7 +26,26 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Add missing space between function\'s argument and its typehint.',
+            [new CodeSample("<?php\nfunction sample(array\$a)\n{}")]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_FUNCTION);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
@@ -35,7 +54,7 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
                 continue;
             }
 
-            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('(', ';', array(T_CLOSE_TAG)));
+            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [T_CLOSE_TAG]]);
             if (!$tokens[$startParenthesisIndex]->equals('(')) {
                 continue;
             }
@@ -48,11 +67,9 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
                 }
 
                 // skip ... before $variable for variadic parameter
-                if (defined('T_ELLIPSIS')) {
-                    $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
-                    if ($tokens[$prevNonWhitespaceIndex]->isGivenKind(T_ELLIPSIS)) {
-                        $iter = $prevNonWhitespaceIndex;
-                    }
+                $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
+                if ($tokens[$prevNonWhitespaceIndex]->isGivenKind(T_ELLIPSIS)) {
+                    $iter = $prevNonWhitespaceIndex;
                 }
 
                 // skip & before $variable for parameter passed by reference
@@ -61,29 +78,10 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
                     $iter = $prevNonWhitespaceIndex;
                 }
 
-                if (!$tokens[$iter - 1]->equalsAny(array(array(T_WHITESPACE), array(T_COMMENT), array(T_DOC_COMMENT), '(', ','))) {
-                    $tokens->insertAt($iter, new Token(array(T_WHITESPACE, ' ')));
+                if (!$tokens[$iter - 1]->equalsAny([[T_WHITESPACE], [T_COMMENT], [T_DOC_COMMENT], '(', ','])) {
+                    $tokens->insertAt($iter, new Token([T_WHITESPACE, ' ']));
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Add missing space between function\'s argument and its typehint.',
-            array(new CodeSample("<?php\nfunction sample(array\$a)\n{}"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_FUNCTION);
     }
 }

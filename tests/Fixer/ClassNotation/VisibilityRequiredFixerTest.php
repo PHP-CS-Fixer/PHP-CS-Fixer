@@ -12,13 +12,15 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer
  */
 final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
 {
@@ -432,35 +434,54 @@ EOF;
     public function testInvalidConfigurationType()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Expected string got "NULL".$/'
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
-        $this->fixer->configure(array(null));
+        $this->fixer->configure(['elements' => [null]]);
     }
 
     public function testInvalidConfigurationValue()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Unknown configuration item "_unknown_", expected any of "property", "method", "const".$/'
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
         );
 
-        $this->fixer->configure(array('_unknown_'));
+        $this->fixer->configure(['elements' => ['_unknown_']]);
     }
 
+    /**
+     * @requires PHP <7.1
+     */
     public function testInvalidConfigurationValueForPHPVersion()
     {
+        // @TODO remove condition after PHPUnit upgrade (and leave annotation)
         if (PHP_VERSION_ID >= 70100) {
             $this->markTestSkipped('PHP version to high.');
         }
 
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[visibility_required\] Invalid configuration item "const" for PHP ".+".$/'
+            \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class,
+            '/^\[visibility_required\] Invalid configuration for env: "const" option can only be enabled with PHP 7\.1\+\.$/'
         );
 
-        $this->fixer->configure(array('const'));
+        $this->fixer->configure(['elements' => ['const']]);
+    }
+
+    /**
+     * @param string $expected expected PHP source after fixing
+     * @param string $input    PHP source to fix
+     *
+     * @group legacy
+     * @requires PHP 7.1
+     * @dataProvider provideFixClassConstCases
+     * @expectedDeprecation Passing "elements" at the root of the configuration is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
+     */
+    public function testLegacyFixClassConst($expected, $input)
+    {
+        $this->fixer->configure(['const']);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -468,34 +489,34 @@ EOF;
      * @param string $input    PHP source to fix
      *
      * @requires PHP 7.1
-     * @dataProvider provideClassConstTest
+     * @dataProvider provideFixClassConstCases
      */
     public function testFixClassConst($expected, $input)
     {
-        $this->fixer->configure(array('const'));
+        $this->fixer->configure(['elements' => ['const']]);
         $this->doTest($expected, $input);
     }
 
-    public function provideClassConstTest()
+    public function provideFixClassConstCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php class A { public const B=1; }',
                 '<?php class A { const B=1; }',
-            ),
-            array(
+            ],
+            [
                 '<?php class A { public const B=1;public const C=1;/**/public const#a
                 D=1;public const E=1;//
 public const F=1; }',
                 '<?php class A { const B=1;const C=1;/**/const#a
                 D=1;const E=1;//
 const F=1; }',
-            ),
-            array(
+            ],
+            [
                 '<?php class A { private const B=1; protected const C=2; public const D=4; public $a; function A(){} }',
                 '<?php class A { private const B=1; protected const C=2; const D=4; public $a; function A(){} }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     class foo
                     {
@@ -516,7 +537,75 @@ const F=1; }',
                         const SENTENCE = "The value of THREE is ".self::THREE;
                     }
                 ',
-            ),
+            ],
+        ];
+    }
+
+    public function testCommentCases()
+    {
+        $expected = '<?php
+class A
+{#
+public static function#
+AB#
+(#
+)#
+{#
+}#
+}
+        ';
+
+        $input = '<?php
+class A
+{#
+static#
+#
+function#
+AB#
+(#
+)#
+{#
+}#
+}
+        ';
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testAnonymousClassFixing()
+    {
+        $this->doTest(
+            '<?php
+                $a = new class() {
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {public function a() {}};
+                    }
+                }
+            ',
+            '<?php
+                $a = new class() {
+                    function a() {
+                    }
+                };
+
+                class C
+                {
+                    function A()
+                    {
+                        $a = new class() {function a() {}};
+                    }
+                }
+            '
         );
     }
 }

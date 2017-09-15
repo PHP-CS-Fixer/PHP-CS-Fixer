@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -29,47 +30,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'syntax' => 'long',
-    );
-
-    private $config;
     private $candidateTokenKind;
     private $fixCallback;
 
     /**
-     * Use 'syntax' => 'long'|'short'.
-     *
-     * @param array<string, string>|null $configuration
-     *
-     * @throws InvalidFixerConfigurationException
+     * {@inheritdoc}
      */
     public function configure(array $configuration = null)
     {
-        if (null === $configuration) {
-            $this->config = 'long';
-            $this->resolveCandidateTokenKind();
-            $this->resolveFixCallback();
-
-            return;
-        }
-
-        if (!array_key_exists('syntax', $configuration) || !in_array($configuration['syntax'], array('long', 'short'), true)) {
-            throw new InvalidFixerConfigurationException(
-                $this->getName(),
-                sprintf('Configuration must define "syntax" being "short" or "long".')
-            );
-        }
-
-        $this->config = $configuration['syntax'];
-        if ('short' === $this->config && PHP_VERSION_ID < 50400) {
-            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Short array syntax is supported from PHP5.4 (your PHP version is %d).', PHP_VERSION_ID));
-        }
+        parent::configure($configuration);
 
         $this->resolveCandidateTokenKind();
         $this->resolveFixCallback();
@@ -78,37 +49,20 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $callback = $this->fixCallback;
-        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
-                $this->$callback($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHP arrays should be declared using the configured syntax (requires PHP >= 5.4 for short syntax).',
-            array(
+            'PHP arrays should be declared using the configured syntax.',
+            [
                 new CodeSample(
-                    "<?php\n[1,2];",
-                    array('syntax' => 'long')
+                    "<?php\n[1,2];"
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\narray(1,2);",
                     new VersionSpecification(50400),
-                    array('syntax' => 'short')
+                    ['syntax' => 'short']
                 ),
-            ),
-            null,
-            'The following can be configured: `syntax => "long"|"short"`',
-            self::$defaultConfiguration
+            ]
         );
     }
 
@@ -130,6 +84,32 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $callback = $this->fixCallback;
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
+            if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
+                $this->$callback($tokens, $index);
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` array syntax.'))
+                ->setAllowedValues(['long', 'short'])
+                ->setDefault('long')
+                ->getOption(),
+        ]);
+    }
+
+    /**
      * @param Tokens $tokens
      * @param int    $index
      */
@@ -137,10 +117,10 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     {
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
-        $tokens->overrideAt($index, '(');
-        $tokens->overrideAt($closeIndex, ')');
+        $tokens[$index] = new Token('(');
+        $tokens[$closeIndex] = new Token(')');
 
-        $tokens->insertAt($index, new Token(array(T_ARRAY, 'array')));
+        $tokens->insertAt($index, new Token([T_ARRAY, 'array']));
     }
 
     /**
@@ -149,22 +129,22 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private function fixToShortArraySyntax(Tokens $tokens, $index)
     {
-        $openIndex = $tokens->getNextTokenOfKind($index, array('('));
+        $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
-        $tokens->overrideAt($openIndex, array(CT::T_ARRAY_SQUARE_BRACE_OPEN, '['));
-        $tokens->overrideAt($closeIndex, array(CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'));
+        $tokens[$openIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']);
+        $tokens[$closeIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
     }
 
     private function resolveFixCallback()
     {
-        $this->fixCallback = sprintf('fixTo%sArraySyntax', ucfirst($this->config));
+        $this->fixCallback = sprintf('fixTo%sArraySyntax', ucfirst($this->configuration['syntax']));
     }
 
     private function resolveCandidateTokenKind()
     {
-        $this->candidateTokenKind = 'long' === $this->config ? CT::T_ARRAY_SQUARE_BRACE_OPEN : T_ARRAY;
+        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_ARRAY_SQUARE_BRACE_OPEN : T_ARRAY;
     }
 }

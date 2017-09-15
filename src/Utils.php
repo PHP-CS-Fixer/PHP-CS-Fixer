@@ -55,7 +55,7 @@ final class Utils
         return preg_replace_callback(
             '/(^|[a-z0-9])([A-Z])/',
             function (array $matches) {
-                return strtolower(strlen($matches[1]) ? $matches[1].'_'.$matches[2] : $matches[2]);
+                return strtolower('' !== $matches[1] ? $matches[1].'_'.$matches[2] : $matches[2]);
             },
             $string
         );
@@ -116,7 +116,7 @@ final class Utils
         }
 
         $str = strrchr(
-            str_replace(array("\r\n", "\r"), "\n", $token->getContent()),
+            str_replace(["\r\n", "\r"], "\n", $token->getContent()),
             "\n"
         );
 
@@ -125,5 +125,37 @@ final class Utils
         }
 
         return ltrim($str, "\n");
+    }
+
+    /**
+     * Perform stable sorting using provided comparison function.
+     *
+     * Stability is ensured by using Schwartzian transform.
+     *
+     * @param mixed[]  $elements
+     * @param callable $getComparedValue a callable that takes a single element and returns the value to compare
+     * @param callable $compareValues    a callable that compares two values
+     *
+     * @return mixed[]
+     */
+    public static function stableSort(array $elements, callable $getComparedValue, callable $compareValues)
+    {
+        array_walk($elements, function (&$element, $index) use ($getComparedValue) {
+            $element = [$element, $index, $getComparedValue($element)];
+        });
+
+        usort($elements, function ($a, $b) use ($compareValues) {
+            $comparison = $compareValues($a[2], $b[2]);
+
+            if (0 !== $comparison) {
+                return $comparison;
+            }
+
+            return self::cmpInt($a[1], $b[1]);
+        });
+
+        return array_map(function (array $item) {
+            return $item[0];
+        }, $elements);
     }
 }

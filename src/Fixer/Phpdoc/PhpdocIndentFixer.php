@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
@@ -31,7 +32,7 @@ final class PhpdocIndentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Docblocks should have the same indentation as the documented subject.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 class DocBlocks
 {
 /**
@@ -39,7 +40,7 @@ class DocBlocks
  */
     const INDENT = 1;
 }
-'))
+')]
         );
     }
 
@@ -62,7 +63,15 @@ class DocBlocks
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -76,13 +85,14 @@ class DocBlocks
                 continue;
             }
 
-            $prevToken = $tokens[$index - 1];
+            $prevIndex = $index - 1;
+            $prevToken = $tokens[$prevIndex];
 
             // ignore inline docblocks
             if (
                 $prevToken->isGivenKind(T_OPEN_TAG)
                 || ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
-                || $prevToken->equalsAny(array(';', '{'))
+                || $prevToken->equalsAny([';', ',', '{', '('])
             ) {
                 continue;
             }
@@ -92,17 +102,15 @@ class DocBlocks
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$nextIndex - 1]);
             }
 
-            $prevToken->setContent($this->fixWhitespaceBefore($prevToken->getContent(), $indent));
-            $token->setContent($this->fixDocBlock($token->getContent(), $indent));
-        }
-    }
+            $newPrevContent = $this->fixWhitespaceBeforeDocblock($prevToken->getContent(), $indent);
+            if ($newPrevContent) {
+                $tokens[$prevIndex] = new Token([$prevToken->getId(), $newPrevContent]);
+            } else {
+                $tokens->clearAt($prevIndex);
+            }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+            $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixDocBlock($token->getContent(), $indent)]);
+        }
     }
 
     /**
@@ -119,14 +127,12 @@ class DocBlocks
     }
 
     /**
-     * Fix whitespace before the Docblock.
-     *
      * @param string $content Whitespace before Docblock
      * @param string $indent  Indentation of the documented subject
      *
      * @return string Whitespace including correct indentation for Dockblock after this whitespace
      */
-    private function fixWhitespaceBefore($content, $indent)
+    private function fixWhitespaceBeforeDocblock($content, $indent)
     {
         return rtrim($content, " \t").$indent;
     }

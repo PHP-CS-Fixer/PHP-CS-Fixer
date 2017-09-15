@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\StringNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer
  */
 final class SingleQuoteFixerTest extends AbstractFixerTestCase
 {
@@ -34,57 +36,57 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a = \'\';',
                 '<?php $a = "";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo bar\';',
                 '<?php $a = "foo bar";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo
                     bar\';',
                 '<?php $a = "foo
                     bar";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo\'.\'bar\'."$baz";',
                 '<?php $a = \'foo\'."bar"."$baz";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo "bar"\';',
                 '<?php $a = "foo \"bar\"";',
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = '\\foo\\bar\\\\';
 EOF
                 , <<<'EOF'
 <?php $a = "\\foo\\bar\\\\";
 EOF
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo $bar7\';',
                 '<?php $a = "foo \$bar7";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo $(bar7)\';',
                 '<?php $a = "foo \$(bar7)";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo \\\\($bar8)\';',
                 '<?php $a = "foo \\\\(\$bar8)";',
-            ),
-            array('<?php $a = "foo \\" \\$$bar";'),
-            array('<?php $a = "foo \'bar\'";'),
-            array('<?php $a = "foo $bar";'),
-            array('<?php $a = "foo ${bar}";'),
-            array('<?php $a = "foo\n bar";'),
-            array(<<<'EOF'
+            ],
+            ['<?php $a = "foo \\" \\$$bar";'],
+            ['<?php $a = "foo \'bar\'";'],
+            ['<?php $a = "foo $bar";'],
+            ['<?php $a = "foo ${bar}";'],
+            ['<?php $a = "foo\n bar";'],
+            [<<<'EOF'
 <?php $a = "\\\n";
 EOF
-            ),
-        );
+            ],
+        ];
     }
 }

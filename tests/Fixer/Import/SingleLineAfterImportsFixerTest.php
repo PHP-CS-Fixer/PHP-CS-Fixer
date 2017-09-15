@@ -12,13 +12,15 @@
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
  */
 final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {
@@ -26,17 +28,17 @@ final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use D;
 use E;
@@ -71,8 +73,8 @@ use E\F;
 
 use G\H;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php use \Exception;
 
 ?>
@@ -83,8 +85,8 @@ $a = new Exception();
 <?php
 $a = new Exception();
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php use \stdClass;
 use \DateTime;
 
@@ -95,8 +97,8 @@ $a = new DateTime();
                 '<?php use \stdClass; use \DateTime?>
 <?php
 $a = new DateTime();
-', ),
-            array(
+', ],
+            [
                 '<?php namespace Foo;
               '.'
 use Bar\Baz;
@@ -110,8 +112,8 @@ use Bar\Baz;
 /**
  * Foo.
  */',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 
@@ -125,8 +127,8 @@ namespace A\B;
 use D;
 class C {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     namespace A\B;
 
@@ -140,8 +142,8 @@ class C {}
     use D;
     class C {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 
@@ -157,8 +159,8 @@ use D;
 use E;
 class C {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 
@@ -171,8 +173,8 @@ namespace A\B;
 
 use D; class C {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 use D;
@@ -186,8 +188,8 @@ namespace A\B;
 use D; use E; {
     class C {}
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 use D;
@@ -202,8 +204,8 @@ use D;
 use E; {
     class C {}
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B {
     use D;
@@ -215,23 +217,23 @@ namespace A\B {
 namespace A\B {
     use D; use E; class C {}
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 class C {
     use SomeTrait;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $lambda = function () use (
     $arg
 ){
     return true;
 };',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A\B;
 use D, E;
@@ -245,8 +247,8 @@ use D, E;
 class C {
 
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     namespace A1;
     use B1; // need to import this !
@@ -254,8 +256,8 @@ class C {
 
     class C1 {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     namespace A2;
     use B2;// need to import this !
@@ -263,8 +265,8 @@ class C {
 
     class C4 {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A1;
 use B1; // need to import this !
@@ -272,8 +274,8 @@ use B2;
 
 class C1 {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A1;
 use B1;// need to import this !
@@ -281,8 +283,8 @@ use B2;
 
 class C1 {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A1;
 use B1; /** need to import this !*/
@@ -290,8 +292,8 @@ use B2;
 
 class C1 {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace A1;
 use B1;# need to import this !
@@ -299,8 +301,8 @@ use B2;
 
 class C1 {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Foo;
 
@@ -318,8 +320,8 @@ use Baz;
 
 class Hello {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class HelloTrait {
     use SomeTrait;
@@ -327,8 +329,8 @@ class HelloTrait {
     use Another;// ensure use statements for traits are not touched
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Foo {}
 namespace Bar {
@@ -338,38 +340,38 @@ namespace Bar {
     }
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php use A\B;
 
 ?>',
                 '<?php use A\B?>',
-            ),
-            array(
+            ],
+            [
                 '<?php use A\B;
 
 ',
                 '<?php use A\B;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null)
+    public function testFix70($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use some\test\{ClassA, ClassB, ClassC as C};
 
@@ -380,8 +382,8 @@ test 123
 use some\test\{ClassA, ClassB, ClassC as C}         ?>
 test 123
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use some\test\{CA, Cl, ClassC as C};
 
@@ -391,8 +393,8 @@ class Test {}
 use some\test\{CA, Cl, ClassC as C};
 class Test {}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use function some\test\{fn_g, fn_f, fn_e};
 
@@ -400,8 +402,8 @@ fn_a();',
                 '<?php
 use function some\test\{fn_g, fn_f, fn_e};
 fn_a();',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use const some\test\{ConstA, ConstB, ConstD};
 
@@ -409,8 +411,8 @@ use const some\test\{ConstA, ConstB, ConstD};
                 '<?php
 use const some\test\{ConstA, ConstB, ConstD};
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 namespace Z\B;
 use const some\test\{ConstA, ConstB, ConstC};
@@ -422,8 +424,8 @@ namespace Z\B;
 use const some\test\{ConstA, ConstB, ConstC};
 use A\B\C;
 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -441,15 +443,15 @@ use A\B\C;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php namespace A\B;\r\n    use D;\r\n\r\n    class C {}",
                 "<?php namespace A\B;\r\n    use D;\r\n\r\n\r\n    class C {}",
-            ),
-            array(
+            ],
+            [
                 "<?php namespace A\B;\r\n    use D;\r\n\r\n    class C {}",
                 "<?php namespace A\B;\r\n    use D;\r\n    class C {}",
-            ),
-        );
+            ],
+        ];
     }
 }

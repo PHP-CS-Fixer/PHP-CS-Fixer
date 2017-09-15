@@ -13,13 +13,16 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\WhitespacesFixerConfig
  */
-final class WhitespacesFixerConfigTest extends \PHPUnit_Framework_TestCase
+final class WhitespacesFixerConfigTest extends TestCase
 {
     /**
      * @param string      $indent
@@ -31,7 +34,10 @@ final class WhitespacesFixerConfigTest extends \PHPUnit_Framework_TestCase
     public function testCases($indent, $lineEnding, $exceptionRegExp = null)
     {
         if (null !== $exceptionRegExp) {
-            $this->setExpectedExceptionRegExp('InvalidArgumentException', $exceptionRegExp);
+            $this->setExpectedExceptionRegExp(
+                \InvalidArgumentException::class,
+                '%^'.preg_quote($exceptionRegExp, '%').'$%'
+            );
         }
 
         $config = new WhitespacesFixerConfig($indent, $lineEnding);
@@ -42,15 +48,15 @@ final class WhitespacesFixerConfigTest extends \PHPUnit_Framework_TestCase
 
     public function provideTestCases()
     {
-        return array(
-            array('    ', "\n"),
-            array("\t", "\n"),
-            array('    ', "\r\n"),
-            array("\t", "\r\n"),
-            array('    ', 'asd', '/lineEnding/'),
-            array('    ', array(), '/lineEnding/'),
-            array('std', "\n", '/indent/'),
-            array(array(), "\n", '/indent/'),
-        );
+        return [
+            ['    ', "\n"],
+            ["\t", "\n"],
+            ['    ', "\r\n"],
+            ["\t", "\r\n"],
+            ['    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'],
+            ['    ', [], 'Invalid "lineEnding" param, expected "\n" or "\r\n".'],
+            ['std', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'],
+            [[], "\n", 'Invalid "indent" param, expected tab or two or four spaces.'],
+        ];
     }
 }

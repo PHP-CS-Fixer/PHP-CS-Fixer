@@ -29,7 +29,43 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.',
+            [
+                new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}"),
+                new CodeSample(
+                    '<?php
+function foo( $bar, $baz )
+{
+}'
+                ),
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must run before FunctionToConstantFixer
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound('(');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
             if (!$token->equals('(')) {
@@ -46,50 +82,29 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
             // remove space after opening `(`
-            $this->removeSpaceAroundToken($tokens[$index + 1]);
+            if (!$tokens[$tokens->getNextNonWhitespace($index)]->isComment()) {
+                $this->removeSpaceAroundToken($tokens, $index + 1);
+            }
 
             // remove space before closing `)` if it is not `list($a, $b, )` case
             if (!$tokens[$tokens->getPrevMeaningfulToken($endIndex)]->equals(',')) {
-                $this->removeSpaceAroundToken($tokens[$endIndex - 1]);
+                $this->removeSpaceAroundToken($tokens, $endIndex - 1);
             }
         }
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.',
-            array(
-                new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}"),
-                new CodeSample('<?php
-function foo( $bar, $baz )
-{
-}'
-                ),
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound('(');
-    }
-
-    /**
      * Remove spaces from token at a given index.
      *
-     * @param Token $token
+     * @param Tokens $tokens
+     * @param int    $index
      */
-    private function removeSpaceAroundToken(Token $token)
+    private function removeSpaceAroundToken(Tokens $tokens, $index)
     {
+        $token = $tokens[$index];
+
         if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
-            $token->clear();
+            $tokens->clearAt($index);
         }
     }
 }

@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\ReturnNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ReturnNotation\NoUselessReturnFixer
  */
 final class NoUselessReturnFixerTest extends AbstractFixerTestCase
 {
@@ -34,8 +36,8 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     function bar($baz)
                     {
@@ -44,8 +46,8 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                         else
                             return;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     function bar($baz)
                     {
@@ -54,8 +56,8 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                         elseif($a)
                             return;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     function bar($baz)
                     {
@@ -64,16 +66,16 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                         else if($a)
                             return;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     function bar($baz)
                     {
                         if ($baz)
                             return;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function b($b) {
         if ($b) {
@@ -88,8 +90,8 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
         }
         return /**/;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Test2
     {
@@ -152,8 +154,8 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
             $d();
         }
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function aT($a) {
         if ($a) {
@@ -168,11 +170,11 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
         }
         return           ;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php return;',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function c($c) {
         if ($c) {
@@ -187,8 +189,8 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
         }
         return;//
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Test {
 
@@ -207,15 +209,15 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
             }
             return;}
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     interface FooInterface
     {
         public function fnc();
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     abstract class AbstractFoo
     {
@@ -226,12 +228,12 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
             echo 1 . self::fn2();//{}
         }
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function foo () { }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $a = function() {
                        /**/
@@ -248,7 +250,7 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                     return;
                 };
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

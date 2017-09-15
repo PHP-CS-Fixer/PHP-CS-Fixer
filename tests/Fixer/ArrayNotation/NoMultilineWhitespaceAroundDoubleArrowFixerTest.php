@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
@@ -20,6 +20,8 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer
  */
 final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixerTestCase
 {
@@ -36,8 +38,8 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     $arr = array(
         $a => array(1),
@@ -51,8 +53,8 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
             array(0 =>
             array())
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         "aaaaaa"    =>    "b",
@@ -73,8 +75,8 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
         "hh"      =>
             [],
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $hello = array(
         "foo" =>
@@ -90,7 +92,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
          */
         array()
     );',
-            ),
-        );
+            ],
+        ];
     }
 }

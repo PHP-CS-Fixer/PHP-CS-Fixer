@@ -27,24 +27,7 @@ final class NoUselessReturnFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound(array(T_FUNCTION, T_RETURN));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_FUNCTION)) {
-                continue;
-            }
-
-            $index = $tokens->getNextTokenOfKind($index, array(';', '{'));
-            if ($tokens[$index]->equals('{')) {
-                $this->fixFunction($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
-            }
-        }
+        return $tokens->isAllTokenKindsFound([T_FUNCTION, T_RETURN]);
     }
 
     /**
@@ -54,7 +37,7 @@ final class NoUselessReturnFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be an empty return statement at the end of a function.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 function example($b) {
@@ -65,7 +48,7 @@ function example($b) {
 }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -76,6 +59,23 @@ function example($b) {
     {
         // should be run before BlankLineBeforeReturnFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLineFixer and after SimplifiedNullReturnFixer and NoEmptyStatementFixer.
         return -18;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+
+            $index = $tokens->getNextTokenOfKind($index, [';', '{']);
+            if ($tokens[$index]->equals('{')) {
+                $this->fixFunction($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
+            }
+        }
     }
 
     /**
@@ -100,7 +100,7 @@ function example($b) {
             }
 
             $previous = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$previous]->equalsAny(array(array(T_ELSE), ')'))) {
+            if ($tokens[$previous]->equalsAny([[T_ELSE], ')'])) {
                 continue;
             }
 

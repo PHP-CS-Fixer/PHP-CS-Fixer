@@ -12,13 +12,15 @@
 
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
-use PhpCsFixer\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer
  */
 final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
 {
@@ -32,26 +34,26 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
         $this->doTest(
             $source,
             $expectedTokens,
-            array(
+            [
                 T_NAMESPACE,
                 CT::T_NAMESPACE_OPERATOR,
-            )
+            ]
         );
     }
 
     public function provideProcessCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 namespace Foo;
 namespace\Bar\baz();
 ',
-                array(
+                [
                     1 => T_NAMESPACE,
                     6 => CT::T_NAMESPACE_OPERATOR,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

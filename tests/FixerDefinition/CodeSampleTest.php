@@ -13,20 +13,23 @@
 namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\CodeSample;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerDefinition\CodeSample
  */
-final class CodeSampleTest extends \PHPUnit_Framework_TestCase
+final class CodeSampleTest extends TestCase
 {
     public function testConstructorSetsValues()
     {
         $code = '<php echo $foo;';
-        $configuration = array(
+        $configuration = [
             'foo' => 'bar',
-        );
+        ];
 
         $codeSample = new CodeSample(
             $code,

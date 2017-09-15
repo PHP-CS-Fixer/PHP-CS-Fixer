@@ -25,31 +25,13 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_RETURN)) {
-                continue;
-            }
-
-            if ($this->needFixing($tokens, $index)) {
-                $this->clear($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'A return statement wishing to return `void` should not return `null`.',
-            array(new CodeSample('<?php return null;')),
+            [new CodeSample('<?php return null;')],
             null,
-            null,
-            null,
-            'Risky as of PHP 7.1 as since than a difference between returning `null` and `void` can be hinted as return type.'
+            'Risky since PHP 7.1 as `null` and `void` can be hinted as return type and have different meaning.'
         );
     }
 
@@ -79,6 +61,22 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_RETURN)) {
+                continue;
+            }
+
+            if ($this->needFixing($tokens, $index)) {
+                $this->clear($tokens, $index);
+            }
+        }
+    }
+
+    /**
      * Clear the return statement located at a given index.
      *
      * @param Tokens $tokens
@@ -88,7 +86,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     {
         while (!$tokens[++$index]->equals(';')) {
             if ($this->shouldClearToken($tokens, $index)) {
-                $tokens[$index]->clear();
+                $tokens->clearAt($index);
             }
         }
     }

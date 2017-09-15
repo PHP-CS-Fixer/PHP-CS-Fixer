@@ -26,57 +26,11 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_UNSET)) {
-                continue;
-            }
-
-            $previousUnsetCall = $this->getPreviousUnsetCall($tokens, $index);
-            if (is_int($previousUnsetCall)) {
-                $index = $previousUnsetCall;
-                continue;
-            }
-
-            list($previousUnset, , $previousUnsetBraceEnd) = $previousUnsetCall;
-
-            // Merge the tokens inside the 'unset' call into the previous one 'unset' call.
-            $tokensAddCount = $this->moveTokens(
-                $tokens,
-                $nextUnsetContentStart = $tokens->getNextTokenOfKind($index, array('(')),
-                $nextUnsetContentEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextUnsetContentStart),
-                $previousUnsetBraceEnd - 1
-            );
-
-            if (!$tokens[$previousUnsetBraceEnd]->isWhitespace()) {
-                $tokens->insertAt($previousUnsetBraceEnd, new Token(array(T_WHITESPACE, ' ')));
-                ++$tokensAddCount;
-            }
-
-            $tokens->insertAt($previousUnsetBraceEnd, new Token(','));
-            ++$tokensAddCount;
-
-            // Remove 'unset', '(', ')' and (possibly) ';' from the merged 'unset' call.
-            $this->clearOffsetTokens($tokens, $tokensAddCount, array($index, $nextUnsetContentStart, $nextUnsetContentEnd));
-
-            $nextUnsetSemicolon = $tokens->getNextMeaningfulToken($nextUnsetContentEnd);
-            if (null !== $nextUnsetSemicolon && $tokens[$nextUnsetSemicolon]->equals(';')) {
-                $tokens->clearTokenAndMergeSurroundingWhitespace($nextUnsetSemicolon);
-            }
-
-            $index = $previousUnset + 1;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Calling `unset` on multiple items should be done in one call.',
-            array(new CodeSample("<?php\nunset(\$a); unset(\$b);"))
+            [new CodeSample("<?php\nunset(\$a); unset(\$b);")]
         );
     }
 
@@ -95,6 +49,53 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_UNSET);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            if (!$tokens[$index]->isGivenKind(T_UNSET)) {
+                continue;
+            }
+
+            $previousUnsetCall = $this->getPreviousUnsetCall($tokens, $index);
+            if (is_int($previousUnsetCall)) {
+                $index = $previousUnsetCall;
+
+                continue;
+            }
+
+            list($previousUnset, , $previousUnsetBraceEnd) = $previousUnsetCall;
+
+            // Merge the tokens inside the 'unset' call into the previous one 'unset' call.
+            $tokensAddCount = $this->moveTokens(
+                $tokens,
+                $nextUnsetContentStart = $tokens->getNextTokenOfKind($index, ['(']),
+                $nextUnsetContentEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextUnsetContentStart),
+                $previousUnsetBraceEnd - 1
+            );
+
+            if (!$tokens[$previousUnsetBraceEnd]->isWhitespace()) {
+                $tokens->insertAt($previousUnsetBraceEnd, new Token([T_WHITESPACE, ' ']));
+                ++$tokensAddCount;
+            }
+
+            $tokens->insertAt($previousUnsetBraceEnd, new Token(','));
+            ++$tokensAddCount;
+
+            // Remove 'unset', '(', ')' and (possibly) ';' from the merged 'unset' call.
+            $this->clearOffsetTokens($tokens, $tokensAddCount, [$index, $nextUnsetContentStart, $nextUnsetContentEnd]);
+
+            $nextUnsetSemicolon = $tokens->getNextMeaningfulToken($nextUnsetContentEnd);
+            if (null !== $nextUnsetSemicolon && $tokens[$nextUnsetSemicolon]->equals(';')) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($nextUnsetSemicolon);
+            }
+
+            $index = $previousUnset + 1;
+        }
     }
 
     /**
@@ -123,7 +124,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      * @param Tokens $tokens
      * @param int    $index
      *
-     * @return int[]|int
+     * @return int|int[]
      */
     private function getPreviousUnsetCall(Tokens $tokens, $index)
     {
@@ -155,12 +156,12 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
             return $previousUnset;
         }
 
-        return array(
+        return [
             $previousUnset,
             $previousUnsetBraceStart,
             $previousUnsetBraceEnd,
             $previousUnsetSemicolon,
-        );
+        ];
     }
 
     /**
@@ -176,14 +177,14 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
         $added = 0;
         for ($i = $start + 1; $i < $end; $i += 2) {
             if ($tokens[$i]->isWhitespace() && $tokens[$to + 1]->isWhitespace()) {
-                $tokens[$to + 1]->setContent($tokens[$to + 1]->getContent().$tokens[$i]->getContent());
+                $tokens[$to + 1] = new Token([T_WHITESPACE, $tokens[$to + 1]->getContent().$tokens[$i]->getContent()]);
             } else {
                 $tokens->insertAt(++$to, clone $tokens[$i]);
                 ++$end;
                 ++$added;
             }
 
-            $tokens[$i + 1]->clear();
+            $tokens->clearAt($i + 1);
         }
 
         return $added;

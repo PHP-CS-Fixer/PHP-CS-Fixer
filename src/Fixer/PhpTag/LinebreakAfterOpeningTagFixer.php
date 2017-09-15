@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -26,7 +27,26 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Ensure there is no code on the same line as the PHP open tag.',
+            [new CodeSample("<?php \$a = 1;\n\$b = 3;")]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_OPEN_TAG);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // ignore files with short open tag and ignore non-monolithic files
         if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
@@ -37,6 +57,7 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
         foreach ($tokens as $token) {
             if ($token->isWhitespace() && false !== strpos($token->getContent(), "\n")) {
                 $newlineFound = true;
+
                 break;
             }
         }
@@ -47,25 +68,6 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
         }
 
         $token = $tokens[0];
-        $token->setContent(rtrim($token->getContent()).$this->whitespacesConfig->getLineEnding());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Ensure there is no code on the same line as the PHP open tag.',
-            array(new CodeSample("<?php \$a = 1;\n\$b = 3;"))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_OPEN_TAG);
+        $tokens[0] = new Token([$token->getId(), rtrim($token->getContent()).$this->whitespacesConfig->getLineEnding()]);
     }
 }

@@ -26,7 +26,26 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Standardize spaces around ternary operator.',
+            [new CodeSample('<?php $a = $a   ?1 :0;')]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isAllTokenKindsFound(['?', ':']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $ternaryLevel = 0;
 
@@ -40,7 +59,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 if ($nextNonWhitespaceToken->equals(':')) {
                     // for `$a ?: $b` remove spaces between `?` and `:`
                     if ($tokens[$index + 1]->isWhitespace()) {
-                        $tokens[$index + 1]->clear();
+                        $tokens->clearAt($index + 1);
                     }
                 } else {
                     // for `$a ? $b : $c` ensure space after `?`
@@ -70,25 +89,6 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Standardize spaces around ternary operator.',
-            array(new CodeSample('<?php $a = $a   ?1 :0;'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound(array('?', ':'));
-    }
-
-    /**
      * @param Tokens $tokens
      * @param int    $index
      * @param bool   $after
@@ -100,13 +100,13 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 false === strpos($tokens[$index]->getContent(), "\n")
                 && !$tokens[$index - 1]->isComment()
             ) {
-                $tokens[$index]->setContent(' ');
+                $tokens[$index] = new Token([T_WHITESPACE, ' ']);
             }
 
             return;
         }
 
         $index += $after ? 0 : 1;
-        $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+        $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
     }
 }

@@ -26,7 +26,28 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.',
+            [new CodeSample("<?php\n\$a = dirname(__FILE__);")],
+            null,
+            'Risky when the function `dirname()` is overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_FILE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $currIndex = 0;
         while (null !== $currIndex) {
@@ -40,12 +61,12 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             // analysing cursor shift, so nested expressions kept processed
             $currIndex = $openParenthesis;
 
-            /* ensure __FILE__ is in between (...) */
+            // ensure __FILE__ is in between (...)
             $fileCandidateRightIndex = $tokens->getPrevMeaningfulToken($closeParenthesis);
             $fileCandidateRight = $tokens[$fileCandidateRightIndex];
             $fileCandidateLeftIndex = $tokens->getNextMeaningfulToken($openParenthesis);
             $fileCandidateLeft = $tokens[$fileCandidateLeftIndex];
-            if (!$fileCandidateRight->isGivenKind(array(T_FILE)) || !$fileCandidateLeft->isGivenKind(array(T_FILE))) {
+            if (!$fileCandidateRight->isGivenKind([T_FILE]) || !$fileCandidateLeft->isGivenKind([T_FILE])) {
                 continue;
             }
 
@@ -54,44 +75,27 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $namespaceCandidate = $tokens[$namespaceCandidateIndex];
             if ($namespaceCandidate->isGivenKind(T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($namespaceCandidateIndex);
-                $namespaceCandidate->clear();
+                $tokens->clearAt($namespaceCandidateIndex);
             }
 
             // closing parenthesis removed with leading spaces
-            $tokens->removeLeadingWhitespace($closeParenthesis);
-            $tokens[$closeParenthesis]->clear();
+            if (!$tokens[$tokens->getNextNonWhitespace($closeParenthesis)]->isComment()) {
+                $tokens->removeLeadingWhitespace($closeParenthesis);
+            }
+
+            $tokens->clearAt($closeParenthesis);
 
             // opening parenthesis removed with trailing and leading spaces
-            $tokens->removeLeadingWhitespace($openParenthesis);
+            if (!$tokens[$tokens->getNextNonWhitespace($openParenthesis)]->isComment()) {
+                $tokens->removeLeadingWhitespace($openParenthesis);
+            }
+
             $tokens->removeTrailingWhitespace($openParenthesis);
-            $tokens[$openParenthesis]->clear();
+            $tokens->clearAt($openParenthesis);
 
             // replace constant and remove function name
-            $tokens->overrideAt($fileCandidateLeftIndex, new Token(array(T_DIR, '__DIR__')));
-            $tokens[$functionNameIndex]->clear();
+            $tokens[$fileCandidateLeftIndex] = new Token([T_DIR, '__DIR__']);
+            $tokens->clearAt($functionNameIndex);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.',
-            array(new CodeSample("<?php\n\$a = dirname(__FILE__);")),
-            null,
-            null,
-            null,
-            'Risky when the function `dirname()` is overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_FILE);
     }
 }

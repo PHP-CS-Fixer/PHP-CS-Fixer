@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Marc Aubé
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
  */
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {
@@ -25,9 +27,9 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
-    public function testFixSpaceInsideParenthesis($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -55,14 +57,14 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php foo();',
                 '<?php foo( );',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     // if body
@@ -71,8 +73,8 @@ if (true) {
 if ( true ) {
     // if body
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     // if body
@@ -81,8 +83,8 @@ if (true) {
 if (     true   ) {
     // if body
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo($bar, $baz)
 {
@@ -93,30 +95,37 @@ function foo( $bar, $baz )
 {
     // function body
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foo->bar($arg1, $arg2);',
                 '<?php
 $foo->bar(  $arg1, $arg2   );',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = array( 1, 2, 3 );
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = [ 1, 2, 3 ];
 ',
-            ),
+            ],
             // list call with trailing comma - need to leave alone
-            array(
+            [
                 '<?php list($path, $mode, ) = foo();',
-            ),
-            array(
+            ],
+            [
                 '<?php list($path, $mode,) = foo();',
-            ),
-        );
+            ],
+            [
+                '<?php
+$a = $b->test(  // do not remove space
+    $e          // between `(` and `)`
+                // and this comment
+);',
+            ],
+        ];
     }
 }

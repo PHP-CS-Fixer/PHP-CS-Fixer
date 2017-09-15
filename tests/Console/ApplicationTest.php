@@ -13,13 +13,16 @@
 namespace PhpCsFixer\Tests\Console;
 
 use PhpCsFixer\Console\Application;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Console\Application
  */
-final class ApplicationTest extends \PHPUnit_Framework_TestCase
+final class ApplicationTest extends TestCase
 {
     public function testApplication()
     {

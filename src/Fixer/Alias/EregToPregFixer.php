@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
@@ -27,30 +28,59 @@ final class EregToPregFixer extends AbstractFixer
      * @var array the list of the ext/ereg function names, their preg equivalent and the preg modifier(s), if any
      *            all condensed in an array of arrays
      */
-    private static $functions = array(
-        array('ereg', 'preg_match', ''),
-        array('eregi', 'preg_match', 'i'),
-        array('ereg_replace', 'preg_replace', ''),
-        array('eregi_replace', 'preg_replace', 'i'),
-        array('split', 'preg_split', ''),
-        array('spliti', 'preg_split', 'i'),
-    );
+    private static $functions = [
+        ['ereg', 'preg_match', ''],
+        ['eregi', 'preg_match', 'i'],
+        ['ereg_replace', 'preg_replace', ''],
+        ['eregi_replace', 'preg_replace', 'i'],
+        ['split', 'preg_split', ''],
+        ['spliti', 'preg_split', 'i'],
+    ];
 
     /**
      * @var array the list of preg delimiters, in order of preference
      */
-    private static $delimiters = array('/', '#', '!');
+    private static $delimiters = ['/', '#', '!'];
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replace deprecated `ereg` regular expression functions with preg.',
+            [new CodeSample('<?php $x = ereg(\'[A-Z]\');')],
+            null,
+            'Risky if the `ereg` funcion is overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $end = $tokens->count() - 1;
 
         foreach (self::$functions as $map) {
             // the sequence is the function name, followed by "(" and a quoted string
-            $seq = array(array(T_STRING, $map[0]), '(', array(T_CONSTANT_ENCAPSED_STRING));
+            $seq = [[T_STRING, $map[0]], '(', [T_CONSTANT_ENCAPSED_STRING]];
 
             $currIndex = 0;
             while (null !== $currIndex) {
@@ -72,13 +102,13 @@ final class EregToPregFixer extends AbstractFixer
 
                 // ensure it's a function call (not a method / static call)
                 $prev = $tokens->getPrevMeaningfulToken($match[0]);
-                if (null === $prev || $tokens[$prev]->isGivenKind(array(T_OBJECT_OPERATOR, T_DOUBLE_COLON))) {
+                if (null === $prev || $tokens[$prev]->isGivenKind([T_OBJECT_OPERATOR, T_DOUBLE_COLON])) {
                     continue;
                 }
 
                 // ensure the first parameter is just a string (e.g. has nothing appended)
                 $next = $tokens->getNextMeaningfulToken($match[2]);
-                if (null === $next || !$tokens[$next]->equalsAny(array(',', ')'))) {
+                if (null === $next || !$tokens[$next]->equalsAny([',', ')'])) {
                     continue;
                 }
 
@@ -95,41 +125,10 @@ final class EregToPregFixer extends AbstractFixer
                 }
 
                 // modify function and argument
-                $tokens[$match[2]]->setContent($quote.$preg.$quote);
-                $tokens[$match[0]]->setContent($map[1]);
+                $tokens[$match[0]] = new Token([T_STRING, $map[1]]);
+                $tokens[$match[2]] = new Token([T_CONSTANT_ENCAPSED_STRING, $quote.$preg.$quote]);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replace deprecated `ereg` regular expression functions with preg.',
-            array(new CodeSample('<?php $x = ereg(\'[A-Z]\');')),
-            null,
-            null,
-            null,
-            'Risky if the `ereg` funcion is overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
     }
 
     /**
@@ -154,13 +153,13 @@ final class EregToPregFixer extends AbstractFixer
     private function getBestDelimiter($pattern)
     {
         // try do find something that's not used
-        $delimiters = array();
+        $delimiters = [];
         foreach (self::$delimiters as $k => $d) {
             if (false === strpos($pattern, $d)) {
                 return $d;
             }
 
-            $delimiters[$d] = array(substr_count($pattern, $d), $k);
+            $delimiters[$d] = [substr_count($pattern, $d), $k];
         }
 
         // return the least used delimiter, using the position in the list as a tie breaker

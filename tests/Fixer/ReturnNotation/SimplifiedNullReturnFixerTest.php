@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\ReturnNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ReturnNotation\SimplifiedNullReturnFixer
  */
 final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 {
@@ -25,32 +27,32 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideExamples
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples()
+    public function provideFixCases()
     {
-        return array(
+        return [
             // check correct statements aren't changed
-            array('<?php return  ;'),
-            array('<?php return \'null\';'),
-            array('<?php return false;'),
-            array('<?php return (false );'),
-            array('<?php return null === foo();'),
-            array('<?php return array() == null ;'),
+            ['<?php return  ;'],
+            ['<?php return \'null\';'],
+            ['<?php return false;'],
+            ['<?php return (false );'],
+            ['<?php return null === foo();'],
+            ['<?php return array() == null ;'],
 
             // check we modified those that can be changed
-            array('<?php return;', '<?php return null;'),
-            array('<?php return;', '<?php return (null);'),
-            array('<?php return;', '<?php return ( null    );'),
-            array('<?php return;', '<?php return ( (( null)));'),
-            array('<?php return /* hello */;', '<?php return /* hello */ null  ;'),
-            array('<?php return;', '<?php return NULL;'),
-            array('<?php return;', "<?php return\n(\nnull\n)\n;"),
-        );
+            ['<?php return;', '<?php return null;'],
+            ['<?php return;', '<?php return (null);'],
+            ['<?php return;', '<?php return ( null    );'],
+            ['<?php return;', '<?php return ( (( null)));'],
+            ['<?php return /* hello */;', '<?php return /* hello */ null  ;'],
+            ['<?php return;', '<?php return NULL;'],
+            ['<?php return;', "<?php return\n(\nnull\n)\n;"],
+        ];
     }
 }

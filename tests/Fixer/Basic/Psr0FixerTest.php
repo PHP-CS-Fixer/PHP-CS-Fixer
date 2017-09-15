@@ -12,18 +12,21 @@
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractPsrAutoloadingFixer
+ * @covers \PhpCsFixer\Fixer\Basic\Psr0Fixer
  */
 final class Psr0FixerTest extends AbstractFixerTestCase
 {
     public function testFixCase()
     {
-        $this->fixer->configure(array('dir' => __DIR__));
+        $this->fixer->configure(['dir' => __DIR__]);
 
-        $fileProphecy = $this->prophesize('SplFileInfo');
+        $fileProphecy = $this->prophesize(\SplFileInfo::class);
         $fileProphecy->getBasename()->willReturn('Bar.php');
         $fileProphecy->getRealPath()->willReturn(__DIR__.'/Psr0/Foo/Bar.php');
         $file = $fileProphecy->reveal();
@@ -135,7 +138,7 @@ EOF;
 
     public function testHandlePartialNamespaces()
     {
-        $this->fixer->configure(array('dir' => __DIR__.'/../../../src/'));
+        $this->fixer->configure(['dir' => __DIR__.'/../../../src/']);
 
         $file = $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/Psr0Fixer.php');
 
@@ -163,12 +166,36 @@ class /* hi there */ Psr0Fixer {}
 EOF;
         $this->doTest($expected, $input, $file);
 
-        $this->fixer->configure(array('dir' => __DIR__.'/../../../src/Fixer/Basic'));
+        $this->fixer->configure(['dir' => __DIR__.'/../../../src/Fixer/Basic']);
         $expected = <<<'EOF'
 <?php
 namespace Foo\Bar\Baz;
 class Psr0Fixer {}
 EOF;
+        $this->doTest($expected, null, $file);
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testIgnoreAnonymousClass()
+    {
+        $file = $this->getTestFile(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+new class implements Countable {};
+EOF;
+
+        $this->doTest($expected, null, $file);
+
+        $expected = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+new class extends stdClass {};
+EOF;
+
         $this->doTest($expected, null, $file);
     }
 
@@ -192,32 +219,32 @@ EOF;
 
     public function provideIgnoredCases()
     {
-        $ignoreCases = array(
-            array('.php'),
-            array('Foo.class.php'),
-            array('4Foo.php'),
-            array('$#.php'),
-        );
+        $ignoreCases = [
+            ['.php'],
+            ['Foo.class.php'],
+            ['4Foo.php'],
+            ['$#.php'],
+        ];
 
-        foreach (array('__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'try', 'unset', 'use', 'var', 'while', 'xor') as $keyword) {
-            $ignoreCases[] = array($keyword.'.php');
+        foreach (['__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'try', 'unset', 'use', 'var', 'while', 'xor'] as $keyword) {
+            $ignoreCases[] = [$keyword.'.php'];
         }
 
-        foreach (array('__CLASS__', '__DIR__', '__FILE__', '__FUNCTION__', '__LINE__', '__METHOD__', '__NAMESPACE__') as $magicConstant) {
-            $ignoreCases[] = array($magicConstant.'.php');
-            $ignoreCases[] = array(strtolower($magicConstant).'.php');
+        foreach (['__CLASS__', '__DIR__', '__FILE__', '__FUNCTION__', '__LINE__', '__METHOD__', '__NAMESPACE__'] as $magicConstant) {
+            $ignoreCases[] = [$magicConstant.'.php'];
+            $ignoreCases[] = [strtolower($magicConstant).'.php'];
         }
 
-        foreach (array(
+        foreach ([
             'T_CALLABLE' => 'callable',
             'T_FINALLY' => 'finally',
             'T_INSTEADOF' => 'insteadof',
             'T_TRAIT' => 'trait',
             'T_TRAIT_C' => '__TRAIT__',
-        ) as $tokenType => $tokenValue) {
+        ] as $tokenType => $tokenValue) {
             if (defined($tokenType)) {
-                $ignoreCases[] = array($tokenValue.'.php');
-                $ignoreCases[] = array(strtolower($tokenValue).'.php');
+                $ignoreCases[] = [$tokenValue.'.php'];
+                $ignoreCases[] = [strtolower($tokenValue).'.php'];
             }
         }
 

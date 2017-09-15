@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\CastNotation;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -26,16 +27,49 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval` function calls with according type casting operator.',
+            [
+                new CodeSample(
+                    '<?php
+    $a = intval($b);
+    $a = floatval($b);
+    $a = doubleval($b);
+    $a = strval ($b);
+    $a = boolval($b);
+'
+                ),
+            ],
+            null,
+            'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // replacement patterns
-        static $replacement = array(
-             'intval' => array(T_INT_CAST, '(int)'),
-             'floatval' => array(T_DOUBLE_CAST, '(float)'),
-             'doubleval' => array(T_DOUBLE_CAST, '(float)'),
-             'strval' => array(T_STRING_CAST, '(string)'),
-             'boolval' => array(T_BOOL_CAST, '(bool)'),
-        );
+        static $replacement = [
+             'intval' => [T_INT_CAST, '(int)'],
+             'floatval' => [T_DOUBLE_CAST, '(float)'],
+             'doubleval' => [T_DOUBLE_CAST, '(float)'],
+             'strval' => [T_STRING_CAST, '(string)'],
+             'boolval' => [T_BOOL_CAST, '(bool)'],
+        ];
+
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         foreach ($replacement as $functionIdentity => $newToken) {
             $currIndex = 0;
@@ -53,7 +87,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 $currIndex = $openParenthesis;
 
                 // indicator that the function is overriden
-                if (1 !== $this->countArguments($tokens, $openParenthesis, $closeParenthesis)) {
+                if (1 !== $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis)) {
                     continue;
                 }
 
@@ -73,24 +107,24 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     // get rid of root namespace when it used
                     $tokens->removeTrailingWhitespace($prevTokenIndex);
-                    $tokens[$prevTokenIndex]->clear();
+                    $tokens->clearAt($prevTokenIndex);
                 }
 
                 // perform transformation
-                $replacementSequence = array(
+                $replacementSequence = [
                     new Token($newToken),
-                    new Token(array(T_WHITESPACE, ' ')),
-                );
+                    new Token([T_WHITESPACE, ' ']),
+                ];
 
                 if (!$preserveParenthesises) {
                     // closing parenthesis removed with leading spaces
                     $tokens->removeLeadingWhitespace($closeParenthesis);
-                    $tokens[$closeParenthesis]->clear();
+                    $tokens->clearAt($closeParenthesis);
 
                     // opening parenthesis removed with trailing spaces
                     $tokens->removeLeadingWhitespace($openParenthesis);
                     $tokens->removeTrailingWhitespace($openParenthesis);
-                    $tokens[$openParenthesis]->clear();
+                    $tokens->clearAt($openParenthesis);
                 } else {
                     // we'll need to provide a space after a casting operator
                     $tokens->removeTrailingWhitespace($functionName);
@@ -102,36 +136,5 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 $currIndex = $functionName;
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval` function calls with according type casting operator.',
-            array(new CodeSample(
-'<?php
-    $a = intval($b);
-    $a = floatval($b);
-    $a = doubleval($b);
-    $a = strval ($b);
-    $a = boolval($b);
-'),
-            ),
-            null,
-            null,
-            null,
-            'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
     }
 }

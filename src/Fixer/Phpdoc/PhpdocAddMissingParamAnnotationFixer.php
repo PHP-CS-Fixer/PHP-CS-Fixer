@@ -13,71 +13,112 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var array<string, bool>
+     * {@inheritdoc}
      */
-    private $configuration;
-
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array(
-        'only_untyped' => true,
-    );
-
-    /**
-     * @param null|array<string, bool> $configuration
-     */
-    public function configure(array $configuration = null)
+    public function getDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        foreach ($configuration as $key => $value) {
-            if (!array_key_exists($key, self::$defaultConfiguration)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('"%s" is not handled by the fixer.', $key));
-            }
-
-            if (!is_bool($value)) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected boolean got "%s".', is_object($value) ? get_class($value) : gettype($value)));
-            }
-
-            $configuration[$key] = $value;
-        }
-
-        $this->configuration = $configuration;
+        return new FixerDefinition(
+            'Phpdoc should contain @param for all params.',
+            [
+                new CodeSample(
+                    '<?php
+/**
+ * @param int $bar
+ *
+ * @return void
+ */
+function f9(string $foo, $bar, $baz) {}'
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param int $bar
+ *
+ * @return void
+ */
+function f9(string $foo, $bar, $baz) {}',
+                    ['only_untyped' => true]
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param int $bar
+ *
+ * @return void
+ */
+function f9(string $foo, $bar, $baz) {}',
+                    ['only_untyped' => false]
+                ),
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getPriority()
     {
+        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
+        return -1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $mainIndex = $index;
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
 
-            if (false !== stripos($token->getContent(), 'inheritdoc')) {
+            $tokenContent = $token->getContent();
+
+            if (false !== stripos($tokenContent, 'inheritdoc')) {
+                continue;
+            }
+
+            // ignore one-line phpdocs like `/** foo */`, as there is no place to put new annotations
+            if (false === strpos($tokenContent, "\n")) {
                 continue;
             }
 
@@ -87,7 +128,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
                 return;
             }
 
-            while ($tokens[$index]->isGivenKind(array(
+            while ($tokens[$index]->isGivenKind([
                 T_ABSTRACT,
                 T_FINAL,
                 T_PRIVATE,
@@ -95,7 +136,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
                 T_PUBLIC,
                 T_STATIC,
                 T_VAR,
-            ))) {
+            ])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
@@ -103,12 +144,12 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
                 continue;
             }
 
-            $openIndex = $tokens->getNextTokenOfKind($index, array('('));
+            $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
-            $arguments = array();
+            $arguments = [];
 
-            foreach ($this->getArguments($tokens, $openIndex, $index) as $start => $end) {
+            foreach ($argumentsAnalyzer->getArguments($tokens, $openIndex, $index) as $start => $end) {
                 $argumentInfo = $this->prepareArgumentInformation($tokens, $start, $end);
 
                 if (!$this->configuration['only_untyped'] || '' === $argumentInfo['type']) {
@@ -120,7 +161,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
                 continue;
             }
 
-            $doc = new DocBlock($token->getContent());
+            $doc = new DocBlock($tokenContent);
             $lastParamLine = null;
 
             foreach ($doc->getAnnotationsOfType('param') as $annotation) {
@@ -143,7 +184,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
             preg_match('/^(\s*).*$/', $lines[$linesCount - 1]->getContent(), $matches);
             $indent = $matches[1];
 
-            $newLines = array();
+            $newLines = [];
 
             foreach ($arguments as $argument) {
                 $type = $argument['type'] ?: 'mixed';
@@ -168,77 +209,21 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
                 $newLines
             );
 
-            $token->setContent(implode('', $lines));
+            $tokens[$mainIndex] = new Token([T_DOC_COMMENT, implode('', $lines)]);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    protected function createConfigurationDefinition()
     {
-        return new FixerDefinition(
-            'Phpdoc should contain @param for all params.',
-            array(
-                new CodeSample(
-                    '<?php
-/**
- * @param int $bar
- *
- * @return void
- */
-function f9(string $foo, $bar, $baz) {}'
-                ),
-                new CodeSample(
-                    '<?php
-/**
- * @param int $bar
- *
- * @return void
- */
-function f9(string $foo, $bar, $baz) {}',
-                    array('only_untyped' => true)
-                ),
-                new CodeSample(
-                    '<?php
-/**
- * @param int $bar
- *
- * @return void
- */
-function f9(string $foo, $bar, $baz) {}',
-                    array('only_untyped' => false)
-                ),
-            ),
-            null,
-            'The following can be configured: `only_untyped => boolean`',
-            self::$defaultConfiguration
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
-        return -5;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return false;
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.'))
+                ->setDefault(true)
+                ->setAllowedTypes(['bool'])
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -250,11 +235,11 @@ function f9(string $foo, $bar, $baz) {}',
      */
     private function prepareArgumentInformation(Tokens $tokens, $start, $end)
     {
-        $info = array(
+        $info = [
             'default' => '',
             'name' => '',
             'type' => '',
-        );
+        ];
 
         $sawName = false;
 

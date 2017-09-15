@@ -13,9 +13,12 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractPsrAutoloadingFixer;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -24,35 +27,41 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Bram Gotink <bram@gotink.me>
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurableFixerInterface
+final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var array
-     */
-    private static $defaultConfiguration = array();
-
-    private $configuration = array();
-
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function getDefinition()
     {
-        if (null === $configuration) {
-            $this->configuration = self::$defaultConfiguration;
-
-            return;
-        }
-
-        if (isset($configuration['dir'])) {
-            $this->configuration['dir'] = $configuration['dir'];
-        }
+        return new FixerDefinition(
+            'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
+            [
+                new FileSpecificCodeSample(
+                    '<?php
+namespace PhpCsFixer\FIXER\Basic;
+class InvalidName {}
+',
+                    new \SplFileInfo(__FILE__)
+                ),
+                new FileSpecificCodeSample(
+                    '<?php
+namespace PhpCsFixer\FIXER\Basic;
+class InvalidName {}
+',
+                    new \SplFileInfo(__FILE__),
+                    ['dir' => realpath(__DIR__.'/../..')]
+                ),
+            ],
+            null,
+            'This fixer may change your class name, which will break the code that is depended on old name.'
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $namespace = false;
         $namespaceIndex = 0;
@@ -68,11 +77,16 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
                 }
 
                 $namespaceIndex = $tokens->getNextMeaningfulToken($index);
-                $namespaceEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
+                $namespaceEndIndex = $tokens->getNextTokenOfKind($index, [';']);
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
                 if (null !== $classyName) {
+                    return;
+                }
+
+                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+                if ($prevToken->isGivenKind(T_NEW)) {
                     return;
                 }
 
@@ -90,7 +104,7 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
             $path = str_replace('\\', '/', $file->getRealPath());
             $dir = dirname($path);
 
-            if (isset($this->configuration['dir'])) {
+            if ('' !== $this->configuration['dir']) {
                 $dir = substr($dir, strlen(realpath($this->configuration['dir'])) + 1);
 
                 if (false === $dir) {
@@ -114,19 +128,17 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
             $filename = basename($path, '.php');
 
             if ($classyName !== $filename) {
-                $tokens[$classyIndex]->setContent($filename);
+                $tokens[$classyIndex] = new Token([T_STRING, $filename]);
             }
 
             if ($normNamespace !== $dir && strtolower($normNamespace) === strtolower($dir)) {
                 for ($i = $namespaceIndex; $i <= $namespaceEndIndex; ++$i) {
-                    $tokens[$i]->clear();
+                    $tokens->clearAt($i);
                 }
                 $namespace = substr($namespace, 0, -strlen($dir)).str_replace('/', '\\', $dir);
 
                 $newNamespace = Tokens::fromCode('<?php namespace '.$namespace.';');
-                $newNamespace[0]->clear();
-                $newNamespace[1]->clear();
-                $newNamespace[2]->clear();
+                $newNamespace->clearRange(0, 2);
                 $newNamespace->clearEmptyTokens();
 
                 $tokens->insertAt($namespaceIndex, $newNamespace);
@@ -137,7 +149,7 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
             $filename = substr($path, -strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
-                $tokens[$classyIndex]->setContent(str_replace('/', '_', $filename));
+                $tokens[$classyIndex] = new Token([T_STRING, str_replace('/', '_', $filename)]);
             }
         }
     }
@@ -145,31 +157,13 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurabl
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    protected function createConfigurationDefinition()
     {
-        return new FixerDefinition(
-            'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
-            array(
-                new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
-                    new \SplFileInfo(__FILE__)
-                ),
-                new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
-                    new \SplFileInfo(__FILE__),
-                    array('dir' => realpath(__DIR__.'/../..'))
-                ),
-            ),
-            null,
-            'One could set up `dir` where the code is placed under project location.',
-            self::$defaultConfiguration,
-            'This fixer may change you class name, which will break the code that is depended on old name.'
-        );
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('dir', 'The directory where the project code is placed.'))
+                ->setAllowedTypes(['string'])
+                ->setDefault('')
+                ->getOption(),
+        ]);
     }
 }

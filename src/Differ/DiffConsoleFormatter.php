@@ -61,8 +61,8 @@ final class DiffConsoleFormatter
                 function ($string) use ($isDecorated, $lineTemplate) {
                     if ($isDecorated) {
                         $string = preg_replace(
-                            array('/^(\+.*)/', '/^(\-.*)/', '/^(@.*)/'),
-                            array('<fg=green>\1</fg=green>', '<fg=red>\1</fg=red>', '<fg=cyan>\1</fg=cyan>'),
+                            ['/^(\+.*)/', '/^(\-.*)/', '/^(@.*)/'],
+                            ['<fg=green>\1</fg=green>', '<fg=red>\1</fg=red>', '<fg=cyan>\1</fg=cyan>'],
                             $string
                         );
                     }
@@ -79,7 +79,7 @@ final class DiffConsoleFormatter
                     "#\n\r|\n#",
                     $isDecorated
                         ? OutputFormatter::escape(rtrim($diff))
-                        : $diff
+                        : rtrim($diff)
                 )
             ))
         );

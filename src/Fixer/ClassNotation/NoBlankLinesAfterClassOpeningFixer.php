@@ -36,30 +36,11 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isClassy()) {
-                continue;
-            }
-
-            $startBraceIndex = $tokens->getNextTokenOfKind($index, array('{'));
-            if (!$tokens[$startBraceIndex + 1]->isWhitespace()) {
-                continue;
-            }
-
-            $this->fixWhitespace($tokens[$startBraceIndex + 1]);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'There should be no empty lines after class opening brace.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 final class Sample
@@ -71,23 +52,43 @@ final class Sample
 }
 '
                 ),
-            )
+            ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isClassy()) {
+                continue;
+            }
+
+            $startBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
+            if (!$tokens[$startBraceIndex + 1]->isWhitespace()) {
+                continue;
+            }
+
+            $this->fixWhitespace($tokens, $startBraceIndex + 1);
+        }
     }
 
     /**
      * Cleanup a whitespace token.
      *
-     * @param Token $token
+     * @param Tokens $tokens
+     * @param int    $index
      */
-    private function fixWhitespace(Token $token)
+    private function fixWhitespace(Tokens $tokens, $index)
     {
-        $content = $token->getContent();
+        $content = $tokens[$index]->getContent();
         // if there is more than one new line in the whitespace, then we need to fix it
         if (substr_count($content, "\n") > 1) {
             // the final bit of the whitespace must be the next statement's indentation
             $lines = Utils::splitLines($content);
-            $token->setContent($this->whitespacesConfig->getLineEnding().end($lines));
+            $tokens[$index] = new Token([T_WHITESPACE, $this->whitespacesConfig->getLineEnding().end($lines)]);
         }
     }
 }

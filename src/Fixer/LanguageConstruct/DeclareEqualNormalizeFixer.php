@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -24,13 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class DeclareEqualNormalizeFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class DeclareEqualNormalizeFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /**
-     * @var array<string, string>
-     */
-    private static $defaultConfiguration = array('space' => 'none');
-
     /**
      * @var string
      */
@@ -41,23 +37,37 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
      */
     public function configure(array $configuration = null)
     {
-        if (null === $configuration) {
-            $configuration = self::$defaultConfiguration;
-        } elseif (
-            1 !== count($configuration)
-            || !isset($configuration['space'])
-            || ('none' !== $configuration['space'] && 'single' !== $configuration['space'])
-        ) {
-            throw new InvalidFixerConfigurationException($this->getName(), 'Configuration must define "space" being "single" or "none".');
-        }
+        parent::configure($configuration);
 
-        $this->callback = 'none' === $configuration['space'] ? 'removeWhitespaceAroundToken' : 'ensureWhitespaceAroundToken';
+        $this->callback = 'none' === $this->configuration['space'] ? 'removeWhitespaceAroundToken' : 'ensureWhitespaceAroundToken';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Equal sign in declare statement should be surrounded by spaces or not following configuration.',
+            [
+                new CodeSample("<?php\ndeclare(ticks =  1);"),
+                new CodeSample("<?php\ndeclare(ticks=1);", ['space' => 'single']),
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DECLARE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $callback = $this->callback;
         for ($index = 0, $count = $tokens->count(); $index < $count - 6; ++$index) {
@@ -74,23 +84,14 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    protected function createConfigurationDefinition()
     {
-        return new FixerDefinition(
-            'Equal sign in declare statement should be surrounded by spaces or not following configuration.',
-            array(new CodeSample("<?php\ndeclare(ticks =  1);")),
-            null,
-            'Configure `[\'space\' => \'none\']` or `[\'space\' => \'single\']`.',
-            self::$defaultConfiguration
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DECLARE);
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('space', 'Spacing to apply around the equal sign.'))
+                ->setAllowedValues(['single', 'none'])
+                ->setDefault('none')
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -100,15 +101,19 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     private function ensureWhitespaceAroundToken(Tokens $tokens, $index)
     {
         if ($tokens[$index + 1]->isWhitespace()) {
-            $tokens[$index + 1]->setContent(' ');
+            if (' ' !== $tokens[$index + 1]->getContent()) {
+                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+            }
         } else {
-            $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
         }
 
         if ($tokens[$index - 1]->isWhitespace()) {
-            $tokens[$index - 1]->setContent(' ');
+            if (' ' !== $tokens[$index - 1]->getContent() && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
+            }
         } else {
-            $tokens->insertAt($index, new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
         }
     }
 
@@ -118,7 +123,10 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
      */
     private function removeWhitespaceAroundToken(Tokens $tokens, $index)
     {
-        $tokens->removeLeadingWhitespace($index);
+        if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isComment()) {
+            $tokens->removeLeadingWhitespace($index);
+        }
+
         $tokens->removeTrailingWhitespace($index);
     }
 }

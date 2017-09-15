@@ -17,6 +17,8 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
+ *
+ * @deprecated Will be removed in 3.0
  */
 interface ConfigurableFixerInterface extends FixerInterface
 {
@@ -32,7 +34,7 @@ interface ConfigurableFixerInterface extends FixerInterface
      * eg `php_unit_strict` fixer allows to configure which methods should be fixed.
      * Finally, some fixers need configuration to work, eg `header_comment`.
      *
-     * @param array|null $configuration configuration depends on Fixer
+     * @param null|array $configuration configuration depends on Fixer
      *
      * @throws InvalidFixerConfigurationException
      */

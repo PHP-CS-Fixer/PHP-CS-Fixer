@@ -26,18 +26,6 @@ final class NoShortBoolCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = count($tokens) - 1; $index > 1; --$index) {
-            if ($tokens[$index]->equals('!')) {
-                $index = $this->fixShortCast($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // should be run before the CastSpacesFixer
@@ -51,7 +39,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Short cast `bool` using double exclamation mark should not be used.',
-            array(new CodeSample("<?php\n\$a = !!\$b;"))
+            [new CodeSample("<?php\n\$a = !!\$b;")]
         );
     }
 
@@ -61,6 +49,18 @@ final class NoShortBoolCastFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound('!');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = count($tokens) - 1; $index > 1; --$index) {
+            if ($tokens[$index]->equals('!')) {
+                $index = $this->fixShortCast($tokens, $index);
+            }
+        }
     }
 
     /**
@@ -74,6 +74,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
         for ($i = $index - 1; $i > 1; --$i) {
             if ($tokens[$i]->equals('!')) {
                 $this->fixShortCastToBoolCast($tokens, $i, $index);
+
                 break;
             }
 
@@ -97,10 +98,10 @@ final class NoShortBoolCastFixer extends AbstractFixer
                 !$tokens[$start]->isComment()
                 && !($tokens[$start]->isWhitespace() && $tokens[$start - 1]->isComment())
             ) {
-                $tokens[$start]->clear();
+                $tokens->clearAt($start);
             }
         }
 
-        $tokens->insertAt($start, new Token(array(T_BOOL_CAST, '(bool)')));
+        $tokens->insertAt($start, new Token([T_BOOL_CAST, '(bool)']));
     }
 }

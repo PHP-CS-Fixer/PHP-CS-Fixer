@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer
  */
 final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
 {
@@ -65,16 +67,38 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveCommentsAlone()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideCommentCases
+     */
+    public function testCommentsCases($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCommentCases()
+    {
+        return [
+            [
+                '<?php
 
 $withComments[0] // here is a comment
     [1] // and here is another
-    [2] = 3;
-EOF;
-        $this->doTest($expected);
+    [2] = 3;',
+            ],
+            [
+                '<?php
+$a = $b[# z
+ 1#z
+ ];',
+                '<?php
+$a = $b[ # z
+ 1#z
+ ];',
+            ],
+        ];
     }
 
     public function testLeaveComplexString()
@@ -99,20 +123,20 @@ EOF;
 
     public function provideOutsideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 $a = $b[0]    ;',
                 '<?php
 $a = $b   [0]    ;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $a = array($b[0]     ,   $b[0]  );',
                 '<?php
 $a = array($b      [0]     ,   $b [0]  );',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $withComments[0] // here is a comment
     [1] // and here is another
@@ -121,152 +145,166 @@ $withComments[0] // here is a comment
 $withComments [0] // here is a comment
     [1] // and here is another
     [2] [3] = 4;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $c = SOME_CONST[0][1][2];',
                 '<?php
 $c = SOME_CONST [0] [1]   [2];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $f = someFunc()[0][1][2];',
                 '<?php
 $f = someFunc() [0] [1]   [2];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foo[][0][1][2] = 3;',
                 '<?php
 $foo [] [0] [1]   [2] = 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foo[0][1][2] = 3;',
                 '<?php
 $foo [0] [1]   [2] = 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $bar = $foo[0][1][2];',
                 '<?php
 $bar = $foo [0] [1]   [2];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $baz[0][1][2] = 3;',
                 '<?php
 $baz [0]
      [1]
      [2] = 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foo{0}{1}{2} = 3;',
                 '<?php
 $foo {0} {1}   {2} = 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $foobar = $foo{0}[1]{2};',
                 '<?php
 $foobar = $foo {0} [1]   {2};',
-            ),
-        );
+            ],
+        ];
     }
 
     public function provideInsideCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 $foo = array(1, 2, 3);
 $var = $foo[1];',
                 '<?php
 $foo = array(1, 2, 3);
 $var = $foo[ 1 ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $arr = [2,   2 , ];
 $var = $arr[0];',
                 '<?php
 $arr = [2,   2 , ];
 $var = $arr[ 0 ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $arr[2] = 3;',
                 '<?php
 $arr[ 2    ] = 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $arr[] = 3;',
                 '<?php
 $arr[  ] = 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $arr[]["some_offset"][] = 3;',
                 '<?php
 $arr[  ][ "some_offset"   ][     ] = 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $arr[]["some  offset with  spaces"][] = 3;',
                 '<?php
 $arr[  ][ "some  offset with  spaces"   ][     ] = 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = $arr[0];',
                 '<?php
 $var = $arr[     0   ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = $arr[0][0];',
                 '<?php
 $var = $arr[    0        ][ 0  ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = $arr[$a[$b]];',
                 '<?php
 $var = $arr[    $a    [ $b    ]  ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = $arr[$a[$b]];',
                 '<?php
 $var = $arr[	$a	[	$b	]	];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = $arr[0][
      0];',
                 '<?php
 $var = $arr[0][
      0 ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = $arr[0][0
          ];',
                 '<?php
 $var = $arr[0][     0
          ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $var = $arr[0]{0
          };',
                 '<?php
 $var = $arr[0]{     0
          };',
-            ),
-        );
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @group legacy
+     * @dataProvider provideConfigurationCases
+     * @expectedDeprecation Passing "positions" at the root of the configuration is deprecated and will not be supported in 3.0, use "positions" => array(...) option instead.
+     */
+    public function testLegacyFixWithConfiguration(array $configuration, $expected, $input)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -277,15 +315,15 @@ $var = $arr[0]{     0
      */
     public function testFixWithConfiguration(array $configuration, $expected, $input)
     {
-        $this->fixer->configure($configuration);
+        $this->fixer->configure(['positions' => $configuration]);
         $this->doTest($expected, $input);
     }
 
     public function provideConfigurationCases()
     {
-        return array(
-            array(
-                array('inside', 'outside'),
+        return [
+            [
+                ['inside', 'outside'],
                 <<<'EOT'
 <?php
 $arr1[]["some_offset"][]{"foo"} = 3;
@@ -296,9 +334,9 @@ EOT
 $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
 EOT
                 ,
-            ),
-            array(
-                array('inside'),
+            ],
+            [
+                ['inside'],
                 <<<'EOT'
 <?php
 $arr1[]  ["some_offset"] [] {"foo"} = 3;
@@ -309,9 +347,9 @@ EOT
 $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
 EOT
                 ,
-            ),
-            array(
-                array('outside'),
+            ],
+            [
+                ['outside'],
                 <<<'EOT'
 <?php
 $arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
@@ -322,17 +360,54 @@ EOT
 $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
 EOT
                 ,
-            ),
-        );
+            ],
+        ];
     }
 
     public function testWrongConfig()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[no_spaces_around_offset\] Unknown configuration option "foo"\.$/'
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/'
         );
 
-        $this->fixer->configure(array('foo'));
+        $this->fixer->configure(['positions' => ['foo']]);
+    }
+
+    /**
+     * @param array  $configuration
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider providePHP71Cases
+     * @requires PHP 7.1
+     */
+    public function testPHP71(array $configuration, $expected, $input)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP71Cases()
+    {
+        return [
+            'Config "default".' => [
+                ['positions' => ['inside', 'outside']],
+                '<?php [ $a ] = $a;
+if ($controllerName = $request->attributes->get(1)) {
+    return false;
+}
+[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+$a = $b[0];
+',
+                '<?php [ $a ] = $a;
+if ($controllerName = $request->attributes->get(1)) {
+    return false;
+}
+[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+$a = $b   [0];
+',
+            ],
+        ];
     }
 }

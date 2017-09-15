@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -26,30 +27,11 @@ final class PhpdocTrimFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
-
-            $content = $token->getContent();
-            $content = $this->fixStart($content);
-            // we need re-parse the docblock after fixing the start before
-            // fixing the end in order for the lines to be correctly indexed
-            $content = $this->fixEnd($content);
-            $token->setContent($content);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Phpdocs should start and end with content, excluding the very first and last line of the docblocks.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 /**
  *
  * Foo must be final class.
@@ -57,7 +39,7 @@ final class PhpdocTrimFixer extends AbstractFixer
  *
  */
 final class Foo {}
-'))
+')]
         );
     }
 
@@ -80,6 +62,25 @@ final class Foo {}
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $content = $token->getContent();
+            $content = $this->fixStart($content);
+            // we need re-parse the docblock after fixing the start before
+            // fixing the end in order for the lines to be correctly indexed
+            $content = $this->fixEnd($content);
+            $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
+        }
     }
 
     /**

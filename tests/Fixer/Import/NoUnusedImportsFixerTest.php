@@ -12,10 +12,12 @@
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
  */
 final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 {
@@ -130,11 +132,14 @@ namespace Foo\Bar\FooBar;
 
 use Foo\Bar\FooBar\Foo as Fooz;
 use Foo\Bar\FooBar\Aaa\Bbb;
+use XYZ\FQCN_XYZ;
 
 $a = new Baz();
 $b = new Fooz();
 $c = new Bar\Fooz();
 $d = new Bbb();
+$e = new FQCN_Babo();
+$f = new FQCN_XYZ();
 EOF;
 
         $input = <<<'EOF'
@@ -146,11 +151,31 @@ use Foo\Bar\FooBar\Baz;
 use Foo\Bar\FooBar\Foo as Fooz;
 use Foo\Bar\FooBar\Bar;
 use Foo\Bar\FooBar\Aaa\Bbb;
+use \Foo\Bar\FooBar\FQCN_Babo;
+use XYZ\FQCN_XYZ;
 
 $a = new Baz();
 $b = new Fooz();
 $c = new Bar\Fooz();
 $d = new Bbb();
+$e = new FQCN_Babo();
+$f = new FQCN_XYZ();
+EOF;
+
+        $this->doTest($expected, $input);
+
+        $expected = <<<'EOF'
+<?php namespace App\Http\Controllers;
+
+
+EOF;
+
+        $input = <<<'EOF'
+<?php namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 EOF;
 
         $this->doTest($expected, $input);
@@ -381,6 +406,26 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testPropertyName()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+$foo->bar = null;
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+$foo->bar = null;
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testNamespacePart()
     {
         $expected = <<<'EOF'
@@ -405,14 +450,14 @@ EOF;
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider providerUseInString
+     * @dataProvider provideFixUseInStringCases
      */
-    public function testUseInString($expected, $input = null)
+    public function testFixUseInString($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function providerUseInString()
+    public function provideFixUseInStringCases()
     {
         $expected1 = <<<'EOF'
 $x=<<<'EOA'
@@ -435,11 +480,11 @@ use b;
 ";
 EOF;
 
-        return array(
-            array($expected1),
-            array($expected2),
-            array($expected3),
-        );
+        return [
+            [$expected1],
+            [$expected2],
+            [$expected3],
+        ];
     }
 
     public function testUseAsLastStatement()
@@ -520,23 +565,23 @@ EOF;
 
     public function provideCloseTagCases()
     {
-        return array(
-            array(
+        return [
+            [
 '<?php
 ?>inline content<?php ?>',
 '<?php
      use A\AA;
      use B\C?>inline content<?php use A\D; use E\F ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php ?>',
                 '<?php use A\B;?>',
-            ),
-            array(
+            ],
+            [
                 '<?php ?>',
                 '<?php use A\B?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -555,5 +600,87 @@ new CLassD();
 echo fn_a();
 EOF;
         $this->doTest($expected);
+    }
+
+    public function testFixWithComments()
+    {
+        $input = '<?php
+use#
+\#
+Exception#
+#
+;
+echo 1;';
+
+        $expected = '<?php
+echo 1;';
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testWithSameNamespaceImportAndUnusedImport()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Bar\C;
+use Foo\A;
+use Foo\Bar\B;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testWithSameNamespaceImportAndUnusedImportAfterNamespaceStatement()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Foo\Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Foo\A;
+use Foo\Bar\B;
+use Foo\Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $this->doTest($expected, $input);
     }
 }

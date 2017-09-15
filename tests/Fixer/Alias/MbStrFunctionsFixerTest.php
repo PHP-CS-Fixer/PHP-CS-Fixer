@@ -12,12 +12,15 @@
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ * @covers \PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer
  */
 final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 {
@@ -25,39 +28,39 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideExamples
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples()
+    public function provideFixCases()
     {
-        return array(
-            array('<?php $x = "strlen";'),
-            array('<?php $x = Foo::strlen("bar");'),
-            array('<?php $x = new strlen("bar");'),
-            array('<?php $x = new \strlen("bar");'),
-            array('<?php $x = new Foo\strlen("bar");'),
-            array('<?php $x = Foo\strlen("bar");'),
-            array('<?php $x = strlen::call("bar");'),
-            array('<?php $x = $foo->strlen("bar");'),
-            array('<?php $x = strlen();'), // number of arguments mismatch
-            array('<?php $x = strlen($a, $b);'), // number of arguments mismatch
-            array('<?php $x = mb_strlen("bar");', '<?php $x = strlen("bar");'),
-            array('<?php $x = \mb_strlen("bar");', '<?php $x = \strlen("bar");'),
-            array('<?php $x = mb_strtolower(mb_strstr("bar", "a"));', '<?php $x = strtolower(strstr("bar", "a"));'),
-            array('<?php $x = mb_strtolower( \mb_strstr ("bar", "a"));', '<?php $x = strtolower( \strstr ("bar", "a"));'),
-            array('<?php $x = mb_substr("bar", 2, 1);', '<?php $x = substr("bar", 2, 1);'),
-            array(
+        return [
+            ['<?php $x = "strlen";'],
+            ['<?php $x = Foo::strlen("bar");'],
+            ['<?php $x = new strlen("bar");'],
+            ['<?php $x = new \strlen("bar");'],
+            ['<?php $x = new Foo\strlen("bar");'],
+            ['<?php $x = Foo\strlen("bar");'],
+            ['<?php $x = strlen::call("bar");'],
+            ['<?php $x = $foo->strlen("bar");'],
+            ['<?php $x = strlen();'], // number of arguments mismatch
+            ['<?php $x = strlen($a, $b);'], // number of arguments mismatch
+            ['<?php $x = mb_strlen("bar");', '<?php $x = strlen("bar");'],
+            ['<?php $x = \mb_strlen("bar");', '<?php $x = \strlen("bar");'],
+            ['<?php $x = mb_strtolower(mb_strstr("bar", "a"));', '<?php $x = strtolower(strstr("bar", "a"));'],
+            ['<?php $x = mb_strtolower( \mb_strstr ("bar", "a"));', '<?php $x = strtolower( \strstr ("bar", "a"));'],
+            ['<?php $x = mb_substr("bar", 2, 1);', '<?php $x = substr("bar", 2, 1);'],
+            [
                 '<?php
                 interface Test
                 {
                     public function &strlen($a);
                     public function strtolower($a);
                 }',
-            ),
-        );
+            ],
+        ];
     }
 }

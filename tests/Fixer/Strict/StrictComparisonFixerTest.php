@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Strict;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Strict\StrictComparisonFixer
  */
 final class StrictComparisonFixerTest extends AbstractFixerTestCase
 {
@@ -34,11 +36,11 @@ final class StrictComparisonFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        return array(
-            array('<?php $a === $b;', '<?php $a == $b;'),
-            array('<?php $a !== $b;', '<?php $a != $b;'),
-            array('<?php $a !== $b;', '<?php $a <> $b;'),
-            array('<?php echo "$a === $b";'),
-        );
+        return [
+            ['<?php $a === $b;', '<?php $a == $b;'],
+            ['<?php $a !== $b;', '<?php $a != $b;'],
+            ['<?php $a !== $b;', '<?php $a <> $b;'],
+            ['<?php echo "$a === $b";'],
+        ];
     }
 }

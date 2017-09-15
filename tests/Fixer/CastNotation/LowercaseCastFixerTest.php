@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\CastNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
  */
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {
@@ -25,37 +27,37 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        $cases = array();
-        foreach (array('boolean', 'bool', 'integer', 'int', 'double', 'float', 'real', 'float', 'string', 'array', 'object', 'unset', 'binary') as $from) {
+        $cases = [];
+        foreach (['boolean', 'bool', 'integer', 'int', 'double', 'float', 'real', 'float', 'string', 'array', 'object', 'unset', 'binary'] as $from) {
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b= (%s)$d;', $from),
                     sprintf('<?php $b= (%s)$d;', strtoupper($from)),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b=( %s) $d;', $from),
                     sprintf('<?php $b=( %s) $d;', ucfirst($from)),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b=(%s ) $d;', $from),
                     sprintf('<?php $b=(%s ) $d;', strtoupper($from)),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b=(  %s  ) $d;', $from),
                     sprintf('<?php $b=(  %s  ) $d;', ucfirst($from)),
-                );
+                ];
         }
 
         return $cases;

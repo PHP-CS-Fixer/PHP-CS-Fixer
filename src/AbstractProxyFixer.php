@@ -45,6 +45,14 @@ abstract class AbstractProxyFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return $this->proxyFixer->isRisky();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         return $this->proxyFixer->getPriority();
@@ -53,7 +61,24 @@ abstract class AbstractProxyFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function supports(\SplFileInfo $file)
+    {
+        return $this->proxyFixer->supports($file);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config)
+    {
+        parent::setWhitespacesConfig($config);
+        $this->proxyFixer->setWhitespacesConfig($config);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->proxyFixer->fix($file, $tokens);
     }

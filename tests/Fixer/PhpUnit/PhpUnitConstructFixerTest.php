@@ -12,23 +12,42 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer
  */
 final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfiguration()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @group legacy
+     * @dataProvider provideTestFixCases
+     * @expectedDeprecation Passing "assertions" at the root of the configuration is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
+     */
+    public function testLegacyFix($expected, $input = null)
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            'Configured method "MyTest" cannot be fixed by this fixer.'
-        );
+        $this->fixer->configure([
+            'assertEquals',
+            'assertSame',
+            'assertNotEquals',
+            'assertNotSame',
+        ]);
+        $this->doTest($expected, $input);
 
-        $this->fixer->configure(array('MyTest'));
+        foreach (['assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame'] as $method) {
+            $this->fixer->configure([$method]);
+            $this->doTest(
+                $expected,
+                $input && false !== strpos($input, $method) ? $input : null
+            );
+        }
     }
 
     /**
@@ -39,19 +58,16 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure(['assertions' => [
             'assertEquals',
             'assertSame',
             'assertNotEquals',
             'assertNotSame',
-        ));
+        ]]);
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array());
-        $this->doTest($input ?: $expected, null);
-
-        foreach (array('assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame') as $method) {
-            $this->fixer->configure(array($method));
+        foreach (['assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame'] as $method) {
+            $this->fixer->configure(['assertions' => [$method]]);
             $this->doTest(
                 $expected,
                 $input && false !== strpos($input, $method) ? $input : null
@@ -61,10 +77,20 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        $cases = array(
-            array('<?php $sth->assertSame(true, $foo);'),
-            array('<?php $this->assertSame($b, null);'),
-            array(
+        $cases = [
+            ['<?php $sth->assertSame(true, $foo);'],
+            ['<?php $this->assertSame($b, null);'],
+            [
+                '<?php $this->assertNull(/*bar*/ $a);',
+                '<?php $this->assertSame(null /*foo*/, /*bar*/ $a);',
+            ],
+            [
+                '<?php $this->assertSame(null === $eventException ? $exception : $eventException, $event->getException());',
+            ],
+            [
+                '<?php $this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
+            ],
+            [
                 '<?php
     $this->assertTrue(
         $a,
@@ -76,18 +102,22 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $a,
         "foo" . $bar
     );',
-            ),
-            array(
-                '<?php $this->assertNull(/*bar*/ $a);',
-                '<?php $this->assertSame(null /*foo*/, /*bar*/ $a);',
-            ),
-            array(
-                '<?php $this->assertSame(null === $eventException ? $exception : $eventException, $event->getException());',
-            ),
-            array(
-                '<?php $this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
-            ),
-        );
+            ],
+            [
+                '<?php
+    $this->assertTrue(#
+        #
+        $a,#
+        "foo" . $bar#
+    );',
+                '<?php
+    $this->assertSame(#
+        true,#
+        $a,#
+        "foo" . $bar#
+    );',
+            ],
+        ];
 
         return array_merge(
             $cases,
@@ -98,24 +128,24 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfig()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[php_unit_construct] Configured method "__TEST__" cannot be fixed by this fixer.'
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/'
         );
 
-        $this->fixer->configure(array('__TEST__'));
+        $this->fixer->configure(['assertions' => ['__TEST__']]);
     }
 
     private function generateCases($expectedTemplate, $inputTemplate)
     {
-        $cases = array();
-        $functionTypes = array('Same' => true, 'NotSame' => false, 'Equals' => true, 'NotEquals' => false);
-        foreach (array('true', 'false', 'null') as $type) {
+        $cases = [];
+        $functionTypes = ['Same' => true, 'NotSame' => false, 'Equals' => true, 'NotEquals' => false];
+        foreach (['true', 'false', 'null'] as $type) {
             foreach ($functionTypes as $method => $positive) {
-                $cases[] = array(
+                $cases[] = [
                     sprintf($expectedTemplate, $positive ? '' : 'Not', ucfirst($type), $method, $type),
                     sprintf($inputTemplate, $method, $type, $method, $type),
-                );
+                ];
             }
         }
 

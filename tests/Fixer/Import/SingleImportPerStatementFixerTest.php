@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -20,6 +20,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer
  */
 final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 {
@@ -27,17 +29,17 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     /**/use Foo;
 use FooB;
@@ -45,8 +47,8 @@ use FooB;
                 '<?php
                     /**/use Foo,FooB;
                 ',
-            ),
-            array(
+            ],
+            [
                 <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
@@ -80,8 +82,8 @@ use FooF,
 use FooZ;
 
 EOF
-            ),
-            array(
+            ],
+            [
                 <<<'EOF'
 <?php
 
@@ -143,8 +145,8 @@ namespace Boo {
 }
 
 EOF
-            ),
-            array(
+            ],
+            [
                 '<?php
                     use FooA;
                     use FooB;
@@ -152,13 +154,13 @@ EOF
                 '<?php
                     use FooA, FooB;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php use FooA;
 use FooB?>',
                 '<?php use FooA, FooB?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use B;
 use C;
@@ -172,8 +174,8 @@ use B,C;
     use E,F;
         use G,H;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use B;
 /*
@@ -184,8 +186,8 @@ use B,
 /*
 */C;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use A;
 use B;
@@ -199,20 +201,20 @@ use A,B,
 #,{} use ; :
 /*,{} use ; :*/
 C  ; ',
-            ),
-            array(
+            ],
+            [
                 '<?php use Z ;
 use X ?><?php new X(); // run before white space around semicolon',
                 '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function test70($expected, $input = null)
@@ -220,10 +222,10 @@ use X ?><?php new X(); // run before white space around semicolon',
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use some\a\ClassA;
 use some\a\ClassB;
@@ -248,7 +250,44 @@ ConstC};
 use A\{B};
 use D\{E,F};
                 ',
-            ),
+            ],
+            [
+                '<?php use FooA#
+;#
+#
+use FooB;',
+                '<?php use FooA#
+,#
+#
+FooB;',
+            ],
+            [
+                '<?php use some\b\ClassB;
+use function some\b\CC as C;
+use function some\b\D;
+use const some\b\E;
+use function some\b\A\B;',
+                '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
+            ],
+        ];
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testMessyComments()
+    {
+        $this->doTest(
+            '<?php
+use D\/*1*//*2*//*3*/E;
+use D\/*4*//*5*//*6*//*7*//*8*//*9*/F/*10*//*11*//*12*/;
+',
+            '<?php
+use D\{
+/*1*//*2*//*3*/E,/*4*//*5*//*6*/
+/*7*//*8*//*9*/F/*10*//*11*//*12*/
+};
+'
         );
     }
 
@@ -267,11 +306,41 @@ use D\{E,F};
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n    use FooA;\r\n    use FooB;",
                 "<?php\r\n    use FooA, FooB;",
-            ),
-        );
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix72Cases
+     * @requires PHP 7.2
+     */
+    public function testFix72($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix72Cases()
+    {
+        return [
+            [
+                '<?php
+use D\E;
+use D\F;
+use G\H;
+use G\I/*1*//*2*/;
+',
+                '<?php
+use D\{E,F,};
+use G\{H,I/*1*/,/*2*/};
+',
+            ],
+        ];
     }
 }

@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Basic;
 use PhpCsFixer\AbstractPsrAutoloadingFixer;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -28,7 +29,28 @@ final class Psr4Fixer extends AbstractPsrAutoloadingFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Class names should match the file name.',
+            [
+                new FileSpecificCodeSample(
+                    '<?php
+namespace PhpCsFixer\FIXER\Basic;
+class InvalidName {}
+',
+                    new \SplFileInfo(__FILE__)
+                ),
+            ],
+            null,
+            'This fixer may change you class name, which will break the code that is depended on old name.'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $namespace = false;
         $classyName = null;
@@ -46,6 +68,11 @@ final class Psr4Fixer extends AbstractPsrAutoloadingFixer
                     return;
                 }
 
+                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+                if ($prevToken->isGivenKind(T_NEW)) {
+                    return;
+                }
+
                 $classyIndex = $tokens->getNextMeaningfulToken($index);
                 $classyName = $tokens[$classyIndex]->getContent();
             }
@@ -59,38 +86,15 @@ final class Psr4Fixer extends AbstractPsrAutoloadingFixer
             $filename = basename(str_replace('\\', '/', $file->getRealPath()), '.php');
 
             if ($classyName !== $filename) {
-                $tokens[$classyIndex]->setContent($filename);
+                $tokens[$classyIndex] = new Token([T_STRING, $filename]);
             }
         } else {
             $normClass = str_replace('_', '/', $classyName);
             $filename = substr(str_replace('\\', '/', $file->getRealPath()), -strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
-                $tokens[$classyIndex]->setContent(str_replace('/', '_', $filename));
+                $tokens[$classyIndex] = new Token([T_STRING, str_replace('/', '_', $filename)]);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Class names should match the file name.',
-            array(
-                new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
-                    new \SplFileInfo(__FILE__)
-                ),
-            ),
-            null,
-            null,
-            null,
-            'This fixer may change you class name, which will break the code that is depended on old name.'
-        );
     }
 }

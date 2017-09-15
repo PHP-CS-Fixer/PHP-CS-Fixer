@@ -40,7 +40,43 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.',
+            [
+                new CodeSample(
+                    '<?php
+namespace Foo;
+
+use Bar;
+use Baz;
+final class Example
+{
+}
+'
+                ),
+                new CodeSample(
+                    '<?php
+namespace Foo;
+
+use Bar;
+use Baz;
+
+
+final class Example
+{
+}
+'
+                ),
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $ending = $this->whitespacesConfig->getLineEnding();
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -55,7 +91,7 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$index - 1]);
             }
 
-            $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG))); // Handle insert index for inline T_COMMENT with whitespace after semicolon
+            $semicolonIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]); // Handle insert index for inline T_COMMENT with whitespace after semicolon
             $insertIndex = $semicolonIndex;
 
             if ($tokens[$semicolonIndex]->isGivenKind(T_CLOSE_TAG)) {
@@ -67,7 +103,7 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
             }
 
             if ($semicolonIndex === count($tokens) - 1) {
-                $tokens->insertAt($insertIndex + 1, new Token(array(T_WHITESPACE, $ending.$ending.$indent)));
+                $tokens->insertAt($insertIndex + 1, new Token([T_WHITESPACE, $ending.$ending.$indent]));
             } else {
                 $newline = $ending;
                 $tokens[$semicolonIndex]->isGivenKind(T_CLOSE_TAG) ? --$insertIndex : ++$insertIndex;
@@ -90,51 +126,15 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
                     $nextMeaningfulAfterUseIndex = $tokens->getNextMeaningfulToken($insertIndex);
                     if (null !== $nextMeaningfulAfterUseIndex && $tokens[$nextMeaningfulAfterUseIndex]->isGivenKind(T_USE)) {
                         if (substr_count($nextToken->getContent(), "\n") < 2) {
-                            $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
+                            $tokens[$insertIndex] = new Token([T_WHITESPACE, $newline.$indent.ltrim($nextToken->getContent())]);
                         }
                     } else {
-                        $nextToken->setContent($newline.$indent.ltrim($nextToken->getContent()));
+                        $tokens[$insertIndex] = new Token([T_WHITESPACE, $newline.$indent.ltrim($nextToken->getContent())]);
                     }
                 } else {
-                    $tokens->insertAt($insertIndex, new Token(array(T_WHITESPACE, $newline.$indent)));
+                    $tokens->insertAt($insertIndex, new Token([T_WHITESPACE, $newline.$indent]));
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.',
-            array(
-                new CodeSample(
-                    '<?php
-namespace Foo;
-
-use Bar;
-use Baz;
-final class Example
-{
-}
-'
-                ),
-                new CodeSample(
-                    '<?php
-namespace Foo;
-
-use Bar;
-use Baz;
-
-
-final class Example
-{
-}
-'
-                ),
-            )
-        );
     }
 }

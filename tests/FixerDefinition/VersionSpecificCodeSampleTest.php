@@ -14,21 +14,24 @@ namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\VersionSpecificationInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerDefinition\VersionSpecificCodeSample
  */
-final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
+final class VersionSpecificCodeSampleTest extends TestCase
 {
     public function testConstructorSetsValues()
     {
         $code = '<php echo $foo;';
-        $configuration = array(
+        $configuration = [
             'foo' => 'bar',
-        );
+        ];
 
         $codeSample = new VersionSpecificCodeSample(
             $code,
@@ -51,7 +54,7 @@ final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider providerIsSuitableForVersionUsesVersionSpecification
+     * @dataProvider provideIsSuitableForVersionUsesVersionSpecificationCases
      *
      * @param int  $version
      * @param bool $isSatisfied
@@ -75,12 +78,12 @@ final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsSuitableForVersionUsesVersionSpecification()
+    public function provideIsSuitableForVersionUsesVersionSpecificationCases()
     {
-        return array(
-            'is-satisfied' => array(PHP_VERSION_ID, true),
-            'is-not-satisfied' => array(PHP_VERSION_ID, false),
-        );
+        return [
+            'is-satisfied' => [PHP_VERSION_ID, true],
+            'is-not-satisfied' => [PHP_VERSION_ID, false],
+        ];
     }
 
     /**
@@ -88,6 +91,6 @@ final class VersionSpecificCodeSampleTest extends \PHPUnit_Framework_TestCase
      */
     private function createVersionSpecificationMock()
     {
-        return $this->prophesize('PhpCsFixer\FixerDefinition\VersionSpecificationInterface');
+        return $this->prophesize(\PhpCsFixer\FixerDefinition\VersionSpecificationInterface::class);
     }
 }

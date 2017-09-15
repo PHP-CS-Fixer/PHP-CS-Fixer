@@ -23,7 +23,7 @@ interface ConfigInterface
     /**
      * Returns the path to the cache file.
      *
-     * @return string|null Returns null if not using cache
+     * @return null|string Returns null if not using cache
      */
     public function getCacheFile();
 
@@ -37,7 +37,7 @@ interface ConfigInterface
     /**
      * Returns files to scan.
      *
-     * @return iterable|\Traversable|string[]
+     * @return iterable|string[]|\Traversable
      */
     public function getFinder();
 
@@ -75,7 +75,7 @@ interface ConfigInterface
     /**
      * Get configured PHP executable, if any.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getPhpExecutable();
 
@@ -107,7 +107,7 @@ interface ConfigInterface
      *
      * Name of custom fixer should follow `VendorName/rule_name` convention.
      *
-     * @param iterable|\Traversable|FixerInterface[] $fixers
+     * @param FixerInterface[]|iterable|\Traversable $fixers
      */
     public function registerCustomFixers($fixers);
 
@@ -121,7 +121,7 @@ interface ConfigInterface
     public function setCacheFile($cacheFile);
 
     /**
-     * @param iterable|\Traversable|string[] $finder
+     * @param iterable|string[]|\Traversable $finder
      *
      * @return self
      */
@@ -158,7 +158,7 @@ interface ConfigInterface
     /**
      * Set PHP executable.
      *
-     * @param string|null $phpExecutable
+     * @param null|string $phpExecutable
      *
      * @return self
      */

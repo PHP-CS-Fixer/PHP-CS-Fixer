@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\NoTrailingCommaInSinglelineArrayFixer
  */
 final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestCase
 {
@@ -25,27 +27,27 @@ final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestC
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideExamples
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples()
+    public function provideFixCases()
     {
-        return array(
-            array('<?php $x = array();'),
-            array('<?php $x = array("foo");'),
-            array(
+        return [
+            ['<?php $x = array();'],
+            ['<?php $x = array("foo");'],
+            [
                 '<?php $x = array("foo");',
                 '<?php $x = array("foo", );',
-            ),
-            array("<?php \$x = array(\n'foo', \n);"),
-            array("<?php \$x = array('foo', \n);"),
-            array("<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"),
-            array("<?php \$x = array(array('foo',\n), \n);"),
-            array(
+            ],
+            ["<?php \$x = array(\n'foo', \n);"],
+            ["<?php \$x = array('foo', \n);"],
+            ["<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"],
+            ["<?php \$x = array(array('foo',\n), \n);"],
+            [
                 '<?php
     $test = array("foo", <<<TWIG
         foo
@@ -56,16 +58,16 @@ TWIG
         foo
 TWIG
         , $twig, );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = array(
         "foo", <<<TWIG
         foo
 TWIG
         , $twig, );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = array("foo", <<<\'TWIG\'
         foo
@@ -76,27 +78,27 @@ TWIG
         foo
 TWIG
         , $twig, );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = array(
         "foo", <<<\'TWIG\'
         foo
 TWIG
         , $twig, );',
-            ),
+            ],
 
             // Short syntax
-            array('<?php $x = array([]);'),
-            array('<?php $x = [[]];'),
-            array('<?php $x = ["foo"];', '<?php $x = ["foo",];'),
-            array('<?php $x = bar(["foo"]);', '<?php $x = bar(["foo",]);'),
-            array("<?php \$x = bar([['foo'],\n]);"),
-            array("<?php \$x = ['foo', \n];"),
-            array('<?php $x = array([]);', '<?php $x = array([],);'),
-            array('<?php $x = [[]];', '<?php $x = [[],];'),
-            array('<?php $x = [$y[""]];', '<?php $x = [$y[""],];'),
-            array(
+            ['<?php $x = array([]);'],
+            ['<?php $x = [[]];'],
+            ['<?php $x = ["foo"];', '<?php $x = ["foo",];'],
+            ['<?php $x = bar(["foo"]);', '<?php $x = bar(["foo",]);'],
+            ["<?php \$x = bar([['foo'],\n]);"],
+            ["<?php \$x = ['foo', \n];"],
+            ['<?php $x = array([]);', '<?php $x = array([],);'],
+            ['<?php $x = [[]];', '<?php $x = [[],];'],
+            ['<?php $x = [$y[""]];', '<?php $x = [$y[""],];'],
+            [
                 '<?php
     $test = ["foo", <<<TWIG
         foo
@@ -107,16 +109,16 @@ TWIG
         foo
 TWIG
         , $twig, ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = [
         "foo", <<<TWIG
         foo
 TWIG
         , $twig, ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = ["foo", <<<\'TWIG\'
         foo
@@ -127,15 +129,15 @@ TWIG
         foo
 TWIG
         , $twig, ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = [
         "foo", <<<\'TWIG\'
         foo
 TWIG
         , $twig, ];',
-            ),
-        );
+            ],
+        ];
     }
 }

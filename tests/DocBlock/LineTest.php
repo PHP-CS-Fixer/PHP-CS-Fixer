@@ -14,13 +14,16 @@ namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\DocBlock\Line
  */
-final class LineTest extends \PHPUnit_Framework_TestCase
+final class LineTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.
@@ -48,7 +51,7 @@ final class LineTest extends \PHPUnit_Framework_TestCase
      *
      * @var string[]
      */
-    private static $content = array(
+    private static $content = [
         "/**\n",
         "     * Test docblock.\n",
         "     *\n",
@@ -64,14 +67,14 @@ final class LineTest extends \PHPUnit_Framework_TestCase
         "     *\n",
         "     * @return void\n",
         '     */',
-    );
+    ];
 
     /**
      * This represents the if each line is "useful".
      *
      * @var bool[]
      */
-    private static $useful = array(
+    private static $useful = [
         false,
         true,
         false,
@@ -87,14 +90,14 @@ final class LineTest extends \PHPUnit_Framework_TestCase
         false,
         true,
         false,
-    );
+    ];
 
     /**
      * This represents the if each line "contains a tag".
      *
      * @var bool[]
      */
-    private static $tag = array(
+    private static $tag = [
         false,
         false,
         false,
@@ -110,13 +113,13 @@ final class LineTest extends \PHPUnit_Framework_TestCase
         false,
         true,
         false,
-    );
+    ];
 
     /**
      * @param int    $pos
      * @param string $content
      *
-     * @dataProvider provideLines
+     * @dataProvider provideLinesCases
      */
     public function testPosAndContent($pos, $content)
     {
@@ -129,34 +132,23 @@ final class LineTest extends \PHPUnit_Framework_TestCase
     /**
      * @param int $pos
      *
-     * @dataProvider provideLines
+     * @dataProvider provideLinesCases
      */
-    public function testStarOrEndPos($pos)
+    public function testStartOrEndPos($pos)
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        switch ($pos) {
-            case 0:
-                $this->assertTrue($line->isTheStart());
-                $this->assertFalse($line->isTheEnd());
-                break;
-            case 14:
-                $this->assertFalse($line->isTheStart());
-                $this->assertTrue($line->isTheEnd());
-                break;
-            default:
-                $this->assertFalse($line->isTheStart());
-                $this->assertFalse($line->isTheEnd());
-        }
+        $this->assertSame(0 === $pos, $line->isTheStart());
+        $this->assertSame(14 === $pos, $line->isTheEnd());
     }
 
-    public function provideLines()
+    public function provideLinesCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$content as $index => $content) {
-            $cases[] = array($index, $content);
+            $cases[] = [$index, $content];
         }
 
         return $cases;
@@ -166,7 +158,7 @@ final class LineTest extends \PHPUnit_Framework_TestCase
      * @param int  $pos
      * @param bool $useful
      *
-     * @dataProvider provideLinesWithUseful
+     * @dataProvider provideLinesWithUsefulCases
      */
     public function testUseful($pos, $useful)
     {
@@ -176,12 +168,12 @@ final class LineTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($useful, $line->containsUsefulContent());
     }
 
-    public function provideLinesWithUseful()
+    public function provideLinesWithUsefulCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$useful as $index => $useful) {
-            $cases[] = array($index, $useful);
+            $cases[] = [$index, $useful];
         }
 
         return $cases;
@@ -191,7 +183,7 @@ final class LineTest extends \PHPUnit_Framework_TestCase
      * @param int  $pos
      * @param bool $tag
      *
-     * @dataProvider provideLinesWithTag
+     * @dataProvider provideLinesWithTagCases
      */
     public function testTag($pos, $tag)
     {
@@ -201,12 +193,12 @@ final class LineTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($tag, $line->containsATag());
     }
 
-    public function provideLinesWithTag()
+    public function provideLinesWithTagCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$tag as $index => $tag) {
-            $cases[] = array($index, $tag);
+            $cases[] = [$index, $tag];
         }
 
         return $cases;

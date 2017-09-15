@@ -29,44 +29,18 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        // check if the declaration is already done
-        $searchIndex = $tokens->getNextMeaningfulToken(0);
-        if (null === $searchIndex) {
-            $this->insertSequence($tokens); // declaration not found, insert one
-
-            return;
-        }
-
-        $sequence = $this->getDeclareStrictTypeSequence();
-        $sequenceLocation = $tokens->findSequence($sequence, $searchIndex, null, false);
-        if (null === $sequenceLocation) {
-            $this->insertSequence($tokens); // declaration not found, insert one
-
-            return;
-        }
-
-        $this->fixStrictTypesCasing($tokens, $sequenceLocation);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Force strict types declaration in all files. Requires PHP >= 7.0.',
-            array(
+            [
                 new VersionSpecificCodeSample(
                     '<?php ',
                     new VersionSpecification(70000)
                 ),
-            ),
+            ],
             null,
-            null,
-            null,
-            'Forcing strict types will stop non script code from working.'
+            'Forcing strict types will stop non strict code from working.'
         );
     }
 
@@ -96,35 +70,27 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $endIndex
+     * {@inheritdoc}
      */
-    private function fixWhiteSpaceAroundSequence(Tokens $tokens, $endIndex)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        // start index of the sequence is always 1 here, 0 is always open tag
-        // transform "<?php\n" to "<?php " if needed
-        if (false !== strpos($tokens[0]->getContent(), "\n")) {
-            $tokens[0]->setContent(trim($tokens[0]->getContent()).' ');
-        }
-
-        if ($endIndex === count($tokens) - 1) {
-            return; // no more tokens afters sequence, single_blank_line_at_eof might add a line
-        }
-
-        if (!$tokens[1 + $endIndex]->isWhitespace()) {
-            $tokens->insertAt(1 + $endIndex, new Token(array(T_WHITESPACE, $lineEnding)));
+        // check if the declaration is already done
+        $searchIndex = $tokens->getNextMeaningfulToken(0);
+        if (null === $searchIndex) {
+            $this->insertSequence($tokens); // declaration not found, insert one
 
             return;
         }
 
-        $content = $tokens[1 + $endIndex]->getContent();
-        if (false !== strpos($content, "\n")) {
+        $sequence = $this->getDeclareStrictTypeSequence();
+        $sequenceLocation = $tokens->findSequence($sequence, $searchIndex, null, false);
+        if (null === $sequenceLocation) {
+            $this->insertSequence($tokens); // declaration not found, insert one
+
             return;
         }
 
-        $tokens[1 + $endIndex]->setContent($lineEnding.ltrim($content));
+        $this->fixStrictTypesCasing($tokens, $sequenceLocation);
     }
 
     /**
@@ -139,14 +105,14 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         // - semicolon or end tag must be there to be valid PHP
         // - empty tokens and comments are dealt with later
         if (null === $sequence) {
-            $sequence = array(
-                new Token(array(T_DECLARE, 'declare')),
+            $sequence = [
+                new Token([T_DECLARE, 'declare']),
                 new Token('('),
-                new Token(array(T_STRING, 'strict_types')),
+                new Token([T_STRING, 'strict_types']),
                 new Token('='),
-                new Token(array(T_LNUMBER, '1')),
+                new Token([T_LNUMBER, '1']),
                 new Token(')'),
-            );
+            ];
         }
 
         return $sequence;
@@ -162,7 +128,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         /** @var Token $token */
         foreach ($sequence as $index => $token) {
             if ($token->isGivenKind(T_STRING)) {
-                $tokens[$index]->setContent(strtolower($token->getContent()));
+                $tokens[$index] = new Token([T_STRING, strtolower($token->getContent())]);
 
                 break;
             }
@@ -180,7 +146,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         // start index of the sequence is always 1 here, 0 is always open tag
         // transform "<?php\n" to "<?php " if needed
         if (false !== strpos($tokens[0]->getContent(), "\n")) {
-            $tokens[0]->setContent(trim($tokens[0]->getContent()).' ');
+            $tokens[0] = new Token([$tokens[0]->getId(), trim($tokens[0]->getContent()).' ']);
         }
 
         if ($endIndex === count($tokens) - 1) {
@@ -189,7 +155,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         if (!$tokens[1 + $endIndex]->isWhitespace()) {
-            $tokens->insertAt(1 + $endIndex, new Token(array(T_WHITESPACE, $lineEnding)));
+            $tokens->insertAt(1 + $endIndex, new Token([T_WHITESPACE, $lineEnding]));
 
             return;
         }
@@ -199,6 +165,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             return;
         }
 
-        $tokens[1 + $endIndex]->setContent($lineEnding.ltrim($content));
+        $tokens[1 + $endIndex] = new Token([T_WHITESPACE, $lineEnding.ltrim($content)]);
     }
 }

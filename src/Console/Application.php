@@ -14,9 +14,14 @@ namespace PhpCsFixer\Console;
 
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Command\ReadmeCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Command\ListCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -26,11 +31,9 @@ use Symfony\Component\Console\Application as BaseApplication;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.2.0-DEV';
+    const VERSION = '2.6.0';
+    const VERSION_CODENAME = 'Local Tavern';
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         error_reporting(-1);
@@ -43,9 +46,41 @@ final class Application extends BaseApplication
         $this->add(new SelfUpdateCommand());
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function doRun(InputInterface $input, OutputInterface $output)
+    {
+        $stdErr = $output instanceof ConsoleOutputInterface
+            ? $output->getErrorOutput()
+            : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output)
+        ;
+        if (null !== $stdErr) {
+            $warningsDetector = new WarningsDetector();
+            $warningsDetector->detectOldVendor();
+            $warningsDetector->detectOldMajor();
+            if (FixCommand::COMMAND_NAME === $this->getCommandName($input)) {
+                $warningsDetector->detectXdebug();
+            }
+            foreach ($warningsDetector->getWarnings() as $warning) {
+                $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
+            }
+        }
+
+        return parent::doRun($input, $output);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLongVersion()
     {
-        $version = parent::getLongVersion().' by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>';
+        $version = parent::getLongVersion();
+        if (self::VERSION_CODENAME) {
+            $version .= ' <info>'.self::VERSION_CODENAME.'</info>';
+        }
+        $version .= ' by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>';
+
         $commit = '@git-commit@';
 
         if ('@'.'git-commit@' !== $commit) {
@@ -53,5 +88,13 @@ final class Application extends BaseApplication
         }
 
         return $version;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDefaultCommands()
+    {
+        return [new HelpCommand(), new ListCommand()];
     }
 }

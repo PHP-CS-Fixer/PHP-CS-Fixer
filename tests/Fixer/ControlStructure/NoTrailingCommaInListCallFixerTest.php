@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoTrailingCommaInListCallFixer
  */
 final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
 {
@@ -25,17 +27,17 @@ final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     list($a, $b) = foo();
     list($a, , $c, $d) = foo();
@@ -52,7 +54,15 @@ final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
     list($a , $b , ) = foo();
     list($a, /* $b */, $c, ) = foo();
 ',
-            ),
-        );
+            ],
+            [
+                '<?php
+list(
+$a#
+,#
+#
+) = $a;',
+            ],
+        ];
     }
 }

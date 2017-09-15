@@ -12,13 +12,15 @@
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer
  */
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {
@@ -35,8 +37,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
 
     public function providePHPCloseTagCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     if (true) {
                         $b = $a > 2 ? "" : die
@@ -45,8 +47,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 798;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true) {
                         $b = $a > 2 ? "" : die
@@ -55,8 +57,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 798;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true) {
                         if($a) die
@@ -65,8 +67,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 798;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true) {
                         echo 1;
@@ -75,8 +77,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 798;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true) {
                         echo 777;
@@ -85,8 +87,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     } else {
                         echo 778;
                     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true)
                         echo 3;
@@ -95,8 +97,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                         echo 4;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (true)
                         echo 3;
@@ -111,8 +113,8 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     ?><?php
                 echo 4;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true)
     echo 4;
@@ -121,8 +123,8 @@ if (true)
 if (true)
     echo 4;
 else?><?php echo 5;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -214,7 +216,7 @@ else?><?php echo 5;',
 
         $cases = array_merge($cases, $this->generateCases($expected));
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
                 if ($a)
                     echo 1789;
@@ -229,9 +231,9 @@ else?><?php echo 5;',
                     }
                 else
                     echo 4;
-            ', );
+            ', ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
                 if ($a)
                     echo 1789;
@@ -245,7 +247,7 @@ else?><?php echo 5;',
                         return 1;
                 } else
                     echo 4;
-            ', );
+            ', ];
 
         return $cases;
     }
@@ -291,52 +293,7 @@ else?><?php echo 5;',
 
         $cases = $this->generateCases($expected, $input);
 
-        // short 'if' statements
-        $expected =
-            '<?php
-                while(true) {
-                    while(true) {
-                        if ($a)
-                            %s
-                        '.'
-                            echo 16677;
-                    }
-                }
-            ';
-
-        $input =
-            '<?php
-                while(true) {
-                    while(true) {
-                        if ($a)
-                            %s
-                        else
-                            echo 16677;
-                    }
-                }
-            ';
-
-        $cases = array_merge($cases, $this->generateCases($expected, $input));
-
-        // short and not short combined
-        $cases[] = array(
-            '<?php
-                if ($a)
-                    return;
-                 '.'
-                    echo 10099;
-                '.'
-            ',
-            '<?php
-                if ($a)
-                    return;
-                else {
-                    echo 10099;
-                }
-            ',
-        );
-
-        $cases[] = array(
+        $cases[] = [
             '<?php
                 if ($a) {
                     GOTO jump;
@@ -355,7 +312,7 @@ else?><?php echo 5;',
 
                 jump:
             ',
-        );
+        ];
 
         return $cases;
     }
@@ -364,17 +321,17 @@ else?><?php echo 5;',
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixNestedIfs
+     * @dataProvider provideFixNestedIfCases
      */
-    public function testFixNestedIfs($expected, $input = null)
+    public function testFixNestedIf($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNestedIfs()
+    public function provideFixNestedIfCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     if ($x) {
                         if ($y) {
@@ -397,70 +354,8 @@ else?><?php echo 5;',
                         return 3;
                     }
                 ',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideBefore54FixCases
-     */
-    public function testBefore54Fix($expected, $input = null)
-    {
-        if (PHP_VERSION_ID >= 50400) {
-            $this->markTestSkipped('PHP lower than 5.4 is required.');
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideBefore54FixCases()
-    {
-        $expected =
-            '<?php
-                $a = 1; $b = 0;
-                while(true) {
-                    while(true) {
-                        ++$b;
-                        if ($b > $a) {
-                            %s %%s;
-                        }  //
-                            echo 22;
-                        //
-                    }
-                }
-            ';
-
-        $input =
-            '<?php
-                $a = 1; $b = 0;
-                while(true) {
-                    while(true) {
-                        ++$b;
-                        if ($b > $a) {
-                            %s %%s;
-                        } else {//
-                            echo 22;
-                        }//
-                    }
-                }
-            ';
-
-        $cases = array();
-        foreach (array('continue', 'break') as $stop) {
-            $expectedTemplate = sprintf($expected, $stop);
-            $inputTemplate = sprintf($input, $stop);
-            foreach (array('1+1', '$a', '(1+1)', '($a)') as $value) {
-                $cases[] = array(
-                    sprintf($expectedTemplate, $value),
-                    sprintf($inputTemplate, $value),
-                );
-            }
-        }
-
-        return $cases;
+            ],
+        ];
     }
 
     /**
@@ -476,8 +371,8 @@ else?><?php echo 5;',
 
     public function provideFixEmptyElseCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     if (false)
                         echo 1;
@@ -488,20 +383,20 @@ else?><?php echo 5;',
                         echo 1;
                     else{}
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php if($a){}',
                 '<?php if($a){}else{}',
-            ),
-            array(
+            ],
+            [
                 '<?php if($a){ $a = ($b); }  ',
                 '<?php if($a){ $a = ($b); } else {}',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($a) {;}   if ($a) {;}  /**/ if($a){}',
                 '<?php if ($a) {;} else {} if ($a) {;} else {/**/} if($a){}else{}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if /**/($a) /**/{ //
                         /**/
@@ -522,8 +417,8 @@ else?><?php echo 5;',
                         //
                     }/**/
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                         if ($b) {
@@ -554,8 +449,8 @@ else?><?php echo 5;',
                     } else {//
                     }//
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -570,8 +465,8 @@ else?><?php echo 5;',
 
     public function provideNegativeCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     if ($a0) {
                         //
@@ -579,8 +474,8 @@ else?><?php echo 5;',
                         echo 0;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (false)
                         echo "a";
@@ -588,20 +483,20 @@ else?><?php echo 5;',
 
                     echo "a";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php if($a2){;} else {echo 27;}',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($a3) {test();} else {echo 3;}',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($a4) {$b = function () {};} else {echo 4;}',
-            ),
-            array(
+            ],
+            [
                 '<?php if ($a5) {$b = function () use ($a){};} else {echo 5;}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                         if ($b) return;
@@ -609,8 +504,8 @@ else?><?php echo 5;',
                         echo 1;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                         if ($b) throw new \Exception();
@@ -618,8 +513,8 @@ else?><?php echo 5;',
                         echo 1;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if ($a) {
                         if ($b) { throw new \Exception(); }
@@ -627,8 +522,8 @@ else?><?php echo 5;',
                         echo 1;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a = true; // 6
                     if (true === $a)
@@ -638,8 +533,8 @@ else?><?php echo 5;',
 
                     echo "end";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a = true; // 6
                     if (true === $a)
@@ -649,8 +544,8 @@ else?><?php echo 5;',
 
                     echo "end";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a = true; // 6
                     if (true === $a)
@@ -660,8 +555,8 @@ else?><?php echo 5;',
 
                     echo "end";
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (false)
                         die;
@@ -674,8 +569,8 @@ else?><?php echo 5;',
                     else
                         echo 7;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $tmp = function($b){$b();};
                     $a =1;
@@ -687,8 +582,8 @@ else?><?php echo 5;',
                         }
                     });
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $tmp = function($b){$b();};
                     $a =1;
@@ -702,8 +597,8 @@ else?><?php echo 5;',
                         }
                     });
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     return function() {
                         if (false) {
@@ -714,8 +609,8 @@ else?><?php echo 5;',
                             echo 1;
                         }
                     };',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     return function() {
                         if (false) {
@@ -726,8 +621,8 @@ else?><?php echo 5;',
                             echo 1;
                         }
                     };',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -751,7 +646,7 @@ else?><?php echo 5;',
 
     public function provideBlockDetectionCases()
     {
-        $cases = array();
+        $cases = [];
 
         $source = '<?php
                     if ($a)
@@ -762,10 +657,10 @@ else?><?php echo 5;',
                     else
                         echo 4;
                     ';
-        $cases[] = array(array(2, 11), $source, 13);
-        $cases[] = array(array(13, 24), $source, 26);
-        $cases[] = array(array(13, 24), $source, 26);
-        $cases[] = array(array(26, 39), $source, 41);
+        $cases[] = [[2, 11], $source, 13];
+        $cases[] = [[13, 24], $source, 26];
+        $cases[] = [[13, 24], $source, 26];
+        $cases[] = [[26, 39], $source, 41];
 
         $source = '<?php
                     if ($a) {
@@ -782,12 +677,9 @@ else?><?php echo 5;',
                     } else
                         echo 1;
                     ';
-        $cases[] = array(array(2, 25), $source, 27);
-        $cases[] = array(array(27, 40), $source, 42);
-        if (!defined('HHVM_VERSION')) {
-            // HHVM 3.6.x tokenizes in a different way
-            $cases[] = array(array(59, 72), $source, 74);
-        }
+        $cases[] = [[2, 25], $source, 27];
+        $cases[] = [[27, 40], $source, 42];
+        $cases[] = [[59, 72], $source, 74];
 
         return $cases;
     }
@@ -796,35 +688,266 @@ else?><?php echo 5;',
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideAlternativeSyntaxCases
+     * @dataProvider provideConditionsWithoutBracesCases
      */
-    public function testAlternativeSyntax($expected, $input = null)
+    public function testConditionsWithoutBraces($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideAlternativeSyntaxCases()
+    public function provideConditionsWithoutBracesCases()
     {
-        return array(
-            array(
-                '<?php
-                    if ($a == 5):
-                        echo 1;
-                    else:
+        $cases = [];
+        $statements = [
+            'die;',
+            'throw new Exception($i);',
+            'while($i < 1) throw/*{}*/new Exception($i);',
+            'while($i < 1){throw new Exception($i);}',
+            'do{throw new Exception($i);}while($i < 1);',
+            'foreach($a as $b)throw new Exception($i);',
+            'foreach($a as $b){throw new Exception($i);}',
+        ];
 
-                    endif;
-                ',
-            ),
-            array(
+        $ifTemplate = '<?php
+            if ($a === false)
+            {
+                if ($v) %s
+            }
+            else
+                $ret .= $value;
+
+            return $ret;'
+        ;
+
+        $ifElseIfTemplate = '<?php
+            if ($a === false)
+            {
+                if ($v) { $ret = "foo"; }
+                elseif($a)
+                    %s
+            }
+            else
+                $ret .= $value;
+
+            return $ret;'
+        ;
+
+        $ifElseTemplate = '<?php
+            if ($a === false)
+            {
+                if ($v) { $ret = "foo"; }
+                else
+                    %s
+            }
+            else
+                $ret .= $value;
+
+            return $ret;'
+        ;
+
+        foreach ($statements as $statement) {
+            $cases[] = [sprintf($ifTemplate, $statement)];
+            $cases[] = [sprintf($ifElseTemplate, $statement)];
+            $cases[] = [sprintf($ifElseIfTemplate, $statement)];
+        }
+
+        $cases[] = [
+            '<?php
+                if ($a === false)
+                {
+                    if ($v) { $ret = "foo"; if($d){return 1;}echo $a;}
+                }
+                else
+                    $ret .= $value;
+
+                return $ret;',
+            '<?php
+                if ($a === false)
+                {
+                    if ($v) { $ret = "foo"; if($d){return 1;}else{echo $a;}}
+                }
+                else
+                    $ret .= $value;
+
+                return $ret;',
+        ];
+
+        return $cases;
+    }
+
+    /**
+     * @param string            $input
+     * @param string<int, bool> $indexes
+     *
+     * @dataProvider provideIsInConditionWithoutBracesCases
+     */
+    public function testIsInConditionWithoutBraces($indexes, $input)
+    {
+        $reflection = new \ReflectionObject($this->fixer);
+        $method = $reflection->getMethod('isInConditionWithoutBraces');
+        $method->setAccessible(true);
+
+        $tokens = Tokens::fromCode($input);
+        foreach ($indexes as $index => $expected) {
+            $this->assertSame(
+                $expected,
+                $method->invoke($this->fixer, $tokens, $index, 0),
+                sprintf('Failed in condition without braces check for index %d', $index)
+            );
+        }
+    }
+
+    public function provideIsInConditionWithoutBracesCases()
+    {
+        return [
+            [
+                [
+                    18 => false, // return
+                    25 => false, // return
+                    36 => false, // return
+                ],
                 '<?php
-                    if ($a == 5):
-                        return 1;
-                    else:
-                        echo "a is neither 5 nor 6";
-                    endif;
+                    if ($x) {
+                        if ($y) {
+                            return 1;
+                        }
+                            return 2;
+
+                    } else {
+                        return 3;
+                    }
                 ',
-            ),
-        );
+            ],
+            [
+                [
+                    0 => false,
+                    29 => false, // throw
+                ],
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        if($a){}else{throw new Exception($i);}
+                ',
+            ],
+            [
+                [
+                    0 => false,
+                    38 => true, // throw
+                ],
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        for($i =0;$i < 1;++$i) throw new Exception($i);
+                ',
+            ],
+            [
+                [
+                    0 => false,
+                    26 => true, // throw
+                    28 => true, // new
+                    30 => true, // Exception
+                ],
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        while(false){throw new Exception($i);}
+                ',
+            ],
+            [
+                [
+                    0 => false,
+                    30 => true, // throw
+                    32 => true, // new
+                    34 => true, // Exception
+                ],
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        foreach($a as $b){throw new Exception($i);}
+                ',
+            ],
+            [
+                [
+                    0 => false,
+                    25 => true, // throw
+                    27 => true, // new
+                    29 => true, // Exception
+                ],
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    else
+                        while(false)throw new Exception($i);
+                ',
+            ],
+            [
+                [
+                    26 => true, // throw
+                ],
+                '<?php
+                    if ($v) { $ret = "foo"; }
+                    elseif($a)
+                        do{throw new Exception($i);}while(false);
+                ',
+            ],
+            [
+                [
+                    4 => false, // 1
+                    13 => true, // if (2nd)
+                    21 => true, // true
+                    33 => true, // while
+                    43 => false, // echo
+                    45 => false, // 2
+                    46 => false, // ;
+                    51 => false, // echo (123)
+                ],
+                '<?php
+                    echo 1;
+                    if ($a) if ($a) while(true)echo 1;
+                    elseif($c) while(true){if($d){echo 2;}};
+                    echo 123;
+                ',
+            ],
+            [
+                [
+                    2 => false, // echo
+                    13 => true, // echo
+                    15 => true, // 2
+                    20 => true, // die
+                    23 => false, // echo
+                ],
+                '<?php
+                    echo 1;
+                    if ($a) echo 2;
+                    else die; echo 3;
+                ',
+            ],
+            [
+                [
+                    8 => true,  // die
+                    9 => true,  // /**/
+                    15 => true, // die
+                ],
+                '<?php
+                    if ($a)
+                        die/**/;
+                    else
+                        /**/die/**/;#
+                ',
+            ],
+            [
+                [
+                    8 => true,  // die
+                    9 => true,  // /**/
+                    15 => true, // die
+                ],
+                '<?php
+                    if ($a)
+                        die/**/;
+                    else
+                        /**/die/**/?>
+                ',
+            ],
+        ];
     }
 
     /**
@@ -835,8 +958,8 @@ else?><?php echo 5;',
      */
     private function generateCases($expected, $input = null)
     {
-        $cases = array();
-        foreach (array(
+        $cases = [];
+        foreach ([
             'exit;',
             'exit();',
             'exit(1);',
@@ -861,15 +984,15 @@ else?><?php echo 5;',
             'throw new \Exception;',
             'throw new \Exception();',
             'throw new \Exception((string)12+1);',
-        ) as $case) {
+        ] as $case) {
             if (null === $input) {
-                $cases[] = array(sprintf($expected, $case));
-                $cases[] = array(sprintf($expected, strtoupper($case)));
-                $cases[] = array(sprintf($expected, strtolower($case)));
+                $cases[] = [sprintf($expected, $case)];
+                $cases[] = [sprintf($expected, strtoupper($case))];
+                $cases[] = [sprintf($expected, strtolower($case))];
             } else {
-                $cases[] = array(sprintf($expected, $case), sprintf($input, $case));
-                $cases[] = array(sprintf($expected, strtoupper($case)), sprintf($input, strtoupper($case)));
-                $cases[] = array(sprintf($expected, strtolower($case)), sprintf($input, strtolower($case)));
+                $cases[] = [sprintf($expected, $case), sprintf($input, $case)];
+                $cases[] = [sprintf($expected, strtoupper($case)), sprintf($input, strtoupper($case))];
+                $cases[] = [sprintf($expected, strtolower($case)), sprintf($input, strtolower($case))];
             }
         }
 

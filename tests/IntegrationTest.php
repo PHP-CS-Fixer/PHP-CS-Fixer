@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Test\AbstractIntegrationTestCase;
+use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 
 /**
  * Test that parses and runs the fixture '*.test' files found in '/Fixtures/Integration'.
@@ -20,6 +20,8 @@ use PhpCsFixer\Test\AbstractIntegrationTestCase;
  * @author SpacePossum
  *
  * @internal
+ *
+ * @coversNothing
  */
 final class IntegrationTest extends AbstractIntegrationTestCase
 {

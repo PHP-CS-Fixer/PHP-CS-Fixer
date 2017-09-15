@@ -12,10 +12,12 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpTag;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer
  */
 final class NoClosingTagFixerTest extends AbstractFixerTestCase
 {
@@ -23,9 +25,9 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCasesWithFullOpenTag
+     * @dataProvider provideWithFullOpenTagCases
      */
-    public function testCasesWithFullOpenTag($expected, $input = null)
+    public function testWithFullOpenTag($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -34,12 +36,12 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCasesWithShortOpenTag
+     * @dataProvider provideWithShortOpenTagCases
      */
-    public function testCasesWithShortOpenTag($expected, $input = null)
+    public function testWithShortOpenTag($expected, $input = null)
     {
         if (!ini_get('short_open_tag')) {
-            $this->markTestSkipped('PHP short open tags are not enabled.');
+            $this->markTestSkipped('The short_open_tag option is required to be enabled.');
 
             return;
         }
@@ -47,28 +49,43 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCasesWithFullOpenTag()
+    public function provideWithFullOpenTagCases()
     {
-        return array(
-            array('<?php echo \'Foo\';', '<?php echo \'Foo\'; ?>'),
-            array('<?php echo \'Foo\';', '<?php echo \'Foo\';?>'),
-            array('<?php echo \'Foo\'; ?> PLAIN TEXT'),
-            array('PLAIN TEXT<?php echo \'Foo\'; ?>'),
-            array('<?php
+        return [
+            [
+                '<?php echo \'Foo\';',
+                '<?php echo \'Foo\'; ?>',
+            ],
+            [
+                '<?php echo \'Foo\';',
+                '<?php echo \'Foo\';?>',
+            ],
+            [
+                '<?php echo \'Foo\'; ?> PLAIN TEXT',
+            ],
+            [
+                'PLAIN TEXT<?php echo \'Foo\'; ?>',
+            ],
+            [
+                '<?php
 
 echo \'Foo\';',
-                  '<?php
+                '<?php
 
 echo \'Foo\';
 
 ?>',
-            ),
-            array('<?php echo \'Foo\'; ?>
+            ],
+            [
+                '<?php echo \'Foo\'; ?>
 <p><?php echo \'this is a template\'; ?></p>
 <?php echo \'Foo\'; ?>',
-            ),
-            array('<?php echo "foo";', '<?php echo "foo" ?>'),
-            array(
+            ],
+            [
+                '<?php echo "foo";',
+                '<?php echo "foo" ?>',
+            ],
+            [
                 '<?php
 class foo
 {
@@ -85,8 +102,8 @@ class foo
         echo "Here I am!";
     }
 }?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function bar()
 {
@@ -97,8 +114,8 @@ function bar()
 {
     echo "Here I am!";
 }?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     echo "Here I am!";
@@ -107,28 +124,55 @@ if (true) {
 if (true) {
     echo "Here I am!";
 }?>',
-            ),
-            'Trailing linebreak, priority issue with SingleBlankLineAtEofFixer.' => array(
+            ],
+            'Trailing linebreak, priority issue with SingleBlankLineAtEofFixer.' => [
                 '<?php echo 1;',
                 "<?php echo 1;\n?>\n",
-            ),
-            'Trailing comment.' => array(
+            ],
+            'Trailing comment.' => [
                 '<?php echo 1;// test',
                 "<?php echo 1;// test\n?>",
-            ),
-        );
+            ],
+            'No code' => [
+                '<?php ',
+                '<?php ?>',
+            ],
+            'No code, only comment' => [
+                '<?php /* license */',
+                '<?php /* license */ ?>',
+            ],
+            [
+                '<?php ?>aa',
+            ],
+        ];
     }
 
-    public function provideCasesWithShortOpenTag()
+    public function provideWithShortOpenTagCases()
     {
-        return array(
-            array('<? echo \'Foo\';', '<? echo \'Foo\'; ?>'),
-            array('<? echo \'Foo\';', '<? echo \'Foo\';?>'),
-            array('<? echo \'Foo\'; ?>
+        return [
+            [
+                '<? echo \'Foo\';',
+                '<? echo \'Foo\'; ?>',
+            ],
+            [
+                '<? echo \'Foo\';',
+                '<? echo \'Foo\';?>',
+            ],
+            [
+                '<? echo \'Foo\'; ?>
 <p><? echo \'this is a template\'; ?></p>
 <? echo \'Foo\'; ?>',
-            ),
-            array('<?= "somestring"; ?> <?= "anotherstring"; ?>'),
-        );
+            ],
+            [
+                '<? /**/', '<? /**/?>',
+            ],
+            [
+                '<?= "somestring"; ?> <?= "anotherstring"; ?>',
+            ],
+            [
+                '<?= 1;',
+                '<?= 1; ?>',
+            ],
+        ];
     }
 }

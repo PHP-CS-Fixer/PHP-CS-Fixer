@@ -29,49 +29,14 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $ending = $this->whitespacesConfig->getLineEnding();
-        $lastIndex = $tokens->count() - 1;
-
-        for ($index = $lastIndex; $index >= 0; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(T_NAMESPACE)) {
-                continue;
-            }
-
-            $semicolonIndex = $tokens->getNextTokenOfKind($index, array(';', '{', array(T_CLOSE_TAG)));
-            $semicolonToken = $tokens[$semicolonIndex];
-
-            if (!isset($tokens[$semicolonIndex + 1]) || !$semicolonToken->equals(';')) {
-                continue;
-            }
-
-            $nextIndex = $semicolonIndex + 1;
-            $nextToken = $tokens[$nextIndex];
-
-            if (!$nextToken->isWhitespace()) {
-                $tokens->insertAt($semicolonIndex + 1, new Token(array(T_WHITESPACE, $ending.$ending)));
-            } else {
-                $nextToken->setContent(
-                    ($nextIndex === $lastIndex ? $ending : $ending.$ending).ltrim($nextToken->getContent())
-                );
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'There MUST be one blank line after the namespace declaration.',
-            array(
+            [
                 new CodeSample("<?php\nnamespace Sample\\Sample;\n\n\n\$a;"),
                 new CodeSample("<?php\nnamespace Sample\\Sample;\nClass Test{}"),
-            )
+            ]
         );
     }
 
@@ -90,5 +55,41 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_NAMESPACE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $ending = $this->whitespacesConfig->getLineEnding();
+        $lastIndex = $tokens->count() - 1;
+
+        for ($index = $lastIndex; $index >= 0; --$index) {
+            $token = $tokens[$index];
+
+            if (!$token->isGivenKind(T_NAMESPACE)) {
+                continue;
+            }
+
+            $semicolonIndex = $tokens->getNextTokenOfKind($index, [';', '{', [T_CLOSE_TAG]]);
+            $semicolonToken = $tokens[$semicolonIndex];
+
+            if (!isset($tokens[$semicolonIndex + 1]) || !$semicolonToken->equals(';')) {
+                continue;
+            }
+
+            $nextIndex = $semicolonIndex + 1;
+            $nextToken = $tokens[$nextIndex];
+
+            if (!$nextToken->isWhitespace()) {
+                $tokens->insertAt($semicolonIndex + 1, new Token([T_WHITESPACE, $ending.$ending]));
+            } else {
+                $tokens[$nextIndex] = new Token([
+                    T_WHITESPACE,
+                    ($nextIndex === $lastIndex ? $ending : $ending.$ending).ltrim($nextToken->getContent()),
+                ]);
+            }
+        }
     }
 }

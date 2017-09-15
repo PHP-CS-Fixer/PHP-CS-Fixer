@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer
  */
 final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 {
@@ -25,17 +27,17 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 <<<'EOT'
 <?php
 
@@ -45,8 +47,8 @@ class Bar
 {
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -57,8 +59,8 @@ EOT
 
 class Foo { private function bar1($x) { return 1; } protected $abc = 'abc'; const C1 = 1; public function baz($y, $z) {} }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -101,8 +103,8 @@ interface FooInterface
     public function def();
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -259,8 +261,8 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     }
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -295,26 +297,8 @@ class Bar
     public function baz() {}
 }
 EOT
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideCases54
-     * @requires PHP 5.4
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCases54()
-    {
-        return array(
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -341,15 +325,15 @@ trait FooTrait
     use BazTrait;
 }
 EOT
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases71
+     * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
     public function testFix71($expected, $input = null)
@@ -357,10 +341,10 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideCases71()
+    public function provideFix71Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 <<<'EOT'
 <?php
 
@@ -385,8 +369,55 @@ class Foo
     public const C3 = 3;
 }
 EOT
-            ),
-        );
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     *
+     * @group legacy
+     * @dataProvider provideConfigurationCases
+     * @expectedDeprecation Passing "order" at the root of the configuration is deprecated and will not be supported in 3.0, use "order" => array(...) option instead.
+     */
+    public function testLegacyFixWithConfiguration(array $configuration, $expected)
+    {
+        static $input = <<<'EOT'
+<?php
+
+class Foo
+{
+    private static function privStatFunc() {}
+    protected static $protStatProp;
+    public static $pubStatProp1;
+    public function pubFunc1() {}
+    use BarTrait;
+    public $pubProp1;
+    public function __toString() {}
+    protected function protFunc() {}
+    protected $protProp;
+    function pubFunc2() {}
+    public function __destruct() {}
+    var $pubProp2;
+    private static $privStatProp;
+    use BazTrait;
+    public static function pubStatFunc1() {}
+    public function pubFunc3() {}
+    private $privProp;
+    const C1 = 1;
+    static function pubStatFunc2() {}
+    private function privFunc() {}
+    public static $pubStatProp2;
+    protected function __construct() {}
+    const C2 = 2;
+    public static function pubStatFunc3() {}
+    public $pubProp3;
+    protected static function protStatFunc() {}
+}
+EOT;
+
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -429,17 +460,15 @@ class Foo
     protected static function protStatFunc() {}
 }
 EOT;
-
-        $this->fixer->configure($configuration);
-
+        $this->fixer->configure(['order' => $configuration]);
         $this->doTest($expected, $input);
     }
 
     public function provideConfigurationCases()
     {
-        return array(
-            array(
-                array('use_trait', 'constant', 'property', 'construct', 'method', 'destruct'),
+        return [
+            [
+                ['use_trait', 'constant', 'property', 'construct', 'method', 'destruct'],
                 <<<'EOT'
 <?php
 
@@ -473,9 +502,9 @@ class Foo
     public function __destruct() {}
 }
 EOT
-            ),
-            array(
-                array('public', 'protected', 'private'),
+            ],
+            [
+                ['public', 'protected', 'private'],
                 <<<'EOT'
 <?php
 
@@ -509,9 +538,9 @@ class Foo
     use BazTrait;
 }
 EOT
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     'use_trait',
                     'constant',
                     'property_public_static',
@@ -529,7 +558,7 @@ EOT
                     'method_public',
                     'method_protected',
                     'method_private',
-                ),
+                ],
                 <<<'EOT'
 <?php
 
@@ -563,17 +592,17 @@ class Foo
     private function privFunc() {}
 }
 EOT
-            ),
-        );
+            ],
+        ];
     }
 
     public function testWrongConfig()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '[ordered_class_elements] Unknown class element type "foo".'
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[ordered_class_elements\] Invalid configuration: The option "order" .*\.$/'
         );
 
-        $this->fixer->configure(array('foo'));
+        $this->fixer->configure(['order' => ['foo']]);
     }
 }

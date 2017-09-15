@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Semicolon;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -25,32 +26,11 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->equals(';') || !$tokens[$index - 1]->isWhitespace(" \t")) {
-                continue;
-            }
-
-            if ($tokens[$index - 2]->equals(';')) {
-                // do not remove all whitespace before the semicolon because it is also whitespace after another semicolon
-                if (!$tokens[$index - 1]->equals(' ')) {
-                    $tokens[$index - 1]->setContent(' ');
-                }
-            } elseif (!$tokens[$index - 2]->isComment()) {
-                $tokens[$index - 1]->clear();
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Single-line whitespace before closing semicolon are prohibited.',
-            array(new CodeSample('<?php $this->foo() ;'))
+            [new CodeSample('<?php $this->foo() ;')]
         );
     }
 
@@ -60,5 +40,26 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(';');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
+            if (!$token->equals(';') || !$tokens[$index - 1]->isWhitespace(" \t")) {
+                continue;
+            }
+
+            if ($tokens[$index - 2]->equals(';')) {
+                // do not remove all whitespace before the semicolon because it is also whitespace after another semicolon
+                if (!$tokens[$index - 1]->equals(' ')) {
+                    $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
+                }
+            } elseif (!$tokens[$index - 2]->isComment()) {
+                $tokens->clearAt($index - 1);
+            }
+        }
     }
 }

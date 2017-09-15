@@ -13,36 +13,39 @@
 namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\Signature;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Cache\Signature
  */
-final class SignatureTest extends \PHPUnit_Framework_TestCase
+final class SignatureTest extends TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Signature');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsSignatureInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Signature');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\SignatureInterface'));
+        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
     }
 
     public function testConstructorSetsValues()
     {
         $php = PHP_VERSION;
         $version = '2.0';
-        $rules = array(
+        $rules = [
             'foo',
             'bar',
-        );
+        ];
 
         $signature = new Signature(
             $php,
@@ -59,10 +62,10 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
     {
         $php = PHP_VERSION;
         $version = '2.0';
-        $rules = array(
+        $rules = [
             'foo',
             'bar',
-        );
+        ];
 
         $signature = new Signature(
             $php,
@@ -83,10 +86,10 @@ final class SignatureTest extends \PHPUnit_Framework_TestCase
     {
         $php = PHP_VERSION;
         $version = '2.0';
-        $rules = array(
+        $rules = [
             'foo',
             'bar',
-        );
+        ];
 
         $signature = new Signature(
             $php,

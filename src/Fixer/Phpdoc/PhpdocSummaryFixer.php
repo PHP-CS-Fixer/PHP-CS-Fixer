@@ -18,6 +18,7 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -28,9 +29,33 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
+    public function getDefinition()
     {
-        foreach ($tokens as $token) {
+        return new FixerDefinition(
+            'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.',
+            [new CodeSample('<?php
+/**
+ * Foo function is great
+ */
+function foo () {}
+')]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens)
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
@@ -44,34 +69,10 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
 
                 if (!$this->isCorrectlyFormatted($content)) {
                     $line->setContent($content.'.'.$this->whitespacesConfig->getLineEnding());
-                    $token->setContent($doc->getContent());
+                    $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
-    {
-        return new FixerDefinition(
-            'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.',
-            array(new CodeSample('<?php
-/**
- * Foo function is great
- */
-function foo () {}
-'))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**
@@ -80,7 +81,7 @@ function foo () {}
      *
      * @param Line[] $lines
      *
-     * @return int|null
+     * @return null|int
      */
     private function findShortDescriptionEnd(array $lines)
     {

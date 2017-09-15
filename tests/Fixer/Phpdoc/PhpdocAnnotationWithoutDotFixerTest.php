@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocAnnotationWithoutDotFixer
  */
 final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
 {
@@ -34,8 +36,8 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     /**
      * Summary.
@@ -43,6 +45,12 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * Description.
      *
      * @param string|null $str   some string
+     * @param string $ip         IPv4 is not lowercased
+     * @param string $a          A
+     * @param string $a_string   a string
+     * @param string $ab         ab
+     * @param string $t34        T34
+     * @param string $s          S§
      * @param string $genrb      Optional. The path to the "genrb" executable
      * @param string $ellipsis1  Ellipsis is this: ...
      * @param string $ellipsis2  Ellipsis is this: 。。。
@@ -62,6 +70,12 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * Description.
      *
      * @param string|null $str   Some string.
+     * @param string $ip         IPv4 is not lowercased.
+     * @param string $a          A.
+     * @param string $a_string   A string.
+     * @param string $ab         Ab.
+     * @param string $t34        T34.
+     * @param string $s          S§.
      * @param string $genrb      Optional. The path to the "genrb" executable
      * @param string $ellipsis1  Ellipsis is this: ...
      * @param string $ellipsis2  Ellipsis is this: 。。。
@@ -74,29 +88,29 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      *
      * @SomeCustomAnnotation This is important sentence that must not be modified.
      */',
-            ),
-            array(
+            ],
+            [
                 // invalid char inside line won't crash the fixer
                 '<?php
     /**
      * @var string This: '.chr(174).' is an odd character.
      * @var string This: '.chr(174).' is an odd character 2nd time。
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @deprecated since version 2. Use emergency() which is PSR-3 compatible.
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @internal This method is public to be usable as callback. It should not
      *           be used in user code.
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @deprecated this is
@@ -107,8 +121,8 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @deprecated This is
      *             deprecated.
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @return bool|null returns `true` if the class has a single-column ID
@@ -119,7 +133,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @return bool|null Returns `true` if the class has a single-column ID
      *                   and Returns `false` otherwise.
      */',
-            ),
-        );
+            ],
+        ];
     }
 }

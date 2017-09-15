@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -20,26 +20,29 @@ use PhpCsFixer\Test\AbstractFixerTestCase;
  * @internal
  *
  * @requires PHP 7.0
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer
  */
 final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfiguration()
     {
         $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[return_type_declaration\] Configuration must define "space_before" being "one" or "none".$#'
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '#^\[return_type_declaration\] Invalid configuration: The option "s" does not exist\. (Known|Defined) options are: "space_before"\.$#'
         );
 
-        $this->fixer->configure(array('s' => 9000));
+        $this->fixer->configure(['s' => 9000]);
     }
 
     /**
-     * @dataProvider testFixProviderWithSpaceBeforeNone
+     * @group legacy
+     * @dataProvider provideFixWithSpaceBeforeNoneCases
+     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      *
      * @param string      $expected
      * @param null|string $input
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
     {
         $this->fixer->configure(null);
 
@@ -47,81 +50,123 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider testFixProviderWithSpaceBeforeNone
+     * @dataProvider provideFixWithSpaceBeforeNoneCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithDefaultConfiguration($expected, $input = null)
+    {
+        $this->fixer->configure([]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideFixWithSpaceBeforeNoneCases
      *
      * @param string      $expected
      * @param null|string $input
      */
     public function testFixWithSpaceBeforeNone($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'space_before' => 'none',
-        ));
+        ]);
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixProviderWithSpaceBeforeNone()
+    public function provideFixWithSpaceBeforeNoneCases()
     {
-        return array(
-            array(
-                '<?php function foo(int $a) {}',
-            ),
-            array(
-                '<?php function foo(int $a): string {}',
-                '<?php function foo(int $a):string {}',
-            ),
-            array(
-                '<?php function foo(int $a)/**/: /**/string {}',
-                '<?php function foo(int $a)/**/:/**/string {}',
-            ),
-            array(
-                '<?php function foo(int $a): string {}',
-                '<?php function foo(int $a)  :  string {}',
-            ),
-            array(
-                '<?php function foo(int $a) /**/: /**/ string {}',
-                '<?php function foo(int $a) /**/ : /**/ string {}',
-            ),
-        );
+        return [
+            [
+                '<?php function foo1(int $a) {}',
+            ],
+            [
+                '<?php function foo2(int $a): string {}',
+                '<?php function foo2(int $a):string {}',
+            ],
+            [
+                '<?php function foo3(int $c)/**/ : /**/ string {}',
+            ],
+            [
+                '<?php function foo4(int $a): string {}',
+                '<?php function foo4(int $a)  :  string {}',
+            ],
+            [
+                '<?php function foo5(int $e)#
+: #
+#
+string {}',
+                '<?php function foo5(int $e)#
+:#
+#
+string {}',
+            ],
+            [
+                '<?php
+                    function foo1(int $a): string {}
+                    function foo2(int $a): string {}
+                    function foo3(int $a): string {}
+                    function foo4(int $a): string {}
+                    function foo5(int $a): string {}
+                    function foo6(int $a): string {}
+                    function foo7(int $a): string {}
+                    function foo8(int $a): string {}
+                    function foo9(int $a): string {}
+                ',
+                '<?php
+                    function foo1(int $a):string {}
+                    function foo2(int $a):string {}
+                    function foo3(int $a):string {}
+                    function foo4(int $a):string {}
+                    function foo5(int $a):string {}
+                    function foo6(int $a):string {}
+                    function foo7(int $a):string {}
+                    function foo8(int $a):string {}
+                    function foo9(int $a):string {}
+                ',
+            ],
+        ];
     }
 
     /**
-     * @dataProvider testFixProviderWithSpaceBeforeOne
+     * @dataProvider provideFixWithSpaceBeforeOneCases
      *
      * @param string      $expected
      * @param null|string $input
      */
     public function testFixWithSpaceBeforeOne($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'space_before' => 'one',
-        ));
+        ]);
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixProviderWithSpaceBeforeOne()
+    public function provideFixWithSpaceBeforeOneCases()
     {
-        return array(
-            array(
-                '<?php function foo(int $a) {}',
-            ),
-            array(
-                '<?php function foo(int $a) : string {}',
-                '<?php function foo(int $a):string {}',
-            ),
-            array(
-                '<?php function foo(int $a)/**/ : /**/string {}',
-                '<?php function foo(int $a)/**/:/**/string {}',
-            ),
-            array(
-                '<?php function foo(int $a) : string {}',
-                '<?php function foo(int $a)  :  string {}',
-            ),
-            array(
-                '<?php function foo(int $a) /**/ : /**/ string {}',
-            ),
-        );
+        return [
+            [
+                '<?php function fooA(int $a) {}',
+            ],
+            [
+                '<?php function fooB(int $a) : string {}',
+                '<?php function fooB(int $a):string {}',
+            ],
+            [
+                '<?php function fooC(int $a)/**/ : /**/string {}',
+                '<?php function fooC(int $a)/**/:/**/string {}',
+            ],
+            [
+                '<?php function fooD(int $a) : string {}',
+                '<?php function fooD(int $a)  :  string {}',
+            ],
+            [
+                '<?php function fooE(int $a) /**/ : /**/ string {}',
+            ],
+        ];
     }
 }

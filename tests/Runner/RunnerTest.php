@@ -20,13 +20,16 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Runner\Runner;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Finder\Finder;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Runner\Runner
  */
-final class RunnerTest extends \PHPUnit_Framework_TestCase
+final class RunnerTest extends TestCase
 {
     /**
      * @covers \PhpCsFixer\Runner\Runner::fix
@@ -34,27 +37,26 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatFixSuccessfully()
     {
-        $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+        $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $linterProphecy
             ->isAsync()
             ->willReturn(false);
         $linterProphecy
             ->lintFile(Argument::type('string'))
-            ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
         $linterProphecy
             ->lintSource(Argument::type('string'))
-            ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
 
-        $fixers = array(
+        $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
             new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
-        );
+        ];
 
-        foreach ($fixers as $fixer) {
-            if ($fixer instanceof Fixer\ConfigurableFixerInterface) {
-                $fixer->configure(null);
-            }
-        }
+        $expectedChangedInfo = [
+            'appliedFixers' => ['visibility_required'],
+            'diff' => '',
+        ];
 
         $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
@@ -66,17 +68,34 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
             $linterProphecy->reveal(),
             true,
             new NullCacheManager(),
-            new Directory($path)
+            new Directory($path),
+            false
         );
 
         $changed = $runner->fix();
 
-        $pathToInvalidFile = 'somefile.php';
+        $this->assertCount(2, $changed);
+        $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
+        $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
+
+        $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
+        $runner = new Runner(
+            Finder::create()->in($path),
+            $fixers,
+            new NullDiffer(),
+            null,
+            new ErrorsManager(),
+            $linterProphecy->reveal(),
+            true,
+            new NullCacheManager(),
+            new Directory($path),
+            true
+        );
+
+        $changed = $runner->fix();
 
         $this->assertCount(1, $changed);
-        $this->assertCount(2, $changed[$pathToInvalidFile]);
-        $this->assertSame(array('appliedFixers', 'diff'), array_keys($changed[$pathToInvalidFile]));
-        $this->assertSame('visibility_required', $changed[$pathToInvalidFile]['appliedFixers'][0]);
+        $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
     }
 
     /**
@@ -90,10 +109,10 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
         $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid';
         $runner = new Runner(
             Finder::create()->in($path),
-            array(
+            [
                 new Fixer\ClassNotation\VisibilityRequiredFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
-            ),
+            ],
             new NullDiffer(),
             null,
             $errorsManager,
@@ -112,7 +131,7 @@ final class RunnerTest extends \PHPUnit_Framework_TestCase
 
         $error = $errors[0];
 
-        $this->assertInstanceOf('PhpCsFixer\Error\Error', $error);
+        $this->assertInstanceOf(\PhpCsFixer\Error\Error::class, $error);
 
         $this->assertSame(Error::TYPE_INVALID, $error->getType());
         $this->assertSame($pathToInvalidFile, $error->getFilePath());

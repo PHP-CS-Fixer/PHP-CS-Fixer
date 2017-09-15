@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer
  */
 final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 {
@@ -25,69 +27,59 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     {
         $key = 'foo';
 
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
-            '"%s" is not handled by the fixer.',
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
+            '[native_function_invocation] Invalid configuration: The option "%s" does not exist.',
             $key
         ));
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             $key => 'bar',
-        ));
-    }
-
-    public function testConfigureRejectsEmptyConfiguration()
-    {
-        $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            'Configuration must define "exclude" as an array.'
-        );
-
-        $this->fixer->configure(array());
+        ]);
     }
 
     /**
-     * @dataProvider providerInvalidConfigurationElement
+     * @dataProvider provideInvalidConfigurationElementCases
      *
      * @param mixed $element
      */
     public function testConfigureRejectsInvalidConfigurationElement($element)
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidConfigurationException', sprintf(
+        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
             'Each element must be a non-empty, trimmed string, got "%s" instead.',
             \is_object($element) ? \get_class($element) : \gettype($element)
         ));
 
-        $this->fixer->configure(array(
-            'exclude' => array(
+        $this->fixer->configure([
+            'exclude' => [
                 $element,
-            ),
-        ));
+            ],
+        ]);
     }
 
     /**
      * @return array
      */
-    public function providerInvalidConfigurationElement()
+    public function provideInvalidConfigurationElementCases()
     {
-        return array(
-            'null' => array(null),
-            'false' => array(false),
-            'true' => array(false),
-            'int' => array(1),
-            'array' => array(array()),
-            'float' => array(0.1),
-            'object' => array(new \stdClass()),
-            'not-trimmed' => array('  json_encode  '),
-        );
+        return [
+            'null' => [null],
+            'false' => [false],
+            'true' => [false],
+            'int' => [1],
+            'array' => [[]],
+            'float' => [0.1],
+            'object' => [new \stdClass()],
+            'not-trimmed' => ['  json_encode  '],
+        ];
     }
 
     public function testConfigureResetsExclude()
     {
-        $this->fixer->configure(array(
-            'exclude' => array(
+        $this->fixer->configure([
+            'exclude' => [
                 'json_encode',
-            ),
-        ));
+            ],
+        ]);
 
         $before = <<<'PHP'
 <?php
@@ -123,7 +115,7 @@ PHP;
 
         $this->doTest($before);
 
-        $this->fixer->configure(null);
+        $this->fixer->configure([]);
 
         $this->doTest($after, $before);
     }
@@ -136,7 +128,7 @@ PHP;
     }
 
     /**
-     * @dataProvider provideCasesWithDefaultConfiguration
+     * @dataProvider provideFixWithDefaultConfigurationCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -149,16 +141,16 @@ PHP;
     /**
      * @return array
      */
-    public function provideCasesWithDefaultConfiguration()
+    public function provideFixWithDefaultConfigurationCases()
     {
-        return array(
-            array(
+        return [
+            [
 '<?php
 
 \json_encode($foo);
 ',
-            ),
-            array(
+            ],
+            [
 '<?php
 
 \json_encode($foo);
@@ -167,8 +159,8 @@ PHP;
 
 json_encode($foo);
 ',
-            ),
-            array(
+            ],
+            [
 '<?php
 
 class Foo
@@ -179,8 +171,8 @@ class Foo
     }
 }
 ',
-            ),
-            array(
+            ],
+            [
 '<?php
 
 class Foo
@@ -201,23 +193,23 @@ class Foo
     }
 }
 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
-     * @dataProvider provideCasesWithConfiguredExclude
+     * @dataProvider provideFixWithConfiguredExcludeCases
      *
      * @param string      $expected
      * @param null|string $input
      */
     public function testFixWithConfiguredExclude($expected, $input = null)
     {
-        $this->fixer->configure(array(
-            'exclude' => array(
+        $this->fixer->configure([
+            'exclude' => [
                 'json_encode',
-            ),
-        ));
+            ],
+        ]);
 
         $this->doTest($expected, $input);
     }
@@ -225,16 +217,16 @@ class Foo
     /**
      * @return array
      */
-    public function provideCasesWithConfiguredExclude()
+    public function provideFixWithConfiguredExcludeCases()
     {
-        return array(
-            array(
+        return [
+            [
 '<?php
 
 json_encode($foo);
 ',
-            ),
-            array(
+            ],
+            [
 '<?php
 
 class Foo
@@ -245,7 +237,7 @@ class Foo
     }
 }
 ',
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -26,32 +27,11 @@ final class NoUnusedImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $useDeclarationsIndexes = $tokensAnalyzer->getImportUseIndexes();
-
-        if (0 === count($useDeclarationsIndexes)) {
-            return;
-        }
-
-        $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
-        $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
-        $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
-        $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
-
-        $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
-        $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Unused use statements must be removed.',
-            array(new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();"))
+            [new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();")]
         );
     }
 
@@ -90,6 +70,27 @@ final class NoUnusedImportsFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $useDeclarationsIndexes = $tokensAnalyzer->getImportUseIndexes();
+
+        if (0 === count($useDeclarationsIndexes)) {
+            return;
+        }
+
+        $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
+        $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
+        $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
+        $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
+
+        $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
+        $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
+    }
+
+    /**
      * @param string $content
      * @param array  $useDeclarations
      *
@@ -97,10 +98,10 @@ final class NoUnusedImportsFixer extends AbstractFixer
      */
     private function detectUseUsages($content, array $useDeclarations)
     {
-        $usages = array();
+        $usages = [];
 
         foreach ($useDeclarations as $shortName => $useDeclaration) {
-            $usages[$shortName] = (bool) preg_match('/(?<![\$\\\\])\b'.preg_quote($shortName).'\b/i', $content);
+            $usages[$shortName] = (bool) preg_match('/(?<![\$\\\\])(?<!->)\b'.preg_quote($shortName).'\b/i', $content);
         }
 
         return $usages;
@@ -122,6 +123,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             foreach ($partials as $partial) {
                 if ($partial['start'] <= $index && $index <= $partial['end']) {
                     $allowToAppend = false;
+
                     break;
                 }
             }
@@ -136,20 +138,20 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
     private function getNamespaceDeclarations(Tokens $tokens)
     {
-        $namespaces = array();
+        $namespaces = [];
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_NAMESPACE)) {
                 continue;
             }
 
-            $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
+            $declarationEndIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
-            $namespaces[] = array(
+            $namespaces[] = [
                 'name' => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
                 'start' => $index,
                 'end' => $declarationEndIndex,
-            );
+            ];
         }
 
         return $namespaces;
@@ -157,10 +159,10 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
     private function getNamespaceUseDeclarations(Tokens $tokens, array $useIndexes)
     {
-        $uses = array();
+        $uses = [];
 
         foreach ($useIndexes as $index) {
-            $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
+            $declarationEndIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
             $declarationContent = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
             if (
                 false !== strpos($declarationContent, ',')    // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
@@ -184,13 +186,13 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             $shortName = trim($shortName);
 
-            $uses[$shortName] = array(
+            $uses[$shortName] = [
                 'fullName' => trim($fullName),
                 'shortName' => $shortName,
                 'aliased' => $aliased,
                 'start' => $index,
                 'end' => $declarationEndIndex,
-            );
+            ];
         }
 
         return $uses;
@@ -212,20 +214,32 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
 
         if ($tokens[$useDeclaration['end']]->equals(';')) {
-            $tokens[$useDeclaration['end']]->clear();
+            $tokens->clearAt($useDeclaration['end']);
         }
 
-        $prevToken = $tokens[$useDeclaration['start'] - 1];
+        $prevIndex = $useDeclaration['start'] - 1;
+        $prevToken = $tokens[$prevIndex];
 
         if ($prevToken->isWhitespace()) {
-            $prevToken->setContent(rtrim($prevToken->getContent(), " \t"));
+            $content = rtrim($prevToken->getContent(), " \t");
+
+            if ('' !== $content) {
+                $tokens[$prevIndex] = new Token([T_WHITESPACE, $content]);
+            } else {
+                $tokens->clearAt($prevIndex);
+            }
+            $prevToken = $tokens[$prevIndex];
         }
 
         if (!isset($tokens[$useDeclaration['end'] + 1])) {
             return;
         }
 
-        $nextIndex = $useDeclaration['end'] + 1;
+        $nextIndex = $tokens->getNonEmptySibling($useDeclaration['end'], 1);
+        if (null === $nextIndex) {
+            return;
+        }
+
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->isWhitespace()) {
@@ -238,12 +252,24 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 1
             );
 
-            $nextToken->setContent($content);
+            if ('' !== $content) {
+                $tokens[$nextIndex] = new Token([T_WHITESPACE, $content]);
+            } else {
+                $tokens->clearAt($nextIndex);
+            }
+            $nextToken = $tokens[$nextIndex];
         }
 
         if ($prevToken->isWhitespace() && $nextToken->isWhitespace()) {
-            $tokens->overrideAt($nextIndex, array(T_WHITESPACE, $prevToken->getContent().$nextToken->getContent()));
-            $prevToken->clear();
+            $content = $prevToken->getContent().$nextToken->getContent();
+
+            if ('' !== $content) {
+                $tokens[$nextIndex] = new Token([T_WHITESPACE, $content]);
+            } else {
+                $tokens->clearAt($nextIndex);
+            }
+
+            $tokens->clearAt($prevIndex);
         }
     }
 
@@ -262,11 +288,13 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 continue;
             }
 
-            if (0 !== strpos($useDeclaration['fullName'], $namespace.'\\')) {
+            $useDeclarationFullName = ltrim($useDeclaration['fullName'], '\\');
+
+            if (0 !== strpos($useDeclarationFullName, $namespace.'\\')) {
                 continue;
             }
 
-            $partName = substr($useDeclaration['fullName'], $nsLength);
+            $partName = substr($useDeclarationFullName, $nsLength);
 
             if (false === strpos($partName, '\\')) {
                 $this->removeUseDeclaration($tokens, $useDeclaration);

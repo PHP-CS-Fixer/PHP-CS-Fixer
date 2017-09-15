@@ -26,44 +26,18 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = count($tokens) - 2; $index > 0; --$index) {
-            if (!$tokens[$index]->equals(';')) {
-                continue;
-            }
-
-            if (!$tokens[$index + 1]->isWhitespace()) {
-                if (!$tokens[$index + 1]->equalsAny(array(')', array(T_INLINE_HTML)))) {
-                    $tokens->insertAt($index + 1, new Token(array(T_WHITESPACE, ' ')));
-                }
-            } elseif (
-                isset($tokens[$index + 2])
-                && !$tokens[$index + 1]->equals(array(T_WHITESPACE, ' '))
-                && $tokens[$index + 1]->isWhitespace(" \t")
-                && !$tokens[$index + 2]->isComment()
-                && !$tokens[$index + 2]->equals(')')
-            ) {
-                $tokens[$index + 1]->setContent(' ');
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Fix whitespace after a semicolon.',
-            array(new CodeSample(
+            [new CodeSample(
                 '<?php
                     sample();     $test = 1;
                     sample();$test = 2;
                     for ( ;;++$sample) {
                     }
                 '
-            ))
+            )]
         );
     }
 
@@ -73,5 +47,31 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(';');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        for ($index = count($tokens) - 2; $index > 0; --$index) {
+            if (!$tokens[$index]->equals(';')) {
+                continue;
+            }
+
+            if (!$tokens[$index + 1]->isWhitespace()) {
+                if (!$tokens[$index + 1]->equalsAny([')', [T_INLINE_HTML]])) {
+                    $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+                }
+            } elseif (
+                isset($tokens[$index + 2])
+                && !$tokens[$index + 1]->equals([T_WHITESPACE, ' '])
+                && $tokens[$index + 1]->isWhitespace(" \t")
+                && !$tokens[$index + 2]->isComment()
+                && !$tokens[$index + 2]->equals(')')
+            ) {
+                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+            }
+        }
     }
 }

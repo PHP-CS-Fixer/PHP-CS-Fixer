@@ -13,41 +13,44 @@
 namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerDefinition\VersionSpecification
  */
-final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
+final class VersionSpecificationTest extends TestCase
 {
     public function testConstructorRequiresEitherMinimumOrMaximum()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         new VersionSpecification();
     }
 
     /**
-     * @dataProvider providerInvalidVersion
+     * @dataProvider provideInvalidVersionCases
      *
      * @param mixed $minimum
      */
     public function testConstructorRejectsInvalidMinimum($minimum)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         new VersionSpecification($minimum);
     }
 
     /**
-     * @dataProvider providerInvalidVersion
+     * @dataProvider provideInvalidVersionCases
      *
      * @param mixed $maximum
      */
     public function testConstructorRejectsInvalidMaximum($maximum)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         new VersionSpecification(
             PHP_VERSION_ID,
@@ -58,22 +61,22 @@ final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerInvalidVersion()
+    public function provideInvalidVersionCases()
     {
-        return array(
-            'negative' => array(-1),
-            'zero' => array(0),
-            'float' => array(3.14),
-            'string' => array('foo'),
-            'integerish' => array('9000'),
-            'array' => array(array()),
-            'object' => array(new \stdClass()),
-        );
+        return [
+            'negative' => [-1],
+            'zero' => [0],
+            'float' => [3.14],
+            'string' => ['foo'],
+            'integerish' => ['9000'],
+            'array' => [[]],
+            'object' => [new \stdClass()],
+        ];
     }
 
     public function testConstructorRejectsMaximumLessThanMinimum()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         new VersionSpecification(
             PHP_VERSION_ID,
@@ -82,7 +85,7 @@ final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider providerIsSatisfiedByReturnsTrue
+     * @dataProvider provideIsSatisfiedByReturnsTrueCases
      *
      * @param null|int $minimum
      * @param null|int $maximum
@@ -101,18 +104,18 @@ final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsSatisfiedByReturnsTrue()
+    public function provideIsSatisfiedByReturnsTrueCases()
     {
-        return array(
-            'version-same-as-maximum' => array(null, PHP_VERSION_ID, PHP_VERSION_ID),
-            'version-same-as-minimum' => array(PHP_VERSION_ID, null, PHP_VERSION_ID),
-            'version-between-minimum-and-maximum' => array(PHP_VERSION_ID - 1, PHP_VERSION_ID + 1, PHP_VERSION_ID),
-            'version-same-as-minimum-and-maximum' => array(PHP_VERSION_ID, PHP_VERSION_ID, PHP_VERSION_ID),
-        );
+        return [
+            'version-same-as-maximum' => [null, PHP_VERSION_ID, PHP_VERSION_ID],
+            'version-same-as-minimum' => [PHP_VERSION_ID, null, PHP_VERSION_ID],
+            'version-between-minimum-and-maximum' => [PHP_VERSION_ID - 1, PHP_VERSION_ID + 1, PHP_VERSION_ID],
+            'version-same-as-minimum-and-maximum' => [PHP_VERSION_ID, PHP_VERSION_ID, PHP_VERSION_ID],
+        ];
     }
 
     /**
-     * @dataProvider providerIsSatisfiedByReturnsFalse
+     * @dataProvider provideIsSatisfiedByReturnsFalseCases
      *
      * @param null|int $minimum
      * @param null|int $maximum
@@ -131,11 +134,11 @@ final class VersionSpecificationTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsSatisfiedByReturnsFalse()
+    public function provideIsSatisfiedByReturnsFalseCases()
     {
-        return array(
-            'version-greater-than-maximum' => array(null, PHP_VERSION_ID, PHP_VERSION_ID + 1),
-            'version-less-than-minimum' => array(PHP_VERSION_ID, null, PHP_VERSION_ID - 1),
-        );
+        return [
+            'version-greater-than-maximum' => [null, PHP_VERSION_ID, PHP_VERSION_ID + 1],
+            'version-less-than-minimum' => [PHP_VERSION_ID, null, PHP_VERSION_ID - 1],
+        ];
     }
 }

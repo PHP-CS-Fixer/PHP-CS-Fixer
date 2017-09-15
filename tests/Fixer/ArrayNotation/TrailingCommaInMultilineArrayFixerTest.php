@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\TrailingCommaInMultilineArrayFixer
  */
 final class TrailingCommaInMultilineArrayFixerTest extends AbstractFixerTestCase
 {
@@ -25,54 +27,54 @@ final class TrailingCommaInMultilineArrayFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideExamples
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples()
+    public function provideFixCases()
     {
-        return array(
+        return [
             // long syntax tests
-            array('<?php $x = array();'),
-            array('<?php $x = array("foo");'),
-            array('<?php $x = array("foo", );'),
-            array("<?php \$x = array(\n'foo',\n);", "<?php \$x = array(\n'foo'\n);"),
-            array("<?php \$x = array('foo',\n);"),
-            array("<?php \$x = array('foo',\n);", "<?php \$x = array('foo'\n);"),
-            array("<?php \$x = array('foo', /* boo */\n);", "<?php \$x = array('foo' /* boo */\n);"),
-            array("<?php \$x = array('foo',\n/* boo */\n);", "<?php \$x = array('foo'\n/* boo */\n);"),
-            array("<?php \$x = array(\narray('foo',\n),\n);", "<?php \$x = array(\narray('foo'\n)\n);"),
-            array("<?php \$x = array(\narray('foo'),\n);", "<?php \$x = array(\narray('foo')\n);"),
-            array("<?php \$x = array(\n /* He */ \n);"),
-            array(
+            ['<?php $x = array();'],
+            ['<?php $x = array("foo");'],
+            ['<?php $x = array("foo", );'],
+            ["<?php \$x = array(\n'foo',\n);", "<?php \$x = array(\n'foo'\n);"],
+            ["<?php \$x = array('foo',\n);"],
+            ["<?php \$x = array('foo',\n);", "<?php \$x = array('foo'\n);"],
+            ["<?php \$x = array('foo', /* boo */\n);", "<?php \$x = array('foo' /* boo */\n);"],
+            ["<?php \$x = array('foo',\n/* boo */\n);", "<?php \$x = array('foo'\n/* boo */\n);"],
+            ["<?php \$x = array(\narray('foo',\n),\n);", "<?php \$x = array(\narray('foo'\n)\n);"],
+            ["<?php \$x = array(\narray('foo'),\n);", "<?php \$x = array(\narray('foo')\n);"],
+            ["<?php \$x = array(\n /* He */ \n);"],
+            [
                 "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z', );",
                 "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z');",
-            ),
-            array(
+            ],
+            [
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z', );",
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z');",
-            ),
-            array(
+            ],
+            [
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z', );",
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z' );",
-            ),
-            array(
+            ],
+            [
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z',\t);",
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z'\t);",
-            ),
-            array("<?php \$x = array(\n<<<EOT\noet\nEOT\n);"),
-            array("<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"),
-            array(
+            ],
+            ["<?php \$x = array(\n<<<EOT\noet\nEOT\n);"],
+            ["<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"],
+            [
                 '<?php
     $foo = array(
         array(
         ),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         1 => array(
@@ -85,8 +87,8 @@ final class TrailingCommaInMultilineArrayFixerTest extends AbstractFixerTestCase
             2 => 3
         )
     );',
-            ),
-            array(
+            ],
+            [
                 "<?php
     \$x = array(
         'foo',
@@ -139,15 +141,15 @@ final class TrailingCommaInMultilineArrayFixerTest extends AbstractFixerTestCase
             )
         )
     );",
-            ),
-            array(
+            ],
+            [
                 '<?php
 
                 $a = array("foo" => function ($b) {
                     return "bar".$b;
                 });',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         "a" => 1,
@@ -158,8 +160,8 @@ final class TrailingCommaInMultilineArrayFixerTest extends AbstractFixerTestCase
         "a" => 1,
         "b" => 2
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = array("foo", <<<TWIG
         foo
@@ -167,8 +169,8 @@ final class TrailingCommaInMultilineArrayFixerTest extends AbstractFixerTestCase
         baz
 TWIG
         , $twig);',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = array("foo", <<<\'TWIG\'
         foo
@@ -176,34 +178,34 @@ TWIG
         baz
 TWIG
         , $twig);',
-            ),
+            ],
 
             // short syntax tests
-            array('<?php $x = array([]);'),
-            array('<?php $x = [[]];'),
-            array('<?php $x = ["foo",];'),
-            array('<?php $x = bar(["foo",]);'),
-            array("<?php \$x = bar(['foo',\n]);", "<?php \$x = bar(['foo'\n]);"),
-            array("<?php \$x = ['foo', \n];"),
-            array('<?php $x = array([],);'),
-            array('<?php $x = [[],];'),
-            array('<?php $x = [$y,];'),
-            array("<?php \$x = [\n /* He */ \n];"),
-            array(
+            ['<?php $x = array([]);'],
+            ['<?php $x = [[]];'],
+            ['<?php $x = ["foo",];'],
+            ['<?php $x = bar(["foo",]);'],
+            ["<?php \$x = bar(['foo',\n]);", "<?php \$x = bar(['foo'\n]);"],
+            ["<?php \$x = ['foo', \n];"],
+            ['<?php $x = array([],);'],
+            ['<?php $x = [[],];'],
+            ['<?php $x = [$y,];'],
+            ["<?php \$x = [\n /* He */ \n];"],
+            [
                 '<?php
     $foo = [
         [
         ],
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
                 $a = ["foo" => function ($b) {
                     return "bar".$b;
                 }];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return [
         "a" => 1,
@@ -214,8 +216,8 @@ TWIG
         "a" => 1,
         "b" => 2
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = ["foo", <<<TWIG
         foo
@@ -223,8 +225,8 @@ TWIG
         baz
 TWIG
         , $twig];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $test = ["foo", <<<\'TWIG\'
         foo
@@ -232,10 +234,10 @@ TWIG
         baz
 TWIG
         , $twig];',
-            ),
+            ],
 
             // no array tests
-            array(
+            [
                 "<?php
     throw new BadMethodCallException(
         sprintf(
@@ -243,15 +245,15 @@ TWIG
             __METHOD__
         )
     );",
-            ),
-            array(
+            ],
+            [
                 "<?php
     throw new BadMethodCallException(sprintf(
         'Method \"%s\" not implemented',
         __METHOD__
     ));",
-            ),
-            array(
+            ],
+            [
                 "<?php
 
     namespace FOS\\RestBundle\\Controller;
@@ -270,8 +272,8 @@ TWIG
             }
         }
     }",
-            ),
-            array(
+            ],
+            [
                 '<?php
     function foo(array $a)
     {
@@ -281,8 +283,8 @@ TWIG
             )
         );
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = array(
         "string",
@@ -293,8 +295,8 @@ TWIG
         "string"
         //comment
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = array(
         "string",
@@ -303,8 +305,8 @@ TWIG
     $var = array(
         "string"
         /* foo */);',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [
         "string",
@@ -313,26 +315,8 @@ TWIG
     $var = [
         "string"
         /* foo */];',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideExamples55
-     * @requires PHP 5.5
-     */
-    public function testFix55($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideExamples55()
-    {
-        return array(
-            array(
+            ],
+            [
                 '<?php
 function a()
 {
@@ -349,8 +333,8 @@ function a()
         "b" => 2
     );
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function a()
 {
@@ -367,7 +351,7 @@ function a()
         "b" => 2
     ];
 }',
-            ),
-        );
+            ],
+        ];
     }
 }

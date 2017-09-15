@@ -28,35 +28,11 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function fix(\SplFileInfo $file, Tokens $tokens)
-    {
-        /** @var Token $token */
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $token->setContent($this->fixTokenContent($token->getContent()));
-                continue;
-            }
-
-            if (!$token->isGivenKind(T_COMMENT)) {
-                continue;
-            }
-
-            $content = $token->getContent();
-            $fixedContent = $this->fixTokenContent($content);
-            if ($content !== $fixedContent) {
-                $tokens->overrideAt($index, array(T_DOC_COMMENT, $fixedContent));
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
             'Single line @var PHPDoc should have proper spacing.',
-            array(new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();"))
+            [new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();")]
         );
     }
 
@@ -74,7 +50,32 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT));
+        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        /** @var Token $token */
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_DOC_COMMENT)) {
+                $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixTokenContent($token->getContent())]);
+
+                continue;
+            }
+
+            if (!$token->isGivenKind(T_COMMENT)) {
+                continue;
+            }
+
+            $content = $token->getContent();
+            $fixedContent = $this->fixTokenContent($content);
+            if ($content !== $fixedContent) {
+                $tokens[$index] = new Token([T_DOC_COMMENT, $fixedContent]);
+            }
+        }
     }
 
     /**

@@ -12,12 +12,14 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
-use PhpCsFixer\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author SpacePossum
  *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\HashToSlashCommentFixer
  */
 final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
 {
@@ -34,32 +36,32 @@ final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<h1>This is an <?php //echo 123;?> example</h1>',
                 '<h1>This is an <?php #echo 123;?> example</h1>',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     //#test
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     /*
                         #test
                     */
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     // test
                 ',
                 '<?php
                     # test
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     // test1
                     //test2
@@ -72,14 +74,14 @@ final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
                     # test3
                     # test 4
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php // a',
                 '<?php # a',
-            ),
-            array(
-                '<?php# a',
-            ),
-        );
+            ],
+            [
+                '<?php /* start-end */',
+            ],
+        ];
     }
 }

@@ -1,0 +1,4 @@
+--TEST--
+Integration of @DoctrineAnnotation.
+--RULESET--
+{"@DoctrineAnnotation": true}

@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Runner;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
@@ -44,7 +45,7 @@ final class Runner
     private $directory;
 
     /**
-     * @var EventDispatcher|null
+     * @var null|EventDispatcher
      */
     private $eventDispatcher;
 
@@ -78,6 +79,11 @@ final class Runner
      */
     private $fixers;
 
+    /**
+     * @var bool
+     */
+    private $stopOnViolation;
+
     public function __construct(
         $finder,
         array $fixers,
@@ -87,7 +93,8 @@ final class Runner
         LinterInterface $linter,
         $isDryRun,
         CacheManagerInterface $cacheManager,
-        DirectoryInterface $directory = null
+        DirectoryInterface $directory = null,
+        $stopOnViolation = false
     ) {
         $this->finder = $finder;
         $this->fixers = $fixers;
@@ -98,6 +105,7 @@ final class Runner
         $this->isDryRun = $isDryRun;
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?: new Directory('');
+        $this->stopOnViolation = $stopOnViolation;
     }
 
     /**
@@ -105,7 +113,7 @@ final class Runner
      */
     public function fix()
     {
-        $changed = array();
+        $changed = [];
 
         $finder = $this->finder;
         $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
@@ -122,13 +130,17 @@ final class Runner
         foreach ($collection as $file) {
             $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
 
+            // we do not need Tokens to still caching just fixed file - so clear the cache
+            Tokens::clearCache();
+
             if ($fixInfo) {
                 $name = $this->directory->getRelativePathTo($file);
                 $changed[$name] = $fixInfo;
-            }
 
-            // we do not need Tokens to still caching just fixed file - so clear the cache
-            Tokens::clearCache();
+                if ($this->stopOnViolation) {
+                    break;
+                }
+            }
         }
 
         return $changed;
@@ -146,23 +158,30 @@ final class Runner
                 new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_INVALID)
             );
 
-            $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name));
+            $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name, $e));
 
             return;
         }
 
         $old = file_get_contents($file->getRealPath());
+
+        Tokens::setLegacyMode(false);
         $tokens = Tokens::fromCode($old);
         $oldHash = $tokens->getCodeHash();
 
         $newHash = $oldHash;
         $new = $old;
 
-        $appliedFixers = array();
+        $appliedFixers = [];
 
         try {
             foreach ($this->fixers as $fixer) {
-                if (!$fixer->supports($file) || !$fixer->isCandidate($tokens)) {
+                // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
+                // thus we need to check it and conditionally skip fixing
+                if (
+                    !$fixer instanceof AbstractFixer &&
+                    (!$fixer->supports($file) || !$fixer->isCandidate($tokens))
+                ) {
                     continue;
                 }
 
@@ -175,7 +194,7 @@ final class Runner
                 }
             }
         } catch (\Exception $e) {
-            $this->processException($name);
+            $this->processException($name, $e);
 
             return;
         } catch (\ParseError $e) {
@@ -184,11 +203,11 @@ final class Runner
                 new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
             );
 
-            $this->errorsManager->report(new Error(Error::TYPE_LINT, $name));
+            $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
 
             return;
         } catch (\Throwable $e) {
-            $this->processException($name);
+            $this->processException($name, $e);
 
             return;
         }
@@ -213,7 +232,7 @@ final class Runner
                     new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
                 );
 
-                $this->errorsManager->report(new Error(Error::TYPE_LINT, $name));
+                $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
 
                 return;
             }
@@ -231,10 +250,10 @@ final class Runner
                 }
             }
 
-            $fixInfo = array(
+            $fixInfo = [
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new),
-            );
+            ];
         }
 
         $this->cacheManager->setFile($name, $new);
@@ -250,21 +269,20 @@ final class Runner
     /**
      * Process an exception that occurred.
      *
-     * @param string $name
+     * @param string     $name
+     * @param \Throwable $e
      */
-    private function processException($name)
+    private function processException($name, $e)
     {
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
             new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_EXCEPTION)
         );
 
-        $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name));
+        $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name, $e));
     }
 
     /**
-     * Dispatch event.
-     *
      * @param string $name
      * @param Event  $event
      */
