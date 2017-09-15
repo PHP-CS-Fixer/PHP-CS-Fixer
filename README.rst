@@ -957,7 +957,7 @@ Choose from the list of available rules:
 
   Class names should match the file name.
 
-  *Risky rule: this fixer may change you class name, which will break the code that is depended on old name.*
+  *Risky rule: this fixer may change your class name, which will break the code that is depended on old name.*
 
 * **random_api_migration** [@PHP70Migration:risky]
 
@@ -1234,7 +1234,7 @@ Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or
 Exit codes
 ----------
 
-Exit code is build using following bit flags:
+Exit code is built using following bit flags:
 
 *  0 OK.
 *  1 General error (or PHP/HHVM minimal requirement not matched).
