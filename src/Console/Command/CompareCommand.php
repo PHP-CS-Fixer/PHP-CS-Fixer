@@ -228,12 +228,12 @@ final class CompareCommand extends Command
             sprintf("Enabled (%s)\nAre hidden: %s", count($this->enabledFixers), $this->hideEnabled ? self::YES : self::NO),
             sprintf("Risky (%s)\nAre hidden: %s", count($this->riskyFixers), $this->hideRisky ? self::YES : self::NO),
             sprintf("Inherited (%s)\nAre hidden: %s", $this->countInherited, $this->hideInherited ? self::YES : self::NO),
-            'In RuleSet',
+            //'In RuleSet',
         ];
 
         $table->setHeaders([$columns]);
 
-        $table->setRows($this->filterRows());
+        $table->setRows($this->filterFixers());
 
         return $table;
     }
@@ -241,7 +241,7 @@ final class CompareCommand extends Command
     /**
      * @return array
      */
-    private function filterRows()
+    private function filterFixers()
     {
         $hideConfigured = $this->hideConfigured;
         $hideEnabled = $this->hideEnabled;
@@ -276,13 +276,27 @@ final class CompareCommand extends Command
                 $path = implode(' > ', array_reverse($fixer['in_set']));
             }
 
+            $color = "<fg=green>%s</>";
+
+            if ($fixer['is_inherited']) {
+                $color = "<fg=yellow>%s</>";
+            }
+
+            if (false === $fixer['is_enabled']) {
+                $color = "<fg=red>%s</>";
+            }
+
+            $name = $fixer['is_enabled']
+                ? sprintf($color, $fixer['name'])
+                : sprintf("<fg=red>%s</>", $fixer['name']);
+
             return [
-                'name' => $fixer['name'],
+                'name' => sprintf("<fg=green>%s</>\n  %s", $name, $path),
                 'is_configured' => $fixer['is_configured'] ? self::YES : self::NO,
                 'is_enabled' => $fixer['is_enabled'] ? self::YES : self::NO,
                 'is_risky' => $fixer['is_risky'] ? self::YES : self::NO,
                 'is_inherited' => $fixer['is_inherited'] ? self::YES : self::NO,
-                'in_set' => $path,
+                //'in_set' => $path,
             ];
         }, $rows);
     }
