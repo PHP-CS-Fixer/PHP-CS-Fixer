@@ -18,6 +18,7 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSetInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -117,40 +118,17 @@ final class CompareCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->initialize($input, $output);
-
         /**
          * @var string
          * @var RuleSet $set
          */
         foreach ($this->ruleSets as $name => $set) {
-            /**
-             * @var string
-             * @var bool   $value
-             */
-            foreach ($set->getRules() as $rule => $value) {
-                if (false === isset($this->list[$rule]['in_set'])) {
-                    $this->list[$rule]['in_set'] = [];
-                }
-                $this->list[$rule]['in_set'][] = $name;
-            }
+            $this->processRuleSet($name, $set);
         }
 
         /** @var FixerInterface $fixer */
         foreach ($this->builtInFixers as $fixer) {
-            if ($isInherited = !empty($this->list[$fixer->getName()]['in_set'])) {
-                ++$this->countInherited;
-            }
-
-            $this->list[$fixer->getName()]['name'] = $fixer->getName();
-            $this->list[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
-            $this->list[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
-            $this->list[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
-            $this->list[$fixer->getName()]['is_inherited'] = $isInherited;
-
-            if ($this->isFixerRisky($fixer)) {
-                $this->riskyFixers[] = $fixer->getName();
-            }
+            $this->processFixer($fixer);
         }
 
         // Render the table
@@ -193,6 +171,46 @@ final class CompareCommand extends Command
         $this->hideEnabled = $input->getOption('hide-enabled');
         $this->hideRisky = $input->getOption('hide-risky');
         $this->hideInherited = $input->getOption('hide-inherited');
+    }
+
+    /**
+     * @param string $name
+     * @param RuleSetInterface $set
+     */
+    private function processRuleSet($name, RuleSetInterface $set)
+    {
+        /**
+         * @var string
+         * @var bool   $value
+         */
+        foreach ($set->getRules() as $rule => $value) {
+            if (false === isset($this->list[$rule]['in_set'])) {
+                $this->list[$rule]['in_set'] = [];
+            }
+            $this->list[$rule]['in_set'][] = $name;
+        }
+    }
+
+    /**
+     * @param FixerInterface $fixer
+     */
+    private function processFixer(FixerInterface $fixer)
+    {
+        $isInherited = !empty($this->list[$fixer->getName()]['in_set']);
+
+        if ($isInherited) {
+            ++$this->countInherited;
+        }
+
+        $this->list[$fixer->getName()]['name'] = $fixer->getName();
+        $this->list[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
+        $this->list[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
+        $this->list[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
+        $this->list[$fixer->getName()]['is_inherited'] = $isInherited;
+
+        if ($this->isFixerRisky($fixer)) {
+            $this->riskyFixers[] = $fixer->getName();
+        }
     }
 
     /**
