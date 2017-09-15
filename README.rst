@@ -573,6 +573,16 @@ Choose from the list of available rules:
   Include/Require and file path should be divided with a single space.
   File path should not be placed under brackets.
 
+* **increment_style** [@Symfony]
+
+  Pre- or post-increment and decrement operators should be used if
+  possible.
+
+  Configuration options:
+
+  - ``style`` (``'post'``, ``'pre'``): whether to use pre- or post-increment and
+    decrement operators; defaults to ``'pre'``
+
 * **indentation_type** [@PSR2, @Symfony]
 
   Code MUST use configured indentation type.
@@ -1096,9 +1106,10 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the function ``pow()`` is overridden.*
 
-* **pre_increment** [@Symfony]
+* **pre_increment**
 
   Pre incrementation/decrementation should be used if possible.
+  DEPRECATED: Use "increment_style" instead.
 
 * **protected_to_private** [@Symfony]
 
