@@ -1090,6 +1090,10 @@ Choose from the list of available rules:
 
   @var and @type annotations should not contain the variable name.
 
+* **post_increment**
+
+  Post incrementation/decrementation should be used if possible.
+
 * **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
   Converts ``pow()`` to the ``**`` operator.

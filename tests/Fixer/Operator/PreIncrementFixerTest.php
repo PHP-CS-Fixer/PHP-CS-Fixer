@@ -109,6 +109,14 @@ final class PreIncrementFixerTest extends AbstractFixerTestCase
             ['<?php foo($a, $b++);'],
             ['<?php $a[$b++];'],
             ['<?php echo $a++;'],
+
+            ['<?php $a = ++$b;'],
+            ['<?php $a + ++$b;'],
+            ['<?php ++$a + $b;'],
+            ['<?php foo(++$b);'],
+            ['<?php foo($a, ++$b);'],
+            ['<?php $a[++$b];'],
+            ['<?php echo ++$a;'],
         ];
     }
 }
