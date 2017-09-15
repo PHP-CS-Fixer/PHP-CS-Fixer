@@ -174,7 +174,7 @@ final class CompareCommand extends Command
     }
 
     /**
-     * @param string $name
+     * @param string           $name
      * @param RuleSetInterface $set
      */
     private function processRuleSet($name, RuleSetInterface $set)
@@ -276,19 +276,19 @@ final class CompareCommand extends Command
                 $path = implode(' > ', array_reverse($fixer['in_set']));
             }
 
-            $color = "<fg=green>%s</>";
+            $color = '<fg=green>%s</>';
 
             if ($fixer['is_inherited']) {
-                $color = "<fg=yellow>%s</>";
+                $color = '<fg=yellow>%s</>';
             }
 
             if (false === $fixer['is_enabled']) {
-                $color = "<fg=red>%s</>";
+                $color = '<fg=red>%s</>';
             }
 
             $name = $fixer['is_enabled']
                 ? sprintf($color, $fixer['name'])
-                : sprintf("<fg=red>%s</>", $fixer['name']);
+                : sprintf('<fg=red>%s</>', $fixer['name']);
 
             return [
                 'name' => sprintf("<fg=green>%s</>\n  %s", $name, $path),
