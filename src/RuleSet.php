@@ -153,6 +153,7 @@ final class RuleSet implements RuleSetInterface
             'is_null' => true,
             'modernize_types_casting' => true,
             'no_alias_functions' => true,
+            'no_homoglyph_names' => true,
             'non_printable_character' => true,
             'php_unit_construct' => true,
             'php_unit_dedicate_assert' => true,
