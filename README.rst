@@ -722,7 +722,7 @@ Choose from the list of available rules:
 
   - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
 
-* **no_homoglyph_names**
+* **no_homoglyph_names** [@Symfony:risky]
 
   Replace accidental usage of homoglyphs (non ascii characters) in names.
 
