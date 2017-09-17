@@ -1213,6 +1213,11 @@ Choose from the list of available rules:
 
   Fix whitespace after a semicolon.
 
+  Configuration options:
+
+  - ``remove_in_empty_for_expressions`` (``bool``): whether spaces should be removed
+    for empty ``for`` expressions; defaults to ``false``
+
 * **standardize_not_equals** [@Symfony]
 
   Replace all ``<>`` with ``!=``.

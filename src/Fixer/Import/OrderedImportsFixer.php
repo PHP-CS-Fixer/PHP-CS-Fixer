@@ -359,7 +359,7 @@ use function CCC\AA;
                         for ($k1 = $k + 1; $k1 < $namespaceTokensCount; ++$k1) {
                             $comment = '';
                             $namespacePart = '';
-                            for ($k2 = $k1; ; ++$k2) {
+                            for ($k2 = $k1;; ++$k2) {
                                 if ($namespaceTokens[$k2]->equalsAny([',', [CT::T_GROUP_IMPORT_BRACE_CLOSE]])) {
                                     break;
                                 }

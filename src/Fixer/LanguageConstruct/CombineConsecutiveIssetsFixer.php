@@ -125,7 +125,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
         $braceOpenCount = 1;
         $meaningfulTokenIndexes = [$openIndex];
 
-        for ($i = $openIndex + 1; ; ++$i) {
+        for ($i = $openIndex + 1;; ++$i) {
             if ($tokens[$i]->isWhitespace() || $tokens[$i]->isComment()) {
                 continue;
             }

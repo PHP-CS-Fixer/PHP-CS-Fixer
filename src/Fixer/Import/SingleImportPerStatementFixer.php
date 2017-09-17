@@ -101,7 +101,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     {
         $groupPrefix = '';
         $comment = '';
-        for ($i = $index + 1; ; ++$i) {
+        for ($i = $index + 1;; ++$i) {
             if ($tokens[$i]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupOpenIndex = $i;
 
