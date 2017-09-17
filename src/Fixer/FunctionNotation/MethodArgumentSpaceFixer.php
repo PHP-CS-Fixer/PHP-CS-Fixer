@@ -202,12 +202,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
         if (!$this->isNewline($tokens[$endFunctionIndex - 1])) {
-            $this->addNewlineAndIndent(
-                $tokens,
-                $endFunctionIndex,
-                $existingIndentation,
-                false
-            );
+            $tokens->ensureWhitespaceAtIndex($endFunctionIndex, 0, $this->whitespacesConfig->getLineEnding().$existingIndentation);
             ++$endFunctionIndex;
         }
 
@@ -238,6 +233,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 $this->fixNewline($tokens, $index, $indentation);
             }
         }
+
         $this->fixNewLine($tokens, $startFunctionIndex, $indentation, false);
     }
 
@@ -254,45 +250,17 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         if ($this->isNewline($tokens[$index + 1]) || $tokens[$index + 1]->isComment()) {
             return;
         }
+
         if ($tokens[$index + 2]->isComment()) {
             $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index + 2);
             if (!$this->isNewLine($tokens[$nextMeaningfulTokenIndex - 1])) {
-                $this->addNewlineAndIndent(
-                    $tokens,
-                    $nextMeaningfulTokenIndex,
-                    $indentation,
-                    false
-                );
+                $tokens->ensureWhitespaceAtIndex($nextMeaningfulTokenIndex, 0, $this->whitespacesConfig->getLineEnding().$indentation);
             }
 
             return;
         }
 
-        $this->addNewlineAndIndent($tokens, $index + 1, $indentation, $override);
-    }
-
-    /**
-     * Makes sure there is a whitespace at the given location.
-     *
-     * @param Tokens $tokens      The token stream to modify
-     * @param int    $index       where to insert the whitespace
-     * @param string $indentation the indentation that should be used
-     * @param bool   $override    whether to override the existing character or not
-     */
-    private function addNewlineAndIndent(Tokens $tokens, $index, $indentation, $override)
-    {
-        $whitespaceToken = new Token([
-            T_WHITESPACE,
-            $this->whitespacesConfig->getLineEnding().$indentation,
-        ]);
-
-        if ($override) {
-            $tokens[$index] = $whitespaceToken;
-
-            return;
-        }
-
-        $tokens->insertAt($index, $whitespaceToken);
+        $tokens->ensureWhitespaceAtIndex($index + 1, 0, $this->whitespacesConfig->getLineEnding().$indentation);
     }
 
     /**
