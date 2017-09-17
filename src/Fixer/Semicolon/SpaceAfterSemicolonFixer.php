@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -21,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author SpacePossum
  */
-final class SpaceAfterSemicolonFixer extends AbstractFixer
+final class SpaceAfterSemicolonFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -30,14 +33,19 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Fix whitespace after a semicolon.',
-            [new CodeSample(
-                '<?php
-                    sample();     $test = 1;
-                    sample();$test = 2;
-                    for ( ;;++$sample) {
-                    }
-                '
-            )]
+            [
+                new CodeSample(
+                    '<?php
+                        sample();     $test = 1;
+                        sample();$test = 2;
+                        for ( ;;++$sample) {
+                        }
+                    '
+                ),
+                new CodeSample("<?php\nfor (\$i = 0; ; ++\$i) {\n}", [
+                    'remove_in_empty_for_expressions' => true,
+                ]),
+            ]
         );
     }
 
@@ -52,18 +60,67 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('remove_in_empty_for_expressions', 'Whether spaces should be removed for empty `for` expressions.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = count($tokens) - 2; $index > 0; --$index) {
+        $insideForParenthesesUntil = null;
+
+        for ($index = 0, $max = count($tokens) - 1; $index < $max; ++$index) {
+            if ($this->configuration['remove_in_empty_for_expressions']) {
+                if ($tokens[$index]->isGivenKind(T_FOR)) {
+                    $index = $tokens->getNextMeaningfulToken($index);
+                    $insideForParenthesesUntil = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+                    continue;
+                }
+
+                if ($index === $insideForParenthesesUntil) {
+                    $insideForParenthesesUntil = null;
+
+                    continue;
+                }
+            }
+
             if (!$tokens[$index]->equals(';')) {
                 continue;
             }
 
             if (!$tokens[$index + 1]->isWhitespace()) {
-                if (!$tokens[$index + 1]->equalsAny([')', [T_INLINE_HTML]])) {
+                if (
+                    !$tokens[$index + 1]->equalsAny([')', [T_INLINE_HTML]]) && (
+                        !$this->configuration['remove_in_empty_for_expressions']
+                        || !$tokens[$index + 1]->equals(';')
+                    )
+                ) {
                     $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
                 }
-            } elseif (
+
+                continue;
+            }
+
+            if (
+                null !== $insideForParenthesesUntil
+                && ($tokens[$index + 2]->equals(';') || $index + 2 === $insideForParenthesesUntil)
+                && !preg_match('/\R/', $tokens[$index + 1]->getContent())
+            ) {
+                $tokens->clearAt($index + 1);
+
+                continue;
+            }
+
+            if (
                 isset($tokens[$index + 2])
                 && !$tokens[$index + 1]->equals([T_WHITESPACE, ' '])
                 && $tokens[$index + 1]->isWhitespace(" \t")
