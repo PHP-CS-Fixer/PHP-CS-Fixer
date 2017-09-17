@@ -76,7 +76,17 @@ final class IsNullFixerTest extends AbstractFixerTestCase
             '<?php $b = a(a(a(b() === null) === null) === null) === null;',
             '<?php $b = \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));'
         );
+
         $this->doTest('<?php if ($x === null && $y) echo "foo";', '<?php if (is_null($x) && $y) echo "foo";');
+
+        $this->doTest(
+            '<?php $x = ($x = array()) === null;',
+            '<?php $x = is_null($x = array());'
+        );
+        $this->doTest(
+            '<?php while (($nextMaxId = $myTimeline->getNextMaxId()) === null);',
+            '<?php while (is_null($nextMaxId = $myTimeline->getNextMaxId()));'
+        );
     }
 
     public function provideYodaFixCases()
