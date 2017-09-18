@@ -43,7 +43,7 @@ class InvalidName {}
                 ),
             ),
             null,
-            'This fixer may change you class name, which will break the code that is depended on old name.'
+            'This fixer may change your class name, which will break the code that is depended on old name.'
         );
     }
 
