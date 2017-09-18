@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-17T18:08:07Z
+
+Did you modify the REAME.rst by hand or regenerate it? as now the tests fail..
+Beside that; I've no strong opinion on the copy used to describe the config, so I let the community deside ;)
+
+(yet I still think using `true/false/null` as value was a good call over some magic string value, but that is part of the PR description but not a proposed change :) )
+
+---------------------------------------------------------------------------
+
+by SteveJobzniak at 2017-09-17T18:53:47Z
+
+@SpacePossum Ohhh, I did it by hand. I didn't know you had an auto-generator (I see it now in contributing.md). I'll update the pull request in a moment!
+
+---------------------------------------------------------------------------
+
+by SteveJobzniak at 2017-09-17T19:05:21Z
+
+@SpacePossum I've auto-generated the README now and made sure that the FixerDefinition matches it completely.
+
+And sure, true/false/null is okay (and even if we wanted to, we can't change that now without breaking backwards-compatibility anyway...). We just need to document those 3 values, which is what I'm trying to do. Let's see what you guys think of this new update now!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-17T20:25:12Z
+
+:+1: if test are green :)
