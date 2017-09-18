@@ -20,7 +20,7 @@
         "composer/semver": "^1.4",
         "doctrine/annotations": "^1.2",
         "gecko-packages/gecko-php-unit": "^2.0",
-        "sebastian/diff": "^1.4",
+        "php-cs-fixer/diff": "^1.0",
         "symfony/console": "^3.2",
         "symfony/event-dispatcher": "^3.0",
         "symfony/filesystem": "^3.0",

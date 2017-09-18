@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Differ;
 
-use SebastianBergmann\Diff\Differ;
+use PhpCsFixer\Diff\v1_4\Differ;
 
 /**
  * @author SpacePossum
