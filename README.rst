@@ -260,8 +260,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``statements`` (``array``): list of statements which must be must be preceded by
-    an empty line; defaults to ``['break', 'continue', 'declare', 'return',
+  - ``statements`` (``array``): list of statements which must be preceded by an
+    empty line; defaults to ``['break', 'continue', 'declare', 'return',
     'throw', 'try']``
 
 * **braces** [@PSR2, @Symfony]
@@ -1116,7 +1116,7 @@ Choose from the list of available rules:
 
   Class names should match the file name.
 
-  *Risky rule: this fixer may change you class name, which will break the code that is depended on old name.*
+  *Risky rule: this fixer may change your class name, which will break the code that is depended on old name.*
 
 * **random_api_migration** [@PHP70Migration:risky, @PHP71Migration:risky]
 
@@ -1283,16 +1283,17 @@ Choose from the list of available rules:
 
 * **yoda_style** [@Symfony]
 
-  Write conditions in Yoda style or not based on configuration.
+  Write conditions in Yoda style (``true``), non-Yoda style (``false``) or
+  ignore those conditions (``null``) based on configuration.
 
   Configuration options:
 
-  - ``equal`` (``bool``, ``null``): change equal (``==``, ``!=``) statements; defaults to
+  - ``equal`` (``bool``, ``null``): style for equal (``==``, ``!=``) statements; defaults to
     ``true``
-  - ``identical`` (``bool``, ``null``): change identical (``===``, ``!==``) statements;
+  - ``identical`` (``bool``, ``null``): style for identical (``===``, ``!==``) statements;
     defaults to ``true``
-  - ``less_and_greater`` (``bool``, ``null``): change less and greater than (``<``, ``<=``,
-    ``>``, ``>=``) statements; defaults to ``null``
+  - ``less_and_greater`` (``bool``, ``null``): style for less and greater than (``<``,
+    ``<=``, ``>``, ``>=``) statements; defaults to ``null``
 
 
 The ``--dry-run`` option displays the files that need to be
@@ -1424,7 +1425,7 @@ Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or
 Exit codes
 ----------
 
-Exit code is build using following bit flags:
+Exit code is built using following bit flags:
 
 *  0 OK.
 *  1 General error (or PHP minimal requirement not matched).

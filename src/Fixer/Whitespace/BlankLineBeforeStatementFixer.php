@@ -299,7 +299,7 @@ if (true) {
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('statements', 'List of statements which must be must be preceded by an empty line.'))
+            (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$tokenMap)),
