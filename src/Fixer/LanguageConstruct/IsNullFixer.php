@@ -164,7 +164,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             } else {
                 $replacement = array_reverse($replacement);
                 if ($isContainingDangerousConstructs) {
-                    array_unshift($replacement, new Token(array(')')));
+                    array_unshift($replacement, new Token(')'));
                 }
 
                 if ($wrapIntoParentheses) {
