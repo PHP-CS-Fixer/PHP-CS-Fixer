@@ -1,0 +1,97 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-14T19:30:59Z
+
+if 2.2.8, then please change target branch ;)
+
+---------------------------------------------------------------------------
+
+by roukmoute at 2017-09-15T09:07:02Z
+
+@juliendufresne @SpacePossum updates done.
+
+I've changed branch.
+I only remove the use of `removeTrailingWhitespace()`.
+I kept all new tests.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-15T09:24:22Z
+
+> I only remove the use of `removeTrailingWhitespace()`.
+
+I think you actually forgot to commit that :)
+
+---------------------------------------------------------------------------
+
+by roukmoute at 2017-09-15T09:37:00Z
+
+@juliendufresne I don't understand.
+I've commited: `Remove the use of the removeTrailingWhitespace() method`.
+
+Have I miss something ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-15T09:39:50Z
+
+The target is good now :+1:
+The test file looks good :+1:
+Changes in `Token.php` are reverted :+1:
+Sadly, now there is no fix proposal left in the fixer file itself.
+
+---------------------------------------------------------------------------
+
+by roukmoute at 2017-09-15T11:24:06Z
+
+@SpacePossum I have followed your commentary `The test passes without your fixes, when you disable this line;` and this [comment](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3058#discussion_r138987448).
+Do you prefer I add a check like before?
+Oh perhaps I add a condition before the `removeTrailingWhitespace()` method?
+
+---------------------------------------------------------------------------
+
+by roukmoute at 2017-09-15T11:27:08Z
+
+Oh!
+I've just seen that I've completely forgotten to remove `removeTrailingWhitespace()` :-D
+
+I better understand your comments now :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-15T12:02:18Z
+
+:)
+thanks for updating!
+
+>Oh perhaps I add a condition before the removeTrailingWhitespace() method?
+
+I would've to take a better look at the fixer and the tests before making that call. What I did notice however is that removing all calls to `removeTrailingWhitespace` in the fixer still makes the tests pass. So I wonder, maybe the tests are incomplete or the fixer is doing unneeded things.
+
+---------------------------------------------------------------------------
+
+by roukmoute at 2017-09-15T12:20:08Z
+
+If we try with:
+```php
+array(
+    '<?php if (null === $u ) echo "foo"; ?>',
+    '<?php if (is_null($u) ) echo "foo"; ?>',
+),
+```
+we keep a space.
+But I don't think it's the job of `IsNullFixer` to remove this space.
+
+Am I right, or I have to improve this P.R.?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-15T12:24:02Z
+
+No it's not its job. Some people even like to have spaces inside braces: `if ( is_null($foo) ) { ... }`, the fixer should not remove them, another fixer already takes care of that, if enabled.
+
+---------------------------------------------------------------------------
+
+by SteveJobzniak at 2017-09-17T19:36:35Z
+
+Thanks for this PR. We'll start using this is_null fixer as soon as this fix is merged. :-)
