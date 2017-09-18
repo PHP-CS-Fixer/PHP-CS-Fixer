@@ -432,7 +432,6 @@ use function some\a\fn;
 use const some\c;
 
 ',
-
                 ' <?php
 use some\a\ClassA; use function some\a\fn; use const some\c;
 ',

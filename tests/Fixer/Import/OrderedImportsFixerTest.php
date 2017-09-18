@@ -1721,7 +1721,7 @@ use function some\a\{fn_a, fn_b};
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
+     * @param null|array  $config
      *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2

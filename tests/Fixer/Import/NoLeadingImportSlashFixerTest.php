@@ -202,7 +202,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFix54Cases
+     * @dataProvider provideFix56Cases
      * @requires PHP 5.6
      */
     public function testFix56($expected, $input = null)
