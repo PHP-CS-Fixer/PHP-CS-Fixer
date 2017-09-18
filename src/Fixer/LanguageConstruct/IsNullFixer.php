@@ -172,7 +172,6 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
                     $tokens[$isNullIndex] = new Token('(');
                 } else {
                     $tokens->clearAt($isNullIndex);
-                    $tokens->removeTrailingWhitespace($referenceEnd);
                 }
 
                 $tokens->overrideRange($referenceEnd, $referenceEnd, $replacement);
