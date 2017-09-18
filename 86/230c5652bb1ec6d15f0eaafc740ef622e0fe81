@@ -1,0 +1,121 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-17T22:20:01Z
+
+@SteveJobzniak could you confirm the fix please?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-17T22:33:50Z
+
+(new commit with same content just to retrigger Travis after changing base branch)
+
+---------------------------------------------------------------------------
+
+by SteveJobzniak at 2017-09-17T22:47:37Z
+
+@keradus Okay I downloaded this pull request. Your branch was missing a bunch of 2.6+ features so I removed all fixers except is_null.
+
+Here's my final config:
+
+```php
+<?php
+
+return PhpCsFixer\Config::create()
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+        ->in(__DIR__)
+    )
+    ->setIndent('    ')
+    ->setLineEnding("\n")
+    ->setRules([
+        'is_null'                             => [
+            // Replaces all is_null() with === null.
+            'use_yoda_style' => false,
+        ],
+    ]);
+```
+
+Test file: https://raw.githubusercontent.com/mgp25/Instagram-API/b145c9c077d41c599a071629a1b91e13b5aa3242/src/Request/Timeline.php
+
+I made a sub-folder of this branch's folder and put the php_cs.conf and Timeline.php there, then I ran:
+
+`../php-cs-fixer fix --config=php_cs.conf --allow-risky yes -vvv`
+
+Result:
+
+```
+Loaded config default from "php_cs.conf".
+F
+Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error
+   1) Timeline.php (is_null)
+
+Fixed all files in 0.112 seconds, 8.000 MB memory used
+```
+
+And then diffed it compared to the original Timeline.php:
+
+```diff
++ $ diff -u foo.php Timeline.php
+--- original.php	2017-09-18 00:44:09.000000000 +0200
++++ Timeline.php	2017-09-18 00:43:54.000000000 +0200
+@@ -279,8 +279,8 @@
+         return $this->ig->request("feed/user/{$userId}/")
+             ->addParam('rank_token', $this->ig->rank_token)
+             ->addParam('ranked_content', 'true')
+-            ->addParam('max_id', (!is_null($maxId) ? $maxId : ''))
+-            ->addParam('min_timestamp', (!is_null($minTimestamp) ? $minTimestamp : ''))
++            ->addParam('max_id', ($maxId !== null? $maxId : ''))
++            ->addParam('min_timestamp', ($minTimestamp !== null? $minTimestamp : ''))
+             ->getResponse(new Response\UserFeedResponse());
+     }
+
+@@ -458,6 +458,6 @@
+                     touch($filePath, $mediaInfo['taken_at']);
+                 }
+             }
+-        } while (!is_null($nextMaxId = $myTimeline->getNextMaxId()));
++        } while (($nextMaxId = $myTimeline->getNextMaxId()) !== null);
+     }
+ }
+```
+
+It seems to be perfectly correct now?
+
+---------------------------------------------------------------------------
+
+by SteveJobzniak at 2017-09-17T22:50:16Z
+
+Thanks, by the way, for the incredibly fast fixing. Great work!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-17T23:59:31Z
+
+> Your branch was missing a bunch of 2.6+ features so I removed all fixers except is_null.
+
+yeah, bugfix goes for 2.2.x, which is lowest supported version
+
+hm... need to see why there is missing space before `?` in first 2 modified lines
+
+---------------------------------------------------------------------------
+
+by SteveJobzniak at 2017-09-18T03:00:52Z
+
+> hm... need to see why there is missing space before "?" in first 2 modified lines
+
+@keradus Sorry that I didn't see your message until now. I could have told you the answer to that. It's a separate bug being fixed here:
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3058
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-18T07:14:10Z
+
+Note when merging; this PR https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3058 touches the same file so might cause conflicts.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-18T19:36:30Z
+
+I merged #3058 and rebase this PR to resolve conflicts
