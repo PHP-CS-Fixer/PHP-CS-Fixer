@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-16T11:54:22Z
+
+> Symfony follows it.
+
+Where did you see that?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-16T12:13:58Z
+
+codebase, golden rule of Symfony's CS - mimic recent code, here, mimic whole code.
