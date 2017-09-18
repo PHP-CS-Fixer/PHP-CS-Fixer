@@ -237,7 +237,7 @@ Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` 
 Exit codes
 ----------
 
-Exit code is build using following bit flags:
+Exit code is built using following bit flags:
 
 *  0 OK.
 *  1 General error (or PHP minimal requirement not matched).
