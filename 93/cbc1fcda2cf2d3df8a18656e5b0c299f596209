@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-17T21:34:31Z
+
+@nullref could you please confirm the fix ?
+
+---------------------------------------------------------------------------
+
+by nullref at 2017-09-17T21:51:49Z
+
+I tested it with my minimal test case and the original code I generated it from, both were processed without generating a syntax error.
