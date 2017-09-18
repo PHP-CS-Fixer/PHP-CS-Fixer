@@ -31,8 +31,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.6.0';
-    const VERSION_CODENAME = 'Local Tavern';
+    const VERSION = '2.7.0-DEV';
+    const VERSION_CODENAME = '';
 
     public function __construct()
     {
