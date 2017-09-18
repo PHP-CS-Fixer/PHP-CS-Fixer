@@ -315,6 +315,18 @@ INPUT
             ,
                 ['ensure_fully_multiline' => true],
             ],
+            'test wrongly formatted half-multiline function becomes fully-multiline' => [
+                '<?php
+f(
+    1,
+    2,
+3
+);',
+                '<?php
+f(1,2,
+3);',
+                ['ensure_fully_multiline' => true],
+            ],
             'function calls with here doc cannot be anything but multiline' => [
                 <<<'EXPECTED'
 <?php
