@@ -1283,16 +1283,17 @@ Choose from the list of available rules:
 
 * **yoda_style** [@Symfony]
 
-  Write conditions in Yoda style or not based on configuration.
+  Write conditions in Yoda style (``true``), non-Yoda style (``false``) or
+  ignore those conditions (``null``) based on configuration.
 
   Configuration options:
 
-  - ``equal`` (``bool``, ``null``): change equal (``==``, ``!=``) statements; defaults to
+  - ``equal`` (``bool``, ``null``): style for equal (``==``, ``!=``) statements; defaults to
     ``true``
-  - ``identical`` (``bool``, ``null``): change identical (``===``, ``!==``) statements;
+  - ``identical`` (``bool``, ``null``): style for identical (``===``, ``!==``) statements;
     defaults to ``true``
-  - ``less_and_greater`` (``bool``, ``null``): change less and greater than (``<``, ``<=``,
-    ``>``, ``>=``) statements; defaults to ``null``
+  - ``less_and_greater`` (``bool``, ``null``): style for less and greater than (``<``,
+    ``<=``, ``>``, ``>=``) statements; defaults to ``null``
 
 
 The ``--dry-run`` option displays the files that need to be

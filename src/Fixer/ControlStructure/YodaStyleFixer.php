@@ -55,7 +55,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Write conditions in Yoda style or not based on configuration.',
+            'Write conditions in Yoda style (`true`), non-Yoda style (`false`) or ignore those conditions (`null`) based on configuration.',
             [
                 new CodeSample(
                     '<?php
@@ -102,15 +102,15 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('equal', 'Change equal (`==`, `!=`) statements.'))
+            (new FixerOptionBuilder('equal', 'Style for equal (`==`, `!=`) statements.'))
                 ->setAllowedTypes(['bool', 'null'])
                 ->setDefault(true)
                 ->getOption(),
-            (new FixerOptionBuilder('identical', 'Change identical (`===`, `!==`) statements.'))
+            (new FixerOptionBuilder('identical', 'Style for identical (`===`, `!==`) statements.'))
                 ->setAllowedTypes(['bool', 'null'])
                 ->setDefault(true)
                 ->getOption(),
-            (new FixerOptionBuilder('less_and_greater', 'Change less and greater than (`<`, `<=`, `>`, `>=`) statements.'))
+            (new FixerOptionBuilder('less_and_greater', 'Style for less and greater than (`<`, `<=`, `>`, `>=`) statements.'))
                 ->setAllowedTypes(['bool', 'null'])
                 ->setDefault(null)
                 ->getOption(),
