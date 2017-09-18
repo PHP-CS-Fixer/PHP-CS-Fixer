@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-16T16:24:29Z
+
+Note that some of these changes can be applied to 2.2 as well. @keradus, do you want to handle this while merging? Or shall we open a separate PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-16T16:29:34Z
+
+I cannot downgrade sth during merging. If pr is for 2.2 line, i will catch it up to 2.6.
+but if sth is for 2.6 line, i won't apply changes back to 2.2 during merging
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-18T05:19:29Z
+
+It would be nice to have some way to see on which version a rule was added so when you want fix multiple you don't need to go through all the release notes.
