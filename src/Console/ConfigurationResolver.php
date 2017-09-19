@@ -642,7 +642,8 @@ final class ConfigurationResolver
 
         $rules = array();
 
-        foreach (array_map('trim', explode(',', $this->options['rules'])) as $rule) {
+        foreach (explode(',', $this->options['rules']) as $rule) {
+            $rule = trim($rule);
             if ('' === $rule) {
                 throw new InvalidConfigurationException('Empty rule name is not allowed.');
             }
