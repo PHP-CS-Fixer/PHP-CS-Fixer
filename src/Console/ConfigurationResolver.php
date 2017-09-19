@@ -215,6 +215,8 @@ final class ConfigurationResolver
                     continue;
                 }
 
+                $configurationResolver = $this;
+
                 $config = include $configFile;
 
                 // verify that the config has an instance of Config
