@@ -16,25 +16,46 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
+ * @author Kuba Werłos <werlos@gmail.com>
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\PreIncrementFixer
+ * @covers \PhpCsFixer\Fixer\Operator\IncrementStyleFixer
  */
-final class PreIncrementFixerTest extends AbstractFixerTestCase
+final class IncrementStyleFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixCases
+     * @dataProvider provideFixPreIncrementCases
      */
-    public function testFix($expected, $input = null)
+    public function testFixPreIncrement($expected, $input = null)
     {
+        $this->fixer->configure(['style' => 'pre']);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPostIncrementCases
+     */
+    public function testFixPostIncrement($expected, $input = null)
+    {
+        $this->fixer->configure(['style' => 'post']);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPostIncrementCases()
+    {
+        return array_map(function (array $case) {
+            return array_reverse($case);
+        }, $this->provideFixPreIncrementCases());
+    }
+
+    public function provideFixPreIncrementCases()
     {
         return [
             [
@@ -109,6 +130,14 @@ final class PreIncrementFixerTest extends AbstractFixerTestCase
             ['<?php foo($a, $b++);'],
             ['<?php $a[$b++];'],
             ['<?php echo $a++;'],
+
+            ['<?php $a = ++$b;'],
+            ['<?php $a + ++$b;'],
+            ['<?php ++$a + $b;'],
+            ['<?php foo(++$b);'],
+            ['<?php foo($a, ++$b);'],
+            ['<?php $a[++$b];'],
+            ['<?php echo ++$a;'],
         ];
     }
 }

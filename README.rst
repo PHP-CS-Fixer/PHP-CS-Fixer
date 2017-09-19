@@ -573,6 +573,16 @@ Choose from the list of available rules:
   Include/Require and file path should be divided with a single space.
   File path should not be placed under brackets.
 
+* **increment_style**
+
+  Pre or post increment and decrement operators should be used if
+  possible.
+
+  Configuration options:
+
+  - ``style`` (``'post'``, ``'pre'``): whether to use ``pre`` or ``post`` increment and
+    decrement operators; defaults to ``'pre'``
+
 * **indentation_type** [@PSR2, @Symfony]
 
   Code MUST use configured indentation type.
@@ -1089,10 +1099,6 @@ Choose from the list of available rules:
 * **phpdoc_var_without_name** [@Symfony]
 
   @var and @type annotations should not contain the variable name.
-
-* **post_increment**
-
-  Post incrementation/decrementation should be used if possible.
 
 * **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
