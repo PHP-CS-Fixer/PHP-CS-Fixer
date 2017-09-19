@@ -712,9 +712,29 @@ $b;
         ];
     }
 
+    public function testWrongConfigItem()
+    {
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "align_double_arrow", "align_equals", "default", "operators"\.$/'
+        );
+
+        $this->fixer->configure(['foo' => true]);
+    }
+
+    public function testWrongConfigOldValue()
+    {
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid\. Accepted values are: true, false, null\.$/'
+        );
+
+        $this->fixer->configure(['align_double_arrow' => 123]);
+    }
+
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true]. Use configuration: ['operators' => ['=>' => 'single_space']] as replacement for ['align_double_arrow' => false].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'single_space']] as replacement for ['align_equals' => true, 'align_double_arrow' => false].
      */
     public function testWrongConfigOldDeprecated()
     {
@@ -726,7 +746,7 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => null].
      */
     public function testWrongConfigOldDeprecated2()
     {
@@ -738,7 +758,7 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=>' => 'align']] as replacement for ['align_double_arrow' => true].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=>' => 'align']] as replacement for ['align_equals' => null, 'align_double_arrow' => true].
      */
     public function testWrongConfigOldDeprecated3()
     {
@@ -750,7 +770,7 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'single_space']] as replacement for ['align_equals' => false]. Use configuration: ['operators' => ['=>' => 'align']] as replacement for ['align_double_arrow' => true].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'single_space', '=>' => 'align']] as replacement for ['align_equals' => false, 'align_double_arrow' => true].
      */
     public function testWrongConfigOldDeprecated4()
     {
@@ -762,7 +782,7 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true]. Use configuration: ['operators' => ['=>' => 'align']] as replacement for ['align_double_arrow' => true].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => true].
      */
     public function testWrongConfigOldDeprecated5()
     {
@@ -821,7 +841,7 @@ $b;
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[binary_operator_spaces\] Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/'
+            '/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/'
         );
 
         $this->fixer->configure(['operators' => [123 => 1]]);
@@ -831,7 +851,7 @@ $b;
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[binary_operator_spaces\] Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/'
+            '/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/'
         );
 
         $this->fixer->configure(['operators' => ['+' => 'abc']]);

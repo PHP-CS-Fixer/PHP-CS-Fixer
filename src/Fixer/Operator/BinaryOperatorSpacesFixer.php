@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -23,6 +24,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -140,13 +142,25 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     private $alignOperatorTokens = [];
 
     /**
+     * @var array<string, string>
+     */
+    private $operators = [];
+
+    /**
      * {@inheritdoc}
      */
     public function configure(array $configuration = null)
     {
+        if (
+            null !== $configuration &&
+            (array_key_exists('align_equals', $configuration) || array_key_exists('align_double_arrow', $configuration))
+        ) {
+            $configuration = $this->resolveOldConfig($configuration);
+        }
+
         parent::configure($configuration);
 
-        $this->resolveConfig(null === $configuration ? [] : $configuration);
+        $this->operators = $this->resolveOperatorsFromConfig();
     }
 
     /**
@@ -254,6 +268,32 @@ $h = $i===  $j;
                 ->getOption(),
             (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array'])
+                ->setAllowedValues([function ($option) {
+                    foreach ($option as $operator => $value) {
+                        if (!in_array($operator, self::$supportedOperators, true)) {
+                            throw new InvalidOptionsException(
+                                sprintf(
+                                    'Unexpected "operators" key, expected any of "%s", got "%s".',
+                                    implode('", "', self::$supportedOperators),
+                                    is_object($operator) ? get_class($operator) : gettype($operator).'#'.$operator
+                                )
+                            );
+                        }
+
+                        if (!in_array($value, self::$allowedValues, true)) {
+                            throw new InvalidOptionsException(
+                                sprintf(
+                                    'Unexpected value for operator "%s", expected any of "%s", got "%s".',
+                                    $operator,
+                                    implode('", "', self::$allowedValues),
+                                    is_object($value) ? get_class($value) : (null === $value ? 'null' : gettype($value).'#'.$value)
+                                )
+                            );
+                        }
+                    }
+
+                    return true;
+                }])
                 ->setDefault([])
                 ->getOption(),
             // add deprecated options as BC layer
@@ -276,26 +316,26 @@ $h = $i===  $j;
     {
         $tokenContent = strtolower($tokens[$index]->getContent());
 
-        if (!array_key_exists($tokenContent, $this->configuration)) {
+        if (!array_key_exists($tokenContent, $this->operators)) {
             return; // not configured to be changed
         }
 
-        if (self::SINGLE_SPACE === $this->configuration[$tokenContent]) {
+        if (self::SINGLE_SPACE === $this->operators[$tokenContent]) {
             $this->fixWhiteSpaceAroundOperatorToSingleSpace($tokens, $index);
 
             return;
         }
 
         // schedule for alignment
-        $this->alignOperatorTokens[$tokenContent] = $this->configuration[$tokenContent];
+        $this->alignOperatorTokens[$tokenContent] = $this->operators[$tokenContent];
 
-        if (self::ALIGN === $this->configuration[$tokenContent]) {
+        if (self::ALIGN === $this->operators[$tokenContent]) {
             return;
         }
 
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
-            if (self::ALIGN_SINGLE_SPACE_MINIMAL === $this->configuration[$tokenContent]) {
+            if (self::ALIGN_SINGLE_SPACE_MINIMAL === $this->operators[$tokenContent]) {
                 $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
             }
 
@@ -354,121 +394,90 @@ $h = $i===  $j;
         return false;
     }
 
-    private function resolveConfig(array $configuration)
+    /**
+     * @return array<string, string>
+     */
+    private function resolveOperatorsFromConfig()
     {
-        $this->configuration = [];
+        $operators = [];
 
-        if (0 === count($configuration)) {
-            $this->resolveTokenDefaults(self::SINGLE_SPACE);
-
-            return;
-        }
-
-        $this->resolveTokenDefaults(array_key_exists('default', $configuration) ? $configuration['default'] : self::SINGLE_SPACE);
-
-        if (array_key_exists('align_equals', $configuration) || array_key_exists('align_double_arrow', $configuration)) {
-            $this->resolveOldConfig($configuration);
-
-            return;
-        }
-
-        if (!array_key_exists('operators', $configuration)) {
-            return;
-        }
-
-        foreach ($configuration['operators'] as $operator => $value) {
-            if (!in_array($operator, self::$supportedOperators, true)) {
-                throw new InvalidFixerConfigurationException(
-                    $this->getName(),
-                    sprintf(
-                        'Unexpected "operators" key, expected any of "%s", got "%s".',
-                        implode('", "', self::$supportedOperators),
-                        is_object($operator) ? get_class($operator) : gettype($operator).'#'.$operator
-                    )
-                );
+        if (null !== $this->configuration['default']) {
+            foreach (self::$supportedOperators as $operator) {
+                $operators[$operator] = $this->configuration['default'];
             }
+        }
 
-            if (!in_array($value, self::$allowedValues, true)) {
-                throw new InvalidFixerConfigurationException(
-                    $this->getName(),
-                    sprintf(
-                        'Unexpected value for operator "%s", expected any of "%s", got "%s".',
-                        $operator,
-                        implode('", "', self::$allowedValues),
-                        is_object($value) ? get_class($value) : (null === $value ? 'null' : gettype($value).'#'.$value)
-                    )
-                );
-            }
-
+        foreach ($this->configuration['operators'] as $operator => $value) {
             if (null === $value) {
-                unset($this->configuration[$operator]);
+                unset($operators[$operator]);
             } else {
-                $this->configuration[$operator] = $value;
+                $operators[$operator] = $value;
             }
         }
 
         if (!defined('T_SPACESHIP')) {
-            unset($this->configuration['<=>']);
+            unset($operators['<=>']);
         }
 
         if (!defined('T_COALESCE')) {
-            unset($this->configuration['??']);
+            unset($operators['??']);
         }
+
+        return $operators;
     }
 
+    /**
+     * @param array $configuration
+     *
+     * @return array
+     */
     private function resolveOldConfig(array $configuration)
     {
-        $message = 'Given configuration is deprecated and will be removed in 3.0.';
+        $newConfig = [
+            'operators' => [],
+        ];
 
         foreach ($configuration as $name => $setting) {
-            if ('align_equals' === $name) {
+            if ('align_double_arrow' === $name) {
                 if (true === $configuration[$name]) {
-                    $this->configuration['='] = self::ALIGN;
-                    $message .= sprintf(" Use configuration: ['operators' => ['=' => '%s']] as replacement for ['%s' => true].", self::ALIGN, $name);
+                    $newConfig['operators']['=>'] = self::ALIGN;
                 } elseif (false === $configuration[$name]) {
-                    $this->configuration['='] = self::SINGLE_SPACE;
-                    $message .= sprintf(" Use configuration: ['operators' => ['=' => '%s']] as replacement for ['%s' => false].", self::SINGLE_SPACE, $name);
-                } else { // === null
-                    unset($this->configuration['=']);
+                    $newConfig['operators']['=>'] = self::SINGLE_SPACE;
+                } elseif (null !== $configuration[$name]) {
+                    throw new InvalidFixerConfigurationException(
+                        $this->getName(),
+                        sprintf(
+                            'Invalid configuration: The option "align_double_arrow" with value %s is invalid. Accepted values are: true, false, null.',
+                            $configuration[$name]
+                        )
+                    );
                 }
-            } elseif ('align_double_arrow' === $name) {
+            } elseif ('align_equals' === $name) {
                 if (true === $configuration[$name]) {
-                    $this->configuration['=>'] = self::ALIGN;
-                    $message .= sprintf(" Use configuration: ['operators' => ['=>' => '%s']] as replacement for ['%s' => true].", self::ALIGN, $name);
+                    $newConfig['operators']['='] = self::ALIGN;
                 } elseif (false === $configuration[$name]) {
-                    $this->configuration['=>'] = self::SINGLE_SPACE;
-                    $message .= sprintf(" Use configuration: ['operators' => ['=>' => '%s']] as replacement for ['%s' => false].", self::SINGLE_SPACE, $name);
-                } else { // === null
-                    unset($this->configuration['=>']);
+                    $newConfig['operators']['='] = self::SINGLE_SPACE;
+                } elseif (null !== $configuration[$name]) {
+                    throw new InvalidFixerConfigurationException(
+                        $this->getName(),
+                        sprintf(
+                            'Invalid configuration: The option "align_equals" with value %s is invalid. Accepted values are: true, false, null.',
+                            $configuration[$name]
+                        )
+                    );
                 }
             } else {
                 throw new InvalidFixerConfigurationException($this->getName(), 'Mixing old configuration with new configuration is not allowed.');
             }
         }
 
-        @trigger_error($message, E_USER_DEPRECATED);
-    }
+        @trigger_error(sprintf(
+            'Given configuration is deprecated and will be removed in 3.0. Use configuration %s as replacement for %s.',
+            HelpCommand::toString($newConfig),
+            HelpCommand::toString($configuration)
+        ), E_USER_DEPRECATED);
 
-    /**
-     * @param null|string $default
-     */
-    private function resolveTokenDefaults($default = null)
-    {
-        if (null === $default) {
-            return;
-        }
-
-        foreach (self::$supportedOperators as $operator) {
-            $this->configuration[$operator] = $default;
-        }
-
-        if (!defined('T_SPACESHIP')) {
-            unset($this->configuration['<=>']);
-        }
-
-        if (!defined('T_COALESCE')) {
-            unset($this->configuration['??']);
-        }
+        return $newConfig;
     }
 
     // Alignment logic related methods
