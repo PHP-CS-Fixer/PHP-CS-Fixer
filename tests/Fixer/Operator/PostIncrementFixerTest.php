@@ -38,9 +38,8 @@ final class PostIncrementFixerTest extends AbstractFixerTestCase
     {
         $preIncrementFixerTest = new PreIncrementFixerTest();
 
-        return array_map(
-            'array_reverse',
-            $preIncrementFixerTest->provideFixCases()
-        );
+        return array_map(function (array $case) {
+            return array_reverse($case);
+        }, $preIncrementFixerTest->provideFixCases());
     }
 }

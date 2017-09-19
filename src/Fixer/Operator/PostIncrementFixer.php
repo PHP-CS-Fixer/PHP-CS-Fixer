@@ -92,13 +92,11 @@ final class PostIncrementFixer extends AbstractFixer
             [T_STRING],
             [T_VARIABLE],
         ])) {
-            $index = $nextIndex;
-
             $blockType = Tokens::detectBlockType($nextToken);
-            if (null !== $blockType && $blockType['isStart']) {
+            if (null !== $blockType) {
                 $nextIndex = $tokens->findBlockEnd($blockType['type'], $nextIndex);
-                $index = $nextIndex;
             }
+            $index = $nextIndex;
             $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             $nextToken = $tokens[$nextIndex];
         }
@@ -108,13 +106,7 @@ final class PostIncrementFixer extends AbstractFixer
         }
 
         if ($nextToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
-            $nextNextToken = $tokens->getNextMeaningfulToken($nextIndex);
-            if (!$tokens[$nextNextToken]->isGivenKind(T_STRING)) {
-                return $this->findEnd($tokens, $nextNextToken);
-            }
-
-            $index = $tokens->getTokenNotOfKindSibling($nextIndex, 1, [[T_NS_SEPARATOR], [T_STRING]]);
-            $index = $tokens->getPrevMeaningfulToken($index);
+            return $this->findEnd($tokens, $tokens->getNextMeaningfulToken($nextIndex));
         }
 
         return $index;
