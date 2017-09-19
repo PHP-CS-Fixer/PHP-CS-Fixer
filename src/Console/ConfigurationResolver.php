@@ -217,7 +217,7 @@ final class ConfigurationResolver
                     continue;
                 }
 
-                $config = include $configFile;
+                $config = self::separatedContextLessInclude($configFile);
 
                 // verify that the config has an instance of Config
                 if (!$config instanceof ConfigInterface) {
@@ -847,5 +847,10 @@ final class ConfigurationResolver
         );
 
         return false;
+    }
+
+    private static function separatedContextLessInclude($path)
+    {
+        return include $path;
     }
 }
