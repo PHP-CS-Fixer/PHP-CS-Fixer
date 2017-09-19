@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.8.3
+--------------------
+
+* bug #3173 SimplifiedNullReturnFixer - handle nullable return types (Slamdunk)
+* bug #3268 PhpUnitNoExpectationAnnotationFixer - add case with backslashes (keradus, Slamdunk)
+* bug #3272 PhpdocTrimFixer - unicode support (SpacePossum)
+
 Changelog for v2.8.2
 --------------------
 
@@ -402,6 +409,12 @@ Changelog for v2.3.0
 * feature #2708 Add PhpUnitTestClassRequiresCoversFixer (keradus)
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
+
+Changelog for v2.2.12
+---------------------
+
+* bug #3173 SimplifiedNullReturnFixer - handle nullable return types (Slamdunk)
+* bug #3272 PhpdocTrimFixer - unicode support (SpacePossum)
 
 Changelog for v2.2.11
 ---------------------
