@@ -16,6 +16,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ * @TODO (keradus): rename to `PhpUnitTestCaseIndicator`
  */
 final class PhpUnitIndicator
 {
@@ -28,7 +29,7 @@ final class PhpUnitIndicator
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
         if ($tokens[$prevIndex]->isGivenKind(T_ABSTRACT)) {
-            return false;
+            return false; // TODO (keradus): this check shall not be here
         }
 
         $classNameIndex = $tokens->getNextMeaningfulToken($index);
