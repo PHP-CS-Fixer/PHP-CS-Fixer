@@ -36,13 +36,17 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
     {
         // if we've got a <?php, then subtracted the number of new lines it
         // contains from the expected number in the following whitespace
-        if (isset($tokens[$index - 2])) {
-            $opening = $tokens[$index - 2];
-            if ($opening->isGivenKind(T_OPEN_TAG)) {
-                $expected -= substr_count($opening->getContent(), "\n");
+        for ($i = 1; $i <= 2; ++$i) {
+            if (isset($tokens[$index - $i])) {
+                $opening = $tokens[$index - $i];
+                if ($opening->isGivenKind(T_OPEN_TAG)) {
+                    $expected -= substr_count($opening->getContent(), "\n");
+                    break;
+                } elseif ($opening->isGivenKind(T_WHITESPACE) !== true) {
+                    break;
+                }
             }
         }
-
         $previousIndex = $index - 1;
         $previous = $tokens[$previousIndex];
         if ($previous->isWhitespace()) {
@@ -51,6 +55,8 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
             } elseif (substr_count($previous->getContent(), "\n") !== $expected) {
                 $tokens[$previousIndex] = new Token(array(T_WHITESPACE, str_repeat("\n", $expected)));
             }
+        } elseif (0 < $expected && $previous->isGivenKind(T_OPEN_TAG)) {
+            $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat("\n", $expected))));
         }
     }
 }
