@@ -48,7 +48,7 @@ final class WarningsDetector
 
     public function detectXdebug()
     {
-        if (extension_loaded('xdebug')) {
+        if (extension_loaded('xdebug') && !getenv('PHP_CS_FIXER_DISABLE_XDEBUG_WARN')) {
             $this->warnings[] = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.';
         }
     }
