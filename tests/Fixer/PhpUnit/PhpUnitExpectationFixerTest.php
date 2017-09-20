@@ -85,6 +85,58 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
         }
     }',
             ],
+            [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            $this->expectException(
+                \Exception::class
+            );
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            $this->setExpectedException(
+                \Exception::class
+            );
+        }
+    }',
+            ],
+            [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            $this->expectException(
+                \Exception::class
+            );
+            $this->expectExceptionMessage(
+                "foo"
+            );
+            $this->expectExceptionCode(
+                123
+            );
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            $this->setExpectedException(
+                \Exception::class,
+                "foo",
+                123
+            );
+        }
+    }',
+            ],
         ];
     }
 }

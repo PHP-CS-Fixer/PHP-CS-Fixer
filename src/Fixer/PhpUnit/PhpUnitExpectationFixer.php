@@ -107,36 +107,41 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
             $argumentsCnt = count($arguments);
 
-            $argumentsReplacements = ['expectException', 'expectExceptionMessage', 'expectExceptionCode']; // TODO option for MessageRegExp
+            $argumentsReplacements = ['expectException', 'expectExceptionMessage', 'expectExceptionCode']; // TODO option for MessageRegExp for phpunit 5.6
 
             $indent = "\n".$this->detectIndent($tokens, $thisIndex); // TODO whitespaceaware shit
+
+            $isMultilineWhitespace = false;
 
             for ($cnt = $argumentsCnt - 1; $cnt >= 1; --$cnt) {
                 $argStart = array_keys($arguments)[$cnt];
                 $argBefore = $tokens->getPrevMeaningfulToken($argStart);
+                $isMultilineWhitespace = $isMultilineWhitespace || ($tokens[$argStart]->isWhitespace() && !$tokens[$argStart]->isWhitespace(" \t"));
 
-                if ($tokens[$argStart]->isWhitespace()) {
-                    $tokens->overrideRange($argStart, $argStart, [
-                        new Token([T_WHITESPACE, $indent]),
-                        new Token([T_VARIABLE, '$this']),
-                        new Token([T_OBJECT_OPERATOR, '->']),
-                        new Token([T_STRING, $argumentsReplacements[$cnt]]),
-                        new Token('('),
-                    ]);
-                } else {
-                    $tokens->insertAt($argStart, [
-                        new Token([T_WHITESPACE, $indent]),
-                        new Token([T_VARIABLE, '$this']),
-                        new Token([T_OBJECT_OPERATOR, '->']),
-                        new Token([T_STRING, $argumentsReplacements[$cnt]]),
-                        new Token('('),
-                    ]);
-                }
-
-                $tokens->overrideRange($argBefore, $argBefore, [
+                $tokensOverrideArgStart = [
+                    new Token([T_WHITESPACE, $indent]),
+                    new Token([T_VARIABLE, '$this']),
+                    new Token([T_OBJECT_OPERATOR, '->']),
+                    new Token([T_STRING, $argumentsReplacements[$cnt]]),
+                    new Token('('),
+                ];
+                $tokensOverrideArgBefore = [
                     new Token(')'),
                     new Token(';'),
-                ]);
+                ];
+
+                if ($isMultilineWhitespace) {
+                    array_push($tokensOverrideArgStart, new Token([T_WHITESPACE, $indent.'    '])); // TODO whitespaceaware shit
+                    array_unshift($tokensOverrideArgBefore, new Token([T_WHITESPACE, $indent]));
+                }
+
+                if ($tokens[$argStart]->isWhitespace()) {
+                    $tokens->overrideRange($argStart, $argStart, $tokensOverrideArgStart);
+                } else {
+                    $tokens->insertAt($argStart, $tokensOverrideArgStart);
+                }
+
+                $tokens->overrideRange($argBefore, $argBefore, $tokensOverrideArgBefore);
 
                 $limit = $tokens->count();
             }
