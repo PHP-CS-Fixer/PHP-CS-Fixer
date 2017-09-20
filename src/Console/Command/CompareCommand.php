@@ -31,8 +31,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class CompareCommand extends Command
 {
     const COMMAND_NAME = 'compare';
-    const YES = "<fg=green;>\xE2\x9C\x94</>";
-    const NO = "<fg=red;>\xE2\x9C\x96</>";
+    const THICK = "\xE2\x9C\x94";
+    const CROSS = "\xE2\x9C\x96";
+    const PLUS = "\xe2\x9c\x9a";
 
     /** @var ConfigInterface $defaultConfig */
     private $defaultConfig;
@@ -224,10 +225,10 @@ final class CompareCommand extends Command
 
         $columns = [
             sprintf('Fixer (%s)', count($this->builtInFixers)),
-            sprintf("Configured (%s)\nAre hidden: %s", count($this->configuredFixers), $this->hideConfigured ? self::YES : self::NO),
-            sprintf("Enabled (%s)\nAre hidden: %s", count($this->enabledFixers), $this->hideEnabled ? self::YES : self::NO),
-            sprintf("Risky (%s)\nAre hidden: %s", count($this->riskyFixers), $this->hideRisky ? self::YES : self::NO),
-            sprintf("Inherited (%s)\nAre hidden: %s", $this->countInherited, $this->hideInherited ? self::YES : self::NO),
+            sprintf("Configured (%s)\nAre hidden: %s", count($this->configuredFixers), $this->hideConfigured ? self::THICK : self::CROSS),
+            sprintf("Enabled (%s)\nAre hidden: %s", count($this->enabledFixers), $this->hideEnabled ? self::THICK : self::CROSS),
+            sprintf("Risky (%s)\nAre hidden: %s", count($this->riskyFixers), $this->hideRisky ? self::THICK : self::CROSS),
+            sprintf("Inherited (%s)\nAre hidden: %s", $this->countInherited, $this->hideInherited ? self::THICK : self::CROSS),
             //'In RuleSet',
         ];
 
@@ -276,26 +277,27 @@ final class CompareCommand extends Command
                 $path = implode(' > ', array_reverse($fixer['in_set']));
             }
 
-            $color = '<fg=green>%s</>';
+            $color = '<fg=green>%s %s</>';
+            $icon = self::THICK;
 
             if ($fixer['is_inherited']) {
-                $color = '<fg=yellow>%s</>';
+                $color = '<fg=yellow>%s %s</>';
+                $icon = self::PLUS;
             }
 
             if (false === $fixer['is_enabled']) {
-                $color = '<fg=red>%s</>';
+                $color = '<fg=red>%s %s</>';
+                $icon = self::CROSS;
             }
 
-            $name = $fixer['is_enabled']
-                ? sprintf($color, $fixer['name'])
-                : sprintf('<fg=red>%s</>', $fixer['name']);
+            $name = sprintf($color, $icon, $fixer['name']);
 
             return [
                 'name' => sprintf("<fg=green>%s</>\n  %s", $name, $path),
-                'is_configured' => $fixer['is_configured'] ? self::YES : self::NO,
-                'is_enabled' => $fixer['is_enabled'] ? self::YES : self::NO,
-                'is_risky' => $fixer['is_risky'] ? self::YES : self::NO,
-                'is_inherited' => $fixer['is_inherited'] ? self::YES : self::NO,
+                'is_configured' => $fixer['is_configured'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
+                'is_enabled' => $fixer['is_enabled'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
+                'is_risky' => $fixer['is_risky'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
+                'is_inherited' => $fixer['is_inherited'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
                 //'in_set' => $path,
             ];
         }, $rows);
