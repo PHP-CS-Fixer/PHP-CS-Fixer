@@ -286,6 +286,19 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         return $string;
     }',
             ],
+            [
+            '<?php
+    /**
+     * @param mixed $first
+     * @param mixed $second
+     */
+     function foo($first, $second) {}',
+            '<?php
+    /**
+     * @param mixed $second
+     */
+     function foo($first, $second) {}',
+            ],
         ];
     }
 
