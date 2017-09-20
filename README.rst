@@ -575,12 +575,12 @@ Choose from the list of available rules:
 
 * **increment_style**
 
-  Pre or post increment and decrement operators should be used if
+  Pre- or post-increment and decrement operators should be used if
   possible.
 
   Configuration options:
 
-  - ``style`` (``'post'``, ``'pre'``): whether to use ``pre`` or ``post`` increment and
+  - ``style`` (``'post'``, ``'pre'``): whether to use pre- or post-increment and
     decrement operators; defaults to ``'pre'``
 
 * **indentation_type** [@PSR2, @Symfony]

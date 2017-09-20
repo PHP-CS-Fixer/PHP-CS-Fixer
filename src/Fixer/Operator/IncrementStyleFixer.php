@@ -28,13 +28,16 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class IncrementStyleFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    const STYLE_PRE = 'pre';
+    const STYLE_POST = 'post';
+
     /**
      * {@inheritdoc}
      */
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Pre or post increment and decrement operators should be used if possible.',
+            'Pre- or post-increment and decrement operators should be used if possible.',
             [new CodeSample("<?php\n\$a++;\n\$b--;")]
         );
     }
@@ -53,9 +56,9 @@ final class IncrementStyleFixer extends AbstractFixer implements ConfigurationDe
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('style', 'Whether to use `pre` or `post` increment and decrement operators.'))
-                ->setAllowedValues(['pre', 'post'])
-                ->setDefault('pre')
+            (new FixerOptionBuilder('style', 'Whether to use pre- or post-increment and decrement operators.'))
+                ->setAllowedValues([self::STYLE_PRE, self::STYLE_POST])
+                ->setDefault(self::STYLE_PRE)
                 ->getOption(),
         ]);
     }
@@ -74,20 +77,7 @@ final class IncrementStyleFixer extends AbstractFixer implements ConfigurationDe
                 continue;
             }
 
-            if ('post' === $this->configuration['style'] && $tokensAnalyzer->isUnaryPredecessorOperator($index)) {
-                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-                if (!$prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
-                    continue;
-                }
-
-                $endIndex = $this->findEnd($tokens, $index);
-
-                $nextToken = $tokens[$tokens->getNextMeaningfulToken($endIndex)];
-                if ($nextToken->equalsAny([';', ')'])) {
-                    $tokens->clearAt($index);
-                    $tokens->insertAt($tokens->getNextNonWhitespace($endIndex), clone $token);
-                }
-            } elseif ('pre' === $this->configuration['style'] && $tokensAnalyzer->isUnarySuccessorOperator($index)) {
+            if (self::STYLE_PRE === $this->configuration['style'] && $tokensAnalyzer->isUnarySuccessorOperator($index)) {
                 $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
                 if (!$nextToken->equalsAny([';', ')'])) {
                     continue;
@@ -99,6 +89,19 @@ final class IncrementStyleFixer extends AbstractFixer implements ConfigurationDe
                 if ($prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
                     $tokens->clearAt($index);
                     $tokens->insertAt($startIndex, clone $token);
+                }
+            } elseif (self::STYLE_POST === $this->configuration['style'] && $tokensAnalyzer->isUnaryPredecessorOperator($index)) {
+                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+                if (!$prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+                    continue;
+                }
+
+                $endIndex = $this->findEnd($tokens, $index);
+
+                $nextToken = $tokens[$tokens->getNextMeaningfulToken($endIndex)];
+                if ($nextToken->equalsAny([';', ')'])) {
+                    $tokens->clearAt($index);
+                    $tokens->insertAt($tokens->getNextNonWhitespace($endIndex), clone $token);
                 }
             }
         }
