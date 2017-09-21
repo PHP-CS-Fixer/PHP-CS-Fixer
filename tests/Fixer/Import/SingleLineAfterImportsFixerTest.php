@@ -425,6 +425,17 @@ use const some\test\{ConstA, ConstB, ConstC};
 use A\B\C;
 ',
             ),
+            array(
+                ' <?php
+use some\a\ClassA;
+use function some\a\fn;
+use const some\c;
+
+',
+                ' <?php
+use some\a\ClassA; use function some\a\fn; use const some\c;
+',
+            ),
         );
     }
 
@@ -453,5 +464,65 @@ use A\B\C;
                 "<?php namespace A\B;\r\n    use D;\r\n    class C {}",
             ),
         );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix72Cases
+     * @requires PHP 7.2
+     */
+    public function testFix72($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix72Cases()
+    {
+        $imports = array(
+            'some\a\{ClassA, ClassB, ClassC as C,};',
+            'function some\a\{fn_a, fn_b, fn_c,};',
+            'const some\a\{ConstA,ConstB,ConstC,};',
+            'const some\Z\{ConstA,ConstB,ConstC,};',
+        );
+
+        $cases = array(
+            array(
+                "<?php use some\\a\\{ClassA,};\n\n",
+                '<?php use some\a\{ClassA,};',
+            ),
+            array(
+                "<?php use some\\a\\{ClassA};\nuse some\\b\\{ClassB};\n\n",
+                '<?php use some\a\{ClassA};use some\b\{ClassB};',
+            ),
+            array(
+                "<?php use some\\a\\{ClassA};\nuse const some\\b\\{ClassB};\n\n",
+                '<?php use some\a\{ClassA};use const some\b\{ClassB};',
+            ),
+            array(
+                "<?php use some\\a\\{ClassA, ClassZ};\nuse const some\\b\\{ClassB, ClassX};\nuse function some\\d;\n\n",
+                '<?php use some\a\{ClassA, ClassZ};use const some\b\{ClassB, ClassX};use function some\\d;',
+            ),
+            'group types with trailing comma' => array(
+                "<?php\nuse ".implode("\nuse ", $imports)."\n\necho 1;",
+                "<?php\nuse ".implode('use ', $imports).' echo 1;',
+            ),
+        );
+
+        foreach ($imports as $import) {
+            $case = array(
+                "<?php\nuse ".$import."\n\necho 1;",
+                "<?php\nuse ".$import.' echo 1;',
+            );
+
+            $cases[] = $case;
+            $cases[] = array(
+                str_replace('some', '\\some', $case[0]),
+                str_replace('some', '\\some', $case[1]),
+            );
+        }
+
+        return $cases;
     }
 }

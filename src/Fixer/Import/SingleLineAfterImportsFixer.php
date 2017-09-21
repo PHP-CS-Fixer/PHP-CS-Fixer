@@ -81,7 +81,9 @@ final class Example
         $ending = $this->whitespacesConfig->getLineEnding();
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
+        $added = 0;
         foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {
+            $index += $added;
             $indent = '';
 
             // if previous line ends with comment and current line starts with whitespace, use current indent
@@ -100,10 +102,12 @@ final class Example
                 }
 
                 $tokens->insertAt($insertIndex, new Token(';'));
+                ++$added;
             }
 
             if ($semicolonIndex === count($tokens) - 1) {
                 $tokens->insertAt($insertIndex + 1, new Token(array(T_WHITESPACE, $ending.$ending.$indent)));
+                ++$added;
             } else {
                 $newline = $ending;
                 $tokens[$semicolonIndex]->isGivenKind(T_CLOSE_TAG) ? --$insertIndex : ++$insertIndex;
@@ -133,6 +137,7 @@ final class Example
                     }
                 } else {
                     $tokens->insertAt($insertIndex, new Token(array(T_WHITESPACE, $newline.$indent)));
+                    ++$added;
                 }
             }
         }

@@ -952,6 +952,47 @@ class Foo
         );
     }
 
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix72Cases
+     * @requires PHP 7.2
+     */
+    public function testFix72($expected, $input)
+    {
+        $this->fixer->configure(array('tokens' => array('use')));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix72Cases()
+    {
+        return array(
+            array(
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA,ConstB,ConstC
+,
+};
+use const some\Z\{ConstA,ConstB,ConstC,};
+',
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+
+
+use function some\a\{fn_a, fn_b, fn_c,};
+
+use const some\a\{ConstA,ConstB,ConstC
+,
+};
+  '.'
+use const some\Z\{ConstA,ConstB,ConstC,};
+',
+            ),
+        );
+    }
+
     private function removeLinesFromString($input, array $lineNumbers)
     {
         sort($lineNumbers);
