@@ -215,7 +215,7 @@ final class ConfigurationResolver
                     continue;
                 }
 
-                $config = include $configFile;
+                $config = self::separatedContextLessInclude($configFile);
 
                 // verify that the config has an instance of Config
                 if (!$config instanceof ConfigInterface) {
@@ -650,7 +650,8 @@ final class ConfigurationResolver
 
         $rules = [];
 
-        foreach (array_map('trim', explode(',', $this->options['rules'])) as $rule) {
+        foreach (explode(',', $this->options['rules']) as $rule) {
+            $rule = trim($rule);
             if ('' === $rule) {
                 throw new InvalidConfigurationException('Empty rule name is not allowed.');
             }
@@ -855,5 +856,10 @@ final class ConfigurationResolver
         );
 
         return false;
+    }
+
+    private static function separatedContextLessInclude($path)
+    {
+        return include $path;
     }
 }

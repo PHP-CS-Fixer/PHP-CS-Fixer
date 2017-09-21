@@ -49,14 +49,18 @@ final class CiIntegrationTest extends TestCase
         self::$fileRemoval = new FileRemoval();
         self::$fileRemoval->observe(static::$tmpFilePath);
 
-        static::executeCommand(implode(' && ', [
-            'rm -rf .git',
-            'git init -q',
-            'git config user.name test',
-            'git config user.email test',
-            'git add .',
-            'git commit -m "init" -q',
-        ]));
+        try {
+            static::executeCommand(implode(' && ', [
+                'rm -rf .git',
+                'git init -q',
+                'git config user.name test',
+                'git config user.email test',
+                'git add .',
+                'git commit -m "init" -q',
+            ]));
+        } catch (\RuntimeException $e) {
+            self::markTestSkipped($e->getMessage());
+        }
     }
 
     public static function tearDownAfterClass()
