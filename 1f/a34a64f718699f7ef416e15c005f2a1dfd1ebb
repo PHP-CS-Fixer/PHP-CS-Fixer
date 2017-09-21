@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-18T20:09:13Z
+
+ref https://github.com/SpacePossum/PHP-CS-Fixer/pull/19
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-19T11:43:10Z
+
+@SpacePossum , thanks for picking up PR from me
+you still have todo in opening comment. Is it still valid after my config grooming ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-19T12:03:16Z
+
+@keradus thanks for the PR. This resolved the TODO item, I've removed it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-19T19:44:09Z
+
+:+1:
+
+@julienfalque
+as we do have me and @SpacePossum as authors, could you double check this PR please ?
