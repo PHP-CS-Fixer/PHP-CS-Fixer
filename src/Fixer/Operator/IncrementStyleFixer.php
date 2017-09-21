@@ -28,7 +28,14 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class IncrementStyleFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    /**
+     * @internal
+     */
     const STYLE_PRE = 'pre';
+
+    /**
+     * @internal
+     */
     const STYLE_POST = 'post';
 
     /**
