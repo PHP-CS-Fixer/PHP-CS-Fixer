@@ -1,0 +1,324 @@
+---------------------------------------------------------------------------
+
+by crhallberg at 2017-03-07T14:56:30Z
+
+I would expect the correct changes for 'align_single_space_minimal' to look more like this, leaving multiple spaces intact, meaning `$d` technically goes unchanged.
+
+Fixing with configuration: ['===' => 'align_single_space_minimal'].
+```diff
+--- Original
++++ New
+@@ @@
+ <?php
+-$a = $b===$c;
+-$d = $f   ===  $g;
+-$h = $i===  $j;
++$a = $b === $c;
++$d = $f   ===  $g;
++$h = $i ===  $j;
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-07T15:39:56Z
+
+Your example result is not aligned for `===`, but if I understand you correctly you want to be able to configure minimal single space around an operator, like;
+```diff
+--- Original
++++ New
+@@ @@
+<?php
+-$a = $b+=           $c;
++$a = $b +=           $c;
+-$d = $e   -=$f;
++$d = $e   -= $f;
+$g = $h        +    $i; // not touched
+```
+That is missing currently, I can take a look, shouldn't be hard to add I think.
+
+For aligning you can use `align_single_space` for cases like;
+```diff
+--- Original
++++ New
+@@ @@
+<?php
+-$a = $b    =>           $c;
++$a = $b    => $c;
+-$d = $e    =>$f;
++$d = $e    => $f;
+$g = $h    => $i;
+
+$z=$x=>$y;
+
+```
+
+or use `align` if you want no white space to be added if it is not needed to align,
+or `align_single_space_minimal`; ensures single space around the operator and use minimal white space to align items of a group
+
+---------------------------------------------------------------------------
+
+by crhallberg at 2017-03-07T16:01:03Z
+
+That's correct. My mistake. You're right that `===` wouldn't be affected by `align_single_space_minimal`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T14:49:12Z
+
+what is the state here @SpacePossum  ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-03T17:49:41Z
+
+on my list of PR's to finish :|
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-04-03T19:24:14Z
+
+I have changed base branch to master
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-06T15:52:09Z
+
+readme test will fail because of https://github.com/symfony/symfony/issues/18481
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-07-27T15:52:08Z
+
+readme failures are fixed over the diff. SF versions,
+not sure we want those fixes in diff. PR targeting 2.2, lemme know
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-19T11:38:15Z
+
+Ready for review, would be nice to work towards closing.
+Only thing to discuss is deprecation of no longer used helper classes (or deleting those all together).
+
+---------------------------------------------------------------------------
+
+by Aerendir at 2017-08-19T13:28:00Z
+
+Maybe adding to the README some of the examples in this  DISCUSSION ABOUT THE DIFFERENT BEHAVIORS OF "align", "align_single_space", ecc. is useful to better understand the behaviors without having to try the rule. Currently I'm not at computer, but I will test the new behavior once I will. Thank you for your work @SpacePossum!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-08-19T22:00:33Z
+
+sadly, there is no place in readme for providing examples, but we do it when you execute `php-cs-fixer describe rule_name`
+
+---------------------------------------------------------------------------
+
+by Aerendir at 2017-08-20T11:29:52Z
+
+I've tested the PR with this configuration and it seems to work well for me (at least for my use cases).
+
+The configuration I've used is this:
+
+```php
+'binary_operator_spaces' => [
+    '=' => 'align_single_space_minimal',
+    '=>' => 'align_single_space_minimal'
+],
+```
+
+The fixes are those:
+
+```php
+- $store   = $this->getDoctrine()->getRepository('AppBundle:Store')->findAll()[0];
++ $store = $this->getDoctrine()->getRepository('AppBundle:Store')->findAll()[0];
+```
+
+```php
+- public function thankyouAction(Feedback $feedback =  null, Request $request): Response
+// Remove two spaces after $feedback
++ public function thankyouAction(Feedback $feedback = null, Request $request): Response
+```
+
+```php
+- $subscribedFeatures =  $this->getContainer()->get(...
+// Remove two spaces after =
++ $subscribedFeatures = $this->getContainer()->get(...
+```
+
+```php
+return [
+-            StoreCreateEvent::CREATE              => 'onStoreCreate',
+-            StoreCreateFromEmailEvent::CREATE     => 'onStoreCreateFromEmail',
+-            StoreReclaimWithEmailEvent::RECLAIM   => 'onStoreReclaimWithEmail',
+-            StorePlanUpdateEvent::UPDATE          => 'onStorePlanUpdate',
+-            'workflow.store.entered.suitable'     => 'onStoreEnteredSuitable',
+        ];
+
+return [
++            StoreCreateEvent::CREATE            => 'onStoreCreate',
++            StoreCreateFromEmailEvent::CREATE   => 'onStoreCreateFromEmail',
++            StoreReclaimWithEmailEvent::RECLAIM => 'onStoreReclaimWithEmail',
++            StorePlanUpdateEvent::UPDATE        => 'onStorePlanUpdate',
++            'workflow.store.entered.suitable'   => 'onStoreEnteredSuitable',
+        ];
+```
+
+```php
+-    $this->entityManager        = $entityManager;
+-    $this->token                = $token->getToken();
+
++ $this->entityManager = $entityManager;
++ $this->token         = $token->getToken();
+```
+
+This is wrong, instead
+```php
+-        $this->newName
+-            = $this->path
+-            = $this->randomName
+-            = $this->remoteFile
+-            = $this->tmpContent
+-            = null;
+
+         $this->newName
++ = $this->path
++ = $this->randomName
++ = $this->remoteFile
++ = $this->tmpContent
++ = null;
+```
+
+The last example is the indentation of a fluent interface and it is aligned wrongly in my opinion.
+
+What do you think?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-21T05:58:13Z
+
+@Aerendir thanks for testing and reporting back, I'll have a look at your last sample :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-21T08:15:22Z
+
+expecting test to fail
+
+---------------------------------------------------------------------------
+
+by Aerendir at 2017-08-27T11:31:27Z
+
+Any news about this?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-27T12:13:15Z
+
+One case is still failing and needs to be resolved, after that the usually rounds of review will happen again I guess.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-29T08:17:35Z
+
+@Aerendir I've made a fix (see last two commits for it + some tests) for the case you've found.
+
+New round of reviews is welcome from everyone :)
+
+---------------------------------------------------------------------------
+
+by Aerendir at 2017-08-29T09:06:06Z
+
+@SpacePossum , just tried: it works. The bug is fixed.
+
+The failing fixing is not failing anymore: it leave the code untouched, without removing the formatting required tabulation spaces.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-08-31T10:41:25Z
+
+TODO: test on multiple repo's to see if all good
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-04T11:54:37Z
+
+0 hits on SF 2.7
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-04T12:36:10Z
+
+On PHPUnit `master` `./src` with;
+```
+        'binary_operator_spaces' => [
+            'operators' => [
+                '+' => 'align_single_space',
+                '=' => 'align_single_space',
+                '=>' => 'align_single_space',
+            ],
+        ]
+```
+
+one hit:
+
+```
+            if (false === \getenv($name)) {
+                \putenv("{$name} ={$value}");
+            }
+```
+
+to
+
+```
+            if (false === \getenv($name)) {
+                \putenv("{$name} = {$value}");
+            }
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-04T13:56:48Z
+
+```diff
+-\putenv("{$name} ={$value}");
++\putenv("{$name} = {$value}");
+```
+
+wait wait wait, change inside a string ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-09T15:41:47Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-18T07:12:15Z
+
+All green after refactor.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-18T22:47:29Z
+
+I'm not sure merging this PR will allow us to close #2559: does it fix the unalignment of ternary operator like the example in the first post there? If so, can you please add a test case?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-19T07:00:42Z
+
+PR description updated; this PR does _not_ fix the ternary operator part of the issue
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-22T09:24:33Z
+
+:+1: after CIs are green.
+Could you do some squashing ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-22T18:58:31Z
+
+rebased and squashed to 1 commit for each author
