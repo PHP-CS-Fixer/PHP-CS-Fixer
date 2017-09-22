@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: list_syntax,binary_operator_spaces.
 --RULESET--
-{"list_syntax": {"syntax":"short"}, "binary_operator_spaces": {"align_equals":false}}
+{"list_syntax": {"syntax":"short"}, "binary_operator_spaces": {"operators":{"=":"single_space"}}}
 --REQUIREMENTS--
 {"php": 70100}
 --EXPECT--

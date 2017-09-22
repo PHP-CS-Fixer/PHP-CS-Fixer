@@ -28,6 +28,7 @@ use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -160,7 +161,7 @@ final class DescribeCommand extends Command
             $output->writeln(sprintf('Fixer is configurable using following option%s:', 1 === count($options) ? '' : 's'));
 
             foreach ($options as $option) {
-                $line = '* <info>'.$option->getName().'</info>';
+                $line = '* <info>'.OutputFormatter::escape($option->getName()).'</info>';
 
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
                 if (null !== $allowed) {
@@ -175,7 +176,7 @@ final class DescribeCommand extends Command
                     $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
                 }
 
-                $description = preg_replace('/(`.+?`)/', '<info>$1</info>', $option->getDescription());
+                $description = preg_replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
                 $line .= ': '.lcfirst(preg_replace('/\.$/', '', $description)).'; ';
                 if ($option->hasDefault()) {
                     $line .= sprintf(

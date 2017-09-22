@@ -175,6 +175,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['combine_consecutive_issets'], $fixers['no_trailing_whitespace']], // tested also in: combine_consecutive_issets,no_trailing_whitespace.test
             [$fixers['combine_consecutive_issets'], $fixers['no_whitespace_in_blank_line']], // tested also in: combine_consecutive_issets,no_whitespace_in_blank_line.test
             [$fixers['combine_consecutive_issets'], $fixers['no_spaces_inside_parenthesis']], // tested also in: combine_consecutive_issets,no_spaces_inside_parenthesis.test
+            [$fixers['strict_comparison'], $fixers['binary_operator_spaces']], // tested also in: strict_comparison,binary_operator_spaces.text
+            [$fixers['standardize_not_equals'], $fixers['binary_operator_spaces']], // tested also in: standardize_not_equals,binary_operator_spaces.test
         ];
 
         // prepare bulk tests for phpdoc fixers to test that:

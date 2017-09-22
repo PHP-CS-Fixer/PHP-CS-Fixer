@@ -55,10 +55,7 @@ final class RuleSet implements RuleSetInterface
         ],
         '@Symfony' => [
             '@PSR2' => true,
-            'binary_operator_spaces' => [
-                'align_double_arrow' => false,
-                'align_equals' => false,
-            ],
+            'binary_operator_spaces' => true,
             'blank_line_after_opening_tag' => true,
             'blank_line_before_statement' => [
                 'statements' => ['return'],

@@ -231,14 +231,18 @@ Choose from the list of available rules:
 
 * **binary_operator_spaces** [@Symfony]
 
-  Binary operators should be surrounded by at least one space.
+  Binary operators should be surrounded by space as configured.
 
   Configuration options:
 
-  - ``align_double_arrow`` (``false``, ``null``, ``true``): whether to apply, remove or
-    ignore double arrows alignment; defaults to ``false``
-  - ``align_equals`` (``false``, ``null``, ``true``): whether to apply, remove or ignore
-    equals alignment; defaults to ``false``
+  - ``align_double_arrow`` (``false``, ``null``, ``true``): (deprecated) Whether to apply,
+    remove or ignore double arrows alignment; defaults to ``false``
+  - ``align_equals`` (``false``, ``null``, ``true``): (deprecated) Whether to apply, remove
+    or ignore equals alignment; defaults to ``false``
+  - ``default`` (``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``,
+    ``'single_space'``, ``null``): default fix strategy; defaults to ``'single_space'``
+  - ``operators`` (``array``): dictionary of ``binary operator`` => ``fix strategy``
+    values that differ from the default strategy; defaults to ``[]``
 
 * **blank_line_after_namespace** [@PSR2, @Symfony]
 

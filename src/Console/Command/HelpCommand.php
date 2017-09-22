@@ -21,6 +21,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use Symfony\Component\Console\Command\HelpCommand as BaseHelpCommand;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -480,7 +481,7 @@ EOF
                     );
 
                     foreach ($configurationDefinitionOptions as $option) {
-                        $line = '<info>'.$option->getName().'</info>';
+                        $line = '<info>'.OutputFormatter::escape($option->getName()).'</info>';
 
                         $allowed = self::getDisplayableAllowedValues($option);
                         if (null !== $allowed) {
@@ -498,7 +499,7 @@ EOF
                         $line .= ': '.preg_replace(
                             '/(`.+?`)/',
                             '<info>$1</info>',
-                            lcfirst(preg_replace('/\.$/', '', $option->getDescription()))
+                            lcfirst(preg_replace('/\.$/', '', OutputFormatter::escape($option->getDescription())))
                         ).'; ';
                         if ($option->hasDefault()) {
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
