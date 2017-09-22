@@ -25,7 +25,8 @@ use PhpCsFixer\Tokenizer\CT;
 final class UseTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
+     * @param string          $source
+     * @param array<int, int> $expectedTokens index => kind
      *
      * @dataProvider provideProcessCases
      */
@@ -69,6 +70,44 @@ final class UseTransformerTest extends AbstractTransformerTestCase
                     6 => T_USE,
                     17 => CT::T_USE_TRAIT,
                     42 => CT::T_USE_LAMBDA,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param string          $source
+     * @param array<int, int> $expectedTokens index => kind
+     *
+     * @dataProvider provideFix72Cases
+     * @requires PHP 7.2
+     */
+    public function testFix72($source, array $expectedTokens = [])
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                T_USE,
+                CT::T_USE_LAMBDA,
+                CT::T_USE_TRAIT,
+            ]
+        );
+    }
+
+    public function provideFix72Cases()
+    {
+        return [
+            [
+                '<?php
+use A\{B,};
+use function D;
+use C\{D,E,};
+',
+                [
+                    1 => T_USE,
+                    11 => T_USE,
+                    18 => T_USE,
                 ],
             ],
         ];

@@ -1062,4 +1062,41 @@ use const some\a\{ConstA, ConstB, ConstC};
             ],
         ];
     }
+
+    /**
+     * @param string $input
+     * @param bool   $perNamespace
+     *
+     * @dataProvider provideGetImportUseIndexesPHP72Cases
+     * @requires PHP 7.2
+     */
+    public function testGetImportUseIndexesPHP72(array $expected, $input, $perNamespace = false)
+    {
+        $tokens = Tokens::fromCode($input);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $this->assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
+    }
+
+    public function provideGetImportUseIndexesPHP72Cases()
+    {
+        return [
+            [
+                [1, 23, 43],
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA, ConstB, ConstC,};
+                ',
+            ],
+            [
+                [[1, 23, 43]],
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA, ConstB, ConstC,};
+                ',
+                true,
+            ],
+        ];
+    }
 }
