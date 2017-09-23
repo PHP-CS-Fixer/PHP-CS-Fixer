@@ -80,7 +80,7 @@ class Foo {
      *
      * @return int
      */
-    private function fixClass(Tokens $tokens, $classOpenIndex, bool $classIsFinal)
+    private function fixClass(Tokens $tokens, $classOpenIndex, $classIsFinal)
     {
         $methodVisibilities = [
             T_PUBLIC,
