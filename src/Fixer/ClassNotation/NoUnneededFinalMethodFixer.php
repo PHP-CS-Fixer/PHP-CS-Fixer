@@ -36,6 +36,12 @@ final class Foo {
     final protected function bar() {}
     final private function baz() {}
 }'),
+                new CodeSample(
+'<?php
+class Foo {
+    final private function bar() {}
+}'
+                ),
             ]
         );
     }
@@ -61,29 +67,24 @@ final class Foo {
 
             $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-            if (!$prevToken->isGivenKind(T_FINAL)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+            $classIsFinal = $prevToken->isGivenKind(T_FINAL);
 
-                continue;
-            }
-
-            $index = $this->fixClass($tokens, $classOpen);
+            $this->fixClass($tokens, $classOpen, $classIsFinal);
         }
     }
 
     /**
      * @param Tokens $tokens
      * @param int    $classOpenIndex
-     *
-     * @return int
+     * @param bool   $classIsFinal
      */
-    private function fixClass(Tokens $tokens, $classOpenIndex)
+    private function fixClass(Tokens $tokens, $classOpenIndex, $classIsFinal)
     {
         $tokensCount = count($tokens);
         for ($index = $classOpenIndex + 1; $index < $tokensCount; ++$index) {
             // Class end
             if ($tokens[$index]->equals('}')) {
-                return $index;
+                return;
             }
 
             // Skip method content
@@ -97,6 +98,10 @@ final class Foo {
                 continue;
             }
 
+            if (!$classIsFinal && !$this->isPrivateMethod($tokens, $index, $classOpenIndex)) {
+                continue;
+            }
+
             $tokens->clearAt($index);
 
             $nextTokenIndex = $index + 1;
@@ -104,5 +109,27 @@ final class Foo {
                 $tokens->clearAt($nextTokenIndex);
             }
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param int    $classOpenIndex
+     *
+     * @return bool
+     */
+    private function isPrivateMethod(Tokens $tokens, $index, $classOpenIndex)
+    {
+        $index = max($classOpenIndex + 1, $tokens->getPrevTokenOfKind($index, ['{', '}']));
+
+        while (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(T_PRIVATE)) {
+                return true;
+            }
+
+            ++$index;
+        }
+
+        return false;
     }
 }
