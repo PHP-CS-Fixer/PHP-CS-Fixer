@@ -36,6 +36,12 @@ final class Foo {
     final protected function bar() {}
     final private function baz() {}
 }'),
+                new CodeSample(
+'<?php
+class Foo {
+    final private function baz() {}
+}'
+                ),
             ]
         );
     }
@@ -61,24 +67,33 @@ final class Foo {
 
             $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-            if (!$prevToken->isGivenKind(T_FINAL)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+            $classIsFinal = $prevToken->isGivenKind(T_FINAL);
 
-                continue;
-            }
-
-            $index = $this->fixClass($tokens, $classOpen);
+            $index = $this->fixClass($tokens, $classOpen, $classIsFinal);
         }
     }
 
     /**
      * @param Tokens $tokens
      * @param int    $classOpenIndex
+     * @param bool   $classIsFinal
      *
      * @return int
      */
-    private function fixClass(Tokens $tokens, $classOpenIndex)
+    private function fixClass(Tokens $tokens, $classOpenIndex, bool $classIsFinal)
     {
+        $methodVisibilities = [
+            T_PUBLIC,
+            T_PROTECTED,
+            T_PRIVATE,
+        ];
+
+        if (!$classIsFinal) {
+            $methodVisibilities = [
+                T_PRIVATE,
+            ];
+        }
+
         $tokensCount = count($tokens);
         for ($index = $classOpenIndex + 1; $index < $tokensCount; ++$index) {
             // Class end
@@ -94,6 +109,12 @@ final class Foo {
             }
 
             if (!$tokens[$index]->isGivenKind(T_FINAL)) {
+                continue;
+            }
+
+            $nextMeaningfulToken = $tokens[$tokens->getNextMeaningfulToken($index)];
+
+            if (!$nextMeaningfulToken->isGivenKind($methodVisibilities)) {
                 continue;
             }
 

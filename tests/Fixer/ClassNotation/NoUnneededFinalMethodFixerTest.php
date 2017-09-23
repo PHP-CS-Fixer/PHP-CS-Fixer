@@ -177,6 +177,16 @@ final class SomeClass {
     static final function baz() {}
 }',
             ],
+            'private-method' => [
+                '<?php
+class Foo {
+    private function baz() {}
+}',
+                '<?php
+class Foo {
+    final private function baz() {}
+}',
+            ],
             'preserve-comment' => [
                 '<?php final class Foo { /* comment */public function foo() {} }',
                 '<?php final class Foo { final/* comment */public function foo() {} }',
