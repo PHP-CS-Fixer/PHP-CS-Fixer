@@ -180,11 +180,11 @@ final class SomeClass {
             'private-method' => [
                 '<?php
 class Foo {
-    private function baz() {}
+    private function bar() {}
 }',
                 '<?php
 class Foo {
-    final private function baz() {}
+    final private function bar() {}
 }',
             ],
             'preserve-comment' => [

@@ -39,7 +39,7 @@ final class Foo {
                 new CodeSample(
 '<?php
 class Foo {
-    final private function baz() {}
+    final private function bar() {}
 }'
                 ),
             ]
