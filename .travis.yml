@@ -66,7 +66,7 @@ jobs:
         -
             <<: *STANDARD_TEST_JOB
             php: 7.1
-            env: PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1
+            env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1
 
         -
             <<: *STANDARD_TEST_JOB
