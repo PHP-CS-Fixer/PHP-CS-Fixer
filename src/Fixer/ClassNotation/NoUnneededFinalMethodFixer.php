@@ -112,9 +112,10 @@ class Foo {
                 continue;
             }
 
+            $prevMeaningfulToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
             $nextMeaningfulToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
-            if (!$nextMeaningfulToken->isGivenKind($methodVisibilities)) {
+            if (!$nextMeaningfulToken->isGivenKind($methodVisibilities) && !$prevMeaningfulToken->isGivenKind($methodVisibilities)) {
                 continue;
             }
 
