@@ -187,6 +187,16 @@ class Foo {
     final private function bar() {}
 }',
             ],
+            'private-method-with-visibility-before-final' => [
+                '<?php
+class Foo {
+    private function bar() {}
+}',
+                '<?php
+class Foo {
+    private final function bar() {}
+}',
+            ],
             'preserve-comment' => [
                 '<?php final class Foo { /* comment */public function foo() {} }',
                 '<?php final class Foo { final/* comment */public function foo() {} }',
