@@ -83,13 +83,13 @@ class Foo {
     private function fixClass(Tokens $tokens, $classOpenIndex, $classIsFinal)
     {
         $methodVisibilities = [
-            T_PUBLIC,
-            T_PROTECTED,
             T_PRIVATE,
         ];
 
-        if (!$classIsFinal) {
+        if ($classIsFinal) {
             $methodVisibilities = [
+                T_PUBLIC,
+                T_PROTECTED,
                 T_PRIVATE,
             ];
         }
