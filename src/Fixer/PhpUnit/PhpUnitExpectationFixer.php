@@ -13,7 +13,10 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitIndicator;
@@ -24,8 +27,28 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitExpectationFixer extends AbstractFunctionReferenceFixer implements WhitespacesAwareFixerInterface
+final class PhpUnitExpectationFixer extends AbstractFunctionReferenceFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @var array<string, string>
+     */
+    private $methodMap = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        parent::configure($configuration);
+
+        $this->methodMap = [];
+        $this->methodMap['setExpectedException'] = 'expectExceptionMessage';
+
+        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_6)) {
+            $this->methodMap['setExpectedExceptionRegExp'] = 'expectExceptionMessageRegExp';
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -38,12 +61,57 @@ final class PhpUnitExpectationFixer extends AbstractFunctionReferenceFixer imple
                     '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
-    function testFunction()
+    public function testFoo()
     {
-        $this->setExpectedException("RuntimeException", "Msg.", 123);
+        $this->setExpectedException("RuntimeException", "Msg", 123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+        bar();
     }
 }
 '
+                ),
+                new CodeSample(
+                    '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->setExpectedException("RuntimeException", "Msg", 123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+        bar();
+    }
+}
+',
+                    ['target' => PhpUnitTargetVersion::VERSION_5_6]
+                ),
+                new CodeSample(
+                    '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->setExpectedException("RuntimeException", "Msg", 123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+        bar();
+    }
+}
+',
+                    ['target' => PhpUnitTargetVersion::VERSION_5_2]
                 ),
             ],
             null,
@@ -78,7 +146,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $oldMethodSequence = [
             new Token([T_VARIABLE, '$this']),
             new Token([T_OBJECT_OPERATOR, '->']),
-            new Token([T_STRING, 'setExpectedException']),
+            [T_STRING],
         ];
 
         $inPhpUnitClass = false;
@@ -101,13 +169,17 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $thisIndex = array_keys($match)[0];
             $index = array_keys($match)[2];
 
+            if (!isset($this->methodMap[$tokens[$index]->getContent()])) {
+                continue;
+            }
+
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
             $argumentsCnt = count($arguments);
 
-            $argumentsReplacements = ['expectException', 'expectExceptionMessage', 'expectExceptionCode']; // TODO option for MessageRegExp for phpunit 5.6
+            $argumentsReplacements = ['expectException', $this->methodMap[$tokens[$index]->getContent()], 'expectExceptionCode'];
 
             $indent = "\n".$this->detectIndent($tokens, $thisIndex); // TODO whitespaceaware shit
 
@@ -148,6 +220,20 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $tokens[$index] = new Token([T_STRING, 'expectException']);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
+                ->setAllowedTypes(['string'])
+                ->setAllowedValues([PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_NEWEST])
+                ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
+                ->getOption(),
+        ]);
     }
 
     /**

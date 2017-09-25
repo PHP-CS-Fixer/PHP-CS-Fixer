@@ -991,6 +991,11 @@ Choose from the list of available rules:
 
   *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
 
+  Configuration options:
+
+  - ``target`` (``'5.2'``, ``'5.6'``, ``'newest'``): target version of PHPUnit; defaults to
+    ``'newest'``
+
 * **php_unit_fqcn_annotation** [@Symfony]
 
   PHPUnit annotations should be a FQCNs including a root namespace.

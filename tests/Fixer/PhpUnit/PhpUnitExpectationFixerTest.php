@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -26,11 +27,13 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param array       $config
      *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $config = [])
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -136,6 +139,115 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
             );
         }
     }',
+            ],
+            [
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->expectException("RuntimeException");
+        $this->expectExceptionMessage("Msg");
+        $this->expectExceptionCode(123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+        bar();
+    }
+}',
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->setExpectedException("RuntimeException", "Msg", 123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+        bar();
+    }
+}',
+                ['target' => PhpUnitTargetVersion::VERSION_5_2],
+            ],
+            [
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->expectException("RuntimeException");
+        $this->expectExceptionMessage("Msg");
+        $this->expectExceptionCode(123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->expectException("RuntimeException");
+        $this->expectExceptionMessageRegExp("/Msg.*/");
+        $this->expectExceptionCode(123);
+        bar();
+    }
+}',
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->setExpectedException("RuntimeException", "Msg", 123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+        bar();
+    }
+}',
+                ['target' => PhpUnitTargetVersion::VERSION_5_6],
+            ],
+            [
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->expectException("RuntimeException");
+        $this->expectExceptionMessage("Msg");
+        $this->expectExceptionCode(123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->expectException("RuntimeException");
+        $this->expectExceptionMessageRegExp("/Msg.*/");
+        $this->expectExceptionCode(123);
+        bar();
+    }
+}',
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->setExpectedException("RuntimeException", "Msg", 123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+        bar();
+    }
+}',
+                ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
             ],
         ];
     }
