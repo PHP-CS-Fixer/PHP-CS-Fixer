@@ -5,12 +5,12 @@ A lot of needed fixes are similar one to another. Would be great to have generic
 5.2
 ---
 
-`setExpectedException` -> `expectException` + `expectExceptionMessage` + `expectExceptionCode`
+[DONE] `setExpectedException` -> `expectException` + `expectExceptionMessage` + `expectExceptionCode`
 
 5.6
 ---
 
-`setExpectedExceptionRegExp` -> `expectException` + `expectExceptionMessageRegExp` + `expectExceptionCode`
+[DONE] `setExpectedExceptionRegExp` -> `expectException` + `expectExceptionMessageRegExp` + `expectExceptionCode`
 
 `php_unit_dedicate_assert` vs added `assertIsReadable(), assertNotIsReadable(), assertIsWritable(), assertNotIsWritable(), assertDirectoryExists(), assertDirectoryNotExists(), assertDirectoryIsReadable(), assertDirectoryNotIsReadable(), assertDirectoryIsWritable(), assertDirectoryNotIsWritable(), assertFileIsReadable(), assertFileNotIsReadable(), assertFileIsWritable(), and assertFileNotIsWritable() assertions`
 maybe `php_unit_dedicate_assert_56` ?
