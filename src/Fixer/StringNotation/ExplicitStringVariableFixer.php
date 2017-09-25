@@ -30,7 +30,7 @@ final class ExplicitStringVariableFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Convert implicit variables into explicit ones in double-quoted strings.',
+            'Converts implicit variables into explicit ones in double-quoted strings.',
             [new CodeSample('<?php $a = "My name is $name!";')],
             'The reasoning behind this rule is the following:'
                 ."\n".'- When there are two valid ways of doing the same thing, using both is confusing, there should be a coding standard to follow'
