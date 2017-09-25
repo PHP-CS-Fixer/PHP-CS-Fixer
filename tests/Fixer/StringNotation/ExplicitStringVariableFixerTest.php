@@ -47,6 +47,7 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
             ],
             ['<?php $a = \'My name is $name!\';'],
             ['<?php $a = "My name is " . $name;'],
+            ['<?php $a = "My name is {$name}!";'],
             ['<?php $a = "My name is {$user->name}";'],
         ];
     }
