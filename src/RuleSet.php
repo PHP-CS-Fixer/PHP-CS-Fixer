@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+
 /**
  * Set of rules to be used by fixer.
  *
@@ -201,11 +203,15 @@ final class RuleSet implements RuleSetInterface
             'void_return' => true,
         ],
         '@PHPUnit52Migration:risky' => [
-            'php_unit_expectation' => true,
+            'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_2],
         ],
         '@PHPUnit54Migration:risky' => [
             '@PHPUnit52Migration:risky' => true,
             'php_unit_namespaced_test_case' => true,
+        ],
+        '@PHPUnit56Migration:risky' => [
+            '@PHPUnit54Migration:risky' => true,
+            'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
         ],
     ];
 

@@ -55,7 +55,7 @@ final class PhpUnitExpectationFixer extends AbstractFunctionReferenceFixer imple
     public function getDefinition()
     {
         return new FixerDefinition(
-            'The `->setExpectedExpception` MUST be replaced by `->expectException*` methods.',
+            'The `->setExpectedExpception*` MUST be replaced by `->expectException*` methods.',
             [
                 new CodeSample(
                     '<?php

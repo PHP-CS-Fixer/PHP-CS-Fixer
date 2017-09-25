@@ -984,9 +984,9 @@ Choose from the list of available rules:
     'is_int', 'is_integer', 'is_long', 'is_nan', 'is_null', 'is_numeric',
     'is_object', 'is_real', 'is_resource', 'is_scalar', 'is_string']``
 
-* **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky]
+* **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky]
 
-  The ``->setExpectedExpception`` MUST be replaced by ``->expectException*``
+  The ``->setExpectedExpception*`` MUST be replaced by ``->expectException*``
   methods.
 
   *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
@@ -1000,7 +1000,7 @@ Choose from the list of available rules:
 
   PHPUnit annotations should be a FQCNs including a root namespace.
 
-* **php_unit_namespaced_test_case** [@PHPUnit54Migration:risky]
+* **php_unit_namespaced_test_case** [@PHPUnit54Migration:risky, @PHPUnit56Migration:risky]
 
   The ``\PHPUnit\Framework\TestCase`` class MUST be used instead of
   ``\PHPUnit_Framework_TestCase`` class.
