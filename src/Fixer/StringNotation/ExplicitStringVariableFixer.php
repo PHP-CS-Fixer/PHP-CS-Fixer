@@ -32,10 +32,10 @@ final class ExplicitStringVariableFixer extends AbstractFixer
         return new FixerDefinition(
             'Convert implicit variables into explicit ones in double-quoted strings.',
             [new CodeSample('<?php $a = "My name is $name!";')],
-            'The reasoning behind this rule are the following:'
+            'The reasoning behind this rule is the following:'
                 ."\n".'- When there are two valid ways of doing the same thing, using both is confusing, there should be a coding standard to follow'
-                ."\n".'- PHP manual marks "$var" sintax as implicit and "${var}" syntax as explicit: explicit code should always be preferred'
-                ."\n".'- Explicit syntax allows word concatenation inside strings, e.g. "${var}IsAVar", implicit doesn\'t'
+                ."\n".'- PHP manual marks `"$var"` syntax as implicit and `"${var}"` syntax as explicit: explicit code should always be preferred'
+                ."\n".'- Explicit syntax allows word concatenation inside strings, e.g. `"${var}IsAVar"`, implicit doesn\'t'
                 ."\n".'- Explicit syntax is easier to detect for IDE/editors and therefore has colors/hightlight with higher contrast, which is easier to read'
         );
     }
