@@ -202,7 +202,19 @@ final class RuleSet implements RuleSetInterface
             '@PHP70Migration:risky' => true,
             'void_return' => true,
         ],
+        '@PHPUnit30Migration:risky' => [
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_0],
+        ],
+        '@PHPUnit35Migration:risky' => [
+            '@PHPUnit30Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_5],
+        ],
+        '@PHPUnit50Migration:risky' => [
+            '@PHPUnit35Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_0],
+        ],
         '@PHPUnit52Migration:risky' => [
+            '@PHPUnit50Migration:risky' => true,
             'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_2],
         ],
         '@PHPUnit54Migration:risky' => [
@@ -211,6 +223,7 @@ final class RuleSet implements RuleSetInterface
         ],
         '@PHPUnit56Migration:risky' => [
             '@PHPUnit54Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
             'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
         ],
     ];

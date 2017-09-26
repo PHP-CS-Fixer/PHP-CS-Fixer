@@ -969,7 +969,7 @@ Choose from the list of available rules:
   - ``assertions`` (``array``): list of assertion methods to fix; defaults to
     ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
 
-* **php_unit_dedicate_assert** [@Symfony:risky]
+* **php_unit_dedicate_assert** [@Symfony:risky, @PHPUnit30Migration:risky, @PHPUnit35Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky]
 
   PHPUnit assertions like "assertInternalType", "assertFileExists", should
   be used over "assertTrue".
@@ -978,11 +978,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``functions`` (``array``): list of assertions to fix; defaults to
-    ``['array_key_exists', 'empty', 'file_exists', 'is_array', 'is_bool',
-    'is_boolean', 'is_callable', 'is_double', 'is_float', 'is_infinite',
-    'is_int', 'is_integer', 'is_long', 'is_nan', 'is_null', 'is_numeric',
-    'is_object', 'is_real', 'is_resource', 'is_scalar', 'is_string']``
+  - ``functions`` (``null``): (deprecated, use ``target`` instead) List of assertions
+    to fix (overrides ``target``); defaults to ``null``
+  - ``target`` (``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``): target version of
+    PHPUnit; defaults to ``'5.0'``
 
 * **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky]
 

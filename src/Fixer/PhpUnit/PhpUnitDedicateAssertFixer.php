@@ -36,6 +36,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         'is_bool' => true,
         'is_boolean' => true,
         'is_callable' => true,
+        'is_dir' => ['assertDirectoryExists', 'assertDirectoryNotExists'],
         'is_double' => true,
         'is_float' => true,
         'is_infinite' => ['assertFinite', 'assertInfinite'],
@@ -46,10 +47,12 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         'is_null' => ['assertNotNull', 'assertNull'],
         'is_numeric' => true,
         'is_object' => true,
+        'is_readable' => ['assertIsReadable', 'assertNotIsReadable'],
         'is_real' => true,
         'is_resource' => true,
         'is_scalar' => true,
         'is_string' => true,
+        'is_writable' => ['assertIsWritable', 'assertNotIsWritable'],
     ];
 
     /**
@@ -107,6 +110,15 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
                 'is_nan',
             ]);
         }
+
+        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_6)) {
+            // assertions added in 5.6: assertDirectoryExists assertDirectoryNotExists assertIsReadable assertNotIsReadable assertIsWritable assertNotIsWritable
+            $this->functions = array_merge($this->functions, [
+                'is_dir',
+                'is_readable',
+                'is_writable',
+            ]);
+        }
     }
 
     /**
@@ -141,10 +153,11 @@ $this->assertTrue(is_nan($a));
                 ),
                 new CodeSample(
                     '<?php
-$this->assertTrue(is_float( $a), "my message");
-$this->assertTrue(is_nan($a));
+$this->assertTrue(is_dir($a));
+$this->assertTrue(is_writable($a));
+$this->assertTrue(is_readable($a));
 ',
-                    ['functions' => ['is_nan']]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_6]
                 ),
             ],
             null,
@@ -232,7 +245,8 @@ $this->assertTrue(is_nan($a));
                     PhpUnitTargetVersion::VERSION_3_0,
                     PhpUnitTargetVersion::VERSION_3_5,
                     PhpUnitTargetVersion::VERSION_5_0,
-                    PhpUnitTargetVersion::VERSION_NEWEST
+                    PhpUnitTargetVersion::VERSION_5_6,
+                    PhpUnitTargetVersion::VERSION_NEWEST,
                 ])
                 ->setDefault(PhpUnitTargetVersion::VERSION_5_0) // @TODO 3.x: change to `VERSION_NEWEST`
                 ->getOption(),

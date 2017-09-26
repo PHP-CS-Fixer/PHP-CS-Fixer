@@ -65,19 +65,30 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
     public function resolve(array $options)
     {
         if (!empty($options) && !array_key_exists($this->root, $options)) {
-            if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                throw new \RuntimeException(sprintf(
-                    'Passing "%1$s" at the root of the configuration is deprecated and will not be supported in 3.0, use "%1$s" => array(...) option instead.  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.',
+            $names = array_map(
+                function (FixerOptionInterface $option) {
+                    return $option->getName();
+                },
+                $this->resolver->getOptions()
+            );
+
+            $passedNames = array_keys($options);
+
+            if (!empty(array_diff($passedNames, $names))) {
+                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                    throw new \RuntimeException(sprintf(
+                        'Passing "%1$s" at the root of the configuration is deprecated and will not be supported in 3.0, use "%1$s" => array(...) option instead.  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.',
+                        $this->root
+                    ));
+                }
+
+                @trigger_error(sprintf(
+                    'Passing "%1$s" at the root of the configuration is deprecated and will not be supported in 3.0, use "%1$s" => array(...) option instead.',
                     $this->root
-                ));
+                ), E_USER_DEPRECATED);
+
+                $options = [$this->root => $options];
             }
-
-            @trigger_error(sprintf(
-                'Passing "%1$s" at the root of the configuration is deprecated and will not be supported in 3.0, use "%1$s" => array(...) option instead.',
-                $this->root
-            ), E_USER_DEPRECATED);
-
-            $options = [$this->root => $options];
         }
 
         return $this->resolver->resolve($options);
