@@ -32,7 +32,18 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
     public function testInternalTypeMethods($expected, $input = null)
     {
         $this->doTest($expected, $input);
+    }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideInternalTypeMethodsCases
+     * @group legacy
+     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
+     */
+    public function testInternalTypeMethodsLegacy($expected, $input = null)
+    {
         $defaultFunctions = [
             'array_key_exists',
             'empty',
@@ -251,6 +262,10 @@ $a#
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
+     */
     public function testConfig()
     {
         $this->fixer->configure(['functions' => ['file_exists']]);

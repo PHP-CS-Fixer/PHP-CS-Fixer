@@ -24,6 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author SpacePossum
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class PhpUnitDedicateAssertFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
@@ -50,6 +51,63 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         'is_scalar' => true,
         'is_string' => true,
     ];
+
+    /**
+     * @var string[]
+     */
+    private $functions = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        parent::configure($configuration);
+
+        if (isset($this->configuration['functions'])) {
+            @trigger_error('Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.', E_USER_DEPRECATED);
+            $this->functions = $this->configuration['functions'];
+
+            return;
+        }
+
+        // assertions added in 3.0: assertArrayNotHasKey assertArrayHasKey assertFileNotExists assertFileExists assertNotNull, assertNull
+        $this->functions = [
+            'array_key_exists',
+            'file_exists',
+            'is_null',
+        ];
+
+        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_3_5)) {
+            // assertions added in 3.5: assertInternalType assertNotEmpty assertEmpty
+            $this->functions = array_merge($this->functions, [
+                'empty',
+                'is_array',
+                'is_bool',
+                'is_boolean',
+                'is_callable',
+                'is_double',
+                'is_float',
+                'is_int',
+                'is_integer',
+                'is_long',
+                'is_numeric',
+                'is_object',
+                'is_real',
+                'is_resource',
+                'is_scalar',
+                'is_string',
+            ]);
+        }
+
+        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_0)) {
+            // assertions added in 5.0: assertFinite assertInfinite assertNan
+            $this->functions = array_merge($this->functions, [
+                'is_infinite',
+                'is_nan',
+            ]);
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -160,12 +218,23 @@ $this->assertTrue(is_nan($a));
         sort($values);
 
         return new FixerConfigurationResolverRootless('functions', [
-            (new FixerOptionBuilder('functions', 'List of assertions to fix.'))
-                ->setAllowedTypes(['array'])
+            (new FixerOptionBuilder('functions', '(deprecated, use `target` instead) List of assertions to fix (overrides `target`).'))
+                ->setAllowedTypes(['null', 'array'])
                 ->setAllowedValues([
+                    null,
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
                 ])
-                ->setDefault($values)
+                ->setDefault(null)
+                ->getOption(),
+            (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
+                ->setAllowedTypes(['string'])
+                ->setAllowedValues([
+                    PhpUnitTargetVersion::VERSION_3_0,
+                    PhpUnitTargetVersion::VERSION_3_5,
+                    PhpUnitTargetVersion::VERSION_5_0,
+                    PhpUnitTargetVersion::VERSION_NEWEST
+                ])
+                ->setDefault(PhpUnitTargetVersion::VERSION_5_0) // @TODO 3.x: change to `VERSION_NEWEST`
                 ->getOption(),
         ]);
     }
@@ -249,7 +318,7 @@ $this->assertTrue(is_nan($a));
         ) = $assertIndexes;
 
         $content = strtolower($tokens[$testIndex]->getContent());
-        if (!in_array($content, $this->configuration['functions'], true)) {
+        if (!in_array($content, $this->functions, true)) {
             return $assertCallCloseIndex;
         }
 

@@ -21,6 +21,9 @@ use Composer\Semver\Comparator;
  */
 final class PhpUnitTargetVersion
 {
+    const VERSION_3_0 = '3.0';
+    const VERSION_3_5 = '3.5';
+    const VERSION_5_0 = '5.0';
     const VERSION_5_2 = '5.2';
     const VERSION_5_6 = '5.6';
     const VERSION_NEWEST = 'newest';
