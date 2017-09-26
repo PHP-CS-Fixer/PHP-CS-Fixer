@@ -11,9 +11,10 @@ A lot of needed fixes are similar one to another. Would be great to have generic
 ---
 
 [DONE] `setExpectedExceptionRegExp` -> `expectException` + `expectExceptionMessageRegExp` + `expectExceptionCode`
-
-`php_unit_dedicate_assert` vs added `assertIsReadable(), assertNotIsReadable(), assertIsWritable(), assertNotIsWritable(), assertDirectoryExists(), assertDirectoryNotExists(), assertDirectoryIsReadable(), assertDirectoryNotIsReadable(), assertDirectoryIsWritable(), assertDirectoryNotIsWritable(), assertFileIsReadable(), assertFileNotIsReadable(), assertFileIsWritable(), and assertFileNotIsWritable() assertions`
-maybe `php_unit_dedicate_assert_56` ?
+[DONE] `php_unit_dedicate_assert`:
+    is_dir      -> assertDirectoryExists / assertDirectoryNotExists
+    is_readable -> assertIsReadable / assertNotIsReadable
+    is_writable -> assertIsWritable / assertNotIsWritable
 
 5.7
 ---
