@@ -48,6 +48,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
                 }
             }
         }
+
         $previousIndex = $index - 1;
         $previous = $tokens[$previousIndex];
         if ($previous->isWhitespace()) {
