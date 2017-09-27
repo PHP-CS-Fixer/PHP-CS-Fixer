@@ -130,7 +130,7 @@ function baz($options)
             }
 
             // do not bother if previous token is already namespace separator
-            if ($tokens[$index - 1]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NS_SEPARATOR)) {
                 continue;
             }
 

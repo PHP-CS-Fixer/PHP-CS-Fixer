@@ -179,7 +179,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return \json_encode($foo);
+        return \JSON_ENCODE($foo);
     }
 }
 ',
@@ -189,9 +189,27 @@ class Foo
 {
     public function bar($foo)
     {
-        return json_encode($foo);
+        return JSON_ENCODE($foo);
     }
 }
+',
+            ),
+            array(
+                '<?php
+echo \/**/strlen($a);
+echo \ strlen($a);
+echo \#
+#
+strlen($a);
+echo \strlen($a);
+',
+                '<?php
+echo \/**/strlen($a);
+echo \ strlen($a);
+echo \#
+#
+strlen($a);
+echo strlen($a);
 ',
             ),
         );
