@@ -47,6 +47,7 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
             array("<?php\r\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"),
             array("<?php\n\nfoo();\nnamespace\\bar\\baz();"),
             array("<?php\n\nnamespace X;", "<?php\nnamespace X;"),
+            array("<?php \n\nnamespace X;", '<?php namespace X;'),
         );
     }
 
