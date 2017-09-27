@@ -269,7 +269,7 @@ class Example
                 'static' => false,
             ];
 
-            for ($i = $startIndex; ; ++$i) {
+            for ($i = $startIndex;; ++$i) {
                 $token = $tokens[$i];
 
                 // class end
