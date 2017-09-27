@@ -98,24 +98,8 @@ class Foo {
                 continue;
             }
 
-            if (!$classIsFinal) {
-                $isPrivateMethod = false;
-
-                $i = max($classOpenIndex + 1, $tokens->getPrevTokenOfKind($index, ['{', '}']));
-
-                while (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
-                    if ($tokens[$i]->isGivenKind(T_PRIVATE)) {
-                        $isPrivateMethod = true;
-
-                        break;
-                    }
-
-                    ++$i;
-                }
-
-                if (!$isPrivateMethod) {
-                    continue;
-                }
+            if (!$classIsFinal && !$this->isPrivateMethod($tokens, $index, $classOpenIndex)) {
+                continue;
             }
 
             $tokens->clearAt($index);
@@ -125,5 +109,27 @@ class Foo {
                 $tokens->clearAt($nextTokenIndex);
             }
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param int    $classOpenIndex
+     *
+     * @return bool
+     */
+    private function isPrivateMethod(Tokens $tokens, $index, $classOpenIndex)
+    {
+        $i = max($classOpenIndex + 1, $tokens->getPrevTokenOfKind($index, ['{', '}']));
+
+        while (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$i]->isGivenKind(T_PRIVATE)) {
+                return true;
+            }
+
+            ++$i;
+        }
+
+        return false;
     }
 }
