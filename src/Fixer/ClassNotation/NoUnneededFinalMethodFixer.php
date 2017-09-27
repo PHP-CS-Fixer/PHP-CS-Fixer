@@ -82,19 +82,8 @@ class Foo {
      */
     private function fixClass(Tokens $tokens, $classOpenIndex, $classIsFinal)
     {
-        $methodVisibilities = [
-            T_PRIVATE,
-        ];
-
-        if ($classIsFinal) {
-            $methodVisibilities = [
-                T_PUBLIC,
-                T_PROTECTED,
-                T_PRIVATE,
-            ];
-        }
-
         $tokensCount = count($tokens);
+        $previousBlockEnd = -1;
         for ($index = $classOpenIndex + 1; $index < $tokensCount; ++$index) {
             // Class end
             if ($tokens[$index]->equals('}')) {
@@ -104,6 +93,7 @@ class Foo {
             // Skip method content
             if ($tokens[$index]->equals('{')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $previousBlockEnd = $index;
 
                 continue;
             }
@@ -112,11 +102,24 @@ class Foo {
                 continue;
             }
 
-            $prevMeaningfulToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-            $nextMeaningfulToken = $tokens[$tokens->getNextMeaningfulToken($index)];
+            if (!$classIsFinal) {
+                $isPrivateMethod = false;
 
-            if (!$nextMeaningfulToken->isGivenKind($methodVisibilities) && !$prevMeaningfulToken->isGivenKind($methodVisibilities)) {
-                continue;
+                $i = max($classOpenIndex + 1, $previousBlockEnd);
+
+                while (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
+                    if ($tokens[$i]->isGivenKind(T_PRIVATE)) {
+                        $isPrivateMethod = true;
+
+                        break;
+                    }
+
+                    ++$i;
+                }
+
+                if (!$isPrivateMethod) {
+                    continue;
+                }
             }
 
             $tokens->clearAt($index);
