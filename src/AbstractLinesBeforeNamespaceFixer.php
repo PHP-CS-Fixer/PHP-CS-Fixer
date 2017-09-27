@@ -42,7 +42,8 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
                 if ($opening->isGivenKind(T_OPEN_TAG)) {
                     $expected -= substr_count($opening->getContent(), "\n");
                     break;
-                } elseif (false === $opening->isGivenKind(T_WHITESPACE)) {
+                }
+                if (false === $opening->isGivenKind(T_WHITESPACE)) {
                     break;
                 }
             }
