@@ -81,7 +81,6 @@ class Foo {
     private function fixClass(Tokens $tokens, $classOpenIndex, $classIsFinal)
     {
         $tokensCount = count($tokens);
-        $previousBlockEnd = -1;
         for ($index = $classOpenIndex + 1; $index < $tokensCount; ++$index) {
             // Class end
             if ($tokens[$index]->equals('}')) {
@@ -91,7 +90,6 @@ class Foo {
             // Skip method content
             if ($tokens[$index]->equals('{')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-                $previousBlockEnd = $index;
 
                 continue;
             }
@@ -103,7 +101,7 @@ class Foo {
             if (!$classIsFinal) {
                 $isPrivateMethod = false;
 
-                $i = max($classOpenIndex + 1, $previousBlockEnd);
+                $i = max($classOpenIndex + 1, $tokens->getPrevTokenOfKind($index, ['{', '}']));
 
                 while (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
                     if ($tokens[$i]->isGivenKind(T_PRIVATE)) {
