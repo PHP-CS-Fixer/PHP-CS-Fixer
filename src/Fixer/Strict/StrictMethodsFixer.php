@@ -118,12 +118,14 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
                     continue;
                 }
 
-                if ($argument['type'] !== '' && $types[0] !== $argument['type']) {
-                    continue;
+                if (!$argument['type']) {
+                    $this->fixMethodArguments($tokens, $argument['name_index'], $types[0]);
+                    $argument['type'] = $types[0];
                 }
 
-                // TODO: Add type to argument
-                $annotation->remove();
+                if ($types[0] === $argument['type']) {
+                    $annotation->remove();
+                }
             }
         }
 
@@ -132,13 +134,38 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
             if (count($annotations) === 1) {
                 $types = $annotations[0]->getTypes();
                 if (count($types) === 1) {
-                    // TODO: Add type to method
+                    $this->fixMethodReturnType($tokens, $functionTokenIndex, current($types));
                     $annotations[0]->remove();
                 }
             }
         }
 
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+    }
+
+    private function fixMethodArguments(Tokens $tokens, int $argumentNameIndex, string $type)
+    {
+        $tokens->insertAt($argumentNameIndex, [
+            new Token([T_STRING, $type]),
+            new Token([T_WHITESPACE, ' ']),
+        ]);
+    }
+
+    private function fixMethodReturnType(Tokens $tokens, int $methodIndex, string $type)
+    {
+        $argumentsStart = $tokens->getNextTokenOfKind($methodIndex, ['(']);
+        $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
+
+        $nextTokenIndex = $tokens->getNextMeaningfulToken($argumentsEnd);
+        if ($tokens[$nextTokenIndex]->equals(':')) {
+            return;
+        }
+
+        $tokens->insertAt($argumentsEnd + 1, [
+            new Token([CT::T_TYPE_COLON, ':']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_STRING, $type]),
+        ]);
     }
 
     /**
@@ -240,6 +267,7 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
 
             if ($token->isGivenKind(T_VARIABLE)) {
                 $sawName = true;
+                $info['name_index'] = $index;
                 $info['name'] = $token->getContent();
 
                 continue;

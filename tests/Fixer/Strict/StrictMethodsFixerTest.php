@@ -43,6 +43,17 @@ final class StrictMethodsFixerTest extends AbstractFixerTestCase
 namespace A\B\C;
 class A {
     /**
+     * @param int $test1
+     * @param int|bool $test2
+     */
+    public function myFunction(int $test, string $test1, $test2)
+    {
+    }
+}',
+                '<?php
+namespace A\B\C;
+class A {
+    /**
      * @param int $test
      * @param int $test1
      * @param int|bool $test2
