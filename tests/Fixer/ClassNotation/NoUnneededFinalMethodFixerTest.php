@@ -246,9 +246,6 @@ final class Foo
             final public function baz()
             {
             }
-            private function qux()
-            {
-            }
         };
     }
 }
@@ -266,6 +263,31 @@ final class Foo
             final public function baz()
             {
             }
+        };
+    }
+}
+',
+            ],
+            'anonymous-class-inside-with-final-private-method' => [
+                '<?php
+class Foo
+{
+    private function bar()
+    {
+        new class {
+            private function qux()
+            {
+            }
+        };
+    }
+}
+',
+                '<?php
+class Foo
+{
+    private function bar()
+    {
+        new class {
             final private function qux()
             {
             }
