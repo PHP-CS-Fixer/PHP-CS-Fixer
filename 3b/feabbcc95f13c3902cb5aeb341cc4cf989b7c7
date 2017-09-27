@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-25T11:53:58Z
+
+> Actually I think we should create a configuration option for this
+
+why? aliases are aliases, no need for using them.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-26T08:34:06Z
+
+:+1: if a utest is added for at least subset of the added aliases.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-09-26T08:43:57Z
+
+> 👍 if a utest is added for at least subset of the added aliases.
+
+@SpacePossum `NoAliasFunctionFixerTest` is dynamic:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/5642a36a60c11cdd01488d192541a89bb44a4abf/tests/Fixer/Alias/NoAliasFunctionsFixerTest.php#L41
