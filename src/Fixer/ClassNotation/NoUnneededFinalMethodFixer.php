@@ -69,7 +69,7 @@ class Foo {
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
             $classIsFinal = $prevToken->isGivenKind(T_FINAL);
 
-            $index = $this->fixClass($tokens, $classOpen, $classIsFinal);
+            $this->fixClass($tokens, $classOpen, $classIsFinal);
         }
     }
 
@@ -77,8 +77,6 @@ class Foo {
      * @param Tokens $tokens
      * @param int    $classOpenIndex
      * @param bool   $classIsFinal
-     *
-     * @return int
      */
     private function fixClass(Tokens $tokens, $classOpenIndex, $classIsFinal)
     {
@@ -87,7 +85,7 @@ class Foo {
         for ($index = $classOpenIndex + 1; $index < $tokensCount; ++$index) {
             // Class end
             if ($tokens[$index]->equals('}')) {
-                return $index;
+                return;
             }
 
             // Skip method content
