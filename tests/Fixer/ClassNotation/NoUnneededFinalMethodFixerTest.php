@@ -246,6 +246,9 @@ final class Foo
             final public function baz()
             {
             }
+            private function qux()
+            {
+            }
         };
     }
 }
@@ -261,6 +264,9 @@ final class Foo
     {
         new class {
             final public function baz()
+            {
+            }
+            final private function qux()
             {
             }
         };
