@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-26T11:08:40Z
+
+> we are dropping HHVM and PHP version checks
+> we are dropping registration of an error handler
+
+We are **not** dropping them.
+On original source, we do have 2 files: `php-cs-fixer` and `src/Resources/phar-stub.php` which are almost the same - difference is registering autoloader from composer or phar map.
+
+This PR unifies files and drop one of them, so phar release will use the same entry point as composer-installed app. in that unified entry point, there are still checks for php versions and error handler registration.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-09-26T11:09:48Z
+
+@keradus
+
+Even better! 👍
