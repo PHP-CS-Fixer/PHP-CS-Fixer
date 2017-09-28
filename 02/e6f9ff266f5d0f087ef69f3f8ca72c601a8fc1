@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-28T06:20:48Z
+
+other case is
+```php
+ /**
+  * @Foo(x={
+  *     @Bar
+  * })
+  * @Foo\z
+  */', '
+ /**
+  * @Foo(x={
+  * @Bar
+  * })
+  * @Foo\z
+  */'),
+```
+
+so `@Bar` got indented. here, you drop indentation. why ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-28T07:06:19Z
+
+When a line has "mixed content" (data + closing brace), the closing brace wins and one level of indentation is removed. On the test case you show, the line with `@Bar` only has data while on the new test case, the line with `@Bar` also contains a closing brace.
+
+I added a new option on higher branch so that mixed lines remain indented instead.
+
+---------------------------------------------------------------------------
+
+by tsufeki at 2017-09-28T17:56:54Z
+
+Yes, this works for me, thank you.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-28T19:13:19Z
+
+Thanks for clarification @julienfalque
