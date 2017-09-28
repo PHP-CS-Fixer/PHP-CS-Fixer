@@ -985,12 +985,12 @@ final class ConfigurationResolverTest extends TestCase
     {
         $this->setExpectedException(
             'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            'The rules contain unknown fixers (bar).'
+            'The rules contain unknown fixers: "bar", "binary_operator_space" (did you mean "binary_operator_spaces"?).'
         );
 
         $resolver = new ConfigurationResolver(
             $this->config,
-            array('rules' => 'braces,-bar'),
+            array('rules' => 'braces,-bar,binary_operator_space'),
             ''
         );
 
