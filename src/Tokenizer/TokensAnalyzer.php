@@ -185,7 +185,7 @@ final class TokensAnalyzer
             'final' => false,
         ];
 
-        for ($i = $index; $i >= 0; --$i) {
+        for ($i = $index; 0 <= $i; --$i) {
             $tokenIndex = $tokens->getPrevMeaningfulToken($i);
 
             $i = $tokenIndex;

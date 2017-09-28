@@ -81,7 +81,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
         }
 
         $whitespace = '';
-        for ($previous = $index - 1; $previous > 0; --$previous) {
+        for ($previous = $index - 1; 0 < $previous; --$previous) {
             $token = $tokens[$previous];
             if ($token->isWhitespace() && preg_match('/(\R[^\R]*)$/', $token->getContent(), $matches)) {
                 $whitespace = $matches[1];

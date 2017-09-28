@@ -70,7 +70,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
             $linesSize = count($lines);
 
             // fix only multiline whitespaces or singleline whitespaces at the end of file
-            if ($linesSize > 1 || !isset($tokens[$index + 1])) {
+            if (1 < $linesSize || !isset($tokens[$index + 1])) {
                 $lines[0] = rtrim($lines[0], " \t");
 
                 for ($i = 1; $i < $linesSize; ++$i) {

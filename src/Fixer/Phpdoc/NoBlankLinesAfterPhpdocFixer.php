@@ -103,7 +103,7 @@ class Bar {}
     {
         $content = $tokens[$index]->getContent();
         // if there is more than one new line in the whitespace, then we need to fix it
-        if (substr_count($content, "\n") > 1) {
+        if (1 < substr_count($content, "\n")) {
             // the final bit of the whitespace must be the next statement's indentation
             $lines = Utils::splitLines($content);
             $tokens[$index] = new Token([T_WHITESPACE, "\n".end($lines)]);

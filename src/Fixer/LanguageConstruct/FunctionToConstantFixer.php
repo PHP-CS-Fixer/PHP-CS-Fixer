@@ -113,7 +113,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = $tokens->count() - 4; $index > 0; --$index) {
+        for ($index = $tokens->count() - 4; 0 < $index; --$index) {
             $candidate = $this->getReplaceCandidate($tokens, $index);
             if (null === $candidate) {
                 continue;

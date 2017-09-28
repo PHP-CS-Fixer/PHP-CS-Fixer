@@ -51,8 +51,8 @@ final class ErrorOutput
             $process
         )]);
 
-        $showDetails = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE;
-        $showTrace = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG;
+        $showDetails = OutputInterface::VERBOSITY_VERY_VERBOSE <= $this->output->getVerbosity();
+        $showTrace = OutputInterface::VERBOSITY_DEBUG <= $this->output->getVerbosity();
         foreach ($errors as $i => $error) {
             $this->output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
             if ($showDetails) {

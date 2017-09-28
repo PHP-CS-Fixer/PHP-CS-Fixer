@@ -524,7 +524,7 @@ PHP;
     public function testClearTokenAndMergeSurroundingWhitespace($source, array $indexes, array $expected)
     {
         $this->doTestClearTokens($source, $indexes, $expected);
-        if (count($indexes) > 1) {
+        if (1 < count($indexes)) {
             $this->doTestClearTokens($source, array_reverse($indexes), $expected);
         }
     }

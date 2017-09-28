@@ -89,10 +89,10 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
             $currentLineDelta = $this->getLineBracesDelta($tokens, $index);
 
             $extraIndentLevel = 0;
-            if ($previousLineBracesDelta > 0) {
+            if (0 < $previousLineBracesDelta) {
                 ++$indentLevel;
             }
-            if ($currentLineDelta < 0) {
+            if (0 > $currentLineDelta) {
                 --$indentLevel;
 
                 if ($this->configuration['indent_mixed_lines'] && $this->isClosingLineWithMeaningfulContent($tokens, $index)) {

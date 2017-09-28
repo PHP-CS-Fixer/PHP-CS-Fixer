@@ -62,7 +62,7 @@ Files that were not fixed due to errors reported during %s:
             __FILE__
         );
 
-        if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+        if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $verbosityLevel) {
             $startWith .= sprintf(
                 '
 
@@ -77,7 +77,7 @@ Files that were not fixed due to errors reported during %s:
             );
         }
 
-        if ($verbosityLevel >= OutputInterface::VERBOSITY_DEBUG) {
+        if (OutputInterface::VERBOSITY_DEBUG <= $verbosityLevel) {
             $startWith .= sprintf(
                 '
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest->getErrorAndLineNumber()

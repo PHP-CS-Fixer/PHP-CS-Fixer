@@ -231,7 +231,7 @@ $h = $i===  $j;
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
 
         // last and first tokens cannot be an operator
-        for ($index = $tokens->count() - 2; $index > 0; --$index) {
+        for ($index = $tokens->count() - 2; 0 < $index; --$index) {
             if (!$this->tokensAnalyzer->isBinaryOperator($index)) {
                 continue;
             }
@@ -509,19 +509,19 @@ $h = $i===  $j;
             // for all tokens that should be aligned but do not have anything to align with, fix spacing if needed
             if (self::ALIGN_SINGLE_SPACE === $alignStrategy || self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
                 if ('=>' === $tokenContent) {
-                    for ($index = $tokens->count() - 2; $index > 0; --$index) {
+                    for ($index = $tokens->count() - 2; 0 < $index; --$index) {
                         if ($tokens[$index]->isGivenKind(T_DOUBLE_ARROW)) { // always binary operator, never part of declare statement
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
                 } elseif ('=' === $tokenContent) {
-                    for ($index = $tokens->count() - 2; $index > 0; --$index) {
+                    for ($index = $tokens->count() - 2; 0 < $index; --$index) {
                         if ('=' === $tokens[$index]->getContent() && !$this->isEqualPartOfDeclareStatement($tokens, $index) && $this->tokensAnalyzer->isBinaryOperator($index)) {
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
                 } else {
-                    for ($index = $tokens->count() - 2; $index > 0; --$index) {
+                    for ($index = $tokens->count() - 2; 0 < $index; --$index) {
                         $content = $tokens[$index]->getContent();
                         if (strtolower($content) === $tokenContent && $this->tokensAnalyzer->isBinaryOperator($index)) { // never part of declare statement
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
@@ -731,7 +731,7 @@ $h = $i===  $j;
             $groups[$groupIndex] = [];
 
             foreach ($lines as $index => $line) {
-                if (substr_count($line, $placeholder) > 0) {
+                if (0 < substr_count($line, $placeholder)) {
                     $groups[$groupIndex][] = $index;
                 } else {
                     ++$groupIndex;
@@ -740,7 +740,7 @@ $h = $i===  $j;
             }
 
             foreach ($groups as $group) {
-                if (count($group) < 1) {
+                if (1 > count($group)) {
                     continue;
                 }
 
@@ -774,7 +774,7 @@ $h = $i===  $j;
                     $currentSymbol = strpos(utf8_decode($line), $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
-                    if ($delta > 0) {
+                    if (0 < $delta) {
                         $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
                         $lines[$index] = $line;
                     }

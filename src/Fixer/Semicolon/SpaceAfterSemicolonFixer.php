@@ -54,7 +54,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = count($tokens) - 2; $index > 0; --$index) {
+        for ($index = count($tokens) - 2; 0 < $index; --$index) {
             if (!$tokens[$index]->equals(';')) {
                 continue;
             }

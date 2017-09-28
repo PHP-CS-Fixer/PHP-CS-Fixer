@@ -104,7 +104,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$index]->isWhitespace() || $this->getLineBreakCount($tokens, $index, $index + 1) > 1) {
+            if (!$tokens[$index]->isWhitespace() || 1 < $this->getLineBreakCount($tokens, $index, $index + 1)) {
                 break;
             }
         }

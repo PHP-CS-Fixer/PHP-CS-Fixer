@@ -99,7 +99,7 @@ final class Foo {}
         foreach ($lines as $index => $line) {
             if (!$line->isTheStart()) {
                 // don't remove lines with content and don't entirely delete docblocks
-                if ($total - $index < 3 || $line->containsUsefulContent()) {
+                if (3 > $total - $index || $line->containsUsefulContent()) {
                     break;
                 }
 
@@ -126,7 +126,7 @@ final class Foo {}
         foreach ($lines as $index => $line) {
             if (!$line->isTheEnd()) {
                 // don't remove lines with content and don't entirely delete docblocks
-                if ($total - $index < 3 || $line->containsUsefulContent()) {
+                if (3 > $total - $index || $line->containsUsefulContent()) {
                     break;
                 }
 

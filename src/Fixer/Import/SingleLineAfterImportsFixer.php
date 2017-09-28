@@ -129,7 +129,7 @@ final class Example
                     $nextToken = $tokens[$insertIndex];
                     $nextMeaningfulAfterUseIndex = $tokens->getNextMeaningfulToken($insertIndex);
                     if (null !== $nextMeaningfulAfterUseIndex && $tokens[$nextMeaningfulAfterUseIndex]->isGivenKind(T_USE)) {
-                        if (substr_count($nextToken->getContent(), "\n") < 2) {
+                        if (2 > substr_count($nextToken->getContent(), "\n")) {
                             $tokens[$insertIndex] = new Token([T_WHITESPACE, $newline.$indent.ltrim($nextToken->getContent())]);
                         }
                     } else {

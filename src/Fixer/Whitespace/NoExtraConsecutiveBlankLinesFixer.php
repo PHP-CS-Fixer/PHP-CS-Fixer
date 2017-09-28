@@ -284,7 +284,7 @@ switch($a) {
     {
         $this->tokens = $tokens;
         $this->tokensAnalyzer = new TokensAnalyzer($this->tokens);
-        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
+        for ($index = $tokens->getSize() - 1; 0 < $index; --$index) {
             $this->fixByToken($tokens[$index], $index);
         }
     }
@@ -370,7 +370,7 @@ switch($a) {
                 $content .= $parts[$i];
             }
 
-            if ($i !== $last && $count < 3) {
+            if ($i !== $last && 3 > $count) {
                 $content .= $this->whitespacesConfig->getLineEnding();
             }
         }
@@ -380,7 +380,7 @@ switch($a) {
 
     private function fixAfterToken($index)
     {
-        for ($i = $index - 1; $i > 0; --$i) {
+        for ($i = $index - 1; 0 < $i; --$i) {
             if ($this->tokens[$i]->isGivenKind(T_FUNCTION) && $this->tokensAnalyzer->isLambda($i)) {
                 return;
             }
@@ -439,7 +439,7 @@ switch($a) {
 
         for ($i = $end; $i < $tokenCount && $this->tokens[$i]->isWhitespace(); ++$i) {
             $content = $this->tokens[$i]->getContent();
-            if (substr_count($content, "\n") < 1) {
+            if (1 > substr_count($content, "\n")) {
                 continue;
             }
 

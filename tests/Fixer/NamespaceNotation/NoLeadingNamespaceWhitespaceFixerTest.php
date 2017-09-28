@@ -39,7 +39,7 @@ final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         $manySpaces = [];
-        for ($i = 1; $i <= 100; ++$i) {
+        for ($i = 1; 100 >= $i; ++$i) {
             $manySpaces[] = 'namespace Test'.$i.';';
         }
 
