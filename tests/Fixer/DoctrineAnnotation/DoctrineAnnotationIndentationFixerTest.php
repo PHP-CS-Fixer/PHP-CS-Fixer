@@ -600,6 +600,13 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @fixme
  *     @override
  */'],
+            ['
+/**
+ * @Foo({
+ *     @Bar()}
+ * )
+ */
+'],
         ]);
     }
 }
