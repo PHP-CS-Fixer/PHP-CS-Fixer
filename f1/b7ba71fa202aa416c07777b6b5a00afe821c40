@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-18T05:15:21Z
+
+:+1: for idea
+
+However, here SF team asks to not remove the space:
+https://github.com/symfony/symfony/pull/24123#issuecomment-327770614
+so I'm not sure adding it to SF is a good idea, so I'm +0 on that change
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-18T06:22:30Z
+
+damn, linked fabbot report is dead
+so, SF doesn't know which way they want to go? maybe go both ways locally, see amount of hit for having space and not having space, then we could propose to unify?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-24T16:02:48Z
+
+@nicolas-grekas @fabpot Could you please confirm whether this new rule should be part of the `@Symfony` ruleset?
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2017-09-24T16:15:36Z
+
+:+1: this is a common false positive right now
+
+---------------------------------------------------------------------------
+
+by fabpot at 2017-09-25T05:16:57Z
+
+👍
