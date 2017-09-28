@@ -74,14 +74,16 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
                     ++$precedingNewlinesInOpening;
                 }
                 $newlinesForWhitespaceToken = $expected - $precedingNewlinesInOpening;
-                if (0 === $newlinesForWhitespaceToken) {
-                    // We have all the needed new lines in the opening tag
-                    // Let's remove the previous token containing extra new lines
-                    $tokens->clearAt($previousIndex);
-                } elseif ($previous->isWhitespace()) {
-                    // Fix the previous whitespace token
-                    $previous->setContent(str_repeat("\n", $newlinesForWhitespaceToken));
-                } else {
+                if ($previous->isWhitespace()) {
+                    if (0 === $newlinesForWhitespaceToken) {
+                        // We have all the needed new lines in the opening tag
+                        // Let's remove the previous token containing extra new lines
+                        $tokens->clearAt($previousIndex);
+                    } else {
+                        // Fix the previous whitespace token
+                        $previous->setContent(str_repeat("\n", $newlinesForWhitespaceToken));
+                    }
+                } elseif (0 < $newlinesForWhitespaceToken) {
                     // Add a new whitespace token
                     $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat("\n", $newlinesForWhitespaceToken))));
                 }
