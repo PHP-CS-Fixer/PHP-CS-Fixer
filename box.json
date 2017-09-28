@@ -16,6 +16,6 @@
         }
     ],
     "git-commit": "git-commit",
-    "stub": "src/Resources/phar-stub.php",
+    "stub": "php-cs-fixer",
     "web": false
 }
