@@ -21,6 +21,7 @@ use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use PhpCsFixer\WhitespacesFixerConfig;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
@@ -110,11 +111,12 @@ abstract class AbstractFixerTestCase extends TestCase
      * This method throws an exception if $expected and $input are equal to prevent test cases that accidentally do
      * not test anything.
      *
-     * @param string            $expected The expected fixer output
-     * @param null|string       $input    The fixer input, or null if it should intentionally be equal to the output
-     * @param null|\SplFileInfo $file     The file to fix, or null if unneeded
+     * @param string                      $expected    The expected fixer output
+     * @param null|string                 $input       The fixer input, or null if it should intentionally be equal to the output
+     * @param null|\SplFileInfo           $file        The file to fix, or null if unneeded
+     * @param null|WhitespacesFixerConfig $whitespaces The white space configuration, or null to use the default
      */
-    protected function doTest($expected, $input = null, \SplFileInfo $file = null)
+    protected function doTest($expected, $input = null, \SplFileInfo $file = null, WhitespacesFixerConfig $whitespaces = null)
     {
         if ($expected === $input) {
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
@@ -132,6 +134,10 @@ abstract class AbstractFixerTestCase extends TestCase
             if ($fileIsSupported) {
                 $this->assertTrue($this->fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
                 $this->assertFalse($tokens->isChanged(), 'Fixer must not touch Tokens on candidate check.');
+                if (null !== $whitespaces) {
+                    $this->assertInstanceOf('PhpCsFixer\Fixer\WhitespacesAwareFixerInterface', $this->fixer, 'Fixer must implement WhitespacesAwareFixerInterface in order to configure whitespaces.');
+                    $this->fixer->setWhitespacesConfig($whitespaces);
+                }
                 $fixResult = $this->fixer->fix($file, $tokens);
                 $this->assertNull($fixResult, '->fix method must return null.');
             }
