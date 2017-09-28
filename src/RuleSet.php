@@ -134,7 +134,9 @@ final class RuleSet implements RuleSetInterface
             'single_blank_line_before_namespace' => true,
             'single_class_element_per_statement' => true,
             'single_quote' => true,
-            'space_after_semicolon' => true,
+            'space_after_semicolon' => [
+                'remove_in_empty_for_expressions' => true,
+            ],
             'standardize_not_equals' => true,
             'ternary_operator_spaces' => true,
             'trailing_comma_in_multiline_array' => true,
