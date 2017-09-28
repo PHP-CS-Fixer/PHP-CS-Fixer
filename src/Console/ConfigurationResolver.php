@@ -35,6 +35,7 @@ use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfo;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
@@ -694,10 +695,19 @@ final class ConfigurationResolver
         );
 
         if (count($unknownFixers)) {
-            throw new InvalidConfigurationException(sprintf(
-                'The rules contain unknown fixers (%s).',
-                implode(', ', $unknownFixers)
-            ));
+            $matcher = new WordMatcher($availableFixers);
+
+            $message = 'The rules contain unknown fixers: ';
+            foreach ($unknownFixers as $unknownFixer) {
+                $alternative = $matcher->match($unknownFixer);
+                $message .= sprintf(
+                    '"%s"%s, ',
+                    $unknownFixer,
+                    null === $alternative ? '' : ' (did you mean "'.$alternative.'"?)'
+                );
+            }
+
+            throw new InvalidConfigurationException(substr($message, 0, -2).'.');
         }
     }
 
