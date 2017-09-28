@@ -110,7 +110,7 @@ interface Bar extends
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // -4, one for count to index, 3 because min. of tokens for a classy location.
-        for ($index = $tokens->getSize() - 4; $index > 0; --$index) {
+        for ($index = $tokens->getSize() - 4; 0 < $index; --$index) {
             if ($tokens[$index]->isClassy()) {
                 $this->fixClassyDefinition($tokens, $index);
             }

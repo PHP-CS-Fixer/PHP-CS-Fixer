@@ -230,15 +230,15 @@ final class FixCommand extends Command
         if (null !== $stdErr) {
             $errorOutput = new ErrorOutput($stdErr);
 
-            if (count($invalidErrors) > 0) {
+            if (0 < count($invalidErrors)) {
                 $errorOutput->listErrors('linting before fixing', $invalidErrors);
             }
 
-            if (count($exceptionErrors) > 0) {
+            if (0 < count($exceptionErrors)) {
                 $errorOutput->listErrors('fixing', $exceptionErrors);
             }
 
-            if (count($lintErrors) > 0) {
+            if (0 < count($lintErrors)) {
                 $errorOutput->listErrors('linting after fixing', $lintErrors);
             }
         }
@@ -247,9 +247,9 @@ final class FixCommand extends Command
 
         return $exitStatusCalculator->calculate(
             $resolver->isDryRun(),
-            count($changed) > 0,
-            count($invalidErrors) > 0,
-            count($exceptionErrors) > 0
+            0 < count($changed),
+            0 < count($invalidErrors),
+            0 < count($exceptionErrors)
         );
     }
 }

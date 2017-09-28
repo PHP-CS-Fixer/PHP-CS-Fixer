@@ -92,7 +92,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
      */
     public function isCandidate(Tokens $tokens)
     {
-        return count($tokens) > 1 && $tokens->isAnyTokenKindsFound(self::$tokens);
+        return 1 < count($tokens) && $tokens->isAnyTokenKindsFound(self::$tokens);
     }
 
     /**

@@ -368,7 +368,7 @@ EOF
             ));
         }
 
-        for ($i = (int) Application::VERSION; $i > 0; --$i) {
+        for ($i = (int) Application::VERSION; 0 < $i; --$i) {
             if (1 === preg_match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
                 $version = $matches[1];
 

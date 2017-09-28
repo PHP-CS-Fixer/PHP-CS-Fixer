@@ -56,7 +56,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; $index > 1; --$index) {
+        for ($index = count($tokens) - 1; 1 < $index; --$index) {
             if ($tokens[$index]->equals('!')) {
                 $index = $this->fixShortCast($tokens, $index);
             }
@@ -71,7 +71,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
      */
     private function fixShortCast(Tokens $tokens, $index)
     {
-        for ($i = $index - 1; $i > 1; --$i) {
+        for ($i = $index - 1; 1 < $i; --$i) {
             if ($tokens[$i]->equals('!')) {
                 $this->fixShortCastToBoolCast($tokens, $i, $index);
 

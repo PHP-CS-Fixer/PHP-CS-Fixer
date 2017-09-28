@@ -65,7 +65,7 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
         $ending = $this->whitespacesConfig->getLineEnding();
         $lastIndex = $tokens->count() - 1;
 
-        for ($index = $lastIndex; $index >= 0; --$index) {
+        for ($index = $lastIndex; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_NAMESPACE)) {

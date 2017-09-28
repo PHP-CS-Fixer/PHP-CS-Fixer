@@ -363,12 +363,12 @@ final class DescribeCommand extends Command
      */
     private function describeList(OutputInterface $output, $type)
     {
-        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+        if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $output->getVerbosity()) {
             $describe = [
                 'set' => $this->getSetNames(),
                 'rules' => $this->getFixers(),
             ];
-        } elseif ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+        } elseif (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
             $describe = 'set' === $type ? ['set' => $this->getSetNames()] : ['rules' => $this->getFixers()];
         } else {
             return;

@@ -186,12 +186,12 @@ final class FixerFactory
             $fixersByName[$name] = $fixer;
 
             $conflicts = array_intersect($this->getFixersConflicts($fixer), $fixerNames);
-            if (count($conflicts) > 0) {
+            if (0 < count($conflicts)) {
                 $fixerConflicts[$name] = $conflicts;
             }
         }
 
-        if (count($fixerConflicts) > 0) {
+        if (0 < count($fixerConflicts)) {
             throw new \UnexpectedValueException($this->generateConflictMessage($fixerConflicts));
         }
 
@@ -265,7 +265,7 @@ final class FixerFactory
                 }
             );
 
-            if (count($report[$fixer]) > 0) {
+            if (0 < count($report[$fixer])) {
                 $message .= sprintf("\n- \"%s\" with \"%s\"", $fixer, implode('", "', $report[$fixer]));
             }
         }

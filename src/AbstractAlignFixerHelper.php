@@ -87,7 +87,7 @@ abstract class AbstractAlignFixerHelper
             $linesWithPlaceholder[$blockSize] = [];
 
             foreach ($lines as $index => $line) {
-                if (substr_count($line, $placeholder) > 0) {
+                if (0 < substr_count($line, $placeholder)) {
                     $linesWithPlaceholder[$blockSize][] = $index;
                 } else {
                     ++$blockSize;
@@ -96,7 +96,7 @@ abstract class AbstractAlignFixerHelper
             }
 
             foreach ($linesWithPlaceholder as $group) {
-                if (count($group) < 1) {
+                if (1 > count($group)) {
                     continue;
                 }
 
@@ -110,7 +110,7 @@ abstract class AbstractAlignFixerHelper
                     $currentSymbol = strpos(utf8_decode($line), $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
-                    if ($delta > 0) {
+                    if (0 < $delta) {
                         $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
                         $lines[$index] = $line;
                     }

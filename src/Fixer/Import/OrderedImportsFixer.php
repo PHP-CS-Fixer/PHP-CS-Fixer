@@ -311,7 +311,7 @@ use function CCC\AA;
         $originalIndexes = [];
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        for ($i = count($uses) - 1; $i >= 0; --$i) {
+        for ($i = count($uses) - 1; 0 <= $i; --$i) {
             $index = $uses[$i];
 
             $startIndex = $tokens->getTokenNotOfKindSibling($index + 1, 1, [[T_WHITESPACE]]);

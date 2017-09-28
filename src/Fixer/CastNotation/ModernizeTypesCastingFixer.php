@@ -100,7 +100,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     }
                 }
 
-                $preserveParenthesises = $countParamTokens > 1;
+                $preserveParenthesises = 1 < $countParamTokens;
 
                 // analyse namespace specification (root one or none) and decide what to do
                 $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);

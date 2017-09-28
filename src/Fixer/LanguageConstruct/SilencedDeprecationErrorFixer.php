@@ -57,7 +57,7 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
             if (!$token->equals([T_STRING, 'trigger_error'], false)) {
                 continue;

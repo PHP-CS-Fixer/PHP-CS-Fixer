@@ -77,9 +77,9 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
 
         if (
             // fix T_WHITESPACES with at least 3 lines (eg `\n   \n`)
-            $lineCount > 2
+            2 < $lineCount
             // and T_WHITESPACES with at least 2 lines at the end of file or after open tag with linebreak
-            || ($lineCount > 0 && (!isset($tokens[$index + 1]) || $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)))
+            || (0 < $lineCount && (!isset($tokens[$index + 1]) || $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)))
         ) {
             $lMax = isset($tokens[$index + 1]) ? $lineCount - 1 : $lineCount;
 

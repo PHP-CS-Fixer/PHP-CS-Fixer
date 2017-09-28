@@ -79,7 +79,7 @@ switch ($foo) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($position = count($tokens) - 1; $position >= 0; --$position) {
+        for ($position = count($tokens) - 1; 0 <= $position; --$position) {
             if ($tokens[$position]->isGivenKind([T_CASE, T_DEFAULT])) {
                 $this->fixCase($tokens, $position);
             }
@@ -194,7 +194,7 @@ switch ($foo) {
             }
         }
 
-        if ($nbNewlines > 1) {
+        if (1 < $nbNewlines) {
             preg_match('/^(.*?)(\R[ \t]*)$/s', $newlineToken->getContent(), $matches);
 
             $indent = $this->getIndentAt($tokens, $newlinePosition - 1);

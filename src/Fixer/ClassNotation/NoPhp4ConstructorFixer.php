@@ -309,7 +309,7 @@ class Foo
             }
 
             // append a comma if it's not the first variable
-            if (count($seq) > 5) {
+            if (5 < count($seq)) {
                 $seq[] = ',';
             }
 

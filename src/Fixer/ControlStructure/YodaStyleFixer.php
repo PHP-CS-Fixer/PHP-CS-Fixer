@@ -205,7 +205,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      */
     private function fixTokens(Tokens $tokens)
     {
-        for ($i = count($tokens) - 1; $i > 1; --$i) {
+        for ($i = count($tokens) - 1; 1 < $i; --$i) {
             if ($tokens[$i]->isGivenKind($this->candidateTypes)) {
                 $yoda = $this->configuration[$tokens[$i]->getId()];
             } elseif (

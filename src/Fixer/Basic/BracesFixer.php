@@ -223,7 +223,7 @@ class Foo
 
             $tokens[$newBraceIndex] = $tokenTmp;
             $c = $tokens[$braceIndex]->getContent();
-            if (substr_count($c, "\n") > 1) {
+            if (1 < substr_count($c, "\n")) {
                 // left trim till last line break
                 $tokens[$braceIndex] = new Token([T_WHITESPACE, substr($c, strrpos($c, "\n"))]);
             }

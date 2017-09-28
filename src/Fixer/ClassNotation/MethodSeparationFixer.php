@@ -80,7 +80,7 @@ final class Sample
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
+        for ($index = $tokens->getSize() - 1; 0 < $index; --$index) {
             if (!$tokens[$index]->isClassy()) {
                 continue;
             }
@@ -190,7 +190,7 @@ final class Sample
             }
 
             // $tokens[$nonWhiteAbove+1] is always a white space token here
-            if (substr_count($tokens[$nonWhiteAbove + 1]->getContent(), "\n") > 1) {
+            if (1 < substr_count($tokens[$nonWhiteAbove + 1]->getContent(), "\n")) {
                 // more than one line break, always bring it back to 2 line breaks between the method start and what is above it
                 $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, 2);
 
@@ -198,7 +198,7 @@ final class Sample
             }
 
             // there are 2 cases:
-            if ($tokens[$nonWhiteAbove - 1]->isWhitespace() && substr_count($tokens[$nonWhiteAbove - 1]->getContent(), "\n") > 0) {
+            if ($tokens[$nonWhiteAbove - 1]->isWhitespace() && 0 < substr_count($tokens[$nonWhiteAbove - 1]->getContent(), "\n")) {
                 // 1. The comment is meant for the method (although not a PHPDoc),
                 //    make sure there is one line break between the method and the comment...
                 $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstMethodAttrIndex, 1);
@@ -275,9 +275,9 @@ final class Sample
 
         // $numbOfWhiteTokens = > 1
         $toReplaceCount = $lineBreakCount - $reqLineCount;
-        for ($i = $startIndex; $i < $endIndex && $toReplaceCount > 0; ++$i) {
+        for ($i = $startIndex; $i < $endIndex && 0 < $toReplaceCount; ++$i) {
             $tokenLineCount = substr_count($tokens[$i]->getContent(), "\n");
-            if ($tokenLineCount > 0) {
+            if (0 < $tokenLineCount) {
                 $tokens[$i] = new Token([
                     T_WHITESPACE,
                     preg_replace('/\r\n|\n/', '', $tokens[$i]->getContent(), min($toReplaceCount, $tokenLineCount)),
@@ -313,14 +313,14 @@ final class Sample
     private function findCommentBlockStart(Tokens $tokens, $commentIndex)
     {
         $start = $commentIndex;
-        for ($i = $commentIndex - 1; $i > 0; --$i) {
+        for ($i = $commentIndex - 1; 0 < $i; --$i) {
             if ($tokens[$i]->isComment()) {
                 $start = $i;
 
                 continue;
             }
 
-            if (!$tokens[$i]->isWhitespace() || $this->getLineBreakCount($tokens, $i, $i + 1) > 1) {
+            if (!$tokens[$i]->isWhitespace() || 1 < $this->getLineBreakCount($tokens, $i, $i + 1)) {
                 break;
             }
         }

@@ -68,7 +68,7 @@ final class Tokens extends \SplFixedArray
                     $nbScannedTokensToUse = 2;
                 }
 
-                if ($index >= 2 && 0 === $nbScopes && !in_array($token['type'], [DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS], true)) {
+                if (2 <= $index && 0 === $nbScopes && !in_array($token['type'], [DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS], true)) {
                     break;
                 }
 
@@ -104,7 +104,7 @@ final class Tokens extends \SplFixedArray
                     }
 
                     $missingTextLength = $token['position'] - $lastTokenEndIndex;
-                    if ($missingTextLength > 0) {
+                    if (0 < $missingTextLength) {
                         $tokens[] = new Token(DocLexer::T_NONE, substr(
                             $content,
                             $nextAtPosition + $lastTokenEndIndex,
