@@ -52,8 +52,8 @@ try {
     } else {
         require_once __DIR__.'/vendor/autoload.php';
     }
-
 }
+
 use PhpCsFixer\Console\Application;
 
 $application = new Application();
