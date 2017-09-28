@@ -34,31 +34,58 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
      */
     protected function fixLinesBeforeNamespace(Tokens $tokens, $index, $expected)
     {
-        // if we've got a <?php, then subtracted the number of new lines it
-        // contains from the expected number in the following whitespace
+        // Let's determine the total numbers of new lines before the namespace
+        // and the opening token
+        $precedingNewlinesTotal = 0;
+        $precedingNewlinesInOpening = 0;
+        $openingToken = null;
         for ($i = 1; $i <= 2; ++$i) {
             if (isset($tokens[$index - $i])) {
-                $opening = $tokens[$index - $i];
-                if ($opening->isGivenKind(T_OPEN_TAG)) {
-                    $expected -= substr_count($opening->getContent(), "\n");
+                $token = $tokens[$index - $i];
+                if ($token->isGivenKind(T_OPEN_TAG)) {
+                    $openingToken = $token;
+                    $precedingNewlinesInOpening = substr_count($token->getContent(), "\n");
+                    $precedingNewlinesTotal += $precedingNewlinesInOpening;
                     break;
                 }
-                if (false === $opening->isGivenKind(T_WHITESPACE)) {
+                if (false === $token->isGivenKind(T_WHITESPACE)) {
                     break;
                 }
+                $precedingNewlinesTotal += substr_count($token->getContent(), "\n");
             }
         }
 
-        $previousIndex = $index - 1;
-        $previous = $tokens[$previousIndex];
-        if ($previous->isWhitespace()) {
+        if ($expected !== $precedingNewlinesTotal) {
+            $previousIndex = $index - 1;
+            $previous = $tokens[$previousIndex];
             if (0 === $expected) {
-                $tokens->clearAt($previousIndex);
-            } elseif (substr_count($previous->getContent(), "\n") !== $expected) {
-                $tokens[$previousIndex] = new Token(array(T_WHITESPACE, str_repeat("\n", $expected)));
+                // Remove all the previous new lines
+                if ($previous->isWhitespace()) {
+                    $tokens->clearAt($previousIndex);
+                }
+                // Remove new lines in opening token
+                if (0 < $precedingNewlinesInOpening) {
+                    $openingToken->setContent(rtrim($openingToken->getContent()).' ');
+                }
+            } else {
+                if (null !== $openingToken && 0 === $precedingNewlinesInOpening) {
+                    // We have an opening tag without new lines: add a new line there
+                    $openingToken->setContent(rtrim($openingToken->getContent())."\n");
+                    ++$precedingNewlinesInOpening;
+                }
+                $newlinesForWhitespaceToken = $expected - $precedingNewlinesInOpening;
+                if (0 === $newlinesForWhitespaceToken) {
+                    // We have all the needed new lines in the opening tag
+                    // Let's remove the previous token containing extra new lines
+                    $tokens->clearAt($previousIndex);
+                } elseif ($previous->isWhitespace()) {
+                    // Fix the previous whitespace token
+                    $previous->setContent(str_repeat("\n", $newlinesForWhitespaceToken));
+                } else {
+                    // Add a new whitespace token
+                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat("\n", $newlinesForWhitespaceToken))));
+                }
             }
-        } elseif (0 < $expected && $previous->isGivenKind(T_OPEN_TAG)) {
-            $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat("\n", $expected))));
         }
     }
 }
