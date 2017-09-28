@@ -70,10 +70,16 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
                 }
             } else {
                 $lineEnding = $this->whitespacesConfig->getLineEnding();
-                if (null !== $openingToken && 0 === $precedingNewlinesInOpening) {
-                    // We have an opening tag without new lines: add a new line there
-                    $openingToken->setContent(rtrim($openingToken->getContent()).$lineEnding);
-                    ++$precedingNewlinesInOpening;
+                if (null !== $openingToken) {
+                    $content = rtrim($openingToken->getContent());
+                    if (0 === $precedingNewlinesInOpening) {
+                        // We have an opening tag without new lines: add a new line there
+                        $openingToken->setContent($content.$lineEnding);
+                        ++$precedingNewlinesInOpening;
+                    } else {
+                        // Use the configured line ending for the PHP opening tag
+                        $openingToken->setContent($content.str_repeat($lineEnding, $precedingNewlinesInOpening));
+                    }
                 }
                 $newlinesForWhitespaceToken = $expected - $precedingNewlinesInOpening;
                 if ($previous->isWhitespace()) {
