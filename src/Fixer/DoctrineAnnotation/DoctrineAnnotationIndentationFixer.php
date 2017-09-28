@@ -72,7 +72,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
             if ($previousLineBracesDelta > 0) {
                 ++$indentLevel;
             }
-            if ($currentLineDelta < 0) {
+            if ($currentLineDelta < 0 && $indentLevel > 0) {
                 --$indentLevel;
             }
 
