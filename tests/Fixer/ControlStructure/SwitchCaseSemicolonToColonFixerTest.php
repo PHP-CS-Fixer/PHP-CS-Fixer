@@ -39,6 +39,20 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 '<?php
+                switch (1) {
+                    case f(function () { return; }):
+                        break;
+                }
+                ',
+                '<?php
+                switch (1) {
+                    case f(function () { return; });
+                        break;
+                }
+                ',
+            ),
+            array(
+                '<?php
                 switch ($a) {
                     case 42:
                         break;
@@ -192,6 +206,52 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                         echo "leave alone";
                         break;
                     }
+                }
+                ',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        return array(
+            array(
+                '<?php
+                    switch (1) {
+                        case new class {public function A(){echo 1;}}:
+                            break;
+                    }
+                ',
+                '<?php
+                    switch (1) {
+                        case new class {public function A(){echo 1;}};
+                            break;
+                    }
+                ',
+            ),
+            array(
+                '<?php
+                switch (1) {
+                    case $b ? f(function () { return; }) : new class {public function A(){echo 1;}} :
+                        break;
+                }
+                ',
+                '<?php
+                switch (1) {
+                    case $b ? f(function () { return; }) : new class {public function A(){echo 1;}} ;
+                        break;
                 }
                 ',
             ),
