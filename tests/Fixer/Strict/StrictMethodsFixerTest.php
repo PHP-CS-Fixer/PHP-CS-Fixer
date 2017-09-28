@@ -42,26 +42,117 @@ final class StrictMethodsFixerTest extends AbstractFixerTestCase
                 '<?php
 namespace A\B\C;
 class A {
+
     /**
-     * @param int $test1
-     * @param int|bool $test2
+     * @var string
      */
-    public function myFunction(int $test, string $test1, $test2)
+    private $someprop;
+
+    /**
+     * @param int $invalidDocType
+     * @param int|bool $multipleDocTypes
+     * @return null|string
+     */
+    public function a(int $replaceMe, string $invalidDocType, $multipleDocTypes)
+    {
+    }
+
+    public function b($noDocBlocks, string $withType)
+    {
+    }
+
+    /**
+     * @param string $doesNotExist
+     * @param mixed $mixed
+     */
+    public function c(string $doesExist, $mixed): string
     {
     }
 }',
                 '<?php
 namespace A\B\C;
 class A {
+
     /**
-     * @param int $test
-     * @param int $test1
-     * @param int|bool $test2
+     * @var string
      */
-    public function myFunction($test, string $test1, $test2)
+    private $someprop;
+
+    /**
+     * @param int $replaceMe
+     * @param int $invalidDocType
+     * @param int|bool $multipleDocTypes
+     * @return null|string
+     */
+    public function a($replaceMe, string $invalidDocType, $multipleDocTypes)
+    {
+    }
+
+    public function b($noDocBlocks, string $withType)
+    {
+    }
+
+    /**
+     * @param string $doesNotExist
+     * @param $doesExist
+     * @param mixed $mixed
+     * @return string
+     */
+    public function c(string $doesExist, $mixed)
     {
     }
 }',
+            ],
+            [
+                '<?php
+
+function x(SomeClass ...$classes): SomeCollection
+{
+}',
+                '<?php
+/**
+ * @param SomeClass $classes
+ * @return SomeCollection
+ */
+function x(SomeClass ...$classes)
+{
+}',
+            ],
+            [
+                '<?php
+
+function x(int $a=((1*(2+3))/(5+6)), string $b = (\'\' . (\'\'))): self
+{
+}',
+                '<?php
+/**
+ * @param int $a
+ * @param string $b
+ * @return self
+ */
+function x($a=((1*(2+3))/(5+6)), string $b = (\'\' . (\'\')))
+{
+}',
+            ],
+            [
+                '<?php
+namespace SomeNamespace;
+
+function x(SomeClass $x, \SomeNameSpace\SomeClass $y): SomeClass
+{
+}',
+                '<?php
+namespace SomeNamespace;
+
+/**
+ * @param \SomeNamespace\SomeClass $x;
+ * @param SomeClass $y
+ * @return \SomeNamespace\SomeClass
+ */
+function x(SomeClass $x, \SomeNameSpace\SomeClass $y): SomeClass
+{
+}
+',
             ],
         ];
     }

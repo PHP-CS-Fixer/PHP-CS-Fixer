@@ -1223,6 +1223,12 @@ Choose from the list of available rules:
 
   *Risky rule: changing comparisons to strict might change code behavior.*
 
+* **strict_methods**
+
+  Force strict types in class methods. Requires PHP >= 7.0.
+
+  *Risky rule: .*
+
 * **strict_param**
 
   Functions should be used with ``$strict`` param set to ``true``.

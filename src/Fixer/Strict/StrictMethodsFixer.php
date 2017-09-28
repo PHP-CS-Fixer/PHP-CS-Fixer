@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
-use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -80,41 +79,43 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
                 continue;
             }
 
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType(['param', 'return']);
-
-            if (empty($annotations)) {
-                continue;
-            }
-
-            $this->useAnnotatedTypesAsStrictTypes($tokens, $index, $annotations);
+            $this->useAnnotatedTypesAsStrictTypes($tokens, $index);
         }
     }
 
     /**
      * @param Tokens $tokens
      * @param int    $docBlockIndex
-     * @param Annotation[] $annotations
      */
-    private function useAnnotatedTypesAsStrictTypes(Tokens $tokens, $docBlockIndex, array $annotations)
+    private function useAnnotatedTypesAsStrictTypes(Tokens $tokens, $docBlockIndex)
     {
+        $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
+        if (!count($doc->getAnnotationsOfType(['param', 'return']))) {
+            return;
+        }
+
         $functionTokenIndex = $this->detectNextFunctionToken($tokens, $docBlockIndex);
-        if ($functionTokenIndex === null) {
+        if (null === $functionTokenIndex) {
             return;
         }
 
         $arguments = $this->detectFunctionArguments($tokens, $functionTokenIndex);
 
-        $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
-
         foreach ($arguments as $variable => $argument) {
             foreach ($doc->getAnnotationsOfType('param') as $annotation) {
-                if (!preg_match('/' . preg_quote($variable, '/') . '\b/', $annotation->getContent())) {
+                if (!preg_match('/'.preg_quote($variable, '/').'\b/', $annotation->getContent())) {
                     continue;
                 }
 
                 $types = $annotation->getTypes();
-                if (count($types) !== 1) {
+                $typesCount = count($types);
+                if (1 === $typesCount && $types[0] === $variable) {
+                    $annotation->remove();
+
+                    continue;
+                }
+
+                if (1 !== $typesCount || 'mixed' === $types[0]) {
                     continue;
                 }
 
@@ -129,15 +130,22 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
             }
         }
 
-        if ($this->detectFunctionReturnType($tokens, $functionTokenIndex) === null) {
+        if (null === $this->detectFunctionReturnType($tokens, $functionTokenIndex)) {
             $annotations = $doc->getAnnotationsOfType('return');
-            if (count($annotations) === 1) {
+            if (1 === count($annotations)) {
                 $types = $annotations[0]->getTypes();
-                if (count($types) === 1) {
+                if (1 === count($types)) {
                     $this->fixMethodReturnType($tokens, $functionTokenIndex, current($types));
                     $annotations[0]->remove();
                 }
             }
+        }
+
+        // Remove empty dockblocks
+        if (preg_match('/\s*\/\*\*\s*\*\/\s*/', $doc->getContent())) {
+            $tokens->clearAt($docBlockIndex);
+
+            return;
         }
 
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
@@ -172,7 +180,7 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
      * @param Tokens $tokens
      * @param int    $docBlockIndex
      *
-     * @return int|null
+     * @return null|int
      */
     private function detectNextFunctionToken(Tokens $tokens, $docBlockIndex)
     {
@@ -189,16 +197,14 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
             if (!$token->isGivenKind($allowedIntermediateToken)) {
                 return null;
             }
-
-
-        } while($currentIndex < count($tokens));
+        } while ($currentIndex < count($tokens));
 
         return null;
     }
 
     /**
      * @param Tokens $tokens
-     * @param int $methodIndex
+     * @param int    $methodIndex
      *
      * @return array
      */
@@ -221,9 +227,9 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
 
     /**
      * @param Tokens $tokens
-     * @param int   $methodIndex
+     * @param int    $methodIndex
      *
-     * @return int|null
+     * @return null|int
      */
     private function detectFunctionReturnType(Tokens $tokens, $methodIndex)
     {
@@ -239,7 +245,9 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
     }
 
     /**
-     * TODO: This method is copied from \PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer We might abstract here?
+     * TODO: This method is copied from \PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer
+     * I've added some small improvements like skipping ellipsis and adding the name_index
+     * We might abstract here?
      *
      *
      * @param Tokens $tokens
@@ -261,7 +269,7 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
         for ($index = $start; $index <= $end; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isComment() || $token->isWhitespace()) {
+            if ($token->isComment() || $token->isWhitespace() || $token->isGivenKind(T_ELLIPSIS)) {
                 continue;
             }
 
