@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  */
-abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
+abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * Make sure the expected number of new lines prefix a namespace.
@@ -68,9 +69,10 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
                     $openingToken->setContent(rtrim($openingToken->getContent()).' ');
                 }
             } else {
+                $lineEnding = $this->whitespacesConfig->getLineEnding();
                 if (null !== $openingToken && 0 === $precedingNewlinesInOpening) {
                     // We have an opening tag without new lines: add a new line there
-                    $openingToken->setContent(rtrim($openingToken->getContent())."\n");
+                    $openingToken->setContent(rtrim($openingToken->getContent()).$lineEnding);
                     ++$precedingNewlinesInOpening;
                 }
                 $newlinesForWhitespaceToken = $expected - $precedingNewlinesInOpening;
@@ -81,11 +83,11 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
                         $tokens->clearAt($previousIndex);
                     } else {
                         // Fix the previous whitespace token
-                        $previous->setContent(str_repeat("\n", $newlinesForWhitespaceToken));
+                        $previous->setContent(str_repeat($lineEnding, $newlinesForWhitespaceToken));
                     }
                 } elseif (0 < $newlinesForWhitespaceToken) {
                     // Add a new whitespace token
-                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat("\n", $newlinesForWhitespaceToken))));
+                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken))));
                 }
             }
         }
