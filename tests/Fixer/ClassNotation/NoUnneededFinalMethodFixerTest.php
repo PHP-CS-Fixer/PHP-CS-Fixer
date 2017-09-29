@@ -177,6 +177,26 @@ final class SomeClass {
     static final function baz() {}
 }',
             ],
+            'private-method' => [
+                '<?php
+class Foo {
+    private function bar() {}
+}',
+                '<?php
+class Foo {
+    final private function bar() {}
+}',
+            ],
+            'private-method-with-visibility-before-final' => [
+                '<?php
+class Foo {
+    private function bar() {}
+}',
+                '<?php
+class Foo {
+    private final function bar() {}
+}',
+            ],
             'preserve-comment' => [
                 '<?php final class Foo { /* comment */public function foo() {} }',
                 '<?php final class Foo { final/* comment */public function foo() {} }',
@@ -241,6 +261,34 @@ final class Foo
     {
         new class {
             final public function baz()
+            {
+            }
+        };
+    }
+}
+',
+            ],
+            'anonymous-class-inside-with-final-private-method' => [
+                '<?php
+class Foo
+{
+    private function bar()
+    {
+        new class {
+            private function qux()
+            {
+            }
+        };
+    }
+}
+',
+                '<?php
+class Foo
+{
+    private function bar()
+    {
+        new class {
+            final private function qux()
             {
             }
         };
