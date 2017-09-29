@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.7.0
+--------------------
+
+* feature #2573 BinaryOperatorSpaces reworked (SpacePossum, keradus)
+* feature #3073 SpaceAfterSemicolonFixer - Add option to remove space in empty for expressions (julienfalque)
+* feature #3089 NoAliasFunctionsFixer - add imap aliases (Slamdunk)
+* feature #3093 NoUnneededFinalMethodFixer - Remove final keyword from private methods (localheinz, keradus)
+* minor #3068 Symfony:risky ruleset - add no_homoglyph_names (keradus)
+* minor #3074 [IO] Replace Diff with fork version (SpacePossum)
+
 Changelog for v2.6.1
 --------------------
 
