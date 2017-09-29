@@ -40,7 +40,7 @@ final class WordMatcher
     public function match($needle)
     {
         $word = null;
-        $distance = 7;
+        $distance = ceil(strlen($needle) * 0.35);
 
         foreach ($this->dict as $candidate) {
             $candidateDistance = levenshtein($needle, $candidate);

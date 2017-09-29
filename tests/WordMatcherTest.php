@@ -67,6 +67,13 @@ final class WordMatcherTest extends TestCase
                     'no_blank_lines_before_foo',
                 ),
             ),
+            array(
+                null,
+                'braces',
+                array(
+                    'elseif',
+                ),
+            ),
         );
     }
 }
