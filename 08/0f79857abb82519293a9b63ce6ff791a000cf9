@@ -1,0 +1,61 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-23T15:52:19Z
+
+tests are failing :(
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-23T15:58:42Z
+
+Please update the PR to target branch 2.6 :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-23T17:45:54Z
+
+@julienfalque
+
+this PR makes one fixer fix more cases, you call it bugfix (targeting 2.6)
+
+#3089 makes one fixer fix mor cases, you call it feature (targeting master)
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3089#pullrequestreview-64574596
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-24T12:42:36Z
+
+@keradus I consider this one a bugfix because IMO it's something that should have been part of the initial implementation and is missing, while for #3089 it's not the case. Though I'm fine with considering this one as a new feature as well, your call :)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-09-24T16:14:16Z
+
+Picked [`2.6`](https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/2.6) as target branch now.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-24T16:43:24Z
+
+@localheinz That was actually not needed as @keradus changed the target milestone to `2.7` (current master), which means we consider this a new feature. Sorry for the trouble.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-09-24T20:29:59Z
+
+@julienfalque
+
+No problem!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-27T11:31:06Z
+
+Please rebase and make Travis happy
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-28T20:08:29Z
+
+@julienfalque , you added #3094, which got merged.
+could you now verify this PR ?
