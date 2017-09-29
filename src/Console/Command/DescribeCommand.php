@@ -27,6 +27,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -104,7 +105,12 @@ final class DescribeCommand extends Command
 
             $this->describeRule($output, $name);
         } catch (DescribeNameNotFoundException $e) {
-            $alternative = $this->getAlternative($e->getType(), $name);
+            $matcher = new WordMatcher(
+                'set' === $e->getType() ? $this->getSetNames() : array_keys($this->getFixers())
+            );
+
+            $alternative = $matcher->match($name);
+
             $this->describeList($output, $e->getType());
 
             throw new \InvalidArgumentException(sprintf(
@@ -330,29 +336,6 @@ final class DescribeCommand extends Command
         sort($this->setNames);
 
         return $this->setNames;
-    }
-
-    /**
-     * @param string $type 'rule'|'set'
-     * @param string $name
-     *
-     * @return null|string
-     */
-    private function getAlternative($type, $name)
-    {
-        $other = null;
-        $alternatives = 'set' === $type ? $this->getSetNames() : array_keys($this->getFixers());
-
-        foreach ($alternatives as $alternative) {
-            $distance = levenshtein($name, $alternative);
-            if (3 > $distance) {
-                $other = $alternative;
-
-                break;
-            }
-        }
-
-        return $other;
     }
 
     /**
