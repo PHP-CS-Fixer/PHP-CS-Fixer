@@ -28,7 +28,7 @@ final class WordMatcher
     private $candidates;
 
     /**
-     * @var string[] $candidates
+     * @param string[] $candidates
      */
     public function __construct(array $candidates)
     {
