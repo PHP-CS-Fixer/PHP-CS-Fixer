@@ -25,11 +25,14 @@ final class WordMatcher
     /**
      * @var string[]
      */
-    private $dict;
+    private $candidates;
 
-    public function __construct(array $dict)
+    /**
+     * @var string[] $candidates
+     */
+    public function __construct(array $candidates)
     {
-        $this->dict = $dict;
+        $this->candidates = $candidates;
     }
 
     /**
@@ -42,7 +45,7 @@ final class WordMatcher
         $word = null;
         $distance = ceil(strlen($needle) * 0.35);
 
-        foreach ($this->dict as $candidate) {
+        foreach ($this->candidates as $candidate) {
             $candidateDistance = levenshtein($needle, $candidate);
 
             if ($candidateDistance < $distance) {
