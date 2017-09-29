@@ -12,11 +12,12 @@
 
 namespace PhpCsFixer\Fixer\Strict;
 
-use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -24,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author VeeWee <toonverwerft@gmail.com>
  */
-final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
+final class StrictMethodsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -74,8 +75,10 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+        $lastIndex = $tokens->count() - 1;
+
+        for ($index = $lastIndex; $index >= 0; --$index) {
+            if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -212,8 +215,10 @@ final class StrictMethodsFixer extends AbstractFunctionReferenceFixer
     {
         $argumentsStart = $tokens->getNextTokenOfKind($methodIndex, ['(']);
         $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
+        $argumentAnalyzer = new ArgumentsAnalyzer();
         $arguments = [];
-        foreach ($this->getArguments($tokens, $argumentsStart, $argumentsEnd) as $start => $end) {
+
+        foreach ($argumentAnalyzer->getArguments($tokens, $argumentsStart, $argumentsEnd) as $start => $end) {
             $argumentInfo = $this->prepareArgumentInformation($tokens, $start, $end);
             $arguments[$argumentInfo['name']] = $argumentInfo;
         }
