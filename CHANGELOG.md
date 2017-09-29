@@ -3,6 +3,28 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.6.1
+--------------------
+
+* bug #3052 Fix false positive warning about paths overridden by provided as command arguments (kubawerlos)
+* bug #3053 CombineConsecutiveIssetsFixer - fix priority (SpacePossum)
+* bug #3058 IsNullFixer - fix whitespace handling (roukmoute)
+* bug #3069 MethodArgumentSpaceFixer - new test case (keradus)
+* bug #3072 IsNullFixer - fix non_yoda_style edge case (keradus)
+* bug #3088 Drop dedicated Phar stub (keradus)
+* bug #3100 NativeFunctionInvocationFixer - Fix test if previous token is already namespace separator (SpacePossum)
+* bug #3104 DoctrineAnnotationIndentationFixer - Fix str_repeat() error (julienfalque)
+* minor #3038 Support PHP 7.2 (SpacePossum, keradus)
+* minor #3064 Fix couple of typos (KKSzymanowski)
+* minor #3070 YodaStyleFixer - Clarify configuration parameters (SteveJobzniak)
+* minor #3078 ConfigurationResolver - hide context while including config file (keradus)
+* minor #3080 Direct function call instead of by string (kubawerlos)
+* minor #3085 CiIntegrationTest - skip when no git is available (keradus)
+* minor #3087 phar-stub.php - allow PHP 7.2 (keradus)
+* minor #3092 .travis.yml - fix matrix for PHP 7.1 (keradus)
+* minor #3094 NoUnneededFinalMethodFixer - Add test cases (julienfalque)
+* minor #3111 DoctrineAnnotationIndentationFixer - Restore test case (julienfalque)
+
 Changelog for v2.6.0
 --------------------
 
