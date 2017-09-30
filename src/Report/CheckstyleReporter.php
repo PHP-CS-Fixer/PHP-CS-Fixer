@@ -71,8 +71,11 @@ final class CheckstyleReporter implements ReporterInterface
     {
         foreach ($fixResult['appliedFixers'] as $appliedFixer) {
             $error = $this->createError($dom, $appliedFixer, $shouldAddAppliedFixers);
-
             $file->appendChild($error);
+
+            if (!$shouldAddAppliedFixers) {
+                break;
+            }
         }
     }
 
