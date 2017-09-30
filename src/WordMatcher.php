@@ -13,8 +13,6 @@
 namespace PhpCsFixer;
 
 /**
- * Base class for function reference fixers.
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  *
