@@ -317,7 +317,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-            '/^The format "xls" is not defined, supported are "json", "junit", "txt", "xml"\.$/'
+            '/^The format "xls" is not defined, supported are "checkstyle", "json", "junit", "txt", "xml"\.$/'
         );
 
         $dirBase = $this->getFixtureDir();
