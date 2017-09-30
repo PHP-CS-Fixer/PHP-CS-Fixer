@@ -87,8 +87,6 @@ final class CheckstyleReporter implements ReporterInterface
     {
         $error = $dom->createElement('error');
         $error->setAttribute('severity', 'warning');
-        $error->setAttribute('line', '1');
-        $error->setAttribute('column', '1');
 
         if ($shouldAddAppliedFixers) {
             $error->setAttribute('source', 'PHP-CS-Fixer.'.$appliedFixer);
