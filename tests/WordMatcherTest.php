@@ -27,13 +27,13 @@ final class WordMatcherTest extends TestCase
     /**
      * @param null|string $expected
      * @param string      $needle
-     * @param array       $dict
+     * @param array       $candidates
      *
      * @dataProvider provideMatchCases
      */
-    public function testMatch($expected, $needle, array $dict)
+    public function testMatch($expected, $needle, array $candidates)
     {
-        $matcher = new WordMatcher($dict);
+        $matcher = new WordMatcher($candidates);
         $this->assertSame($expected, $matcher->match($needle));
     }
 
