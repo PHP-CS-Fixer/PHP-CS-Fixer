@@ -1,16 +1,24 @@
 A lot of needed fixes are similar one to another. Would be great to have generic code that could be reused for similar fixres.
 
+3.2
+---
+`php_unit_no_expectation_annotation`: anontations `@expectedException @expectedExceptionCode @expectedExceptionMessage` into respective methods
+    + integration test of `php_unit_no_expectation_annotation`+`php_unit_expectation`
+    + integration test of `php_unit_no_expectation_annotation`+`no_empty_phpdoc`
+    + integration test of `php_unit_no_expectation_annotation`+string notation ?
+    + drop general annotation from local config
 
+4.3
+---
+`php_unit_no_expectation_annotation`: like 3.2 but with `@expectedExceptionMessageRegExp`
 
 5.2
 ---
-
-[DONE] `setExpectedException` -> `expectException` + `expectExceptionMessage` + `expectExceptionCode`
+[DONE] `php_unit_expectation`: `setExpectedException` -> `expectException` + `expectExceptionMessage` + `expectExceptionCode`
 
 5.6
 ---
-
-[DONE] `setExpectedExceptionRegExp` -> `expectException` + `expectExceptionMessageRegExp` + `expectExceptionCode`
+[DONE] `php_unit_expectation`: `setExpectedExceptionRegExp` -> `expectException` + `expectExceptionMessageRegExp` + `expectExceptionCode`
 [DONE] `php_unit_dedicate_assert`:
     is_dir      -> assertDirectoryExists / assertDirectoryNotExists
     is_readable -> assertIsReadable / assertNotIsReadable
@@ -18,7 +26,6 @@ A lot of needed fixes are similar one to another. Would be great to have generic
 
 5.7
 ---
-
 Similar to `PHPUnit_Framework_TestCase` we already have fixer for (this branch), we need to:
 `PHPUnit_Framework_Assert` -> `PHPUnit\Framework\Assert`
 `PHPUnit_Framework_BaseTestListener` -> `PHPUnit\Framework\BaseTestListener`
@@ -28,13 +35,3 @@ Probably best way of doing this if via new `General***` fixer
 6.0
 ---
 whole code is namespaced now: `PHPUnit_**_*_*` -> `PHPUnit\**\*\*`
-
-
-
-NOT SURE ABOUT TARGET
----------------------
-
-anontations ``@expectedException @expectedExceptionCode @expectedExceptionMessage @expectedExceptionMessageRegExp` into respective methods
-
-Annotation into `->setExpectedExeception` could be converted on... v3.2 (!), version with regex on 4.x line.
-But `setExpectedExeception` is deprecated as well, so maybe just jump directly to 5.6 with this update and fix into `expectException`?
