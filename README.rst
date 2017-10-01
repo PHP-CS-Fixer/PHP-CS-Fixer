@@ -1006,6 +1006,19 @@ Choose from the list of available rules:
 
   *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
 
+* **php_unit_no_expectation_annotation**
+
+  The ``@expectedException*`` MUST be replaced by ``->setExpectedExpception*``
+  methods.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``target`` (``'3.2'``, ``'4.3'``, ``'newest'``): target version of PHPUnit; defaults to
+    ``'newest'``
+  - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
+
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of

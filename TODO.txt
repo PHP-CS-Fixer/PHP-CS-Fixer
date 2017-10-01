@@ -2,15 +2,17 @@ A lot of needed fixes are similar one to another. Would be great to have generic
 
 3.2
 ---
-`php_unit_no_expectation_annotation`: anontations `@expectedException @expectedExceptionCode @expectedExceptionMessage` into respective methods
-    + integration test of `php_unit_no_expectation_annotation`+`php_unit_expectation`
-    + integration test of `php_unit_no_expectation_annotation`+`no_empty_phpdoc`
-    + integration test of `php_unit_no_expectation_annotation`+string notation ?
-    + drop general annotation from local config
+[done] `php_unit_no_expectation_annotation`: anontations `@expectedException @expectedExceptionCode @expectedExceptionMessage` into respective methods
+[awaits]    + integration test of `php_unit_no_expectation_annotation`+`php_unit_expectation`
+[awaits]    + integration test of `php_unit_no_expectation_annotation`+`no_empty_phpdoc`
+[awaits]    + integration test of `php_unit_no_expectation_annotation`+string notation ?
+[awaits]    + drop general annotation from local config
+[awaits]    + add ruleset for 3.2
 
 4.3
 ---
-`php_unit_no_expectation_annotation`: like 3.2 but with `@expectedExceptionMessageRegExp`
+[DONE] `php_unit_no_expectation_annotation`: like 3.2 but with `@expectedExceptionMessageRegExp`
+[awaits]    + add ruleset for 4.3
 
 5.2
 ---
@@ -24,14 +26,14 @@ A lot of needed fixes are similar one to another. Would be great to have generic
     is_readable -> assertIsReadable / assertNotIsReadable
     is_writable -> assertIsWritable / assertNotIsWritable
 
-5.7
----
+5.7 [awaits]
+------------
 Similar to `PHPUnit_Framework_TestCase` we already have fixer for (this branch), we need to:
 `PHPUnit_Framework_Assert` -> `PHPUnit\Framework\Assert`
 `PHPUnit_Framework_BaseTestListener` -> `PHPUnit\Framework\BaseTestListener`
 `PHPUnit_Framework_TestListener` -> `PHPUnit\Framework\TestListener`
 Probably best way of doing this if via new `General***` fixer
 
-6.0
----
+6.0 [awaits]
+------------
 whole code is namespaced now: `PHPUnit_**_*_*` -> `PHPUnit\**\*\*`
