@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.7.1
+--------------------
+
+* bug #3115 NoUnneededFinalMethodFixer - fix edge case (Slamdunk)
+
 Changelog for v2.7.0
 --------------------
 
