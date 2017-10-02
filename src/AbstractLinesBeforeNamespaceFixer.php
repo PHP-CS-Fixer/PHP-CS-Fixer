@@ -45,6 +45,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
                 $token = $tokens[$index - $i];
                 if ($token->isGivenKind(T_OPEN_TAG)) {
                     $openingToken = $token;
+                    $openingTokenIndex = $index - $i;
                     $precedingNewlinesInOpening = substr_count($token->getContent(), "\n");
                     $precedingNewlinesTotal += $precedingNewlinesInOpening;
                     break;
@@ -70,7 +71,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             }
             // Remove new lines in opening token
             if (0 < $precedingNewlinesInOpening) {
-                $openingToken->setContent(rtrim($openingToken->getContent()).' ');
+                $tokens[$openingTokenIndex] = new Token(array(T_OPEN_TAG, rtrim($openingToken->getContent()).' '));
             }
 
             return;
@@ -81,12 +82,13 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             $content = rtrim($openingToken->getContent());
             if (0 === $precedingNewlinesInOpening) {
                 // We have an opening tag without new lines: add a new line there
-                $openingToken->setContent($content.$lineEnding);
+                $newContent = $content.$lineEnding;
                 ++$precedingNewlinesInOpening;
             } else {
                 // Use the configured line ending for the PHP opening tag
-                $openingToken->setContent($content.str_repeat($lineEnding, $precedingNewlinesInOpening));
+                $newContent = $content.str_repeat($lineEnding, $precedingNewlinesInOpening);
             }
+            $tokens[$openingTokenIndex] = new Token(array(T_OPEN_TAG, $newContent));
         }
         $newlinesForWhitespaceToken = $expected - $precedingNewlinesInOpening;
         if ($previous->isWhitespace()) {
@@ -96,7 +98,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
                 $tokens->clearAt($previousIndex);
             } else {
                 // Fix the previous whitespace token
-                $previous->setContent(str_repeat($lineEnding, $newlinesForWhitespaceToken));
+                $tokens[$previousIndex] = new Token(array(T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)));
             }
         } elseif (0 < $newlinesForWhitespaceToken) {
             // Add a new whitespace token
