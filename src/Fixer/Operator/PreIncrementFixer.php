@@ -23,6 +23,17 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
  */
 final class PreIncrementFixer extends AbstractProxyFixer
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        @trigger_error(sprintf(
+            'Fixer "%s" is deprecated and will be removed in 3.0. Use "%s" instead.',
+            $this->getName(),
+            $this->proxyFixer->getName()
+        ), E_USER_DEPRECATED);
+    }
+
     /**
      * {@inheritdoc}
      */

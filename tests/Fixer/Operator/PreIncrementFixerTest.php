@@ -27,7 +27,9 @@ final class PreIncrementFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
+     * @group legacy
      * @dataProvider provideFixCases
+     * @expectedDeprecation Fixer "pre_increment" is deprecated and will be removed in 3.0. Use "increment_style" instead.
      */
     public function testFix($expected, $input = null)
     {
