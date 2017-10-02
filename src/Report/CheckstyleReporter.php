@@ -49,8 +49,7 @@ final class CheckstyleReporter implements ReporterInterface
             $this->addErrors(
                 $dom,
                 $file,
-                $fixResult,
-                $reportSummary->shouldAddAppliedFixers()
+                $fixResult
             );
         }
 
@@ -67,37 +66,26 @@ final class CheckstyleReporter implements ReporterInterface
      *
      * @return \DOMElement
      */
-    private function addErrors(\DOMDocument $dom, \DOMElement $file, array $fixResult, $shouldAddAppliedFixers)
+    private function addErrors(\DOMDocument $dom, \DOMElement $file, array $fixResult)
     {
-        $message = sprintf('Found violations of type(s): %s', implode(', ', $fixResult['appliedFixers']));
-
         foreach ($fixResult['appliedFixers'] as $appliedFixer) {
-            $error = $this->createError($dom, $appliedFixer, $shouldAddAppliedFixers);
-            $error->setAttribute('message', $message);
-
+            $error = $this->createError($dom, $appliedFixer);
             $file->appendChild($error);
-
-            if (!$shouldAddAppliedFixers) {
-                break;
-            }
         }
     }
 
     /**
      * @param \DOMDocument $dom
      * @param string       $appliedFixer
-     * @param bool         $shouldAddAppliedFixers
      *
      * @return \DOMElement
      */
-    private function createError(\DOMDocument $dom, $appliedFixer, $shouldAddAppliedFixers)
+    private function createError(\DOMDocument $dom, $appliedFixer)
     {
         $error = $dom->createElement('error');
         $error->setAttribute('severity', 'warning');
-
-        if ($shouldAddAppliedFixers) {
-            $error->setAttribute('source', 'PHP-CS-Fixer.'.$appliedFixer);
-        }
+        $error->setAttribute('source', 'PHP-CS-Fixer.'.$appliedFixer);
+        $error->setAttribute('message', 'Found violation(s) of type: '.$appliedFixer);
 
         return $error;
     }

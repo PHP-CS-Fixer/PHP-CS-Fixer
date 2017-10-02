@@ -80,7 +80,8 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle>
   <file name="someFile.php">
-    <error severity="warning" message="Found violations of type(s): some_fixer_name_here_1, some_fixer_name_here_2" />
+    <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_1" message="Found violation(s) of type: some_fixer_name_here_1" />
+    <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_2" message="Found violation(s) of type: some_fixer_name_here_2" />
   </file>
 </checkstyle>
 XML;
@@ -110,8 +111,8 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle>
   <file name="someFile.php">
-    <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_1" message="Found violations of type(s): some_fixer_name_here_1, some_fixer_name_here_2" />
-    <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_2" message="Found violations of type(s): some_fixer_name_here_1, some_fixer_name_here_2" />
+    <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_1" message="Found violation(s) of type: some_fixer_name_here_1" />
+    <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_2" message="Found violation(s) of type: some_fixer_name_here_2" />
   </file>
 </checkstyle>
 XML;
