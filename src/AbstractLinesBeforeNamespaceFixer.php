@@ -56,46 +56,51 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             }
         }
 
-        if ($expected !== $precedingNewlinesTotal) {
-            $previousIndex = $index - 1;
-            $previous = $tokens[$previousIndex];
-            if (0 === $expected) {
-                // Remove all the previous new lines
-                if ($previous->isWhitespace()) {
-                    $tokens->clearAt($previousIndex);
-                }
-                // Remove new lines in opening token
-                if (0 < $precedingNewlinesInOpening) {
-                    $openingToken->setContent(rtrim($openingToken->getContent()).' ');
-                }
-            } else {
-                $lineEnding = $this->whitespacesConfig->getLineEnding();
-                if (null !== $openingToken) {
-                    $content = rtrim($openingToken->getContent());
-                    if (0 === $precedingNewlinesInOpening) {
-                        // We have an opening tag without new lines: add a new line there
-                        $openingToken->setContent($content.$lineEnding);
-                        ++$precedingNewlinesInOpening;
-                    } else {
-                        // Use the configured line ending for the PHP opening tag
-                        $openingToken->setContent($content.str_repeat($lineEnding, $precedingNewlinesInOpening));
-                    }
-                }
-                $newlinesForWhitespaceToken = $expected - $precedingNewlinesInOpening;
-                if ($previous->isWhitespace()) {
-                    if (0 === $newlinesForWhitespaceToken) {
-                        // We have all the needed new lines in the opening tag
-                        // Let's remove the previous token containing extra new lines
-                        $tokens->clearAt($previousIndex);
-                    } else {
-                        // Fix the previous whitespace token
-                        $previous->setContent(str_repeat($lineEnding, $newlinesForWhitespaceToken));
-                    }
-                } elseif (0 < $newlinesForWhitespaceToken) {
-                    // Add a new whitespace token
-                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken))));
-                }
+        if ($expected === $precedingNewlinesTotal) {
+            return;
+        }
+
+        $previousIndex = $index - 1;
+        $previous = $tokens[$previousIndex];
+
+        if (0 === $expected) {
+            // Remove all the previous new lines
+            if ($previous->isWhitespace()) {
+                $tokens->clearAt($previousIndex);
             }
+            // Remove new lines in opening token
+            if (0 < $precedingNewlinesInOpening) {
+                $openingToken->setContent(rtrim($openingToken->getContent()).' ');
+            }
+
+            return;
+        }
+
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+        if (null !== $openingToken) {
+            $content = rtrim($openingToken->getContent());
+            if (0 === $precedingNewlinesInOpening) {
+                // We have an opening tag without new lines: add a new line there
+                $openingToken->setContent($content.$lineEnding);
+                ++$precedingNewlinesInOpening;
+            } else {
+                // Use the configured line ending for the PHP opening tag
+                $openingToken->setContent($content.str_repeat($lineEnding, $precedingNewlinesInOpening));
+            }
+        }
+        $newlinesForWhitespaceToken = $expected - $precedingNewlinesInOpening;
+        if ($previous->isWhitespace()) {
+            if (0 === $newlinesForWhitespaceToken) {
+                // We have all the needed new lines in the opening tag
+                // Let's remove the previous token containing extra new lines
+                $tokens->clearAt($previousIndex);
+            } else {
+                // Fix the previous whitespace token
+                $previous->setContent(str_repeat($lineEnding, $newlinesForWhitespaceToken));
+            }
+        } elseif (0 < $newlinesForWhitespaceToken) {
+            // Add a new whitespace token
+            $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken))));
         }
     }
 }
