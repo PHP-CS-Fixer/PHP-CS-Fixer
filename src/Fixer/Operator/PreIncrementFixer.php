@@ -12,16 +12,16 @@
 
 namespace PhpCsFixer\Fixer\Operator;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @deprecated in 2.8, proxy to IncrementStyleFixer
  */
-final class PreIncrementFixer extends AbstractFixer
+final class PreIncrementFixer extends AbstractProxyFixer
 {
     /**
      * {@inheritdoc}
@@ -29,7 +29,7 @@ final class PreIncrementFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Pre incrementation/decrementation should be used if possible.',
+            sprintf('Pre incrementation/decrementation should be used if possible. DEPRECATED: Use "%s" instead.', $this->proxyFixer->getName()),
             [new CodeSample("<?php\n\$a++;\n\$b--;")]
         );
     }
@@ -37,82 +37,11 @@ final class PreIncrementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function createProxyFixer()
     {
-        return $tokens->isAnyTokenKindsFound([T_INC, T_DEC]);
-    }
+        $fixer = new IncrementStyleFixer();
+        $fixer->configure(['style' => 'pre']);
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind([T_INC, T_DEC]) || !$tokensAnalyzer->isUnarySuccessorOperator($index)) {
-                continue;
-            }
-
-            $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
-            if (!$nextToken->equalsAny([';', ')'])) {
-                continue;
-            }
-
-            $startIndex = $this->findStart($tokens, $index);
-
-            $prevToken = $tokens[$tokens->getPrevMeaningfulToken($startIndex)];
-            if ($prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
-                $tokens->clearAt($index);
-                $tokens->insertAt($startIndex, clone $token);
-            }
-        }
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     *
-     * @return int
-     */
-    private function findStart(Tokens $tokens, $index)
-    {
-        do {
-            $index = $tokens->getPrevMeaningfulToken($index);
-            $token = $tokens[$index];
-
-            $blockType = Tokens::detectBlockType($token);
-            if (null !== $blockType && !$blockType['isStart']) {
-                $index = $tokens->findBlockEnd($blockType['type'], $index, false);
-                $token = $tokens[$index];
-            }
-        } while (!$token->equalsAny(['$', [T_VARIABLE]]));
-
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        $prevToken = $tokens[$prevIndex];
-
-        if ($prevToken->equals('$')) {
-            $index = $prevIndex;
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$prevIndex];
-        }
-
-        if ($prevToken->isGivenKind(T_OBJECT_OPERATOR)) {
-            return $this->findStart($tokens, $prevIndex);
-        }
-
-        if ($prevToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
-            $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-            if (!$tokens[$prevPrevIndex]->isGivenKind(T_STRING)) {
-                return $this->findStart($tokens, $prevIndex);
-            }
-
-            $index = $tokens->getTokenNotOfKindSibling($prevIndex, -1, [[T_NS_SEPARATOR], [T_STRING]]);
-            $index = $tokens->getNextMeaningfulToken($index);
-        }
-
-        return $index;
+        return $fixer;
     }
 }

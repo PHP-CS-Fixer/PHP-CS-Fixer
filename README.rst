@@ -1109,6 +1109,7 @@ Choose from the list of available rules:
 * **pre_increment** [@Symfony]
 
   Pre incrementation/decrementation should be used if possible.
+  DEPRECATED: Use "increment_style" instead.
 
 * **protected_to_private** [@Symfony]
 
