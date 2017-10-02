@@ -1106,7 +1106,7 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the function ``pow()`` is overridden.*
 
-* **pre_increment** [@Symfony]
+* **pre_increment**
 
   Pre incrementation/decrementation should be used if possible.
   DEPRECATED: Use "increment_style" instead.

@@ -126,7 +126,6 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_trim' => true,
             'phpdoc_types' => true,
             'phpdoc_var_without_name' => true,
-            'pre_increment' => true,
             'protected_to_private' => true,
             'return_type_declaration' => true,
             'self_accessor' => true,
