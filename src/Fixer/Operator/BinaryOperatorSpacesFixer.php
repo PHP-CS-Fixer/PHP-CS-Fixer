@@ -760,7 +760,7 @@ $h = $i===  $j;
                             }
                         }
 
-                        $lines[$index] = $before.substr($lines[$index], $currentPosition);
+                        $lines[$index] = $before.mb_substr($lines[$index], $currentPosition);
                     }
                 }
 
