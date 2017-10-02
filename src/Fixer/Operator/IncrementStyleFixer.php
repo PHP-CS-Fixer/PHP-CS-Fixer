@@ -45,7 +45,13 @@ final class IncrementStyleFixer extends AbstractFixer implements ConfigurationDe
     {
         return new FixerDefinition(
             'Pre- or post-increment and decrement operators should be used if possible.',
-            [new CodeSample("<?php\n\$a++;\n\$b--;")]
+            [
+                new CodeSample("<?php\n\$a++;\n\$b--;"),
+                new CodeSample(
+                    "<?php\n++\$a;\n--\$b;",
+                    ['style' => self::STYLE_POST]
+                ),
+            ]
         );
     }
 
