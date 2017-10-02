@@ -12,8 +12,10 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -53,9 +55,13 @@ final class DescribeCommandTest extends TestCase
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
+        $fixers = array_filter($factory->getFixers(), function (FixerInterface $fixer) {
+            return $fixer instanceof AbstractFixer && false === strpos($fixer->getDefinition()->getSummary(), 'DEPRECATED');
+        });
+
         $cases = [];
 
-        foreach ($factory->getFixers() as $fixer) {
+        foreach ($fixers as $fixer) {
             $cases[] = [$factory, $fixer->getName()];
         }
 

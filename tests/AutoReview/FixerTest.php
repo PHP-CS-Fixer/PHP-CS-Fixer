@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -172,7 +173,7 @@ final class FixerTest extends TestCase
     {
         return array_map(function (FixerInterface $fixer) {
             return [$fixer];
-        }, $this->getAllFixers());
+        }, $this->getNonDeprecatedFixers());
     }
 
     /**
@@ -220,6 +221,13 @@ final class FixerTest extends TestCase
         $factory = new FixerFactory();
 
         return $factory->registerBuiltInFixers()->getFixers();
+    }
+
+    private function getNonDeprecatedFixers()
+    {
+        return array_filter($this->getAllFixers(), function (FixerInterface $fixer) {
+            return $fixer instanceof AbstractFixer && false === strpos($fixer->getDefinition()->getSummary(), 'DEPRECATED');
+        });
     }
 
     /**
