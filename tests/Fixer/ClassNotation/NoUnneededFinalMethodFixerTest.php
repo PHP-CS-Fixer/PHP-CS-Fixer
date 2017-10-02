@@ -211,6 +211,9 @@ class Foo {
             'abstract-class' => [
                 '<php abstract class Foo { final public function foo() {} }',
             ],
+            'abstract-construct' => [
+                '<?php abstract class Foo { private static $var; final public function foo() {} }',
+            ],
             'trait' => [
                 '<php trait Foo { final public function foo() {} }',
             ],
