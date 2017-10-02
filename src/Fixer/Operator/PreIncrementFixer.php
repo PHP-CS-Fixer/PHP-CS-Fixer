@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Operator;
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
@@ -23,17 +24,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
  */
 final class PreIncrementFixer extends AbstractProxyFixer
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        @trigger_error(sprintf(
-            'Fixer "%s" is deprecated and will be removed in 3.0. Use "%s" instead.',
-            $this->getName(),
-            $this->proxyFixer->getName()
-        ), E_USER_DEPRECATED);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -54,5 +44,19 @@ final class PreIncrementFixer extends AbstractProxyFixer
         $fixer->configure(['style' => 'pre']);
 
         return $fixer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        @trigger_error(sprintf(
+            'Fixer "%s" is deprecated and will be removed in 3.0. Use "%s" instead.',
+            $this->getName(),
+            $this->proxyFixer->getName()
+        ), E_USER_DEPRECATED);
+
+        parent::applyFix($file, $tokens);
     }
 }
