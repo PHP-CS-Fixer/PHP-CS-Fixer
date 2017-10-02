@@ -747,7 +747,7 @@ $h = $i===  $j;
                 if (self::ALIGN !== $alignStrategy) {
                     // move place holders to match strategy
                     foreach ($group as $index) {
-                        $currentPosition = strpos(utf8_decode($lines[$index]), $placeholder);
+                        $currentPosition = strpos($lines[$index], $placeholder);
                         $before = substr($lines[$index], 0, $currentPosition);
 
                         if (self::ALIGN_SINGLE_SPACE === $alignStrategy) {
