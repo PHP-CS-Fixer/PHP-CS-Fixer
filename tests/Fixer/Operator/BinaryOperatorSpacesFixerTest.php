@@ -2044,4 +2044,16 @@ $a = $ae?? $b;
             ],
         ];
     }
+
+    public function testWithMultibyteCharacterInArrayKey()
+    {
+        $this->fixer->configure(['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]]);
+        $this->doTest(
+            '<?php
+                $map = [
+                    "ø" => "oe",
+                ];
+            '
+        );
+    }
 }
