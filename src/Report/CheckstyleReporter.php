@@ -69,8 +69,12 @@ final class CheckstyleReporter implements ReporterInterface
      */
     private function addErrors(\DOMDocument $dom, \DOMElement $file, array $fixResult, $shouldAddAppliedFixers)
     {
+        $message = sprintf('Found violations of type(s): %s', implode(', ', $fixResult['appliedFixers']));
+
         foreach ($fixResult['appliedFixers'] as $appliedFixer) {
             $error = $this->createError($dom, $appliedFixer, $shouldAddAppliedFixers);
+            $error->setAttribute('message', $message);
+
             $file->appendChild($error);
 
             if (!$shouldAddAppliedFixers) {
