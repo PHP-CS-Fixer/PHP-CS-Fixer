@@ -120,7 +120,7 @@ class Foo {
      */
     private function isPrivateMethod(Tokens $tokens, $index, $classOpenIndex)
     {
-        $index = max($classOpenIndex + 1, $tokens->getPrevTokenOfKind($index, ['{', '}']));
+        $index = max($classOpenIndex + 1, $tokens->getPrevTokenOfKind($index, [';', '{', '}']));
 
         while (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
             if ($tokens[$index]->isGivenKind(T_PRIVATE)) {
