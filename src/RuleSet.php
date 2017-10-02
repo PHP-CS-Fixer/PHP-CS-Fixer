@@ -70,6 +70,7 @@ final class RuleSet implements RuleSetInterface
             'function_typehint_space' => true,
             'hash_to_slash_comment' => true,
             'include' => true,
+            'increment_style' => true,
             'lowercase_cast' => true,
             'magic_constant_casing' => true,
             'method_argument_space' => true,

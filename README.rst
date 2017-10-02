@@ -573,7 +573,7 @@ Choose from the list of available rules:
   Include/Require and file path should be divided with a single space.
   File path should not be placed under brackets.
 
-* **increment_style**
+* **increment_style** [@Symfony]
 
   Pre- or post-increment and decrement operators should be used if
   possible.
