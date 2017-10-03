@@ -37,8 +37,8 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
     {
         // Let's determine the total numbers of new lines before the namespace
         // and the opening token
-        $precedingNewlinesTotal = 0;
-        $precedingNewlinesInOpening = 0;
+        $precedingNewlines = 0;
+        $newlineInOpening = false;
         $openingToken = null;
         for ($i = 1; $i <= 2; ++$i) {
             if (isset($tokens[$index - $i])) {
@@ -46,18 +46,20 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
                 if ($token->isGivenKind(T_OPEN_TAG)) {
                     $openingToken = $token;
                     $openingTokenIndex = $index - $i;
-                    $precedingNewlinesInOpening = substr_count($token->getContent(), "\n");
-                    $precedingNewlinesTotal += $precedingNewlinesInOpening;
+                    $newlineInOpening = strpos($token->getContent(), "\n") !== false;
+                    if ($newlineInOpening) {
+                        ++$precedingNewlines;
+                    }
                     break;
                 }
                 if (false === $token->isGivenKind(T_WHITESPACE)) {
                     break;
                 }
-                $precedingNewlinesTotal += substr_count($token->getContent(), "\n");
+                $precedingNewlines += substr_count($token->getContent(), "\n");
             }
         }
 
-        if ($expected === $precedingNewlinesTotal) {
+        if ($expected === $precedingNewlines) {
             return;
         }
 
@@ -70,7 +72,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
                 $tokens->clearAt($previousIndex);
             }
             // Remove new lines in opening token
-            if (0 < $precedingNewlinesInOpening) {
+            if ($newlineInOpening) {
                 $tokens[$openingTokenIndex] = new Token(array(T_OPEN_TAG, rtrim($openingToken->getContent()).' '));
             }
 
@@ -78,19 +80,14 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
         }
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();
+        $newlinesForWhitespaceToken = $expected;
         if (null !== $openingToken) {
+            // Use the configured line ending for the PHP opening tag
             $content = rtrim($openingToken->getContent());
-            if (0 === $precedingNewlinesInOpening) {
-                // We have an opening tag without new lines: add a new line there
-                $newContent = $content.$lineEnding;
-                ++$precedingNewlinesInOpening;
-            } else {
-                // Use the configured line ending for the PHP opening tag
-                $newContent = $content.str_repeat($lineEnding, $precedingNewlinesInOpening);
-            }
+            $newContent = $content.$lineEnding;
             $tokens[$openingTokenIndex] = new Token(array(T_OPEN_TAG, $newContent));
+            --$newlinesForWhitespaceToken;
         }
-        $newlinesForWhitespaceToken = $expected - $precedingNewlinesInOpening;
         if ($previous->isWhitespace()) {
             if (0 === $newlinesForWhitespaceToken) {
                 // We have all the needed new lines in the opening tag
