@@ -88,18 +88,22 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             $tokens[$openingTokenIndex] = new Token(array(T_OPEN_TAG, $newContent));
             --$newlinesForWhitespaceToken;
         }
-        if ($previous->isWhitespace()) {
-            if (0 === $newlinesForWhitespaceToken) {
-                // We have all the needed new lines in the opening tag
+        if (0 === $newlinesForWhitespaceToken) {
+            // We have all the needed new lines in the opening tag
+            if ($previous->isWhitespace()) {
                 // Let's remove the previous token containing extra new lines
                 $tokens->clearAt($previousIndex);
-            } else {
-                // Fix the previous whitespace token
-                $tokens[$previousIndex] = new Token(array(T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)));
             }
-        } elseif (0 < $newlinesForWhitespaceToken) {
+
+            return;
+        }
+        $newWhitespaceToken = new Token(array(T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)));
+        if ($previous->isWhitespace()) {
+            // Fix the previous whitespace token
+            $tokens[$previousIndex] = $newWhitespaceToken;
+        } else {
             // Add a new whitespace token
-            $tokens->insertAt($index, new Token(array(T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken))));
+            $tokens->insertAt($index, $newWhitespaceToken);
         }
     }
 }
