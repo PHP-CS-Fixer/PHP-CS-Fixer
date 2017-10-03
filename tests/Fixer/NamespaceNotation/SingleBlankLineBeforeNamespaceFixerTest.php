@@ -30,7 +30,7 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
      *
      * @param string                      $expected
      * @param null|string                 $input
-     * @param null|WhitespacesFixerConfig $input
+     * @param null|WhitespacesFixerConfig $whitespaces
      */
     public function testFix($expected, $input = null, WhitespacesFixerConfig $whitespaces = null)
     {
