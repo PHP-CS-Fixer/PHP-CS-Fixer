@@ -365,6 +365,32 @@ $a//
                 ',
                 ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
             ],
+            'do not align with multibyte character in array key' => [
+                '<?php
+                    $map = [
+                        "ø" => "oe",
+                    ];
+                ',
+                null,
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            'align correctly with multibyte characters in array key' => [
+                '<?php
+                    $inflect_male = array(
+                        "aitė\b" => "as",
+                        "ytė\b"  => "is",
+                        "iūtė\b" => "ius",
+                        "utė\b"  => "us",
+                    );',
+                '<?php
+                    $inflect_male = array(
+                        "aitė\b" => "as",
+                        "ytė\b" => "is",
+                        "iūtė\b" => "ius",
+                        "utė\b" => "us",
+                    );',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
         ];
     }
 
@@ -2043,17 +2069,5 @@ $a = $ae?? $b;
                 ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
             ],
         ];
-    }
-
-    public function testWithMultibyteCharacterInArrayKey()
-    {
-        $this->fixer->configure(['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]]);
-        $this->doTest(
-            '<?php
-                $map = [
-                    "ø" => "oe",
-                ];
-            '
-        );
     }
 }
