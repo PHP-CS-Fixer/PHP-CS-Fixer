@@ -147,6 +147,78 @@ final class FileHandlerTest extends TestCase
         $this->assertSame($cache->toJson(), $actualCacheJson);
     }
 
+    public function testWriteCacheToDirectory()
+    {
+        $dir = __DIR__.'/../Fixtures/cache-file-handler';
+
+        $handler = new FileHandler($dir);
+
+        $this->setExpectedExceptionRegExp(
+            'Symfony\Component\Filesystem\Exception\IOException',
+            sprintf('#^%s$#', preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
+        ));
+
+        $handler->write(new Cache(new Signature(
+            PHP_VERSION,
+            '2.0',
+            array(
+                'foo',
+                'bar',
+            )
+        )));
+    }
+
+    public function testWriteCacheToNonWriteableFile()
+    {
+        $file = __DIR__.'/../Fixtures/cache-file-handler/cache-file';
+        if (is_writable($file)) {
+            $this->markTestSkipped(sprintf('File "%s" must be not writeable for this tests.', realpath($file)));
+
+            return;
+        }
+
+        $handler = new FileHandler($file);
+
+        $this->setExpectedExceptionRegExp(
+            'Symfony\Component\Filesystem\Exception\IOException',
+            sprintf('#^%s$#', preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
+        ));
+
+        $handler->write(new Cache(new Signature(
+            PHP_VERSION,
+            '2.0',
+            array(
+                'foo',
+                'bar',
+            )
+        )));
+    }
+
+    public function testWriteCacheFilePermissions()
+    {
+        $file = __DIR__.'/../Fixtures/cache-file-handler/rw_cache.test';
+        @unlink($file);
+
+        $this->assertFileNotExists($file);
+
+        $handler = new FileHandler($file);
+        $handler->write(new Cache(new Signature(
+            PHP_VERSION,
+            '2.0',
+            array(
+                'foo',
+                'bar',
+            )
+        )));
+
+        $this->assertFileExists($file);
+        $this->assertTrue(@is_file($file), sprintf('Failed cache "%s" `is_file`.', $file));
+        $this->assertTrue(@is_writable($file), sprintf('Failed cache "%s" `is_writable`.', $file));
+        $this->assertTrue(@is_readable($file), sprintf('Failed cache "%s" `is_readable`.', $file));
+
+        @unlink($file);
+    }
+
     /**
      * @return string
      */
