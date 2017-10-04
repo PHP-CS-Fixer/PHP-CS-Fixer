@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-04T07:51:52Z
+
+reworked
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-04T08:54:53Z
+
+targeting 2.2 now, so AppVeyor fails because it cannot deal with retargets
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-04T09:02:27Z
+
+Pushing again (e.g. with a commit amend) should fix AppVeyor failure.
