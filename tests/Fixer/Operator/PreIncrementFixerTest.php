@@ -27,7 +27,6 @@ final class PreIncrementFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @group legacy
      * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
