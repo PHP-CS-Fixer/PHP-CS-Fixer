@@ -170,7 +170,7 @@ When using combinations of exact and blacklist rules, applying exact rules along
 
 .. code-block:: bash
 
-    $ php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_return,strict_comparison
+    $ php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison
 
 Complete configuration for rules can be supplied using a ``json`` formatted string.
 
