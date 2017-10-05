@@ -46,32 +46,15 @@ final class CheckstyleReporter implements ReporterInterface
             $file = $checkstyles->appendChild($dom->createElement('file'));
             $file->setAttribute('name', $filePath);
 
-            $this->addErrors(
-                $dom,
-                $file,
-                $fixResult
-            );
+            foreach ($fixResult['appliedFixers'] as $appliedFixer) {
+                $error = $this->createError($dom, $appliedFixer);
+                $file->appendChild($error);
+            }
         }
 
         $dom->formatOutput = true;
 
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($dom->saveXML()) : $dom->saveXML();
-    }
-
-    /**
-     * @param \DOMDocument $dom
-     * @param \DOMElement  $file
-     * @param array        $fixResult
-     * @param bool         $shouldAddAppliedFixers
-     *
-     * @return \DOMElement
-     */
-    private function addErrors(\DOMDocument $dom, \DOMElement $file, array $fixResult)
-    {
-        foreach ($fixResult['appliedFixers'] as $appliedFixer) {
-            $error = $this->createError($dom, $appliedFixer);
-            $file->appendChild($error);
-        }
     }
 
     /**
