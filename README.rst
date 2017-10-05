@@ -139,8 +139,11 @@ to merge paths from the config file and from the argument:
 
 The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle`` and ``junit``.
 
-NOTE: When using ``junit`` format report generates in accordance with JUnit xml schema from Jenkins (see docs/junit-10.xsd).
-NOTE: When using ``checkstyle`` format report generates in accordance with the "checkstyle" xml schema (see docs/checkstyle.xsd).
+NOTE: the output for the following formats are generated in accordance with XML schemas
+
+* ``junit`` follows the [JUnit xml schema from Jenkins](doc/junit-10.xsd)
+* ``checkstyle`` follows the common ["checkstyle" xml schema](doc/checkstyle.xsd)
+
 
 The ``--verbose`` option will show the applied rules. When using the ``txt`` format it will also displays progress notifications.
 
