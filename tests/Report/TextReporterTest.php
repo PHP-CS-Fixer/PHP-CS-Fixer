@@ -12,58 +12,27 @@
 
 namespace PhpCsFixer\Tests\Report;
 
-use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Report\TextReporter;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
  * @covers \PhpCsFixer\Report\TextReporter
  */
-final class TextReporterTest extends TestCase
+final class TextReporterTest extends AbstractReporterTestCase
 {
-    /** @var TextReporter */
-    private $reporter;
-
-    protected function setUp()
+    public function createNoErrorReport()
     {
-        $this->reporter = new TextReporter();
-    }
-
-    /**
-     * @covers \PhpCsFixer\Report\TextReporter::getFormat
-     */
-    public function testGetFormat()
-    {
-        $this->assertSame('txt', $this->reporter->getFormat());
-    }
-
-    public function testGenerateNoErrors()
-    {
-        $expectedReport = <<<'TEXT'
+        return <<<'TEXT'
 TEXT;
-
-        $this->assertSame(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(),
-                    0,
-                    0,
-                    false,
-                    false,
-                    false
-                )
-            )
-        );
     }
 
-    public function testGenerateSimple()
+    public function createSimpleReport()
     {
-        $expectedReport = str_replace(
+        return str_replace(
             "\n",
             PHP_EOL,
             <<<'TEXT'
@@ -71,29 +40,11 @@ TEXT;
 
 TEXT
         );
-
-        $this->assertSame(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    ),
-                    0,
-                    0,
-                    false,
-                    false,
-                    false
-                )
-            )
-        );
     }
 
-    public function testGenerateWithDiff()
+    public function createWithDiffReport()
     {
-        $expectedReport = str_replace(
+        return str_replace(
             "\n",
             PHP_EOL,
             <<<'TEXT'
@@ -105,60 +56,23 @@ this text is a diff ;)
 
 TEXT
         );
-
-        $this->assertSame(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                            'diff' => 'this text is a diff ;)',
-                        ),
-                    ),
-                    0,
-                    0,
-                    false,
-                    false,
-                    false
-                )
-            )
-        );
     }
 
-    public function testGenerateWithAppliedFixers()
+    public function createWithAppliedFixersReport()
     {
-        $expectedReport = str_replace(
+        return str_replace(
             "\n",
             PHP_EOL,
             <<<'TEXT'
-   1) someFile.php (some_fixer_name_here)
+   1) someFile.php (some_fixer_name_here_1, some_fixer_name_here_2)
 
 TEXT
         );
-
-        $this->assertSame(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    ),
-                    0,
-                    0,
-                    true,
-                    false,
-                    false
-                )
-            )
-        );
     }
 
-    public function testGenerateWithTimeAndMemory()
+    public function createWithTimeAndMemoryReport()
     {
-        $expectedReport = str_replace(
+        return str_replace(
             "\n",
             PHP_EOL,
             <<<'TEXT'
@@ -168,33 +82,15 @@ Fixed all files in 1.234 seconds, 2.500 MB memory used
 
 TEXT
         );
-
-        $this->assertSame(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    ),
-                    1234,
-                    2.5 * 1024 * 1024,
-                    false,
-                    false,
-                    false
-                )
-            )
-        );
     }
 
-    public function testGenerateComplexWithDecoratedOutput()
+    public function createComplexReport()
     {
-        $expectedReport = str_replace(
+        return str_replace(
             "\n",
             PHP_EOL,
             <<<'TEXT'
-   1) someFile.php (<comment>some_fixer_name_here</comment>)
+   1) someFile.php (<comment>some_fixer_name_here_1, some_fixer_name_here_2</comment>)
 <comment>      ---------- begin diff ----------</comment>
 this text is a diff ;)
 <comment>      ----------- end diff -----------</comment>
@@ -209,28 +105,20 @@ Checked all files in 1.234 seconds, 2.500 MB memory used
 
 TEXT
         );
+    }
 
-        $this->assertSame(
-            $expectedReport,
-            $this->reporter->generate(
-                new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                            'diff' => 'this text is a diff ;)',
-                        ),
-                        'anotherFile.php' => array(
-                            'appliedFixers' => array('another_fixer_name_here'),
-                            'diff' => 'another diff here ;)',
-                        ),
-                    ),
-                    1234,
-                    2.5 * 1024 * 1024,
-                    true,
-                    true,
-                    true
-                )
-            )
-        );
+    protected function createReporter()
+    {
+        return new TextReporter();
+    }
+
+    protected function getFormat()
+    {
+        return 'txt';
+    }
+
+    protected function assertFormat($expected, $input)
+    {
+        $this->assertSame($expected, $input);
     }
 }
