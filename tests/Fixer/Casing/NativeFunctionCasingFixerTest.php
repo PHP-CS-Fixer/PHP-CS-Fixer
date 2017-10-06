@@ -36,8 +36,8 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 namespace Bar {
                     function STRLEN($str) {
@@ -48,16 +48,16 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \Bar\STRLEN("xxx");
                 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     echo strtolower("hello 1");
                 ',
                 '<?php
                     echo STRTOLOWER("hello 1");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     echo strtolower //a
                         ("hello 2");
@@ -66,32 +66,32 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                     echo STRTOLOWER //a
                         ("hello 2");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     echo strtolower /**/   ("hello 3");
                 ',
                 '<?php
                     echo STRTOLOWER /**/   ("hello 3");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     echo \sqrt(4);
                 ',
                 '<?php
                     echo \sQrT(4);
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     echo "1".\sqrt("hello 5");
                 ',
                 '<?php
                     echo "1".\SQRT("hello 5");
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     class Test{
                         public function gettypE()
@@ -104,32 +104,32 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     new STRTOLOWER();
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     new \STRTOLOWER();
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     new \A\B\STRTOLOWER();
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     a::STRTOLOWER();
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a->STRTOLOWER();
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

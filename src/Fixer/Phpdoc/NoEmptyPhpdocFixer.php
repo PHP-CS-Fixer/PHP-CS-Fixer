@@ -29,7 +29,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be empty PHPDoc blocks.',
-            array(new CodeSample('<?php /**  */'))
+            [new CodeSample('<?php /**  */')]
         );
     }
 

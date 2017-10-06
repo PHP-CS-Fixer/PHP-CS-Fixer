@@ -21,9 +21,6 @@ use PhpCsFixer\RuleSet;
  */
 final class IntegrationCase
 {
-    /**
-     * @var array
-     */
     private $config;
 
     /**
@@ -42,7 +39,7 @@ final class IntegrationCase
     private $inputCode;
 
     /**
-     * Env requirements (possible keys: php, hhvm).
+     * Env requirements (possible keys: php).
      *
      * @var array
      */

@@ -21,6 +21,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use Symfony\Component\Console\Command\HelpCommand as BaseHelpCommand;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -100,7 +101,8 @@ The <comment>--show-progress</comment> option allows you to choose the way proce
 
 * <comment>none</comment>: disables progress output;
 * <comment>run-in</comment>: simple single-line progress output;
-* <comment>estimating</comment>: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects.
+* <comment>estimating</comment>: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
+* <comment>estimating-max</comment>: same as <comment>estimating</comment> but using all terminal columns instead of default 80.
 
 If the option is not provided, it defaults to <comment>run-in</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
@@ -141,11 +143,11 @@ The example below will add two rules to the default list of PSR2 set rules:
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
-            'array_syntax' => array('syntax' => 'short'),
-        ))
+            'array_syntax' => ['syntax' => 'short'],
+        ])
         ->setFinder(\$finder)
     ;
 
@@ -167,10 +169,10 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
     ;
 
     return PhpCsFixer\Config::create()
-        ->setRules(array(
+        ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
-        ))
+        ])
         ->setFinder(\$finder)
     ;
 
@@ -239,7 +241,7 @@ Exit codes
 Exit code is built using following bit flags:
 
 *  0 OK.
-*  1 General error (or PHP/HHVM minimal requirement not matched).
+*  1 General error (or PHP minimal requirement not matched).
 *  4 Some files have invalid syntax (only in dry-run mode).
 *  8 Some files need fixing (only in dry-run mode).
 * 16 Configuration error of the application.
@@ -250,7 +252,7 @@ Exit code is built using following bit flags:
 EOF
         ;
 
-        return strtr($template, array(
+        return strtr($template, [
             '%%%CONFIG_INTERFACE_URL%%%' => sprintf(
                 'https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v%s/src/ConfigInterface.php',
                 self::getLatestReleaseVersionFromChangeLog()
@@ -260,7 +262,7 @@ EOF
                 array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
             )),
             '%%%FIXERS_DETAILS%%%' => self::getFixersHelp(),
-        ));
+        ]);
     }
 
     /**
@@ -278,10 +280,10 @@ EOF
             // - remove whitespace at array opening
             // - remove trailing array comma and whitespace at array closing
             // - remove numeric array indexes
-            static $replaces = array(
-                array('#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'),
-                array('', ' ', '[$1]', '[', ']', ''),
-            );
+            static $replaces = [
+                ['#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'],
+                ['', ' ', '[$1]', '[', ']', ''],
+            ];
 
             $str = var_export($value, true);
             do {
@@ -322,8 +324,8 @@ EOF
 
             usort($allowed, function ($valueA, $valueB) {
                 return strcasecmp(
-                    HelpCommand::toString($valueA),
-                    HelpCommand::toString($valueB)
+                    self::toString($valueA),
+                    self::toString($valueB)
                 );
             });
 
@@ -416,13 +418,13 @@ EOF
             }
         );
 
-        $ruleSets = array();
+        $ruleSets = [];
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
-            $ruleSets[$setName] = new RuleSet(array($setName => true));
+            $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
         $getSetsWithRule = function ($rule) use ($ruleSets) {
-            $sets = array();
+            $sets = [];
 
             foreach ($ruleSets as $setName => $ruleSet) {
                 if ($ruleSet->hasRule($rule)) {
@@ -479,7 +481,7 @@ EOF
                     );
 
                     foreach ($configurationDefinitionOptions as $option) {
-                        $line = '<info>'.$option->getName().'</info>';
+                        $line = '<info>'.OutputFormatter::escape($option->getName()).'</info>';
 
                         $allowed = self::getDisplayableAllowedValues($option);
                         if (null !== $allowed) {
@@ -497,7 +499,7 @@ EOF
                         $line .= ': '.preg_replace(
                             '/(`.+?`)/',
                             '<info>$1</info>',
-                            lcfirst(preg_replace('/\.$/', '', $option->getDescription()))
+                            lcfirst(preg_replace('/\.$/', '', OutputFormatter::escape($option->getDescription())))
                         ).'; ';
                         if ($option->hasDefault()) {
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
@@ -533,7 +535,7 @@ EOF
      */
     private static function wordwrap($string, $width)
     {
-        $result = array();
+        $result = [];
         $currentLine = 0;
         $lineLength = 0;
         foreach (explode(' ', $string) as $word) {

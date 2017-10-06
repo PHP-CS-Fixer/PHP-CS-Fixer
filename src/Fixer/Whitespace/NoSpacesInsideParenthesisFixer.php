@@ -33,7 +33,7 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.',
-            array(
+            [
                 new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}"),
                 new CodeSample(
                     '<?php
@@ -41,7 +41,7 @@ function foo( $bar, $baz )
 {
 }'
                 ),
-            )
+            ]
         );
     }
 

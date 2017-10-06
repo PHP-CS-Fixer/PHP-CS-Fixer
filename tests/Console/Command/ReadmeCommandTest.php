@@ -37,7 +37,8 @@ final class ReadmeCommandTest extends TestCase
         $this->assertInternalType('string', $fileContent, sprintf('Failed to get content of "%s"', $readmeFile));
 
         $app = new Application();
-        $input = new ArrayInput(array('readme'));
+        $input = new ArrayInput(['readme']);
+
         $output = new BufferedOutput();
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $output->setDecorated(false);

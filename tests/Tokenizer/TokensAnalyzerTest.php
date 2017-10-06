@@ -69,44 +69,44 @@ PHP;
         $elements = $tokensAnalyzer->getClassyElements();
 
         $this->assertSame(
-            array(
-                9 => array(
+            [
+                9 => [
                     'token' => $tokens[9],
                     'type' => 'property',
-                ),
-                14 => array(
+                ],
+                14 => [
                     'token' => $tokens[14],
                     'type' => 'property',
-                ),
-                19 => array(
+                ],
+                19 => [
                     'token' => $tokens[19],
                     'type' => 'property',
-                ),
-                28 => array(
+                ],
+                28 => [
                     'token' => $tokens[28],
                     'type' => 'property',
-                ),
-                42 => array(
+                ],
+                42 => [
                     'token' => $tokens[42],
                     'type' => 'const',
-                ),
-                53 => array(
+                ],
+                53 => [
                     'token' => $tokens[53],
                     'type' => 'method',
-                ),
-                83 => array(
+                ],
+                83 => [
                     'token' => $tokens[83],
                     'type' => 'method',
-                ),
-                140 => array(
+                ],
+                140 => [
                     'token' => $tokens[140],
                     'type' => 'method',
-                ),
-                164 => array(
+                ],
+                164 => [
                     'token' => $tokens[164],
                     'type' => 'const',
-                ),
-            ),
+                ],
+            ],
             $elements
         );
     }
@@ -139,32 +139,32 @@ PHP;
         $elements = $tokensAnalyzer->getClassyElements();
 
         $this->assertSame(
-            array(
-                9 => array(
+            [
+                9 => [
                     'token' => $tokens[9],
                     'type' => 'property',
-                ),
-                14 => array(
+                ],
+                14 => [
                     'token' => $tokens[14],
                     'type' => 'method',
-                ),
-                33 => array(
+                ],
+                33 => [
                     'token' => $tokens[33],
                     'type' => 'property',
-                ),
-                38 => array(
+                ],
+                38 => [
                     'token' => $tokens[38],
                     'type' => 'method',
-                ),
-                56 => array(
+                ],
+                56 => [
                     'token' => $tokens[56],
                     'type' => 'property',
-                ),
-                74 => array(
+                ],
+                74 => [
                     'token' => $tokens[74],
                     'type' => 'method',
-                ),
-            ),
+                ],
+            ],
             $elements
         );
     }
@@ -185,28 +185,28 @@ PHP;
 
     public function provideIsAnonymousClassCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php class foo {}',
-                array(1 => false),
-            ),
-            array(
+                [1 => false],
+            ],
+            [
                 '<?php $foo = new class() {};',
-                array(7 => true),
-            ),
-            array(
+                [7 => true],
+            ],
+            [
                 '<?php $foo = new class() extends Foo implements Bar, Baz {};',
-                array(7 => true),
-            ),
-            array(
+                [7 => true],
+            ],
+            [
                 '<?php class Foo { function bar() { return new class() {}; } }',
-                array(1 => false, 19 => true),
-            ),
-            array(
+                [1 => false, 19 => true],
+            ],
+            [
                 '<?php $a = new class(new class($d->a) implements B{}) extends C{};',
-                array(7 => true, 11 => true),
-            ),
-        );
+                [7 => true, 11 => true],
+            ],
+        ];
     }
 
     /**
@@ -225,24 +225,24 @@ PHP;
 
     public function provideIsLambdaCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php function foo () {};',
-                array(1 => false),
-            ),
-            array(
+                [1 => false],
+            ],
+            [
                 '<?php function /** foo */ foo () {};',
-                array(1 => false),
-            ),
-            array(
+                [1 => false],
+            ],
+            [
                 '<?php $foo = function () {};',
-                array(5 => true),
-            ),
-            array(
+                [5 => true],
+            ],
+            [
                 '<?php $foo = function /** foo */ () {};',
-                array(5 => true),
-            ),
-            array(
+                [5 => true],
+            ],
+            [
                 '<?php
 preg_replace_callback(
     "/(^|[a-z])/",
@@ -251,13 +251,13 @@ preg_replace_callback(
     },
     $string
 );',
-                array(7 => true),
-            ),
-            array(
+                [7 => true],
+            ],
+            [
                 '<?php $foo = function &() {};',
-                array(5 => true),
-            ),
-        );
+                [5 => true],
+            ],
+        ];
     }
 
     /**
@@ -277,22 +277,22 @@ preg_replace_callback(
 
     public function provideIsLambda70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     $a = function (): array {
                         return [];
                     };',
-                array(6 => true),
-            ),
-            array(
+                [6 => true],
+            ],
+            [
                 '<?php
                     function foo (): array {
                         return [];
                     };',
-                array(2 => false),
-            ),
-        );
+                [2 => false],
+            ],
+        ];
     }
 
     /**
@@ -312,36 +312,36 @@ preg_replace_callback(
 
     public function provideIsLambda71Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     $a = function (): void {
                         return [];
                     };',
-                array(6 => true),
-            ),
-            array(
+                [6 => true],
+            ],
+            [
                 '<?php
                     function foo (): void {
                         return [];
                     };',
-                array(2 => false),
-            ),
-            array(
+                [2 => false],
+            ],
+            [
                 '<?php
                     $a = function (): ?int {
                         return [];
                     };',
-                array(6 => true),
-            ),
-            array(
+                [6 => true],
+            ],
+            [
                 '<?php
                     function foo (): ?int {
                         return [];
                     };',
-                array(2 => false),
-            ),
-        );
+                [2 => false],
+            ],
+        ];
     }
 
     /**
@@ -364,40 +364,40 @@ preg_replace_callback(
 
     public function provideIsUnarySuccessorOperatorCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a++;',
-                array(2 => true),
-            ),
-            array(
+                [2 => true],
+            ],
+            [
                 '<?php $a--;',
-                array(2 => true),
-            ),
-            array(
+                [2 => true],
+            ],
+            [
                 '<?php $a ++;',
-                array(3 => true),
-            ),
-            array(
+                [3 => true],
+            ],
+            [
                 '<?php $a++ + 1;',
-                array(2 => true, 4 => false),
-            ),
-            array(
+                [2 => true, 4 => false],
+            ],
+            [
                 '<?php ${"a"}++;',
-                array(5 => true),
-            ),
-            array(
+                [5 => true],
+            ],
+            [
                 '<?php $foo->bar++;',
-                array(4 => true),
-            ),
-            array(
+                [4 => true],
+            ],
+            [
                 '<?php $foo->{"bar"}++;',
-                array(6 => true),
-            ),
-            array(
+                [6 => true],
+            ],
+            [
                 '<?php $a["foo"]++;',
-                array(5 => true),
-            ),
-        );
+                [5 => true],
+            ],
+        ];
     }
 
     /**
@@ -420,93 +420,68 @@ preg_replace_callback(
 
     public function provideIsUnaryPredecessorOperatorCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php ++$a;',
-                array(1 => true),
-            ),
-            array(
+                [1 => true],
+            ],
+            [
                 '<?php --$a;',
-                array(1 => true),
-            ),
-            array(
+                [1 => true],
+            ],
+            [
                 '<?php -- $a;',
-                array(1 => true),
-            ),
-            array(
+                [1 => true],
+            ],
+            [
                 '<?php $a + ++$b;',
-                array(3 => false, 5 => true),
-            ),
-            array(
+                [3 => false, 5 => true],
+            ],
+            [
                 '<?php !!$a;',
-                array(1 => true, 2 => true),
-            ),
-            array(
+                [1 => true, 2 => true],
+            ],
+            [
                 '<?php $a = &$b;',
-                array(5 => true),
-            ),
-            array(
+                [5 => true],
+            ],
+            [
                 '<?php function &foo() {}',
-                array(3 => true),
-            ),
-            array(
+                [3 => true],
+            ],
+            [
                 '<?php @foo();',
-                array(1 => true),
-            ),
-            array(
+                [1 => true],
+            ],
+            [
                 '<?php foo(+ $a, -$b);',
-                array(3 => true, 8 => true),
-            ),
-            array(
+                [3 => true, 8 => true],
+            ],
+            [
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
-                array(5 => true, 11 => true, 17 => true),
-            ),
-        );
-    }
-
-    /**
-     * @param string $source
-     *
-     * @dataProvider provideIsUnaryPredecessorOperator56Cases
-     * @requires PHP 5.6
-     */
-    public function testIsUnaryPredecessorOperator56($source, array $expected)
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isUnary) {
-            $this->assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
-            if ($isUnary) {
-                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                $this->assertFalse($tokensAnalyzer->isBinaryOperator($index));
-            }
-        }
-    }
-
-    public function provideIsUnaryPredecessorOperator56Cases()
-    {
-        return array(
-            array(
+                [5 => true, 11 => true, 17 => true],
+            ],
+            [
                 '<?php function foo($a, ...$b) {}',
-                array(8 => true),
-            ),
-            array(
+                [8 => true],
+            ],
+            [
                 '<?php function foo(&...$b) {}',
-                array(5 => true, 6 => true),
-            ),
-            array(
+                [5 => true, 6 => true],
+            ],
+            [
                 '<?php function foo(array ...$b) {}',
-                array(7 => true),
-            ),
-            array(
+                [7 => true],
+            ],
+            [
                 '<?php $foo = function(...$a) {};',
-                array(7 => true),
-            ),
-            array(
+                [7 => true],
+            ],
+            [
                 '<?php $foo = function($a, ...$b) {};',
-                array(10 => true),
-            ),
-        );
+                [10 => true],
+            ],
+        ];
     }
 
     /**
@@ -529,137 +504,112 @@ preg_replace_callback(
 
     public function provideIsBinaryOperatorCases()
     {
-        $cases = array(
-            array(
+        $cases = [
+            [
                 '<?php [] + [];',
-                array(4 => true),
-            ),
-            array(
+                [4 => true],
+            ],
+            [
                 '<?php $a + $b;',
-                array(3 => true),
-            ),
-            array(
+                [3 => true],
+            ],
+            [
                 '<?php 1 + $b;',
-                array(3 => true),
-            ),
-            array(
+                [3 => true],
+            ],
+            [
                 '<?php 0.2 + $b;',
-                array(3 => true),
-            ),
-            array(
+                [3 => true],
+            ],
+            [
                 '<?php $a[1] + $b;',
-                array(6 => true),
-            ),
-            array(
+                [6 => true],
+            ],
+            [
                 '<?php FOO + $b;',
-                array(3 => true),
-            ),
-            array(
+                [3 => true],
+            ],
+            [
                 '<?php foo() + $b;',
-                array(5 => true),
-            ),
-            array(
+                [5 => true],
+            ],
+            [
                 '<?php ${"foo"} + $b;',
-                array(6 => true),
-            ),
-            array(
+                [6 => true],
+            ],
+            [
                 '<?php $a+$b;',
-                array(2 => true),
-            ),
-            array(
+                [2 => true],
+            ],
+            [
                 '<?php $a /* foo */  +  /* bar */  $b;',
-                array(5 => true),
-            ),
-            array(
+                [5 => true],
+            ],
+            [
                 '<?php $a =
 $b;',
-                array(3 => true),
-            ),
+                [3 => true],
+            ],
 
-            array(
+            [
                 '<?php $a
 = $b;',
-                array(3 => true),
-            ),
-            array(
+                [3 => true],
+            ],
+            [
                 '<?php $a = array("b" => "c", );',
-                array(3 => true, 9 => true, 12 => false),
-            ),
-            array(
+                [3 => true, 9 => true, 12 => false],
+            ],
+            [
                 '<?php $a * -$b;',
-                array(3 => true, 5 => false),
-            ),
-            array(
+                [3 => true, 5 => false],
+            ],
+            [
                 '<?php $a = -2 / +5;',
-                array(3 => true, 5 => false, 8 => true, 10 => false),
-            ),
-            array(
+                [3 => true, 5 => false, 8 => true, 10 => false],
+            ],
+            [
                 '<?php $a = &$b;',
-                array(3 => true, 5 => false),
-            ),
-            array(
+                [3 => true, 5 => false],
+            ],
+            [
                 '<?php $a++ + $b;',
-                array(2 => false, 4 => true),
-            ),
-            array(
+                [2 => false, 4 => true],
+            ],
+            [
                 '<?php $a = FOO & $bar;',
-                array(7 => true),
-            ),
-            array(
+                [7 => true],
+            ],
+            [
                 '<?php __LINE__ - 1;',
-                array(3 => true),
-            ),
-            array(
+                [3 => true],
+            ],
+            [
                 '<?php `echo 1` + 1;',
-                array(5 => true),
-            ),
-        );
+                [5 => true],
+            ],
+            [
+                '<?php $a ** $b;',
+                [3 => true],
+            ],
+            [
+                '<?php $a **= $b;',
+                [3 => true],
+            ],
+        ];
 
-        $operators = array(
+        $operators = [
             '+', '-', '*', '/', '%', '<', '>', '|', '^', '&=', '&&', '||', '.=', '/=', '==', '>=', '===', '!=',
             '<>', '!==', '<=', 'and', 'or', 'xor', '-=', '%=', '*=', '|=', '+=', '<<', '<<=', '>>', '>>=', '^',
-        );
+        ];
         foreach ($operators as $operator) {
-            $cases[] = array(
+            $cases[] = [
                 '<?php $a '.$operator.' $b;',
-                array(3 => true),
-            );
+                [3 => true],
+            ];
         }
 
         return $cases;
-    }
-
-    /**
-     * @param string $source
-     *
-     * @dataProvider provideIsBinaryOperator56Cases
-     * @requires PHP 5.6
-     */
-    public function testIsBinaryOperator56($source, array $expected)
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-            if ($isBinary) {
-                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
-    }
-
-    public function provideIsBinaryOperator56Cases()
-    {
-        return array(
-            array(
-                '<?php $a ** $b;',
-                array(3 => true),
-            ),
-            array(
-                '<?php $a **= $b;',
-                array(3 => true),
-            ),
-        );
     }
 
     /**
@@ -683,16 +633,16 @@ $b;',
 
     public function provideIsBinaryOperator70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a <=> $b;',
-                array(3 => true),
-            ),
-            array(
+                [3 => true],
+            ],
+            [
                 '<?php $a ?? $b;',
-                array(3 => true),
-            ),
-        );
+                [3 => true],
+            ],
+        ];
     }
 
     /**
@@ -701,7 +651,6 @@ $b;',
      * @param bool   $isMultiLineArray
      *
      * @dataProvider provideIsArrayCases
-     * @requires PHP 5.4
      */
     public function testIsArray($source, $tokenIndex, $isMultiLineArray = false)
     {
@@ -713,29 +662,29 @@ $b;',
 
     public function provideIsArrayCases()
     {
-        $cases = array(
-            array(
+        $cases = [
+            [
                 '<?php
                     array("a" => 1);
                 ',
                 2,
-            ),
-            array(
+            ],
+            [
                 // short array PHP 5.4 single line
                 '<?php
                     ["a" => 2];
                 ',
                 2, false,
-            ),
-            array(
+            ],
+            [
                 '<?php
                     array(
                         "a" => 3
                     );
                 ',
                 2, true,
-            ),
-            array(
+            ],
+            [
                 // short array PHP 5.4 multi line
                 '<?php
                     [
@@ -743,8 +692,8 @@ $b;',
                     ];
                 ',
                 2, true,
-            ),
-            array(
+            ],
+            [
                 '<?php
                     array(
                         "a" => array(5, 6, 7),
@@ -752,8 +701,8 @@ $b;',
                     );
                 ',
                 2, true,
-            ),
-            array(
+            ],
+            [
                 // mix short array syntax
                 '<?php
                     array(
@@ -762,17 +711,17 @@ $b;',
                     );
                 ',
                 2, true,
-            ),
+            ],
             // Windows/Max EOL testing
-            array(
+            [
                 "<?php\r\narray('a' => 13);\r\n",
                 1,
-            ),
-            array(
+            ],
+            [
                 "<?php\r\n   array(\r\n       'a' => 14,\r\n       'b' =>  15\r\n   );\r\n",
                 2, true,
-            ),
-        );
+            ],
+        ];
 
         return $cases;
     }
@@ -801,24 +750,24 @@ $b;',
 
     public function provideIsArray71Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     [$a] = $z;
                     ["a" => $a, "b" => $b] = $array;
                     $c = [$d, $e] = $array[$a];
                     [[$a, $b], [$c, $d]] = $d;
                 ',
-                array(51, 59),
-            ),
-        );
+                [51, 59],
+            ],
+        ];
     }
 
     /**
      * @param string $source
      * @param int    $tokenIndex
      *
-     * @dataProvider provideArrayExceptionCases
+     * @dataProvider provideArrayExceptionsCases
      */
     public function testIsNotArray($source, $tokenIndex)
     {
@@ -831,25 +780,25 @@ $b;',
      * @param string $source
      * @param int    $tokenIndex
      *
-     * @dataProvider provideArrayExceptionCases
+     * @dataProvider provideArrayExceptionsCases
      */
     public function testIsMultiLineArrayException($source, $tokenIndex)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $tokensAnalyzer->isArrayMultiLine($tokenIndex);
     }
 
-    public function provideArrayExceptionCases()
+    public function provideArrayExceptionsCases()
     {
-        $cases = array(
-            array('<?php $a;', 1),
-            array("<?php\n \$a = (0+1); // [0,1]", 4),
-            array('<?php $text = "foo $bbb[0] bar";', 8),
-            array('<?php $text = "foo ${aaa[123]} bar";', 9),
-        );
+        $cases = [
+            ['<?php $a;', 1],
+            ["<?php\n \$a = (0+1); // [0,1]", 4],
+            ['<?php $text = "foo $bbb[0] bar";', 8],
+            ['<?php $text = "foo ${aaa[123]} bar";', 9],
+        ];
 
         return $cases;
     }
@@ -859,9 +808,9 @@ $b;',
      * @param int    $index
      * @param array  $expected
      *
-     * @dataProvider provideGetMethodAttributesCases
+     * @dataProvider provideGetFunctionPropertiesCases
      */
-    public function testGetMethodAttributes($source, $index, array $expected)
+    public function testGetFunctionProperties($source, $index, array $expected)
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -869,14 +818,14 @@ $b;',
         $this->assertSame($expected, $attributes);
     }
 
-    public function provideGetMethodAttributesCases()
+    public function provideGetFunctionPropertiesCases()
     {
-        $defaultAttributes = array(
+        $defaultAttributes = [
             'visibility' => null,
             'static' => false,
             'abstract' => false,
             'final' => false,
-        );
+        ];
 
         $template = '
 <?php
@@ -886,43 +835,43 @@ class TestClass {
     }
 }
 ';
-        $cases = array();
+        $cases = [];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PRIVATE;
-        $cases[] = array(sprintf($template, 'private'), 10, $attributes);
+        $cases[] = [sprintf($template, 'private'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PUBLIC;
-        $cases[] = array(sprintf($template, 'public'), 10, $attributes);
+        $cases[] = [sprintf($template, 'public'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PROTECTED;
-        $cases[] = array(sprintf($template, 'protected'), 10, $attributes);
+        $cases[] = [sprintf($template, 'protected'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = null;
         $attributes['static'] = true;
-        $cases[] = array(sprintf($template, 'static'), 10, $attributes);
+        $cases[] = [sprintf($template, 'static'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PUBLIC;
         $attributes['static'] = true;
         $attributes['final'] = true;
-        $cases[] = array(sprintf($template, 'final public static'), 14, $attributes);
+        $cases[] = [sprintf($template, 'final public static'), 14, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = null;
         $attributes['abstract'] = true;
-        $cases[] = array(sprintf($template, 'abstract'), 10, $attributes);
+        $cases[] = [sprintf($template, 'abstract'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PUBLIC;
         $attributes['abstract'] = true;
-        $cases[] = array(sprintf($template, 'abstract public'), 12, $attributes);
+        $cases[] = [sprintf($template, 'abstract public'), 12, $attributes];
 
         $attributes = $defaultAttributes;
-        $cases[] = array(sprintf($template, ''), 8, $attributes);
+        $cases[] = [sprintf($template, ''), 8, $attributes];
 
         return $cases;
     }
@@ -970,7 +919,7 @@ if (false){}do{}while(false);
 if(false){}while(false){}do{}while(false);
 SRC;
 
-        $expected = array(
+        $expected = [
             3 => false,
             12 => false,
             19 => false,
@@ -985,7 +934,7 @@ SRC;
             139 => true,
             153 => false,
             162 => true,
-        );
+        ];
 
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -1017,38 +966,38 @@ SRC;
 
     public function provideGetImportUseIndexesCases()
     {
-        return array(
-            array(
-                array(1, 8),
+        return [
+            [
+                [1, 8],
                 '<?php use E\F?><?php use A\B;',
-            ),
-            array(
-                array(array(1), array(14), array(29)),
+            ],
+            [
+                [[1], [14], [29]],
                 '<?php
 use T\A;
 namespace A { use D\C; }
 namespace b { use D\C; }
 ',
                 true,
-            ),
-            array(
-                array(array(1, 8)),
+            ],
+            [
+                [[1, 8]],
                 '<?php use D\B; use A\C?>',
                 true,
-            ),
-            array(
-                array(1, 8),
+            ],
+            [
+                [1, 8],
                 '<?php use D\B; use A\C?>',
-            ),
-            array(
-                array(7, 22),
+            ],
+            [
+                [7, 22],
                 '<?php
 namespace A { use D\C; }
 namespace b { use D\C; }
 ',
-            ),
-            array(
-                array(3, 10, 34, 45, 54, 59, 77, 95),
+            ],
+            [
+                [3, 10, 34, 45, 54, 59, 77, 95],
                 <<<'EOF'
 use Zoo\Bar;
 use Foo\Bar;
@@ -1073,45 +1022,45 @@ class AnnotatedClass
 }
 EOF
                 ,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @param string $input
      * @param bool   $perNamespace
      *
-     * @dataProvider provideGetImportUseIndexes70Cases
+     * @dataProvider provideGetImportUseIndexesPHP70Cases
      * @requires PHP 7.0
      */
-    public function testGetImportUseIndexes70(array $expected, $input, $perNamespace = false)
+    public function testGetImportUseIndexesPHP70(array $expected, $input, $perNamespace = false)
     {
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $this->assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
-    public function provideGetImportUseIndexes70Cases()
+    public function provideGetImportUseIndexesPHP70Cases()
     {
-        return array(
-            array(
-                array(1, 22, 41),
+        return [
+            [
+                [1, 22, 41],
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
                 ',
-            ),
-            array(
-                array(array(1, 22, 41)),
+            ],
+            [
+                [[1, 22, 41]],
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
                 ',
                 true,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1130,24 +1079,24 @@ use const some\a\{ConstA, ConstB, ConstC};
 
     public function provideGetImportUseIndexesPHP72Cases()
     {
-        return array(
-            array(
-                array(1, 23, 43),
+        return [
+            [
+                [1, 23, 43],
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
 use const some\a\{ConstA, ConstB, ConstC,};
                 ',
-            ),
-            array(
-                array(array(1, 23, 43)),
+            ],
+            [
+                [[1, 23, 43]],
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
 use const some\a\{ConstA, ConstB, ConstC,};
                 ',
                 true,
-            ),
-        );
+            ],
+        ];
     }
 }

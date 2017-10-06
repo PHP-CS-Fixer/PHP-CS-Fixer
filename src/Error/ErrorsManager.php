@@ -22,11 +22,9 @@ namespace PhpCsFixer\Error;
 final class ErrorsManager
 {
     /**
-     * Errors.
-     *
      * @var Error[]
      */
-    private $errors = array();
+    private $errors = [];
 
     /**
      * Returns errors reported during linting before fixing.
@@ -75,8 +73,6 @@ final class ErrorsManager
     }
 
     /**
-     * Report error.
-     *
      * @param Error $error
      */
     public function report(Error $error)

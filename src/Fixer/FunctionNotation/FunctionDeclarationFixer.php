@@ -39,7 +39,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
      */
     const SPACING_ONE = 'one';
 
-    private $supportedSpacings = array(self::SPACING_NONE, self::SPACING_ONE);
+    private $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE];
 
     private $singleLineWhitespaceOptions = " \t";
 
@@ -58,7 +58,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
     {
         return new FixerDefinition(
             'Spaces should be properly placed in a function declaration.',
-            array(
+            [
                 new CodeSample(
 '<?php
 
@@ -80,9 +80,9 @@ function  foo  ($bar, $baz)
 '<?php
 $f = function () {};
 ',
-                    array('closure_function_spacing' => self::SPACING_NONE)
+                    ['closure_function_spacing' => self::SPACING_NONE]
                 ),
-            )
+            ]
         );
     }
 
@@ -100,13 +100,13 @@ $f = function () {};
                 continue;
             }
 
-            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, array('(', ';', array(T_CLOSE_TAG)));
+            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [T_CLOSE_TAG]]);
             if (!$tokens[$startParenthesisIndex]->equals('(')) {
                 continue;
             }
 
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
-            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, array(';', '{'));
+            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{']);
 
             // fix single-line whitespace before {
             // eg: `function foo(){}` => `function foo() {}`
@@ -128,7 +128,7 @@ $f = function () {};
                 // fix whitespace after CT:T_USE_LAMBDA (we might add a token, so do this before determining start and end parenthesis)
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
 
-                $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, array('('));
+                $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, ['(']);
                 $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
 
                 // remove single-line edge whitespaces inside use parentheses
@@ -177,14 +177,12 @@ $f = function () {};
      */
     protected function createConfigurationDefinition()
     {
-        $spacing = new FixerOptionBuilder('closure_function_spacing', 'Spacing to use before open parenthesis for closures.');
-        $spacing = $spacing
-            ->setDefault(self::SPACING_ONE)
-            ->setAllowedValues($this->supportedSpacings)
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver(array($spacing));
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('closure_function_spacing', 'Spacing to use before open parenthesis for closures.'))
+                ->setDefault(self::SPACING_ONE)
+                ->setAllowedValues($this->supportedSpacings)
+                ->getOption(),
+        ]);
     }
 
     private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end)

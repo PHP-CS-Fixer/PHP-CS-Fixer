@@ -44,8 +44,8 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
 
     public function provideCommentBlockStartDetectionCases()
     {
-        return array(
-            array(
+        return [
+            [
                 4,
                 '<?php
                     //ui
@@ -54,8 +54,8 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
                     //k2
                 ',
                 6,
-            ),
-            array(
+            ],
+            [
                 4,
                 '<?php
                     //ui
@@ -64,8 +64,8 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
                     //k2
                 ',
                 5,
-            ),
-            array(
+            ],
+            [
                 4,
                 '<?php
                     /**/
@@ -74,39 +74,39 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
                     //k2
                 ',
                 6,
-            ),
-            array(
+            ],
+            [
                 4,
                 '<?php
                     $a;//j
                     //k
                 ',
                 6,
-            ),
-            array(
+            ],
+            [
                 2,
                 '<?php
                     //a
                 ',
                 2,
-            ),
-            array(
+            ],
+            [
                 2,
                 '<?php
                     //b
                     //c
                 ',
                 2,
-            ),
-            array(
+            ],
+            [
                 2,
                 '<?php
                     //d
                     //e
                 ',
                 4,
-            ),
-            array(
+            ],
+            [
                 2,
                 '<?php
                     /**/
@@ -115,8 +115,8 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
                     //h
                 ',
                 8,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -132,8 +132,8 @@ final class MethodSeparationFixerTest extends AbstractFixerTestCase
 
     public function provideFixClassesCases()
     {
-        $cases = array();
-        $cases[] = array('<?php
+        $cases = [];
+        $cases[] = ['<?php
 class SomeClass1
 {
     // This comment
@@ -143,8 +143,8 @@ class SomeClass1
         echo "a";
     }
 }
-');
-        $cases[] = array(
+'];
+        $cases[] = [
             '<?php
 class SomeClass2
 {
@@ -166,8 +166,8 @@ class SomeClass2
     }
 }
             ',
-            );
-        $cases[] = array(
+            ];
+        $cases[] = [
             '<?php
 class SomeClass3
 {
@@ -179,8 +179,8 @@ class SomeClass3
         echo "a";
     }
 }
-', );
-        $cases[] = array(
+', ];
+        $cases[] = [
             '<?php
 class SomeClass1
 {
@@ -255,8 +255,8 @@ class SomeClass1
     {
     }
 }
-', );
-        $cases[] = array('<?php
+', ];
+        $cases[] = ['<?php
 class SomeClass
 {
     // comment
@@ -265,8 +265,8 @@ class SomeClass
         echo "a";
     }
 }
-');
-        $cases[] = array('<?php
+'];
+        $cases[] = ['<?php
 class SomeClass
 {
     // This comment
@@ -276,8 +276,8 @@ class SomeClass
         echo "a";
     }
 }
-');
-        $cases[] = array(
+'];
+        $cases[] = [
             '<?php
 class SomeClass
 {
@@ -301,8 +301,8 @@ class SomeClass
     }
 }
 ',
-        );
-        $cases[] = array(
+        ];
+        $cases[] = [
             '<?php
 class SomeClass
 {
@@ -322,8 +322,8 @@ class SomeClass
     }
 }
 ',
-        );
-        $cases[] = array(
+        ];
+        $cases[] = [
             '<?php
 class SomeClass
 {
@@ -343,8 +343,8 @@ class SomeClass
     }
 }
 ',
-        );
-        $cases[] = array(
+        ];
+        $cases[] = [
             '<?php
 abstract class MethodTest2
 {
@@ -404,9 +404,9 @@ abstract class MethodTest2
 }
 function test1(){ echo 1;}
 function test2(){ echo 2;}',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 
 /*
@@ -446,12 +446,12 @@ final class NullLinter implements LinterInterface
     }
 }
 ',
-        );
+        ];
 
         // do not touch anonymous functions (since PHP doesn't allow
         // for class attributes being functions :(, we only have to test
         // those used within methods)
-        $cases[] = array(
+        $cases[] = [
             '<?php
 class MethodTestAnonymous
 {
@@ -470,9 +470,9 @@ class MethodTestAnonymous
         };
     }
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 class MethodTest1
 {
@@ -568,10 +568,10 @@ class MethodTest1
     {
     }
 }',
-        );
+        ];
 
         // spaces between methods
-        $cases[] = array(
+        $cases[] = [
             '<?php
 abstract class MethodTest3
 {
@@ -613,9 +613,9 @@ abstract class MethodTest3
     final private function method321a()
     {
     }
-}', );
+}', ];
         // don't change correct code
-        $cases[] = array(
+        $cases[] = [
             '<?php
 class SmallHelperException extends \Exception
 {
@@ -636,10 +636,10 @@ class MethodTest123124124
 
     public function method211a(){}
 }',
-        );
+        ];
 
         // do not touch function out of class scope
-        $cases[] = array(
+        $cases[] = [
             '<?php
 function test0() {
 
@@ -661,7 +661,7 @@ function test2() {
 
 }
 ',
-        );
+        ];
 
         return $cases;
     }
@@ -670,7 +670,7 @@ function test2() {
      * @param string      $expected
      * @param null|string $input
      *
-     * @requires PHP 5.4
+     *
      * @dataProvider provideFixTraitsCases
      */
     public function testFixTraits($expected, $input = null)
@@ -680,10 +680,10 @@ function test2() {
 
     public function provideFixTraitsCases()
     {
-        $cases = array();
+        $cases = [];
 
         // do not touch well formatted traits
-        $cases[] = array(
+        $cases[] = [
             '<?php
 trait OkTrait
 {
@@ -698,9 +698,9 @@ trait OkTrait
     {
     }
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
@@ -727,9 +727,9 @@ trait ezcReflectionReturnInfo {
     protected function getC(){echo 3;}/** Description */function getD(){echo 4;}
     protected function getE(){echo 3;}private $a;function getF(){echo 4;}
 }',
-        );
+        ];
 
-        $cases[] = array(
+        $cases[] = [
             '<?php
 trait SomeReturnInfo {
     function getReturnType()
@@ -759,7 +759,7 @@ trait SomeReturnInfo {
 
     abstract public function getWorld();
 }',
-        );
+        ];
 
         return $cases;
     }
@@ -777,8 +777,8 @@ trait SomeReturnInfo {
 
     public function provideFixInterfaceCases()
     {
-        $cases = array();
-        $cases[] = array(
+        $cases = [];
+        $cases[] = [
             '<?php
 interface TestInterface
 {
@@ -809,10 +809,10 @@ interface TestInterface
 
     public function testInterfaceMethod7(); public function testInterfaceMethod8();
 }',
-        );
+        ];
 
         // do not touch well formatted interfaces
-        $cases[] = array(
+        $cases[] = [
             '<?php
 interface TestInterfaceOK
 {
@@ -820,10 +820,10 @@ interface TestInterfaceOK
 
     public function testMethod2();
 }',
-        );
+        ];
 
         // method after trait use
-        $cases[] = array(
+        $cases[] = [
             '<?php
 trait ezcReflectionReturnInfo {
     function getReturnDescription() {}
@@ -845,7 +845,7 @@ class ezcReflectionMethod extends ReflectionMethod {
 
 
 }',
-        );
+        ];
 
         return $cases;
     }
@@ -865,15 +865,15 @@ class ezcReflectionMethod extends ReflectionMethod {
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
                 "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-            ),
-            array(
+            ],
+            [
                 "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
                 "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-            ),
-        );
+            ],
+        ];
     }
 }

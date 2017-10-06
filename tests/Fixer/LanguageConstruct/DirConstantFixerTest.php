@@ -56,71 +56,71 @@ __DIR__
 ;
 FIXED;
 
-        return array(
-            array('<?php $x = "dirname";'),
+        return [
+            ['<?php $x = "dirname";'],
 
-            array('<?php $x = dirname(__FILE__.".dist");'),
+            ['<?php $x = dirname(__FILE__.".dist");'],
 
-            array('<?php $x = ClassA::dirname(__FILE__);'),
-            array('<?php $x = ScopeA\\dirname(__FILE__);'),
-            array('<?php $x = namespace\\dirname(__FILE__);'),
-            array('<?php $x = $object->dirname(__FILE__);'),
+            ['<?php $x = ClassA::dirname(__FILE__);'],
+            ['<?php $x = ScopeA\\dirname(__FILE__);'],
+            ['<?php $x = namespace\\dirname(__FILE__);'],
+            ['<?php $x = $object->dirname(__FILE__);'],
 
-            array('<?php $x = new \\dirname(__FILE__);'),
-            array('<?php $x = new dirname(__FILE__);'),
-            array('<?php $x = new ScopeB\\dirname(__FILE__);'),
+            ['<?php $x = new \\dirname(__FILE__);'],
+            ['<?php $x = new dirname(__FILE__);'],
+            ['<?php $x = new ScopeB\\dirname(__FILE__);'],
 
-            array('<?php dirnameSmth(__FILE__);'),
-            array('<?php smth_dirname(__FILE__);'),
+            ['<?php dirnameSmth(__FILE__);'],
+            ['<?php smth_dirname(__FILE__);'],
 
-            array('<?php "SELECT ... dirname(__FILE__) ...";'),
-            array('<?php "SELECT ... DIRNAME(__FILE__) ...";'),
-            array('<?php "test" . "dirname" . "in concatenation";'),
+            ['<?php "SELECT ... dirname(__FILE__) ...";'],
+            ['<?php "SELECT ... DIRNAME(__FILE__) ...";'],
+            ['<?php "test" . "dirname" . "in concatenation";'],
 
-            array(
+            [
                 '<?php $x = dirname(__DIR__);',
                 '<?php $x = dirname(dirname(__FILE__));',
-            ),
-            array(
+            ],
+            [
                 '<?php $x = __DIR__;',
                 '<?php $x = dirname(__FILE__);',
-            ),
-            array(
+            ],
+            [
                 '<?php $x = __DIR__;',
                 '<?php $x = \\dirname(__FILE__);',
-            ),
-            array(
+            ],
+            [
                 '<?php $x = __DIR__.".dist";',
                 '<?php $x = dirname(__FILE__).".dist";',
-            ),
-            array(
+            ],
+            [
                 '<?php $x = __DIR__.".dist";',
                 '<?php $x = \\dirname(__FILE__).".dist";',
-            ),
-            array($multiLinePatternFixed, $multiLinePatternToFix),
-            array(
+            ],
+            [$multiLinePatternFixed, $multiLinePatternToFix],
+            [
                 '<?php $x = /**//**/ /** x*//**//** */__DIR__/***//*xx*/;',
                 '<?php $x = /**/dirname/**/ /** x*/(/**//** */__FILE__/***/)/*xx*/;',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 interface Test
                 {
                     public function dirname($a);
                 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 interface Test
                 {
                     public function &dirname($a);
                 }',
-            ),
-            array(
+            ],
+            [
                 "<?php echo __DIR__\n?>",
                 "<?php echo dirname\n(\n__FILE__\n)\n?>",
-            ),
-            array(
+            ],
+            [
                 '<?php $x =# A
 # A1
 # B
@@ -138,7 +138,7 @@ __FILE__# D
 )# E
 ;# F
 ',
-            ),
-        );
+            ],
+        ];
     }
 }

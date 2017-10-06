@@ -315,10 +315,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 5.4
-     */
-    public function test54()
+    public function testWithTraits()
     {
         $expected = <<<'EOF'
 <?php
@@ -393,9 +390,6 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testFixWithTraitImports()
     {
         $expected = <<<'EOF'
@@ -617,16 +611,16 @@ EOF;
 
     public function provideCommentCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     use A\C1 /* A */;
                     use /* B */ B\C2;',
                 '<?php
                     use /* B */ B\C2;
                     use A\C1 /* A */;',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     use#
 A\C1;
@@ -641,8 +635,8 @@ B#
 #
 ;
                     use A\C1;',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -659,8 +653,8 @@ B#
 
     public function provideFix70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use A\B;
 use some\a\{ClassA, ClassB, ClassC as C};
@@ -701,8 +695,8 @@ use some\b\{
     ClassF
 };
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use A\B;
 use some\a\{ClassA as A /*z*/, ClassB, ClassC};
@@ -723,8 +717,8 @@ use const some\a\{
     ConstC
 };
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
 use Foo\Bir;
@@ -733,16 +727,16 @@ use Foo\Bir;
 use Foo\Bar\Baz, Foo\Bir;
 use Foo\Bar\{ClassC, ClassB, ClassA};
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use A\A;use Foo3\Bar\{ClassA};use G\G;use H\H;use Ioo2\Bar\{ClassB};use J\J;use K\K;use Loo1\Bar\{ClassC};use M\M;
 ',
                 '<?php
 use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;use Loo1\Bar\{ClassC};
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
 use Foo\Bir;
@@ -751,8 +745,8 @@ use Foo\Bir;
 use Foo\Bar\Baz, Foo\Bir;
 use Foo\Bar\{ClassC, ClassB, ClassA};
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use Foo\Bar\{ClassA, ClassB, ClassC};
 use Foo\Bir\{
@@ -778,8 +772,8 @@ use Foo\Bor\{
                         ClassG
 };
 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /*
@@ -791,27 +785,27 @@ use Foo\Bor\{
     public function testInvalidOrderTypesSize()
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '[ordered_imports] Invalid configuration: Missing sort type "function".'
         );
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-            'importsOrder' => array('class', 'const'),
-        ));
+            'importsOrder' => ['class', 'const'],
+        ]);
     }
 
     public function testInvalidOrderType()
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             '[ordered_imports] Invalid configuration: Missing sort type "class".'
         );
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-            'importsOrder' => array('const', 'function', 'bar'),
-        ));
+            'importsOrder' => ['const', 'function', 'bar'],
+        ]);
     }
 
     /**
@@ -823,7 +817,7 @@ use Foo\Bor\{
     public function testInvalidSortAlgorithm($configuration, $expectedValue)
     {
         $this->setExpectedException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
             sprintf(
                 '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
                 $expectedValue
@@ -835,37 +829,37 @@ use Foo\Bor\{
 
     public function provideInvalidSortAlgorithmCases()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'sortAlgorithm' => 'dope',
                     'importsOrder' => null,
-                ),
+                ],
                 '"dope"',
-            ),
-            array(
-                array(
-                    'sortAlgorithm' => array(OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH),
+            ],
+            [
+                [
+                    'sortAlgorithm' => [OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH],
                     'importsOrder' => null,
-                ),
+                ],
                 'array',
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     'sortAlgorithm' => new \stdClass(),
                     'importsOrder' => null,
-                ),
-                'stdClass',
-            ),
-        );
+                ],
+                \stdClass::class,
+            ],
+        ];
     }
 
     public function testFixByLength()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 The normal
@@ -952,10 +946,10 @@ EOF;
 
     public function testByLengthFixWithSameLength()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 <?php
@@ -1010,10 +1004,10 @@ EOF;
 
     public function testByLengthFixWithMultipleNamespace()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 <?php
@@ -1138,10 +1132,10 @@ EOF;
 
     public function testByLengthFixWithComment()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 The normal
@@ -1226,15 +1220,12 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 5.4
-     */
-    public function testByLength54()
+    public function testByLength()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 <?php
@@ -1309,15 +1300,12 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testByLengthFixWithTraitImports()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 The normal
@@ -1410,10 +1398,10 @@ EOF;
 
     public function testByLengthFixWithDifferentCases()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 The normal
@@ -1454,10 +1442,10 @@ EOF;
 
     public function testByLengthOrderWithTrailingDigit()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 <?php
@@ -1494,10 +1482,10 @@ EOF;
 
     public function testByLengthCodeWithImportsOnly()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 <?php
@@ -1518,10 +1506,10 @@ EOF;
 
     public function testByLengthWithoutUses()
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $expected = <<<'EOF'
 <?php
@@ -1542,18 +1530,18 @@ EOF
      */
     public function testFix70ByLength($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
             'importsOrder' => null,
-        ));
+        ]);
 
         $this->doTest($expected, $input);
     }
 
     public function provideFix70ByLengthCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use A\B;
 use Foo\Bar\Biz;
@@ -1584,8 +1572,8 @@ use const some\b\{ConstX, ConstY, ConstZ, ConstG};
 use some\b\{ClassA, ClassB, ClassC as C};
 use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1597,18 +1585,18 @@ use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
      */
     public function testFix70TypesOrderAndLength($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => array(OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION),
-        ));
+            'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+        ]);
 
         $this->doTest($expected, $input);
     }
 
     public function provideFix70TypesOrderAndLengthCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use A\B;
 use Some\Bar;
@@ -1643,8 +1631,8 @@ use function some\a\{fn_a, fn_b};
 use const some\b\{ConstD, ConstE, ConstF};
 use function some\f\{fn_c, fn_d, fn_e};
 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1657,18 +1645,18 @@ use function some\f\{fn_c, fn_d, fn_e};
      */
     public function testFix70TypesOrderAndAlphabet($expected, $input = null, array $importOrder = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
             'importsOrder' => $importOrder,
-        ));
+        ]);
 
         $this->doTest($expected, $input);
     }
 
     public function provideFix70TypesOrderAndAlphabetCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use Aaa\Bbb;
 use Aaa\Ccc;
@@ -1713,9 +1701,9 @@ use Aaa\Bbb;
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
 ',
-                array(OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION),
-            ),
-        );
+                [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            ],
+        ];
     }
 
     /**
@@ -1746,8 +1734,8 @@ use const some\X\{ConstA,ConstB,ConstC,ConstF};
 use C\{D,E,};
 ';
 
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use A\{B,};
 use C\{D,E,};
@@ -1756,8 +1744,8 @@ use C\{D,E,};
 use C\{D,E,};
 use A\{B,};
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php use A\{B,};
 use C\{D,E,};
 use some\y\{ClassA, ClassB, ClassC as C,};
@@ -1766,12 +1754,12 @@ use const some\Z\{ConstAA,ConstBB,ConstCC,};
 use function some\a\{fn_a, fn_b, fn_c,};
 ',
                 $input,
-                array(
+                [
                     'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'importsOrder' => array(OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION),
-                ),
-            ),
-            array(
+                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                ],
+            ],
+            [
                 '<?php use A\{B,};
 use C\{D,E,};
 use some\y\{ClassA, ClassB, ClassC as C,};
@@ -1780,11 +1768,11 @@ use const some\X\{ConstA,ConstB,ConstC,ConstF};
 use function some\a\{fn_a, fn_b, fn_c,};
 ',
                 $input,
-                array(
+                [
                     'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-                    'importsOrder' => array(OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION),
-                ),
-            ),
-        );
+                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                ],
+            ],
+        ];
     }
 }

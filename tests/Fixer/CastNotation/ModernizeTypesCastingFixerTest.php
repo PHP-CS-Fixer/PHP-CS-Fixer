@@ -100,61 +100,61 @@ class overridesIntval
 }
 OVERRIDDEN;
 
-        return array(
-            array('<?php $x = "intval";'),
+        return [
+            ['<?php $x = "intval";'],
 
-            array('<?php $x = ClassA::intval(mt_rand(0, 100));'),
-            array('<?php $x = ScopeA\\intval(mt_rand(0, 100));'),
-            array('<?php $x = namespace\\intval(mt_rand(0, 100));'),
-            array('<?php $x = $object->intval(mt_rand(0, 100));'),
+            ['<?php $x = ClassA::intval(mt_rand(0, 100));'],
+            ['<?php $x = ScopeA\\intval(mt_rand(0, 100));'],
+            ['<?php $x = namespace\\intval(mt_rand(0, 100));'],
+            ['<?php $x = $object->intval(mt_rand(0, 100));'],
 
-            array('<?php $x = new \\intval(mt_rand(0, 100));'),
-            array('<?php $x = new intval(mt_rand(0, 100));'),
-            array('<?php $x = new ScopeB\\intval(mt_rand(0, 100));'),
+            ['<?php $x = new \\intval(mt_rand(0, 100));'],
+            ['<?php $x = new intval(mt_rand(0, 100));'],
+            ['<?php $x = new ScopeB\\intval(mt_rand(0, 100));'],
 
-            array('<?php intvalSmth(mt_rand(0, 100));'),
-            array('<?php smth_intval(mt_rand(0, 100));'),
+            ['<?php intvalSmth(mt_rand(0, 100));'],
+            ['<?php smth_intval(mt_rand(0, 100));'],
 
-            array('<?php "SELECT ... intval(mt_rand(0, 100)) ...";'),
-            array('<?php "test" . "intval" . "in concatenation";'),
+            ['<?php "SELECT ... intval(mt_rand(0, 100)) ...";'],
+            ['<?php "test" . "intval" . "in concatenation";'],
 
-            array('<?php $x = intval($x, 16);'),
-            array('<?php $x = intval($x, $options["base"]);'),
-            array('<?php $x = intval($x, $options->get("base", 16));'),
+            ['<?php $x = intval($x, 16);'],
+            ['<?php $x = intval($x, $options["base"]);'],
+            ['<?php $x = intval($x, $options->get("base", 16));'],
 
-            array('<?php $x = (int) $x;', '<?php $x = intval($x);'),
-            array('<?php $x = (float) $x;', '<?php $x = floatval($x);'),
-            array('<?php $x = (float) $x;', '<?php $x = doubleval($x);'),
-            array('<?php $x = (string) $x;', '<?php $x = strval($x);'),
-            array('<?php $x = (bool) $x;', '<?php $x = boolval   (  $x  );'),
-            array('<?php $x = (int) (mt_rand(0, 100));', '<?php $x = intval(mt_rand(0, 100));'),
-            array('<?php $x = (int) (mt_rand(0, 100));', '<?php $x = \\intval(mt_rand(0, 100));'),
-            array('<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = intval(mt_rand(0, 100)).".dist";'),
-            array('<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = \\intval(mt_rand(0, 100)).".dist";'),
+            ['<?php $x = (int) $x;', '<?php $x = intval($x);'],
+            ['<?php $x = (float) $x;', '<?php $x = floatval($x);'],
+            ['<?php $x = (float) $x;', '<?php $x = doubleval($x);'],
+            ['<?php $x = (string) $x;', '<?php $x = strval($x);'],
+            ['<?php $x = (bool) $x;', '<?php $x = boolval   (  $x  );'],
+            ['<?php $x = (int) (mt_rand(0, 100));', '<?php $x = intval(mt_rand(0, 100));'],
+            ['<?php $x = (int) (mt_rand(0, 100));', '<?php $x = \\intval(mt_rand(0, 100));'],
+            ['<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = intval(mt_rand(0, 100)).".dist";'],
+            ['<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = \\intval(mt_rand(0, 100)).".dist";'],
 
-            array($multiLinePatternFixed, $multiLinePatternToFix),
-            array($overriddenFunctionFixed, $overriddenFunction),
+            [$multiLinePatternFixed, $multiLinePatternToFix],
+            [$overriddenFunctionFixed, $overriddenFunction],
 
-            array(
+            [
                 '<?php $x = /**/(int) /**/ /** x*/(/**//** */mt_rand(0, 100)/***/)/*xx*/;',
                 '<?php $x = /**/intval/**/ /** x*/(/**//** */mt_rand(0, 100)/***/)/*xx*/;',
-            ),
-            array(
+            ],
+            [
                 '<?php $x = (string) ((int) ((int) $x + (float) $x));',
                 '<?php $x = strval(intval(intval($x) + floatval($x)));',
-            ),
-            array(
+            ],
+            [
                 '<?php intval();intval(1,2,3);',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 interface Test
                 {
                     public function floatval($a);
                     public function &doubleval($a);
                 }',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = #
 #
 #
@@ -174,7 +174,7 @@ intval#
  $b#
  )#
  ;#',
-            ),
-        );
+            ],
+        ];
     }
 }

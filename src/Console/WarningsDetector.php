@@ -24,7 +24,7 @@ final class WarningsDetector
     /**
      * @var string[]
      */
-    private $warnings = array();
+    private $warnings = [];
 
     public function detectOldMajor()
     {
@@ -59,12 +59,12 @@ final class WarningsDetector
     public function getWarnings()
     {
         if (!count($this->warnings)) {
-            return array();
+            return [];
         }
 
         return array_unique(array_merge(
             $this->warnings,
-            array('If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!')
+            ['If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!']
         ));
     }
 }

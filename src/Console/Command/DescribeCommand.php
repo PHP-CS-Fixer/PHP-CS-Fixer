@@ -12,8 +12,9 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Diff\v2_0\Differ;
+use PhpCsFixer\Diff\v2_0\Output\UnifiedDiffOutputBuilder;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
@@ -29,6 +30,7 @@ use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -81,9 +83,9 @@ final class DescribeCommand extends Command
         $this
             ->setName(self::COMMAND_NAME)
             ->setDefinition(
-                array(
+                [
                     new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
-                )
+                ]
             )
             ->setDescription('Describe rule / ruleset.')
         ;
@@ -139,7 +141,7 @@ final class DescribeCommand extends Command
         if ($fixer instanceof DefinedFixerInterface) {
             $definition = $fixer->getDefinition();
         } else {
-            $definition = new FixerDefinition('Description is not available.', array());
+            $definition = new FixerDefinition('Description is not available.', []);
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
@@ -166,7 +168,7 @@ final class DescribeCommand extends Command
             $output->writeln(sprintf('Fixer is configurable using following option%s:', 1 === count($options) ? '' : 's'));
 
             foreach ($options as $option) {
-                $line = '* <info>'.$option->getName().'</info>';
+                $line = '* <info>'.OutputFormatter::escape($option->getName()).'</info>';
 
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
                 if (null !== $allowed) {
@@ -181,7 +183,7 @@ final class DescribeCommand extends Command
                     $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
                 }
 
-                $description = preg_replace('/(`.+?`)/', '<info>$1</info>', $option->getDescription());
+                $description = preg_replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
                 $line .= ': '.lcfirst(preg_replace('/\.$/', '', $description)).'; ';
                 if ($option->hasDefault()) {
                     $line .= sprintf(
@@ -219,14 +221,14 @@ final class DescribeCommand extends Command
         });
 
         if (!count($codeSamples)) {
-            $output->writeln(array(
+            $output->writeln([
                 'Fixing examples can not be demonstrated on the current PHP version.',
                 '',
-            ));
+            ]);
         } else {
             $output->writeln('Fixing examples:');
 
-            $differ = new SebastianBergmannDiffer();
+            $differ = new Differ(new UnifiedDiffOutputBuilder("--- Original\n+++ New\n", true));
             $diffFormatter = new DiffConsoleFormatter($output->isDecorated(), sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                 PHP_EOL,
@@ -239,7 +241,7 @@ final class DescribeCommand extends Command
 
                 if ($fixer instanceof ConfigurableFixerInterface) {
                     $configuration = $codeSample->getConfiguration();
-                    $fixer->configure(null === $configuration ? array() : $configuration);
+                    $fixer->configure(null === $configuration ? [] : $configuration);
                 }
 
                 $file = $codeSample instanceof FileSpecificCodeSampleInterface
@@ -276,7 +278,7 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        $ruleSet = new RuleSet(array($name => true));
+        $ruleSet = new RuleSet([$name => true]);
         $rules = $ruleSet->getRules();
         ksort($rules);
 
@@ -311,7 +313,7 @@ final class DescribeCommand extends Command
             return $this->fixers;
         }
 
-        $fixers = array();
+        $fixers = [];
         foreach ($this->fixerFactory->getFixers() as $fixer) {
             $fixers[$fixer->getName()] = $fixer;
         }
@@ -345,12 +347,12 @@ final class DescribeCommand extends Command
     private function describeList(OutputInterface $output, $type)
     {
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $describe = array(
+            $describe = [
                 'set' => $this->getSetNames(),
                 'rules' => $this->getFixers(),
-            );
+            ];
         } elseif ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $describe = 'set' === $type ? array('set' => $this->getSetNames()) : array('rules' => $this->getFixers());
+            $describe = 'set' === $type ? ['set' => $this->getSetNames()] : ['rules' => $this->getFixers()];
         } else {
             return;
         }

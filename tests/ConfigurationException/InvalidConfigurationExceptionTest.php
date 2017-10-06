@@ -29,7 +29,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
     {
         $exception = new InvalidConfigurationException('I cannot do that, Dave.');
 
-        $this->assertInstanceOf('InvalidArgumentException', $exception);
+        $this->assertInstanceOf(\InvalidArgumentException::class, $exception);
     }
 
     public function testDefaults()

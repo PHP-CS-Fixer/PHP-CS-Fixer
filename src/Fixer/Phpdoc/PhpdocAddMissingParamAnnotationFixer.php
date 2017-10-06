@@ -37,7 +37,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     {
         return new FixerDefinition(
             'Phpdoc should contain @param for all params.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -55,7 +55,7 @@ function f9(string $foo, $bar, $baz) {}'
  * @return void
  */
 function f9(string $foo, $bar, $baz) {}',
-                    array('only_untyped' => true)
+                    ['only_untyped' => true]
                 ),
                 new CodeSample(
                     '<?php
@@ -65,9 +65,9 @@ function f9(string $foo, $bar, $baz) {}',
  * @return void
  */
 function f9(string $foo, $bar, $baz) {}',
-                    array('only_untyped' => false)
+                    ['only_untyped' => false]
                 ),
-            )
+            ]
         );
     }
 
@@ -128,7 +128,7 @@ function f9(string $foo, $bar, $baz) {}',
                 return;
             }
 
-            while ($tokens[$index]->isGivenKind(array(
+            while ($tokens[$index]->isGivenKind([
                 T_ABSTRACT,
                 T_FINAL,
                 T_PRIVATE,
@@ -136,7 +136,7 @@ function f9(string $foo, $bar, $baz) {}',
                 T_PUBLIC,
                 T_STATIC,
                 T_VAR,
-            ))) {
+            ])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
@@ -144,10 +144,10 @@ function f9(string $foo, $bar, $baz) {}',
                 continue;
             }
 
-            $openIndex = $tokens->getNextTokenOfKind($index, array('('));
+            $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
-            $arguments = array();
+            $arguments = [];
 
             foreach ($argumentsAnalyzer->getArguments($tokens, $openIndex, $index) as $start => $end) {
                 $argumentInfo = $this->prepareArgumentInformation($tokens, $start, $end);
@@ -184,7 +184,7 @@ function f9(string $foo, $bar, $baz) {}',
             preg_match('/^(\s*).*$/', $lines[$linesCount - 1]->getContent(), $matches);
             $indent = $matches[1];
 
-            $newLines = array();
+            $newLines = [];
 
             foreach ($arguments as $argument) {
                 $type = $argument['type'] ?: 'mixed';
@@ -209,7 +209,7 @@ function f9(string $foo, $bar, $baz) {}',
                 $newLines
             );
 
-            $tokens[$mainIndex] = new Token(array(T_DOC_COMMENT, implode('', $lines)));
+            $tokens[$mainIndex] = new Token([T_DOC_COMMENT, implode('', $lines)]);
         }
     }
 
@@ -218,14 +218,12 @@ function f9(string $foo, $bar, $baz) {}',
      */
     protected function createConfigurationDefinition()
     {
-        $onlyUntyped = new FixerOptionBuilder('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.');
-        $onlyUntyped = $onlyUntyped
-            ->setDefault(true)
-            ->setAllowedTypes(array('bool'))
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver(array($onlyUntyped));
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.'))
+                ->setDefault(true)
+                ->setAllowedTypes(['bool'])
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -237,11 +235,11 @@ function f9(string $foo, $bar, $baz) {}',
      */
     private function prepareArgumentInformation(Tokens $tokens, $start, $end)
     {
-        $info = array(
+        $info = [
             'default' => '',
             'name' => '',
             'type' => '',
-        );
+        ];
 
         $sawName = false;
 

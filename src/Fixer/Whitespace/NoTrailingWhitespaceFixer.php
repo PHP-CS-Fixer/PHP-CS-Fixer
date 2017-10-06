@@ -35,7 +35,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove trailing whitespace at the end of non-blank lines.',
-            array(new CodeSample("<?php\n\$a = 1;     \n"))
+            [new CodeSample("<?php\n\$a = 1;     \n")]
         );
     }
 
@@ -82,7 +82,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
 
                 $content = implode($lines);
                 if ('' !== $content) {
-                    $tokens[$index] = new Token(array($token->getId(), $content));
+                    $tokens[$index] = new Token([$token->getId(), $content]);
                 } else {
                     $tokens->clearAt($index);
                 }

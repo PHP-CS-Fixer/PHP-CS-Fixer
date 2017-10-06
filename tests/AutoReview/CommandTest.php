@@ -51,7 +51,7 @@ final class CommandTest extends TestCase
         });
 
         return array_map(function ($name) use ($commands) {
-            return array($commands[$name]);
+            return [$commands[$name]];
         }, $names);
     }
 }

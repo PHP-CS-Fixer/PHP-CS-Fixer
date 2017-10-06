@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: combine_consecutive_issets,no_spaces_inside_parenthesis.
+--RULESET--
+{"combine_consecutive_issets": true, "no_spaces_inside_parenthesis": true}
+--EXPECT--
+<?php
+if (isset($x->foo, $x->bar)) {
+}
+
+--INPUT--
+<?php
+if (isset($x->foo) && isset($x->bar)) {
+}

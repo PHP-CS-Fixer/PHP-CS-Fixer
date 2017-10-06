@@ -20,12 +20,12 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
     /**
      * @var FixerOptionInterface[]
      */
-    private $options = array();
+    private $options = [];
 
     /**
      * @var string[]
      */
-    private $registeredNames = array();
+    private $registeredNames = [];
 
     /**
      * @param iterable<FixerOptionInterface> $options

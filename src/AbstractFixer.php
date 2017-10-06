@@ -52,7 +52,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
     {
         if ($this instanceof ConfigurableFixerInterface) {
             try {
-                $this->configure(array());
+                $this->configure([]);
             } catch (RequiredFixerConfigurationException $e) {
                 // ignore
             }
@@ -121,7 +121,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
                 E_USER_DEPRECATED
             );
 
-            $configuration = array();
+            $configuration = [];
         }
 
         try {

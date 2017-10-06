@@ -47,23 +47,23 @@ final class UtilsTest extends TestCase
      */
     public function provideCamelCaseToUnderscoreCases()
     {
-        return array(
-            array(
+        return [
+            [
                 'dollar_close_curly_braces',
                 'DollarCloseCurlyBraces',
-            ),
-            array(
+            ],
+            [
                 'utf8_encoder_fixer',
                 'utf8EncoderFixer',
-            ),
-            array(
+            ],
+            [
                 'terminated_with_number10',
                 'TerminatedWithNumber10',
-            ),
-            array(
+            ],
+            [
                 'utf8_encoder_fixer',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -80,14 +80,14 @@ final class UtilsTest extends TestCase
 
     public function provideCmpIntCases()
     {
-        return array(
-            array(0,    1,   1),
-            array(0,   -1,  -1),
-            array(-1,  10,  20),
-            array(-1, -20, -10),
-            array(1,   20,  10),
-            array(1,  -10, -20),
-        );
+        return [
+            [0,    1,   1],
+            [0,   -1,  -1],
+            [-1,  10,  20],
+            [-1, -20, -10],
+            [1,   20,  10],
+            [1,  -10, -20],
+        ];
     }
 
     /**
@@ -103,24 +103,24 @@ final class UtilsTest extends TestCase
 
     public function provideSplitLinesCases()
     {
-        return array(
-            array(
-                array("\t aaa\n", " bbb\n", "\t"),
+        return [
+            [
+                ["\t aaa\n", " bbb\n", "\t"],
                 "\t aaa\n bbb\n\t",
-            ),
-            array(
-                array("aaa\r\n", " bbb\r\n"),
+            ],
+            [
+                ["aaa\r\n", " bbb\r\n"],
                 "aaa\r\n bbb\r\n",
-            ),
-            array(
-                array("aaa\r\n", " bbb\n"),
+            ],
+            [
+                ["aaa\r\n", " bbb\n"],
                 "aaa\r\n bbb\n",
-            ),
-            array(
-                array("aaa\r\n\n\n\r\n", " bbb\n"),
+            ],
+            [
+                ["aaa\r\n\n\n\r\n", " bbb\n"],
                 "aaa\r\n\n\n\r\n bbb\n",
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -138,25 +138,70 @@ final class UtilsTest extends TestCase
 
     public function provideCalculateTrailingWhitespaceIndentCases()
     {
-        return array(
-            array('    ', array(T_WHITESPACE, "\n\n    ")),
-            array(' ', array(T_WHITESPACE, "\r\n\r\r\r ")),
-            array("\t", array(T_WHITESPACE, "\r\n\t")),
-            array('', array(T_WHITESPACE, "\t\n\r")),
-            array('', array(T_WHITESPACE, "\n")),
-            array('', ''),
-        );
+        return [
+            ['    ', [T_WHITESPACE, "\n\n    "]],
+            [' ', [T_WHITESPACE, "\r\n\r\r\r "]],
+            ["\t", [T_WHITESPACE, "\r\n\t"]],
+            ['', [T_WHITESPACE, "\t\n\r"]],
+            ['', [T_WHITESPACE, "\n"]],
+            ['', ''],
+        ];
     }
 
     public function testCalculateTrailingWhitespaceIndentFail()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             'The given token must be whitespace, got "T_STRING".'
         );
 
-        $token = new Token(array(T_STRING, 'foo'));
+        $token = new Token([T_STRING, 'foo']);
 
         Utils::calculateTrailingWhitespaceIndent($token);
+    }
+
+    /**
+     * @dataProvider provideStableSortCases
+     */
+    public function testStableSort(
+        array $expected,
+        array $elements,
+        callable $getComparableValueCallback,
+        callable $compareValuesCallback
+    ) {
+        $this->assertSame(
+            $expected,
+            Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback)
+        );
+    }
+
+    public function provideStableSortCases()
+    {
+        return [
+            [
+                ['a', 'b', 'c', 'd', 'e'],
+                ['b', 'd', 'e', 'a', 'c'],
+                function ($element) { return $element; },
+                'strcmp',
+            ],
+            [
+                ['b', 'd', 'e', 'a', 'c'],
+                ['b', 'd', 'e', 'a', 'c'],
+                function ($element) { return 'foo'; },
+                'strcmp',
+            ],
+            [
+                ['b', 'd', 'e', 'a', 'c'],
+                ['b', 'd', 'e', 'a', 'c'],
+                function ($element) { return $element; },
+                function ($a, $b) { return 0; },
+            ],
+            [
+                ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
+                ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
+                function ($element) { return preg_replace('/([a-z]+)(\d+)/', '$2$1', $element); },
+                'strcmp',
+            ],
+        ];
     }
 }

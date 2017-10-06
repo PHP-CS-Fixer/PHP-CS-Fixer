@@ -1,6 +1,6 @@
 {
     "symbol-whitelist" : [
-        "HHVM_VERSION_ID", "T_HH_ERROR",
+        "HHVM_VERSION_ID",
         "PHPUnit\\Framework\\TestCase", "Prophecy\\Argument",
         "GeckoPackages\\PHPUnit\\Constraints\\SameStringsConstraint",
 

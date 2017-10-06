@@ -34,57 +34,71 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCases
+     */
+    public function testFixWithSpacesInEmptyForExpressions($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'remove_in_empty_for_expressions' => false,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     test1();
                     $a; // test
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php test2();',
-            ),
-            array(
+            ],
+            [
                 '<?php test3(); ',
-            ),
-            array(
+            ],
+            [
                 '<?php test4();   ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     test5();     // test
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php test6();       /* */ //',
-            ),
-            array(
+            ],
+            [
                 '<?php test7a(); /* */',
                 '<?php test7a();/* */',
-            ),
-            array(
+            ],
+            [
                 '<?php test7b(); /* *//**/',
                 '<?php test7b();/* *//**/',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     test8(); $a = 4;
                 ',
                 '<?php
                     test8();     $a = 4;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     test9(); $b = 7;
                 ',
                 '<?php
                     test9();$b = 7;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; ;) {
                     }
@@ -93,8 +107,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;;) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; ; ++$u1) {
                     }
@@ -103,8 +117,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;;++$u1) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; $u2 < 0;) {
                     }
@@ -113,8 +127,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;$u2 < 0;) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; $u3 < 3; ++$u3) {
                     }
@@ -123,8 +137,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;$u3 < 3;++$u3) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u4 = 0; ;) {
                     }
@@ -133,8 +147,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u4 = 0;;) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u5 = 0; ; ++$u5) {
                     }
@@ -143,8 +157,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u5 = 0;;++$u5) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u6 = 0; $u6 < 6;) {
                     }
@@ -153,8 +167,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u6 = 0;$u6 < 6;) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
                     }
@@ -163,8 +177,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u7 = 0;$u7 < 7;++$u7) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; ;    ) {
                     }
@@ -173,8 +187,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;    ;    ) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; ; ++$u1) {
                     }
@@ -183,8 +197,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;    ;    ++$u1) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; $u2 < 0;    ) {
                     }
@@ -193,8 +207,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;    $u2 < 0;    ) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for (; $u3 < 3; ++$u3) {
                     }
@@ -203,8 +217,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for (;    $u3 < 3;    ++$u3) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($ui4 = 0; ;    ) {
                     }
@@ -213,8 +227,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($ui4 = 0;    ;    ) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u5 = 0; ; ++$u5) {
                     }
@@ -223,8 +237,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u5 = 0;    ;    ++$u5) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u6 = 0; $u6 < 6;    ) {
                     }
@@ -233,8 +247,8 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u6 = 0;    $u6 < 6;    ) {
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
                     }
@@ -243,13 +257,250 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     for ($u7 = 0;    $u7 < 7;    ++$u7) {
                     }
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
-     * @requires PHP 5.4
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpacesInEmptyForExpressionsCases
      */
+    public function testFixWithoutSpacesInEmptyForExpressions($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'remove_in_empty_for_expressions' => true,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithoutSpacesInEmptyForExpressionsCases()
+    {
+        return [
+            [
+                '<?php
+                    test1();
+                    $a; // test
+                ',
+            ],
+            [
+                '<?php test2();',
+            ],
+            [
+                '<?php test3(); ',
+            ],
+            [
+                '<?php test4();   ',
+            ],
+            [
+                '<?php
+                    test5();     // test
+                ',
+            ],
+            [
+                '<?php test6();       /* */ //',
+            ],
+            [
+                '<?php test7a(); /* */',
+                '<?php test7a();/* */',
+            ],
+            [
+                '<?php test7b(); /* *//**/',
+                '<?php test7b();/* *//**/',
+            ],
+            [
+                '<?php
+                    test8(); $a = 4;
+                ',
+                '<?php
+                    test8();     $a = 4;
+                ',
+            ],
+            [
+                '<?php
+                    test9(); $b = 7;
+                ',
+                '<?php
+                    test9();$b = 7;
+                ',
+            ],
+            [
+                '<?php
+                    for (;;) {
+                    }
+                ',
+                '<?php
+                    for (; ;) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for (;; ++$u1) {
+                    }
+                ',
+                '<?php
+                    for (;;++$u1) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for (; $u2 < 0;) {
+                    }
+                ',
+                '<?php
+                    for (;$u2 < 0;) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for (; $u3 < 3; ++$u3) {
+                    }
+                ',
+                '<?php
+                    for (;$u3 < 3;++$u3) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for ($u4 = 0;;) {
+                    }
+                ',
+                '<?php
+                    for ($u4 = 0; ;) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for ($u5 = 0;; ++$u5) {
+                    }
+                ',
+                '<?php
+                    for ($u5 = 0;;++$u5) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for ($u6 = 0; $u6 < 6;) {
+                    }
+                ',
+                '<?php
+                    for ($u6 = 0;$u6 < 6;) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for ($u7 = 0; $u7 < 7; ++$u7) {
+                    }
+                ',
+                '<?php
+                    for ($u7 = 0;$u7 < 7;++$u7) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for (;;) {
+                    }
+                ',
+                '<?php
+                    for (;    ;    ) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for (;; ++$u1) {
+                    }
+                ',
+                '<?php
+                    for (;    ;    ++$u1) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for (; $u2 < 0;) {
+                    }
+                ',
+                '<?php
+                    for (;    $u2 < 0;    ) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for (; $u3 < 3; ++$u3) {
+                    }
+                ',
+                '<?php
+                    for (;    $u3 < 3;    ++$u3) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for ($ui4 = 0;;) {
+                    }
+                ',
+                '<?php
+                    for ($ui4 = 0;    ;    ) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for ($u5 = 0;; ++$u5) {
+                    }
+                ',
+                '<?php
+                    for ($u5 = 0;    ;    ++$u5) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for ($u6 = 0; $u6 < 6;) {
+                    }
+                ',
+                '<?php
+                    for ($u6 = 0;    $u6 < 6;    ) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for ($u7 = 0; $u7 < 7; ++$u7) {
+                    }
+                ',
+                '<?php
+                    for ($u7 = 0;    $u7 < 7;    ++$u7) {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    for (
+                        $u7 = 0;
+                        ;
+                        ++$u7
+                    ) {
+                    }
+                ',
+            ],
+            [
+                '<?php for ( /* foo */ ; /* bar */ ; /* baz */ ) { }',
+            ],
+        ];
+    }
+
     public function testHaltCompiler()
     {
         $this->doTest('<?php

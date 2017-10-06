@@ -31,7 +31,7 @@ final class NormalizeIndexBraceFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Array index should always be written by using square braces.',
-            array(new CodeSample("<?php\necho \$sample{\$index};"))
+            [new CodeSample("<?php\necho \$sample{\$index};")]
         );
     }
 

@@ -49,7 +49,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer
             if (0 === $expected) {
                 $tokens->clearAt($previousIndex);
             } elseif (substr_count($previous->getContent(), "\n") !== $expected) {
-                $tokens[$previousIndex] = new Token(array(T_WHITESPACE, str_repeat("\n", $expected)));
+                $tokens[$previousIndex] = new Token([T_WHITESPACE, str_repeat("\n", $expected)]);
             }
         }
     }
