@@ -62,8 +62,8 @@ The <comment>--format</comment> option for the output format. Supported formats 
 
 NOTE: the output for the following formats are generated in accordance with XML schemas
 
-* ``junit`` follows the [JUnit xml schema from Jenkins](doc/junit-10.xsd)
-* ``checkstyle`` follows the common ["checkstyle" xml schema](doc/checkstyle.xsd)
+* ``junit`` follows the `JUnit xml schema from Jenkins </doc/junit-10.xsd>`_
+* ``checkstyle`` follows the common `"checkstyle" xml schema </doc/checkstyle.xsd>`_
 
 
 The <comment>--verbose</comment> option will show the applied rules. When using the ``txt`` format it will also displays progress notifications.
