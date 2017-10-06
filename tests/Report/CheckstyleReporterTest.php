@@ -52,6 +52,28 @@ final class CheckstyleReporterTest extends TestCase
         $this->assertSame('checkstyle', $this->reporter->getFormat());
     }
 
+    public function testItHandlesDecoratedOutput()
+    {
+        $expectedReport = <<<'XML'
+\<?xml version="1.0" encoding="UTF-8"?>
+\<checkstyle/>
+
+XML;
+
+        $actualReport = $this->reporter->generate(
+            new ReportSummary(
+                [],
+                0,
+                0,
+                false,
+                false,
+                true
+            )
+        );
+
+        $this->assertSame($actualReport, $expectedReport);
+    }
+
     public function testGenerateNoErrors()
     {
         $expectedReport = <<<'XML'
