@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-15T17:39:23Z
+
+> As I saw no objection
+
+easy, one day, especially during end of working week, it not too much time given
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-15T17:41:14Z
+
+regardless of real change proposed in this PR, looking at your steps, you understand our cycle pretty well :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-19T20:18:48Z
+
+I think there is no need to review `PostIncrementFixer`. Please make `IncrementStyleFixer` directly and then we could review, as it's the combined fixer that will deserve a review.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-28T20:24:23Z
+
+Your understanding of the PHP CS Fixer is pretty nice @kubawerlos !
+To be honest not much here that I could add as review concerns.
+
+Please deprecate original fixer ;)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-02T19:10:18Z
+
+@keradus done and rebased.
