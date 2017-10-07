@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-04T19:53:52Z
+
+Nope.
+> Do not modify README.rst manually!
+
+from [CONTRIBUTING.md](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md)
+
+You have to fix this in `HelpCommand.php` and regenerate README.rst.
+
+The change looks fine, although instead of removing the fixer I'd replace it with a not deprecated one.
+
+---------------------------------------------------------------------------
+
+by chteuchteu at 2017-10-04T19:56:02Z
+
+Whoops, my bad - didn't read CONTRIBUTING.md before creating this PR.
+My commit message is wrong - I haven't removed it but replaced it with its equivalent.
+
+Closing this PR, I'll open a new one
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-04T19:57:16Z
+
+You don't have to close it, you can update it with pushing another commit to your `patch-1` branch.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-04T21:30:43Z
+
+@chteuchteu changes looks fine :+1: please update this PR like @kubawerlos suggested or open a new one :)
+
+---------------------------------------------------------------------------
+
+by chteuchteu at 2017-10-06T08:14:24Z
+
+Sorry I hadn't the time to answer yet. Commit incoming!
+
+---------------------------------------------------------------------------
+
+by chteuchteu at 2017-10-06T08:18:27Z
+
+Here it is, sorry about the delay & for not reading the contributions rules!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-06T08:24:10Z
+
+@chteuchteu looking good! thanks man :)
