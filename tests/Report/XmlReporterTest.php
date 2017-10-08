@@ -140,7 +140,7 @@ XML;
         return new XmlReporter();
     }
 
-    protected function createExpectedFormat()
+    protected function getFormat()
     {
         return 'xml';
     }

@@ -43,7 +43,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
         $this->xsd = file_get_contents(__DIR__.'/../../doc/junit-10.xsd');
     }
 
-    public function createExpectedFormat()
+    public function getFormat()
     {
         return 'junit';
     }

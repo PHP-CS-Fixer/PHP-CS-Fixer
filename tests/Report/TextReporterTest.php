@@ -112,7 +112,7 @@ TEXT
         return new TextReporter();
     }
 
-    protected function createExpectedFormat()
+    protected function getFormat()
     {
         return 'txt';
     }

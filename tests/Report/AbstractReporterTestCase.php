@@ -36,7 +36,7 @@ abstract class AbstractReporterTestCase extends TestCase
     final public function testGetFormat()
     {
         $this->assertSame(
-            $this->createExpectedFormat(),
+            $this->getFormat(),
             $this->reporter->getFormat()
         );
     }
@@ -163,7 +163,7 @@ abstract class AbstractReporterTestCase extends TestCase
     /**
      * @return string
      */
-    abstract protected function createExpectedFormat();
+    abstract protected function getFormat();
 
     /**
      * @return string

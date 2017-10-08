@@ -123,7 +123,7 @@ JSON;
         return new JsonReporter();
     }
 
-    protected function createExpectedFormat()
+    protected function getFormat()
     {
         return 'json';
     }
