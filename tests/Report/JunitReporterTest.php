@@ -14,23 +14,19 @@ namespace PhpCsFixer\Tests\Report;
 
 use GeckoPackages\PHPUnit\Constraints\XML\XMLMatchesXSDConstraint;
 use PhpCsFixer\Report\JunitReporter;
-use PhpCsFixer\Report\ReportSummary;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
  * @covers \PhpCsFixer\Report\JunitReporter
  */
-final class JunitReporterTest extends TestCase
+final class JunitReporterTest extends AbstractReporterTestCase
 {
-    /**
-     * @var JunitReporter
-     */
-    private $reporter;
-
     /**
      * JUnit XML schema from Jenkins.
      *
@@ -38,25 +34,26 @@ final class JunitReporterTest extends TestCase
      *
      * @see https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
      */
-    private $xsd;
+    private static $xsd;
 
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
-        $this->reporter = new JunitReporter();
-        $this->xsd = file_get_contents(__DIR__.'/../../doc/junit-10.xsd');
+        self::$xsd = file_get_contents(__DIR__.'/../../doc/junit-10.xsd');
     }
 
-    /**
-     * @covers \PhpCsFixer\Report\JunitReporter::getFormat
-     */
-    public function testGetFormat()
+    public static function tearDownAfterClass()
     {
-        $this->assertSame('junit', $this->reporter->getFormat());
+        self::$xsd = null;
     }
 
-    public function testGenerateNoErrors()
+    public function getFormat()
     {
-        $expectedReport = <<<'XML'
+        return 'junit';
+    }
+
+    public function createNoErrorReport()
+    {
+        return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="0" errors="0">
@@ -64,25 +61,11 @@ final class JunitReporterTest extends TestCase
   </testsuite>
 </testsuites>
 XML;
-
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                array(),
-                0,
-                0,
-                false,
-                false,
-                false
-            )
-        );
-
-        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
-        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
-    public function testGenerateSimple()
+    public function createSimpleReport()
     {
-        $expectedReport = <<<'XML'
+        return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0">
@@ -92,29 +75,11 @@ XML;
   </testsuite>
 </testsuites>
 XML;
-
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
-                0,
-                0,
-                false,
-                false,
-                false
-            )
-        );
-
-        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
-        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
-    public function testGenerateWithDiff()
+    public function createWithDiffReport()
     {
-        $expectedReport = <<<'XML'
+        return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0">
@@ -129,30 +94,11 @@ this text is a diff ;)]]></failure>
   </testsuite>
 </testsuites>
 XML;
-
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                        'diff' => 'this text is a diff ;)',
-                    ),
-                ),
-                0,
-                0,
-                false,
-                false,
-                false
-            )
-        );
-
-        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
-        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
-    public function testGenerateWithAppliedFixers()
+    public function createWithAppliedFixersReport()
     {
-        $expectedReport = <<<'XML'
+        return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="2" failures="2" errors="0">
@@ -165,29 +111,11 @@ XML;
   </testsuite>
 </testsuites>
 XML;
-
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
-                    ),
-                ),
-                0,
-                0,
-                true,
-                false,
-                false
-            )
-        );
-
-        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
-        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
-    public function testGenerateWithTimeAndMemory()
+    public function createWithTimeAndMemoryReport()
     {
-        $expectedReport = <<<'XML'
+        return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0" time="1.234">
@@ -197,29 +125,11 @@ XML;
   </testsuite>
 </testsuites>
 XML;
-
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here'),
-                    ),
-                ),
-                1234,
-                0,
-                false,
-                false,
-                false
-            )
-        );
-
-        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
-        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
-    public function testGenerateComplex()
+    public function createComplexReport()
     {
-        $expectedReport = <<<'XML'
+        return <<<'XML'
 <?xml version="1.0"?>
 <testsuites>
   <testsuite assertions="3" errors="0" failures="3" name="PHP CS Fixer" tests="2" time="1.234">
@@ -247,28 +157,19 @@ another diff here ;)</failure>
   </testsuite>
 </testsuites>
 XML;
+    }
 
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                array(
-                    'someFile.php' => array(
-                        'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
-                        'diff' => 'this text is a diff ;)',
-                    ),
-                    'anotherFile.php' => array(
-                        'appliedFixers' => array('another_fixer_name_here'),
-                        'diff' => 'another diff here ;)',
-                    ),
-                ),
-                1234,
-                0,
-                true,
-                true,
-                false
-            )
-        );
+    protected function assertFormat($expected, $input)
+    {
+        $formatter = new OutputFormatter();
+        $input = $formatter->format($input);
 
-        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
-        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
+        $this->assertThat($input, new XMLMatchesXSDConstraint(self::$xsd));
+        $this->assertXmlStringEqualsXmlString($expected, $input);
+    }
+
+    protected function createReporter()
+    {
+        return new JunitReporter();
     }
 }
