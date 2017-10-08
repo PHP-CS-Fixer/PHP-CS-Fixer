@@ -36,11 +36,15 @@ final class ConfigurationResolverTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->config = new Config();
     }
 
     protected function tearDown()
     {
+        parent::tearDown();
+
         unset($this->config);
     }
 
