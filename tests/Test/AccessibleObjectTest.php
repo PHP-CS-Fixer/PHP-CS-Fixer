@@ -29,6 +29,8 @@ final class AccessibleObjectTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->accessibleObject = new AccessibleObject(new DummyClass());
     }
 

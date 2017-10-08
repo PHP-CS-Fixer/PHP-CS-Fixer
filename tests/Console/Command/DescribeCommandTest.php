@@ -39,6 +39,8 @@ final class DescribeCommandTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->application = new Application();
     }
 

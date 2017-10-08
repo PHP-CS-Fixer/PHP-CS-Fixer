@@ -30,6 +30,8 @@ final class TextReporterTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->reporter = new TextReporter();
     }
 

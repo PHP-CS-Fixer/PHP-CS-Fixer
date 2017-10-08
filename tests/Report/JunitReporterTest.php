@@ -42,6 +42,8 @@ final class JunitReporterTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->reporter = new JunitReporter();
         $this->xsd = file_get_contents(__DIR__.'/../../doc/junit-10.xsd');
     }

@@ -36,6 +36,8 @@ final class XmlReporterTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->reporter = new XmlReporter();
         $this->xsd = file_get_contents(__DIR__.'/../../doc/xml.xsd');
     }

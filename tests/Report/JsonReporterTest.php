@@ -31,6 +31,8 @@ final class JsonReporterTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->reporter = new JsonReporter();
     }
 

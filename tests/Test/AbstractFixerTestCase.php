@@ -48,6 +48,8 @@ abstract class AbstractFixerTestCase extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->linter = $this->getLinter();
         $this->fixer = $this->createFixer();
     }
