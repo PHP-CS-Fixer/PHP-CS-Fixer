@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Error\Error;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 

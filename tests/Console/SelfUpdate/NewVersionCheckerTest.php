@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Console\SelfUpdate;
 
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal

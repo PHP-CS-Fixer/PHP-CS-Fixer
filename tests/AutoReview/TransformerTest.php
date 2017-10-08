@@ -12,9 +12,9 @@
 
 namespace PhpCsFixer\tests\AutoReview;
 
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author SpacePossum

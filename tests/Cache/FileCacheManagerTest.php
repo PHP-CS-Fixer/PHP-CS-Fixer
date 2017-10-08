@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\FileCacheManager;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Prophecy\Argument;
 
 /**

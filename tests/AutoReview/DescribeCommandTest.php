@@ -15,7 +15,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\FixerFactory;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**

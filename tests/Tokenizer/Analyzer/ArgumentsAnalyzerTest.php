@@ -12,9 +12,9 @@
 
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
