@@ -34,13 +34,16 @@ final class JunitReporterTest extends AbstractReporterTestCase
      *
      * @see https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
      */
-    private $xsd;
+    private static $xsd;
 
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
-        parent::setUp();
+        self::$xsd = file_get_contents(__DIR__.'/../../doc/junit-10.xsd');
+    }
 
-        $this->xsd = file_get_contents(__DIR__.'/../../doc/junit-10.xsd');
+    public static function tearDownAfterClass()
+    {
+        self::$xsd = null;
     }
 
     public function getFormat()
@@ -161,7 +164,7 @@ XML;
         $formatter = new OutputFormatter();
         $input = $formatter->format($input);
 
-        $this->assertThat($input, new XMLMatchesXSDConstraint($this->xsd));
+        $this->assertThat($input, new XMLMatchesXSDConstraint(self::$xsd));
         $this->assertXmlStringEqualsXmlString($expected, $input);
     }
 
