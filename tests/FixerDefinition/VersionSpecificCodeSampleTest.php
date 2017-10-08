@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\VersionSpecificationInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Prophecy\Prophecy;
 
 /**
