@@ -28,6 +28,8 @@ final class FileHandlerTest extends TestCase
 {
     protected function tearDown()
     {
+        parent::tearDown();
+
         $file = $this->getFile();
 
         if (file_exists($file)) {

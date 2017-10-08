@@ -30,6 +30,8 @@ abstract class AbstractReporterTestCase extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->reporter = $this->createReporter();
     }
 
