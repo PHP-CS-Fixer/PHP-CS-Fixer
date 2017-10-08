@@ -40,3 +40,4 @@ whole code is namespaced now: `PHPUnit_**_*_*` -> `PHPUnit\**\*\*`
     while changing `Foo\Bar\Baz` -> `Xxx`
         when changing from `Foo\Bar\Baz as Dupa` -> no need to check if `Xxx` is also imported, as only alias name will be used
         when changing from `Foo\Bar\Baz` -> we need to check if `Xxx` is also imported, and if so, we shall produce `Xxx as Baz` (as we know Baz is possible to use)
+    what about partial imports ?
