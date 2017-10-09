@@ -322,17 +322,17 @@ $a//
             ],
             [
                 '<?php $a = 1 + 2; $b = array(
-                    13 => 3,
-                    4  => 3,
-                    5  => 2,
+                    $øøø => $ø0ø0ø,
+                    $ø4  => $ø1ø1ø,
+                    $ø5  => $ø2ø2ø,
                 );
                 $a = 12 + 1;
                 $a = 13 + 41;
                 ',
                 '<?php $a    =   1   +    2; $b = array(
-                    13 =>3,
-                    4  =>  3,
-                    5=>2,
+                    $øøø =>$ø0ø0ø,
+                    $ø4  =>  $ø1ø1ø,
+                    $ø5=>$ø2ø2ø,
                 );
                 $a = 12   +  1;
                 $a = 13+41;
@@ -364,6 +364,42 @@ $a//
                     $b              = 1;
                 ',
                 ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            'do not align with multibyte character in array key' => [
+                '<?php
+                    $map = [
+                        "ø" => "oe",
+                    ];
+                ',
+                null,
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            'align correctly with multibyte characters in array key' => [
+                '<?php
+                    $inflect_male = array(
+                        "aitė\b" => "øasø",
+                        "ytė\b"  => "øisø",
+                        "iūtė\b" => "øiusø",
+                        "utė\b"  => array(
+                            "aitė\b" => "øas",
+                            "ytė\b"  => "øis",
+                            "iūtė\b" => $øøius,
+                            "utė\b"  => "us",
+                        ),
+                    );',
+                '<?php
+                    $inflect_male = array(
+                        "aitė\b" => "øasø",
+                        "ytė\b" => "øisø",
+                        "iūtė\b" => "øiusø",
+                        "utė\b" => array(
+                            "aitė\b" => "øas",
+                            "ytė\b" => "øis",
+                            "iūtė\b" => $øøius,
+                            "utė\b"  =>     "us",
+                        ),
+                    );',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
             ],
         ];
     }
