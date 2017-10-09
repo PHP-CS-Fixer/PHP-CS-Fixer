@@ -1,0 +1,130 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-02T13:17:58Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-02T13:47:27Z
+
+Ditching all the `utf8_decode` from `src/Fixer/Operator/BinaryOperatorSpacesFixer.php` resolves the issue, but I'm sure those were added for some reason. Now we have to find out why... :|
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-02T15:19:06Z
+
+Got me thinking about more general solution - what about adding `mb_str_functions` to the `.php_cs.dist`? This would require only small change in `EncodingFixer` (`mb_substr` 2nd parameter `3` -> `1`)
+
+@SpacePossum @keradus thoughts?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-02T15:35:53Z
+
+I wouldn't reply on `mb_` everywhere as it is not needed everywhere.
+If it helps here than lets check it for this fixer only and worry about the rest of the code base later :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-02T19:09:49Z
+
+@SpacePossum I made smallest working fix for this issue.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-03T12:50:33Z
+
+@SpacePossum @julienfalque updated again.
+
+So as I understand: there were 3 calls of `utf8_decode` in the fixer. I have added test case "align correctly with multibyte characters in array key" basing on similar one existing in code and it was failing either with 3 calls.
+
+When I removed the one in this PR it's all working. Removing other `utf8_decode` make tests failing agains so maybe the removed one wasn't necessary.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-08T17:15:33Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-09T05:52:55Z
+
+@kubawerlos looking good :)
+
+please add/update the tests to:
+
+```php
+            [
+                '<?php $a = 1 + 2; $b = array(
+                    $øøø => $ø0ø0ø,
+                    $ø4  => $ø1ø1ø,
+                    $ø5  => $ø2ø2ø,
+                );
+                $a = 12 + 1;
+                $a = 13 + 41;
+                ',
+                '<?php $a    =   1   +    2; $b = array(
+                    $øøø =>$ø0ø0ø,
+                    $ø4  =>  $ø1ø1ø,
+                    $ø5=>$ø2ø2ø,
+                );
+                $a = 12   +  1;
+                $a = 13+41;
+                ',
+                ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
+            ],
+```
+
+```php
+            'align correctly with multibyte characters in array key' => [
+                '<?php
+                    $inflect_male = array(
+                        "aitė\b" => "øasø",
+                        "ytė\b"  => "øisø",
+                        "iūtė\b" => "øiusø",
+                        "utė\b"  => array(
+                            "aitė\b" => "øas",
+                            "ytė\b"  => "øis",
+                            "iūtė\b" => $øøius,
+                            "utė\b"  => "us",
+                        ),
+                    );',
+                '<?php
+                    $inflect_male = array(
+                        "aitė\b" => "øasø",
+                        "ytė\b" => "øisø",
+                        "iūtė\b" => "øiusø",
+                        "utė\b" => array(
+                            "aitė\b" => "øas",
+                            "ytė\b" => "øis",
+                            "iūtė\b" => $øøius,
+                            "utė\b"  =>     "us",
+                        ),
+                    );',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+```
+
+these should pass as well.
+After that please rebase and than I'm :+1:  for merging this, thanks!
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-09T06:32:37Z
+
+@SpacePossum done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-09T07:16:17Z
+
+@keradus can you check `circleci` failure, I've restarted it but it doesn't help :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-09T09:35:07Z
+
+@SpacePossum circleCi failure is not related to this PR, it happens to other PRs as well.
+Please ignore it for this PR in reviewing (and, if have time, investigate it separately)
