@@ -178,17 +178,17 @@ $this->assertNotIsWritable($a);
 $this->assertNotIsReadable($a);
 ',
                 '<?php
-$this->assertTrue(is_dir($a));
-$this->assertTrue(is_writable($a));
-$this->assertTrue(is_readable($a));
+$this->assertFalse(is_dir($a));
+$this->assertFalse(is_writable($a));
+$this->assertFalse(is_readable($a));
 ',
                 ['target' => PhpUnitTargetVersion::VERSION_5_6],
             ],
             [
                 '<?php
-$this->assertDirectoryNotExists($a);
-$this->assertNotIsWritable($a);
-$this->assertNotIsReadable($a);
+$this->assertDirectoryExists($a);
+$this->assertIsWritable($a);
+$this->assertIsReadable($a);
 ',
                 '<?php
 $this->assertTrue(is_dir($a));
