@@ -985,8 +985,8 @@ Choose from the list of available rules:
 
 * **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky]
 
-  The ``->setExpectedExpception*`` MUST be replaced by ``->expectException*``
-  methods.
+  Usages of ``->setExpectedException*`` methods MUST be replaced by
+  ``->expectException*`` methods.
 
   *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
 
@@ -1008,8 +1008,8 @@ Choose from the list of available rules:
 
 * **php_unit_no_expectation_annotation**
 
-  The ``@expectedException*`` MUST be replaced by ``->setExpectedExpception*``
-  methods.
+  Usages of ``@expectedException*`` annotations MUST be replaced by
+  ``->setExpectedException*`` methods.
 
   *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
 
