@@ -41,8 +41,9 @@ final class PhpUnitExpectationFixer extends AbstractFunctionReferenceFixer imple
     {
         parent::configure($configuration);
 
-        $this->methodMap = [];
-        $this->methodMap['setExpectedException'] = 'expectExceptionMessage';
+        $this->methodMap = [
+            'setExpectedException' => 'expectExceptionMessage',
+        ];
 
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_6)) {
             $this->methodMap['setExpectedExceptionRegExp'] = 'expectExceptionMessageRegExp';
@@ -55,7 +56,7 @@ final class PhpUnitExpectationFixer extends AbstractFunctionReferenceFixer imple
     public function getDefinition()
     {
         return new FixerDefinition(
-            'The `->setExpectedExpception*` MUST be replaced by `->expectException*` methods.',
+            'Usages of `->setExpectedException*` methods MUST be replaced by `->expectException*` methods.',
             [
                 new CodeSample(
                     '<?php
