@@ -213,15 +213,15 @@ final class RuleSet implements RuleSetInterface
             '@PHPUnit35Migration:risky' => true,
             'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_0],
         ],
-        '@PHPUnit52Migration:risky' => [ // @TODO FRS: integration test
+        '@PHPUnit52Migration:risky' => [
             '@PHPUnit50Migration:risky' => true,
             'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_2],
         ],
-        '@PHPUnit54Migration:risky' => [ // @TODO FRS: integration test
+        '@PHPUnit54Migration:risky' => [
             '@PHPUnit52Migration:risky' => true,
             'php_unit_namespaced_test_case' => true,
         ],
-        '@PHPUnit56Migration:risky' => [ // @TODO FRS: integration test
+        '@PHPUnit56Migration:risky' => [
             '@PHPUnit54Migration:risky' => true,
             'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
             'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_6],

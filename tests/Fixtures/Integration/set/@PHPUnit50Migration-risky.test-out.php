@@ -1,6 +1,6 @@
 <?php
 
-class FooTest extends \PHPUnit\Framework\TestCase {
+class FooTest extends \PHPUnit_Framework_TestCase {
     public function test_dedicate_assert($foo) {
         $this->assertNull($foo);
         $this->assertInternalType('array', $foo);
