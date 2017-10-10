@@ -1,4 +1,4 @@
-A lot of needed fixes are similar one to another. Would be great to have generic code that could be reused for similar fixres.
+A lot of needed fixers are similar one to another. Would be great to have generic code that could be reused for similar fixers.
 
 3.2
 ---
