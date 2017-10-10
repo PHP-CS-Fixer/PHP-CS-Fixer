@@ -1,4 +1,6 @@
 machine:
+    ruby:
+        version: 2.3
     xcode:
         version: 8.2
 
