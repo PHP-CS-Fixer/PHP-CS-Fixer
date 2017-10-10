@@ -1,0 +1,68 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-02T22:12:48Z
+
+Thanks @K-Phoen , looks promising! :)
+
+>I targeted the 2.7 branch, but this new reporter can easily be backported to the 2.2 branch (in fact, I already cherry-picked the commits and backported it)
+
+We accept new features on new releases only, so the current target `master` is spot on :+1: , still good to know it would be compat with older versions.
+
+I hope to do good review tomorrow (if work allows it ;) ) !
+
+---------------------------------------------------------------------------
+
+by K-Phoen at 2017-10-05T11:58:02Z
+
+I updated the PR and rebased against master :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-05T12:47:06Z
+
+2 minors and this should be good to go IMHO :)  :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-06T18:27:30Z
+
+LGTM :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-06T19:15:54Z
+
+question: was https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3119/files#r142926435 resolved ?
+cc @SpacePossum @K-Phoen
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-08T21:43:34Z
+
+to auto-fix few raised comments and allows me to not perform review manually, please rebase on current `master` to follow changes of #3133,
+then :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-09T23:37:22Z
+
+ref https://github.com/checkstyle/checkstyle/issues/5166
+
+---------------------------------------------------------------------------
+
+by K-Phoen at 2017-10-10T14:33:05Z
+
+I rebased against master, is there anything left to do? (except wait for the "official" xsd to be written)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-10T18:13:23Z
+
+IMO all good
+no need to awaits for official xsd, we could switch when they will provide it
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-10T18:43:33Z
+
+@K-Phoen LGTM, thanks for all the work! :+1:  :)
