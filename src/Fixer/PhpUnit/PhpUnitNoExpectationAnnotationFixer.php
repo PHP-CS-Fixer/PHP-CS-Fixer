@@ -33,11 +33,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class PhpUnitNoExpectationAnnotationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var array<string, string>
-     */
-    private $annotationMap = [];
-
-    /**
      * @var bool
      */
     private $fixMessageRegExp = false;
@@ -49,14 +44,6 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractFixer implements
     {
         parent::configure($configuration);
 
-        // annotationMap czy jest potrzebne?
-        $this->annotationMap = [];
-        $this->annotationMap['expectedException'] = 'setExpectedException';
-
-        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_4_3)) {
-            $this->annotationMap['expectedExceptionMessageRegExp'] = 'setExpectedExceptionRegExp';
-        }
-
         $this->fixMessageRegExp = PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_4_3);
     }
 
@@ -66,7 +53,7 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractFixer implements
     public function getDefinition()
     {
         return new FixerDefinition(
-            'The `@expectedException*` MUST be replaced by `->setExpectedExpception*` methods.',
+            'Usages of `@expectedException*` annotations MUST be replaced by `->setExpectedException*` methods.',
             [
                 new CodeSample(
                     '<?php
@@ -309,7 +296,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         if (isset($annotations['expectedExceptionCode'])) {
             $params[] = $annotations['expectedExceptionCode'];
         }
-        //var_dump($annotations, $params);
+
         return $params;
     }
 }
