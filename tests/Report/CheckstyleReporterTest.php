@@ -14,8 +14,7 @@ namespace PhpCsFixer\Tests\Report;
 
 use GeckoPackages\PHPUnit\Constraints\XML\XMLMatchesXSDConstraint;
 use PhpCsFixer\Report\CheckstyleReporter;
-use PhpCsFixer\Report\ReportSummary;
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -24,81 +23,61 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \PhpCsFixer\Report\CheckstyleReporter
  */
-final class CheckstyleReporterTest extends TestCase
+final class CheckstyleReporterTest extends AbstractReporterTestCase
 {
-    /**
-     * @var CheckstyleReporter
-     */
-    private $reporter;
-
     /**
      * "checkstyle" XML schema.
      *
      * @var string
      */
-    private $xsd;
+    private static $xsd;
 
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
-        $this->reporter = new CheckstyleReporter();
-        $this->xsd = file_get_contents(__DIR__.'/../../doc/checkstyle.xsd');
+        self::$xsd = file_get_contents(__DIR__.'/../../doc/checkstyle.xsd');
     }
 
-    /**
-     * @covers \PhpCsFixer\Report\CheckstyleReporter::getFormat
-     */
-    public function testGetFormat()
+    public static function tearDownAfterClass()
     {
-        $this->assertSame('checkstyle', $this->reporter->getFormat());
+        self::$xsd = null;
     }
 
-    public function testItHandlesDecoratedOutput()
+    public function createNoErrorReport()
     {
-        $expectedReport = <<<'XML'
-\<?xml version="1.0" encoding="UTF-8"?>
-\<checkstyle/>
-
-XML;
-
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                [],
-                0,
-                0,
-                false,
-                false,
-                true
-            )
-        );
-
-        $this->assertSame($actualReport, $expectedReport);
-    }
-
-    public function testGenerateNoErrors()
-    {
-        $expectedReport = <<<'XML'
+        return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle />
 XML;
-
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                [],
-                0,
-                0,
-                false,
-                false,
-                false
-            )
-        );
-
-        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
-        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
-    public function testGenerateSimple()
+    public function createSimpleReport()
     {
-        $expectedReport = <<<'XML'
+        return <<<'XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle>
+  <file name="someFile.php">
+    <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here" message="Found violation(s) of type: some_fixer_name_here" />
+  </file>
+</checkstyle>
+XML;
+    }
+
+    public function createWithDiffReport()
+    {
+        // NOTE: checkstyle format does NOT include diffs
+        return <<<'XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle>
+  <file name="someFile.php">
+    <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here" message="Found violation(s) of type: some_fixer_name_here" />
+  </file>
+</checkstyle>
+XML;
+    }
+
+    public function createWithAppliedFixersReport()
+    {
+        return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle>
   <file name="someFile.php">
@@ -107,54 +86,53 @@ XML;
   </file>
 </checkstyle>
 XML;
-
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                [
-                    'someFile.php' => [
-                        'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
-                    ],
-                ],
-                0,
-                0,
-                false,
-                false,
-                false
-            )
-        );
-
-        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
-        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
     }
 
-    public function testGenerateWithAppliedFixers()
+    public function createWithTimeAndMemoryReport()
     {
-        $expectedReport = <<<'XML'
+        // NOTE: checkstyle format does NOT include time or memory
+        return <<<'XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle>
+  <file name="someFile.php">
+    <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here" message="Found violation(s) of type: some_fixer_name_here" />
+  </file>
+</checkstyle>
+XML;
+    }
+
+    public function createComplexReport()
+    {
+        return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle>
   <file name="someFile.php">
     <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_1" message="Found violation(s) of type: some_fixer_name_here_1" />
     <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_2" message="Found violation(s) of type: some_fixer_name_here_2" />
   </file>
+  <file name="anotherFile.php">
+    <error severity="warning" source="PHP-CS-Fixer.another_fixer_name_here" message="Found violation(s) of type: another_fixer_name_here" />
+  </file>
 </checkstyle>
 XML;
+    }
 
-        $actualReport = $this->reporter->generate(
-            new ReportSummary(
-                [
-                    'someFile.php' => [
-                        'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
-                    ],
-                ],
-                0,
-                0,
-                true,
-                false,
-                false
-            )
-        );
+    protected function createReporter()
+    {
+        return new CheckstyleReporter();
+    }
 
-        $this->assertThat($actualReport, new XMLMatchesXSDConstraint($this->xsd));
-        $this->assertXmlStringEqualsXmlString($expectedReport, $actualReport);
+    protected function getFormat()
+    {
+        return 'checkstyle';
+    }
+
+    protected function assertFormat($expected, $input)
+    {
+        $formatter = new OutputFormatter();
+        $input = $formatter->format($input);
+
+        $this->assertThat($input, new XMLMatchesXSDConstraint(self::$xsd));
+        $this->assertXmlStringEqualsXmlString($expected, $input);
     }
 }
