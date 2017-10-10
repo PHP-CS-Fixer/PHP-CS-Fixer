@@ -157,6 +157,8 @@ $this->assertTrue(is_nan($a));
             'is_string',
         ];
 
+        sort($values);
+
         return new FixerConfigurationResolverRootless('functions', [
             (new FixerOptionBuilder('functions', 'List of assertions to fix.'))
                 ->setAllowedTypes(['array'])
