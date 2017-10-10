@@ -39,7 +39,7 @@ final class ArgumentsAnalyzer
     /**
      * Returns start and end token indexes of arguments.
      *
-     * Return an array which each index being the first token af an
+     * Returns an array with each key being the first token of an
      * argument and the value the last. Including non-function tokens
      * such as comments and white space tokens, but without the separation
      * tokens like '(', ',' and ')'.
