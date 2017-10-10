@@ -252,3 +252,5 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ];
     }
 }
+
+// @TODO FRS: is it needed to create `expectExceptionMessage("")` ?

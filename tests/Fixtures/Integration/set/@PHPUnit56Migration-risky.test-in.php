@@ -8,6 +8,27 @@ class FooTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(is_readable($foo));
     }
 
+    /**
+     * Foo.
+     * @expectedException FooException
+     * @expectedExceptionCode 123
+     */
+    function test_php_unit_no_expectation_annotation_32()
+    {
+        bbb();
+    }
+
+    /**
+     * Foo.
+     * @expectedException FooException
+     * @expectedExceptionMessageRegExp /foo.*$/
+     * @expectedExceptionCode 123
+     */
+    function test_php_unit_no_expectation_annotation_43()
+    {
+        ccc();
+    }
+
     public function test_php_unit_expectation_52() {
         $this->setExpectedException("RuntimeException", "Msg", 123);
     }

@@ -105,6 +105,15 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should be run before the PhpUnitExpectationFixer
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_CLASS);

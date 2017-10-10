@@ -3,16 +3,16 @@ A lot of needed fixers are similar one to another. Would be great to have generi
 3.2
 ---
 [done] `php_unit_no_expectation_annotation`: anontations `@expectedException @expectedExceptionCode @expectedExceptionMessage` into respective methods
-[awaits]    + integration test of `php_unit_no_expectation_annotation`+`php_unit_expectation`
+[done]    + integration test of `php_unit_no_expectation_annotation`+`php_unit_expectation`
 [awaits]    + integration test of `php_unit_no_expectation_annotation`+`no_empty_phpdoc`
 [awaits]    + integration test of `php_unit_no_expectation_annotation`+string notation ?
 [awaits]    + drop general annotation from local config
-[awaits]    + add ruleset for 3.2
+[done]    + add ruleset for 3.2
 
 4.3
 ---
 [DONE] `php_unit_no_expectation_annotation`: like 3.2 but with `@expectedExceptionMessageRegExp`
-[awaits]    + add ruleset for 4.3
+[done]    + add ruleset for 4.3
 
 5.2
 ---
