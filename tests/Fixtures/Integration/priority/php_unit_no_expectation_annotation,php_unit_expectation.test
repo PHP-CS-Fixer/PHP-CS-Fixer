@@ -1,10 +1,11 @@
 --TEST--
-Integration of fixers: php_unit_expectation,php_unit_no_expectation_annotation.
+Integration of fixers: php_unit_no_expectation_annotation,php_unit_expectation.
 --RULESET--
-{"php_unit_expectation": true, "php_unit_no_expectation_annotation": true}
+{"php_unit_no_expectation_annotation": true, "php_unit_expectation": true}
 --EXPECT--
 <?php
-class FooTest extends \PHPUnit_Framework_TestCase {
+class FooTest extends \PHPUnit_Framework_TestCase
+{
     /**
      */
     public function testFoo()
@@ -18,7 +19,8 @@ class FooTest extends \PHPUnit_Framework_TestCase {
 
 --INPUT--
 <?php
-class FooTest extends \PHPUnit_Framework_TestCase {
+class FooTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @expectedException FooException
      * @expectedExceptionCode 123

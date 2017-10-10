@@ -4,8 +4,7 @@ A lot of needed fixers are similar one to another. Would be great to have generi
 ---
 [done] `php_unit_no_expectation_annotation`: anontations `@expectedException @expectedExceptionCode @expectedExceptionMessage` into respective methods
 [done]    + integration test of `php_unit_no_expectation_annotation`+`php_unit_expectation`
-[awaits]    + integration test of `php_unit_no_expectation_annotation`+`no_empty_phpdoc`
-[awaits]    + integration test of `php_unit_no_expectation_annotation`+string notation ?
+[done]    + integration test of `php_unit_no_expectation_annotation`+`no_empty_phpdoc`
 [awaits]    + drop general annotation from local config
 [done]    + add ruleset for 3.2
 

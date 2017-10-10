@@ -107,8 +107,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     public function getPriority()
     {
-        // should be run before the PhpUnitExpectationFixer
-        return 1;
+        // should be run before the PhpUnitExpectationFixer, NoEmptyPhpdocFixer
+        return 10;
     }
 
     /**

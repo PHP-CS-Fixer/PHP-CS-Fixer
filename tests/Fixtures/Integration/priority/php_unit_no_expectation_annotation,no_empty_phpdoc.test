@@ -1,0 +1,30 @@
+--TEST--
+Integration of fixers: php_unit_no_expectation_annotation,no_empty_phpdoc.
+--RULESET--
+{"php_unit_no_expectation_annotation": true, "no_empty_phpdoc": true}
+--EXPECT--
+<?php
+class FooTest extends \PHPUnit_Framework_TestCase
+{
+    
+    public function testFoo()
+    {
+        $this->setExpectedException(\FooException::class, 'foo', 123);
+        foo();
+    }
+}
+
+--INPUT--
+<?php
+class FooTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException FooException
+     * @expectedExceptionMessage foo
+     * @expectedExceptionCode 123
+     */
+    public function testFoo()
+    {
+        foo();
+    }
+}
