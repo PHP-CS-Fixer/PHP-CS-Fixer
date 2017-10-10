@@ -58,9 +58,13 @@ to merge paths from the config file and from the argument:
 
     <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
 
-The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml`` and ``junit``.
+The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle`` and ``junit``.
 
-NOTE: When using ``junit`` format report generates in accordance with JUnit xml schema from Jenkins (see docs/junit-10.xsd).
+NOTE: the output for the following formats are generated in accordance with XML schemas
+
+* ``junit`` follows the `JUnit xml schema from Jenkins </doc/junit-10.xsd>`_
+* ``checkstyle`` follows the common `"checkstyle" xml schema </doc/checkstyle.xsd>`_
+
 
 The <comment>--verbose</comment> option will show the applied rules. When using the ``txt`` format it will also displays progress notifications.
 
