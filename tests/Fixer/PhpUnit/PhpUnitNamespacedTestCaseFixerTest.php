@@ -81,6 +81,34 @@ final class PhpUnitNamespacedTestCaseFixerTest extends AbstractFixerTestCase
     {
     }',
             ],
+            [
+                '<?php
+    namespace Foo;
+    use PHPUnit\Framework\TestCase;
+    final class TextDiffTest extends TestCase
+    {
+    }',
+                '<?php
+    namespace Foo;
+    use PHPUnit_Framework_TestCase;
+    final class TextDiffTest extends PHPUnit_Framework_TestCase
+    {
+    }',
+            ],
+            [
+                '<?php
+    namespace Foo;
+    use PHPUnit\Framework\TestCase as TestAlias;
+    final class TextDiffTest extends TestAlias
+    {
+    }',
+                '<?php
+    namespace Foo;
+    use PHPUnit_Framework_TestCase as TestAlias;
+    final class TextDiffTest extends TestAlias
+    {
+    }',
+            ],
         ];
     }
 }
