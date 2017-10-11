@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 
 /**
@@ -157,5 +158,27 @@ final class Utils
         return array_map(function (array $item) {
             return $item[0];
         }, $elements);
+    }
+
+    /**
+     * Sort fixers by their priorities.
+     *
+     * @param FixerInterface[] $fixers
+     *
+     * @return FixerInterface[]
+     */
+    public static function sortFixers(array $fixers)
+    {
+        // Schwartzian transform is used to improve the efficiency and avoid
+        // `usort(): Array was modified by the user comparison function` warning for mocked objects.
+        return self::stableSort(
+            $fixers,
+            function (FixerInterface $fixer) {
+                return $fixer->getPriority();
+            },
+            function ($a, $b) {
+                return Utils::cmpInt($b, $a);
+            }
+        );
     }
 }

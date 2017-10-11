@@ -43,19 +43,11 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Whi
     /**
      * {@inheritdoc}
      */
-    public function setWhitespacesConfig(WhitespacesFixerConfig $config)
-    {
-        $this->proxyFixer->setWhitespacesConfig($config);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createProxyFixer()
+    protected function createProxyFixers()
     {
         $fixer = new BlankLineBeforeStatementFixer();
         $fixer->configure(['statements' => ['return']]);
 
-        return $fixer;
+        return [$fixer];
     }
 }
