@@ -48,11 +48,11 @@ class Baz
     /**
      * {@inheritdoc}
      */
-    protected function createProxyFixer()
+    protected function createProxyFixers()
     {
         $fixer = new GeneralPhpdocAnnotationRemoveFixer();
         $fixer->configure(['annotations' => ['package', 'subpackage']]);
 
-        return $fixer;
+        return [$fixer];
     }
 }

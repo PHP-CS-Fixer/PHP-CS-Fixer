@@ -13,6 +13,7 @@
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -23,15 +24,17 @@ use PhpCsFixer\Tokenizer\Tokens;
 abstract class AbstractProxyFixer extends AbstractFixer
 {
     /**
-     * @var FixerInterface
+     * @var array<string, FixerInterface>
      */
-    protected $proxyFixer;
+    protected $proxyFixers;
 
     public function __construct()
     {
-        parent::__construct();
+        foreach (Utils::sortFixers($this->createProxyFixers()) as $proxyFixer) {
+            $this->proxyFixers[$proxyFixer->getName()] = $proxyFixer;
+        }
 
-        $this->proxyFixer = $this->createProxyFixer();
+        parent::__construct();
     }
 
     /**
@@ -39,7 +42,13 @@ abstract class AbstractProxyFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $this->proxyFixer->isCandidate($tokens);
+        foreach ($this->proxyFixers as $fixer) {
+            if ($fixer->isCandidate($tokens)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -47,7 +56,13 @@ abstract class AbstractProxyFixer extends AbstractFixer
      */
     public function isRisky()
     {
-        return $this->proxyFixer->isRisky();
+        foreach ($this->proxyFixers as $fixer) {
+            if ($fixer->isRisky()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -55,7 +70,11 @@ abstract class AbstractProxyFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return $this->proxyFixer->getPriority();
+        if (count($this->proxyFixers) > 1) {
+            throw new \LogicException('You need to override this method to provide the priority of combined fixers.');
+        }
+
+        return reset($this->proxyFixers)->getPriority();
     }
 
     /**
@@ -63,7 +82,13 @@ abstract class AbstractProxyFixer extends AbstractFixer
      */
     public function supports(\SplFileInfo $file)
     {
-        return $this->proxyFixer->supports($file);
+        foreach ($this->proxyFixers as $fixer) {
+            if ($fixer->supports($file)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -72,7 +97,12 @@ abstract class AbstractProxyFixer extends AbstractFixer
     public function setWhitespacesConfig(WhitespacesFixerConfig $config)
     {
         parent::setWhitespacesConfig($config);
-        $this->proxyFixer->setWhitespacesConfig($config);
+
+        foreach ($this->proxyFixers as $fixer) {
+            if ($fixer instanceof WhitespacesAwareFixerInterface) {
+                $fixer->setWhitespacesConfig($config);
+            }
+        }
     }
 
     /**
@@ -80,11 +110,13 @@ abstract class AbstractProxyFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $this->proxyFixer->fix($file, $tokens);
+        foreach ($this->proxyFixers as $fixer) {
+            $fixer->fix($file, $tokens);
+        }
     }
 
     /**
-     * @return FixerInterface
+     * @return FixerInterface[]
      */
-    abstract protected function createProxyFixer();
+    abstract protected function createProxyFixers();
 }
