@@ -74,7 +74,7 @@ abstract class AbstractProxyFixer extends AbstractFixer
             throw new \LogicException('You need to override this method to provide the priority of combined fixers.');
         }
 
-        return reset($this->proxyFixers)->getPriority();
+        return current($this->proxyFixers)->getPriority();
     }
 
     /**
