@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 abstract class AbstractProxyFixer extends AbstractFixer
 {
     /**
-     * @var FixerInterface[]
+     * @var array<string, FixerInterface>
      */
     protected $proxyFixers;
 

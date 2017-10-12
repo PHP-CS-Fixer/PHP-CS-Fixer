@@ -17,7 +17,6 @@ use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @deprecated since 2.4, replaced by BlankLineBeforeStatementFixer
