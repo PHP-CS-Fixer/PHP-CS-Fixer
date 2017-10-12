@@ -79,7 +79,9 @@ final class FixerFactory
      */
     public function getFixers()
     {
-        return Utils::sortFixers($this->fixers);
+        $this->fixers = Utils::sortFixers($this->fixers);
+
+        return $this->fixers;
     }
 
     /**
