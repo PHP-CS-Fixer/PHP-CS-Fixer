@@ -259,8 +259,8 @@ Choose from the list of available rules:
 
 * **blank_line_before_return**
 
-  An empty line feed should precede a return statement (deprecated, use
-  ``blank_line_before_statement`` instead).
+  An empty line feed should precede a return statement. DEPRECATED: use
+  ``blank_line_before_statement`` instead.
 
 * **blank_line_before_statement** [@Symfony]
 
@@ -552,7 +552,7 @@ Choose from the list of available rules:
 * **hash_to_slash_comment** [@Symfony]
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
-  DEPRECATED: Use "single_line_comment_style" instead.
+  DEPRECATED: use ``single_line_comment_style`` instead.
 
 * **header_comment**
 
@@ -1113,7 +1113,7 @@ Choose from the list of available rules:
 * **pre_increment**
 
   Pre incrementation/decrementation should be used if possible.
-  DEPRECATED: Use "increment_style" instead.
+  DEPRECATED: use ``increment_style`` instead.
 
 * **protected_to_private** [@Symfony]
 

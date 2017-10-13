@@ -30,7 +30,7 @@ final class PreIncrementFixer extends AbstractProxyFixer
     {
         return new FixerDefinition(
             sprintf(
-                'Pre incrementation/decrementation should be used if possible. DEPRECATED: Use "%s" instead.',
+                'Pre incrementation/decrementation should be used if possible. DEPRECATED: use `%s` instead.',
                 current($this->proxyFixers)->getName()
             ),
             [new CodeSample("<?php\n\$a++;\n\$b--;")]

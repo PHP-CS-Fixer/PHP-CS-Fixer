@@ -34,7 +34,7 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Whi
     public function getDefinition()
     {
         return new FixerDefinition(
-            'An empty line feed should precede a return statement (deprecated, use `blank_line_before_statement` instead).',
+            'An empty line feed should precede a return statement. DEPRECATED: use `blank_line_before_statement` instead.',
             [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}")]
         );
     }
