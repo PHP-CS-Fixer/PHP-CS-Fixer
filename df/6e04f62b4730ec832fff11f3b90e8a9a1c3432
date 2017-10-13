@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2017-10-10T13:38:27Z
+
+@SpacePossum
+
+What do you think if I just push a few more small fixes into this branch before merging? Reviewing some code, if I stumble across something, it's not really worth opening up another PR, I think.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-10T14:12:44Z
+
+long time I did not see misc/grooming PR here ;)
+Usually, back in all days, I was collecting those kind of trivials (not even minors ;P) and raised PR once per 10-15 days.
+But it was old days, maybe we don't have that much minors currently to fix ;)
