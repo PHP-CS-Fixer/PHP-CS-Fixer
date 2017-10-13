@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-11T18:37:46Z
+
+Any clue why it was green on PR introducing this file?
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3133
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-11T18:39:53Z
+
+I think we've no tests in place for the attrs file?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-11T18:41:43Z
+
+we do, and without this PR it's failing on 2.2:
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/builds/285237223
