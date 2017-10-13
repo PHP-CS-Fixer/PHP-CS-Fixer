@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-11T19:20:00Z
+
+2.7 is bugfix only and will not be maintained after 2.8 will be released. I'm changing the target branch
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-11T20:23:52Z
+
+Rebased onto master.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-12T05:27:37Z
+
+please fix the project itself, all CI's are red :(  thanks! :)
