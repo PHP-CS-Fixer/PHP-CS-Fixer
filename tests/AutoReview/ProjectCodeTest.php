@@ -193,7 +193,7 @@ final class ProjectCodeTest extends TestCase
             \PhpCsFixer\AbstractPhpdocTypesFixer::class => ['tags'],
             \PhpCsFixer\AbstractAlignFixerHelper::class => ['deepestLevel'],
             \PhpCsFixer\AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
-            \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixer'],
+            \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixers'],
             \PhpCsFixer\Test\AbstractFixerTestCase::class => ['fixer', 'linter'],
             \PhpCsFixer\Test\AbstractIntegrationTestCase::class => ['linter'],
         ];

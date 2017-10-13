@@ -31,7 +31,10 @@ final class HashToSlashCommentFixer extends AbstractProxyFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            sprintf('Single line comments should use double slashes `//` and not hash `#`. DEPRECATED: Use "%s" instead.', $this->proxyFixer->getName()),
+            sprintf(
+                'Single line comments should use double slashes `//` and not hash `#`. DEPRECATED: Use "%s" instead.',
+                current($this->proxyFixers)->getName()
+            ),
             [new CodeSample('<?php # comment')]
         );
     }
@@ -39,11 +42,11 @@ final class HashToSlashCommentFixer extends AbstractProxyFixer
     /**
      * {@inheritdoc}
      */
-    protected function createProxyFixer()
+    protected function createProxyFixers()
     {
         $fixer = new SingleLineCommentStyleFixer();
         $fixer->configure(['comment_types' => ['hash']]);
 
-        return $fixer;
+        return [$fixer];
     }
 }

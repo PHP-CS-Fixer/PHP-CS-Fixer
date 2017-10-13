@@ -79,7 +79,7 @@ final class FixerFactory
      */
     public function getFixers()
     {
-        $this->sortFixers();
+        $this->fixers = Utils::sortFixers($this->fixers);
 
         return $this->fixers;
     }
@@ -211,24 +211,6 @@ final class FixerFactory
     public function hasRule($name)
     {
         return isset($this->fixersByName[$name]);
-    }
-
-    /**
-     * Sort fixers by their priorities.
-     */
-    private function sortFixers()
-    {
-        // Schwartzian transform is used to improve the efficiency and avoid
-        // `usort(): Array was modified by the user comparison function` warning for mocked objects.
-        $this->fixers = Utils::stableSort(
-            $this->fixers,
-            function (FixerInterface $fixer) {
-                return $fixer->getPriority();
-            },
-            function ($a, $b) {
-                return Utils::cmpInt($b, $a);
-            }
-        );
     }
 
     /**
