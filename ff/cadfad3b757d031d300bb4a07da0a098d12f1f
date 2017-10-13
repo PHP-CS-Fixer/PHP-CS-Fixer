@@ -1,0 +1,84 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-09T17:46:27Z
+
+👍
+
+What about doing the same for fixers options?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-09T21:02:22Z
+
+Can't see why not - what about format: always uppercase `DEPRECATED`, then colon and description what to replace with (starting with capital letter or not?)?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-09T21:06:55Z
+
+Not sure I would use a capital letter to start the description but 👍
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-09T21:16:31Z
+
+@kubawerlos , unification is good for sure. Yet, how you plan to ensure that fixers deprecated later gonna follow this unification ?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-09T21:59:16Z
+
+@keradus obliviously with a test
+
+@julienfalque let's unify descriptions of options in separate PR after unifying summaries.
+
+Any thoughts about RegExes? Should I add dot and space at the beginning of first one?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-10T06:07:33Z
+
+Nice idea!
+Maybe it is time we start thinking about how we can deprecate fixers in a way users of the `phar` releases also get notified when using a deprecated fixer and/or option?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-10T06:46:52Z
+
+Yep, maybe instead of testing that the deprecation description is correct, we could add it the fixers definitions to that the README can be updated accordingly and so we can trigger warnings when using them. WDYT?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-10T07:52:37Z
+
+sounds good to me, I think the biggest task would be to create a way fixers can report warnings and have those displayed to the user in a nice matter.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-10T10:32:47Z
+
+> sounds good to me, I think the biggest task would be to create a way fixers can report warnings and have those displayed to the user in a nice matter.
+
+let us not include this in this PR ;)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-10T15:12:24Z
+
+@SpacePossum do you mean deprecating them by triggering error in constructor like in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3146?
+
+@julienfalque what about creating interface `DeprecatedFixerInterface` (same as proposed in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3146) with method `getSuccessor` to return the name of fixer to use?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-10T18:41:18Z
+
+@kubawerlos don't mind me, I was thinking bigger than is useful for this PR, I think this PR is on a good track :+1:
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-13T19:19:41Z
+
+@SpacePossum can you create an issue and describe with details what you aim to achieve?
+
+@keradus @julienfalque what's to do in this PR? I matter of unifying names it's finished.
