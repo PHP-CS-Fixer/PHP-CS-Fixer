@@ -454,9 +454,9 @@ class Token
     }
 
     /**
-     * Check if token is a whitespace.
+     * Check if token is whitespace.
      *
-     * @param null|string $whitespaces whitespaces characters, default is " \t\n\r\0\x0B"
+     * @param null|string $whitespaces whitespace characters, default is " \t\n\r\0\x0B"
      *
      * @return bool
      */

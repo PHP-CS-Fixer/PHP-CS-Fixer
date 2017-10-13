@@ -1,9 +1,10 @@
 # @TODO 3.0 replace following `tests/... exportignore` with single `tests/ export-ignore`
 tests/**/*Test.php export-ignore
+tests/AbstractDoctrineAnnotationFixerTestCase.php export-ignore
+tests/Differ/AbstractDifferTestCase.php export-ignore
 tests/Fixtures/ export-ignore
 tests/Linter/AbstractLinterTestCase.php export-ignore
-tests/Differ/AbstractDifferTestCase.php export-ignore
-tests/AbstractDoctrineAnnotationFixerTestCase.php export-ignore
+tests/Report/AbstractReporterTestCase.php export-ignore
 tests/Test/AbstractTransformerTestCase.php export-ignore
 
 .appveyor.yml export-ignore
