@@ -73,6 +73,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['declare_strict_types'], $fixers['declare_equal_normalize']], // tested also in: declare_strict_types,declare_equal_normalize.test
             [$fixers['declare_strict_types'], $fixers['single_blank_line_before_namespace']], // tested also in: declare_strict_types,single_blank_line_before_namespace.test
             [$fixers['elseif'], $fixers['braces']],
+            [$fixers['escape_implicit_backslashes'], $fixers['heredoc_to_nowdoc']], // tested also in: escape_implicit_backslashes,heredoc_to_nowdoc.test
+            [$fixers['escape_implicit_backslashes'], $fixers['single_quote']], // tested also in: escape_implicit_backslashes,single_quote.test
             [$fixers['function_to_constant'], $fixers['native_function_casing']], // no priority issue; for speed only
             [$fixers['function_to_constant'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: function_to_constant,no_extra_consecutive_blank_lines.test
             [$fixers['function_to_constant'], $fixers['no_singleline_whitespace_before_semicolons']], // tested also in: function_to_constant,no_singleline_whitespace_before_semicolons.test
