@@ -50,8 +50,10 @@ EOF
             [
 <<<'EOF'
 <?php
+$var = "\\A\\B\\C\\D\\E\\F\\G\\H\\I\\J\\K\\L\\M\\N\\O\\P\\Q\\R\\S\\T\\U\\V\\W\\X\\Y\\Z";
 $var = "\\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z \\' \\8\\9 \\xZ \\u";
 $var = <<<HEREDOC_SYNTAX
+\\A\\B\\C\\D\\E\\F\\G\\H\\I\\J\\K\\L\\M\\N\\O\\P\\Q\\R\\S\\T\\U\\V\\W\\X\\Y\\Z
 \\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z
 \\'
 \\8\\9
@@ -59,6 +61,7 @@ $var = <<<HEREDOC_SYNTAX
 \\u
 HEREDOC_SYNTAX;
 $var = <<<'NOWDOC_SYNTAX'
+\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 \a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
 \'
 \8\9
@@ -70,8 +73,10 @@ EOF
 ,
 <<<'EOF'
 <?php
+$var = "\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z";
 $var = "\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z \' \8\9 \xZ \u";
 $var = <<<HEREDOC_SYNTAX
+\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 \a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
 \'
 \8\9
@@ -79,6 +84,7 @@ $var = <<<HEREDOC_SYNTAX
 \u
 HEREDOC_SYNTAX;
 $var = <<<'NOWDOC_SYNTAX'
+\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 \a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
 \'
 \8\9
