@@ -47,8 +47,8 @@ final class ExplicitEscapeFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $singleQuotedRegex = '/(?<!\\\\)\\\\(?![\\\\\\\'])/';
-        static $doubleQuotedRegex = '/(?<!\\\\)\\\\(?!([efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{))/';
+        static $singleQuotedRegex = '/(?<!\\\\)\\\\(?![\\\'\\\\])/';
+        static $doubleQuotedRegex = '/(?<!\\\\)\\\\(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
 
         foreach ($tokens as $index => $token) {
             $content = $token->getContent();
