@@ -39,7 +39,7 @@ final class ExplicitEscapeFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
+        return $tokens->isAnyTokenKindsFound([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]);
     }
 
     /**
@@ -48,15 +48,32 @@ final class ExplicitEscapeFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+            $content = $token->getContent();
+            if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || false === strpos($content, '\\')) {
                 continue;
             }
 
-            $content = $token->getContent();
+            // Single-quoted strings
+            if ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '\'' === $content[0]) {
+                $newContent = preg_replace('/(?<!\\\\)\\\\(?![\\\\\\\'])/', '\\\\\\\\', $content);
+                if ($newContent !== $content) {
+                    $tokens[$index] = new Token([T_CONSTANT_ENCAPSED_STRING, $newContent]);
+                }
+                continue;
+            }
 
-            if ('\'' === $content[0] && false !== strpos($content, '\\')) {
-                $content = preg_replace('/(?<!\\\\)\\\\(?![\\\\\\\'])/', '\\\\\\\\', $content);
-                $tokens[$index] = new Token([T_CONSTANT_ENCAPSED_STRING, $content]);
+            // Nowdoc syntax
+            if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
+                $prevTokenContent = rtrim($tokens[$index - 1]->getContent());
+                if ('\'' === substr($prevTokenContent, -1)) {
+                    continue;
+                }
+            }
+
+            // Double-quoted strings and Heredoc syntax
+            $newContent = preg_replace('/(?<!\\\\)\\\\(?!([efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{))/', '\\\\\\\\', $content);
+            if ($newContent !== $content) {
+                $tokens[$index] = new Token([$token->getId(), $newContent]);
             }
         }
     }

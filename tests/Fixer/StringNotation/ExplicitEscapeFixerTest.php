@@ -39,11 +39,109 @@ final class ExplicitEscapeFixerTest extends AbstractFixerTestCase
         return [
             [
 <<<'EOF'
-<?php $var = 'String (\\r\\n\\x0) for My\\Prefix\\';
+<?php $var = 'String (\\\'\\r\\n\\x0) for My\\Prefix\\';
 EOF
 ,
 <<<'EOF'
-<?php $var = 'String (\r\n\x0) for My\Prefix\\';
+<?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';
+EOF
+,
+            ],
+            [
+<<<'EOF'
+<?php
+$var = "\\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z \\' \\8\\9 \\xZ \\u";
+$var = <<<HEREDOC_SYNTAX
+\\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z
+\\'
+\\8\\9
+\\xZ
+\\u
+HEREDOC_SYNTAX;
+$var = <<<'NOWDOC_SYNTAX'
+\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
+\'
+\8\9
+\xZ
+\u
+NOWDOC_SYNTAX;
+
+EOF
+,
+<<<'EOF'
+<?php
+$var = "\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z \' \8\9 \xZ \u";
+$var = <<<HEREDOC_SYNTAX
+\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
+\'
+\8\9
+\xZ
+\u
+HEREDOC_SYNTAX;
+$var = <<<'NOWDOC_SYNTAX'
+\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
+\'
+\8\9
+\xZ
+\u
+NOWDOC_SYNTAX;
+
+EOF
+,
+            ],
+            [
+<<<'EOF'
+<?php
+$var = "\e\f\n\r\t\v \\ \$ \"";
+$var = <<<HEREDOC_SYNTAX
+\e\f\n\r\t\v \\ \$ \"
+HEREDOC_SYNTAX;
+
+EOF
+,
+            ],
+            [
+<<<'EOF'
+<?php
+$var = "\0 \00 \000 \0000 \00000";
+$var = <<<HEREDOC_SYNTAX
+\0 \00 \000 \0000 \00000
+HEREDOC_SYNTAX;
+
+EOF
+,
+            ],
+            [
+<<<'EOF'
+<?php
+$var = "\xA \x99 \u{0}";
+$var = <<<HEREDOC_SYNTAX
+\xA \x99 \u{0}
+HEREDOC_SYNTAX;
+
+EOF
+,
+            ],
+            [
+<<<'EOF'
+<?php
+$var = 'backslash \\ alread escaped';
+$var = 'code coverage';
+$var = "backslash \\ alread escaped";
+$var = "code coverage";
+$var = <<<HEREDOC_SYNTAX
+backslash \\ alread escaped
+HEREDOC_SYNTAX;
+$var = <<<HEREDOC_SYNTAX
+code coverage
+HEREDOC_SYNTAX;
+$var = <<<'NOWDOC_SYNTAX'
+backslash \\ alread escaped
+NOWDOC_SYNTAX;
+$var = <<<'NOWDOC_SYNTAX'
+code coverage
+NOWDOC_SYNTAX;
+
 EOF
 ,
             ],
