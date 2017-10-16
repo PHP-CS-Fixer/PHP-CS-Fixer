@@ -30,7 +30,8 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Escape implicit backslashes in strings and heredocs to increase code readability.',
-            [new CodeSample(<<<'EOF'
+            [new CodeSample(
+                <<<'EOF'
 <?php
 
 $singleQuoted = 'String with \" and My\Prefix\\';

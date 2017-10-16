@@ -543,9 +543,10 @@ Choose from the list of available rules:
   Add curly braces to indirect variables to make them clear to understand.
   Requires PHP >= 7.0.
 
-* **explicit_escape**
+* **escape_implicit_backslashes**
 
-  Escape implicit backslashes.
+  Escape implicit backslashes in strings and heredocs to increase code
+  readability.
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
