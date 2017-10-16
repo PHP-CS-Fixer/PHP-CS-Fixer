@@ -47,18 +47,12 @@ final class ExplicitEscapeFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        static $singleQuotedRegex = '/(?<!\\\\)\\\\(?![\\\\\\\'])/';
+        static $doubleQuotedRegex = '/(?<!\\\\)\\\\(?!([efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{))/';
+
         foreach ($tokens as $index => $token) {
             $content = $token->getContent();
             if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || false === strpos($content, '\\')) {
-                continue;
-            }
-
-            // Single-quoted strings
-            if ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '\'' === $content[0]) {
-                $newContent = preg_replace('/(?<!\\\\)\\\\(?![\\\\\\\'])/', '\\\\\\\\', $content);
-                if ($newContent !== $content) {
-                    $tokens[$index] = new Token([T_CONSTANT_ENCAPSED_STRING, $newContent]);
-                }
                 continue;
             }
 
@@ -70,8 +64,13 @@ final class ExplicitEscapeFixer extends AbstractFixer
                 }
             }
 
-            // Double-quoted strings and Heredoc syntax
-            $newContent = preg_replace('/(?<!\\\\)\\\\(?!([efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{))/', '\\\\\\\\', $content);
+            $newContent = preg_replace(
+                $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '\'' === $content[0]
+                    ? $singleQuotedRegex
+                    : $doubleQuotedRegex,
+                '\\\\\\\\',
+                $content
+            );
             if ($newContent !== $content) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);
             }
