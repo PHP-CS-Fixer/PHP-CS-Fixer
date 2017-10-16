@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class ExplicitEscapeFixer extends AbstractFixer
+final class EscapeImplicitBackslashesFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
