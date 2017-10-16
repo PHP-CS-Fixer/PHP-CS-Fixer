@@ -57,11 +57,8 @@ final class ExplicitEscapeFixer extends AbstractFixer
             }
 
             // Nowdoc syntax
-            if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
-                $prevTokenContent = rtrim($tokens[$index - 1]->getContent());
-                if ('\'' === substr($prevTokenContent, -1)) {
-                    continue;
-                }
+            if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && '\'' === substr(rtrim($tokens[$index - 1]->getContent()), -1)) {
+                continue;
             }
 
             $newContent = preg_replace(
