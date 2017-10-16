@@ -125,18 +125,18 @@ EOF
             [
 <<<'EOF'
 <?php
-$var = 'backslash \\ alread escaped';
+$var = 'backslash \\ already escaped';
 $var = 'code coverage';
-$var = "backslash \\ alread escaped";
+$var = "backslash \\ already escaped";
 $var = "code coverage";
 $var = <<<HEREDOC_SYNTAX
-backslash \\ alread escaped
+backslash \\ already escaped
 HEREDOC_SYNTAX;
 $var = <<<HEREDOC_SYNTAX
 code coverage
 HEREDOC_SYNTAX;
 $var = <<<'NOWDOC_SYNTAX'
-backslash \\ alread escaped
+backslash \\ already escaped
 NOWDOC_SYNTAX;
 $var = <<<'NOWDOC_SYNTAX'
 code coverage
