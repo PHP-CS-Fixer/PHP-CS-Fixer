@@ -26,17 +26,28 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
      *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $configuration = null)
     {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
     public function provideTestFixCases()
     {
         return [
+            [
+<<<'EOF'
+<?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';
+EOF
+,
+            ],
             [
 <<<'EOF'
 <?php $var = 'String (\\\'\\r\\n\\x0) for My\\Prefix\\';
@@ -46,6 +57,7 @@ EOF
 <?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';
 EOF
 ,
+            ['single_quoted' => true],
             ],
             [
 <<<'EOF'
@@ -150,6 +162,32 @@ NOWDOC_SYNTAX;
 
 EOF
 ,
+            ],
+            [
+<<<'EOF'
+<?php
+$var = "\A\a \' \8\9 \xZ \u";
+EOF
+,
+            null,
+            ['double_quoted' => false],
+            ],
+            [
+<<<'EOF'
+<?php
+$var = <<<HEREDOC_SYNTAX
+\A\Z
+\a\z
+\'
+\8\9
+\xZ
+\u
+HEREDOC_SYNTAX;
+
+EOF
+,
+            null,
+            ['heredoc_syntax' => false],
             ],
         ];
     }

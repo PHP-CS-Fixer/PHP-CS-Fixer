@@ -548,6 +548,14 @@ Choose from the list of available rules:
   Escape implicit backslashes in strings and heredocs to increase code
   readability.
 
+  Configuration options:
+
+  - ``double_quoted`` (``bool``): whether to fix double-quoted strings; defaults to
+    ``true``
+  - ``heredoc_syntax`` (``bool``): whether to fix heredoc syntax; defaults to ``true``
+  - ``single_quoted`` (``bool``): whether to fix single-quoted strings; defaults to
+    ``false``
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not

@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\StringNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -21,17 +24,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class EscapeImplicitBackslashesFixer extends AbstractFixer
+final class EscapeImplicitBackslashesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * {@inheritdoc}
      */
     public function getDefinition()
     {
-        return new FixerDefinition(
-            'Escape implicit backslashes in strings and heredocs to increase code readability.',
-            [new CodeSample(
-                <<<'EOF'
+        $codeSamble = <<<'EOF'
 <?php
 
 $singleQuoted = 'String with \" and My\Prefix\\';
@@ -42,8 +42,25 @@ $hereDoc = <<<HEREDOC
 Interpret my \100 but not my \999
 HEREDOC;
 
-EOF
-)]
+EOF;
+
+        return new FixerDefinition(
+            'Escape implicit backslashes in strings and heredocs to increase code readability.',
+            [
+                new CodeSample($codeSamble),
+                new CodeSample(
+                    $codeSamble,
+                    ['single_quoted' => true]
+                ),
+                new CodeSample(
+                    $codeSamble,
+                    ['double_quoted' => false]
+                ),
+                new CodeSample(
+                    $codeSamble,
+                    ['heredoc_syntax' => false]
+                ),
+            ]
         );
     }
 
@@ -74,8 +91,17 @@ EOF
                 continue;
             }
 
+            $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '\'' === $content[0];
+            if (
+               (false === $this->configuration['single_quoted'] && $isSingleQuotedString)
+                || (false === $this->configuration['double_quoted'] && $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING))
+                || (false === $this->configuration['heredoc_syntax'] && $token->isGivenKind(T_ENCAPSED_AND_WHITESPACE))
+            ) {
+                continue;
+            }
+
             $newContent = preg_replace(
-                $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '\'' === $content[0]
+                $isSingleQuotedString
                     ? $singleQuotedRegex
                     : $doubleQuotedRegex,
                 '\\\\\\\\',
@@ -85,5 +111,26 @@ EOF
                 $tokens[$index] = new Token([$token->getId(), $newContent]);
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('single_quoted', 'Whether to fix single-quoted strings.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder('double_quoted', 'Whether to fix double-quoted strings.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+            (new FixerOptionBuilder('heredoc_syntax', 'Whether to fix heredoc syntax.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+        ]);
     }
 }
