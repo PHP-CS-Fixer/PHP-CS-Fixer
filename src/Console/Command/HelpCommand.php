@@ -16,6 +16,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
@@ -447,6 +448,10 @@ EOF
                 $description = $fixer->getDefinition()->getSummary();
             } else {
                 $description = '[n/a]';
+            }
+
+            if ($fixer instanceof DeprecatedFixerInterface) {
+                $description .= sprintf(' DEPRECATED: use `%s` instead.', $fixer->getSuccessor());
             }
 
             $description = implode("\n   | ", self::wordwrap(

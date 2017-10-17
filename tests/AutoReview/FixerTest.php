@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
@@ -176,17 +177,17 @@ final class FixerTest extends TestCase
         $reflection = new \ReflectionClass($fixer);
         $comment = $reflection->getDocComment();
 
+        $this->assertNotRegExp(
+            '/DEPRECATED/',
+            $fixer->getDefinition()->getSummary(),
+            'Fixer cannot contain word "DEPRECATED" in summary'
+        );
+
         if (is_string($comment) && false !== strpos($comment, '@deprecated')) {
-            $this->assertRegExp(
-                '/\. DEPRECATED: use `[a-z_]+` instead\.$/',
-                $fixer->getDefinition()->getSummary(),
-                'Deprecated fixer must contain correct "DEPRECATED" note in summary'
-            );
-        } else {
-            $this->assertNotRegExp(
-                '/DEPRECATED/',
-                $fixer->getDefinition()->getSummary(),
-                'Non-deprecated fixer cannot contain word "DEPRECATED" in summary'
+            $this->assertInstanceOf(
+                DeprecatedFixerInterface::class,
+                $fixer,
+                sprintf('Deprecated fixer must implement %s', DeprecatedFixerInterface::class)
             );
         }
     }
