@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 
@@ -21,7 +22,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
  *
  * @deprecated in 2.8, proxy to IncrementStyleFixer
  */
-final class PreIncrementFixer extends AbstractProxyFixer
+final class PreIncrementFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -29,12 +30,17 @@ final class PreIncrementFixer extends AbstractProxyFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            sprintf(
-                'Pre incrementation/decrementation should be used if possible. DEPRECATED: use `%s` instead.',
-                current($this->proxyFixers)->getName()
-            ),
+            'Pre incrementation/decrementation should be used if possible.',
             [new CodeSample("<?php\n\$a++;\n\$b--;")]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSuccessorsNames()
+    {
+        return array_keys($this->proxyFixers);
     }
 
     /**

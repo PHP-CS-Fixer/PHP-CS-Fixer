@@ -181,4 +181,32 @@ final class Utils
             }
         );
     }
+
+    /**
+     * Join names in natural language wrapped in backticks, e.g. `a`, `b` and `c`.
+     *
+     * @param string[] $names
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    public static function naturalLanguageJoinWithBackticks(array $names)
+    {
+        if (empty($names)) {
+            throw new \InvalidArgumentException('Array of names cannot be empty');
+        }
+
+        $names = array_map(function ($name) {
+            return sprintf('`%s`', $name);
+        }, $names);
+
+        $last = array_pop($names);
+
+        if ($names) {
+            return implode(', ', $names).' and '.$last;
+        }
+
+        return $last;
+    }
 }

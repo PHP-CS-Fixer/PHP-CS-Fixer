@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 
@@ -23,7 +24,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
  *
  * @deprecated in 2.4, proxy to SingleLineCommentStyleFixer
  */
-final class HashToSlashCommentFixer extends AbstractProxyFixer
+final class HashToSlashCommentFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -31,12 +32,17 @@ final class HashToSlashCommentFixer extends AbstractProxyFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            sprintf(
-                'Single line comments should use double slashes `//` and not hash `#`. DEPRECATED: use `%s` instead.',
-                current($this->proxyFixers)->getName()
-            ),
+            'Single line comments should use double slashes `//` and not hash `#`.',
             [new CodeSample('<?php # comment')]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSuccessorsNames()
+    {
+        return array_keys($this->proxyFixers);
     }
 
     /**

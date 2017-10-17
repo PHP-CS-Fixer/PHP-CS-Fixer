@@ -226,6 +226,42 @@ final class UtilsTest extends TestCase
         );
     }
 
+    public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray()
+    {
+        $this->setExpectedException(\InvalidArgumentException::class);
+
+        Utils::naturalLanguageJoinWithBackticks([]);
+    }
+
+    /**
+     * @dataProvider provideNaturalLanguageJoinWithBackticksCases
+     *
+     * @param string $joined
+     * @param array  $names
+     */
+    public function testNaturalLanguageJoinWithBackticks($joined, array $names)
+    {
+        $this->assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
+    }
+
+    public function provideNaturalLanguageJoinWithBackticksCases()
+    {
+        return [
+            [
+                '`a`',
+                ['a'],
+            ],
+            [
+                '`a` and `b`',
+                ['a', 'b'],
+            ],
+            [
+                '`a`, `b` and `c`',
+                ['a', 'b', 'c'],
+            ],
+        ];
+    }
+
     private function createFixerDouble($name, $priority)
     {
         $fixer = $this->prophesize(FixerInterface::class);
