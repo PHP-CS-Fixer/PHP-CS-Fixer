@@ -64,6 +64,7 @@ EOF
 <?php
 $var = "\\A\\B\\C\\D\\E\\F\\G\\H\\I\\J\\K\\L\\M\\N\\O\\P\\Q\\R\\S\\T\\U\\V\\W\\X\\Y\\Z";
 $var = "\\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z \\' \\8\\9 \\xZ \\u";
+$var = "$foo \\A \\a \\' \\8\\9 \\xZ \\u ${bar}";
 $var = <<<HEREDOC_SYNTAX
 \\A\\B\\C\\D\\E\\F\\G\\H\\I\\J\\K\\L\\M\\N\\O\\P\\Q\\R\\S\\T\\U\\V\\W\\X\\Y\\Z
 \\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z
@@ -72,6 +73,9 @@ $var = <<<HEREDOC_SYNTAX
 \\8\\9
 \\xZ
 \\u
+HEREDOC_SYNTAX;
+$var = <<<HEREDOC_SYNTAX
+$foo \\A \\a \\" \\' \\8\\9 \\xZ \\u ${bar}
 HEREDOC_SYNTAX;
 $var = <<<'NOWDOC_SYNTAX'
 \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -88,6 +92,7 @@ EOF
 <?php
 $var = "\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z";
 $var = "\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z \' \8\9 \xZ \u";
+$var = "$foo \A \a \' \8\9 \xZ \u ${bar}";
 $var = <<<HEREDOC_SYNTAX
 \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 \a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
@@ -96,6 +101,9 @@ $var = <<<HEREDOC_SYNTAX
 \8\9
 \xZ
 \u
+HEREDOC_SYNTAX;
+$var = <<<HEREDOC_SYNTAX
+$foo \A \a \" \' \8\9 \xZ \u ${bar}
 HEREDOC_SYNTAX;
 $var = <<<'NOWDOC_SYNTAX'
 \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -113,8 +121,12 @@ EOF
 <<<'EOF'
 <?php
 $var = "\e\f\n\r\t\v \\ \$ \"";
+$var = "$foo \e\f\n\r\t\v \\ \$ \" ${bar}";
 $var = <<<HEREDOC_SYNTAX
 \e\f\n\r\t\v \\ \$
+HEREDOC_SYNTAX;
+$var = <<<HEREDOC_SYNTAX
+$foo \e\f\n\r\t\v \\ \$ ${bar}
 HEREDOC_SYNTAX;
 
 EOF
@@ -124,8 +136,12 @@ EOF
 <<<'EOF'
 <?php
 $var = "\0 \00 \000 \0000 \00000";
+$var = "$foo \0 \00 \000 \0000 \00000 ${bar}";
 $var = <<<HEREDOC_SYNTAX
 \0 \00 \000 \0000 \00000
+HEREDOC_SYNTAX;
+$var = <<<HEREDOC_SYNTAX
+$foo \0 \00 \000 \0000 \00000 ${bar}
 HEREDOC_SYNTAX;
 
 EOF
@@ -135,8 +151,12 @@ EOF
 <<<'EOF'
 <?php
 $var = "\xA \x99 \u{0}";
+$var = "$foo \xA \x99 \u{0} ${bar}";
 $var = <<<HEREDOC_SYNTAX
 \xA \x99 \u{0}
+HEREDOC_SYNTAX;
+$var = <<<HEREDOC_SYNTAX
+$foo \xA \x99 \u{0} ${bar}
 HEREDOC_SYNTAX;
 
 EOF
@@ -169,6 +189,7 @@ EOF
 <<<'EOF'
 <?php
 $var = "\A\a \' \8\9 \xZ \u";
+$var = "$foo \A\a \' \8\9 \xZ \u ${bar}";
 EOF
 ,
             null,
@@ -184,6 +205,16 @@ $var = <<<HEREDOC_SYNTAX
 \8\9
 \xZ
 \u
+HEREDOC_SYNTAX;
+$var = <<<HEREDOC_SYNTAX
+$foo
+\A\Z
+\a\z
+\'
+\8\9
+\xZ
+\u
+${bar}
 HEREDOC_SYNTAX;
 
 EOF

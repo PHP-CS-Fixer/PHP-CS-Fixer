@@ -90,8 +90,12 @@ EOF;
         static $doubleQuotedRegex = '/(?<!\\\\)\\\\(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
         static $heredocSyntaxRegex = '/(?<!\\\\)\\\\(?![efnrtv$\\\\0-7]|x[0-9A-Fa-f]|u{)/';
 
+        $doubleQuoteOpened = false;
         foreach ($tokens as $index => $token) {
             $content = $token->getContent();
+            if (null === $token->getId() && '"' === $content) {
+                $doubleQuoteOpened = !$doubleQuoteOpened;
+            }
             if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || false === strpos($content, '\\')) {
                 continue;
             }
@@ -102,10 +106,15 @@ EOF;
             }
 
             $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '\'' === $content[0];
+            $isDoubleQuotedString = (
+                ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '"' === $content[0])
+                || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened)
+            );
+            $isHeredocSyntax = ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && !$doubleQuoteOpened);
             if (
                (false === $this->configuration['single_quoted'] && $isSingleQuotedString)
-                || (false === $this->configuration['double_quoted'] && $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING))
-                || (false === $this->configuration['heredoc_syntax'] && $token->isGivenKind(T_ENCAPSED_AND_WHITESPACE))
+                || (false === $this->configuration['double_quoted'] && $isDoubleQuotedString)
+                || (false === $this->configuration['heredoc_syntax'] && $isHeredocSyntax)
             ) {
                 continue;
             }
@@ -113,7 +122,7 @@ EOF;
             $regex = $heredocSyntaxRegex;
             if ($isSingleQuotedString) {
                 $regex = $singleQuotedRegex;
-            } elseif ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+            } elseif ($isDoubleQuotedString) {
                 $regex = $doubleQuotedRegex;
             }
 
