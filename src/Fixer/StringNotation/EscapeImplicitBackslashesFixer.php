@@ -110,7 +110,7 @@ EOF;
                 ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '"' === $content[0])
                 || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened)
             );
-            $isHeredocSyntax = ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && !$doubleQuoteOpened);
+            $isHeredocSyntax = !$isSingleQuotedString && !$isDoubleQuotedString;
             if (
                (false === $this->configuration['single_quoted'] && $isSingleQuotedString)
                 || (false === $this->configuration['double_quoted'] && $isDoubleQuotedString)
