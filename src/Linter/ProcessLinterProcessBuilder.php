@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Linter;
 
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -42,6 +41,10 @@ final class ProcessLinterProcessBuilder
      */
     public function build($path)
     {
-        return ProcessBuilder::create(['-l', $path])->setPrefix($this->executable)->getProcess();
+        return new Process(sprintf(
+            '"%s" -l "%s"',
+            $this->executable,
+            $path
+        ));
     }
 }
