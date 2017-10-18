@@ -79,6 +79,7 @@ EOF;
     {
         static $singleQuotedRegex = '/(?<!\\\\)\\\\(?![\\\'\\\\])/';
         static $doubleQuotedRegex = '/(?<!\\\\)\\\\(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
+        static $heredocSyntaxRegex = '/(?<!\\\\)\\\\(?![efnrtv$\\\\0-7]|x[0-9A-Fa-f]|u{)/';
 
         foreach ($tokens as $index => $token) {
             $content = $token->getContent();
@@ -100,13 +101,14 @@ EOF;
                 continue;
             }
 
-            $newContent = preg_replace(
-                $isSingleQuotedString
-                    ? $singleQuotedRegex
-                    : $doubleQuotedRegex,
-                '\\\\\\\\',
-                $content
-            );
+            $regex = $heredocSyntaxRegex;
+            if ($isSingleQuotedString) {
+                $regex = $singleQuotedRegex;
+            } elseif ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+                $regex = $doubleQuotedRegex;
+            }
+
+            $newContent = preg_replace($regex, '\\\\\\\\', $content);
             if ($newContent !== $content) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);
             }
