@@ -21,6 +21,7 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\Utils;
 use Symfony\Component\Console\Command\HelpCommand as BaseHelpCommand;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -451,7 +452,11 @@ EOF
             }
 
             if ($fixer instanceof DeprecatedFixerInterface) {
-                $description .= sprintf(' DEPRECATED: use `%s` instead.', $fixer->getSuccessor());
+                $successors = $fixer->getSuccessorsNames();
+                $message = null === $successors
+                    ? 'not supported anymore'
+                    : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+                $description .= sprintf(' DEPRECATED: %s.', $message);
             }
 
             $description = implode("\n   | ", self::wordwrap(

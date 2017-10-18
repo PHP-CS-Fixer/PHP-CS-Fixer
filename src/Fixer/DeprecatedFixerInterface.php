@@ -18,9 +18,9 @@ namespace PhpCsFixer\Fixer;
 interface DeprecatedFixerInterface extends FixerInterface
 {
     /**
-     * Returns name of the fixer to use instead.
+     * Returns names of fixers to use instead.
      *
-     * @return string
+     * @return string[]
      */
-    public function getSuccessor();
+    public function getSuccessorsNames();
 }
