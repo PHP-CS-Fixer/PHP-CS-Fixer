@@ -60,7 +60,8 @@ final class ExplicitStringVariableFixer extends AbstractFixer
 
             $prevToken = $tokens[$index - 1];
             if (
-                   $prevToken->isGivenKind(T_ENCAPSED_AND_WHITESPACE)
+                $prevToken->isGivenKind(T_ENCAPSED_AND_WHITESPACE)
+                || $prevToken->isGivenKind(T_START_HEREDOC)
                 || '"' === $prevToken->getContent()
             ) {
                 $tokens->overrideRange($index, $index, [
