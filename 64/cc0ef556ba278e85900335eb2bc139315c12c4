@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-16T07:37:56Z
+
+```
+1) PhpCsFixer\Tests\CiIntegrationTest::testIntegration with data set #2 ('changes-including-custom-conf...eation', array('echo "" >> dir\ b/file\ b.php', 'echo "echo 1;" >> dir\ b/file\ b.php', 'sed -e 's/@Symfony/@PSR2/' .p...php_cs', 'git add .', 'git commit -m "Random changes...on" -q'), array('.php_cs', 'dir b/file b.php'), array('0'), '...')
+Failed asserting that './tmp.sh: line 6: echo: write error: Broken pipe
+PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.2.*.
+Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
+Loaded config default from ".php_cs.dist".
+```
+
+`Broken pipe` is back on PHP nightly :(
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-17T20:51:05Z
+
+I restarted the build and it's green now :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-18T07:31:49Z
+
+thanks man :)  :+1:
