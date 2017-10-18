@@ -183,12 +183,10 @@ final class FixerTest extends TestCase
             'Fixer cannot contain word "DEPRECATED" in summary'
         );
 
-        if (is_string($comment) && false !== strpos($comment, '@deprecated')) {
-            $this->assertInstanceOf(
-                DeprecatedFixerInterface::class,
-                $fixer,
-                sprintf('Deprecated fixer must implement %s', DeprecatedFixerInterface::class)
-            );
+        if ($fixer instanceof DeprecatedFixerInterface) {
+            $this->assertContains('@deprecated', $comment);
+        } elseif (is_string($comment)) {
+            $this->assertNotContains('@deprecated', $comment);
         }
     }
 

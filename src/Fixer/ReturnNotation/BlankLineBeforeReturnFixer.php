@@ -45,7 +45,7 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Dep
      */
     public function getSuccessor()
     {
-        return 'blank_line_before_statement';
+        return current($this->proxyFixers)->getName();
     }
 
     /**
