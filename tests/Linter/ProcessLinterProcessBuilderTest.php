@@ -29,8 +29,8 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      * @param string $file
      * @param string $expected
      *
-     * @testWith ["php", "foo.php", "'php' '-l' 'foo.php'"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
+     * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
+     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
      * @requires OS Linux|Darwin
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
@@ -53,7 +53,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      * @param string $file
      * @param string $expected
      *
-     * @testWith ["php", "foo.php", "php -l foo.php"]
+     * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
      *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
      * @requires OS ^Win
      */
@@ -79,7 +79,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
         $builder = new ProcessLinterProcessBuilder('hhvm');
 
         $this->assertSame(
-            "'hhvm' '--php' '-l' 'foo.php'",
+            '"hhvm" --php -l "foo.php"',
             $builder->build('foo.php')->getCommandLine()
         );
     }
