@@ -1,0 +1,133 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-14T23:41:10Z
+
+Please rebase, PHP CS Fixer is now using newest PHP Coveralls compatible with SF 4.0
+
+---------------------------------------------------------------------------
+
+by garak at 2017-10-15T12:17:21Z
+
+@keradus if I replace `ProcessBuilder` with `Process`, how can I apply prefix?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-15T14:46:51Z
+
+```diff
+-ProcessBuilder::create(['-l']->setPrefix('ls')->getProcess()
++new Process('ls -l')
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-17T20:38:31Z
+
+> garak reviewed 11 hours ago
+
+wow, you are reviewing your own PR :D
+
+> It looks like everything is fine now
+
+actually, not, look at statuses
+
+---------------------------------------------------------------------------
+
+by garak at 2017-10-18T06:35:33Z
+
+Well, I don't know what to do with appveyor, it's obviously related to ProcessBuilder/Process change, where I just tried a wild guess.
+I'm open to suggestions
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-18T07:19:24Z
+
+I already commented the line where you do some weird ocncat/escape that is causing the issue.
+Just read the error from CI service and that's it... https://ci.appveyor.com/project/keradus/php-cs-fixer/build/dev-7925/job/jdtlrxumqo3hb6as#L253
+I would say that the issue is exactly that "wild guessing". Read error you got, docs for `ProcessBuilder` and `Process`, no need for guessing
+
+---------------------------------------------------------------------------
+
+by garak at 2017-10-18T07:37:22Z
+
+Question is you provided me a partial hint:
+```diff
+-ProcessBuilder::create(['-l']->setPrefix('ls')->getProcess()
++new Process('ls -l')
+```
+But there's no simply `['-l']`, there's an array with many elements.
+From what I understand in tests, elements in array can be quoted or unquoted, but I still don't see when the quotes are needed and when are not.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-18T07:54:44Z
+
+quoting is required for CLI params that could could contain space, and is optional for others.
+
+---------------------------------------------------------------------------
+
+by garak at 2017-10-18T08:09:25Z
+
+Is that something that we need to take care? Or it's supposed to be in charge of Process component?
+I'm sorry but docs for 4.0 are still not up to date, so I don't know when to find such informations.
+I also found a (maybe) related issue, that is still open https://github.com/symfony/symfony/issues/20527#issuecomment-318663546
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-18T08:11:47Z
+
+yes, it's sth that need to be taken care here.
+4.0 is just a deprecations drop, documentation for 3.x is valid for 4.0 without deprecations.
+
+---------------------------------------------------------------------------
+
+by garak at 2017-10-18T08:14:24Z
+
+I know, but unfortunately docs for 4.0 are sitll showing the deprecations that are supposed to be gone.
+So, for example, the Process component docs for 4.0 are still showing ProcessBuilder stuff
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-18T09:34:42Z
+
+cool. then you are aware of deprecations and could ignore deprecated part on your own.
+I don't see not updated documentation anyhow connected to this PR.
+
+---------------------------------------------------------------------------
+
+by garak at 2017-10-18T11:10:34Z
+
+Here is the non-updated doc: http://symfony.com/doc/master/components/process.html#executing-php-code-in-isolation (including ProcessBuilder, even if it's not in master/4.0 anymore)
+So, what's next? Should I revert the removal of ProcessBuilder?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-18T12:11:05Z
+
+again, not-up-to-date symfony docs is not our concern.
+
+> So, what's next?
+
+fix issues raised by CIs
+
+> Should I revert the removal of ProcessBuilder?
+
+then you will again have crashing build on trying to use unexisting class
+
+---------------------------------------------------------------------------
+
+by garak at 2017-10-18T12:19:26Z
+
+So I don't get you when you say
+> you are aware of deprecations and could ignore deprecated part on your own
+
+How can I ignore deprecated part?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-18T13:33:14Z
+
+if official Symfony 4 docs has paragraph about code that is deprecated and you know it, skip reading this paragraph.
+or jump into Symfony 4 codebase repo directly.
+
+man, you going in circle. you know ProcessBuilder is deprecated, I raised this in comment on very beginning of this PR. yes, to allow PHP CS Fixer to run with Symfony 4 you need to stop using it and replace it with `Process`. If you don't know how `Process` works open documentation of last 3.x, of 4.0, github repo directly, doesn't matter.
