@@ -75,6 +75,15 @@ EOF;
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // Should run before single_quote
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $singleQuotedRegex = '/(?<!\\\\)\\\\(?![\\\'\\\\])/';
