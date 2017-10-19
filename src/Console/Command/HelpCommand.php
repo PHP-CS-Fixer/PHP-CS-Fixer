@@ -453,8 +453,8 @@ EOF
 
             if ($fixer instanceof DeprecatedFixerInterface) {
                 $successors = $fixer->getSuccessorsNames();
-                $message = null === $successors
-                    ? 'not supported anymore'
+                $message = [] === $successors
+                    ? 'will be removed on next major version'
                     : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
                 $description .= sprintf(' DEPRECATED: %s.', $message);
             }

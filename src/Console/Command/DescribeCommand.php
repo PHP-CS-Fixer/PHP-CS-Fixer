@@ -149,8 +149,8 @@ final class DescribeCommand extends Command
         $description = $definition->getSummary();
         if ($fixer instanceof DeprecatedFixerInterface) {
             $successors = $fixer->getSuccessorsNames();
-            $message = null === $successors
-                ? 'not supported anymore'
+            $message = [] === $successors
+                ? 'will be removed on next major version'
                 : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
             $message = preg_replace('/(`.+?`)/', '<info>$1</info>', $message);
             $description .= sprintf(' <error>DEPRECATED</error>: %s.', $message);
