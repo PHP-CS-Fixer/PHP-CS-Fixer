@@ -77,7 +77,7 @@ EOF;
      */
     public function getPriority()
     {
-        // Should run before single_quote
+        // Should run before single_quote and heredoc_to_nowdoc
         return 1;
     }
 
