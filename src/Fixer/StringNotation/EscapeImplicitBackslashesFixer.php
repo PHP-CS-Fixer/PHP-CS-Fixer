@@ -112,7 +112,7 @@ EOF;
             );
             $isHeredocSyntax = !$isSingleQuotedString && !$isDoubleQuotedString;
             if (
-               (false === $this->configuration['single_quoted'] && $isSingleQuotedString)
+                (false === $this->configuration['single_quoted'] && $isSingleQuotedString)
                 || (false === $this->configuration['double_quoted'] && $isDoubleQuotedString)
                 || (false === $this->configuration['heredoc_syntax'] && $isHeredocSyntax)
             ) {
