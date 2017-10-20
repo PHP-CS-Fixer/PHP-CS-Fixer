@@ -265,6 +265,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
             $tokens->insertAt($braceIndex + 1, $newMethods);
 
+            $tokens[$braceIndex + $newMethods->getSize() + 1] = new Token([
+                T_WHITESPACE,
+                $this->whitespacesConfig->getLineEnding().$tokens[$braceIndex + $newMethods->getSize() + 1]->getContent(),
+            ]);
+
             $i = $docBlockIndex;
         }
     }
@@ -295,9 +300,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
 
         if (isset($annotations['expectedExceptionMessage'])) {
-            $params[] = "'{$annotations['expectedExceptionMessage']}'";
+            $replacement = str_replace("'", "\\'", $annotations['expectedExceptionMessage']);
+            $params[] = "'{$replacement}'";
         } elseif (isset($annotations['expectedExceptionMessageRegExp'])) {
-            $params[] = "'{$annotations['expectedExceptionMessageRegExp']}'";
+            $replacement = str_replace("'", "\\'", $annotations['expectedExceptionMessageRegExp']);
+            $params[] = "'{$replacement}'";
         } elseif (isset($annotations['expectedExceptionCode'])) {
             $params[] = 'null';
         }

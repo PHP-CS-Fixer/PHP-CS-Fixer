@@ -180,8 +180,26 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             for ($cnt = $argumentsCnt - 1; $cnt >= 1; --$cnt) {
                 $argStart = array_keys($arguments)[$cnt];
                 $argBefore = $tokens->getPrevMeaningfulToken($argStart);
-                $isMultilineWhitespace = $isMultilineWhitespace || ($tokens[$argStart]->isWhitespace() && !$tokens[$argStart]->isWhitespace(" \t"));
 
+                if ('expectExceptionMessage' === $argumentsReplacements[$cnt]) {
+                    $paramIndicatorIndex = $tokens->getNextMeaningfulToken($argBefore);
+                    $afterParamIndicatorIndex = $tokens->getNextMeaningfulToken($paramIndicatorIndex);
+
+                    if (
+                        $tokens[$paramIndicatorIndex]->equals([T_STRING, 'null'], false) &&
+                        $tokens[$afterParamIndicatorIndex]->equals(')')
+                    ) {
+                        if ($tokens[$argBefore + 1]->isWhitespace()) {
+                            $tokens->clearTokenAndMergeSurroundingWhitespace($argBefore + 1);
+                        }
+                        $tokens->clearTokenAndMergeSurroundingWhitespace($argBefore);
+                        $tokens->clearTokenAndMergeSurroundingWhitespace($paramIndicatorIndex);
+
+                        continue;
+                    }
+                }
+
+                $isMultilineWhitespace = $isMultilineWhitespace || ($tokens[$argStart]->isWhitespace() && !$tokens[$argStart]->isWhitespace(" \t"));
                 $tokensOverrideArgStart = [
                     new Token([T_WHITESPACE, $indent]),
                     new Token([T_VARIABLE, '$this']),

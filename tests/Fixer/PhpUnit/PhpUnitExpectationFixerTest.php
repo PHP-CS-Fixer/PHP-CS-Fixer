@@ -72,8 +72,15 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
         function testFnc()
         {
             aaa();
+            $this->expectException(\'RuntimeException\'/*B*/  /*B2*/);
+            $this->expectExceptionCode(/*C*/123);
+            zzz();
+        }
+        function testFnc2()
+        {
+            aaa();
             $this->expectException(\'RuntimeException\');
-            $this->expectExceptionMessage(null);
+            $this->expectExceptionMessage(/*B*/ null /*B2*/ + 1);
             $this->expectExceptionCode(/*C*/123);
             zzz();
         }
@@ -84,7 +91,13 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
         function testFnc()
         {
             aaa();
-            $this->setExpectedException(\'RuntimeException\',null,/*C*/123);
+            $this->setExpectedException(\'RuntimeException\',/*B*/ null /*B2*/,/*C*/123);
+            zzz();
+        }
+        function testFnc2()
+        {
+            aaa();
+            $this->setExpectedException(\'RuntimeException\',/*B*/ null /*B2*/ + 1,/*C*/123);
             zzz();
         }
     }',

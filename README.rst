@@ -197,6 +197,7 @@ The ``--dry-run`` flag will run the fixer without making changes to your files.
 The ``--diff`` flag can be used to let the fixer output all the changes it makes.
 
 The ``--diff-format`` option allows to specify in which format the fixer should output the changes it makes:
+
 * ``udiff``: unified diff format;
 * ``sbd``: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
 
@@ -536,6 +537,11 @@ Choose from the list of available rules:
   Replace deprecated ``ereg`` regular expression functions with preg.
 
   *Risky rule: risky if the ``ereg`` function is overridden.*
+
+* **explicit_indirect_variable**
+
+  Add curly braces to indirect variables to make them clear to understand.
+  Requires PHP >= 7.0.
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
@@ -1395,6 +1401,9 @@ fixed but without actually modifying them:
 .. code-block:: bash
 
     $ php php-cs-fixer.phar fix /path/to/code --dry-run
+
+Config file
+-----------
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.

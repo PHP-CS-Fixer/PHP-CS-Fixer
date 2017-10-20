@@ -100,6 +100,7 @@ The <comment>--dry-run</comment> flag will run the fixer without making changes 
 The <comment>--diff</comment> flag can be used to let the fixer output all the changes it makes.
 
 The <comment>--diff-format</comment> option allows to specify in which format the fixer should output the changes it makes:
+
 * <comment>udiff</comment>: unified diff format;
 * <comment>sbd</comment>: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
 
@@ -137,6 +138,9 @@ The <comment>--dry-run</comment> option displays the files that need to be
 fixed but without actually modifying them:
 
     <info>$ php %command.full_name% /path/to/code --dry-run</info>
+
+Config file
+-----------
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a <comment>.php_cs.dist</comment> file in the root directory of your project.
