@@ -48,7 +48,7 @@ final class DescribeCommandTest extends TestCase
     {
         $expected = <<<'EOT'
 Description of Foo/bar rule.
-Fixes stuff.
+Fixes stuff. DEPRECATED: use `Foo/baz` instead.
 Replaces bad stuff with good stuff.
 
 Fixer applying this rule is risky.
@@ -86,7 +86,7 @@ EOT;
     {
         $expected = <<<EOT
 \033[32mDescription of\033[39m Foo/bar \033[32mrule\033[39m.
-Fixes stuff.
+Fixes stuff. \033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
 Replaces bad stuff with good stuff.
 
 \033[37;41mFixer applying this rule is risky.\033[39;49m
@@ -188,10 +188,12 @@ EOT;
         $fixer = $this->prophesize();
         $fixer->willImplement(\PhpCsFixer\Fixer\DefinedFixerInterface::class);
         $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface::class);
+        $fixer->willImplement(\PhpCsFixer\Fixer\DeprecatedFixerInterface::class);
 
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(true);
+        $fixer->getSuccessorsNames()->willReturn(['Foo/baz']);
 
         $generator = new FixerOptionValidatorGenerator();
         $functionNames = ['foo', 'test'];

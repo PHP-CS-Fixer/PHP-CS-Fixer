@@ -177,8 +177,8 @@ final class FixerTest extends TestCase
         $reflection = new \ReflectionClass($fixer);
         $comment = $reflection->getDocComment();
 
-        $this->assertNotRegExp(
-            '/DEPRECATED/',
+        $this->assertNotContains(
+            'DEPRECATED',
             $fixer->getDefinition()->getSummary(),
             'Fixer cannot contain word "DEPRECATED" in summary'
         );

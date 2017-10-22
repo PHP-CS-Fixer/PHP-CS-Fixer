@@ -241,7 +241,7 @@ final class UtilsTest extends TestCase
     {
         return [
             [
-                null,
+                '',
                 [],
             ],
             [

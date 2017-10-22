@@ -201,6 +201,6 @@ final class Utils
             return implode(', ', $names).' and '.$last;
         }
 
-        return $last;
+        return $last ?: '';
     }
 }
