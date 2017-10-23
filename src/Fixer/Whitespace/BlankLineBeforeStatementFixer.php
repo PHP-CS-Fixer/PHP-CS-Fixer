@@ -89,7 +89,8 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
 function A() {
     echo 1;
     return 1;
-}'
+}
+'
                 ),
                 new CodeSample(
                     '<?php
@@ -99,7 +100,8 @@ switch ($foo) {
         break;
     case 44:
         break;
-}',
+}
+',
                     [
                         'statements' => ['break'],
                     ]
@@ -111,7 +113,8 @@ foreach ($foo as $bar) {
         $bar->sleep();
         continue;
     }
-}',
+}
+',
                     [
                         'statements' => ['continue'],
                     ]
@@ -123,7 +126,8 @@ if ($foo === false) {
 } else {
     $bar = 9000;
     die(1);
-}',
+}
+',
                     [
                         'statements' => ['die'],
                     ]
@@ -146,7 +150,8 @@ if ($foo === false) {
 } else {
     $bar = 9000;
     exit(1);
-}',
+}
+',
                     [
                         'statements' => ['exit'],
                     ]
@@ -160,7 +165,8 @@ if ($foo === false) {
 } else {
     $bar = 9000;
     goto b;
-}',
+}
+',
                     [
                         'statements' => ['goto'],
                     ]
@@ -170,7 +176,8 @@ if ($foo === false) {
 $a = 9000;
 if (true) {
     $foo = $bar;
-}',
+}
+',
                     [
                         'statements' => ['if'],
                     ]
@@ -181,7 +188,8 @@ if (true) {
 if (true) {
     $foo = $bar;
     return;
-}',
+}
+',
                     [
                         'statements' => ['return'],
                     ]
@@ -192,7 +200,8 @@ $a = 9000;
 switch ($a) {
     case 42:
         break;
-}',
+}
+',
                     [
                         'statements' => ['switch'],
                     ]
@@ -202,7 +211,8 @@ switch ($a) {
 if (null === $a) {
     $foo->bar();
     throw new \UnexpectedValueException("A cannot be null");
-}',
+}
+',
                     [
                         'statements' => ['throw'],
                     ]
@@ -214,7 +224,8 @@ try {
     $foo->bar();
 } catch (\Exception $exception) {
     $a = -1;
-}',
+}
+',
                     [
                         'statements' => ['try'],
                     ]
@@ -225,7 +236,8 @@ try {
 if (true) {
     $foo = $bar;
     yield $foo;
-}',
+}
+',
                     [
                         'statements' => ['yield'],
                     ]

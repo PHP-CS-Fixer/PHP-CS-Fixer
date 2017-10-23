@@ -45,7 +45,8 @@ function baz($options)
     }
 
     return json_encode($options);
-}'
+}
+'
                 ),
                 new CodeSample(
 '<?php
@@ -57,7 +58,8 @@ function baz($options)
     }
 
     return json_encode($options);
-}',
+}
+',
                     [
                         'exclude' => [
                             'json_encode',

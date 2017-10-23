@@ -54,11 +54,11 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
             'List (`array` destructuring) assignment should be declared using the configured syntax. Requires PHP >= 7.1.',
             [
                 new VersionSpecificCodeSample(
-                    "<?php\n[\$sample] = \$array;",
+                    "<?php\n[\$sample] = \$array;\n",
                     new VersionSpecification(70100)
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nlist(\$sample) = \$array;",
+                    "<?php\nlist(\$sample) = \$array;\n",
                     new VersionSpecification(70100),
                     ['syntax' => 'short']
                 ),

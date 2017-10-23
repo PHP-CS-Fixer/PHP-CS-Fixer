@@ -31,7 +31,7 @@ final class PreIncrementFixer extends AbstractProxyFixer implements DeprecatedFi
     {
         return new FixerDefinition(
             'Pre incrementation/decrementation should be used if possible.',
-            [new CodeSample("<?php\n\$a++;\n\$b--;")]
+            [new CodeSample("<?php\n\$a++;\n\$b--;\n")]
         );
     }
 

@@ -30,7 +30,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Calling `unset` on multiple items should be done in one call.',
-            [new CodeSample("<?php\nunset(\$a); unset(\$b);")]
+            [new CodeSample("<?php\nunset(\$a); unset(\$b);\n")]
         );
     }
 

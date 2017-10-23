@@ -30,8 +30,8 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
         return new FixerDefinition(
             'There should be exactly one blank line before a namespace declaration.',
             [
-                new CodeSample('<?php  namespace A {}'),
-                new CodeSample("<?php\n\n\nnamespace A{}"),
+                new CodeSample("<?php  namespace A {}\n"),
+                new CodeSample("<?php\n\n\nnamespace A{}\n"),
             ]
         );
     }

@@ -39,7 +39,7 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespac
             'There should be no blank lines before a namespace declaration.',
             [
                 new CodeSample(
-                    "<?php\n\n\n\nnamespace Example;"
+                    "<?php\n\n\n\nnamespace Example;\n"
                 ),
             ]
         );

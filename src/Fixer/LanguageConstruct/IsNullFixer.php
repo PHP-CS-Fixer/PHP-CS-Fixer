@@ -35,8 +35,8 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
         return new FixerDefinition(
             'Replaces is_null(parameter) expression with `null === parameter`.',
             [
-                new CodeSample("<?php\n\$a = is_null(\$b);"),
-                new CodeSample("<?php\n\$a = is_null(\$b);", ['use_yoda_style' => false]),
+                new CodeSample("<?php\n\$a = is_null(\$b);\n"),
+                new CodeSample("<?php\n\$a = is_null(\$b);\n", ['use_yoda_style' => false]),
             ],
             null,
             'Risky when the function `is_null()` is overridden.'

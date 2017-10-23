@@ -34,8 +34,8 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
         return new FixerDefinition(
             'There MUST be one blank line after the namespace declaration.',
             [
-                new CodeSample("<?php\nnamespace Sample\\Sample;\n\n\n\$a;"),
-                new CodeSample("<?php\nnamespace Sample\\Sample;\nClass Test{}"),
+                new CodeSample("<?php\nnamespace Sample\\Sample;\n\n\n\$a;\n"),
+                new CodeSample("<?php\nnamespace Sample\\Sample;\nClass Test{}\n"),
             ]
         );
     }

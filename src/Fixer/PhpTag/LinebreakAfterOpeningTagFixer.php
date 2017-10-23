@@ -31,7 +31,7 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
     {
         return new FixerDefinition(
             'Ensure there is no code on the same line as the PHP open tag.',
-            [new CodeSample("<?php \$a = 1;\n\$b = 3;")]
+            [new CodeSample("<?php \$a = 1;\n\$b = 3;\n")]
         );
     }
 

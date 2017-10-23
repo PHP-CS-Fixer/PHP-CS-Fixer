@@ -46,7 +46,8 @@ switch ($foo) {
         break;
     case 3:
         baz();
-}'
+}
+'
                 ),
             ],
             'Adds a "no break" comment before fall-through cases, and removes it if there is no fall-through.'

@@ -31,7 +31,7 @@ final class NewWithBracesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'All instances created with new keyword must be followed by braces.',
-            [new CodeSample('<?php $x = new X;')]
+            [new CodeSample("<?php \$x = new X;\n")]
         );
     }
 

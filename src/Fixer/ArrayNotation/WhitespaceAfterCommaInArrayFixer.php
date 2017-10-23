@@ -31,7 +31,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'In array declaration, there MUST be a whitespace after each comma.',
-            [new CodeSample("<?php\n\$sample = array(1,'a',\$b,);")]
+            [new CodeSample("<?php\n\$sample = array(1,'a',\$b,);\n")]
         );
     }
 

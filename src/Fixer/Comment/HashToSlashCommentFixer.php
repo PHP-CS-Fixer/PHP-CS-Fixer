@@ -33,7 +33,7 @@ final class HashToSlashCommentFixer extends AbstractProxyFixer implements Deprec
     {
         return new FixerDefinition(
             'Single line comments should use double slashes `//` and not hash `#`.',
-            [new CodeSample('<?php # comment')]
+            [new CodeSample("<?php # comment\n")]
         );
     }
 
