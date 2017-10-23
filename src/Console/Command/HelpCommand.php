@@ -95,13 +95,18 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 
     <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
 
-A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
-display a summary of proposed fixes, leaving your files unchanged.
+The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
+
+The <comment>--diff</comment> flag can be used to let the fixer output all the changes it makes.
+
+The <comment>--diff-format</comment> option allows to specify in which format the fixer should output the changes it makes:
+* <comment>udiff</comment>: unified diff format;
+* <comment>sbd</comment>: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
 
 The <comment>--allow-risky</comment> option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
-The <comment>--stop-on-violation</comment> flag stops execution upon first file that needs to be fixed.
+The <comment>--stop-on-violation</comment> flag stops the execution upon first file that needs to be fixed.
 
 The <comment>--show-progress</comment> option allows you to choose the way process progress is rendered:
 

@@ -134,7 +134,8 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
 $foo = array("foo");
 
 
-$bar = "bar";'
+$bar = "bar";
+'
                 ),
                 new CodeSample(
 '<?php
@@ -146,7 +147,8 @@ switch ($foo) {
 
     case 42:
         break;
-}',
+}
+',
                     ['tokens' => ['break']]
                 ),
                 new CodeSample(
@@ -157,7 +159,8 @@ for ($i = 0; $i < 9000; ++$i) {
         continue;
 
     }
-}',
+}
+',
                     ['tokens' => ['continue']]
                 ),
                 new CodeSample(
@@ -167,7 +170,8 @@ for ($i = 0; $i < 9000; ++$i) {
 
     echo $i;
 
-}',
+}
+',
                     ['tokens' => ['curly_brace_block']]
                 ),
                 new CodeSample(
@@ -176,7 +180,8 @@ for ($i = 0; $i < 9000; ++$i) {
 $foo = array("foo");
 
 
-$bar = "bar";',
+$bar = "bar";
+',
                     ['tokens' => ['extra']]
                 ),
                 new CodeSample(
@@ -186,7 +191,8 @@ $foo = array(
 
     "foo"
 
-);',
+);
+',
                     ['tokens' => ['parenthesis_brace_block']]
                 ),
                 new CodeSample(
@@ -196,7 +202,8 @@ function foo($bar)
 {
     return $bar;
 
-}',
+}
+',
                     ['tokens' => ['return']]
                 ),
                 new CodeSample(
@@ -206,7 +213,8 @@ $foo = [
 
     "foo"
 
-];',
+];
+',
                     ['tokens' => ['square_brace_block']]
                 ),
                 new CodeSample(
@@ -216,7 +224,8 @@ function foo($bar)
 {
     throw new \Exception("Hello!");
 
-}',
+}
+',
                     ['tokens' => ['throw']]
                 ),
                 new CodeSample(
@@ -230,7 +239,8 @@ use Baz\Bar;
 
 class Bar
 {
-}',
+}
+',
                     ['tokens' => ['use']]
                 ),
                 new CodeSample(
@@ -241,7 +251,8 @@ class Foo
     use Bar;
 
     use Baz;
-}',
+}
+',
                     ['tokens' => ['use_trait']]
                 ),
                 new CodeSample(
@@ -253,7 +264,8 @@ switch($a) {
     default:
 
         echo 3;
-}',
+}
+',
                     ['tokens' => ['switch', 'case', 'default']]
                 ),
             ]

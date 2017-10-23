@@ -67,7 +67,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(a(), b());
         $this->assertNotEquals(a(), b());
     }
-}',
+}
+',
                     ['assertions' => ['assertEquals']]
                 ),
             ],

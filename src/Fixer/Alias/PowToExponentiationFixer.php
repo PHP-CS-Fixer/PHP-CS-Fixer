@@ -43,7 +43,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
            'Converts `pow()` to the `**` operator.',
             [
                 new CodeSample(
-                    "<?php\n pow(\$a, 1);"
+                    "<?php\n pow(\$a, 1);\n"
                 ),
             ],
             null,

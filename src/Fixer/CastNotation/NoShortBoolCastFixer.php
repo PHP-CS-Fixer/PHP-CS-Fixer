@@ -39,7 +39,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Short cast `bool` using double exclamation mark should not be used.',
-            [new CodeSample("<?php\n\$a = !!\$b;")]
+            [new CodeSample("<?php\n\$a = !!\$b;\n")]
         );
     }
 

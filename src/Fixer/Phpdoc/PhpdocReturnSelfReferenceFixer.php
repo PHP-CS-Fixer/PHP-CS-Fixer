@@ -63,7 +63,8 @@ class Sample
     {
         return $this;
     }
-}'
+}
+'
                 ),
                 new CodeSample(
                     '<?php
@@ -84,7 +85,8 @@ class Sample
     {
         return $this;
     }
-}',
+}
+',
                     ['replacements' => ['this' => 'self']]
                 ),
             ]

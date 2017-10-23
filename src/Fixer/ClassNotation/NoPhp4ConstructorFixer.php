@@ -38,7 +38,8 @@ class Foo
     public function Foo($bar)
     {
     }
-}'),
+}
+'),
             ],
             null,
             'Risky when old style constructor being fixed is overridden or overrides parent one.'

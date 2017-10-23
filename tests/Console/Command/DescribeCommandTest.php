@@ -216,10 +216,10 @@ EOT;
             'Fixes stuff.',
             [
                 new CodeSample(
-                    '<?php echo \'bad stuff and bad thing\';'
+                    "<?php echo 'bad stuff and bad thing';\n"
                 ),
                 new CodeSample(
-                    '<?php echo \'bad stuff and bad thing\';',
+                    "<?php echo 'bad stuff and bad thing';\n",
                     ['functions' => ['foo', 'bar']]
                 ),
             ],

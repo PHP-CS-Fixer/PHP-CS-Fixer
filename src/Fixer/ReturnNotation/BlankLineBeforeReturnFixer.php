@@ -36,7 +36,7 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Dep
     {
         return new FixerDefinition(
             'An empty line feed should precede a return statement.',
-            [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}")]
+            [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}\n")]
         );
     }
 

@@ -30,7 +30,7 @@ final class TrimArraySpacesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Arrays should be formatted like function/method arguments, without leading or trailing single line space.',
-            [new CodeSample("<?php\n\$sample = array( );\n\$sample = array( 'a', 'b' );")]
+            [new CodeSample("<?php\n\$sample = array( );\n\$sample = array( 'a', 'b' );\n")]
         );
     }
 

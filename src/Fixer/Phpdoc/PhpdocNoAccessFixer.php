@@ -39,7 +39,8 @@ class Foo
      * @access private
      */
     private $bar;
-}'
+}
+'
                 ),
             ]
         );

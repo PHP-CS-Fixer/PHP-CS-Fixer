@@ -45,7 +45,8 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
  *
  * @return void
  */
-function f9(string $foo, $bar, $baz) {}'
+function f9(string $foo, $bar, $baz) {}
+'
                 ),
                 new CodeSample(
                     '<?php
@@ -54,7 +55,8 @@ function f9(string $foo, $bar, $baz) {}'
  *
  * @return void
  */
-function f9(string $foo, $bar, $baz) {}',
+function f9(string $foo, $bar, $baz) {}
+',
                     ['only_untyped' => true]
                 ),
                 new CodeSample(
@@ -64,7 +66,8 @@ function f9(string $foo, $bar, $baz) {}',
  *
  * @return void
  */
-function f9(string $foo, $bar, $baz) {}',
+function f9(string $foo, $bar, $baz) {}
+',
                     ['only_untyped' => false]
                 ),
             ]

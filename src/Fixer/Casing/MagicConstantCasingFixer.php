@@ -31,7 +31,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Magic constants should be referred to using the correct casing.',
-            [new CodeSample("<?php\necho __dir__;")]
+            [new CodeSample("<?php\necho __dir__;\n")]
         );
     }
 

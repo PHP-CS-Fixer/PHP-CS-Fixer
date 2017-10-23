@@ -30,7 +30,7 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Add missing space between function\'s argument and its typehint.',
-            [new CodeSample("<?php\nfunction sample(array\$a)\n{}")]
+            [new CodeSample("<?php\nfunction sample(array\$a)\n{}\n")]
         );
     }
 
