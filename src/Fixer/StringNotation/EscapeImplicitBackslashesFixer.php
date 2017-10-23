@@ -93,7 +93,7 @@ EOF;
         $doubleQuoteOpened = false;
         foreach ($tokens as $index => $token) {
             $content = $token->getContent();
-            if (null === $token->getId() && '"' === $content) {
+            if ($token->equals('"')) {
                 $doubleQuoteOpened = !$doubleQuoteOpened;
             }
             if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || false === strpos($content, '\\')) {
