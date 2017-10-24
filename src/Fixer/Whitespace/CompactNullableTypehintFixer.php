@@ -33,15 +33,11 @@ final class CompactNullableTypehintFixer extends AbstractFixer
             'Remove extra spaces in a nullable typehint.',
             [
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction sample(? string \$str): string\n{}",
-                    new VersionSpecification(70000)
-                ),
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction sample(?string \$str): ? string\n{}",
+                    "<?php\nfunction sample(? string \$str): ? string\n{}",
                     new VersionSpecification(70100)
                 ),
             ],
-            'Rule is applied only in a PHP 7+ environment.'
+            'Rule is applied only in a PHP 7.1+ environment.'
         );
     }
 
@@ -51,7 +47,7 @@ final class CompactNullableTypehintFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return
-            PHP_VERSION_ID >= 70000 &&
+            PHP_VERSION_ID >= 70100 &&
             $tokens->isTokenKindFound(CT::T_NULLABLE_TYPE);
     }
 
