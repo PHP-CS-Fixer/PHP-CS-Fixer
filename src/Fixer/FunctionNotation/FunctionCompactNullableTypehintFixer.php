@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -30,7 +31,17 @@ final class FunctionCompactNullableTypehintFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove extra spaces in a nullable typehint.',
-            [new CodeSample("<?php\nfunction sample(? string \$str): ? string\n{}")]
+            [
+                new VersionSpecificCodeSample(
+                    "<?php\nfunction sample(? string \$str): string\n{}",
+                    new VersionSpecification(70000)
+                ),
+                new VersionSpecificCodeSample(
+                    "<?php\nfunction sample(?string \$str): ? string\n{}",
+                    new VersionSpecification(70100)
+                ),
+            ],
+            'Rule is applied only in a PHP 7+ environment.'
         );
     }
 
@@ -39,7 +50,9 @@ final class FunctionCompactNullableTypehintFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return
+            PHP_VERSION_ID >= 70000 &&
+            $tokens->isAllTokenKindsFound([T_FUNCTION, CT::T_NULLABLE_TYPE]);
     }
 
     /**
@@ -54,15 +67,8 @@ final class FunctionCompactNullableTypehintFixer extends AbstractFixer
                 continue;
             }
 
-            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [T_CLOSE_TAG]]);
-            if (!$tokens[$startParenthesisIndex]->equals('(')) {
-                continue;
-            }
-
-            $startSquareBracketIndex = $tokens->getNextTokenOfKind($startParenthesisIndex, ['{', ';', [T_CLOSE_TAG]]);
-            if (!$tokens[$startSquareBracketIndex]->equalsAny(['{', ';'])) {
-                continue;
-            }
+            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(']);
+            $startSquareBracketIndex = $tokens->getNextTokenOfKind($startParenthesisIndex, ['{', ';']);
 
             for ($iter = $startSquareBracketIndex - 1; $iter > $startParenthesisIndex; --$iter) {
                 if (!$tokens[$iter]->isGivenKind(CT::T_NULLABLE_TYPE)) {

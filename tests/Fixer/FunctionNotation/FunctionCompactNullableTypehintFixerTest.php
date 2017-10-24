@@ -15,6 +15,8 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
+ * @requires PHP 7.1
+ *
  * @author Jack Cherng <jfcherng@gmail.com>
  *
  * @internal
@@ -27,61 +29,70 @@ final class FunctionCompactNullableTypehintFixerTest extends AbstractFixerTestCa
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixCases
+     * @dataProvider providePhp71FixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function providePhp71FixCases()
     {
         return [
             [
-                '<?php function foo(/**? int*/$param) {}',
+                '<?php function foo(?int $param): ?int {}',
             ],
             [
-                '<?php function foo(?callable $param) {}',
-                '<?php function foo(? callable $param) {}',
+                '<?php function foo(/**? int*/$param): ?int {}',
+                '<?php function foo(/**? int*/$param): ? int {}',
             ],
             [
-                '<?php function foo(?array &$param) {}',
-                '<?php function foo(? array &$param) {}',
+                '<?php function foo(?callable $param): ?callable {}',
+                '<?php function foo(? callable $param): ? callable {}',
             ],
             [
-                '<?php function foo(?Bar $param) {}',
-                '<?php function foo(? Bar $param) {}',
+                '<?php function foo(?array &$param): ?array {}',
+                '<?php function foo(? array &$param): ? array {}',
             ],
             [
-                '<?php function foo(?Bar\Baz $param) {}',
-                '<?php function foo(? Bar\Baz $param) {}',
+                '<?php function foo(?Bar $param): ?Bar {}',
+                '<?php function foo(? Bar $param): ? Bar {}',
             ],
             [
-                '<?php function foo(?Bar\Baz &$param) {}',
-                '<?php function foo(? Bar\Baz &$param) {}',
+                '<?php function foo(?Bar\Baz $param): ?Bar\Baz {}',
+                '<?php function foo(? Bar\Baz $param): ? Bar\Baz {}',
             ],
             [
-                '<?php $foo = function(?Bar\Baz $param) {};',
-                '<?php $foo = function(? Bar\Baz $param) {};',
+                '<?php function foo(?Bar\Baz &$param): ?Bar\Baz {}',
+                '<?php function foo(? Bar\Baz &$param): ? Bar\Baz {}',
             ],
             [
-                '<?php $foo = function(?Bar\Baz &$param) {};',
-                '<?php $foo = function(? Bar\Baz &$param) {};',
+                '<?php $foo = function(?Bar\Baz $param): ?Bar\Baz {};',
+                '<?php $foo = function(? Bar\Baz $param): ? Bar\Baz {};',
             ],
             [
-                '<?php class Test { public function foo(?Bar\Baz $param) {} }',
-                '<?php class Test { public function foo(? Bar\Baz $param) {} }',
+                '<?php $foo = function(?Bar\Baz &$param): ?Bar\Baz {};',
+                '<?php $foo = function(? Bar\Baz &$param): ? Bar\Baz {};',
+            ],
+            [
+                '<?php class Test { public function foo(?Bar\Baz $param): ?Bar\Baz {} }',
+                '<?php class Test { public function foo(? Bar\Baz $param): ? Bar\Baz {} }',
+            ],
+            [
+                '<?php abstract class Test { abstract public function foo(?Bar\Baz $param); }',
+                '<?php abstract class Test { abstract public function foo(? Bar\Baz $param); }',
             ],
             [
                 '<?php $foo = function(?array $a,
-                    ?array $b) {};',
+                    ?array $b): ?Bar\Baz {};',
                 '<?php $foo = function(?
                     array $a,
-                    ? array $b) {};',
+                    ? array $b): ?
+                    Bar\Baz {};',
             ],
             [
-                '<?php function foo(?array ...$param) {}',
-                '<?php function foo(? array ...$param) {}',
+                '<?php function foo(?array ...$param): ?array {}',
+                '<?php function foo(? array ...$param): ? array {}',
             ],
         ];
     }
