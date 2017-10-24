@@ -43,6 +43,17 @@ final class FunctionCompactNullableTypehintFixerTest extends AbstractFixerTestCa
                 '<?php function foo(?int $param): ?int {}',
             ],
             [
+                '<?php function foo(? /* foo */ int $param): ? /* foo */ int {}',
+            ],
+            [
+                '<?php function foo(? /** foo */ int $param): ? /** foo */ int {}',
+            ],
+            [
+                '<?php function foo(? // foo
+                    int $param): ? // foo
+                    int {}',
+            ],
+            [
                 '<?php function foo(/**? int*/$param): ?int {}',
                 '<?php function foo(/**? int*/$param): ? int {}',
             ],
@@ -57,6 +68,10 @@ final class FunctionCompactNullableTypehintFixerTest extends AbstractFixerTestCa
             [
                 '<?php function foo(?Bar $param): ?Bar {}',
                 '<?php function foo(? Bar $param): ? Bar {}',
+            ],
+            [
+                '<?php function foo(?\Bar $param): ?\Bar {}',
+                '<?php function foo(? \Bar $param): ? \Bar {}',
             ],
             [
                 '<?php function foo(?Bar\Baz $param): ?Bar\Baz {}',
