@@ -226,6 +226,9 @@ final class UtilsTest extends TestCase
         );
     }
 
+    /**
+     * @requires PHPUnit 5.2
+     */
     public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray()
     {
         $this->expectException(\InvalidArgumentException::class);
