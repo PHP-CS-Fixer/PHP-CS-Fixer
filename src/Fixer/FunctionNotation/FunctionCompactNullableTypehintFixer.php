@@ -60,6 +60,13 @@ final class FunctionCompactNullableTypehintFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        static $typehintKinds = [
+            CT::T_ARRAY_TYPEHINT,
+            T_CALLABLE,
+            T_NS_SEPARATOR,
+            T_STRING,
+        ];
+
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -72,6 +79,17 @@ final class FunctionCompactNullableTypehintFixer extends AbstractFixer
 
             for ($iter = $startSquareBracketIndex - 1; $iter > $startParenthesisIndex; --$iter) {
                 if (!$tokens[$iter]->isGivenKind(CT::T_NULLABLE_TYPE)) {
+                    continue;
+                }
+
+                // remove whitespaces only if there are only whitespaces
+                // between '?' and the variable type
+                if (
+                    !(
+                        $tokens[$iter + 1]->isWhitespace() &&
+                        $tokens[$iter + 2]->isGivenKind($typehintKinds)
+                    )
+                ) {
                     continue;
                 }
 
