@@ -187,10 +187,16 @@ final class Utils
      *
      * @param string[] $names
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public static function naturalLanguageJoinWithBackticks(array $names)
     {
+        if (empty($names)) {
+            throw new \InvalidArgumentException('Array of names cannot be empty');
+        }
+
         $names = array_map(function ($name) {
             return sprintf('`%s`', $name);
         }, $names);
@@ -201,6 +207,6 @@ final class Utils
             return implode(', ', $names).' and '.$last;
         }
 
-        return $last ?: '';
+        return $last;
     }
 }

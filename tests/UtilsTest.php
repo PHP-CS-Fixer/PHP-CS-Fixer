@@ -226,6 +226,13 @@ final class UtilsTest extends TestCase
         );
     }
 
+    public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Utils::naturalLanguageJoinWithBackticks([]);
+    }
+
     /**
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      *
@@ -240,10 +247,6 @@ final class UtilsTest extends TestCase
     public function provideNaturalLanguageJoinWithBackticksCases()
     {
         return [
-            [
-                '',
-                [],
-            ],
             [
                 '`a`',
                 ['a'],
