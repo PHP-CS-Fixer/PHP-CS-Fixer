@@ -52,7 +52,7 @@ final class CompactNullableTypehintFixer extends AbstractFixer
     {
         return
             PHP_VERSION_ID >= 70000 &&
-            $tokens->isAllTokenKindsFound([T_FUNCTION, CT::T_NULLABLE_TYPE]);
+            $tokens->isTokenKindFound(CT::T_NULLABLE_TYPE);
     }
 
     /**
@@ -70,31 +70,22 @@ final class CompactNullableTypehintFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_FUNCTION)) {
+            if (!$token->isGivenKind(CT::T_NULLABLE_TYPE)) {
                 continue;
             }
 
-            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $startSquareBracketIndex = $tokens->getNextTokenOfKind($startParenthesisIndex, ['{', ';']);
-
-            for ($iter = $startSquareBracketIndex - 1; $iter > $startParenthesisIndex; --$iter) {
-                if (!$tokens[$iter]->isGivenKind(CT::T_NULLABLE_TYPE)) {
-                    continue;
-                }
-
-                // remove whitespaces only if there are only whitespaces
-                // between '?' and the variable type
-                if (
-                    !(
-                        $tokens[$iter + 1]->isWhitespace() &&
-                        $tokens[$iter + 2]->isGivenKind($typehintKinds)
-                    )
-                ) {
-                    continue;
-                }
-
-                $tokens->removeTrailingWhitespace($iter);
+            // remove whitespaces only if there are only whitespaces
+            // between '?' and the variable type
+            if (
+                !(
+                    $tokens[$index + 1]->isWhitespace() &&
+                    $tokens[$index + 2]->isGivenKind($typehintKinds)
+                )
+            ) {
+                continue;
             }
+
+            $tokens->removeTrailingWhitespace($index);
         }
     }
 }
