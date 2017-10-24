@@ -516,6 +516,10 @@ Choose from the list of available rules:
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
   other tag variations.
 
+* **function_compact_nullable_typehint**
+
+  Remove extra spaces in a nullable typehint.
+
 * **function_declaration** [@PSR2, @Symfony]
 
   Spaces should be properly placed in a function declaration.
