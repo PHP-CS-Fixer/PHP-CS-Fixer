@@ -73,15 +73,11 @@ final class CompactNullableTypehintFixer extends AbstractFixer
             // remove whitespaces only if there are only whitespaces
             // between '?' and the variable type
             if (
-                !(
-                    $tokens[$index + 1]->isWhitespace() &&
-                    $tokens[$index + 2]->isGivenKind($typehintKinds)
-                )
+                $tokens[$index + 1]->isWhitespace() &&
+                $tokens[$index + 2]->isGivenKind($typehintKinds)
             ) {
-                continue;
+                $tokens->removeTrailingWhitespace($index);
             }
-
-            $tokens->removeTrailingWhitespace($index);
         }
     }
 }

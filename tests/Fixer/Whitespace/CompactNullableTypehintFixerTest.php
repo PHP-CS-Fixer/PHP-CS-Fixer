@@ -30,7 +30,6 @@ final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
      */
     public function testFix71($expected, $input = null)
     {
