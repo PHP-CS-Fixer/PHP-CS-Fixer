@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
+namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\FunctionCompactNullableTypehintFixer
+ * @covers \PhpCsFixer\Fixer\Whitespace\CompactNullableTypehintFixer
  */
-final class FunctionCompactNullableTypehintFixerTest extends AbstractFixerTestCase
+final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected

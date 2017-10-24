@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\FunctionNotation;
+namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Jack Cherng <jfcherng@gmail.com>
  */
-final class FunctionCompactNullableTypehintFixer extends AbstractFixer
+final class CompactNullableTypehintFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
