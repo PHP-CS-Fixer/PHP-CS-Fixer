@@ -98,7 +98,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         }
 
         $indent = $this->indent;
-        
+
         // change indent to expected one
         $content = preg_replace_callback('/^(?:    )+/m', function ($matches) use ($indent) {
             return str_replace('    ', $indent, $matches[0]);
