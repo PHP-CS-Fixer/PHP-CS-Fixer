@@ -60,7 +60,7 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide71Cases
+     * @dataProvider provideNullableReturnTypeCases
      * @requires PHP 7.1
      */
     public function test71ReturnTypes($expected, $input = null)
@@ -68,7 +68,7 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provide71Cases()
+    public function provideNullableReturnTypeCases()
     {
         return [
             ['<?php function foo(): ? /* C */ int { return null; }'],
