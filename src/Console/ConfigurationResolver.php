@@ -273,7 +273,7 @@ final class ConfigurationResolver
                     ));
                 }
             } else {
-                $option = $this->options['diff'] ? 'sbd' : 'null';
+                $option = $this->options['diff'] ? 'sbd' : 'null'; // TODO: change to udiff as default on 3.0
             }
 
             $this->differ = $mapper[$option]();
