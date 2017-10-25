@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ReturnNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -101,18 +102,46 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
      */
     private function needFixing(Tokens $tokens, $index)
     {
-        $content = '';
+        if ($this->isNullableReturnTypeFunction($tokens, $index)) {
+            return false;
+        }
 
+        $content = '';
         while (!$tokens[$index]->equals(';')) {
             $index = $tokens->getNextMeaningfulToken($index);
             $content .= $tokens[$index]->getContent();
         }
 
-        $content = rtrim($content, ';');
         $content = ltrim($content, '(');
-        $content = rtrim($content, ')');
+        $content = rtrim($content, ');');
 
         return 'null' === strtolower($content);
+    }
+
+    /**
+     * Is the return within a function with a nullable return type?
+     *
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
+    private function isNullableReturnTypeFunction(Tokens $tokens, $index)
+    {
+        $functionIndex = $index;
+        do {
+            $functionIndex = $tokens->getPrevTokenOfKind($functionIndex, [[T_FUNCTION]]);
+            if (null === $functionIndex) {
+                return false;
+            }
+            $openingBraceIndex = $tokens->getNextTokenOfKind($functionIndex, ['{']);
+            $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openingBraceIndex);
+        } while ($closingBraceIndex < $index);
+
+        $returnTypeIndex = $tokens->getPrevMeaningfulToken($openingBraceIndex);
+        $nullableIndex = $tokens->getPrevMeaningfulToken($returnTypeIndex);
+
+        return $tokens[$nullableIndex]->isGivenKind(CT::T_NULLABLE_TYPE);
     }
 
     /**
