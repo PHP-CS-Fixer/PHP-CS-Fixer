@@ -122,14 +122,15 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             $previousTokenHasTrailingLinebreak = true;
         }
 
+        $indent = $this->whitespacesConfig->getIndent();
         $newContent = preg_replace_callback(
             '/(\R)(\h+)/', // find indent
-            function (array $matches) {
+            static function (array $matches) use ($indent) {
                 // normalize mixed indent
                 $content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $matches[2]);
 
                 // change indent to expected one
-                return $matches[1].str_replace('    ', $this->whitespacesConfig->getIndent(), $content);
+                return $matches[1].str_replace('    ', $indent, $content);
             },
             $content
         );
