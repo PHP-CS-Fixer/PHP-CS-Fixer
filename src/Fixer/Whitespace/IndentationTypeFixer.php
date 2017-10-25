@@ -97,9 +97,11 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             $content = preg_replace('/^(\ +)?\t/m', '\1    ', $content, -1, $count);
         }
 
+        $indent = $this->indent;
+        
         // change indent to expected one
-        $content = preg_replace_callback('/^(?:    )+/m', function ($matches) {
-            return str_replace('    ', $this->indent, $matches[0]);
+        $content = preg_replace_callback('/^(?:    )+/m', function ($matches) use ($indent) {
+            return str_replace('    ', $indent, $matches[0]);
         }, $content);
 
         return new Token(array($tokens[$index]->getId(), $content));
@@ -122,7 +124,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             $previousTokenHasTrailingLinebreak = true;
         }
 
-        $indent = $this->whitespacesConfig->getIndent();
+        $indent = $this->indent;
         $newContent = preg_replace_callback(
             '/(\R)(\h+)/', // find indent
             function (array $matches) use ($indent) {
