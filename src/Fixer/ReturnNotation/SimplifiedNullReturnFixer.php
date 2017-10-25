@@ -15,6 +15,9 @@ namespace PhpCsFixer\Fixer\ReturnNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -29,9 +32,20 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'A return statement wishing to return `void` should not return `null`.',
-            array(new CodeSample('<?php return null;')),
-            null,
-            'Risky since PHP 7.1 as `null` and `void` can be hinted as return type and have different meaning.'
+            array(
+                new CodeSample('<?php return null;'),
+                new VersionSpecificCodeSample(
+<<<'EOT'
+<?php
+function foo() { return null; }
+function bar(): int { return null; }
+function baz(): ?int { return null; }
+function xyz(): void { return null; }
+EOT
+                    ,
+                    new VersionSpecification(70100)
+                ),
+            )
         );
     }
 
@@ -50,14 +64,6 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_RETURN);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
-    {
-        return true;
     }
 
     /**
@@ -101,18 +107,49 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
      */
     private function needFixing(Tokens $tokens, $index)
     {
-        $content = '';
+        if ($this->isStrictOrNullableReturnTypeFunction($tokens, $index)) {
+            return false;
+        }
 
+        $content = '';
         while (!$tokens[$index]->equals(';')) {
             $index = $tokens->getNextMeaningfulToken($index);
             $content .= $tokens[$index]->getContent();
         }
 
-        $content = rtrim($content, ';');
         $content = ltrim($content, '(');
-        $content = rtrim($content, ')');
+        $content = rtrim($content, ');');
 
         return 'null' === strtolower($content);
+    }
+
+    /**
+     * Is the return within a function with a non-void or nullable return type?
+     *
+     * @param Tokens $tokens
+     * @param int    $returnIndex Current return token index
+     *
+     * @return bool
+     */
+    private function isStrictOrNullableReturnTypeFunction(Tokens $tokens, $returnIndex)
+    {
+        $functionIndex = $returnIndex;
+        do {
+            $functionIndex = $tokens->getPrevTokenOfKind($functionIndex, array(array(T_FUNCTION)));
+            if (null === $functionIndex) {
+                return false;
+            }
+            $openingCurlyBraceIndex = $tokens->getNextTokenOfKind($functionIndex, array('{'));
+            $closingCurlyBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openingCurlyBraceIndex);
+        } while ($closingCurlyBraceIndex < $returnIndex);
+
+        $possibleVoidIndex = $tokens->getPrevMeaningfulToken($openingCurlyBraceIndex);
+        $isStrictReturnType = $tokens[$possibleVoidIndex]->isGivenKind(T_STRING) && 'void' !== $tokens[$possibleVoidIndex]->getContent();
+
+        $nullableTypeIndex = $tokens->getNextTokenOfKind($functionIndex, array(array(CT::T_NULLABLE_TYPE)));
+        $isNullableReturnType = null !== $nullableTypeIndex && $nullableTypeIndex < $openingCurlyBraceIndex;
+
+        return $isStrictReturnType || $isNullableReturnType;
     }
 
     /**
