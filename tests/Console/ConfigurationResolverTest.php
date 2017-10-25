@@ -1061,9 +1061,9 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param string      $expected
-     * @param bool|string $diffConfig
-     * @param null|string $differConfig
+     * @param string           $expected
+     * @param null|bool|string $diffConfig
+     * @param null|string      $differConfig
      *
      * @dataProvider provideDifferCases
      */
