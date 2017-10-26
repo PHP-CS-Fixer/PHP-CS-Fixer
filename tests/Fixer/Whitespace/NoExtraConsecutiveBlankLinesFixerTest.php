@@ -436,11 +436,54 @@ EOF
         ];
     }
 
-    public function testFixWithWindowsLineBreaks()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideLineBreakCases
+     */
+    public function testFixWithLineBreaks($expected, $input = null)
     {
-        $input = "<?php\r\n//a\r\n\r\n\r\n\r\n\$a =1;";
-        $expected = "<?php\r\n//a\n\n\$a =1;";
         $this->doTest($expected, $input);
+    }
+
+    public function provideLineBreakCases()
+    {
+        $input = '<?php //
+
+
+$a = 1;
+
+
+$b = 1;
+';
+        $expected = '<?php //
+
+$a = 1;
+
+$b = 1;
+';
+
+        return [
+            [
+                "<?php\r\n//a\r\n\r\n\$a =1;",
+                "<?php\r\n//a\r\n\r\n\r\n\r\n\$a =1;",
+            ],
+            [
+                $expected,
+                $input,
+            ],
+            [
+                str_replace("\n", "\r\n", $expected),
+                str_replace("\n", "\r\n", $input),
+            ],
+            [
+                str_replace("\n", "\r", $input),
+            ],
+            [
+                str_replace("\n", "\r", $expected),
+            ],
+        ];
     }
 
     public function testWrongConfig()

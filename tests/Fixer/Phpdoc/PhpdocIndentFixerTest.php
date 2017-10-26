@@ -390,6 +390,18 @@ function foo()
 }',
         ];
 
+        $cases[] = [
+            '<?php
+
+/**
+ * Foo
+       Bar
+ */
+class Foo
+{
+}',
+        ];
+
         return $cases;
     }
 }

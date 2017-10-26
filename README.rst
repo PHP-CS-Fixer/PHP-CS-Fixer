@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.3/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -324,6 +324,16 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply between cast and variable;
     defaults to ``'single'``
 
+* **class_attributes_separation** [@Symfony]
+
+  Class, trait and interface elements must be separated with one blank
+  line.
+
+  Configuration options:
+
+  - ``elements`` (``array``): list of classy elements; 'const', 'method',
+    'property'; defaults to ``['const', 'method', 'property']``
+
 * **class_definition** [@PSR2, @Symfony]
 
   Whitespace around the keywords of a class, trait or interfaces
@@ -538,6 +548,25 @@ Choose from the list of available rules:
 
   *Risky rule: risky if the ``ereg`` function is overridden.*
 
+* **escape_implicit_backslashes**
+
+  Escape implicit backslashes in strings and heredocs to ease the
+  understanding of which are special chars interpreted by PHP and which
+  not.
+
+  Configuration options:
+
+  - ``double_quoted`` (``bool``): whether to fix double-quoted strings; defaults to
+    ``true``
+  - ``heredoc_syntax`` (``bool``): whether to fix heredoc syntax; defaults to ``true``
+  - ``single_quoted`` (``bool``): whether to fix single-quoted strings; defaults to
+    ``false``
+
+* **explicit_indirect_variable**
+
+  Add curly braces to indirect variables to make them clear to understand.
+  Requires PHP >= 7.0.
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
@@ -684,9 +713,10 @@ Choose from the list of available rules:
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
-* **method_separation** [@Symfony]
+* **method_separation**
 
-  Methods must be separated with one blank line.
+  Methods must be separated with one blank line. DEPRECATED: use
+  ``class_attributes_separation`` instead.
 
 * **modernize_types_casting** [@Symfony:risky]
 
@@ -1232,8 +1262,8 @@ Choose from the list of available rules:
 
 * **self_accessor** [@Symfony]
 
-  Inside a classy element "self" should be preferred to the class name
-  itself.
+  Inside class or interface element "self" should be preferred to the
+  class name itself.
 
 * **semicolon_after_instruction** [@Symfony]
 
@@ -1253,8 +1283,6 @@ Choose from the list of available rules:
 * **simplified_null_return**
 
   A return statement wishing to return ``void`` should not return ``null``.
-
-  *Risky rule: risky since PHP 7.1 as ``null`` and ``void`` can be hinted as return type and have different meaning.*
 
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
 
@@ -1402,7 +1430,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.1/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.3/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

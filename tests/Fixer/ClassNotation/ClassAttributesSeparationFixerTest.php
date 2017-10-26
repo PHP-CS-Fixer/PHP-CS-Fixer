@@ -13,15 +13,115 @@
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer
+ * @covers \PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer
  */
-final class MethodSeparationFixerTest extends AbstractFixerTestCase
+final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @param int    $expected
+     * @param string $code
+     * @param int    $index
+     *
+     * @dataProvider provideCommentBlockStartDetectionCases
+     */
+    public function testCommentBlockStartDetection($expected, $code, $index)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($code);
+        $method = new \ReflectionMethod($this->fixer, 'findCommentBlockStart');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->fixer, $tokens, $index);
+        $this->assertSame(
+            $expected,
+            $result,
+            sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson())
+        );
+    }
+
+    public function provideCommentBlockStartDetectionCases()
+    {
+        return [
+            [
+                4,
+                '<?php
+                    //ui
+
+                    //j1
+                    //k2
+                ',
+                6,
+            ],
+            [
+                4,
+                '<?php
+                    //ui
+
+                    //j1
+                    //k2
+                ',
+                5,
+            ],
+            [
+                4,
+                '<?php
+                    /**/
+
+                    //j1
+                    //k2
+                ',
+                6,
+            ],
+            [
+                4,
+                '<?php
+                    $a;//j
+                    //k
+                ',
+                6,
+            ],
+            [
+                2,
+                '<?php
+                    //a
+                ',
+                2,
+            ],
+            [
+                2,
+                '<?php
+                    //b
+                    //c
+                ',
+                2,
+            ],
+            [
+                2,
+                '<?php
+                    //d
+                    //e
+                ',
+                4,
+            ],
+            [
+                2,
+                '<?php
+                    /**/
+                    //f
+                    //g
+                    //h
+                ',
+                8,
+            ],
+        ];
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
@@ -69,7 +169,7 @@ class SomeClass2
     }
 }
             ',
-        ];
+            ];
         $cases[] = [
             '<?php
 class SomeClass3
@@ -277,8 +377,8 @@ abstract class MethodTest2
     {
     }
 }
-function test1(){ echo 1;}
-function test2(){ echo 2;}',
+function some1(){ echo 1;}
+function some2(){ echo 2;}',
             '<?php
 abstract class MethodTest2
 {
@@ -305,8 +405,8 @@ abstract class MethodTest2
     {
     }
 }
-function test1(){ echo 1;}
-function test2(){ echo 2;}',
+function some1(){ echo 1;}
+function some2(){ echo 2;}',
         ];
 
         $cases[] = [
@@ -544,7 +644,7 @@ class MethodTest123124124
         // do not touch function out of class scope
         $cases[] = [
             '<?php
-function test0() {
+function some0() {
 
 }
 class MethodTest4
@@ -557,13 +657,24 @@ class MethodTest4
     {
     }
 }
-function test() {
+function some() {
 
 }
-function test2() {
+function some2() {
 
 }
 ',
+        ];
+
+        $cases[] = [
+            '<?php interface A {
+public function B(); // allowed comment
+
+                public function C(); // allowed comment
+            }',
+            '<?php interface A {public function B(); // allowed comment
+                public function C(); // allowed comment
+            }',
         ];
 
         return $cases;
@@ -623,7 +734,7 @@ private $a;
 
 function getF(){echo 4;}
 }',
-            '<?php
+    '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
     protected function getA(){echo 1;}function getB(){echo 2;}
@@ -649,7 +760,7 @@ trait SomeReturnInfo {
 
     abstract public function getWorld();
 }',
-            '<?php
+    '<?php
 trait SomeReturnInfo {
     function getReturnType()
     {
@@ -685,32 +796,32 @@ trait SomeReturnInfo {
             '<?php
 interface TestInterface
 {
-    public function testInterfaceMethod4();
+    public function someInterfaceMethod4();
 
-    public function testInterfaceMethod5();
+    public function someInterfaceMethod5();
 
     /**
      * {@link}
      */           '.'
-    public function testInterfaceMethod6();
+    public function someInterfaceMethod6();
 
-    public function testInterfaceMethod7();
+    public function someInterfaceMethod7();
 
- public function testInterfaceMethod8();
+ public function someInterfaceMethod8();
 }',
             '<?php
 interface TestInterface
-{    public function testInterfaceMethod4();
-    public function testInterfaceMethod5();
+{    public function someInterfaceMethod4();
+    public function someInterfaceMethod5();
 
 
     /**
      * {@link}
      */           '.'
-    public function testInterfaceMethod6();
+    public function someInterfaceMethod6();
 
 
-    public function testInterfaceMethod7(); public function testInterfaceMethod8();
+    public function someInterfaceMethod7(); public function someInterfaceMethod8();
 }',
         ];
 
@@ -719,9 +830,9 @@ interface TestInterface
             '<?php
 interface TestInterfaceOK
 {
-    public function testMethod1();
+    public function someMethod1();
 
-    public function testMethod2();
+    public function someMethod2();
 }',
         ];
 
@@ -738,7 +849,7 @@ function afterUseTrait(){}
 
 function afterUseTrait2(){}
 }',
-            '<?php
+'<?php
 trait ezcReflectionReturnInfo {
     function getReturnDescription() {}
 }
@@ -776,6 +887,188 @@ class ezcReflectionMethod extends ReflectionMethod {
             [
                 "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
                 "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param array       $config
+     *
+     * @dataProvider provideConfigCases
+     */
+    public function testWithConfig($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideConfigCases()
+    {
+        return [
+            [
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+
+                        public $b = 1;
+
+                    function A(){}}
+                ',
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+                        public $b = 1;
+
+
+
+                    function A(){}}
+                ',
+                ['elements' => ['property']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        const A = 1;
+
+                        const THREE = ONE + self::TWO; /* test */ # test
+
+                        const B = 2;
+}
+                ',
+                '<?php
+                    class A
+                    {
+
+                        const A = 1;
+                        const THREE = ONE + self::TWO; /* test */ # test
+                        const B = 2;}
+                ',
+                ['elements' => ['const']],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        $to = $from = '<?php ';
+
+        for ($i = 0; $i < 15; ++$i) {
+            $from .= sprintf('class A%d{public function AA%d(){return new class {public function BB%d(){}};}public function otherFunction%d(){}}', $i, $i, $i, $i);
+            $to .= sprintf("class A%d{\npublic function AA%d(){return new class {\npublic function BB%d(){}\n};}\n\npublic function otherFunction%d(){}\n}", $i, $i, $i, $i);
+        }
+
+        return [
+            [$to, $from],
+            [
+                '<?php $a = new class {
+                public function A(){}
+
+                public function B(){}
+
+                private function C(){}
+                };',
+                '<?php $a = new class {
+                public function A(){}
+                public function B(){}
+                private function C(){}
+                };',
+            ],
+            [
+                '<?php
+                    class A
+                    {
+public function getFilter()
+                        {
+                            return new class () implements FilterInterface {
+private $d = 123;
+
+                                public function pass($a, $b) {
+                                    echo $a;
+                                }
+
+                                public $e = 5;
+};}
+                    }
+                ',
+                '<?php
+                    class A
+                    {public function getFilter()
+                        {
+                            return new class () implements FilterInterface {private $d = 123;
+                                public function pass($a, $b) {
+                                    echo $a;
+                                }
+                                public $e = 5;};}
+
+
+
+                    }
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix71Cases
+     * @requires PHP 7.1
+     */
+    public function testFix71($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'elements' => ['method', 'const'],
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix71Cases()
+    {
+        return [
+            [
+                '<?php
+                class Foo {
+    public abstract function A(){}
+
+    /**  */
+    public const BAR = 123;
+
+    /**  */
+    private const BAZ = "a";
+                }',
+                '<?php
+                class Foo {
+
+
+
+    public abstract function A(){}
+
+
+    /**  */
+    public const BAR = 123;
+    /**  */
+    private const BAZ = "a";
+
+
+                }',
             ],
         ];
     }
