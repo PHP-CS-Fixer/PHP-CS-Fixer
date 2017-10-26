@@ -44,6 +44,14 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        return -1; // Must run after NoMultilineWhitespaceBeforeSemicolonsFixer
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(';');
