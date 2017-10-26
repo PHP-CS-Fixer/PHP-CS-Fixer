@@ -443,16 +443,17 @@ $a#4
      * @param string $expectedMessage
      *
      * @dataProvider provideInvalidConfigurationCases
-     * @requires PHPUnit 5.2
      */
     public function testInvalidConfig(array $config, $expectedMessage)
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(sprintf(
-            '#^\[%s\] %s$#',
-            $this->fixer->getName(),
-            preg_quote($expectedMessage, '#')
-        ));
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            sprintf(
+                '#^\[%s\] %s$#',
+                $this->fixer->getName(),
+                preg_quote($expectedMessage, '#')
+            )
+        );
 
         $this->fixer->configure($config);
     }
