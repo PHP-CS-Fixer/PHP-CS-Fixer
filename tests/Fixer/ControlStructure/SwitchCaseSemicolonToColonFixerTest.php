@@ -227,18 +227,14 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
     public function provideFix70Cases()
     {
         return array(
-            array(
+            'nested switch in switch case' => array(
                 '<?php
                     switch (1) {
-                        case new class {public function A(){echo 1;}}:
-                            break;
-                    }
+                        case new class {public function A(){echo 1;switch(time()){case 1: echo 2;}}}:break;}
                 ',
                 '<?php
                     switch (1) {
-                        case new class {public function A(){echo 1;}};
-                            break;
-                    }
+                        case new class {public function A(){echo 1;switch(time()){case 1; echo 2;}}};break;}
                 ',
             ),
             array(
