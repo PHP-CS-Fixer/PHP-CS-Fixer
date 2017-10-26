@@ -46,7 +46,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return -1;
+        return -1; // Must run after NoMultilineWhitespaceBeforeSemicolonsFixer
     }
 
     /**
