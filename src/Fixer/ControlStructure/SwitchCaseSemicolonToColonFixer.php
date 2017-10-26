@@ -76,7 +76,8 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
         $ternariesCount = 0;
         do {
             if ($tokens[$index]->equalsAny(array('(', '{'))) { // skip constructs
-                $index = $tokens->findBlockEnd(Tokens::detectBlockType($tokens[$index])['type'], $index);
+                $type = Tokens::detectBlockType($tokens[$index]);
+                $index = $tokens->findBlockEnd($type['type'], $index);
 
                 continue;
             }
