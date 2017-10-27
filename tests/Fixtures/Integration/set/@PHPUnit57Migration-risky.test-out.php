@@ -1,8 +1,8 @@
 <?php
 
-use PHPUnit_Framework_Assert;
-use PHPUnit_Framework_BaseTestListener;
-use PHPUnit_Framework_TestListener;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\BaseTestListener;
+use PHPUnit\Framework\TestListener;
 use PHPUnit_Aaa;
 use PHPUnit_Aaa_Bbb;
 use PHPUnit_Aaa_Bbb_Ccc;

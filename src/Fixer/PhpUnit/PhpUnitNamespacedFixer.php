@@ -99,8 +99,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         while (null !== $currIndex) {
             $match = $tokens->findSequence([[T_STRING]], $currIndex);
 
-            flush();
-            ob_flush();
             if (null === $match) {
                 break;
             }
