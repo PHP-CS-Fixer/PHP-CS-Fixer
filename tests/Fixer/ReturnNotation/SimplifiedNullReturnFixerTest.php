@@ -78,6 +78,10 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
                 '<?php function foo(): ?int { return null; } return null;',
             ],
             [
+                '<?php function foo() { return; } function bar(): ?A\B\C\D { return null; } function baz() { return; }',
+                '<?php function foo() { return null; } function bar(): ?A\B\C\D { return null; } function baz() { return null; }',
+            ],
+            [
                 '<?php function foo(): ?int { $bar = function() { return; }; return null; }',
                 '<?php function foo(): ?int { $bar = function() { return null; }; return null; }',
             ],
