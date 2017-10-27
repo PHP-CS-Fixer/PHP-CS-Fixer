@@ -25,9 +25,12 @@ final class PhpUnitTargetVersion
     const VERSION_3_2 = '3.2';
     const VERSION_3_5 = '3.5';
     const VERSION_4_3 = '4.3';
+    const VERSION_4_8 = '4.8';
     const VERSION_5_0 = '5.0';
     const VERSION_5_2 = '5.2';
     const VERSION_5_6 = '5.6';
+    const VERSION_5_7 = '5.7';
+    const VERSION_6_0 = '6.0';
     const VERSION_NEWEST = 'newest';
 
     private function __construct()

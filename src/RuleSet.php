@@ -217,8 +217,12 @@ final class RuleSet implements RuleSetInterface
             '@PHPUnit35Migration:risky' => true,
             'php_unit_no_expectation_annotation' => ['target' => PhpUnitTargetVersion::VERSION_4_3],
         ],
-        '@PHPUnit50Migration:risky' => [
+        '@PHPUnit48Migration:risky' => [
             '@PHPUnit43Migration:risky' => true,
+            // TODO
+        ],
+        '@PHPUnit50Migration:risky' => [
+            '@PHPUnit48Migration:risky' => true,
             'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_0],
         ],
         '@PHPUnit52Migration:risky' => [
@@ -227,12 +231,20 @@ final class RuleSet implements RuleSetInterface
         ],
         '@PHPUnit54Migration:risky' => [
             '@PHPUnit52Migration:risky' => true,
-            'php_unit_namespaced_test_case' => true,
+            'php_unit_namespaced' => true,
         ],
         '@PHPUnit56Migration:risky' => [
             '@PHPUnit54Migration:risky' => true,
             'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
             'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
+        ],
+        '@PHPUnit57Migration:risky' => [
+            '@PHPUnit56Migration:risky' => true,
+            // TODO
+        ],
+        '@PHPUnit60Migration:risky' => [
+            '@PHPUnit57Migration:risky' => true,
+            // TODO
         ],
         // @TODO FRS: integration test for newest phpunit migration - whiteshit version
     ];
