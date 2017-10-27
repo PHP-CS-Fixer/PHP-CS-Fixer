@@ -138,8 +138,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
             $closingCurlyBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openingCurlyBraceIndex);
         } while ($closingCurlyBraceIndex < $index);
 
-        $functionLastBraceIndex = $tokens->getPrevTokenOfKind($openingCurlyBraceIndex, [')']);
-        $nullableTypeIndex = $tokens->getNextTokenOfKind($functionLastBraceIndex, [[CT::T_NULLABLE_TYPE]]);
+        $nullableTypeIndex = $tokens->getNextTokenOfKind($functionIndex, [[CT::T_NULLABLE_TYPE]]);
 
         return null !== $nullableTypeIndex && $nullableTypeIndex < $openingCurlyBraceIndex;
     }
