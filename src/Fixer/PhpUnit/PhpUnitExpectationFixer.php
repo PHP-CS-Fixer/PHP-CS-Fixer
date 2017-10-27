@@ -82,7 +82,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
     {
-        $this->setExpectedException("RuntimeException", "Msg", 123);
+        $this->setExpectedException("RuntimeException", null, 123);
         foo();
     }
 

@@ -72,7 +72,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
         {
             aaa();
             $this->expectException(\'RuntimeException\');
-            $this->expectExceptionMessage(\'msg\');
+            $this->expectExceptionMessage(null);
             $this->expectExceptionCode(/*C*/123);
             zzz();
         }
@@ -83,7 +83,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
         function testFnc()
         {
             aaa();
-            $this->setExpectedException(\'RuntimeException\',\'msg\',/*C*/123);
+            $this->setExpectedException(\'RuntimeException\',null,/*C*/123);
             zzz();
         }
     }',
@@ -252,5 +252,3 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ];
     }
 }
-
-// @TODO FRS: is it needed to create `expectExceptionMessage("")` ?
