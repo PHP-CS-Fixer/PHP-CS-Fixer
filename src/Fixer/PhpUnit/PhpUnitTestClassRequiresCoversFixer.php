@@ -70,6 +70,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            // don't add `@covers` annotation for abstract base classes
+            if ($tokens[$prevIndex]->isGivenKind(T_ABSTRACT)) {
+                return false;
+            }
+
             if (!$phpUnitIndicator->isPhpUnitClass($tokens, $index)) {
                 continue;
             }

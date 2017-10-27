@@ -26,12 +26,6 @@ final class PhpUnitIndicator
             throw new \LogicException(sprintf('No T_CLASS at given index %d, got %s.', $index, $tokens[$index]->getName()));
         }
 
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-
-        if ($tokens[$prevIndex]->isGivenKind(T_ABSTRACT)) {
-            return false; // TODO (keradus): this check shall not be here
-        }
-
         $classNameIndex = $tokens->getNextMeaningfulToken($index);
         if (0 !== preg_match('/(?:Test|TestCase)$/', $tokens[$classNameIndex]->getContent())) {
             return true;
