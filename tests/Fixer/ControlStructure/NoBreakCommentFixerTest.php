@@ -1028,10 +1028,8 @@ switch ($foo) {
 
     public function testConfigureWithInvalidOptions()
     {
-        $this->setExpectedExceptionRegExp(
-            InvalidFixerConfigurationException::class,
-            '/^\[no_break_comment\] Invalid configuration: The option "foo" does not exist\. Defined options are: "comment_text"\.$/'
-        );
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[no_break_comment\] Invalid configuration: The option "foo" does not exist\. Defined options are: "comment_text"\.$/');
         $this->fixer->configure(['foo' => true]);
     }
 }

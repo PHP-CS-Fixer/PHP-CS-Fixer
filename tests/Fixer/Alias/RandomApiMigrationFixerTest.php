@@ -26,20 +26,16 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
     public function testConfigureCheckSearchFunction()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer\.$#');
 
         $this->fixer->configure(['replacements' => ['is_null' => 'random_int']]);
     }
 
     public function testConfigureCheckReplacementType()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given\.$#');
 
         $this->fixer->configure(['replacements' => ['rand' => null]]);
     }
@@ -52,7 +48,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['rand' => 'random_int']);
 
-        static::assertSame(
+        $this->assertSame(
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],
@@ -64,7 +60,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['replacements' => ['rand' => 'random_int']]);
 
-        static::assertSame(
+        $this->assertSame(
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],
