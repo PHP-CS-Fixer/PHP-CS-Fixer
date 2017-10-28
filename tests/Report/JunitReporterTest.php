@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests\Report;
 
 use GeckoPackages\PHPUnit\Constraints\XML\XMLMatchesXSDConstraint;
 use PhpCsFixer\Report\JunitReporter;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
