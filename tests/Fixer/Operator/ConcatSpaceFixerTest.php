@@ -26,20 +26,16 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfigMissingKey()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[concat_space\] Invalid configuration: The option "a" does not exist\. Defined options are: "spacing"\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[concat_space\] Invalid configuration: The option "a" does not exist\. Defined options are: "spacing"\.$#');
 
         $this->fixer->configure(['a' => 1]);
     }
 
     public function testInvalidConfigValue()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[concat_space\] Invalid configuration: The option "spacing" with value "tabs" is invalid\. Accepted values are: "one", "none"\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[concat_space\] Invalid configuration: The option "spacing" with value "tabs" is invalid\. Accepted values are: "one", "none"\.$#');
 
         $this->fixer->configure(['spacing' => 'tabs']);
     }
