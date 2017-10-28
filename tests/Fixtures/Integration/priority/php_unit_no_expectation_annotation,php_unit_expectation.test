@@ -11,7 +11,7 @@ class FooTest extends \PHPUnit_Framework_TestCase
     public function testFoo()
     {
         $this->expectException(\FooException::class);
-        $this->expectExceptionMessage('');
+        $this->expectExceptionMessage(null);
         $this->expectExceptionCode(123);
         foo();
     }

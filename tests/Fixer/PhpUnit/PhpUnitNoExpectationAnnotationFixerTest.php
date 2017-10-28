@@ -122,7 +122,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
          */
         public function testFnc()
         {
-            $this->setExpectedException(\FooException::class, \'\', 123);
+            $this->setExpectedException(\FooException::class, null, 123);
             aaa();
         }
     }',

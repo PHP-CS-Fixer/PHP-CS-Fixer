@@ -13,7 +13,7 @@ class FooTest extends \PHPUnit_Framework_TestCase {
      */
     function test_php_unit_no_expectation_annotation_32()
     {
-        $this->setExpectedException(\FooException::class, '', 123);
+        $this->setExpectedException(\FooException::class, null, 123);
         bbb();
     }
 }

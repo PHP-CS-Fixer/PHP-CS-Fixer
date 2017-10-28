@@ -23,7 +23,7 @@ class FooTest extends \PHPUnit\Framework\TestCase {
     function test_php_unit_no_expectation_annotation_32()
     {
         $this->expectException(\FooException::class);
-        $this->expectExceptionMessage('');
+        $this->expectExceptionMessage(null);
         $this->expectExceptionCode(123);
         bbb();
     }
