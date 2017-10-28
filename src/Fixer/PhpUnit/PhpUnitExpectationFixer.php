@@ -182,7 +182,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $argumentsReplacements = ['expectException', $this->methodMap[$tokens[$index]->getContent()], 'expectExceptionCode'];
 
-            $indent = "\n".$this->detectIndent($tokens, $thisIndex); // TODO whitespaceaware shit
+            $indent = $this->whitespacesConfig->getLineEnding().$this->detectIndent($tokens, $thisIndex);
 
             $isMultilineWhitespace = false;
 
@@ -204,7 +204,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ];
 
                 if ($isMultilineWhitespace) {
-                    array_push($tokensOverrideArgStart, new Token([T_WHITESPACE, $indent.'    '])); // TODO whitespaceaware shit
+                    array_push($tokensOverrideArgStart, new Token([T_WHITESPACE, $indent.$this->whitespacesConfig->getIndent()]));
                     array_unshift($tokensOverrideArgBefore, new Token([T_WHITESPACE, $indent]));
                 }
 

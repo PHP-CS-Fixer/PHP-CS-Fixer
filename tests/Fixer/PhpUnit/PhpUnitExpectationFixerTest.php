@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -248,6 +249,54 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 }',
                 ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $expected = str_replace(['    ', "\n"], ["\t", "\r\n"], $expected);
+        if (null !== $input) {
+            $input = str_replace(['    ', "\n"], ["\t", "\r\n"], $input);
+        }
+
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return [
+            [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            aaa();
+            $this->expectException(\'RuntimeException\');
+            $this->expectExceptionMessage(\'msg\'/*B*/);
+            $this->expectExceptionCode(/*C*/123);
+            zzz();
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            aaa();
+            $this->setExpectedException(\'RuntimeException\', \'msg\'/*B*/, /*C*/123);
+            zzz();
+        }
+    }',
             ],
         ];
     }

@@ -259,7 +259,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 .implode($paramList, ', ')
                 .');';
             $newMethods = Tokens::fromCode($newMethodsCode);
-            $newMethods[0] = new Token([T_WHITESPACE, "\n".$originalIndent.'    ']); // @TODO FRS whitespace shit
+            $newMethods[0] = new Token([
+                T_WHITESPACE,
+                $this->whitespacesConfig->getLineEnding().$originalIndent.$this->whitespacesConfig->getIndent(),
+            ]);
 
             // apply changes
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
@@ -280,7 +283,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         preg_match('/^\s*\*\s*@'.$tag.'\s+(.+)$/', $annotation->getContent(), $matches);
 
-        return $matches[1];
+        return rtrim($matches[1]);
     }
 
     private function annotationsToParamList(array $annotations)

@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -21,7 +22,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitNoExpectationAnnotationFixer
- * @TODO FRS whitespace shit tests
  */
 final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCase
 {
@@ -341,6 +341,56 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
          * @expectedException FooException
          */
         final function testFnc($param)
+        {
+            aaa();
+        }
+    }',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $expected = str_replace(['    ', "\n"], ["\t", "\r\n"], $expected);
+        if (null !== $input) {
+            $input = str_replace(['    ', "\n"], ["\t", "\r\n"], $input);
+        }
+
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return [
+            [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         */
+        public function testFnc()
+        {
+            $this->setExpectedException(\FooException::class, \'foo\', 123);
+            aaa();
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * @expectedException FooException
+         * @expectedExceptionMessage foo
+         * @expectedExceptionCode 123
+         */
+        public function testFnc()
         {
             aaa();
         }

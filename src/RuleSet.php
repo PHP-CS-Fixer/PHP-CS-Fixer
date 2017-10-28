@@ -242,7 +242,6 @@ final class RuleSet implements RuleSetInterface
             '@PHPUnit57Migration:risky' => true,
             'php_unit_namespaced' => ['target' => PhpUnitTargetVersion::VERSION_6_0],
         ],
-        // @TODO FRS: integration test for newest phpunit migration - whiteshit version
     ];
 
     /**
