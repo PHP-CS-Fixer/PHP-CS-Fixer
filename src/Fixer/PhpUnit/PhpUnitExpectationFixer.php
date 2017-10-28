@@ -19,7 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitIndicator;
+use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -142,7 +142,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
-        $phpUnitIndicator = new PhpUnitIndicator();
+        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
 
         $oldMethodSequence = [
             new Token([T_VARIABLE, '$this']),
@@ -153,7 +153,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $inPhpUnitClass = false;
 
         for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
-            if (!$inPhpUnitClass && $tokens[$index]->isGivenKind(T_CLASS) && $phpUnitIndicator->isPhpUnitClass($tokens, $index)) {
+            if (!$inPhpUnitClass && $tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
                 $inPhpUnitClass = true;
             }
 

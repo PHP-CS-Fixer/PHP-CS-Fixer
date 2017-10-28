@@ -21,7 +21,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitIndicator;
+use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -181,11 +181,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     private function findPhpUnitClasses(Tokens $tokens)
     {
-        $phpUnitIndicator = new PhpUnitIndicator();
+        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
         $phpunitClasses = [];
 
         for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_CLASS) && $phpUnitIndicator->isPhpUnitClass($tokens, $index)) {
+            if ($tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
                 $index = $tokens->getNextTokenOfKind($index, ['{']);
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
                 $phpunitClasses[] = [$index, $endIndex];

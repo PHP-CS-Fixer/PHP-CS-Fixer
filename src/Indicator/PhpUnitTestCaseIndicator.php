@@ -16,9 +16,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
- * @TODO (keradus): rename to `PhpUnitTestCaseIndicator`
  */
-final class PhpUnitIndicator
+final class PhpUnitTestCaseIndicator
 {
     public function isPhpUnitClass(Tokens $tokens, $index)
     {
