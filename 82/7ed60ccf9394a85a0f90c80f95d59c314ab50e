@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-24T08:02:07Z
+
+thanks for the PR :)
+I wonder, maybe this logic could be part of the `function_declaration fixer`, WDYT ? (@julienfalque as well)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-24T08:07:34Z
+
+I thought about it but have no strong opinion, both solutions are fine IMO.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-24T09:55:00Z
+
+:-1:, for me `? foo` is a type and shall be treated as one thing (even if multiple tokens).
+for that, we shall fix it everywhere, not only in function (yes, I know, for now it's only there, but maybe, in future, we will strongly typehint properties or local vars as well...)
+
+---------------------------------------------------------------------------
+
+by jfcherng at 2017-10-24T16:54:30Z
+
+@keradus Fair enough since PHP is going to play with JIT. Variable declaration like `?int $foo = 0;` is quite possible in the future indeed.
