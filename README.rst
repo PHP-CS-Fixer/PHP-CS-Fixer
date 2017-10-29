@@ -327,6 +327,10 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
+* **compact_nullable_typehint**
+
+  Remove extra spaces in a nullable typehint.
+
 * **concat_space** [@Symfony]
 
   Concatenation should be spaced according configuration.
