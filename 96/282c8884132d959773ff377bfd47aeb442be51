@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-18T15:28:50Z
+
+@julienfalque it was [this](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3141#issuecomment-335377036) comment that start me to think we can have this for something useful actually - not only as help for https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3146.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-26T17:25:07Z
+
+maybe a nice enhancement could be made in the [RuleSetTest](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.7/tests/RuleSetTest.php) to make sure we've no fixers in there that implement the new `DeprecatedFixerInterface`?
+(you typing and thinking at the same time here)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-10-26T19:35:54Z
+
+I'm planning to do this in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3146 - together with testing that fixers implementing `DeprecatedFixerInterface` will trigger deprecation error. Of course after this one is merged.
