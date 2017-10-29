@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\ReturnNotation;
 
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -26,7 +27,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
  */
-final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements WhitespacesAwareFixerInterface
+final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements DeprecatedFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -34,9 +35,17 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Whi
     public function getDefinition()
     {
         return new FixerDefinition(
-            'An empty line feed should precede a return statement. DEPRECATED: use `blank_line_before_statement` instead.',
+            'An empty line feed should precede a return statement.',
             [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}")]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSuccessorsNames()
+    {
+        return array_keys($this->proxyFixers);
     }
 
     /**

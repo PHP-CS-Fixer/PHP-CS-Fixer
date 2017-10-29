@@ -18,6 +18,7 @@ use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
@@ -28,6 +29,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Utils;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -144,8 +146,18 @@ final class DescribeCommand extends Command
             $definition = new FixerDefinition('Description is not available.', []);
         }
 
+        $description = $definition->getSummary();
+        if ($fixer instanceof DeprecatedFixerInterface) {
+            $successors = $fixer->getSuccessorsNames();
+            $message = [] === $successors
+                ? 'will be removed on next major version'
+                : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+            $message = preg_replace('/(`.+?`)/', '<info>$1</info>', $message);
+            $description .= sprintf(' <error>DEPRECATED</error>: %s.', $message);
+        }
+
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
-        $output->writeln($definition->getSummary());
+        $output->writeln($description);
         if ($definition->getDescription()) {
             $output->writeln($definition->getDescription());
         }
