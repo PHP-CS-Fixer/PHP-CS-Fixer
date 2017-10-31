@@ -396,7 +396,13 @@ final class ConfigurationResolver
                 $progressTypes = ['none', 'run-in', 'estimating', 'estimating-max'];
 
                 if (null === $progressType) {
-                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'run-in';
+                    $default = 'run-in';
+
+                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                        $default = 'estimating-max';
+                    }
+
+                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : $default;
                 } elseif (!in_array($progressType, $progressTypes, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are "%s".',
