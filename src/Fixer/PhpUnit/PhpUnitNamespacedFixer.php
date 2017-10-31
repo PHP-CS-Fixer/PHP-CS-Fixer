@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitNamespacedFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
-     * @var ?string
+     * @var string
      */
     private $originalClassRegEx;
 
