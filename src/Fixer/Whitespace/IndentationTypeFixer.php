@@ -27,6 +27,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
+     * @var string
+     */
+    private $indent;
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinition()
@@ -60,36 +65,82 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $expectedIndent = $this->whitespacesConfig->getIndent();
+        $this->indent = $this->whitespacesConfig->getIndent();
 
         foreach ($tokens as $index => $token) {
             if ($token->isComment()) {
-                $content = preg_replace('/^(?:(?<! ) {1,3})?\t/m', '\1    ', $token->getContent(), -1, $count);
-
-                // Also check for more tabs.
-                while (0 !== $count) {
-                    $content = preg_replace('/^(\ +)?\t/m', '\1    ', $content, -1, $count);
-                }
-
-                // change indent to expected one
-                $content = preg_replace_callback('/^(?:    )+/m', function ($matches) use ($expectedIndent) {
-                    return str_replace('    ', $expectedIndent, $matches[0]);
-                }, $content);
-
-                $tokens[$index] = new Token([$token->getId(), $content]);
+                $tokens[$index] = $this->fixIndentInComment($tokens, $index);
 
                 continue;
             }
 
             if ($token->isWhitespace()) {
-                // normalize mixed indent
-                $content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $token->getContent());
+                $tokens[$index] = $this->fixIndentToken($tokens, $index);
 
-                // change indent to expected one
-                $content = str_replace('    ', $this->whitespacesConfig->getIndent(), $content);
-
-                $tokens[$index] = new Token([T_WHITESPACE, $content]);
+                continue;
             }
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return Token
+     */
+    private function fixIndentInComment(Tokens $tokens, $index)
+    {
+        $content = preg_replace('/^(?:(?<! ) {1,3})?\t/m', '\1    ', $tokens[$index]->getContent(), -1, $count);
+
+        // Also check for more tabs.
+        while (0 !== $count) {
+            $content = preg_replace('/^(\ +)?\t/m', '\1    ', $content, -1, $count);
+        }
+
+        $indent = $this->indent;
+
+        // change indent to expected one
+        $content = preg_replace_callback('/^(?:    )+/m', function ($matches) use ($indent) {
+            return str_replace('    ', $indent, $matches[0]);
+        }, $content);
+
+        return new Token([$tokens[$index]->getId(), $content]);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return Token
+     */
+    private function fixIndentToken(Tokens $tokens, $index)
+    {
+        $content = $tokens[$index]->getContent();
+        $previousTokenHasTrailingLinebreak = false;
+
+        // TODO on 3.x this can be removed when we have a transformer for "T_OPEN_TAG" to "T_OPEN_TAG + T_WHITESPACE"
+        if (false !== strpos($tokens[$index - 1]->getContent(), "\n")) {
+            $content = "\n".$content;
+            $previousTokenHasTrailingLinebreak = true;
+        }
+
+        $indent = $this->indent;
+        $newContent = preg_replace_callback(
+            '/(\R)(\h+)/', // find indent
+            function (array $matches) use ($indent) {
+                // normalize mixed indent
+                $content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $matches[2]);
+
+                // change indent to expected one
+                return $matches[1].str_replace('    ', $indent, $content);
+            },
+            $content
+        );
+
+        if ($previousTokenHasTrailingLinebreak) {
+            $newContent = substr($newContent, 1);
+        }
+
+        return new Token([T_WHITESPACE, $newContent]);
     }
 }
