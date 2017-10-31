@@ -72,7 +72,7 @@ jobs:
         -
             <<: *STANDARD_TEST_JOB
             php: 7.2
-            env: COLLECT_COVERAGE=1 SYMFONY_DEPRECATIONS_HELPER=weak
+            env: COLLECT_COVERAGE=1
             before_script:
                 # check phpdbg
                 - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export COLLECT_COVERAGE=0; }
@@ -82,7 +82,7 @@ jobs:
             script:
                 - if [ $COLLECT_COVERAGE == 0 ]; then vendor/bin/phpunit || travis_terminate 1; fi
                 - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
-                - php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
                 - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/coveralls -v; fi
 
         -

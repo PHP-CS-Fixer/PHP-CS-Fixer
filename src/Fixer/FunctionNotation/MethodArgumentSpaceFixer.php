@@ -129,7 +129,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 'Ensure every argument of a multiline argument list is on its own line'
             ))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO should be true at 3.0
+                ->setDefault(false) // @TODO 3.0 should be true
                 ->getOption(),
         ]);
     }

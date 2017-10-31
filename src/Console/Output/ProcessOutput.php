@@ -64,7 +64,7 @@ final class ProcessOutput implements ProcessOutputInterface
     private $symbolsPerLine;
 
     /**
-     * @TODO make all parameters mandatory (`null` not allowed) in 3.0
+     * @TODO 3.0 make all parameters mandatory (`null` not allowed)
      *
      * @param OutputInterface $output
      * @param EventDispatcher $dispatcher
