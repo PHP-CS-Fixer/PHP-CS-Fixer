@@ -707,6 +707,28 @@ PHP;
             [5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3],
             [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
             [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5],
+            [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
+        ];
+    }
+
+    /**
+     * @param int    $expectedIndex
+     * @param string $source
+     * @param int    $type
+     * @param int    $searchIndex
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideFindBlockEnd70Cases
+     */
+    public function testFindBlockEnd70($expectedIndex, $source, $type, $searchIndex)
+    {
+        $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    public function provideFindBlockEnd70Cases()
+    {
+        return [
+            [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
         ];
     }
 

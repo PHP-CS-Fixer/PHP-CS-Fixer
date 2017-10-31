@@ -373,10 +373,10 @@ final class ProjectCodeTest extends TestCase
 
     private function getSrcClasses()
     {
-        static $files;
+        static $classes;
 
-        if (null !== $files) {
-            return $files;
+        if (null !== $classes) {
+            return $classes;
         }
 
         $finder = Finder::create()
@@ -388,7 +388,7 @@ final class ProjectCodeTest extends TestCase
             ])
         ;
 
-        $names = array_map(
+        $classes = array_map(
             function (SplFileInfo $file) {
                 return sprintf(
                     '%s\\%s%s%s',
@@ -401,17 +401,17 @@ final class ProjectCodeTest extends TestCase
             iterator_to_array($finder, false)
         );
 
-        sort($names);
+        sort($classes);
 
-        return $names;
+        return $classes;
     }
 
     private function getTestClasses()
     {
-        static $files;
+        static $classes;
 
-        if (null !== $files) {
-            return $files;
+        if (null !== $classes) {
+            return $classes;
         }
 
         $finder = Finder::create()
@@ -423,7 +423,7 @@ final class ProjectCodeTest extends TestCase
             ])
         ;
 
-        $names = array_map(
+        $classes = array_map(
             function (SplFileInfo $file) {
                 return sprintf(
                     'PhpCsFixer\\Tests\\%s%s%s',
@@ -435,9 +435,9 @@ final class ProjectCodeTest extends TestCase
             iterator_to_array($finder, false)
         );
 
-        sort($names);
+        sort($classes);
 
-        return $names;
+        return $classes;
     }
 
     /**
