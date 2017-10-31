@@ -784,10 +784,8 @@ use Foo\Bor\{
 
     public function testInvalidOrderTypesSize()
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '[ordered_imports] Invalid configuration: Missing sort type "function".'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".');
 
         $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -797,10 +795,8 @@ use Foo\Bor\{
 
     public function testInvalidOrderType()
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '[ordered_imports] Invalid configuration: Missing sort type "class".'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".');
 
         $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -816,13 +812,11 @@ use Foo\Bor\{
      */
     public function testInvalidSortAlgorithm($configuration, $expectedValue)
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            sprintf(
-                '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
-                $expectedValue
-            )
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage(sprintf(
+            '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
+            $expectedValue
+        ));
 
         $this->fixer->configure($configuration);
     }
