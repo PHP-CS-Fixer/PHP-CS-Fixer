@@ -149,6 +149,10 @@ final class FixCommand extends Command
 
         if (null !== $stdErr) {
             if (null !== $passedConfig && null !== $passedRules) {
+                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                    throw new \RuntimeException('Passing both `config` and `rules` options is not possible.');
+                }
+
                 $stdErr->writeln([
                     sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'When passing both "--config" and "--rules" the rules within the configuration file are not used.'),
                     sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Passing both options is deprecated; version v3.0 PHP-CS-Fixer will exit with a configuration error code.'),
