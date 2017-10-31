@@ -5,6 +5,7 @@ clone_folder: C:\projects\php-cs-fixer
 
 environment:
     matrix:
+        - php_ver: 7.1.2
         - php_ver: 5.6.30
           SKIP_LINT_TEST_CASES: 1
 
