@@ -28,7 +28,7 @@ final class WarningsDetector
 
     public function detectOldMajor()
     {
-        // @TODO to be activated at v3
+        // @TODO 3.0 to be activated with new MAJOR release
         // $this->warnings[] = 'You are running PHP CS Fixer v2, which is not maintained anymore. Please update to v3.';
     }
 

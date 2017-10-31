@@ -175,7 +175,7 @@ final class FixCommand extends Command
             );
         }
 
-        // @TODO remove `run-in` and `estimating` in 3.0
+        // @TODO 3.0 remove `run-in` and `estimating`
         if ('none' === $progressType || null === $stdErr) {
             $progressOutput = new NullOutput();
         } elseif ('run-in' === $progressType) {
