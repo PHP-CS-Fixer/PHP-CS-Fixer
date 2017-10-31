@@ -17,8 +17,7 @@ namespace PhpCsFixer\Cache;
  *
  * @internal
  */
-final class Cache implements CacheInterface
-{
+final class Cache implements CacheInterface {
     /**
      * @var SignatureInterface
      */
