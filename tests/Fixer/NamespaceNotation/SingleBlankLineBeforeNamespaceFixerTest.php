@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\NamespaceNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -27,11 +28,15 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
     /**
      * @dataProvider provideFixCases
      *
-     * @param string      $expected
-     * @param null|string $input
+     * @param string                      $expected
+     * @param null|string                 $input
+     * @param null|WhitespacesFixerConfig $whitespaces
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, WhitespacesFixerConfig $whitespaces = null)
     {
+        if (null !== $whitespaces) {
+            $this->fixer->setWhitespacesConfig($whitespaces);
+        }
         $this->doTest($expected, $input);
     }
 
@@ -44,8 +49,16 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
             ["<?php\n\nnamespace X;"],
             ["<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"],
             ["<?php\r\n\r\nnamespace X;"],
-            ["<?php\r\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
+            ["<?php\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
             ["<?php\n\nfoo();\nnamespace\\bar\\baz();"],
+            ["<?php\n\nnamespace X;", "<?php\nnamespace X;"],
+            ["<?php\n\nnamespace X;", '<?php namespace X;'],
+            ["<?php\n\nnamespace X;", "<?php\t\nnamespace X;"],
+            ["<?php \n\nnamespace X;"],
+            ["<?php\r\n\r\nnamespace X;", '<?php namespace X;', new WhitespacesFixerConfig('    ', "\r\n")],
+            ["<?php\r\n\r\nnamespace X;", "<?php\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
+            ["<?php\r\n\r\nnamespace X;", "<?php\n\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
+            ["<?php\r\n\r\nnamespace X;", "<?php\r\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
         ];
     }
 
