@@ -1310,6 +1310,10 @@ Choose from the list of available rules:
 
   Replace all ``<>`` with ``!=``.
 
+* **static_lambda**
+
+  Lambda's not (indirect) referencing ``$this`` must be declared ``static``.
+
 * **strict_comparison**
 
   Comparisons should be strict.
