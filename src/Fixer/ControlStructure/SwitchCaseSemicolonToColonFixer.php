@@ -61,29 +61,44 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([T_CASE, T_DEFAULT])) {
+            if ($token->isGivenKind([T_CASE, T_DEFAULT])) {
+                $this->fixSwitchCase($tokens, $index);
+            }
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    protected function fixSwitchCase(Tokens $tokens, $index)
+    {
+        $ternariesCount = 0;
+        do {
+            if ($tokens[$index]->equalsAny(['(', '{'])) { // skip constructs
+                $type = Tokens::detectBlockType($tokens[$index]);
+                $index = $tokens->findBlockEnd($type['type'], $index);
+
                 continue;
             }
 
-            $ternariesCount = 0;
-            for ($colonIndex = $index + 1;; ++$colonIndex) {
-                // We have to skip ternary case for colons.
-                if ($tokens[$colonIndex]->equals('?')) {
-                    ++$ternariesCount;
-                }
+            if ($tokens[$index]->equals('?')) {
+                ++$ternariesCount;
 
-                if ($tokens[$colonIndex]->equalsAny([':', ';'])) {
-                    if (0 === $ternariesCount) {
-                        break;
-                    }
-
-                    --$ternariesCount;
-                }
+                continue;
             }
 
-            if ($tokens[$colonIndex]->equals(';')) {
-                $tokens[$colonIndex] = new Token(':');
+            if ($tokens[$index]->equalsAny([':', ';'])) {
+                if (0 === $ternariesCount) {
+                    break;
+                }
+
+                --$ternariesCount;
             }
+        } while (++$index);
+
+        if ($tokens[$index]->equals(';')) {
+            $tokens[$index] = new Token(':');
         }
     }
 }
