@@ -36,7 +36,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         'is_bool' => true,
         'is_boolean' => true,
         'is_callable' => true,
-        'is_dir' => ['assertDirectoryExists', 'assertDirectoryNotExists'],
+        'is_dir' => ['assertDirectoryNotExists', 'assertDirectoryExists'],
         'is_double' => true,
         'is_float' => true,
         'is_infinite' => ['assertFinite', 'assertInfinite'],
@@ -47,12 +47,12 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         'is_null' => ['assertNotNull', 'assertNull'],
         'is_numeric' => true,
         'is_object' => true,
-        'is_readable' => ['assertIsReadable', 'assertNotIsReadable'],
+        'is_readable' => ['assertNotIsReadable', 'assertIsReadable'],
         'is_real' => true,
         'is_resource' => true,
         'is_scalar' => true,
         'is_string' => true,
-        'is_writable' => ['assertIsWritable', 'assertNotIsWritable'],
+        'is_writable' => ['assertNotIsWritable', 'assertIsWritable'],
     ];
 
     /**

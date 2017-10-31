@@ -35,7 +35,7 @@ final class PhpUnitTargetVersionTest extends TestCase
     public function testFulfills($expected, $candidate, $target, $exception = null)
     {
         if (null !== $exception) {
-            $this->setExpectedException($exception);
+            $this->expectException($exception);
         }
 
         $this->assertSame(
