@@ -186,8 +186,8 @@ final class FixerFactoryTest extends TestCase
         // * `phpdoc_types` is third
         // * `phpdoc_scalar` is fourth
         // * `phpdoc_align` is last
-        $cases[] = [$fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']];
         $cases[] = [$fixers['phpdoc_indent'], $fixers['phpdoc_types']];
+        $cases[] = [$fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']];
         $cases[] = [$fixers['phpdoc_types'], $fixers['phpdoc_scalar']];
 
         $docFixerNames = array_filter(
@@ -199,10 +199,10 @@ final class FixerFactoryTest extends TestCase
 
         foreach ($docFixerNames as $docFixerName) {
             if (!in_array($docFixerName, ['phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'], true)) {
-                $cases[] = [$fixers['phpdoc_to_comment'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_indent'], $fixers[$docFixerName]];
-                $cases[] = [$fixers['phpdoc_types'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_scalar'], $fixers[$docFixerName]];
+                $cases[] = [$fixers['phpdoc_to_comment'], $fixers[$docFixerName]];
+                $cases[] = [$fixers['phpdoc_types'], $fixers[$docFixerName]];
             }
 
             if ('phpdoc_align' !== $docFixerName) {
