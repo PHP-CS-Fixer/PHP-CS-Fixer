@@ -1,0 +1,65 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-27T11:38:30Z
+
+ping @mlocati
+could you please address the review comments ?
+
+---------------------------------------------------------------------------
+
+by mlocati at 2017-09-28T08:03:36Z
+
+I assumed `"\n"` for new lines because it was already so, but shouldn't we use `$this->whitespacesConfig->getLineEnding()`?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-28T08:21:30Z
+
+Indeed, it would be nice to add the same new test cases but with `\r\n` as line ending.
+
+---------------------------------------------------------------------------
+
+by mlocati at 2017-09-28T08:25:24Z
+
+Another question: to count new lines we count the numbers of `"\n"`. That's good when new lines are `"\n"` or `"\r\n"`, but not when new lines are `"\r"`.
+What about adding this method to the `Token` class?
+```php
+
+    /**
+     * Get the number of new lines in the content.
+     *
+     * @return int
+     */
+    public function getNumberOfNewLines()
+    {
+        if ($this->content) {
+            $normalizedContent = str_replace("\r", "\n", str_replace("\r\n", "\n", $this->content));
+            $result = substr_count($normalizedContent, "\n");
+        } else {
+            $result = 0;
+        }
+        return $result;
+    }
+```
+
+---------------------------------------------------------------------------
+
+by mlocati at 2017-09-28T09:07:20Z
+
+> Indeed, it would be nice to add the same new test cases but with \r\n as line ending.
+
+Done
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-29T07:21:30Z
+
+> Another question: to count new lines we count the numbers of "\n". That's good when new lines are "\n" or "\r\n", but not when new lines are "\r".
+
+We don't officially support `\r` line endings as they are only used on some old systems, e.g. classic Mac OS (latest release in 2001). I would say it's not worth it.
+
+---------------------------------------------------------------------------
+
+by mlocati at 2017-10-02T08:50:18Z
+
+PR updated
