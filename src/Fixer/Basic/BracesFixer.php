@@ -349,8 +349,12 @@ class Foo
             for ($nestIndex = $lastCommaIndex; $nestIndex >= $startBraceIndex; --$nestIndex) {
                 $nestToken = $tokens[$nestIndex];
 
-                if ($nestToken->equals(')')) {
-                    $nestIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nestIndex, false);
+                if ($nestToken->equalsAny(array(')', array(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)))) {
+                    $nestIndex = $tokens->findBlockEnd(
+                        $nestToken->equals(')') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION,
+                        $nestIndex,
+                        false
+                    );
 
                     continue;
                 }

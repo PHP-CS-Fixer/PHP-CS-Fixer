@@ -23,33 +23,61 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
-    protected function doTest($source, array $expectedTokens = array(), array $observedKinds = array())
+    protected function doTest($source, array $expectedTokens = array(), array $observedKindsOrPrototypes = array())
     {
         $tokens = Tokens::fromCode($source);
 
         $this->assertSame(
             count($expectedTokens),
-            array_sum(array_map(
-                function ($item) {
-                    return count($item);
-                },
-                $tokens->findGivenKind(array_unique(array_merge($observedKinds, array_values($expectedTokens))))
-            )),
+            $this->countTokenPrototypes(
+                $tokens,
+                array_map(
+                    function ($kindOrPrototype) {
+                        return is_int($kindOrPrototype) ? array($kindOrPrototype) : $kindOrPrototype;
+                    },
+                    array_unique(array_merge($observedKindsOrPrototypes, $expectedTokens))
+                )
+            ),
             'Number of expected tokens does not match actual token count.'
         );
 
-        foreach ($expectedTokens as $index => $tokenId) {
+        foreach ($expectedTokens as $index => $tokenIdOrContent) {
+            if (is_string($tokenIdOrContent)) {
+                $this->assertTrue($tokens[$index]->equals($tokenIdOrContent));
+
+                continue;
+            }
+
             $this->assertSame(
-                CT::has($tokenId) ? CT::getName($tokenId) : token_name($tokenId),
+                CT::has($tokenIdOrContent) ? CT::getName($tokenIdOrContent) : token_name($tokenIdOrContent),
                 $tokens[$index]->getName(),
                 sprintf('Token name should be the same. Got token "%s" at index %d.', $tokens[$index]->toJson(), $index)
             );
 
             $this->assertSame(
-                $tokenId,
+                $tokenIdOrContent,
                 $tokens[$index]->getId(),
                 sprintf('Token id should be the same. Got token "%s" at index %d.', $tokens[$index]->toJson(), $index)
             );
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param array  $prototypes
+     *
+     * @return int
+     */
+    private function countTokenPrototypes(Tokens $tokens, array $prototypes)
+    {
+        $count = 0;
+
+        foreach ($tokens as $token) {
+            if ($token->equalsAny($prototypes)) {
+                ++$count;
+            }
+        }
+
+        return $count;
     }
 }
