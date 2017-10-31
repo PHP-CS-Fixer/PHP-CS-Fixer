@@ -34,10 +34,8 @@ final class WhitespacesFixerConfigTest extends TestCase
     public function testCases($indent, $lineEnding, $exceptionRegExp = null)
     {
         if (null !== $exceptionRegExp) {
-            $this->setExpectedExceptionRegExp(
-                \InvalidArgumentException::class,
-                '%^'.preg_quote($exceptionRegExp, '%').'$%'
-            );
+            $this->expectException(\InvalidArgumentException::class);
+            $this->expectExceptionMessageRegExp('%^'.preg_quote($exceptionRegExp, '%').'$%');
         }
 
         $config = new WhitespacesFixerConfig($indent, $lineEnding);

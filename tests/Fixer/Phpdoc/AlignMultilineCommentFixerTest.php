@@ -26,7 +26,7 @@ final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfiguration()
     {
-        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
 
         $this->fixer->configure(['a' => 1]);
     }

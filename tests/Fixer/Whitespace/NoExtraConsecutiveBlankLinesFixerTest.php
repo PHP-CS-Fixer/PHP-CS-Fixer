@@ -445,10 +445,8 @@ EOF
 
     public function testWrongConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[no_extra_consecutive_blank_lines\] Invalid configuration: The option "tokens" .*\.$/'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[no_extra_consecutive_blank_lines\] Invalid configuration: The option "tokens" .*\.$/');
 
         $this->fixer->configure(['tokens' => ['__TEST__']]);
     }

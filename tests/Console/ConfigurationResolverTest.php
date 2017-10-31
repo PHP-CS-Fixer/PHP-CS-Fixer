@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Console;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
@@ -50,10 +51,8 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testSetOptionWithUndefinedOption()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-            '/^Unknown option name: "foo"\.$/'
-        );
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^Unknown option name: "foo"\.$/');
 
         new ConfigurationResolver(
             $this->config,
@@ -192,10 +191,8 @@ final class ConfigurationResolverTest extends TestCase
             ''
         );
 
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-            'The progress type "foo" is not defined, supported are "none", "run-in", "estimating", "estimating-max".'
-        );
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "run-in", "estimating", "estimating-max".');
 
         $resolver->getProgress();
     }
@@ -297,8 +294,8 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithInvalidFile()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessageRegExp(
             '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs\.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
         );
 
@@ -315,10 +312,8 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithInvalidFormat()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-            '/^The format "xls" is not defined, supported are "checkstyle", "json", "junit", "txt", "xml"\.$/'
-        );
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "checkstyle", "json", "junit", "txt", "xml"\.$/');
 
         $dirBase = $this->getFixtureDir();
 
@@ -333,10 +328,8 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
-            '/^For multiple paths config parameter is required\.$/'
-        );
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^For multiple paths config parameter is required\.$/');
 
         $dirBase = $this->getFixtureDir();
 
@@ -482,7 +475,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveIntersectionOfPaths($expected, $configFinder, array $path, $pathMode, $config = null)
     {
         if ($expected instanceof \Exception) {
-            $this->setExpectedException(get_class($expected));
+            $this->expectException(get_class($expected));
         }
 
         if (null !== $configFinder) {
@@ -988,8 +981,10 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveRulesWithUnknownRules()
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
+        $this->expectException(
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class
+        );
+        $this->expectExceptionMessage(
             'The rules contain unknown fixers: "bar", "binary_operator_space" (did you mean "binary_operator_spaces"?).'
         );
 
@@ -1151,10 +1146,8 @@ final class ConfigurationResolverTest extends TestCase
             ''
         );
 
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-            '/^Empty rules value is not allowed\.$/'
-        );
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^Empty rules value is not allowed\.$/');
 
         $resolver->getRules();
     }

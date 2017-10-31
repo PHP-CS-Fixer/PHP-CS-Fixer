@@ -78,7 +78,8 @@ final class FixCommandTest extends TestCase
         $commandTester = new CommandTester($command);
 
         if (null !== $expectedException) {
-            $this->setExpectedExceptionRegExp($expectedException['class'], $expectedException['regex']);
+            $this->expectException($expectedException['class']);
+            $this->expectExceptionMessageRegExp($expectedException['regex']);
         }
 
         $commandTester->execute(
