@@ -91,6 +91,12 @@ My name is {$user->name}
 EOF;
 ',
 ],
+            [
+'<?php $a = <<<\'EOF\'
+$b
+EOF;
+',
+            ],
         ];
     }
 }
