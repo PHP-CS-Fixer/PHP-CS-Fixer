@@ -74,7 +74,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             // don't add `@covers` annotation for abstract base classes
             if ($tokens[$prevIndex]->isGivenKind(T_ABSTRACT)) {
-                return false;
+                continue;
             }
 
             if (!$phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
