@@ -787,6 +787,27 @@ function test()
     $a = 3;
 }',
             ],
+            [
+                '<?php
+class Foo
+{
+    public function bar()
+    {
+        foreach (new Bar() as $file) {
+            foo();
+        }
+    }
+}',
+                '<?php
+class Foo {
+    public function bar() {
+        foreach (new Bar() as $file)
+        {
+            foo();
+        }
+    }
+}',
+            ],
         ];
     }
 

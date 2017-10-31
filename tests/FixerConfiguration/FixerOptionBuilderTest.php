@@ -43,7 +43,7 @@ final class FixerOptionBuilderTest extends TestCase
     public function testSetNormalizer()
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
-        $this->assertSame($builder, $builder->setNormalizer(function () {}));
+        $this->assertSame($builder, $builder->setNormalizer(static function () {}));
     }
 
     public function testGetOption()
@@ -53,7 +53,7 @@ final class FixerOptionBuilderTest extends TestCase
             ->setDefault('baz')
             ->setAllowedTypes(['bool'])
             ->setAllowedValues([true, false])
-            ->setNormalizer(function () {})
+            ->setNormalizer(static function () {})
             ->getOption()
         ;
         $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOption::class, $option);

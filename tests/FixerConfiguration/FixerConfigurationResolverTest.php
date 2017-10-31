@@ -137,7 +137,7 @@ final class FixerConfigurationResolverTest extends TestCase
     public function testResolveWithNormalizers()
     {
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, function (Options $options, $value) {
+            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) {
                 return (int) $value;
             }),
         ]);
@@ -149,18 +149,18 @@ final class FixerConfigurationResolverTest extends TestCase
 
         $exception = new InvalidOptionsException('');
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, function (Options $options, $value) use ($exception) {
+            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) use ($exception) {
                 throw $exception;
             }),
         ]);
 
-        $catched = null;
+        $caught = null;
 
         try {
             $configuration->resolve(['foo' => '1']);
-        } catch (InvalidOptionsException $catched) {
+        } catch (InvalidOptionsException $caught) {
         }
 
-        $this->assertSame($exception, $catched);
+        $this->assertSame($exception, $caught);
     }
 }

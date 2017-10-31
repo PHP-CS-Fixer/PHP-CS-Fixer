@@ -81,7 +81,7 @@ final class FixerOptionTest extends TestCase
         $option = new FixerOption('foo', 'Bar.', true, null, null, ['baz', 'qux']);
         $this->assertSame(['baz', 'qux'], $option->getAllowedValues());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, [function () {}]);
+        $option = new FixerOption('foo', 'Bar.', true, null, null, [static function () {}]);
         $allowedTypes = $option->getAllowedValues();
         $this->assertInternalType('array', $allowedTypes);
         $this->assertCount(1, $allowedTypes);
@@ -94,7 +94,7 @@ final class FixerOptionTest extends TestCase
         $option = new FixerOption('foo', 'Bar.');
         $this->assertNull($option->getNormalizer());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, null, function () {});
+        $option = new FixerOption('foo', 'Bar.', true, null, null, null, static function () {});
         $this->assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 

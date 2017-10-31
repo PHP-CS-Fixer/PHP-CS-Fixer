@@ -371,7 +371,7 @@ class Tokens extends \SplFixedArray
      */
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
-        $removeLastCommentLine = function (self $tokens, $index, $indexOffset, $whitespace) {
+        $removeLastCommentLine = static function (self $tokens, $index, $indexOffset, $whitespace) {
             $token = $tokens[$index];
 
             if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
@@ -1262,7 +1262,7 @@ class Tokens extends \SplFixedArray
      */
     private static function calculateCodeHash($code)
     {
-        return (string) crc32($code);
+        return CodeHasher::calculateCodeHash($code);
     }
 
     /**

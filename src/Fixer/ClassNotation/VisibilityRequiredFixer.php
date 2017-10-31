@@ -112,7 +112,7 @@ class Sample
                 ->setAllowedValues([
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(['property', 'method', 'const']),
                 ])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value) {
                     if (PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
                         throw new InvalidOptionsForEnvException('"const" option can only be enabled with PHP 7.1+.');
                     }

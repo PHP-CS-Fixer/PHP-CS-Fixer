@@ -46,7 +46,7 @@ jobs:
 
 
         - &STANDARD_TEST_JOB
-            stage: Test
+            stage: Fast Test
             php: 7.0
             install:
                 # Composer: enforce given Symfony components version
@@ -57,20 +57,23 @@ jobs:
                 - composer info -D | sort
             script:
                 - vendor/bin/phpunit || travis_terminate 1
-                - php php-cs-fixer --diff --dry-run -v fix
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: 5.6
             env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: 7.1
             env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^4.0" MIN_STABILITY=dev
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: 7.2
             env: COLLECT_COVERAGE=1
             before_script:
@@ -83,17 +86,18 @@ jobs:
                 - if [ $COLLECT_COVERAGE == 0 ]; then vendor/bin/phpunit || travis_terminate 1; fi
                 - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
                 - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
-                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/coveralls -v; fi
+                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/php-coveralls -v; fi
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: nightly
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
             script:
                 - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,native_function_invocation -q || travis_terminate 1
                 - vendor/bin/phpunit || travis_terminate 1
                 - git checkout . -q
-                - php php-cs-fixer --diff --dry-run -v fix
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
             stage: Deployment

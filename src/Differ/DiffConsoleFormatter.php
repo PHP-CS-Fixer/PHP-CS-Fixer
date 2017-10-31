@@ -58,7 +58,7 @@ final class DiffConsoleFormatter
         return sprintf(
             $template,
             implode(PHP_EOL, array_map(
-                function ($string) use ($isDecorated, $lineTemplate) {
+                static function ($string) use ($isDecorated, $lineTemplate) {
                     if ($isDecorated) {
                         $string = preg_replace(
                             ['/^(\+.*)/', '/^(\-.*)/', '/^(@.*)/'],

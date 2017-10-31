@@ -19,6 +19,7 @@ namespace PhpCsFixer\Tokenizer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ * @author SpacePossum
  *
  * @internal
  */
@@ -44,8 +45,18 @@ final class TokensAnalyzer
     public function getClassyElements()
     {
         $this->tokens->rewind();
+        $elements = [];
 
-        return $this->findClassyElements($this->tokens, 0);
+        for ($index = 1, $count = count($this->tokens) - 2; $index < $count; ++$index) {
+            if ($this->tokens[$index]->isClassy()) {
+                list($index, $newElements) = $this->findClassyElements($index);
+                $elements += $newElements;
+            }
+        }
+
+        ksort($elements);
+
+        return $elements;
     }
 
     /**
@@ -269,20 +280,17 @@ final class TokensAnalyzer
      */
     public function isLambda($index)
     {
-        $tokens = $this->tokens;
-        $token = $tokens[$index];
-
-        if (!$token->isGivenKind(T_FUNCTION)) {
-            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got %s.', $index, $token->getName()));
+        if (!$this->tokens[$index]->isGivenKind(T_FUNCTION)) {
+            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got %s.', $index, $this->tokens[$index]->getName()));
         }
 
-        $startParenthesisIndex = $tokens->getNextMeaningfulToken($index);
-        $startParenthesisToken = $tokens[$startParenthesisIndex];
+        $startParenthesisIndex = $this->tokens->getNextMeaningfulToken($index);
+        $startParenthesisToken = $this->tokens[$startParenthesisIndex];
 
         // skip & for `function & () {}` syntax
         if ($startParenthesisToken->isGivenKind(CT::T_RETURN_REF)) {
-            $startParenthesisIndex = $tokens->getNextMeaningfulToken($startParenthesisIndex);
-            $startParenthesisToken = $tokens[$startParenthesisIndex];
+            $startParenthesisIndex = $this->tokens->getNextMeaningfulToken($startParenthesisIndex);
+            $startParenthesisToken = $this->tokens[$startParenthesisIndex];
         }
 
         return $startParenthesisToken->equals('(');
@@ -458,6 +466,7 @@ final class TokensAnalyzer
                 T_SR => true,                   // >>
                 T_SR_EQUAL => true,             // >>=
                 T_XOR_EQUAL => true,            // ^=
+                CT::T_TYPE_ALTERNATION => true, // |
             ];
 
             if (defined('T_SPACESHIP')) {
@@ -516,33 +525,33 @@ final class TokensAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $start
+     * Find classy elements.
+     *
+     * Searches in tokens from the classy (start) index till the end (index) of the classy.
+     * Returns an array; first value is the index until the method has analysed (int), second the found classy elements (array).
+     *
+     * @param int $index classy index
      *
      * @return array
      */
-    private function findClassyElements(Tokens $tokens, $start)
+    private function findClassyElements($index)
     {
         $elements = [];
-        $inClass = false;
         $curlyBracesLevel = 0;
         $bracesLevel = 0;
+        $classIndex = $index;
+        ++$index; // skip the classy index itself
 
-        for ($index = $start, $count = count($tokens); $index < $count; ++$index) {
-            $token = $tokens[$index];
+        for ($count = count($this->tokens); $index < $count; ++$index) {
+            $token = $this->tokens[$index];
 
             if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
                 continue;
             }
 
-            if (!$inClass) {
-                $inClass = $token->isClassy();
-
-                continue;
-            }
-
             if ($token->isClassy()) { // anonymous class in class
-                $elements += $this->findClassyElements($tokens, $index);
+                list($index, $newElements) = $this->findClassyElements($index);
+                $elements += $newElements;
 
                 continue;
             }
@@ -569,7 +578,7 @@ final class TokensAnalyzer
                 --$curlyBracesLevel;
 
                 if (0 === $curlyBracesLevel) {
-                    $inClass = false;
+                    break;
                 }
 
                 continue;
@@ -580,20 +589,30 @@ final class TokensAnalyzer
             }
 
             if (0 === $bracesLevel && $token->isGivenKind(T_VARIABLE)) {
-                $elements[$index] = ['token' => $token, 'type' => 'property'];
+                $elements[$index] = [
+                    'token' => $token,
+                    'type' => 'property',
+                    'classIndex' => $classIndex,
+                ];
 
                 continue;
             }
 
             if ($token->isGivenKind(T_FUNCTION)) {
-                $elements[$index] = ['token' => $token, 'type' => 'method'];
+                $elements[$index] = [
+                    'token' => $token,
+                    'type' => 'method',
+                    'classIndex' => $classIndex,
+                ];
             } elseif ($token->isGivenKind(T_CONST)) {
-                $elements[$index] = ['token' => $token, 'type' => 'const'];
+                $elements[$index] = [
+                    'token' => $token,
+                    'type' => 'const',
+                    'classIndex' => $classIndex,
+                ];
             }
         }
 
-        ksort($elements);
-
-        return $elements;
+        return [$index, $elements];
     }
 }

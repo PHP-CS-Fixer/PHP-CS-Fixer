@@ -53,7 +53,7 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
             $token = $tokens[$index];
 
             if ($token->isGivenKind(T_NAMESPACE)) {
-                $this->fixLinesBeforeNamespace($tokens, $index, 2);
+                $this->fixLinesBeforeNamespace($tokens, $index, 2, 2);
             }
         }
     }

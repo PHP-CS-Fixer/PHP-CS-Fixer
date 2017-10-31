@@ -265,6 +265,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
             $tokens->insertAt($braceIndex + 1, $newMethods);
 
+            $tokens[$braceIndex + $newMethods->getSize() + 1] = new Token([
+                T_WHITESPACE,
+                $this->whitespacesConfig->getLineEnding().$tokens[$braceIndex + $newMethods->getSize() + 1]->getContent(),
+            ]);
+
             $i = $docBlockIndex;
         }
     }
@@ -291,13 +296,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         if ($this->configuration['use_class_const']) {
             $params[] = $exceptionClass.'::class';
         } else {
-            $params[] = "'$exceptionClass'";
+            $params[] = "'${exceptionClass}'";
         }
 
         if (isset($annotations['expectedExceptionMessage'])) {
-            $params[] = "'{$annotations['expectedExceptionMessage']}'";
+            $params[] = var_export($annotations['expectedExceptionMessage'], true);
         } elseif (isset($annotations['expectedExceptionMessageRegExp'])) {
-            $params[] = "'{$annotations['expectedExceptionMessageRegExp']}'";
+            $params[] = var_export($annotations['expectedExceptionMessageRegExp'], true);
         } elseif (isset($annotations['expectedExceptionCode'])) {
             $params[] = 'null';
         }

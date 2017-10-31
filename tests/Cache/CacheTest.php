@@ -143,7 +143,7 @@ final class CacheTest extends TestCase
             'hashes' => [],
         ];
 
-        return array_map(function ($missingKey) use ($data) {
+        return array_map(static function ($missingKey) use ($data) {
             unset($data[$missingKey]);
 
             return [
@@ -172,6 +172,8 @@ final class CacheTest extends TestCase
 
     public function provideCanConvertToAndFromJsonCases()
     {
+        $toolInfo = new ToolInfo();
+
         return [
             [new Signature(
                 PHP_VERSION,
@@ -183,7 +185,7 @@ final class CacheTest extends TestCase
             )],
             [new Signature(
                 PHP_VERSION,
-                ToolInfo::getVersion(),
+                $toolInfo->getVersion(),
                 [
                     // value encoded in ANSI, not UTF
                     'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],

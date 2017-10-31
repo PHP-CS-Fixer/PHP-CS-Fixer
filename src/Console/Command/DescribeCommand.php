@@ -224,7 +224,7 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        $codeSamples = array_filter($definition->getCodeSamples(), function (CodeSampleInterface $codeSample) {
+        $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample) {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
                 return $codeSample->isSuitableFor(PHP_VERSION_ID);
             }

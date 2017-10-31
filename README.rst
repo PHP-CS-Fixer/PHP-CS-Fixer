@@ -13,7 +13,7 @@ If you are already using a linter to identify coding standards problems in your
 code, you know that fixing them by hand is tedious, especially on large
 projects. This tool does not only detect them, but also fixes them for you.
 
-The PHP CS Fixer is maintained on github at https://github.com/FriendsOfPHP/PHP-CS-Fixer
+The PHP CS Fixer is maintained on GitHub at https://github.com/FriendsOfPHP/PHP-CS-Fixer
 bug reports and ideas about new features are welcome there.
 
 You can talk to us at https://gitter.im/PHP-CS-Fixer/Lobby about the project,
@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.0/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.4/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -197,6 +197,7 @@ The ``--dry-run`` flag will run the fixer without making changes to your files.
 The ``--diff`` flag can be used to let the fixer output all the changes it makes.
 
 The ``--diff-format`` option allows to specify in which format the fixer should output the changes it makes:
+
 * ``udiff``: unified diff format;
 * ``sbd``: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
 
@@ -322,6 +323,16 @@ Choose from the list of available rules:
 
   - ``space`` (``'none'``, ``'single'``): spacing to apply between cast and variable;
     defaults to ``'single'``
+
+* **class_attributes_separation** [@Symfony]
+
+  Class, trait and interface elements must be separated with one blank
+  line.
+
+  Configuration options:
+
+  - ``elements`` (``array``): list of classy elements; 'const', 'method',
+    'property'; defaults to ``['const', 'method', 'property']``
 
 * **class_definition** [@PSR2, @Symfony]
 
@@ -535,7 +546,46 @@ Choose from the list of available rules:
 
   Replace deprecated ``ereg`` regular expression functions with preg.
 
-  *Risky rule: risky if the ``ereg`` funcion is overridden.*
+  *Risky rule: risky if the ``ereg`` function is overridden.*
+
+* **escape_implicit_backslashes**
+
+  Escape implicit backslashes in strings and heredocs to ease the
+  understanding of which are special chars interpreted by PHP and which
+  not.
+
+  Configuration options:
+
+  - ``double_quoted`` (``bool``): whether to fix double-quoted strings; defaults to
+    ``true``
+  - ``heredoc_syntax`` (``bool``): whether to fix heredoc syntax; defaults to ``true``
+  - ``single_quoted`` (``bool``): whether to fix single-quoted strings; defaults to
+    ``false``
+
+* **explicit_indirect_variable**
+
+  Add curly braces to indirect variables to make them clear to understand.
+  Requires PHP >= 7.0.
+
+* **explicit_string_variable**
+
+  Converts implicit variables into explicit ones in double-quoted strings
+  or heredoc syntax.
+
+* **final_internal_class**
+
+  Internal classes should be ``final``.
+
+  *Risky rule: changing classes to ``final`` might cause code execution to break.*
+
+  Configuration options:
+
+  - ``annotation-black-list`` (``array``): class level annotations tags that must be
+    omitted to fix the class, even if all of the white list ones are used
+    as well. (case in sensitive); defaults to ``['@final', '@Entity', '@ORM']``
+  - ``annotation-white-list`` (``array``): class level annotations tags that must be
+    set in order to fix the class. (case in sensitive); defaults to
+    ``['@internal']``
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
@@ -683,9 +733,15 @@ Choose from the list of available rules:
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
-* **method_separation** [@Symfony]
+* **method_chaining_indentation**
 
-  Methods must be separated with one blank line.
+  Method chaining MUST be properly indented. Method chaining with
+  different levels of indentation is not supported.
+
+* **method_separation**
+
+  Methods must be separated with one blank line. DEPRECATED: use
+  ``class_attributes_separation`` instead.
 
 * **modernize_types_casting** [@Symfony:risky]
 
@@ -1231,8 +1287,8 @@ Choose from the list of available rules:
 
 * **self_accessor** [@Symfony]
 
-  Inside a classy element "self" should be preferred to the class name
-  itself.
+  Inside class or interface element "self" should be preferred to the
+  class name itself.
 
 * **semicolon_after_instruction** [@Symfony]
 
@@ -1252,8 +1308,6 @@ Choose from the list of available rules:
 * **simplified_null_return**
 
   A return statement wishing to return ``void`` should not return ``null``.
-
-  *Risky rule: risky since PHP 7.1 as ``null`` and ``void`` can be hinted as return type and have different meaning.*
 
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
 
@@ -1309,6 +1363,12 @@ Choose from the list of available rules:
 * **standardize_not_equals** [@Symfony]
 
   Replace all ``<>`` with ``!=``.
+
+* **static_lambda**
+
+  Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
+
+  *Risky rule: risky when using "->bindTo" on lambdas without referencing to ``$this``.*
 
 * **strict_comparison**
 
@@ -1396,9 +1456,12 @@ fixed but without actually modifying them:
 
     $ php php-cs-fixer.phar fix /path/to/code --dry-run
 
+Config file
+-----------
+
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.0/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.4/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

@@ -50,6 +50,15 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     {
         return [
             [
+                '<?php class A { public function B(){ $static = new static(new \SplFileInfo(__FILE__)); }}',
+            ],
+            [
+                '<?php $static = new self(new \SplFileInfo(__FILE__));',
+            ],
+            [
+                '<?php $x = new X/**/ /**/ /**//**//**/ /**//**/   (/**/ /**/ /**//**//**/ /**//**/)/**/ /**/ /**//**//**/ /**//**/;/**/ /**/ /**//**//**/ /**//**/',
+            ],
+            [
                 '<?php $x = new X();',
                 '<?php $x = new X;',
             ],
@@ -268,6 +277,22 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
                     $a = new class  extends Bar2 implements Foo{};
                     $a = new class    extends Bar3 implements Foo, Foo2{};
                     $a = new class {}?>
+                ',
+            ],
+            [
+                '<?php
+                    class A {
+                        public function B() {
+                            $static = new static(new class(){});
+                        }
+                    }
+                ',
+                '<?php
+                    class A {
+                        public function B() {
+                            $static = new static(new class{});
+                        }
+                    }
                 ',
             ],
         ];

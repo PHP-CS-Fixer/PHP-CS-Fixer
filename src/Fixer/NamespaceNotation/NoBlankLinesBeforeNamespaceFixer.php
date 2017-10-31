@@ -57,7 +57,7 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespac
                 continue;
             }
 
-            $this->fixLinesBeforeNamespace($tokens, $index, 1);
+            $this->fixLinesBeforeNamespace($tokens, $index, 0, 1);
         }
     }
 }

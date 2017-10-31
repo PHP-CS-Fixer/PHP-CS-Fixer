@@ -38,7 +38,7 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
         $this->resolver = new FixerConfigurationResolver($options);
 
         $names = array_map(
-            function (FixerOptionInterface $option) {
+            static function (FixerOptionInterface $option) {
                 return $option->getName();
             },
             $this->resolver->getOptions()

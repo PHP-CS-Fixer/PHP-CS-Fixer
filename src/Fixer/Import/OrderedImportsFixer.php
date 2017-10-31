@@ -209,7 +209,7 @@ use function CCC\AA;
                 ->getOption(),
             (new FixerOptionBuilder('importsOrder', 'Defines the order of import types.'))
                 ->setAllowedTypes(['array', 'null'])
-                ->setAllowedValues([function ($value) use ($supportedSortTypes) {
+                ->setAllowedValues([static function ($value) use ($supportedSortTypes) {
                     if (null !== $value) {
                         $missing = array_diff($supportedSortTypes, $value);
                         if (count($missing)) {

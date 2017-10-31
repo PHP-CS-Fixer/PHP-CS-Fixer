@@ -289,7 +289,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $this->assertGreaterThan(
                     1,
                     count(array_unique(array_map(
-                        function (FixerInterface $fixer) {
+                        static function (FixerInterface $fixer) {
                             return $fixer->getPriority();
                         },
                         $fixers
@@ -345,7 +345,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $errorStr = '';
         foreach ($errors as $error) {
             $source = $error->getSource();
-            $errorStr .= sprintf("%d: %s%s\n", $error->getType(), $error->getFilePath(), null === $source ? '' : ' '.$source->getMessage());
+            $errorStr .= sprintf("%d: %s%s\n", $error->getType(), $error->getFilePath(), null === $source ? '' : ' '.$source->getMessage()."\n\n".$source->getTraceAsString());
         }
 
         return $errorStr;
