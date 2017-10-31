@@ -23,29 +23,23 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
-    protected function doTest($source, array $expectedTokens = array(), array $observedKinds = array())
+    protected function doTest($source, array $expectedTokens = array(), array $observedKindsOrPrototypes = array())
     {
         $tokens = Tokens::fromCode($source);
 
-        if (count($observedKinds)) {
-            $observedKinds = array_unique(array_merge(
-                $observedKinds,
-                array_filter($expectedTokens, function ($item) {
-                    return !is_string($item);
-                })
-            ));
-
-            $this->assertSame(
-                count($expectedTokens),
-                array_sum(array_map(
-                    function ($item) {
-                        return count($item);
+        $this->assertSame(
+            count($expectedTokens),
+            $this->countTokenPrototypes(
+                $tokens,
+                array_map(
+                    function ($kindOrPrototype) {
+                        return is_int($kindOrPrototype) ? array($kindOrPrototype) : $kindOrPrototype;
                     },
-                    $tokens->findGivenKind($observedKinds)
-                )),
-                'Number of expected tokens does not match actual token count.'
-            );
-        }
+                    array_unique(array_merge($observedKindsOrPrototypes, $expectedTokens))
+                )
+            ),
+            'Number of expected tokens does not match actual token count.'
+        );
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (is_string($tokenIdOrContent)) {
@@ -66,5 +60,24 @@ abstract class AbstractTransformerTestCase extends TestCase
                 sprintf('Token id should be the same. Got token "%s" at index %d.', $tokens[$index]->toJson(), $index)
             );
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param array  $prototypes
+     *
+     * @return int
+     */
+    private function countTokenPrototypes(Tokens $tokens, array $prototypes)
+    {
+        $count = 0;
+
+        foreach ($tokens as $token) {
+            if ($token->equalsAny($prototypes)) {
+                ++$count;
+            }
+        }
+
+        return $count;
     }
 }

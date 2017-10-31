@@ -66,36 +66,88 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             array(
                 '<?php return foo()->bar(new Foo())->bar();',
                 array(
+                    4 => '(',
+                    5 => ')',
                     8 => '(',
+                    12 => '(',
+                    13 => ')',
                     14 => ')',
+                    17 => '(',
+                    18 => ')',
+                ),
+                array(
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
             array(
                 '<?php $foo[0](new Foo())->bar();',
                 array(
                     5 => '(',
+                    9 => '(',
+                    10 => ')',
                     11 => ')',
+                    14 => '(',
+                    15 => ')',
+                ),
+                array(
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
             array(
                 '<?php $foo{0}(new Foo())->bar();',
                 array(
                     5 => '(',
+                    9 => '(',
+                    10 => ')',
                     11 => ')',
+                    14 => '(',
+                    15 => ')',
+                ),
+                array(
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
             array(
                 '<?php $foo(new Foo())->bar();',
                 array(
                     2 => '(',
+                    6 => '(',
+                    7 => ')',
                     8 => ')',
+                    11 => '(',
+                    12 => ')',
+                ),
+                array(
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
             array(
                 '<?php $$foo(new Foo())->bar();',
                 array(
                     3 => '(',
+                    7 => '(',
+                    8 => ')',
                     9 => ')',
+                    12 => '(',
+                    13 => ')',
+                ),
+                array(
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
             array(
@@ -124,7 +176,15 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                 '<?php $foo = array(new Foo());',
                 array(
                     6 => '(',
+                    10 => '(',
+                    11 => ')',
                     12 => ')',
+                ),
+                array(
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
         );
@@ -151,7 +211,15 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                 '<?php $foo = new class(new \stdClass()) {};',
                 array(
                     8 => '(',
+                    13 => '(',
+                    14 => ')',
                     15 => ')',
+                ),
+                array(
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
             array(
