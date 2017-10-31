@@ -135,7 +135,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Rule "Foo/bar" not found\.$#');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('#^Rule "Foo/bar" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
@@ -150,7 +151,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Set "@NoSuchSet" not found\.$#');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('#^Set "@NoSuchSet" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => '@NoSuchSet',
@@ -165,7 +167,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp(\RuntimeException::class, '/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageRegExp('/^Not enough arguments( \(missing: "name"\))?\.$/');
         $commandTester->execute([
             'command' => $command->getName(),
         ]);
@@ -173,7 +176,8 @@ EOT;
 
     public function testGetAlternativeSuggestion()
     {
-        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
         $this->execute('Foo2/bar', false);
     }
 

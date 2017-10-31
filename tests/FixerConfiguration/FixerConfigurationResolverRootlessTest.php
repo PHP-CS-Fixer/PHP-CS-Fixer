@@ -25,7 +25,8 @@ final class FixerConfigurationResolverRootlessTest extends TestCase
 {
     public function testMapRootConfigurationTo()
     {
-        $this->setExpectedException(\LogicException::class, 'The "bar" option is not defined.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('The "bar" option is not defined.');
 
         $configuration = new FixerConfigurationResolverRootless('bar', [
             new FixerOption('foo', 'Bar.'),

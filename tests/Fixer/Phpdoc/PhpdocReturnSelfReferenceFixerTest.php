@@ -183,10 +183,8 @@ class F
      */
     public function testInvalidConfiguration(array $configuration, $message)
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/'))
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
 
         $this->fixer->configure($configuration);
     }

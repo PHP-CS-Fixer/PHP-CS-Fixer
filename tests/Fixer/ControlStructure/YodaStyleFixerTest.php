@@ -443,7 +443,6 @@ $a#4
      * @param string $expectedMessage
      *
      * @dataProvider provideInvalidConfigurationCases
-     * @requires PHPUnit 5.2
      */
     public function testInvalidConfig(array $config, $expectedMessage)
     {
