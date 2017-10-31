@@ -164,6 +164,7 @@ final class FixerFactoryTest extends TestCase
             array($fixers['function_to_constant'], $fixers['no_singleline_whitespace_before_semicolons']), // tested also in: function_to_constant,no_singleline_whitespace_before_semicolons.test
             array($fixers['function_to_constant'], $fixers['no_trailing_whitespace']), // tested also in: function_to_constant,no_trailing_whitespace.test
             array($fixers['function_to_constant'], $fixers['no_whitespace_in_blank_line']), // tested also in: function_to_constant,no_whitespace_in_blank_line.test
+            array($fixers['no_multiline_whitespace_before_semicolons'], $fixers['space_after_semicolon']), // tested also in: tests/Fixtures/Integration/priority/no_multiline_whitespace_before_semicolons,space_after_semicolon.test
         );
 
         // prepare bulk tests for phpdoc fixers to test that:
