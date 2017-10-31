@@ -34,7 +34,7 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractFixer implements
     /**
      * @var bool
      */
-    private $fixMessageRegExp = false;
+    private $fixMessageRegExp;
 
     /**
      * {@inheritdoc}
