@@ -131,14 +131,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
@@ -167,8 +159,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 return;
             }
 
-            $thisIndex = array_keys($match)[0];
-            $index = array_keys($match)[2];
+            list($thisIndex, , $index) = array_keys($match);
 
             if (!isset($this->methodMap[$tokens[$index]->getContent()])) {
                 continue;
