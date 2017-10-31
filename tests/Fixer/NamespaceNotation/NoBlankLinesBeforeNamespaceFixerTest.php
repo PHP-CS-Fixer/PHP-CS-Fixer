@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\NamespaceNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -27,11 +28,15 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param string      $expected
-     * @param null|string $input
+     * @param string                      $expected
+     * @param null|string                 $input
+     * @param null|WhitespacesFixerConfig $whitespaces
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, WhitespacesFixerConfig $whitespaces = null)
     {
+        if (null !== $whitespaces) {
+            $this->fixer->setWhitespacesConfig($whitespaces);
+        }
         $this->doTest($expected, $input);
     }
 
@@ -44,7 +49,8 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
             ["<?php\nnamespace X;"],
             ["<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"],
             ["<?php\r\nnamespace X;"],
-            ["<?php\r\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
+            ["<?php\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
+            ["<?php\r\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
             ["<?php\n\nnamespace\\Sub\\Foo::bar();"],
         ];
     }

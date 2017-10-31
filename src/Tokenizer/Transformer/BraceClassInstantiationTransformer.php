@@ -38,6 +38,15 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must run after CurlyBraceTransformer and SquareBraceTransformer
+        return -1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRequiredPhpVersionId()
     {
         return 50000;
@@ -51,12 +60,19 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
         if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->equals([T_NEW])) {
             return;
         }
-
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-
-        if (!$tokens[$tokens->getNextMeaningfulToken($closeIndex)]->isGivenKind([T_OBJECT_OPERATOR, T_DOUBLE_COLON])) {
+        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny([
+            [T_STRING],
+            ']',
+            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+            [T_VARIABLE],
+            [T_CLASS],
+            [T_ARRAY],
+        ])) {
             return;
         }
+
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
         $tokens[$index] = new Token([CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '(']);
         $tokens[$closeIndex] = new Token([CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')']);

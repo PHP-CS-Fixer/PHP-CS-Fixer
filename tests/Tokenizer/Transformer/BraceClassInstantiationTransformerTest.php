@@ -29,15 +29,12 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens)
+    public function testProcess($source, array $expectedTokens, array $observedKinds = [])
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            [
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-            ]
+            $observedKinds
         );
     }
 
@@ -50,12 +47,190 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                     3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
                     9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ],
+                [
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
             ],
             [
                 '<?php echo (new Process())::getOutput();',
                 [
                     3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
                     9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+                [
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php return foo()->bar(new Foo())->bar();',
+                [
+                    4 => '(',
+                    5 => ')',
+                    8 => '(',
+                    12 => '(',
+                    13 => ')',
+                    14 => ')',
+                    17 => '(',
+                    18 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php $foo[0](new Foo())->bar();',
+                [
+                    5 => '(',
+                    9 => '(',
+                    10 => ')',
+                    11 => ')',
+                    14 => '(',
+                    15 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php $foo{0}(new Foo())->bar();',
+                [
+                    5 => '(',
+                    9 => '(',
+                    10 => ')',
+                    11 => ')',
+                    14 => '(',
+                    15 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php $foo(new Foo())->bar();',
+                [
+                    2 => '(',
+                    6 => '(',
+                    7 => ')',
+                    8 => ')',
+                    11 => '(',
+                    12 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php $$foo(new Foo())->bar();',
+                [
+                    3 => '(',
+                    7 => '(',
+                    8 => ')',
+                    9 => ')',
+                    12 => '(',
+                    13 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php if ($foo){}(new Foo)->foo();',
+                [
+                    8 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    12 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+                [
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php echo (((new \stdClass()))->a);',
+                [
+                    5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    12 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+                [
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php $foo = array(new Foo());',
+                [
+                    6 => '(',
+                    10 => '(',
+                    11 => ')',
+                    12 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideProcessPhp70Cases
+     */
+    public function testProcessPhp70($source, array $expectedTokens, array $observedKinds = [])
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            $observedKinds
+        );
+    }
+
+    public function provideProcessPhp70Cases()
+    {
+        return [
+            [
+                '<?php $foo = new class(new \stdClass()) {};',
+                [
+                    8 => '(',
+                    13 => '(',
+                    14 => ')',
+                    15 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php $foo = (new class(new \stdClass()) {});',
+                [
+                    5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    20 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+                [
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ],
             ],
         ];
