@@ -1,0 +1,132 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-15T07:18:37Z
+
+Your added check for previous token `T_STRING` is good,
+but I'm not sure your fix covers all cases:
+
+```php
+<?php
+    $a =[function($a){$b = new \stdClass(); $b->a =1; return $b;}];
+
+    echo $a[0](new \stdClass(1))->a;
+```
+
+index/name/content
+
+```
+   39 | T_ECHO                                  | echo
+   40 | T_WHITESPACE                            |
+   41 | T_VARIABLE                              | $a
+   42 |                                         | [
+   43 | T_LNUMBER                               | 0
+   44 |                                         | ]
+   45 | CT::T_BRACE_CLASS_INSTANTIATION_OPEN    | (
+   46 | T_NEW                                   | new
+   47 | T_WHITESPACE                            |
+   48 | T_NS_SEPARATOR                          | \
+   49 | T_STRING                                | stdClass
+   50 |                                         | (
+   51 | T_LNUMBER                               | 1
+   52 |                                         | )
+   53 | CT::T_BRACE_CLASS_INSTANTIATION_CLOSE   | )
+   54 | T_OBJECT_OPERATOR                       | ->
+   55 | T_STRING                                | a
+   56 |                                         | ;
+   57 | T_WHITESPACE                            |
+```
+
+some other ideas for tests;
+
+```
+$a{0}(new \stdClass(1))->a;
+$a(new \stdClass(1))->a;
+$$a(new \stdClass(1))->a;
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-15T07:24:15Z
+
+Indeed, your examples will fail as well. I'll add them soon, thanks :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-16T17:29:29Z
+
+Tests updated.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-17T17:16:41Z
+
+please add as negative test;
+
+```php
+<?php
+
+$a = new class(new \stdClass()) {
+
+};
+```
+
+and positive;
+
+```php
+if ($a){}(new a)->a();
+```
+
+not sure about;
+
+```php
+<?php
+echo (((new \stdClass()))->a);
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-17T21:06:36Z
+
+Green again :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-18T07:16:54Z
+
+Looking good, can we have unit tests for the two fixers that have been changed?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-18T07:21:02Z
+
+There already are and they were failing, see https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/276574947.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-20T07:52:29Z
+
+@keradus can you take a look at this one as well, I think it is all good?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-20T10:34:20Z
+
+If you want me to take a look, I will, yet for that I need at least 30 minutes of spare time, as I have few concerns I need to analyse by cloning the PR and playing with code. Probably not gonna happen today, sorry :(
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-10-25T21:14:02Z
+
+LGTM 👍
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-31T08:17:43Z
+
+Thanks :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-31T08:48:00Z
+
+build restarted
