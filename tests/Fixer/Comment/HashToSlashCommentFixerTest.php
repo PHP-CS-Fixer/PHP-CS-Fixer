@@ -27,7 +27,9 @@ final class HashToSlashCommentFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
+     * @group legacy
      * @dataProvider provideFixCases
+     * @expectedDeprecation Fixer "hash_to_slash_comment" is deprecated and will be removed in 3.0. Use "single_line_comment_style" instead.
      */
     public function testFix($expected, $input = null)
     {
