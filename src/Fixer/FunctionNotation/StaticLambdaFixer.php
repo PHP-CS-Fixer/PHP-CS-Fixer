@@ -106,6 +106,7 @@ final class StaticLambdaFixer extends AbstractFixer
                 T_REQUIRE,                    // "
                 T_REQUIRE_ONCE,               // "
                 CT::T_DYNAMIC_VAR_BRACE_OPEN, // "$h = ${$g};" case
+                T_EVAL,                       // "$c = eval('return $this;');" case
             ])) {
                 return true;
             }

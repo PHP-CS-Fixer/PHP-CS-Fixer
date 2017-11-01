@@ -207,6 +207,26 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                 }
                 new A();',
             ],
+            [
+                '<?php
+
+class A
+{
+    public function abc()
+    {
+        $b = function () {
+            $c = eval(\'return $this;\');
+            var_dump($c);
+        };
+
+        $b();
+    }
+}
+
+$b = new A();
+$b->abc();
+',
+            ],
         ];
     }
 }
