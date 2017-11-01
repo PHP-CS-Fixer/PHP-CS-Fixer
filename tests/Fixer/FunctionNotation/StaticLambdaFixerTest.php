@@ -202,7 +202,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                     function test(){}
                     public function test1(){}
                     protected function test2(){}
-                    protected abstract function test3(){}
+                    protected abstract function test3();
                     private function test3(){}
                 }
                 new A();',
