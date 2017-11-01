@@ -319,7 +319,7 @@ function myFunction() {
         $filteredCases = array();
         $cases = $this->provideMessyWhitespacesCases();
 
-        foreach ($cases as $key => $case) { // TODO on 5.6 bump use array_filter with ARRAY_FILTER_USE_KEY
+        foreach ($cases as $key => $case) {
             if (!is_string($key) || false === strpos($key, 'mix indentation')) {
                 $filteredCases[] = $case;
             }
