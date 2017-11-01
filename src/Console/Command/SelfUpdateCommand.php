@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Console\Command;
 
-use PhpCsFixer\Console\SelfUpdate\GithubClient;
-use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
+use PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface;
+use PhpCsFixer\PharCheckerInterface;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,15 +34,30 @@ final class SelfUpdateCommand extends Command
     const COMMAND_NAME = 'self-update';
 
     /**
+     * @var NewVersionCheckerInterface
+     */
+    private $versionChecker;
+
+    /**
      * @var ToolInfoInterface
      */
     private $toolInfo;
 
-    public function __construct(ToolInfoInterface $toolInfo)
-    {
+    /**
+     * @var PharCheckerInterface
+     */
+    private $pharChecker;
+
+    public function __construct(
+        NewVersionCheckerInterface $versionChecker,
+        ToolInfoInterface $toolInfo,
+        PharCheckerInterface $pharChecker
+    ) {
         parent::__construct();
 
+        $this->versionChecker = $versionChecker;
         $this->toolInfo = $toolInfo;
+        $this->pharChecker = $pharChecker;
     }
 
     /**
@@ -87,11 +102,9 @@ EOT
         preg_match('/^v?(?<major>\d+)\./', $currentVersion, $matches);
         $currentMajor = (int) $matches['major'];
 
-        $checker = new NewVersionChecker(new GithubClient());
-
         try {
-            $latestVersion = $checker->getLatestVersion();
-            $latestVersionOfCurrentMajor = $checker->getLatestVersionOfMajor($currentMajor);
+            $latestVersion = $this->versionChecker->getLatestVersion();
+            $latestVersionOfCurrentMajor = $this->versionChecker->getLatestVersionOfMajor($currentMajor);
         } catch (\Exception $exception) {
             $output->writeln(sprintf(
                 '<error>Unable to determine newest version: %s</error>',
@@ -101,7 +114,7 @@ EOT
             return 1;
         }
 
-        if (1 !== $checker->compareVersions($latestVersion, $currentVersion)) {
+        if (1 !== $this->versionChecker->compareVersions($latestVersion, $currentVersion)) {
             $output->writeln('<info>php-cs-fixer is already up to date.</info>');
 
             return 0;
@@ -110,7 +123,7 @@ EOT
         $remoteTag = $latestVersion;
 
         if (
-            0 !== $checker->compareVersions($latestVersionOfCurrentMajor, $latestVersion)
+            0 !== $this->versionChecker->compareVersions($latestVersionOfCurrentMajor, $latestVersion)
             && true !== $input->getOption('force')
         ) {
             $output->writeln(sprintf('<info>A new major version of php-cs-fixer is available</info> (<comment>%s</comment>)', $latestVersion));
@@ -118,7 +131,7 @@ EOT
             $output->writeln('<info>If you are ready to upgrade run this command with</info> <comment>-f</comment>');
             $output->writeln('<info>Checking for new minor/patch version...</info>');
 
-            if (1 !== $checker->compareVersions($latestVersionOfCurrentMajor, $currentVersion)) {
+            if (1 !== $this->versionChecker->compareVersions($latestVersionOfCurrentMajor, $currentVersion)) {
                 $output->writeln('<info>No minor update for php-cs-fixer.</info>');
 
                 return 0;
@@ -135,36 +148,28 @@ EOT
             return 1;
         }
 
-        $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
-        $remoteFilename = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar', $remoteTag);
+        $tempFilename = dirname($localFilename).'/'.basename($localFilename, '.phar').'-tmp.phar';
+        $remoteFilename = $this->toolInfo->getPharDownloadUri($remoteTag);
 
-        try {
-            $copyResult = @copy($remoteFilename, $tempFilename);
-            if (false === $copyResult) {
-                $output->writeln(sprintf('<error>Unable to download new version %s from the server.</error>', $remoteTag));
+        if (false === @copy($remoteFilename, $tempFilename)) {
+            $output->writeln(sprintf('<error>Unable to download new version %s from the server.</error>', $remoteTag));
 
-                return 1;
-            }
+            return 1;
+        }
 
-            chmod($tempFilename, 0777 & ~umask());
+        chmod($tempFilename, 0777 & ~umask());
 
-            // test the phar validity
-            $phar = new \Phar($tempFilename);
-            // free the variable to unlock the file
-            unset($phar);
-            rename($tempFilename, $localFilename);
-
-            $output->writeln(sprintf('<info>php-cs-fixer updated</info> (<comment>%s</comment>)', $remoteTag));
-        } catch (\Exception $e) {
-            if (!$e instanceof \UnexpectedValueException && !$e instanceof \PharException) {
-                throw $e;
-            }
-
+        $pharInvalidityReason = $this->pharChecker->checkFileValidity($tempFilename);
+        if (null !== $pharInvalidityReason) {
             unlink($tempFilename);
-            $output->writeln(sprintf('<error>The download of %s is corrupt (%s).</error>', $remoteTag, $e->getMessage()));
+            $output->writeln(sprintf('<error>The download of %s is corrupt (%s).</error>', $remoteTag, $pharInvalidityReason));
             $output->writeln('<error>Please re-run the self-update command to try again.</error>');
 
             return 1;
         }
+
+        rename($tempFilename, $localFilename);
+
+        $output->writeln(sprintf('<info>php-cs-fixer updated</info> (<comment>%s</comment>)', $remoteTag));
     }
 }
