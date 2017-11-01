@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-31T23:43:07Z
+
+I rebased PR, is there anything left here @SpacePossum ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-01T07:44:29Z
+
+I think is one is ready, there is https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3162#discussion_r146838541 and the nightly failure though
