@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Max Voloshin <voloshin.dp@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ * @author SpacePossum
  *
  * @internal
  *
@@ -162,6 +163,78 @@ PHP;
                 ),
                 74 => array(
                     'token' => $tokens[74],
+                    'type' => 'method',
+                ),
+            ),
+            $elements
+        );
+    }
+
+    public function testGetClassyElementsWithMultipleAnonymousClass()
+    {
+        $source = <<<'PHP'
+<?php class A0
+{
+    public function AA0()
+    {
+        return new class
+        {
+            public function BB0()
+            {
+            }
+        };
+    }
+
+    public function otherFunction0()
+    {
+    }
+}
+
+class A1
+{
+    public function AA1()
+    {
+        return new class
+        {
+            public function BB1()
+            {
+            }
+        };
+    }
+
+    public function otherFunction1()
+    {
+    }
+}
+PHP;
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        $this->assertSame(
+            array(
+                9 => array(
+                    'token' => $tokens[9],
+                    'type' => 'method',
+                ),
+                27 => array(
+                    'token' => $tokens[27],
+                    'type' => 'method',
+                ),
+                44 => array(
+                    'token' => $tokens[44],
+                    'type' => 'method',
+                ),
+                64 => array(
+                    'token' => $tokens[64],
+                    'type' => 'method',
+                ),
+                82 => array(
+                    'token' => $tokens[82],
+                    'type' => 'method',
+                ),
+                99 => array(
+                    'token' => $tokens[99],
                     'type' => 'method',
                 ),
             ),
