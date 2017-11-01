@@ -15,17 +15,10 @@ namespace PhpCsFixer;
 /**
  * @internal
  */
-interface ToolInfoInterface
+interface PharCheckerInterface
 {
-    public function getComposerInstallationDetails();
-
-    public function getComposerVersion();
-
-    public function getVersion();
-
-    public function isInstalledAsPhar();
-
-    public function isInstalledByComposer();
-
-    public function getPharDownloadUri($version);
+    /**
+     * @param string $filename
+     */
+    public function checkFileValidity($filename);
 }
