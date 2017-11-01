@@ -38,7 +38,7 @@ final class Transformers
     {
         $this->registerBuiltInTransformers();
 
-        usort($this->items, function (TransformerInterface $a, TransformerInterface $b) {
+        usort($this->items, static function (TransformerInterface $a, TransformerInterface $b) {
             return Utils::cmpInt($b->getPriority(), $a->getPriority());
         });
     }

@@ -50,7 +50,7 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
 
     public function provideFixPostIncrementCases()
     {
-        return array_map(function (array $case) {
+        return array_map(static function (array $case) {
             return array_reverse($case);
         }, $this->provideFixPreIncrementCases());
     }

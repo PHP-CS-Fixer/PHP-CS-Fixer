@@ -180,25 +180,25 @@ final class UtilsTest extends TestCase
             [
                 ['a', 'b', 'c', 'd', 'e'],
                 ['b', 'd', 'e', 'a', 'c'],
-                function ($element) { return $element; },
+                static function ($element) { return $element; },
                 'strcmp',
             ],
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
-                function ($element) { return 'foo'; },
+                static function ($element) { return 'foo'; },
                 'strcmp',
             ],
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
-                function ($element) { return $element; },
-                function ($a, $b) { return 0; },
+                static function ($element) { return $element; },
+                static function ($a, $b) { return 0; },
             ],
             [
                 ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
                 ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
-                function ($element) { return preg_replace('/([a-z]+)(\d+)/', '$2$1', $element); },
+                static function ($element) { return preg_replace('/([a-z]+)(\d+)/', '$2$1', $element); },
                 'strcmp',
             ],
         ];

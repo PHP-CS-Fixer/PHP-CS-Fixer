@@ -289,7 +289,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $this->assertGreaterThan(
                     1,
                     count(array_unique(array_map(
-                        function (FixerInterface $fixer) {
+                        static function (FixerInterface $fixer) {
                             return $fixer->getPriority();
                         },
                         $fixers
