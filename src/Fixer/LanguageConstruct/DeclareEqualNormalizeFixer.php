@@ -50,8 +50,8 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
         return new FixerDefinition(
             'Equal sign in declare statement should be surrounded by spaces or not following configuration.',
             [
-                new CodeSample("<?php\ndeclare(ticks =  1);"),
-                new CodeSample("<?php\ndeclare(ticks=1);", ['space' => 'single']),
+                new CodeSample("<?php\ndeclare(ticks =  1);\n"),
+                new CodeSample("<?php\ndeclare(ticks=1);\n", ['space' => 'single']),
             ]
         );
     }

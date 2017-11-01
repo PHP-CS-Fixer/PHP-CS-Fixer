@@ -52,7 +52,8 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
 function sample($a, $b, $c)
 {
     return sample2($a, $b, $c);
-}')]
+}
+')]
         );
     }
 

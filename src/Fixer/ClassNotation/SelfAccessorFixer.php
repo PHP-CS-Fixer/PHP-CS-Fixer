@@ -43,7 +43,8 @@ class Sample
     {
         return Sample::BAR;
     }
-}'
+}
+'
                 ),
             ]
         );

@@ -39,7 +39,8 @@ final class PhpdocNoPackageFixer extends AbstractProxyFixer
  */
 class Baz
 {
-}'
+}
+'
                 ),
             ]
         );

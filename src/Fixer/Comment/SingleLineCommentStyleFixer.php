@@ -68,7 +68,8 @@ $b = 2;
  * multi-line
  * comment
  */
-$c = 3;'
+$c = 3;
+'
                 ),
                 new CodeSample(
                     '<?php
@@ -84,11 +85,12 @@ $b = 2;
  * third
  * comment
  */
-$c = 3;',
+$c = 3;
+',
                     ['comment_types' => ['asterisk']]
                 ),
                 new CodeSample(
-                    '<?php # comment',
+                    "<?php # comment\n",
                     ['comment_types' => ['hash']]
                 ),
             ]

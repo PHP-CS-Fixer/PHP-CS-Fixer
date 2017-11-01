@@ -31,7 +31,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove useless semicolon statements.',
-            [new CodeSample('<?php $a = 1;;')]
+            [new CodeSample("<?php \$a = 1;;\n")]
         );
     }
 

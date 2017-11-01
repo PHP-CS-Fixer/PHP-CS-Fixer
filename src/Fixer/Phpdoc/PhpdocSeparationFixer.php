@@ -45,7 +45,8 @@ final class PhpdocSeparationFixer extends AbstractFixer
  * @throws Exception|RuntimeException
  * @return bool
  */
-function fnc($foo, $bar) {}'
+function fnc($foo, $bar) {}
+'
                 ),
             ]
         );

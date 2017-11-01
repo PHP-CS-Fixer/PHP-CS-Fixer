@@ -33,7 +33,7 @@ final class CompactNullableTypehintFixer extends AbstractFixer
             'Remove extra spaces in a nullable typehint.',
             [
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction sample(? string \$str): ? string\n{}",
+                    "<?php\nfunction sample(? string \$str): ? string\n{}\n",
                     new VersionSpecification(70100)
                 ),
             ],

@@ -1028,7 +1028,7 @@ final class ConfigurationResolverTest extends TestCase
 
         $options = $definition->getOptions();
         $this->assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'diff-format', 'format', 'stop-on-violation', 'show-progress'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -1043,6 +1043,7 @@ final class ConfigurationResolverTest extends TestCase
                 'rules' => 'php_unit_construct',
                 'using-cache' => false,
                 'diff' => true,
+                'diff-format' => 'udiff',
                 'format' => 'json',
                 'stop-on-violation' => true,
             ],
@@ -1055,21 +1056,25 @@ final class ConfigurationResolverTest extends TestCase
         $this->assertSame(['php_unit_construct' => true], $resolver->getRules());
         $this->assertFalse($resolver->getUsingCache());
         $this->assertNull($resolver->getCacheFile());
-        $this->assertInstanceOf(\PhpCsFixer\Differ\SebastianBergmannDiffer::class, $resolver->getDiffer());
+        $this->assertInstanceOf(\PhpCsFixer\Differ\UnifiedDiffer::class, $resolver->getDiffer());
         $this->assertSame('json', $resolver->getReporter()->getFormat());
     }
 
     /**
-     * @param string      $expected
-     * @param bool|string $differConfig
+     * @param string           $expected
+     * @param null|bool|string $diffConfig
+     * @param null|string      $differConfig
      *
      * @dataProvider provideDifferCases
      */
-    public function testResolveDiffer($expected, $differConfig)
+    public function testResolveDiffer($expected, $diffConfig, $differConfig = null)
     {
         $resolver = new ConfigurationResolver(
             $this->config,
-            ['diff' => $differConfig],
+            [
+                'diff' => $diffConfig,
+                'diff-format' => $differConfig,
+            ],
             ''
         );
 
@@ -1084,8 +1089,46 @@ final class ConfigurationResolverTest extends TestCase
                 false,
             ],
             [
+                \PhpCsFixer\Differ\NullDiffer::class,
+                null,
+            ],
+            [
                 \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
                 true,
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+                'sbd',
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+                true,
+                'sbd',
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+                false,
+                'sbd',
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+                null,
+                'sbd',
+            ],
+            [
+                \PhpCsFixer\Differ\UnifiedDiffer::class,
+                true,
+                'udiff',
+            ],
+            [
+                \PhpCsFixer\Differ\UnifiedDiffer::class,
+                false,
+                'udiff',
+            ],
+            [
+                \PhpCsFixer\Differ\UnifiedDiffer::class,
+                null,
+                'udiff',
             ],
         ];
     }

@@ -33,7 +33,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             'Use `null` coalescing operator `??` where possible. Requires PHP >= 7.0.',
             [
                 new VersionSpecificCodeSample(
-                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;",
+                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n",
                     new VersionSpecification(70000)
                 ),
             ]

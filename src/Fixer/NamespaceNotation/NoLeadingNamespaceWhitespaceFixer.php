@@ -44,7 +44,8 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
                 new CodeSample(
                     '<?php
  namespace Test8a;
-    namespace Test8b;'
+    namespace Test8b;
+'
                 ),
             ]
         );

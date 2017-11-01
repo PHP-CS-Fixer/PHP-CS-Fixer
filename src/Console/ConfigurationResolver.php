@@ -24,6 +24,7 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -112,6 +113,7 @@ final class ConfigurationResolver
         'cache-file' => null,
         'config' => null,
         'diff' => null,
+        'diff-format' => null,
         'dry-run' => null,
         'format' => null,
         'path' => [],
@@ -258,15 +260,20 @@ final class ConfigurationResolver
             $mapper = [
                 'null' => function () { return new NullDiffer(); },
                 'sbd' => function () { return new SebastianBergmannDiffer(); },
+                'udiff' => function () { return new UnifiedDiffer(); },
             ];
 
-            $option = $this->options['diff'] ? 'sbd' : 'null';
-
-            if (!isset($mapper[$option])) {
-                throw new InvalidConfigurationException(sprintf(
-                    'Differ must be "sbd" or "null", got "%s".',
-                    $this->options['diff']
-                ));
+            if ($this->options['diff-format']) {
+                $option = $this->options['diff-format'];
+                if (!isset($mapper[$option])) {
+                    throw new InvalidConfigurationException(sprintf(
+                        '"diff-format" must be any of "%s", got "%s".',
+                        implode('", "', array_keys($mapper)),
+                        $option
+                    ));
+                }
+            } else {
+                $option = $this->options['diff'] ? 'sbd' : 'null'; // TODO: change to udiff as default on 3.0
             }
 
             $this->differ = $mapper[$option]();

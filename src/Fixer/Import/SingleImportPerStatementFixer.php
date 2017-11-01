@@ -36,7 +36,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     {
         return new FixerDefinition(
             'There MUST be one use keyword per declaration.',
-            [new CodeSample("<?php\nuse Foo, Sample, Sample\\Sample as Sample2;")]
+            [new CodeSample("<?php\nuse Foo, Sample, Sample\\Sample as Sample2;\n")]
         );
     }
 
