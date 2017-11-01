@@ -346,6 +346,32 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         }
     }',
             ],
+            'valid docblock but for property, not method' => [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * @expectedException FooException
+         * @expectedExceptionCode 123
+         */
+         public $foo;
+
+         public function bar()
+         {
+             /**
+              * @expectedException FooException
+              * @expectedExceptionCode 123
+              */
+             $baz = 1;
+
+             /**
+              * @expectedException FooException
+              * @expectedExceptionCode 123
+              */
+             while (false) {}
+         }
+    }'
+            ],
         ];
     }
 
