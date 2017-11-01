@@ -592,6 +592,8 @@ final class TokensAnalyzer
             }
         }
 
+        ksort($elements);
+
         return $elements;
     }
 }
