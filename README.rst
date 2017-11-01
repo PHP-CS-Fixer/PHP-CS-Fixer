@@ -1312,7 +1312,7 @@ Choose from the list of available rules:
 
 * **static_lambda**
 
-  Lambda's not (indirect) referencing ``$this`` must be declared ``static``.
+  Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
 
 * **strict_comparison**
 
