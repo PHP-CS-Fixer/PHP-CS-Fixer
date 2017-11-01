@@ -273,7 +273,13 @@ final class ConfigurationResolver
                     ));
                 }
             } else {
-                $option = $this->options['diff'] ? 'sbd' : 'null'; // TODO: change to udiff as default on 3.0
+                $default = 'sbd'; // @TODO: 3.0 change to udiff as default
+
+                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                    $default = 'udiff';
+                }
+
+                $option = $this->options['diff'] ? $default : 'null';
             }
 
             $this->differ = $mapper[$option]();
@@ -396,7 +402,13 @@ final class ConfigurationResolver
                 $progressTypes = ['none', 'run-in', 'estimating', 'estimating-max'];
 
                 if (null === $progressType) {
-                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'run-in';
+                    $default = 'run-in';
+
+                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                        $default = 'estimating-max';
+                    }
+
+                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : $default;
                 } elseif (!in_array($progressType, $progressTypes, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are "%s".',
@@ -865,6 +877,10 @@ final class ConfigurationResolver
 
         if ('no' === $value) {
             return false;
+        }
+
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            throw new InvalidConfigurationException(sprintf('Expected "yes" or "no" for option "%s", got "%s".  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.', $optionName, $value));
         }
 
         @trigger_error(

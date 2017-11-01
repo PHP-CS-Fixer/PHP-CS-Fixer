@@ -121,7 +121,7 @@ final class ProjectCodeTest extends TestCase
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
         ];
 
-        // @TODO: should be removed at 3.0
+        // @TODO: 3.0 should be removed
         $exceptionMethodsPerClass = [
             \PhpCsFixer\Config::class => ['create'],
             \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class => ['fixSpace'],

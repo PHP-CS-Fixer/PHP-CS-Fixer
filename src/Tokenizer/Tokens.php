@@ -111,6 +111,10 @@ class Tokens extends \SplFixedArray
      */
     public static function setLegacyMode($isLegacy)
     {
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE') && $isLegacy) {
+            throw new \RuntimeException('Cannot enable `legacy mode` when using `future mode`.  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+        }
+
         self::$isLegacyMode = $isLegacy;
     }
 

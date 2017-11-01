@@ -225,6 +225,13 @@ automatically fix anything:
 
     $ cat foo.php | php php-cs-fixer.phar fix --diff -
 
+Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
+would be default in next MAJOR release (unified differ, estimating, full-width progress indicator):
+
+.. code-block:: bash
+
+    $ PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer.phar fix -v --diff
+
 Choose from the list of available rules:
 
 * **align_multiline_comment**

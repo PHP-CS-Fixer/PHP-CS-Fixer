@@ -124,6 +124,11 @@ automatically fix anything:
 
     <info>$ cat foo.php | php %command.full_name% --diff -</info>
 
+Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
+would be default in next MAJOR release (unified differ, estimating, full-width progress indicator):
+
+    <info>$ PHP_CS_FIXER_FUTURE_MODE=1 php %command.full_name% -v --diff</info>
+
 Choose from the list of available rules:
 
 %%%FIXERS_DETAILS%%%
