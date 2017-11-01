@@ -135,3 +135,6 @@ jobs:
                     tags: true
             after_deploy:
                 - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}
+
+    allow_failures:
+        - php: nightly
