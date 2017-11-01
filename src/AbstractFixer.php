@@ -117,7 +117,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
 
         if (null === $configuration) {
             if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                throw new \InvalidArgumentException('Parameter must not be `null`.');
+                throw new \InvalidArgumentException('Parameter must not be `null`. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
             }
 
             @trigger_error(

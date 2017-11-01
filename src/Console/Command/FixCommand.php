@@ -150,7 +150,7 @@ final class FixCommand extends Command
         if (null !== $stdErr) {
             if (null !== $passedConfig && null !== $passedRules) {
                 if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                    throw new \RuntimeException('Passing both `config` and `rules` options is not possible.');
+                    throw new \RuntimeException('Passing both `config` and `rules` options is not possible. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
                 }
 
                 $stdErr->writeln([
