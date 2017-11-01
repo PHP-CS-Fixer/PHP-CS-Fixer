@@ -97,7 +97,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
          */
         public function testFnc()
         {
-            $this->setExpectedException(\FooException::class, \'foo\');
+            $this->setExpectedException(\FooException::class, \'foo@bar\');
             aaa();
         }
     }',
@@ -106,7 +106,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
     {
         /**
          * @expectedException FooException
-         * @expectedExceptionMessage foo
+         * @expectedExceptionMessage foo@bar
          */
         public function testFnc()
         {
