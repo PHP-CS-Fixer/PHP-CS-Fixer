@@ -32,7 +32,9 @@ final class StaticLambdaFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Lambdas not (indirect) referencing `$this` must be declared `static`.',
-            [new CodeSample("<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};\n")]
+            [new CodeSample("<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};\n")],
+            null,
+            'Risky when using "->bindTo" on lambdas without referencing to `$this`.'
         );
     }
 
@@ -42,6 +44,14 @@ final class StaticLambdaFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_FUNCTION);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     /**
