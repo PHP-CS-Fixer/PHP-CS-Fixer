@@ -92,7 +92,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                 '<?php
                     class B
                     {
-                        public function B()
+                        public function C()
                         {
                             $a = function () {
                                 var_dump($THIS);
@@ -104,9 +104,9 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                    class C
+                    class D
                     {
-                        public function B()
+                        public function E()
                         {
                             $a = function () {
                                 $c = include __DIR__.\'/return_this.php\';
@@ -120,9 +120,9 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                    class D
+                    class F
                     {
-                        public function B()
+                        public function G()
                         {
                             $a = function () {
                                 $d = include_once __DIR__.\'/return_this.php\';
@@ -135,9 +135,9 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                    class E
+                    class H
                     {
-                        public function B()
+                        public function I()
                         {
                             $a = function () {
                                 $e = require_once __DIR__.\'/return_this.php\';
@@ -150,9 +150,9 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                    class F
+                    class J
                     {
-                        public function B()
+                        public function K()
                         {
                             $a = function () {
                                 $f = require __DIR__.\'/return_this.php\';
@@ -165,9 +165,9 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                    class G
+                    class L
                     {
-                        public function B()
+                        public function M()
                         {
                             $a = function () {
                                 $g = \'this\';
@@ -181,9 +181,9 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                    class H
+                    class N
                     {
-                        public function B()
+                        public function O()
                         {
                             $a = function () {
                                 $a = [0 => \'this\'];
@@ -197,20 +197,20 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                 '<?php function test(){} test();',
             ],
             [
-                '<?php class A
+                '<?php abstract class P
                 {
-                    function test(){}
+                    function test0(){}
                     public function test1(){}
                     protected function test2(){}
                     protected abstract function test3();
                     private function test4(){}
                 }
-                new A();',
+                ',
             ],
             [
                 '<?php
 
-class A
+class Q
 {
     public function abc()
     {
@@ -223,7 +223,7 @@ class A
     }
 }
 
-$b = new A();
+$b = new Q();
 $b->abc();
 ',
             ],
