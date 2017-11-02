@@ -370,7 +370,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
               */
              while (false) {}
          }
-    }'
+    }',
             ],
         ];
     }
