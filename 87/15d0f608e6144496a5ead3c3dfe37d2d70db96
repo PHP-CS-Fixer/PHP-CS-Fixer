@@ -1,0 +1,213 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-10-25T21:12:35Z
+
+👍
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-26T06:03:49Z
+
+why not 2.2 ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-26T07:46:26Z
+
+Because of [PHP bug #60573](https://bugs.php.net/bug.php?id=60573) which was fixed in PHP 5.4.1. As 2.2 supports PHP 5.3, it would be affected by the bug because of the changes applied by the fixer. An alternative would be to disable the fixer on the project so we can target 2.2.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-26T08:21:28Z
+
+:+1: for disabling the fixer when running on PHP 5.4.1 (and remove support for PHP 5.4.1 in composer.json)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-26T09:14:27Z
+
+2.2 shall not bump php requirement
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-26T09:21:24Z
+
+We cannot disable the fixer conditionally. We can't apply the change without breaking the tool on PHP 5.3 so CI builds would fail on higher versions, where the fixer would still be enabled and try to apply the change again.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-26T09:31:51Z
+
+>2.2 shall not bump php requirement
+
+no one suggested that, I just suggest we black list `5.4.1`, so no bump
+
+>We cannot disable the fixer conditionally
+
+we can check in the `isCandidate` if running on PHP 5.4.1? and on CI we can pick any other PHP 5.4.x version but 5.4.1?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-26T09:39:16Z
+
+bug was not present only in `5.4.1`, it was present in `5.4.1` and lower, won't it ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-26T09:47:26Z
+
+hmm indeed,
+
+`5.1.6 - 5.4.0, hhvm-3.10.1 - 3.22.0`
+https://3v4l.org/3dLV3
+
+do not raise the warning during execution.
+However why is that an issue for the fixer though?
+For example, some wrong PHP code:
+
+```php
+<?php
+
+namespace A {
+
+    class Foo
+    {
+        public function setSelf(self $s)
+        {
+        }
+    }
+}
+
+namespace {
+
+    use A\Foo as Foo1;
+
+    class Foo extends Foo1
+    {
+        public function setSelf(Foo $s)
+        {
+        }
+    }
+}
+```
+
+```
+$ php -v
+PHP 7.2.0RC4 (cli) (built: Oct 22 2017 13:09:49) ( NTS )
+Copyright (c) 1997-2017 The PHP Group
+Zend Engine v3.2.0-dev, Copyright (c) 1998-2017 Zend Technologies
+    with Zend OPcache v7.2.0RC4, Copyright (c) 1999-2017, by Zend Technologies
+```
+
+```
+[11:58 AM]-[possum@zoo1]-[/home/possum/work/PHP-CS-Fixer]-[git master]
+$ php -l tmp/test3.php
+PHP Warning:  Declaration of Foo::setSelf(Foo $s) should be compatible with A\Foo::setSelf(A\Foo $s) in tmp/test3.php on line 22
+No syntax errors detected in tmp/test3.php
+```
+
+```
+[11:58 AM]-[possum@zoo1]-[/home/possum/work/PHP-CS-Fixer]-[git master]
+$ php php-cs-fixer fix tmp/test3.php --dry-run -vvv
+Loaded config default from "/home/possum/work/PHP-CS-Fixer/.php_cs.dist".
+Using cache file ".php_cs.cache".
+Paths from configuration file have been overridden by paths provided as command arguments.
+F
+Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error
+   1) tmp/test3.php (header_comment, no_extra_consecutive_blank_lines)
+
+Checked all files in 0.012 seconds, 8.000 MB memory used
+```
+
+so on PHP7.2 + PHP CS Fixer @ master we fix these PHP files as well, even though they are not correct.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-26T11:05:09Z
+
+The issue is [the change in `SignatureInterface`](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3114/files#diff-331e87320e6c637bbdb0c39cd6f1b64eR42) that triggers the error on PHP lower than 5.4.1.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-26T17:35:54Z
+
+@Korikulum this PR should resolve your issue, do you maybe have time to review or test as well?
+
+---------------------------------------------------------------------------
+
+by Korikulum at 2017-10-27T11:49:28Z
+
+@SpacePossum ~~Hi, I've tested the changes & it seems that it still doesn't work when the type declarations are nullable, eg:~~
+
+```php
+class Foo
+{
+    public function bar(?Foo $foo): ?Foo {}
+}
+```
+
+~~Other then that, everything is working fine.~~
+
+Just realized that `?self` doesn't work in PHP, so everything is fine, sorry about that. :flushed:
+
+The fixer now works as expected.
+
+---------------------------------------------------------------------------
+
+by Korikulum at 2017-10-27T12:12:42Z
+
+@SpacePossum And I just realized I was testing on php 7, not 7.1, so I have to correct myself again, `?self` does work in PHP, so my initial statement was correct, the fix doesn't work when the type declarations are nullable:
+
+```php
+class Foo
+{
+    public function bar(?Foo $foo): ?Foo {}
+}
+```
+
+Sorry about the confusion.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-02T08:34:14Z
+
+ping @julienfalque :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-02T08:42:25Z
+
+Is there anything left to do here? `?self` [seems to work fine](https://3v4l.org/RLvaV).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-02T08:45:21Z
+
+I think, IIUC, that this test is missing:
+
+```php
+            [
+                 '<?php interface Foo { public function bar(): ?self; }',
+                 '<?php interface Foo { public function bar(): ?Foo; }',
+            ],
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-02T17:18:22Z
+
+Test added (and fixed as it was actually failing).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-02T17:27:20Z
+
+Looks solid to me.
+Can I bother you; the last fix has a `class` variant for fixing proving the fixer works correctly, can we've a `interface` with comment- and whitespace-mess as well? (something like `<?php interface D{public function a()\t/**/?:/**/Foo;`})
+after that and test are green :+1: lets :ship:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-02T18:04:45Z
+
+Test added.
