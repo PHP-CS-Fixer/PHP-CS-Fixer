@@ -82,6 +82,21 @@ PHP;
 class Foo
 {}
 ',
+            'nothing-extends-old' => '<?php
+
+class Foo extends \PHPUnit_Framework_TestCase
+{}
+',
+            'nothing-extends-new' => '<?php
+
+class Foo extends \PHPUnit\Framework\TestCase
+{}
+',
+            'ends-with-test' => '<?php
+
+class FooTest
+{}
+',
         ];
 
         foreach ($cases as $key => $code) {
