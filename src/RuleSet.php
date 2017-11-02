@@ -68,7 +68,6 @@ final class RuleSet implements RuleSetInterface
             'concat_space' => ['spacing' => 'none'],
             'declare_equal_normalize' => true,
             'function_typehint_space' => true,
-            'hash_to_slash_comment' => true,
             'include' => true,
             'increment_style' => true,
             'lowercase_cast' => true,
@@ -133,6 +132,9 @@ final class RuleSet implements RuleSetInterface
             'short_scalar_cast' => true,
             'single_blank_line_before_namespace' => true,
             'single_class_element_per_statement' => true,
+            'single_line_comment_style' => [
+                'comment_types' => ['hash'],
+            ],
             'single_quote' => true,
             'space_after_semicolon' => [
                 'remove_in_empty_for_expressions' => true,

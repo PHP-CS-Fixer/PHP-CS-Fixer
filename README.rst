@@ -575,7 +575,7 @@ Choose from the list of available rules:
   - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
     defaults to ``[]``
 
-* **hash_to_slash_comment** [@Symfony]
+* **hash_to_slash_comment**
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
   DEPRECATED: use ``single_line_comment_style`` instead.
@@ -1239,7 +1239,7 @@ Choose from the list of available rules:
   Each namespace use MUST go on its own line and there MUST be one blank
   line after the use statements block.
 
-* **single_line_comment_style**
+* **single_line_comment_style** [@Symfony]
 
   Single-line comments and multi-line comments with only one line of
   actual content should use the ``//`` syntax.
