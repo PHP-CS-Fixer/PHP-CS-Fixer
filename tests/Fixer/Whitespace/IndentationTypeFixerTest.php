@@ -282,14 +282,14 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         ];
 
         $cases[] = [
-                "<?php
+            "<?php
 function myFunction() {
 \t\$foo        = 1;
 \t//abc
 \t\$myFunction = 2;
 \t\$middleVar  = 1;
 }",
-                '<?php
+            '<?php
 function myFunction() {
     $foo        = 1;
     //abc

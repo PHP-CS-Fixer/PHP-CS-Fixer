@@ -60,7 +60,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                 '<?php UNSET($a); unset($b,$c/**/);',
             ],
             [
-              '<?php
+                '<?php
               $config = array();
               if ($config) {
               }

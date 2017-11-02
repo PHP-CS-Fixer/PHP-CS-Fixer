@@ -567,9 +567,9 @@ EOF;
     {
         return [
             [
-'<?php
+                '<?php
 ?>inline content<?php ?>',
-'<?php
+                '<?php
      use A\AA;
      use B\C?>inline content<?php use A\D; use E\F ?>',
             ],

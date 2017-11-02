@@ -324,7 +324,7 @@ switch($a) {
                 continue;
             }
 
-            $this->$callback($index);
+            $this->{$callback}($index);
 
             return;
         }
@@ -334,7 +334,7 @@ switch($a) {
                 continue;
             }
 
-            $this->$callback($index);
+            $this->{$callback}($index);
 
             return;
         }

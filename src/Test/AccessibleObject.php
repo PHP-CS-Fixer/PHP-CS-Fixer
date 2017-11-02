@@ -54,7 +54,7 @@ final class AccessibleObject
     public function __isset($name)
     {
         try {
-            $value = $this->$name;
+            $value = $this->{$name};
         } catch (\LogicException $e) {
             return false;
         }

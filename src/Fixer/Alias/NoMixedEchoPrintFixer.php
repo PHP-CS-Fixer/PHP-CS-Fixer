@@ -98,7 +98,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
         $callBack = $this->callBack;
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind($this->candidateTokenType)) {
-                $this->$callBack($tokens, $index);
+                $this->{$callBack}($tokens, $index);
             }
         }
     }
