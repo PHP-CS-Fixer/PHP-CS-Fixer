@@ -1293,7 +1293,7 @@ class Tokens extends \SplFixedArray
      * @param string $key   item key
      * @param Tokens $value item value
      */
-    private static function setCache($key, Tokens $value)
+    private static function setCache($key, self $value)
     {
         self::$cache[$key] = $value;
     }
