@@ -55,6 +55,28 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
         }
     }',
             ],
+            [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        public function testFoo()
+        {
+            $this->createMock("Foo");
+            $this->createMock($foo(1, 2));
+            $this->getMock("Foo", ["aaa"]);
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        public function testFoo()
+        {
+            $this->getMock("Foo");
+            $this->getMock($foo(1, 2));
+            $this->getMock("Foo", ["aaa"]);
+        }
+    }',
+            ],
         ];
     }
 }

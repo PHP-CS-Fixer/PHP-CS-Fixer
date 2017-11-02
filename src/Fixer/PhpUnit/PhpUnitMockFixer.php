@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -30,7 +31,7 @@ final class PhpUnitMockFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Usages of `->getMockWithoutInvokingTheOriginalConstructor` method MUST be replaced by `->createMock` method.',
+            'Usages of `->getMock` and `->getMockWithoutInvokingTheOriginalConstructor` methods MUST be replaced by `->createMock` method.',
             [
                 new CodeSample(
                     '<?php
@@ -39,6 +40,18 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function testFoo()
     {
         $mock = $this->getMockWithoutInvokingTheOriginalConstructor("Foo");
+    }
+}
+'
+                ),
+                new CodeSample(
+                    '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $mock1 = $this->getMock("Foo");
+        $mock1 = $this->getMock("Bar", ["aaa"]); // version with multiple params is not supported
     }
 }
 '
@@ -71,6 +84,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $inPhpUnitClass = false;
 
@@ -91,6 +105,15 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             if ($tokens[$index]->equals([T_STRING, 'getMockWithoutInvokingTheOriginalConstructor'], false)) {
                 $tokens[$index] = new Token([T_STRING, 'createMock']);
+            } elseif ($tokens[$index]->equals([T_STRING, 'getMock'], false)) {
+                $openingParenthesis = $tokens->getNextMeaningfulToken($index);
+                $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesis);
+
+                $argumentsCount = $argumentsAnalyzer->countArguments($tokens, $openingParenthesis, $closingParenthesis);
+
+                if (1 === $argumentsCount) {
+                    $tokens[$index] = new Token([T_STRING, 'createMock']);
+                }
             }
         }
     }

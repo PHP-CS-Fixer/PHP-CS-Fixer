@@ -1001,8 +1001,9 @@ Choose from the list of available rules:
 
 * **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
-  Usages of ``->getMockWithoutInvokingTheOriginalConstructor`` method MUST
-  be replaced by ``->createMock`` method.
+  Usages of ``->getMock`` and
+  ``->getMockWithoutInvokingTheOriginalConstructor`` methods MUST be
+  replaced by ``->createMock`` method.
 
   *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
 
