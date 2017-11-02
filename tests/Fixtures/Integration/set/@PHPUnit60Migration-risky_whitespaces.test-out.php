@@ -39,6 +39,11 @@ class FooTest extends \PHPUnit\Framework\TestCase {
 		ccc();
 	}
 
+	public function test_mock_54()
+	{
+		$mock = $this->createMock("Foo");
+	}
+
 	public function test_php_unit_expectation_52() {
 		$this->expectException("RuntimeException");
 		$this->expectExceptionMessage("Msg");

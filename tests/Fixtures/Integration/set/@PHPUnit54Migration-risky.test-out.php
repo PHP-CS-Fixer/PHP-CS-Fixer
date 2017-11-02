@@ -1,20 +1,20 @@
 <?php
 
-use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\BaseTestListener;
-use PHPUnit\Framework\TestListener;
-use PHPUnit\Aaa;
-use PHPUnit\Aaa\Bbb;
-use PHPUnit\Aaa\Bbb\Ccc;
-use PHPUnit\Aaa\Bbb\Ccc\Ddd;
-use PHPUnit\Aaa\Bbb\Ccc\Ddd\Eee;
+use PHPUnit_Framework_Assert;
+use PHPUnit_Framework_BaseTestListener;
+use PHPUnit_Framework_TestListener;
+use PHPUnit_Aaa;
+use PHPUnit_Aaa_Bbb;
+use PHPUnit_Aaa_Bbb_Ccc;
+use PHPUnit_Aaa_Bbb_Ccc_Ddd;
+use PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee;
 
 class FooTest extends \PHPUnit\Framework\TestCase {
     public function test_dedicate_assert($foo) {
         $this->assertNull($foo);
         $this->assertInternalType('array', $foo);
         $this->assertNan($foo);
-        $this->assertIsReadable($foo);
+        $this->assertTrue(is_readable($foo));
     }
 
     /**
@@ -33,9 +33,7 @@ class FooTest extends \PHPUnit\Framework\TestCase {
      */
     function test_php_unit_no_expectation_annotation_43()
     {
-        $this->expectException(\FooException::class);
-        $this->expectExceptionMessageRegExp('/foo.*$/');
-        $this->expectExceptionCode(123);
+        $this->setExpectedExceptionRegExp(\FooException::class, '/foo.*$/', 123);
         ccc();
     }
 
@@ -51,8 +49,6 @@ class FooTest extends \PHPUnit\Framework\TestCase {
     }
 
     public function test_php_unit_expectation_56() {
-        $this->expectException("RuntimeException");
-        $this->expectExceptionMessageRegExp("/Msg.*/");
-        $this->expectExceptionCode(123);
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
     }
 }

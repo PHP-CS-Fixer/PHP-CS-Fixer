@@ -28,6 +28,7 @@ final class PhpUnitTargetVersion
     const VERSION_4_8 = '4.8';
     const VERSION_5_0 = '5.0';
     const VERSION_5_2 = '5.2';
+    const VERSION_5_4 = '5.4';
     const VERSION_5_6 = '5.6';
     const VERSION_5_7 = '5.7';
     const VERSION_6_0 = '6.0';
