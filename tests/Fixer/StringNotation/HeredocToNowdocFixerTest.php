@@ -49,7 +49,7 @@ EOF
 TEST;
 
 EOF
-            , <<<'EOF'
+                , <<<'EOF'
 <?php $a = <<<TEST
 TEST;
 
@@ -61,7 +61,7 @@ Foo \\ $bar \n
 TEST;
 
 EOF
-            , <<<'EOF'
+                , <<<'EOF'
 <?php $a = <<<TEST
 Foo \\\\ \$bar \\n
 TEST;
@@ -74,7 +74,7 @@ Foo
 TEST;
 
 EOF
-            , <<<'EOF'
+                , <<<'EOF'
 <?php $a = <<<"TEST"
 Foo
 TEST;
@@ -116,7 +116,7 @@ a
 HTML;
 
 EOF
-            , <<<'EOF'
+                , <<<'EOF'
 <?php
 $html = <<<   HTML
 a
@@ -130,7 +130,7 @@ Foo
 TEST;
 
 EOF
-            , <<<'EOF'
+                , <<<'EOF'
 <?php $a = <<<           "TEST"
 Foo
 TEST;
@@ -141,7 +141,7 @@ EOF
 <?php echo <<<'TEST'\r\nFoo\r\nTEST;
 
 EOF
-            , <<<EOF
+                , <<<EOF
 <?php echo <<<TEST\r\nFoo\r\nTEST;
 
 EOF

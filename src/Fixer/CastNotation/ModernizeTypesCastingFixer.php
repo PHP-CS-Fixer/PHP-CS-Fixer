@@ -62,11 +62,11 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     {
         // replacement patterns
         static $replacement = array(
-             'intval' => array(T_INT_CAST, '(int)'),
-             'floatval' => array(T_DOUBLE_CAST, '(float)'),
-             'doubleval' => array(T_DOUBLE_CAST, '(float)'),
-             'strval' => array(T_STRING_CAST, '(string)'),
-             'boolval' => array(T_BOOL_CAST, '(bool)'),
+            'intval' => array(T_INT_CAST, '(int)'),
+            'floatval' => array(T_DOUBLE_CAST, '(float)'),
+            'doubleval' => array(T_DOUBLE_CAST, '(float)'),
+            'strval' => array(T_STRING_CAST, '(string)'),
+            'boolval' => array(T_BOOL_CAST, '(bool)'),
         );
 
         $argumentsAnalyzer = new ArgumentsAnalyzer();

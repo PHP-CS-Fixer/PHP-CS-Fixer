@@ -320,7 +320,7 @@ class Foo
                 continue;
             }
 
-            $this->$callback($index);
+            $this->{$callback}($index);
 
             return;
         }
@@ -330,7 +330,7 @@ class Foo
                 continue;
             }
 
-            $this->$callback($index);
+            $this->{$callback}($index);
 
             return;
         }

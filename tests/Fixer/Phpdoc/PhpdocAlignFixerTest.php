@@ -551,7 +551,7 @@ final class Sample
     }
 }
 ',
-            '<?php
+                '<?php
 final class Sample
 {
     /**
@@ -565,7 +565,7 @@ final class Sample
 }
 ',
             ),
-                        array(
+            array(
                 '<?php
 final class Sample
 {
@@ -579,7 +579,7 @@ final class Sample
     }
 }
 ',
-            '<?php
+                '<?php
 final class Sample
 {
     /**

@@ -219,7 +219,7 @@ $c;',
 $d;',
                 '<?php
 $d;',
-             ),
+            ),
             array(
                 array(
                     'header' => 'ghi',
