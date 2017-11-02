@@ -132,6 +132,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']], // tested also in: ordered_class_elements,no_blank_lines_after_class_opening.test
             [$fixers['ordered_class_elements'], $fixers['space_after_semicolon']], // tested also in: ordered_class_elements,space_after_semicolon.test
             [$fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']], // tested also in: php_unit_fqcn_annotation,unused_use.test
+            [$fixers['php_unit_no_expectation_annotation'], $fixers['no_empty_phpdoc']], // tested also in: php_unit_no_expectation_annotation,no_empty_phpdoc.test
+            [$fixers['php_unit_no_expectation_annotation'], $fixers['php_unit_expectation']], // tested also in: php_unit_no_expectation_annotation,php_unit_expectation.test
             [$fixers['php_unit_strict'], $fixers['php_unit_construct']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']], // tested also in: phpdoc_add_missing_param_annotation,phpdoc_align.test
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']], // tested also in: phpdoc_add_missing_param_annotation,phpdoc_order.test
