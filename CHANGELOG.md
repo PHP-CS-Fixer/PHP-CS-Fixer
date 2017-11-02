@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.7.3
+--------------------
+
+* bug #3114 SelfAccessorFixer - Fix type declarations replacement (julienfalque)
+
 Changelog for v2.7.2
 --------------------
 
