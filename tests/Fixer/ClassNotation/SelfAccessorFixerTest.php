@@ -154,6 +154,10 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { public function bar(?self $foo, ?self $bar): ?self { return new self(); } }',
                 '<?php class Foo { public function bar(?Foo $foo, ?Foo $bar): ?Foo { return new Foo(); } }',
             ],
+            [
+                "<?php interface Foo{ public function bar()\t/**/:?/**/self; }",
+                "<?php interface Foo{ public function bar()\t/**/:?/**/Foo; }",
+            ],
         ];
     }
 }
