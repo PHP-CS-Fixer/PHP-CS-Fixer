@@ -527,10 +527,11 @@ final class TokensAnalyzer
     /**
      * @param Tokens $tokens
      * @param int    $start
+     * @param bool   $searchingOnFileLevel if searching on file level
      *
      * @return array
      */
-    private function findClassyElements(Tokens $tokens, $start)
+    private function findClassyElements(Tokens $tokens, $start, $searchingOnFileLevel = true)
     {
         $elements = array();
         $inClass = false;
@@ -551,7 +552,7 @@ final class TokensAnalyzer
             }
 
             if ($token->isClassy()) { // anonymous class in class
-                $elements += $this->findClassyElements($tokens, $index);
+                $elements += $this->findClassyElements($tokens, $index, false);
 
                 continue;
             }
@@ -578,6 +579,10 @@ final class TokensAnalyzer
                 --$curlyBracesLevel;
 
                 if (0 === $curlyBracesLevel) {
+                    if (!$searchingOnFileLevel) {
+                        break;
+                    }
+
                     $inClass = false;
                 }
 
