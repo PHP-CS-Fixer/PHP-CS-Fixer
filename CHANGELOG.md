@@ -3,6 +3,39 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.7.2
+--------------------
+
+* bug #3062 BraceClassInstantiationTransformer - Fix instantiation inside method call braces case (julienfalque, keradus)
+* bug #3083 SingleBlankLineBeforeNamespaceFixer - Fix handling namespace right after opening tag (mlocati)
+* bug #3109 SwitchCaseSemicolonToColonFixer - Fix bug with nested constructs (SpacePossum)
+* bug #3117 Multibyte character in array key makes alignment incorect (kubawerlos)
+* bug #3123 Cache - File permissions (SpacePossum)
+* bug #3138 NoHomoglyphNamesFixer - fix crash on non-ascii but not mapped either (SpacePossum)
+* bug #3172 IndentationTypeFixer - do not touch whitespace that is not indentation (SpacePossum)
+* bug #3176 NoMultilineWhitespaceBeforeSemicolonsFixer - SpaceAfterSemicolonFixer - priority fix (SpacePossum)
+* bug #3193 TokensAnalyzer::getClassyElements - sort result before returning (SpacePossum)
+* bug #3196 SelfUpdateCommand - fix exit status when can't determine newest version (julienfalque)
+* minor #3107 ConfigurationResolver - improve error message when rule is not found (SpacePossum)
+* minor #3113 Add WordMatcher (keradus)
+* minor #3128 README: remove deprecated rule from CLI examples (chteuchteu)
+* minor #3133 Unify Reporter tests (keradus)
+* minor #3134 Allow Symfony 4 (keradus, garak)
+* minor #3136 PHPUnit - call hooks from parent class as well (keradus)
+* minor #3141 Unify description of deprecated fixer (kubawerlos)
+* minor #3144 PhpUnitDedicateAssertFixer - Sort map and array by function name (localheinz)
+* minor #3145 misc - Typo (localheinz)
+* minor #3150 Fix CircleCI (julienfalque)
+* minor #3151 Update gitattributes to ignore next file (keradus)
+* minor #3156 Update php-coveralls (keradus)
+* minor #3166 README - add link to new gitter channel. (SpacePossum)
+* minor #3174 Update UPGRADE.md (vitek-rostislav)
+* minor #3180 Fix usage of static variables (kubawerlos)
+* minor #3182 Add support for PHPUnit 6, drop PHPUnit 4 (keradus)
+* minor #3184 Code grooming - sort content of arrays (keradus)
+* minor #3191 Travis - add nightly build to allow_failures due to Travis issues (keradus)
+* minor #3197 DX groom CS (keradus)
+
 Changelog for v2.7.1
 --------------------
 
