@@ -98,7 +98,7 @@ $this->a
  = $this->b
  = 1
 ;',
-                                '<?php
+                '<?php
 $this->a
 = $this->b
 = 1

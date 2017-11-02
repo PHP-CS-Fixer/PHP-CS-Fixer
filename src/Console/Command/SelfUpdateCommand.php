@@ -86,7 +86,7 @@ EOT
                 $exception->getMessage()
             ));
 
-            return 0;
+            return 1;
         }
 
         if (1 !== $checker->compareVersions($latestVersion, $currentVersion)) {

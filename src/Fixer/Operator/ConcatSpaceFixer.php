@@ -82,7 +82,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
         $callBack = $this->fixCallback;
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens[$index]->equals('.')) {
-                $this->$callBack($tokens, $index);
+                $this->{$callBack}($tokens, $index);
             }
         }
     }

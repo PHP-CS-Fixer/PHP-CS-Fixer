@@ -104,7 +104,7 @@ $this->assertNotSame(null, $d);
             $assertionFixer = self::$assertionFixers[$assertionMethod];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $index = $this->$assertionFixer($tokens, $index, $assertionMethod);
+                $index = $this->{$assertionFixer}($tokens, $index, $assertionMethod);
 
                 if (null === $index) {
                     break;

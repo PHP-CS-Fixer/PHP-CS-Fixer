@@ -394,7 +394,7 @@ EOF;
     {
         return [
             [
-<<<'EOF'
+                <<<'EOF'
 <?php
 //class Test
 $a; //
@@ -407,8 +407,8 @@ $c;
 
 $d;
 EOF
-            ,
-<<<'EOF'
+                ,
+                <<<'EOF'
 <?php
 //class Test
 $a; //

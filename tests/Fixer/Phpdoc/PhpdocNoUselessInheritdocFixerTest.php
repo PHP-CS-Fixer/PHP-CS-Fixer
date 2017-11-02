@@ -275,7 +275,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-'<?php
+                '<?php
 
 /** delete 1 */
 class A
@@ -319,7 +319,7 @@ class A
     }
 }
 ',
-'<?php
+                '<?php
 
 /** @inheritdoc delete 1 */
 class A

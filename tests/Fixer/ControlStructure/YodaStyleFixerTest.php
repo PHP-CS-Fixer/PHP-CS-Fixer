@@ -649,7 +649,7 @@ function a() {
                 '<?php [$a] = 11 === $c ? $b : $d;',
                 '<?php [$a] = $c === 11 ? $b : $d;',
             ],
-                        [
+            [
                 '<?php $b = [$a] = 7 === [7];', // makes no sense, but valid PHP syntax
                 '<?php $b = [$a] = [7] === 7;',
             ],

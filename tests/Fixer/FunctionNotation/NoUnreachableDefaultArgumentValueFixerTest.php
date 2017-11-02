@@ -102,7 +102,7 @@ EOT
                             $d
                         ) {}
 EOT
-            ,
+                ,
                 <<<'EOT'
                     <?php
                         function foo(

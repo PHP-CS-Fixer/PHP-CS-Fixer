@@ -367,7 +367,7 @@ A#
         );
 
         $cases[] = [
-    '<?php
+            '<?php
 interface Test extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
     TestInterface2   ,   // test
@@ -379,7 +379,7 @@ TestInterface3, /**/     TestInterface4   ,
         /**/TestInterface65
 {}
             ',
-    '<?php
+            '<?php
 interface Test
 extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
@@ -463,10 +463,10 @@ TestInterface3, /**/     TestInterface4   ,
                     'classy' => 1,
                     'open' => 9,
                     'extends' => [
-                            'start' => 5,
-                            'numberOfExtends' => 1,
-                            'multiLine' => false,
-                        ],
+                        'start' => 5,
+                        'numberOfExtends' => 1,
+                        'multiLine' => false,
+                    ],
                     'implements' => false,
                     'anonymousClass' => false,
                 ],
@@ -478,10 +478,10 @@ TestInterface3, /**/     TestInterface4   ,
                     'classy' => 1,
                     'open' => 13,
                     'extends' => [
-                            'start' => 5,
-                            'numberOfExtends' => 3,
-                            'multiLine' => false,
-                        ],
+                        'start' => 5,
+                        'numberOfExtends' => 3,
+                        'multiLine' => false,
+                    ],
                     'implements' => false,
                     'anonymousClass' => false,
                 ],
@@ -627,14 +627,14 @@ namespace {
     {
         return [
             [
-            '<?php
+                '<?php
 $a = new class implements
     \RFb,
     \Fcc,
     \GFddZz
 {
 };',
-            '<?php
+                '<?php
 $a = new class implements
     \RFb,
     \Fcc, \GFddZz
@@ -642,14 +642,14 @@ $a = new class implements
 };',
             ],
             [
-            '<?php
+                '<?php
 $a = new class implements
     \RFb,
     \Fcc,
     \GFddZz
 {
 }?>',
-            '<?php
+                '<?php
 $a = new class implements
     \RFb,
     \Fcc, \GFddZz

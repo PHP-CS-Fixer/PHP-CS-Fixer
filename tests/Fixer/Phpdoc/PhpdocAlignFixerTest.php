@@ -680,7 +680,7 @@ final class Sample
     }
 }
 ',
-            '<?php
+                '<?php
 final class Sample
 {
     /**
@@ -709,7 +709,7 @@ final class Sample
     }
 }
 ',
-            '<?php
+                '<?php
 final class Sample
 {
     /**

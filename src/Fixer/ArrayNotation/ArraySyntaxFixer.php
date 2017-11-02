@@ -91,7 +91,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
         $callback = $this->fixCallback;
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
-                $this->$callback($tokens, $index);
+                $this->{$callback}($tokens, $index);
             }
         }
     }
