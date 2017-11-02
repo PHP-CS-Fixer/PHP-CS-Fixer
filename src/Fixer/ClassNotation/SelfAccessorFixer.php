@@ -140,7 +140,7 @@ class Sample
                 || (
                     null !== $insideMethodSignatureUntil
                     && $i < $insideMethodSignatureUntil
-                    && $prevToken->equalsAny(['(', ',', [CT::T_TYPE_COLON]])
+                    && $prevToken->equalsAny(['(', ',', [CT::T_TYPE_COLON], [CT::T_NULLABLE_TYPE]])
                 )
             ) {
                 $tokens[$i] = new Token([T_STRING, 'self']);
