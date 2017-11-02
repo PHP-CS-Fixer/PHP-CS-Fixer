@@ -128,7 +128,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
             array("<?php 'test'.'srand' . 'in concatenation';"),
             array('<?php "test" . "srand"."in concatenation";'),
             array(
-            '<?php
+                '<?php
 class SrandClass
 {
     const srand = 1;

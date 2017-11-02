@@ -32,7 +32,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
         return new FixerDefinition(
             'Convert PHP4-style constructors to `__construct`.',
             array(
-               new CodeSample('<?php
+                new CodeSample('<?php
 class Foo
 {
     public function Foo($bar)

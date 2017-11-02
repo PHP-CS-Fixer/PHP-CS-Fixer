@@ -407,7 +407,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
-            '<?php
+                '<?php
                     try {
                         throw new \Exception("a");
                     } catch (\Exception $e){
@@ -415,7 +415,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     } finally {
                     }  '.'
                 ',
-            '<?php
+                '<?php
                     try {
                         throw new \Exception("a");
                     } catch (\Exception $e){

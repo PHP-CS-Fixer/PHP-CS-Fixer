@@ -145,23 +145,23 @@ PHP;
     {
         return array(
             array(
-'<?php
+                '<?php
 
 \json_encode($foo);
 ',
             ),
             array(
-'<?php
+                '<?php
 
 \json_encode($foo);
 ',
-'<?php
+                '<?php
 
 json_encode($foo);
 ',
             ),
             array(
-'<?php
+                '<?php
 
 class Foo
 {
@@ -173,7 +173,7 @@ class Foo
 ',
             ),
             array(
-'<?php
+                '<?php
 
 class Foo
 {
@@ -183,7 +183,7 @@ class Foo
     }
 }
 ',
-'<?php
+                '<?php
 
 class Foo
 {
@@ -239,13 +239,13 @@ echo strlen($a);
     {
         return array(
             array(
-'<?php
+                '<?php
 
 json_encode($foo);
 ',
             ),
             array(
-'<?php
+                '<?php
 
 class Foo
 {

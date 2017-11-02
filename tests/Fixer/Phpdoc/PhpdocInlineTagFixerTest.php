@@ -192,7 +192,7 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
      * inheritdoc
      */
 ',
-                ),
+            ),
         );
     }
 }

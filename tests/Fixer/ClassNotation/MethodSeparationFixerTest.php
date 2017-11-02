@@ -166,7 +166,7 @@ class SomeClass2
     }
 }
             ',
-            );
+        );
         $cases[] = array(
             '<?php
 class SomeClass3
@@ -720,7 +720,7 @@ private $a;
 
 function getF(){echo 4;}
 }',
-    '<?php
+            '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
     protected function getA(){echo 1;}function getB(){echo 2;}
@@ -746,7 +746,7 @@ trait SomeReturnInfo {
 
     abstract public function getWorld();
 }',
-    '<?php
+            '<?php
 trait SomeReturnInfo {
     function getReturnType()
     {
@@ -835,7 +835,7 @@ function afterUseTrait(){}
 
 function afterUseTrait2(){}
 }',
-'<?php
+            '<?php
 trait ezcReflectionReturnInfo {
     function getReturnDescription() {}
 }

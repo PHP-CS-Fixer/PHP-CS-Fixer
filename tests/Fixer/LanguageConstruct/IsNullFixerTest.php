@@ -248,8 +248,8 @@ FIXED;
                 '<?php $b = \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));',
             ),
             array(
-              '<?php if ($x === null && $y) echo "foo";',
-              '<?php if (is_null($x) && $y) echo "foo";',
+                '<?php if ($x === null && $y) echo "foo";',
+                '<?php if (is_null($x) && $y) echo "foo";',
             ),
             array(
                 '<?php $x = ($x = array()) === null;',
