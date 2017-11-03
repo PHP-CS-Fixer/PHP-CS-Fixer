@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.8.0
+--------------------
+
+* feature #3065 Add IncrementStyleFixer (kubawerlos)
+* feature #3119 Feature checkstyle reporter (K-Phoen)
+* feature #3162 Add udiff as diff format (SpacePossum, keradus)
+* feature #3170 Add CompactNullableTypehintFixer (jfcherng)
+* feature #3189 Add PHP_CS_FIXER_FUTURE_MODE env (keradus)
+* feature #3201 Add PHPUnit Migration rulesets and fixers (keradus)
+* minor #3149 AbstractProxyFixer - Support multiple proxied fixers (julienfalque)
+* minor #3160 Add DeprecatedFixerInterface (kubawerlos)
+* minor #3185 IndentationTypeFixerTest - clean up (SpacePossum, keradus)
+* minor #3198 Cleanup: add test that there is no deprecated fixer in rule set (kubawerlos)
+
 Changelog for v2.7.3
 --------------------
 
