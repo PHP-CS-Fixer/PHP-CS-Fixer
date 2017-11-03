@@ -715,6 +715,27 @@ function test()
     $a = 3;
 }',
             ),
+            array(
+                '<?php
+class Foo
+{
+    public function bar()
+    {
+        foreach (new Bar() as $file) {
+            foo();
+        }
+    }
+}',
+                '<?php
+class Foo {
+    public function bar() {
+        foreach (new Bar() as $file)
+        {
+            foo();
+        }
+    }
+}',
+            ),
         );
     }
 
