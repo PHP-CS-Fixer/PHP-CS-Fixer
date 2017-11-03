@@ -31,8 +31,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.8.0-DEV';
-    const VERSION_CODENAME = '';
+    const VERSION = '2.8.0';
+    const VERSION_CODENAME = 'Round Numbers';
 
     public function __construct()
     {
