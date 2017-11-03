@@ -69,6 +69,12 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
             array(T_VARIABLE),
             array(T_CLASS),
             array(T_ARRAY),
+            array(T_IF),
+            array(T_ELSEIF),
+            array(T_SWITCH),
+            array(T_FOR),
+            array(T_FOREACH),
+            array(T_WHILE),
         ))) {
             return;
         }
