@@ -57,7 +57,7 @@ jobs:
                 - composer info -D | sort
             script:
                 - vendor/bin/phpunit || travis_terminate 1
-                - php php-cs-fixer --diff --dry-run -v fix
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
             <<: *STANDARD_TEST_JOB
@@ -93,7 +93,7 @@ jobs:
                 - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,native_function_invocation -q || travis_terminate 1
                 - vendor/bin/phpunit || travis_terminate 1
                 - git checkout . -q
-                - php php-cs-fixer --diff --dry-run -v fix
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
             stage: Deployment

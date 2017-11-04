@@ -39,4 +39,5 @@ before_test:
 test_script:
     - cd C:\projects\php-cs-fixer
     - vendor\bin\phpunit
+    - set PHP_CS_FIXER_FUTURE_MODE=1
     - php php-cs-fixer --diff --dry-run -v fix
