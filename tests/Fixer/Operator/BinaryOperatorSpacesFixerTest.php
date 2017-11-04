@@ -2072,6 +2072,23 @@ $a = $ae?? $b;
                 ',
                 ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
             ],
+            'catch multiple exceptions' => [
+                '<?php
+                    try {
+                        // foo
+                    } catch (ExceptionOne | ExceptionTwo $e) {
+                        // bar
+                    }
+                ',
+                '<?php
+                    try {
+                        // foo
+                    } catch (ExceptionOne|     ExceptionTwo $e) {
+                        // bar
+                    }
+                ',
+                ['operators' => ['|' => BinaryOperatorSpacesFixer::SINGLE_SPACE]],
+            ],
         ];
     }
 }
