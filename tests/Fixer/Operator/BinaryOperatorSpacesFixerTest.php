@@ -2035,7 +2035,10 @@ $a = $ae?? $b;
      */
     public function testPHP71Cases($expected, $input = null, array $configuration = null)
     {
-        $this->fixer->configure($configuration);
+        if ($configuration !== null) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
