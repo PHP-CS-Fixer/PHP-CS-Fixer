@@ -2087,7 +2087,6 @@ $a = $ae?? $b;
                         // bar
                     }
                 ',
-                ['operators' => ['|' => BinaryOperatorSpacesFixer::SINGLE_SPACE]],
             ],
         ];
     }
