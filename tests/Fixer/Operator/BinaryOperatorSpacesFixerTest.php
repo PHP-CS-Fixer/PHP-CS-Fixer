@@ -1516,4 +1516,15 @@ $b;',
             '
         );
     }
+
+    /**
+     * @requires PHP 7.1
+     */
+    public function testSpacesMultipleException()
+    {
+        $this->doTest(
+            '<?php try {} catch (A | B $e) {}',
+            '<?php try {} catch (A   |     B $e) {}'
+        );
+    }
 }

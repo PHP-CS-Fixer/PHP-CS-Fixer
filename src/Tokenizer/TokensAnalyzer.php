@@ -461,6 +461,7 @@ final class TokensAnalyzer
                 T_SR => true,                   // >>
                 T_SR_EQUAL => true,             // >>=
                 T_XOR_EQUAL => true,            // ^=
+                CT::T_TYPE_ALTERNATION => true, // |
             );
 
             if (defined('T_POW')) {
