@@ -22,4 +22,4 @@ dependencies:
 test:
     override:
         - vendor/bin/phpunit
-        - php php-cs-fixer --diff --dry-run -v fix
+        - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
