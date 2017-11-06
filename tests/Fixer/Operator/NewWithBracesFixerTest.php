@@ -74,6 +74,19 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
+                '<?php $static = new static(new \SplFileInfo(__FILE__));',
+            ),
+            array(
+                '<?php $static = new static(new class(){});',
+                '<?php $static = new static(new class{});',
+            ),
+            array(
+                '<?php $static = new self(new \SplFileInfo(__FILE__));',
+            ),
+            array(
+                '<?php $x = new X/**/ /**/ /**//**//**/ /**//**/   (/**/ /**/ /**//**//**/ /**//**/)/**/ /**/ /**//**//**/ /**//**/;/**/ /**/ /**//**//**/ /**//**/',
+            ),
+            array(
                 '<?php $x = new X();',
                 '<?php $x = new X;',
             ),

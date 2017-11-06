@@ -285,6 +285,21 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                     CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ),
             ),
+            array(
+                '<?php $static = new static(new \SplFileInfo(__FILE__));',
+                array(
+                    8 => '(',
+                    13 => '(',
+                    15 => ')',
+                    16 => ')',
+                ),
+                array(
+                    '(',
+                    ')',
+                    '(',
+                    ')',
+                ),
+            ),
         );
     }
 
