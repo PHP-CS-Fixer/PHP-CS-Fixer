@@ -159,7 +159,7 @@ class Tokens extends \SplFixedArray
      */
     public static function fromCode($code)
     {
-        $codeHash = CodeHasher::calculateCodeHash($code);
+        $codeHash = self::calculateCodeHash($code);
 
         if (self::hasCache($codeHash)) {
             $tokens = self::getCache($codeHash);
@@ -484,7 +484,7 @@ class Tokens extends \SplFixedArray
     public function generateCode()
     {
         $code = $this->generatePartialCode(0, count($this) - 1);
-        $this->changeCodeHash(CodeHasher::calculateCodeHash($code));
+        $this->changeCodeHash(self::calculateCodeHash($code));
 
         return $code;
     }
@@ -1010,7 +1010,7 @@ class Tokens extends \SplFixedArray
         }
 
         $this->rewind();
-        $this->changeCodeHash(CodeHasher::calculateCodeHash($code));
+        $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
     }
 
@@ -1184,6 +1184,18 @@ class Tokens extends \SplFixedArray
         }
 
         $this->clearAt($nextIndex);
+    }
+
+    /**
+     * Calculate hash for code.
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    private static function calculateCodeHash($code)
+    {
+        return CodeHasher::calculateCodeHash($code);
     }
 
     /**
