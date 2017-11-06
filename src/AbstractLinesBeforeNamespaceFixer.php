@@ -27,13 +27,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
-     * Make sure the expected number of new lines prefix a namespace.
+     * Make sure # of line breaks prefixing namespace is within given range.
      *
      * @param Tokens $tokens
      * @param int    $index
-     * @param int    $expected
+     * @param int    $expectedMin min. # of line breaks
+     * @param int    $expectedMax max. # of line breaks
      */
-    protected function fixLinesBeforeNamespace(Tokens $tokens, $index, $expected)
+    protected function fixLinesBeforeNamespace(Tokens $tokens, $index, $expectedMin, $expectedMax)
     {
         // Let's determine the total numbers of new lines before the namespace
         // and the opening token
@@ -59,14 +60,14 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             }
         }
 
-        if ($expected === $precedingNewlines) {
+        if ($precedingNewlines >= $expectedMin && $precedingNewlines <= $expectedMax) {
             return;
         }
 
         $previousIndex = $index - 1;
         $previous = $tokens[$previousIndex];
 
-        if (0 === $expected) {
+        if (0 === $expectedMax) {
             // Remove all the previous new lines
             if ($previous->isWhitespace()) {
                 $tokens->clearAt($previousIndex);
@@ -80,7 +81,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
         }
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();
-        $newlinesForWhitespaceToken = $expected;
+        $newlinesForWhitespaceToken = $expectedMax;
         if (null !== $openingToken) {
             // Use the configured line ending for the PHP opening tag
             $content = rtrim($openingToken->getContent());
