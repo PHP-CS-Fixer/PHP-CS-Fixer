@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-11-05T13:05:56Z
+
+👍
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-06T07:22:21Z
+
+```php
+<?php
+
+switch(new \stdClass()) {
+    case (new \stdClass()) : {
+        echo 123;
+    }
+}
+```
+
+I think `case` and `default` are missing as well.
+
+Kindly note: I've no idea how we should tokenize mess like this;
+
+```php
+<?php
+
+switch(new \stdClass()) {
+    case (((new \stdClass()))) : {
+        echo 123;
+    }
+}
+```
+
+This passes linting as well
+```php
+include_once (new \stdClass());
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-06T08:04:33Z
+
+In the first example I think we should not exclude the braces: `case` does not require braces at all so it makes sense to treat those as _"instantiation braces"_ IMO.
+
+I'm not sure about `include_once` either: https://3v4l.org/p2Kiq.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-06T08:38:10Z
+
+fair enough, lets add all the (odd) cases in a utest anyway, just to check what happens with the fixers that cause the ticket (3202)
