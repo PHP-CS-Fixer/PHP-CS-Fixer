@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,6 +25,17 @@ use PHPUnit\Framework\TestCase;
 abstract class AbstractLinterTestCase extends TestCase
 {
     abstract public function testIsAsync();
+
+    public function testLintingAfterTokenManipulation()
+    {
+        $linter = $this->createLinter();
+
+        $tokens = Tokens::fromCode("<?php \n#EOF\n");
+        $tokens->insertAt(1, new Token(array(T_NS_SEPARATOR, '\\')));
+
+        $this->setExpectedException('\PhpCsFixer\Linter\LintingException');
+        $linter->lintSource($tokens->generateCode())->check();
+    }
 
     /**
      * @param string      $file
