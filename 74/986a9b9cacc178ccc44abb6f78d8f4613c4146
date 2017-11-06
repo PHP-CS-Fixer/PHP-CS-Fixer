@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-06T19:23:29Z
+
+```
+
+/usr/local/Homebrew/Library/Homebrew/brew.rb:12:in `<main>': Homebrew must be run under Ruby 2.3! You're running 2.0.0. (RuntimeError)
+
+brew tap homebrew/homebrew-php returned exit code 1
+```
+
+this cannot be helped by @ntzm or me, however; @ntzm could you rebase on top of 2.2? It should also trigger a new build so maybe it passes this time
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-11-06T20:51:16Z
+
+Shall I close the 2.8 PR?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-06T21:25:09Z
+
+>Shall I close the 2.8 PR?
+
+If there isn't anything in that one that is in this one, you can safely close it.
+Please make a link in a comment to the PR so when @keradus merges it upstream and runs into conflicts he can use it as reference.
+
+ps. you already made the link in the description of this PR, so all good, thanks :)
