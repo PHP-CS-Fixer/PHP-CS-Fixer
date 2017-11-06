@@ -31,7 +31,7 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter = $this->createLinter();
 
         $tokens = Tokens::fromCode("<?php \n#EOF\n");
-        $tokens->insertAt(1, new Token(array(T_NS_SEPARATOR, '\\')));
+        $tokens->insertAt(1, new Token([T_NS_SEPARATOR, '\\']));
 
         $this->expectException(\PhpCsFixer\Linter\LintingException::class);
         $linter->lintSource($tokens->generateCode())->check();

@@ -187,6 +187,119 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                     CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ],
             ],
+            [
+                '<?php if (new Foo()) { } elseif (new Bar()) { } else if (new Baz()) { }',
+                [
+                    3 => '(',
+                    7 => '(',
+                    8 => ')',
+                    9 => ')',
+                    17 => '(',
+                    21 => '(',
+                    22 => ')',
+                    23 => ')',
+                    33 => '(',
+                    37 => '(',
+                    38 => ')',
+                    39 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php switch (new Foo()) { }',
+                [
+                    3 => '(',
+                    7 => '(',
+                    8 => ')',
+                    9 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php for (new Foo();;) { }',
+                [
+                    3 => '(',
+                    7 => '(',
+                    8 => ')',
+                    11 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php foreach (new Foo() as $foo) { }',
+                [
+                    3 => '(',
+                    7 => '(',
+                    8 => ')',
+                    13 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php while (new Foo()) { }',
+                [
+                    3 => '(',
+                    7 => '(',
+                    8 => ')',
+                    9 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php do { } while (new Foo());',
+                [
+                    9 => '(',
+                    13 => '(',
+                    14 => ')',
+                    15 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+            [
+                '<?php $static = new static(new \SplFileInfo(__FILE__));',
+                [
+                    8 => '(',
+                    13 => '(',
+                    15 => ')',
+                    16 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    '(',
+                    ')',
+                ],
+            ],
         ];
     }
 

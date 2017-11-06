@@ -66,6 +66,8 @@ try {
     $config->setRules([]);
 } catch (UnexpectedValueException $e) {
     $config->setRules([]);
+} catch (InvalidArgumentException $e) {
+    $config->setRules([]);
 }
 
 return $config;
