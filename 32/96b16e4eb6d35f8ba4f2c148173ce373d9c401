@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-05T17:01:27Z
+
+what about setting `PHP_CS_FIXER_FUTURE_MODE=1` instead ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-05T19:05:57Z
+
+we want non-future to be tested as well, so maybe for one job on maybe like PHP nightly that makes sense?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-05T19:09:55Z
+
+Was about to say the same, wouldn't using `PHP_CS_FIXER_FUTURE_MODE` change other things we don't want to change in CI builds?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-05T21:40:45Z
+
+huh? following that reasoning I could say "we want non-udiff differ be tested as well"
+but this PR is changing options passed to executing fix command, not tests. non-udiff differ is still tested. same, setting FUTURE env for fix command won't affect tests.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-05T21:58:07Z
+
+It's not a reasoning but a real question: I have no idea what setting `PHP_CS_FIXER_FUTURE_MODE` really does right now.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-05T22:06:46Z
+
+Ok I checked and indeed it may be a better alternative, PR updated :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-05T22:23:36Z
+
+as in readme, it set udiff and estimating-max by default
