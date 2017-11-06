@@ -889,6 +889,35 @@ $b;',
 
     /**
      * @param string $source
+     *
+     * @dataProvider provideIsBinaryOperator71Cases
+     * @requires PHP 7.1
+     */
+    public function testIsBinaryOperator71($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
+                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public function provideIsBinaryOperator71Cases()
+    {
+        return array(
+            array(
+                '<?php try {} catch (A | B $e) {}',
+                array(11 => true),
+            ),
+        );
+    }
+
+    /**
+     * @param string $source
      * @param int    $tokenIndex
      *
      * @dataProvider provideArrayExceptionCases
