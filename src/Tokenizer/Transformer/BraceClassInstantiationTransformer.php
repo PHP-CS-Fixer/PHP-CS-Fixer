@@ -60,14 +60,22 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
         if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->equals([T_NEW])) {
             return;
         }
+
         if ($tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny([
-            [T_STRING],
             ']',
-            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-            [T_VARIABLE],
-            [T_CLASS],
+            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
             [T_ARRAY],
+            [T_CLASS],
+            [T_ELSEIF],
+            [T_FOR],
+            [T_FOREACH],
+            [T_IF],
+            [T_STATIC],
+            [T_STRING],
+            [T_SWITCH],
+            [T_VARIABLE],
+            [T_WHILE],
         ])) {
             return;
         }
