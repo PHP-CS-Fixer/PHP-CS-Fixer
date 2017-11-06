@@ -19,6 +19,11 @@ namespace PhpCsFixer\Tokenizer;
  */
 final class CodeHasher
 {
+    private function __construct()
+    {
+        // cannot create instance of util. class
+    }
+
     /**
      * Calculate hash for code.
      *
