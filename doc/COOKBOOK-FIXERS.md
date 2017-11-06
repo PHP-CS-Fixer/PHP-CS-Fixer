@@ -28,7 +28,7 @@ classes.
 ## Assumptions
 
 * You are familiar with Test Driven Development.
-* Forked FriendsOfPHP/PHP-CS-Fixer into your own Github Account.
+* Forked FriendsOfPHP/PHP-CS-Fixer into your own GitHub Account.
 * Cloned your forked repository locally.
 * Installed the dependencies of PHP CS Fixer using [Composer](https://getcomposer.org/).
 * You have read [`CONTRIBUTING.md`](/CONTRIBUTING.md).
@@ -428,7 +428,7 @@ This will fix all the coding style mistakes.
 
 After the final CS fix, you are ready to commit. Do it.
 
-Now, go to Github and open a Pull Request.
+Now, go to GitHub and open a Pull Request.
 
 
 ### Step 5 - Peer review: it is all about code and community building.
