@@ -2035,7 +2035,10 @@ $a = $ae?? $b;
      */
     public function testPHP71Cases($expected, $input = null, array $configuration = null)
     {
-        $this->fixer->configure($configuration);
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -2071,6 +2074,22 @@ $a = $ae?? $b;
                     ] = $array;
                 ',
                 ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            'catch multiple exceptions' => [
+                '<?php
+                    try {
+                        // foo
+                    } catch (ExceptionOne | ExceptionTwo $e) {
+                        // bar
+                    }
+                ',
+                '<?php
+                    try {
+                        // foo
+                    } catch (ExceptionOne|     ExceptionTwo $e) {
+                        // bar
+                    }
+                ',
             ],
         ];
     }
