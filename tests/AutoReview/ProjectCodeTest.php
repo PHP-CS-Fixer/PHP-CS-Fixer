@@ -57,6 +57,7 @@ final class ProjectCodeTest extends TestCase
         'PhpCsFixer\Runner\FileFilterIterator',
         'PhpCsFixer\Runner\FileLintingIterator',
         'PhpCsFixer\StdinFileInfo',
+        'PhpCsFixer\Tokenizer\CodeHasher',
         'PhpCsFixer\Tokenizer\Transformers',
     );
 
