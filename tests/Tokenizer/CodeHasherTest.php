@@ -16,7 +16,7 @@ use PhpCsFixer\Tokenizer\CodeHasher;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author SpacePossum
  *
  * @internal
  *
