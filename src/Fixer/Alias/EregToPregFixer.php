@@ -51,7 +51,7 @@ final class EregToPregFixer extends AbstractFixer
             'Replace deprecated `ereg` regular expression functions with preg.',
             array(new CodeSample('<?php $x = ereg(\'[A-Z]\');')),
             null,
-            'Risky if the `ereg` funcion is overridden.'
+            'Risky if the `ereg` function is overridden.'
         );
     }
 
