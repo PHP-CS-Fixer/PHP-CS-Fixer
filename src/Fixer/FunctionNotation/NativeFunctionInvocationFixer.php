@@ -155,7 +155,7 @@ function baz($options)
             // in_array() will only be optimized if the third argument is true
             if ('in_array' === $lowerFunctionName && $this->configuration['opcache-only']) {
                 $end = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $next);
-                if ('true' !== $tokens[$tokens->getPrevMeaningfulToken($end)]->getContent()) {
+                if ('true' !== strtolower($tokens[$tokens->getPrevMeaningfulToken($end)]->getContent())) {
                     continue;
                 }
             }
