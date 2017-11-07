@@ -19,6 +19,7 @@ namespace PhpCsFixer\Tokenizer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ * @author SpacePossum
  *
  * @internal
  */
@@ -44,8 +45,18 @@ final class TokensAnalyzer
     public function getClassyElements()
     {
         $this->tokens->rewind();
+        $elements = array();
 
-        return $this->findClassyElements($this->tokens, 0);
+        for ($index = 1, $count = count($this->tokens) - 2; $index < $count; ++$index) {
+            if ($this->tokens[$index]->isClassy()) {
+                list($index, $newElements) = $this->findClassyElements($index);
+                $elements += $newElements;
+            }
+        }
+
+        ksort($elements);
+
+        return $elements;
     }
 
     /**
@@ -525,34 +536,32 @@ final class TokensAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $start
-     * @param bool   $searchingOnFileLevel if searching on file level
+     * Find classy elements.
      *
-     * @return array
+     * Searches in tokens from the classy index till the end of the classy.
+     * Returns an 2D array; (int) the index until the method has analysed, (array) found classy elements.
+     *
+     * @param int $index classy index
+     *
+     * @return array<int, array>
      */
-    private function findClassyElements(Tokens $tokens, $start, $searchingOnFileLevel = true)
+    private function findClassyElements($index)
     {
         $elements = array();
-        $inClass = false;
         $curlyBracesLevel = 0;
         $bracesLevel = 0;
+        ++$index; // skip the classy index itself
 
-        for ($index = $start, $count = count($tokens); $index < $count; ++$index) {
-            $token = $tokens[$index];
+        for ($count = count($this->tokens); $index < $count; ++$index) {
+            $token = $this->tokens[$index];
 
             if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
                 continue;
             }
 
-            if (!$inClass) {
-                $inClass = $token->isClassy();
-
-                continue;
-            }
-
             if ($token->isClassy()) { // anonymous class in class
-                $elements += $this->findClassyElements($tokens, $index, false);
+                list($index, $newElements) = $this->findClassyElements($index);
+                $elements += $newElements;
 
                 continue;
             }
@@ -579,11 +588,7 @@ final class TokensAnalyzer
                 --$curlyBracesLevel;
 
                 if (0 === $curlyBracesLevel) {
-                    if (!$searchingOnFileLevel) {
-                        break;
-                    }
-
-                    $inClass = false;
+                    break;
                 }
 
                 continue;
@@ -606,8 +611,6 @@ final class TokensAnalyzer
             }
         }
 
-        ksort($elements);
-
-        return $elements;
+        return array($index, $elements);
     }
 }
