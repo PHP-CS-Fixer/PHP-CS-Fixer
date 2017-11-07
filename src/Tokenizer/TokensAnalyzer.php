@@ -538,12 +538,12 @@ final class TokensAnalyzer
     /**
      * Find classy elements.
      *
-     * Searches in tokens from the classy index till the end of the classy.
-     * Returns an 2D array; (int) the index until the method has analysed, (array) found classy elements.
+     * Searches in tokens from the classy (start) index till the end (index) of the classy.
+     * Returns an array; first value is the index until the method has analysed (int), second the found classy elements (array).
      *
      * @param int $index classy index
      *
-     * @return array<int, array>
+     * @return array
      */
     private function findClassyElements($index)
     {
