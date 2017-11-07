@@ -708,6 +708,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``exclude`` (``array``): list of functions to ignore; defaults to ``[]``
+  - ``opcache-only`` (``bool``): only prefix functions that will be optimized by the
+    Zend OPcache; defaults to ``false``
 
 * **new_with_braces** [@Symfony]
 

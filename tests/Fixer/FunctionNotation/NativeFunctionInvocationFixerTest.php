@@ -260,4 +260,126 @@ class Foo
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFixWithConfiguredOpcacheOnyCases
+     *
+     * @param string $expected
+     * @param string $input
+     */
+    public function testFixWithConfiguredOpcacheOny($expected, $input)
+    {
+        $this->fixer->configure([
+            'opcache-only' => true,
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFixWithConfiguredOpcacheOnyCases()
+    {
+        return [
+            [
+                '<?php
+
+// These methods should not get prefixed
+json_encode();
+substr();
+in_array();
+in_array($foo, [$foo], false);
+
+// These methods should get prefixed
+\array_slice();
+\assert();
+\boolval();
+\call_user_func();
+\call_user_func_array();
+\chr();
+\count();
+\defined();
+\doubleval();
+\floatval();
+\func_get_args();
+\func_num_args();
+\get_called_class();
+\get_class();
+\gettype();
+\in_array($foo, [$foo], true);
+\intval();
+\is_array();
+\is_bool();
+\is_double();
+\is_float();
+\is_int();
+\is_integer();
+\is_long();
+\is_null();
+\is_object();
+\is_real();
+\is_resource();
+\is_string();
+\ord();
+\strlen();
+\strval();
+\function_exists();
+\is_callable();
+\extension_loaded();
+\dirname();
+\constant();
+\define();
+',
+                '<?php
+
+// These methods should not get prefixed
+json_encode();
+substr();
+in_array();
+in_array($foo, [$foo], false);
+
+// These methods should get prefixed
+array_slice();
+assert();
+boolval();
+call_user_func();
+call_user_func_array();
+chr();
+count();
+defined();
+doubleval();
+floatval();
+func_get_args();
+func_num_args();
+get_called_class();
+get_class();
+gettype();
+in_array($foo, [$foo], true);
+intval();
+is_array();
+is_bool();
+is_double();
+is_float();
+is_int();
+is_integer();
+is_long();
+is_null();
+is_object();
+is_real();
+is_resource();
+is_string();
+ord();
+strlen();
+strval();
+function_exists();
+is_callable();
+extension_loaded();
+dirname();
+constant();
+define();
+',
+            ],
+        ];
+    }
 }
