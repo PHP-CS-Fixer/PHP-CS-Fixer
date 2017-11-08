@@ -288,8 +288,6 @@ class Foo
 // These methods should not get prefixed
 json_encode();
 substr();
-in_array();
-in_array($foo, [$foo], false);
 
 // These methods should get prefixed
 \array_slice();
@@ -312,7 +310,7 @@ in_array($foo, [$foo], false);
 \get_called_class();
 \get_class();
 \gettype();
-\in_array($foo, [$foo], true);
+\in_array();
 \intval();
 \is_array();
 \is_bool();
@@ -336,8 +334,6 @@ in_array($foo, [$foo], false);
 // These methods should not get prefixed
 json_encode();
 substr();
-in_array();
-in_array($foo, [$foo], false);
 
 // These methods should get prefixed
 array_slice();
@@ -360,7 +356,7 @@ function_exists();
 get_called_class();
 get_class();
 gettype();
-in_array($foo, [$foo], true);
+in_array();
 intval();
 is_array();
 is_bool();
