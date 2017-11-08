@@ -181,6 +181,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['single_import_per_statement'], $fixers['no_singleline_whitespace_before_semicolons']],
             [$fixers['single_import_per_statement'], $fixers['no_unused_imports']],
             [$fixers['single_import_per_statement'], $fixers['space_after_semicolon']],
+            [$fixers['standardize_increment'], $fixers['increment_style']],
             [$fixers['standardize_not_equals'], $fixers['binary_operator_spaces']],
             [$fixers['strict_comparison'], $fixers['binary_operator_spaces']],
             [$fixers['unary_operator_spaces'], $fixers['not_operator_with_space']],
