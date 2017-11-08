@@ -13,14 +13,14 @@
 namespace PhpCsFixer\Tests\Fixer;
 
 use PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\UnconfigurableFixer;
-use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\AbstractFixer
  */
-final class AbstractFixerTest extends AbstractFixerTestCase
+final class AbstractFixerTest extends TestCase
 {
     public function testConfigureUnconfigurable()
     {
@@ -47,9 +47,5 @@ final class AbstractFixerTest extends AbstractFixerTestCase
         $this->setExpectedException('LogicException', 'Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
 
         $fixer->doSomethingWithCreateConfigDefinition();
-    }
-
-    protected function createFixer()
-    {
     }
 }
