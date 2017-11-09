@@ -1,7 +1,7 @@
 For configuration or updating questions please read the README and UPGRADE documentation,
 or visit: https://gitter.im/PHP-CS-Fixer
 
-When reporting an issue (bug) please provide the following information:
+When reporting an issue (bug) please provide the following informations:
 
 The PHP version you are using:
 $ php -v
@@ -9,8 +9,9 @@ $ php -v
 PHP CS Fixer version you are using:
 $ php-cs-fixer -V
 
-The command you use to run the fixer (and the configuration file you are using if any).
+The command you use to run PHP CS Fixer (and the configuration file you are using if any).
 
-A minimal sample of valid PHP code that is not fixed correctly (if applicable).
-
-The fixed version of that code after you run the fixer and the version you expected.
+Minimal samples of PHP code:
+ * before running PHP CS Fixer (no changes)
+ * with unexpected changes applied when running PHP CS Fixer
+ * with the changes you expected instead
