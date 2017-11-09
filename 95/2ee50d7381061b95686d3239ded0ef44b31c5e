@@ -1,0 +1,6 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-08T11:20:10Z
+
++/- 0
+looks better, works worse for coverage branches (as no branch is created for complex condition)
