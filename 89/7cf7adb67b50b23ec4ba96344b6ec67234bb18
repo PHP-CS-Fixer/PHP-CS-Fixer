@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-07T23:22:54Z
+
+The current implementation of `no_unused_imports` is very defensive to avoid removing `use` statements that might be used in DocComments (e.g. Doctrine Annotation). This sometimes leads to statements being kept while they could be removed. We have an open issue to improve this: #2814.
