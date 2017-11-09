@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\AbstractFixer
+ * @covers \PhpCsFixer\AbstractFixer
  */
 final class AbstractFixerTest extends TestCase
 {
