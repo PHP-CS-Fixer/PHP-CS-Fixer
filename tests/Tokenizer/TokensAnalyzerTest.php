@@ -198,6 +198,41 @@ class A1
         {
             public function BB1()
             {
+                return new class
+                {
+                    public function CC1()
+                    {
+                        return new class
+                        {
+                            public function DD1()
+                            {
+                                return new class{};
+                            }
+
+                            public function DD2()
+                            {
+                                return new class{};
+                            }
+                        };
+                    }
+                };
+            }
+
+            public function BB2()
+            {
+                return new class
+                {
+                    public function CC2()
+                    {
+                        return new class
+                        {
+                            public function DD2()
+                            {
+                                return new class{};
+                            }
+                        };
+                    }
+                };
             }
         };
     }
@@ -216,26 +251,62 @@ PHP;
                 9 => [
                     'token' => $tokens[9],
                     'type' => 'method',
+                    // 'classIndex' => 1, @TODO on master
                 ],
                 27 => [
                     'token' => $tokens[27],
                     'type' => 'method',
+                    //'classIndex' => 21, @TODO on master
                 ],
                 44 => [
                     'token' => $tokens[44],
                     'type' => 'method',
+                    // 'classIndex' => 1, @TODO on master
                 ],
                 64 => [
                     'token' => $tokens[64],
                     'type' => 'method',
+                    // 'classIndex' => 56, @TODO on master
                 ],
                 82 => [
                     'token' => $tokens[82],
                     'type' => 'method',
+                    // 'classIndex' => 76, @TODO on master
                 ],
-                99 => [
-                    'token' => $tokens[99],
+                100 => [
+                    'token' => $tokens[100],
                     'type' => 'method',
+                    // 'classIndex' => 94, @TODO on master
+                ],
+                118 => [
+                    'token' => $tokens[118],
+                    'type' => 'method',
+                    // 'classIndex' => 112, @TODO on master
+                ],
+                139 => [
+                    'token' => $tokens[139],
+                    'type' => 'method',
+                    // 'classIndex' => 112, @TODO on master
+                ],
+                170 => [
+                    'token' => $tokens[170],
+                    'type' => 'method',
+                    // 'classIndex' => 76, @TODO on master
+                ],
+                188 => [
+                    'token' => $tokens[188],
+                    'type' => 'method',
+                    // 'classIndex' => 182, @TODO on master
+                ],
+                206 => [
+                    'token' => $tokens[206],
+                    'type' => 'method',
+                    // 'classIndex' => 200, @TODO on master
+                ],
+                242 => [
+                    'token' => $tokens[242],
+                    'type' => 'method',
+                    // 'classIndex' => 56, @TODO on master
                 ],
             ],
             $elements

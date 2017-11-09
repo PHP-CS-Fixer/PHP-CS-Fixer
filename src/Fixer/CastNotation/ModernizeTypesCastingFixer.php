@@ -86,7 +86,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 // analysing cursor shift
                 $currIndex = $openParenthesis;
 
-                // indicator that the function is overriden
+                // indicator that the function is overridden
                 if (1 !== $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis)) {
                     continue;
                 }
