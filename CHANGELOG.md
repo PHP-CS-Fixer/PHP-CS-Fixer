@@ -3,6 +3,22 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.7.4
+--------------------
+
+* bug #3199 TokensAnalyzer - getClassyElements (SpacePossum)
+* bug #3208 BracesFixer - Fix for instantiation in control structures (julienfalque, SpacePossum)
+* bug #3215 BinaryOperatorSpacesFixer - Fix spaces around multiple exception catching (|) (ntzm)
+* bug #3216 AbstractLinesBeforeNamespaceFixer - add min. and max. option, not only single target count (SpacePossum)
+* bug #3217 TokenizerLinter - fix lack of linting when code is cached (SpacePossum, keradus)
+* minor #3200 Skip slow test when Xdebug is loaded (julienfalque)
+* minor #3219 Normalise references to GitHub in docs (ntzm)
+* minor #3226 Remove unused imports (ntzm)
+* minor #3231 Fix typos (ntzm)
+* minor #3234 Simplify Cache\Signature::equals (ntzm)
+* minor #3237 UnconfigurableFixer - use only LF (keradus)
+* minor #3238 AbstractFixerTest - fix @cover annotation (keradus)
+
 Changelog for v2.7.3
 --------------------
 
