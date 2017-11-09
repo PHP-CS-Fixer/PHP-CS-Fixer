@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\FixerConfiguration;
 
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FixerConfigurationResolver implements FixerConfigurationResolverInterface
