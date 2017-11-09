@@ -335,6 +335,10 @@ final class ProjectCodeTest extends TestCase
 
     public function provideDataProviderMethodNameCases()
     {
+        if (extension_loaded('xdebug') && false === getenv('CI')) {
+            $this->markTestSkipped('Data provider too slow when Xdebug is loaded.');
+        }
+
         $data = [];
 
         $testClassNames = $this->getTestClasses();

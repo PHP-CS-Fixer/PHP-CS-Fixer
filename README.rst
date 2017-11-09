@@ -515,7 +515,7 @@ Choose from the list of available rules:
 
   Replace deprecated ``ereg`` regular expression functions with preg.
 
-  *Risky rule: risky if the ``ereg`` funcion is overridden.*
+  *Risky rule: risky if the ``ereg`` function is overridden.*
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
