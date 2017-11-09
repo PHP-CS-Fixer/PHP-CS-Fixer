@@ -597,7 +597,7 @@ final class ConfigurationResolverTest extends TestCase
                 ['non_existing_dir'],
                 'intersection',
             ],
-            'configured by config file, overriden by multiple files' => [
+            'configured by config file, overridden by multiple files' => [
                 $cb(['d/d1.php', 'd/d2.php']),
                 null,
                 [$dir.'/d/d1.php', $dir.'/d/d2.php'],
@@ -611,7 +611,7 @@ final class ConfigurationResolverTest extends TestCase
                 'intersection',
                 $dir.'/d/.php_cs',
             ],
-            'configured by config file, overriden by non-existing dir' => [
+            'configured by config file, overridden by non-existing dir' => [
                 new \LogicException(),
                 null,
                 [$dir.'/d/fff'],
@@ -625,7 +625,7 @@ final class ConfigurationResolverTest extends TestCase
                 'intersection',
                 $dir.'/d/.php_cs',
             ],
-            'configured by config file, overriden by non-existing file' => [
+            'configured by config file, overridden by non-existing file' => [
                 new \LogicException(),
                 null,
                 [$dir.'/d/fff.php'],
@@ -639,7 +639,7 @@ final class ConfigurationResolverTest extends TestCase
                 'intersection',
                 $dir.'/d/.php_cs',
             ],
-            'configured by config file, overriden by multiple files and dirs' => [
+            'configured by config file, overridden by multiple files and dirs' => [
                 $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
                 null,
                 [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
