@@ -39,6 +39,10 @@ final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
     {
         return [
             [
+                '<?php echo ${$foo}($bar);',
+                '<?php echo $$foo($bar);',
+            ],
+            [
                 '<?php echo ${$foo}[\'bar\'][\'baz\'];',
                 '<?php echo $$foo[\'bar\'][\'baz\'];',
             ],

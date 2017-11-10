@@ -60,7 +60,8 @@ EOT
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $index => $token) {
+        for ($index = $tokens->count() - 1; $index > 1; --$index) {
+            $token = $tokens[$index];
             if (!$token->isGivenKind(T_VARIABLE)) {
                 continue;
             }
