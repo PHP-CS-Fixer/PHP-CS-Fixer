@@ -36,8 +36,10 @@ final class ExplicitIndirectVariableFixer extends AbstractFixer
                 new VersionSpecificCodeSample(
 <<<'EOT'
 <?php
+echo $$foo;
 echo $$foo['bar'];
 echo $foo->$bar['baz'];
+echo $foo->$callback($baz);
 
 EOT
 ,
