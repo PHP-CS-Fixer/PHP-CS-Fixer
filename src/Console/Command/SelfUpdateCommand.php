@@ -34,6 +34,18 @@ final class SelfUpdateCommand extends Command
     const COMMAND_NAME = 'self-update';
 
     /**
+     * @var ToolInfo
+     */
+    private $toolInfo;
+
+    public function __construct(ToolInfo $toolInfo)
+    {
+        parent::__construct();
+
+        $this->toolInfo = $toolInfo;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -65,7 +77,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!ToolInfo::isInstalledAsPhar()) {
+        if (!$this->toolInfo->isInstalledAsPhar()) {
             $output->writeln('<error>Self-update is available only for PHAR version.</error>');
 
             return 1;

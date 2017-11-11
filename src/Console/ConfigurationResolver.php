@@ -105,6 +105,11 @@ final class ConfigurationResolver
     private $configFinderIsOverridden;
 
     /**
+     * @var ToolInfo
+     */
+    private $toolInfo;
+
+    /**
      * @var array
      */
     private $options = array(
@@ -150,10 +155,12 @@ final class ConfigurationResolver
     public function __construct(
         ConfigInterface $config,
         array $options,
-        $cwd
+        $cwd,
+        ToolInfo $toolInfo
     ) {
         $this->cwd = $cwd;
         $this->defaultConfig = $config;
+        $this->toolInfo = $toolInfo;
 
         foreach ($options as $name => $value) {
             $this->setOption($name, $value);
@@ -186,12 +193,12 @@ final class ConfigurationResolver
     public function getCacheManager()
     {
         if (null === $this->cacheManager) {
-            if ($this->getUsingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
+            if ($this->getUsingCache() && ($this->toolInfo->isInstalledAsPhar() || $this->toolInfo->isInstalledByComposer())) {
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($this->getCacheFile()),
                     new Signature(
                         PHP_VERSION,
-                        ToolInfo::getVersion(),
+                        $this->toolInfo->getVersion(),
                         $this->getRules()
                     ),
                     $this->isDryRun(),
