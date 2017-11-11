@@ -11,13 +11,13 @@ If you need any help, don't hesitate to ask the community on [Gitter](https://gi
 * Install dependencies: `composer install`.
 * Create a new branch, e.g. `feature-foo` or `bugfix-bar`.
 * Make changes.
-* If you are adding functionality or fixing a bug - add a test!
+* If you are adding functionality or fixing a bug - add a test! Prefer adding test case over modifying existing one.
 * Make sure there is no trailing spaces in code: `./check_trailing_spaces.sh`.
 * Regenerate README: `php php-cs-fixer readme > README.rst`. Do not modify `README.rst` manually!
 * Check if tests pass: `vendor/bin/phpunit`.
 * Fix project itself: `php php-cs-fixer fix`.
 
-## Opening a Pull Request
+## Opening a [Pull Request](https://help.github.com/articles/about-pull-requests/)
 
 You can do some things to increase the chance that your Pull Request is accepted the first time:
 
@@ -38,5 +38,5 @@ before opening a PR.
 * [PSR-2: Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 * [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
 * [PSR-5: PHPDoc (draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
-* [Symfony Coding Standards](http://symfony.com/doc/current/contributing/code/standards.html)
+* [Symfony Coding Standards](https://symfony.com/doc/current/contributing/code/standards.html)
 * Keep the order of class elements: static properties, instance properties, constructor (or setUp for PHPUnit), destructor (or tearDown for PHPUnit), static methods, instance methods, magic static methods, magic instance methods.
