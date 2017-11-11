@@ -295,9 +295,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
 
         if (isset($annotations['expectedExceptionMessage'])) {
-            $params[] = "'{$annotations['expectedExceptionMessage']}'";
+            $replacement = str_replace("'", "\\'", $annotations['expectedExceptionMessage']);
+            $params[] = "'{$replacement}'";
         } elseif (isset($annotations['expectedExceptionMessageRegExp'])) {
-            $params[] = "'{$annotations['expectedExceptionMessageRegExp']}'";
+            $replacement = str_replace("'", "\\'", $annotations['expectedExceptionMessageRegExp']);
+            $params[] = "'{$replacement}'";
         } elseif (isset($annotations['expectedExceptionCode'])) {
             $params[] = 'null';
         }
