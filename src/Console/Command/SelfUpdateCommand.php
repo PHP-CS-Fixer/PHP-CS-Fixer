@@ -14,7 +14,7 @@ namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
-use PhpCsFixer\ToolInfo;
+use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -32,6 +32,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class SelfUpdateCommand extends Command
 {
     const COMMAND_NAME = 'self-update';
+
+    /**
+     * @var ToolInfoInterface
+     */
+    private $toolInfo;
+
+    public function __construct(ToolInfoInterface $toolInfo)
+    {
+        parent::__construct();
+
+        $this->toolInfo = $toolInfo;
+    }
 
     /**
      * {@inheritdoc}
@@ -65,7 +77,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!ToolInfo::isInstalledAsPhar()) {
+        if (!$this->toolInfo->isInstalledAsPhar()) {
             $output->writeln('<error>Self-update is available only for PHAR version.</error>');
 
             return 1;

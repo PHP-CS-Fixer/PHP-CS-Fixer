@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Console;
 
 use PhpCsFixer\ToolInfo;
+use PhpCsFixer\ToolInfoInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -22,9 +23,19 @@ use PhpCsFixer\ToolInfo;
 final class WarningsDetector
 {
     /**
+     * @var ToolInfoInterface
+     */
+    private $toolInfo;
+
+    /**
      * @var string[]
      */
     private $warnings = array();
+
+    public function __construct(ToolInfoInterface $toolInfo)
+    {
+        $this->toolInfo = $toolInfo;
+    }
 
     public function detectOldMajor()
     {
@@ -34,8 +45,8 @@ final class WarningsDetector
 
     public function detectOldVendor()
     {
-        if (ToolInfo::isInstalledByComposer()) {
-            $details = ToolInfo::getComposerInstallationDetails();
+        if ($this->toolInfo->isInstalledByComposer()) {
+            $details = $this->toolInfo->getComposerInstallationDetails();
             if (ToolInfo::COMPOSER_LEGACY_PACKAGE_NAME === $details['name']) {
                 $this->warnings[] = sprintf(
                     'You are running PHP CS Fixer installed with old vendor `%s`. Please update to `%s`.',

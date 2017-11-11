@@ -172,6 +172,8 @@ final class CacheTest extends TestCase
 
     public function provideCanConvertToAndFromJsonCases()
     {
+        $toolInfo = new ToolInfo();
+
         return array(
             array(new Signature(
                 PHP_VERSION,
@@ -183,7 +185,7 @@ final class CacheTest extends TestCase
             )),
             array(new Signature(
                 PHP_VERSION,
-                ToolInfo::getVersion(),
+                $toolInfo->getVersion(),
                 array(
                     // value encoded in ANSI, not UTF
                     'header_comment' => array('header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)),
