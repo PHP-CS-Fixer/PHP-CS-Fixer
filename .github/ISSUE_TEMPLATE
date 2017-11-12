@@ -17,7 +17,7 @@ The configuration file you are using, if any:
 => ....................................
 ```
 
-Minimal samples of PHP code, if applicable:
+If applicable, please provide minimum samples of PHP code (as plain text, not screenshots):
  * before running PHP CS Fixer (no changes):
 ```php
 => ....................................
