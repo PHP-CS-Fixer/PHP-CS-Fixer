@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\ToolInfo;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -72,7 +73,7 @@ final class FixCommandTest extends TestCase
      */
     private function doTestExecute(array $arguments, array $expectedException = null)
     {
-        $this->application->add(new FixCommand());
+        $this->application->add(new FixCommand(new ToolInfo()));
 
         $command = $this->application->find('fix');
         $commandTester = new CommandTester($command);

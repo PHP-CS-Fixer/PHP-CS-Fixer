@@ -17,6 +17,7 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\ToolInfo;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -37,7 +38,8 @@ final class ConfigTest extends TestCase
             array(
                 'rules' => 'cast_spaces,braces',
             ),
-            getcwd()
+            getcwd(),
+            new ToolInfo()
         );
 
         $this->assertArraySubset(
@@ -57,7 +59,8 @@ final class ConfigTest extends TestCase
             array(
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
             ),
-            getcwd()
+            getcwd(),
+            new ToolInfo()
         );
 
         $this->assertArraySubset(
@@ -81,7 +84,8 @@ final class ConfigTest extends TestCase
             array(
                 'rules' => '{blah',
             ),
-            getcwd()
+            getcwd(),
+            new ToolInfo()
         );
         $configResolver->getRules();
     }
@@ -89,7 +93,7 @@ final class ConfigTest extends TestCase
     public function testCustomConfig()
     {
         $customConfigFile = __DIR__.'/Fixtures/.php_cs_custom.php';
-        $command = new FixCommand();
+        $command = new FixCommand(new ToolInfo());
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             array(
