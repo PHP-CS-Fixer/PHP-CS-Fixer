@@ -265,6 +265,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
             $tokens->insertAt($braceIndex + 1, $newMethods);
 
+            $tokens[$braceIndex + $newMethods->getSize() + 1] = new Token([
+                T_WHITESPACE,
+                $this->whitespacesConfig->getLineEnding().$tokens[$braceIndex + $newMethods->getSize() + 1]->getContent(),
+            ]);
+
             $i = $docBlockIndex;
         }
     }

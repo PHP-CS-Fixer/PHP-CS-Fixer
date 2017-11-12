@@ -12,6 +12,7 @@ class FooTest extends \PHPUnit_Framework_TestCase
     {
         $this->expectException(\FooException::class);
         $this->expectExceptionCode(123);
+
         foo();
     }
 }

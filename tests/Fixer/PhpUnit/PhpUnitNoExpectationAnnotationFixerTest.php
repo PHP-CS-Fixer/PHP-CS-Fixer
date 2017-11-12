@@ -50,6 +50,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         public function testFnc()
         {
             $this->setExpectedException(\FooException::class);
+
             aaa();
         }
     }',
@@ -74,6 +75,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         public function testFnc()
         {
             $this->setExpectedException(\FooException::class);
+
             aaa();
         }
     }',
@@ -98,6 +100,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         public function testFnc()
         {
             $this->setExpectedException(\FooException::class, \'foo@bar\');
+
             aaa();
         }
     }',
@@ -123,6 +126,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         public function testFnc()
         {
             $this->setExpectedException(\FooException::class, null, 123);
+
             aaa();
         }
     }',
@@ -148,6 +152,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         public function testFnc()
         {
             $this->setExpectedException(\FooException::class, \'foo\', 123);
+
             aaa();
         }
     }',
@@ -190,6 +195,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         public function testFnc()
         {
             $this->setExpectedExceptionRegExp(\FooException::class, \'/foo.*$/\');
+
             aaa();
         }
     }',
@@ -216,6 +222,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         public function testFnc()
         {
             $this->setExpectedException(\'\FooException\');
+
             aaa();
         }
     }',
@@ -245,6 +252,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         public function testFnc($param)
         {
             $this->setExpectedException(\FooException::class);
+
             aaa();
         }
     }',
@@ -273,6 +281,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         function testFnc($param)
         {
             $this->setExpectedException(\FooException::class);
+
             aaa();
         }
     }',
@@ -297,6 +306,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         final function testFnc($param)
         {
             $this->setExpectedException(\FooException::class);
+
             aaa();
         }
     }',
@@ -326,6 +336,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         final function testFnc($param)
         {
             $this->setExpectedException(\FooException::class);
+
             aaa();
         }
     }',
@@ -434,6 +445,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         public function testFnc()
         {
             $this->setExpectedException(\FooException::class, \'foo\', 123);
+
             aaa();
         }
     }',

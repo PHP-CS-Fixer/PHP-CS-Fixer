@@ -24,6 +24,7 @@ class FooTest extends \PHPUnit\Framework\TestCase {
 	{
 		$this->expectException(\FooException::class);
 		$this->expectExceptionCode(123);
+
 		bbb();
 	}
 
@@ -35,6 +36,7 @@ class FooTest extends \PHPUnit\Framework\TestCase {
 		$this->expectException(\FooException::class);
 		$this->expectExceptionMessageRegExp('/foo.*$/');
 		$this->expectExceptionCode(123);
+
 		ccc();
 	}
 
