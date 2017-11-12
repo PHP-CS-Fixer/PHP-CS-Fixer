@@ -372,6 +372,35 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
          }
     }',
             ],
+            'respect \' and " in expected msg' => [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * Summary.
+         *
+         */
+        public function testFnc($param)
+        {
+            $this->setExpectedException(\FooException::class, \'Foo \\\' bar " baz\');
+            aaa();
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * Summary.
+         *
+         * @expectedException FooException
+         * @expectedExceptionMessage Foo \' bar " baz
+         */
+        public function testFnc($param)
+        {
+            aaa();
+        }
+    }',
+            ],
         ];
     }
 
