@@ -21,6 +21,7 @@ use PhpCsFixer\Console\Output\ProcessOutput;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -61,7 +62,12 @@ final class FixCommand extends Command
      */
     private $defaultConfig;
 
-    public function __construct()
+    /**
+     * @var ToolInfoInterface
+     */
+    private $toolInfo;
+
+    public function __construct(ToolInfoInterface $toolInfo)
     {
         parent::__construct();
 
@@ -69,6 +75,7 @@ final class FixCommand extends Command
         $this->errorsManager = new ErrorsManager();
         $this->eventDispatcher = new EventDispatcher();
         $this->stopwatch = new Stopwatch();
+        $this->toolInfo = $toolInfo;
     }
 
     /**
@@ -135,7 +142,8 @@ final class FixCommand extends Command
                 'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
             ],
-            getcwd()
+            getcwd(),
+            $this->toolInfo
         );
 
         $reporter = $resolver->getReporter();

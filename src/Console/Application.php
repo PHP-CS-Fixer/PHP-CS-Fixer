@@ -17,6 +17,7 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Command\ReadmeCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
+use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,16 +35,23 @@ final class Application extends BaseApplication
     const VERSION = '2.7.5-DEV';
     const VERSION_CODENAME = 'Sandy Pool';
 
+    /**
+     * @var ToolInfo
+     */
+    private $toolInfo;
+
     public function __construct()
     {
         error_reporting(-1);
 
         parent::__construct('PHP CS Fixer', self::VERSION);
 
+        $this->toolInfo = new ToolInfo();
+
         $this->add(new DescribeCommand());
-        $this->add(new FixCommand());
+        $this->add(new FixCommand($this->toolInfo));
         $this->add(new ReadmeCommand());
-        $this->add(new SelfUpdateCommand());
+        $this->add(new SelfUpdateCommand($this->toolInfo));
     }
 
     /**
@@ -56,7 +64,7 @@ final class Application extends BaseApplication
             : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output)
         ;
         if (null !== $stdErr) {
-            $warningsDetector = new WarningsDetector();
+            $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
             if (FixCommand::COMMAND_NAME === $this->getCommandName($input)) {
