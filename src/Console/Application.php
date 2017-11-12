@@ -39,6 +39,11 @@ final class Application extends BaseApplication
      */
     private $toolInfo;
 
+    /**
+     * @var ToolInfo
+     */
+    private $toolInfo;
+
     public function __construct()
     {
         error_reporting(-1);
