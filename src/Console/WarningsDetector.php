@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Console;
 
 use PhpCsFixer\ToolInfo;
+use PhpCsFixer\ToolInfoInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -22,7 +23,7 @@ use PhpCsFixer\ToolInfo;
 final class WarningsDetector
 {
     /**
-     * @var ToolInfo
+     * @var ToolInfoInterface
      */
     private $toolInfo;
 
@@ -31,7 +32,7 @@ final class WarningsDetector
      */
     private $warnings = array();
 
-    public function __construct(ToolInfo $toolInfo)
+    public function __construct(ToolInfoInterface $toolInfo)
     {
         $this->toolInfo = $toolInfo;
     }

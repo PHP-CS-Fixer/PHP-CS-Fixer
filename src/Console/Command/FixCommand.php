@@ -21,7 +21,7 @@ use PhpCsFixer\Console\Output\ProcessOutput;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\ToolInfo;
+use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -70,11 +70,11 @@ final class FixCommand extends Command
     private $defaultConfig;
 
     /**
-     * @var ToolInfo
+     * @var ToolInfoInterface
      */
     private $toolInfo;
 
-    public function __construct(ToolInfo $toolInfo)
+    public function __construct(ToolInfoInterface $toolInfo)
     {
         parent::__construct();
 

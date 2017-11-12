@@ -33,7 +33,7 @@ use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
-use PhpCsFixer\ToolInfo;
+use PhpCsFixer\ToolInfoInterface;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -105,7 +105,7 @@ final class ConfigurationResolver
     private $configFinderIsOverridden;
 
     /**
-     * @var ToolInfo
+     * @var ToolInfoInterface
      */
     private $toolInfo;
 
@@ -148,16 +148,16 @@ final class ConfigurationResolver
     /**
      * ConfigurationResolver constructor.
      *
-     * @param ConfigInterface $config
-     * @param array           $options
-     * @param string          $cwd
-     * @param ToolInfo        $toolInfo
+     * @param ConfigInterface   $config
+     * @param array             $options
+     * @param string            $cwd
+     * @param ToolInfoInterface $toolInfo
      */
     public function __construct(
         ConfigInterface $config,
         array $options,
         $cwd,
-        ToolInfo $toolInfo
+        ToolInfoInterface $toolInfo
     ) {
         $this->cwd = $cwd;
         $this->defaultConfig = $config;

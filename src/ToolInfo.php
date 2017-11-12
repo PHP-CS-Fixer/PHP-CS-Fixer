@@ -21,7 +21,7 @@ use PhpCsFixer\Console\Application;
  *
  * @internal
  */
-final class ToolInfo
+final class ToolInfo implements ToolInfoInterface
 {
     const COMPOSER_PACKAGE_NAME = 'friendsofphp/php-cs-fixer';
 
