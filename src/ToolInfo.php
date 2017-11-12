@@ -27,8 +27,14 @@ final class ToolInfo
 
     const COMPOSER_LEGACY_PACKAGE_NAME = 'fabpot/php-cs-fixer';
 
+    /**
+     * @var null|array
+     */
     private $composerInstallationDetails;
 
+    /**
+     * @var null|bool
+     */
     private $isInstalledByComposer;
 
     public function getComposerInstallationDetails()

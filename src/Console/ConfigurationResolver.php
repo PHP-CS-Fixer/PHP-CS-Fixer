@@ -151,6 +151,7 @@ final class ConfigurationResolver
      * @param ConfigInterface $config
      * @param array           $options
      * @param string          $cwd
+     * @param ToolInfo        $toolInfo
      */
     public function __construct(
         ConfigInterface $config,
