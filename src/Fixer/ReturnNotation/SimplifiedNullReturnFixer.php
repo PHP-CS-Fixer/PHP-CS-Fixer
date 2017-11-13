@@ -102,7 +102,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
      */
     private function needFixing(Tokens $tokens, $index)
     {
-        if ($this->isNullableReturnTypeFunction($tokens, $index)) {
+        if ($this->isStrictOrNullableReturnTypeFunction($tokens, $index)) {
             return false;
         }
 
@@ -119,16 +119,16 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     }
 
     /**
-     * Is the return within a function with a nullable return type?
+     * Is the return within a function with a non-void or nullable return type?
      *
      * @param Tokens $tokens
-     * @param int    $index  Current token index
+     * @param int    $returnIndex Current return token index
      *
      * @return bool
      */
-    private function isNullableReturnTypeFunction(Tokens $tokens, $index)
+    private function isStrictOrNullableReturnTypeFunction(Tokens $tokens, $returnIndex)
     {
-        $functionIndex = $index;
+        $functionIndex = $returnIndex;
         do {
             $functionIndex = $tokens->getPrevTokenOfKind($functionIndex, array(array(T_FUNCTION)));
             if (null === $functionIndex) {
@@ -136,11 +136,15 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
             }
             $openingCurlyBraceIndex = $tokens->getNextTokenOfKind($functionIndex, array('{'));
             $closingCurlyBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openingCurlyBraceIndex);
-        } while ($closingCurlyBraceIndex < $index);
+        } while ($closingCurlyBraceIndex < $returnIndex);
+
+        $possibleVoidIndex = $tokens->getPrevMeaningfulToken($openingCurlyBraceIndex);
+        $isStrictReturnType = $tokens[$possibleVoidIndex]->isGivenKind(T_STRING) && 'void' !== $tokens[$possibleVoidIndex]->getContent();
 
         $nullableTypeIndex = $tokens->getNextTokenOfKind($functionIndex, array(array(CT::T_NULLABLE_TYPE)));
+        $isNullableReturnType = null !== $nullableTypeIndex && $nullableTypeIndex < $openingCurlyBraceIndex;
 
-        return null !== $nullableTypeIndex && $nullableTypeIndex < $openingCurlyBraceIndex;
+        return $isStrictReturnType || $isNullableReturnType;
     }
 
     /**
