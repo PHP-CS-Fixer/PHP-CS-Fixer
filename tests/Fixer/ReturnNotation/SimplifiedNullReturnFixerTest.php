@@ -70,29 +70,29 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 
     public function provideNullableReturnTypeCases()
     {
-        return [
-            ['<?php function foo(): ? /* C */ int { return null; }'],
-            ['<?php function foo(): ?int { if (false) { return null; } }'],
-            [
+        return array(
+            array('<?php function foo(): ? /* C */ int { return null; }'),
+            array('<?php function foo(): ?int { if (false) { return null; } }'),
+            array(
                 '<?php function foo(): ?int { return null; } return;',
                 '<?php function foo(): ?int { return null; } return null;',
-            ],
-            [
+            ),
+            array(
                 '<?php function foo() { return; } function bar(): ?A\B\C\D { return null; } function baz() { return; }',
                 '<?php function foo() { return null; } function bar(): ?A\B\C\D { return null; } function baz() { return null; }',
-            ],
-            [
+            ),
+            array(
                 '<?php function foo(): ?int { $bar = function() { return; }; return null; }',
                 '<?php function foo(): ?int { $bar = function() { return null; }; return null; }',
-            ],
-            [
+            ),
+            array(
                 '<?php function foo(): int { return; }',
                 '<?php function foo(): int { return null; }',
-            ],
-            [
+            ),
+            array(
                 '<?php function foo(): void { return; }',
                 '<?php function foo(): void { return null; }',
-            ],
-        ];
+            ),
+        );
     }
 }
