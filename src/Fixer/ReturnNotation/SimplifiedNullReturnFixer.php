@@ -122,7 +122,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
      * Is the return within a function with a nullable return type?
      *
      * @param Tokens $tokens
-     * @param int    $index
+     * @param int    $index  Current token index
      *
      * @return bool
      */
