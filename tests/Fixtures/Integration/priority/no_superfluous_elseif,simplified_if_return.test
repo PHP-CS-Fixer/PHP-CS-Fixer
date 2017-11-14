@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: no_superfluous_elseif,simplified_if_return.
+--RULESET--
+{"no_superfluous_elseif": true, "simplified_if_return": true}
+--EXPECT--
+<?php
+if ($a) {
+    return 1;
+}
+return (bool) $b 
+     
+
+ ;
+
+--INPUT--
+<?php
+if ($a) {
+    return 1;
+} elseif ($b) {
+    return true;
+}
+return false;

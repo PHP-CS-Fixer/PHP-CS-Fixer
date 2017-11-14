@@ -1836,6 +1836,11 @@ Choose from the list of available rules:
   Converts explicit variables in double-quoted strings and heredoc syntax
   from simple to complex format (``${`` to ``{$``).
 
+* **simplified_if_return**
+
+  Simplify ``if`` control structures that return the boolean result of their
+  condition.
+
 * **simplified_null_return**
 
   A return statement wishing to return ``void`` should not return ``null``.
