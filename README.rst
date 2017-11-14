@@ -232,6 +232,97 @@ would be default in next MAJOR release (unified differ, estimating, full-width p
 
     $ PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer.phar fix -v --diff
 
+Choose from the list of available sets:
+
+* **@DoctrineAnnotation**
+
+  TODO fill me
+
+* **@PHP56Migration**
+
+  TODO fill me
+
+* **@PHP56Migration:risky**
+
+  TODO fill me
+
+* **@PHP70Migration**
+
+  TODO fill me
+
+* **@PHP70Migration:risky**
+
+  TODO fill me
+
+* **@PHP71Migration**
+
+  TODO fill me
+
+* **@PHP71Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit30Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit32Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit35Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit43Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit48Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit50Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit52Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit54Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit56Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit57Migration:risky**
+
+  TODO fill me
+
+* **@PHPUnit60Migration:risky**
+
+  TODO fill me
+
+* **@PSR1**
+
+  TODO fill me
+
+* **@PSR2**
+
+  TODO fill me
+
+* **@Symfony**
+
+  TODO fill me
+
+* **@Symfony:risky**
+
+  TODO fill me
+
+
 Choose from the list of available rules:
 
 * **align_multiline_comment**

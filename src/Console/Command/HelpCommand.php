@@ -129,6 +129,10 @@ would be default in next MAJOR release (unified differ, estimating, full-width p
 
     <info>$ PHP_CS_FIXER_FUTURE_MODE=1 php %command.full_name% -v --diff</info>
 
+Choose from the list of available sets:
+
+%%%RULES_SETS_DETAILS%%%
+
 Choose from the list of available rules:
 
 %%%FIXERS_DETAILS%%%
@@ -280,6 +284,7 @@ EOF
                 function ($line) { return '    $ '.$line; },
                 array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
             )),
+            '%%%RULES_SETS_DETAILS%%%' => self::getRulesSetsHelp(),
             '%%%FIXERS_DETAILS%%%' => self::getFixersHelp(),
         ]);
     }
@@ -418,6 +423,20 @@ EOF
         $changelogFile = __DIR__.'/../../../CHANGELOG.md';
 
         return is_file($changelogFile) ? $changelogFile : null;
+    }
+
+    /**
+     * @return string
+     */
+    private static function getRulesSetsHelp()
+    {
+        $ruleSet = new RuleSet();
+        $setDefinitionNames = $ruleSet->getSetDefinitionNames();
+        sort($setDefinitionNames);
+
+        return implode("\n", array_map(function ($setDefinitionName) use ($ruleSet) {
+            return " * <comment>{$setDefinitionName}</comment>\n  {$ruleSet->getSetDescription($setDefinitionName)}\n";
+        }, $setDefinitionNames));
     }
 
     /**

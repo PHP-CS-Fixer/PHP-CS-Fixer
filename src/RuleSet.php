@@ -250,6 +250,31 @@ final class RuleSet implements RuleSetInterface
         ],
     ];
 
+    private $setDescriptions = [
+        '@PSR1' => 'TODO fill me',
+        '@PSR2' => 'TODO fill me',
+        '@Symfony' => 'TODO fill me',
+        '@Symfony:risky' => 'TODO fill me',
+        '@DoctrineAnnotation' => 'TODO fill me',
+        '@PHP56Migration' => 'TODO fill me',
+        '@PHP56Migration:risky' => 'TODO fill me',
+        '@PHP70Migration' => 'TODO fill me',
+        '@PHP70Migration:risky' => 'TODO fill me',
+        '@PHP71Migration' => 'TODO fill me',
+        '@PHP71Migration:risky' => 'TODO fill me',
+        '@PHPUnit30Migration:risky' => 'TODO fill me',
+        '@PHPUnit32Migration:risky' => 'TODO fill me',
+        '@PHPUnit35Migration:risky' => 'TODO fill me',
+        '@PHPUnit43Migration:risky' => 'TODO fill me',
+        '@PHPUnit48Migration:risky' => 'TODO fill me',
+        '@PHPUnit50Migration:risky' => 'TODO fill me',
+        '@PHPUnit52Migration:risky' => 'TODO fill me',
+        '@PHPUnit54Migration:risky' => 'TODO fill me',
+        '@PHPUnit56Migration:risky' => 'TODO fill me',
+        '@PHPUnit57Migration:risky' => 'TODO fill me',
+        '@PHPUnit60Migration:risky' => 'TODO fill me',
+    ];
+
     /**
      * Set that was used to generate group of rules.
      *
@@ -324,6 +349,18 @@ final class RuleSet implements RuleSetInterface
     public function getSetDefinitionNames()
     {
         return array_keys($this->setDefinitions);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSetDescription($setDefinitionName)
+    {
+        if (!array_key_exists($setDefinitionName, $this->setDescriptions)) {
+            throw new \InvalidArgumentException(sprintf('Set definition "%s" is not in decriptions list.', $setDefinitionName));
+        }
+
+        return $this->setDescriptions[$setDefinitionName];
     }
 
     /**

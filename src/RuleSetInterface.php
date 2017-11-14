@@ -49,6 +49,15 @@ interface RuleSetInterface
     public function getSetDefinitionNames();
 
     /**
+     * Get the related description of the set name.
+     *
+     * @param string $setDefinitionName
+     *
+     * @return string
+     */
+    public function getSetDescription($setDefinitionName);
+
+    /**
      * Check given rule is in rules set.
      *
      * @param string $rule name of rule
