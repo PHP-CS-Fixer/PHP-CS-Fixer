@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.0/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.1/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -535,7 +535,7 @@ Choose from the list of available rules:
 
   Replace deprecated ``ereg`` regular expression functions with preg.
 
-  *Risky rule: risky if the ``ereg`` funcion is overridden.*
+  *Risky rule: risky if the ``ereg`` function is overridden.*
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
@@ -1398,9 +1398,12 @@ fixed but without actually modifying them:
 
     $ php php-cs-fixer.phar fix /path/to/code --dry-run
 
+Config file
+-----------
+
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.0/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.1/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

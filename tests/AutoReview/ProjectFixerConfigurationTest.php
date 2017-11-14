@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\ToolInfo;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,7 +36,13 @@ final class ProjectFixerConfigurationTest extends TestCase
         $this->assertNotEmpty($config->getRules());
 
         // call so the fixers get configured to reveal issue (like deprecated configuration used etc.)
-        $resolver = new ConfigurationResolver($config, [], __DIR__);
+        $resolver = new ConfigurationResolver(
+            $config,
+            [],
+            __DIR__,
+            new ToolInfo()
+        );
+
         $resolver->getFixers();
     }
 }
