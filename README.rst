@@ -1321,6 +1321,9 @@ fixed but without actually modifying them:
 
     $ php php-cs-fixer.phar fix /path/to/code --dry-run
 
+Config file
+-----------
+
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
 The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.7.4/src/ConfigInterface.php>`_
