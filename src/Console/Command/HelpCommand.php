@@ -120,6 +120,9 @@ fixed but without actually modifying them:
 
     <info>$ php %command.full_name% /path/to/code --dry-run</info>
 
+Config file
+-----------
+
 Instead of using command line options to customize the rule, you can save the
 project configuration in a <comment>.php_cs.dist</comment> file in the root directory of your project.
 The file must return an instance of `PhpCsFixer\ConfigInterface` (<url>%%%CONFIG_INTERFACE_URL%%%</url>)
