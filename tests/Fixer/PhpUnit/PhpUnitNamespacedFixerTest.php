@@ -217,6 +217,10 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
     }',
                 ['target' => PhpUnitTargetVersion::VERSION_6_0],
             ],
+            [
+                '<?php echo \PHPUnit\Runner\Version::id();',
+                '<?php echo \PHPUnit_Runner_Version::id();',
+            ],
         ];
     }
 }

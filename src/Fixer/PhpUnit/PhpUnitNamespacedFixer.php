@@ -60,7 +60,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CLASS);
+        return $tokens->isTokenKindFound(T_STRING);
     }
 
     /**
