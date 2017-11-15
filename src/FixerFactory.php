@@ -79,6 +79,8 @@ final class FixerFactory
      */
     public function getFixers()
     {
+        $this->fixers = array_map([$this, 'retrieveFixer'], $this->fixers);
+
         $this->fixers = Utils::sortFixers($this->fixers);
 
         return $this->fixers;
@@ -104,7 +106,7 @@ final class FixerFactory
         }
 
         foreach ($builtInFixers as $class) {
-            $this->registerFixer(new $class(), false);
+            $this->registerFixer(new FixerProxy($class), false);
         }
 
         return $this;
@@ -167,7 +169,7 @@ final class FixerFactory
                 throw new \UnexpectedValueException(sprintf('Rule "%s" does not exist.', $name));
             }
 
-            $fixer = $this->fixersByName[$name];
+            $fixer = $this->retrieveFixer($this->fixersByName[$name]);
 
             $config = $ruleSet->getRuleConfiguration($name);
             if (null !== $config) {
@@ -253,5 +255,19 @@ final class FixerFactory
         }
 
         return $message;
+    }
+
+    /**
+     * @param FixerInterface $fixer
+     *
+     * @return FixerInterface
+     */
+    private function retrieveFixer(FixerInterface $fixer)
+    {
+        if ($fixer instanceof FixerProxy) {
+            return $fixer->retrieveFixer();
+        }
+
+        return $fixer;
     }
 }
