@@ -545,8 +545,9 @@ Choose from the list of available rules:
 
 * **escape_implicit_backslashes**
 
-  Escape implicit backslashes in strings and heredocs to increase code
-  readability.
+  Escape implicit backslashes in strings and heredocs to ease the
+  understanding of which are special chars interpreted by PHP and which
+  not.
 
   Configuration options:
 
