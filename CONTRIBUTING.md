@@ -7,11 +7,11 @@ If you need any help, don't hesitate to ask the community on [Gitter](https://gi
 * [Fork](https://help.github.com/articles/fork-a-repo/) the repo.
 * [Checkout](https://git-scm.com/docs/git-checkout) the branch you want to make changes on:
   * If you are fixing a bug or typo, improving tests or for any small tweak: the lowest maintained branch where the changes can be applied. Once your Pull Request is accepted, the changes will get merged up to highest branches.
-  * `master` in other cases (new feature, deprecation, or backwards compatibility breaking changes). Not that most of the time, `master` represents the next minor release of PHP CS Fixer, so Pull Requests that break backwards compatibility might be postponed.
+  * `master` in other cases (new feature, deprecation, or backwards compatibility breaking changes). Note that most of the time, `master` represents the next minor release of PHP CS Fixer, so Pull Requests that break backwards compatibility might be postponed.
 * Install dependencies: `composer install`.
 * Create a new branch, e.g. `feature-foo` or `bugfix-bar`.
 * Make changes.
-* If you are adding functionality or fixing a bug - add a test! Prefer adding test case over modifying existing one.
+* If you are adding functionality or fixing a bug - add a test! Prefer adding new test cases over modifying existing ones.
 * Make sure there is no trailing spaces in code: `./check_trailing_spaces.sh`.
 * Regenerate README: `php php-cs-fixer readme > README.rst`. Do not modify `README.rst` manually!
 * Check if tests pass: `vendor/bin/phpunit`.
@@ -39,4 +39,3 @@ before opening a PR.
 * [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
 * [PSR-5: PHPDoc (draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
 * [Symfony Coding Standards](https://symfony.com/doc/current/contributing/code/standards.html)
-* Keep the order of class elements: static properties, instance properties, constructor (or setUp for PHPUnit), destructor (or tearDown for PHPUnit), static methods, instance methods, magic static methods, magic instance methods.
