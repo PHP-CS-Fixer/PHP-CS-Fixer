@@ -106,10 +106,10 @@ EOF;
             }
 
             $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '\'' === $content[0];
-            $isDoubleQuotedString = (
+            $isDoubleQuotedString =
                 ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '"' === $content[0])
                 || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened)
-            );
+            ;
             $isHeredocSyntax = !$isSingleQuotedString && !$isDoubleQuotedString;
             if (
                 (false === $this->configuration['single_quoted'] && $isSingleQuotedString)
