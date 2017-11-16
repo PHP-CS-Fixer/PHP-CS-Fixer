@@ -1,0 +1,112 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-11T12:57:32Z
+
+Thanks for all the feedbacks, PR updated.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-12T16:18:05Z
+
+How it looks currently:
+---------------
+
+For configuration or updating questions please read the README and UPGRADE documentation,
+or visit: https://gitter.im/PHP-CS-Fixer
+
+When reporting an issue (bug) please provide the following information:
+
+The PHP version you are using (`$ php -v`):
+=> ....................................
+
+PHP CS Fixer version you are using (`$ php-cs-fixer -V`):
+=> ....................................
+
+The command you use to run PHP CS Fixer:
+=> ....................................
+
+The configuration file you are using, if any:
+```php
+=> ....................................
+```
+
+If applicable, please provide minimum samples of PHP code (as plain text, not screenshots):
+ * before running PHP CS Fixer (no changes):
+```php
+=> ....................................
+```
+
+ * with unexpected changes applied when running PHP CS Fixer:
+```php
+=> ....................................
+```
+
+ * with the changes you expected instead:
+```php
+=> ....................................
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-12T16:20:38Z
+
+What about ?:
+--------------------
+For configuration or updating questions please read the README and UPGRADE documentation,
+or visit: https://gitter.im/PHP-CS-Fixer
+
+When reporting an issue (bug) please provide the following information:
+
+> The PHP version you are using (`$ php -v`):
+
+=> ....................................
+
+> PHP CS Fixer version you are using (`$ php-cs-fixer -V`):
+
+=> ....................................
+
+> The command you use to run PHP CS Fixer:
+
+=> ....................................
+
+> The configuration file you are using, if any:
+
+```php
+=> ....................................
+```
+
+> If applicable, please provide minimum samples of PHP code (as plain text, not screenshots):
+>  * before running PHP CS Fixer (no changes):
+
+```php
+=> ....................................
+```
+
+>  * with unexpected changes applied when running PHP CS Fixer:
+
+```php
+=> ....................................
+```
+
+>  * with the changes you expected instead:
+
+```php
+=> ....................................
+```
+-------------------
+
+so we have some kind of visual sections?
+or it doesn't make sense for you ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-15T18:13:28Z
+
+Makes sense, but I used headers instead of quotes as they provide a better contrast.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-15T22:36:11Z
+
+Template looks great :+1:
+I left few minors for contributing guide.
