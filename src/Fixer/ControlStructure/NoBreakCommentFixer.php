@@ -166,7 +166,7 @@ switch ($foo) {
             return false;
         }
 
-        $text = $this->configuration['comment_text'];
+        $text = preg_quote($this->configuration['comment_text'], '~');
 
         return preg_match("~^((//|#)\s*$text\s*)|(/\*\*?\s*$text\s*\*/)$~i", $token->getContent());
     }

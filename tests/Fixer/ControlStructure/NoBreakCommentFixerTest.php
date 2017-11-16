@@ -1026,6 +1026,37 @@ switch ($foo) {
         return $cases;
     }
 
+    public function testFixWithCommentTextWithSpecialRegexpCharacters()
+    {
+        $this->fixer->configure([
+            'comment_text' => '~***(//[No break here.]\\\\)***~',
+        ]);
+
+        $this->doTest(
+            '<?php
+switch ($foo) {
+    case 1:
+        foo();
+        // ~***(//[No break here.]\\\\)***~
+    case 2:
+        bar();
+        // ~***(//[No break here.]\\\\)***~
+    default:
+        baz();
+}',
+            '<?php
+switch ($foo) {
+    case 1:
+        foo();
+        // ~***(//[No break here.]\\\\)***~
+    case 2:
+        bar();
+    default:
+        baz();
+}'
+        );
+    }
+
     public function testConfigureWithInvalidOptions()
     {
         $this->expectException(InvalidFixerConfigurationException::class);
