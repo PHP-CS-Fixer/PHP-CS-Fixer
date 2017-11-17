@@ -60,7 +60,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CLASS);
+        return $tokens->isTokenKindFound(T_STRING);
     }
 
     /**
@@ -96,16 +96,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $currIndex = 0;
 
         while (null !== $currIndex) {
-            $match = $tokens->findSequence([[T_STRING]], $currIndex);
+            $currIndex = $tokens->getNextTokenOfKind($currIndex, [[T_STRING]]);
 
-            if (null === $match) {
+            if (null === $currIndex) {
                 break;
             }
 
-            $matchIndexes = array_keys($match);
-            $currIndex = $matchIndexes[0];
-
-            $originalClass = $match[$currIndex]->getContent();
+            $originalClass = $tokens[$currIndex]->getContent();
 
             if (1 !== preg_match($this->originalClassRegEx, $originalClass)) {
                 ++$currIndex;
@@ -126,7 +123,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $importedOriginalClassesMap[$originalClass] = true;
             } elseif ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-                $importedOriginalClassesMap[$originalClass] = $tokens[$prevIndex]->isGivenKind(T_USE);
+
+                if ($tokens[$prevIndex]->isGivenKind(T_USE)) {
+                    $importedOriginalClassesMap[$originalClass] = true;
+                }
             }
         }
     }

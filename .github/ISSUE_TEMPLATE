@@ -3,14 +3,32 @@ or visit: https://gitter.im/PHP-CS-Fixer
 
 When reporting an issue (bug) please provide the following information:
 
-The PHP version you are using:
-$ php -v
+#### The PHP version you are using (`$ php -v`):
+=> ....................................
 
-PHP CS Fixer version you are using:
-$ php-cs-fixer -V
+#### PHP CS Fixer version you are using (`$ php-cs-fixer -V`):
+=> ....................................
 
-The command you use to run the fixer (and the configuration file you are using if any).
+#### The command you use to run PHP CS Fixer:
+=> ....................................
 
-A minimal sample of valid PHP code that is not fixed correctly (if applicable).
+#### The configuration file you are using, if any:
+```php
+=> ....................................
+```
 
-The fixed version of that code after you run the fixer and the version you expected.
+#### If applicable, please provide minimum samples of PHP code (as plain text, not screenshots):
+ * before running PHP CS Fixer (no changes):
+```php
+=> ....................................
+```
+
+ * with unexpected changes applied when running PHP CS Fixer:
+```php
+=> ....................................
+```
+
+ * with the changes you expected instead:
+```php
+=> ....................................
+```

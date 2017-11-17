@@ -23,6 +23,7 @@ class FooTest extends \PHPUnit\Framework\TestCase {
     function test_php_unit_no_expectation_annotation_32()
     {
         $this->setExpectedException(\FooException::class, null, 123);
+
         bbb();
     }
 
@@ -32,6 +33,7 @@ class FooTest extends \PHPUnit\Framework\TestCase {
     function test_php_unit_no_expectation_annotation_43()
     {
         $this->setExpectedExceptionRegExp(\FooException::class, '/foo.*$/', 123);
+
         ccc();
     }
 }
