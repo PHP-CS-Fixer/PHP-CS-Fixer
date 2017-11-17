@@ -21,6 +21,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * Fixer for rule defined in PSR2 ¶5.2.
@@ -69,6 +70,15 @@ switch ($foo) {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('comment_text', 'The text to use in the added comment and to detect it.'))
                 ->setAllowedTypes(['string'])
+                ->setAllowedValues([
+                    function ($value) {
+                        if (is_string($value) && preg_match('/\R/', $value)) {
+                            throw new InvalidOptionsException('The comment text must not contain new lines.');
+                        }
+
+                        return true;
+                    },
+                ])
                 ->setDefault('no break')
                 ->getOption(),
         ]);

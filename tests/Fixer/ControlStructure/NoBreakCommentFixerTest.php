@@ -1057,10 +1057,35 @@ switch ($foo) {
         );
     }
 
+    /**
+     * @param string $text
+     *
+     * @dataProvider provideFixWithCommentTextContainingNewLinesCases
+     */
+    public function testFixWithCommentTextContainingNewLines($text)
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[no_break_comment\] Invalid configuration: The comment text must not contain new lines\.$/');
+
+        $this->fixer->configure([
+            'comment_text' => $text,
+        ]);
+    }
+
+    public function provideFixWithCommentTextContainingNewLinesCases()
+    {
+        return [
+            ["No\nbreak"],
+            ["No\r\nbreak"],
+            ["No\rbreak"],
+        ];
+    }
+
     public function testConfigureWithInvalidOptions()
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageRegExp('/^\[no_break_comment\] Invalid configuration: The option "foo" does not exist\. Defined options are: "comment_text"\.$/');
+
         $this->fixer->configure(['foo' => true]);
     }
 }
