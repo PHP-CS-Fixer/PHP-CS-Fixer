@@ -366,6 +366,16 @@ $a#4
                 '<?php return "" === $this->myObject->{$index}->/*1*//*2*/b;',
                 '<?php return $this->myObject->{$index}->/*1*//*2*/b === "";',
             ],
+            [
+                '<?php
+                function hello() {}
+                1 === $a ? b() : c();
+                ',
+                '<?php
+                function hello() {}
+                $a === 1 ? b() : c();
+                ',
+            ],
         ];
     }
 

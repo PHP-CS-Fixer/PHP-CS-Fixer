@@ -175,6 +175,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
     private function findComparisonStart(Tokens $tokens, $index)
     {
         --$index;
+        $foundMeaningfulToken = false;
         while (0 <= $index) {
             $token = $tokens[$index];
             if ($this->isOfLowerPrecedence($token)) {
@@ -185,10 +186,18 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             if (null === $block) {
                 --$index;
 
+                if (!$token->isWhitespace() && !$token->isComment()) {
+                    $foundMeaningfulToken = true;
+                }
+
                 continue;
             }
 
             if ($block['isStart']) {
+                break;
+            }
+
+            if ($foundMeaningfulToken && Tokens::BLOCK_TYPE_CURLY_BRACE === $block['type']) {
                 break;
             }
 
