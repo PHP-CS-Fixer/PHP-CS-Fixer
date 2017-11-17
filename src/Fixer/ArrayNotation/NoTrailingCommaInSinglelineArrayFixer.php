@@ -32,7 +32,7 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHP single-line arrays should not have trailing comma.',
-            [new CodeSample("<?php\n\$a = array('sample',  );")]
+            [new CodeSample("<?php\n\$a = array('sample',  );\n")]
         );
     }
 

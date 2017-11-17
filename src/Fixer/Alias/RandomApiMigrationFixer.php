@@ -61,9 +61,9 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
         return new FixerDefinition(
             'Replaces `rand`, `srand`, `getrandmax` functions calls with their `mt_*` analogs.',
             [
-                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();"),
+                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n"),
                 new CodeSample(
-                    "<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();",
+                    "<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n",
                     ['replacements' => ['getrandmax' => 'mt_getrandmax']]
                 ),
             ],
@@ -136,7 +136,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
         return new FixerConfigurationResolverRootless('replacements', [
             (new FixerOptionBuilder('replacements', 'Mapping between replaced functions with the new ones.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([function ($value) {
+                ->setAllowedValues([static function ($value) {
                     foreach ($value as $functionName => $replacement) {
                         if (!array_key_exists($functionName, self::$argumentCounts)) {
                             throw new InvalidOptionsException(sprintf(

@@ -181,6 +181,10 @@ $a =
                     }
                 ',
             ],
+            'get_class with leading backslash' => [
+                '<?php __CLASS__;',
+                '<?php \get_class();',
+            ],
         ];
     }
 

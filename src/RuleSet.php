@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+
 /**
  * Set of rules to be used by fixer.
  *
@@ -64,16 +66,16 @@ final class RuleSet implements RuleSetInterface
                 'allow_single_line_closure' => true,
             ],
             'cast_spaces' => true,
+            'class_attributes_separation' => ['elements' => ['method']],
             'class_definition' => ['singleLine' => true],
             'concat_space' => ['spacing' => 'none'],
             'declare_equal_normalize' => true,
             'function_typehint_space' => true,
-            'hash_to_slash_comment' => true,
             'include' => true,
+            'increment_style' => true,
             'lowercase_cast' => true,
             'magic_constant_casing' => true,
             'method_argument_space' => true,
-            'method_separation' => true,
             'native_function_casing' => true,
             'new_with_braces' => true,
             'no_blank_lines_after_class_opening' => true,
@@ -125,7 +127,6 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_trim' => true,
             'phpdoc_types' => true,
             'phpdoc_var_without_name' => true,
-            'pre_increment' => true,
             'protected_to_private' => true,
             'return_type_declaration' => true,
             'self_accessor' => true,
@@ -133,6 +134,9 @@ final class RuleSet implements RuleSetInterface
             'short_scalar_cast' => true,
             'single_blank_line_before_namespace' => true,
             'single_class_element_per_statement' => true,
+            'single_line_comment_style' => [
+                'comment_types' => ['hash'],
+            ],
             'single_quote' => true,
             'space_after_semicolon' => [
                 'remove_in_empty_for_expressions' => true,
@@ -199,6 +203,50 @@ final class RuleSet implements RuleSetInterface
         '@PHP71Migration:risky' => [
             '@PHP70Migration:risky' => true,
             'void_return' => true,
+        ],
+        '@PHPUnit30Migration:risky' => [
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_0],
+        ],
+        '@PHPUnit32Migration:risky' => [
+            '@PHPUnit30Migration:risky' => true,
+            'php_unit_no_expectation_annotation' => ['target' => PhpUnitTargetVersion::VERSION_3_2],
+        ],
+        '@PHPUnit35Migration:risky' => [
+            '@PHPUnit32Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_5],
+        ],
+        '@PHPUnit43Migration:risky' => [
+            '@PHPUnit35Migration:risky' => true,
+            'php_unit_no_expectation_annotation' => ['target' => PhpUnitTargetVersion::VERSION_4_3],
+        ],
+        '@PHPUnit48Migration:risky' => [
+            '@PHPUnit43Migration:risky' => true,
+            'php_unit_namespaced' => ['target' => PhpUnitTargetVersion::VERSION_4_8],
+        ],
+        '@PHPUnit50Migration:risky' => [
+            '@PHPUnit48Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_0],
+        ],
+        '@PHPUnit52Migration:risky' => [
+            '@PHPUnit50Migration:risky' => true,
+            'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_2],
+        ],
+        '@PHPUnit54Migration:risky' => [
+            '@PHPUnit52Migration:risky' => true,
+            'php_unit_mock' => true,
+        ],
+        '@PHPUnit56Migration:risky' => [
+            '@PHPUnit54Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
+            'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
+        ],
+        '@PHPUnit57Migration:risky' => [
+            '@PHPUnit56Migration:risky' => true,
+            'php_unit_namespaced' => ['target' => PhpUnitTargetVersion::VERSION_5_7],
+        ],
+        '@PHPUnit60Migration:risky' => [
+            '@PHPUnit57Migration:risky' => true,
+            'php_unit_namespaced' => ['target' => PhpUnitTargetVersion::VERSION_6_0],
         ],
     ];
 

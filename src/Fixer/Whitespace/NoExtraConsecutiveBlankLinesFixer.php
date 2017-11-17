@@ -134,7 +134,8 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
 $foo = array("foo");
 
 
-$bar = "bar";'
+$bar = "bar";
+'
                 ),
                 new CodeSample(
 '<?php
@@ -146,7 +147,8 @@ switch ($foo) {
 
     case 42:
         break;
-}',
+}
+',
                     ['tokens' => ['break']]
                 ),
                 new CodeSample(
@@ -157,7 +159,8 @@ for ($i = 0; $i < 9000; ++$i) {
         continue;
 
     }
-}',
+}
+',
                     ['tokens' => ['continue']]
                 ),
                 new CodeSample(
@@ -167,7 +170,8 @@ for ($i = 0; $i < 9000; ++$i) {
 
     echo $i;
 
-}',
+}
+',
                     ['tokens' => ['curly_brace_block']]
                 ),
                 new CodeSample(
@@ -176,7 +180,8 @@ for ($i = 0; $i < 9000; ++$i) {
 $foo = array("foo");
 
 
-$bar = "bar";',
+$bar = "bar";
+',
                     ['tokens' => ['extra']]
                 ),
                 new CodeSample(
@@ -186,7 +191,8 @@ $foo = array(
 
     "foo"
 
-);',
+);
+',
                     ['tokens' => ['parenthesis_brace_block']]
                 ),
                 new CodeSample(
@@ -196,7 +202,8 @@ function foo($bar)
 {
     return $bar;
 
-}',
+}
+',
                     ['tokens' => ['return']]
                 ),
                 new CodeSample(
@@ -206,7 +213,8 @@ $foo = [
 
     "foo"
 
-];',
+];
+',
                     ['tokens' => ['square_brace_block']]
                 ),
                 new CodeSample(
@@ -216,7 +224,8 @@ function foo($bar)
 {
     throw new \Exception("Hello!");
 
-}',
+}
+',
                     ['tokens' => ['throw']]
                 ),
                 new CodeSample(
@@ -230,7 +239,8 @@ use Baz\Bar;
 
 class Bar
 {
-}',
+}
+',
                     ['tokens' => ['use']]
                 ),
                 new CodeSample(
@@ -241,7 +251,8 @@ class Foo
     use Bar;
 
     use Baz;
-}',
+}
+',
                     ['tokens' => ['use_trait']]
                 ),
                 new CodeSample(
@@ -253,7 +264,8 @@ switch($a) {
     default:
 
         echo 3;
-}',
+}
+',
                     ['tokens' => ['switch', 'case', 'default']]
                 ),
             ]
@@ -300,7 +312,7 @@ switch($a) {
                 ->setAllowedValues([
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(self::$availableTokens),
                 ])
-                ->setNormalizer(function (Options $options, $tokens) {
+                ->setNormalizer(static function (Options $options, $tokens) {
                     foreach ($tokens as &$token) {
                         if ('useTrait' === $token) {
                             @trigger_error('Token "useTrait" is deprecated and will be removed in 3.0, use "use_trait" instead.', E_USER_DEPRECATED);
@@ -357,25 +369,12 @@ switch($a) {
 
     private function removeMultipleBlankLines($index)
     {
-        $token = $this->tokens[$index];
-        $content = '';
-        $count = 0;
-        $parts = explode("\n", $token->getContent());
+        $parts = \preg_split('/(.*\R)/', $this->tokens[$index]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $count = \count($parts);
 
-        for ($i = 0, $last = count($parts) - 1; $i <= $last; ++$i) {
-            if ('' === $parts[$i] || "\r" === $parts[$i]) {
-                // if part is empty then we are between two "\n"
-                ++$count;
-            } else {
-                $content .= $parts[$i];
-            }
-
-            if ($i !== $last && $count < 3) {
-                $content .= $this->whitespacesConfig->getLineEnding();
-            }
+        if ($count > 2) {
+            $this->tokens[$index] = new Token([T_WHITESPACE, $parts[0].$parts[1].rtrim($parts[$count - 1], "\r\n")]);
         }
-
-        $this->tokens[$index] = new Token([T_WHITESPACE, $content]);
     }
 
     private function fixAfterToken($index)

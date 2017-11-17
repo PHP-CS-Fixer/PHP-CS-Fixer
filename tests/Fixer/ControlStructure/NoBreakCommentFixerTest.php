@@ -953,7 +953,7 @@ switch ($foo) {
     {
         $cases = $this->provideTestFixCases();
 
-        $replaceCommentText = function ($php) {
+        $replaceCommentText = static function ($php) {
             return strtr($php, [
                 'No break' => 'Fall-through case!',
                 'no break' => 'fall-through case!',
@@ -1026,10 +1026,91 @@ switch ($foo) {
         return $cases;
     }
 
+    public function testFixWithCommentTextWithSpecialRegexpCharacters()
+    {
+        $this->fixer->configure([
+            'comment_text' => '~***(//[No break here.]\\\\)***~',
+        ]);
+
+        $this->doTest(
+            '<?php
+switch ($foo) {
+    case 1:
+        foo();
+        // ~***(//[No break here.]\\\\)***~
+    case 2:
+        bar();
+        // ~***(//[No break here.]\\\\)***~
+    default:
+        baz();
+}',
+            '<?php
+switch ($foo) {
+    case 1:
+        foo();
+        // ~***(//[No break here.]\\\\)***~
+    case 2:
+        bar();
+    default:
+        baz();
+}'
+        );
+    }
+
+    public function testFixWithCommentTextWithTrailingSpaces()
+    {
+        $this->fixer->configure([
+            'comment_text' => 'no break     ',
+        ]);
+
+        $this->doTest(
+            '<?php
+switch ($foo) {
+    case 1:
+        foo();
+        // no break
+    default:
+        baz();
+}',
+            '<?php
+switch ($foo) {
+    case 1:
+        foo();
+    default:
+        baz();
+}'
+        );
+    }
+
+    /**
+     * @param string $text
+     *
+     * @dataProvider provideFixWithCommentTextContainingNewLinesCases
+     */
+    public function testFixWithCommentTextContainingNewLines($text)
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[no_break_comment\] Invalid configuration: The comment text must not contain new lines\.$/');
+
+        $this->fixer->configure([
+            'comment_text' => $text,
+        ]);
+    }
+
+    public function provideFixWithCommentTextContainingNewLinesCases()
+    {
+        return [
+            ["No\nbreak"],
+            ["No\r\nbreak"],
+            ["No\rbreak"],
+        ];
+    }
+
     public function testConfigureWithInvalidOptions()
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageRegExp('/^\[no_break_comment\] Invalid configuration: The option "foo" does not exist\. Defined options are: "comment_text"\.$/');
+
         $this->fixer->configure(['foo' => true]);
     }
 }

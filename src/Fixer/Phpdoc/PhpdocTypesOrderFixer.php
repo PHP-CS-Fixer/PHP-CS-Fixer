@@ -38,27 +38,31 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
                     '<?php
 /**
  * @param string|null $bar
- */'
+ */
+'
                 ),
                 new CodeSample(
                     '<?php
 /**
  * @param null|string $bar
- */',
+ */
+',
                     ['null_adjustment' => 'always_last']
                 ),
                 new CodeSample(
                     '<?php
 /**
  * @param null|string|int|\Foo $bar
- */',
+ */
+',
                     ['sort_algorithm' => 'alpha']
                 ),
                 new CodeSample(
                     '<?php
 /**
  * @param null|string|int|\Foo $bar
- */',
+ */
+',
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'always_last',
@@ -68,7 +72,8 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
                     '<?php
 /**
  * @param null|string|int|\Foo $bar
- */',
+ */
+',
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'none',
@@ -154,8 +159,8 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
         if ('alpha' === $this->configuration['sort_algorithm']) {
             $types = Utils::stableSort(
                 $types,
-                function ($type) { return $type; },
-                function ($typeA, $typeB) {
+                static function ($type) { return $type; },
+                static function ($typeA, $typeB) {
                     $regexp = '/^\\??\\\?/';
 
                     return strcasecmp(
@@ -196,7 +201,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
     {
         $types = array_filter(
             preg_split('/([^|<]+(?:<.*>)?)/', $types, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY),
-            function ($value) {
+            static function ($value) {
                 return '|' !== $value;
             }
         );

@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Console;
 
 use PhpCsFixer\Console\Application;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author SpacePossum

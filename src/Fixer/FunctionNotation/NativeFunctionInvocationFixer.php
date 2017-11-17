@@ -45,7 +45,8 @@ function baz($options)
     }
 
     return json_encode($options);
-}'
+}
+'
                 ),
                 new CodeSample(
 '<?php
@@ -57,7 +58,8 @@ function baz($options)
     }
 
     return json_encode($options);
-}',
+}
+',
                     [
                         'exclude' => [
                             'json_encode',
@@ -151,7 +153,7 @@ function baz($options)
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('exclude', 'List of functions to ignore.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([function ($value) {
+                ->setAllowedValues([static function ($value) {
                     foreach ($value as $functionName) {
                         if (!\is_string($functionName) || '' === \trim($functionName) || \trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(\sprintf(
@@ -188,7 +190,7 @@ function baz($options)
      */
     private function normalizeFunctionNames(array $functionNames)
     {
-        return \array_map(function ($functionName) {
+        return \array_map(static function ($functionName) {
             return \strtolower($functionName);
         }, $functionNames);
     }

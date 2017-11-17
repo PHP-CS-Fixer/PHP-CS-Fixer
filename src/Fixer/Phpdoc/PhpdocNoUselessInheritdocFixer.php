@@ -34,8 +34,8 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
         return new FixerDefinition(
             'Classy that does not inherit must not have inheritdoc tags.',
             [
-                new CodeSample("<?php\n/** {@inheritdoc} */\nclass Sample\n{\n}"),
-                new CodeSample("<?php\nclass Sample\n{\n    /**\n     * @inheritdoc\n     */\n    public function Test()\n    {\n    }\n}"),
+                new CodeSample("<?php\n/** {@inheritdoc} */\nclass Sample\n{\n}\n"),
+                new CodeSample("<?php\nclass Sample\n{\n    /**\n     * @inheritdoc\n     */\n    public function Test()\n    {\n    }\n}\n"),
             ]
         );
     }
@@ -45,7 +45,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // Should run before NoEmptyPhpdocFixer, PhpdocInlineTagFixer and NoTrailingWhitespaceInCommentFixer
+        // Should run before NoEmptyPhpdocFixer, NoTrailingWhitespaceInCommentFixer
         // and after PhpdocToCommentFixer.
         return 6;
     }
@@ -141,7 +141,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
         $count = 0;
         $content = preg_replace_callback(
             '#(\h*(?:@{*|{*\h*@)\h*inheritdoc\h*)([^}]*)((?:}*)\h*)#i',
-            function ($matches) {
+            static function ($matches) {
                 return ' '.$matches[2];
             },
             $tokens[$tokenIndex]->getContent(),

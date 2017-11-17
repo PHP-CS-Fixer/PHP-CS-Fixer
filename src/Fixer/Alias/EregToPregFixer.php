@@ -49,7 +49,7 @@ final class EregToPregFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Replace deprecated `ereg` regular expression functions with preg.',
-            [new CodeSample('<?php $x = ereg(\'[A-Z]\');')],
+            [new CodeSample("<?php \$x = ereg('[A-Z]');\n")],
             null,
             'Risky if the `ereg` function is overridden.'
         );
@@ -163,7 +163,7 @@ final class EregToPregFixer extends AbstractFixer
         }
 
         // return the least used delimiter, using the position in the list as a tie breaker
-        uasort($delimiters, function ($a, $b) {
+        uasort($delimiters, static function ($a, $b) {
             if ($a[0] === $b[0]) {
                 return Utils::cmpInt($a, $b);
             }

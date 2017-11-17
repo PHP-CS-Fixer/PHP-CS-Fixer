@@ -21,6 +21,8 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * Fixer for rule defined in PSR2 ¶5.2.
@@ -46,7 +48,8 @@ switch ($foo) {
         break;
     case 3:
         baz();
-}'
+}
+'
                 ),
             ],
             'Adds a "no break" comment before fall-through cases, and removes it if there is no fall-through.'
@@ -69,6 +72,18 @@ switch ($foo) {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('comment_text', 'The text to use in the added comment and to detect it.'))
                 ->setAllowedTypes(['string'])
+                ->setAllowedValues([
+                    function ($value) {
+                        if (is_string($value) && preg_match('/\R/', $value)) {
+                            throw new InvalidOptionsException('The comment text must not contain new lines.');
+                        }
+
+                        return true;
+                    },
+                ])
+                ->setNormalizer(function (Options $options, $value) {
+                    return rtrim($value);
+                })
                 ->setDefault('no break')
                 ->getOption(),
         ]);
@@ -166,9 +181,9 @@ switch ($foo) {
             return false;
         }
 
-        $text = $this->configuration['comment_text'];
+        $text = preg_quote($this->configuration['comment_text'], '~');
 
-        return preg_match("~^((//|#)\s*$text\s*)|(/\*\*?\s*$text\s*\*/)$~i", $token->getContent());
+        return preg_match("~^((//|#)\\s*${text}\\s*)|(/\\*\\*?\\s*${text}\\s*\\*/)$~i", $token->getContent());
     }
 
     /**

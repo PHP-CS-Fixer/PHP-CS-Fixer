@@ -29,7 +29,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be empty PHPDoc blocks.',
-            [new CodeSample('<?php /**  */')]
+            [new CodeSample("<?php /**  */\n")]
         );
     }
 
@@ -39,7 +39,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     public function getPriority()
     {
         // should be run before NoExtraConsecutiveBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer and
-        // after PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer.
+        // after PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PHPUnitTestAnnotationFixer.
         return 5;
     }
 

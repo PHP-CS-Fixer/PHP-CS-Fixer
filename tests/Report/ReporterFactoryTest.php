@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\ReporterFactory;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -51,7 +51,7 @@ final class ReporterFactoryTest extends TestCase
 
         $builder->registerBuiltInReporters();
         $this->assertSame(
-            ['json', 'junit', 'txt', 'xml'],
+            ['checkstyle', 'json', 'junit', 'txt', 'xml'],
             $builder->getFormats()
         );
     }

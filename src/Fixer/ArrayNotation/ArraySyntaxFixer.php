@@ -55,10 +55,10 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurationDefin
             'PHP arrays should be declared using the configured syntax.',
             [
                 new CodeSample(
-                    "<?php\n[1,2];"
+                    "<?php\n[1,2];\n"
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\narray(1,2);",
+                    "<?php\narray(1,2);\n",
                     new VersionSpecification(50400),
                     ['syntax' => 'short']
                 ),

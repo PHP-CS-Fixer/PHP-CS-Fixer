@@ -30,7 +30,7 @@ final class SingleQuoteFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Convert double quotes to single quotes for simple strings.',
-            [new CodeSample('<?php $a = "sample";')]
+            [new CodeSample("<?php \$a = \"sample\";\n")]
         );
     }
 

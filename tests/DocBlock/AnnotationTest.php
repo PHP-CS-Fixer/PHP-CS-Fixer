@@ -15,7 +15,7 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -58,7 +58,7 @@ final class AnnotationTest extends TestCase
         "     * @param string \$hello\n",
         "     * @param bool \$test Description\n     *        extends over many lines\n",
         "     * @param adkjbadjasbdand \$asdnjkasd\n",
-        "     * @throws \Exception asdnjkasd\n     *\n     * asdasdasdasdasdasdasdasd\n     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb\n",
+        "     * @throws \\Exception asdnjkasd\n     *\n     * asdasdasdasdasdasdasdasd\n     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb\n",
         "     * @return void\n",
     ];
 

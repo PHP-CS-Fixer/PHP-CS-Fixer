@@ -15,9 +15,9 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -67,6 +67,23 @@ final class RuleSetTest extends TestCase
         } catch (InvalidForEnvFixerConfigurationException $exception) {
             // ignore
         }
+    }
+
+    /**
+     * @param string $ruleName
+     * @param string $setName
+     *
+     * @dataProvider provideAllRulesFromSetsCases
+     */
+    public function testThatThereIsNoDeprecatedFixerInRuleSet($setName, $ruleName)
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+        $factory->useRuleSet(new RuleSet([$ruleName => true]));
+
+        $fixer = current($factory->getFixers());
+
+        $this->assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
     public function provideAllRulesFromSetsCases()
@@ -262,7 +279,7 @@ final class RuleSetTest extends TestCase
     {
         $setDefinitionNames = RuleSet::create()->getSetDefinitionNames();
 
-        return array_map(function ($setDefinitionName) {
+        return array_map(static function ($setDefinitionName) {
             return [$setDefinitionName];
         }, $setDefinitionNames);
     }

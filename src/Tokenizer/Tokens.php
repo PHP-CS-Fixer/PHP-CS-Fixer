@@ -111,6 +111,10 @@ class Tokens extends \SplFixedArray
      */
     public static function setLegacyMode($isLegacy)
     {
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE') && $isLegacy) {
+            throw new \RuntimeException('Cannot enable `legacy mode` when using `future mode`. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+        }
+
         self::$isLegacyMode = $isLegacy;
     }
 
@@ -367,7 +371,7 @@ class Tokens extends \SplFixedArray
      */
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
-        $removeLastCommentLine = function (self $tokens, $index, $indexOffset, $whitespace) {
+        $removeLastCommentLine = static function (self $tokens, $index, $indexOffset, $whitespace) {
             $token = $tokens[$index];
 
             if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {

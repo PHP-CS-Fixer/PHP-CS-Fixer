@@ -92,7 +92,7 @@ class Tag
             throw new \RuntimeException('Cannot set name on unknown tag.');
         }
 
-        $this->line->setContent(preg_replace("/@$current/", "@$name", $this->line->getContent(), 1));
+        $this->line->setContent(preg_replace("/@${current}/", "@${name}", $this->line->getContent(), 1));
 
         $this->name = $name;
     }

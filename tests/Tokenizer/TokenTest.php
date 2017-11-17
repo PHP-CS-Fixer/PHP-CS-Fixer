@@ -12,10 +12,10 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -46,6 +46,34 @@ final class TokenTest extends TestCase
         static $prototype = [T_FOREACH, 'foreach'];
 
         return $prototype;
+    }
+
+    /**
+     * @param mixed $input
+     *
+     * @dataProvider provideConstructorValidationCases
+     */
+    public function testConstructorValidation($input)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        new Token($input);
+    }
+
+    public function provideConstructorValidationCases()
+    {
+        return [
+            [null],
+            [123],
+            [new \stdClass()],
+            [['asd', 'asd']],
+            [[null, 'asd']],
+            [[new \stdClass(), 'asd']],
+            [[T_WHITESPACE, null]],
+            [[T_WHITESPACE, 123]],
+            [[T_WHITESPACE, '']],
+            [[T_WHITESPACE, new \stdClass()]],
+        ];
     }
 
     /**
@@ -188,7 +216,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param int    $tokenId
+     * @param ?int   $tokenId
      * @param string $content
      * @param bool   $isConstant
      *
@@ -196,7 +224,10 @@ final class TokenTest extends TestCase
      */
     public function testIsMagicConstant($tokenId, $content, $isConstant = true)
     {
-        $token = new Token([$tokenId, $content]);
+        $token = new Token(
+            null === $tokenId ? $content : [$tokenId, $content]
+        );
+
         $this->assertSame($isConstant, $token->isMagicConstant());
     }
 

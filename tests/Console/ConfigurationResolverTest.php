@@ -17,8 +17,8 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -253,7 +253,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveConfigFileChooseFileWithInvalidFormat()
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "json", "junit", "txt", "xml"\.$/');
+        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "checkstyle", "json", "junit", "txt", "xml"\.$/');
 
         $dirBase = $this->getFixtureDir();
 
@@ -414,7 +414,7 @@ final class ConfigurationResolverTest extends TestCase
         ], $config);
 
         $intersectionItems = array_map(
-            function (\SplFileInfo $file) {
+            static function (\SplFileInfo $file) {
                 return $file->getRealPath();
             },
             iterator_to_array($resolver->getFinder(), false)
@@ -429,9 +429,9 @@ final class ConfigurationResolverTest extends TestCase
     public function provideResolveIntersectionOfPathsCases()
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
-        $cb = function (array $items) use ($dir) {
+        $cb = static function (array $items) use ($dir) {
             return array_map(
-                function ($item) use ($dir) {
+                static function ($item) use ($dir) {
                     return realpath($dir.'/'.$item);
                 },
                 $items
@@ -929,21 +929,22 @@ final class ConfigurationResolverTest extends TestCase
 
         $options = $definition->getOptions();
         $this->assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'diff-format', 'format', 'stop-on-violation', 'show-progress'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
 
         $resolver = $this->createConfigurationResolver([
-            'path-mode' => 'intersection',
-            'allow-risky' => 'yes',
-            'config' => null,
-            'dry-run' => true,
-            'rules' => 'php_unit_construct',
-            'using-cache' => false,
-            'diff' => true,
-            'format' => 'json',
-            'stop-on-violation' => true,
+                'path-mode' => 'intersection',
+                'allow-risky' => 'yes',
+                'config' => null,
+                'dry-run' => true,
+                'rules' => 'php_unit_construct',
+                'using-cache' => false,
+                'diff' => true,
+                'diff-format' => 'udiff',
+                'format' => 'json',
+                'stop-on-violation' => true,
         ]);
 
         $this->assertTrue($resolver->shouldStopOnViolation());
@@ -952,19 +953,23 @@ final class ConfigurationResolverTest extends TestCase
         $this->assertSame(['php_unit_construct' => true], $resolver->getRules());
         $this->assertFalse($resolver->getUsingCache());
         $this->assertNull($resolver->getCacheFile());
-        $this->assertInstanceOf(\PhpCsFixer\Differ\SebastianBergmannDiffer::class, $resolver->getDiffer());
+        $this->assertInstanceOf(\PhpCsFixer\Differ\UnifiedDiffer::class, $resolver->getDiffer());
         $this->assertSame('json', $resolver->getReporter()->getFormat());
     }
 
     /**
-     * @param string      $expected
-     * @param bool|string $differConfig
+     * @param string           $expected
+     * @param null|bool|string $diffConfig
+     * @param null|string      $differConfig
      *
      * @dataProvider provideDifferCases
      */
-    public function testResolveDiffer($expected, $differConfig)
+    public function testResolveDiffer($expected, $diffConfig, $differConfig = null)
     {
-        $resolver = $this->createConfigurationResolver(['diff' => $differConfig]);
+        $resolver = $this->createConfigurationResolver([
+            'diff' => $diffConfig,
+            'diff-format' => $differConfig,
+        ]);
 
         $this->assertInstanceOf($expected, $resolver->getDiffer());
     }
@@ -977,8 +982,46 @@ final class ConfigurationResolverTest extends TestCase
                 false,
             ],
             [
+                \PhpCsFixer\Differ\NullDiffer::class,
+                null,
+            ],
+            [
                 \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
                 true,
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+                'sbd',
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+                true,
+                'sbd',
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+                false,
+                'sbd',
+            ],
+            [
+                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+                null,
+                'sbd',
+            ],
+            [
+                \PhpCsFixer\Differ\UnifiedDiffer::class,
+                true,
+                'udiff',
+            ],
+            [
+                \PhpCsFixer\Differ\UnifiedDiffer::class,
+                false,
+                'udiff',
+            ],
+            [
+                \PhpCsFixer\Differ\UnifiedDiffer::class,
+                null,
+                'udiff',
             ],
         ];
     }

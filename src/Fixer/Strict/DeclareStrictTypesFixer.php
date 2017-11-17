@@ -35,7 +35,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             'Force strict types declaration in all files. Requires PHP >= 7.0.',
             [
                 new VersionSpecificCodeSample(
-                    '<?php ',
+                    "<?php\n",
                     new VersionSpecification(70000)
                 ),
             ],

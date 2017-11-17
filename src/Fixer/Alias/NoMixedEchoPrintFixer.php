@@ -67,8 +67,8 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
         return new FixerDefinition(
             'Either language construct `print` or `echo` should be used.',
             [
-                new CodeSample('<?php print \'example\';'),
-                new CodeSample('<?php echo(\'example\');', ['use' => 'print']),
+                new CodeSample("<?php print 'example';\n"),
+                new CodeSample("<?php echo('example');\n", ['use' => 'print']),
             ]
         );
     }

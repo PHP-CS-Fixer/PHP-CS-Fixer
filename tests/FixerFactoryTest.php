@@ -15,7 +15,6 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -75,7 +74,6 @@ final class FixerFactoryTest extends TestCase
 
     /**
      * @covers \PhpCsFixer\FixerFactory::getFixers
-     * @covers \PhpCsFixer\FixerFactory::sortFixers
      */
     public function testThatFixersAreSorted()
     {

@@ -68,7 +68,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
         return new FixerDefinition(
             'Ordering use statements.',
             [
-                new CodeSample("<?php\nuse Z; use A;"),
+                new CodeSample("<?php\nuse Z; use A;\n"),
                 new CodeSample(
 '<?php
 use Bar1;
@@ -79,7 +79,7 @@ use Acme\Bar;
                     ['sortAlgorithm' => self::SORT_LENGTH]
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nuse function AAA;\nuse const AAB;\nuse AAC;",
+                    "<?php\nuse function AAA;\nuse const AAB;\nuse AAC;\n",
                     new VersionSpecification(70000)
                 ),
                 new VersionSpecificCodeSample(
@@ -209,7 +209,7 @@ use function CCC\AA;
                 ->getOption(),
             (new FixerOptionBuilder('importsOrder', 'Defines the order of import types.'))
                 ->setAllowedTypes(['array', 'null'])
-                ->setAllowedValues([function ($value) use ($supportedSortTypes) {
+                ->setAllowedValues([static function ($value) use ($supportedSortTypes) {
                     if (null !== $value) {
                         $missing = array_diff($supportedSortTypes, $value);
                         if (count($missing)) {
@@ -235,14 +235,6 @@ use function CCC\AA;
                 ->setDefault(null)
                 ->getOption(),
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Ordering use statements.';
     }
 
     /**
@@ -475,11 +467,11 @@ use function CCC\AA;
     }
 
     /**
-     * @param $indexes
+     * @param array[] $indexes
      *
      * @return array
      */
-    private function sortByAlgorithm($indexes)
+    private function sortByAlgorithm(array $indexes)
     {
         if (self::SORT_ALPHA === $this->configuration['sortAlgorithm']) {
             uasort($indexes, [$this, 'sortAlphabetically']);

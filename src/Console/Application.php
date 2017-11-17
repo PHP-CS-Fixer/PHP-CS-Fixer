@@ -17,6 +17,9 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Command\ReadmeCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
+use PhpCsFixer\Console\SelfUpdate\GithubClient;
+use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
+use PhpCsFixer\PharChecker;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\ListCommand;
@@ -32,8 +35,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.7.5-DEV';
-    const VERSION_CODENAME = 'Sandy Pool';
+    const VERSION = '2.9.2-DEV';
+    const VERSION_CODENAME = 'Speechless';
 
     /**
      * @var ToolInfo
@@ -51,7 +54,11 @@ final class Application extends BaseApplication
         $this->add(new DescribeCommand());
         $this->add(new FixCommand($this->toolInfo));
         $this->add(new ReadmeCommand());
-        $this->add(new SelfUpdateCommand($this->toolInfo));
+        $this->add(new SelfUpdateCommand(
+            new NewVersionChecker(new GithubClient()),
+            $this->toolInfo,
+            new PharChecker()
+        ));
     }
 
     /**

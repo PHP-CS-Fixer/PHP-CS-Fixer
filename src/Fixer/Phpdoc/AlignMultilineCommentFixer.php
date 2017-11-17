@@ -57,13 +57,15 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
             * This is a DOC Comment
 with a line not prefixed with asterisk
 
-   */'
+   */
+'
                 ),
                 new CodeSample(
 '<?php
     /*
             * This is a doc-like multiline comment
-*/',
+*/
+',
                     ['comment_type' => 'phpdocs_like']
                 ),
                 new CodeSample(
@@ -72,7 +74,8 @@ with a line not prefixed with asterisk
             * This is a doc-like multiline comment
 with a line not prefixed with asterisk
 
-   */',
+   */
+',
                     ['comment_type' => 'all_multiline']
                 ),
             ]

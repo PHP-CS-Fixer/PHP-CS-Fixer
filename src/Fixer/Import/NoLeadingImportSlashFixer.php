@@ -31,7 +31,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove leading slashes in use clauses.',
-            [new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;")]
+            [new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;\n")]
         );
     }
 

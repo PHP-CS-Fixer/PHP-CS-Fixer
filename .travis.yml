@@ -38,15 +38,25 @@ jobs:
                 - export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
             script:
                 # @TODO remove at 3.0
-                - git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php | grep -v tests/Test/Assert/AssertTokensTrait.php | grep -v tests/Test/AbstractFixerTestCase.php | grep -v tests/Test/AbstractIntegrationTestCase.php | grep -v tests/Test/IntegrationCase.php | grep -v tests/Test/IntegrationCaseFactory.php && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
-
+                - |
+                  git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php \
+                    | grep -v tests/Test/AbstractFixerTestCase.php \
+                    | grep -v tests/Test/AbstractIntegrationCaseFactory.php \
+                    | grep -v tests/Test/AbstractIntegrationTestCase.php \
+                    | grep -v tests/Test/Assert/AssertTokensTrait.php \
+                    | grep -v tests/Test/IntegrationCase.php \
+                    | grep -v tests/Test/IntegrationCaseFactory.php \
+                    | grep -v tests/Test/IntegrationCaseFactoryInterface.php \
+                    | grep -v tests/Test/InternalIntegrationCaseFactory.php \
+                    | grep -v tests/TestCase.php \
+                    && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
                 - ./check_trailing_spaces.sh || travis_terminate 1
                 - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^(src/Resources|tests/Fixtures)" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json
 
 
         - &STANDARD_TEST_JOB
-            stage: Test
+            stage: Fast Test
             php: 7.0
             install:
                 # Composer: enforce given Symfony components version
@@ -57,22 +67,25 @@ jobs:
                 - composer info -D | sort
             script:
                 - vendor/bin/phpunit || travis_terminate 1
-                - php php-cs-fixer --diff --dry-run -v fix
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: 5.6
             env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: 7.1
             env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^4.0" MIN_STABILITY=dev
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: 7.2
-            env: COLLECT_COVERAGE=1 SYMFONY_DEPRECATIONS_HELPER=weak
+            env: COLLECT_COVERAGE=1
             before_script:
                 # check phpdbg
                 - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export COLLECT_COVERAGE=0; }
@@ -82,28 +95,26 @@ jobs:
             script:
                 - if [ $COLLECT_COVERAGE == 0 ]; then vendor/bin/phpunit || travis_terminate 1; fi
                 - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
-                - php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
-                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/coveralls -v; fi
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
+                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/php-coveralls -v; fi
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: nightly
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
             script:
                 - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,native_function_invocation -q || travis_terminate 1
                 - vendor/bin/phpunit || travis_terminate 1
                 - git checkout . -q
-                - php php-cs-fixer --diff --dry-run -v fix
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
             stage: Deployment
             php: 7.1
             install: ./dev-tools/build.sh
             script:
-                - php php-cs-fixer.phar --version
-                - php php-cs-fixer.phar readme
-                - php php-cs-fixer.phar describe header_comment
-                - php php-cs-fixer.phar fix src/Config.php -vvv --dry-run --diff
+                - vendor/bin/phpunit tests/Smoke/PharTest.php
             deploy:
                 provider: releases
                 api_key:
