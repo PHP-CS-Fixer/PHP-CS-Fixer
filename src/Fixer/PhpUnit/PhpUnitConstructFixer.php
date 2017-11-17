@@ -203,7 +203,7 @@ $this->assertNotSame(null, $d);
         $firstParameterToken = $tokens[$sequenceIndexes[4]];
 
         if (!$firstParameterToken->isNativeConstant()) {
-            return null;
+            return $sequenceIndexes[4];
         }
 
         $sequenceIndexes[5] = $tokens->getNextMeaningfulToken($sequenceIndexes[4]);
