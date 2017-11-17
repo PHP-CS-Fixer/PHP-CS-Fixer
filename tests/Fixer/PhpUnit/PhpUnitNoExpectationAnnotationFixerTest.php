@@ -413,6 +413,38 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         }
     }',
             ],
+            'special \\ handling' => [
+<<<'EOT'
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         */
+        public function testElementNonExistent()
+        {
+            $this->setExpectedExceptionRegExp(\Cake\View\Exception\MissingElementException::class, '#^Element file "Element[\\\\/]non_existent_element\.ctp" is missing\.$#');
+
+            $this->View->element('non_existent_element');
+        }
+    }
+EOT
+,
+<<<'EOT'
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * @expectedException \Cake\View\Exception\MissingElementException
+         * @expectedExceptionMessageRegExp #^Element file "Element[\\/]non_existent_element\.ctp" is missing\.$#
+         */
+        public function testElementNonExistent()
+        {
+            $this->View->element('non_existent_element');
+        }
+    }
+EOT
+,
+            ],
         ];
     }
 
