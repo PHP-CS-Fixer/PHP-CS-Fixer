@@ -22,6 +22,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * Fixer for rule defined in PSR2 ¶5.2.
@@ -79,6 +80,9 @@ switch ($foo) {
                         return true;
                     },
                 ])
+                ->setNormalizer(function (Options $options, $value) {
+                    return rtrim($value);
+                })
                 ->setDefault('no break')
                 ->getOption(),
         ]);

@@ -1057,6 +1057,31 @@ switch ($foo) {
         );
     }
 
+    public function testFixWithCommentTextWithTrailingSpaces()
+    {
+        $this->fixer->configure([
+            'comment_text' => 'no break     ',
+        ]);
+
+        $this->doTest(
+            '<?php
+switch ($foo) {
+    case 1:
+        foo();
+        // no break
+    default:
+        baz();
+}',
+            '<?php
+switch ($foo) {
+    case 1:
+        foo();
+    default:
+        baz();
+}'
+        );
+    }
+
     /**
      * @param string $text
      *
