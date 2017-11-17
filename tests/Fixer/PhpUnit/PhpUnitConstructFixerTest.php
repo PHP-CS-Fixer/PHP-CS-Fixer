@@ -121,6 +121,10 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
                 '<?php $this->assertSame("a", $a); $this->assertTrue($b);',
                 '<?php $this->assertSame("a", $a); $this->assertSame(true, $b);',
             ),
+            array(
+                '<?php $this->assertSame(true || $a, $b); $this->assertTrue($c);',
+                '<?php $this->assertSame(true || $a, $b); $this->assertSame(true, $c);',
+            ),
         );
 
         return array_merge(
