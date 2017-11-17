@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-17T16:50:30Z
+
+is the issue only if assertions are on same line ?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-11-17T16:56:07Z
+
+no, the problem is always when the assertion to fix is not the first one - tests are in one line because I'm lazy and this is easier for me to read.
