@@ -210,7 +210,7 @@ $this->assertNotSame(null, $d);
 
         // return if first method argument is an expression, not value
         if (!$tokens[$sequenceIndexes[5]]->equals(',')) {
-            return null;
+            return $sequenceIndexes[5];
         }
 
         $tokens[$sequenceIndexes[2]] = new Token(array(T_STRING, $map[$firstParameterToken->getContent()]));
