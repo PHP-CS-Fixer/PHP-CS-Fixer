@@ -116,7 +116,7 @@ final class NewVersionChecker
             try {
                 $this->versionParser->normalize($version);
 
-                if ('stable' === Versionparser::parseStability($version)) {
+                if ('stable' === Versionparser::parseStability($version) && (PHP_VERSION_ID >= 50600 || version_compare($version, 'v2.3') < 0)) {
                     $this->availableVersions[] = $version;
                 }
             } catch (\UnexpectedValueException $exception) {
