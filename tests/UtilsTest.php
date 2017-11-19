@@ -27,11 +27,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class UtilsTest extends TestCase
 {
-    public function testFastTest()
-    {
-        $this->assertFalse(true);
-    }
-
     /**
      * @param string $expected Camel case string
      * @param string $input    Input string
