@@ -1,0 +1,58 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-17T06:25:48Z
+
+nice catch :+1:
+
+maybe we could also test if `$this->configuration['comment_text']` (through configuration definition setup) doesn't contain `\n\s*[^\\]{2}` itself so we don't insert an invalid comment token that way?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-17T06:32:54Z
+
+What about other special chars like pipe?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-17T06:53:44Z
+
+> maybe we could also test if `$this->configuration['comment_text']` (through configuration definition setup) doesn't contain `\n\s*[^\\]{2}` itself so we don't insert an invalid comment token that way?
+
+Indeed, shall we throw an exception in such case or just strip unwanted characters?
+
+> What about other special chars like pipe?
+
+They are all handled by `preg_quote` already, the point of the new test is to prove this call was missing, not that *all* characters are escaped one by one.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-17T06:55:30Z
+
+> They are all handled by preg_quote already, the point of the new test is to prove this call was missing, not that all characters are escaped one by one.
+
+My fault sorry, I read bad the manual. 👍
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-17T07:18:55Z
+
+I would throw an exception if the configured-content would not create one valid comment token, just IMHO of course :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-17T18:41:45Z
+
+I added the exception when comment text contains newlines and `rtrim` to prevent inserting trailing whitespaces.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-17T19:36:03Z
+
+thanks! looks all great to me! :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-17T19:37:29Z
+
+grrrr sorry :(
+phone acting against me...
