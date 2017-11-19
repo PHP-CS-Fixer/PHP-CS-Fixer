@@ -770,7 +770,7 @@ final class ConfigurationResolver
             if (is_file($path)) {
                 $pathsByType['file'][] = $path;
             } else {
-                $pathsByType['dir'][] = $path.DIRECTORY_SEPARATOR;
+                $pathsByType['dir'][] = ($path === '/' || substr($path, -1, 1) !== DIRECTORY_SEPARATOR) ? $path : substr($path, 0, strlen($path) - 1);
             }
         }
 
