@@ -46,7 +46,7 @@ jobs:
 
 
         - &STANDARD_TEST_JOB
-            stage: Test
+            stage: Fast Test
             php: 7.0
             install:
                 # Composer: enforce given Symfony components version
@@ -61,16 +61,19 @@ jobs:
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: 5.6
             env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: 7.1
             env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^4.0" MIN_STABILITY=dev
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: 7.2
             env: COLLECT_COVERAGE=1 SYMFONY_DEPRECATIONS_HELPER=weak
             before_script:
@@ -87,6 +90,7 @@ jobs:
 
         -
             <<: *STANDARD_TEST_JOB
+            stage: Test
             php: nightly
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
             script:
