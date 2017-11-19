@@ -200,4 +200,22 @@ EOF;
 
         $this->doTest($expected, $input);
     }
+
+    public function testWithLinesWithoutAsterisk()
+    {
+        $expected = <<<'EOF'
+<?php
+
+/**
+ * Foo
+      Baz
+ */
+class Foo
+{
+}
+
+EOF;
+
+        $this->doTest($expected);
+    }
 }
