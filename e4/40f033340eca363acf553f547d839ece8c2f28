@@ -1,0 +1,64 @@
+---------------------------------------------------------------------------
+
+by OskarStark at 2017-11-08T07:35:31Z
+
+@julienfalque now it looks like this and still wrong:
+
+```diff
+  * @ORM\Entity
+  * @ORM\HasLifecycleCallbacks()
+  * @ORM\Table(name="sp_purchase_order_item_history", indexes={
+-      @ORM\Index(name="idx_sp_item_history_pending", columns={"status_pending"}),
+-      @ORM\Index(name="idx_sp_item_history_created", columns={"created_at"}),
+-      @ORM\Index(name="idx_sp_item_history_status", columns={"status_new","status_old"}),
+-      @ORM\Index(name="idx_sp_item_history_po_id", columns={"order_id"}),
+-      @ORM\Index(name="idx_sp_item_history_co_id", columns={"sales_order_number"})
+-   })
++ @ORM\Index(name="idx_sp_item_history_pending", columns={"status_pending"}),
++ @ORM\Index(name="idx_sp_item_history_created", columns={"created_at"}),
++ @ORM\Index(name="idx_sp_item_history_status", columns={"status_new","status_old"}),
++ @ORM\Index(name="idx_sp_item_history_po_id", columns={"order_id"}),
++ @ORM\Index(name="idx_sp_item_history_co_id", columns={"sales_order_number"})
++ })
+  */
+```
+
+If it works correct, it shouldn't be touched IMO
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-08T08:20:33Z
+
+Were those changes applied by `phpdoc_trim` **only**?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-08T08:20:45Z
+
+@julienfalque I wonder if this related to https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/2983 as well, @OskarStark did only the `PhpdocTrim` fixer touch your code? Btw., what line endings do you use?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-09T19:01:45Z
+
+PR updated to fix another bug (in `phpdoc_indent` this time).
+
+---------------------------------------------------------------------------
+
+by OskarStark at 2017-11-10T06:52:57Z
+
+@julienfalque this version of the code behaves like expected, no diffs after running the command 👍
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-11T13:00:28Z
+
+Great to hear, thanks for checking 👍
+
+---------------------------------------------------------------------------
+
+by OskarStark at 2017-11-13T06:38:22Z
+
+> Great to hear, thanks for checking 👍
+
+Thanks for fixing it 👍 😄
