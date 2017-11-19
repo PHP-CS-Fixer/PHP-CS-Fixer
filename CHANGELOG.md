@@ -3,6 +3,21 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.7.5
+--------------------
+
+* bug #3225 PhpdocTrimFixer - Fix handling of lines without leading asterisk (julienfalque)
+* bug #3241 NoExtraConsecutiveBlankLinesFixer - do not crash on ^M LF only (SpacePossum)
+* bug #3262 ToolInfo - support installation by branch as well (keradus)
+* bug #3263 NoBreakCommentFixer - Fix handling comment text with PCRE characters (julienfalque)
+* bug #3266 PhpUnitConstructFixer - multiple asserts bug (kubawerlos)
+* minor #3239 Improve contributing guide and issue template (julienfalque)
+* minor #3246 Make ToolInfo methods non-static (julienfalque)
+* minor #3250 Travis: fail early, spare resources, save the Earth (Slamdunk, keradus)
+* minor #3251 Create Title for config file docs section (IanEdington)
+* minor #3254 AutoReview/FixerFactoryTest::testFixersPriority: verbose assertion message (Slamdunk)
+* minor #3255 IntegrationTest: output exception stack trace (Slamdunk)
+
 Changelog for v2.7.4
 --------------------
 
