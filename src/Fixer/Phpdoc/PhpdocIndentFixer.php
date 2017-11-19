@@ -123,7 +123,7 @@ class DocBlocks
      */
     private function fixDocBlock($content, $indent)
     {
-        return ltrim(preg_replace('/^[ \t]*/m', $indent.' ', $content));
+        return ltrim(preg_replace('/^[ \t]*\*/m', $indent.' *', $content));
     }
 
     /**
