@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-10T09:17:50Z
+
+Does that mean we officially support `\r` line endings now?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-10T09:21:02Z
+
+no
+
+but I agree it's nice to not crash
