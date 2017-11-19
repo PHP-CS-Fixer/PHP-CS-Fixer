@@ -1,0 +1,88 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-13T11:37:04Z
+
+after such a lovely entry, is it some kind of wider initiative?
+best approach would be actually to have Travis feature to stop other jobs if one failed.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-13T11:46:09Z
+
+@julienfalque raised exactly the comments I would like to raise myself. after done his suggestions, you could add order of stages if needed.
+
+Julien, do you like the idea behind this change in first place ? (regardless of implementation)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-13T11:50:15Z
+
+I totally support the goal of this PR but I'm not sure about the way to do it.
+
+> best approach would be actually to have Travis feature to stop other jobs if one failed.
+
+Not if all jobs fail for different reasons. You would have to fix the first failure and trigger a new build, fix the second failure, and so on until all jobs pass. Not sure that would actually reduce overall build time.
+
+Currently this PR has the same issue: if 7.0 job fails, you have no idea whether other jobs would pass.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-13T11:53:13Z
+
+> Not if all jobs fail for different reasons. You would have to fix the first failure and trigger a new build, fix the second failure, and so on until all jobs pass. Not sure that would actually reduce overall build time.
+
+Yup, Travis shouldn't implement it for this reason. The user has to use the stages wisely.
+
+> Currently this PR has the same issue: if 7.0 job fails, you have no idea whether other jobs would pass.
+
+This is exactly the purpose of the PR. First run the 1 minute test, only then the 15 minutes one.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-13T12:33:57Z
+
+we have multiple jobs, only 5.6 is taking 15 minutes. yet, you extracted one of 2 minutes jobs, not the 15 minutes one
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-13T13:03:15Z
+
+> we have multiple jobs, only 5.6 is taking 15 minutes. yet, you extracted one of 2 minutes jobs, not the 15 minutes one
+
+That was my intention, 1 fast test first and then the others. Would you prefer other tests first, then 1 slow test?
+
+My choise is driver by the fact that version specific or depdencency specific fails are uncommon, so 1 fast test first should be enough to save the maximum amount of time and resources retaining a statistically appectable feedback.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-13T14:04:53Z
+
+@julienfalque I've reused the default .travis.yml, had to copy-paste the `stage` of course. Any other suggestions?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-13T18:27:30Z
+
+Looks better, I'm fine with duplicated `stage`. By the way, I'd say this should be done on 2.2 branch.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-16T21:42:33Z
+
+Looks like changing target branch messed up CI builds, could you push your code again to trigger new ones (how ironic 😕)?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-17T07:28:26Z
+
+Done.
+
+> Travis: Ran for 2 min 58 sec
+
+Love it.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-17T18:42:41Z
+
+So what do we do now? Shall we merge it a see how it goes for some time?
