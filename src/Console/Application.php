@@ -32,7 +32,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.2.11';
+    const VERSION = '2.2.12-DEV';
 
     /**
      * @var ToolInfo
