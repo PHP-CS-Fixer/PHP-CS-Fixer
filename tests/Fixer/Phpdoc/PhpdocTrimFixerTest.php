@@ -23,19 +23,43 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 {
-    public function testFix()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCases
+     */
+    public function testFix($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCases()
+    {
+        return [
+            [
+<<<'EOF'
+                <?php
     /**
      * @param EngineInterface $templating
      *
      * @return void
      */
 
-EOF;
+EOF
+            ],
+            [
+                '<?php
 
-        $this->doTest($expected);
+/**
+ * @return int количество деактивированных
+ */
+function deactivateCompleted()
+{
+    return 0;
+}',
+            ],
+        ];
     }
 
     public function testFixMore()
