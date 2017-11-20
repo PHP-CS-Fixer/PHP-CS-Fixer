@@ -122,7 +122,7 @@ final class Foo {}
                     \R[ \t]*(?:\*[ \t]*)?    # lines without useful content
                 )+
                 (\R[ \t]*\*/$)               # DocComment end
-            ~x',
+            ~xu',
             '$1$2',
             $content
         );
