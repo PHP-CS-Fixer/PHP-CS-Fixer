@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\ReturnNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -30,7 +32,20 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'A return statement wishing to return `void` should not return `null`.',
-            array(new CodeSample('<?php return null;'))
+            array(
+                new CodeSample('<?php return null;'),
+                new VersionSpecificCodeSample(
+<<<'EOT'
+<?php
+function foo() { return null; }
+function bar(): int { return null; }
+function baz(): ?int { return null; }
+function xyz(): void { return null; }
+EOT
+                    ,
+                    new VersionSpecification(70100)
+                ),
+            )
         );
     }
 
