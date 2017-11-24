@@ -4,7 +4,7 @@
  * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
- *     Dariusz Rumińssdki <dariusz.ruminski@gmail.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tokenizer\Tokens;
 
-
 /**
  * @internal
  */
@@ -22,7 +21,8 @@ final class FunctionsAnalyzer
 {
     /**
      * @param Tokens $tokens
-     * @param int $methodIndex
+     * @param int    $methodIndex
+     *
      * @return array
      */
     public function getFunctionArguments(Tokens $tokens, $methodIndex)
@@ -42,7 +42,8 @@ final class FunctionsAnalyzer
 
     /**
      * @param Tokens $tokens
-     * @param int $methodIndex
+     * @param int    $methodIndex
+     *
      * @return array
      */
     public function getFunctionReturnType(Tokens $tokens, $methodIndex)
@@ -50,7 +51,7 @@ final class FunctionsAnalyzer
         $argumentsStart = $tokens->getNextTokenOfKind($methodIndex, ['(']);
         $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
         $typeColonIndex = $tokens->getNextMeaningfulToken($argumentsEnd);
-        if ($tokens[$typeColonIndex]->getContent() !== ':') {
+        if (':' !== $tokens[$typeColonIndex]->getContent()) {
             return [];
         }
 
@@ -58,7 +59,7 @@ final class FunctionsAnalyzer
         $typeStartIndex = $tokens->getNextNonWhitespace($typeColonIndex);
         $typeEndIndex = $typeStartIndex;
         $functionBodyStart = $tokens->getNextTokenOfKind($typeColonIndex, ['{', ';']);
-        for ($i = $typeStartIndex; $i<$functionBodyStart; $i++) {
+        for ($i = $typeStartIndex; $i < $functionBodyStart; ++$i) {
             if ($tokens[$i]->isWhitespace()) {
                 continue;
             }

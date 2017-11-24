@@ -27,7 +27,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
 {
     /**
      * @param string $code
-     * @param array $expected
+     * @param array  $expected
      * @dataProvider provideNamespaceUses
      */
     public function testUsesFromTokens($code, $expected)
@@ -40,8 +40,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
 
     /**
      * @param string $code
-     * @param array $expected
-     * @param array $useIndexes
+     * @param array  $expected
+     * @param array  $useIndexes
      * @dataProvider provideNamespaceUses
      */
     public function testUsesFromIndexes($code, $expected, $useIndexes)
@@ -63,7 +63,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'aliased' => false,
                     'start' => 1,
                     'end' => 6,
-                ]
+                ],
             ], [1]],
             ['<?php use Foo\Bar; use Foo\Baz;', [
                 'Bar' => [
@@ -79,7 +79,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'aliased' => false,
                     'start' => 8,
                     'end' => 13,
-                ]
+                ],
             ], [1, 8]],
             ['<?php use \Foo\Bar;', [
                 'Bar' => [
@@ -88,7 +88,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'aliased' => false,
                     'start' => 1,
                     'end' => 7,
-                ]
+                ],
             ], [1]],
             ['<?php use Foo\Bar as Baz;', [
                 'Baz' => [

@@ -28,7 +28,7 @@ final class FunctionsAnalyzerTest extends TestCase
     /**
      * @param string $code
      * @param int    $methodIndex
-     * @param array $expected
+     * @param array  $expected
      * @dataProvider provideFunctionsWithArguments
      */
     public function testFunctionArgumentInfo($code, $methodIndex, $expected)
@@ -42,7 +42,7 @@ final class FunctionsAnalyzerTest extends TestCase
     /**
      * @param string $code
      * @param int    $methodIndex
-     * @param array $expected
+     * @param array  $expected
      * @dataProvider provideFunctionsWithReturnType
      */
     public function testFunctionReturnTypeInfo($code, $methodIndex, $expected)
@@ -65,7 +65,7 @@ final class FunctionsAnalyzerTest extends TestCase
                     'type' => '',
                     'type_index_start' => -1,
                     'type_index_end' => -1,
-                ]
+                ],
             ]],
             ['<?php function($a, $b){};', 1, [
                 '$a' => [
@@ -109,7 +109,7 @@ final class FunctionsAnalyzerTest extends TestCase
                     'type' => '',
                     'type_index_start' => -1,
                     'type_index_end' => -1,
-                ]
+                ],
             ]],
             ['<?php function(array $a = array()){};', 1, [
                 '$a' => [
@@ -119,7 +119,7 @@ final class FunctionsAnalyzerTest extends TestCase
                     'type' => 'array',
                     'type_index_start' => 3,
                     'type_index_end' => 3,
-                ]
+                ],
             ]],
             ['<?php function(array ... $a){};', 1, [
                 '$a' => [
@@ -129,7 +129,7 @@ final class FunctionsAnalyzerTest extends TestCase
                     'type' => 'array',
                     'type_index_start' => 3,
                     'type_index_end' => 3,
-                ]
+                ],
             ]],
         ];
     }

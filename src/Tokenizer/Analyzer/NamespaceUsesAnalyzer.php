@@ -22,6 +22,7 @@ class NamespaceUsesAnalyzer
 {
     /**
      * @param Tokens $tokens
+     *
      * @return array
      */
     public function getDeclarationsFromTokens(Tokens $tokens)
@@ -34,7 +35,8 @@ class NamespaceUsesAnalyzer
 
     /**
      * @param Tokens $tokens
-     * @param array $useIndexes
+     * @param array  $useIndexes
+     *
      * @return array
      */
     public function getDeclarations(Tokens $tokens, array $useIndexes)

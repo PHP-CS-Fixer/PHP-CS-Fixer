@@ -2,6 +2,16 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
@@ -59,6 +69,7 @@ class SomeClass
 
     /**
      * @param Tokens $tokens
+     *
      * @return bool
      */
     public function isCandidate(Tokens $tokens)
@@ -76,8 +87,7 @@ class SomeClass
 
     /**
      * @param \SplFileInfo $file
-     * @param Tokens $tokens
-     * @return void
+     * @param Tokens       $tokens
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
@@ -102,14 +112,13 @@ class SomeClass
 
     /**
      * @param Tokens $tokens
-     * @param int $index
-     * @param array $namespaces
-     * @param array $useMap
-     * @return void
+     * @param int    $index
+     * @param array  $namespaces
+     * @param array  $useMap
      */
     private function fixFunctionArguments(Tokens $tokens, int $index, array $namespaces, array $useMap)
     {
-        $arguments  = (new FunctionsAnalyzer())->getFunctionArguments($tokens, $index);
+        $arguments = (new FunctionsAnalyzer())->getFunctionArguments($tokens, $index);
 
         foreach ($arguments as $argument) {
             if (!$argument['type'] || $argument['type_index_start'] < 0) {
@@ -131,10 +140,9 @@ class SomeClass
 
     /**
      * @param Tokens $tokens
-     * @param int $index
-     * @param array $namespaces
-     * @param array $useMap
-     * @return void
+     * @param int    $index
+     * @param array  $namespaces
+     * @param array  $useMap
      */
     private function fixFunctionReturnType(Tokens $tokens, int $index, array $namespaces, array $useMap)
     {
@@ -157,15 +165,16 @@ class SomeClass
 
     /**
      * @param string $type
-     * @param array $namespaces
-     * @param array $useMap
+     * @param array  $namespaces
+     * @param array  $useMap
+     *
      * @return string
      */
     private function detectShortType(string $type, array $namespaces, array $useMap)
     {
         // First match explicit stuff:
         foreach ($useMap as $shortName => $fullName) {
-            $regex = '/^\\\\?' . preg_quote($fullName, '/') . '$/';
+            $regex = '/^\\\\?'.preg_quote($fullName, '/').'$/';
             if (preg_match($regex, $type)) {
                 return $shortName;
             }
@@ -179,7 +188,7 @@ class SomeClass
         // Next try to match classes inside the same namespace
         foreach ($namespaces as $shortName => $fullName) {
             $matches = [];
-            $regex = '/^\\\\?' . preg_quote($fullName, '/') . '\\\\(?P<className>.+)$/';
+            $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
             if (preg_match($regex, $type, $matches)) {
                 return $matches['className'];
             }
@@ -190,6 +199,7 @@ class SomeClass
 
     /**
      * @param string $shortType
+     *
      * @return array
      */
     private function generateTokensForShortType(string $shortType)
@@ -199,7 +209,7 @@ class SomeClass
 
         foreach ($parts as $index => $part) {
             $tokens[] = new Token([T_STRING, $part]);
-            if ($index !== count($parts) -1 ) {
+            if ($index !== count($parts) - 1) {
                 $tokens[] = new Token([T_NS_SEPARATOR, '\\']);
             }
         }

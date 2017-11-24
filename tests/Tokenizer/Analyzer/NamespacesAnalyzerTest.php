@@ -27,7 +27,7 @@ final class NamespacesAnalyzerTest extends TestCase
 {
     /**
      * @param string $code
-     * @param array $expected
+     * @param array  $expected
      * @dataProvider provideNamespaces
      */
     public function testNamespaces($code, $expected)
@@ -48,7 +48,7 @@ final class NamespacesAnalyzerTest extends TestCase
                     'shortName' => 'Bar',
                     'start' => 1,
                     'end' => 6,
-                ]
+                ],
             ]],
             ['<?php namespace Foo\Bar{}; namespace Foo\Baz {};', [
                 [
@@ -62,7 +62,7 @@ final class NamespacesAnalyzerTest extends TestCase
                     'shortName' => 'Baz',
                     'start' => 10,
                     'end' => 16,
-                ]
+                ],
             ]],
         ];
     }

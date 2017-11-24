@@ -86,8 +86,9 @@ final class ArgumentsAnalyzer
 
     /**
      * @param Tokens $tokens
-     * @param int $argumentStart
-     * @param int $argumentEnd
+     * @param int    $argumentStart
+     * @param int    $argumentEnd
+     *
      * @return array
      */
     public function getArgumentInfo(Tokens $tokens, $argumentStart, $argumentEnd)
@@ -111,6 +112,7 @@ final class ArgumentsAnalyzer
                 $sawName = true;
                 $info['name_index'] = $index;
                 $info['name'] = $token->getContent();
+
                 continue;
             }
             if ($token->equals('=')) {

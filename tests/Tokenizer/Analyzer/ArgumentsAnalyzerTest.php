@@ -46,7 +46,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      * @param string $code
      * @param int    $openIndex
      * @param int    $closeIndex
-     * @param array $expected
+     * @param array  $expected
      * @dataProvider provideArgumentsInfo
      */
     public function testArgumentInfo($code, $openIndex, $closeIndex, $expected)

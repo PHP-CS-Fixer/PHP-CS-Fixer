@@ -98,7 +98,7 @@ namespace Foo\Other {
 
 namespace Foo\Bar {
     use Foo\Bar\Baz;
-    
+
     class SomeClass
     {
         public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): Baz
