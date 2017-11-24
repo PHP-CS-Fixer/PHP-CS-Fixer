@@ -22,7 +22,30 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Transforms imported FQCN parameters and return types to short version',
-            [new CodeSample("<?php\n")]
+            [
+                new CodeSample('<?php
+
+use Foo\Bar;
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(Bar $foo): Baz
+    {
+    }
+}'),
+                new CodeSample('<?php
+
+use Foo\Bar;
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Baz
+    {
+    }
+}'),
+            ]
         );
     }
 

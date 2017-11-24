@@ -17,7 +17,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author VeeWee <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
@@ -38,10 +38,24 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         $this->assertSame($expected, $analyzer->getDeclarationsFromTokens($tokens));
     }
 
+    /**
+     * @param string $code
+     * @param array $expected
+     * @param array $useIndexes
+     * @dataProvider provideNamespaceUses
+     */
+    public function testUsesFromIndexes($code, $expected, $useIndexes)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new NamespaceUsesAnalyzer();
+
+        $this->assertSame($expected, $analyzer->getDeclarations($tokens, $useIndexes));
+    }
+
     public function provideNamespaceUses()
     {
         return [
-            ['<?php // no uses', []],
+            ['<?php // no uses', [], []],
             ['<?php use Foo\Bar;', [
                 'Bar' => [
                     'fullName' => 'Foo\Bar',
@@ -50,7 +64,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'start' => 1,
                     'end' => 6,
                 ]
-            ]],
+            ], [1]],
             ['<?php use Foo\Bar; use Foo\Baz;', [
                 'Bar' => [
                     'fullName' => 'Foo\Bar',
@@ -66,7 +80,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'start' => 8,
                     'end' => 13,
                 ]
-            ]],
+            ], [1, 8]],
             ['<?php use \Foo\Bar;', [
                 'Bar' => [
                     'fullName' => '\Foo\Bar',
@@ -75,7 +89,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'start' => 1,
                     'end' => 7,
                 ]
-            ]],
+            ], [1]],
             ['<?php use Foo\Bar as Baz;', [
                 'Baz' => [
                     'fullName' => 'Foo\Bar',
@@ -84,7 +98,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'start' => 1,
                     'end' => 10,
                 ],
-            ]],
+            ], [1]],
             ['<?php use Foo\Bar as Baz; use Foo\Buz as Baz;', [
                 'Baz' => [
                     'fullName' => 'Foo\Buz',
@@ -93,7 +107,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'start' => 12,
                     'end' => 21,
                 ],
-            ]],
+            ], [1, 12]],
         ];
     }
 }
