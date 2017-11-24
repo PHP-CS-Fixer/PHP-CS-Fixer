@@ -83,4 +83,48 @@ final class ArgumentsAnalyzer
 
         return $arguments;
     }
+
+    /**
+     * @param Tokens $tokens
+     * @param int $argumentStart
+     * @param int $argumentEnd
+     * @return array
+     */
+    public function getArgumentInfo(Tokens $tokens, $argumentStart, $argumentEnd)
+    {
+        $info = [
+            'default' => '',
+            'name' => '',
+            'name_index' => -1,
+            'type' => '',
+            'type_index_start' => -1,
+            'type_index_end' => -1,
+        ];
+
+        $sawName = false;
+        for ($index = $argumentStart; $index <= $argumentEnd; ++$index) {
+            $token = $tokens[$index];
+            if ($token->isComment() || $token->isWhitespace() || $token->isGivenKind(T_ELLIPSIS)) {
+                continue;
+            }
+            if ($token->isGivenKind(T_VARIABLE)) {
+                $sawName = true;
+                $info['name_index'] = $index;
+                $info['name'] = $token->getContent();
+                continue;
+            }
+            if ($token->equals('=')) {
+                continue;
+            }
+            if ($sawName) {
+                $info['default'] .= $token->getContent();
+            } else {
+                $info['type_index_start'] = ($info['type_index_start'] > 0) ? $info['type_index_start'] : $index;
+                $info['type_index_end'] = $index;
+                $info['type'] .= $token->getContent();
+            }
+        }
+
+        return $info;
+    }
 }

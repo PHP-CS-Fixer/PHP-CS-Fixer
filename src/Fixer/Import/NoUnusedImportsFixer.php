@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -81,8 +83,8 @@ final class NoUnusedImportsFixer extends AbstractFixer
             return;
         }
 
-        $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
-        $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
+        $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
+        $namespaceDeclarations = (new NamespacesAnalyzer())->getDeclarations($tokens);
         $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
         $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
 
@@ -134,68 +136,6 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
 
         return $content;
-    }
-
-    private function getNamespaceDeclarations(Tokens $tokens)
-    {
-        $namespaces = [];
-
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_NAMESPACE)) {
-                continue;
-            }
-
-            $declarationEndIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
-
-            $namespaces[] = [
-                'name' => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
-                'start' => $index,
-                'end' => $declarationEndIndex,
-            ];
-        }
-
-        return $namespaces;
-    }
-
-    private function getNamespaceUseDeclarations(Tokens $tokens, array $useIndexes)
-    {
-        $uses = [];
-
-        foreach ($useIndexes as $index) {
-            $declarationEndIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
-            $declarationContent = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
-            if (
-                false !== strpos($declarationContent, ',')    // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
-                || false !== strpos($declarationContent, '{') // do not touch group use declarations until the logic of this is added (for example: `use some\a\{ClassD};`)
-            ) {
-                continue;
-            }
-
-            $declarationParts = preg_split('/\s+as\s+/i', $declarationContent);
-
-            if (1 === count($declarationParts)) {
-                $fullName = $declarationContent;
-                $declarationParts = explode('\\', $fullName);
-                $shortName = end($declarationParts);
-                $aliased = false;
-            } else {
-                list($fullName, $shortName) = $declarationParts;
-                $declarationParts = explode('\\', $fullName);
-                $aliased = $shortName !== end($declarationParts);
-            }
-
-            $shortName = trim($shortName);
-
-            $uses[$shortName] = [
-                'fullName' => trim($fullName),
-                'shortName' => $shortName,
-                'aliased' => $aliased,
-                'start' => $index,
-                'end' => $declarationEndIndex,
-            ];
-        }
-
-        return $uses;
     }
 
     private function removeUnusedUseDeclarations(Tokens $tokens, array $useDeclarations, array $useUsages)
@@ -280,7 +220,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             return;
         }
 
-        $namespace = $namespaceDeclarations[0]['name'];
+        $namespace = $namespaceDeclarations[0]['fullName'];
         $nsLength = strlen($namespace.'\\');
 
         foreach ($useDeclarations as $useDeclaration) {
