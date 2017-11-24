@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer
 {
     /**
-     * @return FixerDefinition
+     * {@inheritdoc}
      */
     public function getDefinition()
     {
@@ -51,9 +51,7 @@ class SomeClass
     }
 
     /**
-     * @param Tokens $tokens
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {
@@ -61,8 +59,7 @@ class SomeClass
     }
 
     /**
-     * @param \SplFileInfo $file
-     * @param Tokens       $tokens
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
@@ -91,7 +88,7 @@ class SomeClass
      * @param array  $namespaces
      * @param array  $useMap
      */
-    private function fixFunctionArguments(Tokens $tokens, int $index, array $namespaces, array $useMap)
+    private function fixFunctionArguments(Tokens $tokens, $index, array $namespaces, array $useMap)
     {
         $arguments = (new FunctionsAnalyzer())->getFunctionArguments($tokens, $index);
 
@@ -119,7 +116,7 @@ class SomeClass
      * @param array  $namespaces
      * @param array  $useMap
      */
-    private function fixFunctionReturnType(Tokens $tokens, int $index, array $namespaces, array $useMap)
+    private function fixFunctionReturnType(Tokens $tokens, $index, array $namespaces, array $useMap)
     {
         $returnType = (new FunctionsAnalyzer())->getFunctionReturnType($tokens, $index);
         if (!$returnType) {
@@ -145,7 +142,7 @@ class SomeClass
      *
      * @return string
      */
-    private function detectShortType(string $type, array $namespaces, array $useMap)
+    private function detectShortType($type, array $namespaces, array $useMap)
     {
         // First match explicit stuff:
         foreach ($useMap as $shortName => $fullName) {
@@ -177,7 +174,7 @@ class SomeClass
      *
      * @return array
      */
-    private function generateTokensForShortType(string $shortType)
+    private function generateTokensForShortType($shortType)
     {
         $tokens = [];
         $parts = explode('\\', $shortType);
