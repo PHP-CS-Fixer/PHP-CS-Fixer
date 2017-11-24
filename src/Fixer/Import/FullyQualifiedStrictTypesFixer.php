@@ -7,7 +7,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Analyzer\FunctionAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -86,7 +86,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer
      */
     private function fixFunctionArguments(Tokens $tokens, int $index, array $namespaces, array $useMap)
     {
-        $arguments  = (new FunctionAnalyzer())->getFunctionArguments($tokens, $index);
+        $arguments  = (new FunctionsAnalyzer())->getFunctionArguments($tokens, $index);
 
         foreach ($arguments as $argument) {
             if (!$argument['type'] || $argument['type_index_start'] < 0) {
@@ -115,7 +115,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer
      */
     private function fixFunctionReturnType(Tokens $tokens, int $index, array $namespaces, array $useMap)
     {
-        $returnType = (new FunctionAnalyzer())->getFunctionReturnType($tokens, $index);
+        $returnType = (new FunctionsAnalyzer())->getFunctionReturnType($tokens, $index);
         if (!$returnType) {
             return;
         }

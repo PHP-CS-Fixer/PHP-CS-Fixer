@@ -60,10 +60,10 @@ final class ArgumentsAnalyzerTest extends TestCase
     public function provideArgumentsCases()
     {
         return [
-            ['<?php fnc();', 2, 3, []],
-            ['<?php fnc($a);', 2, 4, [3 => 3]],
-            ['<?php fnc($a, $b);', 2, 7, [3 => 3, 5 => 6]],
-            ['<?php fnc($a, $b = array(1,2), $c = 3);', 2, 23, [3 => 3, 5 => 15, 17 => 22]],
+            ['<?php function(){};', 2, 3, []],
+            ['<?php function($a){};', 2, 4, [3 => 3]],
+            ['<?php function($a, $b){};', 2, 7, [3 => 3, 5 => 6]],
+            ['<?php function($a, $b = array(1,2), $c = 3){};', 2, 23, [3 => 3, 5 => 15, 17 => 22]],
         ];
     }
 
@@ -110,21 +110,29 @@ final class ArgumentsAnalyzerTest extends TestCase
                 'type_index_start' => -1,
                 'type_index_end' => -1,
             ]],
-            ['<?php function(int $a = 3){};', 3, 9, [
-                'default' => '3',
+            ['<?php function(array $a = array()){};', 3, 11, [
+                'default' => 'array()',
                 'name' => '$a',
                 'name_index' => 5,
-                'type' => 'int',
+                'type' => 'array',
                 'type_index_start' => 3,
                 'type_index_end' => 3,
             ]],
-            ['<?php function(int ... $a){};', 3, 7, [
+            ['<?php function(array ... $a){};', 3, 7, [
                 'default' => '',
                 'name' => '$a',
                 'name_index' => 7,
-                'type' => 'int',
+                'type' => 'array',
                 'type_index_start' => 3,
                 'type_index_end' => 3,
+            ]],
+            ['<?php function(\Foo\Bar $a){};', 3, 8, [
+                'default' => '',
+                'name' => '$a',
+                'name_index' => 8,
+                'type' => '\Foo\Bar',
+                'type_index_start' => 3,
+                'type_index_end' => 6,
             ]],
         ];
     }
