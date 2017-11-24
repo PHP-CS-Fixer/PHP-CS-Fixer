@@ -17,7 +17,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author VeeWee <toonverwerft@gmail.com>
  *
  * @internal
  *
@@ -28,7 +28,7 @@ final class NamespacesAnalyzerTest extends TestCase
     /**
      * @param string $code
      * @param array  $expected
-     * @dataProvider provideNamespaces
+     * @dataProvider provideNamespacesCases
      */
     public function testNamespaces($code, $expected)
     {
@@ -38,7 +38,7 @@ final class NamespacesAnalyzerTest extends TestCase
         $this->assertSame($expected, $analyzer->getDeclarations($tokens));
     }
 
-    public function provideNamespaces()
+    public function provideNamespacesCases()
     {
         return [
             ['<?php // no namespaces', []],

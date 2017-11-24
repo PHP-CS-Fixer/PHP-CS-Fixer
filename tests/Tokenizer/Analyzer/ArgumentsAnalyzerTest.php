@@ -47,7 +47,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      * @param int    $openIndex
      * @param int    $closeIndex
      * @param array  $expected
-     * @dataProvider provideArgumentsInfo
+     * @dataProvider provideArgumentsInfoCases
      */
     public function testArgumentInfo($code, $openIndex, $closeIndex, $expected)
     {
@@ -67,7 +67,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         ];
     }
 
-    public function provideArgumentsInfo()
+    public function provideArgumentsInfoCases()
     {
         return [
             ['<?php function($a){};', 3, 3, [

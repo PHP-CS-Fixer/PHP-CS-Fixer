@@ -597,6 +597,10 @@ Choose from the list of available rules:
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
   other tag variations.
 
+* **fully_qualified_strict_types**
+
+  Transforms imported FQCN parameters and return types to short version.
+
 * **function_declaration** [@PSR2, @Symfony]
 
   Spaces should be properly placed in a function declaration.

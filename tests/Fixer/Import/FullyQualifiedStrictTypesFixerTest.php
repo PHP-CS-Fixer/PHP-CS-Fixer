@@ -15,9 +15,11 @@ namespace PhpCsFixer\Tests\Fixer\Import;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Import\FullyQualifiedStructTypesFixer
+ * @covers \PhpCsFixer\Fixer\Import\FullyQualifiedStrictTypesFixer
  */
 final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {

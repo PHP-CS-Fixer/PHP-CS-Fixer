@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,6 +21,9 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @author VeeWee <toonverwerft@gmail.com>
+ */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer
 {
     /**
@@ -31,19 +32,8 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Transforms imported FQCN parameters and return types to short version',
+            'Transforms imported FQCN parameters and return types to short version.',
             [
-                new CodeSample('<?php
-
-use Foo\Bar;
-use Foo\Bar\Baz;
-
-class SomeClass
-{
-    public function doSomething(Bar $foo): Baz
-    {
-    }
-}'),
                 new CodeSample('<?php
 
 use Foo\Bar;
@@ -54,17 +44,10 @@ class SomeClass
     public function doSomething(\Foo\Bar $foo): \Foo\Bar\Baz
     {
     }
-}'),
+}
+'),
             ]
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return 'Transforms imported FQCN parameters to short version';
     }
 
     /**
@@ -75,14 +58,6 @@ class SomeClass
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_FUNCTION);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRisky()
-    {
-        return true;
     }
 
     /**

@@ -17,7 +17,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author VeeWee <toonverwerft@gmail.com>
  *
  * @internal
  *
@@ -29,7 +29,7 @@ final class FunctionsAnalyzerTest extends TestCase
      * @param string $code
      * @param int    $methodIndex
      * @param array  $expected
-     * @dataProvider provideFunctionsWithArguments
+     * @dataProvider provideFunctionsWithArgumentsCases
      */
     public function testFunctionArgumentInfo($code, $methodIndex, $expected)
     {
@@ -43,7 +43,7 @@ final class FunctionsAnalyzerTest extends TestCase
      * @param string $code
      * @param int    $methodIndex
      * @param array  $expected
-     * @dataProvider provideFunctionsWithReturnType
+     * @dataProvider provideFunctionsWithReturnTypeCases
      */
     public function testFunctionReturnTypeInfo($code, $methodIndex, $expected)
     {
@@ -53,7 +53,7 @@ final class FunctionsAnalyzerTest extends TestCase
         $this->assertSame($expected, $analyzer->getFunctionReturnType($tokens, $methodIndex));
     }
 
-    public function provideFunctionsWithArguments()
+    public function provideFunctionsWithArgumentsCases()
     {
         return [
             ['<?php function(){};', 1, []],
@@ -134,7 +134,7 @@ final class FunctionsAnalyzerTest extends TestCase
         ];
     }
 
-    public function provideFunctionsWithReturnType()
+    public function provideFunctionsWithReturnTypeCases()
     {
         return [
             ['<?php function(){};', 1, []],

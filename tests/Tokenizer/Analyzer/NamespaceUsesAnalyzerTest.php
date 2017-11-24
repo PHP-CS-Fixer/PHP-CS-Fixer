@@ -17,7 +17,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author VeeWee <dariusz.ruminski@gmail.com>
+ * @author VeeWee <toonverwerft@gmail.com>
  *
  * @internal
  *
@@ -28,7 +28,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
     /**
      * @param string $code
      * @param array  $expected
-     * @dataProvider provideNamespaceUses
+     * @dataProvider provideNamespaceUsesCases
      */
     public function testUsesFromTokens($code, $expected)
     {
@@ -42,7 +42,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
      * @param string $code
      * @param array  $expected
      * @param array  $useIndexes
-     * @dataProvider provideNamespaceUses
+     * @dataProvider provideNamespaceUsesCases
      */
     public function testUsesFromIndexes($code, $expected, $useIndexes)
     {
@@ -52,7 +52,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         $this->assertSame($expected, $analyzer->getDeclarations($tokens, $useIndexes));
     }
 
-    public function provideNamespaceUses()
+    public function provideNamespaceUsesCases()
     {
         return [
             ['<?php // no uses', [], []],
