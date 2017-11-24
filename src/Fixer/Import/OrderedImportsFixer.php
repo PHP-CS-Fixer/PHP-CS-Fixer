@@ -21,6 +21,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -294,7 +295,7 @@ use function CCC\AA;
      */
     private function prepareNamespace($namespace)
     {
-        return trim(preg_replace('%/\*(.*)\*/%s', '', $namespace));
+        return trim(Preg::replace('%/\*(.*)\*/%s', '', $namespace));
     }
 
     private function getNewOrder(array $uses, Tokens $tokens)
@@ -467,11 +468,11 @@ use function CCC\AA;
     }
 
     /**
-     * @param $indexes
+     * @param array[] $indexes
      *
      * @return array
      */
-    private function sortByAlgorithm($indexes)
+    private function sortByAlgorithm(array $indexes)
     {
         if (self::SORT_ALPHA === $this->configuration['sortAlgorithm']) {
             uasort($indexes, [$this, 'sortAlphabetically']);

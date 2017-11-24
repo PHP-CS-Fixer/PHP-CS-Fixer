@@ -52,6 +52,7 @@ EOF;
 /**
  * @method int foo()
  * @property int $foo
+ * @property callable $foo
  * @property-read bool $bar
  * @property-write float $baz
  */
@@ -63,6 +64,7 @@ EOF;
 /**
  * @method integer foo()
  * @property integer $foo
+ * @property callback $foo
  * @property-read boolean $bar
  * @property-write double $baz
  */

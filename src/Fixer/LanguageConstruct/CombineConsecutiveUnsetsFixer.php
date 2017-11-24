@@ -39,7 +39,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should ran before SpaceAfterSemicolonFixer, NoWhitespaceInBlankLineFixer, NoTrailingWhitespaceFixer and NoExtraBlankLinesFixerand after NoEmptyStatementFixer.
+        // should be run before SpaceAfterSemicolonFixer, NoWhitespaceInBlankLineFixer, NoTrailingWhitespaceFixer and NoExtraBlankLinesFixerand after NoEmptyStatementFixer.
         return 24;
     }
 
@@ -146,7 +146,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
             return $previousUnsetBraceEnd;
         }
 
-        $previousUnsetBraceStart = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $previousUnsetBraceEnd, false);
+        $previousUnsetBraceStart = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $previousUnsetBraceEnd);
         $previousUnset = $tokens->getPrevMeaningfulToken($previousUnsetBraceStart);
         if (null === $previousUnset) {
             return $index;

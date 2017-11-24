@@ -272,7 +272,7 @@ EOF;
      *
      * List of options for $options array with their defaults.
      *
-     * @see http://php.net/session.configuration for options
+     * @see https://php.net/session.configuration for options
      *
      * but we omit 'session.' from the beginning of the keys for convenience.
      *

@@ -12,8 +12,13 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+if (!class_exists(\PHPUnit\Runner\Version::class)) {
+    class_alias('PHPUnit_Runner_Version', \PHPUnit\Runner\Version::class);
+}
+
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -43,7 +48,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
-        \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
         \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
         \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
@@ -255,6 +259,38 @@ final class ProjectCodeTest extends TestCase
         ));
     }
 
+    /**
+     * @dataProvider provideClassesWherePregFunctionsAreForbiddenCases
+     *
+     * @param string $className
+     */
+    public function testThereIsNoPregFunctionUsedDirectly($className)
+    {
+        $rc = new \ReflectionClass($className);
+        $tokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
+        $stringTokens = array_filter(
+            $tokens->toArray(),
+            function (Token $token) {
+                return $token->isGivenKind(T_STRING);
+            }
+        );
+        $strings = array_map(
+            function (Token $token) {
+                return $token->getContent();
+            },
+            $stringTokens
+        );
+        $strings = array_unique($strings);
+        $message = sprintf('Class %s must not use preg_*, it shall use Preg::* instead.', $className);
+        $this->assertNotContains('preg_filter', $strings, $message);
+        $this->assertNotContains('preg_grep', $strings, $message);
+        $this->assertNotContains('preg_match', $strings, $message);
+        $this->assertNotContains('preg_match_all', $strings, $message);
+        $this->assertNotContains('preg_replace', $strings, $message);
+        $this->assertNotContains('preg_replace_callback', $strings, $message);
+        $this->assertNotContains('preg_split', $strings, $message);
+    }
+
     public function provideSrcClassCases()
     {
         return array_map(
@@ -366,6 +402,25 @@ final class ProjectCodeTest extends TestCase
         return $data;
     }
 
+    public function provideClassesWherePregFunctionsAreForbiddenCases()
+    {
+        if (extension_loaded('xdebug') && false === getenv('CI')) {
+            $this->markTestSkipped('Test too slow when Xdebug is loaded.');
+        }
+
+        return array_map(
+            function ($item) {
+                return [$item];
+            },
+            array_filter(
+                $this->getSrcClasses(),
+                function ($className) {
+                    return 'PhpCsFixer\\Preg' !== $className;
+                }
+            )
+        );
+    }
+
     private function getSrcClasses()
     {
         static $classes;
@@ -429,6 +484,18 @@ final class ProjectCodeTest extends TestCase
             },
             iterator_to_array($finder, false)
         );
+
+        $incomatibleClasses = version_compare(\PHPUnit\Runner\Version::id(), '7.0.0') < 0 ? [
+            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV7::class,
+            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV7::class,
+        ] : [
+            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV5::class,
+            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV5::class,
+        ];
+
+        $classes = array_filter($classes, function ($className) use ($incomatibleClasses) {
+            return !in_array($className, $incomatibleClasses, true);
+        });
 
         sort($classes);
 

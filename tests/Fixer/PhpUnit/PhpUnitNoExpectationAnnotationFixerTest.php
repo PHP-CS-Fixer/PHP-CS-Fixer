@@ -414,7 +414,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
     }',
             ],
             'special \\ handling' => [
-<<<'EOT'
+                <<<'EOT'
     <?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
@@ -437,8 +437,8 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         }
     }
 EOT
-,
-<<<'EOT'
+                ,
+                <<<'EOT'
     <?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
@@ -461,10 +461,10 @@ EOT
         }
     }
 EOT
-,
+                ,
             ],
             'message on newline' => [
-<<<'EOT'
+                <<<'EOT'
     <?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
@@ -499,8 +499,8 @@ EOT
         }
     }
 EOT
-,
-<<<'EOT'
+                ,
+                <<<'EOT'
     <?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
@@ -544,7 +544,7 @@ EOT
         }
     }
 EOT
-,
+                ,
             ],
         ];
     }

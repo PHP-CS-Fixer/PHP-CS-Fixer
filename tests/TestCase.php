@@ -17,8 +17,9 @@ use PHPUnitGoodPractices\Traits\ExpectationViaCodeOverAnnotationTrait;
 use PHPUnitGoodPractices\Traits\ExpectOverSetExceptionTrait;
 use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait;
 use PHPUnitGoodPractices\Traits\ProphecyOverMockObjectTrait;
+use PHPUnitGoodPractices\Traits\ProphesizeOnlyInterfaceTrait;
 
-if (trait_exists(ExpectationViaCodeOverAnnotationTrait::class)) {
+if (trait_exists(ProphesizeOnlyInterfaceTrait::class)) {
     /**
      * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
      *
@@ -30,6 +31,7 @@ if (trait_exists(ExpectationViaCodeOverAnnotationTrait::class)) {
         use ExpectOverSetExceptionTrait;
         use IdentityOverEqualityTrait;
         use ProphecyOverMockObjectTrait;
+        use ProphesizeOnlyInterfaceTrait;
     }
 } else {
     /**

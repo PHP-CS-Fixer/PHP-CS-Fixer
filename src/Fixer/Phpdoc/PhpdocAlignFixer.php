@@ -20,6 +20,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -118,7 +119,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
          * annotations are of the correct type, and are grouped correctly
          * before running this fixer.
          */
-        return -11;
+        return -21;
     }
 
     /**
@@ -290,7 +291,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
      */
     private function getMatches($line, $matchCommentOnly = false)
     {
-        if (preg_match($this->regex, $line, $matches)) {
+        if (Preg::match($this->regex, $line, $matches)) {
             if (!empty($matches['tag2'])) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
@@ -306,7 +307,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             return $matches;
         }
 
-        if ($matchCommentOnly && preg_match($this->regexCommentLine, $line, $matches)) {
+        if ($matchCommentOnly && Preg::match($this->regexCommentLine, $line, $matches)) {
             $matches['tag'] = null;
             $matches['var'] = '';
             $matches['hint'] = '';

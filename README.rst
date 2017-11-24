@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.10.0/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.10.4/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -248,6 +248,10 @@ Choose from the list of available rules:
     whose lines all start with an asterisk (``phpdocs_like``) or any
     multi-line comment (``all_multiline``); defaults to ``'phpdocs_only'``
 
+* **array_indentation**
+
+  Each element of an array must be indented exactly once.
+
 * **array_syntax**
 
   PHP arrays should be declared using the configured syntax.
@@ -377,6 +381,12 @@ Choose from the list of available rules:
 
   - ``spacing`` (``'none'``, ``'one'``): spacing to apply around concatenation operator;
     defaults to ``'none'``
+
+* **date_time_immutable**
+
+  Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
+
+  *Risky rule: risky when the code relies on modifying ``DateTime`` object or if any of the ``date_create*`` functions are overridden.*
 
 * **declare_equal_normalize** [@Symfony]
 
@@ -597,6 +607,11 @@ Choose from the list of available rules:
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
   other tag variations.
 
+* **fully_qualified_strict_types**
+
+  Transforms imported FQCN parameters and return types in function
+  arguments to short version.
+
 * **function_declaration** [@PSR2, @Symfony]
 
   Spaces should be properly placed in a function declaration.
@@ -796,6 +811,10 @@ Choose from the list of available rules:
   Master functions shall be used instead of aliases.
 
   *Risky rule: risky when any of the alias functions are overridden.*
+
+* **no_alternative_syntax**
+
+  Replace control structure alternative syntax to use braces.
 
 * **no_blank_lines_after_class_opening** [@Symfony]
 
@@ -1125,6 +1144,17 @@ Choose from the list of available rules:
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
+* **php_unit_ordered_covers**
+
+  Order ``@covers`` annotation of PHPUnit tests.
+
+* **php_unit_set_up_tear_down_visibility**
+
+  Changes the visibility of the setUp and tearDown functions of phpunit to
+  protected, to match the PHPUnit TestCase.
+
+  *Risky rule: this fixer may change functions named setUp or tearDown outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
+
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of
@@ -1335,10 +1365,12 @@ Choose from the list of available rules:
   - ``space_before`` (``'none'``, ``'one'``): spacing to apply before colon; defaults to
     ``'none'``
 
-* **self_accessor** [@Symfony]
+* **self_accessor** [@Symfony:risky]
 
   Inside class or interface element "self" should be preferred to the
   class name itself.
+
+  *Risky rule: risky when using dynamic calls like get_called_class() or late static binding.*
 
 * **semicolon_after_instruction** [@Symfony]
 
@@ -1401,6 +1433,11 @@ Choose from the list of available rules:
 
   Convert double quotes to single quotes for simple strings.
 
+  Configuration options:
+
+  - ``strings_containing_single_quote_chars`` (``bool``): whether to fix
+    double-quoted strings that contains single-quotes; defaults to ``false``
+
 * **space_after_semicolon** [@Symfony]
 
   Fix whitespace after a semicolon.
@@ -1409,6 +1446,10 @@ Choose from the list of available rules:
 
   - ``remove_in_empty_for_expressions`` (``bool``): whether spaces should be removed
     for empty ``for`` expressions; defaults to ``false``
+
+* **standardize_increment** [@Symfony]
+
+  Increment and decrement operators should be used if possible.
 
 * **standardize_not_equals** [@Symfony]
 
@@ -1431,6 +1472,12 @@ Choose from the list of available rules:
   Functions should be used with ``$strict`` param set to ``true``.
 
   *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
+
+* **string_line_ending**
+
+  All multi-line strings must use correct line ending.
+
+  *Risky rule: changing the line endings of multi-line strings might affect string comparisons and outputs.*
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 
@@ -1511,7 +1558,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.10.0/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.10.4/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -1542,7 +1589,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
 **NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
 
-See `Symfony\\Finder <http://symfony.com/doc/current/components/finder.html>`_
+See `Symfony\\Finder <https://symfony.com/doc/current/components/finder.html>`_
 online documentation for other `Finder` methods.
 
 You may also use a blacklist for the rules instead of the above shown whitelist approach.
