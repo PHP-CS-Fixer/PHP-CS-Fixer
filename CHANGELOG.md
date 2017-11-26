@@ -403,6 +403,12 @@ Changelog for v2.3.0
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
 
+Changelog for v2.2.12
+---------------------
+
+* bug #3173 SimplifiedNullReturnFixer - handle nullable return types (Slamdunk)
+* bug #3272 PhpdocTrimFixer - unicode support (SpacePossum)
+
 Changelog for v2.2.11
 ---------------------
 
