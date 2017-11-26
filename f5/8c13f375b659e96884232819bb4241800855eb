@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-27T14:29:49Z
+
+I would like to remove the `risky` flag, since the fixer wouldn't produce anymore erroneous code.
+
+What do you think?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-07T07:51:38Z
+
+@keradus ping, at least for labels & milestones 🙏
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-12T22:36:08Z
+
+@Slamdunk , sorry for big delay, simply too many things recently and i hoped someone else will pick the thread up (I was active in threads I participated previously, but was trying to not dive in too much threads at same time :( )
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-12T22:41:24Z
+
+riskiness:
+let us see after final version of changes ;)
+
+---------------
+
+label/milestone:
+it's debatable and I could advocate both approaches, but so far we treated "better support of newer language syntax" as bugfixes and sent those to lowest supported branch (currently: 2.2)
+(in the end, currently 2.2 removes the `retrurn **null**` where it shouldn't)
+
+WDYT?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-13T09:13:05Z
+
+> label/milestone:
+> it's debatable and I could advocate both approaches, but so far we treated "better support of newer language syntax" as bugfixes and sent those to lowest supported branch (currently: 2.2)
+> (in the end, currently 2.2 removes the retrurn **null** where it shouldn't)
+>
+> WDYT?
+
+My request for label/milestone was just to set some reminders. I respect your great efforts and time spent in this project, I don't expect a rapid merge, just that without labels it's easy to lose the plot.
+
+Rebased onto 2.2, I agree.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-19T17:39:35Z
+
+for me, now the fixer doesn't look risky indeed.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-22T09:45:39Z
+
+Riskyness removed
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-23T07:56:43Z
+
+Since the removal of riskyness, it wasn't clear enough what now this Fixer does. I've added a `VersionSpecificCodeSample` to be clear.
