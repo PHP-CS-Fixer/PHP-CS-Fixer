@@ -1254,8 +1254,6 @@ Choose from the list of available rules:
 
   A return statement wishing to return ``void`` should not return ``null``.
 
-  *Risky rule: risky since PHP 7.1 as ``null`` and ``void`` can be hinted as return type and have different meaning.*
-
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
 
   A PHP file without end tag must always end with a single empty line
