@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-06T09:52:39Z
+
+LGTM :+1:
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-11-09T12:15:54Z
+
+Why `master`? This isn't a breaking change:
+
+From CONTRIBUTING.md:
+
+> Default branch when adding new features.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-09T13:11:30Z
+
+The `CONTRIBUTING.md` file is wrong here as the default branch currently is 2.8 (already released as 2.8.0). New features should always be merged in the lowest branch not released yet (master, but could have been 2.9 as well).
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-11-09T13:20:39Z
+
+Ahh OK makes sense. My bad
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-09T13:30:36Z
+
+No worries :)
