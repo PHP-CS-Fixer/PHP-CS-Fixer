@@ -1038,6 +1038,25 @@ Choose from the list of available rules:
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
+* **php_unit_short_will_return**
+
+  Usage of ``->will($this->returnValue(..))`` statements must be replaced by
+  it's shorter equivalent ``->willReturn(...)``
+
+  *Risky rule: .*
+
+  Configuration options:
+
+  - ``returnArgument`` (``false``, ``true``): fix ``returnArgument`` occurrence; defaults
+    to ``true``
+  - ``returnCallback`` (``false``, ``true``): fix ``returnCallback`` occurrence; defaults
+    to ``true``
+  - ``returnSelf`` (``false``, ``true``): fix ``returnSelf`` occurrence; defaults to ``true``
+  - ``returnValue`` (``false``, ``true``): fix ``returnValue`` occurrence; defaults to
+    ``true``
+  - ``returnValueMap`` (``false``, ``true``): fix ``returnValueMap`` occurrence; defaults
+    to ``true``
+
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of
