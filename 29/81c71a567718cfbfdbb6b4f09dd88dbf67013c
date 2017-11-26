@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-17T20:38:17Z
+
+for now, case is failing
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-17T20:38:26Z
+
+@Slamdunk, could you please try to take a look here ?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-17T21:05:39Z
+
+Sure, next week though
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-23T08:21:43Z
+
+https://github.com/keradus/PHP-CS-Fixer/pull/29
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-26T19:40:18Z
+
+looks really great, thank you @Slamdunk ! your help is very appreciated ;)
