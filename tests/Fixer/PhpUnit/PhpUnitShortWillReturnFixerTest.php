@@ -22,7 +22,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitShortWillReturnFixer
  */
-class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
+final class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
 {
     /**
      * @var ConfigurableFixerInterface

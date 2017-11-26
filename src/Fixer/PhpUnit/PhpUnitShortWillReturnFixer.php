@@ -46,7 +46,7 @@ final class PhpUnitShortWillReturnFixer extends AbstractFixer implements Configu
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Usage of `->will($this->returnValue(..))` statements must be replaced by it\'s shorter equivalent `->willReturn(...)`',
+            'Usage of `->will($this->returnValue(..))` statements must be replaced by it\'s shorter equivalent `->willReturn(...)`.',
             [
                 new CodeSample('<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
@@ -55,50 +55,16 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $someMock = $this->createMock(Some::class);
         $someMock->method(\'some\')->will($this->returnSelf());
-    }
-}
-'),
-                new CodeSample('<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $someMock = $this->createMock(Some::class);
         $someMock->method(\'some\')->will($this->returnValue(\'example\'));
-    }
-}
-'),
-                new CodeSample('<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $someMock = $this->createMock(Some::class);
-        $someMock->method(\'some\')->will($this->returnValueMap([\'value\'=>\'map\']));
-    }
-}
-'),
-                new CodeSample('<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $someMock = $this->createMock(Some::class);
         $someMock->method(\'some\')->will($this->returnArgument(2));
+        $someMock->method(\'some\')->will($this->returnCallback(\'str_rot13\'));
+        $someMock->method(\'some\')->will($this->returnValueMap([\'a\',\'b\',\'c\']));
     }
 }
 '),
-                new CodeSample('<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $someMock = $this->createMock(Some::class);
-        $someMock->method(\'some\')->will($this->returnCallback(function() { return \'some\'; }));
-    }
-}
-'),
-            ]
+            ],
+            null,
+            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
         );
     }
 

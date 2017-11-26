@@ -1041,9 +1041,9 @@ Choose from the list of available rules:
 * **php_unit_short_will_return**
 
   Usage of ``->will($this->returnValue(..))`` statements must be replaced by
-  it's shorter equivalent ``->willReturn(...)``
+  it's shorter equivalent ``->willReturn(...)``.
 
-  *Risky rule: .*
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
 
   Configuration options:
 
