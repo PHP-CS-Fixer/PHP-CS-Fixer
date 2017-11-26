@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.8.3
+--------------------
+
+* bug #3173 SimplifiedNullReturnFixer - handle nullable return types (Slamdunk)
+* bug #3268 PhpUnitNoExpectationAnnotationFixer - add case with backslashes (keradus, Slamdunk)
+* bug #3272 PhpdocTrimFixer - unicode support (SpacePossum)
+
 Changelog for v2.8.2
 --------------------
 
