@@ -296,7 +296,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         if ($this->configuration['use_class_const']) {
             $params[] = $exceptionClass.'::class';
         } else {
-            $params[] = "'$exceptionClass'";
+            $params[] = "'${exceptionClass}'";
         }
 
         if (isset($annotations['expectedExceptionMessage'])) {

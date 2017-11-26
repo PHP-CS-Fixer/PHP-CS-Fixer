@@ -204,7 +204,7 @@ abstract class AbstractFixerTestCase extends TestCase
         try {
             $this->linter->lintSource($source)->check();
         } catch (\Exception $e) {
-            return $e->getMessage()."\n\nSource:\n$source";
+            return $e->getMessage()."\n\nSource:\n${source}";
         }
     }
 
