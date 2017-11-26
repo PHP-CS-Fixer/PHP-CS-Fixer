@@ -61,8 +61,8 @@ EOF;
                     ['heredoc_syntax' => false]
                 ),
             ],
-            'In PHP, double-quoted strings and heredocs some chars like `n`, `$` or `u` have special meanings if preceeded by a backslash, '
-            .'(and some are special only if followed by other special chars) while a backslash preceding other chars are interpreted like a plain '
+            'In PHP double-quoted strings and heredocs some chars like `n`, `$` or `u` have special meanings if preceded by a backslash '
+            .'(and some are special only if followed by other special chars), while a backslash preceding other chars are interpreted like a plain '
             .'backslash. The precise list of those special chars is hard to remember and to identify quickly: this fixer escapes backslashes '
             .'that do not start a special interpretation with the char after them.'
             .PHP_EOL
