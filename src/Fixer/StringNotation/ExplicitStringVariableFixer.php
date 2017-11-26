@@ -31,7 +31,7 @@ final class ExplicitStringVariableFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Converts implicit variables into explicit ones in double-quoted strings or heredoc syntax.',
-            [new CodeSample('<?php $a = "My name is $name!";')],
+            [new CodeSample('<?php $a = "My name is $name!";'."\n")],
             'The reasoning behind this rule is the following:'
                 ."\n".'- When there are two valid ways of doing the same thing, using both is confusing, there should be a coding standard to follow'
                 ."\n".'- PHP manual marks `"$var"` syntax as implicit and `"${var}"` syntax as explicit: explicit code should always be preferred'
