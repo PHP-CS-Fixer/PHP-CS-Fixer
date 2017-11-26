@@ -538,11 +538,6 @@ Choose from the list of available rules:
 
   *Risky rule: risky if the ``ereg`` function is overridden.*
 
-* **explicit_indirect_variable**
-
-  Add curly braces to indirect variables to make them clear to understand.
-  Requires PHP >= 7.0.
-
 * **escape_implicit_backslashes**
 
   Escape implicit backslashes in strings and heredocs to ease the
@@ -556,6 +551,11 @@ Choose from the list of available rules:
   - ``heredoc_syntax`` (``bool``): whether to fix heredoc syntax; defaults to ``true``
   - ``single_quoted`` (``bool``): whether to fix single-quoted strings; defaults to
     ``false``
+
+* **explicit_indirect_variable**
+
+  Add curly braces to indirect variables to make them clear to understand.
+  Requires PHP >= 7.0.
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
