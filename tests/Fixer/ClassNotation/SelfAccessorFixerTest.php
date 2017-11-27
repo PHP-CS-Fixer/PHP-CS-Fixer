@@ -120,9 +120,7 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
      */
     public function testFix54()
     {
-        $expected = '<?php trait Foo { function bar() { self::bar(); } }';
-        $input = '<?php trait Foo { function bar() { Foo::bar(); } }';
-
-        $this->doTest($expected, $input);
+        // In trait "self" will reference the class it's used in, not the actual trait, so we can't replace "Foo" with "self" here
+        $this->doTest('<?php trait Foo { function bar() { Foo::bar(); } }');
     }
 }

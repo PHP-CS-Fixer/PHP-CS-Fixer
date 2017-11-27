@@ -994,8 +994,8 @@ Choose from the list of available rules:
 
 * **self_accessor** [@Symfony]
 
-  Inside a classy element "self" should be preferred to the class name
-  itself.
+  Inside class or interface element "self" should be preferred to the
+  class name itself.
 
 * **semicolon_after_instruction**
 
