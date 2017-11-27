@@ -59,7 +59,7 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 5.3
-            env: SKIP_LINT_TEST_CASES=1 COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
+            env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
             dist: precise
 
         -
