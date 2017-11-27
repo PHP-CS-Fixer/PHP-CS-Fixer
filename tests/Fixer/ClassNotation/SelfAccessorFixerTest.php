@@ -118,4 +118,9 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
             ),
         );
     }
+
+    public function testFix54()
+    {
+        $this->doTest('<?php trait Foo { function bar() { Foo::bar(); } }');
+    }
 }
