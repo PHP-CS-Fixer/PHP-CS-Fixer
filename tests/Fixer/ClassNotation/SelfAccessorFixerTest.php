@@ -86,6 +86,10 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 // PHP < 5.4 compatibility: "self" is not available in closures
                 '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
             ),
+            array(
+                // In trait "self" will reference the class it's used in, not the actual trait, so we can't replace "Foo" with "self" here
+                '<?php trait Foo { function bar() { Foo::bar(); } }',
+            ),
         );
     }
 
@@ -113,16 +117,5 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { protected $foo; function bar() { return $this->foo::find(2); } }',
             ),
         );
-    }
-
-    /**
-     * @requires PHP 5.4
-     */
-    public function testFix54()
-    {
-        $expected = '<?php trait Foo { function bar() { self::bar(); } }';
-        $input = '<?php trait Foo { function bar() { Foo::bar(); } }';
-
-        $this->doTest($expected, $input);
     }
 }
