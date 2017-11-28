@@ -55,7 +55,7 @@ class SomeClass
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_FUNCTION);
     }
 
     /**
@@ -144,7 +144,7 @@ class SomeClass
      */
     private function detectShortType($type, array $namespaces, array $useMap)
     {
-        // First match explicit stuff:
+        // First match explicit imports:
         foreach ($useMap as $shortName => $fullName) {
             $regex = '/^\\\\?'.preg_quote($fullName, '/').'$/';
             if (preg_match($regex, $type)) {
@@ -152,17 +152,24 @@ class SomeClass
             }
         }
 
+        // Next try to match (partial) classes inside the same namespace
         // For now only support one namespace per file:
-        if (1 !== count($namespaces)) {
-            return $type;
+        if (1 === count($namespaces)) {
+            foreach ($namespaces as $shortName => $fullName) {
+                $matches = [];
+                $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
+                if (preg_match($regex, $type, $matches)) {
+                    return $matches['className'];
+                }
+            }
         }
 
-        // Next try to match classes inside the same namespace
-        foreach ($namespaces as $shortName => $fullName) {
+        // Next: Try to match partial use statements:
+        foreach ($useMap as $shortName => $fullName) {
             $matches = [];
             $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
             if (preg_match($regex, $type, $matches)) {
-                return $matches['className'];
+                return $shortName.'\\'.$matches['className'];
             }
         }
 

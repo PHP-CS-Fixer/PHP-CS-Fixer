@@ -114,4 +114,55 @@ EOF;
 
         $this->doTest($expected, null);
     }
+
+    public function testPartialNamespaces()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Ping\Pong;
+
+use Foo\Bar;
+use Ping;
+use Ping\Pong\Pang;
+use Ping\Pong\Pyng\Pang;
+
+class SomeClass
+{
+    public function doSomething(
+        Ping\Something $something,
+        Pung\Pang $pungpang,
+        Pung $pongpung,
+        Pang\Pung $pangpung,
+        Pyng\Pang\Pong $pongpyngpangpang,
+        Bar\Baz\Buz $bazbuz
+    ){}
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Ping\Pong;
+
+use Foo\Bar;
+use Ping;
+use Ping\Pong\Pang;
+use Ping\Pong\Pyng\Pang;
+
+class SomeClass
+{
+    public function doSomething(
+        \Ping\Something $something,
+        \Ping\Pong\Pung\Pang $pungpang,
+        \Ping\Pong\Pung $pongpung,
+        \Ping\Pong\Pang\Pung $pangpung,
+        \Ping\Pong\Pyng\Pang\Pong $pongpyngpangpang,
+        \Foo\Bar\Baz\Buz $bazbuz
+    ){}
+}
+EOF;
+
+        $this->doTest($expected, $input);
+    }
 }
