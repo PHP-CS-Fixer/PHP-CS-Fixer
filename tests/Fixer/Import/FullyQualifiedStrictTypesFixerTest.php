@@ -23,6 +23,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        if (PHP_VERSION_ID < 70000) {
+            $this->markTestSkipped('The strict return type : operator is only avaiable from PHP 7.0.');
+        }
+    }
+
     public function testImportedStrictTypesFix()
     {
         $expected = <<<'EOF'
@@ -125,7 +134,7 @@ namespace Ping\Pong;
 use Foo\Bar;
 use Ping;
 use Ping\Pong\Pang;
-use Ping\Pong\Pyng\Pang;
+use Ping\Pong\Pyng\Pung;
 
 class SomeClass
 {
@@ -134,7 +143,7 @@ class SomeClass
         Pung\Pang $pungpang,
         Pung $pongpung,
         Pang\Pung $pangpung,
-        Pyng\Pang\Pong $pongpyngpangpang,
+        Pyng\Pung\Pong $pongpyngpangpang,
         Bar\Baz\Buz $bazbuz
     ){}
 }
@@ -148,7 +157,7 @@ namespace Ping\Pong;
 use Foo\Bar;
 use Ping;
 use Ping\Pong\Pang;
-use Ping\Pong\Pyng\Pang;
+use Ping\Pong\Pyng\Pung;
 
 class SomeClass
 {
@@ -157,7 +166,7 @@ class SomeClass
         \Ping\Pong\Pung\Pang $pungpang,
         \Ping\Pong\Pung $pongpung,
         \Ping\Pong\Pang\Pung $pangpung,
-        \Ping\Pong\Pyng\Pang\Pong $pongpyngpangpang,
+        \Ping\Pong\Pyng\Pung\Pong $pongpyngpangpang,
         \Foo\Bar\Baz\Buz $bazbuz
     ){}
 }
