@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
@@ -34,7 +36,8 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer
         return new FixerDefinition(
             'Transforms imported FQCN parameters and return types to short version.',
             [
-                new CodeSample('<?php
+                new VersionSpecificCodeSample(
+                    '<?php
 
 use Foo\Bar;
 use Foo\Bar\Baz;
@@ -45,7 +48,9 @@ class SomeClass
     {
     }
 }
-'),
+',
+                    new VersionSpecification(70000)
+                ),
             ]
         );
     }
