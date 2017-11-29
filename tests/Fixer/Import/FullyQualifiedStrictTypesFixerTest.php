@@ -54,12 +54,11 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @requires PHP 7.0
+     */
     public function testImportedStrictTypesFixWithReturn()
     {
-        if (PHP_VERSION_ID < 70000) {
-            $this->markTestSkipped('The strict return type : operator is only avaiable from PHP 7.0.');
-        }
-
         $expected = <<<'EOF'
 <?php
 
@@ -122,12 +121,11 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @requires PHP 7.0
+     */
     public function testNamespaceFixesWithReturn()
     {
-        if (PHP_VERSION_ID < 70000) {
-            $this->markTestSkipped('The strict return type : operator is only avaiable from PHP 7.0.');
-        }
-
         $expected = <<<'EOF'
 <?php
 
@@ -183,12 +181,11 @@ EOF;
         $this->doTest($expected, null);
     }
 
+    /**
+     * @requires PHP 7.0
+     */
     public function testMultiNamespaceFixesWithReturn()
     {
-        if (PHP_VERSION_ID < 70000) {
-            $this->markTestSkipped('The strict return type : operator is only avaiable from PHP 7.0.');
-        }
-
         $expected = <<<'EOF'
 <?php
 namespace Foo\Other {
