@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
@@ -35,6 +36,19 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer
         return new FixerDefinition(
             'Transforms imported FQCN parameters and return types to short version.',
             [
+                new CodeSample(
+                    '<?php
+
+use Foo\Bar;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar $foo)
+    {
+    }
+}
+'
+                ),
                 new VersionSpecificCodeSample(
                     '<?php
 
@@ -59,7 +73,7 @@ class SomeClass
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isTokenKindFound(T_FUNCTION);
     }
 
     /**
@@ -81,7 +95,10 @@ class SomeClass
                 continue;
             }
 
-            $this->fixFunctionReturnType($tokens, $index, $namespaces, $useMap);
+            // Return types are only available since PHP 7.0
+            if (PHP_VERSION_ID >= 70000) {
+                $this->fixFunctionReturnType($tokens, $index, $namespaces, $useMap);
+            }
             $this->fixFunctionArguments($tokens, $index, $namespaces, $useMap);
         }
     }

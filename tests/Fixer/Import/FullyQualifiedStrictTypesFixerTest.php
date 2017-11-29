@@ -23,17 +23,43 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {
-    protected function setUp()
+    public function testImportedStrictTypesFixWithoutReturn()
     {
-        parent::setUp();
+        $expected = <<<'EOF'
+<?php
 
+use Foo\Bar;
+
+class SomeClass
+{
+    public function doSomething(Bar $foo)
+    {
+    }
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar $foo)
+    {
+    }
+}
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testImportedStrictTypesFixWithReturn()
+    {
         if (PHP_VERSION_ID < 70000) {
             $this->markTestSkipped('The strict return type : operator is only avaiable from PHP 7.0.');
         }
-    }
 
-    public function testImportedStrictTypesFix()
-    {
         $expected = <<<'EOF'
 <?php
 
@@ -65,8 +91,43 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testNamespaceFixes()
+    public function testNamespaceFixesWithoutReturn()
     {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo\Bar;
+
+class SomeClass
+{
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
+    {
+    }
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo\Bar;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+    {
+    }
+}
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testNamespaceFixesWithReturn()
+    {
+        if (PHP_VERSION_ID < 70000) {
+            $this->markTestSkipped('The strict return type : operator is only avaiable from PHP 7.0.');
+        }
+
         $expected = <<<'EOF'
 <?php
 
@@ -100,8 +161,34 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testMultiNamespaceFixes()
+    public function testMultiNamespaceFixesWithoutReturn()
     {
+        $expected = <<<'EOF'
+<?php
+namespace Foo\Other {
+}
+
+namespace Foo\Bar {
+    class SomeClass
+    {
+        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+        {
+        }
+    }
+}
+
+
+EOF;
+
+        $this->doTest($expected, null);
+    }
+
+    public function testMultiNamespaceFixesWithReturn()
+    {
+        if (PHP_VERSION_ID < 70000) {
+            $this->markTestSkipped('The strict return type : operator is only avaiable from PHP 7.0.');
+        }
+
         $expected = <<<'EOF'
 <?php
 namespace Foo\Other {
@@ -121,7 +208,26 @@ namespace Foo\Bar {
 
 EOF;
 
-        $this->doTest($expected, null);
+        $input = <<<'EOF'
+<?php
+namespace Foo\Other {
+}
+
+namespace Foo\Bar {
+    use Foo\Bar\Baz;
+
+    class SomeClass
+    {
+        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz
+        {
+        }
+    }
+}
+
+
+EOF;
+
+        $this->doTest($expected, $input);
     }
 
     public function testPartialNamespaces()
