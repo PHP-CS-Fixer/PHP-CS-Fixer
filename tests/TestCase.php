@@ -13,12 +13,35 @@
 namespace PhpCsFixer\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use PHPUnitGoodPractices\Traits\ExpectationViaCodeOverAnnotationTrait;
+use PHPUnitGoodPractices\Traits\ExpectOverSetExceptionTrait;
+use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait;
+use PHPUnitGoodPractices\Traits\ProphecyOverMockObjectTrait;
 
-/**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
- */
-abstract class TestCase extends BaseTestCase
-{
+if (trait_exists(ExpectationViaCodeOverAnnotationTrait::class)) {
+    /**
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     *
+     * @internal
+     */
+    abstract class TestCase extends BaseTestCase
+    {
+        use ExpectationViaCodeOverAnnotationTrait;
+        use ExpectOverSetExceptionTrait;
+        use IdentityOverEqualityTrait;
+        use ProphecyOverMockObjectTrait;
+    }
+} else {
+    /**
+     * Version without traits for cases when this class is used as a lib.
+     *
+     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+     *
+     * @internal
+     *
+     * @todo 3.0 To be removed when we clean up composer prod-autoloader from dev-packages.
+     */
+    abstract class TestCase extends BaseTestCase
+    {
+    }
 }
