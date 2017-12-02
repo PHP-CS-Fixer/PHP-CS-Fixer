@@ -68,7 +68,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
         return new FixerDefinition(
             'Ordering use statements.',
             [
-                new CodeSample("<?php\nuse Z; use A;"),
+                new CodeSample("<?php\nuse Z; use A;\n"),
                 new CodeSample(
 '<?php
 use Bar1;
@@ -79,7 +79,7 @@ use Acme\Bar;
                     ['sortAlgorithm' => self::SORT_LENGTH]
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nuse function AAA;\nuse const AAB;\nuse AAC;",
+                    "<?php\nuse function AAA;\nuse const AAB;\nuse AAC;\n",
                     new VersionSpecification(70000)
                 ),
                 new VersionSpecificCodeSample(

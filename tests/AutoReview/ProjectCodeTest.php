@@ -50,7 +50,7 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
         \PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException::class,
         \PhpCsFixer\FixerFileProcessedEvent::class,
-        \PhpCsFixer\Indicator\PhpUnitIndicator::class,
+        \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator::class,
         \PhpCsFixer\Linter\ProcessLintingResult::class,
         \PhpCsFixer\Linter\TokenizerLintingResult::class,
         \PhpCsFixer\Report\ReportSummary::class,
@@ -121,7 +121,7 @@ final class ProjectCodeTest extends TestCase
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
         ];
 
-        // @TODO: should be removed at 3.0
+        // @TODO: 3.0 should be removed
         $exceptionMethodsPerClass = [
             \PhpCsFixer\Config::class => ['create'],
             \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class => ['fixSpace'],
@@ -193,7 +193,7 @@ final class ProjectCodeTest extends TestCase
             \PhpCsFixer\AbstractPhpdocTypesFixer::class => ['tags'],
             \PhpCsFixer\AbstractAlignFixerHelper::class => ['deepestLevel'],
             \PhpCsFixer\AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
-            \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixer'],
+            \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixers'],
             \PhpCsFixer\Test\AbstractFixerTestCase::class => ['fixer', 'linter'],
             \PhpCsFixer\Test\AbstractIntegrationTestCase::class => ['linter'],
         ];

@@ -35,14 +35,13 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurat
             'Fix whitespace after a semicolon.',
             [
                 new CodeSample(
-                    '<?php
-                        sample();     $test = 1;
-                        sample();$test = 2;
-                        for ( ;;++$sample) {
-                        }
-                    '
+                    "<?php
+                        sample();     \$test = 1;
+                        sample();\$test = 2;
+                        for ( ;;++\$sample) {
+                        }\n"
                 ),
-                new CodeSample("<?php\nfor (\$i = 0; ; ++\$i) {\n}", [
+                new CodeSample("<?php\nfor (\$i = 0; ; ++\$i) {\n}\n", [
                     'remove_in_empty_for_expressions' => true,
                 ]),
             ]

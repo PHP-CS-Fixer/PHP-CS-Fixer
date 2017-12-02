@@ -196,7 +196,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Replace accidental usage of homoglyphs (non ascii characters) in names.',
-            [new CodeSample('<?php $nаmе = \'wrong "a" character\';')],
+            [new CodeSample("<?php \$nаmе = 'wrong \"a\" character';\n")],
             null,
             'Renames classes and cannot rename the files. You might have string references to renamed code (`$$name`).'
         );

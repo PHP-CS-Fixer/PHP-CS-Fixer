@@ -316,15 +316,12 @@ function myFunction() {
 
     public function provideMessyWhitespacesReversedCases()
     {
-        $filteredCases = [];
-        $cases = $this->provideMessyWhitespacesCases();
-
-        foreach ($cases as $key => $case) { // TODO on 5.6 bump use array_filter with ARRAY_FILTER_USE_KEY
-            if (!is_string($key) || false === strpos($key, 'mix indentation')) {
-                $filteredCases[] = $case;
-            }
-        }
-
-        return $filteredCases;
+        return array_filter(
+            $this->provideMessyWhitespacesCases(),
+            static function ($key) {
+                return !is_string($key) || false === strpos($key, 'mix indentation');
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }

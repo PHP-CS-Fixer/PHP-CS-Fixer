@@ -32,7 +32,7 @@ final class NoClosingTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The closing `?>` tag MUST be omitted from files containing only PHP.',
-            [new CodeSample("<?php\nclass Sample\n{\n}\n?>")]
+            [new CodeSample("<?php\nclass Sample\n{\n}\n?>\n")]
         );
     }
 

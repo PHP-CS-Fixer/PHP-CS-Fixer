@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -92,26 +91,22 @@ final class Foo {}
      */
     private function fixStart($content)
     {
-        $doc = new DocBlock($content);
-        $lines = $doc->getLines();
-        $total = count($lines);
-
-        foreach ($lines as $index => $line) {
-            if (!$line->isTheStart()) {
-                // don't remove lines with content and don't entirely delete docblocks
-                if ($total - $index < 3 || $line->containsUsefulContent()) {
-                    break;
-                }
-
-                $line->remove();
-            }
-        }
-
-        return $doc->getContent();
+        return preg_replace(
+            '~
+                (^/\*\*)                  # DocComment begin
+                (?:
+                    \R[ \t]*(?:\*[ \t]*)? # lines without useful content
+                    (?!\R[ \t]*\*/)       # not followed by a DocComment end
+                )+
+                (\R[ \t]*(?:\*[ \t]*)?\S) # first line with useful content
+            ~x',
+            '$1$2',
+            $content
+        );
     }
 
     /**
-     * Make sure the last useful is immediately before after the final line.
+     * Make sure the last useful line is immediately before the final line.
      *
      * @param string $content
      *
@@ -119,21 +114,17 @@ final class Foo {}
      */
     private function fixEnd($content)
     {
-        $doc = new DocBlock($content);
-        $lines = array_reverse($doc->getLines());
-        $total = count($lines);
-
-        foreach ($lines as $index => $line) {
-            if (!$line->isTheEnd()) {
-                // don't remove lines with content and don't entirely delete docblocks
-                if ($total - $index < 3 || $line->containsUsefulContent()) {
-                    break;
-                }
-
-                $line->remove();
-            }
-        }
-
-        return $doc->getContent();
+        return preg_replace(
+            '~
+                (\R[ \t]*(?:\*[ \t]*)?\S.*?) # last line with useful content
+                (?:
+                    (?<!/\*\*)               # not preceded by a DocComment start
+                    \R[ \t]*(?:\*[ \t]*)?    # lines without useful content
+                )+
+                (\R[ \t]*\*/$)               # DocComment end
+            ~xu',
+            '$1$2',
+            $content
+        );
     }
 }

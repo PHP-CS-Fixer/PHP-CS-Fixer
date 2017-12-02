@@ -75,7 +75,6 @@ final class FixerFactoryTest extends TestCase
 
     /**
      * @covers \PhpCsFixer\FixerFactory::getFixers
-     * @covers \PhpCsFixer\FixerFactory::sortFixers
      */
     public function testThatFixersAreSorted()
     {

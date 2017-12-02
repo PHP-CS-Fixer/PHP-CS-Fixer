@@ -14,6 +14,7 @@ $config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
         '@PHP56Migration' => true,
+        '@PHPUnit60Migration:risky' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'align_multiline_comment' => true,
@@ -21,8 +22,7 @@ $config = PhpCsFixer\Config::create()
         'blank_line_before_statement' => true,
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
-        // one should use PHPUnit methods to set up expected exception instead of annotations
-        'general_phpdoc_annotation_remove' => ['annotations' => ['expectedException', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp']],
+        'compact_nullable_typehint' => true,
         'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
         'list_syntax' => ['syntax' => 'long'],
@@ -65,6 +65,8 @@ try {
 } catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
     $config->setRules([]);
 } catch (UnexpectedValueException $e) {
+    $config->setRules([]);
+} catch (InvalidArgumentException $e) {
     $config->setRules([]);
 }
 

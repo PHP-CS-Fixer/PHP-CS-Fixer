@@ -38,27 +38,31 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
                     '<?php
 /**
  * @param string|null $bar
- */'
+ */
+'
                 ),
                 new CodeSample(
                     '<?php
 /**
  * @param null|string $bar
- */',
+ */
+',
                     ['null_adjustment' => 'always_last']
                 ),
                 new CodeSample(
                     '<?php
 /**
  * @param null|string|int|\Foo $bar
- */',
+ */
+',
                     ['sort_algorithm' => 'alpha']
                 ),
                 new CodeSample(
                     '<?php
 /**
  * @param null|string|int|\Foo $bar
- */',
+ */
+',
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'always_last',
@@ -68,7 +72,8 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
                     '<?php
 /**
  * @param null|string|int|\Foo $bar
- */',
+ */
+',
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'none',

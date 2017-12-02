@@ -13,11 +13,11 @@
 namespace PhpCsFixer\Fixer\ReturnNotation;
 
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @deprecated since 2.4, replaced by BlankLineBeforeStatementFixer
@@ -27,7 +27,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
  */
-final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements WhitespacesAwareFixerInterface
+final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements DeprecatedFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -35,27 +35,27 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Whi
     public function getDefinition()
     {
         return new FixerDefinition(
-            'An empty line feed should precede a return statement. DEPRECATED: use `blank_line_before_statement` instead.',
-            [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}")]
+            'An empty line feed should precede a return statement.',
+            [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}\n")]
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setWhitespacesConfig(WhitespacesFixerConfig $config)
+    public function getSuccessorsNames()
     {
-        $this->proxyFixer->setWhitespacesConfig($config);
+        return array_keys($this->proxyFixers);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createProxyFixer()
+    protected function createProxyFixers()
     {
         $fixer = new BlankLineBeforeStatementFixer();
         $fixer->configure(['statements' => ['return']]);
 
-        return $fixer;
+        return [$fixer];
     }
 }

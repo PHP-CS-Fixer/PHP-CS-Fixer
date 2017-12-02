@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.7.4/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.3/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -147,9 +147,13 @@ to merge paths from the config file and from the argument:
 
     $ php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
 
-The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml`` and ``junit``.
+The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle`` and ``junit``.
 
-NOTE: When using ``junit`` format report generates in accordance with JUnit xml schema from Jenkins (see docs/junit-10.xsd).
+NOTE: the output for the following formats are generated in accordance with XML schemas
+
+* ``junit`` follows the `JUnit xml schema from Jenkins </doc/junit-10.xsd>`_
+* ``checkstyle`` follows the common `"checkstyle" xml schema </doc/checkstyle.xsd>`_
+
 
 The ``--verbose`` option will show the applied rules. When using the ``txt`` format it will also displays progress notifications.
 
@@ -188,13 +192,19 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 
     $ php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
 
-A combination of ``--dry-run`` and ``--diff`` will
-display a summary of proposed fixes, leaving your files unchanged.
+The ``--dry-run`` flag will run the fixer without making changes to your files.
+
+The ``--diff`` flag can be used to let the fixer output all the changes it makes.
+
+The ``--diff-format`` option allows to specify in which format the fixer should output the changes it makes:
+
+* ``udiff``: unified diff format;
+* ``sbd``: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
 
 The ``--allow-risky`` option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
-The ``--stop-on-violation`` flag stops execution upon first file that needs to be fixed.
+The ``--stop-on-violation`` flag stops the execution upon first file that needs to be fixed.
 
 The ``--show-progress`` option allows you to choose the way process progress is rendered:
 
@@ -215,6 +225,13 @@ automatically fix anything:
 .. code-block:: bash
 
     $ cat foo.php | php php-cs-fixer.phar fix --diff -
+
+Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
+would be default in next MAJOR release (unified differ, estimating, full-width progress indicator):
+
+.. code-block:: bash
+
+    $ PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer.phar fix -v --diff
 
 Choose from the list of available rules:
 
@@ -332,6 +349,10 @@ Choose from the list of available rules:
 * **combine_consecutive_unsets**
 
   Calling ``unset`` on multiple items should be done in one call.
+
+* **compact_nullable_typehint**
+
+  Remove extra spaces in a nullable typehint.
 
 * **concat_space** [@Symfony]
 
@@ -555,7 +576,7 @@ Choose from the list of available rules:
   - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
     defaults to ``[]``
 
-* **hash_to_slash_comment** [@Symfony]
+* **hash_to_slash_comment**
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
   DEPRECATED: use ``single_line_comment_style`` instead.
@@ -582,6 +603,16 @@ Choose from the list of available rules:
 
   Include/Require and file path should be divided with a single space.
   File path should not be placed under brackets.
+
+* **increment_style** [@Symfony]
+
+  Pre- or post-increment and decrement operators should be used if
+  possible.
+
+  Configuration options:
+
+  - ``style`` (``'post'``, ``'pre'``): whether to use pre- or post-increment and
+    decrement operators; defaults to ``'pre'``
 
 * **indentation_type** [@PSR2, @Symfony]
 
@@ -939,7 +970,7 @@ Choose from the list of available rules:
   - ``assertions`` (``array``): list of assertion methods to fix; defaults to
     ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
 
-* **php_unit_dedicate_assert** [@Symfony:risky]
+* **php_unit_dedicate_assert** [@Symfony:risky, @PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   PHPUnit assertions like "assertInternalType", "assertFileExists", should
   be used over "assertTrue".
@@ -948,15 +979,59 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``functions`` (``array``): list of assertions to fix; defaults to
-    ``['array_key_exists', 'empty', 'file_exists', 'is_array', 'is_bool',
-    'is_boolean', 'is_callable', 'is_double', 'is_float', 'is_infinite',
-    'is_int', 'is_integer', 'is_long', 'is_nan', 'is_null', 'is_numeric',
-    'is_object', 'is_real', 'is_resource', 'is_scalar', 'is_string']``
+  - ``functions`` (``null``): (deprecated, use ``target`` instead) List of assertions
+    to fix (overrides ``target``); defaults to ``null``
+  - ``target`` (``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``): target version of
+    PHPUnit; defaults to ``'5.0'``
+
+* **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+
+  Usages of ``->setExpectedException*`` methods MUST be replaced by
+  ``->expectException*`` methods.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``target`` (``'5.2'``, ``'5.6'``, ``'newest'``): target version of PHPUnit; defaults to
+    ``'newest'``
 
 * **php_unit_fqcn_annotation** [@Symfony]
 
   PHPUnit annotations should be a FQCNs including a root namespace.
+
+* **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+
+  Usages of ``->getMock`` and
+  ``->getMockWithoutInvokingTheOriginalConstructor`` methods MUST be
+  replaced by ``->createMock`` method.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+* **php_unit_namespaced** [@PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+
+  PHPUnit classes MUST be used in namespaced version, eg
+  ``\PHPUnit\Framework\TestCase`` instead of ``\PHPUnit_Framework_TestCase``.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``target`` (``'4.8'``, ``'5.7'``, ``'6.0'``, ``'newest'``): target version of PHPUnit;
+    defaults to ``'newest'``
+
+* **php_unit_no_expectation_annotation** [@PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+
+  Usages of ``@expectedException*`` annotations MUST be replaced by
+  ``->setExpectedException*`` methods.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``target`` (``'3.2'``, ``'4.3'``, ``'newest'``): target version of PHPUnit; defaults to
+    ``'newest'``
+  - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
 * **php_unit_strict**
 
@@ -1105,9 +1180,10 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the function ``pow()`` is overridden.*
 
-* **pre_increment** [@Symfony]
+* **pre_increment**
 
   Pre incrementation/decrementation should be used if possible.
+  DEPRECATED: use ``increment_style`` instead.
 
 * **protected_to_private** [@Symfony]
 
@@ -1178,8 +1254,6 @@ Choose from the list of available rules:
 
   A return statement wishing to return ``void`` should not return ``null``.
 
-  *Risky rule: risky since PHP 7.1 as ``null`` and ``void`` can be hinted as return type and have different meaning.*
-
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
 
   A PHP file without end tag must always end with a single empty line
@@ -1208,7 +1282,7 @@ Choose from the list of available rules:
   Each namespace use MUST go on its own line and there MUST be one blank
   line after the use statements block.
 
-* **single_line_comment_style**
+* **single_line_comment_style** [@Symfony]
 
   Single-line comments and multi-line comments with only one line of
   actual content should use the ``//`` syntax.
@@ -1326,7 +1400,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.7.4/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.3/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

@@ -42,7 +42,8 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
  * @internal
  * @author someone
  */
-function foo() {}',
+function foo() {}
+',
                     ['annotations' => ['author']]
                 ),
             ]

@@ -30,7 +30,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Using `isset(X) &&` multiple times should be done in one call.',
-            [new CodeSample("<?php\n\$a = isset(\$a) && isset(\$b);")]
+            [new CodeSample("<?php\n\$a = isset(\$a) && isset(\$b);\n")]
         );
     }
 

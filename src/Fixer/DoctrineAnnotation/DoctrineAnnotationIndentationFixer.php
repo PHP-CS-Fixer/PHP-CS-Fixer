@@ -30,9 +30,9 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         return new FixerDefinition(
             'Doctrine annotations must be indented with four spaces.',
             [
-                new CodeSample("<?php\n/**\n *  @Foo(\n *   foo=\"foo\"\n *  )\n */\nclass Bar {}"),
+                new CodeSample("<?php\n/**\n *  @Foo(\n *   foo=\"foo\"\n *  )\n */\nclass Bar {}\n"),
                 new CodeSample(
-                    "<?php\n/**\n *  @Foo({@Bar,\n *   @Baz})\n */\nclass Bar {}",
+                    "<?php\n/**\n *  @Foo({@Bar,\n *   @Baz})\n */\nclass Bar {}\n",
                     ['indent_mixed_lines' => true]
                 ),
             ]

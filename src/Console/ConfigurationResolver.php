@@ -24,6 +24,7 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -117,6 +118,7 @@ final class ConfigurationResolver
         'cache-file' => null,
         'config' => null,
         'diff' => null,
+        'diff-format' => null,
         'dry-run' => null,
         'format' => null,
         'path' => [],
@@ -266,15 +268,26 @@ final class ConfigurationResolver
             $mapper = [
                 'null' => function () { return new NullDiffer(); },
                 'sbd' => function () { return new SebastianBergmannDiffer(); },
+                'udiff' => function () { return new UnifiedDiffer(); },
             ];
 
-            $option = $this->options['diff'] ? 'sbd' : 'null';
+            if ($this->options['diff-format']) {
+                $option = $this->options['diff-format'];
+                if (!isset($mapper[$option])) {
+                    throw new InvalidConfigurationException(sprintf(
+                        '"diff-format" must be any of "%s", got "%s".',
+                        implode('", "', array_keys($mapper)),
+                        $option
+                    ));
+                }
+            } else {
+                $default = 'sbd'; // @TODO: 3.0 change to udiff as default
 
-            if (!isset($mapper[$option])) {
-                throw new InvalidConfigurationException(sprintf(
-                    'Differ must be "sbd" or "null", got "%s".',
-                    $this->options['diff']
-                ));
+                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                    $default = 'udiff';
+                }
+
+                $option = $this->options['diff'] ? $default : 'null';
             }
 
             $this->differ = $mapper[$option]();
@@ -397,7 +410,13 @@ final class ConfigurationResolver
                 $progressTypes = ['none', 'run-in', 'estimating', 'estimating-max'];
 
                 if (null === $progressType) {
-                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'run-in';
+                    $default = 'run-in';
+
+                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                        $default = 'estimating-max';
+                    }
+
+                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : $default;
                 } elseif (!in_array($progressType, $progressTypes, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are "%s".',
@@ -866,6 +885,10 @@ final class ConfigurationResolver
 
         if ('no' === $value) {
             return false;
+        }
+
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            throw new InvalidConfigurationException(sprintf('Expected "yes" or "no" for option "%s", got "%s".  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.', $optionName, $value));
         }
 
         @trigger_error(

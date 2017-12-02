@@ -33,7 +33,7 @@ final class LowercaseConstantsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The PHP constants `true`, `false`, and `null` MUST be in lower case.',
-            [new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;")]
+            [new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;\n")]
         );
     }
 
