@@ -17,6 +17,8 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
@@ -81,9 +83,12 @@ class SomeClass
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $fullNameOnly = function (array $info) { return $info['fullName']; };
-        $namespaces = array_map($fullNameOnly, (new NamespacesAnalyzer())->getDeclarations($tokens));
-        $useMap = array_map($fullNameOnly, (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens));
+        $namespaces = array_map(function (NamespaceAnalysis $info) {
+            return $info->getFullName();
+        }, (new NamespacesAnalyzer())->getDeclarations($tokens));
+        $useMap = array_map(function (NamespaceUseAnalysis $info) {
+            return $info->getFullName();
+        }, (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens));
 
         if (!count($namespaces) && !count($useMap)) {
             return;
@@ -114,18 +119,18 @@ class SomeClass
         $arguments = (new FunctionsAnalyzer())->getFunctionArguments($tokens, $index);
 
         foreach ($arguments as $argument) {
-            if (!$argument['type'] || $argument['type_index_start'] < 0) {
+            if (!$argument->hasType()) {
                 continue;
             }
 
-            $shortType = $this->detectShortType($argument['type'], $namespaces, $useMap);
-            if ($shortType === $argument['type']) {
+            $shortType = $this->detectShortType($argument->getType(), $namespaces, $useMap);
+            if ($shortType === $argument->getType()) {
                 continue;
             }
 
             $tokens->overrideRange(
-                $argument['type_index_start'],
-                $argument['type_index_end'],
+                $argument->getTypeIndexStart(),
+                $argument->getTypeIndexEnd(),
                 $this->generateTokensForShortType($shortType)
             );
         }
@@ -144,14 +149,14 @@ class SomeClass
             return;
         }
 
-        $shortType = $this->detectShortType($returnType['type'], $namespaces, $useMap);
-        if ($shortType === $returnType['type']) {
+        $shortType = $this->detectShortType($returnType->getType(), $namespaces, $useMap);
+        if ($shortType === $returnType->getType()) {
             return;
         }
 
         $tokens->overrideRange(
-            $returnType['start_index'],
-            $returnType['end_index'],
+            $returnType->getStartIndex(),
+            $returnType->getEndIndex(),
             $this->generateTokensForShortType($shortType)
         );
     }
@@ -200,7 +205,7 @@ class SomeClass
     /**
      * @param string $shortType
      *
-     * @return array
+     * @return Token[]
      */
     private function generateTokensForShortType($shortType)
     {

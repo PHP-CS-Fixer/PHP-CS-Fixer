@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +29,7 @@ final class NamespacesAnalyzerTest extends TestCase
     /**
      * @param string $code
      * @param array  $expected
+     *
      * @dataProvider provideNamespacesCases
      */
     public function testNamespaces($code, $expected)
@@ -35,7 +37,7 @@ final class NamespacesAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespacesAnalyzer();
 
-        $this->assertSame($expected, $analyzer->getDeclarations($tokens));
+        $this->assertEquals($expected, $analyzer->getDeclarations($tokens));
     }
 
     public function provideNamespacesCases()
@@ -43,26 +45,26 @@ final class NamespacesAnalyzerTest extends TestCase
         return [
             ['<?php // no namespaces', []],
             ['<?php namespace Foo\Bar;', [
-                [
-                    'fullName' => 'Foo\Bar',
-                    'shortName' => 'Bar',
-                    'start' => 1,
-                    'end' => 6,
-                ],
+                new NamespaceAnalysis(
+                    'Foo\Bar',
+                    'Bar',
+                    1,
+                    6
+                ),
             ]],
             ['<?php namespace Foo\Bar{}; namespace Foo\Baz {};', [
-                [
-                    'fullName' => 'Foo\Bar',
-                    'shortName' => 'Bar',
-                    'start' => 1,
-                    'end' => 6,
-                ],
-                [
-                    'fullName' => 'Foo\Baz',
-                    'shortName' => 'Baz',
-                    'start' => 10,
-                    'end' => 16,
-                ],
+                new NamespaceAnalysis(
+                    'Foo\Bar',
+                    'Bar',
+                    1,
+                    6
+                ),
+                new NamespaceAnalysis(
+                    'Foo\Baz',
+                    'Baz',
+                    10,
+                    16
+                ),
             ]],
         ];
     }

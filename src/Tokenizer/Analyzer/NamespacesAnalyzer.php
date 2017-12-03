@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -19,6 +20,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NamespacesAnalyzer
 {
+    /**
+     * @param Tokens $tokens
+     * @return NamespaceAnalysis[]
+     */
     public function getDeclarations(Tokens $tokens)
     {
         $namespaces = [];
@@ -33,12 +38,7 @@ final class NamespacesAnalyzer
             $declarationParts = explode('\\', $namespace);
             $shortName = end($declarationParts);
 
-            $namespaces[] = [
-                'fullName' => $namespace,
-                'shortName' => $shortName,
-                'start' => $index,
-                'end' => $declarationEndIndex,
-            ];
+            $namespaces[] = new NamespaceAnalysis($namespace, $shortName, $index, $declarationEndIndex);
         }
 
         return $namespaces;

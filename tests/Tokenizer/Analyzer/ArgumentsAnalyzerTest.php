@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -38,8 +39,8 @@ final class ArgumentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
 
-        $this->assertSame(count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
-        $this->assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
+        $this->assertEquals(count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
+        $this->assertEquals($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
     /**
@@ -47,6 +48,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      * @param int    $openIndex
      * @param int    $closeIndex
      * @param array  $expected
+     *
      * @dataProvider provideArgumentsInfoCases
      */
     public function testArgumentInfo($code, $openIndex, $closeIndex, $expected)
@@ -54,7 +56,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
 
-        $this->assertSame($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
+        $this->assertEquals($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
     public function provideArgumentsCases()
@@ -70,70 +72,70 @@ final class ArgumentsAnalyzerTest extends TestCase
     public function provideArgumentsInfoCases()
     {
         return [
-            ['<?php function($a){};', 3, 3, [
-                'default' => '',
-                'name' => '$a',
-                'name_index' => 3,
-                'type' => '',
-                'type_index_start' => -1,
-                'type_index_end' => -1,
-            ]],
-            ['<?php function($a, $b){};', 5, 6, [
-                'default' => '',
-                'name' => '$b',
-                'name_index' => 6,
-                'type' => '',
-                'type_index_start' => -1,
-                'type_index_end' => -1,
-            ]],
-            ['<?php function($a, $b = array(1,2), $c = 3){};', 3, 3, [
-                'default' => '',
-                'name' => '$a',
-                'name_index' => 3,
-                'type' => '',
-                'type_index_start' => -1,
-                'type_index_end' => -1,
-            ]],
-            ['<?php function($a, $b = array(1,2), $c = 3){};', 5, 15, [
-                'default' => 'array(1,2)',
-                'name' => '$b',
-                'name_index' => 6,
-                'type' => '',
-                'type_index_start' => -1,
-                'type_index_end' => -1,
-            ]],
-            ['<?php function($a, $b = array(1,2), $c = 3){};', 17, 22, [
-                'default' => '3',
-                'name' => '$c',
-                'name_index' => 18,
-                'type' => '',
-                'type_index_start' => -1,
-                'type_index_end' => -1,
-            ]],
-            ['<?php function(array $a = array()){};', 3, 11, [
-                'default' => 'array()',
-                'name' => '$a',
-                'name_index' => 5,
-                'type' => 'array',
-                'type_index_start' => 3,
-                'type_index_end' => 3,
-            ]],
-            ['<?php function(array ... $a){};', 3, 7, [
-                'default' => '',
-                'name' => '$a',
-                'name_index' => 7,
-                'type' => 'array',
-                'type_index_start' => 3,
-                'type_index_end' => 3,
-            ]],
-            ['<?php function(\Foo\Bar $a){};', 3, 8, [
-                'default' => '',
-                'name' => '$a',
-                'name_index' => 8,
-                'type' => '\Foo\Bar',
-                'type_index_start' => 3,
-                'type_index_end' => 6,
-            ]],
+            ['<?php function($a){};', 3, 3, new ArgumentAnalysis(
+                '$a',
+                3,
+                null,
+                null,
+                null,
+                null
+            )],
+            ['<?php function($a, $b){};', 5, 6, new ArgumentAnalysis(
+                '$b',
+                6,
+                null,
+                null,
+                null,
+                null
+            )],
+            ['<?php function($a, $b = array(1,2), $c = 3){};', 3, 3, new ArgumentAnalysis(
+                '$a',
+                3,
+                null,
+                null,
+                null,
+                null
+            )],
+            ['<?php function($a, $b = array(1,2), $c = 3){};', 5, 15, new ArgumentAnalysis(
+                '$b',
+                6,
+                'array(1,2)',
+                null,
+                null,
+                null
+            )],
+            ['<?php function($a, $b = array(1,2), $c = 3){};', 17, 22, new ArgumentAnalysis(
+                '$c',
+                18,
+                '3',
+                null,
+                null,
+                null
+            )],
+            ['<?php function(array $a = array()){};', 3, 11, new ArgumentAnalysis(
+                '$a',
+                5,
+                'array()',
+                'array',
+                3,
+                3
+            )],
+            ['<?php function(array ... $a){};', 3, 7, new ArgumentAnalysis(
+                '$a',
+                7,
+                null,
+                'array',
+                3,
+                3
+            )],
+            ['<?php function(\Foo\Bar $a){};', 3, 8, new ArgumentAnalysis(
+                '$a',
+                8,
+                null,
+                '\Foo\Bar',
+                3,
+                6
+            )],
         ];
     }
 }

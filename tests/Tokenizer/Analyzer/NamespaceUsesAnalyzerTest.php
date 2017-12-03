@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +29,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
     /**
      * @param string $code
      * @param array  $expected
+     *
      * @dataProvider provideNamespaceUsesCases
      */
     public function testUsesFromTokens($code, $expected)
@@ -35,13 +37,14 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespaceUsesAnalyzer();
 
-        $this->assertSame($expected, $analyzer->getDeclarationsFromTokens($tokens));
+        $this->assertEquals($expected, $analyzer->getDeclarationsFromTokens($tokens));
     }
 
     /**
      * @param string $code
      * @param array  $expected
      * @param array  $useIndexes
+     *
      * @dataProvider provideNamespaceUsesCases
      */
     public function testUsesFromIndexes($code, $expected, $useIndexes)
@@ -49,7 +52,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespaceUsesAnalyzer();
 
-        $this->assertSame($expected, $analyzer->getDeclarations($tokens, $useIndexes));
+        $this->assertEquals($expected, $analyzer->getDeclarations($tokens, $useIndexes));
     }
 
     public function provideNamespaceUsesCases()
@@ -57,56 +60,56 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         return [
             ['<?php // no uses', [], []],
             ['<?php use Foo\Bar;', [
-                'Bar' => [
-                    'fullName' => 'Foo\Bar',
-                    'shortName' => 'Bar',
-                    'aliased' => false,
-                    'start' => 1,
-                    'end' => 6,
-                ],
+                'Bar' => new NamespaceUseAnalysis(
+                    'Foo\Bar',
+                    'Bar',
+                    false,
+                    1,
+                    6
+                ),
             ], [1]],
             ['<?php use Foo\Bar; use Foo\Baz;', [
-                'Bar' => [
-                    'fullName' => 'Foo\Bar',
-                    'shortName' => 'Bar',
-                    'aliased' => false,
-                    'start' => 1,
-                    'end' => 6,
-                ],
-                'Baz' => [
-                    'fullName' => 'Foo\Baz',
-                    'shortName' => 'Baz',
-                    'aliased' => false,
-                    'start' => 8,
-                    'end' => 13,
-                ],
+                'Bar' => new NamespaceUseAnalysis(
+                    'Foo\Bar',
+                    'Bar',
+                    false,
+                    1,
+                    6
+                ),
+                'Baz' => new NamespaceUseAnalysis(
+                    'Foo\Baz',
+                    'Baz',
+                    false,
+                    8,
+                    13
+                ),
             ], [1, 8]],
             ['<?php use \Foo\Bar;', [
-                'Bar' => [
-                    'fullName' => '\Foo\Bar',
-                    'shortName' => 'Bar',
-                    'aliased' => false,
-                    'start' => 1,
-                    'end' => 7,
-                ],
+                'Bar' => new NamespaceUseAnalysis(
+                    '\Foo\Bar',
+                    'Bar',
+                    false,
+                    1,
+                    7
+                ),
             ], [1]],
             ['<?php use Foo\Bar as Baz;', [
-                'Baz' => [
-                    'fullName' => 'Foo\Bar',
-                    'shortName' => 'Baz',
-                    'aliased' => true,
-                    'start' => 1,
-                    'end' => 10,
-                ],
+                'Baz' => new NamespaceUseAnalysis(
+                    'Foo\Bar',
+                    'Baz',
+                    true,
+                    1,
+                    10
+                ),
             ], [1]],
             ['<?php use Foo\Bar as Baz; use Foo\Buz as Baz;', [
-                'Baz' => [
-                    'fullName' => 'Foo\Buz',
-                    'shortName' => 'Baz',
-                    'aliased' => true,
-                    'start' => 12,
-                    'end' => 21,
-                ],
+                'Baz' => new NamespaceUseAnalysis(
+                    'Foo\Buz',
+                    'Baz',
+                    true,
+                    12,
+                    21
+                ),
             ], [1, 12]],
         ];
     }

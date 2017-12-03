@@ -15,6 +15,9 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -94,7 +97,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
     /**
      * @param string $content
-     * @param array  $useDeclarations
+     * @param NamespaceUseAnalysis[] $useDeclarations
      *
      * @return array
      */
@@ -111,7 +114,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
     /**
      * @param Tokens $tokens
-     * @param array  $partials
+     * @param StartEndTokenAwareAnalysis[] $partials
      *
      * @return string
      */
@@ -123,7 +126,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             $allowToAppend = true;
 
             foreach ($partials as $partial) {
-                if ($partial['start'] <= $index && $index <= $partial['end']) {
+                if ($partial->getStartIndex() <= $index && $index <= $partial->getEndIndex()) {
                     $allowToAppend = false;
 
                     break;
@@ -147,17 +150,17 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
     }
 
-    private function removeUseDeclaration(Tokens $tokens, array $useDeclaration)
+    private function removeUseDeclaration(Tokens $tokens, NamespaceUseAnalysis $useDeclaration)
     {
-        for ($index = $useDeclaration['end'] - 1; $index >= $useDeclaration['start']; --$index) {
+        for ($index = $useDeclaration->getEndIndex() - 1; $index >= $useDeclaration->getStartIndex(); --$index) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
 
-        if ($tokens[$useDeclaration['end']]->equals(';')) {
-            $tokens->clearAt($useDeclaration['end']);
+        if ($tokens[$useDeclaration->getEndIndex()]->equals(';')) {
+            $tokens->clearAt($useDeclaration->getEndIndex());
         }
 
-        $prevIndex = $useDeclaration['start'] - 1;
+        $prevIndex = $useDeclaration->getStartIndex() - 1;
         $prevToken = $tokens[$prevIndex];
 
         if ($prevToken->isWhitespace()) {
@@ -171,11 +174,11 @@ final class NoUnusedImportsFixer extends AbstractFixer
             $prevToken = $tokens[$prevIndex];
         }
 
-        if (!isset($tokens[$useDeclaration['end'] + 1])) {
+        if (!isset($tokens[$useDeclaration->getEndIndex() + 1])) {
             return;
         }
 
-        $nextIndex = $tokens->getNonEmptySibling($useDeclaration['end'], 1);
+        $nextIndex = $tokens->getNonEmptySibling($useDeclaration->getEndIndex(), 1);
         if (null === $nextIndex) {
             return;
         }
@@ -213,6 +216,11 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param NamespaceAnalysis[] $namespaceDeclarations
+     */
     private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, array $namespaceDeclarations)
     {
         // safeguard for files with multiple namespaces to avoid breaking them until we support this case
@@ -220,15 +228,15 @@ final class NoUnusedImportsFixer extends AbstractFixer
             return;
         }
 
-        $namespace = $namespaceDeclarations[0]['fullName'];
+        $namespace = $namespaceDeclarations[0]->getFullName();
         $nsLength = strlen($namespace.'\\');
 
         foreach ($useDeclarations as $useDeclaration) {
-            if ($useDeclaration['aliased']) {
+            if ($useDeclaration->isAliased()) {
                 continue;
             }
 
-            $useDeclarationFullName = ltrim($useDeclaration['fullName'], '\\');
+            $useDeclarationFullName = ltrim($useDeclaration->getFullName(), '\\');
 
             if (0 !== strpos($useDeclarationFullName, $namespace.'\\')) {
                 continue;

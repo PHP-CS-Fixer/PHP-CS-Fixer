@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -23,7 +24,7 @@ class NamespaceUsesAnalyzer
     /**
      * @param Tokens $tokens
      *
-     * @return array
+     * @return NamespaceUseAnalysis[]
      */
     public function getDeclarationsFromTokens(Tokens $tokens)
     {
@@ -37,7 +38,7 @@ class NamespaceUsesAnalyzer
      * @param Tokens $tokens
      * @param array  $useIndexes
      *
-     * @return array
+     * @return NamespaceUseAnalysis[]
      */
     public function getDeclarations(Tokens $tokens, array $useIndexes)
     {
@@ -68,13 +69,13 @@ class NamespaceUsesAnalyzer
 
             $shortName = trim($shortName);
 
-            $uses[$shortName] = [
-                'fullName' => trim($fullName),
-                'shortName' => $shortName,
-                'aliased' => $aliased,
-                'start' => $index,
-                'end' => $declarationEndIndex,
-            ];
+            $uses[$shortName] = new NamespaceUseAnalysis(
+                trim($fullName),
+                $shortName,
+                $aliased,
+                $index,
+                $declarationEndIndex
+            );
         }
 
         return $uses;

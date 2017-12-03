@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -89,17 +90,17 @@ final class ArgumentsAnalyzer
      * @param int    $argumentStart
      * @param int    $argumentEnd
      *
-     * @return array
+     * @return ArgumentAnalysis
      */
     public function getArgumentInfo(Tokens $tokens, $argumentStart, $argumentEnd)
     {
         $info = [
-            'default' => '',
-            'name' => '',
-            'name_index' => -1,
-            'type' => '',
-            'type_index_start' => -1,
-            'type_index_end' => -1,
+            'default' => null,
+            'name' => null,
+            'name_index' => null,
+            'type' => null,
+            'type_index_start' => null,
+            'type_index_end' => null,
         ];
 
         $sawName = false;
@@ -127,6 +128,13 @@ final class ArgumentsAnalyzer
             }
         }
 
-        return $info;
+        return new ArgumentAnalysis(
+            $info['name'],
+            $info['name_index'],
+            $info['default'],
+            $info['type'],
+            $info['type_index_start'],
+            $info['type_index_end']
+        );
     }
 }

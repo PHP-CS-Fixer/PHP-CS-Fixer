@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\FunctionReturnTypeAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -23,7 +25,7 @@ final class FunctionsAnalyzer
      * @param Tokens $tokens
      * @param int    $methodIndex
      *
-     * @return array
+     * @return ArgumentAnalysis[]
      */
     public function getFunctionArguments(Tokens $tokens, $methodIndex)
     {
@@ -34,7 +36,7 @@ final class FunctionsAnalyzer
 
         foreach ($argumentAnalyzer->getArguments($tokens, $argumentsStart, $argumentsEnd) as $start => $end) {
             $argumentInfo = $argumentAnalyzer->getArgumentInfo($tokens, $start, $end);
-            $arguments[$argumentInfo['name']] = $argumentInfo;
+            $arguments[$argumentInfo->getName()] = $argumentInfo;
         }
 
         return $arguments;
@@ -44,7 +46,7 @@ final class FunctionsAnalyzer
      * @param Tokens $tokens
      * @param int    $methodIndex
      *
-     * @return array
+     * @return FunctionReturnTypeAnalysis|null
      */
     public function getFunctionReturnType(Tokens $tokens, $methodIndex)
     {
@@ -52,7 +54,7 @@ final class FunctionsAnalyzer
         $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
         $typeColonIndex = $tokens->getNextMeaningfulToken($argumentsEnd);
         if (':' !== $tokens[$typeColonIndex]->getContent()) {
-            return [];
+            return null;
         }
 
         $type = '';
@@ -68,10 +70,6 @@ final class FunctionsAnalyzer
             $typeEndIndex = $i;
         }
 
-        return [
-            'type' => $type,
-            'start_index' => $typeStartIndex,
-            'end_index' => $typeEndIndex,
-        ];
+        return new FunctionReturnTypeAnalysis($type, $typeStartIndex, $typeEndIndex);
     }
 }
