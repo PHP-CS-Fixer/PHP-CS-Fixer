@@ -711,6 +711,136 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testWhenImportedClassNameIsPrefixWithDashOfConstant()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+class Dummy
+{
+    const C = 'bar-bados';
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+class Dummy
+{
+    const C = 'bar-bados';
+}
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testWhenImportedClassNameIsSuffixWithDashOfConstant()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+class Dummy
+{
+    const C = 'tool-bar';
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+class Dummy
+{
+    const C = 'tool-bar';
+}
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testWhenImportedClassNameIsInsideWithDashOfConstant()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+class Dummy
+{
+    const C = 'tool-bar-bados';
+}
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+class Dummy
+{
+    const C = 'tool-bar-bados';
+}
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string $expected
+     *
+     * @dataProvider provideWhenImportedClassIsUsedForConstantsCases
+     */
+    public function testWhenImportedClassIsUsedForConstants($expected)
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideWhenImportedClassIsUsedForConstantsCases()
+    {
+        return array(
+            array(
+                '<?php
+use A\ABC;
+$a = 5-ABC::Test;
+$a = 5-ABC::Test-5;
+$a = ABC::Test-5;
+',
+            ),
+            array(
+                '<?php
+use A\ABC;
+$a = 5-ABC::Test;
+$a = 5-ABC::Test-5;
+',
+            ),
+            array(
+                '<?php
+use A\ABC;
+$a = 5-ABC::Test;
+',
+            ),
+            array('<?php
+use A\ABC;
+$a = ABC::Test-5;
+',
+            ),
+            array('<?php
+use A\ABC;
+$a = 5-ABC::Test-5;
+',
+            ),
+            array('<?php
+use A\ABC;
+$b = $a-->ABC::Test;
+',
+            ),
+        );
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
