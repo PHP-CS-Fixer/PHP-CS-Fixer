@@ -22,6 +22,7 @@ final class NamespacesAnalyzer
 {
     /**
      * @param Tokens $tokens
+     *
      * @return NamespaceAnalysis[]
      */
     public function getDeclarations(Tokens $tokens)

@@ -23,44 +23,36 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {
-    public function testImportedStrictTypesFixWithoutReturn()
+    /**
+     * @requires PHP 7.0
+     *
+     * @dataProvider provideCodeWithReturnTypesCases
+     *
+     * @param mixed      $expected
+     * @param null|mixed $input
+     */
+    public function testCodeWithReturnTypes($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-class SomeClass
-{
-    public function doSomething(Bar $foo)
-    {
-    }
-}
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-class SomeClass
-{
-    public function doSomething(\Foo\Bar $foo)
-    {
-    }
-}
-EOF;
-
         $this->doTest($expected, $input);
     }
 
     /**
-     * @requires PHP 7.0
+     * @dataProvider provideCodeWithoutReturnTypesCases
+     *
+     * @param mixed      $expected
+     * @param null|mixed $input
      */
-    public function testImportedStrictTypesFixWithReturn()
+    public function testCodeWithoutReturnTypes($expected, $input = null)
     {
-        $expected = <<<'EOF'
-<?php
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCodeWithReturnTypesCases()
+    {
+        return [
+            // Import common strict types:
+            [
+                '<?php
 
 use Foo\Bar;
 use Foo\Bar\Baz;
@@ -70,11 +62,8 @@ class SomeClass
     public function doSomething(Bar $foo): Baz
     {
     }
-}
-EOF;
-
-        $input = <<<'EOF'
-<?php
+}',
+                '<?php
 
 use Foo\Bar;
 use Foo\Bar\Baz;
@@ -84,50 +73,11 @@ class SomeClass
     public function doSomething(\Foo\Bar $foo): \Foo\Bar\Baz
     {
     }
-}
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testNamespaceFixesWithoutReturn()
-    {
-        $expected = <<<'EOF'
-<?php
-
-namespace Foo\Bar;
-
-class SomeClass
-{
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
-    {
-    }
-}
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-namespace Foo\Bar;
-
-class SomeClass
-{
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
-    {
-    }
-}
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @requires PHP 7.0
-     */
-    public function testNamespaceFixesWithReturn()
-    {
-        $expected = <<<'EOF'
-<?php
+}',
+            ],
+            // Test namespace fixes:
+            [
+                '<?php
 
 namespace Foo\Bar;
 
@@ -138,11 +88,8 @@ class SomeClass
     public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz
     {
     }
-}
-EOF;
-
-        $input = <<<'EOF'
-<?php
+}',
+                '<?php
 
 namespace Foo\Bar;
 
@@ -153,41 +100,11 @@ class SomeClass
     public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz
     {
     }
-}
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testMultiNamespaceFixesWithoutReturn()
-    {
-        $expected = <<<'EOF'
-<?php
-namespace Foo\Other {
-}
-
-namespace Foo\Bar {
-    class SomeClass
-    {
-        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
-        {
-        }
-    }
-}
-
-
-EOF;
-
-        $this->doTest($expected, null);
-    }
-
-    /**
-     * @requires PHP 7.0
-     */
-    public function testMultiNamespaceFixesWithReturn()
-    {
-        $expected = <<<'EOF'
-<?php
+}',
+            ],
+            // Test multi namespace fixes
+            [
+                '<?php
 namespace Foo\Other {
 }
 
@@ -200,37 +117,78 @@ namespace Foo\Bar {
         {
         }
     }
-}
+}',
+            ],
+        ];
+    }
 
+    public function provideCodeWithoutReturnTypesCases()
+    {
+        return [
+            // Import common strict types:
+            [
+                '<?php
 
-EOF;
+use Foo\Bar;
 
-        $input = <<<'EOF'
-<?php
+class SomeClass
+{
+    public function doSomething(Bar $foo)
+    {
+    }
+}',
+                '<?php
+
+use Foo\Bar;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar $foo)
+    {
+    }
+}',
+            ],
+            // Test namespace fixes:
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+class SomeClass
+{
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
+    {
+    }
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+    {
+    }
+}',
+            ],
+            // Test multi namespace fixes
+            [
+                '<?php
 namespace Foo\Other {
 }
 
 namespace Foo\Bar {
-    use Foo\Bar\Baz;
-
     class SomeClass
     {
-        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz
+        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
         {
         }
     }
-}
-
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testPartialNamespaces()
-    {
-        $expected = <<<'EOF'
-<?php
+}',
+            ],
+            // Test partial namespace and use imports
+            [
+                '<?php
 
 namespace Ping\Pong;
 
@@ -249,11 +207,8 @@ class SomeClass
         Pyng\Pung\Pong $pongpyngpangpang,
         Bar\Baz\Buz $bazbuz
     ){}
-}
-EOF;
-
-        $input = <<<'EOF'
-<?php
+}',
+                '<?php
 
 namespace Ping\Pong;
 
@@ -272,9 +227,8 @@ class SomeClass
         \Ping\Pong\Pyng\Pung\Pong $pongpyngpangpang,
         \Foo\Bar\Baz\Buz $bazbuz
     ){}
-}
-EOF;
-
-        $this->doTest($expected, $input);
+}',
+            ],
+        ];
     }
 }

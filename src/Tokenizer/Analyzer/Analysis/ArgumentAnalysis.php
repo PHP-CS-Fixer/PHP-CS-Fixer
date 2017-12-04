@@ -17,11 +17,10 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  */
 final class ArgumentAnalysis
 {
-
     /**
      * The default value of the argument.
      *
-     * @var string|null
+     * @var null|string
      */
     private $default;
 
@@ -42,28 +41,29 @@ final class ArgumentAnalysis
     /**
      * The type of the argument.
      *
-     * @var string|null
+     * @var null|string
      */
     private $type;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $typeIndexStart;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $typeIndexEnd;
 
     /**
      * ArgumentAnalysis constructor.
-     * @param string $name
-     * @param int $nameIndex
-     * @param string|null $default
-     * @param string|null $type
-     * @param int|null $typeIndexStart
-     * @param int|null $typeIndexEnd
+     *
+     * @param string      $name
+     * @param int         $nameIndex
+     * @param null|string $default
+     * @param null|string $type
+     * @param null|int    $typeIndexStart
+     * @param null|int    $typeIndexEnd
      */
     public function __construct($name, $nameIndex, $default, $type, $typeIndexStart, $typeIndexEnd)
     {
@@ -124,7 +124,7 @@ final class ArgumentAnalysis
     }
 
     /**
-     * @return int|null
+     * @return null|int
      */
     public function getTypeIndexStart()
     {
@@ -132,7 +132,7 @@ final class ArgumentAnalysis
     }
 
     /**
-     * @return int|null
+     * @return null|int
      */
     public function getTypeIndexEnd()
     {

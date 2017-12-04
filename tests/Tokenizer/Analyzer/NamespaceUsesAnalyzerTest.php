@@ -37,7 +37,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespaceUsesAnalyzer();
 
-        $this->assertEquals($expected, $analyzer->getDeclarationsFromTokens($tokens));
+        $this->assertSame(serialize($expected), serialize($analyzer->getDeclarationsFromTokens($tokens)));
     }
 
     /**
@@ -52,7 +52,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespaceUsesAnalyzer();
 
-        $this->assertEquals($expected, $analyzer->getDeclarations($tokens, $useIndexes));
+        $this->assertSame(serialize($expected), serialize($analyzer->getDeclarations($tokens, $useIndexes)));
     }
 
     public function provideNamespaceUsesCases()

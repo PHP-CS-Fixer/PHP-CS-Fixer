@@ -96,7 +96,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     }
 
     /**
-     * @param string $content
+     * @param string                 $content
      * @param NamespaceUseAnalysis[] $useDeclarations
      *
      * @return array
@@ -113,7 +113,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
+     * @param Tokens                       $tokens
      * @param StartEndTokenAwareAnalysis[] $partials
      *
      * @return string
@@ -217,9 +217,9 @@ final class NoUnusedImportsFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
+     * @param Tokens                 $tokens
      * @param NamespaceUseAnalysis[] $useDeclarations
-     * @param NamespaceAnalysis[] $namespaceDeclarations
+     * @param NamespaceAnalysis[]    $namespaceDeclarations
      */
     private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, array $namespaceDeclarations)
     {

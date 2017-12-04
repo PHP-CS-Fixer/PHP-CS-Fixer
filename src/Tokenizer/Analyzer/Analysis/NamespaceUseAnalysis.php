@@ -54,11 +54,12 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
 
     /**
      * NamespaceAnalysis constructor.
+     *
      * @param string $fullName
      * @param string $shortName
-     * @param bool $aliased
-     * @param int $startIndex
-     * @param int $endIndex
+     * @param bool   $aliased
+     * @param int    $startIndex
+     * @param int    $endIndex
      */
     public function __construct($fullName, $shortName, $aliased, $startIndex, $endIndex)
     {

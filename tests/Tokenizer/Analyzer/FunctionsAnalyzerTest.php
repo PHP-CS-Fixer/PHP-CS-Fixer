@@ -39,7 +39,7 @@ final class FunctionsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        $this->assertEquals($expected, $analyzer->getFunctionArguments($tokens, $methodIndex));
+        $this->assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
     /**
@@ -54,7 +54,7 @@ final class FunctionsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        $this->assertEquals($expected, $analyzer->getFunctionReturnType($tokens, $methodIndex));
+        $this->assertSame(serialize($expected), serialize($analyzer->getFunctionReturnType($tokens, $methodIndex)));
     }
 
     public function provideFunctionsWithArgumentsCases()

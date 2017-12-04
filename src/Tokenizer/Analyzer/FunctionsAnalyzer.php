@@ -46,7 +46,7 @@ final class FunctionsAnalyzer
      * @param Tokens $tokens
      * @param int    $methodIndex
      *
-     * @return FunctionReturnTypeAnalysis|null
+     * @return null|FunctionReturnTypeAnalysis
      */
     public function getFunctionReturnType(Tokens $tokens, $methodIndex)
     {

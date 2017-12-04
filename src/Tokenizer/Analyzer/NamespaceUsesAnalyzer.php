@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @internal
  */
-class NamespaceUsesAnalyzer
+final class NamespaceUsesAnalyzer
 {
     /**
      * @param Tokens $tokens
