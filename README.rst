@@ -1207,6 +1207,12 @@ Choose from the list of available rules:
 
   Classy that does not inherit must not have inheritdoc tags.
 
+* **phpdoc_opening_closing**
+
+  DocBlocks must start with two asterisks, multiline comments must start
+  with a single asterisk, after the opening slash. Both must end with a
+  single asterisk before the closing slash.
+
 * **phpdoc_order**
 
   Annotations in phpdocs should be ordered so that param annotations come
