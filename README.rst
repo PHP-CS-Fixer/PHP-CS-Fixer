@@ -755,6 +755,12 @@ Choose from the list of available rules:
 
   *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
 
+* **multiline_comment_opening_closing**
+
+  DocBlocks must start with two asterisks, multiline comments must start
+  with a single asterisk, after the opening slash. Both must end with a
+  single asterisk before the closing slash.
+
 * **multiline_whitespace_before_semicolons**
 
   Forbid multi-line whitespace before the closing semicolon or move the
