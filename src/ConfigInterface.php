@@ -37,7 +37,7 @@ interface ConfigInterface
     /**
      * Returns files to scan.
      *
-     * @return iterable|string[]|\Traversable|Finder
+     * @return Finder|iterable|string[]|\Traversable
      */
     public function getFinder();
 
@@ -121,7 +121,7 @@ interface ConfigInterface
     public function setCacheFile($cacheFile);
 
     /**
-     * @param iterable|string[]|\Traversable|Finder $finder
+     * @param Finder|iterable|string[]|\Traversable $finder
      *
      * @return self
      */
