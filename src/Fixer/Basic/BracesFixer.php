@@ -383,7 +383,7 @@ class Foo
 
                         if ($nextLineCanBeIndented || $i === $startBraceIndex) {
                             $nextToken = $tokens[$nestIndex + 1];
-                            $nextLineCanBeIndented = $nextToken->isWhitespace() && 1 === preg_match('/\R/', $nextToken->getContent());
+                            $nextLineCanBeIndented = $nextToken->isWhitespace() && 1 === preg_match('/\R/u', $nextToken->getContent());
                         }
                     }
 
@@ -398,7 +398,7 @@ class Foo
                         // next Token is not a comment on its own line
                         !($nextNonWhitespaceNestToken->isComment() && (
                             !$tokens[$nextNonWhitespaceNestIndex - 1]->isWhitespace()
-                            || !preg_match('/\R/', $tokens[$nextNonWhitespaceNestIndex - 1]->getContent())
+                            || !preg_match('/\R/u', $tokens[$nextNonWhitespaceNestIndex - 1]->getContent())
                         )) &&
                         // and it is not a `$foo = function () {};` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']', array(CT::T_ARRAY_SQUARE_BRACE_CLOSE)))) &&
@@ -854,15 +854,15 @@ class Foo
             // do not indent inline comments used to comment out unused code
             if (
                 (0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextToken->getContent())
-                && $previousToken->isWhitespace() && 1 === preg_match('/\R$/', $previousToken->getContent())
+                && $previousToken->isWhitespace() && 1 === preg_match('/\R$/u', $previousToken->getContent())
             ) {
                 return;
             }
             $tokens[$nextTokenIndex] = new Token(array(
                 $nextToken->getId(),
                 preg_replace(
-                    '/(\R)'.$this->detectIndent($tokens, $nextTokenIndex).'/',
-                    '$1'.preg_replace('/^.*\R([ \t]*)$/s', '$1', $whitespace),
+                    '/(\R)'.$this->detectIndent($tokens, $nextTokenIndex).'/u',
+                    '$1'.preg_replace('/^.*\R([ \t]*)$/su', '$1', $whitespace),
                     $nextToken->getContent()
                 ),
             ));
@@ -969,8 +969,8 @@ class Foo
 
         $newLines = 0;
         for ($i = min($siblingIndex, $index) + 1, $max = max($siblingIndex, $index); $i < $max; ++$i) {
-            if ($tokens[$i]->isWhitespace() && preg_match('/\R/', $tokens[$i]->getContent())) {
-                if (1 === $newLines || preg_match('/\R.*\R/', $tokens[$i]->getContent())) {
+            if ($tokens[$i]->isWhitespace() && preg_match('/\R/u', $tokens[$i]->getContent())) {
+                if (1 === $newLines || preg_match('/\R.*\R/u', $tokens[$i]->getContent())) {
                     return null;
                 }
 

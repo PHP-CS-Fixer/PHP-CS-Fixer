@@ -158,7 +158,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         //  2) no space after comma
         if ($nextToken->isWhitespace()) {
             if (
-                ($this->configuration['keep_multiple_spaces_after_comma'] && !preg_match('/\R/', $nextToken->getContent()))
+                ($this->configuration['keep_multiple_spaces_after_comma'] && !preg_match('/\R/u', $nextToken->getContent()))
                 || $this->isCommentLastLineToken($tokens, $index + 2)
             ) {
                 return;
