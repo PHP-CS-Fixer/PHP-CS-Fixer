@@ -875,4 +875,119 @@ final class Sample
             ],
         ];
     }
+
+    public function testDescriptionAlignTag()
+    {
+        $this->fixer->configure(['description_align' => 'tag']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     * ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *    ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignHint()
+    {
+        $this->fixer->configure(['description_align' => 'hint']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *        ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *    ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignName()
+    {
+        $this->fixer->configure(['description_align' => 'name']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *            ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *    ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignDescription()
+    {
+        $this->fixer->configure(['description_align' => 'description']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *               ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *    ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIndent()
+    {
+        $this->fixer->configure(['description_extra_indent' => 2]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *                 ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *    ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
 }

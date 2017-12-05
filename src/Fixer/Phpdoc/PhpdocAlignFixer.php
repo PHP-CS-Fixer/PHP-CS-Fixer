@@ -35,6 +35,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
 {
     private $regex;
     private $regexCommentLine;
+    private $descriptionAlign;
+    private $descriptionExtraIndent;
 
     private static $alignableTags = [
         'param',
@@ -78,6 +80,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
 
         $this->regex = '/^'.$indent.' \* @(?:'.$tagsWithName.'|'.$tagsWithoutName.'|'.$tagsWithMethodSignature.')'.$desc.'\s*$/u';
         $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)$/u';
+        $this->descriptionAlign = $this->configuration['description_align'];
+        $this->descriptionExtraIndent = $this->configuration['description_extra_indent'];
     }
 
     /**
@@ -158,7 +162,29 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             ])
         ;
 
-        return new FixerConfigurationResolver([$tags->getOption()]);
+        $descriptionAlign = new FixerOptionBuilder('description_align', 'The alignment of a description running over multiple lines.');
+        $descriptionAlign
+            ->setAllowedTypes(['string'])
+            ->setAllowedValues([
+                'tag',
+                'hint',
+                'name',
+                'description',
+            ])
+            ->setDefault('description')
+        ;
+
+        $descriptionExtraIndent = new FixerOptionBuilder('description_extra_indent', 'Extra indent for a description running over multiple lines.');
+        $descriptionExtraIndent
+            ->setAllowedTypes(['int'])
+            ->setDefault(0)
+        ;
+
+        return new FixerConfigurationResolver([
+            $tags->getOption(),
+            $descriptionAlign->getOption(),
+            $descriptionExtraIndent->getOption(),
+        ]);
     }
 
     /**
@@ -224,16 +250,28 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                         continue;
                     }
 
-                    $extraIndent = 2;
+                    $indent = 0;
+                    switch ($this->descriptionAlign) {
+                        case 'description':
+                            $indent += $varMax;
+                            if (in_array($currTag, self::$tagsWithName, true) || in_array($currTag, self::$tagsWithMethodSignature, true)) {
+                                ++$indent;
+                            }
+                            // no break
+                        case 'name':
+                            $indent += $hintMax + 1;
+                            // no break
+                        case 'hint':
+                            $indent += $tagMax + 2;
 
-                    if (in_array($currTag, self::$tagsWithName, true) || in_array($currTag, self::$tagsWithMethodSignature, true)) {
-                        $extraIndent = 3;
+                            break;
                     }
+                    $indent += $this->descriptionExtraIndent;
 
                     $line =
                         $item['indent']
-                        .' *  '
-                        .str_repeat(' ', $tagMax + $hintMax + $varMax + $extraIndent)
+                        .' * '
+                        .str_repeat(' ', max(0, $indent))
                         .$item['desc']
                         .$lineEnding;
 

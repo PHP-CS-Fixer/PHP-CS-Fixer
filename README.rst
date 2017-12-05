@@ -1071,6 +1071,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
+  - ``description_align`` (``'description'``, ``'hint'``, ``'name'``, ``'tag'``): the alignment
+    of a description running over multiple lines; defaults to ``'description'``
+  - ``description_extra_indent`` (``int``): extra indent for a description running
+    over multiple lines; defaults to ``0``
   - ``tags`` (``array``): the tags that should be aligned; defaults to ``['param',
     'return', 'throws', 'type', 'var']``
 
