@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.3/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -197,6 +197,7 @@ The ``--dry-run`` flag will run the fixer without making changes to your files.
 The ``--diff`` flag can be used to let the fixer output all the changes it makes.
 
 The ``--diff-format`` option allows to specify in which format the fixer should output the changes it makes:
+
 * ``udiff``: unified diff format;
 * ``sbd``: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
 
@@ -1255,8 +1256,6 @@ Choose from the list of available rules:
 
   A return statement wishing to return ``void`` should not return ``null``.
 
-  *Risky rule: risky since PHP 7.1 as ``null`` and ``void`` can be hinted as return type and have different meaning.*
-
 * **single_blank_line_at_eof** [@PSR2, @Symfony]
 
   A PHP file without end tag must always end with a single empty line
@@ -1403,7 +1402,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.1/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.3/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

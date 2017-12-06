@@ -62,7 +62,13 @@ final class ToolInfo implements ToolInfoInterface
     {
         $package = $this->getComposerInstallationDetails();
 
-        return $package['version'].'#'.$package['dist']['reference'];
+        $versionSuffix = '';
+
+        if (isset($package['dist'])) {
+            $versionSuffix = '#'.$package['dist']['reference'];
+        }
+
+        return $package['version'].$versionSuffix;
     }
 
     public function getVersion()
