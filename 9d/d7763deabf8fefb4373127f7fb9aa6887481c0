@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-05T22:19:02Z
+
+would it work if we remove config from global env setting and put it in phpunit config file?
