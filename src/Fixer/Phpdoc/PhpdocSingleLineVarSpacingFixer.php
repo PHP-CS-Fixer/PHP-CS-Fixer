@@ -32,7 +32,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Single line @var PHPDoc should have proper spacing.',
-            [new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();")]
+            [new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();\n")]
         );
     }
 

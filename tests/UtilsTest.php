@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Utils;
 use PHPUnit\Framework\TestCase;
@@ -150,10 +151,8 @@ final class UtilsTest extends TestCase
 
     public function testCalculateTrailingWhitespaceIndentFail()
     {
-        $this->setExpectedException(
-            \InvalidArgumentException::class,
-            'The given token must be whitespace, got "T_STRING".'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
 
         $token = new Token([T_STRING, 'foo']);
 
@@ -203,5 +202,70 @@ final class UtilsTest extends TestCase
                 'strcmp',
             ],
         ];
+    }
+
+    public function testSortFixers()
+    {
+        $fixers = [
+            $this->createFixerDouble('f1', 0),
+            $this->createFixerDouble('f2', -10),
+            $this->createFixerDouble('f3', 10),
+            $this->createFixerDouble('f4', -10),
+        ];
+
+        $this->assertSame(
+            [
+                $fixers[2],
+                $fixers[0],
+                $fixers[1],
+                $fixers[3],
+            ],
+            Utils::sortFixers($fixers)
+        );
+    }
+
+    public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Utils::naturalLanguageJoinWithBackticks([]);
+    }
+
+    /**
+     * @dataProvider provideNaturalLanguageJoinWithBackticksCases
+     *
+     * @param string $joined
+     * @param array  $names
+     */
+    public function testNaturalLanguageJoinWithBackticks($joined, array $names)
+    {
+        $this->assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
+    }
+
+    public function provideNaturalLanguageJoinWithBackticksCases()
+    {
+        return [
+            [
+                '`a`',
+                ['a'],
+            ],
+            [
+                '`a` and `b`',
+                ['a', 'b'],
+            ],
+            [
+                '`a`, `b` and `c`',
+                ['a', 'b', 'c'],
+            ],
+        ];
+    }
+
+    private function createFixerDouble($name, $priority)
+    {
+        $fixer = $this->prophesize(FixerInterface::class);
+        $fixer->getName()->willReturn($name);
+        $fixer->getPriority()->willReturn($priority);
+
+        return $fixer->reveal();
     }
 }

@@ -16,11 +16,14 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\Utils;
 use Symfony\Component\Console\Command\HelpCommand as BaseHelpCommand;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,9 +60,13 @@ to merge paths from the config file and from the argument:
 
     <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
 
-The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml`` and ``junit``.
+The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle`` and ``junit``.
 
-NOTE: When using ``junit`` format report generates in accordance with JUnit xml schema from Jenkins (see docs/junit-10.xsd).
+NOTE: the output for the following formats are generated in accordance with XML schemas
+
+* ``junit`` follows the `JUnit xml schema from Jenkins </doc/junit-10.xsd>`_
+* ``checkstyle`` follows the common `"checkstyle" xml schema </doc/checkstyle.xsd>`_
+
 
 The <comment>--verbose</comment> option will show the applied rules. When using the ``txt`` format it will also displays progress notifications.
 
@@ -82,19 +89,25 @@ using <comment>-name_of_fixer</comment>:
 
 When using combinations of exact and blacklist rules, applying exact rules along with above blacklisted results:
 
-    <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_return,strict_comparison</info>
+    <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
 
 Complete configuration for rules can be supplied using a ``json`` formatted string.
 
     <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
 
-A combination of <comment>--dry-run</comment> and <comment>--diff</comment> will
-display a summary of proposed fixes, leaving your files unchanged.
+The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
+
+The <comment>--diff</comment> flag can be used to let the fixer output all the changes it makes.
+
+The <comment>--diff-format</comment> option allows to specify in which format the fixer should output the changes it makes:
+
+* <comment>udiff</comment>: unified diff format;
+* <comment>sbd</comment>: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
 
 The <comment>--allow-risky</comment> option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
 
-The <comment>--stop-on-violation</comment> flag stops execution upon first file that needs to be fixed.
+The <comment>--stop-on-violation</comment> flag stops the execution upon first file that needs to be fixed.
 
 The <comment>--show-progress</comment> option allows you to choose the way process progress is rendered:
 
@@ -112,6 +125,11 @@ automatically fix anything:
 
     <info>$ cat foo.php | php %command.full_name% --diff -</info>
 
+Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
+would be default in next MAJOR release (unified differ, estimating, full-width progress indicator):
+
+    <info>$ PHP_CS_FIXER_FUTURE_MODE=1 php %command.full_name% -v --diff</info>
+
 Choose from the list of available rules:
 
 %%%FIXERS_DETAILS%%%
@@ -120,6 +138,9 @@ The <comment>--dry-run</comment> option displays the files that need to be
 fixed but without actually modifying them:
 
     <info>$ php %command.full_name% /path/to/code --dry-run</info>
+
+Config file
+-----------
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a <comment>.php_cs.dist</comment> file in the root directory of your project.
@@ -237,7 +258,7 @@ Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` 
 Exit codes
 ----------
 
-Exit code is build using following bit flags:
+Exit code is built using following bit flags:
 
 *  0 OK.
 *  1 General error (or PHP minimal requirement not matched).
@@ -444,6 +465,14 @@ EOF
                 $description = '[n/a]';
             }
 
+            if ($fixer instanceof DeprecatedFixerInterface) {
+                $successors = $fixer->getSuccessorsNames();
+                $message = [] === $successors
+                    ? 'will be removed on next major version'
+                    : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+                $description .= sprintf(' DEPRECATED: %s.', $message);
+            }
+
             $description = implode("\n   | ", self::wordwrap(
                 preg_replace('/(`.+?`)/', '<info>$1</info>', $description),
                 72
@@ -480,7 +509,7 @@ EOF
                     );
 
                     foreach ($configurationDefinitionOptions as $option) {
-                        $line = '<info>'.$option->getName().'</info>';
+                        $line = '<info>'.OutputFormatter::escape($option->getName()).'</info>';
 
                         $allowed = self::getDisplayableAllowedValues($option);
                         if (null !== $allowed) {
@@ -498,7 +527,7 @@ EOF
                         $line .= ': '.preg_replace(
                             '/(`.+?`)/',
                             '<info>$1</info>',
-                            lcfirst(preg_replace('/\.$/', '', $option->getDescription()))
+                            lcfirst(preg_replace('/\.$/', '', OutputFormatter::escape($option->getDescription())))
                         ).'; ';
                         if ($option->hasDefault()) {
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';

@@ -30,10 +30,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigurationClassyConstructs()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[braces\] Invalid configuration: The option "position_after_functions_and_oop_constructs" with value "neither" is invalid\. Accepted values are: "next", "same"\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[braces\] Invalid configuration: The option "position_after_functions_and_oop_constructs" with value "neither" is invalid\. Accepted values are: "next", "same"\.$#');
 
         $this->fixer->configure(['position_after_functions_and_oop_constructs' => 'neither']);
     }
@@ -591,7 +589,7 @@ $b = a();
 }',
             ],
             [
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
             $a = 1;
@@ -600,7 +598,7 @@ $b = a();
         }
     }
 ',
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
          $a = 1;
@@ -611,7 +609,7 @@ $b = a();
 ',
             ],
             [
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
             $a = 1;
@@ -621,7 +619,7 @@ $b = a();
         }
     }
 ',
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
          $a = 1;
@@ -787,6 +785,27 @@ function test()
 //        return true;
 //    };
     $a = 3;
+}',
+            ],
+            [
+                '<?php
+class Foo
+{
+    public function bar()
+    {
+        foreach (new Bar() as $file) {
+            foo();
+        }
+    }
+}',
+                '<?php
+class Foo {
+    public function bar() {
+        foreach (new Bar() as $file)
+        {
+            foo();
+        }
+    }
 }',
             ],
         ];

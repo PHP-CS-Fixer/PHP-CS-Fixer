@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\ToolInfo;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -38,7 +39,8 @@ final class ConfigTest extends TestCase
             [
                 'rules' => 'cast_spaces,braces',
             ],
-            getcwd()
+            getcwd(),
+            new ToolInfo()
         );
 
         $this->assertArraySubset(
@@ -58,7 +60,8 @@ final class ConfigTest extends TestCase
             [
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
             ],
-            getcwd()
+            getcwd(),
+            new ToolInfo()
         );
 
         $this->assertArraySubset(
@@ -74,7 +77,7 @@ final class ConfigTest extends TestCase
 
     public function testConfigRulesUsingInvalidJson()
     {
-        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
 
         $config = new Config();
         $configResolver = new ConfigurationResolver(
@@ -82,7 +85,8 @@ final class ConfigTest extends TestCase
             [
                 'rules' => '{blah',
             ],
-            getcwd()
+            getcwd(),
+            new ToolInfo()
         );
         $configResolver->getRules();
     }
@@ -92,9 +96,10 @@ final class ConfigTest extends TestCase
         $customConfigFile = __DIR__.'/Fixtures/.php_cs_custom.php';
 
         $application = new Application();
-        $application->add(new FixCommand());
+        $application->add(new FixCommand(new ToolInfo()));
 
         $commandTester = new CommandTester($application->find('fix'));
+
         $commandTester->execute(
             [
                 'path' => [$customConfigFile],
@@ -183,10 +188,8 @@ final class ConfigTest extends TestCase
 
     public function testRegisterCustomFixersWithInvalidArgument()
     {
-        $this->setExpectedExceptionRegExp(
-            \InvalidArgumentException::class,
-            '/^Argument must be an array or a Traversable, got "\w+"\.$/'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('/^Argument must be an array or a Traversable, got "\w+"\.$/');
 
         $config = new Config();
         $config->registerCustomFixers('foo');

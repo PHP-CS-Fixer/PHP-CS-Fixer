@@ -196,7 +196,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Replace accidental usage of homoglyphs (non ascii characters) in names.',
-            [new CodeSample('<?php $nаmе = \'wrong "a" character\';')],
+            [new CodeSample("<?php \$nаmе = 'wrong \"a\" character';\n")],
             null,
             'Renames classes and cannot rename the files. You might have string references to renamed code (`$$name`).'
         );
@@ -229,7 +229,10 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
             }
 
             $replaced = preg_replace_callback('/[^[:ascii:]]/u', function ($matches) {
-                return self::$replacements[$matches[0]];
+                return isset(self::$replacements[$matches[0]])
+                    ? self::$replacements[$matches[0]]
+                    : $matches[0]
+                ;
             }, $token->getContent(), -1, $count);
 
             if ($count) {

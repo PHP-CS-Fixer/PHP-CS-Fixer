@@ -67,7 +67,7 @@ use FooJ;
 use FooZ;
 
 EOF
-            ,
+                ,
                 <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
@@ -118,7 +118,7 @@ namespace Boo {
 }
 
 EOF
-            ,
+                ,
                 <<<'EOF'
 <?php
 

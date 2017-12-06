@@ -149,3 +149,36 @@ Changes to Fixers
 Fixer | Note
 ----- | ----
 psr0  | Fixer no longer takes base dir from `ConfigInterface::getDir`, instead you may configure the fixer with `['dir' => 'my/path']`.
+
+Custom fixers
+-------------
+
+If you have registered custom fixers in your config file `*.php_cs` using `addCustomFixer()` method...
+```
+<?php
+// phpcs-fixer v1.*
+$config = Symfony\CS\Config\Config::create()
+    ->fixers([
+        'blankline_after_open_tag',
+        // ...
+    ])
+    ->addCustomFixer(new ShopSys\CodingStandards\CsFixer\MissingButtonTypeFixer())
+    ->addCustomFixer(new ShopSys\CodingStandards\CsFixer\OrmJoinColumnRequireNullableFixer());
+```
+...now you have to use `registerCustomFixers()` method instead and enable the custom fixers by their names in the `setRules()` method:
+```
+<?php
+// phpcs-fixer v2.*
+$config = PhpCsFixer\Config::create()
+    ->registerCustomFixers([
+        new ShopSys\CodingStandards\CsFixer\MissingButtonTypeFixer(),
+        new ShopSys\CodingStandards\CsFixer\OrmJoinColumnRequireNullableFixer(),
+    ])
+    ->setRules([
+        'blankline_after_open_tag',
+        'Shopsys/missing_button_type' => true,
+        'Shopsys/orm_join_column_require_nullable' => true,
+        // ...
+    ]);
+
+```

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -216,6 +217,43 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     class Baz3 extends \PHPUnit\Framework\TestCase {}
 
                     class Baz4 extends TestCase {}
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $expected = str_replace(['    ', "\n"], ["\t", "\r\n"], $expected);
+        if (null !== $input) {
+            $input = str_replace(['    ', "\n"], ["\t", "\r\n"], $input);
+        }
+
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return [
+            [
+                '<?php
+
+                    /**
+                     * @coversNothing
+                     */
+                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                ',
+                '<?php
+
+                    class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
             ],
         ];

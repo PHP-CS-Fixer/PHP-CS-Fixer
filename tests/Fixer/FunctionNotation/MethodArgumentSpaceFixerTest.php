@@ -304,7 +304,7 @@ functionCall(
     'c'
 );
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 functionCall(
@@ -312,7 +312,19 @@ functionCall(
     'c'
 );
 INPUT
-            ,
+                ,
+                ['ensure_fully_multiline' => true],
+            ],
+            'test wrongly formatted half-multiline function becomes fully-multiline' => [
+                '<?php
+f(
+    1,
+    2,
+3
+);',
+                '<?php
+f(1,2,
+3);',
                 ['ensure_fully_multiline' => true],
             ],
             'function calls with here doc cannot be anything but multiline' => [
@@ -327,7 +339,7 @@ str_replace(
 TEXT
 );
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 str_replace("\n", PHP_EOL, <<<'TEXT'
@@ -336,7 +348,7 @@ str_replace("\n", PHP_EOL, <<<'TEXT'
 TEXT
 );
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test barely multiline function with blank lines becomes fully-multiline' => [
@@ -349,14 +361,14 @@ functionCall(
     'c'
 );
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 functionCall('a', 'b',
 
     'c');
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test indentation is preserved' => [
@@ -370,7 +382,7 @@ if (true) {
     );
 }
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 if (true) {
@@ -380,7 +392,7 @@ if (true) {
     );
 }
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test multiline array arguments do not trigger multiline' => [
@@ -392,7 +404,7 @@ defraculate(1, array(
     'c',
 ), 42);
 EXPECTED
-            ,
+                ,
                 null,
                 ['ensure_fully_multiline' => true],
             ],
@@ -403,7 +415,7 @@ defraculate(1, function () {
     $a = 42;
 }, 42);
 EXPECTED
-            ,
+                ,
                 null,
                 ['ensure_fully_multiline' => true],
             ],
@@ -416,13 +428,13 @@ defraculate(
     3
 );
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 defraculate(
     1, 2, 3);
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test violation after opening parenthesis, indented with two spaces' => [
@@ -434,13 +446,13 @@ defraculate(
   3
 );
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 defraculate(
   1, 2, 3);
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test violation after opening parenthesis, indented with tabs' => [
@@ -452,13 +464,13 @@ defraculate(
 	3
 );
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 defraculate(
 	1, 2, 3);
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test violation before closing parenthesis' => [
@@ -470,13 +482,13 @@ defraculate(
     3
 );
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 defraculate(1, 2, 3
 );
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test violation before closing parenthesis in nested call' => [
@@ -488,13 +500,13 @@ getSchwifty('rick', defraculate(
     3
 ), 'morty');
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 getSchwifty('rick', defraculate(1, 2, 3
 ), 'morty');
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test with comment between arguments' => [
@@ -506,7 +518,7 @@ functionCall(
     'c'
 );
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 functionCall(
@@ -514,7 +526,7 @@ functionCall(
     'c'
 );
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test with deeply nested arguments' => [
@@ -535,7 +547,7 @@ foo(
     ]
 );
 EXPECTED
-            ,
+                ,
                 <<<'INPUT'
 <?php
 foo('a',
@@ -549,7 +561,7 @@ foo('a',
             ]),
     ]);
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'multiline string argument' => [
@@ -561,7 +573,7 @@ class FooClass
 {
 }', $comment, false);
 UNAFFECTED
-            ,
+                ,
                 null,
                 ['ensure_fully_multiline' => true],
             ],
@@ -575,12 +587,12 @@ $a = array/***/(123,  7);
 $a = array (        1,
 2);
 UNAFFECTED
-            ,
+                ,
                 null,
                 ['ensure_fully_multiline' => true],
             ],
             'test code that should not be affected (because not a function nor a method)' => [
-            <<<'UNAFFECTED'
+                <<<'UNAFFECTED'
 <?php
 if (true &&
     true
@@ -588,12 +600,12 @@ if (true &&
     // do whatever
 }
 UNAFFECTED
-            ,
+                ,
                 null,
                 ['ensure_fully_multiline' => true],
             ],
             'test ungodly code' => [
-            <<<'EXPECTED'
+                <<<'EXPECTED'
 <?php
 $a = function#
 (#
@@ -610,8 +622,8 @@ use ($b,
 $c,$d) {
 };
 EXPECTED
-            ,
-            <<<'INPUT'
+                ,
+                <<<'INPUT'
 <?php
 $a = function#
 (#
@@ -627,11 +639,11 @@ use ($b,
 $c,$d) {
 };
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
             'test list' => [
-            <<<'UNAFFECTED'
+                <<<'UNAFFECTED'
 <?php
 // no fix
 list($a,
@@ -644,24 +656,24 @@ array(1,
     2,3
 );
 UNAFFECTED
-            ,
+                ,
                 null,
                 ['ensure_fully_multiline' => true],
             ],
             'test function argument with multiline echo in it' => [
-            <<<'UNAFFECTED'
+                <<<'UNAFFECTED'
 <?php
 call_user_func(function ($arguments) {
     echo 'a',
       'b';
 }, $argv);
 UNAFFECTED
-            ,
+                ,
                 null,
                 ['ensure_fully_multiline' => true],
             ],
             'test function argument with oneline echo in it' => [
-            <<<'EXPECTED'
+                <<<'EXPECTED'
 <?php
 call_user_func(
     function ($arguments) {
@@ -670,15 +682,15 @@ call_user_func(
 $argv
 );
 EXPECTED
-            ,
-            <<<'INPUT'
+                ,
+                <<<'INPUT'
 <?php
 call_user_func(function ($arguments) {
     echo 'a', 'b';
 },
 $argv);
 INPUT
-            ,
+                ,
                 ['ensure_fully_multiline' => true],
             ],
         ];

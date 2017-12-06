@@ -34,8 +34,8 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
         return new FixerDefinition(
             'Classy that does not inherit must not have inheritdoc tags.',
             [
-                new CodeSample("<?php\n/** {@inheritdoc} */\nclass Sample\n{\n}"),
-                new CodeSample("<?php\nclass Sample\n{\n    /**\n     * @inheritdoc\n     */\n    public function Test()\n    {\n    }\n}"),
+                new CodeSample("<?php\n/** {@inheritdoc} */\nclass Sample\n{\n}\n"),
+                new CodeSample("<?php\nclass Sample\n{\n    /**\n     * @inheritdoc\n     */\n    public function Test()\n    {\n    }\n}\n"),
             ]
         );
     }

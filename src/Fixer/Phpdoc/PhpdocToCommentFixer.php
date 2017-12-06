@@ -61,7 +61,8 @@ $first = true;// needed because by default first docblock is never fixed.
 /** This should not be a docblock */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
-}'
+}
+'
                 ),
             ]
         );

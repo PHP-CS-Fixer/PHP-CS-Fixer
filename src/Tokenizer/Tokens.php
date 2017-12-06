@@ -37,6 +37,7 @@ class Tokens extends \SplFixedArray
     const BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE = 7;
     const BLOCK_TYPE_GROUP_IMPORT_BRACE = 8;
     const BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE = 9;
+    const BLOCK_TYPE_BRACE_CLASS_INSTANTIATION = 10;
 
     /**
      * Static class cache.
@@ -110,6 +111,10 @@ class Tokens extends \SplFixedArray
      */
     public static function setLegacyMode($isLegacy)
     {
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE') && $isLegacy) {
+            throw new \RuntimeException('Cannot enable `legacy mode` when using `future mode`.  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+        }
+
         self::$isLegacyMode = $isLegacy;
     }
 
@@ -253,6 +258,10 @@ class Tokens extends \SplFixedArray
             self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => [
                 'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
                 'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
+            ],
+            self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
+                'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
+                'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
             ],
         ];
     }
@@ -1253,7 +1262,7 @@ class Tokens extends \SplFixedArray
      */
     private static function calculateCodeHash($code)
     {
-        return (string) crc32($code);
+        return CodeHasher::calculateCodeHash($code);
     }
 
     /**
@@ -1288,7 +1297,7 @@ class Tokens extends \SplFixedArray
      * @param string $key   item key
      * @param Tokens $value item value
      */
-    private static function setCache($key, Tokens $value)
+    private static function setCache($key, self $value)
     {
         self::$cache[$key] = $value;
     }

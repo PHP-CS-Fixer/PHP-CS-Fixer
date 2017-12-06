@@ -173,7 +173,8 @@ class Example
 {
     public function A(){}
     private function B(){}
-}',
+}
+',
                     ['order' => ['method_private', 'method_public']]
                 ),
             ]
@@ -269,7 +270,7 @@ class Example
                 'static' => false,
             ];
 
-            for ($i = $startIndex; ; ++$i) {
+            for ($i = $startIndex;; ++$i) {
                 $token = $tokens[$i];
 
                 // class end

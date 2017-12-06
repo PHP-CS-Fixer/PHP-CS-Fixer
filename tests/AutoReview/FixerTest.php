@@ -14,7 +14,9 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
@@ -70,6 +72,9 @@ final class FixerTest extends TestCase
 
             $code = $sample->getCode();
             $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+            if (!($fixer instanceof SingleBlankLineAtEofFixer)) {
+                $this->assertSame("\n", substr($code, -1), sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
+            }
 
             $config = $sample->getConfiguration();
             if (null !== $config) {
@@ -166,6 +171,27 @@ final class FixerTest extends TestCase
     public function testFixersAreDefined(FixerInterface $fixer)
     {
         $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
+    }
+
+    /**
+     * @dataProvider provideFixerDefinitionsCases
+     */
+    public function testDeprecatedFixersHaveCorrectSummary(FixerInterface $fixer)
+    {
+        $reflection = new \ReflectionClass($fixer);
+        $comment = $reflection->getDocComment();
+
+        $this->assertNotContains(
+            'DEPRECATED',
+            $fixer->getDefinition()->getSummary(),
+            'Fixer cannot contain word "DEPRECATED" in summary'
+        );
+
+        if ($fixer instanceof DeprecatedFixerInterface) {
+            $this->assertContains('@deprecated', $comment);
+        } elseif (is_string($comment)) {
+            $this->assertNotContains('@deprecated', $comment);
+        }
     }
 
     public function provideFixerDefinitionsCases()

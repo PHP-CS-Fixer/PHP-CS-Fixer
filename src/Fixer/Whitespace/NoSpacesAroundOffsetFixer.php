@@ -35,9 +35,9 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
         return new FixerDefinition(
             'There MUST NOT be spaces around offset braces.',
             [
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];"),
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", ['positions' => ['inside']]),
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", ['positions' => ['outside']]),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n"),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['inside']]),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['outside']]),
             ]
         );
     }

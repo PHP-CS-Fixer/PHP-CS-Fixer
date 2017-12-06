@@ -26,7 +26,7 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfig()
     {
-        $this->setExpectedException(InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->fixer->configure(['abc']);
     }

@@ -34,7 +34,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
      */
     public function testConfigureRejectsInvalidControlStatement($controlStatement)
     {
-        $this->setExpectedException(InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->fixer->configure([
             'statements' => [$controlStatement],

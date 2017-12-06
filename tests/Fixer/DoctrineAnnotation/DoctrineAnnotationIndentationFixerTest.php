@@ -315,6 +315,17 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @fixme
  *     @override
  */'],
+            ['
+/**
+ * @Foo({
+ * @Bar()}
+ * )
+ */', '
+/**
+ * @Foo({
+ *     @Bar()}
+ * )
+ */'],
         ]);
     }
 
@@ -599,6 +610,12 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @FIXME
  *     @fixme
  *     @override
+ */'],
+            ['
+/**
+ * @Foo({
+ *     @Bar()}
+ * )
  */'],
         ]);
     }

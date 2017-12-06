@@ -784,10 +784,8 @@ use Foo\Bor\{
 
     public function testInvalidOrderTypesSize()
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '[ordered_imports] Invalid configuration: Missing sort type "function".'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".');
 
         $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -797,10 +795,8 @@ use Foo\Bor\{
 
     public function testInvalidOrderType()
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '[ordered_imports] Invalid configuration: Missing sort type "class".'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".');
 
         $this->fixer->configure([
             'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -816,13 +812,11 @@ use Foo\Bor\{
      */
     public function testInvalidSortAlgorithm($configuration, $expectedValue)
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            sprintf(
-                '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
-                $expectedValue
-            )
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage(sprintf(
+            '[ordered_imports] Invalid configuration: The option "sortAlgorithm" with value %s is invalid. Accepted values are: "alpha", "length".',
+            $expectedValue
+        ));
 
         $this->fixer->configure($configuration);
     }
@@ -1709,17 +1703,31 @@ use function some\a\{fn_a, fn_b};
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $config
      *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($expected, $input = null)
+    public function testFix72($expected, $input = null, array $config = null)
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
     public function provideFix72Cases()
     {
+        $input =
+            '<?php use A\{B,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use C\{D,E,};
+';
+
         return [
             [
                 '<?php
@@ -1730,6 +1738,34 @@ use C\{D,E,};
 use C\{D,E,};
 use A\{B,};
 ',
+            ],
+            [
+                '<?php use A\{B,};
+use C\{D,E,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use function some\a\{fn_a, fn_b, fn_c,};
+',
+                $input,
+                [
+                    'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                ],
+            ],
+            [
+                '<?php use A\{B,};
+use C\{D,E,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use function some\a\{fn_a, fn_b, fn_c,};
+',
+                $input,
+                [
+                    'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
+                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                ],
             ],
         ];
     }

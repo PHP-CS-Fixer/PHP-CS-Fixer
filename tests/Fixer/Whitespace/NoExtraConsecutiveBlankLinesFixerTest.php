@@ -394,7 +394,7 @@ EOF;
     {
         return [
             [
-<<<'EOF'
+                <<<'EOF'
 <?php
 //class Test
 $a; //
@@ -407,8 +407,8 @@ $c;
 
 $d;
 EOF
-            ,
-<<<'EOF'
+                ,
+                <<<'EOF'
 <?php
 //class Test
 $a; //
@@ -436,19 +436,60 @@ EOF
         ];
     }
 
-    public function testFixWithWindowsLineBreaks()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideLineBreakCases
+     */
+    public function testFixWithLineBreaks($expected, $input = null)
     {
-        $input = "<?php\r\n//a\r\n\r\n\r\n\r\n\$a =1;";
-        $expected = "<?php\r\n//a\n\n\$a =1;";
         $this->doTest($expected, $input);
+    }
+
+    public function provideLineBreakCases()
+    {
+        $input = '<?php //
+
+
+$a = 1;
+
+
+$b = 1;
+';
+        $expected = '<?php //
+
+$a = 1;
+
+$b = 1;
+';
+
+        return [
+            [
+                "<?php\r\n//a\r\n\r\n\$a =1;",
+                "<?php\r\n//a\r\n\r\n\r\n\r\n\$a =1;",
+            ],
+            [
+                $expected,
+                $input,
+            ],
+            [
+                str_replace("\n", "\r\n", $expected),
+                str_replace("\n", "\r\n", $input),
+            ],
+            [
+                str_replace("\n", "\r", $input),
+            ],
+            [
+                str_replace("\n", "\r", $expected),
+            ],
+        ];
     }
 
     public function testWrongConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[no_extra_consecutive_blank_lines\] Invalid configuration: The option "tokens" .*\.$/'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[no_extra_consecutive_blank_lines\] Invalid configuration: The option "tokens" .*\.$/');
 
         $this->fixer->configure(['tokens' => ['__TEST__']]);
     }
@@ -1058,6 +1099,47 @@ class Foo
 
 
                     // above stays empty',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix72Cases
+     * @requires PHP 7.2
+     */
+    public function testFix72($expected, $input)
+    {
+        $this->fixer->configure(['tokens' => ['use']]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix72Cases()
+    {
+        return [
+            [
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA,ConstB,ConstC
+,
+};
+use const some\Z\{ConstA,ConstB,ConstC,};
+',
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+
+
+use function some\a\{fn_a, fn_b, fn_c,};
+
+use const some\a\{ConstA,ConstB,ConstC
+,
+};
+  '.'
+use const some\Z\{ConstA,ConstB,ConstC,};
+',
             ],
         ];
     }

@@ -53,7 +53,8 @@ final class FixerOptionTest extends TestCase
     {
         $option = new FixerOption('foo', 'Bar.');
 
-        $this->setExpectedException(\LogicException::class, 'No default value defined.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No default value defined.');
         $option->getDefault();
     }
 
@@ -99,7 +100,8 @@ final class FixerOptionTest extends TestCase
 
     public function testRequiredWithDefaultValue()
     {
-        $this->setExpectedException(\LogicException::class, 'Required options cannot have a default value.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Required options cannot have a default value.');
 
         new FixerOption('foo', 'Bar.', true, false);
     }

@@ -28,6 +28,8 @@ final class FileHandlerTest extends TestCase
 {
     protected function tearDown()
     {
+        parent::tearDown();
+
         $file = $this->getFile();
 
         if (file_exists($file)) {
@@ -102,7 +104,8 @@ final class FileHandlerTest extends TestCase
     {
         $file = __DIR__.'/non-existent-directory/.php_cs.cache';
 
-        $this->setExpectedExceptionRegExp(\Symfony\Component\Filesystem\Exception\IOException::class, sprintf(
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
+        $this->expectExceptionMessageRegExp(sprintf(
             '#^Failed to write file "%s"(, ".*")?.#',
             preg_quote($file, '#')
         ));
@@ -143,6 +146,80 @@ final class FileHandlerTest extends TestCase
         $actualCacheJson = file_get_contents($file);
 
         $this->assertSame($cache->toJson(), $actualCacheJson);
+    }
+
+    public function testWriteCacheToDirectory()
+    {
+        $dir = __DIR__.'/../Fixtures/cache-file-handler';
+
+        $handler = new FileHandler($dir);
+
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
+        $this->expectExceptionMessageRegExp(sprintf(
+            '#^%s$#',
+            preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
+        ));
+
+        $handler->write(new Cache(new Signature(
+            PHP_VERSION,
+            '2.0',
+            [
+                'foo',
+                'bar',
+            ]
+        )));
+    }
+
+    public function testWriteCacheToNonWriteableFile()
+    {
+        $file = __DIR__.'/../Fixtures/cache-file-handler/cache-file';
+        if (is_writable($file)) {
+            $this->markTestSkipped(sprintf('File "%s" must be not writeable for this tests.', realpath($file)));
+
+            return;
+        }
+
+        $handler = new FileHandler($file);
+
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
+        $this->expectExceptionMessageRegExp(sprintf(
+            '#^%s$#',
+            preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
+        ));
+
+        $handler->write(new Cache(new Signature(
+            PHP_VERSION,
+            '2.0',
+            [
+                'foo',
+                'bar',
+            ]
+        )));
+    }
+
+    public function testWriteCacheFilePermissions()
+    {
+        $file = __DIR__.'/../Fixtures/cache-file-handler/rw_cache.test';
+        @unlink($file);
+
+        $this->assertFileNotExists($file);
+
+        $handler = new FileHandler($file);
+        $handler->write(new Cache(new Signature(
+            PHP_VERSION,
+            '2.0',
+            [
+                'foo',
+                'bar',
+            ]
+        )));
+
+        $this->assertFileExists($file);
+        $this->assertTrue(@is_file($file), sprintf('Failed cache "%s" `is_file`.', $file));
+        $this->assertTrue(@is_writable($file), sprintf('Failed cache "%s" `is_writable`.', $file));
+        $this->assertTrue(@is_readable($file), sprintf('Failed cache "%s" `is_readable`.', $file));
+
+        @unlink($file);
     }
 
     /**

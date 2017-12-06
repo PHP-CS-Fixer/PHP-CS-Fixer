@@ -24,6 +24,7 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -33,8 +34,9 @@ use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
-use PhpCsFixer\ToolInfo;
+use PhpCsFixer\ToolInfoInterface;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
@@ -104,6 +106,11 @@ final class ConfigurationResolver
     private $configFinderIsOverridden;
 
     /**
+     * @var ToolInfoInterface
+     */
+    private $toolInfo;
+
+    /**
      * @var array
      */
     private $options = [
@@ -111,6 +118,7 @@ final class ConfigurationResolver
         'cache-file' => null,
         'config' => null,
         'diff' => null,
+        'diff-format' => null,
         'dry-run' => null,
         'format' => null,
         'path' => [],
@@ -142,17 +150,20 @@ final class ConfigurationResolver
     /**
      * ConfigurationResolver constructor.
      *
-     * @param ConfigInterface $config
-     * @param array           $options
-     * @param string          $cwd
+     * @param ConfigInterface   $config
+     * @param array             $options
+     * @param string            $cwd
+     * @param ToolInfoInterface $toolInfo
      */
     public function __construct(
         ConfigInterface $config,
         array $options,
-        $cwd
+        $cwd,
+        ToolInfoInterface $toolInfo
     ) {
         $this->cwd = $cwd;
         $this->defaultConfig = $config;
+        $this->toolInfo = $toolInfo;
 
         foreach ($options as $name => $value) {
             $this->setOption($name, $value);
@@ -185,12 +196,12 @@ final class ConfigurationResolver
     public function getCacheManager()
     {
         if (null === $this->cacheManager) {
-            if ($this->getUsingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
+            if ($this->getUsingCache() && ($this->toolInfo->isInstalledAsPhar() || $this->toolInfo->isInstalledByComposer())) {
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($this->getCacheFile()),
                     new Signature(
                         PHP_VERSION,
-                        ToolInfo::getVersion(),
+                        $this->toolInfo->getVersion(),
                         $this->getRules()
                     ),
                     $this->isDryRun(),
@@ -215,7 +226,7 @@ final class ConfigurationResolver
                     continue;
                 }
 
-                $config = include $configFile;
+                $config = self::separatedContextLessInclude($configFile);
 
                 // verify that the config has an instance of Config
                 if (!$config instanceof ConfigInterface) {
@@ -257,15 +268,26 @@ final class ConfigurationResolver
             $mapper = [
                 'null' => function () { return new NullDiffer(); },
                 'sbd' => function () { return new SebastianBergmannDiffer(); },
+                'udiff' => function () { return new UnifiedDiffer(); },
             ];
 
-            $option = $this->options['diff'] ? 'sbd' : 'null';
+            if ($this->options['diff-format']) {
+                $option = $this->options['diff-format'];
+                if (!isset($mapper[$option])) {
+                    throw new InvalidConfigurationException(sprintf(
+                        '"diff-format" must be any of "%s", got "%s".',
+                        implode('", "', array_keys($mapper)),
+                        $option
+                    ));
+                }
+            } else {
+                $default = 'sbd'; // @TODO: 3.0 change to udiff as default
 
-            if (!isset($mapper[$option])) {
-                throw new InvalidConfigurationException(sprintf(
-                    'Differ must be "sbd" or "null", got "%s".',
-                    $this->options['diff']
-                ));
+                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                    $default = 'udiff';
+                }
+
+                $option = $this->options['diff'] ? $default : 'null';
             }
 
             $this->differ = $mapper[$option]();
@@ -388,7 +410,13 @@ final class ConfigurationResolver
                 $progressTypes = ['none', 'run-in', 'estimating', 'estimating-max'];
 
                 if (null === $progressType) {
-                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'run-in';
+                    $default = 'run-in';
+
+                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                        $default = 'estimating-max';
+                    }
+
+                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : $default;
                 } elseif (!in_array($progressType, $progressTypes, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are "%s".',
@@ -650,7 +678,8 @@ final class ConfigurationResolver
 
         $rules = [];
 
-        foreach (array_map('trim', explode(',', $this->options['rules'])) as $rule) {
+        foreach (explode(',', $this->options['rules']) as $rule) {
+            $rule = trim($rule);
             if ('' === $rule) {
                 throw new InvalidConfigurationException('Empty rule name is not allowed.');
             }
@@ -701,10 +730,19 @@ final class ConfigurationResolver
         );
 
         if (count($unknownFixers)) {
-            throw new InvalidConfigurationException(sprintf(
-                'The rules contain unknown fixers (%s).',
-                implode(', ', $unknownFixers)
-            ));
+            $matcher = new WordMatcher($availableFixers);
+
+            $message = 'The rules contain unknown fixers: ';
+            foreach ($unknownFixers as $unknownFixer) {
+                $alternative = $matcher->match($unknownFixer);
+                $message .= sprintf(
+                    '"%s"%s, ',
+                    $unknownFixer,
+                    null === $alternative ? '' : ' (did you mean "'.$alternative.'"?)'
+                );
+            }
+
+            throw new InvalidConfigurationException(substr($message, 0, -2).'.');
         }
     }
 
@@ -798,7 +836,7 @@ final class ConfigurationResolver
             );
         }
 
-        if (null !== $this->getConfigFile()) {
+        if (null !== $this->getConfigFile() && null !== $nestedFinder) {
             $this->configFinderIsOverridden = true;
         }
 
@@ -849,11 +887,20 @@ final class ConfigurationResolver
             return false;
         }
 
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            throw new InvalidConfigurationException(sprintf('Expected "yes" or "no" for option "%s", got "%s".  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.', $optionName, $value));
+        }
+
         @trigger_error(
             sprintf('Expected "yes" or "no" for option "%s", other values are deprecated and support will be removed in 3.0. Got "%s", this implicitly set the option to "false".', $optionName, $value),
             E_USER_DEPRECATED
         );
 
         return false;
+    }
+
+    private static function separatedContextLessInclude($path)
+    {
+        return include $path;
     }
 }

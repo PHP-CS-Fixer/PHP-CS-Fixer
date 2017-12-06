@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: strict_comparison,binary_operator_spaces.text.
+--RULESET--
+{"strict_comparison": true, "binary_operator_spaces": {"operators":{"===":"align"}}}
+--EXPECT--
+<?php
+$a = $b === $c;
+$d = $e === $f;
+
+--INPUT--
+<?php
+$a = $b == $c;
+$d = $e   ==   $f;

@@ -60,7 +60,7 @@ class Good
         //code here
     }
 }',
-                '<?php
+            '<?php
 class Good
 {
 
@@ -82,7 +82,7 @@ class Good
         //code here
     }
 }',
-                '<?php
+            '<?php
 class Good
 {
 

@@ -33,7 +33,7 @@ final class TrailingCommaInMultilineArrayFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHP multi-line arrays should have a trailing comma.',
-            [new CodeSample("<?php\narray(\n    1,\n    2\n);")]
+            [new CodeSample("<?php\narray(\n    1,\n    2\n);\n")]
         );
     }
 

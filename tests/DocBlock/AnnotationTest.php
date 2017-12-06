@@ -344,10 +344,8 @@ final class AnnotationTest extends TestCase
 
     public function testGetTypesOnBadTag()
     {
-        $this->setExpectedException(
-            \RuntimeException::class,
-            'This tag does not support types'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('This tag does not support types');
 
         $tag = new Annotation([new Line(' * @deprecated since 1.2')]);
 
@@ -356,10 +354,8 @@ final class AnnotationTest extends TestCase
 
     public function testSetTypesOnBadTag()
     {
-        $this->setExpectedException(
-            \RuntimeException::class,
-            'This tag does not support types'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('This tag does not support types');
 
         $tag = new Annotation([new Line(' * @author Chuck Norris')]);
 

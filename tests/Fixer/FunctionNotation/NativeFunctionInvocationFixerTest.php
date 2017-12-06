@@ -27,7 +27,8 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     {
         $key = 'foo';
 
-        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectExceptionMessage(sprintf(
             '[native_function_invocation] Invalid configuration: The option "%s" does not exist.',
             $key
         ));
@@ -44,7 +45,8 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
      */
     public function testConfigureRejectsInvalidConfigurationElement($element)
     {
-        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectExceptionMessage(sprintf(
             'Each element must be a non-empty, trimmed string, got "%s" instead.',
             \is_object($element) ? \get_class($element) : \gettype($element)
         ));
@@ -145,23 +147,23 @@ PHP;
     {
         return [
             [
-'<?php
+                '<?php
 
 \json_encode($foo);
 ',
             ],
             [
-'<?php
+                '<?php
 
 \json_encode($foo);
 ',
-'<?php
+                '<?php
 
 json_encode($foo);
 ',
             ],
             [
-'<?php
+                '<?php
 
 class Foo
 {
@@ -173,25 +175,43 @@ class Foo
 ',
             ],
             [
-'<?php
+                '<?php
 
 class Foo
 {
     public function bar($foo)
     {
-        return \json_encode($foo);
+        return \JSON_ENCODE($foo);
     }
 }
 ',
-'<?php
+                '<?php
 
 class Foo
 {
     public function bar($foo)
     {
-        return json_encode($foo);
+        return JSON_ENCODE($foo);
     }
 }
+',
+            ],
+            [
+                '<?php
+echo \/**/strlen($a);
+echo \ strlen($a);
+echo \#
+#
+strlen($a);
+echo \strlen($a);
+',
+                '<?php
+echo \/**/strlen($a);
+echo \ strlen($a);
+echo \#
+#
+strlen($a);
+echo strlen($a);
 ',
             ],
         ];
@@ -221,13 +241,13 @@ class Foo
     {
         return [
             [
-'<?php
+                '<?php
 
 json_encode($foo);
 ',
             ],
             [
-'<?php
+                '<?php
 
 class Foo
 {

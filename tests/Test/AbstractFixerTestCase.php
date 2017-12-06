@@ -51,6 +51,8 @@ abstract class AbstractFixerTestCase extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->linter = $this->getLinter();
         $this->fixer = $this->createFixer();
 
@@ -62,6 +64,8 @@ abstract class AbstractFixerTestCase extends TestCase
 
     protected function tearDown()
     {
+        parent::tearDown();
+
         // @todo remove at 3.0
         Tokens::setLegacyMode(false);
     }

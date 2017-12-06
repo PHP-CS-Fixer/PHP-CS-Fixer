@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Max Voloshin <voloshin.dp@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ * @author SpacePossum
  *
  * @internal
  *
@@ -163,6 +164,149 @@ PHP;
                 74 => [
                     'token' => $tokens[74],
                     'type' => 'method',
+                ],
+            ],
+            $elements
+        );
+    }
+
+    public function testGetClassyElementsWithMultipleAnonymousClass()
+    {
+        $source = <<<'PHP'
+<?php class A0
+{
+    public function AA0()
+    {
+        return new class
+        {
+            public function BB0()
+            {
+            }
+        };
+    }
+
+    public function otherFunction0()
+    {
+    }
+}
+
+class A1
+{
+    public function AA1()
+    {
+        return new class
+        {
+            public function BB1()
+            {
+                return new class
+                {
+                    public function CC1()
+                    {
+                        return new class
+                        {
+                            public function DD1()
+                            {
+                                return new class{};
+                            }
+
+                            public function DD2()
+                            {
+                                return new class{};
+                            }
+                        };
+                    }
+                };
+            }
+
+            public function BB2()
+            {
+                return new class
+                {
+                    public function CC2()
+                    {
+                        return new class
+                        {
+                            public function DD2()
+                            {
+                                return new class{};
+                            }
+                        };
+                    }
+                };
+            }
+        };
+    }
+
+    public function otherFunction1()
+    {
+    }
+}
+PHP;
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        $this->assertSame(
+            [
+                9 => [
+                    'token' => $tokens[9],
+                    'type' => 'method',
+                    // 'classIndex' => 1, @TODO on master
+                ],
+                27 => [
+                    'token' => $tokens[27],
+                    'type' => 'method',
+                    //'classIndex' => 21, @TODO on master
+                ],
+                44 => [
+                    'token' => $tokens[44],
+                    'type' => 'method',
+                    // 'classIndex' => 1, @TODO on master
+                ],
+                64 => [
+                    'token' => $tokens[64],
+                    'type' => 'method',
+                    // 'classIndex' => 56, @TODO on master
+                ],
+                82 => [
+                    'token' => $tokens[82],
+                    'type' => 'method',
+                    // 'classIndex' => 76, @TODO on master
+                ],
+                100 => [
+                    'token' => $tokens[100],
+                    'type' => 'method',
+                    // 'classIndex' => 94, @TODO on master
+                ],
+                118 => [
+                    'token' => $tokens[118],
+                    'type' => 'method',
+                    // 'classIndex' => 112, @TODO on master
+                ],
+                139 => [
+                    'token' => $tokens[139],
+                    'type' => 'method',
+                    // 'classIndex' => 112, @TODO on master
+                ],
+                170 => [
+                    'token' => $tokens[170],
+                    'type' => 'method',
+                    // 'classIndex' => 76, @TODO on master
+                ],
+                188 => [
+                    'token' => $tokens[188],
+                    'type' => 'method',
+                    // 'classIndex' => 182, @TODO on master
+                ],
+                206 => [
+                    'token' => $tokens[206],
+                    'type' => 'method',
+                    // 'classIndex' => 200, @TODO on master
+                ],
+                242 => [
+                    'token' => $tokens[242],
+                    'type' => 'method',
+                    // 'classIndex' => 56, @TODO on master
                 ],
             ],
             $elements
@@ -765,6 +909,35 @@ $b;',
 
     /**
      * @param string $source
+     *
+     * @dataProvider provideIsBinaryOperator71Cases
+     * @requires PHP 7.1
+     */
+    public function testIsBinaryOperator71($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
+                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public function provideIsBinaryOperator71Cases()
+    {
+        return [
+            [
+                '<?php try {} catch (A | B $e) {}',
+                [11 => true],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
      * @param int    $tokenIndex
      *
      * @dataProvider provideArrayExceptionsCases
@@ -784,7 +957,7 @@ $b;',
      */
     public function testIsMultiLineArrayException($source, $tokenIndex)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -1057,6 +1230,43 @@ use const some\a\{ConstA, ConstB, ConstC};
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
+                ',
+                true,
+            ],
+        ];
+    }
+
+    /**
+     * @param string $input
+     * @param bool   $perNamespace
+     *
+     * @dataProvider provideGetImportUseIndexesPHP72Cases
+     * @requires PHP 7.2
+     */
+    public function testGetImportUseIndexesPHP72(array $expected, $input, $perNamespace = false)
+    {
+        $tokens = Tokens::fromCode($input);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $this->assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
+    }
+
+    public function provideGetImportUseIndexesPHP72Cases()
+    {
+        return [
+            [
+                [1, 23, 43],
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA, ConstB, ConstC,};
+                ',
+            ],
+            [
+                [[1, 23, 43]],
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA, ConstB, ConstC,};
                 ',
                 true,
             ],

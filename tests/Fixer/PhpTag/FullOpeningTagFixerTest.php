@@ -46,7 +46,7 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 echo \'Foo\';
 
 ',
-                  '<?
+                '<?
 
 echo \'Foo\';
 

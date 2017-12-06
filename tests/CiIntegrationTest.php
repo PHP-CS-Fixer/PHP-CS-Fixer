@@ -49,14 +49,18 @@ final class CiIntegrationTest extends TestCase
         self::$fileRemoval = new FileRemoval();
         self::$fileRemoval->observe(static::$tmpFilePath);
 
-        static::executeCommand(implode(' && ', [
-            'rm -rf .git',
-            'git init -q',
-            'git config user.name test',
-            'git config user.email test',
-            'git add .',
-            'git commit -m "init" -q',
-        ]));
+        try {
+            static::executeCommand(implode(' && ', [
+                'rm -rf .git',
+                'git init -q',
+                'git config user.name test',
+                'git config user.email test',
+                'git add .',
+                'git commit -m "init" -q',
+            ]));
+        } catch (\RuntimeException $e) {
+            self::markTestSkipped($e->getMessage());
+        }
     }
 
     public static function tearDownAfterClass()
@@ -140,7 +144,7 @@ final class CiIntegrationTest extends TestCase
             $steps[3],
         ]);
 
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.1.*.
+        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.2.*.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 

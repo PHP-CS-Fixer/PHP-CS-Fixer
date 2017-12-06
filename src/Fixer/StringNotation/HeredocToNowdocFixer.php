@@ -94,7 +94,7 @@ EOF
      *
      * @param Token $token
      *
-     * @return $token
+     * @return Token
      */
     private function convertToNowdoc(Token $token)
     {

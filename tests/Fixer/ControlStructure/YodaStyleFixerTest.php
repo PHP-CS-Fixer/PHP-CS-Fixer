@@ -443,7 +443,6 @@ $a#4
      * @param string $expectedMessage
      *
      * @dataProvider provideInvalidConfigurationCases
-     * @requires PHPUnit 5.2
      */
     public function testInvalidConfig(array $config, $expectedMessage)
     {
@@ -650,7 +649,7 @@ function a() {
                 '<?php [$a] = 11 === $c ? $b : $d;',
                 '<?php [$a] = $c === 11 ? $b : $d;',
             ],
-                        [
+            [
                 '<?php $b = [$a] = 7 === [7];', // makes no sense, but valid PHP syntax
                 '<?php $b = [$a] = [7] === 7;',
             ],

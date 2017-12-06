@@ -51,30 +51,30 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             'In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma. Argument lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument per line.',
             [
                 new CodeSample(
-                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);",
+                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);\n",
                     null
                 ),
                 new CodeSample(
-                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);",
+                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);\n",
                     ['keep_multiple_spaces_after_comma' => false]
                 ),
                 new CodeSample(
-                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);",
+                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);\n",
                     ['keep_multiple_spaces_after_comma' => true]
                 ),
                 new CodeSample(
-                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,\n    2);",
+                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,\n    2);\n",
                     ['ensure_fully_multiline' => true]
                 ),
                 new CodeSample(
-                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample('foo',    'foobarbaz', 'baz');\nsample('foobar', 'bar',       'baz');",
+                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample('foo',    'foobarbaz', 'baz');\nsample('foobar', 'bar',       'baz');\n",
                     [
                         'ensure_fully_multiline' => true,
                         'keep_multiple_spaces_after_comma' => true,
                     ]
                 ),
                 new CodeSample(
-                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample('foo',    'foobarbaz', 'baz');\nsample('foobar', 'bar',       'baz');",
+                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample('foo',    'foobarbaz', 'baz');\nsample('foobar', 'bar',       'baz');\n",
                     [
                         'ensure_fully_multiline' => true,
                         'keep_multiple_spaces_after_comma' => false,
@@ -129,7 +129,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 'Ensure every argument of a multiline argument list is on its own line'
             ))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO should be true at 3.0
+                ->setDefault(false) // @TODO 3.0 should be true
                 ->getOption(),
         ]);
     }
@@ -202,12 +202,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
         if (!$this->isNewline($tokens[$endFunctionIndex - 1])) {
-            $this->addNewlineAndIndent(
-                $tokens,
-                $endFunctionIndex,
-                $existingIndentation,
-                false
-            );
+            $tokens->ensureWhitespaceAtIndex($endFunctionIndex, 0, $this->whitespacesConfig->getLineEnding().$existingIndentation);
             ++$endFunctionIndex;
         }
 
@@ -238,6 +233,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 $this->fixNewline($tokens, $index, $indentation);
             }
         }
+
         $this->fixNewLine($tokens, $startFunctionIndex, $indentation, false);
     }
 
@@ -254,45 +250,17 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         if ($this->isNewline($tokens[$index + 1]) || $tokens[$index + 1]->isComment()) {
             return;
         }
+
         if ($tokens[$index + 2]->isComment()) {
             $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index + 2);
             if (!$this->isNewLine($tokens[$nextMeaningfulTokenIndex - 1])) {
-                $this->addNewlineAndIndent(
-                    $tokens,
-                    $nextMeaningfulTokenIndex,
-                    $indentation,
-                    false
-                );
+                $tokens->ensureWhitespaceAtIndex($nextMeaningfulTokenIndex, 0, $this->whitespacesConfig->getLineEnding().$indentation);
             }
 
             return;
         }
 
-        $this->addNewlineAndIndent($tokens, $index + 1, $indentation, $override);
-    }
-
-    /**
-     * Makes sure there is a whitespace at the given location.
-     *
-     * @param Tokens $tokens      The token stream to modify
-     * @param int    $index       where to insert the whitespace
-     * @param string $indentation the indentation that should be used
-     * @param bool   $override    whether to override the existing character or not
-     */
-    private function addNewlineAndIndent(Tokens $tokens, $index, $indentation, $override)
-    {
-        $whitespaceToken = new Token([
-            T_WHITESPACE,
-            $this->whitespacesConfig->getLineEnding().$indentation,
-        ]);
-
-        if ($override) {
-            $tokens[$index] = $whitespaceToken;
-
-            return;
-        }
-
-        $tokens->insertAt($index, $whitespaceToken);
+        $tokens->ensureWhitespaceAtIndex($index + 1, 0, $this->whitespacesConfig->getLineEnding().$indentation);
     }
 
     /**

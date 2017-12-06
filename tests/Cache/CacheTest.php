@@ -64,7 +64,7 @@ final class CacheTest extends TestCase
 
     public function testSetThrowsInvalidArgumentExceptionIfValueIsNotAnInteger()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $signature = $this->getSignatureDouble();
 
@@ -107,7 +107,7 @@ final class CacheTest extends TestCase
 
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $json = '{"foo';
 
@@ -121,7 +121,7 @@ final class CacheTest extends TestCase
      */
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $json = json_encode($data);
 
@@ -172,6 +172,8 @@ final class CacheTest extends TestCase
 
     public function provideCanConvertToAndFromJsonCases()
     {
+        $toolInfo = new ToolInfo();
+
         return [
             [new Signature(
                 PHP_VERSION,
@@ -183,7 +185,7 @@ final class CacheTest extends TestCase
             )],
             [new Signature(
                 PHP_VERSION,
-                ToolInfo::getVersion(),
+                $toolInfo->getVersion(),
                 [
                     // value encoded in ANSI, not UTF
                     'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],

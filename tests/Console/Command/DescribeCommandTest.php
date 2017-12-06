@@ -39,6 +39,8 @@ final class DescribeCommandTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->application = new Application();
     }
 
@@ -46,7 +48,7 @@ final class DescribeCommandTest extends TestCase
     {
         $expected = <<<'EOT'
 Description of Foo/bar rule.
-Fixes stuff.
+Fixes stuff. DEPRECATED: use `Foo/baz` instead.
 Replaces bad stuff with good stuff.
 
 Fixer applying this rule is risky.
@@ -60,7 +62,7 @@ Fixing examples:
    ---------- begin diff ----------
    --- Original
    +++ New
-   @@ @@
+   @@ -1 +1 @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and bad thing';
    ----------- end diff -----------
@@ -69,7 +71,7 @@ Fixing examples:
    ---------- begin diff ----------
    --- Original
    +++ New
-   @@ @@
+   @@ -1 +1 @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and good thing';
    ----------- end diff -----------
@@ -84,7 +86,7 @@ EOT;
     {
         $expected = <<<EOT
 \033[32mDescription of\033[39m Foo/bar \033[32mrule\033[39m.
-Fixes stuff.
+Fixes stuff. \033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
 Replaces bad stuff with good stuff.
 
 \033[37;41mFixer applying this rule is risky.\033[39;49m
@@ -98,7 +100,7 @@ Fixing examples:
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
-   \033[36m@@ @@\033[39m
+   \033[36m@@ -1 +1 @@\033[39m
    \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
    \033[32m+<?php echo 'good stuff and bad thing';\033[39m
 \033[33m   ----------- end diff -----------\033[39m
@@ -107,7 +109,7 @@ Fixing examples:
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
-   \033[36m@@ @@\033[39m
+   \033[36m@@ -1 +1 @@\033[39m
    \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
    \033[32m+<?php echo 'good stuff and good thing';\033[39m
 \033[33m   ----------- end diff -----------\033[39m
@@ -133,7 +135,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Rule "Foo/bar" not found\.$#');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('#^Rule "Foo/bar" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
@@ -148,7 +151,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Set "@NoSuchSet" not found\.$#');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('#^Set "@NoSuchSet" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => '@NoSuchSet',
@@ -163,7 +167,8 @@ EOT;
 
         $commandTester = new CommandTester($command);
 
-        $this->setExpectedExceptionRegExp(\RuntimeException::class, '/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageRegExp('/^Not enough arguments( \(missing: "name"\))?\.$/');
         $commandTester->execute([
             'command' => $command->getName(),
         ]);
@@ -171,7 +176,8 @@ EOT;
 
     public function testGetAlternativeSuggestion()
     {
-        $this->setExpectedExceptionRegExp(\InvalidArgumentException::class, '#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
         $this->execute('Foo2/bar', false);
     }
 
@@ -186,10 +192,12 @@ EOT;
         $fixer = $this->prophesize();
         $fixer->willImplement(\PhpCsFixer\Fixer\DefinedFixerInterface::class);
         $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface::class);
+        $fixer->willImplement(\PhpCsFixer\Fixer\DeprecatedFixerInterface::class);
 
         $fixer->getName()->willReturn('Foo/bar');
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(true);
+        $fixer->getSuccessorsNames()->willReturn(['Foo/baz']);
 
         $generator = new FixerOptionValidatorGenerator();
         $functionNames = ['foo', 'test'];
@@ -208,10 +216,10 @@ EOT;
             'Fixes stuff.',
             [
                 new CodeSample(
-                    '<?php echo \'bad stuff and bad thing\';'
+                    "<?php echo 'bad stuff and bad thing';\n"
                 ),
                 new CodeSample(
-                    '<?php echo \'bad stuff and bad thing\';',
+                    "<?php echo 'bad stuff and bad thing';\n",
                     ['functions' => ['foo', 'bar']]
                 ),
             ],

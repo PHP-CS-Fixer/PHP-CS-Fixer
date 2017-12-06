@@ -80,7 +80,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-            <<<'EOF'
+                <<<'EOF'
 <?php
 
 class Foo
@@ -91,8 +91,8 @@ class Foo
     }
 }
 EOF
-        ,
-            <<<'EOF'
+                ,
+                <<<'EOF'
 <?php
 
 class Foo
@@ -119,8 +119,8 @@ __construct#
     {}
 }
 EOF
-        ,
-            <<<'EOF'
+                ,
+                <<<'EOF'
 <?php
 
 class Foo
