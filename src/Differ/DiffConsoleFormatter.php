@@ -53,35 +53,42 @@ final class DiffConsoleFormatter
 
         $template = $isDecorated
             ? $this->template
-            : preg_replace('/<[^<>]+>/', '', $this->template);
+            : preg_replace('/<[^<>]+>/', '', $this->template)
+        ;
 
         return sprintf(
             $template,
-            implode(PHP_EOL, array_map(
-                function ($string) use ($isDecorated, $lineTemplate) {
-                    if ($isDecorated) {
-                        $string = preg_replace(
-                            array('/^(\+.*)/', '/^(\-.*)/', '/^(@.*)/'),
-                            array('<fg=green>\1</fg=green>', '<fg=red>\1</fg=red>', '<fg=cyan>\1</fg=cyan>'),
-                            $string
-                        );
-                    }
+            implode(
+                PHP_EOL,
+                array_map(
+                    function ($string) use ($isDecorated, $lineTemplate) {
+                        if ($isDecorated) {
+                            $string = preg_replace_callback(
+                                array(
+                                    '/^(\+.*)/',
+                                    '/^(\-.*)/',
+                                    '/^(@.*)/',
+                                ),
+                                function ($matches) {
+                                    if ('+' === $matches[0][0]) {
+                                        $c = 'green';
+                                    } elseif ('-' === $matches[0][0]) {
+                                        $c = 'red';
+                                    } else {
+                                        $c = 'cyan';
+                                    }
 
-                    $templated = sprintf($lineTemplate, $string);
+                                    return sprintf('<fg=%s>%s</fg=%s>', $c, OutputFormatter::escape($matches[0]), $c);
+                                },
+                                $string
+                            );
+                        }
 
-                    if (' ' === $string) {
-                        $templated = rtrim($templated);
-                    }
-
-                    return $templated;
-                },
-                preg_split(
-                    "#\n\r|\n#",
-                    $isDecorated
-                        ? OutputFormatter::escape(rtrim($diff))
-                        : rtrim($diff)
+                        return sprintf($lineTemplate, $string);
+                    },
+                    preg_split('#\R#u', $diff)
                 )
-            ))
+            )
         );
     }
 }
