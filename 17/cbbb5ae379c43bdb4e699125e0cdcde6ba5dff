@@ -1,0 +1,138 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-16T11:10:06Z
+
+@keradus TL,DR: ease of reading
+
+### On single-quoted strings
+
+In single-quoted strings only `'` must be escaped, and `\` is optional, but mandatory at the end of string. This can be a burden while writing code because
+```php
+$a = 'My\Prefix\Full';
+```
+is ok, but if you need to refactor the code for the prefix only, you need to remember to add the backslash:
+```php
+$a = 'My\Prefix\\';
+```
+Later you need to put the full prefix again, but forget to remove the escaped backslash, and you end up in a mixed result:
+```php
+$a = 'My\Prefix\\Full';
+```
+Moral of the story:
+1. There are two ways of doing the same thing
+1. One is mandatory in some contexts
+
+So let's use that one everywhere to prevent excessive brain-cost in writing and reading.
+
+### On double-quoted strings & heredoc syntax
+
+[Escaped chars here is a mess to remember.](https://secure.php.net/manual/en/language.types.string.php#language.types.string.syntax.double)
+Tell me in one second which ones are special chars and which one are a backslash with a following normal char:
+```php
+var_dump("\d" === "\\d");           // bool(true)
+var_dump("\e" === "\\e");           // bool(false)
+var_dump("\f" === "\\f");           // bool(false)
+var_dump("\n" === "\\n");           // bool(false)
+var_dump("\s" === "\\s");           // bool(true)
+var_dump("\r" === "\\r");           // bool(false)
+var_dump("\t" === "\\t");           // bool(false)
+var_dump("\0" === "\\0");           // bool(false)
+var_dump("\8" === "\\8");           // bool(true)
+var_dump("\xA" === "\\xA");         // bool(false)
+var_dump("\xZ" === "\\xZ");         // bool(true)
+var_dump("\u" === "\\u");           // bool(true)
+var_dump("\u{0}" === "\\u{0}");     // bool(false)
+```
+https://3v4l.org/tb4PQ
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-16T11:18:49Z
+
+I know.
+I raised my comment at `FixerDefinition` definition. Please provide reasoning in `FixerDefinition`, not PR comment ;)
+So ppl that do not know - will have it explained
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-17T09:23:06Z
+
+After running this fixer against PHP-CS-Fixer, i've noticed that:
+
+1. The algorithm is good
+1. In some context like this the result reduces the readibility, expecially for single-quoted strings
+
+So I'm gonna make it configurable, with double-quoted and heredocs enabled by default, and single-quoted disabled by default
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-18T13:54:10Z
+
+Hi, I've set this fixer to run before `SingleQuoteFixer` and `HeredocToNowdocFixer`, so these two fixers can move a cleared dobuel-quote or heredoc syntax to a simplier single-quote or nowdoc syntax.
+
+I've added this fixer to `.php_cs.dist` and you can see the result in the last commit: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3155/commits/c53f656df3c1416f7baacefe785c3bbe288d7f9a
+
+I think the result is good, the heredoc syntax in `HelpCommand` was escaped by this new fixer and then `HeredocToNowdocFixer` moved it to a nowdoc syntax, making it easier to manage.
+
+On the other side, a string like this:
+```php
+"<?php namespace A\B;  class C {}"
+```
+Moved to
+```php
+'<?php namespace A\\B;  class C {}'
+```
+So the result has a redundant backslash, but this is a `SingleQuoteFixer` flaw to not strip it.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-22T09:39:03Z
+
+> So the result has a redundant backslash, but this is a `SingleQuoteFixer` flaw to not strip it.
+
+Wouldn't this fixer change
+```php
+'<?php namespace A\B;  class C {}'
+```
+to
+```php
+'<?php namespace A\\B;  class C {}'
+```
+anyway?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-22T12:57:47Z
+
+Yes but only with `single_quoted` enabled, which is disabled by default
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-23T06:48:03Z
+
+Take a look at those fixers code:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/ab2e189d94698178988f9732bc75bb4ce8d16f77/src/Fixer/StringNotation/SingleQuoteFixer.php#L60-L61
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/ab2e189d94698178988f9732bc75bb4ce8d16f77/src/Fixer/StringNotation/HeredocToNowdocFixer.php#L78-L79
+They both skip to fix when backslashes are odd.
+This fixer makes backslashes even (when possible), so those two fixer can handle them properly.
+
+I wouldn't call it a bug: they just don't fix **all** fixable single-quotes/heredoc, but only a secure subset.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-26T11:16:17Z
+
+> `$ php php-cs-fixer describe escape_implicit_backslashes`
+>
+> In PHP, double-quoted strings and heredocs some chars like `n`, `$` or `u` have special meanings if preceded by a backslash, (and some are special only if followed by
+other special chars) while a backslash preceding other chars are interpreted like a plain backslash. The precise list of those special chars is hard to remember and to
+identify quickly: this fixer escapes backslashes that do not start a special interpretation with the char after them.
+It is possible to fix also single-quoted strings: in this case there is no special chars apart from single-quote and backslash itself, so the fixer simply ensure that all backslashes are escaped. Both single and double backslashes are allowed in single-quoted strings, so the purpose in this context is mainly to have a uniformed way to have them written all over the codebase.
+
+@keradus WDYT?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-26T17:19:14Z
+
+the only thing I would change is to put the comma after parenthesis, not before
