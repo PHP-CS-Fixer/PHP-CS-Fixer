@@ -250,23 +250,17 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                         continue;
                     }
 
-                    $indent = 0;
-                    switch ($this->descriptionAlign) {
-                        case 'description':
-                            $indent += $varMax;
-                            if (in_array($currTag, self::$tagsWithName, true) || in_array($currTag, self::$tagsWithMethodSignature, true)) {
-                                ++$indent;
-                            }
-                            // no break
-                        case 'name':
-                            $indent += $hintMax + 1;
-                            // no break
-                        case 'hint':
-                            $indent += $tagMax + 2;
-
-                            break;
+                    $indent = $this->descriptionExtraIndent;
+                    if ('hint' === $this->descriptionAlign) {
+                        $indent += $tagMax + 2;
+                    } elseif ('name' === $this->descriptionAlign) {
+                        $indent += $tagMax + $hintMax + 3;
+                    } elseif ('description' === $this->descriptionAlign) {
+                        $indent += $tagMax + $hintMax + 3;
+                        if ($varMax) {
+                            $indent += $varMax + 1;
+                        }
                     }
-                    $indent += $this->descriptionExtraIndent;
 
                     $line =
                         $item['indent']
