@@ -538,6 +538,20 @@ Choose from the list of available rules:
 
   *Risky rule: risky if the ``ereg`` function is overridden.*
 
+* **escape_implicit_backslashes**
+
+  Escape implicit backslashes in strings and heredocs to ease the
+  understanding of which are special chars interpreted by PHP and which
+  not.
+
+  Configuration options:
+
+  - ``double_quoted`` (``bool``): whether to fix double-quoted strings; defaults to
+    ``true``
+  - ``heredoc_syntax`` (``bool``): whether to fix heredoc syntax; defaults to ``true``
+  - ``single_quoted`` (``bool``): whether to fix single-quoted strings; defaults to
+    ``false``
+
 * **explicit_indirect_variable**
 
   Add curly braces to indirect variables to make them clear to understand.
