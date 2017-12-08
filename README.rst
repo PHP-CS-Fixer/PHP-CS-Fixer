@@ -1101,6 +1101,19 @@ Choose from the list of available rules:
     ``['assertAttributeEquals', 'assertAttributeNotEquals', 'assertEquals',
     'assertNotEquals']``
 
+* **php_unit_test_annotation**
+
+  Adds or removes @test annotations from tests, following configuration.
+
+  *Risky rule: this fixer may change the name of your tests, and could cause incompatibility with abstract classes or interfaces.*
+
+  Configuration options:
+
+  - ``case`` (``'camel'``, ``'snake'``): whether to camel or snake case when adding the
+    test prefix; defaults to ``'camel'``
+  - ``style`` (``'annotation'``, ``'prefix'``): whether to use the @test annotation or
+    not; defaults to ``'prefix'``
+
 * **php_unit_test_class_requires_covers**
 
   Adds a default ``@coversNothing`` annotation to PHPUnit test classes that

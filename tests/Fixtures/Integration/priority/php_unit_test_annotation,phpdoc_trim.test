@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: php_unit_test_annotation,phpdoc_trim
+--RULESET--
+{"php_unit_test_annotation": true, "phpdoc_trim" : true}
+--EXPECT--
+<?php
+class Test
+{
+    /**
+     * It does thing for foo and bar
+     */
+    public function testFooBar() {}
+}
+--INPUT--
+<?php
+class Test
+{
+    /**
+     * It does thing for foo and bar
+     * @test
+     */
+    public function fooBar() {}
+}
