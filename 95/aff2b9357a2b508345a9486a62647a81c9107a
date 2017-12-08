@@ -1,0 +1,32 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2017-10-31T18:10:23Z
+
+`Lambda's` should be `Lambdas`
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-10-31T19:10:01Z
+
+@SpacePossum
+
+Interesting! Was going to ask why that makes sense - then I found this: http://php.net/manual/en/functions.anonymous.php#functions.anonymous-functions.static
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-31T19:53:36Z
+
+thanks @ntzm , I'm no native English speaker (and even within my native language I'm not very good with spelling and grammar), so corrections like yours are most welcome :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-31T19:58:53Z
+
+@localheinz your link reminds me that I should mark this fixer after all,
+as we've no way to check if somewhere a `bindTo` call is done on the callable... sadly
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-01T13:56:58Z
+
+expect tests to fail
