@@ -1,0 +1,61 @@
+---------------------------------------------------------------------------
+
+by fterrag at 2017-11-17T15:52:07Z
+
+@julienfalque thanks for opening this PR. Any updates here?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-17T15:57:08Z
+
+This PR mainly needs proper review for now :)
+
+---------------------------------------------------------------------------
+
+by fterrag at 2017-11-17T17:03:37Z
+
+@julienfalque alright, cool! Who can we ping to get some movement here?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-17T18:23:01Z
+
+@fterrag If you want this PR to be merged faster (and if you have time to), please help by reviewing :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-11-17T20:21:18Z
+
+What about indenting to the arrow? Like this:
+```php
+$somethingBuilder->addDescription('Hello')
+                 ->addNumber(42)
+                 ->addSomethingElse('something else');
+```
+Doctrine does that in their [docs](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/query-builder.html#binding-parameters-to-your-query).
+
+Also an option if the first chaining should be in the line with the variable or in the next one would be useful.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-17T22:59:45Z
+
+Why not but I'd like to avoid implementing too much things here and merge the current PR first.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-18T20:48:45Z
+
+btw, please incorporate my commits into @boliev 's ones (to clean up history) next time you will make a rebase
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-05T15:04:58Z
+
+please make a rebase @julienfalque
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-12-05T19:39:34Z
+
+Rebased. I'm not sure the CircleCI failure is related to changes in this PR as I'm getting similar errors locally with master.
