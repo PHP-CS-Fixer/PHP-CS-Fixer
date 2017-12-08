@@ -100,7 +100,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         $indent = $this->indent;
 
         // change indent to expected one
-        $content = preg_replace_callback('/^(?:    )+/m', function ($matches) use ($indent) {
+        $content = preg_replace_callback('/^(?:    )+/m', static function ($matches) use ($indent) {
             return str_replace('    ', $indent, $matches[0]);
         }, $content);
 
@@ -127,7 +127,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         $indent = $this->indent;
         $newContent = preg_replace_callback(
             '/(\R)(\h+)/', // find indent
-            function (array $matches) use ($indent) {
+            static function (array $matches) use ($indent) {
                 // normalize mixed indent
                 $content = preg_replace('/(?:(?<! ) {1,3})?\t/', '    ', $matches[2]);
 

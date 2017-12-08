@@ -237,7 +237,7 @@ EOF;
         $help = preg_replace("#^\n( +<\\?php)#m", "\n.. code-block:: php\n\n$1", $help);
         $help = preg_replace_callback(
             '#^\s*<\?(\w+).*?\?>#ms',
-            function ($matches) {
+            static function ($matches) {
                 $result = preg_replace("#^\\.\\. code-block:: bash\n\n#m", '', $matches[0]);
 
                 if ('php' !== $matches[1]) {
@@ -259,7 +259,7 @@ EOF;
 
         $help = preg_replace_callback(
            '#`(.+)`\s?\(<url>(.+)<\/url>\)#',
-            function (array $matches) {
+            static function (array $matches) {
                 return sprintf('`%s <%s>`_', str_replace('\\', '\\\\', $matches[1]), $matches[2]);
             },
             $help

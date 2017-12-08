@@ -131,7 +131,7 @@ class Sample
         return new FixerConfigurationResolverRootless('replacements', [
             (new FixerOptionBuilder('replacements', 'Mapping between replaced return types with new ones.'))
                 ->setAllowedTypes(['array'])
-                ->setNormalizer(function (Options $options, $value) use ($default) {
+                ->setNormalizer(static function (Options $options, $value) use ($default) {
                     $normalizedValue = [];
                     foreach ($value as $from => $to) {
                         if (is_string($from)) {

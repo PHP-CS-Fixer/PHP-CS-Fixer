@@ -199,7 +199,7 @@ final class FixerFactoryTest extends TestCase
 
         $docFixerNames = array_filter(
             array_keys($fixers),
-            function ($name) {
+            static function ($name) {
                 return false !== strpos($name, 'phpdoc');
             }
         );

@@ -66,7 +66,7 @@ final class ProjectCodeTest extends TestCase
     {
         $unknownClasses = array_filter(
             self::$classesWithoutTests,
-            function ($class) { return !class_exists($class) && !trait_exists($class); }
+            static function ($class) { return !class_exists($class) && !trait_exists($class); }
         );
 
         $this->assertSame([], $unknownClasses);
@@ -143,7 +143,7 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(function ($item) {
+                implode("\n", array_map(static function ($item) {
                     return " * ${item}";
                 }, $extraMethods))
             )
@@ -182,10 +182,10 @@ final class ProjectCodeTest extends TestCase
             $allowedProps = $rc->getParentClass()->getProperties(\ReflectionProperty::IS_PROTECTED);
         }
 
-        $allowedProps = array_map(function (\ReflectionProperty $item) {
+        $allowedProps = array_map(static function (\ReflectionProperty $item) {
             return $item->getName();
         }, $allowedProps);
-        $definedProps = array_map(function (\ReflectionProperty $item) {
+        $definedProps = array_map(static function (\ReflectionProperty $item) {
             return $item->getName();
         }, $definedProps);
 
@@ -211,7 +211,7 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(function ($item) {
+                implode("\n", array_map(static function ($item) {
                     return " * ${item}";
                 }, $extraProps))
             )
@@ -267,7 +267,7 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcClassCases()
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
             $this->getSrcClasses()
@@ -277,10 +277,10 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcClassesNotAbuseInterfacesCases()
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
-            array_filter($this->getSrcClasses(), function ($className) {
+            array_filter($this->getSrcClasses(), static function ($className) {
                 $rc = new \ReflectionClass($className);
 
                 $doc = false !== $rc->getDocComment()
@@ -311,10 +311,10 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcConcreteClassCases()
     {
         return array_map(
-            function ($item) { return [$item]; },
+            static function ($item) { return [$item]; },
             array_filter(
                 $this->getSrcClasses(),
-                function ($className) {
+                static function ($className) {
                     $rc = new \ReflectionClass($className);
 
                     return !$rc->isAbstract() && !$rc->isInterface();
@@ -326,7 +326,7 @@ final class ProjectCodeTest extends TestCase
     public function provideTestClassCases()
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
             $this->getTestClasses()
@@ -393,7 +393,7 @@ final class ProjectCodeTest extends TestCase
         ;
 
         $classes = array_map(
-            function (SplFileInfo $file) {
+            static function (SplFileInfo $file) {
                 return sprintf(
                     '%s\\%s%s%s',
                     'PhpCsFixer',
@@ -428,7 +428,7 @@ final class ProjectCodeTest extends TestCase
         ;
 
         $classes = array_map(
-            function (SplFileInfo $file) {
+            static function (SplFileInfo $file) {
                 return sprintf(
                     'PhpCsFixer\\Tests\\%s%s%s',
                     strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
@@ -452,7 +452,7 @@ final class ProjectCodeTest extends TestCase
     private function getPublicMethodNames(\ReflectionClass $rc)
     {
         return array_map(
-            function (\ReflectionMethod $rm) {
+            static function (\ReflectionMethod $rm) {
                 return $rm->getName();
             },
             $rc->getMethods(\ReflectionMethod::IS_PUBLIC)

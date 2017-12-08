@@ -143,7 +143,7 @@ final class CacheTest extends TestCase
             'hashes' => [],
         ];
 
-        return array_map(function ($missingKey) use ($data) {
+        return array_map(static function ($missingKey) use ($data) {
             unset($data[$missingKey]);
 
             return [
