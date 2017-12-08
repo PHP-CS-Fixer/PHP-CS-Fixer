@@ -39,7 +39,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     public function getPriority()
     {
         // should be run before NoExtraConsecutiveBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer and
-        // after PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer.
+        // after PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PHPUnitTestAnnotationFixer.
         return 5;
     }
 

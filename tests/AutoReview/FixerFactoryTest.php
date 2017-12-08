@@ -185,6 +185,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['unary_operator_spaces'], $fixers['not_operator_with_successor_space']],
             [$fixers['void_return'], $fixers['phpdoc_no_empty_return']], // tested also in: void_return,phpdoc_no_empty_return.test
             [$fixers['void_return'], $fixers['return_type_declaration']], // tested also in: void_return,return_type_declaration.test
+            [$fixers['php_unit_test_annotation'], $fixers['no_empty_phpdoc']], // tested also in: php_unit_test_annotation,no_empty_phpdoc.test
+            [$fixers['php_unit_test_annotation'], $fixers['phpdoc_trim']], // tested also in: php_unit_test_annotation,phpdoc_trim.test
         ];
 
         // prepare bulk tests for phpdoc fixers to test that:
