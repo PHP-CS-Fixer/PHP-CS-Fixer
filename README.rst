@@ -582,9 +582,9 @@ Choose from the list of available rules:
 
   - ``annotation-black-list`` (``array``): class level annotations tags that must be
     omitted to fix the class, even if all of the white list ones are used
-    as well. (case in sensitive); defaults to ``['@final', '@Entity', '@ORM']``
+    as well. (case insensitive); defaults to ``['@final', '@Entity', '@ORM']``
   - ``annotation-white-list`` (``array``): class level annotations tags that must be
-    set in order to fix the class. (case in sensitive); defaults to
+    set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
