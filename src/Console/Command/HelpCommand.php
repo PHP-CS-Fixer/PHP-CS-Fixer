@@ -278,7 +278,7 @@ EOF
                 self::getLatestReleaseVersionFromChangeLog()
             ),
             '%%%CI_INTEGRATION%%%' => implode("\n", array_map(
-                function ($line) { return '    $ '.$line; },
+                static function ($line) { return '    $ '.$line; },
                 array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
             )),
             '%%%FIXERS_DETAILS%%%' => self::getFixersHelp(),
@@ -338,11 +338,11 @@ EOF
         $allowed = $option->getAllowedValues();
 
         if (null !== $allowed) {
-            $allowed = array_filter($allowed, function ($value) {
+            $allowed = array_filter($allowed, static function ($value) {
                 return !($value instanceof \Closure);
             });
 
-            usort($allowed, function ($valueA, $valueB) {
+            usort($allowed, static function ($valueA, $valueB) {
                 return strcasecmp(
                     self::toString($valueA),
                     self::toString($valueB)
@@ -433,7 +433,7 @@ EOF
         // sort fixers by name
         usort(
             $fixers,
-            function (FixerInterface $a, FixerInterface $b) {
+            static function (FixerInterface $a, FixerInterface $b) {
                 return strcmp($a->getName(), $b->getName());
             }
         );
@@ -443,7 +443,7 @@ EOF
             $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
-        $getSetsWithRule = function ($rule) use ($ruleSets) {
+        $getSetsWithRule = static function ($rule) use ($ruleSets) {
             $sets = [];
 
             foreach ($ruleSets as $setName => $ruleSet) {
@@ -503,7 +503,7 @@ EOF
 
                     usort(
                         $configurationDefinitionOptions,
-                        function (FixerOptionInterface $optionA, FixerOptionInterface $optionB) {
+                        static function (FixerOptionInterface $optionA, FixerOptionInterface $optionB) {
                             return strcmp($optionA->getName(), $optionB->getName());
                         }
                     );
@@ -581,7 +581,7 @@ EOF
             $lineLength += $wordLength;
         }
 
-        return array_map(function ($line) {
+        return array_map(static function ($line) {
             return implode(' ', $line);
         }, $result);
     }

@@ -268,7 +268,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                 "Cannot execute `%s`:\n%s\nCode: %s\nExit text: %s\nError output: %s\nDetails:\n%s",
                 $command,
                 './'.static::$tmpFileName === $command
-                    ? implode('', array_map(function ($line) { return "$ ${line}"; }, file(static::$tmpFilePath)))."\n"
+                    ? implode('', array_map(static function ($line) { return "$ ${line}"; }, file(static::$tmpFilePath)))."\n"
                     : '',
                 $result['code'],
                 $process->getExitCodeText(),

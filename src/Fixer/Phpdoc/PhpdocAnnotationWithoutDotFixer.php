@@ -92,7 +92,7 @@ function foo ($bar) {}
                     : '';
                 $content = preg_replace_callback(
                     '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
-                    function (array $matches) {
+                    static function (array $matches) {
                         return $matches[1].strtolower($matches[2]).$matches[3];
                     },
                     $startLine->getContent(),
