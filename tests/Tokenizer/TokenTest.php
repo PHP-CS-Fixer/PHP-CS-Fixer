@@ -49,6 +49,34 @@ final class TokenTest extends TestCase
     }
 
     /**
+     * @param mixed $input
+     *
+     * @dataProvider provideConstructorValidationCases
+     */
+    public function testConstructorValidation($input)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        new Token($input);
+    }
+
+    public function provideConstructorValidationCases()
+    {
+        return [
+            [null],
+            [123],
+            [new \stdClass()],
+            [['asd', 'asd']],
+            [[null, 'asd']],
+            [[new \stdClass(), 'asd']],
+            [[T_WHITESPACE, null]],
+            [[T_WHITESPACE, 123]],
+            [[T_WHITESPACE, '']],
+            [[T_WHITESPACE, new \stdClass()]],
+        ];
+    }
+
+    /**
      * @group legacy
      * @expectedDeprecation PhpCsFixer\Tokenizer\Token::clear is deprecated and will be removed in 3.0.
      */
@@ -188,7 +216,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param int    $tokenId
+     * @param ?int   $tokenId
      * @param string $content
      * @param bool   $isConstant
      *
@@ -196,7 +224,10 @@ final class TokenTest extends TestCase
      */
     public function testIsMagicConstant($tokenId, $content, $isConstant = true)
     {
-        $token = new Token([$tokenId, $content]);
+        $token = new Token(
+            null === $tokenId ? $content : [$tokenId, $content]
+        );
+
         $this->assertSame($isConstant, $token->isMagicConstant());
     }
 
