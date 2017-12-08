@@ -1,0 +1,65 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-04T07:58:04Z
+
+`fabbot.io` is false negative because we updated the CS rules of SF set but this is not yet part of `fabbot.io`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-26T07:23:57Z
+
++ interesting 7.2 failure https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/289951049#L697
++ false failure on fabbot.io
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-26T11:41:13Z
+
+too many deprecations perhaps ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-26T12:16:28Z
+
+`phpdbg` with `phpunit` coverage runs out of memory, this is a known issue.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-26T14:06:41Z
+
+obviously phpunit with phpdbg/xdebug demands more memory, yet on master we don't demand that much it crashes the build
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-26T14:17:36Z
+
+https://github.com/sebastianbergmann/phpunit/issues/2019
+and
+https://stackoverflow.com/questions/46001411/phpdbg-phpunit-throws-error-even-when-memory-limit-is-1
+
+If I run the `phpdbg phpunit` setup local it crashes as well, running with `xdebug phpunit` setup there is no issue. Not sure how to proceed for now.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-29T16:18:53Z
+
+if we don't get memory issue with phpdbg on master branch and we do on this PR, then I would say this PR requires too much memory. could we check it and shrink it down perhaps ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-30T08:04:35Z
+
+I don't think the issue is within this PR, I think this PR just pushes the total amount of memory used over the total limit.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-01T16:29:26Z
+
+about memory issue.
+memory needed by PHPUnit on master: 108MB, on this branch: 108MB
+
+so, it's not about memory in general.
+under 7.2:
+> Allowed memory size of 1073741824 bytes exhausted
+
+which is 1GB ! new code works ugly on PHP 7.2, maybe some unfinished loop ?
