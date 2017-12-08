@@ -87,8 +87,8 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
             ],
             [
-                '<?php trait Foo { function bar() { self::bar(); } }',
-                '<?php trait Foo { function bar() { Foo::bar(); } }',
+                // In trait "self" will reference the class it's used in, not the actual trait, so we can't replace "Foo" with "self" here
+                '<?php trait Foo { function bar() { Foo::bar(); } } class Bar { use Foo; }',
             ],
             [
                 '<?php class Foo { public function bar(self $foo, self $bar) { return new self(); } }',

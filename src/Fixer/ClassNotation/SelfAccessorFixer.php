@@ -31,7 +31,7 @@ final class SelfAccessorFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Inside a classy element "self" should be preferred to the class name itself.',
+            'Inside class or interface element "self" should be preferred to the class name itself.',
             [
                 new CodeSample(
                     '<?php
@@ -56,7 +56,7 @@ class Sample
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
 
     /**
@@ -67,7 +67,7 @@ class Sample
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($i = 0, $c = $tokens->count(); $i < $c; ++$i) {
-            if (!$tokens[$i]->isClassy() || $tokensAnalyzer->isAnonymousClass($i)) {
+            if (!$tokens[$i]->isGivenKind([T_CLASS, T_INTERFACE]) || $tokensAnalyzer->isAnonymousClass($i)) {
                 continue;
             }
 
