@@ -25,6 +25,7 @@ $config = PhpCsFixer\Config::create()
         'compact_nullable_typehint' => true,
         'escape_implicit_backslashes' => true,
         'explicit_indirect_variable' => true,
+        'explicit_string_variable' => true,
         'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
         'list_syntax' => ['syntax' => 'long'],

@@ -324,6 +324,16 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply between cast and variable;
     defaults to ``'single'``
 
+* **class_attributes_separation** [@Symfony]
+
+  Class, trait and interface elements must be separated with one blank
+  line.
+
+  Configuration options:
+
+  - ``elements`` (``array``): list of classy elements; 'const', 'method',
+    'property'; defaults to ``['const', 'method', 'property']``
+
 * **class_definition** [@PSR2, @Symfony]
 
   Whitespace around the keywords of a class, trait or interfaces
@@ -557,6 +567,11 @@ Choose from the list of available rules:
   Add curly braces to indirect variables to make them clear to understand.
   Requires PHP >= 7.0.
 
+* **explicit_string_variable**
+
+  Converts implicit variables into explicit ones in double-quoted strings
+  or heredoc syntax.
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
@@ -703,9 +718,10 @@ Choose from the list of available rules:
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
-* **method_separation** [@Symfony]
+* **method_separation**
 
-  Methods must be separated with one blank line.
+  Methods must be separated with one blank line. DEPRECATED: use
+  ``class_attributes_separation`` instead.
 
 * **modernize_types_casting** [@Symfony:risky]
 

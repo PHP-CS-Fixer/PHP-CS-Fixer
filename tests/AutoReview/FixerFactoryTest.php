@@ -60,6 +60,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']], // tested also in: array_syntax,binary_operator_spaces.test
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']], // tested also in: array_syntax,ternary_operator_spaces.test
             [$fixers['blank_line_after_opening_tag'], $fixers['no_blank_lines_before_namespace']], // tested also in: blank_line_after_opening_tag,no_blank_lines_before_namespace.test
+            [$fixers['class_attributes_separation'], $fixers['braces']],
+            [$fixers['class_attributes_separation'], $fixers['indentation_type']],
             [$fixers['class_keyword_remove'], $fixers['no_unused_imports']], // tested also in: class_keyword_remove,no_unused_imports.test
             [$fixers['combine_consecutive_issets'], $fixers['no_multiline_whitespace_before_semicolons']], // tested also in: combine_consecutive_issets,no_multiline_whitespace_before_semicolons.test
             [$fixers['combine_consecutive_issets'], $fixers['no_spaces_inside_parenthesis']], // tested also in: combine_consecutive_issets,no_spaces_inside_parenthesis.test
@@ -130,6 +132,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_useless_return'], $fixers['blank_line_before_statement']], // tested also in: no_useless_return,blank_line_before_statement.test
             [$fixers['no_useless_return'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_useless_return,no_extra_consecutive_blank_lines.test
             [$fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']], // tested also in: no_useless_return,no_whitespace_in_blank_line.test
+            [$fixers['ordered_class_elements'], $fixers['class_attributes_separation']], // tested also in: ordered_class_elements,class_attributes_separation.test
             [$fixers['ordered_class_elements'], $fixers['method_separation']], // tested also in: ordered_class_elements,method_separation.test
             [$fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']], // tested also in: ordered_class_elements,no_blank_lines_after_class_opening.test
             [$fixers['ordered_class_elements'], $fixers['space_after_semicolon']], // tested also in: ordered_class_elements,space_after_semicolon.test
