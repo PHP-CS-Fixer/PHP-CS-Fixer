@@ -557,6 +557,11 @@ Choose from the list of available rules:
   Add curly braces to indirect variables to make them clear to understand.
   Requires PHP >= 7.0.
 
+* **explicit_string_variable**
+
+  Converts implicit variables into explicit ones in double-quoted strings
+  or heredoc syntax.
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
