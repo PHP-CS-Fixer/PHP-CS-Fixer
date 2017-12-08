@@ -6,9 +6,10 @@ Integration of fixers: php_unit_test_annotation,no_empty_phpdoc.
 <?php
 class Test
 {
-
+    
     public function testFooBar() {}
 }
+
 --INPUT--
 <?php
 class Test

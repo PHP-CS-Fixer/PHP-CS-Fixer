@@ -103,8 +103,9 @@ if (1) {
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
-     * @test
      * @dataProvider blabla
+     *
+     * @test
      */
     public function itDoesSomething() {}
     }',
@@ -130,8 +131,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function helperFunction() {}
 
     /**
-     *
      * @depends testAaa
+     *
+     *
      */
     public function testBbb () {}
 }',
@@ -146,8 +148,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function helperFunction() {}
 
     /**
-     * @test
      * @depends aaa
+     *
+     * @test
      */
     public function bbb () {}
 }',
@@ -163,8 +166,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function aaa () {}
 
     /**
-     * @test
      * @depends aaa
+     *
+     * @test
      */
     public function bbb () {}
 }',
@@ -266,8 +270,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function works_fine () {}
 
     /**
-     * @test
      * @depends works_fine
+     *
+     * @test
      */
     public function works_fine_too() {}
 }',
@@ -329,8 +334,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function camelCased () {}
 
     /**
-     * @test
+     * Description.
+     *
      * @depends camelCased
+     *
+     * @test
      */
     public function depends_on_someone () {}
 
@@ -338,14 +346,16 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function a_helper_function () {}
 
     /**
-     * @test
      * @depends depends_on_someone
+     *
+     * @test
      */
     public function moreDepends() {}
 
     /**
-     * @test
      * @depends depends_on_someone
+     *
+     * @test
      */
     public function alreadyAnnotated() {}
 }',
@@ -357,6 +367,8 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function testCamelCased () {}
 
     /**
+     * Description.
+     *
      * @depends testCamelCased
      */
     public function test_depends_on_someone () {}
@@ -370,8 +382,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function testMoreDepends() {}
 
     /**
-     * @test
      * @depends test_depends_on_someone
+     *
+     * @test
      */
     public function alreadyAnnotated() {}
 }',
@@ -639,8 +652,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
-     * @test
      * @group Database
+     *
+     * @test
      */
     public function itTestsDatabase() {}
 }',
@@ -657,8 +671,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
-     * @test
      * I really like this test, it helps a lot
+     *
+     * @test
      */
     public function itTestsDatabase() {}
 }',
@@ -698,8 +713,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function itTestsDatabase() {}
 
     /**
-     * @test
      * @depends itTestsDatabase
+     *
+     * @test
      */
     public function itDepends() {}
 }',
@@ -766,7 +782,6 @@ final class ProcessLinterProcessBuilderTest extends TestCase
 final class ProcessLinterProcessBuilderTest extends TestCase
 {
     /**
-     * @test
      * @param string $executable
      * @param string $file
      * @param string $expected
@@ -774,6 +789,8 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
      *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
      * @requires OS Linux|Darwin
+     *
+     * @test
      */
     public function prepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
     {
@@ -872,8 +889,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
-     * @test
      * There is some text here @group Database @group Integration
+     *
+     * @test
      */
     public function whyDoThis() {}
 }',
@@ -918,7 +936,17 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function testItDoesSomething() {}
     }',
             ],
-            'Annotation does not get added when it is already present in a weird place' => [
+            'Annotation is added when it is already present in a weird place' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * Im a comment @test about the function
+     *
+     * @test
+     */
+    public function iHateMyTestSuite() {}
+}',
                 '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
@@ -927,7 +955,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function iHateMyTestSuite() {}
 }',
-                null,
                 ['style' => 'annotation'],
             ],
             'Docblock does not get converted to a multi line doc block if it already has @test annotation' => [

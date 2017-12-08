@@ -406,7 +406,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
                 $lines[$i] = new Line(str_replace(' @test', '', $lines[$i]->getContent()));
             }
             //ignore the line if it isnt @depends
-            if (false === strpos($lines[$i], '@depends')) {
+            if (false === strpos($lines[$i]->getContent(), '@depends')) {
                 continue;
             }
 
@@ -552,7 +552,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             $originalIndent = $this->detectIndent($tokens, $docBlockIndex);
             $lineEnd = $this->whitespacesConfig->getLineEnding();
 
-            array_splice($lines, 1, 0, $originalIndent.' * @test'.$lineEnd);
+            array_splice($lines, -1, 0, $originalIndent.' *'.$lineEnd.$originalIndent.' * @test'.$lineEnd);
         }
 
         return $lines;
@@ -565,23 +565,6 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function doesDocBlockContainTest(DocBlock $doc)
     {
-        //If it doesnt have @test at all its not a test
-        if (false === strpos($doc->getContent(), '@test')) {
-            return false;
-        }
-        // if it contains @test and then a new line, its a test
-        if (false !== strpos($doc->getContent(), '@test'.$this->whitespacesConfig->getLineEnding())) {
-            return true;
-        }
-        //If it contains @test and then a space its a new line
-        if (false !== strpos($doc->getContent(), '@test ')) {
-            return true;
-        }
-        //If it contains @test and then a tab its a new line
-        if (false !== strpos($doc->getContent(), '@test\t')) {
-            return true;
-        }
-
-        return false;
+        return !empty($doc->getAnnotationsOfType('test'));
     }
 }
