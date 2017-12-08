@@ -154,13 +154,13 @@ final class FixerConfigurationResolverTest extends TestCase
             }),
         ]);
 
-        $catched = null;
+        $caught = null;
 
         try {
             $configuration->resolve(['foo' => '1']);
-        } catch (InvalidOptionsException $catched) {
+        } catch (InvalidOptionsException $caught) {
         }
 
-        $this->assertSame($exception, $catched);
+        $this->assertSame($exception, $caught);
     }
 }

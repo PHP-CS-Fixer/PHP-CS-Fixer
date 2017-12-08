@@ -1262,7 +1262,7 @@ class Tokens extends \SplFixedArray
      */
     private static function calculateCodeHash($code)
     {
-        return (string) crc32($code);
+        return CodeHasher::calculateCodeHash($code);
     }
 
     /**

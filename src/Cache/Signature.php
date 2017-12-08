@@ -63,15 +63,9 @@ final class Signature implements SignatureInterface
 
     public function equals(SignatureInterface $signature)
     {
-        if (
-            $this->phpVersion !== $signature->getPhpVersion()
-            || $this->fixerVersion !== $signature->getFixerVersion()
-            || $this->rules !== $signature->getRules()
-        ) {
-            return false;
-        }
-
-        return true;
+        return $this->phpVersion === $signature->getPhpVersion()
+            && $this->fixerVersion === $signature->getFixerVersion()
+            && $this->rules === $signature->getRules();
     }
 
     private static function utf8Encode(array $data)

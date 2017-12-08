@@ -19,6 +19,7 @@ namespace PhpCsFixer\Tokenizer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ * @author SpacePossum
  *
  * @internal
  */
@@ -44,8 +45,18 @@ final class TokensAnalyzer
     public function getClassyElements()
     {
         $this->tokens->rewind();
+        $elements = [];
 
-        return $this->findClassyElements($this->tokens, 0);
+        for ($index = 1, $count = count($this->tokens) - 2; $index < $count; ++$index) {
+            if ($this->tokens[$index]->isClassy()) {
+                list($index, $newElements) = $this->findClassyElements($index);
+                $elements += $newElements;
+            }
+        }
+
+        ksort($elements);
+
+        return $elements;
     }
 
     /**
@@ -455,6 +466,7 @@ final class TokensAnalyzer
                 T_SR => true,                   // >>
                 T_SR_EQUAL => true,             // >>=
                 T_XOR_EQUAL => true,            // ^=
+                CT::T_TYPE_ALTERNATION => true, // |
             ];
 
             if (defined('T_SPACESHIP')) {
@@ -513,33 +525,32 @@ final class TokensAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $start
+     * Find classy elements.
+     *
+     * Searches in tokens from the classy (start) index till the end (index) of the classy.
+     * Returns an array; first value is the index until the method has analysed (int), second the found classy elements (array).
+     *
+     * @param int $index classy index
      *
      * @return array
      */
-    private function findClassyElements(Tokens $tokens, $start)
+    private function findClassyElements($index)
     {
         $elements = [];
-        $inClass = false;
         $curlyBracesLevel = 0;
         $bracesLevel = 0;
+        ++$index; // skip the classy index itself
 
-        for ($index = $start, $count = count($tokens); $index < $count; ++$index) {
-            $token = $tokens[$index];
+        for ($count = count($this->tokens); $index < $count; ++$index) {
+            $token = $this->tokens[$index];
 
             if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
                 continue;
             }
 
-            if (!$inClass) {
-                $inClass = $token->isClassy();
-
-                continue;
-            }
-
             if ($token->isClassy()) { // anonymous class in class
-                $elements += $this->findClassyElements($tokens, $index);
+                list($index, $newElements) = $this->findClassyElements($index);
+                $elements += $newElements;
 
                 continue;
             }
@@ -566,7 +577,7 @@ final class TokensAnalyzer
                 --$curlyBracesLevel;
 
                 if (0 === $curlyBracesLevel) {
-                    $inClass = false;
+                    break;
                 }
 
                 continue;
@@ -589,8 +600,6 @@ final class TokensAnalyzer
             }
         }
 
-        ksort($elements);
-
-        return $elements;
+        return [$index, $elements];
     }
 }

@@ -34,7 +34,7 @@ use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
-use PhpCsFixer\ToolInfo;
+use PhpCsFixer\ToolInfoInterface;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -106,6 +106,11 @@ final class ConfigurationResolver
     private $configFinderIsOverridden;
 
     /**
+     * @var ToolInfoInterface
+     */
+    private $toolInfo;
+
+    /**
      * @var array
      */
     private $options = [
@@ -145,17 +150,20 @@ final class ConfigurationResolver
     /**
      * ConfigurationResolver constructor.
      *
-     * @param ConfigInterface $config
-     * @param array           $options
-     * @param string          $cwd
+     * @param ConfigInterface   $config
+     * @param array             $options
+     * @param string            $cwd
+     * @param ToolInfoInterface $toolInfo
      */
     public function __construct(
         ConfigInterface $config,
         array $options,
-        $cwd
+        $cwd,
+        ToolInfoInterface $toolInfo
     ) {
         $this->cwd = $cwd;
         $this->defaultConfig = $config;
+        $this->toolInfo = $toolInfo;
 
         foreach ($options as $name => $value) {
             $this->setOption($name, $value);
@@ -188,12 +196,12 @@ final class ConfigurationResolver
     public function getCacheManager()
     {
         if (null === $this->cacheManager) {
-            if ($this->getUsingCache() && (ToolInfo::isInstalledAsPhar() || ToolInfo::isInstalledByComposer())) {
+            if ($this->getUsingCache() && ($this->toolInfo->isInstalledAsPhar() || $this->toolInfo->isInstalledByComposer())) {
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($this->getCacheFile()),
                     new Signature(
                         PHP_VERSION,
-                        ToolInfo::getVersion(),
+                        $this->toolInfo->getVersion(),
                         $this->getRules()
                     ),
                     $this->isDryRun(),
