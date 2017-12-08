@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: ordered_class_elements,class_attributes_separation.
+--RULESET--
+{"ordered_class_elements": true, "class_attributes_separation": true}
+--EXPECT--
+<?php
+
+class Foo
+{
+    public function bar() {}
+
+    protected function baz() {}
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    protected function baz() {}
+
+    public function bar() {}
+}
