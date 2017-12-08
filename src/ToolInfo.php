@@ -94,6 +94,14 @@ final class ToolInfo implements ToolInfoInterface
         return $this->isInstalledByComposer;
     }
 
+    public function getPharDownloadUri($version)
+    {
+        return sprintf(
+            'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar',
+            $version
+        );
+    }
+
     private function getComposerInstalledFile()
     {
         return __DIR__.'/../../../composer/installed.json';
