@@ -46,6 +46,34 @@ final class TokenTest extends TestCase
         return $prototype;
     }
 
+    /**
+     * @param mixed $input
+     *
+     * @dataProvider provideConstructorValidationCases
+     */
+    public function testConstructorValidation($input)
+    {
+        $this->setExpectedException(get_class(new \InvalidArgumentException()));
+
+        new Token($input);
+    }
+
+    public function provideConstructorValidationCases()
+    {
+        return array(
+            array(null),
+            array(123),
+            array(new \stdClass()),
+            array(array('asd', 'asd')),
+            array(array(null, 'asd')),
+            array(array(new \stdClass(), 'asd')),
+            array(array(T_WHITESPACE, null)),
+            array(array(T_WHITESPACE, 123)),
+            array(array(T_WHITESPACE, '')),
+            array(array(T_WHITESPACE, new \stdClass())),
+        );
+    }
+
     public function testClear()
     {
         $token = $this->getForeachToken();
@@ -179,7 +207,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param int    $tokenId
+     * @param ?int   $tokenId
      * @param string $content
      * @param bool   $isConstant
      *
@@ -187,7 +215,10 @@ final class TokenTest extends TestCase
      */
     public function testIsMagicConstant($tokenId, $content, $isConstant = true)
     {
-        $token = new Token(array($tokenId, $content));
+        $token = new Token(
+            null === $tokenId ? $content : array($tokenId, $content)
+        );
+
         $this->assertSame($isConstant, $token->isMagicConstant());
     }
 
