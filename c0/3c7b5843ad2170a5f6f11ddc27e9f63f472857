@@ -1,0 +1,555 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-24T14:51:52Z
+
+Hi, thanks for quickly picking it up ! Really great to see it here ;)
+Remember, that this project is heavily maintained and for that we need to work with code that we are super sure about, thus, if you will get some picky comments to change sth or review process won't be that fast as all of us would like, please be understanding, and sorry for that ;)
+
+Don't bother about `getPriority` here, it's indicator of "when" given fixer shall be executed in comparison to other fixers - before or after some of them. It's our way of configuring the order of conflicting fixers.
+As I don't see any conflict here, you don't need to implement the method on your own (so, you will use default implementation that is in abstract parent class).
+
+About definitions - you mean the failing test? I will point to it in comment of given line soon ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-24T15:01:30Z
+
+btw, please don't squash the commits.
+like now, I see that sth has been modified, some of my comments are outdated now, but I have no way to see what was actually changed, so I need to start from beginning...
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-11-24T15:02:28Z
+
+@keradus
+Will do, and thanks for the feedback so far
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-11-24T15:07:24Z
+
+@BackEndTea
+
+In regard to priority, probably makes sense to run this before the `NoEmptyPhpdocFixer`, so if the only content of the docblock is the `@test` annotation, that it will eventually be removed.
+
+👍
+
+By the way, great idea!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-24T15:26:45Z
+
+so.
+before:
+```php
+/**
+ * @test
+ */
+public function aaa() {}
+
+/**
+ * @test
+ * @depends aaa
+ */
+public function bbb() {}
+```
+
+after:
+
+```php
+/**
+ */
+public function testAaa() {}
+
+/**
+ * @depends aaa
+ */
+public function testBbb() {}
+```
+
+`@depends` annotation was not modified. tests will crash
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-11-27T20:01:14Z
+
+Thanks for all the feedback so far.
+
+@keradus
+I added a check for the ```@depends``` tags, and added tests to cover that behaviour.
+
+@localheinz
+What priority do i have to give it in order to make sure that it is placed in the correct order?
+
+And for your comment
+> * some people use camelCase with ```@test``` annotation
+> * some people use snake_case with ```@test``` annotation
+> * some people use prefix test followed by PascalCase
+> * some maybe even use prefix test followed by PascalCase and also have a redundant ```@test``` annotation
+
+This should cover case 1 and 3, but i'm not sure about how i should add support for case 2.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-11-29T10:46:01Z
+
+@BackEndTea @keradus
+
+I was just thinking, maybe it makes sense to separate this into two fixers?
+
+* one that either removes the `test` prefix and adds the `@test` annotation or adds the `test` prefix and removes the `@test` annotation
+* one that normalizes the test method name and is configurable, for example, accepts a `style` option
+    * `camelCase`
+    * `snake_case`
+    * `wtf case` (see http://mnapoli.fr/using-non-breakable-spaces-in-test-method-names/)
+
+In the light of the latter, the former would probably just have to detect whether the test method name contains `_`, then prefix with `test_`, otherwise prefix with `test` and `ucfirst()` the current test method name (or something like that)
+
+Would that make sense?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-11-29T10:47:52Z
+
+@BackEndTea
+
+> What priority do i have to give it in order to make sure that it is placed in the correct order?
+
+Maybe @keradus can help?
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-11-29T10:59:25Z
+
+@localheinz
+
+I think i should be able to make this fix know if it should use camel or snake case, i'll get working on that soon. I don't mind adding support for wtf case, either, since it shouldn't be that hard, but i'm not sure if that is wanted.
+
+One edge case i can think of is when the test goes from using an annotation to none, and the name, without test, is just one word, it wouldn't be able to know for sure what to use. (Then again a test with a one word name is bad design and *shouldn't* happen)
+
+A fixer that normalises the test naming convention would be a separate fixer though.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-29T11:55:52Z
+
+@localheinz
+
+> I was just thinking, maybe it makes sense to separate this into two fixers?
+
+in this PR, let us not make fixer that would fully normalize the test method.
+Yet, if there is `/** @test */ function sth`, we need to know shall it be converted to `function testSth` or `function test_sth`.
+
+> In the light of the latter, the former would probably just have to detect whether the test method name contains _, then prefix with test_, otherwise prefix with test and ucfirst() the current test method name (or something like that)
+> Would that make sense?
+
+No. When method is named with single word, like `pull`, you cannot detect it.
+
+> > What priority do i have to give it in order to make sure that it is placed in the correct order?
+>
+> Maybe @keradus can help?
+
+out of the box - no clue. let us first finish spec of this fixer, then we will handle relations to different rules.
+
+-----------
+
+@BackEndTea
+
+> I don't mind adding support for wtf case
+
+no. don't. ever.
+
+> One edge case i can think of is when the test goes from using an annotation to none, and the name, without test, is just one word, it wouldn't be able to know for sure what to use.
+
+yeah, exactly. yet, we need to know which notation to use (camelCase vs snake_case).
+
+> (Then again a test with a one word name is bad design and shouldn't happen)
+
+No, it is not. There is a lot of valid cases to have single word.
+(And even if it would be bad, we would still need to properly handle that)
+
+> A fixer that normalises the test naming convention would be a separate fixer though.
+
+exactly. let us not put it in scope of this PR.
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-11-29T12:17:41Z
+
+Thanks for the insight @keradus
+
+> No. When method is named with single word, like pull, you cannot detect it.
+
+I'm not sure how to properly detect it. And just defaulting to either camel or snake case would be bad.
+
+> > I don't mind adding support for wtf case
+>
+> no. don't. ever.
+
+>> A fixer that normalises the test naming convention would be a separate fixer though.
+>
+> exactly. let us not put it in scope of this PR.
+
+Got it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-29T12:37:58Z
+
+> I'm not sure how to properly detect it.
+
+you can't. you need config option for that.
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-11-29T19:01:01Z
+
+I updated the addition logic to either add ```test_``` or ```test``` and uppercase the first letter of the original function, depending on the configuration.
+
+For adding annotations, and thus removing ```test``` from the function name, it simply removes ```test_``` if its present, and otherwise it removes ```test```.
+
+No wtf case support though.
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-11-30T13:03:45Z
+
+~~Known issue right now:~~
+Fixed
+```php
+    public function blabla() {}
+
+    public function again() {}
+```
+becomes
+```php
+    /**
+     * @test
+     */
+    public function blabla() {}
+    /**
+     * @test
+     */
+
+    public function again() {}
+```
+when adding annotations.
+
+I can't seem to get it to properly add a new docblock if there is an empty new line above the function.
+
+Though i did notice there is another fixer that does this.~~
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-30T14:35:27Z
+
+> I can't seem to get it to properly add a new docblock if there is an empty new line above the function.
+
+you need to split `T_WHITESPACE` into 2 tokens and add docblock between them
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-11-30T16:23:20Z
+
+@keradus
+I have fixed that, and made sure the tests reflect that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-02T19:01:27Z
+
+could you please include https://github.com/BackEndTea/PHP-CS-Fixer/pull/2 ? ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-02T19:05:27Z
+
+@BackEndTea, thanks for great work!
+I raised some comments, mainly minors, yet one bug and lack of whitespaces configuration are the blockers
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-03T14:37:55Z
+
+@keradus I fixed the minor issues, as well as the bug, and the whitespace configuration.
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-04T08:06:30Z
+
+~~I noticed an error, which also isn't covered by any test cases. It currently breaks when trying to handle a test that was annotated like this ```/** @test */``` instead of~~
+```php
+/**
+ * @test
+ */
+```
+~~I'm writing it here so there is no accidental merging when the error still exists.~~
+
+This has been fixed in the last commit
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-04T17:24:11Z
+
+Part of this fixer is now to convert single line doc blocs, like this
+```php
+/** Information */
+```
+to
+```php
+/**
+ * Information
+ */
+```
+When adding test annotation. Is there any interest in having a Fixer that does this as well @keradus ? I was unable to find one that does this currently.
+
+And besides that, i can't think of any edge cases right now that aren't covered. Ive ran it with different configurations on test of another project, and everything was fine.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-05T11:42:08Z
+
+this one-liner -> multiliner annotation is done only when annotation is added, right?
+
+about dedicated fixer to do it always, let us finish this PR first and then we will see ;)
+
+Sounds really great.
+Sadly, my time this week is very limited. Let me try to do next round next week, or perhaps someone else is willing to take a look as well ? :)
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-05T12:12:09Z
+
+Yeah the one liner to multi liner is only done when adding the ```@test``` annotation.
+
+I could also change it to convert ```/** @group Database */``` to ```/** @test @group Database */```, instead of
+```
+/**
+ * @test
+ * @group Database
+ */
+```
+
+But thats up to the maintainers to decide
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-05T13:08:16Z
+
+nah, when adding annotation convert to multiliner, that makes sense :+1:
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-06T20:44:57Z
+
+I'm a little bit stuck on something
+```php
+/**
+ * asdf@testasdf
+ */
+```
+Gets accepted by phpUnit just the same as
+```php
+/**
+ * @test
+ */
+```
+
+Should this fixer 'see' the ```@test``` annotation in the first example?
+
+As in, if the functions ```@test``` has to be removed, should it be removed from the first function.
+And if ```@test``` has to be added, when the first docblock would be updated, should we add an explicit ```@test``` or not?
+
+```php
+final class ProcessLinterProcessBuilderTest extends TestCase
+{
+    /**
+     * @param string $executable
+     * @param string $file
+     * @param string $expected
+     *
+     * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
+     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
+     * @requires OS Linux|Darwin
+     */
+    public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
+    {
+        $builder = new ProcessLinterProcessBuilder($executable);
+
+        $this->assertSame(
+            $expected,
+            $builder->build($file)->getCommandLine()
+        );
+    }
+```
+If we look at this projects code base, the above snippet has both ```@testWith```, which counts as ```@test``` to phpunit, and a prefix. What should the fixer do in this case, if it is run with the annotation configuration?
+Of course it would remove the test prefix, but should it add an explicit ```@test``` to the Doc block?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-06T22:31:08Z
+
+> I'm a little bit stuck on something (...) Gets accepted by phpUnit (...)
+
+Don't bother about it.
+IMO, you shall open a bug report ;)
+
+> Should this fixer 'see' the `@test` annotation in the first example?
+
+I believe that our DocBlock parser is not see that annotation, and it's good if it does't.
+If that's the case, you have nothing to do with it.
+
+> Of course it would remove the test prefix, but should it add an explicit @test to the Doc block?
+
+yes, it should.
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-07T08:25:47Z
+
+Things I have no idea how to currently do/fix:
+
+- How to handle abstract test functions
+- How to handle interfaces with test functions
+- How to handle traits with test functions
+
+For example:
+```php
+trait ItsAUser
+{
+    public function testItsAUser()
+    {
+        $this->assertTrue($this->user->isUser());
+    }
+}
+
+class TestUser extends \PHPUnit\Framework\TestCase
+{
+    use ItsAUser;
+
+    protected $user;
+
+    protected function setUp()
+    {
+        $this->user = new \Foo\User();
+
+    }
+}
+```
+
+There is good way to check that the trait is actually a test, and its not just a normal function that starts with test.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-07T10:52:34Z
+
+> How to handle abstract test functions
+
+like any other tets function
+
+> How to handle interfaces with test functions
+> How to handle traits with test functions
+
+for now, ignore them. let us focus on finishing PR rather than extending it's scope, it could be done later if needed
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-07T10:55:40Z
+
+@keradus
+My concern is this, I could have an abstract function lets say
+```php
+    abstract public function itDoesThings();
+```
+Now, when implemented, it is done like this
+```php
+    /**
+     * @test
+     */
+    public function itDoesThings() {}
+```
+
+In the abstract class, there is no way to guarantee that an abstract function is a test or not.
+
+Don't get me wrong, this is a bad practice to say the least. But it could break tests if the fixer ran over this.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-07T11:20:23Z
+
+then in abstract class it shall be marked with `@test` as well.
+
+look, when one use other way to mark method as a test - a prefix, then he mark that abstract method with prefix as well.
+
+> But it could break tests if the fixer ran over this.
+
+any change of function name can break code. very good point. note that all of our phpunit fixers are marked as risky.
+
+yes, mark this fixer as risky as well.
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-07T11:26:32Z
+
+>yes, mark this fixer as risky as well.
+
+Will do
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-08T14:14:24Z
+
+I let myself fix last raised issue
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-08T14:19:01Z
+
+new concerns from final tests:
+
+1. when we want to use `@test` annotation and current test method name is `test123foo`, fixer would rename method to `123foo`, which is PHP syntax issue, this has to be fixed (probably adding annotation, yet leaving test prefix)
+
+2. fixer is mature enough, let us fix priority:
+fixer must run before `phpdoc_trim` and `no_empty_phpdoc`
+
+3. again for `@test` anontation over prefix.
+`testGetName` is renamed to `getName`. it's the issue, as it's overwriting internal PHPUnit method (most probably with wrong params, as test could have no params, and internal one has a param). Not sure about best approach here.
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-08T14:41:32Z
+
+I added a test, and a fix for issue 1 you raised, and i gave it a priority of 10, which should make it run before  ```phpdoc_trim``` & ```no_empty_phpdoc```
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-08T14:48:32Z
+
+The only way around issue 3 i can really see is having a list of all phpunit functions, and adding those to some kind of black list. But that is going to be a big list
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-08T14:51:48Z
+
+> But that is going to be a big list
+
+and imposible to maintain whenever external phpunit class will change/add/remove it's methods
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-08T15:40:04Z
+
+please freeze now
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-08T15:43:39Z
+
+👍
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-08T16:29:30Z
+
+damn, nightly was failing...
