@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-02T11:44:58Z
+
+big one, I will need deeper look.
+can we somehow split it ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-09T19:28:46Z
+
+Updated to keep final classes final and use interfaces for mocks instead.
+
+@keradus I think some small parts could be extracted, but most of the changes are directly tied to adding the `SelfUpdateCommand` test, so not worth it IMO.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-10T09:09:24Z
+
+21 files, 1.3k lines on diff, not sure if "not worth it" indeed
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-11T18:46:55Z
+
+See #3246.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-12T16:53:04Z
+
+#3246 got merged. please merge/rebase with 2.2
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-15T19:39:16Z
+
+Rebased.
