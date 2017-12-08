@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.2.13
+---------------------
+
+* bug #3281 SelfAccessorFixer - stop modifying traits (kubawerlos)
+* minor #3195 Add self-update command test (julienfalque)
+* minor #3292 PHPUnit - set memory limit (veewee)
+* minor #3306 Token - better input validation (keradus)
+
 Changelog for v2.2.12
 ---------------------
 
