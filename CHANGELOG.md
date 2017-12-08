@@ -410,6 +410,14 @@ Changelog for v2.3.0
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
 
+Changelog for v2.2.13
+---------------------
+
+* bug #3281 SelfAccessorFixer - stop modifying traits (kubawerlos)
+* minor #3195 Add self-update command test (julienfalque)
+* minor #3292 PHPUnit - set memory limit (veewee)
+* minor #3306 Token - better input validation (keradus)
+
 Changelog for v2.2.12
 ---------------------
 
