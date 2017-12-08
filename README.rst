@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.3/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.4/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -572,6 +572,21 @@ Choose from the list of available rules:
   Converts implicit variables into explicit ones in double-quoted strings
   or heredoc syntax.
 
+* **final_internal_class**
+
+  Internal classes should be ``final``.
+
+  *Risky rule: changing classes to ``final`` might cause code execution to break.*
+
+  Configuration options:
+
+  - ``annotation-black-list`` (``array``): class level annotations tags that must be
+    omitted to fix the class, even if all of the white list ones are used
+    as well. (case in sensitive); defaults to ``['@final', '@Entity', '@ORM']``
+  - ``annotation-white-list`` (``array``): class level annotations tags that must be
+    set in order to fix the class. (case in sensitive); defaults to
+    ``['@internal']``
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
@@ -717,6 +732,11 @@ Choose from the list of available rules:
     argument list is on its own line; defaults to ``false``
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
+
+* **method_chaining_indentation**
+
+  Method chaining MUST be properly indented. Method chaining with
+  different levels of indentation is not supported.
 
 * **method_separation**
 
@@ -1441,7 +1461,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.3/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.4/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
