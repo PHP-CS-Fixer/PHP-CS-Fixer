@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -29,6 +30,23 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class FinalInternalClassFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        parent::configure($configuration);
+
+        $intersect = array_intersect_assoc(
+            $this->configuration['annotation-white-list'],
+            $this->configuration['annotation-black-list']
+        );
+
+        if (count($intersect)) {
+            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both the white- and black list, got duplicates: "%s".', implode('", "', array_keys($intersect))));
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -94,7 +112,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     {
         $annotationsAsserts = [static function (array $values) {
             foreach ($values as $value) {
-                if (!is_string($value) || strlen($value) < 2 || '@' !== $value[0]) {
+                if (!is_string($value) || '' === $value) {
                     return false;
                 }
             }
@@ -105,7 +123,11 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
         $annotationsNormalizer = static function (Options $options, array $value) {
             $newValue = [];
             foreach ($value as $key) {
-                $newValue[strtolower(substr($key, 1))] = true;
+                if ('@' === $key[0]) {
+                    $key = substr($key, 1);
+                }
+
+                $newValue[strtolower($key)] = true;
             }
 
             return $newValue;
@@ -118,7 +140,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
                 ->setDefault(['@internal'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new FixerOptionBuilder('annotation-black-list', 'Class level annotations tags that must be omitted to fix the class, even if others are in white list. (case in sensitive)'))
+            (new FixerOptionBuilder('annotation-black-list', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case in sensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(['@final', '@Entity', '@ORM'])

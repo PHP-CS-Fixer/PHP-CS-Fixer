@@ -581,8 +581,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``annotation-black-list`` (``array``): class level annotations tags that must be
-    omitted to fix the class, even if others are in white list. (case in
-    sensitive); defaults to ``['@final', '@Entity', '@ORM']``
+    omitted to fix the class, even if all of the white list ones are used
+    as well. (case in sensitive); defaults to ``['@final', '@Entity', '@ORM']``
   - ``annotation-white-list`` (``array``): class level annotations tags that must be
     set in order to fix the class. (case in sensitive); defaults to
     ``['@internal']``

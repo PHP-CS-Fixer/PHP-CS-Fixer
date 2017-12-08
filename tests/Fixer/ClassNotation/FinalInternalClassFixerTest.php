@@ -256,7 +256,7 @@ class A{}
 class B{}
 ',
                 [
-                    'annotation-black-list' => ['@abc'],
+                    'annotation-black-list' => ['abc'],
                 ],
             ],
         ];
@@ -283,5 +283,18 @@ class B{}
 $a = new class (){};',
             ],
         ];
+    }
+
+    public function testConfigureSameAnnotationInBothLists()
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(
+            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both the white- and black list, got duplicates: "internal123".', '#'))
+        );
+
+        $this->fixer->configure([
+            'annotation-white-list' => ['@internal123', 'a'],
+            'annotation-black-list' => ['@internal123', 'b'],
+        ]);
     }
 }
