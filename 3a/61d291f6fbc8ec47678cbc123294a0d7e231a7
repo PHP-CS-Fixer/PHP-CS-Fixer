@@ -1,0 +1,179 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-19T20:16:26Z
+
+Hi. Could you please provide reasoning behind this rule?
+Also, maybe there is some community following the rule ?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-09-20T09:20:52Z
+
+> Could you please provide reasoning behind this rule?
+
+1. When there are two valid ways of doing the same thing, using both is confusing, there should be a coding standard to follow (I have tons of legacy code with both used)
+1. [Manual](https://secure.php.net/manual/en/language.types.string.php#language.types.string.parsing.simple) marks `"$var"` sintax as _implicit_ and `"${var}"` syntax as _explicit_: I think explicit code should always be preferred
+1. _Explicit_ syntax allows word concatenation, e.g. `"${var}IsAVar"`, _implicit_ doesn't; if someone wants to use _implicit_, he/she has to use string concatenation `$var . "IsAVar"`, otherwise _explicit_ must be used. So, edge cases need _explicit_ syntax, and if there are cases without choises, I think all the other cases must follow them.
+1. (Least important) _explicit_ syntax is easier to detect for IDE/editors and therefore has colors/hightlight with higher contrast, which is easier to read
+
+> Also, maybe there is some community following the rule ?
+
+Dunno ¯\\\_\(ツ\)\_\/¯
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-20T10:24:17Z
+
+Thanks for reasoning, I think we could put it to Fixer definition. (we have short summary and long description field)
+
+In that case, let us wait a bit for community output is there a willing of ppl to use such a rule, maybe somehow changed/groomed/configured.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-09-20T13:40:46Z
+
+Ad 3. It's possible with _implicit_ syntax and without concatenation: `"{$var}IsAVar"` - hacky, but possible.
+
+Anyway, what about instead of `bool` value making configuration option `syntax` with values `implicit`, `explicit` and `sprintf`? If I'd see variable inside double quoted string, in most cases I'd suggest to replace it with `sprintf` function.
+
+Would be tricky (if possible) to convert from each 3 version to others, so maybe treating those as ordered solutions with ``implicit` being lowest and `sprintf` highest and the option could define what to upgrade?
+
+~~Going further, having those 3 we could have 4th one: `sprintf_only_in_exceptions` and making it default so the fixer would be part of `@Symfony`.~~ - that's too far, not for the initial version for sure.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-09-20T13:54:29Z
+
+> Ad 3. It's possible with implicit syntax and without concatenation: "{$var}IsAVar" - hacky, but possible.
+
+This is not implicit nor hacky, is [Complex (curly) sintax](https://secure.php.net/manual/en/language.types.string.php#language.types.string.parsing.complex), and as stated by this PR opening comment, it is not affected nor evaluated
+
+> Anyway, what about instead of bool value making configuration option syntax with values implicit, explicit and sprintf? If I'd see variable inside double quoted string, in most cases I'd suggest to replace it with sprintf function.
+
+Even though `sprintf` is the solution I mandate in my businesses, I don't like going that far because can reduce readibility:
+```php
+$a = "I am ${name} ${surname}, and live in ${city}, ${state}, ${street} ${streetNumber}";
+$b = sprintf('I am %s %s, and live in %s, %s, %s %s', $name, $surname, $city, $state, $street, $streetNumber);
+```
+
+I thought about _implicit_ as an option, but I dislike it because:
+
+1. How do you turn `"${var}IsAVar"` into _implicit_ syntax? `$var . "IsAVar"`? No thanks: if the developer wants everything inside a string (without concatenation) this fixer shouldn't change it.
+1. If `"${var}IsAVar"` is changed to `$var . "IsAVar"`, how do you turn this back? Reverting `$var . "IsAVar"` to `"${var}IsAVar"` means also every concatenation becomes a single string, and we can't do that
+1. PHP-CS-Fixer tries to promote good practices; _implicit_ variables are not a good practice
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-09-20T14:16:47Z
+
+> I don't like going that far because can reduce readibility
+
+It wouldn't reduce it, it was already poor. It's like having a function with too many parameters, someone made it and no fixer can make it right for him.
+
+I'd use the `sprintf` option in CI tools to point to the developer that it's not right to put variable in string in any way. PHP-CS-Fixer would suggest a solution, so with 1 or 2 variables it would be the final one. With your example it needs more work anyway.
+
+> I thought about implicit as an option, but I dislike it (...)
+
+Haven't thought about it this way - you're right, having it would make more harm than good.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-09-20T14:29:35Z
+
+> It wouldn't reduce it, it was already poor.
+
+I disagree:
+```php
+$b = sprintf('I am %s %s, and live in %s, %s, %s %s', $name, $surname, $city, $state, $street, $streetNumber);
+```
+is mush less readable than this
+```php
+$a = "I am ${name} ${surname}, and live in ${city}, ${state}, ${street} ${streetNumber}";
+```
+
+> I'd use the sprintf option in CI tools to point to the developer that it's not right to put variable in string in any way. PHP-CS-Fixer would suggest a solution, so with 1 or 2 variables it would be the final one. With your example it needs more work anyway.
+
+We can write such fixer, but can't be faced here. This fixer only takes one particular string type (double-quoted with implicit variables) and converts it to another particular string type (double-quoted with explicit variable).
+
+What you are asking would have more sense for all string types: single-quoted, double-quoted, implicit syntax, explicit syntax, complex syntax etc.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-21T09:29:04Z
+
+> I'd use the sprintf option in CI tools to point to the developer that it's not right to put variable in string in any way.
+
+PHP 5? sprintf over concatenation/interpolation
+
+PHP 7? strings interpolation !
+https://blog.blackfire.io/php-7-performance-improvements-encapsed-strings-optimization.html
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-09-25T07:11:45Z
+
+@julienfalque done everything you asked
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-18T15:13:02Z
+
+@julienfalque Does this PR deserve the 2.8.0 milestone?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-30T18:33:38Z
+
+please add a negative test for `nowdoc` and a test case with many (15+; please use some sort of generating the input and output) positive fix cases within one "PHP file".
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-30T18:44:50Z
+
+> a test case with many (15+; please use some sort of generating the input and output) positive fix cases within one "PHP file"
+
+@SpacePossum sorry I don't understand this part, can you elaborate a bit more the idea?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-30T18:55:31Z
+
+@Slamdunk sorry to be vaguely about the second test I asked, let me try again :)
+
+Your fixer fixes something like;
+`<?php $a = "My name is $name!";`
+
+What I would like to see as test (mostly to prevent regression btw.) is something like a test of;
+input:
+```
+<?php
+$a00 = "My name is $name!"
+$a01 = "My name is $name!"
+[...]
+$a15 = "My name is $name!"
+```
+with a `expected` counter part.
+With such a test we are sure if the fixer has a lot "stuff" to fix, it fixes all correctly.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-30T19:49:03Z
+
+I'm sorry I don't get how could that be useful.
+Two consequent strings would be enough, wouldn't they?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-30T20:32:27Z
+
+Two would be nice, however if you've two in loop than more shouldn't be issue I think?
+I was thinking of a construct something like https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3183/files#diff-542de4b103ea2736810b39d22a3c22b4R39 .
+The reason I push for more tests like this is because we had some issues with multiple candidates before, so it is not directly related to this PR alone.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-30T22:26:05Z
+
+@Slamdunk the point of that test is to prove fixer works properly when adding new tokens. imagine there is 1000 tokens, and token `-10` (so 990) needs a fixing.
+Then, during iteration, there is a lot of things to fix, thus fixer inserts 100 new tokens, collection size is not 1100, and last token that needs a fix is 1090. yet, last index you are currently visiting is still 1000 (as you extend collection when iterating over it with foreach), so last case is not fixed.
+https://3v4l.org/YGtWf
