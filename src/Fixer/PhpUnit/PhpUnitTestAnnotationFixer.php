@@ -314,19 +314,13 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function removeTestFromFunctionName($functionName)
     {
-        if ($this->startsWith('test_', $functionName)) {
-            if (is_numeric(substr($functionName, 6, 1))) {
-                return $functionName;
-            }
+        $remainder = preg_replace('/^test_?/', '', $functionName);
 
-            return  substr($functionName, 5);
-        }
-        if (is_numeric(substr($functionName, 5, 1))) {
+        if ('' === $remainder || is_numeric($remainder[0])) {
             return $functionName;
         }
-        $functionName = substr($functionName, 4);
 
-        return lcfirst($functionName);
+        return lcfirst($remainder);
     }
 
     /**
