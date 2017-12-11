@@ -147,8 +147,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             $functionNameIndex = $tokens->getNextMeaningfulToken($i);
             $functionName = $tokens[$functionNameIndex]->getContent();
 
-            // if the function name stats with test, we remove that
-            if ($this->startsWith('test', $functionName)) {
+            if ($this->hasTestPrefix($functionName)) {
                 $newFunctionName = $this->removeTestFromFunctionName($functionName);
                 $tokens[$functionNameIndex] = new Token([T_STRING, $newFunctionName]);
             }
@@ -193,8 +192,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             $functionNameIndex = $tokens->getNextMeaningfulToken($i);
             $functionName = $tokens[$functionNameIndex]->getContent();
 
-            // if the function already starts with test were done
-            if ($this->startsWith('test', $functionName)) {
+            if ($this->hasTestPrefix($functionName)) {
                 continue;
             }
 
