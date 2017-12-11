@@ -294,6 +294,22 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     /**
      * @param string $functionName
      *
+     * @return bool
+     */
+    private function hasTestPrefix($functionName)
+    {
+        if (!$this->startsWith('test', $functionName) || strlen($functionName) < 5) {
+            return false;
+        }
+
+        $nextCharacter = $functionName[4];
+
+        return $nextCharacter === strtoupper($nextCharacter);
+    }
+
+    /**
+     * @param string $functionName
+     *
      * @return string
      */
     private function removeTestFromFunctionName($functionName)
