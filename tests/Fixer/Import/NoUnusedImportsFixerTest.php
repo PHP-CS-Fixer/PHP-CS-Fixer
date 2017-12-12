@@ -684,6 +684,92 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testFunctionsInTheGlobalNamespaceShouldNotBeRemoved()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use function is_int;
+
+is_int(1);
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use function is_int;
+use function is_float;
+
+is_int(1);
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testConstantsInTheGlobalNamespaceShouldNotBeRemoved()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use const PHP_INT_MAX;
+
+echo PHP_INT_MAX;
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use const PHP_INT_MAX;
+use const PHP_INT_MIN;
+
+echo PHP_INT_MAX;
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFunctionsInTheGlobalNamespaceShouldNotBeRemovedEvenWhenDeclarationHasNewLinesAndIsUppercase()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;use FUNCTION
+is_int;
+
+is_int(1);
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;use FUNCTION
+is_int;
+use function
+    is_float;
+use
+    const
+        PHP_INT_MIN;
+
+is_int(1);
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
