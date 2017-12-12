@@ -228,7 +228,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
                 continue;
             }
 
-            $replaced = preg_replace_callback('/[^[:ascii:]]/u', function ($matches) {
+            $replaced = preg_replace_callback('/[^[:ascii:]]/u', static function ($matches) {
                 return isset(self::$replacements[$matches[0]])
                     ? self::$replacements[$matches[0]]
                     : $matches[0]

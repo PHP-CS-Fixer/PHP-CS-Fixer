@@ -61,7 +61,7 @@ final class LineTest extends TestCase
         "     *\n",
         "     * @param adkjbadjasbdand \$asdnjkasd\n",
         "     *\n",
-        "     * @throws \Exception asdnjkasd\n",
+        "     * @throws \\Exception asdnjkasd\n",
         "     * asdasdasdasdasdasdasdasd\n",
         "     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb\n",
         "     *\n",

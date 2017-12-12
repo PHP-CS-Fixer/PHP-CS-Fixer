@@ -77,7 +77,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('ignored_tags', 'List of tags that must not be treated as Doctrine Annotations.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([function ($values) {
+                ->setAllowedValues([static function ($values) {
                     foreach ($values as $value) {
                         if (!is_string($value)) {
                             return false;

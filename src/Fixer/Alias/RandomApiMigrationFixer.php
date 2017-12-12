@@ -136,7 +136,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
         return new FixerConfigurationResolverRootless('replacements', [
             (new FixerOptionBuilder('replacements', 'Mapping between replaced functions with the new ones.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([function ($value) {
+                ->setAllowedValues([static function ($value) {
                     foreach ($value as $functionName => $replacement) {
                         if (!array_key_exists($functionName, self::$argumentCounts)) {
                             throw new InvalidOptionsException(sprintf(

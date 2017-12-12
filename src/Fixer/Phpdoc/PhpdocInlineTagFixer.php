@@ -69,7 +69,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
             // of text and closing bracket and between the tag and inline comment.
             $content = preg_replace_callback(
                 '#(?:@{+|{+[ \t]*@)[ \t]*(example|id|internal|inheritdoc|link|source|toc|tutorial)s?([^}]*)(?:}+)#i',
-                function (array $matches) {
+                static function (array $matches) {
                     $doc = trim($matches[2]);
 
                     if ('' === $doc) {
