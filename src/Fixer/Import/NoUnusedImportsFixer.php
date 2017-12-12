@@ -171,6 +171,10 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 continue;
             }
 
+            if (1 === preg_match('/^ (function|const)(.+)$/', $declarationContent, $matches)) {
+                $declarationContent = $matches[2];
+            }
+
             $declarationParts = preg_split('/\s+as\s+/i', $declarationContent);
 
             if (1 === count($declarationParts)) {
