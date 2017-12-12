@@ -60,7 +60,7 @@ final class VoidReturnFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound(T_FUNCTION);
+        return \PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound(T_FUNCTION);
     }
 
     /**

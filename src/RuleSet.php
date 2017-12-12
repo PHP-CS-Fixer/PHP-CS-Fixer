@@ -168,6 +168,14 @@ final class RuleSet implements RuleSetInterface
             'function_to_constant' => true,
             'is_null' => true,
             'modernize_types_casting' => true,
+            'native_constant_invocation' => [
+                'fix_built_in' => false,
+                'include' => [
+                    'DIRECTORY_SEPARATOR',
+                    'PHP_SAPI',
+                    'PHP_VERSION_ID',
+                ],
+            ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
             'non_printable_character' => [

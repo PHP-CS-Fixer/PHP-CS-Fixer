@@ -827,6 +827,23 @@ Choose from the list of available rules:
     multi-line whitespace or move the semicolon to the new line for chained
     calls; defaults to ``'no_multi_line'``
 
+* **native_constant_invocation** [@Symfony:risky]
+
+  Add leading ``\`` before constant invocation of internal constant to speed
+  up resolving. Constant name match is case-sensitive, except for ``null``,
+  ``false`` and ``true``.
+
+  *Risky rule: risky when any of the constants are namespaced or overridden.*
+
+  Configuration options:
+
+  - ``exclude`` (``array``): list of constants to ignore; defaults to ``['null',
+    'false', 'true']``
+  - ``fix_built_in`` (``bool``): whether to fix constants returned by
+    ``get_defined_constants``. User constants are not accounted in this list
+    and must be specified in the include one; defaults to ``true``
+  - ``include`` (``array``): list of additional constants to fix; defaults to ``[]``
+
 * **native_function_casing** [@Symfony]
 
   Function defined by PHP should be called using the correct casing.
