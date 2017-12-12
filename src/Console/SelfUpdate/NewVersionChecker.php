@@ -19,7 +19,7 @@ use Composer\Semver\VersionParser;
 /**
  * @internal
  */
-final class NewVersionChecker
+final class NewVersionChecker implements NewVersionCheckerInterface
 {
     /**
      * @var GithubClientInterface
@@ -46,9 +46,7 @@ final class NewVersionChecker
     }
 
     /**
-     * Returns the tag of the latest version.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLatestVersion()
     {
@@ -58,11 +56,7 @@ final class NewVersionChecker
     }
 
     /**
-     * Returns the tag of the latest minor/patch version of the given major version.
-     *
-     * @param int $majorVersion
-     *
-     * @return null|string
+     * {@inheritdoc}
      */
     public function getLatestVersionOfMajor($majorVersion)
     {
@@ -80,13 +74,7 @@ final class NewVersionChecker
     }
 
     /**
-     * Returns -1, 0, or 1 if the first version is respectively less than,
-     * equal to, or greater than the second.
-     *
-     * @param string $versionA
-     * @param string $versionB
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function compareVersions($versionA, $versionB)
     {
@@ -116,7 +104,7 @@ final class NewVersionChecker
             try {
                 $this->versionParser->normalize($version);
 
-                if ('stable' === Versionparser::parseStability($version)) {
+                if ('stable' === VersionParser::parseStability($version)) {
                     $this->availableVersions[] = $version;
                 }
             } catch (\UnexpectedValueException $exception) {
