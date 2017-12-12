@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Michał Adamski <michal.adamski@gmail.com>
+ *
+ * @internal
  */
 final class PhpUnitShortWillReturnFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
@@ -38,6 +40,16 @@ final class PhpUnitShortWillReturnFixer extends AbstractFixer implements Configu
         self::METHOD_RETURN_VALUE_MAP => 'willReturnMap',
         self::METHOD_RETURN_ARGUMENT => 'willReturnArgument',
         self::METHOD_RETURN_CALLBACK => 'willReturnCallback',
+    ];
+
+    const SEQUENCE = [
+        [T_OBJECT_OPERATOR, '->'],
+        [T_STRING, 'will'],
+        '(',
+        [T_VARIABLE, '$this'],
+        [T_OBJECT_OPERATOR, '->'],
+        [T_STRING],
+        '(',
     ];
 
     /**
@@ -123,73 +135,65 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($this->getSequences() as $method => $sequence) {
-            $this->fixSequence($tokens, $sequence, $method);
-        }
-
-        $tokens->clearEmptyTokens();
-
-        return $tokens->generateCode();
-    }
-
-    /**
-     * @return array
-     */
-    private function getSequences()
-    {
-        $sequences = [];
-
-        foreach (static::RETURN_METHODS_MAP as $longerOccurrence => $shorterOccurrence) {
-            if (!$this->configuration[$longerOccurrence]) {
-                continue;
-            }
-
-            $sequences[$shorterOccurrence] = [
-                [T_OBJECT_OPERATOR, '->'],
-                [T_STRING, 'will'],
-                '(',
-                [T_VARIABLE, '$this'],
-                [T_OBJECT_OPERATOR, '->'],
-                [T_STRING, $longerOccurrence],
-                '(',
-            ];
-        }
-
-        return $sequences;
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param array  $sequence
-     * @param string $method
-     */
-    private function fixSequence(Tokens $tokens, $sequence, $method)
-    {
-        $occurrence = $tokens->findSequence($sequence);
+        $occurrence = $tokens->findSequence(static::SEQUENCE);
         while (null !== $occurrence) {
-            $index = $this->fixOccurrence($tokens, $occurrence, $method);
-            $occurrence = $tokens->findSequence($sequence, ++$index);
+            $index = $this->fixOccurrence($tokens, $occurrence);
+            $occurrence = $tokens->findSequence(static::SEQUENCE, ++$index);
         }
     }
 
     /**
      * @param Tokens $tokens
      * @param array  $occurrence
-     * @param string $method
      *
      * @return int last closing brace index
      */
-    private function fixOccurrence(Tokens $tokens, array $occurrence, $method)
+    private function fixOccurrence(Tokens $tokens, array $occurrence)
     {
-        $willReturnToken = new Token([T_STRING, $method]);
         $sequenceIndexes = array_keys($occurrence);
-        $openBraceIndex = end($sequenceIndexes);
+        $openBraceIndex = $sequenceIndexes[2];
+        $longOccurrenceIndex = $sequenceIndexes[5];
         $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
+        $longOccurrenceMethod = $occurrence[$longOccurrenceIndex]->getContent();
 
-        $tokens->clearRange($sequenceIndexes[2], $sequenceIndexes[5]);
+        if (!$this->isSupportedMethod($longOccurrenceMethod)) {
+            return $closingBraceIndex;
+        }
+
+        $willReturnToken = new Token([T_STRING, static::RETURN_METHODS_MAP[$longOccurrenceMethod]]);
+        $tokens->clearRange($openBraceIndex, $longOccurrenceIndex);
+        $tokens->clearTokenAndMergeSurroundingWhitespace($openBraceIndex);
         $tokens->offsetSet($sequenceIndexes[1], $willReturnToken);
         $tokens->clearAt($closingBraceIndex);
+        if ($tokens->isEmptyAt($closingBraceIndex) && !$this->isPreviousTokenAComment($tokens, $closingBraceIndex)) {
+            $tokens->removeLeadingWhitespace($closingBraceIndex);
+            $tokens->removeTrailingWhitespace($closingBraceIndex);
+        }
 
         return $closingBraceIndex;
+    }
+
+    /**
+     * @param string $method
+     *
+     * @return bool
+     */
+    private function isSupportedMethod($method)
+    {
+        return in_array($method, array_keys(static::RETURN_METHODS_MAP), true) && $this->configuration[$method];
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $closingBraceIndex
+     *
+     * @return bool
+     */
+    private function isPreviousTokenAComment(Tokens $tokens, $closingBraceIndex)
+    {
+        $prevMeaningfulToken = $tokens->getPrevMeaningfulToken($closingBraceIndex);
+        $prevNonWhitespace = $tokens->getPrevNonWhitespace($closingBraceIndex);
+
+        return $prevMeaningfulToken !== $prevNonWhitespace;
     }
 }

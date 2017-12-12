@@ -181,6 +181,75 @@ final class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
                     'returnValueMap' => false,
                 ],
             ],
+            'will return with multi lines and messy indents' => [
+                '<?php $someMock
+    ->method(\'someMethod\')
+        ->willReturn(10);',
+                '<?php $someMock
+    ->method(\'someMethod\')
+        ->will(
+            $this->returnValue(10)
+        );',
+            ],
+            'will return with multi lines, messy indents and comments inside' => [
+                '<?php $someMock
+    ->method(\'someMethod\')
+        ->willReturn(10)
+            // bar
+        ;',
+                '<?php $someMock
+    ->method(\'someMethod\')
+        ->will(
+            // foo
+            $this->returnValue(10)
+            // bar
+        );',
+            ],
+            'will return with block comments in weird places' => [
+                '<?php $someMock->method(\'someMethod\')->/* a */willReturn/* b */(10) /* d */;',
+                '<?php $someMock->method(\'someMethod\')->/* a */will/* b */(/* c */ $this->returnValue(10) /* d */);',
+            ],
+            'will return with multi lines, messy indents and comments in weird places' => [
+                '<?php
+$someMock
+->method(
+\'someMethod\'
+)
+      ->
+
+      /* a */
+willReturn
+        /*
+        b
+        c
+        d
+        e
+*/        
+    (10)
+     /* k */
+     /* l */;',
+                '<?php
+$someMock
+->method(
+\'someMethod\'
+)
+      ->
+
+      /* a */
+will
+        /*
+        b
+        c
+        d
+        e
+*/        (
+            // f g h i
+            /* j */ $this
+->returnValue
+    (10)
+     /* k */
+     /* l */);',
+            ],
         ];
     }
 }
