@@ -47,6 +47,9 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
     {
         return [
             [
+                "<?php\n/* ?> */",
+            ],
+            [
                 '<?php
 // lonely line
 ',
@@ -149,7 +152,6 @@ $a = 1; /* after code */
 s    *
      */',
             ],
-
             // Untouched cases
             [
                 '<?php
@@ -251,7 +253,6 @@ second line*/',
                     # test 4
                 ',
             ],
-
             // Untouched cases
             [
                 '<?php
