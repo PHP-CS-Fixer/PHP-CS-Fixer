@@ -63,11 +63,11 @@ final class FixerFactoryTest extends TestCase
             [$fixers['class_attributes_separation'], $fixers['braces']],
             [$fixers['class_attributes_separation'], $fixers['indentation_type']],
             [$fixers['class_keyword_remove'], $fixers['no_unused_imports']], // tested also in: class_keyword_remove,no_unused_imports.test
-            [$fixers['combine_consecutive_issets'], $fixers['no_multiline_whitespace_before_semicolons']], // tested also in: combine_consecutive_issets,no_multiline_whitespace_before_semicolons.test
+            [$fixers['combine_consecutive_issets'], $fixers['multiline_whitespace_before_semicolons']], // tested also in: combine_consecutive_issets,multiline_whitespace_before_semicolons.test
             [$fixers['combine_consecutive_issets'], $fixers['no_spaces_inside_parenthesis']], // tested also in: combine_consecutive_issets,no_spaces_inside_parenthesis.test
             [$fixers['combine_consecutive_issets'], $fixers['no_trailing_whitespace']], // tested also in: combine_consecutive_issets,no_trailing_whitespace.test
             [$fixers['combine_consecutive_issets'], $fixers['no_whitespace_in_blank_line']], // tested also in: combine_consecutive_issets,no_whitespace_in_blank_line.test
-            [$fixers['combine_consecutive_unsets'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: combine_consecutive_unsets,no_extra_consecutive_blank_lines.test
+            [$fixers['combine_consecutive_unsets'], $fixers['no_extra_blank_lines']], // tested also in: combine_consecutive_unsets,no_extra_blank_lines.test
             [$fixers['combine_consecutive_unsets'], $fixers['no_trailing_whitespace']], // tested also in: combine_consecutive_unsets,no_trailing_whitespace.test
             [$fixers['combine_consecutive_unsets'], $fixers['no_whitespace_in_blank_line']], // tested also in: combine_consecutive_unsets,no_whitespace_in_blank_line.test
             [$fixers['combine_consecutive_unsets'], $fixers['space_after_semicolon']], // tested also in: combine_consecutive_unsets,space_after_semicolon.test
@@ -78,7 +78,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['escape_implicit_backslashes'], $fixers['heredoc_to_nowdoc']], // tested also in: escape_implicit_backslashes,heredoc_to_nowdoc.test
             [$fixers['escape_implicit_backslashes'], $fixers['single_quote']], // tested also in: escape_implicit_backslashes,single_quote.test
             [$fixers['function_to_constant'], $fixers['native_function_casing']], // no priority issue; for speed only
-            [$fixers['function_to_constant'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: function_to_constant,no_extra_consecutive_blank_lines.test
+            [$fixers['function_to_constant'], $fixers['no_extra_blank_lines']], // tested also in: function_to_constant,no_extra_blank_lines.test
             [$fixers['function_to_constant'], $fixers['no_singleline_whitespace_before_semicolons']], // tested also in: function_to_constant,no_singleline_whitespace_before_semicolons.test
             [$fixers['function_to_constant'], $fixers['no_trailing_whitespace']], // tested also in: function_to_constant,no_trailing_whitespace.test
             [$fixers['function_to_constant'], $fixers['no_whitespace_in_blank_line']], // tested also in: function_to_constant,no_whitespace_in_blank_line.test
@@ -90,16 +90,16 @@ final class FixerFactoryTest extends TestCase
             [$fixers['method_separation'], $fixers['indentation_type']],
             [$fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']], // tested also in: no_alias_functions,php_unit_dedicate_assert.test
             [$fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']], // tested also in: no_blank_lines_after_phpdoc,single_blank_line_before_namespace.test
-            [$fixers['no_empty_comment'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_empty_comment,no_extra_consecutive_blank_lines.test
+            [$fixers['no_empty_comment'], $fixers['no_extra_blank_lines']], // tested also in: no_empty_comment,no_extra_blank_lines.test
             [$fixers['no_empty_comment'], $fixers['no_trailing_whitespace']], // tested also in: no_empty_comment,no_trailing_whitespace.test
             [$fixers['no_empty_comment'], $fixers['no_whitespace_in_blank_line']], // tested also in: no_empty_comment,no_whitespace_in_blank_line.test
-            [$fixers['no_empty_phpdoc'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_empty_phpdoc,no_extra_consecutive_blank_lines.test
+            [$fixers['no_empty_phpdoc'], $fixers['no_extra_blank_lines']], // tested also in: no_empty_phpdoc,no_extra_blank_lines.test
             [$fixers['no_empty_phpdoc'], $fixers['no_trailing_whitespace']], // tested also in: no_empty_phpdoc,no_trailing_whitespace.test
             [$fixers['no_empty_phpdoc'], $fixers['no_whitespace_in_blank_line']], // tested also in: no_empty_phpdoc,no_whitespace_in_blank_line.test
             [$fixers['no_empty_statement'], $fixers['braces']],
             [$fixers['no_empty_statement'], $fixers['combine_consecutive_unsets']], // tested also in: no_empty_statement,combine_consecutive_unsets.test
-            [$fixers['no_empty_statement'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_empty_statement,no_extra_consecutive_blank_lines.test
-            [$fixers['no_empty_statement'], $fixers['no_multiline_whitespace_before_semicolons']],
+            [$fixers['no_empty_statement'], $fixers['no_extra_blank_lines']], // tested also in: no_empty_statement,no_extra_blank_lines.test
+            [$fixers['no_empty_statement'], $fixers['multiline_whitespace_before_semicolons']],
             [$fixers['no_empty_statement'], $fixers['no_singleline_whitespace_before_semicolons']],
             [$fixers['no_empty_statement'], $fixers['no_trailing_whitespace']], // tested also in: no_empty_statement,no_trailing_whitespace.test
             [$fixers['no_empty_statement'], $fixers['no_useless_else']], // tested also in: no_empty_statement,no_useless_else.test
@@ -110,7 +110,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_leading_import_slash'], $fixers['ordered_imports']], // tested also in: no_leading_import_slash,ordered_imports.test
             [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['binary_operator_spaces']], // tested also in: no_multiline_whitespace_around_double_arrow,binary_operator_spaces.test
             [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']], // tested also in: no_multiline_whitespace_around_double_arrow,trailing_comma_in_multiline_array.test
-            [$fixers['no_multiline_whitespace_before_semicolons'], $fixers['space_after_semicolon']], // tested also in: tests/Fixtures/Integration/priority/no_multiline_whitespace_before_semicolons,space_after_semicolon.test
+            [$fixers['multiline_whitespace_before_semicolons'], $fixers['space_after_semicolon']], // tested also in: tests/Fixtures/Integration/priority/multiline_whitespace_before_semicolons,space_after_semicolon.test
             [$fixers['no_php4_constructor'], $fixers['ordered_class_elements']], // tested also in: no_php4_constructor,ordered_class_elements.test
             [$fixers['no_short_bool_cast'], $fixers['cast_spaces']], // tested also in: no_short_bool_cast,cast_spaces.test
             [$fixers['no_short_echo_tag'], $fixers['no_mixed_echo_print']], // tested also in: no_mixed_echo_print,no_short_echo_tag.test
@@ -120,17 +120,17 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_else']], // tested also in: no_unneeded_curly_braces,no_useless_else.test
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_return']], // tested also in: no_unneeded_curly_braces,no_useless_return.test
             [$fixers['no_unused_imports'], $fixers['blank_line_after_namespace']], // tested also in: no_unused_imports,blank_line_after_namespace.test and no_unused_imports,blank_line_after_namespace_2.test
-            [$fixers['no_unused_imports'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_unused_imports,no_extra_consecutive_blank_lines.test
+            [$fixers['no_unused_imports'], $fixers['no_extra_blank_lines']], // tested also in: no_unused_imports,no_extra_blank_lines.test
             [$fixers['no_unused_imports'], $fixers['no_leading_import_slash']], // no priority issue; for speed only
             [$fixers['no_useless_else'], $fixers['braces']],
             [$fixers['no_useless_else'], $fixers['combine_consecutive_unsets']], // tested also in: no_useless_else,combine_consecutive_unsets.test
-            [$fixers['no_useless_else'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_useless_else,no_extra_consecutive_blank_lines.test
+            [$fixers['no_useless_else'], $fixers['no_extra_blank_lines']], // tested also in: no_useless_else,no_extra_blank_lines.test
             [$fixers['no_useless_else'], $fixers['no_trailing_whitespace']], // tested also in: no_useless_else,no_trailing_whitespace.test
             [$fixers['no_useless_else'], $fixers['no_useless_return']], // tested also in: no_useless_else,no_useless_return.test
             [$fixers['no_useless_else'], $fixers['no_whitespace_in_blank_line']], // tested also in: no_useless_else,no_whitespace_in_blank_line.test
             [$fixers['no_useless_return'], $fixers['blank_line_before_return']], // tested also in: no_useless_return,blank_line_before_return.test
             [$fixers['no_useless_return'], $fixers['blank_line_before_statement']], // tested also in: no_useless_return,blank_line_before_statement.test
-            [$fixers['no_useless_return'], $fixers['no_extra_consecutive_blank_lines']], // tested also in: no_useless_return,no_extra_consecutive_blank_lines.test
+            [$fixers['no_useless_return'], $fixers['no_extra_blank_lines']], // tested also in: no_useless_return,no_extra_blank_lines.test
             [$fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']], // tested also in: no_useless_return,no_whitespace_in_blank_line.test
             [$fixers['ordered_class_elements'], $fixers['class_attributes_separation']], // tested also in: ordered_class_elements,class_attributes_separation.test
             [$fixers['ordered_class_elements'], $fixers['method_separation']], // tested also in: ordered_class_elements,method_separation.test
@@ -174,7 +174,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['protected_to_private'], $fixers['ordered_class_elements']], // tested also in: protected_to_private,ordered_class_elements.test
             [$fixers['simplified_null_return'], $fixers['no_useless_return']], // tested also in: simplified_null_return,no_useless_return.test
             [$fixers['single_import_per_statement'], $fixers['no_leading_import_slash']], // tested also in: single_import_per_statement,no_leading_import_slash.test
-            [$fixers['single_import_per_statement'], $fixers['no_multiline_whitespace_before_semicolons']], // single_import_per_statement,no_multiline_whitespace_before_semicolons.test
+            [$fixers['single_import_per_statement'], $fixers['multiline_whitespace_before_semicolons']], // single_import_per_statement,multiline_whitespace_before_semicolons.test
             [$fixers['single_import_per_statement'], $fixers['no_singleline_whitespace_before_semicolons']], // tested also in: single_import_per_statement,no_singleline_whitespace_before_semicolons.test
             [$fixers['single_import_per_statement'], $fixers['no_unused_imports']], // tested also in: single_import_per_statement,no_unused_imports.test
             [$fixers['single_import_per_statement'], $fixers['ordered_imports']], // tested also in: single_import_per_statement,ordered_imports.test

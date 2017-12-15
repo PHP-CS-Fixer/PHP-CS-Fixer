@@ -17,6 +17,7 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
 use PhpCsFixer\ToolInfo;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -113,6 +114,19 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param string $progressType
      *
+     * @dataProvider provideProgressTypeLegacyCases
+     *
+     * @group legacy
+     * @expectedDeprecation Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.
+     */
+    public function testResolveProgressWithPositiveConfigAndExplicitProgressLegacy($progressType)
+    {
+        $this->testResolveProgressWithPositiveConfigAndExplicitProgress($progressType);
+    }
+
+    /**
+     * @param string $progressType
+     *
      * @dataProvider provideProgressTypeCases
      */
     public function testResolveProgressWithNegativeConfigAndExplicitProgress($progressType)
@@ -129,13 +143,33 @@ final class ConfigurationResolverTest extends TestCase
         $this->assertSame($progressType, $resolver->getProgress());
     }
 
+    /**
+     * @param string $progressType
+     *
+     * @dataProvider provideProgressTypeLegacyCases
+     *
+     * @group legacy
+     * @expectedDeprecation Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.
+     */
+    public function testResolveProgressWithNegativeConfigAndExplicitProgressLegacy($progressType)
+    {
+        $this->testResolveProgressWithNegativeConfigAndExplicitProgress($progressType);
+    }
+
+    public function provideProgressTypeLegacyCases()
+    {
+        return [
+            ['run-in'],
+            ['estimating'],
+            ['estimating-max'],
+        ];
+    }
+
     public function provideProgressTypeCases()
     {
         return [
             ['none'],
-            ['run-in'],
-            ['estimating'],
-            ['estimating-max'],
+            ['dots'],
         ];
     }
 
@@ -148,7 +182,7 @@ final class ConfigurationResolverTest extends TestCase
         ]);
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "run-in", "estimating", "estimating-max".');
+        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "run-in", "estimating", "estimating-max", "dots".');
 
         $resolver->getProgress();
     }
@@ -1074,6 +1108,24 @@ final class ConfigurationResolverTest extends TestCase
         $this->expectExceptionMessageRegExp('/^Empty rules value is not allowed\.$/');
 
         $resolver->getRules();
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Fixer `Vendor4/foo` is deprecated, use `testA` and `testB` instead.
+     */
+    public function testDeprecatedFixerConfigured()
+    {
+        $fixer = new DeprecatedFixer();
+        $config = new Config();
+        $config->registerCustomFixers([$fixer]);
+
+        $resolver = $this->createConfigurationResolver(
+            ['rules' => $fixer->getName()],
+            $config
+        );
+
+        $resolver->getFixers();
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')

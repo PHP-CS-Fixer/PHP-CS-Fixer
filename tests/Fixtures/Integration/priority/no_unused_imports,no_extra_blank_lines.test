@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: no_unused_imports,no_extra_blank_lines.
+--RULESET--
+{"no_unused_imports": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php
+
+
+$bar = null;
+
+--INPUT--
+<?php
+
+
+use Foo\Bar;
+
+$bar = null;

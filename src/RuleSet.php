@@ -83,7 +83,7 @@ final class RuleSet implements RuleSetInterface
             'no_empty_comment' => true,
             'no_empty_phpdoc' => true,
             'no_empty_statement' => true,
-            'no_extra_consecutive_blank_lines' => ['tokens' => [
+            'no_extra_blank_lines' => ['tokens' => [
                 'curly_brace_block',
                 'extra',
                 'parenthesis_brace_block',
@@ -109,7 +109,18 @@ final class RuleSet implements RuleSetInterface
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
             'php_unit_fqcn_annotation' => true,
-            'phpdoc_align' => true,
+            'phpdoc_align' => [
+                // @TODO: on 3.0 switch whole rule to `=> true`, currently we use custom config that will be default on 3.0
+                'tags' => [
+                    'method',
+                    'param',
+                    'property',
+                    'return',
+                    'throws',
+                    'type',
+                    'var',
+                ],
+            ],
             'phpdoc_annotation_without_dot' => true,
             'phpdoc_indent' => true,
             'phpdoc_inline_tag' => true,
@@ -157,9 +168,10 @@ final class RuleSet implements RuleSetInterface
             'modernize_types_casting' => true,
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
-            'non_printable_character' => true,
+            'non_printable_character' => [
+                'use_escape_sequences_in_strings' => false,
+            ],
             'php_unit_construct' => true,
-            'php_unit_dedicate_assert' => true,
             'psr4' => true,
             'silenced_deprecation_error' => true,
         ],

@@ -26,6 +26,7 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
@@ -35,6 +36,7 @@ use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfoInterface;
+use PhpCsFixer\Utils;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -343,6 +345,25 @@ final class ConfigurationResolver
                     throw new InvalidConfigurationException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky option?', implode(', ', $riskyFixers)));
                 }
             }
+
+            foreach ($this->fixers as $fixer) {
+                if ($fixer instanceof DeprecatedFixerInterface) {
+                    $successors = $fixer->getSuccessorsNames();
+                    $message = sprintf(
+                        'Fixer `%s` is deprecated%s',
+                        $fixer->getName(),
+                        [] === $successors
+                            ? ' and will be removed on next major version.'
+                            : sprintf(', use %s instead.', Utils::naturalLanguageJoinWithBackticks($successors))
+                    );
+
+                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                        throw new \RuntimeException($message.' This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+                    }
+
+                    @trigger_error($message, E_USER_DEPRECATED);
+                }
+            }
         }
 
         return $this->fixers;
@@ -407,13 +428,13 @@ final class ConfigurationResolver
         if (null === $this->progress) {
             if (OutputInterface::VERBOSITY_VERBOSE <= $this->options['verbosity'] && 'txt' === $this->getFormat()) {
                 $progressType = $this->options['show-progress'];
-                $progressTypes = ['none', 'run-in', 'estimating', 'estimating-max'];
+                $progressTypes = ['none', 'run-in', 'estimating', 'estimating-max', 'dots'];
 
                 if (null === $progressType) {
                     $default = 'run-in';
 
                     if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                        $default = 'estimating-max';
+                        $default = 'dots';
                     }
 
                     $progressType = $this->getConfig()->getHideProgress() ? 'none' : $default;
@@ -423,6 +444,15 @@ final class ConfigurationResolver
                         $progressType,
                         implode('", "', $progressTypes)
                     ));
+                } elseif (in_array($progressType, ['estimating', 'estimating-max', 'run-in'], true)) {
+                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                        throw new \InvalidArgumentException('Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+                    }
+
+                    @trigger_error(
+                        'Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.',
+                        E_USER_DEPRECATED
+                    );
                 }
 
                 $this->progress = $progressType;
@@ -888,7 +918,7 @@ final class ConfigurationResolver
         }
 
         if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            throw new InvalidConfigurationException(sprintf('Expected "yes" or "no" for option "%s", got "%s".  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.', $optionName, $value));
+            throw new InvalidConfigurationException(sprintf('Expected "yes" or "no" for option "%s", got "%s". This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.', $optionName, $value));
         }
 
         @trigger_error(

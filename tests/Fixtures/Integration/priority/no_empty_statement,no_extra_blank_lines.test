@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: no_empty_statement,no_extra_blank_lines.
+--RULESET--
+{"no_empty_statement": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php $foo = 2 ; //
+
+//
+
+--INPUT--
+<?php $foo = 2 ; //
+;
+
+//

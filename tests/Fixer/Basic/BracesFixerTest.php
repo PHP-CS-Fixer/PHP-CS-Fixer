@@ -1045,7 +1045,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // comment
+    // comment
     } else {
         $c = "c";
     }
@@ -1757,7 +1757,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // comment
+    // comment
     } else {
         $c = "c";
     }
@@ -3122,6 +3122,27 @@ function foo()
         echo 1;
     };',
                 self::$configurationOopPositionSameLine,
+            ],
+            [
+                '<?php
+    // 2.5+ API
+    if (isNewApi()) {
+        echo "new API";
+    // 2.4- API
+    } elseif (isOldApi()) {
+        echo "old API";
+    // 2.4- API
+    } else {
+        echo "unknown API";
+        // sth
+    }
+
+    return $this->guess($class, $property, function (Constraint $constraint) use ($guesser) {
+        return $guesser->guessRequiredForConstraint($constraint);
+    // Fallback to false...
+    // ... due to sth...
+    }, false);
+    ',
             ],
         ];
     }
@@ -5075,6 +5096,36 @@ if (true) {
     /**
      * @param string      $expected
      * @param null|string $input
+     *
+     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
+     */
+    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
+    {
+        return [
+            [
+                '<?php
+if (true) {
+    do {
+        echo 1;
+    } while (false);
+}',
+                '<?php
+if (true)
+    do {
+        echo 1;
+    } while (false);',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
      * @param null|array  $configuration
      *
      * @dataProvider provideMessyWhitespacesCases
@@ -5143,35 +5194,5 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
             ],
         ];
-    }
-
-    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
-    {
-        return [
-            [
-                '<?php
-if (true) {
-    do {
-        echo 1;
-    } while (false);
-}',
-                '<?php
-if (true)
-    do {
-        echo 1;
-    } while (false);',
-            ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
-     */
-    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
     }
 }

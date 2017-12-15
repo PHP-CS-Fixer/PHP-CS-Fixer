@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.4/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.9.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -209,9 +209,10 @@ The ``--stop-on-violation`` flag stops the execution upon first file that needs 
 The ``--show-progress`` option allows you to choose the way process progress is rendered:
 
 * ``none``: disables progress output;
-* ``run-in``: simple single-line progress output;
-* ``estimating``: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
-* ``estimating-max``: same as ``estimating`` but using all terminal columns instead of default 80.
+* ``run-in``: [deprecated] simple single-line progress output;
+* ``estimating``: [deprecated] multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
+* ``estimating-max``: [deprecated] same as ``dots``;
+* ``dots``: same as ``estimating`` but using all terminal columns instead of default 80.
 
 If the option is not provided, it defaults to ``run-in`` unless a config file that disables output is used, in which case it defaults to ``none``. This option has no effect if the verbosity of the command is less than ``verbose``.
 
@@ -582,9 +583,9 @@ Choose from the list of available rules:
 
   - ``annotation-black-list`` (``array``): class level annotations tags that must be
     omitted to fix the class, even if all of the white list ones are used
-    as well. (case in sensitive); defaults to ``['@final', '@Entity', '@ORM']``
+    as well. (case insensitive); defaults to ``['@final', '@Entity', '@ORM']``
   - ``annotation-white-list`` (``array``): class level annotations tags that must be
-    set in order to fix the class. (case in sensitive); defaults to
+    set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
@@ -750,6 +751,17 @@ Choose from the list of available rules:
 
   *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
 
+* **multiline_whitespace_before_semicolons**
+
+  Forbid multi-line whitespace before the closing semicolon or move the
+  semicolon to the new line for chained calls.
+
+  Configuration options:
+
+  - ``strategy`` (``'new_line_for_chained_calls'``, ``'no_multi_line'``): forbid
+    multi-line whitespace or move the semicolon to the new line for chained
+    calls; defaults to ``'no_multi_line'``
+
 * **native_function_casing** [@Symfony]
 
   Function defined by PHP should be called using the correct casing.
@@ -814,9 +826,18 @@ Choose from the list of available rules:
 
   Remove useless semicolon statements.
 
-* **no_extra_consecutive_blank_lines** [@Symfony]
+* **no_extra_blank_lines** [@Symfony]
 
   Removes extra blank lines and/or blank lines following configuration.
+
+  Configuration options:
+
+  - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
+
+* **no_extra_consecutive_blank_lines**
+
+  Removes extra blank lines and/or blank lines following configuration.
+  DEPRECATED: use ``no_extra_blank_lines`` instead.
 
   Configuration options:
 
@@ -852,6 +873,7 @@ Choose from the list of available rules:
 * **no_multiline_whitespace_before_semicolons**
 
   Multi-line whitespace before closing semicolon are prohibited.
+  DEPRECATED: use ``multiline_whitespace_before_semicolons`` instead.
 
 * **no_null_property_initialization**
 
@@ -1025,7 +1047,7 @@ Choose from the list of available rules:
   - ``assertions`` (``array``): list of assertion methods to fix; defaults to
     ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
 
-* **php_unit_dedicate_assert** [@Symfony:risky, @PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+* **php_unit_dedicate_assert** [@PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   PHPUnit assertions like "assertInternalType", "assertFileExists", should
   be used over "assertTrue".
@@ -1474,7 +1496,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.4/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.9.0/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

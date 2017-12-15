@@ -47,6 +47,13 @@ class Tokens extends \SplFixedArray
     private static $cache = [];
 
     /**
+     * Cache of block edges. Any change in collection will invalidate it.
+     *
+     * @var array<int, int>
+     */
+    private $blockEndCache = [];
+
+    /**
      * crc32 hash of code string.
      *
      * @var string
@@ -112,7 +119,7 @@ class Tokens extends \SplFixedArray
     public static function setLegacyMode($isLegacy)
     {
         if (getenv('PHP_CS_FIXER_FUTURE_MODE') && $isLegacy) {
-            throw new \RuntimeException('Cannot enable `legacy mode` when using `future mode`.  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+            throw new \RuntimeException('Cannot enable `legacy mode` when using `future mode`. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
         }
 
         self::$isLegacyMode = $isLegacy;
@@ -301,6 +308,8 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval)
     {
+        $this->blockEndCache = [];
+
         if (!$this[$index] || !$this[$index]->equals($newval)) {
             $this->changed = true;
         }
@@ -437,6 +446,10 @@ class Tokens extends \SplFixedArray
             throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
         }
 
+        if (!self::isLegacyMode() && isset($this->blockEndCache[$searchIndex])) {
+            return $this->blockEndCache[$searchIndex];
+        }
+
         $startEdge = $blockEdgeDefinitions[$type]['start'];
         $endEdge = $blockEdgeDefinitions[$type]['end'];
         $startIndex = $searchIndex;
@@ -478,6 +491,9 @@ class Tokens extends \SplFixedArray
         if (!$this[$index]->equals($endEdge)) {
             throw new \UnexpectedValueException(sprintf('Missing block %s.', $findEnd ? 'end' : 'start'));
         }
+
+        $this->blockEndCache[$startIndex] = $index;
+        $this->blockEndCache[$index] = $startIndex;
 
         return $index;
     }
