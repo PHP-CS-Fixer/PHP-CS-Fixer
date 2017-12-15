@@ -1307,6 +1307,10 @@ Choose from the list of available rules:
 
   Instructions must be terminated with a semicolon.
 
+* **semicolon_on_new_line_for_chained_call**
+
+  Semicolon must be on the new line for chained calls.
+
 * **short_scalar_cast** [@Symfony]
 
   Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
