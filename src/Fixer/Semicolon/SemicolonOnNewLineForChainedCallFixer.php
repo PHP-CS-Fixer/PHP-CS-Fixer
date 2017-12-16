@@ -41,7 +41,7 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
             'Semicolon must be on the new line for chained calls.',
             [
                 new CodeSample('
-                    <?php 
+                    <?php
                         $this->method1()
                             ->method2()
                             ->method(3)

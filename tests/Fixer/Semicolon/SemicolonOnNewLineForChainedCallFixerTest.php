@@ -56,8 +56,8 @@ final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestC
 
                     $this
                         ->method1()
-                        ->method2() // comment  
-                    ;  
+                        ->method2() // comment
+                    ;
 
 
 ',
@@ -65,7 +65,7 @@ final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestC
 
                     $this
                         ->method1()
-                        ->method2(); // comment  
+                        ->method2(); // comment
 
 
 ',
@@ -126,7 +126,7 @@ final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestC
                         ->method2([1, 2])
                         ->method3(
                             "2",
-                            2, 
+                            2,
                             [1, 2]
                         )
                         ->method4()
@@ -138,7 +138,7 @@ final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestC
                         ->method2([1, 2])
                         ->method3(
                             "2",
-                            2, 
+                            2,
                             [1, 2]
                         )
                         ->method4();
@@ -241,8 +241,8 @@ final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestC
                             $a->otherCall()
                                 ->a()
                                 ->b(array_merge([
-                                        1 => 1, 
-                                        2 => 2, 
+                                        1 => 1,
+                                        2 => 2,
                                     ], $this->getOtherArray()
                                 ))
                             ;
@@ -256,15 +256,15 @@ final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestC
                             $a->otherCall()
                                 ->a()
                                 ->b(array_merge([
-                                        1 => 1, 
-                                        2 => 2, 
+                                        1 => 1,
+                                        2 => 2,
                                     ], $this->getOtherArray()
                                 ));
                         });
                 ?>',
             ], [
                 '<?php
-        
+
                     $service
                         ->method1(null, null, [
                             null => null,
@@ -274,7 +274,7 @@ final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestC
                     ;
 ',
                 '<?php
-        
+
                     $service
                         ->method1(null, null, [
                             null => null,
