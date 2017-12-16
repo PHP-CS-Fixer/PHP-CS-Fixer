@@ -44,9 +44,9 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
                     <?php
                         $this->method1()
                             ->method2()
-                            ->method(3)
-                        ;
-                    ?>\n'),
+                            ->method(3);
+                    ?>
+'),
             ]
         );
     }
