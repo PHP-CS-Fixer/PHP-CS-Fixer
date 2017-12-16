@@ -103,7 +103,7 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
      *
      * @return bool|string
      */
-    private function getLineEnding(int $index, Tokens $tokens)
+    private function getLineEnding($index, Tokens $tokens)
     {
         // no line end, i.e. ends with a semicolon?
         if (!array_key_exists($index, $tokens)) {
@@ -126,7 +126,7 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
      *
      * @return int
      */
-    private function getNewLineIndex(int $index, Tokens $tokens): int
+    private function getNewLineIndex($index, Tokens $tokens)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
@@ -147,7 +147,7 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
      *
      * @return null|string
      */
-    private function getIndentation(int $index, Tokens $tokens): ?string
+    private function getIndentation($index, Tokens $tokens)
     {
         // semicolon followed by a closing bracket?
         if (!$tokens[$index]->equals(')')) {
