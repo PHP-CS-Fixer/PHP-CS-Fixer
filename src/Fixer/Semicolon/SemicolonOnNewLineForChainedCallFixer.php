@@ -85,7 +85,7 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
             $index = $this->getNewLineIndex($index, $tokens);
 
             // line ending string of the last method call
-            $lineEnding = $this->getLineEnding($index, $tokens);
+            $lineEnding = $this->whitespacesConfig->getLineEnding();
 
             // appended new line to the last method call
             $newline = new Token([T_WHITESPACE, $lineEnding.$indent]);
@@ -93,29 +93,6 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
             // insert the new line with indented semicolon
             $tokens->insertAt($index, [$newline, new Token(';')]);
         }
-    }
-
-    /**
-     * Get the line ending string of the last method call.
-     *
-     * @param int    $index
-     * @param Tokens $tokens
-     *
-     * @return bool|string
-     */
-    private function getLineEnding($index, Tokens $tokens)
-    {
-        // no line end, i.e. ends with a semicolon?
-        if (!array_key_exists($index, $tokens)) {
-            return $this->whitespacesConfig->getLineEnding();
-        }
-
-        $lineEnding = $tokens[$index]->getContent();
-
-        return substr($lineEnding, 0, strpos(
-            $lineEnding,
-            $this->whitespacesConfig->getLineEnding()
-        ) + 1);
     }
 
     /**
@@ -198,8 +175,7 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
 
             // must be the variable of the first call in the chain
             if ($tokens[$index]->isGivenKind(T_VARIABLE) && 0 === $closingBrackets) {
-                --$index;
-                if ($tokens[$index]->isGivenKind(T_WHITESPACE)) {
+                if ($tokens[--$index]->isGivenKind(T_WHITESPACE)) {
                     return $this->getIndentAt($tokens, $index);
                 }
             }
