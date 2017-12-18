@@ -77,7 +77,7 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
             if (!empty(array_diff($passedNames, $names))) {
                 if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
                     throw new \RuntimeException(sprintf(
-                        'Passing "%1$s" at the root of the configuration is deprecated and will not be supported in 3.0, use "%1$s" => array(...) option instead.  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.',
+                        'Passing "%1$s" at the root of the configuration is deprecated and will not be supported in 3.0, use "%1$s" => array(...) option instead. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.',
                         $this->root
                     ));
                 }
