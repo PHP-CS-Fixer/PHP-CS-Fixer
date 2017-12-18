@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Semicolon;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Egidijus Girčys <e.gircys@gmail.com>
@@ -282,6 +283,36 @@ final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestC
                         ])
                         ->method2(4, Type::class);
 ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces($expected, $input = null)
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideMessyWhitespacesCases()
+    {
+        return [
+            [
+                "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2()\r\n   ;",
+                "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2();",
+            ],
+            [
+                "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3)\r\n\t;",
+                "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3);",
+            ], [
+                "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t))\r\n\t\t\t;\r\n\t\t})\r\n\t;\r\n?>",
+                "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t));\r\n\t\t});\r\n?>",
             ],
         ];
     }
