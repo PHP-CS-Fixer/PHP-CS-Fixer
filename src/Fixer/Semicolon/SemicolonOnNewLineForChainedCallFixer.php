@@ -65,7 +65,7 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = 1, $count = count($tokens); $index < $count; ++$index) {
+        for ($index = count($tokens) - 1; $index >= 0; --$index) {
             // continue if token is not a semicolon
             if (!$tokens[$index]->equals(';')) {
                 continue;
