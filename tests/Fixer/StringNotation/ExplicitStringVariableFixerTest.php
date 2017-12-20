@@ -110,8 +110,8 @@ EOF;
                 '<?php $a = "My name is $object->property !";',
             ],
             [
-                '<?php $a = "My name is {$array[-1]} !";',
-                '<?php $a = "My name is $array[-1] !";',
+                '<?php $a = "My name is {$array[1]} !";',
+                '<?php $a = "My name is $array[1] !";',
             ],
             [
                 '<?php $a = "My name is {$array[MY_CONSTANT]} !";',
@@ -144,6 +144,36 @@ EOF;
             [
                 '<?php $a = "end {$a[1]}";',
                 '<?php $a = "end $a[1]";',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideTestFix71Cases
+     * @requires PHP 7.1
+     */
+    public function testFix71($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestFix71Cases()
+    {
+        return [
+            [
+                '<?php $a = "My name is {$array[-1]} !";',
+                '<?php $a = "My name is $array[-1] !";',
+            ],
+            [
+                '<?php $a = "{$a[-1]} start";',
+                '<?php $a = "$a[-1] start";',
+            ],
+            [
+                '<?php $a = "end {$a[-1]}";',
+                '<?php $a = "end $a[-1]";',
             ],
         ];
     }
