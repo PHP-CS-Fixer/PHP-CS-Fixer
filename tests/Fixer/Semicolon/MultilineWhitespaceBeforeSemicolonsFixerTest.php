@@ -21,7 +21,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonOnNewLineForChainedCallFixer
+ * @covers \PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer
  */
 final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {
