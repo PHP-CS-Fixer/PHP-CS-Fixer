@@ -30,7 +30,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixCasesMultiLineWhitespace
+     * @dataProvider provideMultiLineWhitespaceFixCases
      */
     public function testFixMultiLineWhitespace($expected, $input = null)
     {
@@ -38,7 +38,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCasesMultiLineWhitespace()
+    public function provideMultiLineWhitespaceFixCases()
     {
         return [
             [
@@ -129,7 +129,7 @@ $this
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideMessyWhitespacesCasesMultiLineWhitespace
+     * @dataProvider provideMessyWhitespacesMultiLineWhitespaceFixCases
      */
     public function testMessyWhitespacesMultiLineWhitespace($expected, $input = null)
     {
@@ -139,7 +139,7 @@ $this
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCasesMultiLineWhitespace()
+    public function provideMessyWhitespacesMultiLineWhitespaceFixCases()
     {
         return [
             [
@@ -152,7 +152,7 @@ $this
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixCasesSemicolonForChainedCalls
+     * @dataProvider provideSemicolonForChainedCallsFixCases
      */
     public function testSemicolonForChainedCallsFix($expected, $input = null)
     {
@@ -160,7 +160,7 @@ $this
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCasesSemicolonForChainedCalls()
+    public function provideSemicolonForChainedCallsFixCases()
     {
         return [
             [
@@ -416,7 +416,7 @@ $this
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideMessyWhitespacesCasesSemicolonForChainedCalls
+     * @dataProvider provideMessyWhitespacesSemicolonForChainedCallsFixCases
      */
     public function testMessyWhitespacesSemicolonForChainedCalls($expected, $input = null)
     {
@@ -426,7 +426,7 @@ $this
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCasesSemicolonForChainedCalls()
+    public function provideMessyWhitespacesSemicolonForChainedCallsFixCases()
     {
         return [
             [

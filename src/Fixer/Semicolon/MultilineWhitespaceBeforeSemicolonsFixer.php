@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Egidijus Girčys <e.gircys@gmail.com>
  */
-final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer  implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     const STRATEGY_NO_MULTI_LINE = 'no_multi_line';
     const STRATEGY_NEW_LINE_FOR_CHAINED_CALLS = 'new_line_for_chained_calls';
@@ -44,8 +44,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer  impl
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Forbid multi-line whitespace before the closing semicolon or 
-            move the semicolon to the new line for chained calls.',
+            'Forbid multi-line whitespace before the closing semicolon or move the semicolon to the new line for chained calls.',
             [
                 new CodeSample(
                     '<?php
@@ -53,15 +52,16 @@ function foo () {
     return 1 + 2
         ;
 }
-', ['strategy' => self::STRATEGY_NO_MULTI_LINE]),
-            ], [
+'
+                ),
                 new CodeSample('
                     <?php
                         $this->method1()
                             ->method2()
                             ->method(3);
                     ?>
-', ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]),
+', ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]
+                ),
             ]
         );
     }
@@ -76,17 +76,9 @@ function foo () {
                     'strategy',
                     'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'))
                 ->setAllowedValues([self::STRATEGY_NO_MULTI_LINE, self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS])
+                ->setDefault(self::STRATEGY_NO_MULTI_LINE)
                 ->getOption(),
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        // must run after the NoSinglelineWhitespaceBeforeSemicolonsFixer
-        return 10;
     }
 
     /**

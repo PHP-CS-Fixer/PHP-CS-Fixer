@@ -759,7 +759,7 @@ Choose from the list of available rules:
 
   - ``strategy`` (``'new_line_for_chained_calls'``, ``'no_multi_line'``): forbid
     multi-line whitespace or move the semicolon to the new line for chained
-    calls; required
+    calls; defaults to ``'no_multi_line'``
 
 * **native_function_casing** [@Symfony]
 
