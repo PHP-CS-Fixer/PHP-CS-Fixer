@@ -117,7 +117,8 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    $ ./composer.phar global update friendsofphp/php-cs-fixer
+    $ ./composer.phar global remove friendsofphp/php-cs-fixer
+    $ ./composer.phar global require friendsofphp/php-cs-fixer
 
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
