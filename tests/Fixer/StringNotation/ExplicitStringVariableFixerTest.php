@@ -66,6 +66,14 @@ EOF;
                 '<?php $a = "$b";',
             ],
             [
+                '<?php $a = "${b} start";',
+                '<?php $a = "$b start";',
+            ],
+            [
+                '<?php $a = "end ${b}";',
+                '<?php $a = "end $b";',
+            ],
+            [
 '<?php $a = <<<EOF
 ${b}
 EOF;
@@ -102,12 +110,12 @@ EOF;
                 '<?php $a = "My name is $object->property !";',
             ],
             [
-                '<?php $a = "My name is {$array[1]} !";',
-                '<?php $a = "My name is $array[1] !";',
+                '<?php $a = "My name is {$array[-1]} !";',
+                '<?php $a = "My name is $array[-1] !";',
             ],
             [
-                '<?php $a = "My name is {$array[CONST]} !";',
-                '<?php $a = "My name is $array[CONST] !";',
+                '<?php $a = "My name is {$array[MY_CONSTANT]} !";',
+                '<?php $a = "My name is $array[MY_CONSTANT] !";',
             ],
             [
                 '<?php $a = "Closure not allowed ${closure}() text";',
@@ -120,6 +128,22 @@ EOF;
             [
                 '<?php $a = "Complex array chaining not allowed {$array[1]}->property->method() text";',
                 '<?php $a = "Complex array chaining not allowed $array[1]->property->method() text";',
+            ],
+            [
+                '<?php $a = "{$a->b} start";',
+                '<?php $a = "$a->b start";',
+            ],
+            [
+                '<?php $a = "end {$a->b}";',
+                '<?php $a = "end $a->b";',
+            ],
+            [
+                '<?php $a = "{$a[1]} start";',
+                '<?php $a = "$a[1] start";',
+            ],
+            [
+                '<?php $a = "end {$a[1]}";',
+                '<?php $a = "end $a[1]";',
             ],
         ];
     }
