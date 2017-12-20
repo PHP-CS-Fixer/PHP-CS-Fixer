@@ -97,6 +97,30 @@ $b
 EOF;
 ',
             ],
+            [
+                '<?php $a = "My name is {$object->property} !";',
+                '<?php $a = "My name is $object->property !";',
+            ],
+            [
+                '<?php $a = "My name is {$array[1]} !";',
+                '<?php $a = "My name is $array[1] !";',
+            ],
+            [
+                '<?php $a = "My name is {$array[CONST]} !";',
+                '<?php $a = "My name is $array[CONST] !";',
+            ],
+            [
+                '<?php $a = "Closure not allowed ${closure}() text";',
+                '<?php $a = "Closure not allowed $closure() text";',
+            ],
+            [
+                '<?php $a = "Complex object chaining not allowed {$object->property}->method()->array[1] text";',
+                '<?php $a = "Complex object chaining not allowed $object->property->method()->array[1] text";',
+            ],
+            [
+                '<?php $a = "Complex array chaining not allowed {$array[1]}->property->method() text";',
+                '<?php $a = "Complex array chaining not allowed $array[1]->property->method() text";',
+            ],
         ];
     }
 }
