@@ -750,6 +750,17 @@ Choose from the list of available rules:
 
   *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
 
+* **multiline_whitespace_before_semicolons**
+
+  Forbid multi-line whitespace before the closing semicolon or move the
+  semicolon to the new line for chained calls.
+
+  Configuration options:
+
+  - ``strategy`` (``'new_line_for_chained_calls'``, ``'no_multi_line'``): forbid
+    multi-line whitespace or move the semicolon to the new line for chained
+    calls; required
+
 * **native_function_casing** [@Symfony]
 
   Function defined by PHP should be called using the correct casing.
@@ -852,6 +863,7 @@ Choose from the list of available rules:
 * **no_multiline_whitespace_before_semicolons**
 
   Multi-line whitespace before closing semicolon are prohibited.
+  DEPRECATED: use ``multiline_whitespace_before_semicolons`` instead.
 
 * **no_null_property_initialization**
 
@@ -1306,10 +1318,6 @@ Choose from the list of available rules:
 * **semicolon_after_instruction** [@Symfony]
 
   Instructions must be terminated with a semicolon.
-
-* **semicolon_on_new_line_for_chained_call**
-
-  Semicolon must be on the new line for chained calls.
 
 * **short_scalar_cast** [@Symfony]
 

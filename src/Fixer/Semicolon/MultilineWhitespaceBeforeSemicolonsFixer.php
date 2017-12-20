@@ -13,7 +13,10 @@
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -22,8 +25,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Egidijus Girčys <e.gircys@gmail.com>
  */
-final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer  implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    const STRATEGY_NO_MULTI_LINE = 'no_multi_line';
+    const STRATEGY_NEW_LINE_FOR_CHAINED_CALLS = 'new_line_for_chained_calls';
+
     /**
      * {@inheritdoc}
      */
@@ -38,17 +44,40 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Semicolon must be on the new line for chained calls.',
+            'Forbid multi-line whitespace before the closing semicolon or 
+            move the semicolon to the new line for chained calls.',
             [
+                new CodeSample(
+                    '<?php
+function foo () {
+    return 1 + 2
+        ;
+}
+', ['strategy' => self::STRATEGY_NO_MULTI_LINE]),
+            ], [
                 new CodeSample('
                     <?php
                         $this->method1()
                             ->method2()
                             ->method(3);
                     ?>
-'),
+', ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder(
+                    'strategy',
+                    'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'))
+                ->setAllowedValues([self::STRATEGY_NO_MULTI_LINE, self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS])
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -64,6 +93,47 @@ final class SemicolonOnNewLineForChainedCallFixer extends AbstractFixer implemen
      * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    {
+        if ($this->configuration['strategy'] === self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS) {
+            return $this->applyChainedCallsFix($tokens);
+        }
+
+        if ($this->configuration['strategy'] === self::STRATEGY_NO_MULTI_LINE) {
+            return $this->applyNoMultiLineFix($tokens);
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     */
+    protected function applyNoMultiLineFix(Tokens $tokens)
+    {
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->equals(';')) {
+                continue;
+            }
+
+            $previousIndex = $index - 1;
+            $previous = $tokens[$previousIndex];
+            if (!$previous->isWhitespace() || false === strpos($previous->getContent(), "\n")) {
+                continue;
+            }
+
+            $content = $previous->getContent();
+            if (("\n" === $content[0] || "\r" === $content[0]) && $tokens[$index - 2]->isComment()) {
+                $tokens[$previousIndex] = new Token([$previous->getId(), $lineEnding]);
+            } else {
+                $tokens->clearAt($previousIndex);
+            }
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     */
+    protected function applyChainedCallsFix(Tokens $tokens)
     {
         for ($index = count($tokens) - 1; $index >= 0; --$index) {
             // continue if token is not a semicolon

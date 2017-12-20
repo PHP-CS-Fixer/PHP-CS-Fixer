@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Semicolon;
 
+use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -22,20 +23,144 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonOnNewLineForChainedCallFixer
  */
-final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestCase
+final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {
+
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixCases
+     * @dataProvider provideFixCasesMultiLineWhitespace
      */
-    public function testFix($expected, $input = null)
+    public function testFixMultiLineWhitespace($expected, $input = null)
     {
+        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE]);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCasesMultiLineWhitespace()
+    {
+        return [
+            [
+                '<?php
+                    $foo->bar() // test
+;',
+                '<?php
+                    $foo->bar() // test
+                    ;',
+            ],
+            [
+                "<?php echo(1) // test\n;",
+            ],
+            [
+                '<?php
+                    $foo->bar() # test
+;',
+                '<?php
+                    $foo->bar() # test
+
+
+                ;',
+            ],
+            [
+                "<?php\n;",
+            ],
+            [
+                '<?php
+$this
+    ->setName(\'readme1\')
+    ->setDescription(\'Generates the README\');
+',
+                '<?php
+$this
+    ->setName(\'readme1\')
+    ->setDescription(\'Generates the README\')
+;
+',
+            ],
+            [
+                '<?php
+$this
+    ->setName(\'readme2\')
+    ->setDescription(\'Generates the README\');
+',
+                '<?php
+$this
+    ->setName(\'readme2\')
+    ->setDescription(\'Generates the README\')
+    ;
+',
+            ],
+            [
+                '<?php echo "$this->foo(\'with param containing ;\') ;" ;',
+            ],
+            [
+                '<?php $this->foo();',
+            ],
+            [
+                '<?php $this->foo() ;',
+            ],
+            [
+                '<?php $this->foo(\'with param containing ;\') ;',
+            ],
+            [
+                '<?php $this->foo(\'with param containing ) ; \') ;',
+            ],
+            [
+                '<?php $this->foo("with param containing ) ; ")  ; ?>',
+            ],
+            [
+                '<?php $this->foo("with semicolon in string) ; "); ?>',
+            ],
+            [
+                '<?php
+$this
+    ->example();',
+                '<?php
+$this
+    ->example()
+
+    ;',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideMessyWhitespacesCasesMultiLineWhitespace
+     */
+    public function testMessyWhitespacesMultiLineWhitespace($expected, $input = null)
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideMessyWhitespacesCasesMultiLineWhitespace()
+    {
+        return [
+            [
+                "<?php echo(1) // test\r\n;",
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCasesSemicolonForChainedCalls
+     */
+    public function testSemicolonForChainedCallsFix($expected, $input = null)
+    {
+        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCasesSemicolonForChainedCalls()
     {
         return [
             [
@@ -291,16 +416,17 @@ final class SemicolonOnNewLineForChainedCallFixerTest extends AbstractFixerTestC
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideMessyWhitespacesCases
+     * @dataProvider provideMessyWhitespacesCasesSemicolonForChainedCalls
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespacesSemicolonForChainedCalls($expected, $input = null)
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCasesSemicolonForChainedCalls()
     {
         return [
             [
