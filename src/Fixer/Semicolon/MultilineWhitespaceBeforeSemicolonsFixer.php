@@ -54,13 +54,14 @@ function foo () {
 }
 '
                 ),
-                new CodeSample('
-                    <?php
+                new CodeSample(
+                    '<?php
                         $this->method1()
                             ->method2()
                             ->method(3);
                     ?>
-', ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]
+',
+                    ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]
                 ),
             ]
         );
@@ -74,7 +75,8 @@ function foo () {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
                     'strategy',
-                    'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'))
+                    'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'
+            ))
                 ->setAllowedValues([self::STRATEGY_NO_MULTI_LINE, self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS])
                 ->setDefault(self::STRATEGY_NO_MULTI_LINE)
                 ->getOption(),
@@ -86,11 +88,11 @@ function foo () {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if ($this->configuration['strategy'] === self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS) {
+        if (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $this->configuration['strategy']) {
             return $this->applyChainedCallsFix($tokens);
         }
 
-        if ($this->configuration['strategy'] === self::STRATEGY_NO_MULTI_LINE) {
+        if (self::STRATEGY_NO_MULTI_LINE === $this->configuration['strategy']) {
             return $this->applyNoMultiLineFix($tokens);
         }
     }

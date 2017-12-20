@@ -25,7 +25,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {
-
     /**
      * @param string      $expected
      * @param null|string $input
