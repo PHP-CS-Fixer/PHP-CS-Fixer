@@ -4223,8 +4223,8 @@ if (true)
                 <<<'EOT'
 <?php
 if (true) {
-    $var = <<<'JS'
-JS;
+    $var = <<<'NOWDOC'
+NOWDOC;
 ?>
 <?php
 }
@@ -4234,8 +4234,32 @@ EOT
                 <<<'EOT'
 <?php
 if (true) {
-$var = <<<'JS'
-JS;
+$var = <<<'NOWDOC'
+NOWDOC;
+?>
+<?php
+}
+
+EOT
+,
+            ),
+            array(
+                <<<'EOT'
+<?php
+if (true) {
+    $var = <<<HEREDOC
+HEREDOC;
+?>
+<?php
+}
+
+EOT
+,
+                <<<'EOT'
+<?php
+if (true) {
+$var = <<<HEREDOC
+HEREDOC;
 ?>
 <?php
 }
