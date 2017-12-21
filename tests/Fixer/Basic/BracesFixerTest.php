@@ -4174,4 +4174,75 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
             ),
         );
     }
+
+    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
+    {
+        return array(
+            array(
+                '<?php
+if (true) {
+    do {
+        echo 1;
+    } while (false);
+}',
+                '<?php
+if (true)
+    do {
+        echo 1;
+    } while (false);',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
+     */
+    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideNowdocInTemplatesCases
+     */
+    public function testNowdocInTemplates($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideNowdocInTemplatesCases()
+    {
+        return array(
+            array(
+                <<<'EOT'
+<?php
+if (true) {
+    $var = <<<'JS'
+JS;
+?>
+<?php
+}
+
+EOT
+,
+                <<<'EOT'
+<?php
+if (true) {
+$var = <<<'JS'
+JS;
+?>
+<?php
+}
+
+EOT
+,
+            ),
+        );
+    }
 }
