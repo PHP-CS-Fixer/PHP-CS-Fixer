@@ -27,7 +27,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @internal
+     */
     const STRATEGY_NO_MULTI_LINE = 'no_multi_line';
+
+    /**
+     * @internal
+     */
     const STRATEGY_NEW_LINE_FOR_CHAINED_CALLS = 'new_line_for_chained_calls';
 
     /**
