@@ -126,8 +126,8 @@ EOF;
                 '<?php $a = "Complex object chaining not allowed $object->property->method()->array[1] text";',
             ],
             [
-                '<?php $a = "Complex array chaining not allowed {$array[1]}->property->method() text";',
-                '<?php $a = "Complex array chaining not allowed $array[1]->property->method() text";',
+                '<?php $a = "Complex array chaining not allowed {$array[1]}[2][MY_CONSTANT] text";',
+                '<?php $a = "Complex array chaining not allowed $array[1][2][MY_CONSTANT] text";',
             ],
             [
                 '<?php $a = "{$a->b} start";',
