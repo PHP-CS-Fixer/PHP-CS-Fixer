@@ -226,6 +226,11 @@ final class Runner
         // work of other and both of them will mark collection as changed.
         // Therefore we need to check if code hashes changed.
         if ($oldHash !== $newHash) {
+            $fixInfo = [
+                'appliedFixers' => $appliedFixers,
+                'diff' => $this->differ->diff($old, $new),
+            ];
+
             try {
                 $this->linter->lintSource($new)->check();
             } catch (LintingException $e) {
@@ -234,7 +239,7 @@ final class Runner
                     new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
                 );
 
-                $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
+                $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
 
                 return;
             }
@@ -251,11 +256,6 @@ final class Runner
                     );
                 }
             }
-
-            $fixInfo = [
-                'appliedFixers' => $appliedFixers,
-                'diff' => $this->differ->diff($old, $new),
-            ];
         }
 
         $this->cacheManager->setFile($name, $new);
