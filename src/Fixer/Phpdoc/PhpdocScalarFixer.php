@@ -32,6 +32,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
         'integer' => 'int',
         'real' => 'float',
         'str' => 'string',
+        'scalar' => 'int|string|float|bool',
     ];
 
     /**
@@ -40,7 +41,9 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Scalar types should always be written in the same form. `int` not `integer`, `bool` not `boolean`, `float` not `real` or `double`.',
+            'Scalar types should always be written in the same form. '.
+            '`int` not `integer`, `bool` not `boolean`, `float` not `real` or `double`. '.
+            'The scalar phpdoc type will be converted into a list of valid scalar types.',
             [new CodeSample('<?php
 /**
  * @param integer $a

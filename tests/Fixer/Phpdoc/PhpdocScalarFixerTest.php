@@ -317,4 +317,23 @@ EOF;
 
         $this->doTest($expected, $input);
     }
+
+    public function testScalarTypeToListFix()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int|string|float|bool $scalar Scalar value
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param scalar $scalar Scalar value
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
 }
