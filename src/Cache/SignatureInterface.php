@@ -39,5 +39,5 @@ interface SignatureInterface
      *
      * @return mixed
      */
-    public function equals(self $signature);
+    public function equals(SignatureInterface $signature);
 }
