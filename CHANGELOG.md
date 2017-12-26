@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.9.0
+--------------------
+
+* feature #3063 Method chaining indentation fixer (boliev, julienfalque)
+* feature #3076 Add ExplicitStringVariableFixer (Slamdunk, keradus)
+* feature #3098 MethodSeparationFixer - add class elements separation options (SpacePossum, keradus)
+* feature #3155 Add EscapeImplicitBackslashesFixer (Slamdunk)
+* feature #3164 Add ExplicitIndirectVariableFixer (Slamdunk, keradus)
+* feature #3183 FinalInternalClassFixer introduction (keradus, SpacePossum)
+* feature #3187 StaticLambdaFixer - introduction (SpacePossum, keradus)
+* feature #3209 PhpdocAlignFixer - Make @method alignable (ntzm)
+* feature #3275 Add PhpUnitTestAnnotationFixer (BackEndTea, keradus)
+
 Changelog for v2.8.4
 --------------------
 
