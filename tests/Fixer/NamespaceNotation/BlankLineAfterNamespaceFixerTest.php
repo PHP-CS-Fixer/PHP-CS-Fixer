@@ -102,10 +102,10 @@ namespace A\B {
 ',
             ),
             array(
-                "<?php\rnamespace A\B;
+                "<?php\rnamespace A\\B;
 
 class C {}\r",
-                "<?php\rnamespace A\B;\r\r\r\r\r\rclass C {}\r",
+                "<?php\rnamespace A\\B;\r\r\r\r\r\rclass C {}\r",
             ),
             array(
                 '<?php
@@ -158,12 +158,12 @@ namespace Foo;
     {
         return array(
             array(
-                "<?php namespace A\B;\r\n\r\nclass C {}",
-                "<?php namespace A\B;  class C {}",
+                "<?php namespace A\\B;\r\n\r\nclass C {}",
+                '<?php namespace A\\B;  class C {}',
             ),
             array(
-                "<?php namespace A\B;\r\n\r\nclass C {}",
-                "<?php namespace A\B;\r\n\r\n\r\n\r\n\r\n\r\nclass C {}",
+                "<?php namespace A\\B;\r\n\r\nclass C {}",
+                "<?php namespace A\\B;\r\n\r\n\r\n\r\n\r\n\r\nclass C {}",
             ),
         );
     }
