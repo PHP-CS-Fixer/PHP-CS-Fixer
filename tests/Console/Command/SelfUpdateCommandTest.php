@@ -360,12 +360,12 @@ OUTPUT;
     private function assertDisplay($expectedDisplay, CommandTester $commandTester)
     {
         if (!$commandTester->getOutput()->isDecorated()) {
-            $expectedDisplay = preg_replace("/\033\[(\d+;)*\d+m/", '', $expectedDisplay);
+            $expectedDisplay = preg_replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
         }
 
         // TODO drop preg_replace() usage when symfony/console is bumped
         $cleanDisplay = function ($display) {
-            return preg_replace("/\033\[39(;49)?m/", "\033[0m", $display);
+            return preg_replace("/\033\\[39(;49)?m/", "\033[0m", $display);
         };
 
         self::assertSame(

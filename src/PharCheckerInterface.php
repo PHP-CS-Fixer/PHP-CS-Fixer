@@ -20,7 +20,7 @@ interface PharCheckerInterface
     /**
      * @param string $filename
      *
-     * @return string|null the invalidity reason if any, null otherwise
+     * @return null|string the invalidity reason if any, null otherwise
      */
     public function checkFileValidity($filename);
 }
