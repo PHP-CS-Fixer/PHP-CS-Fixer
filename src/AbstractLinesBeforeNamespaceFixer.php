@@ -51,6 +51,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
                     if ($newlineInOpening) {
                         ++$precedingNewlines;
                     }
+
                     break;
                 }
                 if (false === $token->isGivenKind(T_WHITESPACE)) {

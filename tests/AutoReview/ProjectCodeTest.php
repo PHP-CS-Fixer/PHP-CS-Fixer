@@ -145,7 +145,7 @@ final class ProjectCodeTest extends TestCase
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
                 $className,
                 implode("\n", array_map(function ($item) {
-                    return " * $item";
+                    return " * ${item}";
                 }, $extraMethods))
             )
         );
@@ -210,7 +210,7 @@ final class ProjectCodeTest extends TestCase
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
                 $className,
                 implode("\n", array_map(function ($item) {
-                    return " * $item";
+                    return " * ${item}";
                 }, $extraProps))
             )
         );

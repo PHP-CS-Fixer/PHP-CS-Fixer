@@ -67,7 +67,7 @@ final class FixCommandTest extends TestCase
 
     /**
      * @param array      $arguments
-     * @param array|null $expectedException
+     * @param null|array $expectedException
      *
      * @return CommandTester
      */
