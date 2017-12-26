@@ -44,7 +44,7 @@ final class HelpCommand extends BaseHelpCommand
     public static function getHelpCopy()
     {
         $template =
-            <<<EOF
+            <<<'EOF'
 The <info>%command.name%</info> command tries to fix as much coding standards
 problems as possible on a given file or files in a given directory and its subdirectories:
 
@@ -137,7 +137,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
     <?php
 
-    \$finder = PhpCsFixer\Finder::create()
+    $finder = PhpCsFixer\Finder::create()
         ->exclude('somedir')
         ->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
         ->in(__DIR__)
@@ -149,7 +149,7 @@ The example below will add two rules to the default list of PSR2 set rules:
             'strict_param' => true,
             'array_syntax' => array('syntax' => 'short'),
         ))
-        ->setFinder(\$finder)
+        ->setFinder($finder)
     ;
 
     ?>
@@ -164,7 +164,7 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
 
     <?php
 
-    \$finder = PhpCsFixer\Finder::create()
+    $finder = PhpCsFixer\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
@@ -174,7 +174,7 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
             '@Symfony' => true,
             'full_opening_tag' => false,
         ))
-        ->setFinder(\$finder)
+        ->setFinder($finder)
     ;
 
     ?>
@@ -185,8 +185,8 @@ configure them in your config file.
     <?php
 
     return PhpCsFixer\Config::create()
-        ->setIndent("\\t")
-        ->setLineEnding("\\r\\n")
+        ->setIndent("\t")
+        ->setLineEnding("\r\n")
     ;
 
     ?>
@@ -234,7 +234,7 @@ Then, add the following command to your CI:
 
 %%%CI_INTEGRATION%%%
 
-Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
+Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
 Exit codes
 ----------
