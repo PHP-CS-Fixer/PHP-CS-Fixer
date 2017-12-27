@@ -18,5 +18,5 @@ composer global show kherge/box -q || composer global require --no-interaction -
 php -d phar.readonly=false $(composer config home)/vendor/bin/box build
 
 # revert changes to composer
-git co composer.json
+git checkout composer.json
 composer update --no-interaction --no-progress -q
