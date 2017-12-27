@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Smoke;
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\Console\Command\HelpCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -46,15 +47,19 @@ final class PharTest extends TestCase
     public function testVersion()
     {
         $this->assertRegExp(
-            '/^.*version '.Application::VERSION.' .*$/',
+            '/^.* '.Application::VERSION.' by .*$/',
             self::executePharCommand('--version')->getOutput()
         );
     }
 
     public function testReadme()
     {
-        $this->assertStringEqualsFile(
-            __DIR__.'/../../README.rst',
+        $this->assertSame(
+            str_replace(
+                HelpCOmmand::getLatestReleaseVersionFromChangeLog(),
+                Application::VERSION,
+                file_get_contents(__DIR__.'/../../README.rst')
+            ),
             self::executePharCommand('readme')->getOutput()
         );
     }
