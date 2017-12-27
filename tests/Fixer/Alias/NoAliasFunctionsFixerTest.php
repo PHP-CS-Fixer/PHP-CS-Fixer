@@ -43,20 +43,20 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
         $cases = array();
         foreach ($aliases as $alias => $master) {
             // valid cases
-            $cases[] = array("<?php \$smth->$alias(\$a);");
+            $cases[] = array("<?php \$smth->${alias}(\$a);");
             $cases[] = array("<?php {$alias}Smth(\$a);");
-            $cases[] = array("<?php smth_$alias(\$a);");
-            $cases[] = array("<?php new $alias(\$a);");
-            $cases[] = array("<?php new Smth\\$alias(\$a);");
-            $cases[] = array("<?php Smth\\$alias(\$a);");
-            $cases[] = array("<?php namespace\\$alias(\$a);");
-            $cases[] = array("<?php Smth::$alias(\$a);");
-            $cases[] = array("<?php new $alias\\smth(\$a);");
-            $cases[] = array("<?php $alias::smth(\$a);");
-            $cases[] = array("<?php $alias\\smth(\$a);");
+            $cases[] = array("<?php smth_${alias}(\$a);");
+            $cases[] = array("<?php new ${alias}(\$a);");
+            $cases[] = array("<?php new Smth\\${alias}(\$a);");
+            $cases[] = array("<?php Smth\\${alias}(\$a);");
+            $cases[] = array("<?php namespace\\${alias}(\$a);");
+            $cases[] = array("<?php Smth::${alias}(\$a);");
+            $cases[] = array("<?php new ${alias}\\smth(\$a);");
+            $cases[] = array("<?php ${alias}::smth(\$a);");
+            $cases[] = array("<?php ${alias}\\smth(\$a);");
             $cases[] = array('<?php "SELECT ... '.$alias.'(\$a) ...";');
             $cases[] = array('<?php "SELECT ... '.strtoupper($alias).'($a) ...";');
-            $cases[] = array("<?php 'test'.'$alias' . 'in concatenation';");
+            $cases[] = array("<?php 'test'.'${alias}' . 'in concatenation';");
             $cases[] = array('<?php "test" . "'.$alias.'"."in concatenation";');
             $cases[] = array(
                 '<?php
@@ -80,38 +80,38 @@ class '.$alias.' extends '.ucfirst($alias).'ing{
 
             // cases to be fixed
             $cases[] = array(
-                "<?php $master(\$a);",
-                "<?php $alias(\$a);",
+                "<?php ${master}(\$a);",
+                "<?php ${alias}(\$a);",
             );
             $cases[] = array(
-                "<?php \\$master(\$a);",
-                "<?php \\$alias(\$a);",
+                "<?php \\${master}(\$a);",
+                "<?php \\${alias}(\$a);",
             );
             $cases[] = array(
-                "<?php \$ref = &$master(\$a);",
-                "<?php \$ref = &$alias(\$a);",
+                "<?php \$ref = &${master}(\$a);",
+                "<?php \$ref = &${alias}(\$a);",
             );
             $cases[] = array(
-                "<?php \$ref = &\\$master(\$a);",
-                "<?php \$ref = &\\$alias(\$a);",
+                "<?php \$ref = &\\${master}(\$a);",
+                "<?php \$ref = &\\${alias}(\$a);",
             );
             $cases[] = array(
-                "<?php $master
+                "<?php ${master}
                             (\$a);",
-                "<?php $alias
+                "<?php ${alias}
                             (\$a);",
             );
             $cases[] = array(
-                "<?php /* foo */ $master /** bar */ (\$a);",
-                "<?php /* foo */ $alias /** bar */ (\$a);",
+                "<?php /* foo */ ${master} /** bar */ (\$a);",
+                "<?php /* foo */ ${alias} /** bar */ (\$a);",
             );
             $cases[] = array(
-                "<?php a($master());",
-                "<?php a($alias());",
+                "<?php a(${master}());",
+                "<?php a(${alias}());",
             );
             $cases[] = array(
-                "<?php a(\\$master());",
-                "<?php a(\\$alias());",
+                "<?php a(\\${master}());",
+                "<?php a(\\${alias}());",
             );
         }
 

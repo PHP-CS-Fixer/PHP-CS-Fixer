@@ -456,12 +456,12 @@ use some\a\ClassA; use function some\a\fn; use const some\c;
     {
         return array(
             array(
-                "<?php namespace A\B;\r\n    use D;\r\n\r\n    class C {}",
-                "<?php namespace A\B;\r\n    use D;\r\n\r\n\r\n    class C {}",
+                "<?php namespace A\\B;\r\n    use D;\r\n\r\n    class C {}",
+                "<?php namespace A\\B;\r\n    use D;\r\n\r\n\r\n    class C {}",
             ),
             array(
-                "<?php namespace A\B;\r\n    use D;\r\n\r\n    class C {}",
-                "<?php namespace A\B;\r\n    use D;\r\n    class C {}",
+                "<?php namespace A\\B;\r\n    use D;\r\n\r\n    class C {}",
+                "<?php namespace A\\B;\r\n    use D;\r\n    class C {}",
             ),
         );
     }

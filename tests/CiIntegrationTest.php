@@ -102,14 +102,14 @@ final class CiIntegrationTest extends TestCase
     ) {
         static::executeCommand(implode(' && ', array_merge(
             array(
-                "git checkout -b $branchName -q",
+                "git checkout -b ${branchName} -q",
             ),
             $caseCommands
         )));
 
         $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../dev-tools/ci-integration.sh')));
         $steps = array(
-            "COMMIT_RANGE=\"master..$branchName\"",
+            "COMMIT_RANGE=\"master..${branchName}\"",
             $integrationScript[3],
             $integrationScript[4],
             $integrationScript[5],
@@ -153,7 +153,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
 ';
 
         $executionDetails = "Loaded config default from \".php_cs.dist\".
-$expectedResult3Files
+${expectedResult3Files}
 Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error";
 
         $this->assertRegExp(
@@ -268,7 +268,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                 "Cannot execute `%s`:\n%s\nCode: %s\nExit text: %s\nError output: %s\nDetails:\n%s",
                 $command,
                 './'.static::$tmpFileName === $command
-                    ? implode('', array_map(function ($line) { return "$ $line"; }, file(static::$tmpFilePath)))."\n"
+                    ? implode('', array_map(function ($line) { return "$ ${line}"; }, file(static::$tmpFilePath)))."\n"
                     : '',
                 $result['code'],
                 $process->getExitCodeText(),
