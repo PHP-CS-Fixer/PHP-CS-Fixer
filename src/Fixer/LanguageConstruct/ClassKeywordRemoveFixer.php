@@ -129,9 +129,11 @@ $className = Baz::class;
             // Imports group (PHP 7 spec)
             if ($tokens[$index]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $index);
-                $groupImports = array_map(function ($import) {
-                    return trim($import);
-                }, explode(',', $tokens->generatePartialCode($index + 1, $groupEndIndex - 1))
+                $groupImports = array_map(
+                    function ($import) {
+                        return trim($import);
+                    },
+                    explode(',', $tokens->generatePartialCode($index + 1, $groupEndIndex - 1))
                 );
                 foreach ($groupImports as $groupImport) {
                     $groupImportParts = array_map(function ($import) {
