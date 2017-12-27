@@ -35,7 +35,6 @@ CLI options
 |                 | --rules         | Rules to be used                                                               | option was added                |
 |                 | --using-cache   | Does cache should be used                                                      | option was added                |
 
-
 CLI argument
 ------------
 
