@@ -81,7 +81,7 @@ echo \'Foo\';
  */',
             ),
             array(
-                "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
+                "<?php \$this->data = preg_replace('/<\\?(?!xml|php)/s', '<?php ',       \$this->data);",
             ),
             array(
                 'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',

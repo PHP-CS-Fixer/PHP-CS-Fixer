@@ -155,8 +155,11 @@ final class FileHandlerTest extends TestCase
 
         $this->setExpectedExceptionRegExp(
             'Symfony\Component\Filesystem\Exception\IOException',
-            sprintf('#^%s$#', preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
-        ));
+            sprintf(
+                '#^%s$#',
+                preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
+            )
+        );
 
         $handler->write(new Cache(new Signature(
             PHP_VERSION,
@@ -181,8 +184,11 @@ final class FileHandlerTest extends TestCase
 
         $this->setExpectedExceptionRegExp(
             'Symfony\Component\Filesystem\Exception\IOException',
-            sprintf('#^%s$#', preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
-        ));
+            sprintf(
+                '#^%s$#',
+                preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
+            )
+        );
 
         $handler->write(new Cache(new Signature(
             PHP_VERSION,

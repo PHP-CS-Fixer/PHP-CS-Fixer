@@ -41,22 +41,22 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
 
         return array(
             'final-extends' => array(
-                "<?php final class MyClass extends MyAbstractClass { $attributesAndMethodsOriginal }",
+                "<?php final class MyClass extends MyAbstractClass { ${attributesAndMethodsOriginal} }",
             ),
             'normal-extends' => array(
-                "<?php class MyClass extends MyAbstractClass { $attributesAndMethodsOriginal }",
+                "<?php class MyClass extends MyAbstractClass { ${attributesAndMethodsOriginal} }",
             ),
             'abstract' => array(
-                "<?php abstract class MyAbstractClass { $attributesAndMethodsOriginal }",
+                "<?php abstract class MyAbstractClass { ${attributesAndMethodsOriginal} }",
             ),
             'normal' => array(
-                "<?php class MyClass { $attributesAndMethodsOriginal }",
+                "<?php class MyClass { ${attributesAndMethodsOriginal} }",
             ),
             'trait' => array(
-                "<?php trait MyTrait { $attributesAndMethodsOriginal }",
+                "<?php trait MyTrait { ${attributesAndMethodsOriginal} }",
             ),
             'final-with-trait' => array(
-                "<?php final class MyClass { use MyTrait; $attributesAndMethodsOriginal }",
+                "<?php final class MyClass { use MyTrait; ${attributesAndMethodsOriginal} }",
             ),
             'multiline-comment' => array(
                 '<?php final class MyClass { /* public protected private */ }',
@@ -65,24 +65,24 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
                 "<?php final class MyClass { \n // public protected private \n }",
             ),
             'final' => array(
-                "<?php final class MyClass { $attributesAndMethodsFixed }",
-                "<?php final class MyClass { $attributesAndMethodsOriginal }",
+                "<?php final class MyClass { ${attributesAndMethodsFixed} }",
+                "<?php final class MyClass { ${attributesAndMethodsOriginal} }",
             ),
             'final-implements' => array(
-                "<?php final class MyClass implements MyInterface { $attributesAndMethodsFixed }",
-                "<?php final class MyClass implements MyInterface { $attributesAndMethodsOriginal }",
+                "<?php final class MyClass implements MyInterface { ${attributesAndMethodsFixed} }",
+                "<?php final class MyClass implements MyInterface { ${attributesAndMethodsOriginal} }",
             ),
             'final-with-use-before' => array(
-                "<?php use stdClass; final class MyClass { $attributesAndMethodsFixed }",
-                "<?php use stdClass; final class MyClass { $attributesAndMethodsOriginal }",
+                "<?php use stdClass; final class MyClass { ${attributesAndMethodsFixed} }",
+                "<?php use stdClass; final class MyClass { ${attributesAndMethodsOriginal} }",
             ),
             'final-with-use-after' => array(
-                "<?php final class MyClass { $attributesAndMethodsFixed } use stdClass;",
-                "<?php final class MyClass { $attributesAndMethodsOriginal } use stdClass;",
+                "<?php final class MyClass { ${attributesAndMethodsFixed} } use stdClass;",
+                "<?php final class MyClass { ${attributesAndMethodsOriginal} } use stdClass;",
             ),
             'multiple-classes' => array(
-                "<?php final class MyFirstClass { $attributesAndMethodsFixed } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsFixed } ",
-                "<?php final class MyFirstClass { $attributesAndMethodsOriginal } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsOriginal } ",
+                "<?php final class MyFirstClass { ${attributesAndMethodsFixed} } class MySecondClass { ${attributesAndMethodsOriginal} } final class MyThirdClass { ${attributesAndMethodsFixed} } ",
+                "<?php final class MyFirstClass { ${attributesAndMethodsOriginal} } class MySecondClass { ${attributesAndMethodsOriginal} } final class MyThirdClass { ${attributesAndMethodsOriginal} } ",
             ),
             'minimal-set' => array(
                 '<?php final class MyClass { private $v1; }',
@@ -113,12 +113,12 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
                 "<?php
 final class Foo
 {
-    $attributesAndMethodsFixed
+    ${attributesAndMethodsFixed}
 
     private function bar()
     {
         new class {
-            $attributesAndMethodsOriginal
+            ${attributesAndMethodsOriginal}
         };
     }
 }
@@ -126,12 +126,12 @@ final class Foo
                 "<?php
 final class Foo
 {
-    $attributesAndMethodsOriginal
+    ${attributesAndMethodsOriginal}
 
     protected function bar()
     {
         new class {
-            $attributesAndMethodsOriginal
+            ${attributesAndMethodsOriginal}
         };
     }
 }
