@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Runner;
 
 use PhpCsFixer\Cache\CacheManagerInterface;
+use PhpCsFixer\FileReader;
 use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -74,7 +75,7 @@ final class FileFilterIterator extends \FilterIterator
             return false;
         }
 
-        $content = @file_get_contents($path);
+        $content = @FileReader::createSingleton()->read($path);
         if (false === $content) {
             $error = error_get_last();
 
