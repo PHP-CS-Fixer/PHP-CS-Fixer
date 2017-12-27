@@ -114,26 +114,22 @@ Files that were not fixed due to errors reported during %s:
 +${diffSpecificContext}
 EOT;
 
-        $exception = new LintingException();
-        $exception->setAppliedFixers([$fixerName]);
-        $exception->setDiff($diff);
+        $lintError = new Error(Error::TYPE_LINT, __FILE__, new LintingException(), [$fixerName], $diff);
 
-        $lintError = new Error(Error::TYPE_LINT, __FILE__, $exception);
+        $noDiffLintFixerName = uniqid('no_diff_');
+        $noDiffLintError = new Error(Error::TYPE_LINT, __FILE__, new LintingException(), [$noDiffLintFixerName]);
 
         $invalidErrorFixerName = uniqid('line_ending_');
         $invalidDiff = uniqid('invalid_diff_');
 
-        $invalidErrorException = new LintingException();
-        $invalidErrorException->setAppliedFixers([$invalidErrorFixerName]);
-        $invalidErrorException->setDiff($invalidDiff);
-
-        $invalidError = new Error(Error::TYPE_INVALID, __FILE__, $invalidErrorException);
+        $invalidError = new Error(Error::TYPE_INVALID, __FILE__, new LintingException(), [$invalidErrorFixerName], $invalidDiff);
 
         $output = $this->createStreamOutput(OutputInterface::VERBOSITY_VERY_VERBOSE);
 
         $errorOutput = new ErrorOutput($output);
         $errorOutput->listErrors(uniqid('process_'), [
             $lintError,
+            $noDiffLintError,
             $invalidError,
         ]);
 
@@ -141,6 +137,8 @@ EOT;
 
         $this->assertContains($fixerName, $displayed);
         $this->assertContains($diffSpecificContext, $displayed);
+
+        $this->assertContains($noDiffLintFixerName, $displayed);
 
         $this->assertNotContains($invalidErrorFixerName, $displayed);
         $this->assertNotContains($invalidDiff, $displayed);

@@ -234,15 +234,12 @@ final class Runner
             try {
                 $this->linter->lintSource($new)->check();
             } catch (LintingException $e) {
-                $e->setAppliedFixers($fixInfo['appliedFixers']);
-                $e->setDiff($fixInfo['diff']);
-
                 $this->dispatchEvent(
                     FixerFileProcessedEvent::NAME,
                     new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
                 );
 
-                $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
+                $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
 
                 return;
             }

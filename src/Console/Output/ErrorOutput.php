@@ -100,17 +100,20 @@ final class ErrorOutput
                 }
             }
 
-            if (Error::TYPE_LINT === $error->getType() && $e instanceof LintingException) {
+            if (Error::TYPE_LINT === $error->getType() && 0 < count($error->getAppliedFixers())) {
                 $this->output->writeln('');
-                $this->output->writeln(sprintf('      Applied fixers: <comment>%s</comment>', implode(', ', $e->getAppliedFixers())));
+                $this->output->writeln(sprintf('      Applied fixers: <comment>%s</comment>', implode(', ', $error->getAppliedFixers())));
 
-                $diffFormatter = new DiffConsoleFormatter($this->isDecorated, sprintf(
-                    '<comment>      ---------- begin diff ----------</comment>%s%%s%s<comment>      ----------- end diff -----------</comment>',
-                    PHP_EOL,
-                    PHP_EOL
-                ));
+                $diff = $error->getDiff();
+                if (!empty($diff)) {
+                    $diffFormatter = new DiffConsoleFormatter($this->isDecorated, sprintf(
+                        '<comment>      ---------- begin diff ----------</comment>%s%%s%s<comment>      ----------- end diff -----------</comment>',
+                        PHP_EOL,
+                        PHP_EOL
+                    ));
 
-                $this->output->writeln($diffFormatter->format($e->getDiff()));
+                    $this->output->writeln($diffFormatter->format($diff));
+                }
             }
         }
     }
