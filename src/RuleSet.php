@@ -120,6 +120,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_no_useless_inheritdoc' => true,
             'phpdoc_return_self_reference' => true,
             'phpdoc_scalar' => true,
+            'phpdoc_scalar_breakdown' => true,
             'phpdoc_separation' => true,
             'phpdoc_single_line_var_spacing' => true,
             'phpdoc_summary' => true,

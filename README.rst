@@ -1196,8 +1196,12 @@ Choose from the list of available rules:
 * **phpdoc_scalar** [@Symfony]
 
   Scalar types should always be written in the same form. ``int`` not
-  ``integer``, ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``. The
-  scalar phpdoc type will be converted into a list of valid scalar types.
+  ``integer``, ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``. 
+
+* **phpdoc_scalar_breakdown** [@Symfony]
+
+  The scalar phpdoc type will be broken down into a list of valid scalar
+  types.
 
 * **phpdoc_separation** [@Symfony]
 

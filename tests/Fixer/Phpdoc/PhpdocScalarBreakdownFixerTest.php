@@ -15,21 +15,21 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Andreas Frömer <blubb0r05+github@gmail.com>
  *
  * @internal
  *
  * @covers \PhpCsFixer\AbstractPhpdocTypesFixer
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocScalarFixer
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocScalarBreakdownFixer
  */
-final class PhpdocScalarFixerTest extends AbstractFixerTestCase
+final class PhpdocScalarBreakdownFixerTest extends AbstractFixerTestCase
 {
     public function testBasicFix()
     {
         $expected = <<<'EOF'
 <?php
     /**
-     * @return int
+     * @return int|string|float|bool
      */
 
 EOF;
@@ -37,7 +37,7 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * @return integer
+     * @return scalar
      */
 
 EOF;
@@ -50,10 +50,10 @@ EOF;
         $expected = <<<'EOF'
 <?php
 /**
- * @method int foo()
- * @property int $foo
- * @property-read bool $bar
- * @property-write float $baz
+ * @method int|string|float|bool foo()
+ * @property int|string|float|bool $foo
+ * @property-read int|string|float|bool $bar
+ * @property-write int|string|float|bool $baz
  */
 
 EOF;
@@ -61,10 +61,10 @@ EOF;
         $input = <<<'EOF'
 <?php
 /**
- * @method integer foo()
- * @property integer $foo
- * @property-read boolean $bar
- * @property-write double $baz
+ * @method scalar foo()
+ * @property scalar $foo
+ * @property-read scalar $bar
+ * @property-write scalar $baz
  */
 
 EOF;
@@ -77,7 +77,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @param int $integer
+     * @param int|string|float|bool $scalar
      */
 
 EOF;
@@ -85,7 +85,7 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * @param integer $integer
+     * @param scalar $scalar
      */
 
 EOF;
@@ -95,9 +95,9 @@ EOF;
 
     public function testFixWithTabsOnOneLine()
     {
-        $expected = "<?php /**\t@return\tbool\t*/";
+        $expected = "<?php /**\t@return\tint|string|float|bool\t*/";
 
-        $input = "<?php /**\t@return\tboolean\t*/";
+        $input = "<?php /**\t@return\tscalar\t*/";
 
         $this->doTest($expected, $input);
     }
@@ -107,13 +107,11 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * Hello there mr integer!
+     * Hello there mr scalar!
      *
-     * @param int|float $integer
-     * @param int|int[] $foo
-     * @param string|null $bar
+     * @param int|string|float|bool $scalar
      *
-     * @return string|bool
+     * @return int|string|float|bool
      */
 
 EOF;
@@ -121,13 +119,11 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * Hello there mr integer!
+     * Hello there mr scalar!
      *
-     * @param integer|real $integer
-     * @param int|integer[] $foo
-     * @param str|null $bar
+     * @param scalar $scalar
      *
-     * @return string|boolean
+     * @return scalar
      */
 
 EOF;
@@ -140,7 +136,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @var int Some integer value.
+     * @var int|string|float|bool Some integer value.
      */
 
 EOF;
@@ -148,28 +144,7 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * @var integer Some integer value.
-     */
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixVarWithMoreStuff()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @var bool|int|Double Booleans, integers and doubles.
-     */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-    /**
-     * @var boolean|integer|Double Booleans, integers and doubles.
+     * @var scalar Some integer value.
      */
 
 EOF;
@@ -182,7 +157,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @type float
+     * @type int|string|float|bool
      */
 
 EOF;
@@ -190,7 +165,7 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * @type real
+     * @type scalar
      */
 
 EOF;
@@ -203,7 +178,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @var notaboolean
+     * @var scalara
      */
 
 EOF;
@@ -216,7 +191,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @var notabooleanthistime|bool|integerr
+     * @var notabooleanthistime|int|string|float|bool|integerr
      */
 
 EOF;
@@ -224,7 +199,7 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * @var notabooleanthistime|boolean|integerr
+     * @var notabooleanthistime|scalar|integerr
      */
 
 EOF;
@@ -237,7 +212,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @Type("boolean")
+     * @Type("scalar")
      */
 EOF;
 
@@ -251,7 +226,7 @@ EOF;
 
 $string = '
     /**
-     * @var boolean
+     * @var scalar
      */
 ';
 
@@ -278,9 +253,9 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @Param boolean
+     * @Param scalar
      *
-     * @Return int
+     * @Return scalar
      */
 
 EOF;
@@ -295,8 +270,7 @@ EOF;
      * Does stuffs with stuffs.
      *
      * @param array $stuffs {
-     *     @type bool $foo
-     *     @type int $bar
+     *     @type int|string|float|bool $foo
      * }
      */
 
@@ -308,8 +282,7 @@ EOF;
      * Does stuffs with stuffs.
      *
      * @param array $stuffs {
-     *     @type boolean $foo
-     *     @type integer $bar
+     *     @type scalar $foo
      * }
      */
 
