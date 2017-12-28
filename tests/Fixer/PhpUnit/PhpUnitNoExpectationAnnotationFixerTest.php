@@ -463,6 +463,40 @@ EOT
 EOT
 ,
             ],
+            'message on newline' => [
+<<<'EOT'
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         */
+        public function testElementNonExistent()
+        {
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines');
+
+            aaa();
+        }
+    }
+EOT
+,
+<<<'EOT'
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * @expectedException \RuntimeException
+         * @expectedExceptionMessage Message
+         *                           on
+         *                           multilines
+         */
+        public function testElementNonExistent()
+        {
+            aaa();
+        }
+    }
+EOT
+,
+            ],
         ];
     }
 
