@@ -22,8 +22,19 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoEmptyCommentFixer extends AbstractFixer
 {
+    /**
+     * @internal
+     */
     const TYPE_HASH = 1;
+
+    /**
+     * @internal
+     */
     const TYPE_DOUBLE_SLASH = 2;
+
+    /**
+     * @internal
+     */
     const TYPE_SLASH_ASTERISK = 3;
 
     /**
