@@ -212,15 +212,6 @@ final class DescribeCommand extends Command
             $output->writeln('');
         } elseif ($fixer instanceof ConfigurableFixerInterface) {
             $output->writeln('<comment>Fixer is configurable.</comment>');
-
-            if ($definition->getConfigurationDescription()) {
-                $output->writeln($definition->getConfigurationDescription());
-            }
-
-            if ($definition->getDefaultConfiguration()) {
-                $output->writeln(sprintf('Default configuration: <comment>%s</comment>.', HelpCommand::toString($definition->getDefaultConfiguration())));
-            }
-
             $output->writeln('');
         }
 

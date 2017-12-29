@@ -28,20 +28,6 @@ interface FixerDefinitionInterface
     public function getDescription();
 
     /**
-     * @return null|string null for non-configurable fixer
-     *
-     * @deprecated will be removed in 3.0
-     */
-    public function getConfigurationDescription();
-
-    /**
-     * @return null|array null for non-configurable fixer
-     *
-     * @deprecated will be removed in 3.0
-     */
-    public function getDefaultConfiguration();
-
-    /**
      * @return null|string null for non-risky fixer
      */
     public function getRiskyDescription();

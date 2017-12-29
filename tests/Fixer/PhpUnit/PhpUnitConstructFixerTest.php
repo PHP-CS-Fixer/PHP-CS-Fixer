@@ -27,33 +27,6 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @group legacy
-     * @dataProvider provideTestFixCases
-     * @expectedDeprecation Passing "assertions" at the root of the configuration is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
-     */
-    public function testLegacyFix($expected, $input = null)
-    {
-        $this->fixer->configure([
-            'assertEquals',
-            'assertSame',
-            'assertNotEquals',
-            'assertNotSame',
-        ]);
-        $this->doTest($expected, $input);
-
-        foreach (['assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame'] as $method) {
-            $this->fixer->configure([$method]);
-            $this->doTest(
-                $expected,
-                $input && false !== strpos($input, $method) ? $input : null
-            );
-        }
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
     public function testFix($expected, $input = null)
