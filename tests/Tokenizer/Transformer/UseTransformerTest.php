@@ -30,49 +30,49 @@ final class UseTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = array())
+    public function testProcess($source, array $expectedTokens = [])
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            array(
+            [
                 T_USE,
                 CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT,
-            )
+            ]
         );
     }
 
     public function provideProcessCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php use Foo;',
-                array(
+                [
                     1 => T_USE,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php $foo = function() use ($bar) {};',
-                array(
+                [
                     9 => CT::T_USE_LAMBDA,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php class Foo { use Bar; }',
-                array(
+                [
                     7 => CT::T_USE_TRAIT,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php namespace Aaa; use Bbb; class Foo { use Bar; function baz() { $a=1; return function () use ($a) {}; } }',
-                array(
+                [
                     6 => T_USE,
                     17 => CT::T_USE_TRAIT,
                     42 => CT::T_USE_LAMBDA,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -82,34 +82,34 @@ final class UseTransformerTest extends AbstractTransformerTestCase
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($source, array $expectedTokens = array())
+    public function testFix72($source, array $expectedTokens = [])
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            array(
+            [
                 T_USE,
                 CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT,
-            )
+            ]
         );
     }
 
     public function provideFix72Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 use A\{B,};
 use function D;
 use C\{D,E,};
 ',
-                array(
+                [
                     1 => T_USE,
                     11 => T_USE,
                     18 => T_USE,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

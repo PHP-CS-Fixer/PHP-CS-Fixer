@@ -31,7 +31,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
      */
     public function getCustomTokens()
     {
-        return array(CT::T_TYPE_ALTERNATION);
+        return [CT::T_TYPE_ALTERNATION];
     }
 
     /**
@@ -61,10 +61,10 @@ final class TypeAlternationTransformer extends AbstractTransformer
         $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         $prevToken = $tokens[$prevIndex];
 
-        if (!$prevToken->equalsAny(array('(', array(CT::T_TYPE_ALTERNATION)))) {
+        if (!$prevToken->equalsAny(['(', [CT::T_TYPE_ALTERNATION]])) {
             return;
         }
 
-        $tokens[$index] = new Token(array(CT::T_TYPE_ALTERNATION, '|'));
+        $tokens[$index] = new Token([CT::T_TYPE_ALTERNATION, '|']);
     }
 }

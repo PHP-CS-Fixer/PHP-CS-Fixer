@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 {
-    private $tags = array('throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type');
+    private $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
 
     /**
      * {@inheritdoc}
@@ -33,12 +33,12 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Phpdocs annotation descriptions should not be a sentence.',
-            array(new CodeSample('<?php
+            [new CodeSample('<?php
 /**
  * @param string $bar Some string.
  */
 function foo ($bar) {}
-'))
+')]
         );
     }
 
@@ -92,7 +92,7 @@ function foo ($bar) {}
                     : '';
                 $content = preg_replace_callback(
                     '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
-                    function (array $matches) {
+                    static function (array $matches) {
                         return $matches[1].strtolower($matches[2]).$matches[3];
                     },
                     $startLine->getContent(),
@@ -101,7 +101,7 @@ function foo ($bar) {}
                 $startLine->setContent($content);
             }
 
-            $tokens[$index] = new Token(array(T_DOC_COMMENT, $doc->getContent()));
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 }

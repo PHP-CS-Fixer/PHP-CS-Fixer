@@ -46,10 +46,10 @@ final class ErrorOutput
      */
     public function listErrors($process, array $errors)
     {
-        $this->output->writeln(array('', sprintf(
+        $this->output->writeln(['', sprintf(
             'Files that were not fixed due to errors reported during %s:',
             $process
-        )));
+        )]);
 
         $showDetails = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE;
         $showTrace = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG;
@@ -66,12 +66,12 @@ final class ErrorOutput
                     }
 
                     $length = max(strlen($class), strlen($message));
-                    $lines = array(
+                    $lines = [
                         '',
                         $class,
                         $message,
                         '',
-                    );
+                    ];
 
                     $this->output->writeln('');
 
@@ -87,7 +87,7 @@ final class ErrorOutput
                         $this->output->writeln('');
                         $stackTrace = $e->getTrace();
                         foreach ($stackTrace as $trace) {
-                            if (isset($trace['class'], $trace['function']) && 'Symfony\Component\Console\Command\Command' === $trace['class'] && 'run' === $trace['function']) {
+                            if (isset($trace['class'], $trace['function']) && \Symfony\Component\Console\Command\Command::class === $trace['class'] && 'run' === $trace['function']) {
                                 $this->output->writeln('      [ ... ]');
 
                                 break;

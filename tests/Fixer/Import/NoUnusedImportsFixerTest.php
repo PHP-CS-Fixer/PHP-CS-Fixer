@@ -480,11 +480,11 @@ use b;
 ";
 EOF;
 
-        return array(
-            array($expected1),
-            array($expected2),
-            array($expected3),
-        );
+        return [
+            [$expected1],
+            [$expected2],
+            [$expected3],
+        ];
     }
 
     public function testUseAsLastStatement()
@@ -565,23 +565,23 @@ EOF;
 
     public function provideCloseTagCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 ?>inline content<?php ?>',
                 '<?php
      use A\AA;
      use B\C?>inline content<?php use A\D; use E\F ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php ?>',
                 '<?php use A\B;?>',
-            ),
-            array(
+            ],
+            [
                 '<?php ?>',
                 '<?php use A\B?>',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -698,8 +698,8 @@ EOF;
 
     public function provideFix72Cases()
     {
-        return array(
-            array( // TODO test shows lot of cases where imports are not removed while could be
+        return [
+            [ // TODO test shows lot of cases where imports are not removed while could be
                 '<?php use A\{B,};
 use some\y\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
@@ -723,7 +723,7 @@ use Z;
     echo ConstBB.ConstCC;
     fn_a(ClassA::test, new C());
 ',
-            ),
-        );
+            ],
+        ];
     }
 }

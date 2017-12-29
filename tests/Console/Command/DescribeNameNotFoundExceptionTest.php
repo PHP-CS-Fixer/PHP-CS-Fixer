@@ -31,7 +31,7 @@ final class DescribeNameNotFoundExceptionTest extends TestCase
             'weird'
         );
 
-        $this->assertInstanceOf('InvalidArgumentException', $exception);
+        $this->assertInstanceOf(\InvalidArgumentException::class, $exception);
     }
 
     public function testConstructorSetsValues()

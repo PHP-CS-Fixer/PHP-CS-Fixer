@@ -30,34 +30,34 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
      * @dataProvider provideProcessCases
      * @requires PHP 7.1
      */
-    public function testProcess($source, array $expectedTokens = array())
+    public function testProcess($source, array $expectedTokens = [])
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            array(
+            [
                 CT::T_TYPE_ALTERNATION,
-            )
+            ]
         );
     }
 
     public function provideProcessCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php try {} catch (ExceptionType1 | ExceptionType2 | ExceptionType3 $e) {}',
-                array(
+                [
                     11 => CT::T_TYPE_ALTERNATION,
                     15 => CT::T_TYPE_ALTERNATION,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php
                     echo 2 | 4;
                     echo "aaa" | "bbb";
                     echo F_OK | F_ERR;
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

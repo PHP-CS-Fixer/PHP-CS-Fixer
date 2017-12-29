@@ -41,20 +41,20 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
 
     public function provideTestCases()
     {
-        return array(
-            'Minimal case, alternative casing, alternative statement end.' => array(
+        return [
+            'Minimal case, alternative casing, alternative statement end.' => [
                 '<?php echo PHP_VERSION?>',
                 '<?php echo PHPversion()?>',
-            ),
-            'With embedded comment.' => array(
+            ],
+            'With embedded comment.' => [
                 '<?php echo PHP_VERSION/**/?>',
                 '<?php echo phpversion(/**/)?>',
-            ),
-            'With white space.' => array(
+            ],
+            'With white space.' => [
                 '<?php echo PHP_VERSION      ;',
                 '<?php echo phpversion  (  )  ;',
-            ),
-            'With multi line whitespace.' => array(
+            ],
+            'With multi line whitespace.' => [
                 '<?php echo
                 PHP_VERSION
                 '.'
@@ -65,50 +65,50 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
                 (
                 )
                 ;',
-            ),
-            'Global namespaced.' => array(
+            ],
+            'Global namespaced.' => [
                 '<?php echo \PHP_VERSION;',
                 '<?php echo \phpversion();',
-            ),
-            'Wrong number of arguments.' => array(
+            ],
+            'Wrong number of arguments.' => [
                 '<?php phpversion($a);',
-            ),
-            'Wrong namespace.' => array(
+            ],
+            'Wrong namespace.' => [
                 '<?php A\B\phpversion();',
-            ),
-            'Class creating.' => array(
+            ],
+            'Class creating.' => [
                 '<?php new phpversion();',
-            ),
-            'Class static method call.' => array(
+            ],
+            'Class static method call.' => [
                 '<?php A::phpversion();',
-            ),
-            'Class method call.' => array(
+            ],
+            'Class method call.' => [
                 '<?php $a->phpversion();',
-            ),
-            'Overridden function.' => array(
+            ],
+            'Overridden function.' => [
                 '<?php if (!function_exists("phpversion")){function phpversion(){}}?>',
-            ),
-            'phpversion only' => array(
+            ],
+            'phpversion only' => [
                 '<?php echo PHP_VERSION; echo php_sapi_name(); echo pi();',
                 '<?php echo phpversion(); echo php_sapi_name(); echo pi();',
-                array('functions' => array('phpversion')),
-            ),
-            'php_sapi_name only' => array(
+                ['functions' => ['phpversion']],
+            ],
+            'php_sapi_name only' => [
                 '<?php echo phpversion(); echo PHP_SAPI; echo pi();',
                 '<?php echo phpversion(); echo php_sapi_name(); echo pi();',
-                array('functions' => array('php_sapi_name')),
-            ),
-            'php_sapi_name in conditional' => array(
+                ['functions' => ['php_sapi_name']],
+            ],
+            'php_sapi_name in conditional' => [
                 '<?php if ("cli" === PHP_SAPI && $a){ echo 123;}',
                 '<?php if ("cli" === php_sapi_name() && $a){ echo 123;}',
-                array('functions' => array('php_sapi_name')),
-            ),
-            'pi only' => array(
+                ['functions' => ['php_sapi_name']],
+            ],
+            'pi only' => [
                 '<?php echo phpversion(); echo php_sapi_name(); echo M_PI;',
                 '<?php echo phpversion(); echo php_sapi_name(); echo pi();',
-                array('functions' => array('pi')),
-            ),
-            'multi line pi' => array(
+                ['functions' => ['pi']],
+            ],
+            'multi line pi' => [
                 '<?php
 $a =
     $b
@@ -119,21 +119,69 @@ $a =
     $b
     || $c < pi()
 ;',
-                array('functions' => array('pi')),
-            ),
-            'phpversion and pi' => array(
+                ['functions' => ['pi']],
+            ],
+            'phpversion and pi' => [
                 '<?php echo PHP_VERSION; echo php_sapi_name(); echo M_PI;',
                 '<?php echo phpversion(); echo php_sapi_name(); echo M_PI;',
-                array('functions' => array('pi', 'phpversion')),
-            ),
-            'diff argument count than native allows' => array(
+                ['functions' => ['pi', 'phpversion']],
+            ],
+            'diff argument count than native allows' => [
                 '<?php
                     echo phpversion(1);
                     echo php_sapi_name(1,2);
                     echo pi(1);
                 ',
-            ),
-        );
+            ],
+            'get_class => T_CLASS' => [
+                '<?php
+                    class A
+                    {
+                        public function echoClassName($notMe)
+                        {
+                            echo get_class($notMe);
+                            echo __CLASS__/** 1 *//* 2 */;
+                            echo __CLASS__;
+                        }
+                    }
+
+                    trait A
+                    {
+                        public function A() {
+                            var_dump(__CLASS__);
+                        }
+                    }
+
+                    class B
+                    {
+                        use A;
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        public function echoClassName($notMe)
+                        {
+                            echo get_class($notMe);
+                            echo get_class(/** 1 *//* 2 */);
+                            echo GET_Class();
+                        }
+                    }
+
+                    trait A
+                    {
+                        public function A() {
+                            var_dump(get_class());
+                        }
+                    }
+
+                    class B
+                    {
+                        use A;
+                    }
+                ',
+            ],
+        ];
     }
 
     /**
@@ -143,30 +191,26 @@ $a =
      */
     public function testInvalidConfigurationKeys(array $config)
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#');
 
         $this->fixer->configure($config);
     }
 
     public function provideInvalidConfigurationKeysCases()
     {
-        return array(
-            array(array('functions' => array('a'))),
-            array(array('functions' => array(false => 1))),
-            array(array('functions' => array('abc' => true))),
-        );
+        return [
+            [['functions' => ['a']]],
+            [['functions' => [false => 1]]],
+            [['functions' => ['abc' => true]]],
+        ];
     }
 
     public function testInvalidConfigurationValue()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. (Defined|Known) options are: "functions"\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');
 
-        $this->fixer->configure(array('pi123'));
+        $this->fixer->configure(['pi123']);
     }
 }

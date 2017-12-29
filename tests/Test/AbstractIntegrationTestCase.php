@@ -48,7 +48,7 @@ use Symfony\Component\Finder\Finder;
  * --SETTINGS--*
  * {"key": "value"} # optional extension point for custom IntegrationTestCase class
  * --REQUIREMENTS--*
- * {"php": 50600**, "hhvm": false***}
+ * {"php": 50600**}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
@@ -56,7 +56,6 @@ use Symfony\Component\Finder\Finder;
  *
  *   * Section or any line in it may be omitted.
  *  ** PHP minimum version. Default to current running php version (no effect).
- * *** HHVM compliant flag. Default to true. Set to false to skip test under HHVM.
  *
  * @author SpacePossum
  *
@@ -106,6 +105,19 @@ abstract class AbstractIntegrationTestCase extends TestCase
         parent::setUp();
 
         $this->linter = $this->getLinter();
+
+        // @todo remove at 3.0 together with env var itself
+        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
+            Tokens::setLegacyMode(true);
+        }
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        // @todo remove at 3.0
+        Tokens::setLegacyMode(false);
     }
 
     /**
@@ -133,16 +145,16 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         $factory = new IntegrationCaseFactory();
-        $tests = array();
+        $tests = [];
 
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
             if ('test' !== $file->getExtension()) {
                 continue;
             }
 
-            $tests[] = array(
+            $tests[] = [
                 $factory->create($file),
-            );
+            ];
         }
 
         return $tests;
@@ -179,10 +191,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
      */
     protected function doTest(IntegrationCase $case)
     {
-        if (defined('HHVM_VERSION') && false === $case->getRequirement('hhvm')) {
-            $this->markTestSkipped('HHVM is not supported.');
-        }
-
         if (PHP_VERSION_ID < $case->getRequirement('php')) {
             $this->markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), PHP_VERSION_ID));
         }
@@ -201,7 +209,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $errorsManager = new ErrorsManager();
         $fixers = $this->createFixers($case);
         $runner = new Runner(
-            new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
+            new \ArrayIterator([new \SplFileInfo($tmpFile)]),
             $fixers,
             new SebastianBergmannDiffer(),
             null,
@@ -261,7 +269,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             }
 
             $runner = new Runner(
-                new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
+                new \ArrayIterator([new \SplFileInfo($tmpFile)]),
                 array_reverse($fixers),
                 new SebastianBergmannDiffer(),
                 null,
@@ -281,7 +289,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $this->assertGreaterThan(
                     1,
                     count(array_unique(array_map(
-                        function (FixerInterface $fixer) {
+                        static function (FixerInterface $fixer) {
                             return $fixer->getPriority();
                         },
                         $fixers
@@ -336,7 +344,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         $errorStr = '';
         foreach ($errors as $error) {
-            $errorStr .= sprintf("%d: %s\n", $error->getType(), $error->getFilePath());
+            $source = $error->getSource();
+            $errorStr .= sprintf("%d: %s%s\n", $error->getType(), $error->getFilePath(), null === $source ? '' : ' '.$source->getMessage()."\n\n".$source->getTraceAsString());
         }
 
         return $errorStr;
@@ -351,13 +360,13 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (null === $linter) {
             if (getenv('SKIP_LINT_TEST_CASES')) {
-                $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+                $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
                 $linterProphecy
                     ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
                 $linterProphecy
                     ->lintFile(Argument::type('string'))
-                    ->willReturn($this->prophesize('PhpCsFixer\Linter\LintingResultInterface')->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
                 $linterProphecy
                     ->isAsync()
                     ->willReturn(false);

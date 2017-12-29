@@ -12,17 +12,22 @@
 
 namespace PhpCsFixer\Fixer\ReturnNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @deprecated since 2.4, replaced by BlankLineBeforeStatementFixer
+ *
+ * @todo To be removed at 3.0
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Andreas Möller <am@localheinz.com>
  */
-final class BlankLineBeforeReturnFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements DeprecatedFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -31,65 +36,26 @@ final class BlankLineBeforeReturnFixer extends AbstractFixer implements Whitespa
     {
         return new FixerDefinition(
             'An empty line feed should precede a return statement.',
-            array(new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}"))
+            [new CodeSample("<?php\nfunction A()\n{\n    echo 1;\n    return 1;\n}\n")]
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getSuccessorsNames()
     {
-        // should be run after NoUselessReturnFixer
-        return -19;
+        return array_keys($this->proxyFixers);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function createProxyFixers()
     {
-        return $tokens->isTokenKindFound(T_RETURN);
-    }
+        $fixer = new BlankLineBeforeStatementFixer();
+        $fixer->configure(['statements' => ['return']]);
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(T_RETURN)) {
-                continue;
-            }
-
-            $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
-
-            if (!$prevNonWhitespaceToken->equalsAny(array(';', '}'))) {
-                continue;
-            }
-
-            $prevIndex = $index - 1;
-            $prevToken = $tokens[$prevIndex];
-
-            if ($prevToken->isWhitespace()) {
-                $parts = explode("\n", $prevToken->getContent());
-                $countParts = count($parts);
-
-                if (1 === $countParts) {
-                    $tokens[$prevIndex] = new Token(array(T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding));
-                } elseif (count($parts) <= 2) {
-                    $tokens[$prevIndex] = new Token(array(T_WHITESPACE, $lineEnding.$prevToken->getContent()));
-                }
-            } else {
-                $tokens->insertAt($index, new Token(array(T_WHITESPACE, $lineEnding.$lineEnding)));
-
-                ++$index;
-                ++$limit;
-            }
-        }
+        return [$fixer];
     }
 }

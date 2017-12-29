@@ -31,9 +31,9 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     {
         return new FixerDefinition(
             'Replaces `intval`, `floatval`, `doubleval`, `strval` and `boolval` function calls with according type casting operator.',
-            array(
+            [
                 new CodeSample(
-'<?php
+                    '<?php
     $a = intval($b);
     $a = floatval($b);
     $a = doubleval($b);
@@ -41,7 +41,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     $a = boolval($b);
 '
                 ),
-            ),
+            ],
             null,
             'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
         );
@@ -61,13 +61,13 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // replacement patterns
-        static $replacement = array(
-            'intval' => array(T_INT_CAST, '(int)'),
-            'floatval' => array(T_DOUBLE_CAST, '(float)'),
-            'doubleval' => array(T_DOUBLE_CAST, '(float)'),
-            'strval' => array(T_STRING_CAST, '(string)'),
-            'boolval' => array(T_BOOL_CAST, '(bool)'),
-        );
+        static $replacement = [
+            'intval' => [T_INT_CAST, '(int)'],
+            'floatval' => [T_DOUBLE_CAST, '(float)'],
+            'doubleval' => [T_DOUBLE_CAST, '(float)'],
+            'strval' => [T_STRING_CAST, '(string)'],
+            'boolval' => [T_BOOL_CAST, '(bool)'],
+        ];
 
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
@@ -111,10 +111,10 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 }
 
                 // perform transformation
-                $replacementSequence = array(
+                $replacementSequence = [
                     new Token($newToken),
-                    new Token(array(T_WHITESPACE, ' ')),
-                );
+                    new Token([T_WHITESPACE, ' ']),
+                ];
 
                 if (!$preserveParenthesises) {
                     // closing parenthesis removed with leading spaces

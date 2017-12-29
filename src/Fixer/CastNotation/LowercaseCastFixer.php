@@ -30,7 +30,7 @@ final class LowercaseCastFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Cast should be written in lower case.',
-            array(
+            [
                 new CodeSample(
 '<?php
     $a = (BOOLEAN) $b;
@@ -48,7 +48,7 @@ final class LowercaseCastFixer extends AbstractFixer
     $a = (Binary) $b;
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -70,7 +70,7 @@ final class LowercaseCastFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index] = new Token(array($tokens[$index]->getId(), strtolower($tokens[$index]->getContent())));
+            $tokens[$index] = new Token([$tokens[$index]->getId(), strtolower($tokens[$index]->getContent())]);
         }
     }
 }

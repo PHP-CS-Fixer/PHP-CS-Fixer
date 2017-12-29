@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: void_return,phpdoc_no_empty_return.
+--RULESET--
+{"void_return": true, "phpdoc_no_empty_return": true}
+--REQUIREMENTS--
+{"php": 70100}
+--EXPECT--
+<?php
+interface Test {
+    /**
+     */
+    public function foo(): void;
+}
+
+--INPUT--
+<?php
+interface Test {
+    /**
+     * @return void
+     */
+    public function foo();
+}

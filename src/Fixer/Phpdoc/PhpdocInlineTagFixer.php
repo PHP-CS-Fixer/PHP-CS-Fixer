@@ -30,7 +30,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Fix phpdoc inline tags, make inheritdoc always inline.',
-            array(new CodeSample(
+            [new CodeSample(
 '<?php
 /**
  * @{TUTORIAL}
@@ -39,7 +39,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
  * @inheritdocs
  */
 '
-            ))
+            )]
         );
     }
 
@@ -69,7 +69,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
             // of text and closing bracket and between the tag and inline comment.
             $content = preg_replace_callback(
                 '#(?:@{+|{+[ \t]*@)[ \t]*(example|id|internal|inheritdoc|link|source|toc|tutorial)s?([^}]*)(?:}+)#i',
-                function (array $matches) {
+                static function (array $matches) {
                     $doc = trim($matches[2]);
 
                     if ('' === $doc) {
@@ -89,7 +89,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
                 $content
             );
 
-            $tokens[$index] = new Token(array(T_DOC_COMMENT, $content));
+            $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
         }
     }
 }

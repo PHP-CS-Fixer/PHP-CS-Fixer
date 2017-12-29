@@ -30,6 +30,8 @@ abstract class AbstractReporterTestCase extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->reporter = $this->createReporter();
     }
 
@@ -59,100 +61,100 @@ abstract class AbstractReporterTestCase extends TestCase
      */
     final public function provideGenerateCases()
     {
-        return array(
-            'no errors' => array(
+        return [
+            'no errors' => [
                 $this->createNoErrorReport(),
                 new ReportSummary(
-                    array(),
+                    [],
                     0,
                     0,
                     false,
                     false,
                     false
                 ),
-            ),
-            'simple' => array(
+            ],
+            'simple' => [
                 $this->createSimpleReport(),
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    ),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here'],
+                        ],
+                    ],
                     0,
                     0,
                     false,
                     false,
                     false
                 ),
-            ),
-            'with diff' => array(
+            ],
+            'with diff' => [
                 $this->createWithDiffReport(),
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here'],
                             'diff' => 'this text is a diff ;)',
-                        ),
-                    ),
+                        ],
+                    ],
                     0,
                     0,
                     false,
                     false,
                     false
                 ),
-            ),
-            'with applied fixers' => array(
+            ],
+            'with applied fixers' => [
                 $this->createWithAppliedFixersReport(),
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
-                        ),
-                    ),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
+                        ],
+                    ],
                     0,
                     0,
                     true,
                     false,
                     false
                 ),
-            ),
-            'with time and memory' => array(
+            ],
+            'with time and memory' => [
                 $this->createWithTimeAndMemoryReport(),
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here'),
-                        ),
-                    ),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here'],
+                        ],
+                    ],
                     1234,
                     2.5 * 1024 * 1024,
                     false,
                     false,
                     false
                 ),
-            ),
-            'complex' => array(
+            ],
+            'complex' => [
                 $this->createComplexReport(),
                 new ReportSummary(
-                    array(
-                        'someFile.php' => array(
-                            'appliedFixers' => array('some_fixer_name_here_1', 'some_fixer_name_here_2'),
+                    [
+                        'someFile.php' => [
+                            'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
                             'diff' => 'this text is a diff ;)',
-                        ),
-                        'anotherFile.php' => array(
-                            'appliedFixers' => array('another_fixer_name_here'),
+                        ],
+                        'anotherFile.php' => [
+                            'appliedFixers' => ['another_fixer_name_here'],
                             'diff' => 'another diff here ;)',
-                        ),
-                    ),
+                        ],
+                    ],
                     1234,
                     2.5 * 1024 * 1024,
                     true,
                     true,
                     true
                 ),
-            ),
-        );
+            ],
+        ];
     }
 
     /**

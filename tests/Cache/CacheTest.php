@@ -29,16 +29,16 @@ final class CacheTest extends TestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Cache');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheInterface()
     {
-        $reflection = new \ReflectionClass('PhpCsFixer\Cache\Cache');
+        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
-        $this->assertTrue($reflection->implementsInterface('PhpCsFixer\Cache\CacheInterface'));
+        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheInterface::class));
     }
 
     public function testConstructorSetsValues()
@@ -64,7 +64,7 @@ final class CacheTest extends TestCase
 
     public function testSetThrowsInvalidArgumentExceptionIfValueIsNotAnInteger()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $signature = $this->getSignatureDouble();
 
@@ -107,7 +107,7 @@ final class CacheTest extends TestCase
 
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $json = '{"foo';
 
@@ -121,7 +121,7 @@ final class CacheTest extends TestCase
      */
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $json = json_encode($data);
 
@@ -133,22 +133,22 @@ final class CacheTest extends TestCase
      */
     public function provideMissingDataCases()
     {
-        $data = array(
-            'php' => '5.5.5',
+        $data = [
+            'php' => '7.1.2',
             'version' => '2.0',
-            'rules' => array(
+            'rules' => [
                 'foo' => true,
                 'bar' => false,
-            ),
-            'hashes' => array(),
-        );
+            ],
+            'hashes' => [],
+        ];
 
-        return array_map(function ($missingKey) use ($data) {
+        return array_map(static function ($missingKey) use ($data) {
             unset($data[$missingKey]);
 
-            return array(
+            return [
                 $data,
-            );
+            ];
         }, array_keys($data));
     }
 
@@ -174,24 +174,24 @@ final class CacheTest extends TestCase
     {
         $toolInfo = new ToolInfo();
 
-        return array(
-            array(new Signature(
+        return [
+            [new Signature(
                 PHP_VERSION,
                 '2.0',
-                array(
+                [
                     'foo' => true,
                     'bar' => true,
-                )
-            )),
-            array(new Signature(
+                ]
+            )],
+            [new Signature(
                 PHP_VERSION,
                 $toolInfo->getVersion(),
-                array(
+                [
                     // value encoded in ANSI, not UTF
-                    'header_comment' => array('header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)),
-                )
-            )),
-        );
+                    'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],
+                ]
+            )],
+        ];
     }
 
     /**
@@ -199,6 +199,6 @@ final class CacheTest extends TestCase
      */
     private function getSignatureDouble()
     {
-        return $this->prophesize('PhpCsFixer\Cache\SignatureInterface')->reveal();
+        return $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
     }
 }

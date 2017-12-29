@@ -15,8 +15,6 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * Base class for Doctrine annotation fixer tests.
- *
  * @internal
  */
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
@@ -28,7 +26,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
      */
     public function testConfigureWithInvalidConfiguration(array $configuration)
     {
-        $this->setExpectedException('PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException');
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
 
         $this->fixer->configure($configuration);
     }
@@ -38,10 +36,10 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
      */
     public function provideInvalidConfigurationCases()
     {
-        return array(
-            array(array('foo' => 'bar')),
-            array(array('ignored_tags' => 'foo')),
-        );
+        return [
+            [['foo' => 'bar']],
+            [['ignored_tags' => 'foo']],
+        ];
     }
 
     /**
@@ -51,26 +49,26 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
      */
     protected function createTestCases(array $commentCases)
     {
-        $cases = array();
+        $cases = [];
         foreach ($commentCases as $commentCase) {
-            $cases[] = array(
+            $cases[] = [
                 $this->withClassDocBlock($commentCase[0]),
                 isset($commentCase[1]) ? $this->withClassDocBlock($commentCase[1]) : null,
-            );
+            ];
 
-            $cases[] = array(
+            $cases[] = [
                 $this->withPropertyDocBlock($commentCase[0]),
                 isset($commentCase[1]) ? $this->withPropertyDocBlock($commentCase[1]) : null,
-            );
+            ];
 
-            $cases[] = array(
+            $cases[] = [
                 $this->withMethodDocBlock($commentCase[0]),
                 isset($commentCase[1]) ? $this->withMethodDocBlock($commentCase[1]) : null,
-            );
+            ];
 
-            $cases[] = array(
+            $cases[] = [
                 $this->withWrongElementDocBlock($commentCase[0]),
-            );
+            ];
         }
 
         return $cases;

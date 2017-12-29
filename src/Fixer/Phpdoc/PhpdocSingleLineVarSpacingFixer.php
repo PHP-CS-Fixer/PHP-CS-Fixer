@@ -32,7 +32,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Single line @var PHPDoc should have proper spacing.',
-            array(new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();"))
+            [new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();\n")]
         );
     }
 
@@ -50,7 +50,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT));
+        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
     }
 
     /**
@@ -61,7 +61,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
         /** @var Token $token */
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token(array(T_DOC_COMMENT, $this->fixTokenContent($token->getContent())));
+                $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixTokenContent($token->getContent())]);
 
                 continue;
             }
@@ -73,7 +73,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
             $content = $token->getContent();
             $fixedContent = $this->fixTokenContent($content);
             if ($content !== $fixedContent) {
-                $tokens[$index] = new Token(array(T_DOC_COMMENT, $fixedContent));
+                $tokens[$index] = new Token([T_DOC_COMMENT, $fixedContent]);
             }
         }
     }
@@ -87,7 +87,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     {
         return preg_replace_callback(
             '#^/\*\*[ \t]*@var[ \t]+(\S+)[ \t]*(\$\S+)?[ \t]*([^\n]*)\*/$#',
-            function (array $matches) {
+            static function (array $matches) {
                 $content = '/** @var';
                 for ($i = 1, $m = count($matches); $i < $m; ++$i) {
                     if ('' !== $matches[$i]) {

@@ -42,9 +42,8 @@ final class ProcessLinterProcessBuilder
     public function build($path)
     {
         return new Process(sprintf(
-            '"%s"%s -l "%s"',
+            '"%s" -l "%s"',
             $this->executable,
-            defined('HHVM_VERSION') ? ' --php' : '',
             $path
         ));
     }

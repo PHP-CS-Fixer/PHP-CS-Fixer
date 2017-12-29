@@ -20,8 +20,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -37,19 +35,22 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     /**
      * @var string[]
      */
-    private static $availableTokens = array(
+    private static $availableTokens = [
         'break',
+        'case',
         'continue',
+        'curly_brace_block',
+        'default',
         'extra',
+        'parenthesis_brace_block',
         'return',
+        'square_brace_block',
+        'switch',
         'throw',
         'use',
         'useTrait',
         'use_trait',
-        'curly_brace_block',
-        'parenthesis_brace_block',
-        'square_brace_block',
-    );
+    ];
 
     /**
      * @var array<int, string> key is token id, value is name of callback
@@ -78,49 +79,45 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     {
         parent::configure($configuration);
 
-        $this->tokenKindCallbackMap = array();
-        $this->tokenEqualsMap = array();
-        foreach ($this->configuration['tokens'] as $item) {
-            switch ($item) {
-                case 'break':
-                    $this->tokenKindCallbackMap[T_BREAK] = 'fixAfterToken';
+        static $reprToTokenMap = [
+            'break' => T_BREAK,
+            'case' => T_CASE,
+            'continue' => T_CONTINUE,
+            'curly_brace_block' => '{',
+            'default' => T_DEFAULT,
+            'extra' => T_WHITESPACE,
+            'parenthesis_brace_block' => '(',
+            'return' => T_RETURN,
+            'square_brace_block' => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+            'switch' => T_SWITCH,
+            'throw' => T_THROW,
+            'use' => T_USE,
+            'use_trait' => CT::T_USE_TRAIT,
+        ];
 
-                    break;
-                case 'continue':
-                    $this->tokenKindCallbackMap[T_CONTINUE] = 'fixAfterToken';
+        static $tokenKindCallbackMap = [
+            T_BREAK => 'fixAfterToken',
+            T_CASE => 'fixAfterToken',
+            T_CONTINUE => 'fixAfterToken',
+            T_DEFAULT => 'fixAfterToken',
+            T_RETURN => 'fixAfterToken',
+            T_SWITCH => 'fixAfterToken',
+            T_THROW => 'fixAfterToken',
+            T_USE => 'removeBetweenUse',
+            T_WHITESPACE => 'removeMultipleBlankLines',
+            CT::T_USE_TRAIT => 'removeBetweenUse',
+            CT::T_ARRAY_SQUARE_BRACE_OPEN => 'fixStructureOpenCloseIfMultiLine', // typeless '[' tokens should not be fixed (too rare)
+        ];
 
-                    break;
-                case 'extra':
-                    $this->tokenKindCallbackMap[T_WHITESPACE] = 'removeMultipleBlankLines';
+        static $tokenEqualsMap = [
+            '{' => 'fixStructureOpenCloseIfMultiLine', // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
+            '(' => 'fixStructureOpenCloseIfMultiLine', // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
+        ];
 
-                    break;
-                case 'return':
-                    $this->tokenKindCallbackMap[T_RETURN] = 'fixAfterToken';
+        $tokensAssoc = array_flip(array_intersect_key($reprToTokenMap, array_flip($this->configuration['tokens'])));
 
-                    break;
-                case 'throw':
-                    $this->tokenKindCallbackMap[T_THROW] = 'fixAfterToken';
-
-                    break;
-                case 'use':
-                    $this->tokenKindCallbackMap[T_USE] = 'removeBetweenUse';
-
-                    break;
-                case 'use_trait':
-                    $this->tokenKindCallbackMap[CT::T_USE_TRAIT] = 'removeBetweenUse';
-
-                    break;
-                case 'curly_brace_block':
-                    $this->tokenEqualsMap['{'] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
-                    break;
-                case 'parenthesis_brace_block':
-                    $this->tokenEqualsMap['('] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
-                    break;
-                case 'square_brace_block':
-                    $this->tokenKindCallbackMap[CT::T_ARRAY_SQUARE_BRACE_OPEN] = 'fixStructureOpenCloseIfMultiLine'; // typeless '[' tokens should not be fixed (too rare)
-                    break;
-            }
-        }
+        $this->tokenKindCallbackMap = array_intersect_key($tokenKindCallbackMap, $tokensAssoc);
+        $this->tokenEqualsMap = array_intersect_key($tokenEqualsMap, $tokensAssoc);
     }
 
     /**
@@ -130,14 +127,15 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
     {
         return new FixerDefinition(
             'Removes extra blank lines and/or blank lines following configuration.',
-            array(
+            [
                 new CodeSample(
 '<?php
 
 $foo = array("foo");
 
 
-$bar = "bar";'
+$bar = "bar";
+'
                 ),
                 new CodeSample(
 '<?php
@@ -149,8 +147,9 @@ switch ($foo) {
 
     case 42:
         break;
-}',
-                    array('tokens' => array('break'))
+}
+',
+                    ['tokens' => ['break']]
                 ),
                 new CodeSample(
 '<?php
@@ -160,8 +159,9 @@ for ($i = 0; $i < 9000; ++$i) {
         continue;
 
     }
-}',
-                    array('tokens' => array('continue'))
+}
+',
+                    ['tokens' => ['continue']]
                 ),
                 new CodeSample(
 '<?php
@@ -170,8 +170,9 @@ for ($i = 0; $i < 9000; ++$i) {
 
     echo $i;
 
-}',
-                    array('tokens' => array('curly_brace_block'))
+}
+',
+                    ['tokens' => ['curly_brace_block']]
                 ),
                 new CodeSample(
 '<?php
@@ -179,8 +180,9 @@ for ($i = 0; $i < 9000; ++$i) {
 $foo = array("foo");
 
 
-$bar = "bar";',
-                    array('tokens' => array('extra'))
+$bar = "bar";
+',
+                    ['tokens' => ['extra']]
                 ),
                 new CodeSample(
 '<?php
@@ -189,8 +191,9 @@ $foo = array(
 
     "foo"
 
-);',
-                    array('tokens' => array('parenthesis_brace_block'))
+);
+',
+                    ['tokens' => ['parenthesis_brace_block']]
                 ),
                 new CodeSample(
 '<?php
@@ -199,19 +202,20 @@ function foo($bar)
 {
     return $bar;
 
-}',
-                    array('tokens' => array('return'))
+}
+',
+                    ['tokens' => ['return']]
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
 '<?php
 
 $foo = [
 
     "foo"
 
-];',
-                    new VersionSpecification(50400),
-                    array('tokens' => array('square_brace_block'))
+];
+',
+                    ['tokens' => ['square_brace_block']]
                 ),
                 new CodeSample(
 '<?php
@@ -220,8 +224,9 @@ function foo($bar)
 {
     throw new \Exception("Hello!");
 
-}',
-                    array('tokens' => array('throw'))
+}
+',
+                    ['tokens' => ['throw']]
                 ),
                 new CodeSample(
 '<?php
@@ -234,8 +239,9 @@ use Baz\Bar;
 
 class Bar
 {
-}',
-                    array('tokens' => array('use'))
+}
+',
+                    ['tokens' => ['use']]
                 ),
                 new CodeSample(
 '<?php
@@ -245,10 +251,24 @@ class Foo
     use Bar;
 
     use Baz;
-}',
-                    array('tokens' => array('use_trait'))
+}
+',
+                    ['tokens' => ['use_trait']]
                 ),
-            )
+                new CodeSample(
+'<?php
+switch($a) {
+
+    case 1:
+
+    default:
+
+        echo 3;
+}
+',
+                    ['tokens' => ['switch', 'case', 'default']]
+                ),
+            ]
         );
     }
 
@@ -286,31 +306,27 @@ class Foo
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
+        return new FixerConfigurationResolverRootless('tokens', [
+            (new FixerOptionBuilder('tokens', 'List of tokens to fix.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(self::$availableTokens),
+                ])
+                ->setNormalizer(static function (Options $options, $tokens) {
+                    foreach ($tokens as &$token) {
+                        if ('useTrait' === $token) {
+                            @trigger_error('Token "useTrait" is deprecated and will be removed in 3.0, use "use_trait" instead.', E_USER_DEPRECATED);
+                            $token = 'use_trait';
 
-        $tokens = new FixerOptionBuilder('tokens', 'List of tokens to fix.');
-        $tokens = $tokens
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf(self::$availableTokens),
-            ))
-            ->setNormalizer(function (Options $options, $tokens) {
-                foreach ($tokens as &$token) {
-                    if ('useTrait' === $token) {
-                        @trigger_error('Token "useTrait" is deprecated and will be removed in 3.0, use "use_trait" instead.', E_USER_DEPRECATED);
-                        $token = 'use_trait';
-
-                        break;
+                            break;
+                        }
                     }
-                }
 
-                return $tokens;
-            })
-            ->setDefault(array('extra'))
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('tokens', array($tokens));
+                    return $tokens;
+                })
+                ->setDefault(['extra'])
+                ->getOption(),
+        ]);
     }
 
     private function fixByToken(Token $token, $index)
@@ -338,7 +354,7 @@ class Foo
 
     private function removeBetweenUse($index)
     {
-        $next = $this->tokens->getNextTokenOfKind($index, array(';', T_CLOSE_TAG));
+        $next = $this->tokens->getNextTokenOfKind($index, [';', T_CLOSE_TAG]);
         if (null === $next || $this->tokens[$next]->isGivenKind(T_CLOSE_TAG)) {
             return;
         }
@@ -353,25 +369,12 @@ class Foo
 
     private function removeMultipleBlankLines($index)
     {
-        $token = $this->tokens[$index];
-        $content = '';
-        $count = 0;
-        $parts = explode("\n", $token->getContent());
+        $parts = \preg_split('/(.*\R)/', $this->tokens[$index]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $count = \count($parts);
 
-        for ($i = 0, $last = count($parts) - 1; $i <= $last; ++$i) {
-            if ('' === $parts[$i] || "\r" === $parts[$i]) {
-                // if part is empty then we are between two "\n"
-                ++$count;
-            } else {
-                $content .= $parts[$i];
-            }
-
-            if ($i !== $last && $count < 3) {
-                $content .= $this->whitespacesConfig->getLineEnding();
-            }
+        if ($count > 2) {
+            $this->tokens[$index] = new Token([T_WHITESPACE, $parts[0].$parts[1].rtrim($parts[$count - 1], "\r\n")]);
         }
-
-        $this->tokens[$index] = new Token(array(T_WHITESPACE, $content));
     }
 
     private function fixAfterToken($index)
@@ -446,7 +449,7 @@ class Foo
                 $newContent = $ending;
             }
 
-            $this->tokens[$i] = new Token(array(T_WHITESPACE, $newContent));
+            $this->tokens[$i] = new Token([T_WHITESPACE, $newContent]);
         }
     }
 }

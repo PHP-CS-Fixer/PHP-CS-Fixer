@@ -101,7 +101,18 @@ class FooBarTest extends \PHPUnit_Framework_TestCase implements Test1Interface, 
     /**
      * @expectedException \Exception
      */
-    public function testFooBar()
+    public function testFooBar($a)
+    {
+        $b = 1 === $a ? 'a' : 'b';
+        echo $b;
+    }
+}
+
+final class finalClass
+{
+    public function finalMethod()
     {
     }
 }
+
+echo 1;

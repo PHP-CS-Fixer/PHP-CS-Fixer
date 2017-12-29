@@ -23,7 +23,7 @@ use Symfony\Component\Finder\SplFileInfo;
 final class ReporterFactory
 {
     /** @var ReporterInterface[] */
-    private $reporters = array();
+    private $reporters = [];
 
     public static function create()
     {
@@ -36,7 +36,7 @@ final class ReporterFactory
         static $builtInReporters;
 
         if (null === $builtInReporters) {
-            $builtInReporters = array();
+            $builtInReporters = [];
 
             /** @var SplFileInfo $file */
             foreach (SymfonyFinder::create()->files()->name('*Reporter.php')->in(__DIR__) as $file) {

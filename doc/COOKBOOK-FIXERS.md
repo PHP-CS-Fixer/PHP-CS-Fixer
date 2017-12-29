@@ -474,11 +474,6 @@ PHP CS Fixer community to partake on the review debates of your fixer.
 In any case, we care a lot about what you do and we want to see it being
 part of the application as soon as possible.
 
-#### May I use short arrays (`$a = []`)?
-
-No. Short arrays were introduced in PHP 5.4 and PHP CS Fixer still
-supports PHP 5.3.6.
-
 #### Why am I asked to use `getPrevMeaningfulToken()` instead of `getPrevNonWhitespace()`?
 
 The main difference is that `getPrevNonWhitespace()` ignores only

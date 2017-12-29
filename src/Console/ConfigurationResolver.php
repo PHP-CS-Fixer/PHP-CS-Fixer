@@ -24,6 +24,7 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -112,21 +113,22 @@ final class ConfigurationResolver
     /**
      * @var array
      */
-    private $options = array(
+    private $options = [
         'allow-risky' => null,
         'cache-file' => null,
         'config' => null,
         'diff' => null,
+        'diff-format' => null,
         'dry-run' => null,
         'format' => null,
-        'path' => array(),
+        'path' => [],
         'path-mode' => self::PATH_MODE_OVERRIDE,
         'rules' => null,
         'show-progress' => null,
         'stop-on-violation' => null,
         'using-cache' => null,
         'verbosity' => null,
-    );
+    ];
 
     private $cacheFile;
     private $cacheManager;
@@ -214,8 +216,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * Returns config instance.
-     *
      * @return ConfigInterface
      */
     public function getConfig()
@@ -248,8 +248,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * Returns config file path.
-     *
      * @return null|string
      */
     public function getConfigFile()
@@ -267,7 +265,32 @@ final class ConfigurationResolver
     public function getDiffer()
     {
         if (null === $this->differ) {
-            $this->differ = false === $this->options['diff'] ? new NullDiffer() : new SebastianBergmannDiffer();
+            $mapper = [
+                'null' => static function () { return new NullDiffer(); },
+                'sbd' => static function () { return new SebastianBergmannDiffer(); },
+                'udiff' => static function () { return new UnifiedDiffer(); },
+            ];
+
+            if ($this->options['diff-format']) {
+                $option = $this->options['diff-format'];
+                if (!isset($mapper[$option])) {
+                    throw new InvalidConfigurationException(sprintf(
+                        '"diff-format" must be any of "%s", got "%s".',
+                        implode('", "', array_keys($mapper)),
+                        $option
+                    ));
+                }
+            } else {
+                $default = 'sbd'; // @TODO: 3.0 change to udiff as default
+
+                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                    $default = 'udiff';
+                }
+
+                $option = $this->options['diff'] ? $default : 'null';
+            }
+
+            $this->differ = $mapper[$option]();
         }
 
         return $this->differ;
@@ -293,8 +316,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * Returns fixers.
-     *
      * @return FixerInterface[] An array of FixerInterface
      */
     public function getFixers()
@@ -307,12 +328,12 @@ final class ConfigurationResolver
 
             if (false === $this->getRiskyAllowed()) {
                 $riskyFixers = array_map(
-                    function (FixerInterface $fixer) {
+                    static function (FixerInterface $fixer) {
                         return $fixer->getName();
                     },
                     array_filter(
                         $this->fixers,
-                        function (FixerInterface $fixer) {
+                        static function (FixerInterface $fixer) {
                             return $fixer->isRisky();
                         }
                     )
@@ -354,7 +375,7 @@ final class ConfigurationResolver
                 $this->path = $this->options['path'];
             } else {
                 $this->path = array_map(
-                    function ($path) use ($cwd, $filesystem) {
+                    static function ($path) use ($cwd, $filesystem) {
                         $absolutePath = $filesystem->isAbsolutePath($path)
                             ? $path
                             : $cwd.DIRECTORY_SEPARATOR.$path;
@@ -386,10 +407,16 @@ final class ConfigurationResolver
         if (null === $this->progress) {
             if (OutputInterface::VERBOSITY_VERBOSE <= $this->options['verbosity'] && 'txt' === $this->getFormat()) {
                 $progressType = $this->options['show-progress'];
-                $progressTypes = array('none', 'run-in', 'estimating');
+                $progressTypes = ['none', 'run-in', 'estimating', 'estimating-max'];
 
                 if (null === $progressType) {
-                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'run-in';
+                    $default = 'run-in';
+
+                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                        $default = 'estimating-max';
+                    }
+
+                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : $default;
                 } elseif (!in_array($progressType, $progressTypes, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are "%s".',
@@ -532,7 +559,7 @@ final class ConfigurationResolver
                 throw new InvalidConfigurationException(sprintf('Cannot read config file "%s".', $configFile));
             }
 
-            return array($configFile);
+            return [$configFile];
         }
 
         $path = $this->getPath();
@@ -547,10 +574,10 @@ final class ConfigurationResolver
             $configDir = $path[0];
         }
 
-        $candidates = array(
+        $candidates = [
             $configDir.DIRECTORY_SEPARATOR.'.php_cs',
             $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
-        );
+        ];
 
         if ($configDir !== $this->cwd) {
             $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs';
@@ -649,7 +676,7 @@ final class ConfigurationResolver
             return $rules;
         }
 
-        $rules = array();
+        $rules = [];
 
         foreach (explode(',', $this->options['rules']) as $rule) {
             $rule = trim($rule);
@@ -679,7 +706,7 @@ final class ConfigurationResolver
          *
          * @see RuleSet::resolveSet()
          */
-        $ruleSet = array();
+        $ruleSet = [];
         foreach ($rules as $key => $value) {
             if (is_int($key)) {
                 throw new InvalidConfigurationException(sprintf('Missing value for "%s" rule/set.', $value));
@@ -693,7 +720,7 @@ final class ConfigurationResolver
         $configuredFixers = array_keys($ruleSet->getRules());
 
         /** @var string[] $availableFixers */
-        $availableFixers = array_map(function (FixerInterface $fixer) {
+        $availableFixers = array_map(static function (FixerInterface $fixer) {
             return $fixer->getName();
         }, $this->createFixerFactory()->getFixers());
 
@@ -727,10 +754,10 @@ final class ConfigurationResolver
         $this->configFinderIsOverridden = false;
 
         if ($this->isStdIn()) {
-            return new \ArrayIterator(array(new StdinFileInfo()));
+            return new \ArrayIterator([new StdinFileInfo()]);
         }
 
-        $modes = array(self::PATH_MODE_OVERRIDE, self::PATH_MODE_INTERSECTION);
+        $modes = [self::PATH_MODE_OVERRIDE, self::PATH_MODE_INTERSECTION];
 
         if (!in_array(
             $this->options['path-mode'],
@@ -747,7 +774,7 @@ final class ConfigurationResolver
         $isIntersectionPathMode = self::PATH_MODE_INTERSECTION === $this->options['path-mode'];
 
         $paths = array_filter(array_map(
-            function ($path) {
+            static function ($path) {
                 return realpath($path);
             },
             $this->getPath()
@@ -755,16 +782,16 @@ final class ConfigurationResolver
 
         if (!count($paths)) {
             if ($isIntersectionPathMode) {
-                return new \ArrayIterator(array());
+                return new \ArrayIterator([]);
             }
 
             return $this->iterableToTraversable($this->getConfig()->getFinder());
         }
 
-        $pathsByType = array(
-            'file' => array(),
-            'dir' => array(),
-        );
+        $pathsByType = [
+            'file' => [],
+            'dir' => [],
+        ];
 
         foreach ($paths as $path) {
             if (is_file($path)) {
@@ -791,7 +818,7 @@ final class ConfigurationResolver
 
             return new \CallbackFilterIterator(
                 $nestedFinder,
-                function (\SplFileInfo $current) use ($pathsByType) {
+                static function (\SplFileInfo $current) use ($pathsByType) {
                     $currentRealPath = $current->getRealPath();
 
                     if (in_array($currentRealPath, $pathsByType['file'], true)) {
@@ -858,6 +885,10 @@ final class ConfigurationResolver
 
         if ('no' === $value) {
             return false;
+        }
+
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            throw new InvalidConfigurationException(sprintf('Expected "yes" or "no" for option "%s", got "%s".  This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.', $optionName, $value));
         }
 
         @trigger_error(

@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class LowercaseKeywordsFixer extends AbstractFixer
 {
-    private static $excludedTokens = array(T_HALT_COMPILER);
+    private static $excludedTokens = [T_HALT_COMPILER];
 
     /**
      * {@inheritdoc}
@@ -34,7 +34,7 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHP keywords MUST be in lower case.',
-            array(
+            [
                 new CodeSample(
 '<?php
     FOREACH($a AS $B) {
@@ -49,7 +49,7 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     }
 '
                 ),
-            )
+            ]
         );
     }
 
@@ -68,7 +68,7 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     {
         foreach ($tokens as $index => $token) {
             if ($token->isKeyword() && !$token->isGivenKind(self::$excludedTokens)) {
-                $tokens[$index] = new Token(array($token->getId(), strtolower($token->getContent())));
+                $tokens[$index] = new Token([$token->getId(), strtolower($token->getContent())]);
             }
         }
     }

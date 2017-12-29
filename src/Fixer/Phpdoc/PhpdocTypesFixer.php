@@ -26,7 +26,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
      *
      * @var string[]
      */
-    private static $types = array(
+    private static $types = [
         'array',
         'bool',
         'boolean',
@@ -48,7 +48,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
         'true',
         'void',
         '$this',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -57,7 +57,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
     {
         return new FixerDefinition(
             'The correct case must be used for standard PHP types in phpdoc.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 /**
@@ -67,7 +67,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
  */
 '
                 ),
-            )
+            ]
         );
     }
 

@@ -27,11 +27,11 @@ final class FileRemoval
      *
      * @var array
      */
-    private $files = array();
+    private $files = [];
 
     public function __construct()
     {
-        register_shutdown_function(array($this, 'clean'));
+        register_shutdown_function([$this, 'clean']);
     }
 
     public function __destruct()
@@ -70,7 +70,7 @@ final class FileRemoval
         foreach ($this->files as $file => $value) {
             $this->unlink($file);
         }
-        $this->files = array();
+        $this->files = [];
     }
 
     private function unlink($path)

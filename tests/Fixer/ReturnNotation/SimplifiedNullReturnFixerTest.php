@@ -36,24 +36,24 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
+        return [
             // check correct statements aren't changed
-            array('<?php return  ;'),
-            array('<?php return \'null\';'),
-            array('<?php return false;'),
-            array('<?php return (false );'),
-            array('<?php return null === foo();'),
-            array('<?php return array() == null ;'),
+            ['<?php return  ;'],
+            ['<?php return \'null\';'],
+            ['<?php return false;'],
+            ['<?php return (false );'],
+            ['<?php return null === foo();'],
+            ['<?php return array() == null ;'],
 
             // check we modified those that can be changed
-            array('<?php return;', '<?php return null;'),
-            array('<?php return;', '<?php return (null);'),
-            array('<?php return;', '<?php return ( null    );'),
-            array('<?php return;', '<?php return ( (( null)));'),
-            array('<?php return /* hello */;', '<?php return /* hello */ null  ;'),
-            array('<?php return;', '<?php return NULL;'),
-            array('<?php return;', "<?php return\n(\nnull\n)\n;"),
-        );
+            ['<?php return;', '<?php return null;'],
+            ['<?php return;', '<?php return (null);'],
+            ['<?php return;', '<?php return ( null    );'],
+            ['<?php return;', '<?php return ( (( null)));'],
+            ['<?php return /* hello */;', '<?php return /* hello */ null  ;'],
+            ['<?php return;', '<?php return NULL;'],
+            ['<?php return;', "<?php return\n(\nnull\n)\n;"],
+        ];
     }
 
     /**
@@ -70,27 +70,27 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 
     public function provideNullableReturnTypeCases()
     {
-        return array(
-            array('<?php function foo(): ? /* C */ int { return null; }'),
-            array('<?php function foo(): ?int { if (false) { return null; } }'),
-            array('<?php function foo(): int { return null; }'),
-            array('<?php function foo(): A\B\C { return null; }'),
-            array(
+        return [
+            ['<?php function foo(): ? /* C */ int { return null; }'],
+            ['<?php function foo(): ?int { if (false) { return null; } }'],
+            ['<?php function foo(): int { return null; }'],
+            ['<?php function foo(): A\B\C { return null; }'],
+            [
                 '<?php function foo(): ?int { return null; } return;',
                 '<?php function foo(): ?int { return null; } return null;',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo() { return; } function bar(): ?A\B\C\D { return null; } function baz() { return; }',
                 '<?php function foo() { return null; } function bar(): ?A\B\C\D { return null; } function baz() { return null; }',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo(): ?int { $bar = function() { return; }; return null; }',
                 '<?php function foo(): ?int { $bar = function() { return null; }; return null; }',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo(): void { return; }',
                 '<?php function foo(): void { return null; }',
-            ),
-        );
+            ],
+        ];
     }
 }

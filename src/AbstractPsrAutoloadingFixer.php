@@ -65,8 +65,6 @@ abstract class AbstractPsrAutoloadingFixer extends AbstractFixer
             (!isset($filenameParts[1]) || 'php' !== $filenameParts[1])
             // ignore file with name that cannot be a class name
             || 0 === preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $filenameParts[0])
-            // ignore filename that will halt compiler (and cannot be properly tokenized under PHP 5.3)
-            || '__halt_compiler' === $filenameParts[0]
         ) {
             return false;
         }

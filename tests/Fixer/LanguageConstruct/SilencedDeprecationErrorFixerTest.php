@@ -36,37 +36,37 @@ final class SilencedDeprecationErrorFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php trigger_error("This is a deprecation warning."); ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php trigger_error("This is a deprecation warning.", E_USER_WARNING); ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php A\B\trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php \A\B/* */\trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php @\trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
                 '<?php \trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php echo "test";@trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
                 '<?php echo "test";trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ),
-            array(
+            ],
+            [
                 '<?php //
 @Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>',
                 '<?php //
 Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>',
-            ),
-        );
+            ],
+        ];
     }
 }

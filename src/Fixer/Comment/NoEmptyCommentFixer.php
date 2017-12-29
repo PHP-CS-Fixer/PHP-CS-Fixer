@@ -42,7 +42,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be any empty comments.',
-            array(new CodeSample("<?php\n//\n#\n/* */\n"))
+            [new CodeSample("<?php\n//\n#\n/* */\n")]
         );
     }
 
@@ -109,7 +109,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
             }
         }
 
-        return array($start, $index - 1, $empty);
+        return [$start, $index - 1, $empty];
     }
 
     /**
@@ -154,17 +154,14 @@ final class NoEmptyCommentFixer extends AbstractFixer
      */
     private function isEmptyComment($content)
     {
+        static $mapper = [
+            self::TYPE_HASH => '|^#\s*$|', // single line comment starting with '#'
+            self::TYPE_SLASH_ASTERISK => '|^/\*\s*\*/$|', // comment starting with '/*' and ending with '*/' (but not a PHPDoc)
+            self::TYPE_DOUBLE_SLASH => '|^//\s*$|', // single line comment starting with '//'
+        ];
+
         $type = $this->getCommentType($content);
-        switch ($type) {
-            case self::TYPE_HASH:
-                // single line comment starting with '#'
-                return 1 === preg_match('|^#\s*$|', $content);
-            case self::TYPE_SLASH_ASTERISK:
-                // comment starting with '/*' and ending with '*/' (but not a PHPDoc)
-                return 1 === preg_match('|^/\*\s*\*/$|', $content);
-            case self::TYPE_DOUBLE_SLASH:
-                // single line comment starting with '//'
-                return 1 === preg_match('|^//\s*$|', $content);
-        }
+
+        return 1 === preg_match($mapper[$type], $content);
     }
 }

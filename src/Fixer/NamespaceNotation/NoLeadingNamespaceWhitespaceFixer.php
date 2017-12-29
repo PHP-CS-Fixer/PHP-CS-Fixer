@@ -40,13 +40,14 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
     {
         return new FixerDefinition(
             'The namespace declaration line shouldn\'t contain leading whitespace.',
-            array(
+            [
                 new CodeSample(
                     '<?php
  namespace Test8a;
-    namespace Test8b;'
+    namespace Test8b;
+'
                 ),
-            )
+            ]
         );
     }
 
@@ -67,7 +68,7 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
 
             if (!$beforeNamespace->isWhitespace()) {
                 if (!self::endsWithWhitespace($beforeNamespace->getContent())) {
-                    $tokens->insertAt($index, new Token(array(T_WHITESPACE, $this->whitespacesConfig->getLineEnding())));
+                    $tokens->insertAt($index, new Token([T_WHITESPACE, $this->whitespacesConfig->getLineEnding()]));
                 }
 
                 continue;
@@ -81,10 +82,10 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
                 if (self::endsWithWhitespace($beforeBeforeNamespace->getContent())) {
                     $tokens->clearAt($beforeNamespaceIndex);
                 } else {
-                    $tokens[$beforeNamespaceIndex] = new Token(array(T_WHITESPACE, ' '));
+                    $tokens[$beforeNamespaceIndex] = new Token([T_WHITESPACE, ' ']);
                 }
             } else {
-                $tokens[$beforeNamespaceIndex] = new Token(array(T_WHITESPACE, substr($beforeNamespace->getContent(), 0, $lastNewline + 1)));
+                $tokens[$beforeNamespaceIndex] = new Token([T_WHITESPACE, substr($beforeNamespace->getContent(), 0, $lastNewline + 1)]);
             }
         }
     }

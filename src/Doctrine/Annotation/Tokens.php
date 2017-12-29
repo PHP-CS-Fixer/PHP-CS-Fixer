@@ -30,7 +30,7 @@ final class Tokens extends \SplFixedArray
      *
      * @return self
      */
-    public static function createFromDocComment(PhpToken $input, array $ignoredTags = array())
+    public static function createFromDocComment(PhpToken $input, array $ignoredTags = [])
     {
         if (!$input->isGivenKind(T_DOC_COMMENT)) {
             throw new \InvalidArgumentException('Input must be a T_DOC_COMMENT token.');
@@ -51,7 +51,7 @@ final class Tokens extends \SplFixedArray
             $lexer = new DocLexer();
             $lexer->setInput(substr($content, $nextAtPosition));
 
-            $scannedTokens = array();
+            $scannedTokens = [];
             $index = 0;
             $nbScannedTokensToUse = 0;
             $nbScopes = 0;
@@ -68,7 +68,7 @@ final class Tokens extends \SplFixedArray
                     $nbScannedTokensToUse = 2;
                 }
 
-                if ($index >= 2 && 0 === $nbScopes && !in_array($token['type'], array(DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS), true)) {
+                if ($index >= 2 && 0 === $nbScopes && !in_array($token['type'], [DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS], true)) {
                     break;
                 }
 

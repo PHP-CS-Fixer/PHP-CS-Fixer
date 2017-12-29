@@ -27,9 +27,9 @@ final class CodeSampleTest extends TestCase
     public function testConstructorSetsValues()
     {
         $code = '<php echo $foo;';
-        $configuration = array(
+        $configuration = [
             'foo' => 'bar',
-        );
+        ];
 
         $codeSample = new CodeSample(
             $code,

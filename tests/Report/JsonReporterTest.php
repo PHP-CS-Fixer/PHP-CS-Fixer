@@ -160,7 +160,7 @@ JSON;
         $validator = new \JsonSchema\Validator();
         $validator->validate(
             $data,
-            (object) array('$ref' => 'file://'.realpath($jsonPath))
+            (object) ['$ref' => 'file://'.realpath($jsonPath)]
         );
 
         $this->assertTrue(
@@ -168,7 +168,7 @@ JSON;
             implode(
                 "\n",
                 array_map(
-                    function (array $item) { return sprintf('Property `%s`: %s.', $item['property'], $item['message']); },
+                    static function (array $item) { return sprintf('Property `%s`: %s.', $item['property'], $item['message']); },
                     $validator->getErrors()
                 )
             )

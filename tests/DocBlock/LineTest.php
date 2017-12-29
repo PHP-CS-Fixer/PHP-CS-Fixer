@@ -51,7 +51,7 @@ final class LineTest extends TestCase
      *
      * @var string[]
      */
-    private static $content = array(
+    private static $content = [
         "/**\n",
         "     * Test docblock.\n",
         "     *\n",
@@ -67,14 +67,14 @@ final class LineTest extends TestCase
         "     *\n",
         "     * @return void\n",
         '     */',
-    );
+    ];
 
     /**
      * This represents the if each line is "useful".
      *
      * @var bool[]
      */
-    private static $useful = array(
+    private static $useful = [
         false,
         true,
         false,
@@ -90,14 +90,14 @@ final class LineTest extends TestCase
         false,
         true,
         false,
-    );
+    ];
 
     /**
      * This represents the if each line "contains a tag".
      *
      * @var bool[]
      */
-    private static $tag = array(
+    private static $tag = [
         false,
         false,
         false,
@@ -113,7 +113,7 @@ final class LineTest extends TestCase
         false,
         true,
         false,
-    );
+    ];
 
     /**
      * @param int    $pos
@@ -139,29 +139,16 @@ final class LineTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        switch ($pos) {
-            case 0:
-                $this->assertTrue($line->isTheStart());
-                $this->assertFalse($line->isTheEnd());
-
-                break;
-            case 14:
-                $this->assertFalse($line->isTheStart());
-                $this->assertTrue($line->isTheEnd());
-
-                break;
-            default:
-                $this->assertFalse($line->isTheStart());
-                $this->assertFalse($line->isTheEnd());
-        }
+        $this->assertSame(0 === $pos, $line->isTheStart());
+        $this->assertSame(14 === $pos, $line->isTheEnd());
     }
 
     public function provideLinesCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$content as $index => $content) {
-            $cases[] = array($index, $content);
+            $cases[] = [$index, $content];
         }
 
         return $cases;
@@ -183,10 +170,10 @@ final class LineTest extends TestCase
 
     public function provideLinesWithUsefulCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$useful as $index => $useful) {
-            $cases[] = array($index, $useful);
+            $cases[] = [$index, $useful];
         }
 
         return $cases;
@@ -208,10 +195,10 @@ final class LineTest extends TestCase
 
     public function provideLinesWithTagCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$tag as $index => $tag) {
-            $cases[] = array($index, $tag);
+            $cases[] = [$index, $tag];
         }
 
         return $cases;

@@ -2,8 +2,6 @@
 Integration of fixers: array_syntax,ternary_operator_spaces.
 --RULESET--
 {"array_syntax": {"syntax":"short"}, "ternary_operator_spaces":true}
---REQUIREMENTS--
-{"php": 50400}
 --EXPECT--
 <?php
 $a = $b ? [ ] : 1;

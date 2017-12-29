@@ -32,7 +32,7 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
      */
     public function getCustomTokens()
     {
-        return array(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, CT::T_BRACE_CLASS_INSTANTIATION_CLOSE);
+        return [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, CT::T_BRACE_CLASS_INSTANTIATION_CLOSE];
     }
 
     /**
@@ -57,32 +57,32 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->equals(array(T_NEW))) {
+        if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->equals([T_NEW])) {
             return;
         }
 
-        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(array(
+        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny([
             ']',
-            array(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE),
-            array(CT::T_ARRAY_SQUARE_BRACE_CLOSE),
-            array(T_ARRAY),
-            array(T_CLASS),
-            array(T_ELSEIF),
-            array(T_FOR),
-            array(T_FOREACH),
-            array(T_IF),
-            array(T_STATIC),
-            array(T_STRING),
-            array(T_SWITCH),
-            array(T_VARIABLE),
-            array(T_WHILE),
-        ))) {
+            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+            [T_ARRAY],
+            [T_CLASS],
+            [T_ELSEIF],
+            [T_FOR],
+            [T_FOREACH],
+            [T_IF],
+            [T_STATIC],
+            [T_STRING],
+            [T_SWITCH],
+            [T_VARIABLE],
+            [T_WHILE],
+        ])) {
             return;
         }
 
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
-        $tokens[$index] = new Token(array(CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('));
-        $tokens[$closeIndex] = new Token(array(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'));
+        $tokens[$index] = new Token([CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '(']);
+        $tokens[$closeIndex] = new Token([CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')']);
     }
 }

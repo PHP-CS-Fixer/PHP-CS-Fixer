@@ -249,9 +249,9 @@ EOF;
 
     public function provideInlineTypehintingDocsBeforeFlowBreakCases()
     {
-        $cases = array();
+        $cases = [];
 
-        $cases[] = array(<<<'EOF'
+        $cases[] = [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -264,9 +264,9 @@ function parseTag($tag)
     }
 }
 EOF
-        );
+        ];
 
-        $cases[] = array(<<<'EOF'
+        $cases[] = [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -279,9 +279,9 @@ function parseTag($tag)
     }
 }
 EOF
-        );
+        ];
 
-        $cases[] = array(<<<'EOF'
+        $cases[] = [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -296,9 +296,9 @@ function parseTag($tag)
 FOO:
 }
 EOF
-        );
+        ];
 
-        $cases[] = array(<<<'EOF'
+        $cases[] = [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -313,9 +313,9 @@ function parseTag($tag)
     }
 }
 EOF
-        );
+        ];
 
-        $cases[] = array(<<<'EOF'
+        $cases[] = [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -330,7 +330,7 @@ function parseTag($tag)
     }
 }
 EOF
-        );
+        ];
 
         return $cases;
     }

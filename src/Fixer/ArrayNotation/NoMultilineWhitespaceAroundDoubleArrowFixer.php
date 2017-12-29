@@ -32,7 +32,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Operator `=>` should not be surrounded by multi-line whitespaces.',
-            array(new CodeSample("<?php\n\$a = array(1\n\n=> 2);"))
+            [new CodeSample("<?php\n\$a = array(1\n\n=> 2);\n")]
         );
     }
 
@@ -80,7 +80,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
         $token = $tokens[$index];
 
         if ($token->isWhitespace() && !$token->isWhitespace(" \t")) {
-            $tokens[$index] = new Token(array(T_WHITESPACE, rtrim($token->getContent()).' '));
+            $tokens[$index] = new Token([T_WHITESPACE, rtrim($token->getContent()).' ']);
         }
     }
 }

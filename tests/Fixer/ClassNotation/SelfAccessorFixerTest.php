@@ -36,57 +36,69 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php class Foo { const BAR = self::BAZ; }',
                 '<?php class Foo { const BAR = Foo::BAZ; }',
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { private $bar = self::BAZ; }',
                 '<?php class Foo { private $bar = fOO::BAZ; }', // case insensitive
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { function bar($a = self::BAR) {} }',
                 '<?php class Foo { function bar($a = Foo::BAR) {} }',
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { function bar() { self::baz(); } }',
                 '<?php class Foo { function bar() { Foo::baz(); } }',
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { function bar() { self::class; } }',
                 '<?php class Foo { function bar() { Foo::class; } }',
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { function bar() { $x instanceof self; } }',
                 '<?php class Foo { function bar() { $x instanceof Foo; } }',
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { function bar() { new self(); } }',
                 '<?php class Foo { function bar() { new Foo(); } }',
-            ),
-            array(
+            ],
+            [
                 '<?php interface Foo { const BAR = self::BAZ; function bar($a = self::BAR); }',
                 '<?php interface Foo { const BAR = Foo::BAZ; function bar($a = Foo::BAR); }',
-            ),
+            ],
 
-            array(
+            [
                 '<?php class Foo { const Foo = 1; }',
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { function foo() { } }',
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { function bar() { new \Baz\Foo(); } }',
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { function bar() { new Foo\Baz(); } }',
-            ),
-            array(
+            ],
+            [
                 // PHP < 5.4 compatibility: "self" is not available in closures
                 '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
-            ),
-        );
+            ],
+            [
+                // In trait "self" will reference the class it's used in, not the actual trait, so we can't replace "Foo" with "self" here
+                '<?php trait Foo { function bar() { Foo::bar(); } } class Bar { use Foo; }',
+            ],
+            [
+                '<?php class Foo { public function bar(self $foo, self $bar) { return new self(); } }',
+                '<?php class Foo { public function bar(Foo $foo, Foo $bar) { return new Foo(); } }',
+            ],
+            [
+                '<?php interface Foo { public function bar(self $foo, self $bar); }',
+                '<?php interface Foo { public function bar(Foo $foo, Foo $bar); }',
+            ],
+        ];
     }
 
     /**
@@ -103,24 +115,49 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
 
     public function provideFix70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php class Foo { function bar() {
                     new class() { function baz() { new Foo(); } };
                 } }',
-            ),
-            array(
+            ],
+            [
                 '<?php class Foo { protected $foo; function bar() { return $this->foo::find(2); } }',
-            ),
-        );
+            ],
+            [
+                '<?php class Foo { public function bar(self $foo, self $bar): self { return new self(); } }',
+                '<?php class Foo { public function bar(Foo $foo, Foo $bar): Foo { return new Foo(); } }',
+            ],
+            [
+                '<?php interface Foo { public function bar(self $foo, self $bar): self; }',
+                '<?php interface Foo { public function bar(Foo $foo, Foo $bar): Foo; }',
+            ],
+        ];
     }
 
     /**
-     * @requires PHP 5.4
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix71Cases
+     * @requires PHP 7.1
      */
-    public function testFix54()
+    public function testFix71($expected, $input = null)
     {
-        // In trait "self" will reference the class it's used in, not the actual trait, so we can't replace "Foo" with "self" here
-        $this->doTest('<?php trait Foo { function bar() { Foo::bar(); } }');
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix71Cases()
+    {
+        return [
+            [
+                '<?php class Foo { public function bar(?self $foo, ?self $bar): ?self { return new self(); } }',
+                '<?php class Foo { public function bar(?Foo $foo, ?Foo $bar): ?Foo { return new Foo(); } }',
+            ],
+            [
+                "<?php interface Foo{ public function bar()\t/**/:?/**/self; }",
+                "<?php interface Foo{ public function bar()\t/**/:?/**/Foo; }",
+            ],
+        ];
     }
 }

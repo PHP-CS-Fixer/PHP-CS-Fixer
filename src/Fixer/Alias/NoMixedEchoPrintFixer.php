@@ -31,7 +31,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     /**
      * @deprecated will be removed in 3.0
      */
-    public static $defaultConfig = array('use' => 'echo');
+    public static $defaultConfig = ['use' => 'echo'];
 
     /**
      * @var string
@@ -66,10 +66,10 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     {
         return new FixerDefinition(
             'Either language construct `print` or `echo` should be used.',
-            array(
-                new CodeSample('<?php print \'example\';'),
-                new CodeSample('<?php echo(\'example\');', array('use' => 'print')),
-            )
+            [
+                new CodeSample("<?php print 'example';\n"),
+                new CodeSample("<?php echo('example');\n", ['use' => 'print']),
+            ]
         );
     }
 
@@ -108,14 +108,12 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
      */
     protected function createConfigurationDefinition()
     {
-        $use = new FixerOptionBuilder('use', 'The desired language construct.');
-        $use = $use
-            ->setAllowedValues(array('print', 'echo'))
-            ->setDefault('echo')
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver(array($use));
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('use', 'The desired language construct.'))
+                ->setAllowedValues(['print', 'echo'])
+                ->setDefault('echo')
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -124,25 +122,12 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
      */
     private function fixEchoToPrint(Tokens $tokens, $index)
     {
-        /*
-         * HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-         *
-         * @see https://github.com/facebook/hhvm/issues/4809
-         * @see https://github.com/facebook/hhvm/issues/7161
-         */
-        if (
-            defined('HHVM_VERSION')
-            && 0 === strpos($tokens[$index]->getContent(), '<?=')
-        ) {
-            return;
-        }
-
         $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
-        $endTokenIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
+        $endTokenIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
         $canBeConverted = true;
 
         for ($i = $nextTokenIndex; $i < $endTokenIndex; ++$i) {
-            if ($tokens[$i]->equalsAny(array('(', array(CT::T_ARRAY_SQUARE_BRACE_OPEN)))) {
+            if ($tokens[$i]->equalsAny(['(', [CT::T_ARRAY_SQUARE_BRACE_OPEN]])) {
                 $blockType = Tokens::detectBlockType($tokens[$i]);
                 $i = $tokens->findBlockEnd($blockType['type'], $i);
             }
@@ -158,7 +143,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
             return;
         }
 
-        $tokens[$index] = new Token(array(T_PRINT, 'print'));
+        $tokens[$index] = new Token([T_PRINT, 'print']);
     }
 
     /**
@@ -169,10 +154,10 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny(array(';', '{', '}', array(T_OPEN_TAG)))) {
+        if (!$prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
             return;
         }
 
-        $tokens[$index] = new Token(array(T_ECHO, 'echo'));
+        $tokens[$index] = new Token([T_ECHO, 'echo']);
     }
 }

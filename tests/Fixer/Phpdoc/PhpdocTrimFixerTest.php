@@ -36,8 +36,8 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
 <<<'EOF'
                 <?php
     /**
@@ -47,8 +47,8 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
      */
 
 EOF
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 /**
@@ -58,8 +58,8 @@ function deactivateCompleted()
 {
     return 0;
 }',
-            ),
-        );
+            ],
+        ];
     }
 
     public function testFixMore()

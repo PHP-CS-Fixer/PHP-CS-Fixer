@@ -52,7 +52,7 @@ final class ArgumentsAnalyzer
      */
     public function getArguments(Tokens $tokens, $openParenthesis, $closeParenthesis)
     {
-        $arguments = array();
+        $arguments = [];
         $firstSensibleToken = $tokens->getNextMeaningfulToken($openParenthesis);
         if ($tokens[$firstSensibleToken]->equals(')')) {
             return $arguments;

@@ -14,31 +14,30 @@
         }
     ],
     "require": {
-        "php": "^5.3.6 || >=7.0 <7.3",
+        "php": "^5.6 || >=7.0 <7.3",
         "ext-json": "*",
         "ext-tokenizer": "*",
         "composer/semver": "^1.4",
         "doctrine/annotations": "^1.2",
-        "gecko-packages/gecko-php-unit": "^2.0",
-        "sebastian/diff": "^1.4",
-        "symfony/console": "^2.4 || ^3.0 || ^4.0",
-        "symfony/event-dispatcher": "^2.1 || ^3.0 || ^4.0",
-        "symfony/filesystem": "^2.4 || ^3.0 || ^4.0",
-        "symfony/finder": "^2.2 || ^3.0 || ^4.0",
-        "symfony/options-resolver": "^2.6 || ^3.0 || ^4.0",
-        "symfony/polyfill-php54": "^1.0",
-        "symfony/polyfill-php55": "^1.3",
+        "gecko-packages/gecko-php-unit": "^2.0 || ^3.0",
+        "php-cs-fixer/diff": "^1.2",
+        "symfony/console": "^3.2 || ^4.0",
+        "symfony/event-dispatcher": "^3.0 || ^4.0",
+        "symfony/filesystem": "^3.0 || ^4.0",
+        "symfony/finder": "^3.0 || ^4.0",
+        "symfony/options-resolver": "^3.0 || ^4.0",
         "symfony/polyfill-php70": "^1.0",
         "symfony/polyfill-php72": "^1.4",
-        "symfony/process": "^2.3 || ^3.0 || ^4.0",
-        "symfony/stopwatch": "^2.5 || ^3.0 || ^4.0"
+        "symfony/process": "^3.0 || ^4.0",
+        "symfony/stopwatch": "^3.0 || ^4.0"
     },
     "require-dev": {
-        "johnkary/phpunit-speedtrap": "^1.0.1",
+        "johnkary/phpunit-speedtrap": "^1.1 || ^2.0@dev",
         "justinrainbow/json-schema": "^5.0",
         "mikey179/vfsStream": "^1.6",
-        "php-coveralls/php-coveralls": "^1.0.2",
-        "phpunit/phpunit": "^4.8.35 || ^5.4.3",
+        "php-coveralls/php-coveralls": "^2.0",
+        "php-cs-fixer/accessible-object": "^1.0",
+        "phpunit/phpunit": "^5.7.23 || ^6.4.3",
         "symfony/phpunit-bridge": "^3.2.2 || ^4.0"
     },
     "suggest": {
@@ -46,7 +45,7 @@
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
     "conflict": {
-        "hhvm": "<3.18"
+        "hhvm": "*"
     },
     "config": {
         "optimize-autoloader": true,
@@ -55,6 +54,7 @@
     "autoload": {
         "psr-4": { "PhpCsFixer\\": "src/" },
         "classmap": [
+            "tests/Test/Assert/AssertTokensTrait.php",
             "tests/Test/AbstractFixerTestCase.php",
             "tests/Test/AbstractIntegrationTestCase.php",
             "tests/Test/IntegrationCase.php",
@@ -64,10 +64,5 @@
     "autoload-dev": {
         "psr-4": { "PhpCsFixer\\Tests\\": "tests/" }
     },
-    "bin": ["php-cs-fixer"],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.2-dev"
-        }
-    }
+    "bin": ["php-cs-fixer"]
 }

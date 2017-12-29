@@ -14,6 +14,8 @@ namespace PhpCsFixer\Test;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @deprecated since v2.5. Use "php-cs-fixer/accessible-object" package instead.
  */
 final class AccessibleObject
 {
@@ -25,6 +27,14 @@ final class AccessibleObject
      */
     public function __construct($object)
     {
+        @trigger_error(
+            sprintf(
+                'The "%s" class is deprecated and will be removed in 3.0 version. Use "php-cs-fixer/accessible-object" package instead.',
+                __CLASS__
+            ),
+            E_USER_DEPRECATED
+        );
+
         $this->object = $object;
         $this->reflection = new \ReflectionClass($object);
     }

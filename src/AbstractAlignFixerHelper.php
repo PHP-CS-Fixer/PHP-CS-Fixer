@@ -18,6 +18,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  *
  * @internal
+ *
+ * @deprecated
  */
 abstract class AbstractAlignFixerHelper
 {
@@ -79,17 +81,17 @@ abstract class AbstractAlignFixerHelper
             }
 
             $lines = explode("\n", $tmpCode);
-            $linesWithPlaceholder = array();
+            $linesWithPlaceholder = [];
             $blockSize = 0;
 
-            $linesWithPlaceholder[$blockSize] = array();
+            $linesWithPlaceholder[$blockSize] = [];
 
             foreach ($lines as $index => $line) {
                 if (substr_count($line, $placeholder) > 0) {
                     $linesWithPlaceholder[$blockSize][] = $index;
                 } else {
                     ++$blockSize;
-                    $linesWithPlaceholder[$blockSize] = array();
+                    $linesWithPlaceholder[$blockSize] = [];
                 }
             }
 

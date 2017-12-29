@@ -27,18 +27,63 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param null|string $input
      *
      * @dataProvider provideFixAllCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     */
+    public function testLegacyFixAll($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+
+        $this->fixer->configure([
+            'around_parentheses' => true,
+            'around_commas' => true,
+            'around_argument_assignments' => true,
+            'around_array_assignments' => true,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixAllCases
      */
     public function testFixAll($expected, $input = null)
     {
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => true,
             'around_commas' => true,
-            'around_argument_assignments' => true,
-            'around_array_assignments' => true,
-        ));
+            'before_argument_assignments' => false,
+            'after_argument_assignments' => false,
+            'before_array_assignments_equals' => true,
+            'after_array_assignments_equals' => true,
+            'before_array_assignments_colon' => true,
+            'after_array_assignments_colon' => true,
+        ]);
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixAllCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     */
+    public function testLegacyFixAllWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testLegacyFixAll($expected, $input);
     }
 
     /**
@@ -62,16 +107,16 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function provideFixAllCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo()
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
@@ -85,8 +130,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Foo ( foo = "foo" ,bar = "bar" )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -98,8 +143,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     foo = "foo" ,
  *     bar = "bar"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar("foo", "bar"),
@@ -111,26 +156,26 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     @Bar ( "foo" ,"bar") ,
  *     @Baz
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo({"bar", "baz"})
  */', '
 /**
  * @Foo( {"bar" ,"baz"} )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="=foo", bar={"foo" : "=foo", "bar" = "=bar"})
  */', '
 /**
  * @Foo(foo = "=foo" ,bar = {"foo" : "=foo", "bar"="=bar"})
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo(foo="foo", bar={"foo" : "foo", "bar" = "bar"}) */',
                 '/** @Foo ( foo = "foo" ,bar = {"foo" : "foo", "bar"="bar"} ) */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -149,8 +194,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"="bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -177,23 +222,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo", "bar"=@Bar\Baz({"foo" : true, "bar" = false}))
  */', '
 /**
  * @Foo   (   foo = "foo", "bar" = @Bar\Baz({"foo":true, "bar"=false})   )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo = "foo" ,bar="bar"
- */'),
-            array('
+ */'],
+            ['
 /**
  * Comment , with a comma.
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
@@ -207,8 +252,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @Foo( foo="string "" with inner quote" ,bar="string "" with inner quote" )
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -313,12 +358,40 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Transform /^(\d+)$/
- */'),
-        ));
+
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixAroundParenthesesOnlyCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     */
+    public function testLegacyFixAroundParenthesesOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_commas' => false,
+            'around_argument_assignments' => false,
+            'around_array_assignments' => false,
+        ]);
+        $this->doTest($expected, $input);
+
+        $this->fixer->configure([
+            'around_parentheses' => true,
+            'around_commas' => false,
+            'around_argument_assignments' => false,
+            'around_array_assignments' => false,
+        ]);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -329,20 +402,47 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function testFixAroundParenthesesOnly($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_commas' => false,
-            'around_argument_assignments' => false,
-            'around_array_assignments' => false,
-        ));
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => true,
             'around_commas' => false,
-            'around_argument_assignments' => false,
-            'around_array_assignments' => false,
-        ));
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixAroundParenthesesOnlyCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     */
+    public function testLegacyFixAroundParenthesesOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testLegacyFixAroundParenthesesOnly($expected, $input);
     }
 
     /**
@@ -366,12 +466,12 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function provideFixAroundParenthesesOnlyCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
@@ -385,40 +485,40 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Foo ( )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("bar")
  */', '
 /**
  * @Foo( "bar" )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("bar", "baz")
  */', '
 /**
  * @Foo( "bar", "baz" )
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo("bar", "baz") */',
                 '/** @Foo( "bar", "baz" ) */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo("bar", "baz")
  */', '
 /**
  * @Foo(     "bar", "baz"     )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("bar", "baz")
  */', '
 /**
  * @Foo    (     "bar", "baz"     )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     "bar",
@@ -431,8 +531,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     "bar",
  *     "baz"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar("baz")
@@ -443,16 +543,16 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * (
  *     @Bar ( "baz" )
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo ( @Bar ( "bar" )
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo ( Bar Baz )
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
@@ -466,8 +566,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @Foo ( "string "" with inner quote" )
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -572,8 +672,35 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-        ));
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixAroundCommasOnlyCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     */
+    public function testLegacyFixAroundCommasOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_argument_assignments' => false,
+            'around_array_assignments' => false,
+        ]);
+        $this->doTest($expected, $input);
+
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => true,
+            'around_argument_assignments' => false,
+            'around_array_assignments' => false,
+        ]);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -584,20 +711,47 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function testFixAroundCommasOnly($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
-            'around_argument_assignments' => false,
-            'around_array_assignments' => false,
-        ));
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => true,
-            'around_argument_assignments' => false,
-            'around_array_assignments' => false,
-        ));
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixAroundCommasOnlyCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     */
+    public function testLegacyFixAroundCommasOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testLegacyFixAroundCommasOnly($expected, $input);
     }
 
     /**
@@ -621,24 +775,24 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function provideFixAroundCommasOnlyCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo ()
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo( "bar" )
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
@@ -652,19 +806,19 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Foo( "bar" ,"baz")
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo( "bar", "baz") */',
                 '/** @Foo( "bar" ,"baz") */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo( "bar", "baz")
  */', '
 /**
  * @Foo( "bar" , "baz")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     "bar",
@@ -676,8 +830,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     "bar" ,
  *     "baz"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     "bar",
@@ -690,12 +844,12 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     ,
  *     "baz"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo("bar ,", "baz,")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     @Bar ( "foo", "bar"),
@@ -707,30 +861,30 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     @Bar ( "foo" ,"bar") ,
  *     @Baz
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo({"bar", "baz"})
  */', '
 /**
  * @Foo({"bar" ,"baz"})
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo", bar="bar")
  */', '
 /**
  * @Foo(foo="foo" ,bar="bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo" ,bar="bar"
- */'),
-            array('
+ */'],
+            ['
 /**
  * Comment , with a comma.
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
@@ -744,8 +898,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @Foo(foo="string "" with inner quote" ,bar="string "" with inner quote")
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -850,8 +1004,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-        ));
+ */'],
+        ]);
     }
 
     /**
@@ -859,22 +1013,25 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param null|string $input
      *
      * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
-    public function testFixAroundArgumentAssignmentsOnly($expected, $input = null)
+    public function testLegacyFixAroundArgumentAssignmentsOnly($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
             'around_array_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
             'around_argument_assignments' => true,
             'around_array_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
     }
 
@@ -883,15 +1040,18 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param null|string $input
      *
      * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
-    public function testFixAroundArgumentAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testLegacyFixAroundArgumentAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
             $input = str_replace("\n", "\r\n", $input);
         }
 
-        $this->testFixAroundArgumentAssignmentsOnly($expected, $input);
+        $this->testLegacyFixAroundArgumentAssignmentsOnly($expected, $input);
     }
 
     /**
@@ -899,12 +1059,12 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function provideFixAroundArgumentAssignmentsOnlyCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo (foo="foo", bar="bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
@@ -918,8 +1078,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @author John Doe
  *
  * @Foo(foo = "foo", bar = "bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -931,19 +1091,19 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *     foo = "foo",
  *     bar = "bar"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo", bar={"foo" : "foo", "bar"="bar"})
  */', '
 /**
  * @Foo(foo = "foo", bar = {"foo" : "foo", "bar"="bar"})
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo(foo="foo", bar={"foo" : "foo", "bar"="bar"}) */',
                 '/** @Foo(foo = "foo", bar = {"foo" : "foo", "bar"="bar"}) */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -961,8 +1121,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"="bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo="foo",
@@ -992,15 +1152,15 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo="foo", "bar"=@Bar\Baz({"foo":true, "bar"=false}))
  */', '
 /**
  * @Foo(foo = "foo", "bar" = @Bar\Baz({"foo":true, "bar"=false}))
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
@@ -1014,8 +1174,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @Foo(foo = "string "" with inner quote")
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -1120,8 +1280,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-        ));
+ */'],
+        ]);
     }
 
     /**
@@ -1129,22 +1289,25 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param null|string $input
      *
      * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
-    public function testFixAroundArrayAssignmentsOnly($expected, $input = null)
+    public function testLegacyFixAroundArrayAssignmentsOnly($expected, $input = null)
     {
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
             'around_argument_assignments' => false,
-        ));
+        ]);
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
             'around_argument_assignments' => false,
             'around_array_assignments' => true,
-        ));
+        ]);
         $this->doTest($expected, $input);
     }
 
@@ -1153,15 +1316,18 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      * @param null|string $input
      *
      * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
+     * @group legacy
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
-    public function testFixAroundArrayAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testLegacyFixAroundArrayAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
             $input = str_replace("\n", "\r\n", $input);
         }
 
-        $this->testFixAroundArrayAssignmentsOnly($expected, $input);
+        $this->testLegacyFixAroundArrayAssignmentsOnly($expected, $input);
     }
 
     /**
@@ -1169,38 +1335,38 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function provideFixAroundArrayAssignmentsOnlyCases()
     {
-        return $this->createTestCases(array(
-            array('
+        return $this->createTestCases([
+            ['
 /**
  * @Foo (foo="foo", bar="bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * Foo.
  *
  * @author John Doe
  *
  * @Foo(foo = "foo", bar = "bar")
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo = "foo",
  *     bar = "bar"
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
  */', '
 /**
  * @Foo(foo = "foo", bar = {"foo" : "foo", "bar"="bar"})
- */'),
-            array(
+ */'],
+            [
                 '/** @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"}) */',
                 '/** @Foo(foo = "foo", bar = {"foo" : "foo", "bar"="bar"}) */',
-            ),
-            array('
+            ],
+            ['
 /**
  * @Foo(
  *     foo = "foo",
@@ -1218,8 +1384,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"="bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(
  *     foo
@@ -1249,23 +1415,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  *         "bar"
  *     }
  * )
- */'),
-            array('
+ */'],
+            ['
 /**
  * @Foo(foo = "foo", "bar" = @Bar\Baz({"foo" : true, "bar" = false}))
  */', '
 /**
  * @Foo(foo = "foo", "bar" = @Bar\Baz({"foo":true, "bar"=false}))
- */'),
-            array('
+ */'],
+            ['
 /**
  * Description with a single " character.
  *
  * @Foo(foo = "string "" with inner quote")
  *
  * @param mixed description with a single " character.
- */'),
-            array('
+ */'],
+            ['
 /**
  * // PHPDocumentor 1
  * @abstract ( foo,bar  =  "baz" )
@@ -1370,22 +1536,655 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  * @FIXME ( foo,bar  =  "baz" )
  * @fixme ( foo,bar  =  "baz" )
  * @override
- */'),
-        ));
+ */'],
+        ]);
     }
 
     /**
-     * @return array
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceBeforeArgumentAssignmentOnlyCases
      */
-    public function provideInvalidConfigurationCases()
+    public function testFixWithSpaceBeforeArgumentAssignmentOnly($expected, $input = null)
     {
-        return array_merge(parent::provideInvalidConfigurationCases(), array(
-            array(array(
-                'around_parentheses' => false,
-                'around_commas' => false,
-                'around_argument_assignments' => false,
-                'around_array_assignments' => false,
-            )),
-        ));
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => true,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceBeforeArgumentAssignmentOnlyCases
+     */
+    public function testFixWithSpaceBeforeArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithSpaceBeforeArgumentAssignmentOnly($expected, $input);
+    }
+
+    public function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo ="foo", bar ={"foo":"foo", "bar"="bar"})
+ */', '
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases
+     */
+    public function testFixWithoutSpaceBeforeArgumentAssignmentOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => false,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases
+     */
+    public function testFixWithoutSpaceBeforeArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithoutSpaceBeforeArgumentAssignmentOnly($expected, $input);
+    }
+
+    public function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo= "foo", bar= {"foo" : "foo", "bar" = "bar"})
+ */', '
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceAfterArgumentAssignmentOnlyCases
+     */
+    public function testFixWithSpaceAfterArgumentAssignmentOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => true,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceAfterArgumentAssignmentOnlyCases
+     */
+    public function testFixWithSpaceAfterArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithSpaceAfterArgumentAssignmentOnly($expected, $input);
+    }
+
+    public function provideFixWithSpaceAfterArgumentAssignmentOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo= "foo", bar= {"foo":"foo", "bar"="bar"})
+ */', '
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases
+     */
+    public function testFixWithoutSpaceAfterArgumentAssignmentOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => false,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases
+     */
+    public function testFixWithoutSpaceAfterArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithoutSpaceAfterArgumentAssignmentOnly($expected, $input);
+    }
+
+    public function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo ="foo", bar ={"foo" : "foo", "bar" = "bar"})
+ */', '
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases
+     */
+    public function testFixWithSpaceBeforeArrayAssignmentEqualOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => true,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases
+     */
+    public function testFixWithSpaceBeforeArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
+    }
+
+    public function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar" ="bar"})
+ */', '
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases
+     */
+    public function testFixWithoutSpaceBeforeArrayAssignmentEqualOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => false,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases
+     */
+    public function testFixWithoutSpaceBeforeArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithoutSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
+    }
+
+    public function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar"= "bar"})
+ */', '
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases
+     */
+    public function testFixWithSpaceAfterArrayAssignmentEqualOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => true,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases
+     */
+    public function testFixWithSpaceAfterArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithSpaceAfterArrayAssignmentEqualOnly($expected, $input);
+    }
+
+    public function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"= "bar"})
+ */', '
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases
+     */
+    public function testFixWithoutSpaceAfterArrayAssignmentEqualOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => false,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases
+     */
+    public function testFixWithoutSpaceAfterArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithoutSpaceAfterArrayAssignmentEqualOnly($expected, $input);
+    }
+
+    public function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" ="bar"})
+ */', '
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases
+     */
+    public function testFixWithSpaceBeforeArrayAssignmentColonOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => true,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases
+     */
+    public function testFixWithSpaceBeforeArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithSpaceBeforeArrayAssignmentColonOnly($expected, $input);
+    }
+
+    public function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo" :"foo", "bar"="bar"})
+ */', '
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases
+     */
+    public function testFixWithoutSpaceBeforeArrayAssignmentColonOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => false,
+            'after_array_assignments_colon' => null,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases
+     */
+    public function testFixWithoutSpaceBeforeArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithoutSpaceBeforeArrayAssignmentColonOnly($expected, $input);
+    }
+
+    public function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo": "foo", "bar" = "bar"})
+ */', '
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceAfterArrayAssignmentColonOnlyCases
+     */
+    public function testFixWithSpaceAfterArrayAssignmentColonOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => true,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSpaceAfterArrayAssignmentColonOnlyCases
+     */
+    public function testFixWithSpaceAfterArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithSpaceAfterArrayAssignmentColonOnly($expected, $input);
+    }
+
+    public function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo": "foo", "bar"="bar"})
+ */', '
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases
+     */
+    public function testFixWithoutSpaceAfterArrayAssignmentColonOnly($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'around_parentheses' => false,
+            'around_commas' => false,
+            'before_argument_assignments' => null,
+            'after_argument_assignments' => null,
+            'before_array_assignments_equals' => null,
+            'after_array_assignments_equals' => null,
+            'before_array_assignments_colon' => null,
+            'after_array_assignments_colon' => false,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases
+     */
+    public function testFixWithoutSpaceAfterArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
+    {
+        $expected = str_replace("\n", "\r\n", $expected);
+        if (null !== $input) {
+            $input = str_replace("\n", "\r\n", $input);
+        }
+
+        $this->testFixWithoutSpaceAfterArrayAssignmentColonOnly($expected, $input);
+    }
+
+    public function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases()
+    {
+        return $this->createTestCases([
+            ['
+/**
+ * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+ */'],
+            ['
+/**
+ * @Foo(foo = "foo", bar = {"foo" :"foo", "bar" = "bar"})
+ */', '
+/**
+ * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+ */'],
+        ]);
     }
 }

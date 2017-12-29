@@ -14,7 +14,10 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
@@ -33,14 +36,14 @@ use PHPUnit\Framework\TestCase;
 final class FixerTest extends TestCase
 {
     // do not modify this structure without prior discussion
-    private $allowedRequiredOptions = array(
-        'header_comment' => array('header' => true),
-    );
+    private $allowedRequiredOptions = [
+        'header_comment' => ['header' => true],
+    ];
 
     // do not modify this structure without prior discussion
-    private $allowedFixersWithoutDefaultCodeSample = array(
+    private $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,
-    );
+    ];
 
     /**
      * @param FixerInterface $fixer
@@ -49,7 +52,7 @@ final class FixerTest extends TestCase
      */
     public function testFixerDefinitions(FixerInterface $fixer)
     {
-        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
 
         /** @var DefinedFixerInterface $fixer */
         $fixerName = $fixer->getName();
@@ -61,14 +64,17 @@ final class FixerTest extends TestCase
         $samples = $definition->getCodeSamples();
         $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));
 
-        $configSamplesProvided = array();
+        $configSamplesProvided = [];
         $dummyFileInfo = new StdinFileInfo();
         foreach ($samples as $sampleCounter => $sample) {
-            $this->assertInstanceOf('PhpCsFixer\FixerDefinition\CodeSampleInterface', $sample, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+            $this->assertInstanceOf(CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
             $this->assertInternalType('int', $sampleCounter);
 
             $code = $sample->getCode();
             $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+            if (!($fixer instanceof SingleBlankLineAtEofFixer)) {
+                $this->assertSame("\n", substr($code, -1), sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
+            }
 
             $config = $sample->getConfiguration();
             if (null !== $config) {
@@ -90,7 +96,7 @@ final class FixerTest extends TestCase
 
             if ($fixerIsConfigurable) {
                 // always re-configure as the fixer might have been configured with diff. configuration form previous sample
-                $fixer->configure(null === $config ? array() : $config);
+                $fixer->configure(null === $config ? [] : $config);
             }
 
             Tokens::clearCache();
@@ -164,13 +170,34 @@ final class FixerTest extends TestCase
      */
     public function testFixersAreDefined(FixerInterface $fixer)
     {
-        $this->assertInstanceOf('PhpCsFixer\Fixer\DefinedFixerInterface', $fixer);
+        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
+    }
+
+    /**
+     * @dataProvider provideFixerDefinitionsCases
+     */
+    public function testDeprecatedFixersHaveCorrectSummary(FixerInterface $fixer)
+    {
+        $reflection = new \ReflectionClass($fixer);
+        $comment = $reflection->getDocComment();
+
+        $this->assertNotContains(
+            'DEPRECATED',
+            $fixer->getDefinition()->getSummary(),
+            'Fixer cannot contain word "DEPRECATED" in summary'
+        );
+
+        if ($fixer instanceof DeprecatedFixerInterface) {
+            $this->assertContains('@deprecated', $comment);
+        } elseif (is_string($comment)) {
+            $this->assertNotContains('@deprecated', $comment);
+        }
     }
 
     public function provideFixerDefinitionsCases()
     {
-        return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+        return array_map(static function (FixerInterface $fixer) {
+            return [$fixer];
         }, $this->getAllFixers());
     }
 
@@ -183,10 +210,10 @@ final class FixerTest extends TestCase
     {
         $configurationDefinition = $fixer->getConfigurationDefinition();
 
-        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface', $configurationDefinition);
+        $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
-            $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerOption', $option);
+            $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOption::class, $option);
             $this->assertNotEmpty($option->getDescription());
 
             $this->assertSame(
@@ -205,12 +232,12 @@ final class FixerTest extends TestCase
 
     public function provideFixerConfigurationDefinitionsCases()
     {
-        $fixers = array_filter($this->getAllFixers(), function (FixerInterface $fixer) {
+        $fixers = array_filter($this->getAllFixers(), static function (FixerInterface $fixer) {
             return $fixer instanceof ConfigurationDefinitionFixerInterface;
         });
 
-        return array_map(function (FixerInterface $fixer) {
-            return array($fixer);
+        return array_map(static function (FixerInterface $fixer) {
+            return [$fixer];
         }, $fixers);
     }
 

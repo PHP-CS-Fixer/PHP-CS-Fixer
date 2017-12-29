@@ -36,7 +36,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     {
         return new FixerDefinition(
             'There MUST be one use keyword per declaration.',
-            array(new CodeSample("<?php\nuse Foo, Sample, Sample\\Sample as Sample2;"))
+            [new CodeSample("<?php\nuse Foo, Sample, Sample\\Sample as Sample2;\n")]
         );
     }
 
@@ -63,7 +63,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         $uses = array_reverse($tokensAnalyzer->getImportUseIndexes());
 
         foreach ($uses as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
+            $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
             $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
             if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
@@ -101,7 +101,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     {
         $groupPrefix = '';
         $comment = '';
-        for ($i = $index + 1; ; ++$i) {
+        for ($i = $index + 1;; ++$i) {
             if ($tokens[$i]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupOpenIndex = $i;
 
@@ -126,12 +126,12 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
             $groupPrefix .= $tokens[$i]->getContent();
         }
 
-        return array(
+        return [
             $groupPrefix,
             $groupOpenIndex,
             $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $groupOpenIndex),
             $comment,
-        );
+        ];
     }
 
     /**
@@ -145,17 +145,17 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
      */
     private function getGroupStatements(Tokens $tokens, $groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment)
     {
-        $statements = array();
+        $statements = [];
         $statement = $groupPrefix;
 
         for ($i = $groupOpenIndex + 1; $i <= $groupCloseIndex; ++$i) {
             $token = $tokens[$i];
 
-            if ($token->equals(',') && $tokens[$tokens->getNextMeaningfulToken($i)]->equals(array(CT::T_GROUP_IMPORT_BRACE_CLOSE))) {
+            if ($token->equals(',') && $tokens[$tokens->getNextMeaningfulToken($i)]->equals([CT::T_GROUP_IMPORT_BRACE_CLOSE])) {
                 continue;
             }
 
-            if ($token->equalsAny(array(',', array(CT::T_GROUP_IMPORT_BRACE_CLOSE)))) {
+            if ($token->equalsAny([',', [CT::T_GROUP_IMPORT_BRACE_CLOSE]])) {
                 $statements[] = 'use'.$statement.';';
                 $statement = $groupPrefix;
 
@@ -165,13 +165,13 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
             if ($token->isWhitespace()) {
                 $j = $tokens->getNextMeaningfulToken($i);
 
-                if ($tokens[$j]->equals(array(T_AS))) {
+                if ($tokens[$j]->equals([T_AS])) {
                     $statement .= ' as ';
                     $i += 2;
-                } elseif ($tokens[$j]->equals(array(T_FUNCTION))) {
+                } elseif ($tokens[$j]->equals([T_FUNCTION])) {
                     $statement = ' function'.$statement;
                     $i += 2;
-                } elseif ($tokens[$j]->equals(array(T_CONST))) {
+                } elseif ($tokens[$j]->equals([T_CONST])) {
                     $statement = ' const'.$statement;
                     $i += 2;
                 }
@@ -234,18 +234,18 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
 
             $tokens[$i] = new Token(';');
             $i = $tokens->getNextMeaningfulToken($i);
-            $tokens->insertAt($i, new Token(array(T_USE, 'use')));
-            $tokens->insertAt($i + 1, new Token(array(T_WHITESPACE, ' ')));
+            $tokens->insertAt($i, new Token([T_USE, 'use']));
+            $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
 
             $indent = $this->detectIndent($tokens, $index);
             if ($tokens[$i - 1]->isWhitespace()) {
-                $tokens[$i - 1] = new Token(array(T_WHITESPACE, $ending.$indent));
+                $tokens[$i - 1] = new Token([T_WHITESPACE, $ending.$indent]);
 
                 continue;
             }
 
             if (false === strpos($tokens[$i - 1]->getContent(), "\n")) {
-                $tokens->insertAt($i, new Token(array(T_WHITESPACE, $ending.$indent)));
+                $tokens->insertAt($i, new Token([T_WHITESPACE, $ending.$indent]));
             }
         }
     }

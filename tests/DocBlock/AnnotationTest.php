@@ -54,34 +54,34 @@ final class AnnotationTest extends TestCase
      *
      * @var string[]
      */
-    private static $content = array(
+    private static $content = [
         "     * @param string \$hello\n",
         "     * @param bool \$test Description\n     *        extends over many lines\n",
         "     * @param adkjbadjasbdand \$asdnjkasd\n",
         "     * @throws \\Exception asdnjkasd\n     *\n     * asdasdasdasdasdasdasdasd\n     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb\n",
         "     * @return void\n",
-    );
+    ];
 
     /**
      * This represents the start indexes of each annotation.
      *
      * @var int[]
      */
-    private static $start = array(3, 4, 7, 9, 14);
+    private static $start = [3, 4, 7, 9, 14];
 
     /**
      * This represents the start indexes of each annotation.
      *
      * @var int[]
      */
-    private static $end = array(3, 5, 7, 12, 14);
+    private static $end = [3, 5, 7, 12, 14];
 
     /**
      * This represents the tag type of each annotation.
      *
      * @var string[]
      */
-    private static $tags = array('param', 'param', 'param', 'throws', 'return');
+    private static $tags = ['param', 'param', 'param', 'throws', 'return'];
 
     /**
      * @param int    $index
@@ -100,10 +100,10 @@ final class AnnotationTest extends TestCase
 
     public function provideGetContentCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$content as $index => $content) {
-            $cases[] = array($index, $content);
+            $cases[] = [$index, $content];
         }
 
         return $cases;
@@ -125,10 +125,10 @@ final class AnnotationTest extends TestCase
 
     public function provideStartCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$start as $index => $start) {
-            $cases[] = array($index, $start);
+            $cases[] = [$index, $start];
         }
 
         return $cases;
@@ -150,10 +150,10 @@ final class AnnotationTest extends TestCase
 
     public function provideEndCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$end as $index => $end) {
-            $cases[] = array($index, $end);
+            $cases[] = [$index, $end];
         }
 
         return $cases;
@@ -175,10 +175,10 @@ final class AnnotationTest extends TestCase
 
     public function provideGetTagCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$tags as $index => $tag) {
-            $cases[] = array($index, $tag);
+            $cases[] = [$index, $tag];
         }
 
         return $cases;
@@ -204,10 +204,10 @@ final class AnnotationTest extends TestCase
 
     public function provideRemoveCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach (self::$start as $index => $start) {
-            $cases[] = array($index, $start, self::$end[$index]);
+            $cases[] = [$index, $start, self::$end[$index]];
         }
 
         return $cases;
@@ -221,91 +221,91 @@ final class AnnotationTest extends TestCase
      */
     public function testTypeParsing($input, array $expected)
     {
-        $tag = new Annotation(array(new Line($input)));
+        $tag = new Annotation([new Line($input)]);
 
         $this->assertSame($expected, $tag->getTypes());
     }
 
     public function provideTypeParsingCases()
     {
-        return array(
-            array(
+        return [
+            [
                 ' * @method int method()',
-                array('int'),
-            ),
-            array(
+                ['int'],
+            ],
+            [
                 ' * @method int[] method()',
-                array('int[]'),
-            ),
-            array(
+                ['int[]'],
+            ],
+            [
                 ' * @method int[]|null method()',
-                array('int[]', 'null'),
-            ),
-            array(
+                ['int[]', 'null'],
+            ],
+            [
                 ' * @method int[]|null|?int|array method()',
-                array('int[]', 'null', '?int', 'array'),
-            ),
-            array(
+                ['int[]', 'null', '?int', 'array'],
+            ],
+            [
                 ' * @method null|Foo\Bar|\Baz\Bax|int[] method()',
-                array('null', 'Foo\Bar', '\Baz\Bax', 'int[]'),
-            ),
-            array(
+                ['null', 'Foo\Bar', '\Baz\Bax', 'int[]'],
+            ],
+            [
                 ' * @method gen<int> method()',
-                array('gen<int>'),
-            ),
-            array(
+                ['gen<int>'],
+            ],
+            [
                 ' * @method int|gen<int> method()',
-                array('int', 'gen<int>'),
-            ),
-            array(
+                ['int', 'gen<int>'],
+            ],
+            [
                 ' * @method \int|\gen<\int, \bool> method()',
-                array('\int', '\gen<\int, \bool>'),
-            ),
-            array(
+                ['\int', '\gen<\int, \bool>'],
+            ],
+            [
                 ' * @method gen<int,  int> method()',
-                array('gen<int,  int>'),
-            ),
-            array(
+                ['gen<int,  int>'],
+            ],
+            [
                 ' * @method gen<int,  bool|string> method()',
-                array('gen<int,  bool|string>'),
-            ),
-            array(
+                ['gen<int,  bool|string>'],
+            ],
+            [
                 ' * @method gen<int,  string[]> method() <> a',
-                array('gen<int,  string[]>'),
-            ),
-            array(
+                ['gen<int,  string[]>'],
+            ],
+            [
                 ' * @method gen<int,  gener<string, bool>> method() foo <a >',
-                array('gen<int,  gener<string, bool>>'),
-            ),
-            array(
+                ['gen<int,  gener<string, bool>>'],
+            ],
+            [
                 ' * @method gen<int,  gener<string, null|bool>> method()',
-                array('gen<int,  gener<string, null|bool>>'),
-            ),
-            array(
+                ['gen<int,  gener<string, null|bool>>'],
+            ],
+            [
                 ' * @method null|gen<int,  gener<string, bool>>|int|string[] method() foo <a >',
-                array('null', 'gen<int,  gener<string, bool>>', 'int', 'string[]'),
-            ),
-            array(
+                ['null', 'gen<int,  gener<string, bool>>', 'int', 'string[]'],
+            ],
+            [
                 ' * @method null|gen<int,  gener<string, bool>>|int|array<int, string>|string[] method() foo <a >',
-                array('null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]'),
-            ),
-            array(
+                ['null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]'],
+            ],
+            [
                 '/** @return    this */',
-                array('this'),
-            ),
-            array(
+                ['this'],
+            ],
+            [
                 '/** @return    @this */',
-                array('@this'),
-            ),
-            array(
+                ['@this'],
+            ],
+            [
                 '/** @return $SELF|int */',
-                array('$SELF', 'int'),
-            ),
-            array(
+                ['$SELF', 'int'],
+            ],
+            [
                 '/** @var array<string|int, string>',
-                array('array<string|int, string>'),
-            ),
-        );
+                ['array<string|int, string>'],
+            ],
+        ];
     }
 
     /**
@@ -319,7 +319,7 @@ final class AnnotationTest extends TestCase
     public function testTypes($expected, $new, $input, $output)
     {
         $line = new Line($input);
-        $tag = new Annotation(array($line));
+        $tag = new Annotation([$line]);
 
         $this->assertSame($expected, $tag->getTypes());
 
@@ -332,38 +332,34 @@ final class AnnotationTest extends TestCase
 
     public function provideTypesCases()
     {
-        return array(
-            array(array('Foo', 'null'), array('Bar[]'), '     * @param Foo|null $foo', '     * @param Bar[] $foo'),
-            array(array('false'), array('bool'), '*   @return            false', '*   @return            bool'),
-            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "* \t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "* \t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
-            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "*\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
-            array(array('RUNTIMEEEEeXCEPTION'), array('Throwable'), "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"),
-            array(array('string'), array('string', 'null'), ' * @method string getString()', ' * @method string|null getString()'),
-        );
+        return [
+            [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
+            [['false'], ['bool'], '*   @return            false', '*   @return            bool'],
+            [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "* \t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "* \t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "*\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['string'], ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'],
+        ];
     }
 
     public function testGetTypesOnBadTag()
     {
-        $this->setExpectedException(
-            'RuntimeException',
-            'This tag does not support types'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('This tag does not support types');
 
-        $tag = new Annotation(array(new Line(' * @deprecated since 1.2')));
+        $tag = new Annotation([new Line(' * @deprecated since 1.2')]);
 
         $tag->getTypes();
     }
 
     public function testSetTypesOnBadTag()
     {
-        $this->setExpectedException(
-            'RuntimeException',
-            'This tag does not support types'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('This tag does not support types');
 
-        $tag = new Annotation(array(new Line(' * @author Chuck Norris')));
+        $tag = new Annotation([new Line(' * @author Chuck Norris')]);
 
-        $tag->setTypes(array('string'));
+        $tag->setTypes(['string']);
     }
 
     public function testGetTagsWithTypes()

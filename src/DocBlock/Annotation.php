@@ -60,7 +60,7 @@ class Annotation
      *
      * @var string[]
      */
-    private static $tags = array(
+    private static $tags = [
         'method',
         'param',
         'property',
@@ -70,7 +70,7 @@ class Annotation
         'throws',
         'type',
         'var',
-    );
+    ];
 
     /**
      * The lines that make up the annotation.
@@ -101,7 +101,7 @@ class Annotation
     private $tag;
 
     /**
-     * The cached types content.
+     * Lazy loaded, cached types content.
      *
      * @var null|string
      */
@@ -191,7 +191,7 @@ class Annotation
     public function getTypes()
     {
         if (null === $this->types) {
-            $this->types = array();
+            $this->types = [];
 
             $content = $this->getTypesContent();
 

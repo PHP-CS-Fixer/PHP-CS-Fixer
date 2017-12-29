@@ -34,11 +34,11 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
     {
         return new FixerDefinition(
             'There MUST NOT be spaces around offset braces.',
-            array(
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];"),
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", array('positions' => array('inside'))),
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", array('positions' => array('outside'))),
-            )
+            [
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n"),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['inside']]),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['outside']]),
+            ]
         );
     }
 
@@ -47,7 +47,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array('[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN));
+        return $tokens->isAnyTokenKindsFound(['[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]);
     }
 
     /**
@@ -56,7 +56,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny(array('[', array(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)))) {
+            if (!$token->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]])) {
                 continue;
             }
 
@@ -94,19 +94,16 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
-        $values = array('inside', 'outside');
+        $values = ['inside', 'outside'];
 
-        $positions = new FixerOptionBuilder('positions', 'Whether spacing should be fixed inside and/or outside the offset braces.');
-        $positions = $positions
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf($values),
-            ))
-            ->setDefault($values)
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('positions', array($positions));
+        return new FixerConfigurationResolverRootless('positions', [
+            (new FixerOptionBuilder('positions', 'Whether spacing should be fixed inside and/or outside the offset braces.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
+                ])
+                ->setDefault($values)
+                ->getOption(),
+        ]);
     }
 }

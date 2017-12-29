@@ -36,33 +36,33 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $cases = array();
-        foreach (array('boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'real' => 'float') as $from => $to) {
+        $cases = [];
+        foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'real' => 'float'] as $from => $to) {
             $cases[] =
-                array(
+                [
                     sprintf('<?php echo ( %s  )$a;', $to),
                     sprintf('<?php echo ( %s  )$a;', $from),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b=(%s) $d;', $to),
                     sprintf('<?php $b=(%s) $d;', $from),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b= (%s)$d;', $to),
                     sprintf('<?php $b= (%s)$d;', strtoupper($from)),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b=( %s) $d;', $to),
                     sprintf('<?php $b=( %s) $d;', ucfirst($from)),
-                );
+                ];
             $cases[] =
-                array(
+                [
                     sprintf('<?php $b=(%s ) $d;', $to),
                     sprintf('<?php $b=(%s ) $d;', ucfirst($from)),
-                );
+                ];
         }
 
         return $cases;
@@ -80,12 +80,12 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 
     public function provideNoFixCases()
     {
-        $cases = array();
-        foreach (array('string', 'array', 'object', 'unset', 'binary') as $cast) {
-            $cases[] = array(sprintf('<?php $b=(%s) $d;', $cast));
-            $cases[] = array(sprintf('<?php $b=( %s ) $d;', $cast));
-            $cases[] = array(sprintf('<?php $b=(%s ) $d;', ucfirst($cast)));
-            $cases[] = array(sprintf('<?php $b=(%s ) $d;', strtoupper($cast)));
+        $cases = [];
+        foreach (['string', 'array', 'object', 'unset', 'binary'] as $cast) {
+            $cases[] = [sprintf('<?php $b=(%s) $d;', $cast)];
+            $cases[] = [sprintf('<?php $b=( %s ) $d;', $cast)];
+            $cases[] = [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
+            $cases[] = [sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
         }
 
         return $cases;

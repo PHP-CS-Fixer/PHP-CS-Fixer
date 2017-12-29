@@ -58,11 +58,11 @@ final class DiffConsoleFormatter
         return sprintf(
             $template,
             implode(PHP_EOL, array_map(
-                function ($string) use ($isDecorated, $lineTemplate) {
+                static function ($string) use ($isDecorated, $lineTemplate) {
                     if ($isDecorated) {
                         $string = preg_replace(
-                            array('/^(\+.*)/', '/^(\-.*)/', '/^(@.*)/'),
-                            array('<fg=green>\1</fg=green>', '<fg=red>\1</fg=red>', '<fg=cyan>\1</fg=cyan>'),
+                            ['/^(\+.*)/', '/^(\-.*)/', '/^(@.*)/'],
+                            ['<fg=green>\1</fg=green>', '<fg=red>\1</fg=red>', '<fg=cyan>\1</fg=cyan>'],
                             $string
                         );
                     }

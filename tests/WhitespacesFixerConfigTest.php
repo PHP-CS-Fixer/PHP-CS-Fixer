@@ -34,10 +34,8 @@ final class WhitespacesFixerConfigTest extends TestCase
     public function testCases($indent, $lineEnding, $exceptionRegExp = null)
     {
         if (null !== $exceptionRegExp) {
-            $this->setExpectedExceptionRegExp(
-                'InvalidArgumentException',
-                '%^'.preg_quote($exceptionRegExp, '%').'$%'
-            );
+            $this->expectException(\InvalidArgumentException::class);
+            $this->expectExceptionMessageRegExp('%^'.preg_quote($exceptionRegExp, '%').'$%');
         }
 
         $config = new WhitespacesFixerConfig($indent, $lineEnding);
@@ -48,15 +46,15 @@ final class WhitespacesFixerConfigTest extends TestCase
 
     public function provideTestCases()
     {
-        return array(
-            array('    ', "\n"),
-            array("\t", "\n"),
-            array('    ', "\r\n"),
-            array("\t", "\r\n"),
-            array('    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'),
-            array('    ', array(), 'Invalid "lineEnding" param, expected "\n" or "\r\n".'),
-            array('std', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'),
-            array(array(), "\n", 'Invalid "indent" param, expected tab or two or four spaces.'),
-        );
+        return [
+            ['    ', "\n"],
+            ["\t", "\n"],
+            ['    ', "\r\n"],
+            ["\t", "\r\n"],
+            ['    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'],
+            ['    ', [], 'Invalid "lineEnding" param, expected "\n" or "\r\n".'],
+            ['std', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'],
+            [[], "\n", 'Invalid "indent" param, expected tab or two or four spaces.'],
+        ];
     }
 }

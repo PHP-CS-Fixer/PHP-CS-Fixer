@@ -43,10 +43,10 @@ final class CTTest extends TestCase
 
     public function provideConstantsCases()
     {
-        $cases = array();
+        $cases = [];
 
         foreach ($this->getConstants() as $name => $value) {
-            $cases[] = array($name, $value);
+            $cases[] = [$name, $value];
         }
 
         return $cases;
@@ -57,7 +57,7 @@ final class CTTest extends TestCase
         static $constants;
 
         if (null === $constants) {
-            $reflection = new \ReflectionClass('PhpCsFixer\Tokenizer\CT');
+            $reflection = new \ReflectionClass(\PhpCsFixer\Tokenizer\CT::class);
             $constants = $reflection->getConstants();
         }
 

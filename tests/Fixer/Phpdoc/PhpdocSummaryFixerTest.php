@@ -384,11 +384,11 @@ EOF;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php\r\n\t/**\r\n\t * Hello there.\r\n\t */",
                 "<?php\r\n\t/**\r\n\t * Hello there\r\n\t */",
-            ),
-        );
+            ],
+        ];
     }
 }
