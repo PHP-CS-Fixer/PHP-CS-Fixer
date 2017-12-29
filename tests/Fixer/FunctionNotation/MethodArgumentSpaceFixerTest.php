@@ -717,13 +717,4 @@ INPUT
             ],
         ];
     }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0.
-     */
-    public function testLegacyFixSpace()
-    {
-        $this->fixer->fixSpace(Tokens::fromCode('<?php xyz("", "", "", "");'), 1);
-    }
 }
