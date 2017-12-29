@@ -127,9 +127,13 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
             ],
             'test method call with \n not affected' => [
                 "<?php xyz(\$a=10, \$b=20,\n                    \$c=30);",
+                null,
+                ['ensure_fully_multiline' => false],
             ],
             'test method call with \r\n not affected' => [
                 "<?php xyz(\$a=10, \$b=20,\r\n                    \$c=30);",
+                null,
+                ['ensure_fully_multiline' => false],
             ],
             'test method call with multiple spaces (II)' => [
                 '<?php xyz($a=10, $b=20, $this->foo(), $c=30);',
@@ -175,6 +179,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                     $b=20,      //comment2
                     $c=30) {
                 }',
+                null,
+                ['ensure_fully_multiline' => false],
             ],
             'must keep align comments (2)' => [
                 '<?php function xyz(
@@ -182,6 +188,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                     $b=2000,//comment2
                     $c=30) {
                 }',
+                null,
+                ['ensure_fully_multiline' => false],
             ],
             'multiline comments also must be ignored (I)' => [
                 '<?php function xyz(
@@ -193,6 +201,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                         comment 2c */
                     $c=30) {
                 }',
+                null,
+                ['ensure_fully_multiline' => false],
             ],
             'multiline comments also must be ignored (II)' => [
                 '<?php
@@ -215,6 +225,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                                 */ ,$b2=2000,
                         $c=30) {
                     }',
+                ['ensure_fully_multiline' => false],
             ],
             'multi line testing method arguments' => [
                 '<?php function xyz(
@@ -227,6 +238,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                     $b=20,
                     $c=30) {
                 }',
+                ['ensure_fully_multiline' => false],
             ],
             'multi line testing method call' => [
                 '<?php xyz(
@@ -292,7 +304,10 @@ $a#
             [
                 "<?php xyz(\$a=10,\n\$b=20);",
                 "<?php xyz(\$a=10,   \n\$b=20);",
-                ['keep_multiple_spaces_after_comma' => true],
+                [
+                    'keep_multiple_spaces_after_comma' => true,
+                    'ensure_fully_multiline' => false,
+                ],
             ],
             'test half-multiline function becomes fully-multiline' => [
                 <<<'EXPECTED'
@@ -312,7 +327,6 @@ functionCall(
 );
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test wrongly formatted half-multiline function becomes fully-multiline' => [
                 '<?php
@@ -324,7 +338,6 @@ f(
                 '<?php
 f(1,2,
 3);',
-                ['ensure_fully_multiline' => true],
             ],
             'function calls with here doc cannot be anything but multiline' => [
                 <<<'EXPECTED'
@@ -348,7 +361,6 @@ TEXT
 );
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test barely multiline function with blank lines becomes fully-multiline' => [
                 <<<'EXPECTED'
@@ -368,7 +380,6 @@ functionCall('a', 'b',
     'c');
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test indentation is preserved' => [
                 <<<'EXPECTED'
@@ -392,7 +403,6 @@ if (true) {
 }
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test multiline array arguments do not trigger multiline' => [
                 <<<'EXPECTED'
@@ -404,8 +414,6 @@ defraculate(1, array(
 ), 42);
 EXPECTED
                 ,
-                null,
-                ['ensure_fully_multiline' => true],
             ],
             'test multiline function arguments do not trigger multiline' => [
                 <<<'EXPECTED'
@@ -415,8 +423,6 @@ defraculate(1, function () {
 }, 42);
 EXPECTED
                 ,
-                null,
-                ['ensure_fully_multiline' => true],
             ],
             'test violation after opening parenthesis' => [
                 <<<'EXPECTED'
@@ -434,7 +440,6 @@ defraculate(
     1, 2, 3);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test violation after opening parenthesis, indented with two spaces' => [
                 <<<'EXPECTED'
@@ -452,7 +457,6 @@ defraculate(
   1, 2, 3);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test violation after opening parenthesis, indented with tabs' => [
                 <<<'EXPECTED'
@@ -470,7 +474,6 @@ defraculate(
 	1, 2, 3);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test violation before closing parenthesis' => [
                 <<<'EXPECTED'
@@ -488,7 +491,6 @@ defraculate(1, 2, 3
 );
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test violation before closing parenthesis in nested call' => [
                 <<<'EXPECTED'
@@ -506,7 +508,6 @@ getSchwifty('rick', defraculate(1, 2, 3
 ), 'morty');
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test with comment between arguments' => [
                 <<<'EXPECTED'
@@ -526,7 +527,6 @@ functionCall(
 );
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test with deeply nested arguments' => [
                 <<<'EXPECTED'
@@ -561,7 +561,6 @@ foo('a',
     ]);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'multiline string argument' => [
                 <<<'UNAFFECTED'
@@ -573,8 +572,6 @@ class FooClass
 }', $comment, false);
 UNAFFECTED
                 ,
-                null,
-                ['ensure_fully_multiline' => true],
             ],
             'arrays with whitespace inside' => [
                 <<<'UNAFFECTED'
@@ -587,8 +584,6 @@ $a = array (        1,
 2);
 UNAFFECTED
                 ,
-                null,
-                ['ensure_fully_multiline' => true],
             ],
             'test code that should not be affected (because not a function nor a method)' => [
                 <<<'UNAFFECTED'
@@ -600,8 +595,6 @@ if (true &&
 }
 UNAFFECTED
                 ,
-                null,
-                ['ensure_fully_multiline' => true],
             ],
             'test ungodly code' => [
                 <<<'EXPECTED'
@@ -639,7 +632,6 @@ $c,$d) {
 };
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
             'test list' => [
                 <<<'UNAFFECTED'
@@ -656,8 +648,6 @@ array(1,
 );
 UNAFFECTED
                 ,
-                null,
-                ['ensure_fully_multiline' => true],
             ],
             'test function argument with multiline echo in it' => [
                 <<<'UNAFFECTED'
@@ -668,8 +658,6 @@ call_user_func(function ($arguments) {
 }, $argv);
 UNAFFECTED
                 ,
-                null,
-                ['ensure_fully_multiline' => true],
             ],
             'test function argument with oneline echo in it' => [
                 <<<'EXPECTED'
@@ -690,7 +678,6 @@ call_user_func(function ($arguments) {
 $argv);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
             ],
         ];
     }

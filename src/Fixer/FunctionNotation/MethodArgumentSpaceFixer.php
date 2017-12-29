@@ -52,12 +52,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,\n    2);\n",
-                    ['ensure_fully_multiline' => true]
+                    ['ensure_fully_multiline' => false]
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample('foo',    'foobarbaz', 'baz');\nsample('foobar', 'bar',       'baz');\n",
                     [
-                        'ensure_fully_multiline' => true,
+                        'ensure_fully_multiline' => false,
                         'keep_multiple_spaces_after_comma' => true,
                     ]
                 ),
@@ -117,7 +117,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 'Ensure every argument of a multiline argument list is on its own line'
             ))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO 3.0 should be true
+                ->setDefault(true)
                 ->getOption(),
         ]);
     }

@@ -705,7 +705,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``ensure_fully_multiline`` (``bool``): ensure every argument of a multiline
-    argument list is on its own line; defaults to ``false``
+    argument list is on its own line; defaults to ``true``
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
@@ -1019,7 +1019,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``target`` (``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``): target version of
-    PHPUnit; defaults to ``'5.0'``
+    PHPUnit; defaults to ``'newest'``
 
 * **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
@@ -1121,8 +1121,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``tags`` (``array``): the tags that should be aligned; defaults to ``['param',
-    'return', 'throws', 'type', 'var']``
+  - ``tags`` (``array``): the tags that should be aligned; defaults to ``['method',
+    'param', 'property', 'return', 'throws', 'type', 'var']``
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 
