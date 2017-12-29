@@ -359,22 +359,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         static $linter = null;
 
         if (null === $linter) {
-            if (getenv('SKIP_LINT_TEST_CASES')) {
-                $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
-                $linterProphecy
-                    ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
-                $linterProphecy
-                    ->lintFile(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
-                $linterProphecy
-                    ->isAsync()
-                    ->willReturn(false);
-
-                $linter = $linterProphecy->reveal();
-            } else {
-                $linter = new Linter();
-            }
+            $linter = new Linter();
         }
 
         return $linter;
