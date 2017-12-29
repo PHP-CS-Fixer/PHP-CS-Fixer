@@ -620,29 +620,6 @@ echo Foo::A, Foo::B;
     /**
      * @param string $expected
      *
-     * @group legacy
-     * @dataProvider provideConfigurationCases
-     * @expectedDeprecation Passing "elements" at the root of the configuration is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
-     */
-    public function testLegacyFixWithConfiguration(array $configuration, $expected)
-    {
-        static $input = <<<'EOT'
-<?php
-
-class Foo
-{
-    const SOME_CONST = 'a', OTHER_CONST = 'b';
-    protected static $foo = 1, $bar = 2;
-}
-EOT;
-
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string $expected
-     *
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, $expected)

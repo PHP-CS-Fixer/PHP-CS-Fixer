@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -103,7 +103,7 @@ function foo() {}
      */
     protected function createConfigurationDefinition()
     {
-        return new FixerConfigurationResolverRootless('annotations', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["author"]`.'))
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
