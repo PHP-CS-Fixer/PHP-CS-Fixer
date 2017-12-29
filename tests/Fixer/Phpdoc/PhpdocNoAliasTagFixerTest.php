@@ -88,24 +88,6 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @group legacy
-     * @dataProvider providePropertyCases
-     * @expectedDeprecation Passing "replacements" at the root of the configuration is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
-     */
-    public function testLegacyPropertyFix($expected, $input = null)
-    {
-        $this->fixer->configure([
-            'property-read' => 'property',
-            'property-write' => 'property',
-        ]);
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePropertyCases
      */
     public function testPropertyFix($expected, $input = null)
