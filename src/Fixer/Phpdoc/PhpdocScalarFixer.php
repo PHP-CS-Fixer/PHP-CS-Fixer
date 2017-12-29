@@ -40,8 +40,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Scalar types should always be written in the same form. '.
-            '`int` not `integer`, `bool` not `boolean`, `float` not `real` or `double`.',
+            'Scalar types should always be written in the same form. `int` not `integer`, `bool` not `boolean`, `float` not `real` or `double`.',
             [new CodeSample('<?php
 /**
  * @param integer $a
