@@ -55,43 +55,43 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
                 '<?php /* Closing Multiline comment ***/',
             ],
             [
-<<<'EOT'
+                <<<'EOT'
 <?php
 
 /*
  * WUT
  */
 EOT
-,
-<<<'EOT'
+                ,
+                <<<'EOT'
 <?php
 
 /********
  * WUT
  ********/
 EOT
-,
+                ,
             ],
             [
-<<<'EOT'
+                <<<'EOT'
 <?php
 
 /*\
  * False DocBlock
  */
 EOT
-,
-<<<'EOT'
+                ,
+                <<<'EOT'
 <?php
 
 /**\
  * False DocBlock
  */
 EOT
-,
+                ,
             ],
             [
-<<<'EOT'
+                <<<'EOT'
 <?php
 # Hash
 #*** Hash asterisk
@@ -105,7 +105,7 @@ Weird multiline comment
 */
 
 EOT
-,
+                ,
             ],
         ];
     }

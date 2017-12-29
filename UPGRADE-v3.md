@@ -56,3 +56,12 @@ Rule | Option | Change
 `is_null`                          | `use_yoda_style` | option was removed, use `yoda_style` rule instead
 `no_extra_consecutive_blank_lines` | `tokens`    | one of possible values, `useTrait`, was renamed to `use_trait`
 `php_unit_dedicate_assert`         | `functions` | option was removed, use `target` instead
+
+### Changed default values of options
+
+Rule | Option | Old value | New value
+---- | ---- | ---- | ----
+`function_to_constant` | `functions` | `['get_class', 'php_sapi_name', 'phpversion', 'pi']` | `['get_called_class', 'get_class', 'php_sapi_name', 'phpversion', 'pi']`
+`method_argument_space` | `ensure_fully_multiline` | `false` | `true`
+`php_unit_dedicate_assert` | `target` | `5.0` | `newest`
+`phpdoc_align` | `tags` | `['param', 'return', 'throws', 'type', 'var']` | `['method', 'param', 'property', 'return', 'throws', 'type', 'var']`

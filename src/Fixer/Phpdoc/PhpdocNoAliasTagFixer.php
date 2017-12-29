@@ -14,11 +14,12 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -31,7 +32,7 @@ use Symfony\Component\OptionsResolver\Options;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -130,7 +131,7 @@ final class Example
                             ));
                         }
 
-                        if (1 !== preg_match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
+                        if (1 !== Preg::match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
                             throw new InvalidOptionsException(sprintf(
                                 'Tag "%s" cannot be replaced by invalid tag "%s".',
                                 $from,

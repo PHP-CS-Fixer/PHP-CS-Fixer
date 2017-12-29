@@ -13,19 +13,20 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author SpacePossum
  */
-final class FunctionToConstantFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class FunctionToConstantFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var string[]
@@ -41,10 +42,15 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     {
         if (null === self::$availableFunctions) {
             self::$availableFunctions = [
-                'get_class' => new Token([T_CLASS_C, '__CLASS__']),
-                'php_sapi_name' => new Token([T_STRING, 'PHP_SAPI']),
-                'phpversion' => new Token([T_STRING, 'PHP_VERSION']),
-                'pi' => new Token([T_STRING, 'M_PI']),
+                'get_called_class' => [
+                    new Token([T_STATIC, 'static']),
+                    new Token([T_DOUBLE_COLON, '::']),
+                    new Token([CT::T_CLASS_CONSTANT, 'class']),
+                ],
+                'get_class' => [new Token([T_CLASS_C, '__CLASS__'])],
+                'php_sapi_name' => [new Token([T_STRING, 'PHP_SAPI'])],
+                'phpversion' => [new Token([T_STRING, 'PHP_VERSION'])],
+                'pi' => [new Token([T_STRING, 'M_PI'])],
             ];
         }
 
@@ -142,32 +148,39 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
                 ->setAllowedValues([
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($functionNames),
                 ])
-                ->setDefault($functionNames)
+                ->setDefault([
+                    'get_called_class',
+                    'get_class',
+                    'php_sapi_name',
+                    'phpversion',
+                    'pi',
+                ])
                 ->getOption(),
         ]);
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param int    $braceOpenIndex
-     * @param int    $braceCloseIndex
-     * @param Token  $replacementConst
+     * @param Tokens  $tokens
+     * @param int     $index
+     * @param int     $braceOpenIndex
+     * @param int     $braceCloseIndex
+     * @param Token[] $replacements
      */
-    private function fixFunctionCallToConstant(Tokens $tokens, $index, $braceOpenIndex, $braceCloseIndex, Token $replacementConst)
+    private function fixFunctionCallToConstant(Tokens $tokens, $index, $braceOpenIndex, $braceCloseIndex, array $replacements)
     {
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceCloseIndex);
         $tokens->clearTokenAndMergeSurroundingWhitespace($braceOpenIndex);
 
-        if ($replacementConst->isMagicConstant()) {
+        if ($replacements[0]->isGivenKind([T_CLASS_C, T_STATIC])) {
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevIndex];
             if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
                 $tokens->clearAt($prevIndex);
             }
         }
+
         $tokens->clearAt($index);
-        $tokens->insertAt($index, $replacementConst);
+        $tokens->insertAt($index, $replacements);
     }
 
     /**
@@ -213,10 +226,15 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
             return null;
         }
 
+        $clones = [];
+        foreach ($this->functionsFixMap[$lowerContent] as $token) {
+            $clones[] = clone $token;
+        }
+
         return [
             $braceOpenIndex,
             $braceCloseIndex,
-            clone $this->functionsFixMap[$lowerContent],
+            $clones,
         ];
     }
 }

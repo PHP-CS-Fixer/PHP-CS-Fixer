@@ -13,18 +13,19 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitNamespacedFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpUnitNamespacedFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var string
@@ -104,7 +105,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $originalClass = $tokens[$currIndex]->getContent();
 
-            if (1 !== preg_match($this->originalClassRegEx, $originalClass)) {
+            if (1 !== Preg::match($this->originalClassRegEx, $originalClass)) {
                 ++$currIndex;
 
                 continue;

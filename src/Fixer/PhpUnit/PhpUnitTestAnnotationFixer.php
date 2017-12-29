@@ -15,13 +15,14 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -29,7 +30,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Gert de Pagter
  */
-final class PhpUnitTestAnnotationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class PhpUnitTestAnnotationFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -58,7 +59,7 @@ class Test extends \\PhpUnit\\FrameWork\\TestCase
 class Test extends \\PhpUnit\\FrameWork\\TestCase
 {
 public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEnding(), ['style' => 'annotation']),
-                ],
+            ],
             null,
             'This fixer may change the name of your tests, and could cause incompatibility with'.
             ' abstract classes or interfaces.'
@@ -316,7 +317,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function removeTestPrefix($functionName)
     {
-        $remainder = preg_replace('/^test_?/', '', $functionName);
+        $remainder = Preg::replace('/^test_?/', '', $functionName);
 
         if ('' === $remainder || is_numeric($remainder[0])) {
             return $functionName;

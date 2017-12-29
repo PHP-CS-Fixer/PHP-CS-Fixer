@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -45,7 +46,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // Should run before NoEmptyPhpdocFixer, PhpdocInlineTagFixer and NoTrailingWhitespaceInCommentFixer
+        // Should run before NoEmptyPhpdocFixer, NoTrailingWhitespaceInCommentFixer
         // and after PhpdocToCommentFixer.
         return 6;
     }
@@ -139,7 +140,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     private function fixToken(Tokens $tokens, $tokenIndex)
     {
         $count = 0;
-        $content = preg_replace_callback(
+        $content = Preg::replaceCallback(
             '#(\h*(?:@{*|{*\h*@)\h*inheritdoc\h*)([^}]*)((?:}*)\h*)#i',
             static function ($matches) {
                 return ' '.$matches[2];

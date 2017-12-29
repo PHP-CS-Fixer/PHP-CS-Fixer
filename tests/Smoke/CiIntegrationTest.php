@@ -23,6 +23,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @requires OS Linux|Darwin
  * @coversNothing
+ * @group covers-nothing
  * @large
  */
 final class CiIntegrationTest extends TestCase
@@ -56,7 +57,7 @@ final class CiIntegrationTest extends TestCase
         self::executeCommand('rm -rf .git');
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
 
@@ -94,14 +95,16 @@ final class CiIntegrationTest extends TestCase
         $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../dev-tools/ci-integration.sh')));
         $steps = [
             "COMMIT_RANGE=\"master..${branchName}\"",
-            $integrationScript[3],
-            $integrationScript[4],
+            "{$integrationScript[3]}\n{$integrationScript[4]}",
             $integrationScript[5],
+            $integrationScript[6],
+            $integrationScript[7],
         ];
 
         $result1 = self::executeScript([
             $steps[0],
             $steps[1],
+            $steps[2],
             'echo "$CHANGED_FILES"',
         ]);
 
@@ -111,12 +114,8 @@ final class CiIntegrationTest extends TestCase
             $steps[0],
             $steps[1],
             $steps[2],
-            'echo "${#EXTRA_ARGS[@]}"',
-            'echo "${EXTRA_ARGS[@]}"',
-            'echo "${EXTRA_ARGS[0]}"',
-            'echo "${EXTRA_ARGS[1]}"',
-            'echo "${EXTRA_ARGS[2]}"',
-            'echo "${EXTRA_ARGS[3]}"',
+            $steps[3],
+            'echo "${EXTRA_ARGS}"',
         ]);
 
         $this->assertSame(implode("\n", $expectedResult2Lines), $result2->getOutput());
@@ -126,6 +125,7 @@ final class CiIntegrationTest extends TestCase
             $steps[1],
             $steps[2],
             $steps[3],
+            $steps[4],
         ]);
 
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.2.*.
@@ -174,8 +174,6 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     'dir b/file b.php',
                 ],
                 [
-                    '4',
-                    '--path-mode=intersection -- dir a/file.php dir b/file b.php',
                     '--path-mode=intersection',
                     '--',
                     'dir a/file.php',
@@ -200,11 +198,6 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     'dir b/file b.php',
                 ],
                 [
-                    '0',
-                    '',
-                    '',
-                    '',
-                    '',
                     '',
                     '',
                 ],
@@ -224,11 +217,6 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     'dir b/file b.php',
                 ],
                 [
-                    '0',
-                    '',
-                    '',
-                    '',
-                    '',
                     '',
                     '',
                 ],
@@ -248,11 +236,6 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     'dir b/file b.php',
                 ],
                 [
-                    '0',
-                    '',
-                    '',
-                    '',
-                    '',
                     '',
                     '',
                 ],

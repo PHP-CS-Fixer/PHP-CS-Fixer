@@ -13,13 +13,14 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -32,7 +33,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author SpacePossum
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -159,7 +160,7 @@ final class Example
         $divisionContent = null;
         if ($tokens[$startIndex - 1]->isWhitespace()) {
             $divisionContent = $tokens[$startIndex - 1]->getContent();
-            if (preg_match('#(\n|\r\n)#', $divisionContent, $matches)) {
+            if (Preg::match('#(\n|\r\n)#', $divisionContent, $matches)) {
                 $divisionContent = $matches[0].trim($divisionContent, "\r\n");
             }
         }
@@ -169,13 +170,13 @@ final class Example
             $token = $tokens[$i];
 
             if ($token->equals(')')) {
-                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i, false);
+                $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i);
 
                 continue;
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
-                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $i, false);
+                $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $i);
 
                 continue;
             }

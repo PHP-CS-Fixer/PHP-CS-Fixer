@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -30,7 +30,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author SpacePossum
  */
-final class ClassDefinitionFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -192,7 +192,7 @@ interface Bar extends
      *
      * @return array
      */
-    private function fixClassyDefinitionExtends(Tokens $tokens, $classOpenIndex, $classExtendsInfo)
+    private function fixClassyDefinitionExtends(Tokens $tokens, $classOpenIndex, array $classExtendsInfo)
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
 
@@ -241,7 +241,7 @@ interface Bar extends
      *
      * @return int
      */
-    private function fixClassyDefinitionOpenSpacing(Tokens $tokens, $classDefInfo)
+    private function fixClassyDefinitionOpenSpacing(Tokens $tokens, array $classDefInfo)
     {
         if ($classDefInfo['anonymousClass']) {
             if (false !== $classDefInfo['implements']) {

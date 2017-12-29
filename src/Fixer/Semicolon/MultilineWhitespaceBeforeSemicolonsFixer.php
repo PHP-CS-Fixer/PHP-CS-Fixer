@@ -13,12 +13,13 @@
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -26,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Graham Campbell <graham@alt-three.com>
  * @author Egidijus Girčys <e.gircys@gmail.com>
  */
-final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @internal
@@ -283,7 +284,7 @@ function foo () {
             $content = $tokens[$index]->getContent().$content;
         }
 
-        if (1 === preg_match('/\R{1}([ \t]*)$/', $content, $matches)) {
+        if (1 === Preg::match('/\R{1}([ \t]*)$/', $content, $matches)) {
             return $matches[1];
         }
 

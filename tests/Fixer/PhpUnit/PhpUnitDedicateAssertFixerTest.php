@@ -123,6 +123,7 @@ $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
 ',
                 null,
+                ['target' => PhpUnitTargetVersion::VERSION_5_0],
             ],
             [
                 '<?php
@@ -200,6 +201,26 @@ $a#
 ;',
         ];
 
+        $cases[] = [
+            '<?php static::assertInternalType(\'float\', $a);',
+            '<?php static::assertTrue(is_float( $a));',
+        ];
+
+        $cases[] = [
+            '<?php self::assertInternalType(\'float\', $a);',
+            '<?php self::assertTrue(is_float( $a));',
+        ];
+
+        $cases[] = [
+            '<?php static::assertNull($a);',
+            '<?php static::assertTrue(is_null($a));',
+        ];
+
+        $cases[] = [
+            '<?php self::assertNull($a);',
+            '<?php self::assertTrue(is_null($a));',
+        ];
+
         return $cases;
     }
 
@@ -235,6 +256,8 @@ $a#
                     $this->assertFalse(is_nan($a));
                     $this->assertTrue(is_int($a) || \is_bool($b));
                     $this->assertTrue($a&&is_int($a));
+                    static::assertTrue(is_null);
+                    self::assertTrue(is_null);
                 ',
             ],
         ];

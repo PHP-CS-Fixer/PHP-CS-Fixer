@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class FunctionDeclarationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class FunctionDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @internal

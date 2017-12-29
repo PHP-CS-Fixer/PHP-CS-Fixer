@@ -13,12 +13,13 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -28,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  */
-final class MethodArgumentSpaceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class MethodArgumentSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -52,12 +53,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,\n    2);\n",
-                    ['ensure_fully_multiline' => true]
+                    ['ensure_fully_multiline' => false]
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample('foo',    'foobarbaz', 'baz');\nsample('foobar', 'bar',       'baz');\n",
                     [
-                        'ensure_fully_multiline' => true,
+                        'ensure_fully_multiline' => false,
                         'keep_multiple_spaces_after_comma' => true,
                     ]
                 ),
@@ -117,7 +118,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 'Ensure every argument of a multiline argument list is on its own line'
             ))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO 3.0 should be true
+                ->setDefault(true)
                 ->getOption(),
         ]);
     }
@@ -140,19 +141,19 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             $token = $tokens[$index];
 
             if ($token->equals(')')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                 continue;
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
                 continue;
             }
 
             if ($token->equals('}')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
                 continue;
             }
@@ -199,20 +200,20 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
 
             // skip nested method calls and arrays
             if ($token->equals(')')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                 continue;
             }
 
             // skip nested arrays
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
                 continue;
             }
 
             if ($token->equals('}')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
                 continue;
             }
@@ -276,7 +277,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         //  2) no space after comma
         if ($nextToken->isWhitespace()) {
             if (
-                ($this->configuration['keep_multiple_spaces_after_comma'] && !preg_match('/\R/', $nextToken->getContent()))
+                ($this->configuration['keep_multiple_spaces_after_comma'] && !Preg::match('/\R/', $nextToken->getContent()))
                 || $this->isCommentLastLineToken($tokens, $index + 2)
             ) {
                 return;

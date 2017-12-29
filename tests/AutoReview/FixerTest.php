@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
@@ -31,6 +31,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class FixerTest extends TestCase
 {
@@ -54,7 +55,7 @@ final class FixerTest extends TestCase
         /** @var FixerInterface $fixer */
         $fixerName = $fixer->getName();
         $definition = $fixer->getDefinition();
-        $fixerIsConfigurable = $fixer instanceof ConfigurationDefinitionFixerInterface;
+        $fixerIsConfigurable = $fixer instanceof ConfigurableFixerInterface;
 
         $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixerName));
 
@@ -175,11 +176,11 @@ final class FixerTest extends TestCase
     }
 
     /**
-     * @param ConfigurationDefinitionFixerInterface $fixer
+     * @param ConfigurableFixerInterface $fixer
      *
      * @dataProvider provideFixerConfigurationDefinitionsCases
      */
-    public function testFixerConfigurationDefinitions(ConfigurationDefinitionFixerInterface $fixer)
+    public function testFixerConfigurationDefinitions(ConfigurableFixerInterface $fixer)
     {
         $configurationDefinition = $fixer->getConfigurationDefinition();
 
@@ -206,7 +207,7 @@ final class FixerTest extends TestCase
     public function provideFixerConfigurationDefinitionsCases()
     {
         $fixers = array_filter($this->getAllFixers(), static function (FixerInterface $fixer) {
-            return $fixer instanceof ConfigurationDefinitionFixerInterface;
+            return $fixer instanceof ConfigurableFixerInterface;
         });
 
         return array_map(static function (FixerInterface $fixer) {
@@ -222,8 +223,6 @@ final class FixerTest extends TestCase
     }
 
     /**
-     * copy paste from GeckoPackages/GeckoPHPUnit StringsAssertTrait, to replace with Trait when possible.
-     *
      * @param mixed  $actual
      * @param string $message
      */

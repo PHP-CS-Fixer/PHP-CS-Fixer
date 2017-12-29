@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private $fixCallback;
 
@@ -106,7 +106,8 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
      */
     private function fixConcatenationToNoSpace(Tokens $tokens, $index)
     {
-        if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
+        $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
+        if (!$prevNonWhitespaceToken->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT]) || '/*' === substr($prevNonWhitespaceToken->getContent(), 0, 2)) {
             $tokens->removeLeadingWhitespace($index, " \t");
         }
 

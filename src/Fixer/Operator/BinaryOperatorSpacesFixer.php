@@ -13,11 +13,12 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -28,7 +29,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @internal
@@ -203,8 +204,8 @@ $h = $i===  $j;
      */
     public function getPriority()
     {
-        // must run after ArraySyntaxFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer and StrictComparisonFixer.
-        return -1;
+        // must run after ArraySyntaxFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer, StrictComparisonFixer and ArrayIndentationFixer.
+        return -31;
     }
 
     /**
@@ -684,7 +685,7 @@ $h = $i===  $j;
                                 $before .= ' ';
                             }
                         } elseif (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
-                            if (1 !== preg_match('/^\h+$/', $before)) { // if indent; do not move, leave to other fixer
+                            if (1 !== Preg::match('/^\h+$/', $before)) { // if indent; do not move, leave to other fixer
                                 $before = rtrim($before).' ';
                             }
                         }

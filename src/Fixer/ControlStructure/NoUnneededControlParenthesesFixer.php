@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
  */
-final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private static $loops = [
         'break' => ['lookupTokens' => T_BREAK, 'neededSuccessors' => [';']],

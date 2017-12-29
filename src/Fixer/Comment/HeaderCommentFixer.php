@@ -13,12 +13,13 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Options;
@@ -27,7 +28,7 @@ use Symfony\Component\OptionsResolver\Options;
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  * @author SpacePossum
  */
-final class HeaderCommentFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @internal
@@ -285,8 +286,8 @@ echo 1;
         $prev = $tokens->getPrevNonWhitespace($headerIndex);
 
         $regex = '/[\t ]$/';
-        if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && preg_match($regex, $tokens[$prev]->getContent())) {
-            $tokens[$prev] = new Token([T_OPEN_TAG, preg_replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
+        if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && Preg::match($regex, $tokens[$prev]->getContent())) {
+            $tokens[$prev] = new Token([T_OPEN_TAG, Preg::replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
         }
 
         $lineBreakCount = $this->getLineBreakCount($tokens, $prev, $headerIndex);

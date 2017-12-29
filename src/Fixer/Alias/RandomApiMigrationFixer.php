@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -26,7 +26,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer implements ConfigurationDefinitionFixerInterface
+final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer implements ConfigurableFixerInterface
 {
     /**
      * @var array

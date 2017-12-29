@@ -223,7 +223,7 @@ Fixing examples:
     private function execute($name, $decorated)
     {
         $fixer = $this->prophesize();
-        $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface::class);
+        $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
         $fixer->willImplement(\PhpCsFixer\Fixer\DeprecatedFixerInterface::class);
 
         $fixer->getName()->willReturn('Foo/bar');

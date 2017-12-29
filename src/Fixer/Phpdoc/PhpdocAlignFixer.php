@@ -13,13 +13,14 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -31,7 +32,7 @@ use PhpCsFixer\Utils;
  * @author Graham Campbell <graham@alt-three.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     private $regex;
     private $regexCommentLine;
@@ -118,7 +119,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
          * annotations are of the correct type, and are grouped correctly
          * before running this fixer.
          */
-        return -11;
+        return -21;
     }
 
     /**
@@ -154,10 +155,10 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             ->setAllowedValues([
                 $generator->allowedValueIsSubsetOf(self::$alignableTags),
             ])
-            // By default, all tags apart from @property and @method will be aligned for backwards compatibility
-            // @TODO 3.0 Align all available tags by default
             ->setDefault([
+                'method',
                 'param',
+                'property',
                 'return',
                 'throws',
                 'type',
@@ -290,7 +291,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
      */
     private function getMatches($line, $matchCommentOnly = false)
     {
-        if (preg_match($this->regex, $line, $matches)) {
+        if (Preg::match($this->regex, $line, $matches)) {
             if (!empty($matches['tag2'])) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
@@ -306,7 +307,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             return $matches;
         }
 
-        if ($matchCommentOnly && preg_match($this->regexCommentLine, $line, $matches)) {
+        if ($matchCommentOnly && Preg::match($this->regexCommentLine, $line, $matches)) {
             $matches['tag'] = null;
             $matches['var'] = '';
             $matches['hint'] = '';

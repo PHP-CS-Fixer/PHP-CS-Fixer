@@ -13,7 +13,7 @@
 namespace PhpCsFixer;
 
 use PhpCsFixer\Doctrine\Annotation\Tokens as DoctrineAnnotationTokens;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\Tokenizer\Token as PhpToken;
@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @internal
  */
-abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var array
@@ -205,6 +205,10 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
     {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
+
+            if (null === $index) {
+                return false;
+            }
         } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL]));
 
         if ($tokens[$index]->isClassy()) {

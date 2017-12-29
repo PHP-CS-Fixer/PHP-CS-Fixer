@@ -572,17 +572,17 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDoesNotAlignPropertyByDefault()
+    public function testDoesAlignPropertyByDefault()
     {
         $expected = <<<'EOF'
 <?php
     /**
-     * @param  int       $foobar Description
-     * @return int
-     * @throws Exception
-     * @var    FooBar
-     * @type   BarFoo
-     * @property     string    $foo   Hello World
+     * @param    int       $foobar Description
+     * @return   int
+     * @throws   Exception
+     * @var      FooBar
+     * @type     BarFoo
+     * @property string    $foo    Hello World
      */
 EOF;
 
@@ -632,17 +632,17 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDoesNotAlignMethodByDefault()
+    public function testDoesAlignMethodByDefault()
     {
         $expected = <<<'EOF'
 <?php
     /**
-     * @param  int       $foobar Description
+     * @param  int       $foobar          Description
      * @return int
      * @throws Exception
      * @var    FooBar
      * @type   BarFoo
-     * @method     string    foo(string $bar)   Hello World
+     * @method string    foo(string $bar) Hello World
      */
 EOF;
 
