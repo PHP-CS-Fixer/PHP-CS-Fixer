@@ -472,7 +472,7 @@ EOT
          */
         public function testMessageOnMultilines()
         {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines AAA');
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines AAA €');
 
             aaa();
         }
@@ -482,9 +482,9 @@ EOT
          */
         public function testMessageOnMultilinesWithAnotherTag()
         {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines BBB');
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines BBB è');
 
-            aaa();
+            bbb();
         }
 
         /**
@@ -493,9 +493,9 @@ EOT
          */
         public function testMessageOnMultilinesWithAnotherSpaceAndTag()
         {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines CCC');
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines CCC ✔');
 
-            aaa();
+            ccc();
         }
     }
 EOT
@@ -509,6 +509,7 @@ EOT
          * @expectedExceptionMessage Message
          *                           on
          *                           multilines AAA
+         *                           €
          */
         public function testMessageOnMultilines()
         {
@@ -520,6 +521,7 @@ EOT
          * @expectedExceptionMessage Message
          *                           on
          *                           multilines BBB
+         *                           è
          * @foo
          */
         public function testMessageOnMultilinesWithAnotherTag()
@@ -532,6 +534,7 @@ EOT
          * @expectedExceptionMessage Message
          *                           on
          *                           multilines CCC
+         *                           ✔
          *
          * @foo
          */
