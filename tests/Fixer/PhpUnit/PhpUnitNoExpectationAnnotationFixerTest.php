@@ -470,9 +470,30 @@ EOT
     {
         /**
          */
-        public function testElementNonExistent()
+        public function testMessageOnMultilines()
         {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines');
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines AAA');
+
+            aaa();
+        }
+
+        /**
+         * @foo
+         */
+        public function testMessageOnMultilinesWithAnotherTag()
+        {
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines BBB');
+
+            aaa();
+        }
+
+        /**
+         *
+         * @foo
+         */
+        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
+        {
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines CCC');
 
             aaa();
         }
@@ -487,11 +508,36 @@ EOT
          * @expectedException \RuntimeException
          * @expectedExceptionMessage Message
          *                           on
-         *                           multilines
+         *                           multilines AAA
          */
-        public function testElementNonExistent()
+        public function testMessageOnMultilines()
         {
             aaa();
+        }
+
+        /**
+         * @expectedException \RuntimeException
+         * @expectedExceptionMessage Message
+         *                           on
+         *                           multilines BBB
+         * @foo
+         */
+        public function testMessageOnMultilinesWithAnotherTag()
+        {
+            bbb();
+        }
+
+        /**
+         * @expectedException \RuntimeException
+         * @expectedExceptionMessage Message
+         *                           on
+         *                           multilines CCC
+         *
+         * @foo
+         */
+        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
+        {
+            ccc();
         }
     }
 EOT
