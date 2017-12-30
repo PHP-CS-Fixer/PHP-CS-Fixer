@@ -118,7 +118,7 @@ final class ProcessLinter implements LinterInterface
     {
         // in case php://stdin
         if (!is_file($path)) {
-            return $this->createProcessForSource(FileReader::createSingletone()->read($path));
+            return $this->createProcessForSource(FileReader::createSingleton()->read($path));
         }
 
         $process = $this->processBuilder->build($path);

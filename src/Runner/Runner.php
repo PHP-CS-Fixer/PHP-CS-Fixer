@@ -164,7 +164,7 @@ final class Runner
             return;
         }
 
-        $old = FileReader::createSingletone()->read($file->getRealPath());
+        $old = FileReader::createSingleton()->read($file->getRealPath());
         $tokens = Tokens::fromCode($old);
         $oldHash = $tokens->getCodeHash();
 

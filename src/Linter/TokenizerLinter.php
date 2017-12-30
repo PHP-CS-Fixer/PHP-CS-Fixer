@@ -45,7 +45,7 @@ final class TokenizerLinter implements LinterInterface
      */
     public function lintFile($path)
     {
-        return $this->lintSource(FileReader::createSingletone()->read($path));
+        return $this->lintSource(FileReader::createSingleton()->read($path));
     }
 
     /**

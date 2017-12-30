@@ -36,7 +36,7 @@ final class FileReader
     /**
      * @return self
      */
-    public static function createSingletone()
+    public static function createSingleton()
     {
         if (null === self::$instance) {
             self::$instance = new self();

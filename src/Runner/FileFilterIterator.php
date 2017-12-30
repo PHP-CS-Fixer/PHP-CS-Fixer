@@ -75,7 +75,7 @@ final class FileFilterIterator extends \FilterIterator
             return false;
         }
 
-        $content = @FileReader::createSingletone()->read($path);
+        $content = @FileReader::createSingleton()->read($path);
         if (false === $content) {
             $error = error_get_last();
 
