@@ -973,7 +973,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // comment
+    // comment
     } else {
         $c = "c";
     }
@@ -1685,7 +1685,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // comment
+    // comment
     } else {
         $c = "c";
     }
@@ -2777,6 +2777,27 @@ function foo()
         echo 1;
     };',
                 self::$configurationOopPositionSameLine,
+            ),
+            array(
+                '<?php
+    // 2.5+ API
+    if (isNewApi()) {
+        echo "new API";
+    // 2.4- API
+    } elseif (isOldApi()) {
+        echo "old API";
+    // 2.4- API
+    } else {
+        echo "unknown API";
+        // sth
+    }
+
+    return $this->guess($class, $property, function (Constraint $constraint) use ($guesser) {
+        return $guesser->guessRequiredForConstraint($constraint);
+    // Fallback to false...
+    // ... due to sth...
+    }, false);
+    ',
             ),
         );
     }
