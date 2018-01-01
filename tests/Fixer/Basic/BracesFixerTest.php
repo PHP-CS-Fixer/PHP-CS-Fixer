@@ -4074,6 +4074,36 @@ if (true) {
     /**
      * @param string      $expected
      * @param null|string $input
+     *
+     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
+     */
+    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
+    {
+        return array(
+            array(
+                '<?php
+if (true) {
+    do {
+        echo 1;
+    } while (false);
+}',
+                '<?php
+if (true)
+    do {
+        echo 1;
+    } while (false);',
+            ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
      * @param null|array  $configuration
      *
      * @dataProvider provideMessyWhitespacesCases
@@ -4122,35 +4152,5 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 self::$configurationOopPositionSameLine,
             ),
         );
-    }
-
-    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
-    {
-        return array(
-            array(
-                '<?php
-if (true) {
-    do {
-        echo 1;
-    } while (false);
-}',
-                '<?php
-if (true)
-    do {
-        echo 1;
-    } while (false);',
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
-     */
-    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
     }
 }
