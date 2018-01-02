@@ -18,9 +18,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer
  */
-final class NoExtraConsecutiveBlankLinesFixerTest extends AbstractFixerTestCase
+final class NoExtraBlankLinesFixerTest extends AbstractFixerTestCase
 {
     private $template = <<<'EOF'
 <?php
@@ -489,7 +489,7 @@ $b = 1;
     public function testWrongConfig()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[no_extra_consecutive_blank_lines\] Invalid configuration: The option "tokens" .*\.$/');
+        $this->expectExceptionMessageRegExp('/^\[no_extra_blank_lines\] Invalid configuration: The option "tokens" .*\.$/');
 
         $this->fixer->configure(['tokens' => ['__TEST__']]);
     }

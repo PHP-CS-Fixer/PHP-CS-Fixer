@@ -814,7 +814,7 @@ Choose from the list of available rules:
 
   Remove useless semicolon statements.
 
-* **no_extra_consecutive_blank_lines** [@Symfony]
+* **no_extra_blank_lines** [@Symfony]
 
   Removes extra blank lines and/or blank lines following configuration.
 
