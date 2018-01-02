@@ -1025,7 +1025,7 @@ Choose from the list of available rules:
   - ``assertions`` (``array``): list of assertion methods to fix; defaults to
     ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
 
-* **php_unit_dedicate_assert** [@Symfony:risky, @PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+* **php_unit_dedicate_assert** [@PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   PHPUnit assertions like "assertInternalType", "assertFileExists", should
   be used over "assertTrue".
