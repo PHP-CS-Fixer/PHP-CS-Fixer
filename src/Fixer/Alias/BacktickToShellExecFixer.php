@@ -55,6 +55,15 @@ EOT
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // Should run before escape_implicit_backslashes
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $backtickStarted = false;
