@@ -822,6 +822,15 @@ Choose from the list of available rules:
 
   - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
 
+* **no_extra_consecutive_blank_lines**
+
+  Removes extra blank lines and/or blank lines following configuration.
+  DEPRECATED: use ``no_extra_blank_lines`` instead.
+
+  Configuration options:
+
+  - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
+
 * **no_homoglyph_names** [@Symfony:risky]
 
   Replace accidental usage of homoglyphs (non ascii characters) in names.
