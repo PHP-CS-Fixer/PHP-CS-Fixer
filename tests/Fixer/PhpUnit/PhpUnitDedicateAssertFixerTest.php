@@ -42,7 +42,6 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
             'is_null',
             'is_array',
             'is_bool',
-            'is_boolean',
             'is_callable',
             'is_double',
             'is_float',
@@ -65,7 +64,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
     {
         $cases = array();
 
-        foreach (array('array', 'bool', 'boolean', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string') as $type) {
+        foreach (array('array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string') as $type) {
             $cases[] = array(
                 sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
                 sprintf('<?php $this->assertTrue(is_%s($a));', $type),

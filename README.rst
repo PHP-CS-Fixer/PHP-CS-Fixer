@@ -808,10 +808,9 @@ Choose from the list of available rules:
 
   - ``functions`` (``array``): list of assertions to fix; defaults to
     ``['array_key_exists', 'empty', 'file_exists', 'is_infinite', 'is_nan',
-    'is_null', 'is_array', 'is_bool', 'is_boolean', 'is_callable',
-    'is_double', 'is_float', 'is_int', 'is_integer', 'is_long',
-    'is_numeric', 'is_object', 'is_real', 'is_resource', 'is_scalar',
-    'is_string']``
+    'is_null', 'is_array', 'is_bool', 'is_callable', 'is_double',
+    'is_float', 'is_int', 'is_integer', 'is_long', 'is_numeric',
+    'is_object', 'is_real', 'is_resource', 'is_scalar', 'is_string']``
 
 * **php_unit_fqcn_annotation** [@Symfony]
 
