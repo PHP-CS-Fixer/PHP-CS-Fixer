@@ -25,19 +25,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyFix()
-    {
-        $this->fixer->configure(null);
-        $this->doTest(
-             '<?php declare(ticks=1);',
-            '<?php declare(ticks= 1);'
-        );
-    }
-
-    /**
      * @param string $expected
      * @param string $input
      * @param array  $config

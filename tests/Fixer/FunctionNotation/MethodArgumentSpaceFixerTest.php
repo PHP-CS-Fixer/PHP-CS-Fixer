@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -716,14 +715,5 @@ INPUT
                 '<?php function A($c ,...$a){}',
             ],
         ];
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0.
-     */
-    public function testLegacyFixSpace()
-    {
-        $this->fixer->fixSpace(Tokens::fromCode('<?php xyz("", "", "", "");'), 1);
     }
 }

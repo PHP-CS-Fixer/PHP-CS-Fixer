@@ -280,25 +280,6 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing "functions" at the root of the configuration is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
-     */
-    public function testLegacyConfig()
-    {
-        $this->fixer->configure(['file_exists']);
-        $this->doTest(
-            '<?php
-                    $this->assertFileExists($a);
-                    $this->assertTrue(is_infinite($a));
-            ',
-            '<?php
-                    $this->assertTrue(file_exists($a));
-                    $this->assertTrue(is_infinite($a));
-            '
-        );
-    }
-
-    /**
-     * @group legacy
      * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
      */
     public function testConfig()

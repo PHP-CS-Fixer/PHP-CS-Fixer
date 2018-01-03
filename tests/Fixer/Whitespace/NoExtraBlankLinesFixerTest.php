@@ -90,32 +90,6 @@ class Test {
 EOF;
 
     /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyConfigNull()
-    {
-        $this->fixer->configure(null);
-
-        $this->doTest($this->removeLinesFromString($this->template, [23, 24]), $this->template);
-    }
-
-    /**
-     * @param int[]         $lineNumberRemoved Line numbers expected to be removed after fixing
-     * @param null|string[] $config
-     *
-     * @group legacy
-     * @dataProvider provideWithConfigCases
-     * @expectedDeprecation Passing "tokens" at the root of the configuration is deprecated and will not be supported in 3.0, use "tokens" => array(...) option instead.
-     */
-    public function testLegacyWithConfig(array $lineNumberRemoved, array $config)
-    {
-        $this->fixer->configure($config);
-
-        $this->doTest($this->removeLinesFromString($this->template, $lineNumberRemoved), $this->template);
-    }
-
-    /**
      * @param int[]         $lineNumberRemoved Line numbers expected to be removed after fixing
      * @param null|string[] $config
      *
@@ -669,56 +643,6 @@ $a = new Qux();',
     public function testRemoveBetweenUseTraits()
     {
         $this->fixer->configure(['tokens' => ['use_trait']]);
-        $this->doTest(
-            '<?php
-            namespace T\A;
-            use V;
-
-
-            use W;
-
-            class Test {
-                use A;
-                use B;
-
-                private function test($b) {
-
-                    $a = function() use ($b) { echo $b;};
-
-                    $b = function() use ($b) { echo $b;};
-
-                }
-            }',
-            '<?php
-            namespace T\A;
-            use V;
-
-
-            use W;
-
-            class Test {
-                use A;
-
-                use B;
-
-                private function test($b) {
-
-                    $a = function() use ($b) { echo $b;};
-
-                    $b = function() use ($b) { echo $b;};
-
-                }
-            }'
-        );
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Token "useTrait" is deprecated and will be removed in 3.0, use "use_trait" instead.
-     */
-    public function testRemoveBetweenUseTraitsDeprecatedToken()
-    {
-        $this->fixer->configure(['tokens' => ['useTrait']]);
         $this->doTest(
             '<?php
             namespace T\A;

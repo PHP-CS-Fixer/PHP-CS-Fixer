@@ -35,7 +35,7 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 
