@@ -45,6 +45,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
 $plain = `ls -lah`;
 $withVar = `ls -lah $var1 ${var2} {$var3} {$var4[0]} {$var5->call()}`;
 $withQuotes = `ls -lah a\"m\\\\z`;
+$withBacktick = `ls -lah 'foo\`bar'`;
 
 EOT
                 ),
@@ -106,7 +107,7 @@ EOT
         array_pop($backtickTokens);
 
         // Double-quoted strings are parsed differenly if they contains
-        // variables or not
+        // variables or not, so we need to build the new token array accordingly
         $count = count($backtickTokens);
 
         $newTokens = [
@@ -122,7 +123,7 @@ EOT
 
                 continue;
             }
-            $content = str_replace('\\"', '\\\\\\"', $token->getContent());
+            $content = str_replace(['\\`', '\\"'], ['`', '\\\\\\"'], $token->getContent());
             $kind = T_ENCAPSED_AND_WHITESPACE;
             if (1 === $count) {
                 $content = '"'.$content.'"';

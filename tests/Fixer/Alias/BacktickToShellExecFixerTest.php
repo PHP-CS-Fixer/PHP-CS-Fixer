@@ -69,6 +69,18 @@ EOT
 EOT
 ,
             ],
+            'with backtick' => [
+<<<'EOT'
+<?php
+shell_exec("echo 'foo`bar'");
+EOT
+,
+<<<'EOT'
+<?php
+`echo 'foo\`bar'`;
+EOT
+,
+            ],
         ];
     }
 }
