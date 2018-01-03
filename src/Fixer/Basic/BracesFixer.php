@@ -439,7 +439,42 @@ class Foo
                             $whitespace = $nextWhitespace.$this->whitespacesConfig->getLineEnding().$indent;
 
                             if (!$nextNonWhitespaceNestToken->equals('}')) {
-                                $whitespace .= $this->whitespacesConfig->getIndent();
+                                $determineIsIndentableBlockContent = function ($contentIndex) use ($tokens) {
+                                    if (!$tokens[$contentIndex]->isComment()) {
+                                        return true;
+                                    }
+
+                                    if (!$tokens[$tokens->getPrevMeaningfulToken($contentIndex)]->equals(';')) {
+                                        return true;
+                                    }
+
+                                    $nextIndex = $tokens->getNextMeaningfulToken($contentIndex);
+
+                                    if (!$tokens[$nextIndex]->equals('}')) {
+                                        return true;
+                                    }
+
+                                    $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+
+                                    if (null === $nextNextIndex) {
+                                        return true;
+                                    }
+
+                                    if ($tokens[$nextNextIndex]->equalsAny(array(
+                                        array(T_ELSE),
+                                        array(T_ELSEIF),
+                                        ',',
+                                    ))) {
+                                        return false;
+                                    }
+
+                                    return true;
+                                };
+
+                                // add extra indent only if current content is not a comment for content outside of current block
+                                if ($determineIsIndentableBlockContent($nestIndex + 2)) {
+                                    $whitespace .= $this->whitespacesConfig->getIndent();
+                                }
                             }
                         }
 
