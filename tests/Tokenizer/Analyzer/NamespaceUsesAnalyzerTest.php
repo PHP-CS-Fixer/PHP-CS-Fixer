@@ -111,6 +111,21 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     21
                 ),
             ], [1, 12]],
+
+            // TODO: How to support these:
+
+            // Function and constant imports
+            // ['<?php use function My\count;', [], []],
+            // ['<?php use function My\count as myCount;', [], []],
+            // ['<?php use const My\Full\CONSTANT;', [], []],
+
+            // Multiple imports on one line:
+            // use My\Full\Classname as Another, My\Full\NSname;
+
+            // PHP 7+ code
+            // use some\namespace\{ClassA, ClassB, ClassC as C};
+            // use function some\namespace\{fn_a, fn_b, fn_c};
+            // use const some\namespace\{ConstA, ConstB, ConstC};
         ];
     }
 }

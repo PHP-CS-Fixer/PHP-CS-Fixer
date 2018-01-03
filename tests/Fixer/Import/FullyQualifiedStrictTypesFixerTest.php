@@ -119,6 +119,77 @@ namespace Foo\Bar {
     }
 }',
             ],
+            // Test fixes in interface
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+interface SomeClass
+{
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+interface SomeClass
+{
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
+}'
+            ],
+            // Test fixes in trait
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+trait SomeClass
+{
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz
+    {
+    }
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+trait SomeClass
+{
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz
+    {
+    }
+}',
+            ],
+            // Test fixes in regular functions
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz
+{
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz
+{
+}',
+            ],
         ];
     }
 
@@ -184,6 +255,77 @@ namespace Foo\Bar {
         {
         }
     }
+}',
+            ],
+// Test fixes in interface
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+interface SomeClass
+{
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz);
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+interface SomeClass
+{
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz);
+}'
+            ],
+            // Test fixes in trait
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+trait SomeClass
+{
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
+    {
+    }
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+trait SomeClass
+{
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+    {
+    }
+}',
+            ],
+            // Test fixes in regular functions
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
+{
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+{
 }',
             ],
             // Test partial namespace and use imports
