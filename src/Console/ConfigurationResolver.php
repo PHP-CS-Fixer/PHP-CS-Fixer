@@ -767,7 +767,9 @@ final class ConfigurationResolver
             array_walk(
                 $currentFinder,
                 function (&$item) {
-                    $item = new \SplFileInfo($item);
+                    if (!($item instanceof \SplFileInfo)) { // do not use `is_string` to prevent reference mismatch
+                        $item = new \SplFileInfo($item);
+                    }
                 }
             );
 
