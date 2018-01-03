@@ -113,6 +113,19 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param string $progressType
      *
+     * @dataProvider provideProgressTypeLegacyCases
+     *
+     * @group legacy
+     * @expectedDeprecation Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.
+     */
+    public function testResolveProgressWithPositiveConfigAndExplicitProgressLegacy($progressType)
+    {
+        $this->testResolveProgressWithPositiveConfigAndExplicitProgress($progressType);
+    }
+
+    /**
+     * @param string $progressType
+     *
      * @dataProvider provideProgressTypeCases
      */
     public function testResolveProgressWithNegativeConfigAndExplicitProgress($progressType)
@@ -129,13 +142,33 @@ final class ConfigurationResolverTest extends TestCase
         $this->assertSame($progressType, $resolver->getProgress());
     }
 
+    /**
+     * @param string $progressType
+     *
+     * @dataProvider provideProgressTypeLegacyCases
+     *
+     * @group legacy
+     * @expectedDeprecation Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.
+     */
+    public function testResolveProgressWithNegativeConfigAndExplicitProgressLegacy($progressType)
+    {
+        $this->testResolveProgressWithNegativeConfigAndExplicitProgress($progressType);
+    }
+
+    public function provideProgressTypeLegacyCases()
+    {
+        return [
+            ['run-in'],
+            ['estimating'],
+            ['estimating-max'],
+        ];
+    }
+
     public function provideProgressTypeCases()
     {
         return [
             ['none'],
-            ['run-in'],
-            ['estimating'],
-            ['estimating-max'],
+            ['dots'],
         ];
     }
 
@@ -148,7 +181,7 @@ final class ConfigurationResolverTest extends TestCase
         ]);
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "run-in", "estimating", "estimating-max".');
+        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "run-in", "estimating", "estimating-max", "dots".');
 
         $resolver->getProgress();
     }

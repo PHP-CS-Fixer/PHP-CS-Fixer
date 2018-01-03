@@ -209,9 +209,10 @@ The ``--stop-on-violation`` flag stops the execution upon first file that needs 
 The ``--show-progress`` option allows you to choose the way process progress is rendered:
 
 * ``none``: disables progress output;
-* ``run-in``: simple single-line progress output;
-* ``estimating``: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
-* ``estimating-max``: same as ``estimating`` but using all terminal columns instead of default 80.
+* ``run-in``: [deprecated] simple single-line progress output;
+* ``estimating``: [deprecated] multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
+* ``estimating-max``: [deprecated] same as ``dots``;
+* ``dots``: same as ``estimating`` but using all terminal columns instead of default 80.
 
 If the option is not provided, it defaults to ``run-in`` unless a config file that disables output is used, in which case it defaults to ``none``. This option has no effect if the verbosity of the command is less than ``verbose``.
 
