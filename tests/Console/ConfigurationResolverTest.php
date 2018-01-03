@@ -1040,7 +1040,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFinders
+     * @dataProvider provideFinderCases
      *
      * @param mixed $finder
      */
@@ -1063,7 +1063,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFinders
+     * @dataProvider provideFinderCases
      *
      * @param mixed $finder
      */
@@ -1082,7 +1082,7 @@ final class ConfigurationResolverTest extends TestCase
         }
     }
 
-    public function provideFinders()
+    public function provideFinderCases()
     {
         $path = $this->getFixPath();
 

@@ -32,7 +32,7 @@ use Symfony\Component\Finder\Finder;
 final class RunnerTest extends TestCase
 {
     /**
-     * @dataProvider provideFinders
+     * @dataProvider provideFinderCases
      *
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
@@ -140,7 +140,7 @@ final class RunnerTest extends TestCase
         $this->assertSame($pathToInvalidFile, $error->getFilePath());
     }
 
-    public function provideFinders()
+    public function provideFinderCases()
     {
         $path = $this->getFixPath();
 
