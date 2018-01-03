@@ -32,7 +32,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 

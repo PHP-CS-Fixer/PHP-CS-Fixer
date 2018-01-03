@@ -65,7 +65,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 

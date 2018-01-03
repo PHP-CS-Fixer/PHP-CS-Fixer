@@ -27,20 +27,6 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
      * @param string      $expected PHP code
      * @param null|string $input    PHP code
      *
-     * @group legacy
-     * @dataProvider provideDefaultConfigurationTestCases
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
-    {
-        $this->fixer->configure(null);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected PHP code
-     * @param null|string $input    PHP code
-     *
      * @dataProvider provideDefaultConfigurationTestCases
      */
     public function testFixWithDefaultConfiguration($expected, $input = null)
