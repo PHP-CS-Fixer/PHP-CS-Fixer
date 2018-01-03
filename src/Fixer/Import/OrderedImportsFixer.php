@@ -243,14 +243,6 @@ use function CCC\AA;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getDescription()
-    {
-        return 'Ordering use statements.';
-    }
-
-    /**
      * This method is used for sorting the uses in a namespace.
      *
      * @param string[] $first
