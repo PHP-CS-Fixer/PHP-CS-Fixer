@@ -140,7 +140,7 @@ use Foo\Bar\Baz;
 interface SomeClass
 {
     public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
-}'
+}',
             ],
             // Test fixes in trait
             [
@@ -278,7 +278,7 @@ use Foo\Bar\Baz;
 interface SomeClass
 {
     public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz);
-}'
+}',
             ],
             // Test fixes in trait
             [
