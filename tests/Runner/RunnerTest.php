@@ -36,6 +36,8 @@ final class RunnerTest extends TestCase
      *
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
+     *
+     * @param mixed $finder
      */
     public function testThatFixSuccessfully($finder)
     {
@@ -153,10 +155,10 @@ final class RunnerTest extends TestCase
 
         $paths[] = new \SplFileInfo('__INVALID__');
 
-        return [
-            [Finder::create()->in($path)],
-            [new \ArrayIterator($paths)],
-        ];
+        return array(
+            array(Finder::create()->in($path)),
+            array(new \ArrayIterator($paths)),
+        );
     }
 
     private function getFixPath()
