@@ -1020,27 +1020,8 @@ final class ConfigurationResolverTest extends TestCase
                 null,
             ],
             [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
+                \PhpCsFixer\Differ\UnifiedDiffer::class,
                 true,
-            ],
-            [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-                'sbd',
-            ],
-            [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-                true,
-                'sbd',
-            ],
-            [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-                false,
-                'sbd',
-            ],
-            [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-                null,
-                'sbd',
             ],
             [
                 \PhpCsFixer\Differ\UnifiedDiffer::class,
