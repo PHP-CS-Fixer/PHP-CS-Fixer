@@ -52,7 +52,12 @@ final class FileFilterIterator extends \FilterIterator
 
     public function accept()
     {
+        /** @var \SplFileInfo $file */
         $file = $this->current();
+        if (!($file instanceof \SplFileInfo)) {
+            return false;
+        }
+
         $path = $file->getRealPath();
 
         if (isset($this->visitedElements[$path])) {
@@ -61,7 +66,7 @@ final class FileFilterIterator extends \FilterIterator
 
         $this->visitedElements[$path] = true;
 
-        if ($file->isDir() || $file->isLink()) {
+        if (!$file->isFile() || $file->isLink()) {
             return false;
         }
 
