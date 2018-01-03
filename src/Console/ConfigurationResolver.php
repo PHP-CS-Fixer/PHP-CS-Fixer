@@ -753,12 +753,25 @@ final class ConfigurationResolver
             $this->getPath()
         ));
 
+        $currentFinder = $this->getConfig()->getFinder();
+
         if (!count($paths)) {
             if ($isIntersectionPathMode) {
                 return new \ArrayIterator(array());
             }
 
-            return $this->iterableToTraversable($this->getConfig()->getFinder());
+            if (!is_array($currentFinder)) {
+                return $this->iterableToTraversable($currentFinder);
+            }
+
+            array_walk(
+                $currentFinder,
+                function (&$item) {
+                    $item = new \SplFileInfo($item);
+                }
+            );
+
+            return new \ArrayIterator($currentFinder);
         }
 
         $pathsByType = array(
@@ -775,7 +788,7 @@ final class ConfigurationResolver
         }
 
         $nestedFinder = null;
-        $currentFinder = $this->iterableToTraversable($this->getConfig()->getFinder());
+        $currentFinder = $this->iterableToTraversable($currentFinder);
 
         try {
             $nestedFinder = $currentFinder instanceof \IteratorAggregate ? $currentFinder->getIterator() : $currentFinder;
@@ -791,7 +804,13 @@ final class ConfigurationResolver
 
             return new \CallbackFilterIterator(
                 $nestedFinder,
-                function (\SplFileInfo $current) use ($pathsByType) {
+                function ($current) use ($pathsByType) {
+                    if (is_string($current)) {
+                        $current = new \SplFileInfo($current);
+                    } elseif (!($current instanceof \SplFileInfo)) {
+                        return false;
+                    }
+
                     $currentRealPath = $current->getRealPath();
 
                     if (in_array($currentRealPath, $pathsByType['file'], true)) {

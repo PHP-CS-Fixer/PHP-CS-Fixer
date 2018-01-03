@@ -1039,6 +1039,76 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getRules();
     }
 
+    /**
+     * @dataProvider provideFinders
+     *
+     * @param mixed $finder
+     */
+    public function testResolveFinder($finder)
+    {
+        $config = new Config();
+        $config->setFinder($finder);
+
+        $resolver = $this->createConfigurationResolver(array(
+            'path' => array(__DIR__),
+            'path-mode' => 'intersection',
+        ), $config);
+
+        $finder = $resolver->getFinder();
+        $this->assertInstanceOf(\Traversable::class, $finder);
+
+        foreach ($finder as $file) {
+            $this->assertInstanceOf(\SplFileInfo::class, $file);
+        }
+    }
+
+    /**
+     * @dataProvider provideFinders
+     *
+     * @param mixed $finder
+     */
+    public function testResolveFinderWithoutPath($finder)
+    {
+        $config = new Config();
+        $config->setFinder($finder);
+
+        $resolver = $this->createConfigurationResolver(array(), $config);
+
+        $finder = $resolver->getFinder();
+        $this->assertInstanceOf(\Traversable::class, $finder);
+
+        foreach ($finder as $file) {
+            $this->assertInstanceOf(\SplFileInfo::class, $file);
+        }
+    }
+
+    public function provideFinders()
+    {
+        $path = $this->getFixPath();
+
+        $paths = array();
+        foreach (new \DirectoryIterator($path) as $file) {
+            if ($file->isFile()) {
+                $name = $file->getPathname();
+                $paths[$name] = new \SplFileInfo($name);
+            }
+        }
+
+        $splFileInfo = array_values($paths);
+
+        return array(
+            array(Finder::create()->in($path)),
+            array(new \ArrayIterator($splFileInfo)),
+            array($splFileInfo),
+            array(array_keys($paths)),
+        );
+    }
+
+    private function getFixPath()
+    {
+        return __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
+    }
+
     private function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
