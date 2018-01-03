@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  * @author Julien Falque <julien.falque@gmail.com>
  */
-final class AlignMultilineCommentFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class AlignMultilineCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     private $tokenKinds;
 

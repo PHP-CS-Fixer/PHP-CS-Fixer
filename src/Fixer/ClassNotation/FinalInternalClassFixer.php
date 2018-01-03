@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -28,7 +28,7 @@ use Symfony\Component\OptionsResolver\Options;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class FinalInternalClassFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class FinalInternalClassFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}

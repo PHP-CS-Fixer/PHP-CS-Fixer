@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author SpacePossum
  */
-final class SpaceAfterSemicolonFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class SpaceAfterSemicolonFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}

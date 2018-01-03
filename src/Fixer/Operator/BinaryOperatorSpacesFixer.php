@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -28,7 +28,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @internal

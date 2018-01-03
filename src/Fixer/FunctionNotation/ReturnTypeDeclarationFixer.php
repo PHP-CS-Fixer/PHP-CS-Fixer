@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class ReturnTypeDeclarationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class ReturnTypeDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}

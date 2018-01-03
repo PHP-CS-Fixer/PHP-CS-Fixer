@@ -14,7 +14,7 @@ namespace PhpCsFixer\Fixer\ListNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author SpacePossum
  */
-final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private $candidateTokenKind;
 

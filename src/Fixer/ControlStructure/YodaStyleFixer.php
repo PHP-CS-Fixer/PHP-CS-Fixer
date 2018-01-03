@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var array<int|string, Token>

@@ -14,7 +14,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -31,7 +31,7 @@ use Symfony\Component\OptionsResolver\Options;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}

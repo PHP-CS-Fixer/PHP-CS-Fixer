@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\StringNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class EscapeImplicitBackslashesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class EscapeImplicitBackslashesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}

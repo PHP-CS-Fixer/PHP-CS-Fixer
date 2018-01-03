@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -27,7 +27,7 @@ use Symfony\Component\OptionsResolver\Options;
  * @author Antonio J. García Lagar <aj@garcialagar.es>
  * @author SpacePossum
  */
-final class HeaderCommentFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @internal
