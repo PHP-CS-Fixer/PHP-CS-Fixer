@@ -198,8 +198,8 @@ The ``--diff`` flag can be used to let the fixer output all the changes it makes
 
 The ``--diff-format`` option allows to specify in which format the fixer should output the changes it makes:
 
-* ``udiff``: unified diff format;
-* ``sbd``: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
+* ``null``: no diff;
+* ``udiff``: unified diff format.
 
 The ``--allow-risky`` option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.

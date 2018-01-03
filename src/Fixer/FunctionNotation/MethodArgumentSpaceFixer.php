@@ -31,18 +31,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class MethodArgumentSpaceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * Method to insert space after comma and remove space before comma.
-     *
-     * @param Tokens $tokens
-     * @param int    $index
-     */
-    public function fixSpace(Tokens $tokens, $index)
-    {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
-        $this->fixSpace2($tokens, $index);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getDefinition()
@@ -170,7 +158,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             }
 
             if ($token->equals(',')) {
-                $this->fixSpace2($tokens, $index);
+                $this->fixSpace($tokens, $index);
                 if (!$isMultiline && $this->isNewline($tokens[$index + 1])) {
                     $isMultiline = true;
 
@@ -269,7 +257,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      * @param Tokens $tokens
      * @param int    $index
      */
-    private function fixSpace2(Tokens $tokens, $index)
+    private function fixSpace(Tokens $tokens, $index)
     {
         // remove space before comma if exist
         if ($tokens[$index - 1]->isWhitespace()) {

@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\Test;
 
 use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
 use PhpCsFixer\Cache\NullCacheManager;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
@@ -105,19 +105,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
         parent::setUp();
 
         $this->linter = $this->getLinter();
-
-        // @todo remove at 3.0 together with env var itself
-        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
-            Tokens::setLegacyMode(true);
-        }
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        // @todo remove at 3.0
-        Tokens::setLegacyMode(false);
     }
 
     /**
@@ -211,7 +198,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $runner = new Runner(
             new \ArrayIterator([new \SplFileInfo($tmpFile)]),
             $fixers,
-            new SebastianBergmannDiffer(),
+            new UnifiedDiffer(),
             null,
             $errorsManager,
             $this->linter,
@@ -271,7 +258,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $runner = new Runner(
                 new \ArrayIterator([new \SplFileInfo($tmpFile)]),
                 array_reverse($fixers),
-                new SebastianBergmannDiffer(),
+                new UnifiedDiffer(),
                 null,
                 $errorsManager,
                 $this->linter,
