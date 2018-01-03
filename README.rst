@@ -1288,6 +1288,11 @@ Choose from the list of available rules:
     ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'rand' =>
     'mt_rand', 'srand' => 'mt_srand']``
 
+* **regular_expression_utf8_modifier**
+
+  Modifier ``u`` (pattern and subject strings are treated as UTF-8) should
+  be used in PCRE Functions.
+
 * **return_type_declaration** [@Symfony]
 
   There should be one or no space before colon, and one space after it in
