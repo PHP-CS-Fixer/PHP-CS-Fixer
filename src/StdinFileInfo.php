@@ -34,11 +34,6 @@ final class StdinFileInfo extends \SplFileInfo
         return 'php://stdin';
     }
 
-    public function getContents()
-    {
-        return file_get_contents($this->getRealpath());
-    }
-
     public function getATime()
     {
         return 0;
