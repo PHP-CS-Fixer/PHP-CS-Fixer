@@ -15,7 +15,6 @@ namespace PhpCsFixer\Console\Command;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
@@ -459,12 +458,7 @@ EOF
         $count = count($fixers) - 1;
         foreach ($fixers as $i => $fixer) {
             $sets = $getSetsWithRule($fixer->getName());
-
-            if ($fixer instanceof DefinedFixerInterface) {
-                $description = $fixer->getDefinition()->getSummary();
-            } else {
-                $description = '[n/a]';
-            }
+            $description = $fixer->getDefinition()->getSummary();
 
             if ($fixer instanceof DeprecatedFixerInterface) {
                 $successors = $fixer->getSuccessorsNames();

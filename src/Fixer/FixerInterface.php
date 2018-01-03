@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Fixer;
 
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -51,6 +52,13 @@ interface FixerInterface
      * @param Tokens       $tokens Tokens collection
      */
     public function fix(\SplFileInfo $file, Tokens $tokens);
+
+    /**
+     * Returns the definition of the fixer.
+     *
+     * @return FixerDefinitionInterface
+     */
+    public function getDefinition();
 
     /**
      * Returns the name of the fixer.
