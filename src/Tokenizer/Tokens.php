@@ -446,7 +446,7 @@ class Tokens extends \SplFixedArray
             throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
         }
 
-        if (isset($this->blockEndCache[$searchIndex])) {
+        if (!self::isLegacyMode() && isset($this->blockEndCache[$searchIndex])) {
             return $this->blockEndCache[$searchIndex];
         }
 
