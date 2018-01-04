@@ -109,7 +109,7 @@ final class FixCommand extends Command
                     new InputOption('diff-format', '', InputOption::VALUE_REQUIRED, 'Specify diff format.'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, estimating or estimating-max).'),
+                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, estimating, estimating-max or dots).'),
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
@@ -197,7 +197,7 @@ final class FixCommand extends Command
             $progressOutput = new ProcessOutput(
                 $stdErr,
                 $this->eventDispatcher,
-                'estimating-max' === $progressType ? (new Terminal())->getWidth() : null,
+                'estimating' !== $progressType ? (new Terminal())->getWidth() : null,
                 count($finder)
             );
         }
