@@ -875,4 +875,14 @@ final class Sample
             ],
         ];
     }
+
+    public function testSpaceAfterAtIsNotCleared()
+    {
+        $input = '<?php
+/**
+ * @ Security("is_granted(\'CANCEL\', giftCard)")
+ */';
+
+        $this->doTest($input);
+    }
 }
