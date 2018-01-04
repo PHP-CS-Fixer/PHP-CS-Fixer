@@ -26,6 +26,7 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
@@ -35,6 +36,7 @@ use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfoInterface;
+use PhpCsFixer\Utils;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -341,6 +343,25 @@ final class ConfigurationResolver
 
                 if (count($riskyFixers)) {
                     throw new InvalidConfigurationException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky option?', implode(', ', $riskyFixers)));
+                }
+            }
+
+            foreach ($this->fixers as $fixer) {
+                if ($fixer instanceof DeprecatedFixerInterface) {
+                    $successors = $fixer->getSuccessorsNames();
+                    $message = sprintf(
+                        'Fixer `%s` is deprecated%s',
+                        $fixer->getName(),
+                        [] === $successors
+                            ? ' and will be removed on next major version.'
+                            : sprintf(', use %s instead.', Utils::naturalLanguageJoinWithBackticks($successors))
+                    );
+
+                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                        throw new \RuntimeException($message.' This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+                    }
+
+                    @trigger_error($message, E_USER_DEPRECATED);
                 }
             }
         }

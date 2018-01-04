@@ -17,6 +17,7 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
 use PhpCsFixer\ToolInfo;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -1074,6 +1075,24 @@ final class ConfigurationResolverTest extends TestCase
         $this->expectExceptionMessageRegExp('/^Empty rules value is not allowed\.$/');
 
         $resolver->getRules();
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Fixer `Vendor4/foo` is deprecated, use `testA` and `testB` instead.
+     */
+    public function testDeprecatedFixerConfigured()
+    {
+        $fixer = new DeprecatedFixer();
+        $config = new Config();
+        $config->registerCustomFixers([$fixer]);
+
+        $resolver = $this->createConfigurationResolver(
+            ['rules' => $fixer->getName()],
+            $config
+        );
+
+        $resolver->getFixers();
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')
