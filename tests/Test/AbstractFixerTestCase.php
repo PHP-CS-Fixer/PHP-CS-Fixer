@@ -23,6 +23,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
