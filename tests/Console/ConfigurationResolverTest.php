@@ -1075,10 +1075,10 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver(array(), $config);
 
         $finder = $resolver->getFinder();
-        $this->assertInstanceOf(\Traversable::class, $finder);
+        $this->assertInstanceOf('Traversable', $finder);
 
         foreach ($finder as $file) {
-            $this->assertInstanceOf(\SplFileInfo::class, $file);
+            $this->assertInstanceOf('SplFileInfo', $file);
         }
     }
 
