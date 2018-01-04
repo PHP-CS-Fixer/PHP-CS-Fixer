@@ -237,8 +237,6 @@ final class NoUnusedImportsFixer extends AbstractFixer
             } else {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
-
-            $index = $prevIndex;
         }
 
         if ($tokens[$useDeclaration['end']]->equals(';')) { // do not remove `? >`
