@@ -57,7 +57,7 @@ function example($b) {
      */
     public function getPriority()
     {
-        // should be run before BlankLineBeforeReturnFixer, NoExtraConsecutiveBlankLinesFixer, NoWhitespaceInBlankLineFixer and after SimplifiedNullReturnFixer and NoEmptyStatementFixer.
+        // should be run before BlankLineBeforeReturnFixer, NoExtraBlankLinesFixer, NoWhitespaceInBlankLineFixer and after SimplifiedNullReturnFixer and NoEmptyStatementFixer.
         return -18;
     }
 

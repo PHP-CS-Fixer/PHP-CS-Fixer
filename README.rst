@@ -814,9 +814,18 @@ Choose from the list of available rules:
 
   Remove useless semicolon statements.
 
-* **no_extra_consecutive_blank_lines** [@Symfony]
+* **no_extra_blank_lines** [@Symfony]
 
   Removes extra blank lines and/or blank lines following configuration.
+
+  Configuration options:
+
+  - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
+
+* **no_extra_consecutive_blank_lines**
+
+  Removes extra blank lines and/or blank lines following configuration.
+  DEPRECATED: use ``no_extra_blank_lines`` instead.
 
   Configuration options:
 

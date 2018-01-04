@@ -83,7 +83,7 @@ final class RuleSet implements RuleSetInterface
             'no_empty_comment' => true,
             'no_empty_phpdoc' => true,
             'no_empty_statement' => true,
-            'no_extra_consecutive_blank_lines' => ['tokens' => [
+            'no_extra_blank_lines' => ['tokens' => [
                 'curly_brace_block',
                 'extra',
                 'parenthesis_brace_block',
