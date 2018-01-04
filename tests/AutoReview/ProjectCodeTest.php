@@ -116,7 +116,7 @@ final class ProjectCodeTest extends TestCase
 
         $exceptionMethods = [
             'configure', // due to AbstractFixer::configure
-            'getConfigurationDefinition', // due to AbstractFixer::getDefaultConfiguration
+            'getConfigurationDefinition', // due to AbstractFixer::getConfigurationDefinition
             'getDefaultConfiguration', // due to AbstractFixer::getDefaultConfiguration
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
         ];
