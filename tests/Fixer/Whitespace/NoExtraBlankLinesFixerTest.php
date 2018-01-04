@@ -90,17 +90,6 @@ class Test {
 EOF;
 
     /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyConfigNull()
-    {
-        $this->fixer->configure(null);
-
-        $this->doTest($this->removeLinesFromString($this->template, [23, 24]), $this->template);
-    }
-
-    /**
      * @param int[]         $lineNumberRemoved Line numbers expected to be removed after fixing
      * @param null|string[] $config
      *
