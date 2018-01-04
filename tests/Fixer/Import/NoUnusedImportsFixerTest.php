@@ -605,15 +605,24 @@ EOF;
     public function testFixWithComments()
     {
         $input = '<?php
-use#
-\#
-Exception#
-#
-;
+use# 1
+\# 2
+Exception# 3
+# 4
+
+
+
+
+
+  ;
 echo 1;';
 
         $expected = '<?php
-echo 1;';
+# 1
+# 2
+# 3
+# 4
+  echo 1;';
 
         $this->doTest($expected, $input);
     }
@@ -626,6 +635,7 @@ echo 1;';
 namespace Foo;
 
 use Bar\C;
+/* test */
 
 abstract class D extends A implements C
 {
@@ -640,7 +650,7 @@ namespace Foo;
 
 use Bar\C;
 use Foo\A;
-use Foo\Bar\B/* test */;
+use Foo\Bar\B /* test */ ;
 
 abstract class D extends A implements C
 {

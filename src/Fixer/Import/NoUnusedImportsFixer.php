@@ -210,12 +210,33 @@ final class NoUnusedImportsFixer extends AbstractFixer
     private function removeUseDeclaration(Tokens $tokens, array $useDeclaration)
     {
         for ($index = $useDeclaration['end'] - 1; $index >= $useDeclaration['start']; --$index) {
-            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            if ($tokens[$index]->isComment()) {
+                continue;
+            }
+
+            if (!$tokens[$index]->isWhitespace() || false === strpos($tokens[$index]->getContent(), "\n")) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+
+                continue;
+            }
+
+            // when multi line white space keep the line feed if the previous token is a comment
+            $prevIndex = $tokens->getPrevNonWhitespace($index);
+            if ($tokens[$prevIndex]->isComment()) {
+                $content = $tokens[$index]->getContent();
+                $tokens[$index]->setContent(substr($content, strrpos($content, "\n"))); // preserve indent only
+            } else {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            }
+
+            $index = $prevIndex;
         }
 
-        if ($tokens[$useDeclaration['end']]->equals(';')) {
+        if ($tokens[$useDeclaration['end']]->equals(';')) { // do not remove `? >`
             $tokens->clearAt($useDeclaration['end']);
         }
+
+        // remove white space above and below where the `use` statement was
 
         $prevIndex = $useDeclaration['start'] - 1;
         $prevToken = $tokens[$prevIndex];
@@ -223,11 +244,12 @@ final class NoUnusedImportsFixer extends AbstractFixer
         if ($prevToken->isWhitespace()) {
             $content = rtrim($prevToken->getContent(), " \t");
 
-            if ('' !== $content) {
-                $tokens[$prevIndex] = new Token(array(T_WHITESPACE, $content));
-            } else {
+            if ('' === $content) {
                 $tokens->clearAt($prevIndex);
+            } else {
+                $tokens[$prevIndex] = new Token(array(T_WHITESPACE, $content));
             }
+
             $prevToken = $tokens[$prevIndex];
         }
 
@@ -243,12 +265,10 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->isWhitespace()) {
-            $content = ltrim($nextToken->getContent(), " \t");
-
             $content = preg_replace(
                 "#^\r\n|^\n#",
                 '',
-                $content,
+                ltrim($nextToken->getContent(), " \t"),
                 1
             );
 
@@ -257,6 +277,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             } else {
                 $tokens->clearAt($nextIndex);
             }
+
             $nextToken = $tokens[$nextIndex];
         }
 
