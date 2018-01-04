@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
