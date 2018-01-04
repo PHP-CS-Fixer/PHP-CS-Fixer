@@ -876,13 +876,48 @@ final class Sample
         ];
     }
 
-    public function testSpaceAfterAtIsNotCleared()
+    /**
+     * @param array  $config
+     * @param string $input
+     *
+     * @dataProvider provideInvalidPhpdocCases
+     */
+    public function testInvalidPhpdocsAreUnchanged(array $config, $input)
     {
-        $input = '<?php
-/**
- * @ Security("is_granted(\'CANCEL\', giftCard)")
- */';
+        $this->fixer->configure($config);
 
         $this->doTest($input);
+    }
+
+    public function provideInvalidPhpdocCases()
+    {
+        return [
+            [
+                ['tags' => ['param', 'return', 'throws', 'type', 'var']],
+                '<?php
+/**
+ * @ Security("is_granted(\'CANCEL\', giftCard)")
+ */
+ ',
+            ],
+            [
+                ['tags' => ['param', 'return', 'throws', 'type', 'var', 'method']],
+                '<?php
+/**
+ * @ Security("is_granted(\'CANCEL\', giftCard)")
+ */
+ ',
+            ],
+            [
+                ['tags' => ['param', 'return', 'throws', 'type', 'var']],
+                '<?php
+/**
+ * @ Security("is_granted(\'CANCEL\', giftCard)")
+ * @     foo   bar
+ *   @ foo
+ */
+ ',
+            ],
+        ];
     }
 }
