@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-26T12:48:37Z
+
+@SpacePossum , we had a small talk about it ages ago. take a look ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-02T10:08:27Z
+
+awesome :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-02T10:12:44Z
+
+One question,
+if `$isLegacyMode` is `true` the cache might be outdated if tokens are changed using `Token::override` / `Tokens::overrideAt` I think, maybe best not to use the cache if in legacy mode?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-03T11:59:17Z
+
+very good point
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-03T12:36:12Z
+
+done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-03T14:16:39Z
+
+thanks, looks good to me :+1:
