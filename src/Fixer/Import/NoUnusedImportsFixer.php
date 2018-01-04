@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -163,31 +164,39 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
         foreach ($useIndexes as $index) {
             $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG)));
-            $declarationContent = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
-            if (
-                false !== strpos($declarationContent, ',')    // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
-                || false !== strpos($declarationContent, '{') // do not touch group use declarations until the logic of this is added (for example: `use some\a\{ClassD};`)
-            ) {
-                continue;
+
+            $fullName = '';
+            $shortName = '';
+            $aliased = false;
+
+            for ($i = $index; $i <= $declarationEndIndex; ++$i) {
+                $token = $tokens[$i];
+
+                if ($token->equals(',') || $token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                    // do not touch group use declarations until the logic of this is added (for example: `use some\a\{ClassD};`)
+                    // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
+
+                    continue 2;
+                }
+
+                if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind(array(T_USE))) {
+                    continue;
+                }
+
+                if ($token->isGivenKind(T_STRING)) {
+                    $shortName = $token->getContent();
+                    if (!$aliased) {
+                        $fullName .= $shortName;
+                    }
+                } elseif ($token->isGivenKind(T_NS_SEPARATOR)) {
+                    $fullName .= $token->getContent();
+                } elseif ($token->isGivenKind(T_AS)) {
+                    $aliased = true;
+                }
             }
-
-            $declarationParts = preg_split('/\s+as\s+/i', $declarationContent);
-
-            if (1 === count($declarationParts)) {
-                $fullName = $declarationContent;
-                $declarationParts = explode('\\', $fullName);
-                $shortName = end($declarationParts);
-                $aliased = false;
-            } else {
-                list($fullName, $shortName) = $declarationParts;
-                $declarationParts = explode('\\', $fullName);
-                $aliased = $shortName !== end($declarationParts);
-            }
-
-            $shortName = trim($shortName);
 
             $uses[$shortName] = array(
-                'fullName' => trim($fullName),
+                'fullName' => $fullName,
                 'shortName' => $shortName,
                 'aliased' => $aliased,
                 'start' => $index,

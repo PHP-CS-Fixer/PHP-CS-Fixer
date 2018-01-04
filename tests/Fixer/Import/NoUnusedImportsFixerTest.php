@@ -447,26 +447,28 @@ EOF;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @param string $expected
      *
      * @dataProvider provideFixUseInStringCases
      */
-    public function testFixUseInString($expected, $input = null)
+    public function testFixUseInString($expected)
     {
-        $this->doTest($expected, $input);
+        $this->doTest($expected);
     }
 
     public function provideFixUseInStringCases()
     {
         $expected1 = <<<'EOF'
+<?php
 $x=<<<'EOA'
 use a;
 use b;
 EOA;
+
 EOF;
 
         $expected2 = <<<'EOF'
+<?php
 $x='
 use a;
 use b;
@@ -474,16 +476,25 @@ use b;
 EOF;
 
         $expected3 = <<<'EOF'
+<?php
 $x="
 use a;
 use b;
 ";
 EOF;
 
+        $expected4 = <<<'EOF'
+<?php
+namespace A;
+use \SplFileInfo;
+new SplFileInfo(__FILE__);
+EOF;
+
         return array(
             array($expected1),
             array($expected2),
             array($expected3),
+            array($expected4),
         );
     }
 
@@ -615,14 +626,20 @@ Exception# 3
 
 
   ;
-echo 1;';
+use /**/A\B/**/;
+  echo 1;
+  new B();
+';
 
         $expected = '<?php
 # 1
 # 2
 # 3
 # 4
-  echo 1;';
+  use /**/A\B/**/;
+  echo 1;
+  new B();
+';
 
         $this->doTest($expected, $input);
     }
