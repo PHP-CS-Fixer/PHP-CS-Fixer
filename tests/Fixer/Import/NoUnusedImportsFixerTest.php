@@ -640,7 +640,7 @@ namespace Foo;
 
 use Bar\C;
 use Foo\A;
-use Foo\Bar\B;
+use Foo\Bar\B/* test */;
 
 abstract class D extends A implements C
 {
