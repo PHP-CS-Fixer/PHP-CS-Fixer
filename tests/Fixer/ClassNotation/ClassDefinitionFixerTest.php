@@ -26,26 +26,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyConfigureDefaultToNull()
-    {
-        $defaultConfig = [
-            'multiLineExtendsEachSingleLine' => false,
-            'singleItemSingleLine' => false,
-            'singleLine' => false,
-        ];
-
-        $fixer = new ClassDefinitionFixer();
-        $fixer->configure($defaultConfig);
-        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
-
-        $fixer->configure(null);
-        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
-    }
-
     public function testConfigureDefaultToNull()
     {
         $defaultConfig = [

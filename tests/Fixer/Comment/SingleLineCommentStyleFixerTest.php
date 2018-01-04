@@ -317,6 +317,13 @@ second line*/',
     # 5
 ',
             ],
+            [
+                '<?php
+                function foo() {
+                    /* ?> */
+                    return "bar";
+                }',
+            ],
         ];
     }
 }

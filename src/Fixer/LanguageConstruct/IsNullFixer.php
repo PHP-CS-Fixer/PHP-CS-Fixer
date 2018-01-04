@@ -13,9 +13,6 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -25,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-final class IsNullFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class IsNullFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -33,14 +30,22 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Replaces is_null(parameter) expression with `null === parameter`.',
+            'Replaces `is_null($var)` expression with `null === $var`.',
             [
                 new CodeSample("<?php\n\$a = is_null(\$b);\n"),
-                new CodeSample("<?php\n\$a = is_null(\$b);\n", ['use_yoda_style' => false]),
             ],
             null,
-            'Risky when the function `is_null()` is overridden.'
+            'Risky when the function `is_null` is overridden.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must be run before YodaStyleFixer
+        return 1;
     }
 
     /**
@@ -57,6 +62,21 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        if (null !== $configuration && array_key_exists('use_yoda_style', $configuration)) {
+            @trigger_error(
+                'Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
+        parent::configure($configuration);
     }
 
     /**
@@ -155,43 +175,14 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
                 new Token([T_WHITESPACE, ' ']),
             ];
 
-            if (true === $this->configuration['use_yoda_style']) {
-                if ($wrapIntoParentheses) {
-                    array_unshift($replacement, new Token('('));
-                }
-
-                $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
-            } else {
-                $replacement = array_reverse($replacement);
-                if ($isContainingDangerousConstructs) {
-                    array_unshift($replacement, new Token(')'));
-                }
-
-                if ($wrapIntoParentheses) {
-                    $replacement[] = new Token(')');
-                    $tokens[$isNullIndex] = new Token('(');
-                } else {
-                    $tokens->clearAt($isNullIndex);
-                }
-
-                $tokens->overrideRange($referenceEnd, $referenceEnd, $replacement);
+            if ($wrapIntoParentheses) {
+                array_unshift($replacement, new Token('('));
             }
+
+            $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
 
             // nested is_null calls support
             $currIndex = $isNullIndex;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
-    {
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('use_yoda_style', 'Whether Yoda style conditions should be used.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(true)
-                ->getOption(),
-        ]);
     }
 }

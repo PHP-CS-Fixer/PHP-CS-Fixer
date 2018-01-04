@@ -198,8 +198,8 @@ The ``--diff`` flag can be used to let the fixer output all the changes it makes
 
 The ``--diff-format`` option allows to specify in which format the fixer should output the changes it makes:
 
-* ``udiff``: unified diff format;
-* ``sbd``: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
+* ``null``: no diff;
+* ``udiff``: unified diff format.
 
 The ``--allow-risky`` option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
@@ -263,10 +263,6 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``align_double_arrow`` (``false``, ``null``, ``true``): (deprecated) Whether to apply,
-    remove or ignore double arrows alignment; defaults to ``false``
-  - ``align_equals`` (``false``, ``null``, ``true``): (deprecated) Whether to apply, remove
-    or ignore equals alignment; defaults to ``false``
   - ``default`` (``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``,
     ``'single_space'``, ``null``): default fix strategy; defaults to ``'single_space'``
   - ``operators`` (``array``): dictionary of ``binary operator`` => ``fix strategy``
@@ -280,11 +276,6 @@ Choose from the list of available rules:
 
   Ensure there is no code on the same line as the PHP open tag and it is
   followed by a blank line.
-
-* **blank_line_before_return**
-
-  An empty line feed should precede a return statement. DEPRECATED: use
-  ``blank_line_before_statement`` instead.
 
 * **blank_line_before_statement** [@Symfony]
 
@@ -395,7 +386,7 @@ Choose from the list of available rules:
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
 
-  *Risky rule: risky when the function ``dirname()`` is overridden.*
+  *Risky rule: risky when the function ``dirname`` is overridden.*
 
 * **doctrine_annotation_array_assignment** [@DoctrineAnnotation]
 
@@ -496,13 +487,6 @@ Choose from the list of available rules:
     ignore spaces after array assignment ``:`` operator; defaults to ``true``
   - ``after_array_assignments_equals`` (``null``, ``bool``): whether to add, remove or
     ignore spaces after array assignment ``=`` operator; defaults to ``true``
-  - ``around_argument_assignments`` (``bool``): whether to fix spaces around
-    argument assignment operator (deprecated, use
-    ``before_argument_assignments`` and ``after_argument_assignments`` options
-    instead); defaults to ``true``
-  - ``around_array_assignments`` (``bool``): whether to fix spaces around array
-    assignment operators (deprecated, use ``before_array_assignments_*`` and
-    ``after_array_assignments_*`` options instead); defaults to ``true``
   - ``around_commas`` (``bool``): whether to fix spaces around commas; defaults to
     ``true``
   - ``around_parentheses`` (``bool``): whether to fix spaces around parentheses;
@@ -583,9 +567,9 @@ Choose from the list of available rules:
 
   - ``annotation-black-list`` (``array``): class level annotations tags that must be
     omitted to fix the class, even if all of the white list ones are used
-    as well. (case in sensitive); defaults to ``['@final', '@Entity', '@ORM']``
+    as well. (case insensitive); defaults to ``['@final', '@Entity', '@ORM']``
   - ``annotation-white-list`` (``array``): class level annotations tags that must be
-    set in order to fix the class. (case in sensitive); defaults to
+    set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
@@ -626,11 +610,6 @@ Choose from the list of available rules:
   - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
     defaults to ``[]``
 
-* **hash_to_slash_comment**
-
-  Single line comments should use double slashes ``//`` and not hash ``#``.
-  DEPRECATED: use ``single_line_comment_style`` instead.
-
 * **header_comment**
 
   Add, replace or remove header comment.
@@ -670,14 +649,9 @@ Choose from the list of available rules:
 
 * **is_null** [@Symfony:risky]
 
-  Replaces is_null(parameter) expression with ``null === parameter``.
+  Replaces ``is_null($var)`` expression with ``null === $var``.
 
-  *Risky rule: risky when the function ``is_null()`` is overridden.*
-
-  Configuration options:
-
-  - ``use_yoda_style`` (``bool``): whether Yoda style conditions should be used;
-    defaults to ``true``
+  *Risky rule: risky when the function ``is_null`` is overridden.*
 
 * **line_ending** [@PSR2, @Symfony]
 
@@ -739,17 +713,23 @@ Choose from the list of available rules:
   Method chaining MUST be properly indented. Method chaining with
   different levels of indentation is not supported.
 
-* **method_separation**
-
-  Methods must be separated with one blank line. DEPRECATED: use
-  ``class_attributes_separation`` instead.
-
 * **modernize_types_casting** [@Symfony:risky]
 
   Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
   function calls with according type casting operator.
 
   *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
+
+* **multiline_whitespace_before_semicolons**
+
+  Forbid multi-line whitespace before the closing semicolon or move the
+  semicolon to the new line for chained calls.
+
+  Configuration options:
+
+  - ``strategy`` (``'new_line_for_chained_calls'``, ``'no_multi_line'``): forbid
+    multi-line whitespace or move the semicolon to the new line for chained
+    calls; defaults to ``'no_multi_line'``
 
 * **native_function_casing** [@Symfony]
 
@@ -823,15 +803,6 @@ Choose from the list of available rules:
 
   - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
 
-* **no_extra_consecutive_blank_lines**
-
-  Removes extra blank lines and/or blank lines following configuration.
-  DEPRECATED: use ``no_extra_blank_lines`` instead.
-
-  Configuration options:
-
-  - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
-
 * **no_homoglyph_names** [@Symfony:risky]
 
   Replace accidental usage of homoglyphs (non ascii characters) in names.
@@ -858,10 +829,6 @@ Choose from the list of available rules:
 * **no_multiline_whitespace_around_double_arrow** [@Symfony]
 
   Operator ``=>`` should not be surrounded by multi-line whitespaces.
-
-* **no_multiline_whitespace_before_semicolons**
-
-  Multi-line whitespace before closing semicolon are prohibited.
 
 * **no_null_property_initialization**
 
@@ -1044,8 +1011,6 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``functions`` (``null``): (deprecated, use ``target`` instead) List of assertions
-    to fix (overrides ``target``); defaults to ``null``
   - ``target`` (``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``): target version of
     PHPUnit; defaults to ``'5.0'``
 
@@ -1254,14 +1219,9 @@ Choose from the list of available rules:
 
 * **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
-  Converts ``pow()`` to the ``**`` operator.
+  Converts ``pow`` to the ``**`` operator.
 
-  *Risky rule: risky when the function ``pow()`` is overridden.*
-
-* **pre_increment**
-
-  Pre incrementation/decrementation should be used if possible.
-  DEPRECATED: use ``increment_style`` instead.
+  *Risky rule: risky when the function ``pow`` is overridden.*
 
 * **protected_to_private** [@Symfony]
 

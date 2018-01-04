@@ -14,7 +14,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -76,7 +76,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 
@@ -224,7 +224,7 @@ class Example
      */
     protected function createConfigurationDefinition()
     {
-        return new FixerConfigurationResolverRootless('order', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([

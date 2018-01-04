@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -74,22 +73,6 @@ final class TokenTest extends TestCase
             [[T_WHITESPACE, '']],
             [[T_WHITESPACE, new \stdClass()]],
         ];
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::clear is deprecated and will be removed in 3.0.
-     */
-    public function testClear()
-    {
-        $token = $this->getForeachToken();
-        $token->clear();
-
-        Tokens::setLegacyMode(false);
-
-        $this->assertSame('', $token->getContent());
-        $this->assertNull($token->getId());
-        $this->assertFalse($token->isArray());
     }
 
     public function testGetPrototype()
@@ -173,22 +156,6 @@ final class TokenTest extends TestCase
             [new Token([T_COMMENT, '/* comment */', 1]), true],
             [new Token([T_DOC_COMMENT, '/** docs */', 1]), true],
         ];
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isEmpty is deprecated and will be removed in 3.0.
-     */
-    public function testIsEmpty()
-    {
-        $braceToken = $this->getBraceToken();
-        $this->assertFalse($braceToken->isEmpty());
-
-        $emptyToken = new Token('');
-        $this->assertTrue($emptyToken->isEmpty());
-
-        $whitespaceToken = new Token([T_WHITESPACE, ' ']);
-        $this->assertFalse($whitespaceToken->isEmpty());
     }
 
     public function testIsGivenKind()
@@ -469,16 +436,6 @@ final class TokenTest extends TestCase
             [false, [true, false, true], 1],
             [false, [1 => false], 1],
         ];
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isChanged is deprecated and will be removed in 3.0.
-     */
-    public function testIsChanged()
-    {
-        $token = new Token([T_WHITESPACE, ' ']);
-        $this->assertFalse($token->isChanged());
     }
 
     /**

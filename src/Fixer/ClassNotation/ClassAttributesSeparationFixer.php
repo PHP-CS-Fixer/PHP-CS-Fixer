@@ -42,7 +42,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 

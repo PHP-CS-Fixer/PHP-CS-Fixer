@@ -35,21 +35,6 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @group legacy
-     * @dataProvider provideFixWithSpaceBeforeNoneCases
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     *
-     * @param string      $expected
-     * @param null|string $input
-     */
-    public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
-    {
-        $this->fixer->configure(null);
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
      * @dataProvider provideFixWithSpaceBeforeNoneCases
      *
      * @param string      $expected

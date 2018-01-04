@@ -38,7 +38,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
      *
      * @throws InvalidFixerConfigurationException
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 

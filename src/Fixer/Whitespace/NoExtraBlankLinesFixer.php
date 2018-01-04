@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Whitespace;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -24,7 +24,6 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -48,7 +47,6 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configuratio
         'switch',
         'throw',
         'use',
-        'useTrait',
         'use_trait',
     ];
 
@@ -75,7 +73,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configuratio
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 
@@ -306,24 +304,12 @@ switch($a) {
      */
     protected function createConfigurationDefinition()
     {
-        return new FixerConfigurationResolverRootless('tokens', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('tokens', 'List of tokens to fix.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(self::$availableTokens),
                 ])
-                ->setNormalizer(static function (Options $options, $tokens) {
-                    foreach ($tokens as &$token) {
-                        if ('useTrait' === $token) {
-                            @trigger_error('Token "useTrait" is deprecated and will be removed in 3.0, use "use_trait" instead.', E_USER_DEPRECATED);
-                            $token = 'use_trait';
-
-                            break;
-                        }
-                    }
-
-                    return $tokens;
-                })
                 ->setDefault(['extra'])
                 ->getOption(),
         ]);
