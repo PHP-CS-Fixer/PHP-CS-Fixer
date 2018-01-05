@@ -105,7 +105,7 @@ EOT
         array_shift($backtickTokens);
         array_pop($backtickTokens);
 
-        // Double-quoted strings are parsed differenly if they contains
+        // Double-quoted strings are parsed differenly if they contain
         // variables or not, so we need to build the new token array accordingly
         $count = count($backtickTokens);
 
