@@ -147,7 +147,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             $functionNameIndex = $tokens->getNextMeaningfulToken($i);
             $functionName = $tokens[$functionNameIndex]->getContent();
 
-            //if the function name stats with test, we remove that
+            // if the function name stats with test, we remove that
             if ($this->startsWith('test', $functionName)) {
                 $newFunctionName = $this->removeTestFromFunctionName($functionName);
                 $tokens[$functionNameIndex] = new Token([T_STRING, $newFunctionName]);
@@ -155,7 +155,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
             $docBlockIndex = $this->getDockBlockIndex($tokens, $i);
 
-            //Create a new docblock if it didn't have one before;
+            // Create a new docblock if it didn't have one before;
             if (!$this->doesFunctionHaveDocBlock($tokens, $i)) {
                 $this->createDocBlock($tokens, $docBlockIndex);
 
@@ -193,7 +193,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             $functionNameIndex = $tokens->getNextMeaningfulToken($i);
             $functionName = $tokens[$functionNameIndex]->getContent();
 
-            //if the function already starts with test were done
+            // if the function already starts with test were done
             if ($this->startsWith('test', $functionName)) {
                 continue;
             }
@@ -387,14 +387,14 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
         for ($i = 0; $i < \count($lines); ++$i) {
-            //If we need to add test annotation and it is a single line comment we need to deal with that separately
+            // If we need to add test annotation and it is a single line comment we need to deal with that separately
             if ($needsAnnotation && ($lines[$i]->isTheStart() && $lines[$i]->isTheEnd())) {
                 if (!$this->doesDocBlockContainTest($doc)) {
                     $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
 
                     return $this->updateLines($lines, $tokens, $docBlockIndex);
                 }
-                //One we split it up, we run the function again, so we deal with other things in a proper way
+                // One we split it up, we run the function again, so we deal with other things in a proper way
             }
 
             if (!$needsAnnotation &&
@@ -402,10 +402,10 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
                 false === \strpos($lines[$i]->getContent(), '@testWith') &&
                 false === \strpos($lines[$i]->getContent(), '@testdox')
             ) {
-                //We remove @test from the doc block
+                // We remove @test from the doc block
                 $lines[$i] = new Line(str_replace(' @test', '', $lines[$i]->getContent()));
             }
-            //ignore the line if it isnt @depends
+            // ignore the line if it isn't @depends
             if (false === strpos($lines[$i]->getContent(), '@depends')) {
                 continue;
             }
@@ -476,7 +476,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             return $this->removeTestFromDepends($line);
         }
 
-        return $this->addtestToDepends($line);
+        return $this->addTestToDepends($line);
     }
 
     /**
