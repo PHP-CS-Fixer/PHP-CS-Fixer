@@ -37,19 +37,18 @@ final class BacktickToShellExecFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-           'Converts backtick operators to shell_exec calls.',
+            'Converts backtick operators to shell_exec calls.',
             [
                 new CodeSample(
 <<<'EOT'
 <?php
 $plain = `ls -lah`;
 $withVar = `ls -lah $var1 ${var2} {$var3} {$var4[0]} {$var5->call()}`;
-$withQuotes = `ls -lah a\"m\\\\z`;
-$withBacktick = `ls -lah 'foo\`bar'`;
 
 EOT
                 ),
-            ]
+            ],
+            'Convertion is done only when it is non risky, so when special chars like single-quotes, double-quotes and backticks are not used inside the command.'
         );
     }
 
@@ -123,7 +122,12 @@ EOT
 
                 continue;
             }
-            $content = str_replace(['\\`', '\\"'], ['`', '\\\\\\"'], $token->getContent());
+            $content = $token->getContent();
+            // Escaping special chars depends on the context: too tricky
+            if (preg_match('/[`"\']/u', $content)) {
+                return;
+            }
+
             $kind = T_ENCAPSED_AND_WHITESPACE;
             if (1 === $count) {
                 $content = '"'.$content.'"';

@@ -41,43 +41,31 @@ final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
                 '<?php shell_exec("ls -lah");',
                 '<?php `ls -lah`;',
             ],
-            'with double quote' => [
-<<<'EOT'
-<?php
-shell_exec("ls -lah a\\\"m\\\\z");
-EOT
-,
-<<<'EOT'
-<?php
-`ls -lah a\"m\\\\z`;
-EOT
-,
-            ],
             'with variables' => [
                 '<?php shell_exec("$var1 ls ${var2} -lah {$var3} file1.txt {$var4[0]} file2.txt {$var5->call()}");',
                 '<?php `$var1 ls ${var2} -lah {$var3} file1.txt {$var4[0]} file2.txt {$var5->call()}`;',
             ],
-            'with double quote and variable' => [
+            'with single quote' => [
 <<<'EOT'
 <?php
-shell_exec("ls -lah a\\\"m\\\\z $var");
+`echo a\'b`;
+`echo 'ab'`;
 EOT
 ,
+            ],
+            'with double quote' => [
 <<<'EOT'
 <?php
-`ls -lah a\"m\\\\z $var`;
+`echo a\"b`;
+`echo 'a"b'`;
 EOT
 ,
             ],
             'with backtick' => [
 <<<'EOT'
 <?php
-shell_exec("echo 'foo`bar'");
-EOT
-,
-<<<'EOT'
-<?php
-`echo 'foo\`bar'`;
+`echo 'a\`b'`;
+`echo a\\\`b`;
 EOT
 ,
             ],
