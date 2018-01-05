@@ -145,8 +145,8 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
     private function fixFunction(Tokens $tokens, $startFunctionIndex)
     {
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
-        $isMultiline = $this->isNewline($tokens[$startFunctionIndex + 1])
-            || $this->isNewline($tokens[$endFunctionIndex - 1]);
+        $isMultiline = $this->isNewLine($tokens[$startFunctionIndex + 1])
+            || $this->isNewLine($tokens[$endFunctionIndex - 1]);
 
         for ($index = $endFunctionIndex - 1; $index > $startFunctionIndex; --$index) {
             $token = $tokens[$index];
@@ -171,7 +171,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
 
             if ($token->equals(',')) {
                 $this->fixSpace2($tokens, $index);
-                if (!$isMultiline && $this->isNewline($tokens[$index + 1])) {
+                if (!$isMultiline && $this->isNewLine($tokens[$index + 1])) {
                     $isMultiline = true;
 
                     break;
@@ -201,7 +201,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
 
         $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
-        if (!$this->isNewline($tokens[$endFunctionIndex - 1])) {
+        if (!$this->isNewLine($tokens[$endFunctionIndex - 1])) {
             $tokens->ensureWhitespaceAtIndex($endFunctionIndex, 0, $this->whitespacesConfig->getLineEnding().$existingIndentation);
             ++$endFunctionIndex;
         }
@@ -234,7 +234,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             }
         }
 
-        $this->fixNewLine($tokens, $startFunctionIndex, $indentation, false);
+        $this->fixNewline($tokens, $startFunctionIndex, $indentation, false);
     }
 
     /**
@@ -247,7 +247,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      */
     private function fixNewline(Tokens $tokens, $index, $indentation, $override = true)
     {
-        if ($this->isNewline($tokens[$index + 1]) || $tokens[$index + 1]->isComment()) {
+        if ($this->isNewLine($tokens[$index + 1]) || $tokens[$index + 1]->isComment()) {
             return;
         }
 

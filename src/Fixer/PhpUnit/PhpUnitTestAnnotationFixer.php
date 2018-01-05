@@ -476,7 +476,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             return $this->removeTestFromDepends($line);
         }
 
-        return $this->addtestToDepends($line);
+        return $this->addTestToDepends($line);
     }
 
     /**
