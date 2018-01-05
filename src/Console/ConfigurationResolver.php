@@ -761,7 +761,7 @@ final class ConfigurationResolver
             }
 
             if (!is_array($currentFinder)) {
-                return $this->iterableToTraversable($currentFinder);
+                return $currentFinder;
             }
 
             array_walk(
