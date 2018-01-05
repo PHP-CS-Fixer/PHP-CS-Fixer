@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer;
 
 use PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\UnconfigurableFixer;
+use PhpCsFixer\WhitespacesFixerConfig;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -47,5 +48,14 @@ final class AbstractFixerTest extends TestCase
         $this->setExpectedException('LogicException', 'Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
 
         $fixer->doSomethingWithCreateConfigDefinition();
+    }
+
+    public function testSetWhitespacesConfigUnconfigurable()
+    {
+        $fixer = new UnconfigurableFixer();
+
+        $this->setExpectedException('LogicException', 'Cannot run method for class not implementing "PhpCsFixer\Fixer\WhitespacesAwareFixerInterface".');
+
+        $fixer->setWhitespacesConfig(new WhitespacesFixerConfig());
     }
 }
