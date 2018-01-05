@@ -23,8 +23,8 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Egidijus Girčys <e.gircys@gmail.com>
  * @author Graham Campbell <graham@alt-three.com>
+ * @author Egidijus Girčys <e.gircys@gmail.com>
  */
 final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
