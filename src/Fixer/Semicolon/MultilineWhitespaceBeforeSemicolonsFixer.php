@@ -24,6 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Egidijus Girčys <e.gircys@gmail.com>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {

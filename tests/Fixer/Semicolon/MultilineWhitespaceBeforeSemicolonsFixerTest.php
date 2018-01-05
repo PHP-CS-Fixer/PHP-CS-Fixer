@@ -18,6 +18,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Egidijus Girčys <e.gircys@gmail.com>
+ * @author John Kelly <wablam@gmail.com>
+ * @author Graham Campbell <graham@alt-three.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
