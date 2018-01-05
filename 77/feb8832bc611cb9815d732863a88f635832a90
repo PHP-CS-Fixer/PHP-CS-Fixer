@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-05T10:32:45Z
+
+now we would get;
+`isNewLine` and `fixNewline`
+
+maybe it is better to use one way of writing `Newline` or `NewLine`
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-05T10:34:03Z
+
+I noticed the mismatch, but didn't want to change signatures.
+
+Ping me again if you want a change.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-05T11:02:06Z
+
+please change one of the two signature to match the other :+1:
