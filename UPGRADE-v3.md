@@ -9,7 +9,7 @@ Changes to rules
 ### Removed rootless configuration
 
 Rule                                 | Root option    | Note
------------------------------------- | -------------- |
+------------------------------------ | -------------- | ----
 `general_phpdoc_annotation_remove`   | `annotations`
 `no_extra_consecutive_blank_lines`   | `tokens`
 `no_spaces_around_offset`            | `positions`
