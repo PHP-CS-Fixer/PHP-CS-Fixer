@@ -405,7 +405,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
                 //We remove @test from the doc block
                 $lines[$i] = new Line(str_replace(' @test', '', $lines[$i]->getContent()));
             }
-            //ignore the line if it isnt @depends
+            //ignore the line if it isn't @depends
             if (false === strpos($lines[$i]->getContent(), '@depends')) {
                 continue;
             }
