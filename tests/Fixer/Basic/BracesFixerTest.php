@@ -740,6 +740,20 @@ function foo()
                 '<?php
 function foo()
 {
+    $bar = 1;                   // multiline ...
+    $baz  = 2;                  // next comment
+}',
+                '<?php
+function foo()
+{
+      $bar = 1;                   // multiline ...
+       $baz  = 2;                  // next comment
+}',
+            ],
+            [
+                '<?php
+function foo()
+{
     $foo = 1;
 
     // multiline...
