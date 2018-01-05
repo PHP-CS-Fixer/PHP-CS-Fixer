@@ -126,7 +126,7 @@ final class FixCommand extends Command
         $passedRules = $input->getOption('rules');
 
         if (null !== $passedConfig && null !== $passedRules) {
-            throw new InvalidConfigurationException('Passing both `--config` and `--rules` options is not possible.');
+            throw new InvalidConfigurationException('Passing both `--config` and `--rules` options is not allowed.');
         }
 
         $resolver = new ConfigurationResolver(
