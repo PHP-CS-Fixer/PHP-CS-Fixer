@@ -163,8 +163,10 @@ function foo () {
 
     /**
      * Find the index for the new line. Return the given index when there's no new line.
+     *
+     * @return int
      */
-    private function getNewLineIndex(int $index, Tokens $tokens): int
+    private function getNewLineIndex(int $index, Tokens $tokens)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
@@ -185,8 +187,10 @@ function foo () {
      * ____$this->methodCall()
      *          ->anotherCall();
      * ..
+     *
+     * @return null|string
      */
-    private function findWhitespaceBeforeFirstCall(int $index, Tokens $tokens): ?string
+    private function findWhitespaceBeforeFirstCall(int $index, Tokens $tokens)
     {
         // semicolon followed by a closing bracket?
         if (!$tokens[$index]->equals(')')) {
@@ -247,7 +251,10 @@ function foo () {
         return null;
     }
 
-    private function getIndentAt(Tokens $tokens, int $index): ?string
+    /**
+     * @return null|string
+     */
+    private function getIndentAt(Tokens $tokens, int $index)
     {
         $content = '';
         $lineEnding = $this->whitespacesConfig->getLineEnding();
