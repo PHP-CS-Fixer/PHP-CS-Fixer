@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-12-24T09:54:36Z
+
+Yup: https://3v4l.org/ecNmf
+```php
+var_dump(function_exists('is_boolean'));
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-02T10:34:05Z
+
+great catch :+1:  thanks!
+
+(I've no idea why I've ever added that (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/1792))
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-02T10:35:19Z
+
+@carusogabriel can you retarget this fix to 2.2, I think it will be of use there are well :)
+
+---------------------------------------------------------------------------
+
+by carusogabriel at 2018-01-02T10:55:38Z
+
+After seen #1792, and my recently [PR in Symfony](https://github.com/symfony/symfony/pull/25420), I guess we can create some Fixers :nerd_face:
