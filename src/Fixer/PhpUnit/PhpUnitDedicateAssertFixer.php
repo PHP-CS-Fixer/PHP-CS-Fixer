@@ -14,7 +14,7 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -230,7 +230,7 @@ $this->assertTrue(is_readable($a));
 
         sort($values);
 
-        return new FixerConfigurationResolverRootless('functions', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('functions', '(deprecated, use `target` instead) List of assertions to fix (overrides `target`).'))
                 ->setAllowedTypes(['null', 'array'])
                 ->setAllowedValues([

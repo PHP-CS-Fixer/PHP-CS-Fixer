@@ -40,22 +40,6 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['replacements' => ['rand' => null]]);
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing "replacements" at the root of the configuration is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
-     */
-    public function testLegacyConfigure()
-    {
-        $this->fixer->configure(['rand' => 'random_int']);
-
-        $this->assertSame(
-            ['replacements' => [
-                'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
-            ],
-            static::getObjectAttribute($this->fixer, 'configuration')
-        );
-    }
-
     public function testConfigure()
     {
         $this->fixer->configure(['replacements' => ['rand' => 'random_int']]);

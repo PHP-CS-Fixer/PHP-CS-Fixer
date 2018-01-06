@@ -69,7 +69,7 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.1
-            env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^4.0" MIN_STABILITY=dev
+            env: SYMFONY_DEPRECATIONS_HELPER=weak SYMFONY_VERSION="^4.0" MIN_STABILITY=dev
 
         -
             <<: *STANDARD_TEST_JOB
