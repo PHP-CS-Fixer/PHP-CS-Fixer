@@ -462,21 +462,6 @@ EOF;
      * @param string $expected expected PHP source after fixing
      * @param string $input    PHP source to fix
      *
-     * @group legacy
-     * @requires PHP 7.1
-     * @dataProvider provideFixClassConstCases
-     * @expectedDeprecation Passing "elements" at the root of the configuration is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
-     */
-    public function testLegacyFixClassConst($expected, $input)
-    {
-        $this->fixer->configure(['const']);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string $expected expected PHP source after fixing
-     * @param string $input    PHP source to fix
-     *
      * @requires PHP 7.1
      * @dataProvider provideFixClassConstCases
      */

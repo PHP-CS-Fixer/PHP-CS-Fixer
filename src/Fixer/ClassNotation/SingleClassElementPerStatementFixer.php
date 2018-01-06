@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -97,7 +97,7 @@ final class Example
     {
         $values = ['const', 'property'];
 
-        return new FixerConfigurationResolverRootless('elements', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'List of strings which element should be modified.'))
                 ->setDefault($values)
                 ->setAllowedTypes(['array'])
