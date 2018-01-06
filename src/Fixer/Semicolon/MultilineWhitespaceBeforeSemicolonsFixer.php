@@ -105,10 +105,7 @@ function foo () {
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     */
-    protected function applyNoMultiLineFix(Tokens $tokens)
+    private function applyNoMultiLineFix(Tokens $tokens)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
@@ -125,17 +122,14 @@ function foo () {
 
             $content = $previous->getContent();
             if (("\n" === $content[0] || "\r" === $content[0]) && $tokens[$index - 2]->isComment()) {
-                $tokens[$previousIndex] = new Token([$previous->getId(), $lineEnding]);
+                $tokens->ensureWhitespaceAtIndex($previousIndex, 0, $lineEnding);
             } else {
                 $tokens->clearAt($previousIndex);
             }
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     */
-    protected function applyChainedCallsFix(Tokens $tokens)
+    private function applyChainedCallsFix(Tokens $tokens)
     {
         for ($index = count($tokens) - 1; $index >= 0; --$index) {
             // continue if token is not a semicolon
@@ -144,7 +138,7 @@ function foo () {
             }
 
             // get the indent of the chained call, null in case it's not a chained call
-            $indent = $this->getIndentation($index - 1, $tokens);
+            $indent = $this->findWhitespaceBeforeFirstCall($index - 1, $tokens);
 
             if (null === $indent) {
                 continue;
@@ -169,13 +163,8 @@ function foo () {
 
     /**
      * Find the index for the new line. Return the given index when there's no new line.
-     *
-     * @param int    $index
-     * @param Tokens $tokens
-     *
-     * @return int
      */
-    private function getNewLineIndex($index, Tokens $tokens)
+    private function getNewLineIndex(int $index, Tokens $tokens): int
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
@@ -189,14 +178,15 @@ function foo () {
     }
 
     /**
-     * Find the indentation of the chained call at $index.
+     * Checks if the semicolon closes a chained call and returns the whitespace of the first call at $index.
+     * i.e. it will return the whitespace marked with '____' in the example underneath.
      *
-     * @param int    $index
-     * @param Tokens $tokens
-     *
-     * @return null|string
+     * ..
+     * ____$this->methodCall()
+     *          ->anotherCall();
+     * ..
      */
-    private function getIndentation($index, Tokens $tokens)
+    private function findWhitespaceBeforeFirstCall(int $index, Tokens $tokens): ?string
     {
         // semicolon followed by a closing bracket?
         if (!$tokens[$index]->equals(')')) {
@@ -247,7 +237,8 @@ function foo () {
 
             // must be the variable of the first call in the chain
             if ($tokens[$index]->isGivenKind(T_VARIABLE) && 0 === $closingBrackets) {
-                if ($tokens[--$index]->isGivenKind(T_WHITESPACE)) {
+                if ($tokens[--$index]->isGivenKind(T_WHITESPACE)
+                    || $tokens[$index]->isGivenKind(T_OPEN_TAG)) {
                     return $this->getIndentAt($tokens, $index);
                 }
             }
@@ -256,13 +247,7 @@ function foo () {
         return null;
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $index  index of the indentation token
-     *
-     * @return null|string
-     */
-    private function getIndentAt(Tokens $tokens, $index)
+    private function getIndentAt(Tokens $tokens, int $index): ?string
     {
         $content = '';
         $lineEnding = $this->whitespacesConfig->getLineEnding();

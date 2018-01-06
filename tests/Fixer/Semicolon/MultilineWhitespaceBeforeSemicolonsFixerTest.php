@@ -411,6 +411,19 @@ $this
                         ->method2(4, Type::class);
 ',
             ],
+            [
+                '<?php
+$this
+                        ->method1()
+                        ->method2()
+;
+                ?>',
+                '<?php
+$this
+                        ->method1()
+                        ->method2();
+                ?>',
+            ],
         ];
     }
 
