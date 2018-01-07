@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-04T11:15:37Z
+
+Looking good thanks!
+Please add an entry here as well https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.2.13/tests/AutoReview/FixerFactoryTest.php#L59
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-06T22:56:00Z
+
+I wonder, as long as this PR itself is good, maybe we shall drop `yoda` part of `IsNullFixer`, as yoda is handled fully by dedicated rule.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-01-07T09:10:25Z
+
+I thought about it too and created an issue with more details: https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/3399
