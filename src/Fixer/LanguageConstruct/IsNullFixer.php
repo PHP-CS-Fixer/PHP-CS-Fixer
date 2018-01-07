@@ -33,10 +33,9 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Replaces is_null(parameter) expression with `null === parameter`.',
+            'Replaces `is_null($var)` expression with `null === $var`.',
             [
                 new CodeSample("<?php\n\$a = is_null(\$b);\n"),
-                new CodeSample("<?php\n\$a = is_null(\$b);\n", ['use_yoda_style' => false]),
             ],
             null,
             'Risky when the function `is_null()` is overridden.'
@@ -57,6 +56,21 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        if (null !== $configuration && array_key_exists('use_yoda_style', $configuration)) {
+            @trigger_error(
+                'Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
+        parent::configure($configuration);
     }
 
     /**
@@ -188,7 +202,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('use_yoda_style', 'Whether Yoda style conditions should be used.'))
+            (new FixerOptionBuilder('use_yoda_style', '(deprecated) Whether Yoda style conditions should be used.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),

@@ -670,14 +670,14 @@ Choose from the list of available rules:
 
 * **is_null** [@Symfony:risky]
 
-  Replaces is_null(parameter) expression with ``null === parameter``.
+  Replaces ``is_null($var)`` expression with ``null === $var``.
 
   *Risky rule: risky when the function ``is_null()`` is overridden.*
 
   Configuration options:
 
-  - ``use_yoda_style`` (``bool``): whether Yoda style conditions should be used;
-    defaults to ``true``
+  - ``use_yoda_style`` (``bool``): (deprecated) Whether Yoda style conditions should
+    be used; defaults to ``true``
 
 * **line_ending** [@PSR2, @Symfony]
 

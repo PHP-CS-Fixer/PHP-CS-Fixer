@@ -33,6 +33,10 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         $fixer->configure(['yoda' => true]);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     */
     public function testConfigurationWrongValue()
     {
         $fixer = new IsNullFixer();
@@ -42,6 +46,10 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         $fixer->configure(['use_yoda_style' => -1]);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     */
     public function testCorrectConfiguration()
     {
         $fixer = new IsNullFixer();
@@ -52,6 +60,9 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     *
      * @dataProvider provideYodaFixCases
      *
      * @param string      $expected
@@ -222,6 +233,9 @@ FIXED;
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     *
      * @dataProvider provideNonYodaFixCases
      *
      * @param string      $expected
