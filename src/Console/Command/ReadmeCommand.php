@@ -51,7 +51,7 @@ whether you want to follow PHP coding standards as defined in the PSR-1, PSR-2, 
 or other community driven ones like the Symfony one.
 You can **also** define your (teams) style through configuration.
 
-It can modernize your code (like converting the `pow` function to the `**` operator on PHP 5.6)
+It can modernize your code (like converting the ``pow`` function to the ``**`` operator on PHP 5.6)
 and (micro) optimize it.
 
 If you are already using a linter to identify coding standards problems in your
