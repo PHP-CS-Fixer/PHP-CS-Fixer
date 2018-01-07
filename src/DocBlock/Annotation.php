@@ -217,7 +217,7 @@ class Annotation
      */
     public function setTypes(array $types)
     {
-        $pattern = '/'.preg_quote($this->getTypesContent()).'/';
+        $pattern = '/'.preg_quote($this->getTypesContent(), '/').'/';
 
         $this->lines[0]->setContent(preg_replace($pattern, implode('|', $types), $this->lines[0]->getContent(), 1));
 
