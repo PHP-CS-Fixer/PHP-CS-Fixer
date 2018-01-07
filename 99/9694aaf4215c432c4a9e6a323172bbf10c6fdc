@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-05T09:34:51Z
+
+please don't forget to throw this in the upgrade file ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-05T11:22:58Z
+
+> please don't forget to throw this in the upgrade file ;)
+
+why?
+the upgrade 2->3, same as 1->2, is only for CLI usage, so for 99% of our users:
+> This is guide for upgrade from version 2.x to 3.0 for using the CLI tool.
+
+If one want to see the full changelog to see changes for using PHP CS Fixer as library, he will have to see the changelog file. I must admit I don't see big benefit of this, as there is literally only few users treating PHP CS Fixer as a lib. Amount of work is way to high for such small benefit. And you didn't requested it for other PRs like https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3379 ;)
+
+it's enough that we do have a deprecation triggering on 2.x
