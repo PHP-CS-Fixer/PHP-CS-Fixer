@@ -73,7 +73,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configuratio
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 

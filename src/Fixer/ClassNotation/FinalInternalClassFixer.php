@@ -33,7 +33,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 

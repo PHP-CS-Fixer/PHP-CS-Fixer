@@ -35,7 +35,7 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractProxyFixer impleme
         return $this->getFixer()->getDefinition();
     }
 
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         $this->getFixer()->configure($configuration);
         $this->configuration = $configuration;
