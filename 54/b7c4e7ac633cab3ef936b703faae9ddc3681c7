@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-06T17:12:33Z
+
+👍 looking good.
+
+What about adding a note to the UPGRADE file? Users may need to update their config file.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-06T21:54:20Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3389#issuecomment-355532770
+
+About config file - it is not possible to create config file that would pass null to `configure` method, it is possible to have rule conifgured with:
+- `true` (will call `configure([])`),
+- `false` (won't call method at all) or
+- `[ array_content ]` (will call `configure([ array_content ])`).
