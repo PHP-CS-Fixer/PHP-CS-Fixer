@@ -53,7 +53,6 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
             'file_exists',
             'is_array',
             'is_bool',
-            'is_boolean',
             'is_callable',
             'is_double',
             'is_float',
@@ -199,7 +198,7 @@ $this->assertTrue(is_readable($a));
             ],
         ];
 
-        foreach (['array', 'bool', 'boolean', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
+        foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
             $cases[] = [
                 sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
                 sprintf('<?php $this->assertTrue(is_%s($a));', $type),
