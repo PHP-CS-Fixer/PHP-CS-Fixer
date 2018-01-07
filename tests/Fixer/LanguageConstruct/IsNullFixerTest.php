@@ -60,17 +60,17 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideYodaFixCases
+     * @dataProvider provideFixCases
      *
      * @param string      $expected
      * @param null|string $input
      */
-    public function testYodaFix($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideYodaFixCases()
+    public function provideFixCases()
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =
