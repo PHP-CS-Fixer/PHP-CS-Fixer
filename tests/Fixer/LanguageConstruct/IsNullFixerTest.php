@@ -60,9 +60,6 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @group legacy
-     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
-     *
      * @dataProvider provideYodaFixCases
      *
      * @param string      $expected
@@ -70,7 +67,6 @@ final class IsNullFixerTest extends AbstractFixerTestCase
      */
     public function testYodaFix($expected, $input = null)
     {
-        $this->fixer->configure(['use_yoda_style' => true]);
         $this->doTest($expected, $input);
     }
 
