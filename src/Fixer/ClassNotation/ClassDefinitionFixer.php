@@ -369,9 +369,9 @@ interface Bar extends
 
                 if ($tokens[$prevNonWhite]->isComment() || $tokens[$nextNonWhite]->isComment()) {
                     $content = $tokens[$prevNonWhite]->getContent();
-                    if (!('#' === $content || '//' === substr($content, 0, 2))) {
+                    if (!('#' === $content || 0 === strpos($content, '//'))) {
                         $content = $tokens[$nextNonWhite]->getContent();
-                        if (!('#' === $content || '//' === substr($content, 0, 2))) {
+                        if (!('#' === $content || 0 === strpos($content, '//'))) {
                             $tokens[$i] = new Token(array(T_WHITESPACE, ' '));
                         }
                     }

@@ -358,7 +358,7 @@ array('order' => array('method_private', 'method_public'))
             return array('phpunit', strtolower($nameToken->getContent()));
         }
 
-        if ('__' === substr($nameToken->getContent(), 0, 2)) {
+        if (0 === strpos($nameToken->getContent(), '__')) {
             return 'magic';
         }
 
