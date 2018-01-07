@@ -116,7 +116,7 @@ function foo () {}
      */
     private function isCorrectlyFormatted($content)
     {
-        if (false !== strpos(strtolower($content), '{@inheritdoc}')) {
+        if (false !== stripos($content, '{@inheritdoc}')) {
             return true;
         }
 
