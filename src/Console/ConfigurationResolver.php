@@ -23,7 +23,6 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
@@ -269,7 +268,6 @@ final class ConfigurationResolver
         if (null === $this->differ) {
             $mapper = [
                 'null' => static function () { return new NullDiffer(); },
-                'sbd' => static function () { return new SebastianBergmannDiffer(); },
                 'udiff' => static function () { return new UnifiedDiffer(); },
             ];
 
@@ -283,11 +281,7 @@ final class ConfigurationResolver
                     ));
                 }
             } else {
-                $default = 'sbd'; // @TODO: 3.0 change to udiff as default
-
-                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                    $default = 'udiff';
-                }
+                $default = 'udiff';
 
                 $option = $this->options['diff'] ? $default : 'null';
             }

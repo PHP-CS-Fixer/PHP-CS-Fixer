@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\Test;
 
 use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
 use PhpCsFixer\Cache\NullCacheManager;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
@@ -197,7 +197,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $runner = new Runner(
             new \ArrayIterator([new \SplFileInfo($tmpFile)]),
             $fixers,
-            new SebastianBergmannDiffer(),
+            new UnifiedDiffer(),
             null,
             $errorsManager,
             $this->linter,
@@ -257,7 +257,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $runner = new Runner(
                 new \ArrayIterator([new \SplFileInfo($tmpFile)]),
                 array_reverse($fixers),
-                new SebastianBergmannDiffer(),
+                new UnifiedDiffer(),
                 null,
                 $errorsManager,
                 $this->linter,
