@@ -670,7 +670,7 @@ Choose from the list of available rules:
 
 * **is_null** [@Symfony:risky]
 
-  Replaces ``is_null($var)`` expression with ``null === $var``.
+  Replaces is_null(parameter) expression with ``null === parameter``.
 
   *Risky rule: risky when the function ``is_null()`` is overridden.*
 

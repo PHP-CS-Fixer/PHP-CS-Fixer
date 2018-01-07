@@ -33,7 +33,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Replaces `is_null($var)` expression with `null === $var`.',
+            'Replaces is_null(parameter) expression with `null === parameter`.',
             [
                 new CodeSample("<?php\n\$a = is_null(\$b);\n"),
             ],
