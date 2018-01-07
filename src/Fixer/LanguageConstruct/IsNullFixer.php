@@ -46,6 +46,15 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must be run before YodaStyleFixer
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_STRING);
