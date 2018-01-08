@@ -217,10 +217,12 @@ final class FixerFactoryTest extends TestCase
 
     /**
      * @dataProvider provideFixersPriorityPairsHaveIntegrationTestCases
+     *
+     * @requires PHP 5.4
      */
     public function testFixersPriorityPairsHaveIntegrationTest(FixerInterface $first, FixerInterface $second)
     {
-        // This structure contains older classes that are not yet covered by tests.
+        // This structure contains older cases that are not yet covered by tests.
         // It may only shrink, never add anything to it.
         $casesWithoutTests = array(
             'elseif,braces.test',
