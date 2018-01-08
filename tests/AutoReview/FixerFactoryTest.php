@@ -216,7 +216,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFixersPriorityParisHaveIntegrationTestCases
+     * @dataProvider provideFixersPriorityPairsHaveIntegrationTestCases
      */
     public function testFixersPriorityPairsHaveIntegrationTest(FixerInterface $first, FixerInterface $second)
     {
@@ -258,7 +258,7 @@ final class FixerFactoryTest extends TestCase
         $this->assertTrue($integrationTestExists, sprintf('There shall be an integration test "%s". How do you know that priority set up is good, if there is no integration test to check it?', $this->generateIntegrationTestName($first, $second)));
     }
 
-    public function provideFixersPriorityParisHaveIntegrationTestCases()
+    public function provideFixersPriorityPairsHaveIntegrationTestCases()
     {
         return array_filter(
             $this->provideFixersPriorityCases(),
