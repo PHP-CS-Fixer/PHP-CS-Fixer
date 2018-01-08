@@ -261,6 +261,7 @@ final class FixerFactoryTest extends TestCase
     public function provideFixersPriorityPairsHaveIntegrationTestCases()
     {
         $self = $this;
+
         return array_filter(
             $this->provideFixersPriorityCases(),
             // ignore speed-up only priorities set up
