@@ -216,9 +216,9 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFixersPriorityParisHaveItestCases
+     * @dataProvider provideFixersPriorityParisHaveIntegrationTestCases
      */
-    public function testFixersPriorityParisHaveItest(FixerInterface $first, FixerInterface $second)
+    public function testFixersPriorityPairsHaveIntegrationTest(FixerInterface $first, FixerInterface $second)
     {
         // This structure contains older classes that are not yet covered by tests.
         // It may only shrink, never add anything to it.
@@ -248,24 +248,24 @@ final class FixerFactoryTest extends TestCase
             'unary_operator_spaces,not_operator_with_successor_space.test',
         );
 
-        $itestExists = $this->doesItestExist($first, $second);
+        $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
 
-        if (in_array($this->generateItestName($first, $second), $casesWithoutTests, true)) {
-            $this->assertFalse($itestExists, sprintf('Case "%s" already has itests, so it should be removed from "$casesWithoutTests".', $this->generateItestName($first, $second)));
-            $this->markTestIncomplete(sprintf('Case "%s" has no itest yet, please help and add it.', $this->generateItestName($first, $second)));
+        if (in_array($this->generateIntegrationTestName($first, $second), $casesWithoutTests, true)) {
+            $this->assertFalse($integrationTestExists, sprintf('Case "%s" already has an integration test, so it should be removed from "$casesWithoutTests".', $this->generateIntegrationTestName($first, $second)));
+            $this->markTestIncomplete(sprintf('Case "%s" has no integration test yet, please help and add it.', $this->generateIntegrationTestName($first, $second)));
         }
 
-        $this->assertTrue($itestExists, sprintf('There shall be itest "%s". How do you know that priority set up is good, if there is no itest to check it?', $this->generateItestName($first, $second)));
+        $this->assertTrue($integrationTestExists, sprintf('There shall be an integration test "%s". How do you know that priority set up is good, if there is no integration test to check it?', $this->generateIntegrationTestName($first, $second)));
     }
 
-    public function provideFixersPriorityParisHaveItestCases()
+    public function provideFixersPriorityParisHaveIntegrationTestCases()
     {
         return array_filter(
             $this->provideFixersPriorityCases(),
             // ignore speed-up only priorities set up
             function (array $case) {
                 return !in_array(
-                    $this->generateItestName($case[0], $case[1]),
+                    $this->generateIntegrationTestName($case[0], $case[1]),
                     array(
                         'function_to_constant,native_function_casing.test',
                         'no_unused_imports,no_leading_import_slash.test',
@@ -280,12 +280,12 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    private function doesItestExist(FixerInterface $first, FixerInterface $second)
+    private function doesIntegrationTestExist(FixerInterface $first, FixerInterface $second)
     {
-        return is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateItestName($first, $second)) || is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateItestName($second, $first));
+        return is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($first, $second)) || is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($second, $first));
     }
 
-    private function generateItestName(FixerInterface $first, FixerInterface $second)
+    private function generateIntegrationTestName(FixerInterface $first, FixerInterface $second)
     {
         return "{$first->getName()},{$second->getName()}.test";
     }
