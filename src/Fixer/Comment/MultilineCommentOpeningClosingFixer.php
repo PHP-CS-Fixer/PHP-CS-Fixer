@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\Phpdoc;
+namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class PhpdocOpeningClosingFixer extends AbstractFixer
+final class MultilineCommentOpeningClosingFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}

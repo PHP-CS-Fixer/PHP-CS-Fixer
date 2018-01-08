@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\Phpdoc;
+namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocOpeningClosingFixer
+ * @covers \PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer
  */
-final class PhpdocOpeningClosingFixerTest extends AbstractFixerTestCase
+final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
