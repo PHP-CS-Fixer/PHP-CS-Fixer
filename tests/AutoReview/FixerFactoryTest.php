@@ -260,12 +260,13 @@ final class FixerFactoryTest extends TestCase
 
     public function provideFixersPriorityPairsHaveIntegrationTestCases()
     {
+        $self = $this;
         return array_filter(
             $this->provideFixersPriorityCases(),
             // ignore speed-up only priorities set up
-            function (array $case) {
+            function (array $case) use ($self) {
                 return !in_array(
-                    $this->generateIntegrationTestName($case[0], $case[1]),
+                    $self->generateIntegrationTestName($case[0], $case[1]),
                     array(
                         'function_to_constant,native_function_casing.test',
                         'no_unused_imports,no_leading_import_slash.test',
