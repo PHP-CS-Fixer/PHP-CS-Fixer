@@ -37,43 +37,6 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixLegacyCases
-     * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
-     */
-    public function testFixLegacy($expected, $input = null)
-    {
-        $defaultFunctions = [
-            'array_key_exists',
-            'empty',
-            'file_exists',
-            'is_array',
-            'is_bool',
-            'is_callable',
-            'is_double',
-            'is_float',
-            'is_infinite',
-            'is_int',
-            'is_integer',
-            'is_long',
-            'is_nan',
-            'is_null',
-            'is_numeric',
-            'is_object',
-            'is_real',
-            'is_resource',
-            'is_scalar',
-            'is_string',
-        ];
-
-        $this->fixer->configure(['functions' => $defaultFunctions]);
-        $this->doTest($expected, $input);
-    }
-
     public function provideTestFixCases()
     {
         $cases = [
@@ -275,32 +238,5 @@ $a#
                 ',
             ],
         ];
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
-     */
-    public function testConfig()
-    {
-        $this->fixer->configure(['functions' => ['file_exists']]);
-        $this->doTest(
-            '<?php
-                    $this->assertFileExists($a);
-                    $this->assertTrue(is_infinite($a));
-            ',
-            '<?php
-                    $this->assertTrue(file_exists($a));
-                    $this->assertTrue(is_infinite($a));
-            '
-        );
-    }
-
-    public function testInvalidConfig()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "functions" .*\.$/');
-
-        $this->fixer->configure(['functions' => ['_unknown_']]);
     }
 }

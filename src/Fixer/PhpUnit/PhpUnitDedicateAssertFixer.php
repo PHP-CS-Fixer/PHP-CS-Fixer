@@ -16,7 +16,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -65,13 +64,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
     public function configure(array $configuration)
     {
         parent::configure($configuration);
-
-        if (isset($this->configuration['functions'])) {
-            @trigger_error('Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.', E_USER_DEPRECATED);
-            $this->functions = $this->configuration['functions'];
-
-            return;
-        }
 
         // assertions added in 3.0: assertArrayNotHasKey assertArrayHasKey assertFileNotExists assertFileExists assertNotNull, assertNull
         $this->functions = [
@@ -203,40 +195,7 @@ $this->assertTrue(is_readable($a));
      */
     protected function createConfigurationDefinition()
     {
-        $values = [
-            'array_key_exists',
-            'empty',
-            'file_exists',
-            'is_array',
-            'is_bool',
-            'is_callable',
-            'is_double',
-            'is_float',
-            'is_infinite',
-            'is_int',
-            'is_integer',
-            'is_long',
-            'is_nan',
-            'is_null',
-            'is_numeric',
-            'is_object',
-            'is_real',
-            'is_resource',
-            'is_scalar',
-            'is_string',
-        ];
-
-        sort($values);
-
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('functions', '(deprecated, use `target` instead) List of assertions to fix (overrides `target`).'))
-                ->setAllowedTypes(['null', 'array'])
-                ->setAllowedValues([
-                    null,
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
-                ])
-                ->setDefault(null)
-                ->getOption(),
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([

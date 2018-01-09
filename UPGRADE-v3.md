@@ -31,3 +31,15 @@ Rule                                 | Root option    | Note
 `random_api_migration`               | `replacements`
 `single_class_element_per_statement` | `elements`
 `visibility_required`                | `elements`
+
+### Changed options
+
+Rule | Option | Change
+---- | ------ | ------
+`binary_operator_spaces`           | `align_double_arrow` | option was removed, use `operators` instead
+`binary_operator_spaces`           | `align_equals`       | option was removed use `operators` instead
+`doctrine_annotation_spaces`       | `around_argument_assignments` | option was removed, use `before_argument_assignments` and `after_argument_assignments` instead
+`doctrine_annotation_spaces`       | `around_array_assignments`    | option was removed, use `after_array_assignments_colon`, `after_array_assignments_equals`, `before_array_assignments_colon` and `before_array_assignments_equals` instead
+`is_null`                          | `use_yoda_style` | option was removed, use `yoda_style` rule instead
+`no_extra_consecutive_blank_lines` | `tokens`    | one of possible values, `useTrait`, was renamed to `use_trait`
+`php_unit_dedicate_assert`         | `functions` | option was removed, use `target` instead

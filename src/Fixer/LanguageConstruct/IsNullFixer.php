@@ -13,9 +13,6 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -25,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-final class IsNullFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class IsNullFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -178,44 +175,14 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
                 new Token([T_WHITESPACE, ' ']),
             ];
 
-            if (true === $this->configuration['use_yoda_style']) {
-                if ($wrapIntoParentheses) {
-                    array_unshift($replacement, new Token('('));
-                }
-
-                $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
-            } else {
-                $replacement = array_reverse($replacement);
-                if ($isContainingDangerousConstructs) {
-                    array_unshift($replacement, new Token(')'));
-                }
-
-                if ($wrapIntoParentheses) {
-                    $replacement[] = new Token(')');
-                    $tokens[$isNullIndex] = new Token('(');
-                } else {
-                    $tokens->clearAt($isNullIndex);
-                }
-
-                $tokens->overrideRange($referenceEnd, $referenceEnd, $replacement);
+            if ($wrapIntoParentheses) {
+                array_unshift($replacement, new Token('('));
             }
+
+            $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
 
             // nested is_null calls support
             $currIndex = $isNullIndex;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
-    {
-        // @todo 3.0 drop `ConfigurationDefinitionFixerInterface`
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('use_yoda_style', '(deprecated) Whether Yoda style conditions should be used.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(true)
-                ->getOption(),
-        ]);
     }
 }

@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
-use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -24,41 +23,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigurationWrongOption()
-    {
-        $fixer = new IsNullFixer();
-
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[is_null] Invalid configuration: The option "yoda" does not exist.');
-        $fixer->configure(['yoda' => true]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
-     */
-    public function testConfigurationWrongValue()
-    {
-        $fixer = new IsNullFixer();
-
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[is_null] Invalid configuration: The option "use_yoda_style" with value -1 is expected to be of type "bool", but is of type "integer".');
-        $fixer->configure(['use_yoda_style' => -1]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
-     */
-    public function testCorrectConfiguration()
-    {
-        $fixer = new IsNullFixer();
-        $fixer->configure(['use_yoda_style' => false]);
-
-        $configuration = static::getObjectAttribute($fixer, 'configuration');
-        static::assertFalse($configuration['use_yoda_style']);
-    }
-
     /**
      * @dataProvider provideFixCases
      *
@@ -224,46 +188,6 @@ FIXED;
             [
                 '<?php if ((null === $u or $v) and ($w || null === $x) xor (null !== $y and $z)) echo "foo"; ?>',
                 '<?php if ((is_null($u) or $v) and ($w || is_null($x)) xor (!is_null($y) and $z)) echo "foo"; ?>',
-            ],
-        ];
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
-     *
-     * @dataProvider provideNonYodaFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     */
-    public function testNonYodaFix($expected, $input)
-    {
-        $this->fixer->configure(['use_yoda_style' => false]);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideNonYodaFixCases()
-    {
-        return [
-            [
-                '<?php $x = $y === null;', '<?php $x = is_null($y);',
-            ],
-            [
-                '<?php $b = a(a(a(b() === null) === null) === null) === null;',
-                '<?php $b = \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));',
-            ],
-            [
-                '<?php if ($x === null && $y) echo "foo";',
-                '<?php if (is_null($x) && $y) echo "foo";',
-            ],
-            [
-                '<?php $x = ($x = array()) === null;',
-                '<?php $x = is_null($x = array());',
-            ],
-            [
-                '<?php while (($nextMaxId = $myTimeline->getNextMaxId()) === null);',
-                '<?php while (is_null($nextMaxId = $myTimeline->getNextMaxId()));',
             ],
         ];
     }

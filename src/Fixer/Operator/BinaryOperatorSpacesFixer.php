@@ -13,8 +13,6 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -151,13 +149,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
      */
     public function configure(array $configuration)
     {
-        if (
-            null !== $configuration &&
-            (array_key_exists('align_equals', $configuration) || array_key_exists('align_double_arrow', $configuration))
-        ) {
-            $configuration = $this->resolveOldConfig($configuration);
-        }
-
         parent::configure($configuration);
 
         $this->operators = $this->resolveOperatorsFromConfig();
@@ -296,15 +287,6 @@ $h = $i===  $j;
                 }])
                 ->setDefault([])
                 ->getOption(),
-            // add deprecated options as BC layer
-            (new FixerOptionBuilder('align_double_arrow', '(deprecated) Whether to apply, remove or ignore double arrows alignment.'))
-                ->setDefault(false)
-                ->setAllowedValues([true, false, null])
-                ->getOption(),
-            (new FixerOptionBuilder('align_equals', '(deprecated) Whether to apply, remove or ignore equals alignment.'))
-                ->setDefault(false)
-                ->setAllowedValues([true, false, null])
-                ->getOption(),
         ]);
     }
 
@@ -424,60 +406,6 @@ $h = $i===  $j;
         }
 
         return $operators;
-    }
-
-    /**
-     * @param array $configuration
-     *
-     * @return array
-     */
-    private function resolveOldConfig(array $configuration)
-    {
-        $newConfig = [
-            'operators' => [],
-        ];
-
-        foreach ($configuration as $name => $setting) {
-            if ('align_double_arrow' === $name) {
-                if (true === $configuration[$name]) {
-                    $newConfig['operators']['=>'] = self::ALIGN;
-                } elseif (false === $configuration[$name]) {
-                    $newConfig['operators']['=>'] = self::SINGLE_SPACE;
-                } elseif (null !== $configuration[$name]) {
-                    throw new InvalidFixerConfigurationException(
-                        $this->getName(),
-                        sprintf(
-                            'Invalid configuration: The option "align_double_arrow" with value %s is invalid. Accepted values are: true, false, null.',
-                            $configuration[$name]
-                        )
-                    );
-                }
-            } elseif ('align_equals' === $name) {
-                if (true === $configuration[$name]) {
-                    $newConfig['operators']['='] = self::ALIGN;
-                } elseif (false === $configuration[$name]) {
-                    $newConfig['operators']['='] = self::SINGLE_SPACE;
-                } elseif (null !== $configuration[$name]) {
-                    throw new InvalidFixerConfigurationException(
-                        $this->getName(),
-                        sprintf(
-                            'Invalid configuration: The option "align_equals" with value %s is invalid. Accepted values are: true, false, null.',
-                            $configuration[$name]
-                        )
-                    );
-                }
-            } else {
-                throw new InvalidFixerConfigurationException($this->getName(), 'Mixing old configuration with new configuration is not allowed.');
-            }
-        }
-
-        @trigger_error(sprintf(
-            'Given configuration is deprecated and will be removed in 3.0. Use configuration %s as replacement for %s.',
-            HelpCommand::toString($newConfig),
-            HelpCommand::toString($configuration)
-        ), E_USER_DEPRECATED);
-
-        return $newConfig;
     }
 
     // Alignment logic related methods

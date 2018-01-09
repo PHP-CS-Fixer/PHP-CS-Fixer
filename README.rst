@@ -263,10 +263,6 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``align_double_arrow`` (``false``, ``null``, ``true``): (deprecated) Whether to apply,
-    remove or ignore double arrows alignment; defaults to ``false``
-  - ``align_equals`` (``false``, ``null``, ``true``): (deprecated) Whether to apply, remove
-    or ignore equals alignment; defaults to ``false``
   - ``default`` (``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``,
     ``'single_space'``, ``null``): default fix strategy; defaults to ``'single_space'``
   - ``operators`` (``array``): dictionary of ``binary operator`` => ``fix strategy``
@@ -496,13 +492,6 @@ Choose from the list of available rules:
     ignore spaces after array assignment ``:`` operator; defaults to ``true``
   - ``after_array_assignments_equals`` (``null``, ``bool``): whether to add, remove or
     ignore spaces after array assignment ``=`` operator; defaults to ``true``
-  - ``around_argument_assignments`` (``bool``): whether to fix spaces around
-    argument assignment operator (deprecated, use
-    ``before_argument_assignments`` and ``after_argument_assignments`` options
-    instead); defaults to ``true``
-  - ``around_array_assignments`` (``bool``): whether to fix spaces around array
-    assignment operators (deprecated, use ``before_array_assignments_*`` and
-    ``after_array_assignments_*`` options instead); defaults to ``true``
   - ``around_commas`` (``bool``): whether to fix spaces around commas; defaults to
     ``true``
   - ``around_parentheses`` (``bool``): whether to fix spaces around parentheses;
@@ -673,11 +662,6 @@ Choose from the list of available rules:
   Replaces ``is_null($var)`` expression with ``null === $var``.
 
   *Risky rule: risky when the function ``is_null`` is overridden.*
-
-  Configuration options:
-
-  - ``use_yoda_style`` (``bool``): (deprecated) Whether Yoda style conditions should
-    be used; defaults to ``true``
 
 * **line_ending** [@PSR2, @Symfony]
 
@@ -1056,8 +1040,6 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``functions`` (``null``): (deprecated, use ``target`` instead) List of assertions
-    to fix (overrides ``target``); defaults to ``null``
   - ``target`` (``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``): target version of
     PHPUnit; defaults to ``'5.0'``
 
