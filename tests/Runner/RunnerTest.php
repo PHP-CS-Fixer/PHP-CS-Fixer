@@ -32,10 +32,14 @@ use Symfony\Component\Finder\Finder;
 final class RunnerTest extends TestCase
 {
     /**
+     * @dataProvider provideFinderCases
+     *
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
+     *
+     * @param mixed $finder
      */
-    public function testThatFixSuccessfully()
+    public function testThatFixSuccessfully($finder)
     {
         $linterProphecy = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
         $linterProphecy
@@ -58,9 +62,9 @@ final class RunnerTest extends TestCase
             'diff' => '',
         );
 
-        $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
+        $path = $this->getFixPath();
         $runner = new Runner(
-            Finder::create()->in($path),
+            $finder,
             $fixers,
             new NullDiffer(),
             null,
@@ -78,9 +82,9 @@ final class RunnerTest extends TestCase
         $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
         $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
 
-        $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
+        $path = $this->getFixPath();
         $runner = new Runner(
-            Finder::create()->in($path),
+            $finder,
             $fixers,
             new NullDiffer(),
             null,
@@ -120,6 +124,7 @@ final class RunnerTest extends TestCase
             true,
             new NullCacheManager()
         );
+
         $changed = $runner->fix();
         $pathToInvalidFile = $path.DIRECTORY_SEPARATOR.'somefile.php';
 
@@ -135,5 +140,29 @@ final class RunnerTest extends TestCase
 
         $this->assertSame(Error::TYPE_INVALID, $error->getType());
         $this->assertSame($pathToInvalidFile, $error->getFilePath());
+    }
+
+    public function provideFinderCases()
+    {
+        $path = $this->getFixPath();
+
+        $paths = array();
+        foreach (new \DirectoryIterator($path) as $file) {
+            if ($file->isFile()) {
+                $paths[] = new \SplFileInfo($file->getPathname());
+            }
+        }
+
+        $paths[] = new \SplFileInfo('__INVALID__');
+
+        return array(
+            array(Finder::create()->in($path)),
+            array(new \ArrayIterator($paths)),
+        );
+    }
+
+    private function getFixPath()
+    {
+        return __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
     }
 }
