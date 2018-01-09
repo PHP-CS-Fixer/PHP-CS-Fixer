@@ -395,7 +395,7 @@ Choose from the list of available rules:
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
 
-  *Risky rule: risky when the function ``dirname()`` is overridden.*
+  *Risky rule: risky when the function ``dirname`` is overridden.*
 
 * **doctrine_annotation_array_assignment** [@DoctrineAnnotation]
 
@@ -670,9 +670,9 @@ Choose from the list of available rules:
 
 * **is_null** [@Symfony:risky]
 
-  Replaces is_null(parameter) expression with ``null === parameter``.
+  Replaces ``is_null($var)`` expression with ``null === $var``.
 
-  *Risky rule: risky when the function ``is_null()`` is overridden.*
+  *Risky rule: risky when the function ``is_null`` is overridden.*
 
   Configuration options:
 
@@ -1254,9 +1254,9 @@ Choose from the list of available rules:
 
 * **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
-  Converts ``pow()`` to the ``**`` operator.
+  Converts ``pow`` to the ``**`` operator.
 
-  *Risky rule: risky when the function ``pow()`` is overridden.*
+  *Risky rule: risky when the function ``pow`` is overridden.*
 
 * **pre_increment**
 
