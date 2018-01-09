@@ -98,7 +98,7 @@ function foo () {
     {
         if (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $this->configuration['strategy']) {
             $this->applyChainedCallsFix($tokens);
-            
+
             return;
         }
 
