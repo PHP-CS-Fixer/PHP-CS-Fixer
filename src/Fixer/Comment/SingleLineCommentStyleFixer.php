@@ -122,7 +122,13 @@ $c = 3;
 
                 continue;
             }
-            if (!$this->asteriskEnabled || '/*' !== substr($content, 0, 2) || 1 === preg_match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)) {
+
+            if (
+                !$this->asteriskEnabled
+                || false !== strpos($commentContent, '?>')
+                || '/*' !== substr($content, 0, 2)
+                || 1 === preg_match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)
+            ) {
                 continue;
             }
 
