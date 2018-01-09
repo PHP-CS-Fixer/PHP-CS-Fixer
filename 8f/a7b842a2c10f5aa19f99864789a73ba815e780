@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-08T08:30:14Z
+
++0, is this really faster here?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-01-08T08:33:52Z
+
+I haven't compared but it's 1 function call vs 2, so I assume it's faster?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-08T08:35:45Z
+
+Not sure it's faster but it's simpler so :+1: for me.
+
+Though this an edge case, not sure it's worth creating a fixer.
