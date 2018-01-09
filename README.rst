@@ -663,11 +663,6 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the function ``is_null`` is overridden.*
 
-  Configuration options:
-
-  - ``use_yoda_style`` (``bool``): (deprecated) Whether Yoda style conditions should
-    be used; defaults to ``true``
-
 * **line_ending** [@PSR2, @Symfony]
 
   All PHP files must use same line ending.
