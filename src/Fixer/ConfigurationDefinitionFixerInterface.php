@@ -14,6 +14,9 @@ namespace PhpCsFixer\Fixer;
 
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 
+/**
+ * @deprecated Will be incorporated into `ConfigurationDefinitionFixerInterface` in 3.0
+ */
 interface ConfigurationDefinitionFixerInterface extends ConfigurableFixerInterface
 {
     /**
