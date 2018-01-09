@@ -97,11 +97,13 @@ function foo () {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         if (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $this->configuration['strategy']) {
-            return $this->applyChainedCallsFix($tokens);
+            $this->applyChainedCallsFix($tokens);
+            
+            return;
         }
 
         if (self::STRATEGY_NO_MULTI_LINE === $this->configuration['strategy']) {
-            return $this->applyNoMultiLineFix($tokens);
+            $this->applyNoMultiLineFix($tokens);
         }
     }
 
