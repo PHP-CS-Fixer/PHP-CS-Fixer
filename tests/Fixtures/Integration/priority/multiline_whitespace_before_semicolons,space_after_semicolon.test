@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: multiline_whitespace_before_semicolons,space_after_semicolon.
+--RULESET--
+{"multiline_whitespace_before_semicolons": true, "space_after_semicolon": true}
+--EXPECT--
+<?php
+
+for ($i = 0; ; ++$i) {
+}
+
+--INPUT--
+<?php
+
+for ($i = 0;
+; ++$i) {
+}

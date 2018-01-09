@@ -395,7 +395,7 @@ Choose from the list of available rules:
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
 
-  *Risky rule: risky when the function ``dirname()`` is overridden.*
+  *Risky rule: risky when the function ``dirname`` is overridden.*
 
 * **doctrine_annotation_array_assignment** [@DoctrineAnnotation]
 
@@ -670,14 +670,14 @@ Choose from the list of available rules:
 
 * **is_null** [@Symfony:risky]
 
-  Replaces is_null(parameter) expression with ``null === parameter``.
+  Replaces ``is_null($var)`` expression with ``null === $var``.
 
-  *Risky rule: risky when the function ``is_null()`` is overridden.*
+  *Risky rule: risky when the function ``is_null`` is overridden.*
 
   Configuration options:
 
-  - ``use_yoda_style`` (``bool``): whether Yoda style conditions should be used;
-    defaults to ``true``
+  - ``use_yoda_style`` (``bool``): (deprecated) Whether Yoda style conditions should
+    be used; defaults to ``true``
 
 * **line_ending** [@PSR2, @Symfony]
 
@@ -750,6 +750,17 @@ Choose from the list of available rules:
   function calls with according type casting operator.
 
   *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
+
+* **multiline_whitespace_before_semicolons**
+
+  Forbid multi-line whitespace before the closing semicolon or move the
+  semicolon to the new line for chained calls.
+
+  Configuration options:
+
+  - ``strategy`` (``'new_line_for_chained_calls'``, ``'no_multi_line'``): forbid
+    multi-line whitespace or move the semicolon to the new line for chained
+    calls; defaults to ``'no_multi_line'``
 
 * **native_function_casing** [@Symfony]
 
@@ -862,6 +873,7 @@ Choose from the list of available rules:
 * **no_multiline_whitespace_before_semicolons**
 
   Multi-line whitespace before closing semicolon are prohibited.
+  DEPRECATED: use ``multiline_whitespace_before_semicolons`` instead.
 
 * **no_null_property_initialization**
 
@@ -1254,9 +1266,9 @@ Choose from the list of available rules:
 
 * **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
-  Converts ``pow()`` to the ``**`` operator.
+  Converts ``pow`` to the ``**`` operator.
 
-  *Risky rule: risky when the function ``pow()`` is overridden.*
+  *Risky rule: risky when the function ``pow`` is overridden.*
 
 * **pre_increment**
 
