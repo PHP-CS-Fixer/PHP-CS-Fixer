@@ -846,11 +846,6 @@ Choose from the list of available rules:
 
   Operator ``=>`` should not be surrounded by multi-line whitespaces.
 
-* **no_multiline_whitespace_before_semicolons**
-
-  Multi-line whitespace before closing semicolon are prohibited.
-  DEPRECATED: use ``multiline_whitespace_before_semicolons`` instead.
-
 * **no_null_property_initialization**
 
   Properties MUST not be explicitly initialized with ``null``.
