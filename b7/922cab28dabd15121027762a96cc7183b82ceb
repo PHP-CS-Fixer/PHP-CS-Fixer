@@ -1,0 +1,59 @@
+---------------------------------------------------------------------------
+
+by seyfer at 2018-01-04T10:52:57Z
+
+Our team really needs it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-04T22:49:13Z
+
+what is "our team" btw ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-04T22:51:44Z
+
+@TomasVotruba , would you mind to give a review here? :)
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2018-01-05T18:41:00Z
+
+@keradus I've dropped my 2 cents :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-06T15:06:52Z
+
+you need to replace references to old fixer class to new fixer class:
+```
+ker@dus:~/github/PHP-CS-Fixer$ grep -r NoMultilineWhitespaceBeforeSemicolonsFixer src
+src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php:        // should ran before NoMultilineWhitespaceBeforeSemicolonsFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer and NoSpacesInsideParenthesisFixer.
+src/Fixer/Import/SingleImportPerStatementFixer.php:        // must be run before NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer.
+src/Fixer/Semicolon/SpaceAfterSemicolonFixer.php:        return -1; // Must run after NoMultilineWhitespaceBeforeSemicolonsFixer
+src/Fixer/Semicolon/NoEmptyStatementFixer.php:        // should be run before the BracesFixer, CombineConsecutiveUnsetsFixer, NoExtraBlankLinesFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer,
+```
+
+after you replace the comments here, you need to replace the references in:
+```
+ker@dus:~/github/PHP-CS-Fixer$ grep -r no_multiline_whitespace_before_semicolon .
+./tests/AutoReview/FixerFactoryTest.php:            [$fixers['combine_consecutive_issets'], $fixers['no_multiline_whitespace_before_semicolons']], // tested also in: combine_consecutive_issets,no_multiline_whitespace_before_semicolons.test
+./tests/AutoReview/FixerFactoryTest.php:            [$fixers['no_empty_statement'], $fixers['no_multiline_whitespace_before_semicolons']],
+./tests/AutoReview/FixerFactoryTest.php:            [$fixers['no_multiline_whitespace_before_semicolons'], $fixers['space_after_semicolon']], // tested also in: tests/Fixtures/Integration/priority/no_multiline_whitespace_before_semicolons,space_after_semicolon.test
+./tests/AutoReview/FixerFactoryTest.php:            [$fixers['single_import_per_statement'], $fixers['no_multiline_whitespace_before_semicolons']], // single_import_per_statement,no_multiline_whitespace_before_semicolons.test
+```
+
+and finally the itest files (both, configuration in them and their file names)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-07T15:08:36Z
+
+@TomasVotruba , could you give final check? I think that comments you had raised have been fixed
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2018-01-07T23:08:00Z
+
+@keradus :+1:  I've added last few ideas
