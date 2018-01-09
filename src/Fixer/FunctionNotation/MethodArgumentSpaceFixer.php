@@ -234,7 +234,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             }
         }
 
-        $this->fixNewLine($tokens, $startFunctionIndex, $indentation, false);
+        $this->fixNewline($tokens, $startFunctionIndex, $indentation, false);
     }
 
     /**
@@ -253,7 +253,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
 
         if ($tokens[$index + 2]->isComment()) {
             $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index + 2);
-            if (!$this->isNewLine($tokens[$nextMeaningfulTokenIndex - 1])) {
+            if (!$this->isNewline($tokens[$nextMeaningfulTokenIndex - 1])) {
                 $tokens->ensureWhitespaceAtIndex($nextMeaningfulTokenIndex, 0, $this->whitespacesConfig->getLineEnding().$indentation);
             }
 
@@ -331,7 +331,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      *
      * @return bool
      */
-    private function isNewLine(Token $token)
+    private function isNewline(Token $token)
     {
         return $token->isWhitespace() && false !== strpos($token->getContent(), "\n");
     }
