@@ -53,7 +53,6 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
             'file_exists',
             'is_array',
             'is_bool',
-            'is_boolean',
             'is_callable',
             'is_double',
             'is_float',
@@ -199,7 +198,7 @@ $this->assertTrue(is_readable($a));
             ],
         ];
 
-        foreach (['array', 'bool', 'boolean', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
+        foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
             $cases[] = [
                 sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
                 sprintf('<?php $this->assertTrue(is_%s($a));', $type),
@@ -276,25 +275,6 @@ $a#
                 ',
             ],
         ];
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing "functions" at the root of the configuration is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
-     */
-    public function testLegacyConfig()
-    {
-        $this->fixer->configure(['file_exists']);
-        $this->doTest(
-            '<?php
-                    $this->assertFileExists($a);
-                    $this->assertTrue(is_infinite($a));
-            ',
-            '<?php
-                    $this->assertTrue(file_exists($a));
-                    $this->assertTrue(is_infinite($a));
-            '
-        );
     }
 
     /**

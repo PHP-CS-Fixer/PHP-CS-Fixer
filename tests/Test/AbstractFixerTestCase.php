@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Test;
 
 use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
@@ -23,7 +24,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -40,7 +40,7 @@ abstract class AbstractFixerTestCase extends TestCase
     protected $linter;
 
     /**
-     * @var null|FixerInterface
+     * @var null|ConfigurableFixerInterface|FixerInterface
      */
     protected $fixer;
 
@@ -55,19 +55,6 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $this->linter = $this->getLinter();
         $this->fixer = $this->createFixer();
-
-        // @todo remove at 3.0 together with env var itself
-        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
-            Tokens::setLegacyMode(true);
-        }
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        // @todo remove at 3.0
-        Tokens::setLegacyMode(false);
     }
 
     /**
@@ -237,16 +224,7 @@ abstract class AbstractFixerTestCase extends TestCase
         static $linter = null;
 
         if (null === $linter) {
-            if (getenv('SKIP_LINT_TEST_CASES')) {
-                $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
-                $linterProphecy
-                    ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
-
-                $linter = $linterProphecy->reveal();
-            } else {
-                $linter = new Linter();
-            }
+            $linter = new Linter();
         }
 
         return $linter;

@@ -14,7 +14,7 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -118,7 +118,7 @@ $this->assertNotSame(null, $d);
      */
     protected function createConfigurationDefinition()
     {
-        return new FixerConfigurationResolverRootless('assertions', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([

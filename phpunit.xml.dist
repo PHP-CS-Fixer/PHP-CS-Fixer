@@ -48,7 +48,5 @@
     <php>
         <ini name="zend.enable_gc" value="0"/>
         <ini name="memory_limit" value="1G"/>
-        <env name="SKIP_LINT_TEST_CASES" value="0"/>
-        <env name="PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER" value="0"/>
     </php>
 </phpunit>

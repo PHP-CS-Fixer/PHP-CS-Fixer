@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -128,7 +128,7 @@ class Sample
             '@static' => 'static',
         ];
 
-        return new FixerConfigurationResolverRootless('replacements', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('replacements', 'Mapping between replaced return types with new ones.'))
                 ->setAllowedTypes(['array'])
                 ->setNormalizer(static function (Options $options, $value) use ($default) {
