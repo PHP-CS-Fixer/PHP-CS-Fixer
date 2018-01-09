@@ -12,13 +12,14 @@
 
 namespace PhpCsFixer\Tests\Runner;
 
-use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\FileFilterIterator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
+ * @author SpacePossum
+ *
  * @internal
  *
  * @covers \PhpCsFixer\Runner\FileFilterIterator
@@ -41,12 +42,12 @@ final class FileFilterIteratorTest extends TestCase
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
             FixerFileProcessedEvent::NAME,
-            static function ($event) use (&$events) {
+            function ($event) use (&$events) {
                 $events[] = $event;
             }
         );
 
-        $cache = $this->prophesize(CacheManagerInterface::class);
+        $cache = $this->prophesize('PhpCsFixer\Cache\CacheManagerInterface');
         $cache->needFixing($file, $content)->willReturn(true);
 
         $fileInfo = new \SplFileInfo($file);
@@ -79,7 +80,7 @@ final class FileFilterIteratorTest extends TestCase
             }
         );
 
-        $cache = $this->prophesize(CacheManagerInterface::class);
+        $cache = $this->prophesize('PhpCsFixer\Cache\CacheManagerInterface');
         $cache->needFixing($file, $content)->willReturn(false);
 
         $filter = new FileFilterIterator(
@@ -94,7 +95,7 @@ final class FileFilterIteratorTest extends TestCase
         /** @var FixerFileProcessedEvent $event */
         $event = reset($events);
 
-        $this->assertInstanceOf(FixerFileProcessedEvent::class, $event);
+        $this->assertInstanceOf('PhpCsFixer\FixerFileProcessedEvent', $event);
         $this->assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
     }
 
@@ -112,7 +113,7 @@ final class FileFilterIteratorTest extends TestCase
             }
         );
 
-        $cache = $this->prophesize(CacheManagerInterface::class);
+        $cache = $this->prophesize('PhpCsFixer\Cache\CacheManagerInterface');
         $cache->needFixing($file, $content)->willReturn(true);
 
         $filter = new FileFilterIterator(
@@ -127,7 +128,7 @@ final class FileFilterIteratorTest extends TestCase
         /** @var FixerFileProcessedEvent $event */
         $event = reset($events);
 
-        $this->assertInstanceOf(FixerFileProcessedEvent::class, $event);
+        $this->assertInstanceOf('PhpCsFixer\FixerFileProcessedEvent', $event);
         $this->assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
     }
 
@@ -147,7 +148,7 @@ final class FileFilterIteratorTest extends TestCase
                 new \SplFileInfo('__INVALID__'),
             )),
             $eventDispatcher,
-            $this->prophesize(CacheManagerInterface::class)->reveal()
+            $this->prophesize('PhpCsFixer\Cache\CacheManagerInterface')->reveal()
         );
 
         $this->assertCount(0, $filter);
@@ -158,7 +159,7 @@ final class FileFilterIteratorTest extends TestCase
         $file = __FILE__;
         $content = file_get_contents($file);
 
-        $cache = $this->prophesize(CacheManagerInterface::class);
+        $cache = $this->prophesize('PhpCsFixer\Cache\CacheManagerInterface');
         $cache->needFixing($file, $content)->willReturn(false);
 
         $filter = new FileFilterIterator(
@@ -175,11 +176,11 @@ final class FileFilterIteratorTest extends TestCase
         $filter = new FileFilterIterator(
             new \ArrayIterator(array(__FILE__)),
             null,
-            $this->prophesize(CacheManagerInterface::class)->reveal()
+            $this->prophesize('PhpCsFixer\Cache\CacheManagerInterface')->reveal()
         );
 
         $this->setExpectedExceptionRegExp(
-            \RuntimeException::class,
+            'RuntimeException',
             '#^Expected instance of "\\\SplFileInfo", got "string"\.$#'
         );
 
