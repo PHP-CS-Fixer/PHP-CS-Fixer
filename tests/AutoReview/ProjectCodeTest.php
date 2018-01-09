@@ -44,7 +44,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
-        \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
         \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
         \PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException::class,
         \PhpCsFixer\FixerFileProcessedEvent::class,

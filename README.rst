@@ -277,11 +277,6 @@ Choose from the list of available rules:
   Ensure there is no code on the same line as the PHP open tag and it is
   followed by a blank line.
 
-* **blank_line_before_return**
-
-  An empty line feed should precede a return statement. DEPRECATED: use
-  ``blank_line_before_statement`` instead.
-
 * **blank_line_before_statement** [@Symfony]
 
   An empty line feed must precede any configured statement.
@@ -615,11 +610,6 @@ Choose from the list of available rules:
   - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
     defaults to ``[]``
 
-* **hash_to_slash_comment**
-
-  Single line comments should use double slashes ``//`` and not hash ``#``.
-  DEPRECATED: use ``single_line_comment_style`` instead.
-
 * **header_comment**
 
   Add, replace or remove header comment.
@@ -723,11 +713,6 @@ Choose from the list of available rules:
   Method chaining MUST be properly indented. Method chaining with
   different levels of indentation is not supported.
 
-* **method_separation**
-
-  Methods must be separated with one blank line. DEPRECATED: use
-  ``class_attributes_separation`` instead.
-
 * **modernize_types_casting** [@Symfony:risky]
 
   Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
@@ -818,15 +803,6 @@ Choose from the list of available rules:
 
   - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
 
-* **no_extra_consecutive_blank_lines**
-
-  Removes extra blank lines and/or blank lines following configuration.
-  DEPRECATED: use ``no_extra_blank_lines`` instead.
-
-  Configuration options:
-
-  - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
-
 * **no_homoglyph_names** [@Symfony:risky]
 
   Replace accidental usage of homoglyphs (non ascii characters) in names.
@@ -853,11 +829,6 @@ Choose from the list of available rules:
 * **no_multiline_whitespace_around_double_arrow** [@Symfony]
 
   Operator ``=>`` should not be surrounded by multi-line whitespaces.
-
-* **no_multiline_whitespace_before_semicolons**
-
-  Multi-line whitespace before closing semicolon are prohibited.
-  DEPRECATED: use ``multiline_whitespace_before_semicolons`` instead.
 
 * **no_null_property_initialization**
 
@@ -1251,11 +1222,6 @@ Choose from the list of available rules:
   Converts ``pow`` to the ``**`` operator.
 
   *Risky rule: risky when the function ``pow`` is overridden.*
-
-* **pre_increment**
-
-  Pre incrementation/decrementation should be used if possible.
-  DEPRECATED: use ``increment_style`` instead.
 
 * **protected_to_private** [@Symfony]
 
