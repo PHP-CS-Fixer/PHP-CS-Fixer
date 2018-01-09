@@ -67,21 +67,6 @@ final class IsNullFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
-    {
-        if (null !== $configuration && array_key_exists('use_yoda_style', $configuration)) {
-            @trigger_error(
-                'Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        parent::configure($configuration);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $sequenceNeeded = [[T_STRING, 'is_null'], '('];
