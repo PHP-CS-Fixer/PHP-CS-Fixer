@@ -119,9 +119,9 @@ function foo () {
             if (!$previous->isWhitespace() || false === strpos($previous->getContent(), "\n")) {
                 continue;
             }
-
             $content = $previous->getContent();
-            if (("\n" === $content[0] || "\r" === $content[0]) && $tokens[$index - 2]->isComment()) {
+
+            if (0 === strpos($content, $lineEnding) && $tokens[$index - 2]->isComment()) {
                 $tokens->ensureWhitespaceAtIndex($previousIndex, 0, $lineEnding);
             } else {
                 $tokens->clearAt($previousIndex);
