@@ -23,6 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\FileFilterIterator
+ * @requires PHP 5.4
  */
 final class FileFilterIteratorTest extends TestCase
 {
