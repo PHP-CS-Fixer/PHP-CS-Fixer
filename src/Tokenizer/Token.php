@@ -115,36 +115,6 @@ class Token
     }
 
     /**
-     * Clear token at given index.
-     *
-     * Clearing means override token by empty string.
-     *
-     * @deprecated since 2.4
-     */
-    public function clear()
-    {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
-        Tokens::setLegacyMode(true);
-
-        $this->content = '';
-        $this->id = null;
-        $this->isArray = false;
-    }
-
-    /**
-     * Clear internal flag if token was changed.
-     *
-     * @deprecated since 2.4
-     */
-    public function clearChanged()
-    {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
-        Tokens::setLegacyMode(true);
-
-        $this->changed = false;
-    }
-
-    /**
      * Check if token is equals to given one.
      *
      * If tokens are arrays, then only keys defined in parameter token are checked.
@@ -372,20 +342,6 @@ class Token
     }
 
     /**
-     * Check if token was changed.
-     *
-     * @return bool
-     *
-     * @deprecated since 2.4
-     */
-    public function isChanged()
-    {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
-
-        return $this->changed;
-    }
-
-    /**
      * Check if token is one of classy tokens: T_CLASS, T_INTERFACE or T_TRAIT.
      *
      * @return bool
@@ -405,20 +361,6 @@ class Token
         static $commentTokens = [T_COMMENT, T_DOC_COMMENT];
 
         return $this->isGivenKind($commentTokens);
-    }
-
-    /**
-     * Check if token is empty, e.g. because of clearing.
-     *
-     * @return bool
-     *
-     * @deprecated since 2.4
-     */
-    public function isEmpty()
-    {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
-
-        return null === $this->id && ('' === $this->content || null === $this->content);
     }
 
     /**
@@ -489,66 +431,6 @@ class Token
         }
 
         return '' === trim($this->content, $whitespaces);
-    }
-
-    /**
-     * Override token.
-     *
-     * If called on Token inside Tokens collection please use `Tokens::overrideAt` instead.
-     *
-     * @param array|string|Token $other token prototype
-     *
-     * @deprecated since 2.4
-     */
-    public function override($other)
-    {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
-        Tokens::setLegacyMode(true);
-
-        $prototype = $other instanceof self ? $other->getPrototype() : $other;
-
-        if ($this->equals($prototype)) {
-            return;
-        }
-
-        $this->changed = true;
-
-        if (is_array($prototype)) {
-            $this->isArray = true;
-            $this->id = $prototype[0];
-            $this->content = $prototype[1];
-
-            return;
-        }
-
-        $this->isArray = false;
-        $this->id = null;
-        $this->content = $prototype;
-    }
-
-    /**
-     * @param string $content
-     *
-     * @deprecated since 2.4
-     */
-    public function setContent($content)
-    {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
-        Tokens::setLegacyMode(true);
-
-        if ($this->content === $content) {
-            return;
-        }
-
-        $this->changed = true;
-        $this->content = $content;
-
-        // setting empty content is clearing the token
-        if ('' === $content) {
-            @trigger_error(__METHOD__.' shall not be used to clear token, use Tokens::clearAt instead.', E_USER_DEPRECATED);
-            $this->id = null;
-            $this->isArray = false;
-        }
     }
 
     public function toArray()

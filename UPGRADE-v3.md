@@ -3,13 +3,21 @@ UPGRADE GUIDE FROM 2.x to 3.0
 
 This is guide for upgrade from version 2.x to 3.0 for using the CLI tool.
 
+CLI options
+-----------
+
+| 2.x             | 3.0             | Description                                     | Note                                   |
+| --------------- | --------------- | ----------------------------------------------- | -------------------------------------- |
+| --diff-format   | --diff-format   | Type of differ                                  | Allowed value `sbd` was removed,       |
+|                 |                 |                                                 | new default is `udiff`                 |
+
 Changes to rules
 ----------------
 
 ### Removed rootless configuration
 
 Rule                                 | Root option    | Note
------------------------------------- | -------------- |
+------------------------------------ | -------------- | ----
 `general_phpdoc_annotation_remove`   | `annotations`
 `no_extra_consecutive_blank_lines`   | `tokens`
 `no_spaces_around_offset`            | `positions`

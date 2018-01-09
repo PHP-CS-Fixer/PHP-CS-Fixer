@@ -40,7 +40,7 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 
@@ -122,7 +122,13 @@ $c = 3;
 
                 continue;
             }
-            if (!$this->asteriskEnabled || '/*' !== substr($content, 0, 2) || 1 === preg_match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)) {
+
+            if (
+                !$this->asteriskEnabled
+                || false !== strpos($commentContent, '?>')
+                || '/*' !== substr($content, 0, 2)
+                || 1 === preg_match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)
+            ) {
                 continue;
             }
 

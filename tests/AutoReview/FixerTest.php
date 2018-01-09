@@ -137,22 +137,6 @@ final class FixerTest extends TestCase
     }
 
     /**
-     * @param FixerInterface $fixer
-     *
-     * @group legacy
-     * @dataProvider provideFixerDefinitionsCases
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.
-     */
-    public function testLegacyFixerDefinitions(FixerInterface $fixer)
-    {
-        $definition = $fixer->getDefinition();
-
-        $this->assertNull($definition->getConfigurationDescription(), sprintf('[%s] No configuration description expected.', $fixer->getName()));
-        $this->assertNull($definition->getDefaultConfiguration(), sprintf('[%s] No default configuration expected.', $fixer->getName()));
-    }
-
-    /**
      * @dataProvider provideFixerDefinitionsCases
      */
     public function testFixersAreFinal(FixerInterface $fixer)

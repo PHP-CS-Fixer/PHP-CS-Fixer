@@ -14,6 +14,7 @@ namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigInterface;
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\NullOutput;
@@ -121,10 +122,12 @@ final class FixCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $verbosity = $output->getVerbosity();
-
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
+
+        if (null !== $passedConfig && null !== $passedRules) {
+            throw new InvalidConfigurationException('Passing both `--config` and `--rules` options is not allowed.');
+        }
 
         $resolver = new ConfigurationResolver(
             $this->defaultConfig,
@@ -141,7 +144,7 @@ final class FixCommand extends Command
                 'diff' => $input->getOption('diff'),
                 'diff-format' => $input->getOption('diff-format'),
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
-                'verbosity' => $verbosity,
+                'verbosity' => $output->getVerbosity(),
                 'show-progress' => $input->getOption('show-progress'),
             ],
             getcwd(),
@@ -156,17 +159,6 @@ final class FixCommand extends Command
         ;
 
         if (null !== $stdErr) {
-            if (null !== $passedConfig && null !== $passedRules) {
-                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                    throw new \RuntimeException('Passing both `config` and `rules` options is not possible. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
-                }
-
-                $stdErr->writeln([
-                    sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'When passing both "--config" and "--rules" the rules within the configuration file are not used.'),
-                    sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Passing both options is deprecated; version v3.0 PHP-CS-Fixer will exit with a configuration error code.'),
-                ]);
-            }
-
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
 

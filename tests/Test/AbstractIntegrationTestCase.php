@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\Test;
 
 use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
 use PhpCsFixer\Cache\NullCacheManager;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
@@ -26,7 +26,6 @@ use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -105,19 +104,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
         parent::setUp();
 
         $this->linter = $this->getLinter();
-
-        // @todo remove at 3.0 together with env var itself
-        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
-            Tokens::setLegacyMode(true);
-        }
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        // @todo remove at 3.0
-        Tokens::setLegacyMode(false);
     }
 
     /**
@@ -211,7 +197,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $runner = new Runner(
             new \ArrayIterator([new \SplFileInfo($tmpFile)]),
             $fixers,
-            new SebastianBergmannDiffer(),
+            new UnifiedDiffer(),
             null,
             $errorsManager,
             $this->linter,
@@ -271,7 +257,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $runner = new Runner(
                 new \ArrayIterator([new \SplFileInfo($tmpFile)]),
                 array_reverse($fixers),
-                new SebastianBergmannDiffer(),
+                new UnifiedDiffer(),
                 null,
                 $errorsManager,
                 $this->linter,
@@ -359,22 +345,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         static $linter = null;
 
         if (null === $linter) {
-            if (getenv('SKIP_LINT_TEST_CASES')) {
-                $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
-                $linterProphecy
-                    ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
-                $linterProphecy
-                    ->lintFile(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
-                $linterProphecy
-                    ->isAsync()
-                    ->willReturn(false);
-
-                $linter = $linterProphecy->reveal();
-            } else {
-                $linter = new Linter();
-            }
+            $linter = new Linter();
         }
 
         return $linter;

@@ -43,8 +43,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Differ\DiffConsoleFormatter::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\FileRemoval::class,
-        \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
-        \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
         \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
         \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
@@ -59,7 +57,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
-        \PhpCsFixer\Test\AccessibleObject::class,
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
 
@@ -125,7 +122,6 @@ final class ProjectCodeTest extends TestCase
         // @TODO: 3.0 should be removed
         $exceptionMethodsPerClass = [
             \PhpCsFixer\Config::class => ['create'],
-            \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class => ['fixSpace'],
         ];
 
         $definedMethods = $this->getPublicMethodNames($rc);
@@ -192,7 +188,6 @@ final class ProjectCodeTest extends TestCase
 
         $exceptionPropsPerClass = [
             \PhpCsFixer\AbstractPhpdocTypesFixer::class => ['tags'],
-            \PhpCsFixer\AbstractAlignFixerHelper::class => ['deepestLevel'],
             \PhpCsFixer\AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
             \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixers'],
             \PhpCsFixer\Test\AbstractFixerTestCase::class => ['fixer', 'linter'],

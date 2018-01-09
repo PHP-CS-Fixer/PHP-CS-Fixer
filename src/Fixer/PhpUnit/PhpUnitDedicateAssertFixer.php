@@ -33,7 +33,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         'file_exists' => ['assertFileNotExists', 'assertFileExists'],
         'is_array' => true,
         'is_bool' => true,
-        'is_boolean' => true,
         'is_callable' => true,
         'is_dir' => ['assertDirectoryNotExists', 'assertDirectoryExists'],
         'is_double' => true,
@@ -62,7 +61,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration)
     {
         parent::configure($configuration);
 
