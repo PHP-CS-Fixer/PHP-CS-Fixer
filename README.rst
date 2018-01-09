@@ -676,8 +676,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``use_yoda_style`` (``bool``): whether Yoda style conditions should be used;
-    defaults to ``true``
+  - ``use_yoda_style`` (``bool``): (deprecated) Whether Yoda style conditions should
+    be used; defaults to ``true``
 
 * **line_ending** [@PSR2, @Symfony]
 
