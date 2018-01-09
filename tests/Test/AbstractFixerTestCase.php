@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Test;
 
 use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
@@ -40,7 +41,7 @@ abstract class AbstractFixerTestCase extends TestCase
     protected $linter;
 
     /**
-     * @var null|FixerInterface
+     * @var null|ConfigurableFixerInterface|FixerInterface
      */
     protected $fixer;
 
