@@ -284,16 +284,16 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    private function doesIntegrationTestExist(FixerInterface $first, FixerInterface $second)
-    {
-        return is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($first, $second)) || is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($second, $first));
-    }
-
     /**
      * @private
      */
     public function generateIntegrationTestName(FixerInterface $first, FixerInterface $second)
     {
         return "{$first->getName()},{$second->getName()}.test";
+    }
+
+    private function doesIntegrationTestExist(FixerInterface $first, FixerInterface $second)
+    {
+        return is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($first, $second)) || is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($second, $first));
     }
 }
