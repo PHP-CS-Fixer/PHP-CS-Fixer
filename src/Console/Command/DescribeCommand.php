@@ -17,12 +17,10 @@ use PhpCsFixer\Diff\v2_0\Differ;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
-use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
@@ -140,11 +138,7 @@ final class DescribeCommand extends Command
 
         /** @var FixerInterface $fixer */
         $fixer = $fixers[$name];
-        if ($fixer instanceof DefinedFixerInterface) {
-            $definition = $fixer->getDefinition();
-        } else {
-            $definition = new FixerDefinition('Description is not available.', []);
-        }
+        $definition = $fixer->getDefinition();
 
         $description = $definition->getSummary();
         if ($fixer instanceof DeprecatedFixerInterface) {

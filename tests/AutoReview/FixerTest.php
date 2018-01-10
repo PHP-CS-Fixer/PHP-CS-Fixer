@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
@@ -52,9 +51,7 @@ final class FixerTest extends TestCase
      */
     public function testFixerDefinitions(FixerInterface $fixer)
     {
-        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
-
-        /** @var DefinedFixerInterface $fixer */
+        /** @var FixerInterface $fixer */
         $fixerName = $fixer->getName();
         $definition = $fixer->getDefinition();
         $fixerIsConfigurable = $fixer instanceof ConfigurationDefinitionFixerInterface;
@@ -147,14 +144,6 @@ final class FixerTest extends TestCase
             $reflection->isFinal(),
             sprintf('Fixer "%s" must be declared "final".', $fixer->getName())
         );
-    }
-
-    /**
-     * @dataProvider provideFixerDefinitionsCases
-     */
-    public function testFixersAreDefined(FixerInterface $fixer)
-    {
-        $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
     }
 
     /**

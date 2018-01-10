@@ -17,7 +17,6 @@ use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -31,7 +30,7 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  *
  * @internal
  */
-abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
+abstract class AbstractFixer implements FixerInterface
 {
     /**
      * @var null|array<string, mixed>
