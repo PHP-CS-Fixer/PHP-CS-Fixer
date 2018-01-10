@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-12-29T07:47:23Z
+
+@keradus `PhpUnitNoExpectationAnnotationFixer` source seems not so trivial, if you could take care of the bugfix I'd appreciate it. Btw the priority to me is very low, near zero, just found the case in a project and wanted to report the bug.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-12-29T15:11:10Z
+
+Never mind, just found the time to fix it 😛
