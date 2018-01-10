@@ -433,6 +433,33 @@ Changelog for v2.3.0
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
 
+Changelog for v2.2.14
+---------------------
+
+* bug #3298 DiffConsoleFormatter - fix output escaping. (SpacePossum)
+* bug #3337 BracesFixer: nowdoc bug on template files (Slamdunk)
+* bug #3349 Fix stdin handling and add tests for it (keradus)
+* bug #3359 BracesFixer - handle comment for content outside of given block (keradus)
+* bug #3415 FileFilterIterator - input checks and utests (SpacePossum, keradus)
+* bug #3429 Fix archive analysing (keradus)
+* minor #3137 PHPUnit - use common base class (keradus)
+* minor #3342 PhpUnitDedicateAssertFixer - Remove unexistent method is_boolean  (carusogabriel)
+* minor #3345 StdinFileInfo - fix `__toString` (keradus)
+* minor #3346 StdinFileInfo - drop getContents (keradus)
+* minor #3347 DX: reapply newest CS (keradus)
+* minor #3365 COOKBOOK-FIXERS.md - update to provide definition instead of description (keradus)
+* minor #3370 AbstractFixer - FQCN in in exceptions (Slamdunk)
+* minor #3372 ProjectCodeTest - fix comment (keradus)
+* minor #3402 Always provide delimiter to `preg_quote` calls (ntzm)
+* minor #3403 Remove unused import (ntzm)
+* minor #3405 Fix `fopen` mode (ntzm)
+* minor #3408 Improving fixers descriptions (kubawerlos)
+* minor #3409 move itests from misc to priority (keradus)
+* minor #3411 Better type hinting for AbstractFixerTestCase::$fixer (kubawerlos)
+* minor #3412 Convert `strtolower` inside `strpos` to just `stripos` (ntzm)
+* minor #3425 FixerFactoryTest - test that priority pair fixers have itest (keradus, SpacePossum)
+* minor #3427 ConfigurationResolver: fix @return annotation (Slamdunk)
+
 Changelog for v2.2.13
 ---------------------
 
