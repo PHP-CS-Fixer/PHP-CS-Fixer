@@ -257,6 +257,10 @@ Choose from the list of available rules:
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` array
     syntax; defaults to ``'long'``
 
+* **backtick_to_shell_exec**
+
+  Converts backtick operators to shell_exec calls.
+
 * **binary_operator_spaces** [@Symfony]
 
   Binary operators should be surrounded by space as configured.
