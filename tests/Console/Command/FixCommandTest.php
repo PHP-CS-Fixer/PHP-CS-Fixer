@@ -43,7 +43,7 @@ final class FixCommandTest extends TestCase
         $this->doTestExecute(
             ['--rules' => ''],
             [
-                'class' => 'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+                'class' => \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class,
                 'regex' => '#^Empty rules value is not allowed\.$#',
             ]
         );
