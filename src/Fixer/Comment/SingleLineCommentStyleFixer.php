@@ -116,7 +116,8 @@ $c = 3;
             }
 
             $content = $token->getContent();
-            $commentContent = substr($content, 2, -2);
+            $commentContent = substr($content, 2, -2) ?: '';
+
             if ($this->hashEnabled && '#' === $content[0]) {
                 $tokens[$index] = new Token([$token->getId(), '//'.substr($content, 1)]);
 
