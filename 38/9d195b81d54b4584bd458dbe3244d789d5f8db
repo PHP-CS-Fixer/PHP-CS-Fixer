@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-05T08:29:18Z
+
+After further investigations I decided to skip cases with special chars like single-quotes, double-quotes and backticks because the final escaped sequence depends on the context:
+```php
+// Single-quotes behave the same, but affect other special chars so better skip them too
+var_dump(`echo a\'b` === shell_exec("echo a\\'b"));
+var_dump(`echo 'ab'` === shell_exec("echo 'ab'"));
+
+var_dump(`echo a\"b` === shell_exec("echo a\\\"b"));
+var_dump(`echo 'a"b'` === shell_exec("echo 'a\"b'"));
+
+var_dump(`echo 'a\`b'` === shell_exec("echo 'a`b'"));
+var_dump(`echo a\\\`b` === shell_exec("echo a\\`b"));
+```
