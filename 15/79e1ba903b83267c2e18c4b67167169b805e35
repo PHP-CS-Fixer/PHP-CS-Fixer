@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-12-01T09:30:02Z
+
+Hi, it's the first time I see https://github.com/PHPUnitGoodPractices/Traits, and I would like to share some thoughts on it. I'm doing this here and not in an Issue of that library because FriendsOfPHP/PHP-CS-Fixer is involved on my reasoning.
+
+First of all, I understand and appreciate a lot the work behind PHPUnitGoodPractices; the following ideas should not be intended as a criticism but rather as what I experienced facing the same issues.
+
+Nowadays it's a while I'm working on PHP-CS-Fixer and I find its engine one of the most powerful and flexible for AST parsing and querying, and I've always thought it could also be used for a check-only tool.
+
+About PHPUnitGoodPractices I don't like that it forces the user to alter the entire tests codebase.
+
+What I would find more flexible and less intrusive is:
+
+1. Extract PHP-CS-Fixer tokenization as a separate component
+1. Create an AutoReview test case that accept something like the path of the test suite as a configuration (something like my [phpunit-extensions](https://github.com/Slamdunk/phpunit-extensions))
+
+So the test codebase would be unaffected, and all the autoreviews would be easy to configure and manage under a specific class/path/single-entry-point.
+
+Of course this would be **a lot** more work than some simple traits like PHPUnitGoodPractices, but we could achieve to be a complete "*competitor*" of PHP_CodeSniffer, a tool that I've always found verbose and  tricky to configure and extend, but that offers checks for non-autofixable code, a missing-feature of PHP-CS-Fixer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-01T09:47:49Z
+
+Hi. Thanks for your thoughts!
+
+Those traits were created as a POC indeed.
+
+> About PHPUnitGoodPractices I don't like that it forces the user to alter the entire tests codebase.
+
+That's a sad point indeed. fully agree with that. Yet, no better way to customize PHPUnit yet.
+Few words about it in next ¶
+
+> Extract PHP-CS-Fixer tokenization & Create an AutoReview
+
+Actually, creating AutoReview doesn't need to rely on tokenizer at all.
+We already have AutoReview in our project and there is a willing to extract it since a while already :+1:
+
+But you are talking about generic tool to detect non-autofixable things.
+
+Yet, idea behind this PR is different. It's not about (auto) reviewing the code. It's not about linting what cannot be fix. It's about shrink PHPUnit to cut off what IMO shall not be there (yet, it is there, mostly for compat reason, even if they were introduced in PHPUnit 3 and we have 6 now).
+PHPUnit is slowly moving into direction to be configurable, like now, there is a work to extract constraints to dedicated repo and later to register constraints how you want. Yet it way before accomplished.
+Before that happen, I find it nice to have a notice when sth that shall not be used anymore was used.
