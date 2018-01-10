@@ -55,7 +55,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\PharChecker::class,
         \PhpCsFixer\Report\ReportSummary::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
-        \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
         \PhpCsFixer\Test\AccessibleObject::class,
