@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Utils;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
