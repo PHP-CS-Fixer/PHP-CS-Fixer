@@ -20,10 +20,10 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 /**

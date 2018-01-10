@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\FileFilterIterator;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
