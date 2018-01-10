@@ -38,6 +38,7 @@
         "php-coveralls/php-coveralls": "^2.0",
         "php-cs-fixer/accessible-object": "^1.0",
         "phpunit/phpunit": "^5.7.23 || ^6.4.3",
+        "phpunitgoodpractices/traits": "^1.0",
         "symfony/phpunit-bridge": "^3.2.2 || ^4.0"
     },
     "suggest": {
