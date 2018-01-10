@@ -1,0 +1,83 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-12-12T07:08:29Z
+
+LGTM, sadly the test fails on a not related issue (`echo: write error: Broken pipe`)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-12-12T08:09:16Z
+
+Thank you, @SpacePossum! Noticed this locally as well, but focused only on `PhpUnitTestAnnotation` fixer here.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-12-12T08:16:19Z
+
+@SpacePossum
+
+Initially I had three methods
+
+- `hasTestPrefix()`
+- `canRemoveTestPrefix()`
+- `removeTestPrefix()`
+
+What do you think, would the code be easier to understand if there was a single method to handle all of that? Similarly, for adding a test prefix, if necessary? After all, there’s some temporal coupling involved, as we always invoke `hasTestPrefix()`, immediately followed by `removeTestPrefix()`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-12T11:43:08Z
+
+then `removeTestPrefix` would need to check `hasTestPrefix` internally to decouple the methods.
+if there is a need to call one method but not another (even conditionally), then 2 methods are fine.
+if we always call them in chain (even conditionally), I don't see value of splitting them
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-12-12T15:14:12Z
+
+@keradus @SpacePossum
+
+On second thought, we use `hasTestPrefix()` in two different scenarios:
+
+* when verifying that we need to remove
+* when verifying that we need to add
+
+So I guess it's ok to leave them separate.
+
+How about a bit of renaming, though? Please hang on for the next commit.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-12-12T19:31:39Z
+
+the current PR'ed composition of methods and their naming looks spot on to me :+1:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2017-12-12T22:24:58Z
+
+@BackEndTea @keradus @SpacePossum
+
+I added one more test case, but other than that, I can't think of anything else to add at the moment.
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2017-12-13T09:48:58Z
+
+Thanks for improving my code a bit @localheinz
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-09T23:34:31Z
+
+Somehow I missed that.
+@localheinz , please rebase so I could merge it
+
+---------------------------------------------------------------------------
+
+by localheinz at 2018-01-10T08:01:57Z
+
+@keradus
+
+Rebased!
