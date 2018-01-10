@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-05T07:06:52Z
+
+We should add a note about BC breaks in the `UPGRADE.md` file.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-05T12:05:03Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3389#issuecomment-355532770
