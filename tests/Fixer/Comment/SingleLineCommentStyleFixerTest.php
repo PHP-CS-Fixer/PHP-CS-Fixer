@@ -149,7 +149,14 @@ $a = 1; /* after code */
 s    *
      */',
             ],
-
+            'empty comment' => [
+                '<?php
+//
+',
+                '<?php
+/**/
+',
+            ],
             // Untouched cases
             [
                 '<?php
