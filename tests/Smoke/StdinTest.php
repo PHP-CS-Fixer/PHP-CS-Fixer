@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
  * @internal
  *
  * @coversNothing
+ * @requires OS Linux|Darwin
  */
 final class StdinTest extends TestCase
 {
