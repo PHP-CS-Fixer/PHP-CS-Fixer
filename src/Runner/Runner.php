@@ -19,6 +19,7 @@ use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
@@ -163,7 +164,7 @@ final class Runner
             return;
         }
 
-        $old = file_get_contents($file->getRealPath());
+        $old = FileReader::createSingleton()->read($file->getRealPath());
         $tokens = Tokens::fromCode($old);
         $oldHash = $tokens->getCodeHash();
 

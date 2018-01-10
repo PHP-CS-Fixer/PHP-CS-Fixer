@@ -128,10 +128,7 @@ jobs:
             php: 7.1
             install: ./dev-tools/build.sh
             script:
-                - php php-cs-fixer.phar --version
-                - php php-cs-fixer.phar readme
-                - php php-cs-fixer.phar describe header_comment
-                - php php-cs-fixer.phar fix src/Config.php -vvv --dry-run --diff
+                - vendor/bin/phpunit tests/Smoke/PharTest.php
             deploy:
                 provider: releases
                 api_key:

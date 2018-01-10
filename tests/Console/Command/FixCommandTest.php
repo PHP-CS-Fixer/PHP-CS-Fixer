@@ -40,12 +40,13 @@ final class FixCommandTest extends TestCase
 
     public function testEmptyRulesValue()
     {
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+            '#^Empty rules value is not allowed\.$#'
+        );
+
         $this->doTestExecute(
-            array('--rules' => ''),
-            array(
-                'class' => 'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-                'regex' => '#^Empty rules value is not allowed\.$#',
-            )
+            array('--rules' => '')
         );
     }
 
@@ -66,21 +67,16 @@ final class FixCommandTest extends TestCase
     }
 
     /**
-     * @param array      $arguments
-     * @param null|array $expectedException
+     * @param array $arguments
      *
      * @return CommandTester
      */
-    private function doTestExecute(array $arguments, array $expectedException = null)
+    private function doTestExecute(array $arguments)
     {
         $this->application->add(new FixCommand(new ToolInfo()));
 
         $command = $this->application->find('fix');
         $commandTester = new CommandTester($command);
-
-        if (null !== $expectedException) {
-            $this->setExpectedExceptionRegExp($expectedException['class'], $expectedException['regex']);
-        }
 
         $commandTester->execute(
             array_merge(
