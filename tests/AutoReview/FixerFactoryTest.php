@@ -289,7 +289,10 @@ final class FixerFactoryTest extends TestCase
         return is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($first, $second)) || is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($second, $first));
     }
 
-    private function generateIntegrationTestName(FixerInterface $first, FixerInterface $second)
+    /**
+     * @private
+     */
+    public function generateIntegrationTestName(FixerInterface $first, FixerInterface $second)
     {
         return "{$first->getName()},{$second->getName()}.test";
     }
