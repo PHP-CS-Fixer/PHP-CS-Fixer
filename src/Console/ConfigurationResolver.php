@@ -400,7 +400,7 @@ final class ConfigurationResolver
     /**
      * @throws InvalidConfigurationException
      *
-     * @return bool
+     * @return string
      */
     public function getProgress()
     {

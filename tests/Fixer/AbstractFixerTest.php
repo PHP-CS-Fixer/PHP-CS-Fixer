@@ -13,8 +13,8 @@
 namespace PhpCsFixer\Tests\Fixer;
 
 use PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\UnconfigurableFixer;
-use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
