@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-10T06:38:47Z
+
+looks good, however the trailing space detection seems to be broken
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-10T09:31:43Z
+
+no, it's about phpmd, we shall filter out fixtures before checking if there are any files to check, not after
+```
+$ if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^(src/Resources|tests/Fixtures)" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
+Mandatory arguments:
+1) A php source code filename or directory. Can be a comma-separated string
+2) A report format
+3) A ruleset filename or a comma-separated string of rulesetfilenames
+```
