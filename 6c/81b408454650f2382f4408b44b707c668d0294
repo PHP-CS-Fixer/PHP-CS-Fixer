@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-07T19:17:30Z
+
+good idea!
+
+kindly note; duplicates https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3367 :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-07T19:19:14Z
+
+So, I would say it other way.
+Let us make a fixer for it.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-07T19:22:56Z
+
+>Let us make a fixer for it.
+
+That is going to be a highly risky one, as it is impossible to determine the delimiter that should be used.
+Could be an autoreview/sniff though.
