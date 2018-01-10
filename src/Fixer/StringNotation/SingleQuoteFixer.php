@@ -31,7 +31,7 @@ final class SingleQuoteFixer extends AbstractFixer implements ConfigurationDefin
      */
     public function getDefinition()
     {
-        $codeSamble = <<<'EOF'
+        $codeSample = <<<'EOF'
 <?php
 
 $a = "sample";
@@ -42,9 +42,9 @@ EOF;
         return new FixerDefinition(
             'Convert double quotes to single quotes for simple strings.',
             [
-                new CodeSample($codeSamble),
+                new CodeSample($codeSample),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['strings_containing_single_quote_chars' => true]
                 ),
             ]
