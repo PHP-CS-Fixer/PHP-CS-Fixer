@@ -54,7 +54,7 @@ final class AbstractFixerTest extends TestCase
     {
         $fixer = new UnconfigurableFixer();
 
-        $this->expectException('LogicException');
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot run method for class not implementing "PhpCsFixer\Fixer\WhitespacesAwareFixerInterface".');
 
         $fixer->setWhitespacesConfig(new WhitespacesFixerConfig());
