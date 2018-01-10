@@ -1,0 +1,86 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-12-04T11:01:52Z
+
+@SpacePossum the backslash in the code sample seems breaking the colouring:
+```
+$ php php-cs-fixer describe phpdoc_opening_closing
+Description of phpdoc_opening_closing rule.
+DocBlocks must start with two asterisks, multiline comments must start with a single asterisk, after the opening slash. Both must end with a single asterisk before the closing slash.
+
+Fixing examples:
+ * Example #1.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,13 +1,13 @@
+    <?php
+
+   -/******
+   +/*
+     * Multiline comment with arbitrary asterisks count
+   - ******/
+   + */
+
+   -/**</fg=red>
+   +/*</fg=green>
+     * Multiline comment that seems a DocBlock
+     */
+
+    /**
+     * DocBlock with arbitrary asterisk count at the end
+   - **/
+   + */
+   ----------- end diff -----------
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-05T13:27:45Z
+
+:+1:
+
+> I've namespaced it under Phpdoc because the main purpose here is to ease the reading and understanding of comments that aren't docblock but can be misundestood as a docblock
+
+I would still move this fixer to the `Comment` namespace as it does not only deal with PhpDoc comments.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-05T13:30:26Z
+
+> I would still move this fixer to the Comment namespace as it does not only deal with PhpDoc comments.
+
+It deals also with PhpDoc comments:
+```diff
+ /**
+  * DocBlock with arbitrary asterisk count at the end
+- **/
++ */
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-05T13:37:44Z
+
+That's what I meant: _not only_ :p
+
+Happy to hear more opinions about it though.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-06T15:11:42Z
+
+shall be in `Comment` namespace indeed
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-08T08:12:36Z
+
+- [x] `Phpdoc` -> `Comment`
+- [x] `PhpdocOpeningClosingFixer` -> `MultilineCommentOpeningClosingFixer`
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-08T08:17:12Z
+
+Shall we add it to the project config?
