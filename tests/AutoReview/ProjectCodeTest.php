@@ -40,7 +40,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Console\Output\NullOutput::class,
         \PhpCsFixer\Console\SelfUpdate\GithubClient::class,
         \PhpCsFixer\Console\WarningsDetector::class,
-        \PhpCsFixer\Differ\DiffConsoleFormatter::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,

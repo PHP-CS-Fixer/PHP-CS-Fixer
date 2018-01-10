@@ -5195,4 +5195,69 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideNowdocInTemplatesCases
+     */
+    public function testNowdocInTemplates($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideNowdocInTemplatesCases()
+    {
+        return [
+            [
+                <<<'EOT'
+<?php
+if (true) {
+    $var = <<<'NOWDOC'
+NOWDOC;
+?>
+<?php
+}
+
+EOT
+,
+                <<<'EOT'
+<?php
+if (true) {
+$var = <<<'NOWDOC'
+NOWDOC;
+?>
+<?php
+}
+
+EOT
+,
+            ],
+            [
+                <<<'EOT'
+<?php
+if (true) {
+    $var = <<<HEREDOC
+HEREDOC;
+?>
+<?php
+}
+
+EOT
+,
+                <<<'EOT'
+<?php
+if (true) {
+$var = <<<HEREDOC
+HEREDOC;
+?>
+<?php
+}
+
+EOT
+,
+            ],
+        ];
+    }
 }
