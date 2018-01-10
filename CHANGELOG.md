@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.10.0
+---------------------
+
+* feature #3290 Add PhpdocOpeningClosingFixer (Slamdunk, keradus)
+* feature #3327 Add MultilineWhitespaceBeforeSemicolonsFixer (egircys, keradus)
+* feature #3351 PhuUnit: migrate getMock to createPartialMock when arguments count is 2 (Slamdunk)
+* feature #3362 Add BacktickToShellExecFixer (Slamdunk)
+* minor #3285 PHPUnit - use protective traits (keradus)
+* minor #3329 ConfigurationResolver - detect deprecated fixers (keradus, SpacePossum)
+* minor #3343 Tokens - improve block end lookup (keradus)
+* minor #3360 Adjust Symfony ruleset (keradus)
+* minor #3361 no_extra_consecutive_blank_lines - rename to no_extra_blank_lines (with BC layer) (keradus)
+* minor #3363 progress-type - name main option value 'dots' (keradus)
+* minor #3404 Deprecate "use_yoda_style" in IsNullFixer (kubawerlos, keradus)
+* minor #3418 ConfigurableFixerInterface, ConfigurationDefinitionFixerInterface - update deprecations (keradus)
+* minor #3419 Dont use deprecated fixer in itest (keradus)
+
 Changelog for v2.9.1
 --------------------
 
