@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-07T20:15:54Z
+
+shouldn't any of this go to 2.2 ?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-01-07T20:20:49Z
+
+it could, not sure if should, as it's clean up I was thinking about it to be in the default branch
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-07T20:23:15Z
+
+all possible bugfixes/docs/refactoring/cleanups shall go to oldest supported branch, which is 2.2
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-01-07T20:42:10Z
+
+ok, so I've extracted [this](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3408) and changed this to point ot 2.9.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-09T21:52:41Z
+
+please rebase
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2018-01-09T21:55:56Z
+
+Technically, this title should read `Improving fixers' descriptions` with an apostrophe. :P
