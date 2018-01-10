@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\FileRemoval;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
 /**

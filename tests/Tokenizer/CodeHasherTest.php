@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CodeHasher;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author SpacePossum

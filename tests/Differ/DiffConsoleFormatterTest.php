@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Differ;
 
 use PhpCsFixer\Differ\DiffConsoleFormatter;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**

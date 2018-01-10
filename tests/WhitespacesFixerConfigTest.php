@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\WhitespacesFixerConfig;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
