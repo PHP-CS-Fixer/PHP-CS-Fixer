@@ -354,7 +354,7 @@ Choose from the list of available rules:
 
 * **combine_consecutive_issets**
 
-  Using ``isset(X) &&`` multiple times should be done in one call.
+  Using ``isset($var) &&`` multiple times should be done in one call.
 
 * **combine_consecutive_unsets**
 
