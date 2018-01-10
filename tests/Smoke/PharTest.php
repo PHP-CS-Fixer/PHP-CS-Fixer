@@ -47,7 +47,7 @@ final class PharTest extends TestCase
     public function testVersion()
     {
         $this->assertRegExp(
-            '/^.* '.Application::VERSION.' by .*$/',
+            '/^.* '.Application::VERSION.'(?: '.Application::VERSION_CODENAME.')? by .*$/',
             self::executePharCommand('--version')->getOutput()
         );
     }
