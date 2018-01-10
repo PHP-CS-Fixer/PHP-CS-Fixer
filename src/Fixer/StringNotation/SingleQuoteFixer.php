@@ -73,7 +73,7 @@ EOF;
 
             if (
                 '"' === $content[0] &&
-                (false === strpos($content, "'") || true === $this->configuration['strings_containing_single_quote_chars']) &&
+                (true === $this->configuration['strings_containing_single_quote_chars'] || false === strpos($content, "'")) &&
                 // regex: odd number of backslashes, not followed by double quote or dollar
                 !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
             ) {
