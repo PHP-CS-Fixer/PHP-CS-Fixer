@@ -237,7 +237,6 @@ final class FixerFactoryTest extends TestCase
             'php_unit_strict,php_unit_construct.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
-            'phpdoc_no_access,phpdoc_trim.test',
             'phpdoc_no_empty_return,phpdoc_trim.test',
             'phpdoc_no_package,phpdoc_order.test',
             'phpdoc_no_package,phpdoc_trim.test',

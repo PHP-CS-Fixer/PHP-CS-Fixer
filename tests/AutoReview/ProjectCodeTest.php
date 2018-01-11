@@ -36,8 +36,6 @@ final class ProjectCodeTest extends TestCase
      * @var string[]
      */
     private static $classesWithoutTests = array(
-        'PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException',
-        'PhpCsFixer\Console\Output\NullOutput',
         'PhpCsFixer\Console\SelfUpdate\GithubClient',
         'PhpCsFixer\Console\WarningsDetector',
         'PhpCsFixer\Doctrine\Annotation\Tokens',
@@ -46,13 +44,6 @@ final class ProjectCodeTest extends TestCase
         'PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper',
         'PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper',
         'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer',
-        'PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator',
-        'PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException',
-        'PhpCsFixer\FixerFileProcessedEvent',
-        'PhpCsFixer\Linter\ProcessLintingResult',
-        'PhpCsFixer\Linter\TokenizerLintingResult',
-        'PhpCsFixer\PharChecker',
-        'PhpCsFixer\Report\ReportSummary',
         'PhpCsFixer\Runner\FileCachingLintingIterator',
         'PhpCsFixer\Runner\FileLintingIterator',
         'PhpCsFixer\StdinFileInfo',
