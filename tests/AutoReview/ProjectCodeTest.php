@@ -45,7 +45,6 @@ final class ProjectCodeTest extends TestCase
         'PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper',
         'PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper',
         'PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer',
-        'PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator',
         'PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException',
         'PhpCsFixer\Report\ReportSummary',
         'PhpCsFixer\Runner\FileCachingLintingIterator',
