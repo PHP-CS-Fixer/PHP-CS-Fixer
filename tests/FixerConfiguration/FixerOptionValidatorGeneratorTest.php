@@ -16,6 +16,8 @@ use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
+ * @author SpacePossum
+ *
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator
