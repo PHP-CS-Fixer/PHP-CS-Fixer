@@ -39,7 +39,7 @@ final class PharCheckerTest extends TestCase
     {
         $checker = new PharChecker();
 
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException('UnexpectedValueException');
         $this->expectExceptionMessageRegExp('#^Expected a filename to be a string, got "DOMDocument"\.$#');
 
         $checker->checkFileValidity(new \DOMDocument());
