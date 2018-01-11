@@ -39,8 +39,6 @@ final class ProcessLintingResultTest extends TestCase
 
         $result = new ProcessLintingResult($process->reveal());
         $result->check();
-        $result->check(); // call twice
-
         $this->addToAssertionCount(1); // no exception, so we are good here
     }
 
