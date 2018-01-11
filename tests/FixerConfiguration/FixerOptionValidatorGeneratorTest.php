@@ -26,7 +26,7 @@ final class FixerOptionValidatorGeneratorTest extends TestCase
 {
     /**
      * @param bool  $expected
-     * @param array $input
+     * @param array $allowed
      * @param mixed $input
      *
      * @dataProvider provideAllowedValueIsSubsetOfCases
