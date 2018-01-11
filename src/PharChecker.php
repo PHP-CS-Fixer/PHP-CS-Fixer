@@ -22,15 +22,6 @@ final class PharChecker implements PharCheckerInterface
      */
     public function checkFileValidity($filename)
     {
-        if (!is_string($filename)) {
-            throw new \UnexpectedValueException(
-                sprintf(
-                    'Expected a filename to be a string, got "%s".',
-                    is_object($filename) ? get_class($filename) : gettype($filename)
-                )
-            );
-        }
-
         try {
             $phar = new \Phar($filename);
             // free the variable to unlock the file

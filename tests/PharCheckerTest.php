@@ -34,14 +34,4 @@ final class PharCheckerTest extends TestCase
         $checker = new PharChecker();
         $this->assertStringStartsWith('Failed to create Phar instance.', $checker->checkFileValidity(__FILE__));
     }
-
-    public function testPharCheckerWithInvalidFileType()
-    {
-        $checker = new PharChecker();
-
-        $this->expectException('UnexpectedValueException');
-        $this->expectExceptionMessageRegExp('#^Expected a filename to be a string, got "DOMDocument"\.$#');
-
-        $checker->checkFileValidity(new \DOMDocument());
-    }
 }
