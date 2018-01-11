@@ -26,6 +26,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpdocTypesFixer extends AbstractFixer
 {
+    protected const MOD_ARRAY = 1;
+    protected const MOD_NULLABLE = 2;
+    protected const MOD_COLLECTION = 4;
+
     /**
      * The annotation tags search inside.
      *
@@ -81,7 +85,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * @param string $type
      *
-     * @return string
+     * @return string|array
      */
     abstract protected function normalize($type);
 
@@ -113,25 +117,83 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     private function normalizeTypes(array $types)
     {
         foreach ($types as $index => $type) {
-            $types[$index] = $this->normalizeType($type);
+            // Extract modifier and modify type
+            $modifiers = $this->extractModifier($type);
+
+            $types[$index] = $this->appendModifier($this->normalize($type), $modifiers);
         }
 
         return $types;
     }
 
     /**
-     * Prepare the type and normalize it.
+     * Append given modifiers to a type
      *
-     * @param string $type
+     * @param string|array $type
+     * @param int          $modifiers
      *
      * @return string
      */
-    private function normalizeType($type)
+    private function appendModifier($type, int $modifiers)
     {
-        if ('[]' === substr($type, -2)) {
-            return $this->normalize(substr($type, 0, -2)).'[]';
+        $hasArrayMod = ($modifiers & self::MOD_ARRAY) === self::MOD_ARRAY;
+        $hasNullableMod = ($modifiers & self::MOD_NULLABLE) === self::MOD_NULLABLE;
+        $hasCollectionMod = ($modifiers & self::MOD_COLLECTION) === self::MOD_COLLECTION;
+
+        // Use PSR-5 array type grouping
+        $group = false;
+
+        // First of we flatten types if we get an array
+        if (is_array($type)) {
+            $type = implode('|', $type);
+            $group = true;
         }
 
-        return $this->normalize($type);
+        // Replace ?type with type|null
+        if ($hasNullableMod) {
+            $type .= '|null';
+        }
+
+        if ($hasCollectionMod) {
+            $type = 'Collection<' . $type . '>';
+        }
+
+        if ($hasArrayMod) {
+
+            if ($group) {
+                $type = '(' . $type . ')';
+            }
+
+            $type .= '[]';
+        }
+
+        return $type;
+    }
+
+    /**
+     * @param string &$type
+     *
+     * @return int
+     */
+    private function extractModifier(&$type)
+    {
+        $modifiers = 0;
+
+        if ('[]' === substr($type, -2)) {
+            $modifiers |= self::MOD_ARRAY;
+            $type = str_replace('[]', '', $type);
+        }
+
+        if ('?' === substr($type, 0, 1)) {
+            $modifiers |= self::MOD_NULLABLE;
+            $type = str_replace('?', '', $type);
+        }
+
+        if (preg_match('/Collection<(?<type>.*)>$/', $type, $match)) {
+            $modifiers |= self::MOD_COLLECTION;
+            $type = $match['type'];
+        }
+
+        return $modifiers;
     }
 }

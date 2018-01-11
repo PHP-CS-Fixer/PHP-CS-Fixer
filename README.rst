@@ -1238,7 +1238,7 @@ Choose from the list of available rules:
 * **phpdoc_scalar_breakdown** [@Symfony]
 
   The scalar phpdoc type will be broken down into a list of valid scalar
-  types.
+  types. Specifically: ``bool``, ``float``, ``int`` and ``string``.
 
 * **phpdoc_separation** [@Symfony]
 

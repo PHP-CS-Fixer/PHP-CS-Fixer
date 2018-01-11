@@ -29,7 +29,7 @@ final class PhpdocScalarBreakdownFixerTest extends AbstractFixerTestCase
         $expected = <<<'EOF'
 <?php
     /**
-     * @return int|string|float|bool
+     * @return bool|float|int|string
      */
 
 EOF;
@@ -50,10 +50,10 @@ EOF;
         $expected = <<<'EOF'
 <?php
 /**
- * @method int|string|float|bool foo()
- * @property int|string|float|bool $foo
- * @property-read int|string|float|bool $bar
- * @property-write int|string|float|bool $baz
+ * @method bool|float|int|string foo()
+ * @property bool|float|int|string $foo
+ * @property-read bool|float|int|string $bar
+ * @property-write bool|float|int|string $baz
  */
 
 EOF;
@@ -77,7 +77,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @param int|string|float|bool $scalar
+     * @param bool|float|int|string $scalar
      */
 
 EOF;
@@ -95,7 +95,7 @@ EOF;
 
     public function testFixWithTabsOnOneLine()
     {
-        $expected = "<?php /**\t@return\tint|string|float|bool\t*/";
+        $expected = "<?php /**\t@return\tbool|float|int|string\t*/";
 
         $input = "<?php /**\t@return\tscalar\t*/";
 
@@ -109,9 +109,9 @@ EOF;
     /**
      * Hello there mr scalar!
      *
-     * @param int|string|float|bool $scalar
+     * @param bool|float|int|string $scalar
      *
-     * @return int|string|float|bool
+     * @return bool|float|int|string
      */
 
 EOF;
@@ -136,7 +136,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @var int|string|float|bool Some integer value.
+     * @var bool|float|int|string Some integer value.
      */
 
 EOF;
@@ -157,7 +157,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @type int|string|float|bool
+     * @type bool|float|int|string
      */
 
 EOF;
@@ -191,7 +191,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * @var notabooleanthistime|int|string|float|bool|integerr
+     * @var notabooleanthistime|bool|float|int|string|integerr
      */
 
 EOF;
@@ -270,7 +270,7 @@ EOF;
      * Does stuffs with stuffs.
      *
      * @param array $stuffs {
-     *     @type int|string|float|bool $foo
+     *     @type bool|float|int|string $foo
      * }
      */
 
@@ -284,6 +284,90 @@ EOF;
      * @param array $stuffs {
      *     @type scalar $foo
      * }
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testScalarNullable()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @var bool|float|int|string|null
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @var ?scalar
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testScalarCollection()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param Collection<bool|float|int|string>
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param Collection<scalar>
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testScalarArrayConversion()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param (bool|float|int|string)[]
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param scalar[]
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testNullableScalarArrayConversion()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param (bool|float|int|string|null)[]
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param ?scalar[]
      */
 
 EOF;

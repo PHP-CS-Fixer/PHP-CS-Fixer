@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of PHP CS Fixer.
@@ -27,7 +28,10 @@ final class PhpdocScalarBreakdownFixer extends AbstractPhpdocTypesFixer
      * @var array
      */
     private static $types = [
-        'scalar' => 'int|string|float|bool',
+        'bool',
+        'float',
+        'int',
+        'string'
     ];
 
     /**
@@ -36,7 +40,8 @@ final class PhpdocScalarBreakdownFixer extends AbstractPhpdocTypesFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'The scalar phpdoc type will be broken down into a list of valid scalar types.',
+            'The scalar phpdoc type will be broken down into a list of valid scalar types. ' .
+            'Specifically: `bool`, `float`, `int` and `string`.',
             [new CodeSample('<?php
 /**
  * @param scalar $a
@@ -56,8 +61,8 @@ function sample($a)
      */
     protected function normalize($type)
     {
-        if (array_key_exists($type, self::$types)) {
-            return self::$types[$type];
+        if ($type === 'scalar') {
+            return self::$types;
         }
 
         return $type;

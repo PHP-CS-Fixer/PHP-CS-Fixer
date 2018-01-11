@@ -48,7 +48,6 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
         'true',
         'void',
         '$this',
-        'scalar',
     ];
 
     /**

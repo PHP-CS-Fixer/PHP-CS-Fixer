@@ -317,4 +317,46 @@ EOF;
 
         $this->doTest($expected, $input);
     }
+
+    public function testNullableTypeFix()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @return int|null
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return ?integer
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testArrayTypeFix()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @return int[]
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return integer[]
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
 }
