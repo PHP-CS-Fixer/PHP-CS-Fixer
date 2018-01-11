@@ -67,9 +67,11 @@ final class ProcessLintingResultTest extends TestCase
 
         $result = new ProcessLintingResult($process->reveal());
 
-        $this->expectException('PhpCsFixer\Linter\LintingException');
-        $this->expectExceptionMessageRegExp('#^test$#');
-        $this->expectExceptionCode(123);
+        $this->setExpectedExceptionRegExp(
+            'PhpCsFixer\Linter\LintingException',
+            '#^test$#',
+            123
+        );
 
         $result->check();
     }
