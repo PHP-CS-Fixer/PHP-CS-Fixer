@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: no_empty_statement,multiline_whitespace_before_semicolons.
+--RULESET--
+{"no_empty_statement": true, "multiline_whitespace_before_semicolons": {"strategy" : "no_multi_line"} }
+--EXPECT--
+<?php
+function foo() {
+    (new Bar)
+        ->hello()
+        ->chain()
+        ->more();
+
+}
+
+--INPUT--
+<?php
+function foo() {
+    (new Bar)
+        ->hello()
+        ->chain()
+        ->more()
+        ;
+;
+}
