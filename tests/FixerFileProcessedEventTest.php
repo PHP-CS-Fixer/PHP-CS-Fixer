@@ -29,10 +29,5 @@ final class FixerFileProcessedEventTest extends TestCase
         $event = new FixerFileProcessedEvent($status);
 
         $this->assertSame($status, $event->getStatus());
-        $this->assertFalse($event->isPropagationStopped());
-
-        $event->stopPropagation();
-
-        $this->assertTrue($event->isPropagationStopped());
     }
 }
