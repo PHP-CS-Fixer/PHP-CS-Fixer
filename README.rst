@@ -1125,6 +1125,11 @@ Choose from the list of available rules:
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
+* **php_unit_set_up_tear_down_visibility**
+
+  Changes the visibility of the setUp and tearDown functions of phpunit to
+  protected, to match its parent.
+
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of
