@@ -40,7 +40,7 @@ final class PharChecker implements PharCheckerInterface
                 throw $e;
             }
 
-            return 'Failed to create phar. '.$e->getMessage();
+            return 'Failed to create Phar instance. '.$e->getMessage();
         }
 
         return null;

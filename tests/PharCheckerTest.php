@@ -32,7 +32,7 @@ final class PharCheckerTest extends TestCase
     public function testPharCheckerInvalidFile()
     {
         $checker = new PharChecker();
-        $this->assertStringStartsWith('Failed to create phar.', $checker->checkFileValidity(__FILE__));
+        $this->assertStringStartsWith('Failed to create Phar instance.', $checker->checkFileValidity(__FILE__));
     }
 
     public function testPharCheckerWithInvalidFileType()
