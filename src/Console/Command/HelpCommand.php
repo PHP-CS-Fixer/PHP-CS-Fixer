@@ -112,9 +112,10 @@ The <comment>--stop-on-violation</comment> flag stops the execution upon first f
 The <comment>--show-progress</comment> option allows you to choose the way process progress is rendered:
 
 * <comment>none</comment>: disables progress output;
-* <comment>run-in</comment>: simple single-line progress output;
-* <comment>estimating</comment>: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
-* <comment>estimating-max</comment>: same as <comment>estimating</comment> but using all terminal columns instead of default 80.
+* <comment>run-in</comment>: [deprecated] simple single-line progress output;
+* <comment>estimating</comment>: [deprecated] multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
+* <comment>estimating-max</comment>: [deprecated] same as <comment>dots</comment>;
+* <comment>dots</comment>: same as <comment>estimating</comment> but using all terminal columns instead of default 80.
 
 If the option is not provided, it defaults to <comment>run-in</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
