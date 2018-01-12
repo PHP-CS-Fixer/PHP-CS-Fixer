@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: general_phpdoc_annotation_remove,phpdoc_order.
+--RULESET--
+{"general_phpdoc_annotation_remove": {"annotations": ["test"] }, "phpdoc_order": true}
+--EXPECT--
+<?php
+/**
+ * @param string $name
+ * @return string
+ */
+function hello($name)
+{
+    return 'hello'. $name;
+}
+
+--INPUT--
+<?php
+/**
+ * @return string
+ * @test
+ * @param string $name
+ */
+function hello($name)
+{
+    return 'hello'. $name;
+}
