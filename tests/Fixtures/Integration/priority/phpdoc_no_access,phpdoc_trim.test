@@ -5,11 +5,14 @@ Integration of fixers: phpdoc_no_access,phpdoc_trim.
 --EXPECT--
 <?php
 /**
+ *
  */
 
 --INPUT--
 <?php
 /**
  *
- *      @access public
+ *           @access public
+ *
+ *
  */
