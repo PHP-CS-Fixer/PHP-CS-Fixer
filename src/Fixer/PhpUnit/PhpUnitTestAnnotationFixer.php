@@ -296,8 +296,12 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function hasTestPrefix($functionName)
     {
-        if (!$this->startsWith('test', $functionName) || strlen($functionName) < 5) {
+        if (!$this->startsWith('test', $functionName)) {
             return false;
+        }
+
+        if  (strlen($functionName) === 4) {
+            return true;
         }
 
         $nextCharacter = $functionName[4];
