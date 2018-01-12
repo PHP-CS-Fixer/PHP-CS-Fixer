@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: backtick_to_shell_exec,escape_implicit_backslashes.
+--RULESET--
+{"backtick_to_shell_exec": true, "escape_implicit_backslashes": true}
+--EXPECT--
+<?php
+$var = shell_exec("ls a\\b");
+
+--INPUT--
+<?php
+$var = `ls a\b`;

@@ -1018,6 +1018,25 @@ abstract class Test extends \PhpUnit\FrameWork\TestCase
 }',
                 ['style' => 'prefix'],
             ],
+            'Annotation present, but method does not actually have test prefix' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     *
+     */
+    public function testTestarossaIsFromItaly() {}
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function testarossaIsFromItaly() {}
+}',
+                ['style' => 'prefix'],
+            ],
             'Abstract test gets annotation added' => [
                 '<?php
 abstract class Test extends \PhpUnit\FrameWork\TestCase
@@ -1048,6 +1067,78 @@ class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function test123fooBar() {}
 }',
+                ['style' => 'annotation'],
+            ],
+            'Annotation missing, method qualifies as test, but does not actually have test prefix' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function testarossaIsFromItaly() {}
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    public function testarossaIsFromItaly() {}
+}',
+                ['style' => 'annotation'],
+            ],
+            'Annotation present, method qualifies as test, but does not actually have test prefix' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function testarossaIsFromItaly() {}
+}',
+                null,
+                ['style' => 'annotation'],
+            ],
+            'Annotation missing, method qualifies as test, but test prefix cannot be removed' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function test() {}
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    public function test() {}
+}',
+                ['style' => 'annotation'],
+            ],
+            'Annotation missing, method qualifies as test, but test_ prefix cannot be removed' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function test_() {}
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    public function test_() {}
+}',
+                ['style' => 'annotation'],
+            ],
+            'Annotation present, method qualifies as test, but test_ prefix cannot be removed' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function test_() {}
+}',
+                null,
                 ['style' => 'annotation'],
             ],
         ];

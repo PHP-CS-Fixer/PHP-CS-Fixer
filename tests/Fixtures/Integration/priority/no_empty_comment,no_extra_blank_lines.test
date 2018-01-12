@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: no_empty_comment,no_extra_blank_lines.
+--RULESET--
+{"no_empty_comment": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php
+// $a
+
+
+--INPUT--
+<?php
+// $a
+
+//
+
+//

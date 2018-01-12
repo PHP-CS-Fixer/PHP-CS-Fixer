@@ -15,7 +15,6 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 

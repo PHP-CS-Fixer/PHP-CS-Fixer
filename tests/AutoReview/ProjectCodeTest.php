@@ -13,8 +13,8 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -40,12 +40,13 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Console\Output\NullOutput::class,
         \PhpCsFixer\Console\SelfUpdate\GithubClient::class,
         \PhpCsFixer\Console\WarningsDetector::class,
-        \PhpCsFixer\Differ\DiffConsoleFormatter::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
+        \PhpCsFixer\FileReader::class,
         \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
+        \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
         \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
         \PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException::class,
         \PhpCsFixer\FixerFileProcessedEvent::class,
@@ -55,7 +56,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\PharChecker::class,
         \PhpCsFixer\Report\ReportSummary::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
-        \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
         \PhpCsFixer\Test\AccessibleObject::class,
@@ -87,7 +87,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         $this->assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
-        $this->assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit\Framework\TestCase".', $testClassName));
+        $this->assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PhpCsFixer\Tests\TestCase".', $testClassName));
     }
 
     /**
@@ -116,7 +116,7 @@ final class ProjectCodeTest extends TestCase
 
         $exceptionMethods = [
             'configure', // due to AbstractFixer::configure
-            'getConfigurationDefinition', // due to AbstractFixer::getDefaultConfiguration
+            'getConfigurationDefinition', // due to AbstractFixer::getConfigurationDefinition
             'getDefaultConfiguration', // due to AbstractFixer::getDefaultConfiguration
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
         ];
