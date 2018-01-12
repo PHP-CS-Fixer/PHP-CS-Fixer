@@ -300,7 +300,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             return false;
         }
 
-        if  (strlen($functionName) === 4) {
+        if (4 === strlen($functionName)) {
             return true;
         }
 
