@@ -43,6 +43,10 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
                 '<?php /*** Opening Multiline comment */',
             ],
             [
+                '<?php /** @var string Opening DocBlock */',
+                '<?php /*** @var string Opening DocBlock */',
+            ],
+            [
                 '<?php /*\ Opening false-DocBlock */',
                 '<?php /**\ Opening false-DocBlock */',
             ],

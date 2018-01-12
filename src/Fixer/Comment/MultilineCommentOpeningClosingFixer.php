@@ -76,18 +76,24 @@ EOT
                 continue;
             }
 
+            $tokenId = $token->getId();
             $newContent = $originalContent;
 
             // Fix opening
             if ($token->isGivenKind(T_COMMENT)) {
-                $newContent = preg_replace('/^\\/\\*\\*+/', '/*', $newContent);
+                $replacement = '/*';
+                if (1 === preg_match('/\\*\\s+\\@[a-zA-Z]+/', $newContent)) {
+                    $replacement .= '*';
+                    $tokenId = T_DOC_COMMENT;
+                }
+                $newContent = preg_replace('/^\\/\\*\\*+/', $replacement, $newContent);
             }
 
             // Fix closing
             $newContent = preg_replace('/\\*+\\*\\/$/', '*/', $newContent);
 
             if ($newContent !== $originalContent) {
-                $tokens[$index] = new Token([$token->getId(), $newContent]);
+                $tokens[$index] = new Token([$tokenId, $newContent]);
             }
         }
     }
