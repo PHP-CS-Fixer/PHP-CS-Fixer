@@ -20,6 +20,7 @@ use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Utils;
 use Symfony\Component\Console\Command\HelpCommand as BaseHelpCommand;
@@ -176,7 +177,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
 **NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
 
-See `Symfony\Finder` (<url>http://symfony.com/doc/current/components/finder.html</url>)
+See `Symfony\Finder` (<url>https://symfony.com/doc/current/components/finder.html</url>)
 online documentation for other `Finder` methods.
 
 You may also use a blacklist for the rules instead of the above shown whitelist approach.
@@ -308,7 +309,7 @@ EOF
 
             $str = var_export($value, true);
             do {
-                $strNew = preg_replace(
+                $strNew = Preg::replace(
                     $replaces[0],
                     $replaces[1],
                     $str
@@ -324,7 +325,7 @@ EOF
             $str = var_export($value, true);
         }
 
-        return preg_replace('/\bNULL\b/', 'null', $str);
+        return Preg::replace('/\bNULL\b/', 'null', $str);
     }
 
     /**
@@ -390,7 +391,7 @@ EOF
         }
 
         for ($i = (int) Application::VERSION; $i > 0; --$i) {
-            if (1 === preg_match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
+            if (1 === Preg::match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
                 $version = $matches[1];
 
                 break;
@@ -475,7 +476,7 @@ EOF
             }
 
             $description = implode("\n   | ", self::wordwrap(
-                preg_replace('/(`.+?`)/', '<info>$1</info>', $description),
+                Preg::replace('/(`.+?`)/', '<info>$1</info>', $description),
                 72
             ));
 
@@ -488,10 +489,10 @@ EOF
             if ($fixer->isRisky()) {
                 $help .= sprintf(
                     "   | *Risky rule: %s.*\n",
-                    preg_replace(
+                    Preg::replace(
                         '/(`.+?`)/',
                         '<info>$1</info>',
-                        lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
+                        lcfirst(Preg::replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
                     )
                 );
             }
@@ -525,10 +526,10 @@ EOF
                             $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
                         }
 
-                        $line .= ': '.preg_replace(
+                        $line .= ': '.Preg::replace(
                             '/(`.+?`)/',
                             '<info>$1</info>',
-                            lcfirst(preg_replace('/\.$/', '', OutputFormatter::escape($option->getDescription())))
+                            lcfirst(Preg::replace('/\.$/', '', OutputFormatter::escape($option->getDescription())))
                         ).'; ';
                         if ($option->hasDefault()) {
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
@@ -551,7 +552,7 @@ EOF
         }
 
         // prevent "\</foo>" from being rendered as an escaped literal style tag
-        return preg_replace('#\\\\(</.*?>)#', '<<$1', $help);
+        return Preg::replace('#\\\\(</.*?>)#', '<<$1', $help);
     }
 
     /**
@@ -568,7 +569,7 @@ EOF
         $currentLine = 0;
         $lineLength = 0;
         foreach (explode(' ', $string) as $word) {
-            $wordLength = strlen(preg_replace('~</?(\w+)>~', '', $word));
+            $wordLength = strlen(Preg::replace('~</?(\w+)>~', '', $word));
             if (0 !== $lineLength) {
                 ++$wordLength; // space before word
             }

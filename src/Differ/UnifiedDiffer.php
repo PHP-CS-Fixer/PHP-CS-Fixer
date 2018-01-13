@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Differ;
 
-use PhpCsFixer\Diff\GeckoPackages\DiffOutputBuilder\UnifiedDiffOutputBuilder;
-use PhpCsFixer\Diff\v2_0\Differ;
+use PhpCsFixer\Diff\v3_0\Differ;
+use PhpCsFixer\Diff\v3_0\Output\StrictUnifiedDiffOutputBuilder;
 
 /**
  * @author SpacePossum
@@ -27,7 +27,7 @@ final class UnifiedDiffer implements DifferInterface
 
     public function __construct()
     {
-        $this->differ = new Differ(new UnifiedDiffOutputBuilder([
+        $this->differ = new Differ(new StrictUnifiedDiffOutputBuilder([
             'fromFile' => 'Original',
             'toFile' => 'New',
         ]));

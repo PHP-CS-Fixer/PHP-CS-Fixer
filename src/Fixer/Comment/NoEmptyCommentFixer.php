@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Comment;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -141,7 +142,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     {
         $lineCount = 0;
         for ($i = $whiteStart; $i < $whiteEnd; ++$i) {
-            $lineCount += preg_match_all('/\R/u', $tokens[$i]->getContent(), $matches);
+            $lineCount += Preg::matchAll('/\R/u', $tokens[$i]->getContent(), $matches);
         }
 
         return $lineCount;
@@ -162,6 +163,6 @@ final class NoEmptyCommentFixer extends AbstractFixer
 
         $type = $this->getCommentType($content);
 
-        return 1 === preg_match($mapper[$type], $content);
+        return 1 === Preg::match($mapper[$type], $content);
     }
 }

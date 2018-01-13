@@ -336,7 +336,7 @@ class Token
     /**
      * Generate array containing all predefined constants that exists in PHP version in use.
      *
-     * @see http://php.net/manual/en/language.constants.predefined.php
+     * @see https://php.net/manual/en/language.constants.predefined.php
      *
      * @return array<int, int>
      */
@@ -460,7 +460,7 @@ class Token
     /**
      * Returns if the token is of a Magic constants type.
      *
-     * @see http://php.net/manual/en/language.constants.predefined.php
+     * @see https://php.net/manual/en/language.constants.predefined.php
      *
      * @return bool
      */

@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Report;
 
-use GeckoPackages\PHPUnit\Constraints\XML\XMLMatchesXSDConstraint;
 use PhpCsFixer\Report\CheckstyleReporter;
+use PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraint;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -132,7 +132,7 @@ XML;
         $formatter = new OutputFormatter();
         $input = $formatter->format($input);
 
-        $this->assertThat($input, new XMLMatchesXSDConstraint(self::$xsd));
+        $this->assertThat($input, new XmlMatchesXsdConstraint(self::$xsd));
         $this->assertXmlStringEqualsXmlString($expected, $input);
     }
 }

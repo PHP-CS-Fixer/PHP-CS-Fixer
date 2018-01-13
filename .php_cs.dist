@@ -10,6 +10,18 @@ This source file is subject to the MIT license that is bundled
 with this source code in the file LICENSE.
 EOF;
 
+$finder = PhpCsFixer\Finder::create()
+    ->exclude('tests/Fixtures')
+    ->in(__DIR__)
+;
+
+if (PHP_VERSION_ID < 70000) {
+    $finder
+        ->notPath('tests/Test/Constraint/SameStringsConstraintForV7.php')
+        ->notPath('tests/Test/Constraint/XmlMatchesXsdConstraintForV7.php')
+    ;
+}
+
 $config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
@@ -18,15 +30,19 @@ $config = PhpCsFixer\Config::create()
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'align_multiline_comment' => true,
+        'array_indentation' => true,
         'array_syntax' => ['syntax' => 'short'],
         'blank_line_before_statement' => true,
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
+        'comment_to_phpdoc' => true,
         'compact_nullable_typehint' => true,
         'escape_implicit_backslashes' => true,
         'explicit_indirect_variable' => true,
         'explicit_string_variable' => true,
         'final_internal_class' => true,
+        'fully_qualified_strict_types' => true,
+        'function_to_constant' => ['functions' => ['get_class', 'get_called_class', 'php_sapi_name', 'phpversion', 'pi']],
         'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
         'list_syntax' => ['syntax' => 'long'],
@@ -44,6 +60,8 @@ $config = PhpCsFixer\Config::create()
         'no_useless_return' => true,
         'ordered_class_elements' => true,
         'ordered_imports' => true,
+        'php_unit_ordered_covers' => true,
+        'php_unit_set_up_tear_down_visibility' => true,
         'php_unit_strict' => true,
         'php_unit_test_annotation' => true,
         'php_unit_test_class_requires_covers' => true,
@@ -54,27 +72,27 @@ $config = PhpCsFixer\Config::create()
         'single_line_comment_style' => true,
         'strict_comparison' => true,
         'strict_param' => true,
+        'string_line_ending' => true,
         'yoda_style' => true,
+        'no_alternative_syntax' => true,
     ])
-    ->setFinder(
-        PhpCsFixer\Finder::create()
-            ->exclude('tests/Fixtures')
-            ->in(__DIR__)
-    )
+    ->setFinder($finder)
 ;
 
 // special handling of fabbot.io service if it's using too old PHP CS Fixer version
-try {
-    PhpCsFixer\FixerFactory::create()
-        ->registerBuiltInFixers()
-        ->registerCustomFixers($config->getCustomFixers())
-        ->useRuleSet(new PhpCsFixer\RuleSet($config->getRules()));
-} catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
-    $config->setRules([]);
-} catch (UnexpectedValueException $e) {
-    $config->setRules([]);
-} catch (InvalidArgumentException $e) {
-    $config->setRules([]);
+if (false !== getenv('FABBOT_IO')) {
+    try {
+        PhpCsFixer\FixerFactory::create()
+            ->registerBuiltInFixers()
+            ->registerCustomFixers($config->getCustomFixers())
+            ->useRuleSet(new PhpCsFixer\RuleSet($config->getRules()));
+    } catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
+        $config->setRules([]);
+    } catch (UnexpectedValueException $e) {
+        $config->setRules([]);
+    } catch (InvalidArgumentException $e) {
+        $config->setRules([]);
+    }
 }
 
 return $config;

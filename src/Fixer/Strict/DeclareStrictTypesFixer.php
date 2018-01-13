@@ -49,7 +49,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
      */
     public function getPriority()
     {
-        // must ran before SingleBlankLineBeforeNamespaceFixer, BlankLineAfterOpeningTagFixer and DeclareEqualNormalizeFixer.
+        // must run before SingleBlankLineBeforeNamespaceFixer, BlankLineAfterOpeningTagFixer and DeclareEqualNormalizeFixer.
         return 2;
     }
 

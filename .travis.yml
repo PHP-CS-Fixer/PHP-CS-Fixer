@@ -44,6 +44,12 @@ jobs:
                     | grep -v tests/Test/AbstractIntegrationCaseFactory.php \
                     | grep -v tests/Test/AbstractIntegrationTestCase.php \
                     | grep -v tests/Test/Assert/AssertTokensTrait.php \
+                    | grep -v tests/Test/Constraint/SameStringsConstraint.php \
+                    | grep -v tests/Test/Constraint/SameStringsConstraintForV5.php \
+                    | grep -v tests/Test/Constraint/SameStringsConstraintForV7.php \
+                    | grep -v tests/Test/Constraint/XmlMatchesXsdConstraint.php \
+                    | grep -v tests/Test/Constraint/XmlMatchesXsdConstraintForV5.php \
+                    | grep -v tests/Test/Constraint/XmlMatchesXsdConstraintForV7.php \
                     | grep -v tests/Test/IntegrationCase.php \
                     | grep -v tests/Test/IntegrationCaseFactory.php \
                     | grep -v tests/Test/IntegrationCaseFactoryInterface.php \
@@ -51,9 +57,9 @@ jobs:
                     | grep -v tests/TestCase.php \
                     && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
                 - ./check_trailing_spaces.sh || travis_terminate 1
-                - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^(src/Resources|tests/Fixtures)" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
-                - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json
-
+                - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^tests/Fixtures" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
+                - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json || travis_terminate 1
+                - composer normalize -d ./dev-tools ./../composer.json --dry-run
 
         - &STANDARD_TEST_JOB
             stage: Fast Test

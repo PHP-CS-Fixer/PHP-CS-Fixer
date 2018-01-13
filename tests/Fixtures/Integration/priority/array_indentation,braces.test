@@ -1,0 +1,27 @@
+--TEST--
+Integration of fixers: array_indentation,braces.
+--RULESET--
+{"array_indentation": true, "braces": true}
+--EXPECT--
+<?php
+class Foo
+{
+    public function bar()
+    {
+        return [
+            'foo',
+            'bar',
+        ];
+    }
+}
+
+--INPUT--
+<?php
+class Foo {
+  public function bar() {
+    return [
+      'foo',
+        'bar',
+    ];
+  }
+}
