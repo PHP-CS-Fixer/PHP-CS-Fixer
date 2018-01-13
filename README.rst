@@ -365,6 +365,10 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
+* **comment_to_phpdoc**
+
+  Comments with annotation should be docblock.
+
 * **compact_nullable_typehint**
 
   Remove extra spaces in a nullable typehint.
