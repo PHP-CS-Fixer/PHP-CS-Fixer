@@ -20,7 +20,7 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @internal
  */
-final class IntegrationCaseFactory
+class IntegrationCaseFactory implements IntegrationCaseFactoryInterface
 {
     /**
      * @param SplFileInfo $file
@@ -59,13 +59,13 @@ final class IntegrationCaseFactory
 
             return new IntegrationCase(
                 $file->getRelativePathname(),
-                $match['title'],
-                $this->determineSettings($match['settings']),
-                $this->determineRequirements($match['requirements']),
-                $this->determineConfig($match['config']),
-                $this->determineRuleset($match['ruleset']),
-                $this->determineExpectedCode($match['expect'], $file),
-                $this->determineInputCode($match['input'], $file)
+                $this->determineTitle($file, $match['title']),
+                $this->determineSettings($file, $match['settings']),
+                $this->determineRequirements($file, $match['requirements']),
+                $this->determineConfig($file, $match['config']),
+                $this->determineRuleset($file, $match['ruleset']),
+                $this->determineExpectedCode($file, $match['expect']),
+                $this->determineInputCode($file, $match['input'])
             );
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException(
@@ -79,11 +79,12 @@ final class IntegrationCaseFactory
     /**
      * Parses the '--CONFIG--' block of a '.test' file.
      *
-     * @param string $config
+     * @param SplFileInfo $file
+     * @param string      $config
      *
      * @return array
      */
-    private function determineConfig($config)
+    protected function determineConfig(SplFileInfo $file, $config)
     {
         $parsed = $this->parseJson($config, array(
             'indent' => '    ',
@@ -110,11 +111,12 @@ final class IntegrationCaseFactory
     /**
      * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
      *
-     * @param string $config
+     * @param SplFileInfo $file
+     * @param string      $config
      *
      * @return array
      */
-    private function determineRequirements($config)
+    protected function determineRequirements(SplFileInfo $file, $config)
     {
         $parsed = $this->parseJson($config, array(
             'hhvm' => true,
@@ -141,23 +143,38 @@ final class IntegrationCaseFactory
     /**
      * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
      *
-     * @param string $config
+     * @param SplFileInfo $file
+     * @param string      $config
      *
      * @return RuleSet
      */
-    private function determineRuleset($config)
+    protected function determineRuleset(SplFileInfo $file, $config)
     {
         return new RuleSet($this->parseJson($config));
     }
 
     /**
+     * Parses the '--TEST--' block of a '.test' file and determines title.
+     *
+     * @param SplFileInfo $file
+     * @param string      $config
+     *
+     * @return string
+     */
+    protected function determineTitle(SplFileInfo $file, $config)
+    {
+        return $config;
+    }
+
+    /**
      * Parses the '--SETTINGS--' block of a '.test' file and determines settings.
      *
-     * @param string $config
+     * @param SplFileInfo $file
+     * @param string      $config
      *
      * @return array
      */
-    private function determineSettings($config)
+    protected function determineSettings(SplFileInfo $file, $config)
     {
         $parsed = $this->parseJson($config, array(
             'checkPriority' => true,
@@ -174,14 +191,14 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * @param null|string $code
      * @param SplFileInfo $file
+     * @param null|string $code
      *
      * @return string
      */
-    private function determineExpectedCode($code, SplFileInfo $file)
+    protected function determineExpectedCode(SplFileInfo $file, $code)
     {
-        $code = $this->determineCode($code, $file, '-out.php');
+        $code = $this->determineCode($file, $code, '-out.php');
 
         if (null === $code) {
             throw new \InvalidArgumentException('Missing expected code.');
@@ -191,24 +208,24 @@ final class IntegrationCaseFactory
     }
 
     /**
-     * @param null|string $code
      * @param SplFileInfo $file
+     * @param null|string $code
      *
      * @return null|string
      */
-    private function determineInputCode($code, SplFileInfo $file)
+    protected function determineInputCode(SplFileInfo $file, $code)
     {
-        return $this->determineCode($code, $file, '-in.php');
+        return $this->determineCode($file, $code, '-in.php');
     }
 
     /**
-     * @param null|string $code
      * @param SplFileInfo $file
+     * @param null|string $code
      * @param string      $suffix
      *
      * @return null|string
      */
-    private function determineCode($code, SplFileInfo $file, $suffix)
+    private function determineCode(SplFileInfo $file, $code, $suffix)
     {
         if (null !== $code) {
             return $code;
