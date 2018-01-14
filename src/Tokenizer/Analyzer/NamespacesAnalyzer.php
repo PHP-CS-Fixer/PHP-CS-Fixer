@@ -39,7 +39,28 @@ final class NamespacesAnalyzer
             $declarationParts = explode('\\', $namespace);
             $shortName = end($declarationParts);
 
-            $namespaces[] = new NamespaceAnalysis($namespace, $shortName, $index, $declarationEndIndex);
+            if ($tokens[$declarationEndIndex]->equals('{')) {
+                $scopeEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $declarationEndIndex);
+            } else {
+                $scopeEndIndex = $tokens->getNextTokenOfKind($declarationEndIndex, [[T_NAMESPACE]]);
+                if (null === $scopeEndIndex) {
+                    $scopeEndIndex = count($tokens);
+                }
+                --$scopeEndIndex;
+            }
+
+            $namespaces[] = new NamespaceAnalysis(
+                $namespace,
+                $shortName,
+                $index,
+                $declarationEndIndex,
+                $index,
+                $scopeEndIndex
+            );
+        }
+
+        if (0 === count($namespaces)) {
+            $namespaces[] = new NamespaceAnalysis('', '', 0, 0, 0, count($tokens) - 1);
         }
 
         return $namespaces;

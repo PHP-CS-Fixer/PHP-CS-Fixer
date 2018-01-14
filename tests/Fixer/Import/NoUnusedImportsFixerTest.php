@@ -21,9 +21,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 {
-    public function testFix()
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCases
+     */
+    public function testFix($expected, $input = null)
     {
-        $expected = <<<'EOF'
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCases()
+    {
+        return [
+            'simple' => [
+                <<<'EOF'
 <?php
 
 use Foo\Bar;
@@ -50,9 +63,9 @@ class AnnotatedClass
         /** @var ArrayInterface $bar */
     }
 }
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 use Foo\Bar;
@@ -82,14 +95,11 @@ class AnnotatedClass
         /** @var ArrayInterface $bar */
     }
 }
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixFunWithIndent()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'with_indents' => [
+                <<<'EOF'
 <?php
 
 use Foo\Bar;
@@ -101,9 +111,9 @@ $a = new Bar();
 $a = new FooBaz();
 $a = new SomeClassIndented();
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 use Foo\Bar;
@@ -118,14 +128,11 @@ $a = new Bar();
 $a = new FooBaz();
 $a = new SomeClassIndented();
 
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixUseInTheSameNamespace()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'in_same_namespace_1' => [
+                <<<'EOF'
 <?php
 
 namespace Foo\Bar\FooBar;
@@ -140,9 +147,9 @@ $c = new Bar\Fooz();
 $d = new Bbb();
 $e = new FQCN_Babo();
 $f = new FQCN_XYZ();
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 namespace Foo\Bar\FooBar;
@@ -160,28 +167,40 @@ $c = new Bar\Fooz();
 $d = new Bbb();
 $e = new FQCN_Babo();
 $f = new FQCN_XYZ();
-EOF;
-
-        $this->doTest($expected, $input);
-
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'in_same_namespace_2' => [
+                <<<'EOF'
 <?php namespace App\Http\Controllers;
 
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-EOF;
+EOF
+                ,
+            ],
+            'in_same_namespace_multiple_1' => [
+                <<<'EOF'
+<?php
 
-        $this->doTest($expected, $input);
+namespace Foooooooo;
+namespace Foo;
 
-        // the fixer doesn't support file with multiple namespace - test if we don't remove imports in that case
-        $expected = <<<'EOF'
+use Foooooooo\Baaaaz;
+
+$a = new Bar();
+$b = new Baz();
+$c = new Baaaaz();
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 namespace Foooooooo;
@@ -189,17 +208,117 @@ namespace Foo;
 
 use Foo\Bar;
 use Foo\Baz;
+use Foooooooo\Baaaar;
+use Foooooooo\Baaaaz;
 
 $a = new Bar();
 $b = new Baz();
-EOF;
+$c = new Baaaaz();
+EOF
+                ,
+            ],
+            'in_same_namespace_multiple_2' => [
+                <<<'EOF'
+<?php
 
-        $this->doTest($expected);
-    }
+namespace Foooooooo;
 
-    public function testMultipleUseStatements()
-    {
-        $expected = <<<'EOF'
+use Foo\Bar;
+
+$a = new Baaaar();
+$b = new Baaaaz();
+$c = new Bar();
+
+namespace Foo;
+
+use Foooooooo\Baaaaz;
+
+$a = new Bar();
+$b = new Baz();
+$c = new Baaaaz();
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+namespace Foooooooo;
+
+use Foo\Bar;
+use Foo\Baz;
+use Foooooooo\Baaaar;
+use Foooooooo\Baaaaz;
+
+$a = new Baaaar();
+$b = new Baaaaz();
+$c = new Bar();
+
+namespace Foo;
+
+use Foo\Bar;
+use Foo\Baz;
+use Foooooooo\Baaaar;
+use Foooooooo\Baaaaz;
+
+$a = new Bar();
+$b = new Baz();
+$c = new Baaaaz();
+EOF
+                ,
+            ],
+            'in_same_namespace_multiple_braces' => [
+                <<<'EOF'
+<?php
+
+namespace Foooooooo
+{
+    use Foo\Bar;
+
+    $a = new Baaaar();
+    $b = new Baaaaz();
+    $c = new Bar();
+}
+
+namespace Foo
+{
+    use Foooooooo\Baaaaz;
+
+    $a = new Bar();
+    $b = new Baz();
+    $c = new Baaaaz();
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+namespace Foooooooo
+{
+    use Foo\Bar;
+    use Foo\Baz;
+    use Foooooooo\Baaaar;
+    use Foooooooo\Baaaaz;
+
+    $a = new Baaaar();
+    $b = new Baaaaz();
+    $c = new Bar();
+}
+
+namespace Foo
+{
+    use Foo\Bar;
+    use Foo\Baz;
+    use Foooooooo\Baaaar;
+    use Foooooooo\Baaaaz;
+
+    $a = new Bar();
+    $b = new Baz();
+    $c = new Baaaaz();
+}
+EOF
+                ,
+            ],
+            'multiple_use' => [
+                <<<'EOF'
 <?php
 
 namespace Foo;
@@ -209,9 +328,10 @@ use BarE;
 
 $c = new D();
 $e = new BarE();
-EOF;
+EOF
+                ,
 
-        $input = <<<'EOF'
+                <<<'EOF'
 <?php
 
 namespace Foo;
@@ -225,14 +345,11 @@ use BarE;
 
 $c = new D();
 $e = new BarE();
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testNamespaceWithBraces()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'with_braces' => [
+                <<<'EOF'
 <?php
 
 namespace Foo\Bar\FooBar {
@@ -244,9 +361,9 @@ namespace Foo\Bar\FooBar {
     $c = new Bar\Fooz();
     $d = new Bbb();
 }
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 namespace Foo\Bar\FooBar {
@@ -260,14 +377,11 @@ namespace Foo\Bar\FooBar {
     $c = new Bar\Fooz();
     $d = new Bbb();
 }
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testTrailingSpaces()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'trailing_spaces' => [
+                <<<'EOF'
 <?php
 
 use Foo\Bar ;
@@ -275,9 +389,9 @@ use Foo\Bar\FooBar as FooBaz ;
 
 $a = new Bar();
 $a = new FooBaz();
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 use Foo\Bar ;
@@ -287,14 +401,11 @@ use SomeClass ;
 
 $a = new Bar();
 $a = new FooBaz();
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testTraits()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'traits' => [
+                <<<'EOF'
 <?php
 
 use Foo as Bar;
@@ -305,9 +416,9 @@ class MyParent
 use MyTrait2;
     use Bar;
 }
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 use Foo;
@@ -319,14 +430,11 @@ class MyParent
 use MyTrait2;
     use Bar;
 }
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFunctionUse()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'function_use' => [
+                <<<'EOF'
 <?php
 
 use Foo;
@@ -335,9 +443,9 @@ $f = new Foo();
 $a = function ($item) use ($f) {
     return !in_array($item, $f);
 };
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 use Foo;
@@ -347,14 +455,11 @@ $f = new Foo();
 $a = function ($item) use ($f) {
     return !in_array($item, $f);
 };
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testSimilarNames()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'similar_names' => [
+                <<<'EOF'
 <?php
 
 use SomeEntityRepository;
@@ -366,9 +471,9 @@ class SomeService
         $this->repo = $repo;
     }
 }
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 use SomeEntityRepository;
@@ -381,162 +486,170 @@ class SomeService
         $this->repo = $repo;
     }
 }
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testVariableName()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'variable_name' => [
+                <<<'EOF'
 <?php
 
 
 $bar = null;
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 use Foo\Bar;
 
 $bar = null;
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testPropertyName()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'property_name' => [
+                <<<'EOF'
 <?php
 
 
 $foo->bar = null;
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 use Foo\Bar;
 
 $foo->bar = null;
-EOF;
+EOF
+                ,
+            ],
+            'constant_name' => [
+                <<<'EOF'
+<?php
 
-        $this->doTest($expected, $input);
-    }
 
-    public function testNamespacePart()
-    {
-        $expected = <<<'EOF'
+class Baz
+{
+    const BAR = 0;
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+class Baz
+{
+    const BAR = 0;
+}
+EOF
+                ,
+            ],
+            'namespace_part' => [
+                <<<'EOF'
 <?php
 
 
 new \Baz\Bar();
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 use Foo\Bar;
 
 new \Baz\Bar();
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string $expected
-     *
-     * @dataProvider provideFixUseInStringCases
-     */
-    public function testFixUseInString($expected)
-    {
-        $this->doTest($expected);
-    }
-
-    public function provideFixUseInStringCases()
-    {
-        $expected1 = <<<'EOF'
+EOF
+                ,
+            ],
+            'use_in_string_1' => [
+                <<<'EOF'
 <?php
 $x=<<<'EOA'
 use a;
 use b;
 EOA;
 
-EOF;
-
-        $expected2 = <<<'EOF'
+EOF
+                ,
+            ],
+            'use_in_string_2' => [
+                <<<'EOF'
 <?php
 $x='
 use a;
 use b;
 ';
-EOF;
-
-        $expected3 = <<<'EOF'
+EOF
+                ,
+            ],
+            'use_in_string_3' => [
+                <<<'EOF'
 <?php
 $x="
 use a;
 use b;
 ";
-EOF;
-
-        $expected4 = <<<'EOF'
+EOF
+                ,
+            ],
+            'import_in_global_namespace' => [
+                <<<'EOF'
 <?php
 namespace A;
 use \SplFileInfo;
 new SplFileInfo(__FILE__);
-EOF;
-
-        return [
-            [$expected1],
-            [$expected2],
-            [$expected3],
-            [$expected4],
-        ];
-    }
-
-    public function testUseAsLastStatement()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'use_as_last_statement' => [
+                <<<'EOF'
 <?php
 
-EOF;
+EOF
+                ,
 
-        $input = <<<'EOF'
+                <<<'EOF'
 <?php
 use Bar\Finder;
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testUseWithSameLastPartThatIsInNamespace()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ],
+            'use_with_same_last_part_that_is_in_namespace' => [
+                <<<'EOF'
 <?php
 
 namespace Foo\Finder;
 
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 
 namespace Foo\Finder;
 
 use Bar\Finder;
-EOF;
+EOF
+                ,
+            ],
+            'used_use_with_same_last_part_that_is_in_namespace' => [
+                <<<'EOF'
+<?php
 
-        $this->doTest($expected, $input);
-    }
+namespace Foo\Finder;
 
-    public function testFoo()
-    {
-        $expected = <<<'EOF'
+use Bar\Finder;
+
+class Baz extends Finder
+{
+}
+EOF
+                ,
+            ],
+            'foo' => [
+                <<<'EOF'
 <?php
 namespace Aaa;
 
@@ -545,9 +658,9 @@ class Ddd
 {
 }
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 namespace Aaa;
 
@@ -558,39 +671,353 @@ class Ddd
 {
 }
 
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideCloseTagCases
-     */
-    public function testFixABC($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCloseTagCases()
-    {
-        return [
-            [
+EOF
+                ,
+            ],
+            'close_tag_1' => [
                 '<?php
 ?>inline content<?php ?>',
                 '<?php
      use A\AA;
      use B\C?>inline content<?php use A\D; use E\F ?>',
             ],
-            [
+            'close_tag_2' => [
                 '<?php ?>',
                 '<?php use A\B;?>',
             ],
-            [
+            'close_tag_3' => [
                 '<?php ?>',
                 '<?php use A\B?>',
+            ],
+            'with_comments' => [
+                '<?php
+# 1
+# 2
+# 3
+# 4
+  use /**/A\B/**/;
+  echo 1;
+  new B();
+',
+                '<?php
+use# 1
+\# 2
+Exception# 3
+# 4
+
+
+
+
+
+  ;
+use /**/A\B/**/;
+  echo 1;
+  new B();
+',
+            ],
+            'with_matches_in_comments' => [
+                '<?php
+use Foo;
+use Bar;
+use Baz;
+
+//Foo
+#Bar
+/*Baz*/',
+            ],
+            'with_case_insensitive_matches_in_comments' => [
+                '<?php
+use Foo;
+use Bar;
+use Baz;
+
+//foo
+#bar
+/*baz*/',
+            ],
+            'with_same_namespace_import_and_unused_import' => [
+                <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Bar\C;
+/* test */
+
+abstract class D extends A implements C
+{
+}
+
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Bar\C;
+use Foo\A;
+use Foo\Bar\B /* test */ ;
+
+abstract class D extends A implements C
+{
+}
+
+EOF
+                ,
+            ],
+            'with_same_namespace_import_and_unused_import_after_namespace_statement' => [
+                <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Foo\Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Foo\A;
+use Foo\Bar\B;
+use Foo\Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF
+                ,
+            ],
+            'wrong_casing' => [
+                <<<'EOF'
+<?php
+
+use Foo\Foo;
+use Bar\Bar;
+
+$a = new FOO();
+$b = new bar();
+EOF
+                ,
+            ],
+            'phpdoc_unused' => [
+                <<<'EOF'
+<?php
+
+class Foo extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException \Exception
+     */
+    public function testBar()
+    { }
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+use Some\Exception;
+
+class Foo extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException \Exception
+     */
+    public function testBar()
+    { }
+}
+EOF
+                ,
+            ],
+            'imported_class_is_used_for_constants_1' => [
+                '<?php
+use A\ABC;
+$a = 5-ABC::Test;
+$a = 5-ABC::Test-5;
+$a = ABC::Test-5;
+',
+            ],
+            'imported_class_is_used_for_constants_2' => [
+                '<?php
+use A\ABC;
+$a = 5-ABC::Test;
+$a = 5-ABC::Test-5;
+',
+            ],
+            'imported_class_is_used_for_constants_3' => [
+                '<?php
+use A\ABC;
+$a = 5-ABC::Test;
+',
+            ],
+            'imported_class_is_used_for_constants_4' => ['<?php
+use A\ABC;
+$a = ABC::Test-5;
+',
+            ],
+            'imported_class_is_used_for_constants_5' => ['<?php
+use A\ABC;
+$a = 5-ABC::Test-5;
+',
+            ],
+            'imported_class_is_used_for_constants_6' => ['<?php
+use A\ABC;
+$b = $a-->ABC::Test;
+',
+            ],
+            'imported_class_name_is_prefix_with_dash_of_constant' => [
+                <<<'EOF'
+<?php
+
+
+class Dummy
+{
+const C = 'bar-bados';
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+class Dummy
+{
+const C = 'bar-bados';
+}
+EOF
+                ,
+            ],
+            'imported_class_name_is_suffix_with_dash_of_constant' => [
+                <<<'EOF'
+<?php
+
+
+class Dummy
+{
+    const C = 'tool-bar';
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+class Dummy
+{
+    const C = 'tool-bar';
+}
+EOF
+                ,
+            ],
+            'imported_class_name_is_inside_with_dash_of_constant' => [
+                <<<'EOF'
+<?php
+
+
+class Dummy
+{
+    const C = 'tool-bar-bados';
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+use Foo\Bar;
+
+class Dummy
+{
+    const C = 'tool-bar-bados';
+}
+EOF
+                ,
+            ],
+            'functions_in_the_global_namespace_should_not_be_removed_even_when_declaration_has_new_lines_and_is_uppercase' => [
+                <<<'EOF'
+<?php
+
+namespace Foo;
+
+use function is_int;
+
+is_int(1);
+
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+namespace Foo;
+
+use function is_int;
+use function is_float;
+
+is_int(1);
+
+EOF
+                ,
+            ],
+            'constants_in_the_global_namespace_should_not_be_removed' => [
+                $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use const PHP_INT_MAX;
+
+echo PHP_INT_MAX;
+
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+namespace Foo;
+
+use const PHP_INT_MAX;
+use const PHP_INT_MIN;
+
+echo PHP_INT_MAX;
+
+EOF
+                ,
+            ],
+            'functions_in_the_global_namespace_should_not_be_removed_even_when_declaration_has_ne_lines_and_is_uppercase' => [
+                <<<'EOF'
+<?php
+
+namespace Foo;use/**/FUNCTION#1
+is_int;#2
+
+is_int(1);
+
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+namespace Foo;use/**/FUNCTION#1
+is_int;#2
+use function
+    is_float;
+use
+    const
+        PHP_INT_MIN;
+
+is_int(1);
+
+EOF
+                ,
             ],
         ];
     }
@@ -611,234 +1038,6 @@ new CLassD();
 echo fn_a();
 EOF;
         $this->doTest($expected);
-    }
-
-    public function testFixWithComments()
-    {
-        $input = '<?php
-use# 1
-\# 2
-Exception# 3
-# 4
-
-
-
-
-
-  ;
-use /**/A\B/**/;
-  echo 1;
-  new B();
-';
-
-        $expected = '<?php
-# 1
-# 2
-# 3
-# 4
-  use /**/A\B/**/;
-  echo 1;
-  new B();
-';
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testWithSameNamespaceImportAndUnusedImport()
-    {
-        $expected = <<<'EOF'
-<?php
-
-namespace Foo;
-
-use Bar\C;
-/* test */
-
-abstract class D extends A implements C
-{
-}
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-namespace Foo;
-
-use Bar\C;
-use Foo\A;
-use Foo\Bar\B /* test */ ;
-
-abstract class D extends A implements C
-{
-}
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testWithSameNamespaceImportAndUnusedImportAfterNamespaceStatement()
-    {
-        $expected = <<<'EOF'
-<?php
-
-namespace Foo;
-
-use Foo\Bar\C;
-
-abstract class D extends A implements C
-{
-}
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-namespace Foo;
-
-use Foo\A;
-use Foo\Bar\B;
-use Foo\Bar\C;
-
-abstract class D extends A implements C
-{
-}
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testWhenImportedClassNameIsPrefixWithDashOfConstant()
-    {
-        $expected = <<<'EOF'
-<?php
-
-
-class Dummy
-{
-    const C = 'bar-bados';
-}
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-class Dummy
-{
-    const C = 'bar-bados';
-}
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testWhenImportedClassNameIsSuffixWithDashOfConstant()
-    {
-        $expected = <<<'EOF'
-<?php
-
-
-class Dummy
-{
-    const C = 'tool-bar';
-}
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-class Dummy
-{
-    const C = 'tool-bar';
-}
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testWhenImportedClassNameIsInsideWithDashOfConstant()
-    {
-        $expected = <<<'EOF'
-<?php
-
-
-class Dummy
-{
-    const C = 'tool-bar-bados';
-}
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-class Dummy
-{
-    const C = 'tool-bar-bados';
-}
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string $expected
-     *
-     * @dataProvider provideWhenImportedClassIsUsedForConstantsCases
-     */
-    public function testWhenImportedClassIsUsedForConstants($expected)
-    {
-        $this->doTest($expected);
-    }
-
-    public function provideWhenImportedClassIsUsedForConstantsCases()
-    {
-        return array(
-            array(
-                '<?php
-use A\ABC;
-$a = 5-ABC::Test;
-$a = 5-ABC::Test-5;
-$a = ABC::Test-5;
-',
-            ),
-            array(
-                '<?php
-use A\ABC;
-$a = 5-ABC::Test;
-$a = 5-ABC::Test-5;
-',
-            ),
-            array(
-                '<?php
-use A\ABC;
-$a = 5-ABC::Test;
-',
-            ),
-            array('<?php
-use A\ABC;
-$a = ABC::Test-5;
-',
-            ),
-            array('<?php
-use A\ABC;
-$a = 5-ABC::Test-5;
-',
-            ),
-            array('<?php
-use A\ABC;
-$b = $a-->ABC::Test;
-',
-            ),
-        );
     }
 
     /**
@@ -882,91 +1081,5 @@ use Z;
 ',
             ],
         ];
-    }
-
-    public function testFunctionsInTheGlobalNamespaceShouldNotBeRemoved()
-    {
-        $expected = <<<'EOF'
-<?php
-
-namespace Foo;
-
-use function is_int;
-
-is_int(1);
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-namespace Foo;
-
-use function is_int;
-use function is_float;
-
-is_int(1);
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testConstantsInTheGlobalNamespaceShouldNotBeRemoved()
-    {
-        $expected = <<<'EOF'
-<?php
-
-namespace Foo;
-
-use const PHP_INT_MAX;
-
-echo PHP_INT_MAX;
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-namespace Foo;
-
-use const PHP_INT_MAX;
-use const PHP_INT_MIN;
-
-echo PHP_INT_MAX;
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFunctionsInTheGlobalNamespaceShouldNotBeRemovedEvenWhenDeclarationHasNewLinesAndIsUppercase()
-    {
-        $expected = <<<'EOF'
-<?php
-
-namespace Foo;use/**/FUNCTION#1
-is_int;#2
-
-is_int(1);
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-
-namespace Foo;use/**/FUNCTION#1
-is_int;#2
-use function
-    is_float;
-use
-    const
-        PHP_INT_MIN;
-
-is_int(1);
-
-EOF;
-
-        $this->doTest($expected, $input);
     }
 }
