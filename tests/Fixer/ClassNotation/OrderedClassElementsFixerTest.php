@@ -376,53 +376,6 @@ EOT
     /**
      * @param string $expected
      *
-     * @group legacy
-     * @dataProvider provideConfigurationCases
-     * @expectedDeprecation Passing "order" at the root of the configuration is deprecated and will not be supported in 3.0, use "order" => array(...) option instead.
-     */
-    public function testLegacyFixWithConfiguration(array $configuration, $expected)
-    {
-        static $input = <<<'EOT'
-<?php
-
-class Foo
-{
-    private static function privStatFunc() {}
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public function pubFunc1() {}
-    use BarTrait;
-    public $pubProp1;
-    public function __toString() {}
-    protected function protFunc() {}
-    protected $protProp;
-    function pubFunc2() {}
-    public function __destruct() {}
-    var $pubProp2;
-    private static $privStatProp;
-    use BazTrait;
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    private $privProp;
-    const C1 = 1;
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static $pubStatProp2;
-    protected function __construct() {}
-    const C2 = 2;
-    public static function pubStatFunc3() {}
-    public $pubProp3;
-    protected static function protStatFunc() {}
-}
-EOT;
-
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string $expected
-     *
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, $expected)
@@ -579,6 +532,159 @@ class Foo
     private $privProp;
     protected function __construct() {}
     public function __destruct() {}
+    public function __toString() {}
+    public static function pubStatFunc1() {}
+    static function pubStatFunc2() {}
+    public static function pubStatFunc3() {}
+    protected static function protStatFunc() {}
+    private static function privStatFunc() {}
+    public function pubFunc1() {}
+    function pubFunc2() {}
+    public function pubFunc3() {}
+    protected function protFunc() {}
+    private function privFunc() {}
+}
+EOT
+            ],
+        ];
+    }
+
+    /**
+     * @param array  $configuration
+     * @param string $input
+     * @param string $expected
+     *
+     * @dataProvider provideSortingConfigurationCases
+     */
+    public function testFixWithSortingAlhorithm(array $configuration, $input, $expected)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideSortingConfigurationCases()
+    {
+        return [
+            [
+                [
+                    'order' => [
+                        'property_public_static',
+                        'method_public',
+                        'method_private',
+                    ],
+                    'sortAlgorithm' => 'alpha',
+                ],
+                <<<'EOT'
+<?php
+class Example
+{
+    public function D(){}
+    public static $pubStatProp2;
+    public function B1(){}
+    public function B2(){}
+    private function A(){}
+    public static $pubStatProp1;
+    public function A(){}
+    public function C(){}
+    public function C1(){}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+class Example
+{
+    public static $pubStatProp1;
+    public static $pubStatProp2;
+    public function A(){}
+    public function B1(){}
+    public function B2(){}
+    public function C(){}
+    public function C1(){}
+    public function D(){}
+    private function A(){}
+}
+EOT
+            ],
+            [
+                [
+                    'order' => [
+                        'use_trait',
+                        'constant',
+                        'property_public_static',
+                        'property_protected_static',
+                        'property_private_static',
+                        'property_public',
+                        'property_protected',
+                        'property_private',
+                        'construct',
+                        'destruct',
+                        'magic',
+                        'method_public_static',
+                        'method_protected_static',
+                        'method_private_static',
+                        'method_public',
+                        'method_protected',
+                        'method_private',
+                    ],
+                    'sortAlgorithm' => 'alpha',
+                ],
+                <<<'EOT'
+<?php
+class Foo
+{
+    private static function privStatFunc() {}
+    protected static $protStatProp;
+    use BazTrait;
+    public static $pubStatProp2;
+    public $pubProp3;
+    use BarTrait;
+    public function __toString() {}
+    protected function protFunc() {}
+    protected $protProp;
+    function pubFunc2() {}
+    public $pubProp1;
+    public function __destruct() {}
+    var $pubProp2;
+    public function __magicB() {}
+    const C2 = 2;
+    public static $pubStatProp1;
+    public function __magicA() {}
+    private static $privStatProp;
+    static function pubStatFunc2() {}
+    public function pubFunc3() {}
+    private $privProp;
+    const C1 = 1;
+    public static function pubStatFunc3() {}
+    public function pubFunc1() {}
+    public static function pubStatFunc1() {}
+    private function privFunc() {}
+    protected function __construct() {}
+    protected static function protStatFunc() {}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+class Foo
+{
+    use BarTrait;
+    use BazTrait;
+    const C1 = 1;
+    const C2 = 2;
+    public static $pubStatProp1;
+    public static $pubStatProp2;
+    protected static $protStatProp;
+    private static $privStatProp;
+    public $pubProp1;
+    var $pubProp2;
+    public $pubProp3;
+    protected $protProp;
+    private $privProp;
+    protected function __construct() {}
+    public function __destruct() {}
+    public function __magicA() {}
+    public function __magicB() {}
     public function __toString() {}
     public static function pubStatFunc1() {}
     static function pubStatFunc2() {}

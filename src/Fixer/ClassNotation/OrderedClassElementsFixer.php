@@ -14,7 +14,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -28,6 +28,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    const SORT_ALPHA = 'alpha';
+    const SORT_NONE = 'none';
+
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)
      */
@@ -66,6 +69,16 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'destruct' => null,
         'magic' => null,
         'phpunit' => null,
+    ];
+
+    /**
+     * Array of supported sort algorithms in configuration.
+     *
+     * @var string[]
+     */
+    private $supportedSortAlgorithms = [
+        self::SORT_NONE,
+        self::SORT_ALPHA,
     ];
 
     /**
@@ -177,6 +190,18 @@ class Example
 ',
                     ['order' => ['method_private', 'method_public']]
                 ),
+                new CodeSample(
+                    '<?php
+class Example
+{
+    public function D(){}
+    public function B(){}
+    public function A(){}
+    public function C(){}
+}
+',
+                    ['order' => ['method_public'], 'sortAlgorithm' => 'alpha']
+                ),
             ]
         );
     }
@@ -224,7 +249,7 @@ class Example
      */
     protected function createConfigurationDefinition()
     {
-        return new FixerConfigurationResolverRootless('order', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([
@@ -246,6 +271,10 @@ class Example
                     'method_protected',
                     'method_private',
                 ])
+                ->getOption(),
+            (new FixerOptionBuilder('sortAlgorithm', 'How multiple occurrences of same type statements should be sorted'))
+                ->setAllowedValues($this->supportedSortAlgorithms)
+                ->setDefault(self::SORT_NONE)
                 ->getOption(),
         ]);
     }
@@ -300,6 +329,12 @@ class Example
                     $element['name'] = $type[1];
                 } else {
                     $element['type'] = $type;
+                }
+
+                if ('property' === $element['type']) {
+                    $element['name'] = $tokens[$i]->getContent();
+                } elseif (in_array($element['type'], ['use_trait', 'constant', 'method', 'magic'], true)) {
+                    $element['name'] = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
                 }
 
                 $element['end'] = $this->findElementEnd($tokens, $i);
@@ -424,16 +459,30 @@ class Example
         }
         unset($element);
 
-        usort($elements, static function (array $a, array $b) {
+        usort($elements, function (array $a, array $b) {
             if ($a['position'] === $b['position']) {
-                // same group, preserve current order
-                return $a['start'] > $b['start'] ? 1 : -1;
+                return $this->sortGroupElements($a, $b);
             }
 
             return $a['position'] > $b['position'] ? 1 : -1;
         });
 
         return $elements;
+    }
+
+    private function sortGroupElements(array $a, array $b)
+    {
+        $selectedSortAlgorithm = $this->configuration['sortAlgorithm'];
+
+        if (!in_array($selectedSortAlgorithm, $this->supportedSortAlgorithms, true)) {
+            throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $selectedSortAlgorithm));
+        }
+
+        if (self::SORT_ALPHA === $selectedSortAlgorithm) {
+            return strcasecmp($a['name'], $b['name']);
+        }
+
+        return $a['start'] > $b['start'] ? 1 : -1;
     }
 
     /**
