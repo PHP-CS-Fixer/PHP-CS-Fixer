@@ -582,7 +582,7 @@ class Example
     public static $pubStatProp2;
     public function B1(){}
     public function B2(){}
-    private function A(){}
+    private function E(){}
     public static $pubStatProp1;
     public function A(){}
     public function C(){}
@@ -602,7 +602,7 @@ class Example
     public function C(){}
     public function C1(){}
     public function D(){}
-    private function A(){}
+    private function E(){}
 }
 EOT
             ],
