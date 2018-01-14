@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
+use PhpCsFixer\Tests\Test\IntegrationCase;
+use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
 
 /**
  * Test that parses and runs the fixture '*.test' files found in '/Fixtures/Integration'.
@@ -39,5 +41,34 @@ final class IntegrationTest extends AbstractIntegrationTestCase
     protected static function getTempFile()
     {
         return self::getFixturesDir().DIRECTORY_SEPARATOR.'.tmp.php';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function createIntegrationCaseFactory()
+    {
+        return new InternalIntegrationCaseFactory();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function assertRevertedOrderFixing(IntegrationCase $case, $fixedInputCode, $fixedInputCodeWithReversedFixers)
+    {
+        parent::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
+
+        $settings = $case->getSettings();
+
+        if (!isset($settings['isExplicitPriorityCheck'])) {
+            static::markTestIncomplete('Missing `isExplicitPriorityCheck` extension setting.');
+        }
+
+        if ($settings['isExplicitPriorityCheck']) {
+            static::assertTrue(
+                $fixedInputCode !== $fixedInputCodeWithReversedFixers,
+                sprintf('Test "%s" in "%s" is expected to be priority check.', $case->getTitle(), $case->getFileName())
+            );
+        }
     }
 }

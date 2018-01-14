@@ -216,6 +216,7 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($className);
 
         $this->assertTrue(
+            $rc->isInterface() || // due to hhvm only, @TODO remove me whem hhvm support is dropped
             $rc->isAbstract() || $rc->isFinal(),
             sprintf('Test class %s should be abstract or final.', $className)
         );
