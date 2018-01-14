@@ -2574,6 +2574,18 @@ function foo()
 }',
                 self::$configurationOopPositionSameLine,
             ),
+            array(
+                '<?php
+class TestClass
+{
+    // 酰
+}',
+                '<?php
+class TestClass
+{
+// 酰
+}',
+            ),
         );
     }
 
