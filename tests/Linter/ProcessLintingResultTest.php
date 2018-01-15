@@ -24,6 +24,9 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ProcessLintingResultTest extends TestCase
 {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testCheckOK()
     {
         $process = $this->prophesize('Symfony\Component\Process\Process');
@@ -39,7 +42,6 @@ final class ProcessLintingResultTest extends TestCase
 
         $result = new ProcessLintingResult($process->reveal());
         $result->check();
-        $this->addToAssertionCount(1); // no exception, so we are good here
     }
 
     public function testCheckFail()

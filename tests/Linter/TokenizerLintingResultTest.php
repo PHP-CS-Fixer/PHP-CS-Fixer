@@ -24,12 +24,15 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class TokenizerLintingResultTest extends TestCase
 {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testTokenizerLintingResultOK()
     {
         $result = new TokenizerLintingResult();
         $result->check();
 
-        $this->addToAssertionCount(1); // no exception, so we are good here
+        $this->addToAssertionCount(1);
     }
 
     public function testTokenizerLintingResultFail()

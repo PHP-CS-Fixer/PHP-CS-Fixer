@@ -21,6 +21,7 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\NullOutput
+ * @doesNotPerformAssertions
  */
 final class NullOutputTest extends TestCase
 {
@@ -28,7 +29,5 @@ final class NullOutputTest extends TestCase
     {
         $output = new NullOutput();
         $output->printLegend();
-        // no exceptions, no output, so OK
-        $this->addToAssertionCount(1);
     }
 }
