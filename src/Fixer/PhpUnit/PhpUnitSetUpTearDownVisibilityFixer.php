@@ -67,7 +67,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach (array_reverse($this->findPhpUnitClasses($tokens)) as $indexes) {
+        foreach ($this->findPhpUnitClasses($tokens) as $indexes) {
             $this->fixSetUpAndTearDown($tokens, $indexes[0], $indexes[1]);
         }
     }
@@ -75,23 +75,19 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * @param Tokens $tokens
      *
-     * @return int[][] array of [start, end] indexes from sooner to later classes
+     * @return \Generator
      */
     private function findPhpUnitClasses(Tokens $tokens)
     {
         $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-        $phpunitClasses = [];
 
-        for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
-                $index = $tokens->getNextTokenOfKind($index, ['{']);
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-                $phpunitClasses[] = [$index, $endIndex];
-                $index = $endIndex;
+                $start = $tokens->getNextTokenOfKind($index, ['{']);
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $start);
+                yield [$start, $endIndex];
             }
         }
-
-        return $phpunitClasses;
     }
 
     /**
@@ -101,6 +97,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     private function fixSetUpAndTearDown(Tokens $tokens, $startIndex, $endIndex)
     {
+
         $counter = 0;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
