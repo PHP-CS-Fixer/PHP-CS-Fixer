@@ -58,17 +58,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
 }
 ',
             ],
-            'setUp and tearDown stay protected if they are' => [
-                '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-
-    protected function setUp() {}
-
-    protected function tearDown() {}
-}
-',
-            ],
             'Other functions are ignored' => [
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
