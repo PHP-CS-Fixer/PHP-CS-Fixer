@@ -241,6 +241,42 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
 }
 ',
             ],
+            'It works when there are multiple classes in one file' => [
+                '<?php
+class FixerTest extends \PhpUnit\FrameWork\TestCase
+{
+
+    protected function setUp() {}
+
+    protected function tearDown() {}
+}
+
+class OtherTest extends \PhpUnit\FrameWork\TestCase
+{
+
+    protected function setUp() {}
+
+    protected function tearDown() {}
+}
+',
+                '<?php
+class FixerTest extends \PhpUnit\FrameWork\TestCase
+{
+
+    public function setUp() {}
+
+    public function tearDown() {}
+}
+
+class OtherTest extends \PhpUnit\FrameWork\TestCase
+{
+
+    public function setUp() {}
+
+    public function tearDown() {}
+}
+',
+            ],
         ];
     }
 }
