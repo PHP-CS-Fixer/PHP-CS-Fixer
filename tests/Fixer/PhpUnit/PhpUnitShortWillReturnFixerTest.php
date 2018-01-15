@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -25,20 +24,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @var ConfigurableFixerInterface
-     */
-    protected $fixer;
-
-    /**
      * @param string        $expected
      * @param string | null $input
-     * @param array         $config
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, $config = [])
+    public function testFix($expected, $input = null)
     {
-        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -51,11 +43,6 @@ final class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
             'will return with integer' => [
                 '<?php $someMock->method(\'someMethod\')->willReturn(10);',
                 '<?php $someMock->method(\'someMethod\')->will($this->returnValue(10));',
-            ],
-            'will return turned off' => [
-                '<?php $someMock->method(\'someMethod\')->will($this->returnValue(10));',
-                null,
-                ['returnValue' => false],
             ],
             'will return with negative integer' => [
                 '<?php $someMock->method(\'someMethod\')->willReturn(-10);',
@@ -109,39 +96,19 @@ final class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
                 '<?php $someMock->method(\'someMethod\')->willReturnSelf();',
                 '<?php $someMock->method(\'someMethod\')->will($this->returnSelf());',
             ],
-            'will return self turned off' => [
-                '<?php $someMock->method(\'someMethod\')->will($this->returnSelf());',
-                null,
-                ['returnSelf' => false],
-            ],
             'will return argument' => [
                 '<?php $someMock->method(\'someMethod\')->willReturnArgument(2);',
                 '<?php $someMock->method(\'someMethod\')->will($this->returnArgument(2));',
-            ],
-            'will return argument turned off' => [
-                '<?php $someMock->method(\'someMethod\')->will($this->returnArgument(2));',
-                null,
-                ['returnArgument' => false],
             ],
             'will return callback without params' => [
                 '<?php $someMock->method(\'someMethod\')->willReturnCallback(\'str_rot13\');',
                 '<?php $someMock->method(\'someMethod\')->will($this->returnCallback(\'str_rot13\'));',
             ],
-            'will return callback turned off' => [
-                '<?php $someMock->method(\'someMethod\')->will($this->returnCallback(\'str_rot13\'));',
-                null,
-                ['returnCallback' => false],
-            ],
             'will return value map' => [
                 '<?php $someMock->method(\'someMethod\')->willReturnMap([\'a\', \'b\', \'c\', \'d\']);',
                 '<?php $someMock->method(\'someMethod\')->will($this->returnValueMap([\'a\', \'b\', \'c\', \'d\']));',
             ],
-            'will return value map turned off' => [
-                '<?php $someMock->method(\'someMethod\')->will($this->returnValueMap([\'a\', \'b\', \'c\', \'d\']));',
-                null,
-                ['returnValueMap' => false],
-            ],
-            'will return multiple occurrences with default configuration fixed all by default' => [
+            'will return multiple occurrences' => [
                 '<?php
                 $someMock->method(\'someMethod\')->willReturn(10);
                 $someMock->method(\'someMethod\')->willReturnSelf();
@@ -156,30 +123,6 @@ final class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
                 $someMock->method(\'someMethod\')->will($this->returnCallback(\'str_rot13\'));
                 $someMock->method(\'someMethod\')->will($this->returnValueMap([\'a\', \'b\', \'c\', \'d\']));
                 ',
-                [],
-            ],
-            'will return multiple occurrences with mixed configuration' => [
-                '<?php
-                $someMock->method(\'someMethod\')->will($this->returnValue(10));
-                $someMock->method(\'someMethod\')->willReturnSelf();
-                $someMock->method(\'someMethod\')->will($this->returnArgument(2));
-                $someMock->method(\'someMethod\')->willReturnCallback(\'str_rot13\');
-                $someMock->method(\'someMethod\')->will($this->returnValueMap([\'a\', \'b\', \'c\', \'d\']));
-                ',
-                '<?php
-                $someMock->method(\'someMethod\')->will($this->returnValue(10));
-                $someMock->method(\'someMethod\')->will($this->returnSelf());
-                $someMock->method(\'someMethod\')->will($this->returnArgument(2));
-                $someMock->method(\'someMethod\')->will($this->returnCallback(\'str_rot13\'));
-                $someMock->method(\'someMethod\')->will($this->returnValueMap([\'a\', \'b\', \'c\', \'d\']));
-                ',
-                [
-                    'returnValue' => false,
-                    'returnSelf' => true,
-                    'returnArgument' => false,
-                    'returnCallback' => true,
-                    'returnValueMap' => false,
-                ],
             ],
             'will return with multi lines and messy indents' => [
                 '<?php $someMock
@@ -194,10 +137,11 @@ final class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
             'will return with multi lines, messy indents and comments inside' => [
                 '<?php $someMock
     ->method(\'someMethod\')
-        ->willReturn(10)
+        ->// foo
+            willReturn(10)
             // bar
         ;',
-                '<?php $someMock
+            '<?php $someMock
     ->method(\'someMethod\')
         ->will(
             // foo
@@ -206,8 +150,29 @@ final class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
         );',
             ],
             'will return with block comments in weird places' => [
-                '<?php $someMock->method(\'someMethod\')->/* a */willReturn/* b */(10) /* d */;',
+                '<?php $someMock->method(\'someMethod\')->/* a *//* b *//* c */ willReturn(10) /* d */;',
                 '<?php $someMock->method(\'someMethod\')->/* a */will/* b */(/* c */ $this->returnValue(10) /* d */);',
+            ],
+            'will return with comments persisted not touched even if put in unexpected places' => [
+                '
+                <?php $someMock->method(\'someMethod\')// a
+                ->/* b *//* c *//* d */ /** e */
+                 // f
+                // g
+                willReturn(
+                /* h */
+                10) /* i */;
+                ',
+                '
+                <?php $someMock->method(\'someMethod\')// a
+                ->/* b */will/* c */(/* d */ $this/** e */
+                -> // f
+                returnValue
+                // g
+                (
+                /* h */
+                10) /* i */);
+                ',
             ],
             'will return with multi lines, messy indents and comments in weird places' => [
                 '<?php
@@ -218,13 +183,15 @@ $someMock
       ->
 
       /* a */
-willReturn
         /*
         b
         c
         d
         e
-*/        
+*/
+            // f g h i
+            /* j */
+willReturn
     (10)
      /* k */
      /* l */;',
