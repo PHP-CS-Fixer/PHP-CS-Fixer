@@ -28,7 +28,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    /** @internal */
     const SORT_ALPHA = 'alpha';
+    /** @internal */
     const SORT_NONE = 'none';
 
     /**
@@ -473,10 +475,6 @@ class Example
     private function sortGroupElements(array $a, array $b)
     {
         $selectedSortAlgorithm = $this->configuration['sortAlgorithm'];
-
-        if (!in_array($selectedSortAlgorithm, $this->supportedSortAlgorithms, true)) {
-            throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $selectedSortAlgorithm));
-        }
 
         if (self::SORT_ALPHA === $selectedSortAlgorithm) {
             return strcasecmp($a['name'], $b['name']);
