@@ -21,10 +21,12 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\NullOutput
- * @doesNotPerformAssertions
  */
 final class NullOutputTest extends TestCase
 {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testNullOutput()
     {
         $output = new NullOutput();
