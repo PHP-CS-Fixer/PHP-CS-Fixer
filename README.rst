@@ -1128,7 +1128,7 @@ Choose from the list of available rules:
 * **php_unit_set_up_tear_down_visibility**
 
   Changes the visibility of the setUp and tearDown functions of phpunit to
-  protected, to match its parent.
+  protected, to match the PHPUnit TestCase.
 
 * **php_unit_strict**
 

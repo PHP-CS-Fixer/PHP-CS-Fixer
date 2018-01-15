@@ -31,7 +31,7 @@ final class PhpUnitSetUpTearDownVisibilityFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Changes the visibility of the setUp and tearDown functions of phpunit to protected, to match its parent.',
+            'Changes the visibility of the setUp and tearDown functions of phpunit to protected, to match the PHPUnit TestCase.',
             [
                 new CodeSample(
                     '<?php
@@ -101,27 +101,29 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     private function fixSetUpAndTearDown(Tokens $tokens, $startIndex, $endIndex)
     {
+        $counter = 0;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($i = $endIndex - 1; $i > $startIndex; --$i) {
-            if (!$this->isMethod($tokens, $i)) {
-                continue;
+            if ($counter >= 2) {
+                break;
             }
+
             if (!$this->isMethodSetUpOrTearDown($tokens, $i)) {
                 continue;
             }
 
+            ++$counter;
+
             $visibility = $tokensAnalyzer->getMethodAttributes($i)['visibility'];
 
-            if (T_PROTECTED === $visibility) {
+            if (T_PROTECTED === $visibility || T_PRIVATE === $visibility) {
                 continue;
             }
 
             if (T_PUBLIC === $visibility) {
-                do {
-                    $i = $tokens->getPrevMeaningfulToken($i);
-                } while (!$tokens[$i]->isGivenKind(T_PUBLIC));
-
-                $tokens[$i] = new Token([T_PROTECTED, 'protected']);
+                $index = $tokens->getPrevTokenOfKind($i, [[T_PUBLIC]]);
+                $tokens[$index] = new Token([T_PROTECTED, 'protected']);
 
                 continue;
             }
@@ -138,28 +140,18 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      *
      * @return bool
      */
-    private function isMethod(Tokens $tokens, $index)
+    private function isMethodSetUpOrTearDown(Tokens $tokens, $index)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        return $tokens[$index]->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     *
-     * @return bool
-     */
-    private function isMethodSetUpOrTearDown(Tokens $tokens, $index)
-    {
-        $functionNameIndex = $tokens->getNextMeaningfulToken($index);
-        $functionName = \strtolower($tokens[$functionNameIndex]->getContent());
-
-        if ('setup' !== $functionName && 'teardown' !== $functionName) {
+        $isMethod = $tokens[$index]->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
+        if (!$isMethod) {
             return false;
         }
 
-        return true;
+        $functionNameIndex = $tokens->getNextMeaningfulToken($index);
+        $functionName = \strtolower($tokens[$functionNameIndex]->getContent());
+
+        return 'setup' === $functionName || 'teardown' === $functionName;
     }
 }

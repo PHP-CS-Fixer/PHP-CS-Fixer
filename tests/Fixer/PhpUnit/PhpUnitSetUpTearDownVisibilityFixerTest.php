@@ -241,6 +241,17 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
 }
 ',
             ],
+            'Nothing changes if setUp or tearDown are private' => [
+                '<?php
+class FixerTest extends \PhpUnit\FrameWork\TestCase
+{
+
+    private function setUp() {}
+
+    private function tearDown() {}
+}
+',
+            ],
         ];
     }
 }
