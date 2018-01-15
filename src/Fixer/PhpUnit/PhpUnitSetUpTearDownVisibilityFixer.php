@@ -97,7 +97,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     private function fixSetUpAndTearDown(Tokens $tokens, $startIndex, $endIndex)
     {
-
         $counter = 0;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
