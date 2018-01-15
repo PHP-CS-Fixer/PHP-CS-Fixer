@@ -31,8 +31,6 @@ final class TokenizerLintingResultTest extends TestCase
     {
         $result = new TokenizerLintingResult();
         $result->check();
-
-        $this->addToAssertionCount(1);
     }
 
     public function testTokenizerLintingResultFail()
