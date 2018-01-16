@@ -53,7 +53,9 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
                 new CodeSample(
                     "<?php \$a = 'my\r\nmulti\nline\r\nstring';\r\n"
                 ),
-            ]
+            ],
+            null,
+            'Changing the line endings of multi-line strings might change behaviour.'
         );
     }
 
