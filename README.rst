@@ -6,7 +6,7 @@ whether you want to follow PHP coding standards as defined in the PSR-1, PSR-2, 
 or other community driven ones like the Symfony one.
 You can **also** define your (teams) style through configuration.
 
-It can modernize your code (like converting the `pow` function to the `**` operator on PHP 5.6)
+It can modernize your code (like converting the ``pow`` function to the ``**`` operator on PHP 5.6)
 and (micro) optimize it.
 
 If you are already using a linter to identify coding standards problems in your
@@ -1431,6 +1431,12 @@ Choose from the list of available rules:
   Functions should be used with ``$strict`` param set to ``true``.
 
   *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
+
+* **string_line_ending**
+
+  All multi-line strings must use correct line ending.
+
+  *Risky rule: changing the line endings of multi-line strings might affect string comparisons and outputs.*
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 
