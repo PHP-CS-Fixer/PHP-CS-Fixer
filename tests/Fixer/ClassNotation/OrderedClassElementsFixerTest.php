@@ -332,12 +332,14 @@ EOT
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param array       $configuration
      *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input = null)
+    public function testFix71(array $configuration, $expected, $input = null)
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -345,6 +347,34 @@ EOT
     {
         return [
             [
+                [],
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    const C2 = 2;
+    public const C1 = 1;
+    public const C3 = 3;
+    protected const C4 = 4;
+    private const C5 = 5;
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    private const C5 = 5;
+    const C2 = 2;
+    public const C1 = 1;
+    protected const C4 = 4;
+    public const C3 = 3;
+}
+EOT
+            ],
+            [
+                ['sortAlgorithm' => 'alpha'],
                 <<<'EOT'
 <?php
 
@@ -363,14 +393,61 @@ EOT
 class Foo
 {
     private const C5 = 5;
+    const C2 = 2;
     public const C1 = 1;
     protected const C4 = 4;
-    const C2 = 2;
     public const C3 = 3;
 }
 EOT
             ],
         ];
+    }
+
+    /**
+     * @param string $expected
+     *
+     * @group legacy
+     * @dataProvider provideConfigurationCases
+     * @expectedDeprecation Passing "order" at the root of the configuration is deprecated and will not be supported in 3.0, use "order" => array(...) option instead.
+     */
+    public function testLegacyFixWithConfiguration(array $configuration, $expected)
+    {
+        static $input = <<<'EOT'
+<?php
+
+class Foo
+{
+    private static function privStatFunc() {}
+    protected static $protStatProp;
+    public static $pubStatProp1;
+    public function pubFunc1() {}
+    use BarTrait;
+    public $pubProp1;
+    public function __toString() {}
+    protected function protFunc() {}
+    protected $protProp;
+    function pubFunc2() {}
+    public function __destruct() {}
+    var $pubProp2;
+    private static $privStatProp;
+    use BazTrait;
+    public static function pubStatFunc1() {}
+    public function pubFunc3() {}
+    private $privProp;
+    const C1 = 1;
+    static function pubStatFunc2() {}
+    private function privFunc() {}
+    public static $pubStatProp2;
+    protected function __construct() {}
+    const C2 = 2;
+    public static function pubStatFunc3() {}
+    public $pubProp3;
+    protected static function protStatFunc() {}
+}
+EOT;
+
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
     }
 
     /**
