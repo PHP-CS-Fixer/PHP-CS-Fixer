@@ -13,8 +13,8 @@
 namespace PhpCsFixer\Tests\Fixer;
 
 use PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\UnconfigurableFixer;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
@@ -27,7 +27,8 @@ final class AbstractFixerTest extends TestCase
     {
         $fixer = new UnconfigurableFixer();
 
-        $this->expectException(\LogicException::class, 'Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
 
         $fixer->configure(['foo' => 'bar']);
     }
@@ -36,7 +37,8 @@ final class AbstractFixerTest extends TestCase
     {
         $fixer = new UnconfigurableFixer();
 
-        $this->expectException(\LogicException::class, 'Cannot get configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Cannot get configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
 
         $fixer->getConfigurationDefinition();
     }
@@ -45,7 +47,8 @@ final class AbstractFixerTest extends TestCase
     {
         $fixer = new UnconfigurableFixer();
 
-        $this->expectException(\LogicException::class, 'Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
 
         $fixer->doSomethingWithCreateConfigDefinition();
     }
@@ -54,7 +57,7 @@ final class AbstractFixerTest extends TestCase
     {
         $fixer = new UnconfigurableFixer();
 
-        $this->expectException('LogicException');
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot run method for class not implementing "PhpCsFixer\Fixer\WhitespacesAwareFixerInterface".');
 
         $fixer->setWhitespacesConfig(new WhitespacesFixerConfig());

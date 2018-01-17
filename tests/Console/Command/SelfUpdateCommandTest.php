@@ -19,7 +19,7 @@ use org\bovigo\vfs\vfsStreamWrapper;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -65,9 +65,9 @@ final class SelfUpdateCommandTest extends TestCase
     public function testCommandName($name)
     {
         $command = new SelfUpdateCommand(
-            $this->prophesize('PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface')->reveal(),
+            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
             $this->createToolInfo(),
-            $this->prophesize('PhpCsFixer\PharCheckerInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
         );
 
         $application = new Application();
@@ -104,7 +104,7 @@ final class SelfUpdateCommandTest extends TestCase
         $expectedFileContents,
         $expectedDisplay
     ) {
-        $versionChecker = $this->prophesize('PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface');
+        $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $versionChecker->getLatestVersion()->willReturn($latestVersion);
 
@@ -114,7 +114,7 @@ final class SelfUpdateCommandTest extends TestCase
         ;
 
         $actualVersionCheck = new NewVersionChecker(
-            $this->prophesize('PhpCsFixer\Console\SelfUpdate\GithubClientInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\GithubClientInterface::class)->reveal()
         );
 
         $versionChecker
@@ -127,7 +127,7 @@ final class SelfUpdateCommandTest extends TestCase
         $command = new SelfUpdateCommand(
             $versionChecker->reveal(),
             $this->createToolInfo(),
-            $this->prophesize('PhpCsFixer\PharCheckerInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -241,7 +241,7 @@ OUTPUT;
         array $input,
         $decorated
     ) {
-        $versionChecker = $this->prophesize('PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface');
+        $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $newMajorVersion = $this->getNewMajorVersion();
         $versionChecker->getLatestVersion()->will(function () use ($latestVersionSuccess, $newMajorVersion) {
@@ -267,7 +267,7 @@ OUTPUT;
         $command = new SelfUpdateCommand(
             $versionChecker->reveal(),
             $this->createToolInfo(),
-            $this->prophesize('PhpCsFixer\PharCheckerInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -312,9 +312,9 @@ OUTPUT;
     public function testExecuteWhenNotInstalledAsPhar(array $input, $decorated)
     {
         $command = new SelfUpdateCommand(
-            $this->prophesize('PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface')->reveal(),
+            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
             $this->createToolInfo(false),
-            $this->prophesize('PhpCsFixer\PharCheckerInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -378,7 +378,7 @@ OUTPUT;
     {
         $root = $this->root;
 
-        $toolInfo = $this->prophesize('PhpCsFixer\ToolInfoInterface');
+        $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
         $toolInfo->isInstalledAsPhar()->willReturn($isInstalledAsPhar);
         $toolInfo
             ->getPharDownloadUri(Argument::type('string'))

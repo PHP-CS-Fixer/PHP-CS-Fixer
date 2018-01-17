@@ -283,9 +283,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $tag = $annotation->getTag()->getName();
 
-        preg_match('/^\s*\*\s*@'.$tag.'\s+(.+)$/', $annotation->getContent(), $matches);
+        preg_match('/^\s*\*\s*@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches);
+        $content = $matches[1];
+        if (preg_match('/\R/u', $content)) {
+            $content = preg_replace('/\s*\R+\s*\*\s*/u', ' ', $content);
+        }
 
-        return rtrim($matches[1]);
+        return rtrim($content);
     }
 
     private function annotationsToParamList(array $annotations)

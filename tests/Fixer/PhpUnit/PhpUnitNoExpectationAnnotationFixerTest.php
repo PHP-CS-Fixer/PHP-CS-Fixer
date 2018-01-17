@@ -463,6 +463,89 @@ EOT
 EOT
 ,
             ],
+            'message on newline' => [
+<<<'EOT'
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         */
+        public function testMessageOnMultilines()
+        {
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines AAA €');
+
+            aaa();
+        }
+
+        /**
+         * @foo
+         */
+        public function testMessageOnMultilinesWithAnotherTag()
+        {
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines BBB è');
+
+            bbb();
+        }
+
+        /**
+         *
+         * @foo
+         */
+        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
+        {
+            $this->setExpectedException(\RuntimeException::class, 'Message on multilines CCC ✔');
+
+            ccc();
+        }
+    }
+EOT
+,
+<<<'EOT'
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * @expectedException \RuntimeException
+         * @expectedExceptionMessage Message
+         *                           on
+         *                           multilines AAA
+         *                           €
+         */
+        public function testMessageOnMultilines()
+        {
+            aaa();
+        }
+
+        /**
+         * @expectedException \RuntimeException
+         * @expectedExceptionMessage Message
+         *                           on
+         *                           multilines BBB
+         *                           è
+         * @foo
+         */
+        public function testMessageOnMultilinesWithAnotherTag()
+        {
+            bbb();
+        }
+
+        /**
+         * @expectedException \RuntimeException
+         * @expectedExceptionMessage Message
+         *                           on
+         *                           multilines CCC
+         *                           ✔
+         *
+         * @foo
+         */
+        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
+        {
+            ccc();
+        }
+    }
+EOT
+,
+            ],
         ];
     }
 

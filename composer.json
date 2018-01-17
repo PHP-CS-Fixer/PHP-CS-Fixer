@@ -34,10 +34,12 @@
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.1 || ^2.0@dev",
         "justinrainbow/json-schema": "^5.0",
+        "keradus/cli-executor": "^1.0",
         "mikey179/vfsStream": "^1.6",
         "php-coveralls/php-coveralls": "^2.0",
         "php-cs-fixer/accessible-object": "^1.0",
         "phpunit/phpunit": "^5.7.23 || ^6.4.3",
+        "phpunitgoodpractices/traits": "^1.0",
         "symfony/phpunit-bridge": "^3.2.2 || ^4.0"
     },
     "suggest": {
@@ -54,11 +56,12 @@
     "autoload": {
         "psr-4": { "PhpCsFixer\\": "src/" },
         "classmap": [
-            "tests/Test/Assert/AssertTokensTrait.php",
             "tests/Test/AbstractFixerTestCase.php",
             "tests/Test/AbstractIntegrationTestCase.php",
+            "tests/Test/Assert/AssertTokensTrait.php",
             "tests/Test/IntegrationCase.php",
-            "tests/Test/IntegrationCaseFactory.php"
+            "tests/Test/IntegrationCaseFactory.php",
+            "tests/TestCase.php"
         ]
     },
     "autoload-dev": {

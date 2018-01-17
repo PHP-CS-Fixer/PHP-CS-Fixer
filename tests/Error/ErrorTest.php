@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Error;
 
 use PhpCsFixer\Error\Error;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
