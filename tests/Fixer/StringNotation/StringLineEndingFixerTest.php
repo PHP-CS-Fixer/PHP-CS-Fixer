@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Fixer\StringNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Ilija Tovilo <ilija.tovilo@me.com>
