@@ -66,19 +66,19 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
     {
         $ending = $this->whitespacesConfig->getLineEnding();
 
-        for ($index = 0, $count = count($tokens); $index < $count; ++$index) {
-            $token = $tokens[$index];
-
-            if ($token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE])) {
-                $tokens[$index] = new Token([
-                    $token->getId(),
-                    preg_replace(
-                        '#\R#',
-                        $ending,
-                        $token->getContent()
-                    ),
-                ]);
+        foreach ($tokens as $tokenIndex => $token) {
+            if (!$token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE])) {
+                continue;
             }
+
+            $tokens[$tokenIndex] = new Token([
+                $token->getId(),
+                preg_replace(
+                    '#\R#',
+                    $ending,
+                    $token->getContent()
+                ),
+            ]);
         }
     }
 }
