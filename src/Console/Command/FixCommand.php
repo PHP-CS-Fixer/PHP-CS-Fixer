@@ -110,7 +110,7 @@ final class FixCommand extends Command
                     new InputOption('diff-format', '', InputOption::VALUE_REQUIRED, 'Specify diff format.'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, estimating, estimating-max or dots).'),
+                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
@@ -179,17 +179,14 @@ final class FixCommand extends Command
             );
         }
 
-        // @TODO 3.0 remove `run-in` and `estimating`
         if ('none' === $progressType || null === $stdErr) {
             $progressOutput = new NullOutput();
-        } elseif ('run-in' === $progressType) {
-            $progressOutput = new ProcessOutput($stdErr, $this->eventDispatcher, null, null);
         } else {
             $finder = new \ArrayIterator(iterator_to_array($finder));
             $progressOutput = new ProcessOutput(
                 $stdErr,
                 $this->eventDispatcher,
-                'estimating' !== $progressType ? (new Terminal())->getWidth() : null,
+                (new Terminal())->getWidth(),
                 count($finder)
             );
         }

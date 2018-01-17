@@ -10,6 +10,9 @@ CLI options
 | --------------- | --------------- | ----------------------------------------------- | -------------------------------------- |
 | --diff-format   | --diff-format   | Type of differ                                  | Allowed value `sbd` was removed,       |
 |                 |                 |                                                 | new default is `udiff`                 |
+| --show-progress | --show-progress | Type of progress indicator                      | Allowed values were modified:          |
+|                 |                 |                                                 | `run-in` and `estimating` was removed, |
+|                 |                 |                                                 | `estimating-max` was removed to `dots` |
 
 Changes to rules
 ----------------

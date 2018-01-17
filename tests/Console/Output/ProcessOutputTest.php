@@ -25,161 +25,13 @@ use Symfony\Component\Console\Output\BufferedOutput;
 final class ProcessOutputTest extends TestCase
 {
     /**
-     * @param array    $statuses
-     * @param string   $expectedOutput
-     * @param null|int $width
+     * @param array  $statuses
+     * @param string $expectedOutput
+     * @param int    $width
      *
      * @dataProvider provideProcessProgressOutputCases
      */
-    public function testProcessProgressOutput(array $statuses, $expectedOutput, $width = null)
-    {
-        $processOutput = new ProcessOutput(
-            $output = new BufferedOutput(),
-            $this->prophesize(\Symfony\Component\EventDispatcher\EventDispatcher::class)->reveal(),
-            $width,
-            null
-        );
-
-        $this->foreachStatus($statuses, static function ($status) use ($processOutput) {
-            $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
-        });
-
-        $this->assertSame($expectedOutput, $output->fetch());
-    }
-
-    public function provideProcessProgressOutputCases()
-    {
-        return [
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 4],
-                ],
-                '....',
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 4],
-                ],
-                '....',
-                80,
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES],
-                    [FixerFileProcessedEvent::STATUS_FIXED],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 4],
-                ],
-                '.F....',
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 65],
-                ],
-                '.................................................................',
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 81],
-                ],
-                '.................................................................................',
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 81],
-                ],
-                '................................................................................'.PHP_EOL.
-                '.',
-                80,
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 81],
-                ],
-                '........................................'.PHP_EOL.
-                '........................................'.PHP_EOL.
-                '.',
-                40,
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 81],
-                ],
-                '.................................................................................',
-                100,
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 19],
-                    [FixerFileProcessedEvent::STATUS_EXCEPTION],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 6],
-                    [FixerFileProcessedEvent::STATUS_LINT],
-                    [FixerFileProcessedEvent::STATUS_FIXED, 3],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 67],
-                    [FixerFileProcessedEvent::STATUS_SKIPPED],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 66],
-                    [FixerFileProcessedEvent::STATUS_INVALID],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES],
-                    [FixerFileProcessedEvent::STATUS_INVALID],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
-                    [FixerFileProcessedEvent::STATUS_UNKNOWN],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 32],
-                ],
-                '...................E......EFFF...................................................................S..................................................................I.I........................................?................................',
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 19],
-                    [FixerFileProcessedEvent::STATUS_EXCEPTION],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 6],
-                    [FixerFileProcessedEvent::STATUS_LINT],
-                    [FixerFileProcessedEvent::STATUS_FIXED, 3],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 67],
-                    [FixerFileProcessedEvent::STATUS_SKIPPED],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 66],
-                    [FixerFileProcessedEvent::STATUS_INVALID],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES],
-                    [FixerFileProcessedEvent::STATUS_INVALID],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
-                    [FixerFileProcessedEvent::STATUS_UNKNOWN],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 32],
-                ],
-                '...................E......EFFF..................................................'.PHP_EOL.
-                '.................S..............................................................'.PHP_EOL.
-                '....I.I........................................?................................',
-                80,
-            ],
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 19],
-                    [FixerFileProcessedEvent::STATUS_EXCEPTION],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 6],
-                    [FixerFileProcessedEvent::STATUS_LINT],
-                    [FixerFileProcessedEvent::STATUS_FIXED, 3],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 67],
-                    [FixerFileProcessedEvent::STATUS_SKIPPED],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 66],
-                    [FixerFileProcessedEvent::STATUS_INVALID],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES],
-                    [FixerFileProcessedEvent::STATUS_INVALID],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
-                    [FixerFileProcessedEvent::STATUS_UNKNOWN],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 32],
-                ],
-                '...................E......EFFF...................................................................S......................'.PHP_EOL.
-                '............................................I.I........................................?................................',
-                120,
-            ],
-        ];
-    }
-
-    /**
-     * @param array    $statuses
-     * @param string   $expectedOutput
-     * @param null|int $width
-     *
-     * @dataProvider provideProcessProgressOutputWithNumbersCases
-     */
-    public function testProcessProgressOutputWithNumbers(array $statuses, $expectedOutput, $width = null)
+    public function testProcessProgressOutput(array $statuses, $expectedOutput, $width)
     {
         $nbFiles = 0;
         $this->foreachStatus($statuses, static function ($status) use (&$nbFiles) {
@@ -200,15 +52,9 @@ final class ProcessOutputTest extends TestCase
         $this->assertSame($expectedOutput, $output->fetch());
     }
 
-    public function provideProcessProgressOutputWithNumbersCases()
+    public function provideProcessProgressOutputCases()
     {
         return [
-            [
-                [
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 4],
-                ],
-                '....                                                                4 / 4 (100%)',
-            ],
             [
                 [
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 4],
@@ -223,12 +69,14 @@ final class ProcessOutputTest extends TestCase
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 4],
                 ],
                 '.F....                                                              6 / 6 (100%)',
+                80,
             ],
             [
                 [
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 65],
                 ],
                 '................................................................. 65 / 65 (100%)',
+                80,
             ],
             [
                 [
@@ -236,6 +84,7 @@ final class ProcessOutputTest extends TestCase
                 ],
                 '................................................................. 65 / 66 ( 98%)'.PHP_EOL.
                 '.                                                                 66 / 66 (100%)',
+                80,
             ],
             [
                 [
@@ -281,6 +130,7 @@ final class ProcessOutputTest extends TestCase
                 '...................E......EFFF.................................  63 / 189 ( 33%)'.PHP_EOL.
                 '.................S............................................. 126 / 189 ( 67%)'.PHP_EOL.
                 '....I.I........................................?............... 189 / 189 (100%)',
+                80,
             ],
             [
                 [

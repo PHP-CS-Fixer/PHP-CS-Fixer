@@ -422,31 +422,16 @@ final class ConfigurationResolver
         if (null === $this->progress) {
             if (OutputInterface::VERBOSITY_VERBOSE <= $this->options['verbosity'] && 'txt' === $this->getFormat()) {
                 $progressType = $this->options['show-progress'];
-                $progressTypes = ['none', 'run-in', 'estimating', 'estimating-max', 'dots'];
+                $progressTypes = ['none', 'dots'];
 
                 if (null === $progressType) {
-                    $default = 'run-in';
-
-                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                        $default = 'dots';
-                    }
-
-                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : $default;
+                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'dots';
                 } elseif (!in_array($progressType, $progressTypes, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are "%s".',
                         $progressType,
                         implode('", "', $progressTypes)
                     ));
-                } elseif (in_array($progressType, ['estimating', 'estimating-max', 'run-in'], true)) {
-                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                        throw new \InvalidArgumentException('Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
-                    }
-
-                    @trigger_error(
-                        'Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.',
-                        E_USER_DEPRECATED
-                    );
                 }
 
                 $this->progress = $progressType;

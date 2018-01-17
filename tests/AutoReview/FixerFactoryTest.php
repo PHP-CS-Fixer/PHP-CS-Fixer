@@ -129,7 +129,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_useless_else'], $fixers['no_trailing_whitespace']],
             [$fixers['no_useless_else'], $fixers['no_useless_return']],
             [$fixers['no_useless_else'], $fixers['no_whitespace_in_blank_line']],
-            [$fixers['no_useless_return'], $fixers['blank_line_before_return']],
             [$fixers['no_useless_return'], $fixers['blank_line_before_statement']],
             [$fixers['no_useless_return'], $fixers['no_extra_blank_lines']],
             [$fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']],
