@@ -31,7 +31,7 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
      */
     public function isCandidate(Tokens $tokens)
     {
-        return true;
+        return $tokens->isAnyTokenKindsFound([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE]);
     }
 
     /**
