@@ -44,6 +44,9 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
                 '<?php /* $yoda string @var */',
             ],
             [
+                '<?php /* $yoda @var string */',
+            ],
+            [
                 '<?php /** @var string $foo */',
                 '<?php /* @var string $foo */',
             ],
@@ -86,6 +89,78 @@ EOT
 /*
  * @var string $foo
  */
+EOT
+                ,
+            ],
+            [
+                <<<'EOT'
+<?php
+
+/**
+ * This is my var
+ * @var string $foo
+ * stop using it
+ * @deprecated since 1.2
+ */
+$foo = 1;
+EOT
+                ,
+                <<<'EOT'
+<?php
+
+// This is my var
+// @var string $foo
+// stop using it
+// @deprecated since 1.2
+$foo = 1;
+EOT
+                ,
+            ],
+            [
+                <<<'EOT'
+<?php
+
+for (;;) {
+    /**
+     * This is my var
+     * @var string $foo
+     */
+    $foo++;
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+
+for (;;) {
+    // This is my var
+    // @var string $foo
+    $foo++;
+}
+EOT
+                ,
+            ],
+            [
+                <<<'EOT'
+<?php
+
+/**
+ * This is my var
+ * @var string $foo
+ * stop using it
+ * @deprecated since 1.3
+ */
+$foo = 1;
+EOT
+                ,
+                <<<'EOT'
+<?php
+
+# This is my var
+# @var string $foo
+# stop using it
+# @deprecated since 1.3
+$foo = 1;
 EOT
                 ,
             ],

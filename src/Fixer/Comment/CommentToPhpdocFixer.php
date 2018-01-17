@@ -13,15 +13,18 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Utils;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  */
-final class CommentToPhpdocFixer extends AbstractFixer
+final class CommentToPhpdocFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -60,41 +63,106 @@ final class CommentToPhpdocFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $index => $token) {
+        $commentsAnalyzer = new CommentsAnalyzer();
+
+        for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
+            $token = $tokens[$index];
+
             if (!$token->isGivenKind(T_COMMENT)) {
                 continue;
             }
 
-            if (1 === preg_match('~(#|//|/\*+|\R(\s*\*)?)\s*\@[a-zA-Z0-9_\\\\-]+(?=\s|\(|$)~', $token->getContent())) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixContent($token->getContent())]);
+            $commentIndices = $commentsAnalyzer->getCommentBlockIndices($tokens, $index);
+
+            if ($this->isCommentCandidate($tokens, $commentIndices)) {
+                $this->fixComment($tokens, $commentIndices);
             }
+
+            $index = max($commentIndices);
         }
     }
 
     /**
-     * @param string $content
+     * @param Tokens $tokens
+     * @param int[]  $indices
      *
-     * @return string
+     * @return bool
      */
-    private function fixContent($content)
+    private function isCommentCandidate(Tokens $tokens, array $indices)
+    {
+        return array_reduce(
+            $indices,
+            function ($carry, $index) use ($tokens) {
+                return $carry || 1 === preg_match('~(#|//|/\*+|\R(\s*\*)?)\s*\@[a-zA-Z0-9_\\\\-]+(?=\s|\(|$)~', $tokens[$index]->getContent());
+            },
+            false
+        );
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int[]  $indices
+     */
+    private function fixComment(Tokens $tokens, $indices)
+    {
+        if (1 === count($indices)) {
+            $this->fixCommentSingleLine($tokens, reset($indices));
+        } else {
+            $this->fixCommentMultiLine($tokens, $indices);
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixCommentSingleLine(Tokens $tokens, $index)
+    {
+        $message = $this->getMessage($tokens[$index]->getContent());
+
+        if ('' !== trim(substr($message, 0, 1))) {
+            $message = ' '.$message;
+        }
+
+        if ('' !== trim(substr($message, -1))) {
+            $message .= ' ';
+        }
+
+        $tokens[$index] = new Token([T_DOC_COMMENT, '/**'.$message.'*/']);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int[]  $indices
+     */
+    private function fixCommentMultiLine(Tokens $tokens, array $indices)
+    {
+        $startIndex = reset($indices);
+        $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$startIndex - 1]);
+
+        $content = '/**'.$this->whitespacesConfig->getLineEnding();
+        $count = max($indices);
+
+        for ($index = $startIndex; $index <= $count; ++$index) {
+            if ($tokens[$index]->isComment()) {
+                $content .= $indent.' *'.$this->getMessage($tokens[$index]->getContent()).$this->whitespacesConfig->getLineEnding();
+            }
+            $tokens->clearAt($index);
+        }
+        $content .= $indent.' */';
+
+        $tokens->insertAt($startIndex, new Token([T_DOC_COMMENT, $content]));
+    }
+
+    private function getMessage($content)
     {
         if (0 === strpos($content, '#')) {
-            $content = substr($content, 1);
-        } elseif (0 === strpos($content, '//')) {
-            $content = substr($content, 2);
-        } else {
-            $content = ltrim($content, '/*');
-            $content = rtrim($content, '*/');
+            return substr($content, 1);
+        }
+        if (0 === strpos($content, '//')) {
+            return substr($content, 2);
         }
 
-        if ('' !== trim(substr($content, 0, 1))) {
-            $content = ' '.$content;
-        }
-
-        if ('' !== trim(substr($content, -1))) {
-            $content .= ' ';
-        }
-
-        return '/**'.$content.'*/';
+        return rtrim(ltrim($content, '/*'), '*/');
     }
 }
