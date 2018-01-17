@@ -287,6 +287,18 @@ echo 1;
                 true,
             ),
             array(
+                str_replace("\n", "\r", '<?php
+//
+//
+
+//
+//
+'),
+                1,
+                3,
+                true,
+            ),
+            array(
                 '<?php
 //
 
