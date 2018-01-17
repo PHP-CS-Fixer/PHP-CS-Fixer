@@ -1434,9 +1434,9 @@ Choose from the list of available rules:
 
 * **string_line_ending**
 
-  All multi-line strings must use same line ending.
+  All multi-line strings must use correct line ending.
 
-  *Risky rule: changing the line endings of multi-line strings might change behaviour.*
+  *Risky rule: changing the line endings of multi-line strings might affect string comparisons and outputs.*
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 

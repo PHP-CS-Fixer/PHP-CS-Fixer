@@ -48,14 +48,14 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
     public function getDefinition()
     {
         return new FixerDefinition(
-            'All multi-line strings must use same line ending.',
+            'All multi-line strings must use correct line ending.',
             [
                 new CodeSample(
                     "<?php \$a = 'my\r\nmulti\nline\r\nstring';\r\n"
                 ),
             ],
             null,
-            'Changing the line endings of multi-line strings might change behaviour.'
+            'Changing the line endings of multi-line strings might affect string comparisons and outputs.'
         );
     }
 
