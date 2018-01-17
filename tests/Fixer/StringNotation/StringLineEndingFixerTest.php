@@ -19,7 +19,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\StringLineEndingFixer
+ * @covers \PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer
  */
 final class StringLineEndingFixerTest extends AbstractFixerTestCase
 {
