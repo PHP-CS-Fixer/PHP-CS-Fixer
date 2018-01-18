@@ -12,9 +12,9 @@
 
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
-use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>

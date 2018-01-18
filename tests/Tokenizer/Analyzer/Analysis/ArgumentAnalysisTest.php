@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
