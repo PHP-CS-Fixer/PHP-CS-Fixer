@@ -15,6 +15,8 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
+ * @author Gert de Pagter
+ *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitSetUpTearDownVisibilityFixer
@@ -42,7 +44,6 @@ final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCas
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     protected function setUp() {}
 
     protected function tearDown() {}
@@ -51,7 +52,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     public function setUp() {}
 
     public function tearDown() {}
@@ -96,7 +96,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     protected final function setUp() {}
 
     final protected function tearDown() {}
@@ -105,7 +104,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     public final function setUp() {}
 
     final public function tearDown() {}
@@ -116,7 +114,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     protected function setUp() {}
 
     protected function tearDown() {}
@@ -125,7 +122,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     function setUp() {}
 
     function tearDown() {}
@@ -136,7 +132,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     final protected function setUp() {}
 
     final protected function tearDown() {}
@@ -145,7 +140,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     final function setUp() {}
 
     final function tearDown() {}
@@ -174,7 +168,6 @@ class Fixer extends OtherClass
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     protected function sEtUp() {}
 
     protected function TeArDoWn() {}
@@ -183,7 +176,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     public function sEtUp() {}
 
     public function TeArDoWn() {}
@@ -194,7 +186,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                     '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     protected /** foo */ function setUp() {}
 
     /** foo */protected function tearDown() {}
@@ -203,7 +194,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                     '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     public /** foo */ function setUp() {}
 
     /** foo */public function tearDown() {}
@@ -214,7 +204,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     /** foo */protected function setUp() {}
 
     /** bar */protected function tearDown() {}
@@ -223,7 +212,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     /** foo */function setUp() {}
 
     /** bar */function tearDown() {}
@@ -234,7 +222,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     private function setUp() {}
 
     private function tearDown() {}
@@ -245,7 +232,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     protected function setUp() {}
 
     protected function tearDown() {}
@@ -253,7 +239,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
 
 class OtherTest extends \PhpUnit\FrameWork\TestCase
 {
-
     protected function setUp() {}
 
     protected function tearDown() {}
@@ -262,7 +247,6 @@ class OtherTest extends \PhpUnit\FrameWork\TestCase
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
-
     public function setUp() {}
 
     public function tearDown() {}
@@ -270,7 +254,6 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
 
 class OtherTest extends \PhpUnit\FrameWork\TestCase
 {
-
     public function setUp() {}
 
     public function tearDown() {}

@@ -112,21 +112,16 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($i = $endIndex - 1; $i > $startIndex; --$i) {
-            if ($counter >= 2) {
-                break;
+            if (2 === $counter) {
+                break; // we've seen both method we are interested in, so stop analyzing this class
             }
 
-            if (!$this->isMethodSetUpOrTearDown($tokens, $i)) {
+            if (!$this->isSetupOrTearDownMethod($tokens, $i)) {
                 continue;
             }
 
             ++$counter;
-
             $visibility = $tokensAnalyzer->getMethodAttributes($i)['visibility'];
-
-            if (T_PROTECTED === $visibility || T_PRIVATE === $visibility) {
-                continue;
-            }
 
             if (T_PUBLIC === $visibility) {
                 $index = $tokens->getPrevTokenOfKind($i, [[T_PUBLIC]]);
@@ -147,7 +142,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      *
      * @return bool
      */
-    private function isMethodSetUpOrTearDown(Tokens $tokens, $index)
+    private function isSetupOrTearDownMethod(Tokens $tokens, $index)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
