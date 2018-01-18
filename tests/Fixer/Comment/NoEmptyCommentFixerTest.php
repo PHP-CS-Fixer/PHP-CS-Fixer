@@ -143,18 +143,20 @@ echo 1;
                 */',
             ),
             array(
-                '<?php
-                    '.'
-                    '.'
-                    '.'
-                    '.'
-                ',
-                '<?php
-                    //
-                    //
-                    //
-                    /**///
-                ',
+                "<?php\n                    \n                    \n                    \n                    \n                ",
+                "<?php\n                    //\n                    //\n                    //\n                    /**///\n                ",
+            ),
+            array(
+                "<?php\r                    \r                    \r                    \r                    \r                ",
+                "<?php\r                    //\r                    //\r                    //\r                    /**///\r                ",
+            ),
+            array(
+                "<?php\r\n                    \r\n                    \r\n                    \r\n                    \r\n                ",
+                "<?php\r\n                    //\r\n                    //\r\n                    //\r\n                    /**///\r\n                ",
+            ),
+            array(
+                "<?php\necho 1;\r\recho 2;",
+                "<?php\necho 1;\r//\recho 2;",
             ),
             // do not fix cases
             array(
@@ -282,6 +284,18 @@ echo 1;
 //
 //
 ',
+                1,
+                3,
+                true,
+            ),
+            array(
+                str_replace("\n", "\r", "<?php\n//\n//\n\n//\n//\n"),
+                1,
+                3,
+                true,
+            ),
+            array(
+                str_replace("\n", "\r\n", "<?php\n//\n//\n\n//\n//\n"),
                 1,
                 3,
                 true,
