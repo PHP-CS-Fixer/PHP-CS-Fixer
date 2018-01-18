@@ -729,10 +729,16 @@ class Foo
     public function __magicA() {}
     private static $privStatProp;
     static function pubStatFunc2() {}
-    public function pubFunc3() {}
+    public function pubFunc3(int $b, int $c) {
+        $a = $b*$c;
+
+        return $a % 4;
+    }
     private $privProp;
     const C1 = 1;
-    public static function pubStatFunc3() {}
+    public static function pubStatFunc3() {
+        return $this->privFunc();
+    }
     public function pubFunc1() {}
     public static function pubStatFunc1() {}
     private function privFunc() {}
@@ -765,12 +771,18 @@ class Foo
     public function __toString() {}
     public static function pubStatFunc1() {}
     static function pubStatFunc2() {}
-    public static function pubStatFunc3() {}
+    public static function pubStatFunc3() {
+        return $this->privFunc();
+    }
     protected static function protStatFunc() {}
     private static function privStatFunc() {}
     public function pubFunc1() {}
     function pubFunc2() {}
-    public function pubFunc3() {}
+    public function pubFunc3(int $b, int $c) {
+        $a = $b*$c;
+
+        return $a % 4;
+    }
     protected function protFunc() {}
     private function privFunc() {}
 }
