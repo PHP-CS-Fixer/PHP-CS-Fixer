@@ -18,7 +18,7 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  *
- * @deprecated Will incorporate `ConfigurationDefinitionFixerInterface` in 3.0
+ * @todo Will incorporate `ConfigurationDefinitionFixerInterface` in 3.0
  */
 interface ConfigurableFixerInterface extends FixerInterface
 {

@@ -23,6 +23,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use Prophecy\Argument;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -179,6 +180,38 @@ Fixing examples:
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageRegExp('#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
         $this->execute('Foo2/bar', false);
+    }
+
+    public function testFixerClassNameIsExposedWhenVerbose()
+    {
+        $fixerName = uniqid('Foo/bar_');
+
+        $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
+        $fixer->getName()->willReturn($fixerName);
+        $fixer->getPriority()->willReturn(0);
+        $fixer->isRisky()->willReturn(true);
+        $fixer->getDefinition()->willReturn(new FixerDefinition('Fixes stuff.', []));
+        $mock = $fixer->reveal();
+
+        $fixerFactory = new FixerFactory();
+        $fixerFactory->registerFixer($mock, true);
+
+        $this->application->add(new DescribeCommand($fixerFactory));
+
+        $command = $this->application->find('describe');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+            [
+                'command' => $command->getName(),
+                'name' => $fixerName,
+            ],
+            [
+                'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+            ]
+        );
+
+        $this->assertContains(get_class($mock), $commandTester->getDisplay(true));
     }
 
     /**
