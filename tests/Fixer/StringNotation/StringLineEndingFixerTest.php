@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\StringNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Ilija Tovilo <ilija.tovilo@me.com>
@@ -36,6 +37,16 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
+        $template = "<?php\n\$a=\n<<<'EOT'\n%s\n\nEOT;\n";
+        $input = '/**
+* @SWG\Get(
+*     path="/api/v0/cards",
+*     operationId="listCards",
+*     tags={"Банковские карты"},
+*     summary="Возвращает список банковских карт."
+*  )
+*/';
+
         return [
             [
                 "<?php \$a = 'my\nmulti\nline\nstring';\r\n",
@@ -49,6 +60,24 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
                 "<?php \$a = \"my\nmulti\nline\nstring\nwith\n\$b\ninterpolation\";\r\n",
                 "<?php \$a = \"my\r\nmulti\nline\r\nstring\nwith\r\n\$b\ninterpolation\";\r\n",
             ],
+            [
+                sprintf($template, $input),
+                sprintf($template, str_replace("\n", "\r", $input)),
+            ],
+            [
+                sprintf($template, $input),
+                sprintf($template, str_replace("\n", "\r\n", $input)),
+            ],
         ];
+    }
+
+    public function testWithDifferentLineEndingConfiguration()
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest(
+            "<?php \$a = 'my\r\nmulti\r\nline\r\nstring';",
+            "<?php \$a = 'my\nmulti\nline\nstring';"
+        );
     }
 }
