@@ -51,8 +51,9 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     const ALIGN_SINGLE_SPACE_MINIMAL = 'align_single_space_minimal';
 
     /**
+     * Placeholder used as anchor for right alignment.
+     *
      * @internal
-     * @const Placeholder used as anchor for right alignment.
      */
     const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 

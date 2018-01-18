@@ -29,22 +29,15 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class HeaderCommentFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @internal
+     */
     const HEADER_PHPDOC = 'PHPDoc';
+
+    /**
+     * @internal
+     */
     const HEADER_COMMENT = 'comment';
-
-    /** @deprecated will be removed in 3.0 */
-    const HEADER_LOCATION_AFTER_OPEN = 1;
-    /** @deprecated will be removed in 3.0 */
-    const HEADER_LOCATION_AFTER_DECLARE_STRICT = 2;
-
-    /** @deprecated will be removed in 3.0 */
-    const HEADER_LINE_SEPARATION_BOTH = 1;
-    /** @deprecated will be removed in 3.0 */
-    const HEADER_LINE_SEPARATION_TOP = 2;
-    /** @deprecated will be removed in 3.0 */
-    const HEADER_LINE_SEPARATION_BOTTOM = 3;
-    /** @deprecated will be removed in 3.0 */
-    const HEADER_LINE_SEPARATION_NONE = 4;
 
     /**
      * {@inheritdoc}

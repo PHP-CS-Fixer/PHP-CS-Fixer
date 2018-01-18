@@ -36,14 +36,29 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @internal
+     */
     const IMPORT_TYPE_CLASS = 'class';
 
+    /**
+     * @internal
+     */
     const IMPORT_TYPE_CONST = 'const';
 
+    /**
+     * @internal
+     */
     const IMPORT_TYPE_FUNCTION = 'function';
 
+    /**
+     * @internal
+     */
     const SORT_ALPHA = 'alpha';
 
+    /**
+     * @internal
+     */
     const SORT_LENGTH = 'length';
 
     /**
