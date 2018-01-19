@@ -1130,6 +1130,8 @@ Choose from the list of available rules:
   Changes the visibility of the setUp and tearDown functions of phpunit to
   protected, to match the PHPUnit TestCase.
 
+  *Risky rule: this fixer may change functions named setUp or tearDown outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
+
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of
