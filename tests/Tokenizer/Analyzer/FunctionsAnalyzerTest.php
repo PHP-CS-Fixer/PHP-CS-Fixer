@@ -28,6 +28,72 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionsAnalyzerTest extends TestCase
 {
     /**
+     * @param bool   $isFunctionIndex
+     * @param string $code
+     * @param int    $index
+     *
+     * @dataProvider provideIsGlobalFunctionIndexCases
+     */
+    public function testIsGlobalFunctionIndex($isFunctionIndex, $code, $index)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        $this->assertSame($isFunctionIndex, $analyzer->isGlobalFunctionIndex($tokens, $index));
+    }
+
+    public function provideIsGlobalFunctionIndexCases()
+    {
+        return [
+            [
+                true,
+                '<?php foo("bar");',
+                1,
+            ],
+            [
+                false,
+                '<?php \foo("bar");',
+                1,
+            ],
+            [
+                true,
+                '<?php \foo("bar");',
+                2,
+            ],
+            [
+                false,
+                '<?php foo\bar("baz");',
+                1,
+            ],
+            [
+                false,
+                '<?php foo\bar("baz");',
+                3,
+            ],
+            [
+                false,
+                '<?php foo::bar("baz");',
+                1,
+            ],
+            [
+                false,
+                '<?php foo::bar("baz");',
+                3,
+            ],
+            [
+                false,
+                '<?php $foo->bar("baz");',
+                3,
+            ],
+            [
+                false,
+                '<?php new bar("baz");',
+                3,
+            ],
+        ];
+    }
+
+    /**
      * @param string $code
      * @param int    $methodIndex
      * @param array  $expected

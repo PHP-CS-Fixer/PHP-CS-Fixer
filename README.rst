@@ -575,6 +575,22 @@ Choose from the list of available rules:
 
   *Risky rule: risky if the ``ereg`` function is overridden.*
 
+* **error_suppression** [@Symfony:risky]
+
+  Error control operator should be added to deprecation notices and/or
+  removed from other cases.
+
+  *Risky rule: risky because adding/removing ``@`` might cause changes to code behaviour or if ``trigger_error`` function is overridden.*
+
+  Configuration options:
+
+  - ``mute_deprecation_error`` (``bool``): whether to add ``@`` in deprecation
+    notices; defaults to ``true``
+  - ``noise_remaining_usages`` (``bool``): whether to remove ``@`` in remaining
+    usages; defaults to ``false``
+  - ``noise_remaining_usages_exclude`` (``array``): list of global functions to
+    exclude from removing ``@``; defaults to ``[]``
+
 * **escape_implicit_backslashes**
 
   Escape implicit backslashes in strings and heredocs to ease the
@@ -1462,9 +1478,10 @@ Choose from the list of available rules:
   ``(int)``, ``(double)`` and ``(real)`` as ``(float)``, ``(binary)`` as
   ``(string)``.
 
-* **silenced_deprecation_error** [@Symfony:risky]
+* **silenced_deprecation_error**
 
-  Ensures deprecation notices are silenced.
+  Ensures deprecation notices are silenced. DEPRECATED: use
+  ``error_suppression`` instead.
 
   *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
 

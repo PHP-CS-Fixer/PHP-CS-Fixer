@@ -164,6 +164,7 @@ final class RuleSet implements RuleSetInterface
         '@Symfony:risky' => [
             'dir_constant' => true,
             'ereg_to_preg' => true,
+            'error_suppression' => true,
             'function_to_constant' => true,
             'is_null' => true,
             'modernize_types_casting' => true,
@@ -175,7 +176,6 @@ final class RuleSet implements RuleSetInterface
             'php_unit_construct' => true,
             'psr4' => true,
             'self_accessor' => true,
-            'silenced_deprecation_error' => true,
         ],
         '@DoctrineAnnotation' => [
             'doctrine_annotation_array_assignment' => [
