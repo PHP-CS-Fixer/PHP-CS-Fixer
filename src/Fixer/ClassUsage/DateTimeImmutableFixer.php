@@ -103,6 +103,17 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
 
     private function fixClassUpdate(Tokens $tokens, $index, $isInNamespace, $isImported)
     {
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
+        if ($tokens[$nextIndex]->isGivenKind(T_DOUBLE_COLON)) {
+            $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+            if ($tokens[$nextNextIndex]->isGivenKind(T_STRING)) {
+                $nextNextNextIndex = $tokens->getNextMeaningfulToken($nextNextIndex);
+                if (!$tokens[$nextNextNextIndex]->equals('(')) {
+                    return;
+                }
+            }
+        }
+
         $isUsedAlone = false; // e.g. new DateTime();
         $isUsedWithLeadingBackslash = false; // e.g. new \DateTime();
 
@@ -134,7 +145,7 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
         if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
             if ($tokens[$prevPrevIndex]->isGivenKind([T_NEW, T_STRING])) {
-                return null;
+                return;
             }
         }
 

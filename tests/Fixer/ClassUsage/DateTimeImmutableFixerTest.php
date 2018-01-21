@@ -77,12 +77,10 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
                 '<?php namespace Foo; use DateTime\Bar; use DateTime; use Baz\DateTime as BazDateTime; new DateTime();',
             ],
             [
-                '<?php $foo = DateTimeImmutable::ISO8601;',
                 '<?php $foo = DateTime::ISO8601;',
             ],
             [
-                '<?php $foo = \DateTimeImmutable::ISO8601;',
-                '<?php $foo = \datetime::ISO8601;',
+                '<?php $foo = \datetime::ISO8601 + 24;',
             ],
             [
                 "<?php DateTimeImmutable::createFromFormat('j-M-Y', '15-Feb-2009');",
