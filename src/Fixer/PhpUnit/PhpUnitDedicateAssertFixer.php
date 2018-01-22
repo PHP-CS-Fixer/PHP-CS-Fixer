@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author SpacePossum
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitDedicateAssertFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpUnitDedicateAssertFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private static $fixMap = [
         'array_key_exists' => ['assertArrayNotHasKey', 'assertArrayHasKey'],

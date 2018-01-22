@@ -14,7 +14,6 @@ namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
@@ -487,7 +486,7 @@ EOF
                 );
             }
 
-            if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
+            if ($fixer instanceof ConfigurableFixerInterface) {
                 $configurationDefinition = $fixer->getConfigurationDefinition();
                 $configurationDefinitionOptions = $configurationDefinition->getOptions();
                 if (count($configurationDefinitionOptions)) {

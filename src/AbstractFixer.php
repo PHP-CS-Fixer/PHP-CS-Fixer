@@ -16,7 +16,6 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -110,8 +109,8 @@ abstract class AbstractFixer implements FixerInterface
 
     public function configure(array $configuration)
     {
-        if (!$this instanceof ConfigurationDefinitionFixerInterface) {
-            throw new \LogicException('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        if (!$this instanceof ConfigurableFixerInterface) {
+            throw new \LogicException('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
         }
 
         try {
@@ -142,8 +141,8 @@ abstract class AbstractFixer implements FixerInterface
      */
     public function getConfigurationDefinition()
     {
-        if (!$this instanceof ConfigurationDefinitionFixerInterface) {
-            throw new \LogicException('Cannot get configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        if (!$this instanceof ConfigurableFixerInterface) {
+            throw new \LogicException('Cannot get configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
         }
 
         if (null === $this->configurationDefinition) {
@@ -169,8 +168,8 @@ abstract class AbstractFixer implements FixerInterface
      */
     protected function createConfigurationDefinition()
     {
-        if (!$this instanceof ConfigurationDefinitionFixerInterface) {
-            throw new \LogicException('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        if (!$this instanceof ConfigurableFixerInterface) {
+            throw new \LogicException('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
         }
 
         throw new \LogicException('Not implemented.');

@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Gregor Harlan <gharlan@web.de>
  * @author Kuba Werłos <werlos@gmail.com>
  */
-final class IncrementStyleFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class IncrementStyleFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @internal

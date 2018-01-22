@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
@@ -30,7 +30,7 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Ivan Boprzenkov <ivan.borzenkov@gmail.com>
  */
-final class NonPrintableCharacterFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class NonPrintableCharacterFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private $symbolsReplace;
 
