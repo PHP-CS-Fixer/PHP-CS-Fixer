@@ -242,6 +242,19 @@ final class IncludeFixerTest extends AbstractFixerTestCase
             );
         }
 
+        $tests[] = array(
+            '<?php
+require_once "test1.php";
+include_once "test2.php";
+require "test3.php";
+include "test4.php";',
+            '<?php
+require_once("test1.php");
+include_once("test2.php");
+require("test3.php");
+include("test4.php");',
+        );
+
         return $tests;
     }
 }
