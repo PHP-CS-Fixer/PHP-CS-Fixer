@@ -54,7 +54,10 @@
         "sort-packages": true
     },
     "autoload": {
-        "psr-4": { "PhpCsFixer\\": "src/" },
+        "psr-4": { "PhpCsFixer\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "PhpCsFixer\\Tests\\": "tests/" },
         "classmap": [
             "tests/Test/AbstractFixerTestCase.php",
             "tests/Test/AbstractIntegrationTestCase.php",
@@ -63,9 +66,6 @@
             "tests/Test/IntegrationCaseFactory.php",
             "tests/TestCase.php"
         ]
-    },
-    "autoload-dev": {
-        "psr-4": { "PhpCsFixer\\Tests\\": "tests/" }
     },
     "bin": ["php-cs-fixer"]
 }
