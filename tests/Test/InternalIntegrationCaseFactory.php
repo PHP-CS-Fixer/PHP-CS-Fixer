@@ -19,7 +19,7 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @internal
  */
-final class InternalIntegrationCaseFactory extends IntegrationCaseFactory
+final class InternalIntegrationCaseFactory extends AbstractIntegrationCaseFactory
 {
     /**
      * {@inheritdoc}
