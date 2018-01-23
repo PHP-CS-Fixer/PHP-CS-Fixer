@@ -1,0 +1,38 @@
+--TEST--
+Integration of fixers: header_comment, declare_strict_types
+--RULESET--
+{
+    "header_comment" :
+    {
+        "commentType": "PHPDoc", "header": "Header Comment", "location": "after_open", "separate": "bottom"
+    },
+    "declare_strict_types": true
+}
+--REQUIREMENTS--
+{"php": 70000}
+--EXPECT--
+<?php
+/**
+ * Header Comment
+ */
+
+declare(strict_types=1);
+/**
+ * Header Comment
+ */
+
+namespace A\B\C;
+
+class A {
+}
+
+--INPUT--
+<?php
+/**
+ * Header Comment
+ */
+
+namespace A\B\C;
+
+class A {
+}
