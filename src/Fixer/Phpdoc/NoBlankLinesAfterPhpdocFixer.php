@@ -61,7 +61,8 @@ class Bar {}
     public function getPriority()
     {
         // should be ran before the SingleBlankLineBeforeNamespaceFixer.
-        return 1;
+        // should be ran after the NoWhitespaceInBlankLineFixer.
+        return -20;
     }
 
     /**
