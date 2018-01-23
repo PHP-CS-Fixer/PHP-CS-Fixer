@@ -79,7 +79,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
          * annotations are of the correct type, and are grouped correctly
          * before running this fixer.
          */
-        return -11;
+        return -21;
     }
 
     /**
