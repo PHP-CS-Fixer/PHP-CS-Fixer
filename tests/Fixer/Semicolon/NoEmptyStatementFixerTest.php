@@ -490,7 +490,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCasesWithShortOpenTag
+     * @dataProvider provideCasesWithShortOpenTagCases
      */
     public function testCasesWithShortOpenTag($expected, $input = null)
     {
@@ -500,7 +500,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCasesWithShortOpenTag()
+    public function provideCasesWithShortOpenTagCases()
     {
         return [
             [

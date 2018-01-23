@@ -56,6 +56,24 @@ class Token
     public function __construct($token)
     {
         if (is_array($token)) {
+            if (!is_int($token[0])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Id must be an int, got "%s".',
+                    is_object($token[0]) ? get_class($token[0]) : gettype($token[0])
+                ));
+            }
+
+            if (!is_string($token[1])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Content must be a string, got "%s".',
+                    is_object($token[1]) ? get_class($token[1]) : gettype($token[1])
+                ));
+            }
+
+            if ('' === $token[1]) {
+                throw new \InvalidArgumentException('Cannot set empty content for id-based Token.');
+            }
+
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
@@ -115,6 +133,8 @@ class Token
 
     /**
      * Clear internal flag if token was changed.
+     *
+     * @deprecated since 2.4
      */
     public function clearChanged()
     {
@@ -256,11 +276,27 @@ class Token
             return null;
         }
 
-        if (CT::has($this->id)) {
-            return CT::getName($this->id);
+        return self::getNameForId($this->id);
+    }
+
+    /**
+     * Get token's name.
+     *
+     * It shall be used only for getting the name of token, not for checking it against excepted value.
+     *
+     * @param int $id
+     *
+     * @return null|string token name
+     */
+    public static function getNameForId($id)
+    {
+        if (CT::has($id)) {
+            return CT::getName($id);
         }
 
-        return token_name($this->id);
+        $name = token_name($id);
+
+        return 'UNKNOWN' === $name ? null : $name;
     }
 
     /**
@@ -339,9 +375,13 @@ class Token
      * Check if token was changed.
      *
      * @return bool
+     *
+     * @deprecated since 2.4
      */
     public function isChanged()
     {
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+
         return $this->changed;
     }
 
@@ -432,9 +472,9 @@ class Token
     }
 
     /**
-     * Check if token is a whitespace.
+     * Check if token is whitespace.
      *
-     * @param null|string $whitespaces whitespaces characters, default is " \t\n\r\0\x0B"
+     * @param null|string $whitespaces whitespace characters, default is " \t\n\r\0\x0B"
      *
      * @return bool
      */
@@ -488,6 +528,8 @@ class Token
 
     /**
      * @param string $content
+     *
+     * @deprecated since 2.4
      */
     public function setContent($content)
     {

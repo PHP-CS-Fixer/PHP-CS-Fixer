@@ -46,7 +46,7 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 echo \'Foo\';
 
 ',
-                  '<?
+                '<?
 
 echo \'Foo\';
 
@@ -81,7 +81,7 @@ echo \'Foo\';
  */',
             ],
             [
-                "<?php \$this->data = preg_replace('/<\?(?!xml|php)/s', '<?php ',       \$this->data);",
+                "<?php \$this->data = preg_replace('/<\\?(?!xml|php)/s', '<?php ',       \$this->data);",
             ],
             [
                 'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
@@ -109,7 +109,7 @@ TEST;
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixCasesLT70
+     * @dataProvider provideFixLT70Cases
      * @requires PHP <7.0
      */
     public function testFixLT70($expected, $input = null)
@@ -117,7 +117,7 @@ TEST;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCasesLT70()
+    public function provideFixLT70Cases()
     {
         return [
             [

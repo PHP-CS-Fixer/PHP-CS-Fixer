@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -60,9 +61,9 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
         return new FixerDefinition(
             'Replaces `rand`, `srand`, `getrandmax` functions calls with their `mt_*` analogs.',
             [
-                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();"),
+                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n"),
                 new CodeSample(
-                    "<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();",
+                    "<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n",
                     ['replacements' => ['getrandmax' => 'mt_getrandmax']]
                 ),
             ],
@@ -84,6 +85,8 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+
         foreach ($this->configuration['replacements'] as $functionIdentity => $functionReplacement) {
             if ($functionIdentity === $functionReplacement['alternativeName']) {
                 continue;
@@ -99,7 +102,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 }
 
                 list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
-                $count = $this->countArguments($tokens, $openParenthesis, $closeParenthesis);
+                $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
                 if (!in_array($count, $functionReplacement['argumentCount'], true)) {
                     continue 2;
                 }
@@ -108,6 +111,19 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 $currIndex = $openParenthesis;
 
                 $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
+
+                if (0 === $count && 'random_int' === $functionReplacement['alternativeName']) {
+                    $tokens->insertAt($currIndex + 1, [
+                        new Token([T_LNUMBER, '0']),
+                        new Token(','),
+                        new Token([T_WHITESPACE, ' ']),
+                        new Token([T_STRING, 'getrandmax']),
+                        new Token('('),
+                        new Token(')'),
+                    ]);
+
+                    $currIndex += 6;
+                }
             }
         }
     }
@@ -120,7 +136,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
         return new FixerConfigurationResolverRootless('replacements', [
             (new FixerOptionBuilder('replacements', 'Mapping between replaced functions with the new ones.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([function ($value) {
+                ->setAllowedValues([static function ($value) {
                     foreach ($value as $functionName => $replacement) {
                         if (!array_key_exists($functionName, self::$argumentCounts)) {
                             throw new InvalidOptionsException(sprintf(

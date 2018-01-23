@@ -12,14 +12,14 @@
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Test\AccessibleObject;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\ToolInfo;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\FixCommand
@@ -27,36 +27,84 @@ use PHPUnit\Framework\TestCase;
 final class FixCommandTest extends TestCase
 {
     /**
-     * @param int  $expected
-     * @param bool $isDryRun
-     * @param bool $hasChangedFiles
-     * @param bool $hasInvalidErrors
-     * @param bool $hasExceptionErrors
-     *
-     * @dataProvider provideCalculateExitStatusCases
+     * @var Application
      */
-    public function testCalculateExitStatus($expected, $isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
-    {
-        $command = new AccessibleObject(new FixCommand());
+    private $application;
 
-        $this->assertSame(
-            $expected,
-            $command->calculateExitStatus($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->application = new Application();
+    }
+
+    public function testEmptyRulesValue()
+    {
+        $this->expectException(
+            'PhpCsFixer\ConfigurationException\InvalidConfigurationException'
+        );
+        $this->expectExceptionMessageRegExp(
+            '#^Empty rules value is not allowed\.$#'
+        );
+
+        $this->doTestExecute(
+            ['--rules' => '']
         );
     }
 
-    public function provideCalculateExitStatusCases()
+    /**
+     * @group legacy
+     * @expectedDeprecation Expected "yes" or "no" for option "using-cache", other values are deprecated and support will be removed in 3.0. Got "not today", this implicitly set the option to "false".
+     */
+    public function testEmptyFormatValue()
+    {
+        $cmdTester = $this->doTestExecute(
+            [
+                '--using-cache' => 'not today',
+                '--rules' => 'switch_case_semicolon_to_colon',
+            ]
+        );
+
+        $this->assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+    }
+
+    /**
+     * @param array $arguments
+     *
+     * @return CommandTester
+     */
+    private function doTestExecute(array $arguments)
+    {
+        $this->application->add(new FixCommand(new ToolInfo()));
+
+        $command = $this->application->find('fix');
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute(
+            array_merge(
+                ['command' => $command->getName()],
+                $this->getDefaultArguments(),
+                $arguments
+            ),
+            [
+                'interactive' => false,
+                'decorated' => false,
+                'verbosity' => OutputInterface::VERBOSITY_DEBUG,
+            ]
+        );
+
+        return $commandTester;
+    }
+
+    private function getDefaultArguments()
     {
         return [
-            [0, true, false, false, false],
-            [0, false, false, false, false],
-            [8, true, true, false, false],
-            [0, false, true, false, false],
-            [4, true, false, true, false],
-            [0, false, false, true, false],
-            [12, true, true, true, false],
-            [0, false, true, true, false],
-            [76, true, true, true, true],
+            'path' => [__FILE__],
+            '--path-mode' => 'override',
+            '--allow-risky' => true,
+            '--dry-run' => true,
+            '--using-cache' => 'no',
+            '--show-progress' => 'none',
         ];
     }
 }

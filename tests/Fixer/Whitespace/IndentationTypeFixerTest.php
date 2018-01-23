@@ -30,7 +30,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFis($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -268,6 +268,60 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
      */",
         ];
 
+        $cases['mix indentation'] = [
+            "<?php
+\t\t/*
+\t\t * multiple indentation
+\t\t * shall be handled properly
+\t\t */",
+            "<?php
+\t\t/*
+\t\t * multiple indentation
+    \t * shall be handled properly
+\t     */",
+        ];
+
+        $cases[] = [
+            "<?php
+function myFunction() {
+\t\$foo        = 1;
+\t//abc
+\t\$myFunction = 2;
+\t\$middleVar  = 1;
+}",
+            '<?php
+function myFunction() {
+    $foo        = 1;
+    //abc
+    $myFunction = 2;
+    $middleVar  = 1;
+}',
+        ];
+
         return $cases;
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideMessyWhitespacesReversedCases
+     */
+    public function testMessyWhitespacesReversed($expected, $input = null)
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\r\n"));
+
+        $this->doTest($input, $expected);
+    }
+
+    public function provideMessyWhitespacesReversedCases()
+    {
+        return array_filter(
+            $this->provideMessyWhitespacesCases(),
+            static function ($key) {
+                return !is_string($key) || false === strpos($key, 'mix indentation');
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }

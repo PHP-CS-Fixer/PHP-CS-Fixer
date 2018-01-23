@@ -3,6 +3,10 @@
         "HHVM_VERSION_ID",
         "PHPUnit\\Framework\\TestCase", "Prophecy\\Argument",
         "GeckoPackages\\PHPUnit\\Constraints\\SameStringsConstraint",
+        "PHPUnitGoodPractices\\Traits\\ExpectationViaCodeOverAnnotationTrait",
+        "PHPUnitGoodPractices\\Traits\\ExpectOverSetExceptionTrait",
+        "PHPUnitGoodPractices\\Traits\\IdentityOverEqualityTrait",
+        "PHPUnitGoodPractices\\Traits\\ProphecyOverMockObjectTrait",
 
         "null", "true", "false",
         "static", "self", "parent",

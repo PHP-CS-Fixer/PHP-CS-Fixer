@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\CastNotation;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -61,12 +62,14 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     {
         // replacement patterns
         static $replacement = [
-             'intval' => [T_INT_CAST, '(int)'],
-             'floatval' => [T_DOUBLE_CAST, '(float)'],
-             'doubleval' => [T_DOUBLE_CAST, '(float)'],
-             'strval' => [T_STRING_CAST, '(string)'],
-             'boolval' => [T_BOOL_CAST, '(bool)'],
+            'intval' => [T_INT_CAST, '(int)'],
+            'floatval' => [T_DOUBLE_CAST, '(float)'],
+            'doubleval' => [T_DOUBLE_CAST, '(float)'],
+            'strval' => [T_STRING_CAST, '(string)'],
+            'boolval' => [T_BOOL_CAST, '(bool)'],
         ];
+
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         foreach ($replacement as $functionIdentity => $newToken) {
             $currIndex = 0;
@@ -83,8 +86,8 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 // analysing cursor shift
                 $currIndex = $openParenthesis;
 
-                // indicator that the function is overriden
-                if (1 !== $this->countArguments($tokens, $openParenthesis, $closeParenthesis)) {
+                // indicator that the function is overridden
+                if (1 !== $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis)) {
                     continue;
                 }
 

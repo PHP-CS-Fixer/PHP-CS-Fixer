@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Report\ReporterFactory;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -32,11 +32,11 @@ final class TextDiffTest extends TestCase
      * @param string $format
      * @param bool   $isDecorated
      *
-     * @dataProvider provideDiffReporting
+     * @dataProvider provideDiffReportingCases
      */
     public function testDiffReportingDecorated($expected, $format, $isDecorated)
     {
-        $command = new FixCommand();
+        $command = new FixCommand(new ToolInfo());
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             [
@@ -64,7 +64,7 @@ final class TextDiffTest extends TestCase
         $this->assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
-    public function provideDiffReporting()
+    public function provideDiffReportingCases()
     {
         $expected = <<<'TEST'
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
@@ -84,7 +84,7 @@ TEST;
     }
 
     /**
-     * Test to make sure @see TextDiffTest::provideDiffReporting covers all formats.
+     * Test to make sure @see TextDiffTest::provideDiffReportingCases covers all formats.
      */
     public function testAllFormatsCovered()
     {
@@ -93,7 +93,7 @@ TEST;
         sort($formats);
 
         $this->assertSame(
-            ['json', 'junit', 'txt', 'xml'],
+            ['checkstyle', 'json', 'junit', 'txt', 'xml'],
             $formats
         );
     }

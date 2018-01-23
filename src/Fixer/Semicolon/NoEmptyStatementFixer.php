@@ -31,7 +31,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove useless semicolon statements.',
-            [new CodeSample('<?php $a = 1;;')]
+            [new CodeSample("<?php \$a = 1;;\n")]
         );
     }
 
@@ -40,7 +40,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before the BracesFixer, CombineConsecutiveUnsetsFixer, NoExtraConsecutiveBlankLinesFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer,
+        // should be run before the BracesFixer, CombineConsecutiveUnsetsFixer, NoExtraBlankLinesFixer, MultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer,
         // NoTrailingCommaInListCallFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, SpaceAfterSemicolonFixer, SwitchCaseSemicolonToColonFixer.
         return 26;
     }

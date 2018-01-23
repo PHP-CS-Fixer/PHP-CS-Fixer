@@ -67,6 +67,18 @@ final class SilencedDeprecationErrorFixerTest extends AbstractFixerTestCase
                 '<?php //
 Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>',
             ],
+            [
+                '<?php new trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
+            ],
+            [
+                '<?php new \trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
+            ],
+            [
+                '<?php $foo->trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
+            ],
+            [
+                '<?php Foo::trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
+            ],
         ];
     }
 }

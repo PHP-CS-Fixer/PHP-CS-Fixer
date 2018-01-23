@@ -27,9 +27,9 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
-    public function testFixSpaceInsideParenthesis($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -57,7 +57,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
             [

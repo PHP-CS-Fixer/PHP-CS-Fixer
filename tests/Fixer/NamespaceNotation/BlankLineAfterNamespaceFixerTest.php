@@ -28,14 +28,14 @@ final class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
             [
@@ -102,10 +102,10 @@ namespace A\B {
 ',
             ],
             [
-                "<?php\rnamespace A\B;
+                "<?php\rnamespace A\\B;
 
 class C {}\r",
-                "<?php\rnamespace A\B;\r\r\r\r\r\rclass C {}\r",
+                "<?php\rnamespace A\\B;\r\r\r\r\r\rclass C {}\r",
             ],
             [
                 '<?php
@@ -158,12 +158,12 @@ namespace Foo;
     {
         return [
             [
-                "<?php namespace A\B;\r\n\r\nclass C {}",
-                "<?php namespace A\B;  class C {}",
+                "<?php namespace A\\B;\r\n\r\nclass C {}",
+                '<?php namespace A\\B;  class C {}',
             ],
             [
-                "<?php namespace A\B;\r\n\r\nclass C {}",
-                "<?php namespace A\B;\r\n\r\n\r\n\r\n\r\n\r\nclass C {}",
+                "<?php namespace A\\B;\r\n\r\nclass C {}",
+                "<?php namespace A\\B;\r\n\r\n\r\n\r\n\r\n\r\nclass C {}",
             ],
         ];
     }

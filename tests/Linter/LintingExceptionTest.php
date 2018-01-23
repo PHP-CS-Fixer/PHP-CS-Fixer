@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\LintingException;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -28,7 +28,7 @@ final class LintingExceptionTest extends TestCase
     {
         $exception = new LintingException();
 
-        $this->assertInstanceOf('RuntimeException', $exception);
+        $this->assertInstanceOf(\RuntimeException::class, $exception);
     }
 
     public function testConstructorSetsValues()

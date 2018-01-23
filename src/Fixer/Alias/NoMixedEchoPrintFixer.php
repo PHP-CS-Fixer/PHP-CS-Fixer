@@ -67,8 +67,8 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
         return new FixerDefinition(
             'Either language construct `print` or `echo` should be used.',
             [
-                new CodeSample('<?php print \'example\';'),
-                new CodeSample('<?php echo(\'example\');', ['use' => 'print']),
+                new CodeSample("<?php print 'example';\n"),
+                new CodeSample("<?php echo('example');\n", ['use' => 'print']),
             ]
         );
     }
@@ -98,7 +98,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
         $callBack = $this->callBack;
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind($this->candidateTokenType)) {
-                $this->$callBack($tokens, $index);
+                $this->{$callBack}($tokens, $index);
             }
         }
     }

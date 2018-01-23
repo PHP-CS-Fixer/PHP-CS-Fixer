@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: combine_consecutive_issets,no_trailing_whitespace.
+--RULESET--
+{"combine_consecutive_issets": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php
+$a = isset($a, $b)
+;
+
+--INPUT--
+<?php
+$a = isset($a) && isset($b
+);

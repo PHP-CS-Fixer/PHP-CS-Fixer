@@ -450,14 +450,14 @@ EOF;
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider providerUseInString
+     * @dataProvider provideFixUseInStringCases
      */
-    public function testUseInString($expected, $input = null)
+    public function testFixUseInString($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function providerUseInString()
+    public function provideFixUseInStringCases()
     {
         $expected1 = <<<'EOF'
 $x=<<<'EOA'
@@ -567,9 +567,9 @@ EOF;
     {
         return [
             [
-'<?php
+                '<?php
 ?>inline content<?php ?>',
-'<?php
+                '<?php
      use A\AA;
      use B\C?>inline content<?php use A\D; use E\F ?>',
             ],
@@ -616,5 +616,114 @@ echo 1;';
 echo 1;';
 
         $this->doTest($expected, $input);
+    }
+
+    public function testWithSameNamespaceImportAndUnusedImport()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Bar\C;
+use Foo\A;
+use Foo\Bar\B;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testWithSameNamespaceImportAndUnusedImportAfterNamespaceStatement()
+    {
+        $expected = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Foo\Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+namespace Foo;
+
+use Foo\A;
+use Foo\Bar\B;
+use Foo\Bar\C;
+
+abstract class D extends A implements C
+{
+}
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix72Cases
+     * @requires PHP 7.2
+     */
+    public function testFix72($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix72Cases()
+    {
+        return [
+            [ // TODO test shows lot of cases where imports are not removed while could be
+                '<?php use A\{B,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use C\{D,E,};
+
+    echo ConstA.ConstB.ConstC,ConstF;
+    echo ConstBB.ConstCC;
+    fn_a(ClassA::test, new C());
+',
+                '<?php use A\{B,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use C\{D,E,};
+use Z;
+
+    echo ConstA.ConstB.ConstC,ConstF;
+    echo ConstBB.ConstCC;
+    fn_a(ClassA::test, new C());
+',
+            ],
+        ];
     }
 }

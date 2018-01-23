@@ -23,9 +23,9 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -75,6 +75,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         $tmpFile = static::getTempFile();
         self::$fileRemoval = new FileRemoval();
         self::$fileRemoval->observe($tmpFile);
@@ -91,6 +93,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
     public static function tearDownAfterClass()
     {
+        parent::tearDownAfterClass();
+
         $tmpFile = static::getTempFile();
 
         self::$fileRemoval->delete($tmpFile);
@@ -98,6 +102,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->linter = $this->getLinter();
 
         // @todo remove at 3.0 together with env var itself
@@ -108,12 +114,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
     protected function tearDown()
     {
+        parent::tearDown();
+
         // @todo remove at 3.0
         Tokens::setLegacyMode(false);
     }
 
     /**
-     * @dataProvider getTests
+     * @dataProvider provideIntegrationCases
      *
      * @see doTest()
      *
@@ -129,7 +137,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @return IntegrationCase[][]
      */
-    public function getTests()
+    public function provideIntegrationCases()
     {
         $fixturesDir = realpath(static::getFixturesDir());
         if (!is_dir($fixturesDir)) {
@@ -233,8 +241,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
                     "Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n%s.\nDiff.:\n%s.",
                     $case->getTitle(),
                     $case->getFileName(),
-                    $changed === null ? '[None]' : implode(',', $changed['appliedFixers']),
-                    $changed === null ? '[None]' : $changed['diff']
+                    null === $changed ? '[None]' : implode(',', $changed['appliedFixers']),
+                    null === $changed ? '[None]' : $changed['diff']
                 )
             );
 
@@ -250,7 +258,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
                 $case->getFileName(),
-                $changed === null ? '[None]' : implode(',', $changed['appliedFixers'])
+                null === $changed ? '[None]' : implode(',', $changed['appliedFixers'])
             )
         );
 
@@ -281,7 +289,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $this->assertGreaterThan(
                     1,
                     count(array_unique(array_map(
-                        function (FixerInterface $fixer) {
+                        static function (FixerInterface $fixer) {
                             return $fixer->getPriority();
                         },
                         $fixers
@@ -336,7 +344,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         $errorStr = '';
         foreach ($errors as $error) {
-            $errorStr .= sprintf("%d: %s\n", $error->getType(), $error->getFilePath());
+            $source = $error->getSource();
+            $errorStr .= sprintf("%d: %s%s\n", $error->getType(), $error->getFilePath(), null === $source ? '' : ' '.$source->getMessage()."\n\n".$source->getTraceAsString());
         }
 
         return $errorStr;

@@ -15,7 +15,6 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -75,7 +74,6 @@ final class FixerFactoryTest extends TestCase
 
     /**
      * @covers \PhpCsFixer\FixerFactory::getFixers
-     * @covers \PhpCsFixer\FixerFactory::sortFixers
      */
     public function testThatFixersAreSorted()
     {
@@ -121,10 +119,8 @@ final class FixerFactoryTest extends TestCase
      */
     public function testRegisterFixerWithOccupiedName()
     {
-        $this->setExpectedException(
-            \UnexpectedValueException::class,
-            'Fixer named "non_unique_name" is already registered.'
-        );
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Fixer named "non_unique_name" is already registered.');
 
         $factory = new FixerFactory();
 
@@ -159,10 +155,8 @@ final class FixerFactoryTest extends TestCase
      */
     public function testUseRuleSetWithNonExistingRule()
     {
-        $this->setExpectedException(
-            \UnexpectedValueException::class,
-            'Rule "non_existing_rule" does not exist.'
-        );
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Rule "non_existing_rule" does not exist.');
 
         $factory = FixerFactory::create()
             ->registerBuiltInFixers()
@@ -207,19 +201,17 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider provideConflictingFixersRules
+     * @dataProvider provideConflictingFixersCases
      */
     public function testConflictingFixers(RuleSet $ruleSet)
     {
-        $this->setExpectedExceptionRegExp(
-            \UnexpectedValueException::class,
-            '#^Rule contains conflicting fixers:\n#'
-        );
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessageRegExp('#^Rule contains conflicting fixers:\n#');
 
         FixerFactory::create()->registerBuiltInFixers()->useRuleSet($ruleSet);
     }
 
-    public function provideConflictingFixersRules()
+    public function provideConflictingFixersCases()
     {
         return [
             [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])],

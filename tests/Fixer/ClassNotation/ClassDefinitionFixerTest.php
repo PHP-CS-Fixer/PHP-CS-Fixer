@@ -133,8 +133,8 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigurationKey()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(
             '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multiLineExtendsEachSingleLine", "singleItemSingleLine", "singleLine"\.$/'
         );
 
@@ -144,8 +144,8 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigurationValueType()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(
             '/^\[class_definition\] Invalid configuration: The option "singleLine" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
         );
 
@@ -367,7 +367,7 @@ A#
         );
 
         $cases[] = [
-    '<?php
+            '<?php
 interface Test extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
     TestInterface2   ,   // test
@@ -379,7 +379,7 @@ TestInterface3, /**/     TestInterface4   ,
         /**/TestInterface65
 {}
             ',
-    '<?php
+            '<?php
 interface Test
 extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
@@ -463,10 +463,10 @@ TestInterface3, /**/     TestInterface4   ,
                     'classy' => 1,
                     'open' => 9,
                     'extends' => [
-                            'start' => 5,
-                            'numberOfExtends' => 1,
-                            'multiLine' => false,
-                        ],
+                        'start' => 5,
+                        'numberOfExtends' => 1,
+                        'multiLine' => false,
+                    ],
                     'implements' => false,
                     'anonymousClass' => false,
                 ],
@@ -478,10 +478,10 @@ TestInterface3, /**/     TestInterface4   ,
                     'classy' => 1,
                     'open' => 13,
                     'extends' => [
-                            'start' => 5,
-                            'numberOfExtends' => 3,
-                            'multiLine' => false,
-                        ],
+                        'start' => 5,
+                        'numberOfExtends' => 3,
+                        'multiLine' => false,
+                    ],
                     'implements' => false,
                     'anonymousClass' => false,
                 ],
@@ -507,7 +507,7 @@ TestInterface3, /**/     TestInterface4   ,
      * @param array  $expected
      *
      * @requires PHP 7.0
-     * @dataProvider provideClassyImplementsInfoCases7
+     * @dataProvider provideClassyInheritanceInfo7Cases
      */
     public function testClassyInheritanceInfo7($source, $label, array $expected)
     {
@@ -588,7 +588,7 @@ namespace {
         ];
     }
 
-    public function provideClassyImplementsInfoCases7()
+    public function provideClassyInheritanceInfo7Cases()
     {
         return [
             [
@@ -627,14 +627,14 @@ namespace {
     {
         return [
             [
-            '<?php
+                '<?php
 $a = new class implements
     \RFb,
     \Fcc,
     \GFddZz
 {
 };',
-            '<?php
+                '<?php
 $a = new class implements
     \RFb,
     \Fcc, \GFddZz
@@ -642,14 +642,14 @@ $a = new class implements
 };',
             ],
             [
-            '<?php
+                '<?php
 $a = new class implements
     \RFb,
     \Fcc,
     \GFddZz
 {
 }?>',
-            '<?php
+                '<?php
 $a = new class implements
     \RFb,
     \Fcc, \GFddZz

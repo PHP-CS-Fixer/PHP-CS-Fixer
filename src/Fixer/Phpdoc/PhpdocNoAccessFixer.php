@@ -39,7 +39,8 @@ class Foo
      * @access private
      */
     private $bar;
-}'
+}
+'
                 ),
             ]
         );
@@ -48,11 +49,11 @@ class Foo
     /**
      * {@inheritdoc}
      */
-    protected function createProxyFixer()
+    protected function createProxyFixers()
     {
         $fixer = new GeneralPhpdocAnnotationRemoveFixer();
         $fixer->configure(['annotations' => ['access']]);
 
-        return $fixer;
+        return [$fixer];
     }
 }

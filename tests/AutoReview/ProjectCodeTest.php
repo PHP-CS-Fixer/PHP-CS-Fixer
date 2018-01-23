@@ -13,7 +13,8 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\DocBlock\DocBlock;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -35,26 +36,20 @@ final class ProjectCodeTest extends TestCase
      * @var string[]
      */
     private static $classesWithoutTests = [
-        \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class,
-        \PhpCsFixer\Console\Command\SelfUpdateCommand::class,
-        \PhpCsFixer\Console\Output\NullOutput::class,
-        \PhpCsFixer\Differ\DiffConsoleFormatter::class,
+        \PhpCsFixer\Console\SelfUpdate\GithubClient::class,
+        \PhpCsFixer\Console\WarningsDetector::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
+        \PhpCsFixer\FileReader::class,
         \PhpCsFixer\FileRemoval::class,
-        \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
-        \PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException::class,
-        \PhpCsFixer\FixerFileProcessedEvent::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
-        \PhpCsFixer\Indicator\PhpUnitIndicator::class,
-        \PhpCsFixer\Linter\ProcessLintingResult::class,
-        \PhpCsFixer\Linter\TokenizerLintingResult::class,
-        \PhpCsFixer\Report\ReportSummary::class,
+        \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
+        \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
-        \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
+        \PhpCsFixer\Test\AccessibleObject::class,
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
 
@@ -62,7 +57,7 @@ final class ProjectCodeTest extends TestCase
     {
         $unknownClasses = array_filter(
             self::$classesWithoutTests,
-            function ($class) { return !class_exists($class) && !trait_exists($class); }
+            static function ($class) { return !class_exists($class) && !trait_exists($class); }
         );
 
         $this->assertSame([], $unknownClasses);
@@ -71,7 +66,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcConcreteClasses
+     * @dataProvider provideSrcConcreteClassCases
      */
     public function testThatSrcClassHaveTestClass($className)
     {
@@ -83,35 +78,17 @@ final class ProjectCodeTest extends TestCase
         }
 
         $this->assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
-        $this->assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit\Framework\TestCase".', $testClassName));
+        $this->assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PhpCsFixer\Tests\TestCase".', $testClassName));
     }
 
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcClasses
+     * @dataProvider provideSrcClassesNotAbuseInterfacesCases
      */
     public function testThatSrcClassesNotAbuseInterfaces($className)
     {
         $rc = new \ReflectionClass($className);
-
-        $doc = false !== $rc->getDocComment()
-            ? new DocBlock($rc->getDocComment())
-            : null;
-
-        if (
-            $rc->isInterface()
-            || ($doc && count($doc->getAnnotationsOfType('internal')))
-            || 0 === count($rc->getInterfaces())
-            || in_array($className, [
-                \PhpCsFixer\Finder::class,
-                \PhpCsFixer\Test\AbstractFixerTestCase::class,
-                \PhpCsFixer\Test\AbstractIntegrationTestCase::class,
-                \PhpCsFixer\Tokenizer\Tokens::class,
-            ], true)
-        ) {
-            return;
-        }
 
         $allowedMethods = array_map(
             function (\ReflectionClass $interface) {
@@ -130,12 +107,12 @@ final class ProjectCodeTest extends TestCase
 
         $exceptionMethods = [
             'configure', // due to AbstractFixer::configure
-            'getConfigurationDefinition', // due to AbstractFixer::getDefaultConfiguration
+            'getConfigurationDefinition', // due to AbstractFixer::getConfigurationDefinition
             'getDefaultConfiguration', // due to AbstractFixer::getDefaultConfiguration
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
         ];
 
-        // @TODO: should be removed at 3.0
+        // @TODO: 3.0 should be removed
         $exceptionMethodsPerClass = [
             \PhpCsFixer\Config::class => ['create'],
             \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class => ['fixSpace'],
@@ -157,8 +134,8 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(function ($item) {
-                    return " * $item";
+                implode("\n", array_map(static function ($item) {
+                    return " * ${item}";
                 }, $extraMethods))
             )
         );
@@ -167,7 +144,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideSrcClasses
+     * @dataProvider provideSrcClassCases
      */
     public function testThatSrcClassesNotExposeProperties($className)
     {
@@ -196,10 +173,10 @@ final class ProjectCodeTest extends TestCase
             $allowedProps = $rc->getParentClass()->getProperties(\ReflectionProperty::IS_PROTECTED);
         }
 
-        $allowedProps = array_map(function (\ReflectionProperty $item) {
+        $allowedProps = array_map(static function (\ReflectionProperty $item) {
             return $item->getName();
         }, $allowedProps);
-        $definedProps = array_map(function (\ReflectionProperty $item) {
+        $definedProps = array_map(static function (\ReflectionProperty $item) {
             return $item->getName();
         }, $definedProps);
 
@@ -207,7 +184,7 @@ final class ProjectCodeTest extends TestCase
             \PhpCsFixer\AbstractPhpdocTypesFixer::class => ['tags'],
             \PhpCsFixer\AbstractAlignFixerHelper::class => ['deepestLevel'],
             \PhpCsFixer\AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
-            \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixer'],
+            \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixers'],
             \PhpCsFixer\Test\AbstractFixerTestCase::class => ['fixer', 'linter'],
             \PhpCsFixer\Test\AbstractIntegrationTestCase::class => ['linter'],
         ];
@@ -225,8 +202,8 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(function ($item) {
-                    return " * $item";
+                implode("\n", array_map(static function ($item) {
+                    return " * ${item}";
                 }, $extraProps))
             )
         );
@@ -235,7 +212,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideTestClasses
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassesAreTraitOrAbstractOrFinal($className)
     {
@@ -250,7 +227,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param string $className
      *
-     * @dataProvider provideTestClasses
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassesAreInternal($className)
     {
@@ -263,23 +240,72 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcClasses()
+    /**
+     * @dataProvider provideDataProviderMethodNameCases
+     *
+     * @param string $testClassName
+     * @param string $dataProviderMethodName
+     */
+    public function testThatDataProvidersAreCorrectlyNamed($testClassName, $dataProviderMethodName)
+    {
+        $this->assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
+            'Data provider in "%s" with name "%s" is not correctly named.',
+            $testClassName,
+            $dataProviderMethodName
+        ));
+    }
+
+    public function provideSrcClassCases()
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
             $this->getSrcClasses()
         );
     }
 
-    public function provideSrcConcreteClasses()
+    public function provideSrcClassesNotAbuseInterfacesCases()
     {
         return array_map(
-            function ($item) { return [$item]; },
+            static function ($item) {
+                return [$item];
+            },
+            array_filter($this->getSrcClasses(), static function ($className) {
+                $rc = new \ReflectionClass($className);
+
+                $doc = false !== $rc->getDocComment()
+                    ? new DocBlock($rc->getDocComment())
+                    : null;
+
+                if (
+                    $rc->isInterface()
+                    || ($doc && count($doc->getAnnotationsOfType('internal')))
+                    || 0 === count($rc->getInterfaces())
+                    || in_array($className, [
+                        \PhpCsFixer\Finder::class,
+                        \PhpCsFixer\Test\AbstractFixerTestCase::class,
+                        \PhpCsFixer\Test\AbstractIntegrationTestCase::class,
+                        \PhpCsFixer\Tests\Test\AbstractFixerTestCase::class,
+                        \PhpCsFixer\Tests\Test\AbstractIntegrationTestCase::class,
+                        \PhpCsFixer\Tokenizer\Tokens::class,
+                    ], true)
+                ) {
+                    return false;
+                }
+
+                return true;
+            })
+        );
+    }
+
+    public function provideSrcConcreteClassCases()
+    {
+        return array_map(
+            static function ($item) { return [$item]; },
             array_filter(
                 $this->getSrcClasses(),
-                function ($className) {
+                static function ($className) {
                     $rc = new \ReflectionClass($className);
 
                     return !$rc->isAbstract() && !$rc->isInterface();
@@ -288,22 +314,64 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideTestClasses()
+    public function provideTestClassCases()
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
             $this->getTestClasses()
         );
     }
 
+    public function provideDataProviderMethodNameCases()
+    {
+        if (extension_loaded('xdebug') && false === getenv('CI')) {
+            $this->markTestSkipped('Data provider too slow when Xdebug is loaded.');
+        }
+
+        $data = [];
+
+        $testClassNames = $this->getTestClasses();
+
+        foreach ($testClassNames as $testClassName) {
+            $dataProviderMethodNames = [];
+            $tokens = Tokens::fromCode(file_get_contents(
+                str_replace('\\', DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
+            ));
+
+            foreach ($tokens as $token) {
+                if ($token->isGivenKind(T_DOC_COMMENT)) {
+                    $docBlock = new DocBlock($token->getContent());
+                    $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
+
+                    foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
+                        if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
+                            $dataProviderMethodNames[] = $matches['methodName'];
+                        }
+                    }
+                }
+            }
+
+            $dataProviderMethodNames = array_unique($dataProviderMethodNames);
+
+            foreach ($dataProviderMethodNames as $dataProviderMethodName) {
+                $data[] = [
+                    $testClassName,
+                    $dataProviderMethodName,
+                ];
+            }
+        }
+
+        return $data;
+    }
+
     private function getSrcClasses()
     {
-        static $files;
+        static $classes;
 
-        if (null !== $files) {
-            return $files;
+        if (null !== $classes) {
+            return $classes;
         }
 
         $finder = Finder::create()
@@ -315,8 +383,8 @@ final class ProjectCodeTest extends TestCase
             ])
         ;
 
-        $names = array_map(
-            function (SplFileInfo $file) {
+        $classes = array_map(
+            static function (SplFileInfo $file) {
                 return sprintf(
                     '%s\\%s%s%s',
                     'PhpCsFixer',
@@ -328,17 +396,17 @@ final class ProjectCodeTest extends TestCase
             iterator_to_array($finder, false)
         );
 
-        sort($names);
+        sort($classes);
 
-        return $names;
+        return $classes;
     }
 
     private function getTestClasses()
     {
-        static $files;
+        static $classes;
 
-        if (null !== $files) {
-            return $files;
+        if (null !== $classes) {
+            return $classes;
         }
 
         $finder = Finder::create()
@@ -350,8 +418,8 @@ final class ProjectCodeTest extends TestCase
             ])
         ;
 
-        $names = array_map(
-            function (SplFileInfo $file) {
+        $classes = array_map(
+            static function (SplFileInfo $file) {
                 return sprintf(
                     'PhpCsFixer\\Tests\\%s%s%s',
                     strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
@@ -362,9 +430,9 @@ final class ProjectCodeTest extends TestCase
             iterator_to_array($finder, false)
         );
 
-        sort($names);
+        sort($classes);
 
-        return $names;
+        return $classes;
     }
 
     /**
@@ -375,7 +443,7 @@ final class ProjectCodeTest extends TestCase
     private function getPublicMethodNames(\ReflectionClass $rc)
     {
         return array_map(
-            function (\ReflectionMethod $rm) {
+            static function (\ReflectionMethod $rm) {
                 return $rm->getName();
             },
             $rc->getMethods(\ReflectionMethod::IS_PUBLIC)

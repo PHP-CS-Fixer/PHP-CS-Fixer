@@ -21,6 +21,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -44,7 +45,8 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
  *
  * @return void
  */
-function f9(string $foo, $bar, $baz) {}'
+function f9(string $foo, $bar, $baz) {}
+'
                 ),
                 new CodeSample(
                     '<?php
@@ -53,7 +55,8 @@ function f9(string $foo, $bar, $baz) {}'
  *
  * @return void
  */
-function f9(string $foo, $bar, $baz) {}',
+function f9(string $foo, $bar, $baz) {}
+',
                     ['only_untyped' => true]
                 ),
                 new CodeSample(
@@ -63,7 +66,8 @@ function f9(string $foo, $bar, $baz) {}',
  *
  * @return void
  */
-function f9(string $foo, $bar, $baz) {}',
+function f9(string $foo, $bar, $baz) {}
+',
                     ['only_untyped' => false]
                 ),
             ]
@@ -100,6 +104,8 @@ function f9(string $foo, $bar, $baz) {}',
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $mainIndex = $index;
             $token = $tokens[$index];
@@ -146,7 +152,7 @@ function f9(string $foo, $bar, $baz) {}',
 
             $arguments = [];
 
-            foreach ($this->getArguments($tokens, $openIndex, $index) as $start => $end) {
+            foreach ($argumentsAnalyzer->getArguments($tokens, $openIndex, $index) as $start => $end) {
                 $argumentInfo = $this->prepareArgumentInformation($tokens, $start, $end);
 
                 if (!$this->configuration['only_untyped'] || '' === $argumentInfo['type']) {

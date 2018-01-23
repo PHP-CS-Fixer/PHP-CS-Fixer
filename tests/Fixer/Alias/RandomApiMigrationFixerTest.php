@@ -26,20 +26,16 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
     public function testConfigureCheckSearchFunction()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer\.$#');
 
         $this->fixer->configure(['replacements' => ['is_null' => 'random_int']]);
     }
 
     public function testConfigureCheckReplacementType()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given\.$#');
 
         $this->fixer->configure(['replacements' => ['rand' => null]]);
     }
@@ -52,7 +48,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['rand' => 'random_int']);
 
-        static::assertSame(
+        $this->assertSame(
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],
@@ -64,7 +60,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['replacements' => ['rand' => 'random_int']]);
 
-        static::assertSame(
+        $this->assertSame(
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],
@@ -77,7 +73,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param array       $config
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null, array $config = [])
     {
@@ -89,9 +85,29 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     /**
      * @return array[]
      */
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
+            [
+                '<?php random_int(0, getrandmax());',
+                '<?php rand();',
+                ['replacements' => ['rand' => 'random_int']],
+            ],
+            [
+                '<?php random_int#1
+                #2
+                (0, getrandmax()#3
+                #4
+                )#5
+                ;',
+                '<?php rand#1
+                #2
+                (#3
+                #4
+                )#5
+                ;',
+                ['replacements' => ['rand' => 'random_int']],
+            ],
             ['<?php $smth->srand($a);'],
             ['<?php srandSmth($a);'],
             ['<?php smth_srand($a);'],
@@ -108,7 +124,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
             ["<?php 'test'.'srand' . 'in concatenation';"],
             ['<?php "test" . "srand"."in concatenation";'],
             [
-            '<?php
+                '<?php
 class SrandClass
 {
     const srand = 1;
@@ -123,7 +139,8 @@ class SrandClass
 class srand extends SrandClass{
     const srand = "srand";
 }
-', ],
+',
+            ],
             ['<?php mt_srand($a);', '<?php srand($a);'],
             ['<?php \\mt_srand($a);', '<?php \\srand($a);'],
             ['<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'],

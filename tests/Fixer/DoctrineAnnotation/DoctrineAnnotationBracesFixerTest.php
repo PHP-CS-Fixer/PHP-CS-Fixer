@@ -26,7 +26,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithBracesCases
+     * @dataProvider provideFixWithBracesCases
      */
     public function testFixWithBraces($expected, $input = null)
     {
@@ -37,7 +37,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixWithBracesCases()
+    public function provideFixWithBracesCases()
     {
         return $this->createTestCases([
             ['
@@ -268,7 +268,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithoutBracesCases
+     * @dataProvider provideFixWithoutBracesCases
      */
     public function testFixWithoutBraces($expected, $input = null)
     {
@@ -281,7 +281,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     /**
      * @return array
      */
-    public function getFixWithoutBracesCases()
+    public function provideFixWithoutBracesCases()
     {
         return $this->createTestCases([
             ['

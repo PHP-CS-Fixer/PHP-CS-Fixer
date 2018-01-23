@@ -37,6 +37,7 @@ class Tokens extends \SplFixedArray
     const BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE = 7;
     const BLOCK_TYPE_GROUP_IMPORT_BRACE = 8;
     const BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE = 9;
+    const BLOCK_TYPE_BRACE_CLASS_INSTANTIATION = 10;
 
     /**
      * Static class cache.
@@ -44,6 +45,13 @@ class Tokens extends \SplFixedArray
      * @var array
      */
     private static $cache = [];
+
+    /**
+     * Cache of block edges. Any change in collection will invalidate it.
+     *
+     * @var array<int, int>
+     */
+    private $blockEndCache = [];
 
     /**
      * crc32 hash of code string.
@@ -110,6 +118,10 @@ class Tokens extends \SplFixedArray
      */
     public static function setLegacyMode($isLegacy)
     {
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE') && $isLegacy) {
+            throw new \RuntimeException('Cannot enable `legacy mode` when using `future mode`. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+        }
+
         self::$isLegacyMode = $isLegacy;
     }
 
@@ -254,6 +266,10 @@ class Tokens extends \SplFixedArray
                 'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
                 'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
             ],
+            self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
+                'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
+                'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
+            ],
         ];
     }
 
@@ -292,6 +308,8 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval)
     {
+        $this->blockEndCache = [];
+
         if (!$this[$index] || !$this[$index]->equals($newval)) {
             $this->changed = true;
         }
@@ -362,7 +380,7 @@ class Tokens extends \SplFixedArray
      */
     public function ensureWhitespaceAtIndex($index, $indexOffset, $whitespace)
     {
-        $removeLastCommentLine = function (self $tokens, $index, $indexOffset, $whitespace) {
+        $removeLastCommentLine = static function (self $tokens, $index, $indexOffset, $whitespace) {
             $token = $tokens[$index];
 
             if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
@@ -428,6 +446,10 @@ class Tokens extends \SplFixedArray
             throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
         }
 
+        if (!self::isLegacyMode() && isset($this->blockEndCache[$searchIndex])) {
+            return $this->blockEndCache[$searchIndex];
+        }
+
         $startEdge = $blockEdgeDefinitions[$type]['start'];
         $endEdge = $blockEdgeDefinitions[$type]['end'];
         $startIndex = $searchIndex;
@@ -469,6 +491,9 @@ class Tokens extends \SplFixedArray
         if (!$this[$index]->equals($endEdge)) {
             throw new \UnexpectedValueException(sprintf('Missing block %s.', $findEnd ? 'end' : 'start'));
         }
+
+        $this->blockEndCache[$startIndex] = $index;
+        $this->blockEndCache[$index] = $startIndex;
 
         return $index;
     }
@@ -1253,7 +1278,7 @@ class Tokens extends \SplFixedArray
      */
     private static function calculateCodeHash($code)
     {
-        return (string) crc32($code);
+        return CodeHasher::calculateCodeHash($code);
     }
 
     /**
@@ -1288,7 +1313,7 @@ class Tokens extends \SplFixedArray
      * @param string $key   item key
      * @param Tokens $value item value
      */
-    private static function setCache($key, Tokens $value)
+    private static function setCache($key, self $value)
     {
         self::$cache[$key] = $value;
     }

@@ -26,7 +26,7 @@ final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfiguration()
     {
-        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
 
         $this->fixer->configure(['a' => 1]);
     }
@@ -151,6 +151,23 @@ $a = 1;
    //
       //',
             ],
+            'uni code test' => [
+                '<?php
+class A
+{
+    /**
+     * @SWG\Get(
+     *     path="/api/v0/cards",
+     *     operationId="listCards",
+     *     tags={"Банковские карты"},
+     *     summary="Возвращает список банковских карт."
+     *  )
+     */
+    public function indexAction()
+    {
+    }
+}',
+            ],
         ];
     }
 
@@ -158,7 +175,7 @@ $a = 1;
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideDocLikeMultilineComments
+     * @dataProvider provideDocLikeMultilineCommentsCases
      */
     public function testDocLikeMultilineComments($expected, $input = null)
     {
@@ -166,7 +183,7 @@ $a = 1;
         $this->doTest($expected, $input);
     }
 
-    public function provideDocLikeMultilineComments()
+    public function provideDocLikeMultilineCommentsCases()
     {
         return [
             [
@@ -209,7 +226,7 @@ $a = 1;
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideMixedContentMultilineComments
+     * @dataProvider provideMixedContentMultilineCommentsCases
      */
     public function testMixedContentMultilineComments($expected, $input = null)
     {
@@ -217,7 +234,7 @@ $a = 1;
         $this->doTest($expected, $input);
     }
 
-    public function provideMixedContentMultilineComments()
+    public function provideMixedContentMultilineCommentsCases()
     {
         return [
             [
@@ -249,7 +266,7 @@ $a = 1;
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $expected = str_replace("\n", "\r\n", $expected);
-        if ($input !== null) {
+        if (null !== $input) {
             $input = str_replace("\n", "\r\n", $input);
         }
 

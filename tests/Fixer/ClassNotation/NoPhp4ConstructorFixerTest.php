@@ -27,7 +27,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function testFix70($expected, $input = null)
@@ -35,7 +35,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return [
             [
@@ -80,7 +80,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-            <<<'EOF'
+                <<<'EOF'
 <?php
 
 class Foo
@@ -91,8 +91,8 @@ class Foo
     }
 }
 EOF
-        ,
-            <<<'EOF'
+                ,
+                <<<'EOF'
 <?php
 
 class Foo
@@ -119,8 +119,8 @@ __construct#
     {}
 }
 EOF
-        ,
-            <<<'EOF'
+                ,
+                <<<'EOF'
 <?php
 
 class Foo

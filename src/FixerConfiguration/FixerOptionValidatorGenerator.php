@@ -26,7 +26,7 @@ final class FixerOptionValidatorGenerator
      */
     public function allowedValueIsSubsetOf(array $allowedArrayValues)
     {
-        return function ($values) use ($allowedArrayValues) {
+        return static function ($values) use ($allowedArrayValues) {
             foreach ($values as $value) {
                 if (!in_array($value, $allowedArrayValues, true)) {
                     return false;

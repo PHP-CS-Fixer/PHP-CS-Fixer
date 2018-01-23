@@ -13,7 +13,9 @@
 namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\LinterInterface;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -24,6 +26,17 @@ abstract class AbstractLinterTestCase extends TestCase
 {
     abstract public function testIsAsync();
 
+    public function testLintingAfterTokenManipulation()
+    {
+        $linter = $this->createLinter();
+
+        $tokens = Tokens::fromCode("<?php \n#EOF\n");
+        $tokens->insertAt(1, new Token([T_NS_SEPARATOR, '\\']));
+
+        $this->expectException(\PhpCsFixer\Linter\LintingException::class);
+        $linter->lintSource($tokens->generateCode())->check();
+    }
+
     /**
      * @param string      $file
      * @param null|string $errorRegExp
@@ -33,11 +46,13 @@ abstract class AbstractLinterTestCase extends TestCase
     public function testLintFile($file, $errorRegExp = null)
     {
         if (null !== $errorRegExp) {
-            $this->setExpectedExceptionRegExp(\PhpCsFixer\Linter\LintingException::class, $errorRegExp);
+            $this->expectException(\PhpCsFixer\Linter\LintingException::class);
+            $this->expectExceptionMessageRegExp($errorRegExp);
         }
 
         $linter = $this->createLinter();
-        $linter->lintFile($file)->check();
+
+        $this->assertNull($linter->lintFile($file)->check());
     }
 
     /**
@@ -65,11 +80,13 @@ abstract class AbstractLinterTestCase extends TestCase
     public function testLintSource($source, $errorRegExp = null)
     {
         if (null !== $errorRegExp) {
-            $this->setExpectedExceptionRegExp(\PhpCsFixer\Linter\LintingException::class, $errorRegExp);
+            $this->expectException(\PhpCsFixer\Linter\LintingException::class);
+            $this->expectExceptionMessageRegExp($errorRegExp);
         }
 
         $linter = $this->createLinter();
-        $linter->lintSource($source)->check();
+
+        $this->assertNull($linter->lintSource($source)->check());
     }
 
     /**

@@ -10,12 +10,12 @@
     ],
     "finder": [
         {
-            "name": ["*.php"],
+            "name": ["*.php", "ci-integration.sh"],
             "exclude": ["Test", "test", "Tests", "tests"],
-            "in": ["vendor", "src"]
+            "in": ["dev-tools", "src", "vendor"]
         }
     ],
     "git-commit": "git-commit",
-    "stub": "src/Resources/phar-stub.php",
+    "stub": "php-cs-fixer",
     "web": false
 }

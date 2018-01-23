@@ -126,25 +126,82 @@ $a =
                 '<?php echo phpversion(); echo php_sapi_name(); echo M_PI;',
                 ['functions' => ['pi', 'phpversion']],
             ],
+            'diff argument count than native allows' => [
+                '<?php
+                    echo phpversion(1);
+                    echo php_sapi_name(1,2);
+                    echo pi(1);
+                ',
+            ],
+            'get_class => T_CLASS' => [
+                '<?php
+                    class A
+                    {
+                        public function echoClassName($notMe)
+                        {
+                            echo get_class($notMe);
+                            echo __CLASS__/** 1 *//* 2 */;
+                            echo __CLASS__;
+                        }
+                    }
+
+                    trait A
+                    {
+                        public function A() {
+                            var_dump(__CLASS__);
+                        }
+                    }
+
+                    class B
+                    {
+                        use A;
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        public function echoClassName($notMe)
+                        {
+                            echo get_class($notMe);
+                            echo get_class(/** 1 *//* 2 */);
+                            echo GET_Class();
+                        }
+                    }
+
+                    trait A
+                    {
+                        public function A() {
+                            var_dump(get_class());
+                        }
+                    }
+
+                    class B
+                    {
+                        use A;
+                    }
+                ',
+            ],
+            'get_class with leading backslash' => [
+                '<?php __CLASS__;',
+                '<?php \get_class();',
+            ],
         ];
     }
 
     /**
      * @param array $config
      *
-     * @dataProvider provideInvalidConfiguration
+     * @dataProvider provideInvalidConfigurationKeysCases
      */
     public function testInvalidConfigurationKeys(array $config)
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#');
 
         $this->fixer->configure($config);
     }
 
-    public function provideInvalidConfiguration()
+    public function provideInvalidConfigurationKeysCases()
     {
         return [
             [['functions' => ['a']]],
@@ -155,10 +212,8 @@ $a =
 
     public function testInvalidConfigurationValue()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');
 
         $this->fixer->configure(['pi123']);
     }

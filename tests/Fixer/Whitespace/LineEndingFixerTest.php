@@ -29,14 +29,14 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         $cases = $this->provideCommonCases();
 
@@ -78,7 +78,7 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
 
     public function provideMessyWhitespacesCases()
     {
-        $cases = array_map(function (array $case) {
+        $cases = array_map(static function (array $case) {
             return array_reverse($case);
         }, $this->provideCommonCases());
 

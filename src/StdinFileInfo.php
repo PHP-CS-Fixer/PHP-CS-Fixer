@@ -25,18 +25,14 @@ final class StdinFileInfo extends \SplFileInfo
 
     public function __toString()
     {
-        return $this->getContents();
+        return $this->getRealPath();
     }
 
-    public function getRealpath()
+    public function getRealPath()
     {
         // So file_get_contents & friends will work.
+        // Warning - this stream is not seekable, so `file_get_contents` will work only once! Consider using `FileReader`.
         return 'php://stdin';
-    }
-
-    public function getContents()
-    {
-        return file_get_contents($this->getRealpath());
     }
 
     public function getATime()

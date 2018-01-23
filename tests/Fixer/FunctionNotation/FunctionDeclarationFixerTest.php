@@ -28,8 +28,8 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigurationClosureFunctionSpacing()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(
             '#^\[function_declaration\] Invalid configuration: The option "closure_function_spacing" with value "neither" is invalid\. Accepted values are: "none", "one"\.$#'
         );
 
@@ -41,7 +41,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null, array $configuration = null)
     {
@@ -52,7 +52,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
             [
@@ -340,7 +340,7 @@ foo#
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide54Cases
+     * @dataProvider provideFix54Cases
      */
     public function test54($expected, $input = null, array $configuration = null)
     {
@@ -351,7 +351,7 @@ foo#
         $this->doTest($expected, $input);
     }
 
-    public function provide54Cases()
+    public function provideFix54Cases()
     {
         return [
             [
@@ -387,7 +387,7 @@ foo#
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function test70($expected, $input = null, array $configuration = null)
@@ -399,7 +399,7 @@ foo#
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return [
             ['<?php use function Foo\bar; bar ( 1 );'],

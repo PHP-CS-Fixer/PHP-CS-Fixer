@@ -39,16 +39,16 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
             'There should be one or no space before colon, and one space after it in return type declarations, according to configuration.',
             [
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction foo(int \$a):string {};",
+                    "<?php\nfunction foo(int \$a):string {};\n",
                     $versionSpecification
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction foo(int \$a):string {};",
+                    "<?php\nfunction foo(int \$a):string {};\n",
                     $versionSpecification,
                     ['space_before' => 'none']
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction foo(int \$a):string {};",
+                    "<?php\nfunction foo(int \$a):string {};\n",
                     $versionSpecification,
                     ['space_before' => 'one']
                 ),

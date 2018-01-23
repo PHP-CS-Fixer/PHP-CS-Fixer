@@ -117,6 +117,14 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         "foo" . $bar#
     );',
             ],
+            [
+                '<?php $this->assertSame("a", $a); $this->assertTrue($b);',
+                '<?php $this->assertSame("a", $a); $this->assertSame(true, $b);',
+            ],
+            [
+                '<?php $this->assertSame(true || $a, $b); $this->assertTrue($c);',
+                '<?php $this->assertSame(true || $a, $b); $this->assertSame(true, $c);',
+            ],
         ];
 
         return array_merge(
@@ -128,10 +136,8 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/');
 
         $this->fixer->configure(['assertions' => ['__TEST__']]);
     }

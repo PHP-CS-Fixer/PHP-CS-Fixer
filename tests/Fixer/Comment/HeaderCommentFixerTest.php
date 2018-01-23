@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
-use PhpCsFixer\Test\AccessibleObject;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -220,7 +219,7 @@ $c;',
 $d;',
                 '<?php
 $d;',
-             ],
+            ],
             [
                 [
                     'header' => 'ghi',
@@ -309,18 +308,18 @@ echo \'x\';',
 
     public function testDefaultConfiguration()
     {
-        $fixer = new AccessibleObject($this->fixer);
         $this->fixer->configure(['header' => 'a']);
-        $this->assertSame(
-            [
-                'commentType' => 'comment',
-                'location' => 'after_declare_strict',
-                'separate' => 'both',
-                'header' => 'a',
-            ],
-            $fixer->configuration
+        $this->doTest(
+            '<?php
+
+/*
+ * a
+ */
+
+echo 1;',
+            '<?php
+echo 1;'
         );
-        $this->assertSame("/*\n * a\n */", $fixer->getHeaderAsComment());
     }
 
     /**
@@ -329,10 +328,8 @@ echo \'x\';',
      */
     public function testLegacyMisconfiguration()
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '[header_comment] Missing required configuration: The required option "header" is missing.'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[header_comment] Missing required configuration: The required option "header" is missing.');
 
         $this->fixer->configure(null);
     }
@@ -341,19 +338,17 @@ echo \'x\';',
      * @param null|array $configuration
      * @param string     $exceptionMessage
      *
-     * @dataProvider provideMisconfiguration
+     * @dataProvider provideMisconfigurationCases
      */
     public function testMisconfiguration($configuration, $exceptionMessage)
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '[header_comment] '.$exceptionMessage
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[header_comment] '.$exceptionMessage);
 
         $this->fixer->configure($configuration);
     }
 
-    public function provideMisconfiguration()
+    public function provideMisconfigurationCases()
     {
         return [
             [[], 'Missing required configuration: The required option "header" is missing.'],
@@ -401,13 +396,19 @@ echo \'x\';',
      */
     public function testHeaderGeneration($expected, $header, $type)
     {
-        $fixer = new AccessibleObject($this->fixer);
         $this->fixer->configure([
             'header' => $header,
             'commentType' => $type,
         ]);
+        $this->doTest(
+            '<?php
 
-        $this->assertSame($expected, $fixer->getHeaderAsComment());
+'.$expected.'
+
+echo 1;',
+            '<?php
+echo 1;'
+        );
     }
 
     public function provideHeaderGenerationCases()
@@ -518,7 +519,7 @@ declare(strict_types=1)?>',
 
     public function testWithoutConfiguration()
     {
-        $this->setExpectedException(\PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class);
+        $this->expectException(\PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class);
 
         $this->doTest('<?php echo 1;');
     }

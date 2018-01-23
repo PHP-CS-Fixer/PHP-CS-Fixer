@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -23,101 +22,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class MethodSeparationFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @param int    $expected
-     * @param string $code
-     * @param int    $index
-     *
-     * @dataProvider provideCommentBlockStartDetectionCases
-     */
-    public function testCommentBlockStartDetection($expected, $code, $index)
-    {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($code);
-        $method = new \ReflectionMethod($this->fixer, 'findCommentBlockStart');
-        $method->setAccessible(true);
-        if ($expected !== $result = $method->invoke($this->fixer, $tokens, $index)) {
-            $this->fail(sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson()));
-        }
-    }
-
-    public function provideCommentBlockStartDetectionCases()
-    {
-        return [
-            [
-                4,
-                '<?php
-                    //ui
-
-                    //j1
-                    //k2
-                ',
-                6,
-            ],
-            [
-                4,
-                '<?php
-                    //ui
-
-                    //j1
-                    //k2
-                ',
-                5,
-            ],
-            [
-                4,
-                '<?php
-                    /**/
-
-                    //j1
-                    //k2
-                ',
-                6,
-            ],
-            [
-                4,
-                '<?php
-                    $a;//j
-                    //k
-                ',
-                6,
-            ],
-            [
-                2,
-                '<?php
-                    //a
-                ',
-                2,
-            ],
-            [
-                2,
-                '<?php
-                    //b
-                    //c
-                ',
-                2,
-            ],
-            [
-                2,
-                '<?php
-                    //d
-                    //e
-                ',
-                4,
-            ],
-            [
-                2,
-                '<?php
-                    /**/
-                    //f
-                    //g
-                    //h
-                ',
-                8,
-            ],
-        ];
-    }
-
     /**
      * @param string      $expected
      * @param null|string $input
@@ -165,7 +69,7 @@ class SomeClass2
     }
 }
             ',
-            ];
+        ];
         $cases[] = [
             '<?php
 class SomeClass3
@@ -719,7 +623,7 @@ private $a;
 
 function getF(){echo 4;}
 }',
-    '<?php
+            '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
     protected function getA(){echo 1;}function getB(){echo 2;}
@@ -745,7 +649,7 @@ trait SomeReturnInfo {
 
     abstract public function getWorld();
 }',
-    '<?php
+            '<?php
 trait SomeReturnInfo {
     function getReturnType()
     {
@@ -767,14 +671,14 @@ trait SomeReturnInfo {
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideFixInterfaces
+     * @dataProvider provideFixInterfaceCases
      */
-    public function testFixInterfaces($expected, $input = null)
+    public function testFixInterface($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixInterfaces()
+    public function provideFixInterfaceCases()
     {
         $cases = [];
         $cases[] = [
@@ -834,7 +738,7 @@ function afterUseTrait(){}
 
 function afterUseTrait2(){}
 }',
-'<?php
+            '<?php
 trait ezcReflectionReturnInfo {
     function getReturnDescription() {}
 }

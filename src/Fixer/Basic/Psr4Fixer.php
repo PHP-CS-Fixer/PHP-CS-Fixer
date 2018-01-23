@@ -43,7 +43,7 @@ class InvalidName {}
                 ),
             ],
             null,
-            'This fixer may change you class name, which will break the code that is depended on old name.'
+            'This fixer may change your class name, which will break the code that is depended on old name.'
         );
     }
 
@@ -65,6 +65,11 @@ class InvalidName {}
                 $namespace = true;
             } elseif ($token->isClassy()) {
                 if (null !== $classyName) {
+                    return;
+                }
+
+                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+                if ($prevToken->isGivenKind(T_NEW)) {
                     return;
                 }
 

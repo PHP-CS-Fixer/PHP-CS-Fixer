@@ -18,6 +18,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  *
  * @internal
+ *
+ * @deprecated
  */
 abstract class AbstractAlignFixerHelper
 {

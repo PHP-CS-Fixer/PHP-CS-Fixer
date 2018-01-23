@@ -54,7 +54,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @param string $source
      *
-     * @dataProvider provideProcessCases70
+     * @dataProvider provideProcess70Cases
      * @requires PHP 7.0
      */
     public function testProcess70($source, array $expectedTokens = [])
@@ -199,7 +199,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
         ];
     }
 
-    public function provideProcessCases70()
+    public function provideProcess70Cases()
     {
         return [
             [

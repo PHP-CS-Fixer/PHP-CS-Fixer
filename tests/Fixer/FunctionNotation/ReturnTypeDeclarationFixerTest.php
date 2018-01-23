@@ -26,8 +26,8 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfiguration()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(
             '#^\[return_type_declaration\] Invalid configuration: The option "s" does not exist\. (Known|Defined) options are: "space_before"\.$#'
         );
 
@@ -36,7 +36,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 
     /**
      * @group legacy
-     * @dataProvider testFixProviderWithSpaceBeforeNone
+     * @dataProvider provideFixWithSpaceBeforeNoneCases
      * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      *
      * @param string      $expected
@@ -50,7 +50,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider testFixProviderWithSpaceBeforeNone
+     * @dataProvider provideFixWithSpaceBeforeNoneCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -63,7 +63,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider testFixProviderWithSpaceBeforeNone
+     * @dataProvider provideFixWithSpaceBeforeNoneCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -77,7 +77,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function testFixProviderWithSpaceBeforeNone()
+    public function provideFixWithSpaceBeforeNoneCases()
     {
         return [
             [
@@ -132,7 +132,7 @@ string {}',
     }
 
     /**
-     * @dataProvider testFixProviderWithSpaceBeforeOne
+     * @dataProvider provideFixWithSpaceBeforeOneCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -146,7 +146,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function testFixProviderWithSpaceBeforeOne()
+    public function provideFixWithSpaceBeforeOneCases()
     {
         return [
             [

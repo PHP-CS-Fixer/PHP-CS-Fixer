@@ -30,10 +30,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigurationClassyConstructs()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[braces\] Invalid configuration: The option "position_after_functions_and_oop_constructs" with value "neither" is invalid\. Accepted values are: "next", "same"\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[braces\] Invalid configuration: The option "position_after_functions_and_oop_constructs" with value "neither" is invalid\. Accepted values are: "next", "same"\.$#');
 
         $this->fixer->configure(['position_after_functions_and_oop_constructs' => 'neither']);
     }
@@ -591,7 +589,7 @@ $b = a();
 }',
             ],
             [
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
             $a = 1;
@@ -600,7 +598,7 @@ $b = a();
         }
     }
 ',
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
          $a = 1;
@@ -611,7 +609,7 @@ $b = a();
 ',
             ],
             [
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
             $a = 1;
@@ -621,7 +619,7 @@ $b = a();
         }
     }
 ',
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
          $a = 1;
@@ -777,6 +775,51 @@ function foo()
     $bar = 1;     /* bar */     // multiline ...
                                 // ... comment
     $baz  = 2;    /* baz */     // next comment
+}',
+            ],
+            [
+                '<?php
+function test()
+{
+//    $closure = function ($callback) use ($query) {
+//        doSomething();
+//
+//        return true;
+//    };
+    $a = 3;
+}',
+            ],
+            [
+                '<?php
+function test()
+{
+//    $closure = function ($callback) use ($query) {
+//        doSomething();
+//        '.'
+//        return true;
+//    };
+    $a = 3;
+}',
+            ],
+            [
+                '<?php
+class Foo
+{
+    public function bar()
+    {
+        foreach (new Bar() as $file) {
+            foo();
+        }
+    }
+}',
+                '<?php
+class Foo {
+    public function bar() {
+        foreach (new Bar() as $file)
+        {
+            foo();
+        }
+    }
 }',
             ],
         ];
@@ -1016,7 +1059,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // comment
+    // comment
     } else {
         $c = "c";
     }
@@ -1728,7 +1771,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // comment
+    // comment
     } else {
         $c = "c";
     }
@@ -2558,6 +2601,159 @@ function D() /**
 }',
                 self::$configurationOopPositionSameLine,
             ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+//        return [];
+//    }
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+    //        return [];
+//    }
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+//        return [];
+//    }
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    bar();
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+//    bar();
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+    '.'
+//    bar();
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+    '.'
+//    bar();
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $a = 1;
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+// we will return sth
+    return $a;
+}
+',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $a = 1;
+    '.'
+//    bar();
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+    '.'
+//    bar();
+// we will return sth
+    return $a;
+}
+',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $a = 1;
+//    if ($a === \'bar\') {
+//        return [];
+//    }
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+//    if ($a === \'bar\') {
+//        return [];
+//    }
+// we will return sth
+    return $a;
+}
+',
+            ],
         ];
     }
 
@@ -2940,6 +3136,27 @@ function foo()
         echo 1;
     };',
                 self::$configurationOopPositionSameLine,
+            ],
+            [
+                '<?php
+    // 2.5+ API
+    if (isNewApi()) {
+        echo "new API";
+    // 2.4- API
+    } elseif (isOldApi()) {
+        echo "old API";
+    // 2.4- API
+    } else {
+        echo "unknown API";
+        // sth
+    }
+
+    return $this->guess($class, $property, function (Constraint $constraint) use ($guesser) {
+        return $guesser->guessRequiredForConstraint($constraint);
+    // Fallback to false...
+    // ... due to sth...
+    }, false);
+    ',
             ],
         ];
     }
@@ -3580,7 +3797,7 @@ class Foo
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provideFixMultiLineStructures
+     * @dataProvider provideFixMultiLineStructuresCases
      */
     public function testFixMultiLineStructures($expected, $input = null, array $configuration = null)
     {
@@ -3591,7 +3808,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMultiLineStructures()
+    public function provideFixMultiLineStructuresCases()
     {
         return [
             [
@@ -4062,10 +4279,10 @@ declare   (   ticks   =   1   )   {
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null, array $configuration = null)
+    public function testFix70($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -4074,7 +4291,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return [
             [
@@ -4719,7 +4936,7 @@ use const some\a\{ConstA, ConstB, ConstC};
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider providePreserveLineAfterControlBrace
+     * @dataProvider providePreserveLineAfterControlBraceCases
      */
     public function testPreserveLineAfterControlBrace($expected, $input = null, array $configuration = null)
     {
@@ -4730,7 +4947,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         $this->doTest($expected, $input);
     }
 
-    public function providePreserveLineAfterControlBrace()
+    public function providePreserveLineAfterControlBraceCases()
     {
         return [
             [
@@ -4893,6 +5110,36 @@ if (true) {
     /**
      * @param string      $expected
      * @param null|string $input
+     *
+     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
+     */
+    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
+    {
+        return [
+            [
+                '<?php
+if (true) {
+    do {
+        echo 1;
+    } while (false);
+}',
+                '<?php
+if (true)
+    do {
+        echo 1;
+    } while (false);',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
      * @param null|array  $configuration
      *
      * @dataProvider provideMessyWhitespacesCases
@@ -4963,33 +5210,68 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
         ];
     }
 
-    public function provideDoWhileLoopInsideAnIfWithoutBrackets()
-    {
-        return [
-            [
-                '<?php
-if (true) {
-    do {
-        echo 1;
-    } while (false);
-}',
-                '<?php
-if (true)
-    do {
-        echo 1;
-    } while (false);',
-            ],
-        ];
-    }
-
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBrackets
+     * @dataProvider provideNowdocInTemplatesCases
      */
-    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
+    public function testNowdocInTemplates($expected, $input = null)
     {
         $this->doTest($expected, $input);
+    }
+
+    public function provideNowdocInTemplatesCases()
+    {
+        return [
+            [
+                <<<'EOT'
+<?php
+if (true) {
+    $var = <<<'NOWDOC'
+NOWDOC;
+?>
+<?php
+}
+
+EOT
+,
+                <<<'EOT'
+<?php
+if (true) {
+$var = <<<'NOWDOC'
+NOWDOC;
+?>
+<?php
+}
+
+EOT
+,
+            ],
+            [
+                <<<'EOT'
+<?php
+if (true) {
+    $var = <<<HEREDOC
+HEREDOC;
+?>
+<?php
+}
+
+EOT
+,
+                <<<'EOT'
+<?php
+if (true) {
+$var = <<<HEREDOC
+HEREDOC;
+?>
+<?php
+}
+
+EOT
+,
+            ],
+        ];
     }
 }

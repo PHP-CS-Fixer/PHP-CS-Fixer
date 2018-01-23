@@ -27,36 +27,36 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
         $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
 
         return [
             'final-extends' => [
-                "<?php final class MyClass extends MyAbstractClass { $attributesAndMethodsOriginal }",
+                "<?php final class MyClass extends MyAbstractClass { ${attributesAndMethodsOriginal} }",
             ],
             'normal-extends' => [
-                "<?php class MyClass extends MyAbstractClass { $attributesAndMethodsOriginal }",
+                "<?php class MyClass extends MyAbstractClass { ${attributesAndMethodsOriginal} }",
             ],
             'abstract' => [
-                "<?php abstract class MyAbstractClass { $attributesAndMethodsOriginal }",
+                "<?php abstract class MyAbstractClass { ${attributesAndMethodsOriginal} }",
             ],
             'normal' => [
-                "<?php class MyClass { $attributesAndMethodsOriginal }",
+                "<?php class MyClass { ${attributesAndMethodsOriginal} }",
             ],
             'trait' => [
-                "<?php trait MyTrait { $attributesAndMethodsOriginal }",
+                "<?php trait MyTrait { ${attributesAndMethodsOriginal} }",
             ],
             'final-with-trait' => [
-                "<?php final class MyClass { use MyTrait; $attributesAndMethodsOriginal }",
+                "<?php final class MyClass { use MyTrait; ${attributesAndMethodsOriginal} }",
             ],
             'multiline-comment' => [
                 '<?php final class MyClass { /* public protected private */ }',
@@ -65,24 +65,28 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
                 "<?php final class MyClass { \n // public protected private \n }",
             ],
             'final' => [
-                "<?php final class MyClass { $attributesAndMethodsFixed }",
-                "<?php final class MyClass { $attributesAndMethodsOriginal }",
+                "<?php final class MyClass { ${attributesAndMethodsFixed} }",
+                "<?php final class MyClass { ${attributesAndMethodsOriginal} }",
             ],
             'final-implements' => [
-                "<?php final class MyClass implements MyInterface { $attributesAndMethodsFixed }",
-                "<?php final class MyClass implements MyInterface { $attributesAndMethodsOriginal }",
+                "<?php final class MyClass implements MyInterface { ${attributesAndMethodsFixed} }",
+                "<?php final class MyClass implements MyInterface { ${attributesAndMethodsOriginal} }",
             ],
             'final-with-use-before' => [
-                "<?php use stdClass; final class MyClass { $attributesAndMethodsFixed }",
-                "<?php use stdClass; final class MyClass { $attributesAndMethodsOriginal }",
+                "<?php use stdClass; final class MyClass { ${attributesAndMethodsFixed} }",
+                "<?php use stdClass; final class MyClass { ${attributesAndMethodsOriginal} }",
             ],
             'final-with-use-after' => [
-                "<?php final class MyClass { $attributesAndMethodsFixed } use stdClass;",
-                "<?php final class MyClass { $attributesAndMethodsOriginal } use stdClass;",
+                "<?php final class MyClass { ${attributesAndMethodsFixed} } use stdClass;",
+                "<?php final class MyClass { ${attributesAndMethodsOriginal} } use stdClass;",
             ],
             'multiple-classes' => [
-                "<?php final class MyFirstClass { $attributesAndMethodsFixed } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsFixed } ",
-                "<?php final class MyFirstClass { $attributesAndMethodsOriginal } class MySecondClass { $attributesAndMethodsOriginal } final class MyThirdClass { $attributesAndMethodsOriginal } ",
+                "<?php final class MyFirstClass { ${attributesAndMethodsFixed} } class MySecondClass { ${attributesAndMethodsOriginal} } final class MyThirdClass { ${attributesAndMethodsFixed} } ",
+                "<?php final class MyFirstClass { ${attributesAndMethodsOriginal} } class MySecondClass { ${attributesAndMethodsOriginal} } final class MyThirdClass { ${attributesAndMethodsOriginal} } ",
+            ],
+            'minimal-set' => [
+                '<?php final class MyClass { private $v1; }',
+                '<?php final class MyClass { protected $v1; }',
             ],
         ];
     }
@@ -91,7 +95,7 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function test70Fix($expected, $input = null)
@@ -99,7 +103,7 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
         $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
@@ -109,12 +113,12 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
                 "<?php
 final class Foo
 {
-    $attributesAndMethodsFixed
+    ${attributesAndMethodsFixed}
 
     private function bar()
     {
         new class {
-            $attributesAndMethodsOriginal
+            ${attributesAndMethodsOriginal}
         };
     }
 }
@@ -122,12 +126,12 @@ final class Foo
                 "<?php
 final class Foo
 {
-    $attributesAndMethodsOriginal
+    ${attributesAndMethodsOriginal}
 
     protected function bar()
     {
         new class {
-            $attributesAndMethodsOriginal
+            ${attributesAndMethodsOriginal}
         };
     }
 }

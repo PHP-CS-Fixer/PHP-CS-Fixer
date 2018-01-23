@@ -15,8 +15,8 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -64,7 +64,7 @@ final class CacheTest extends TestCase
 
     public function testSetThrowsInvalidArgumentExceptionIfValueIsNotAnInteger()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $signature = $this->getSignatureDouble();
 
@@ -107,7 +107,7 @@ final class CacheTest extends TestCase
 
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $json = '{"foo';
 
@@ -115,13 +115,13 @@ final class CacheTest extends TestCase
     }
 
     /**
-     * @dataProvider providerMissingData
+     * @dataProvider provideMissingDataCases
      *
      * @param array $data
      */
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $json = json_encode($data);
 
@@ -131,7 +131,7 @@ final class CacheTest extends TestCase
     /**
      * @return array
      */
-    public function providerMissingData()
+    public function provideMissingDataCases()
     {
         $data = [
             'php' => '7.1.2',
@@ -143,7 +143,7 @@ final class CacheTest extends TestCase
             'hashes' => [],
         ];
 
-        return array_map(function ($missingKey) use ($data) {
+        return array_map(static function ($missingKey) use ($data) {
             unset($data[$missingKey]);
 
             return [
@@ -172,6 +172,8 @@ final class CacheTest extends TestCase
 
     public function provideCanConvertToAndFromJsonCases()
     {
+        $toolInfo = new ToolInfo();
+
         return [
             [new Signature(
                 PHP_VERSION,
@@ -183,7 +185,7 @@ final class CacheTest extends TestCase
             )],
             [new Signature(
                 PHP_VERSION,
-                ToolInfo::getVersion(),
+                $toolInfo->getVersion(),
                 [
                     // value encoded in ANSI, not UTF
                     'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],

@@ -104,7 +104,7 @@ $this->assertNotSame(null, $d);
             $assertionFixer = self::$assertionFixers[$assertionMethod];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $index = $this->$assertionFixer($tokens, $index, $assertionMethod);
+                $index = $this->{$assertionFixer}($tokens, $index, $assertionMethod);
 
                 if (null === $index) {
                     break;
@@ -199,14 +199,14 @@ $this->assertNotSame(null, $d);
         $firstParameterToken = $tokens[$sequenceIndexes[4]];
 
         if (!$firstParameterToken->isNativeConstant()) {
-            return null;
+            return $sequenceIndexes[4];
         }
 
         $sequenceIndexes[5] = $tokens->getNextMeaningfulToken($sequenceIndexes[4]);
 
         // return if first method argument is an expression, not value
         if (!$tokens[$sequenceIndexes[5]]->equals(',')) {
-            return null;
+            return $sequenceIndexes[5];
         }
 
         $tokens[$sequenceIndexes[2]] = new Token([T_STRING, $map[$firstParameterToken->getContent()]]);

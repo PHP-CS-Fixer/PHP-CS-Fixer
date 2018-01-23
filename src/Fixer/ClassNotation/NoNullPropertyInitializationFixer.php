@@ -30,10 +30,13 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
         return new FixerDefinition(
             'Properties MUST not be explicitly initialized with `null`.',
             [
-                new CodeSample('<?php
+                new CodeSample(
+'<?php
 class Foo {
     public $foo = null;
-}'),
+}
+'
+                ),
             ]
         );
     }

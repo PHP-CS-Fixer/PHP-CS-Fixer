@@ -15,7 +15,7 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -58,7 +58,7 @@ final class AnnotationTest extends TestCase
         "     * @param string \$hello\n",
         "     * @param bool \$test Description\n     *        extends over many lines\n",
         "     * @param adkjbadjasbdand \$asdnjkasd\n",
-        "     * @throws \Exception asdnjkasd\n     *\n     * asdasdasdasdasdasdasdasd\n     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb\n",
+        "     * @throws \\Exception asdnjkasd\n     *\n     * asdasdasdasdasdasdasdasd\n     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb\n",
         "     * @return void\n",
     ];
 
@@ -87,7 +87,7 @@ final class AnnotationTest extends TestCase
      * @param int    $index
      * @param string $content
      *
-     * @dataProvider provideContent
+     * @dataProvider provideGetContentCases
      */
     public function testGetContent($index, $content)
     {
@@ -98,7 +98,7 @@ final class AnnotationTest extends TestCase
         $this->assertSame($content, (string) $annotation);
     }
 
-    public function provideContent()
+    public function provideGetContentCases()
     {
         $cases = [];
 
@@ -163,7 +163,7 @@ final class AnnotationTest extends TestCase
      * @param int    $index
      * @param string $tag
      *
-     * @dataProvider provideTags
+     * @dataProvider provideGetTagCases
      */
     public function testGetTag($index, $tag)
     {
@@ -173,7 +173,7 @@ final class AnnotationTest extends TestCase
         $this->assertSame($tag, $annotation->getTag()->getName());
     }
 
-    public function provideTags()
+    public function provideGetTagCases()
     {
         $cases = [];
 
@@ -335,19 +335,17 @@ final class AnnotationTest extends TestCase
         return [
             [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
             [['false'], ['bool'], '*   @return            false', '*   @return            bool'],
-            [['RUNTIMEEEEeXCEPTION'], ['Throwable'], "* \t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "* \t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
-            [['RUNTIMEEEEeXCEPTION'], ['Throwable'], "*\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
-            [['RUNTIMEEEEeXCEPTION'], ['Throwable'], "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "* \t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "* \t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "*\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
+            [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
             [['string'], ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'],
         ];
     }
 
     public function testGetTypesOnBadTag()
     {
-        $this->setExpectedException(
-            \RuntimeException::class,
-            'This tag does not support types'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('This tag does not support types');
 
         $tag = new Annotation([new Line(' * @deprecated since 1.2')]);
 
@@ -356,10 +354,8 @@ final class AnnotationTest extends TestCase
 
     public function testSetTypesOnBadTag()
     {
-        $this->setExpectedException(
-            \RuntimeException::class,
-            'This tag does not support types'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('This tag does not support types');
 
         $tag = new Annotation([new Line(' * @author Chuck Norris')]);
 

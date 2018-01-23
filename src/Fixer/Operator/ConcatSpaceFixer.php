@@ -52,14 +52,14 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
             'Concatenation should be spaced according configuration.',
             [
                 new CodeSample(
-                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';"
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n"
                 ),
                 new CodeSample(
-                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n",
                     ['spacing' => 'none']
                 ),
                 new CodeSample(
-                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n",
                     ['spacing' => 'one']
                 ),
             ]
@@ -82,7 +82,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
         $callBack = $this->fixCallback;
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens[$index]->equals('.')) {
-                $this->$callBack($tokens, $index);
+                $this->{$callBack}($tokens, $index);
             }
         }
     }

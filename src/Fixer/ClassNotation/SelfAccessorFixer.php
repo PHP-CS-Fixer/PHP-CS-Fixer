@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -30,7 +31,7 @@ final class SelfAccessorFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Inside a classy element "self" should be preferred to the class name itself.',
+            'Inside class or interface element "self" should be preferred to the class name itself.',
             [
                 new CodeSample(
                     '<?php
@@ -43,7 +44,8 @@ class Sample
     {
         return Sample::BAR;
     }
-}'
+}
+'
                 ),
             ]
         );
@@ -54,7 +56,7 @@ class Sample
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
 
     /**
@@ -65,7 +67,7 @@ class Sample
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($i = 0, $c = $tokens->count(); $i < $c; ++$i) {
-            if (!$tokens[$i]->isClassy() || $tokensAnalyzer->isAnonymousClass($i)) {
+            if (!$tokens[$i]->isGivenKind([T_CLASS, T_INTERFACE]) || $tokensAnalyzer->isAnonymousClass($i)) {
                 continue;
             }
 
@@ -93,8 +95,13 @@ class Sample
     private function replaceNameOccurrences(Tokens $tokens, $name, $startIndex, $endIndex)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $insideMethodSignatureUntil = null;
 
         for ($i = $startIndex; $i < $endIndex; ++$i) {
+            if ($i === $insideMethodSignatureUntil) {
+                $insideMethodSignatureUntil = null;
+            }
+
             $token = $tokens[$i];
 
             if (
@@ -105,6 +112,13 @@ class Sample
             ) {
                 $i = $tokens->getNextTokenOfKind($i, ['{']);
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+
+                continue;
+            }
+
+            if ($token->isGivenKind(T_FUNCTION)) {
+                $i = $tokens->getNextTokenOfKind($i, ['(']);
+                $insideMethodSignatureUntil = $tokens->getNextTokenOfKind($i, ['{', ';']);
 
                 continue;
             }
@@ -122,8 +136,13 @@ class Sample
             }
 
             if (
-                $prevToken->isGivenKind([T_INSTANCEOF, T_NEW]) ||
-                $nextToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)
+                $prevToken->isGivenKind([T_INSTANCEOF, T_NEW])
+                || $nextToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)
+                || (
+                    null !== $insideMethodSignatureUntil
+                    && $i < $insideMethodSignatureUntil
+                    && $prevToken->equalsAny(['(', ',', [CT::T_TYPE_COLON], [CT::T_NULLABLE_TYPE]])
+                )
             ) {
                 $tokens[$i] = new Token([T_STRING, 'self']);
             }

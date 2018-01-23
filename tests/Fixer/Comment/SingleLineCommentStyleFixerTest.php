@@ -26,7 +26,7 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfig()
     {
-        $this->setExpectedException(InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->fixer->configure(['abc']);
     }
@@ -149,7 +149,14 @@ $a = 1; /* after code */
 s    *
      */',
             ],
-
+            'empty comment' => [
+                '<?php
+//
+',
+                '<?php
+/**/
+',
+            ],
             // Untouched cases
             [
                 '<?php
@@ -316,6 +323,13 @@ second line*/',
      */
     # 5
 ',
+            ],
+            [
+                '<?php
+                function foo() {
+                    /* ?> */
+                    return "bar";
+                }',
             ],
         ];
     }

@@ -27,14 +27,14 @@ final class PhpdocIndentFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideDocblocks
+     * @dataProvider provideFixIndentCases
      */
     public function testFixIndent($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideDocblocks()
+    public function provideFixIndentCases()
     {
         $cases = [];
 
@@ -387,6 +387,18 @@ function foo()
 {
     $foo->bar(/** oops */$baz);
     $foo->bar($a,/** oops */$baz);
+}',
+        ];
+
+        $cases[] = [
+            '<?php
+
+/**
+ * Foo
+       Bar
+ */
+class Foo
+{
 }',
         ];
 

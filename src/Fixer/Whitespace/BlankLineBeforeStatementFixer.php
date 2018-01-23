@@ -38,9 +38,12 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'break' => T_BREAK,
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
+        'die' => T_EXIT,
         'do' => T_DO,
+        'exit' => T_EXIT,
         'for' => T_FOR,
         'foreach' => T_FOREACH,
+        'goto' => T_GOTO,
         'if' => T_IF,
         'include' => T_INCLUDE,
         'include_once' => T_INCLUDE_ONCE,
@@ -51,6 +54,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'throw' => T_THROW,
         'try' => T_TRY,
         'while' => T_WHILE,
+        'yield' => T_YIELD,
     ];
 
     /**
@@ -85,7 +89,8 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
 function A() {
     echo 1;
     return 1;
-}'
+}
+'
                 ),
                 new CodeSample(
                     '<?php
@@ -95,7 +100,8 @@ switch ($foo) {
         break;
     case 44:
         break;
-}',
+}
+',
                     [
                         'statements' => ['break'],
                     ]
@@ -107,9 +113,23 @@ foreach ($foo as $bar) {
         $bar->sleep();
         continue;
     }
-}',
+}
+',
                     [
                         'statements' => ['continue'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+if ($foo === false) {
+    die(0);
+} else {
+    $bar = 9000;
+    die(1);
+}
+',
+                    [
+                        'statements' => ['die'],
                     ]
                 ),
                 new CodeSample(
@@ -125,10 +145,39 @@ do {
                 ),
                 new CodeSample(
                     '<?php
+if ($foo === false) {
+    exit(0);
+} else {
+    $bar = 9000;
+    exit(1);
+}
+',
+                    [
+                        'statements' => ['exit'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+a:
+
+if ($foo === false) {
+    goto a;
+} else {
+    $bar = 9000;
+    goto b;
+}
+',
+                    [
+                        'statements' => ['goto'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
 $a = 9000;
 if (true) {
     $foo = $bar;
-}',
+}
+',
                     [
                         'statements' => ['if'],
                     ]
@@ -139,7 +188,8 @@ if (true) {
 if (true) {
     $foo = $bar;
     return;
-}',
+}
+',
                     [
                         'statements' => ['return'],
                     ]
@@ -150,7 +200,8 @@ $a = 9000;
 switch ($a) {
     case 42:
         break;
-}',
+}
+',
                     [
                         'statements' => ['switch'],
                     ]
@@ -160,7 +211,8 @@ switch ($a) {
 if (null === $a) {
     $foo->bar();
     throw new \UnexpectedValueException("A cannot be null");
-}',
+}
+',
                     [
                         'statements' => ['throw'],
                     ]
@@ -172,9 +224,22 @@ try {
     $foo->bar();
 } catch (\Exception $exception) {
     $a = -1;
-}',
+}
+',
                     [
                         'statements' => ['try'],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+
+if (true) {
+    $foo = $bar;
+    yield $foo;
+}
+',
+                    [
+                        'statements' => ['yield'],
                     ]
                 ),
             ]
@@ -246,7 +311,7 @@ try {
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('statements', 'List of statements which must be must be preceded by an empty line.'))
+            (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$tokenMap)),

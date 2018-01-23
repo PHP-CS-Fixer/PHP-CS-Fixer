@@ -27,14 +27,14 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
             [
@@ -60,7 +60,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                 '<?php UNSET($a); unset($b,$c/**/);',
             ],
             [
-              '<?php
+                '<?php
               $config = array();
               if ($config) {
               }

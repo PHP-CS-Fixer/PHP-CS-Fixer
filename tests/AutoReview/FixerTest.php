@@ -14,14 +14,16 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\StdinFileInfo;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -70,6 +72,9 @@ final class FixerTest extends TestCase
 
             $code = $sample->getCode();
             $this->assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+            if (!($fixer instanceof SingleBlankLineAtEofFixer)) {
+                $this->assertSame("\n", substr($code, -1), sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
+            }
 
             $config = $sample->getConfiguration();
             if (null !== $config) {
@@ -168,9 +173,30 @@ final class FixerTest extends TestCase
         $this->assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
     }
 
+    /**
+     * @dataProvider provideFixerDefinitionsCases
+     */
+    public function testDeprecatedFixersHaveCorrectSummary(FixerInterface $fixer)
+    {
+        $reflection = new \ReflectionClass($fixer);
+        $comment = $reflection->getDocComment();
+
+        $this->assertNotContains(
+            'DEPRECATED',
+            $fixer->getDefinition()->getSummary(),
+            'Fixer cannot contain word "DEPRECATED" in summary'
+        );
+
+        if ($fixer instanceof DeprecatedFixerInterface) {
+            $this->assertContains('@deprecated', $comment);
+        } elseif (is_string($comment)) {
+            $this->assertNotContains('@deprecated', $comment);
+        }
+    }
+
     public function provideFixerDefinitionsCases()
     {
-        return array_map(function (FixerInterface $fixer) {
+        return array_map(static function (FixerInterface $fixer) {
             return [$fixer];
         }, $this->getAllFixers());
     }
@@ -187,7 +213,7 @@ final class FixerTest extends TestCase
         $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
-            $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerOption', $option);
+            $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOption::class, $option);
             $this->assertNotEmpty($option->getDescription());
 
             $this->assertSame(
@@ -206,11 +232,11 @@ final class FixerTest extends TestCase
 
     public function provideFixerConfigurationDefinitionsCases()
     {
-        $fixers = array_filter($this->getAllFixers(), function (FixerInterface $fixer) {
+        $fixers = array_filter($this->getAllFixers(), static function (FixerInterface $fixer) {
             return $fixer instanceof ConfigurationDefinitionFixerInterface;
         });
 
-        return array_map(function (FixerInterface $fixer) {
+        return array_map(static function (FixerInterface $fixer) {
             return [$fixer];
         }, $fixers);
     }

@@ -28,7 +28,7 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
@@ -40,14 +40,14 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      *
-     * @dataProvider provideTraits
+     * @dataProvider provideTraitsCases
      */
     public function testFixTraits($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         $cases = [];
 
@@ -60,7 +60,7 @@ class Good
         //code here
     }
 }',
-                '<?php
+            '<?php
 class Good
 {
 
@@ -82,7 +82,7 @@ class Good
         //code here
     }
 }',
-                '<?php
+            '<?php
 class Good
 {
 
@@ -134,7 +134,7 @@ class Good
         return $cases;
     }
 
-    public function provideTraits()
+    public function provideTraitsCases()
     {
         $cases = [];
 

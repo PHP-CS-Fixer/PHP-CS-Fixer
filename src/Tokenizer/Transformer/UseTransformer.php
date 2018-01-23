@@ -58,7 +58,7 @@ final class UseTransformer extends AbstractTransformer
         }
 
         $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-        $prevToken = $prevTokenIndex === null ? null : $tokens[$prevTokenIndex];
+        $prevToken = null === $prevTokenIndex ? null : $tokens[$prevTokenIndex];
 
         if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
             return;

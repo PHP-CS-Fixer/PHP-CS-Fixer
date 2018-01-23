@@ -179,19 +179,17 @@ class F
      * @param array  $configuration
      * @param string $message
      *
-     * @dataProvider provideInvalidConfiguration
+     * @dataProvider provideInvalidConfigurationCases
      */
     public function testInvalidConfiguration(array $configuration, $message)
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/'))
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
 
         $this->fixer->configure($configuration);
     }
 
-    public function provideInvalidConfiguration()
+    public function provideInvalidConfigurationCases()
     {
         return [
             [
@@ -205,5 +203,52 @@ class F
                 'Invalid configuration: Unknown value "string#foo", expected any of "$this", "static", "self".',
             ],
         ];
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testAnonymousClassFixing()
+    {
+        $this->doTest(
+            '<?php
+                $a = new class() {
+
+                    /** @return $this */
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {
+                            /** @return $this */
+                            public function a() {}
+                        };
+                    }
+                }
+            ',
+            '<?php
+                $a = new class() {
+
+                    /** @return @this */
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {
+                            /** @return @this */
+                            public function a() {}
+                        };
+                    }
+                }
+            '
+        );
     }
 }

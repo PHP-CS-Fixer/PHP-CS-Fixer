@@ -30,7 +30,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Calling `unset` on multiple items should be done in one call.',
-            [new CodeSample("<?php\nunset(\$a); unset(\$b);")]
+            [new CodeSample("<?php\nunset(\$a); unset(\$b);\n")]
         );
     }
 
@@ -39,7 +39,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should ran before SpaceAfterSemicolonFixer, NoWhitespaceInBlankLineFixer, NoTrailingWhitespaceFixer and NoExtraConsecutiveBlankLinesFixer and after NoEmptyStatementFixer.
+        // should ran before SpaceAfterSemicolonFixer, NoWhitespaceInBlankLineFixer, NoTrailingWhitespaceFixer and NoExtraBlankLinesFixerand after NoEmptyStatementFixer.
         return 24;
     }
 

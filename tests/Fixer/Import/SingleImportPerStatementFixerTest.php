@@ -29,14 +29,14 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
             [
@@ -67,7 +67,7 @@ use FooJ;
 use FooZ;
 
 EOF
-            ,
+                ,
                 <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
@@ -118,7 +118,7 @@ namespace Boo {
 }
 
 EOF
-            ,
+                ,
                 <<<'EOF'
 <?php
 
@@ -214,7 +214,7 @@ use X ?><?php new X(); // run before white space around semicolon',
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function test70($expected, $input = null)
@@ -222,7 +222,7 @@ use X ?><?php new X(); // run before white space around semicolon',
         $this->doTest($expected, $input);
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return [
             [
@@ -273,6 +273,25 @@ use function some\b\A\B;',
     }
 
     /**
+     * @requires PHP 7.0
+     */
+    public function testMessyComments()
+    {
+        $this->doTest(
+            '<?php
+use D\/*1*//*2*//*3*/E;
+use D\/*4*//*5*//*6*//*7*//*8*//*9*/F/*10*//*11*//*12*/;
+',
+            '<?php
+use D\{
+/*1*//*2*//*3*/E,/*4*//*5*//*6*/
+/*7*//*8*//*9*/F/*10*//*11*//*12*/
+};
+'
+        );
+    }
+
+    /**
      * @param string      $expected
      * @param null|string $input
      *
@@ -291,6 +310,36 @@ use function some\b\A\B;',
             [
                 "<?php\r\n    use FooA;\r\n    use FooB;",
                 "<?php\r\n    use FooA, FooB;",
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix72Cases
+     * @requires PHP 7.2
+     */
+    public function testFix72($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix72Cases()
+    {
+        return [
+            [
+                '<?php
+use D\E;
+use D\F;
+use G\H;
+use G\I/*1*//*2*/;
+',
+                '<?php
+use D\{E,F,};
+use G\{H,I/*1*/,/*2*/};
+',
             ],
         ];
     }

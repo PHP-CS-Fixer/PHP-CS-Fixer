@@ -288,7 +288,7 @@ class Foo
         $controlTokens = $this->getControlTokens();
         $indentTokens = array_filter(
             array_merge($classyAndFunctionTokens, $controlTokens),
-            function ($item) {
+            static function ($item) {
                 return T_SWITCH !== $item;
             }
         );
@@ -355,8 +355,12 @@ class Foo
             for ($nestIndex = $lastCommaIndex; $nestIndex >= $startBraceIndex; --$nestIndex) {
                 $nestToken = $tokens[$nestIndex];
 
-                if ($nestToken->equals(')')) {
-                    $nestIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nestIndex, false);
+                if ($nestToken->equalsAny([')', [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE]])) {
+                    $nestIndex = $tokens->findBlockEnd(
+                        $nestToken->equals(')') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION,
+                        $nestIndex,
+                        false
+                    );
 
                     continue;
                 }
@@ -370,7 +374,7 @@ class Foo
                     $nextLineCanBeIndented = false;
                     if ($nestToken->equalsAny([';', '}'])) {
                         $nextLineCanBeIndented = true;
-                    } elseif ($this->isCommentWithFixableIndendation($tokens, $nestIndex)) {
+                    } elseif ($this->isCommentWithFixableIndentation($tokens, $nestIndex)) {
                         for ($i = $nestIndex; $i > $startBraceIndex; --$i) {
                             if ($tokens[$i]->equalsAny([';', '}'])) {
                                 $nextLineCanBeIndented = true;
@@ -407,7 +411,9 @@ class Foo
                         // and it is not a `Foo::{bar}()` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals('(')) &&
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
-                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(['"', "'", [T_CONSTANT_ENCAPSED_STRING]]))
+                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(['"', "'", [T_CONSTANT_ENCAPSED_STRING]])) &&
+                        // and next token is not a closing tag that would break heredoc/nowdoc syntax
+                        !($tokens[$nestIndex - 1]->isGivenKind(T_END_HEREDOC) && $nextNonWhitespaceNestToken->isGivenKind(T_CLOSE_TAG))
                     ) {
                         if (
                             (
@@ -443,7 +449,42 @@ class Foo
                             $whitespace = $nextWhitespace.$this->whitespacesConfig->getLineEnding().$indent;
 
                             if (!$nextNonWhitespaceNestToken->equals('}')) {
-                                $whitespace .= $this->whitespacesConfig->getIndent();
+                                $determineIsIndentableBlockContent = function ($contentIndex) use ($tokens) {
+                                    if (!$tokens[$contentIndex]->isComment()) {
+                                        return true;
+                                    }
+
+                                    if (!$tokens[$tokens->getPrevMeaningfulToken($contentIndex)]->equals(';')) {
+                                        return true;
+                                    }
+
+                                    $nextIndex = $tokens->getNextMeaningfulToken($contentIndex);
+
+                                    if (!$tokens[$nextIndex]->equals('}')) {
+                                        return true;
+                                    }
+
+                                    $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+
+                                    if (null === $nextNextIndex) {
+                                        return true;
+                                    }
+
+                                    if ($tokens[$nextNextIndex]->equalsAny([
+                                        [T_ELSE],
+                                        [T_ELSEIF],
+                                        ',',
+                                    ])) {
+                                        return false;
+                                    }
+
+                                    return true;
+                                };
+
+                                // add extra indent only if current content is not a comment for content outside of current block
+                                if ($determineIsIndentableBlockContent($nestIndex + 2)) {
+                                    $whitespace .= $this->whitespacesConfig->getIndent();
+                                }
                             }
                         }
 
@@ -780,18 +821,18 @@ class Foo
 
     private function getControlContinuationTokensForOpeningToken($openingTokenKind)
     {
-        if ($openingTokenKind === T_IF) {
+        if (T_IF === $openingTokenKind) {
             return [
                 T_ELSE,
                 T_ELSEIF,
             ];
         }
 
-        if ($openingTokenKind === T_DO) {
+        if (T_DO === $openingTokenKind) {
             return [T_WHILE];
         }
 
-        if ($openingTokenKind === T_TRY) {
+        if (T_TRY === $openingTokenKind) {
             return [
                 T_CATCH,
                 T_FINALLY,
@@ -803,11 +844,11 @@ class Foo
 
     private function getFinalControlContinuationTokensForOpeningToken($openingTokenKind)
     {
-        if ($openingTokenKind === T_IF) {
+        if (T_IF === $openingTokenKind) {
             return [T_ELSE];
         }
 
-        if ($openingTokenKind === T_TRY) {
+        if (T_TRY === $openingTokenKind) {
             return [T_FINALLY];
         }
 
@@ -868,6 +909,16 @@ class Foo
 
         $nextToken = $tokens[$nextTokenIndex];
         if ($nextToken->isComment()) {
+            $previousToken = $tokens[$nextTokenIndex - 1];
+
+            // do not indent inline comments used to comment out unused code
+            if (
+                (0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextToken->getContent())
+                && $previousToken->isWhitespace() && 1 === preg_match('/\R$/', $previousToken->getContent())
+            ) {
+                return;
+            }
+
             $tokens[$nextTokenIndex] = new Token([
                 $nextToken->getId(),
                 preg_replace(
@@ -912,7 +963,7 @@ class Foo
      *
      * @return bool
      */
-    private function isCommentWithFixableIndendation(Tokens $tokens, $index)
+    private function isCommentWithFixableIndentation(Tokens $tokens, $index)
     {
         if (!$tokens[$index]->isComment()) {
             return false;

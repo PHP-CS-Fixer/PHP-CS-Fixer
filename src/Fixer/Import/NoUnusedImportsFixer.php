@@ -31,7 +31,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Unused use statements must be removed.',
-            [new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();")]
+            [new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();\n")]
         );
     }
 
@@ -101,7 +101,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $usages = [];
 
         foreach ($useDeclarations as $shortName => $useDeclaration) {
-            $usages[$shortName] = (bool) preg_match('/(?<![\$\\\\])(?<!->)\b'.preg_quote($shortName).'\b/i', $content);
+            $usages[$shortName] = (bool) preg_match('/(?<![\$\\\\])(?<!->)\b'.preg_quote($shortName, '/').'\b/i', $content);
         }
 
         return $usages;
@@ -235,7 +235,11 @@ final class NoUnusedImportsFixer extends AbstractFixer
             return;
         }
 
-        $nextIndex = $useDeclaration['end'] + 1;
+        $nextIndex = $tokens->getNonEmptySibling($useDeclaration['end'], 1);
+        if (null === $nextIndex) {
+            return;
+        }
+
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->isWhitespace()) {

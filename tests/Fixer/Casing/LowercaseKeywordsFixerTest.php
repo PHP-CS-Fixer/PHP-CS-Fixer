@@ -27,14 +27,14 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideExamples
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideExamples()
+    public function provideFixCases()
     {
         return [
             ['<?php $x = (1 and 2);', '<?php $x = (1 AND 2);'],

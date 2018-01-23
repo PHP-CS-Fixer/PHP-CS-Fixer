@@ -30,7 +30,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Function defined by PHP should be called using the correct casing.',
-            [new CodeSample("<?php\nSTRLEN(\$str);")]
+            [new CodeSample("<?php\nSTRLEN(\$str);\n")]
         );
     }
 

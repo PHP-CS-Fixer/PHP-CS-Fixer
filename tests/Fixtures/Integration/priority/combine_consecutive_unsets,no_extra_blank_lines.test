@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: combine_consecutive_unsets,no_extra_blank_lines.
+--RULESET--
+{"combine_consecutive_unsets": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php
+unset($a, $b, $c);
+
+$a;
+
+--INPUT--
+<?php
+unset($a);
+
+unset($b);
+
+unset($c);
+
+$a;

@@ -173,7 +173,8 @@ class Example
 {
     public function A(){}
     private function B(){}
-}',
+}
+',
                     ['order' => ['method_private', 'method_public']]
                 ),
             ]
@@ -269,7 +270,7 @@ class Example
                 'static' => false,
             ];
 
-            for ($i = $startIndex; ; ++$i) {
+            for ($i = $startIndex;; ++$i) {
                 $token = $tokens[$i];
 
                 // class end
@@ -423,7 +424,7 @@ class Example
         }
         unset($element);
 
-        usort($elements, function (array $a, array $b) {
+        usort($elements, static function (array $a, array $b) {
             if ($a['position'] === $b['position']) {
                 // same group, preserve current order
                 return $a['start'] > $b['start'] ? 1 : -1;

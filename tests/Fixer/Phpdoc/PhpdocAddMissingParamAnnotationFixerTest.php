@@ -29,7 +29,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     {
         $key = 'foo';
 
-        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectExceptionMessage(sprintf(
             '[phpdoc_add_missing_param_annotation] Invalid configuration: The option "%s" does not exist.',
             $key
         ));
@@ -40,13 +41,14 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @dataProvider providerInvalidConfigurationValue
+     * @dataProvider provideConfigureRejectsInvalidConfigurationValueCases
      *
      * @param mixed $value
      */
     public function testConfigureRejectsInvalidConfigurationValue($value)
     {
-        $this->setExpectedException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, sprintf(
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectExceptionMessage(sprintf(
             'expected to be of type "bool", but is of type "%s".',
             is_object($value) ? get_class($value) : gettype($value)
         ));
@@ -59,7 +61,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @return array
      */
-    public function providerInvalidConfigurationValue()
+    public function provideConfigureRejectsInvalidConfigurationValueCases()
     {
         return [
             'null' => [null],
@@ -294,7 +296,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param null|string $input
      * @param null|array  $config
      *
-     * @dataProvider provideCases70
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function testFix70($expected, $input = null, array $config = null)
@@ -304,7 +306,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public function provideCases70()
+    public function provideFix70Cases()
     {
         return [
             [
@@ -335,7 +337,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param null|string $input
      * @param null|array  $config
      *
-     * @dataProvider provideCases71
+     * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
     public function testFix71($expected, $input = null, array $config = null)
@@ -345,7 +347,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public function provideCases71()
+    public function provideFix71Cases()
     {
         return [
             [

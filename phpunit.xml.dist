@@ -2,9 +2,14 @@
 
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     backupGlobals="false"
     backupStaticAttributes="false"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTestSize="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    beStrictAboutTodoAnnotatedTests="true"
     bootstrap="./vendor/autoload.php"
     colors="true"
     columns="max"
@@ -13,20 +18,17 @@
     convertWarningsToExceptions="true"
     processIsolation="false"
     stopOnFailure="false"
+    verbose="true"
 >
     <testsuites>
         <testsuite>
             <directory>./tests</directory>
-            <exclude>./tests/Standalone</exclude>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
             <directory>./src</directory>
-            <exclude>
-                <directory>./src/Resources</directory>
-            </exclude>
         </whitelist>
     </filter>
 
@@ -45,6 +47,7 @@
 
     <php>
         <ini name="zend.enable_gc" value="0"/>
+        <ini name="memory_limit" value="1G"/>
         <env name="SKIP_LINT_TEST_CASES" value="0"/>
         <env name="PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER" value="0"/>
     </php>

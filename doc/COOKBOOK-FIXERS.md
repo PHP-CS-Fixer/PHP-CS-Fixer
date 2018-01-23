@@ -28,7 +28,7 @@ classes.
 ## Assumptions
 
 * You are familiar with Test Driven Development.
-* Forked FriendsOfPHP/PHP-CS-Fixer into your own Github Account.
+* Forked FriendsOfPHP/PHP-CS-Fixer into your own GitHub Account.
 * Cloned your forked repository locally.
 * Installed the dependencies of PHP CS Fixer using [Composer](https://getcomposer.org/).
 * You have read [`CONTRIBUTING.md`](/CONTRIBUTING.md).
@@ -78,9 +78,9 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDefinition()
     {
-        // Return a short description of the Fixer, it will be used in the README.rst.
+        // Return a definition of the fixer, it will be used in the README.rst.
     }
 }
 ```
@@ -235,9 +235,16 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDefinition()
     {
-        return 'Removes all comments of the code that are preceded by ";" (semicolon).'; // Trailing dot is important. We thrive to use English grammar properly.
+        return new FixerDefinition(
+            'Removes all comments of the code that are preceded by ";" (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
+            [
+                new CodeSample(
+                    '<?php echo 123; /* Comment */'
+                ),
+            ]
+        );
     }
 }
 ```
@@ -402,8 +409,16 @@ final class RemoveCommentsFixer extends AbstractFixer {
     /**
      * {@inheritdoc}
      */
-    public function getDescription() {
-        return 'Removes all comments of the code that are preceded by ";" (semicolon).';// Trailing dot is important. We thrive to use English grammar properly.
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Removes all comments of the code that are preceded by ";" (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
+            [
+                new CodeSample(
+                    '<?php echo 123; /* Comment */'
+                ),
+            ]
+        );
     }
 
     /**
@@ -428,7 +443,7 @@ This will fix all the coding style mistakes.
 
 After the final CS fix, you are ready to commit. Do it.
 
-Now, go to Github and open a Pull Request.
+Now, go to GitHub and open a Pull Request.
 
 
 ### Step 5 - Peer review: it is all about code and community building.
@@ -473,11 +488,6 @@ PHP CS Fixer community to partake on the review debates of your fixer.
 
 In any case, we care a lot about what you do and we want to see it being
 part of the application as soon as possible.
-
-#### May I use short arrays (`$a = []`)?
-
-No. Short arrays were introduced in PHP 5.4 and PHP CS Fixer still
-supports PHP 5.3.6.
 
 #### Why am I asked to use `getPrevMeaningfulToken()` instead of `getPrevNonWhitespace()`?
 

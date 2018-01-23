@@ -12,11 +12,13 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Diff\GeckoPackages\DiffOutputBuilder\UnifiedDiffOutputBuilder;
+use PhpCsFixer\Diff\v2_0\Differ;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
@@ -27,7 +29,10 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Utils;
+use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,6 +45,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class DescribeCommand extends Command
 {
+    const COMMAND_NAME = 'describe';
+
     /**
      * @var string[]
      */
@@ -76,7 +83,7 @@ final class DescribeCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('describe')
+            ->setName(self::COMMAND_NAME)
             ->setDefinition(
                 [
                     new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
@@ -102,7 +109,12 @@ final class DescribeCommand extends Command
 
             $this->describeRule($output, $name);
         } catch (DescribeNameNotFoundException $e) {
-            $alternative = $this->getAlternative($e->getType(), $name);
+            $matcher = new WordMatcher(
+                'set' === $e->getType() ? $this->getSetNames() : array_keys($this->getFixers())
+            );
+
+            $alternative = $matcher->match($name);
+
             $this->describeList($output, $e->getType());
 
             throw new \InvalidArgumentException(sprintf(
@@ -134,8 +146,22 @@ final class DescribeCommand extends Command
             $definition = new FixerDefinition('Description is not available.', []);
         }
 
+        $description = $definition->getSummary();
+        if ($fixer instanceof DeprecatedFixerInterface) {
+            $successors = $fixer->getSuccessorsNames();
+            $message = [] === $successors
+                ? 'will be removed on next major version'
+                : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+            $message = preg_replace('/(`.+?`)/', '<info>$1</info>', $message);
+            $description .= sprintf(' <error>DEPRECATED</error>: %s.', $message);
+        }
+
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
-        $output->writeln($definition->getSummary());
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', get_class($fixer)));
+        }
+
+        $output->writeln($description);
         if ($definition->getDescription()) {
             $output->writeln($definition->getDescription());
         }
@@ -158,7 +184,7 @@ final class DescribeCommand extends Command
             $output->writeln(sprintf('Fixer is configurable using following option%s:', 1 === count($options) ? '' : 's'));
 
             foreach ($options as $option) {
-                $line = '* <info>'.$option->getName().'</info>';
+                $line = '* <info>'.OutputFormatter::escape($option->getName()).'</info>';
 
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
                 if (null !== $allowed) {
@@ -173,7 +199,7 @@ final class DescribeCommand extends Command
                     $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
                 }
 
-                $description = preg_replace('/(`.+?`)/', '<info>$1</info>', $option->getDescription());
+                $description = preg_replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
                 $line .= ': '.lcfirst(preg_replace('/\.$/', '', $description)).'; ';
                 if ($option->hasDefault()) {
                     $line .= sprintf(
@@ -202,7 +228,7 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        $codeSamples = array_filter($definition->getCodeSamples(), function (CodeSampleInterface $codeSample) {
+        $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample) {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
                 return $codeSample->isSuitableFor(PHP_VERSION_ID);
             }
@@ -218,7 +244,11 @@ final class DescribeCommand extends Command
         } else {
             $output->writeln('Fixing examples:');
 
-            $differ = new SebastianBergmannDiffer();
+            $differ = new Differ(new UnifiedDiffOutputBuilder([
+                'fromFile' => 'Original',
+                'toFile' => 'New',
+            ]));
+
             $diffFormatter = new DiffConsoleFormatter($output->isDecorated(), sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                 PHP_EOL,
@@ -328,29 +358,6 @@ final class DescribeCommand extends Command
         sort($this->setNames);
 
         return $this->setNames;
-    }
-
-    /**
-     * @param string $type 'rule'|'set'
-     * @param string $name
-     *
-     * @return null|string
-     */
-    private function getAlternative($type, $name)
-    {
-        $other = null;
-        $alternatives = 'set' === $type ? $this->getSetNames() : array_keys($this->getFixers());
-
-        foreach ($alternatives as $alternative) {
-            $distance = levenshtein($name, $alternative);
-            if (3 > $distance) {
-                $other = $alternative;
-
-                break;
-            }
-        }
-
-        return $other;
     }
 
     /**

@@ -32,13 +32,14 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
         return new FixerDefinition(
             'Convert PHP4-style constructors to `__construct`.',
             [
-               new CodeSample('<?php
+                new CodeSample('<?php
 class Foo
 {
     public function Foo($bar)
     {
     }
-}'),
+}
+'),
             ],
             null,
             'Risky when old style constructor being fixed is overridden or overrides parent one.'
@@ -374,7 +375,7 @@ class Foo
         } else {
             // find method body start and the end of the function definition
             $bodyStart = $tokens->getNextTokenOfKind($function[2], ['{']);
-            $funcEnd = $bodyStart !== null ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $bodyStart) : null;
+            $funcEnd = null !== $bodyStart ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $bodyStart) : null;
         }
 
         return [

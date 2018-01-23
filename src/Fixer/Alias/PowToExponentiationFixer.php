@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -39,14 +40,14 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-           'Converts `pow()` to the `**` operator.',
+            'Converts `pow` to the `**` operator.',
             [
                 new CodeSample(
-                    "<?php\n pow(\$a, 1);"
+                    "<?php\n pow(\$a, 1);\n"
                 ),
             ],
             null,
-            'Risky when the function `pow()` is overridden.'
+            'Risky when the function `pow` is overridden.'
         );
     }
 
@@ -65,6 +66,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $candidates = $this->findPowCalls($tokens);
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $numberOfTokensAdded = 0;
         $previousCloseParenthesisIndex = count($tokens);
@@ -80,7 +82,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
                 $numberOfTokensAdded = 0;
             }
 
-            $arguments = $this->getArguments($tokens, $candidate[1], $candidate[2]);
+            $arguments = $argumentsAnalyzer->getArguments($tokens, $candidate[1], $candidate[2]);
             if (2 !== count($arguments)) {
                 continue;
             }

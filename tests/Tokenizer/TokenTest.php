@@ -12,9 +12,10 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -45,6 +46,34 @@ final class TokenTest extends TestCase
         static $prototype = [T_FOREACH, 'foreach'];
 
         return $prototype;
+    }
+
+    /**
+     * @param mixed $input
+     *
+     * @dataProvider provideConstructorValidationCases
+     */
+    public function testConstructorValidation($input)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        new Token($input);
+    }
+
+    public function provideConstructorValidationCases()
+    {
+        return [
+            [null],
+            [123],
+            [new \stdClass()],
+            [['asd', 'asd']],
+            [[null, 'asd']],
+            [[new \stdClass(), 'asd']],
+            [[T_WHITESPACE, null]],
+            [[T_WHITESPACE, 123]],
+            [[T_WHITESPACE, '']],
+            [[T_WHITESPACE, new \stdClass()]],
+        ];
     }
 
     /**
@@ -187,7 +216,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param int    $tokenId
+     * @param ?int   $tokenId
      * @param string $content
      * @param bool   $isConstant
      *
@@ -195,7 +224,10 @@ final class TokenTest extends TestCase
      */
     public function testIsMagicConstant($tokenId, $content, $isConstant = true)
     {
-        $token = new Token([$tokenId, $content]);
+        $token = new Token(
+            null === $tokenId ? $content : [$tokenId, $content]
+        );
+
         $this->assertSame($isConstant, $token->isMagicConstant());
     }
 
@@ -291,7 +323,9 @@ final class TokenTest extends TestCase
      */
     public function testCreatingToken($prototype, $expectedId, $expectedContent, $expectedIsArray, $expectedExceptionClass = null)
     {
-        $this->setExpectedException($expectedExceptionClass);
+        if ($expectedExceptionClass) {
+            $this->expectException($expectedExceptionClass);
+        }
 
         $token = new Token($prototype);
         $this->assertSame($expectedId, $token->getId());
@@ -304,9 +338,9 @@ final class TokenTest extends TestCase
         return [
             [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
             ['(', null, '(', false],
-            [123, null, null, null, 'InvalidArgumentException'],
-            [false, null, null, null, 'InvalidArgumentException'],
-            [null, null, null, null, 'InvalidArgumentException'],
+            [123, null, null, null, \InvalidArgumentException::class],
+            [false, null, null, null, \InvalidArgumentException::class],
+            [null, null, null, null, \InvalidArgumentException::class],
         ];
     }
 
@@ -324,14 +358,14 @@ final class TokenTest extends TestCase
      * @param array|string|Token $other
      * @param bool               $caseSensitive
      *
-     * @dataProvider provideEquals
+     * @dataProvider provideEqualsCases
      */
     public function testEquals(Token $token, $equals, $other, $caseSensitive = true)
     {
         $this->assertSame($equals, $token->equals($other, $caseSensitive));
     }
 
-    public function provideEquals()
+    public function provideEqualsCases()
     {
         $brace = $this->getBraceToken();
         $function = new Token([T_FUNCTION, 'function', 1]);
@@ -380,7 +414,7 @@ final class TokenTest extends TestCase
      * @param array $other
      * @param bool  $caseSensitive
      *
-     * @dataProvider provideEqualsAny
+     * @dataProvider provideEqualsAnyCases
      */
     public function testEqualsAny($equalsAny, array $other, $caseSensitive = true)
     {
@@ -389,7 +423,7 @@ final class TokenTest extends TestCase
         $this->assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
 
-    public function provideEqualsAny()
+    public function provideEqualsAnyCases()
     {
         $brace = $this->getBraceToken();
         $foreach = $this->getForeachToken();
@@ -411,14 +445,14 @@ final class TokenTest extends TestCase
      * @param array|bool $caseSensitive
      * @param int        $key
      *
-     * @dataProvider provideIsKeyCaseSensitive
+     * @dataProvider provideIsKeyCaseSensitiveCases
      */
     public function testIsKeyCaseSensitive($isKeyCaseSensitive, $caseSensitive, $key)
     {
         $this->assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
     }
 
-    public function provideIsKeyCaseSensitive()
+    public function provideIsKeyCaseSensitiveCases()
     {
         return [
             [true, true, 0],
@@ -434,6 +468,45 @@ final class TokenTest extends TestCase
             [false, [true, false], 1],
             [false, [true, false, true], 1],
             [false, [1 => false], 1],
+        ];
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isChanged is deprecated and will be removed in 3.0.
+     */
+    public function testIsChanged()
+    {
+        $token = new Token([T_WHITESPACE, ' ']);
+        $this->assertFalse($token->isChanged());
+    }
+
+    /**
+     * @param null|string $expected
+     * @param int         $id
+     *
+     * @dataProvider provideTokenGetNameCases
+     */
+    public function testTokenGetNameForId($expected, $id)
+    {
+        $this->assertSame($expected, Token::getNameForId($id));
+    }
+
+    public function provideTokenGetNameCases()
+    {
+        return [
+            [
+                null,
+                -1,
+            ],
+            [
+                'T_CLASS',
+                T_CLASS,
+            ],
+            [
+                'CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            ],
         ];
     }
 }

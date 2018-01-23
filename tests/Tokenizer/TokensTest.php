@@ -13,9 +13,9 @@
 namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -53,7 +53,7 @@ final class TokensTest extends TestCase
      * @param null|int   $end
      * @param array|bool $caseSensitive
      *
-     * @dataProvider provideFindSequence
+     * @dataProvider provideFindSequenceCases
      */
     public function testFindSequence(
         $source,
@@ -76,7 +76,7 @@ final class TokensTest extends TestCase
         );
     }
 
-    public function provideFindSequence()
+    public function provideFindSequenceCases()
     {
         return [
             [
@@ -283,20 +283,18 @@ final class TokensTest extends TestCase
      * @param string $message
      * @param array  $sequence
      *
-     * @dataProvider provideFindSequenceExceptions
+     * @dataProvider provideFindSequenceExceptionCases
      */
     public function testFindSequenceException($message, array $sequence)
     {
-        $this->setExpectedException(
-            \InvalidArgumentException::class,
-            $message
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($message);
 
         $tokens = Tokens::fromCode('<?php $x = 1;');
         $tokens->findSequence($sequence);
     }
 
-    public function provideFindSequenceExceptions()
+    public function provideFindSequenceExceptionCases()
     {
         $emptyToken = new Token('');
 
@@ -346,7 +344,7 @@ PHP;
     }
 
     /**
-     * @dataProvider provideMonolithicPhpDetection
+     * @dataProvider provideMonolithicPhpDetectionCases
      *
      * @param string $source
      * @param bool   $isMonolithic
@@ -357,7 +355,7 @@ PHP;
         $this->assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideMonolithicPhpDetection()
+    public function provideMonolithicPhpDetectionCases()
     {
         return [
             ["<?php\n", true],
@@ -372,7 +370,7 @@ PHP;
     }
 
     /**
-     * @dataProvider provideShortOpenTagMonolithicPhpDetection
+     * @dataProvider provideShortOpenTagMonolithicPhpDetectionCases
      *
      * @param string $source
      * @param bool   $monolithic
@@ -387,7 +385,7 @@ PHP;
         $this->assertSame($monolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideShortOpenTagMonolithicPhpDetection()
+    public function provideShortOpenTagMonolithicPhpDetectionCases()
     {
         return [
             ["<?\n", true],
@@ -403,7 +401,7 @@ PHP;
     }
 
     /**
-     * @dataProvider provideShortOpenTagEchoMonolithicPhpDetection
+     * @dataProvider provideShortOpenTagEchoMonolithicPhpDetectionCases
      *
      * @param string $source
      * @param bool   $monolithic
@@ -414,7 +412,7 @@ PHP;
         $this->assertSame($monolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideShortOpenTagEchoMonolithicPhpDetection()
+    public function provideShortOpenTagEchoMonolithicPhpDetectionCases()
     {
         return [
             ["<?=' ';\n", true],
@@ -519,7 +517,7 @@ PHP;
      * @param Token[] $expected tokens
      * @param int[]   $indexes  to clear
      *
-     * @dataProvider getClearTokenAndMergeSurroundingWhitespaceCases
+     * @dataProvider provideGetClearTokenAndMergeSurroundingWhitespaceCases
      */
     public function testClearTokenAndMergeSurroundingWhitespace($source, array $indexes, array $expected)
     {
@@ -529,7 +527,7 @@ PHP;
         }
     }
 
-    public function getClearTokenAndMergeSurroundingWhitespaceCases()
+    public function provideGetClearTokenAndMergeSurroundingWhitespaceCases()
     {
         $clearToken = new Token('');
 
@@ -707,6 +705,28 @@ PHP;
             [5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3],
             [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
             [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5],
+            [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
+        ];
+    }
+
+    /**
+     * @param int    $expectedIndex
+     * @param string $source
+     * @param int    $type
+     * @param int    $searchIndex
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideFindBlockEnd70Cases
+     */
+    public function testFindBlockEnd70($expectedIndex, $source, $type, $searchIndex)
+    {
+        $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    public function provideFindBlockEnd70Cases()
+    {
+        return [
+            [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
         ];
     }
 
@@ -717,14 +737,14 @@ PHP;
      * @param int    $searchIndex
      *
      * @requires PHP 7.1
-     * @dataProvider provideFindBlockEndCases71
+     * @dataProvider provideFindBlockEnd71Cases
      */
     public function testFindBlockEnd71($expectedIndex, $source, $type, $searchIndex)
     {
         $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
-    public function provideFindBlockEndCases71()
+    public function provideFindBlockEnd71Cases()
     {
         return [
             [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5],
@@ -734,10 +754,8 @@ PHP;
 
     public function testFindBlockEndInvalidType()
     {
-        $this->setExpectedExceptionRegExp(
-            \InvalidArgumentException::class,
-            '/^Invalid param type: -1\.$/'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('/^Invalid param type: -1\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
@@ -746,10 +764,8 @@ PHP;
 
     public function testFindBlockEndInvalidStart()
     {
-        $this->setExpectedExceptionRegExp(
-            \InvalidArgumentException::class,
-            '/^Invalid param \$startIndex - not a proper block start\.$/'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('/^Invalid param \$startIndex - not a proper block start\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
@@ -1002,6 +1018,39 @@ echo $a;',
         ];
     }
 
+    public function testAssertTokensAfterChanging()
+    {
+        $template =
+            '<?php class SomeClass {
+                    %s//
+
+                    public function __construct($name)
+                    {
+                        $this->name = $name;
+                    }
+            }';
+
+        $tokens = Tokens::fromCode(sprintf($template, ''));
+        $commentIndex = $tokens->getNextTokenOfKind(0, [[T_COMMENT]]);
+
+        $tokens->insertAt(
+            $commentIndex,
+            [
+                new Token([T_PRIVATE, 'private']),
+                new Token([T_WHITESPACE, ' ']),
+                new Token([T_VARIABLE, '$name']),
+                new Token(';'),
+            ]
+        );
+
+        $this->assertTrue($tokens->isChanged());
+
+        $expected = Tokens::fromCode(sprintf($template, 'private $name;'));
+        $this->assertFalse($expected->isChanged());
+
+        $this->assertTokens($expected, $tokens);
+    }
+
     /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
@@ -1012,7 +1061,8 @@ echo $a;',
             $this->assertNull($input);
 
             return;
-        } elseif (null === $input) {
+        }
+        if (null === $input) {
             $this->fail('While "input" is <null>, "expected" is not.');
         }
 

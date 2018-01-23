@@ -60,7 +60,7 @@ final class Sample
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CLASS);
+        return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL, T_PROTECTED]);
     }
 
     /**

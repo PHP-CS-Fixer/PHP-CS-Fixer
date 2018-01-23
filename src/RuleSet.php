@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+
 /**
  * Set of rules to be used by fixer.
  *
@@ -55,10 +57,7 @@ final class RuleSet implements RuleSetInterface
         ],
         '@Symfony' => [
             '@PSR2' => true,
-            'binary_operator_spaces' => [
-                'align_double_arrow' => false,
-                'align_equals' => false,
-            ],
+            'binary_operator_spaces' => true,
             'blank_line_after_opening_tag' => true,
             'blank_line_before_statement' => [
                 'statements' => ['return'],
@@ -67,16 +66,16 @@ final class RuleSet implements RuleSetInterface
                 'allow_single_line_closure' => true,
             ],
             'cast_spaces' => true,
+            'class_attributes_separation' => ['elements' => ['method']],
             'class_definition' => ['singleLine' => true],
             'concat_space' => ['spacing' => 'none'],
             'declare_equal_normalize' => true,
             'function_typehint_space' => true,
-            'hash_to_slash_comment' => true,
             'include' => true,
+            'increment_style' => true,
             'lowercase_cast' => true,
             'magic_constant_casing' => true,
             'method_argument_space' => true,
-            'method_separation' => true,
             'native_function_casing' => true,
             'new_with_braces' => true,
             'no_blank_lines_after_class_opening' => true,
@@ -84,7 +83,7 @@ final class RuleSet implements RuleSetInterface
             'no_empty_comment' => true,
             'no_empty_phpdoc' => true,
             'no_empty_statement' => true,
-            'no_extra_consecutive_blank_lines' => ['tokens' => [
+            'no_extra_blank_lines' => ['tokens' => [
                 'curly_brace_block',
                 'extra',
                 'parenthesis_brace_block',
@@ -102,13 +101,26 @@ final class RuleSet implements RuleSetInterface
             'no_trailing_comma_in_list_call' => true,
             'no_trailing_comma_in_singleline_array' => true,
             'no_unneeded_control_parentheses' => true,
+            'no_unneeded_curly_braces' => true,
+            'no_unneeded_final_method' => true,
             'no_unused_imports' => true,
             'no_whitespace_before_comma_in_array' => true,
             'no_whitespace_in_blank_line' => true,
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
             'php_unit_fqcn_annotation' => true,
-            'phpdoc_align' => true,
+            'phpdoc_align' => [
+                // @TODO: on 3.0 switch whole rule to `=> true`, currently we use custom config that will be default on 3.0
+                'tags' => [
+                    'method',
+                    'param',
+                    'property',
+                    'return',
+                    'throws',
+                    'type',
+                    'var',
+                ],
+            ],
             'phpdoc_annotation_without_dot' => true,
             'phpdoc_indent' => true,
             'phpdoc_inline_tag' => true,
@@ -126,21 +138,27 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_trim' => true,
             'phpdoc_types' => true,
             'phpdoc_var_without_name' => true,
-            'pre_increment' => true,
             'protected_to_private' => true,
             'return_type_declaration' => true,
             'self_accessor' => true,
+            'semicolon_after_instruction' => true,
             'short_scalar_cast' => true,
             'single_blank_line_before_namespace' => true,
             'single_class_element_per_statement' => true,
+            'single_line_comment_style' => [
+                'comment_types' => ['hash'],
+            ],
             'single_quote' => true,
-            'space_after_semicolon' => true,
+            'space_after_semicolon' => [
+                'remove_in_empty_for_expressions' => true,
+            ],
             'standardize_not_equals' => true,
             'ternary_operator_spaces' => true,
             'trailing_comma_in_multiline_array' => true,
             'trim_array_spaces' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
+            'yoda_style' => true,
         ],
         '@Symfony:risky' => [
             'dir_constant' => true,
@@ -149,17 +167,35 @@ final class RuleSet implements RuleSetInterface
             'is_null' => true,
             'modernize_types_casting' => true,
             'no_alias_functions' => true,
-            'non_printable_character' => true,
+            'no_homoglyph_names' => true,
+            'non_printable_character' => [
+                'use_escape_sequences_in_strings' => false,
+            ],
             'php_unit_construct' => true,
-            'php_unit_dedicate_assert' => true,
             'psr4' => true,
             'silenced_deprecation_error' => true,
         ],
-        '@PHP56Migration' => [
+        '@DoctrineAnnotation' => [
+            'doctrine_annotation_array_assignment' => [
+                'operator' => ':',
+            ],
+            'doctrine_annotation_braces' => true,
+            'doctrine_annotation_indentation' => true,
+            'doctrine_annotation_spaces' => [
+                'before_array_assignments_colon' => false,
+            ],
+        ],
+        '@PHP56Migration' => [],
+        '@PHP56Migration:risky' => [
             'pow_to_exponentiation' => true,
         ],
         '@PHP70Migration' => [
             '@PHP56Migration' => true,
+            'ternary_to_null_coalescing' => true,
+        ],
+        '@PHP70Migration:risky' => [
+            '@PHP56Migration:risky' => true,
+            'declare_strict_types' => true,
             'non_printable_character' => [
                 'use_escape_sequences_in_strings' => true,
             ],
@@ -167,10 +203,6 @@ final class RuleSet implements RuleSetInterface
                 'mt_rand' => 'random_int',
                 'rand' => 'random_int',
             ]],
-            'ternary_to_null_coalescing' => true,
-        ],
-        '@PHP70Migration:risky' => [
-            'declare_strict_types' => true,
         ],
         '@PHP71Migration' => [
             '@PHP70Migration' => true,
@@ -183,6 +215,54 @@ final class RuleSet implements RuleSetInterface
         '@PHP71Migration:risky' => [
             '@PHP70Migration:risky' => true,
             'void_return' => true,
+        ],
+        '@PHPUnit30Migration:risky' => [
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_0],
+        ],
+        '@PHPUnit32Migration:risky' => [
+            '@PHPUnit30Migration:risky' => true,
+            'php_unit_no_expectation_annotation' => ['target' => PhpUnitTargetVersion::VERSION_3_2],
+        ],
+        '@PHPUnit35Migration:risky' => [
+            '@PHPUnit32Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_5],
+        ],
+        '@PHPUnit43Migration:risky' => [
+            '@PHPUnit35Migration:risky' => true,
+            'php_unit_no_expectation_annotation' => ['target' => PhpUnitTargetVersion::VERSION_4_3],
+        ],
+        '@PHPUnit48Migration:risky' => [
+            '@PHPUnit43Migration:risky' => true,
+            'php_unit_namespaced' => ['target' => PhpUnitTargetVersion::VERSION_4_8],
+        ],
+        '@PHPUnit50Migration:risky' => [
+            '@PHPUnit48Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_0],
+        ],
+        '@PHPUnit52Migration:risky' => [
+            '@PHPUnit50Migration:risky' => true,
+            'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_2],
+        ],
+        '@PHPUnit54Migration:risky' => [
+            '@PHPUnit52Migration:risky' => true,
+            'php_unit_mock' => ['target' => PhpUnitTargetVersion::VERSION_5_4],
+        ],
+        '@PHPUnit55Migration:risky' => [
+            '@PHPUnit54Migration:risky' => true,
+            'php_unit_mock' => ['target' => PhpUnitTargetVersion::VERSION_5_5],
+        ],
+        '@PHPUnit56Migration:risky' => [
+            '@PHPUnit55Migration:risky' => true,
+            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
+            'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_5_6],
+        ],
+        '@PHPUnit57Migration:risky' => [
+            '@PHPUnit56Migration:risky' => true,
+            'php_unit_namespaced' => ['target' => PhpUnitTargetVersion::VERSION_5_7],
+        ],
+        '@PHPUnit60Migration:risky' => [
+            '@PHPUnit57Migration:risky' => true,
+            'php_unit_namespaced' => ['target' => PhpUnitTargetVersion::VERSION_6_0],
         ],
     ];
 
@@ -239,7 +319,7 @@ final class RuleSet implements RuleSetInterface
             throw new \InvalidArgumentException(sprintf('Rule "%s" is not in the set.', $rule));
         }
 
-        if ($this->rules[$rule] === true) {
+        if (true === $this->rules[$rule]) {
             return null;
         }
 

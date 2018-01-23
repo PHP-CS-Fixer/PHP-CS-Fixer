@@ -42,7 +42,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
      * @param string $input
      * @param array  $config
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input, array $config)
     {
@@ -50,7 +50,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
             'minimal case remove whitespace (default config)' => [
@@ -109,19 +109,17 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
      * @param array  $config
      * @param string $expectedMessage
      *
-     * @dataProvider provideInvalidConfig
+     * @dataProvider provideInvalidConfigCases
      */
     public function testInvalidConfig(array $config, $expectedMessage)
     {
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage)
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage(sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage));
 
         $this->fixer->configure($config);
     }
 
-    public function provideInvalidConfig()
+    public function provideInvalidConfigCases()
     {
         return [
             [

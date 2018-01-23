@@ -26,7 +26,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
@@ -37,7 +37,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixCases
+     * @dataProvider provideFixCases
      */
     public function testFixWithUnindentedMixedLines($expected, $input = null)
     {
@@ -50,7 +50,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
     /**
      * @return array
      */
-    public function getFixCases()
+    public function provideFixCases()
     {
         return $this->createTestCases([
             ['
@@ -315,6 +315,17 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @fixme
  *     @override
  */'],
+            ['
+/**
+ * @Foo({
+ * @Bar()}
+ * )
+ */', '
+/**
+ * @Foo({
+ *     @Bar()}
+ * )
+ */'],
         ]);
     }
 
@@ -322,7 +333,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider getFixWithIndentedMixedLinesCases
+     * @dataProvider provideFixWithIndentedMixedLinesCases
      */
     public function testFixWithIndentedMixedLines($expected, $input = null)
     {
@@ -335,7 +346,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
     /**
      * @return array
      */
-    public function getFixWithIndentedMixedLinesCases()
+    public function provideFixWithIndentedMixedLinesCases()
     {
         return $this->createTestCases([
             ['
@@ -599,6 +610,12 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @FIXME
  *     @fixme
  *     @override
+ */'],
+            ['
+/**
+ * @Foo({
+ *     @Bar()}
+ * )
  */'],
         ]);
     }

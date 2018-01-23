@@ -85,6 +85,11 @@ class InvalidName {}
                     return;
                 }
 
+                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+                if ($prevToken->isGivenKind(T_NEW)) {
+                    return;
+                }
+
                 $classyIndex = $tokens->getNextMeaningfulToken($index);
                 $classyName = $tokens[$classyIndex]->getContent();
             }

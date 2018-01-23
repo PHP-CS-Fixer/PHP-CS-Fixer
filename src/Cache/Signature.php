@@ -63,15 +63,9 @@ final class Signature implements SignatureInterface
 
     public function equals(SignatureInterface $signature)
     {
-        if (
-            $this->phpVersion !== $signature->getPhpVersion()
-            || $this->fixerVersion !== $signature->getFixerVersion()
-            || $this->rules !== $signature->getRules()
-        ) {
-            return false;
-        }
-
-        return true;
+        return $this->phpVersion === $signature->getPhpVersion()
+            && $this->fixerVersion === $signature->getFixerVersion()
+            && $this->rules === $signature->getRules();
     }
 
     private static function utf8Encode(array $data)
@@ -80,7 +74,7 @@ final class Signature implements SignatureInterface
             return $data;
         }
 
-        array_walk_recursive($data, function (&$item) {
+        array_walk_recursive($data, static function (&$item) {
             if (is_string($item) && !mb_detect_encoding($item, 'utf-8', true)) {
                 $item = utf8_encode($item);
             }

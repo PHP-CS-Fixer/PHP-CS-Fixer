@@ -27,7 +27,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
@@ -38,7 +38,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provide70Cases
+     * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
     public function testFix70($expected, $input = null)
@@ -46,9 +46,18 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCases()
+    public function provideFixCases()
     {
         return [
+            [
+                '<?php class A { public function B(){ $static = new static(new \SplFileInfo(__FILE__)); }}',
+            ],
+            [
+                '<?php $static = new self(new \SplFileInfo(__FILE__));',
+            ],
+            [
+                '<?php $x = new X/**/ /**/ /**//**//**/ /**//**/   (/**/ /**/ /**//**//**/ /**//**/)/**/ /**/ /**//**//**/ /**//**/;/**/ /**/ /**//**//**/ /**//**/',
+            ],
             [
                 '<?php $x = new X();',
                 '<?php $x = new X;',
@@ -241,7 +250,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function provide70Cases()
+    public function provideFix70Cases()
     {
         return [
             [
@@ -268,6 +277,22 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
                     $a = new class  extends Bar2 implements Foo{};
                     $a = new class    extends Bar3 implements Foo, Foo2{};
                     $a = new class {}?>
+                ',
+            ],
+            [
+                '<?php
+                    class A {
+                        public function B() {
+                            $static = new static(new class(){});
+                        }
+                    }
+                ',
+                '<?php
+                    class A {
+                        public function B() {
+                            $static = new static(new class{});
+                        }
+                    }
                 ',
             ],
         ];

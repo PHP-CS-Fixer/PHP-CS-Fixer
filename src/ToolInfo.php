@@ -21,65 +21,88 @@ use PhpCsFixer\Console\Application;
  *
  * @internal
  */
-final class ToolInfo
+final class ToolInfo implements ToolInfoInterface
 {
     const COMPOSER_PACKAGE_NAME = 'friendsofphp/php-cs-fixer';
 
-    public static function getComposerVersion()
-    {
-        static $result;
+    const COMPOSER_LEGACY_PACKAGE_NAME = 'fabpot/php-cs-fixer';
 
-        if (!self::isInstalledByComposer()) {
+    /**
+     * @var null|array
+     */
+    private $composerInstallationDetails;
+
+    /**
+     * @var null|bool
+     */
+    private $isInstalledByComposer;
+
+    public function getComposerInstallationDetails()
+    {
+        if (!$this->isInstalledByComposer()) {
             throw new \LogicException('Cannot get composer version for tool not installed by composer.');
         }
 
-        if (null === $result) {
-            $composerInstalled = json_decode(file_get_contents(self::getComposerInstalledFile()), true);
+        if (null === $this->composerInstallationDetails) {
+            $composerInstalled = json_decode(file_get_contents($this->getComposerInstalledFile()), true);
 
             foreach ($composerInstalled as $package) {
-                if (self::COMPOSER_PACKAGE_NAME === $package['name']) {
-                    $result = $package['version'].'#'.$package['dist']['reference'];
+                if (in_array($package['name'], [self::COMPOSER_PACKAGE_NAME, self::COMPOSER_LEGACY_PACKAGE_NAME], true)) {
+                    $this->composerInstallationDetails = $package;
 
                     break;
                 }
             }
         }
 
-        return $result;
+        return $this->composerInstallationDetails;
     }
 
-    public static function getVersion()
+    public function getComposerVersion()
     {
-        if (self::isInstalledByComposer()) {
-            return Application::VERSION.':'.self::getComposerVersion();
+        $package = $this->getComposerInstallationDetails();
+
+        $versionSuffix = '';
+
+        if (isset($package['dist'])) {
+            $versionSuffix = '#'.$package['dist']['reference'];
+        }
+
+        return $package['version'].$versionSuffix;
+    }
+
+    public function getVersion()
+    {
+        if ($this->isInstalledByComposer()) {
+            return Application::VERSION.':'.$this->getComposerVersion();
         }
 
         return Application::VERSION;
     }
 
-    public static function isInstalledAsPhar()
+    public function isInstalledAsPhar()
     {
-        static $result;
-
-        if (null === $result) {
-            $result = 'phar://' === substr(__DIR__, 0, 7);
-        }
-
-        return $result;
+        return 'phar://' === substr(__DIR__, 0, 7);
     }
 
-    public static function isInstalledByComposer()
+    public function isInstalledByComposer()
     {
-        static $result;
-
-        if (null === $result) {
-            $result = !self::isInstalledAsPhar() && file_exists(self::getComposerInstalledFile());
+        if (null === $this->isInstalledByComposer) {
+            $this->isInstalledByComposer = !$this->isInstalledAsPhar() && file_exists($this->getComposerInstalledFile());
         }
 
-        return $result;
+        return $this->isInstalledByComposer;
     }
 
-    private static function getComposerInstalledFile()
+    public function getPharDownloadUri($version)
+    {
+        return sprintf(
+            'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar',
+            $version
+        );
+    }
+
+    private function getComposerInstalledFile()
     {
         return __DIR__.'/../../../composer/installed.json';
     }

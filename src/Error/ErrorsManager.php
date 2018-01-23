@@ -33,8 +33,8 @@ final class ErrorsManager
      */
     public function getInvalidErrors()
     {
-        return array_filter($this->errors, function (Error $error) {
-            return $error->getType() === Error::TYPE_INVALID;
+        return array_filter($this->errors, static function (Error $error) {
+            return Error::TYPE_INVALID === $error->getType();
         });
     }
 
@@ -45,8 +45,8 @@ final class ErrorsManager
      */
     public function getExceptionErrors()
     {
-        return array_filter($this->errors, function (Error $error) {
-            return $error->getType() === Error::TYPE_EXCEPTION;
+        return array_filter($this->errors, static function (Error $error) {
+            return Error::TYPE_EXCEPTION === $error->getType();
         });
     }
 
@@ -57,8 +57,8 @@ final class ErrorsManager
      */
     public function getLintErrors()
     {
-        return array_filter($this->errors, function (Error $error) {
-            return $error->getType() === Error::TYPE_LINT;
+        return array_filter($this->errors, static function (Error $error) {
+            return Error::TYPE_LINT === $error->getType();
         });
     }
 

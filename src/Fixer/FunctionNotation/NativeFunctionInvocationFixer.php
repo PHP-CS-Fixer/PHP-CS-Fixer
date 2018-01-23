@@ -45,7 +45,8 @@ function baz($options)
     }
 
     return json_encode($options);
-}'
+}
+'
                 ),
                 new CodeSample(
 '<?php
@@ -57,7 +58,8 @@ function baz($options)
     }
 
     return json_encode($options);
-}',
+}
+',
                     [
                         'exclude' => [
                             'json_encode',
@@ -130,7 +132,7 @@ function baz($options)
             }
 
             // do not bother if previous token is already namespace separator
-            if ($tokens[$index - 1]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NS_SEPARATOR)) {
                 continue;
             }
 
@@ -151,9 +153,9 @@ function baz($options)
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('exclude', 'List of functions to ignore.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([function ($value) {
+                ->setAllowedValues([static function ($value) {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || \trim($functionName) === '' || \trim($functionName) !== $functionName) {
+                        if (!\is_string($functionName) || '' === \trim($functionName) || \trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(\sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
@@ -188,6 +190,8 @@ function baz($options)
      */
     private function normalizeFunctionNames(array $functionNames)
     {
-        return \array_map('strtolower', $functionNames);
+        return \array_map(static function ($functionName) {
+            return \strtolower($functionName);
+        }, $functionNames);
     }
 }
