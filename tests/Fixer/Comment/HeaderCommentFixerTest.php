@@ -304,6 +304,65 @@ echo \'x\';',
 
 echo \'x\';',
             ],
+            [
+                [
+                    'header' => 'foo',
+                    'location' => 'after_open',
+                    'separate' => 'bottom',
+                    'commentType' => 'PHPDoc',
+                ],
+                '<?php
+/**
+ * foo
+ */
+
+declare(strict_types=1);
+
+namespace A;
+
+echo 1;',
+                '<?php
+
+declare(strict_types=1);
+/**
+ * foo
+ */
+
+namespace A;
+
+echo 1;'
+            ],
+            [
+                [
+                    'header' => 'foo',
+                    'location' => 'after_open',
+                    'separate' => 'bottom',
+                    'commentType' => 'PHPDoc',
+                ],
+                '<?php
+/**
+ * foo
+ */
+
+declare(strict_types=1);
+/**
+ * bar
+ */
+
+namespace A;
+
+echo 1;',
+                '<?php
+
+declare(strict_types=1);
+/**
+ * bar
+ */
+
+namespace A;
+
+echo 1;'
+            ],
         ];
     }
 
