@@ -12,26 +12,21 @@
 
 namespace PhpCsFixer\Fixer\Semicolon;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @deprecated since 2.9.1, replaced by MultilineWhitespaceBeforeSemicolonsFixer
+ *
+ * @todo To be removed at 3.0
+ *
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class NoMultilineWhitespaceBeforeSemicolonsFixer extends AbstractProxyFixer implements DeprecatedFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(';');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -55,27 +50,19 @@ function foo () {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    public function getSuccessorsNames()
     {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
+        return array_keys($this->proxyFixers);
+    }
 
-        foreach ($tokens as $index => $token) {
-            if (!$token->equals(';')) {
-                continue;
-            }
+    /**
+     * {@inheritdoc}
+     */
+    protected function createProxyFixers()
+    {
+        $fixer = new MultilineWhitespaceBeforeSemicolonsFixer();
+        $fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE]);
 
-            $previousIndex = $index - 1;
-            $previous = $tokens[$previousIndex];
-            if (!$previous->isWhitespace() || false === strpos($previous->getContent(), "\n")) {
-                continue;
-            }
-
-            $content = $previous->getContent();
-            if (("\n" === $content[0] || "\r" === $content[0]) && $tokens[$index - 2]->isComment()) {
-                $tokens[$previousIndex] = new Token([$previous->getId(), $lineEnding]);
-            } else {
-                $tokens->clearAt($previousIndex);
-            }
-        }
+        return [$fixer];
     }
 }

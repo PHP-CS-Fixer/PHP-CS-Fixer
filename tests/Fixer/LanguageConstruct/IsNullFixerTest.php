@@ -33,6 +33,10 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         $fixer->configure(['yoda' => true]);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     */
     public function testConfigurationWrongValue()
     {
         $fixer = new IsNullFixer();
@@ -42,6 +46,10 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         $fixer->configure(['use_yoda_style' => -1]);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     */
     public function testCorrectConfiguration()
     {
         $fixer = new IsNullFixer();
@@ -52,18 +60,17 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideYodaFixCases
+     * @dataProvider provideFixCases
      *
      * @param string      $expected
      * @param null|string $input
      */
-    public function testYodaFix($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
-        $this->fixer->configure(['use_yoda_style' => true]);
         $this->doTest($expected, $input);
     }
 
-    public function provideYodaFixCases()
+    public function provideFixCases()
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =
@@ -222,6 +229,9 @@ FIXED;
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     *
      * @dataProvider provideNonYodaFixCases
      *
      * @param string      $expected

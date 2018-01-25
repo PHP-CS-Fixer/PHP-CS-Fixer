@@ -157,6 +157,10 @@ final class DescribeCommand extends Command
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', get_class($fixer)));
+        }
+
         $output->writeln($description);
         if ($definition->getDescription()) {
             $output->writeln($definition->getDescription());
@@ -224,7 +228,7 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        $codeSamples = array_filter($definition->getCodeSamples(), function (CodeSampleInterface $codeSample) {
+        $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample) {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
                 return $codeSample->isSuitableFor(PHP_VERSION_ID);
             }

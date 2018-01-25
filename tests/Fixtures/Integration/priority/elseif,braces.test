@@ -1,0 +1,33 @@
+--TEST--
+Integration of fixers: elseif, braces
+--RULESET--
+{"elseif": true, "braces": true}
+--EXPECT--
+<?php
+
+class Foo
+{
+    private $var;
+
+    public function __construct()
+    {
+        if (1 == 1) {
+            $var = 1;
+        } elseif (1 == 2) {
+            $var = 2;
+        }
+    }
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    private $var;
+
+    public function __construct()
+    {
+        if(1 == 1) {
+            $var = 1; } else if (1 == 2) {
+$var = 2;}}}

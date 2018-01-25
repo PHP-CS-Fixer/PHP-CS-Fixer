@@ -15,8 +15,8 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -143,7 +143,7 @@ final class CacheTest extends TestCase
             'hashes' => [],
         ];
 
-        return array_map(function ($missingKey) use ($data) {
+        return array_map(static function ($missingKey) use ($data) {
             unset($data[$missingKey]);
 
             return [

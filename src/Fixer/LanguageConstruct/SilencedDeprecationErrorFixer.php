@@ -70,7 +70,7 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
                 $prev = $tokens->getPrevMeaningfulToken($start);
             }
 
-            if ($tokens[$prev]->isGivenKind(T_STRING) || $tokens[$prev]->equals('@')) {
+            if ($tokens[$prev]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_STRING]) || $tokens[$prev]->equals('@')) {
                 continue;
             }
 

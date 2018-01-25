@@ -13,16 +13,17 @@
 namespace PhpCsFixer\Tests\Test;
 
 use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 /**
@@ -40,7 +41,7 @@ abstract class AbstractFixerTestCase extends TestCase
     protected $linter;
 
     /**
-     * @var null|FixerInterface
+     * @var null|ConfigurableFixerInterface|FixerInterface
      */
     protected $fixer;
 
@@ -165,7 +166,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             $this->assertSame(
                 count($tokens),
-                count(array_unique(array_map(function (Token $token) {
+                count(array_unique(array_map(static function (Token $token) {
                     return spl_object_hash($token);
                 }, $tokens->toArray()))),
                 'Token items inside Tokens collection must be unique.'
@@ -204,7 +205,7 @@ abstract class AbstractFixerTestCase extends TestCase
         try {
             $this->linter->lintSource($source)->check();
         } catch (\Exception $e) {
-            return $e->getMessage()."\n\nSource:\n$source";
+            return $e->getMessage()."\n\nSource:\n${source}";
         }
     }
 

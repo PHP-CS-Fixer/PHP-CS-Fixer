@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: is_null,yoda_style.
+--RULESET--
+{"is_null": true, "yoda_style": {"identical": false}}
+--EXPECT--
+<?php
+$foo === null;
+$bar === null;
+$baz === null;
+
+--INPUT--
+<?php
+null === $foo;
+is_null($bar);
+$baz === null;

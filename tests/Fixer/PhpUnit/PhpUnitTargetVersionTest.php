@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

@@ -12,9 +12,9 @@
 
 namespace PhpCsFixer\Tests\Test;
 
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -50,7 +50,7 @@ abstract class AbstractTransformerTestCase extends TestCase
             $this->countTokenPrototypes(
                 $tokens,
                 array_map(
-                    function ($kindOrPrototype) {
+                    static function ($kindOrPrototype) {
                         return is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype;
                     },
                     array_unique(array_merge($observedKindsOrPrototypes, $expectedTokens))
