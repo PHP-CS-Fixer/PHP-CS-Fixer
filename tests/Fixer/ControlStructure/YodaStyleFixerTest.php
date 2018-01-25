@@ -679,4 +679,47 @@ function a() {
             ],
         ];
     }
+
+    /**
+     * @param array  $config
+     * @param string $expected
+     *
+     * @dataProvider provideFixWithConfigCases
+     */
+    public function testWithConfig(array $config, $expected)
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected);
+    }
+
+    public function provideFixWithConfigCases()
+    {
+        return [
+            [
+                [
+                    'identical' => false,
+                ],
+            '<?php
+$a = [1, 2, 3];
+while (2 !== $b = array_pop($c));
+',
+            ],
+            [
+                [
+                    'equal' => false,
+                    'identical' => false,
+                ],
+                '<?php
+                if ($revision->event == \'created\') {
+    foreach ($revision->getModified() as $col => $data) {
+        $model->$col = $data[\'new\'];
+    }
+} else {
+    foreach ($revision->getModified() as $col => $data) {
+        $model->$col = $data[\'old\'];
+    }
+}',
+            ],
+        ];
+    }
 }
