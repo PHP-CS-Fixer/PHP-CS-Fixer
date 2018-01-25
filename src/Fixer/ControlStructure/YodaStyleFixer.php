@@ -136,6 +136,12 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
         $count = count($tokens);
         while ($index < $count) {
             $token = $tokens[$index];
+            if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+                ++$index;
+
+                continue;
+            }
+
             if ($this->isOfLowerPrecedence($token)) {
                 break;
             }
@@ -175,9 +181,16 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
     private function findComparisonStart(Tokens $tokens, $index)
     {
         --$index;
-        $foundMeaningfulToken = false;
+        $nonBlockFound = false;
+
         while (0 <= $index) {
             $token = $tokens[$index];
+            if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+                --$index;
+
+                continue;
+            }
+
             if ($this->isOfLowerPrecedence($token)) {
                 break;
             }
@@ -185,19 +198,15 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             $block = Tokens::detectBlockType($token);
             if (null === $block) {
                 --$index;
-
-                if (!$token->isWhitespace() && !$token->isComment()) {
-                    $foundMeaningfulToken = true;
-                }
+                $nonBlockFound = true;
 
                 continue;
             }
 
-            if ($block['isStart']) {
-                break;
-            }
-
-            if ($foundMeaningfulToken && Tokens::BLOCK_TYPE_CURLY_BRACE === $block['type']) {
+            if (
+                $block['isStart']
+                || ($nonBlockFound && Tokens::BLOCK_TYPE_CURLY_BRACE === $block['type']) // closing of structure not related to the comparison
+            ) {
                 break;
             }
 
@@ -409,10 +418,6 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      */
     private function isOfLowerPrecedence(Token $token)
     {
-        if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
-            return false;
-        }
-
         static $tokens;
 
         if (null === $tokens) {
