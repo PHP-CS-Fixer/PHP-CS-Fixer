@@ -348,6 +348,11 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             }
 
             $right = $this->getRightSideCompareFixableInfo($tokens, $index);
+
+            if ($tokens[$tokens->getNextMeaningfulToken($right['end'])]->equals('=')) {
+                return null;
+            }
+
             $otherIsVar = $this->isVariable($tokens, $right['start'], $right['end']);
         }
 
