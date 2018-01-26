@@ -178,23 +178,37 @@ $this->assertTrue(is_readable($a));
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $searchSequence = [
-            [T_VARIABLE, '$this'],
-            [T_OBJECT_OPERATOR, '->'],
-            [T_STRING],
+        static $searchSequences = [
+            [
+                [T_VARIABLE, '$this'],
+                [T_OBJECT_OPERATOR, '->'],
+                [T_STRING],
+            ],
+            [
+                [T_STATIC, 'static'],
+                [T_DOUBLE_COLON, '::'],
+                [T_STRING],
+            ],
+            [
+                [T_STRING, 'self'],
+                [T_DOUBLE_COLON, '::'],
+                [T_STRING],
+            ],
         ];
 
-        $index = 1;
-        $candidate = $tokens->findSequence($searchSequence, $index);
-        while (null !== $candidate) {
-            end($candidate);
-            $index = $this->getAssertCandidate($tokens, key($candidate));
-            if (is_array($index)) {
-                $index = $this->fixAssert($tokens, $index);
-            }
-
-            ++$index;
+        foreach ($searchSequences as $searchSequence) {
+            $index = 1;
             $candidate = $tokens->findSequence($searchSequence, $index);
+            while (null !== $candidate) {
+                end($candidate);
+                $index = $this->getAssertCandidate($tokens, key($candidate));
+                if (is_array($index)) {
+                    $index = $this->fixAssert($tokens, $index);
+                }
+
+                ++$index;
+                $candidate = $tokens->findSequence($searchSequence, $index);
+            }
         }
     }
 
