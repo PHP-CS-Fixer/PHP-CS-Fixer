@@ -390,6 +390,22 @@ $a#4
                 $a === 1 ? b() : c();
                 ',
             ],
+            [
+               '<?php
+                function foo() {
+                    foreach ($arr as $key => $value) {
+                        false !== uniqid() ? 1 : 2;
+                    }
+                    false !== uniqid() ? 1 : 2;
+                }',
+                '<?php
+                function foo() {
+                    foreach ($arr as $key => $value) {
+                        uniqid() !== false ? 1 : 2;
+                    }
+                    uniqid() !== false ? 1 : 2;
+                }',
+           ],
         ];
     }
 
