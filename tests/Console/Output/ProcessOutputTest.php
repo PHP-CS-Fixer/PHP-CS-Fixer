@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\ProcessOutput;
 use PhpCsFixer\FixerFileProcessedEvent;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
@@ -40,7 +40,7 @@ final class ProcessOutputTest extends TestCase
             null
         );
 
-        $this->foreachStatus($statuses, function ($status) use ($processOutput) {
+        $this->foreachStatus($statuses, static function ($status) use ($processOutput) {
             $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
         });
 
@@ -182,7 +182,7 @@ final class ProcessOutputTest extends TestCase
     public function testProcessProgressOutputWithNumbers(array $statuses, $expectedOutput, $width = null)
     {
         $nbFiles = 0;
-        $this->foreachStatus($statuses, function ($status) use (&$nbFiles) {
+        $this->foreachStatus($statuses, static function ($status) use (&$nbFiles) {
             ++$nbFiles;
         });
 
@@ -193,7 +193,7 @@ final class ProcessOutputTest extends TestCase
             $nbFiles
         );
 
-        $this->foreachStatus($statuses, function ($status) use ($processOutput) {
+        $this->foreachStatus($statuses, static function ($status) use ($processOutput) {
             $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
         });
 

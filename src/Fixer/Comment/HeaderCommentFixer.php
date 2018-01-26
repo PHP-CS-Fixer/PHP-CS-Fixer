@@ -146,7 +146,7 @@ echo 1;
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('header', 'Proper header content.'))
                 ->setAllowedTypes(['string'])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value) {
                     if ('' === trim($value)) {
                         return '';
                     }

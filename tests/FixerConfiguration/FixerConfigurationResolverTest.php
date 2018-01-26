@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -137,7 +137,7 @@ final class FixerConfigurationResolverTest extends TestCase
     public function testResolveWithNormalizers()
     {
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, function (Options $options, $value) {
+            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) {
                 return (int) $value;
             }),
         ]);
@@ -149,7 +149,7 @@ final class FixerConfigurationResolverTest extends TestCase
 
         $exception = new InvalidOptionsException('');
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, function (Options $options, $value) use ($exception) {
+            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) use ($exception) {
                 throw $exception;
             }),
         ]);

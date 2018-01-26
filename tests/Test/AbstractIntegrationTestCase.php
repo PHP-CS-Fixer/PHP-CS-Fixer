@@ -23,9 +23,9 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -289,7 +289,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $this->assertGreaterThan(
                     1,
                     count(array_unique(array_map(
-                        function (FixerInterface $fixer) {
+                        static function (FixerInterface $fixer) {
                             return $fixer->getPriority();
                         },
                         $fixers

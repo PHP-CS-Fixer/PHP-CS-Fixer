@@ -268,7 +268,7 @@ $h = $i===  $j;
                 ->getOption(),
             (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([function ($option) {
+                ->setAllowedValues([static function ($option) {
                     foreach ($option as $operator => $value) {
                         if (!in_array($operator, self::$supportedOperators, true)) {
                             throw new InvalidOptionsException(

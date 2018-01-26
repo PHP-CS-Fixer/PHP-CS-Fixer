@@ -13,8 +13,8 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author SpacePossum

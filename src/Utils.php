@@ -55,7 +55,7 @@ final class Utils
     {
         return preg_replace_callback(
             '/(^|[a-z0-9])([A-Z])/',
-            function (array $matches) {
+            static function (array $matches) {
                 return strtolower('' !== $matches[1] ? $matches[1].'_'.$matches[2] : $matches[2]);
             },
             $string
@@ -141,11 +141,11 @@ final class Utils
      */
     public static function stableSort(array $elements, callable $getComparedValue, callable $compareValues)
     {
-        array_walk($elements, function (&$element, $index) use ($getComparedValue) {
+        array_walk($elements, static function (&$element, $index) use ($getComparedValue) {
             $element = [$element, $index, $getComparedValue($element)];
         });
 
-        usort($elements, function ($a, $b) use ($compareValues) {
+        usort($elements, static function ($a, $b) use ($compareValues) {
             $comparison = $compareValues($a[2], $b[2]);
 
             if (0 !== $comparison) {
@@ -155,7 +155,7 @@ final class Utils
             return self::cmpInt($a[1], $b[1]);
         });
 
-        return array_map(function (array $item) {
+        return array_map(static function (array $item) {
             return $item[0];
         }, $elements);
     }
@@ -173,10 +173,10 @@ final class Utils
         // `usort(): Array was modified by the user comparison function` warning for mocked objects.
         return self::stableSort(
             $fixers,
-            function (FixerInterface $fixer) {
+            static function (FixerInterface $fixer) {
                 return $fixer->getPriority();
             },
-            function ($a, $b) {
+            static function ($a, $b) {
                 return Utils::cmpInt($b, $a);
             }
         );
@@ -197,7 +197,7 @@ final class Utils
             throw new \InvalidArgumentException('Array of names cannot be empty');
         }
 
-        $names = array_map(function ($name) {
+        $names = array_map(static function ($name) {
             return sprintf('`%s`', $name);
         }, $names);
 

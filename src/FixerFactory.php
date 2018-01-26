@@ -242,7 +242,7 @@ final class FixerFactory
             // filter mutual conflicts
             $report[$fixer] = array_filter(
                 $fixers,
-                function ($candidate) use ($report, $fixer) {
+                static function ($candidate) use ($report, $fixer) {
                     return !array_key_exists($candidate, $report) || !in_array($fixer, $report[$candidate], true);
                 }
             );

@@ -312,7 +312,7 @@ switch($a) {
                 ->setAllowedValues([
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(self::$availableTokens),
                 ])
-                ->setNormalizer(function (Options $options, $tokens) {
+                ->setNormalizer(static function (Options $options, $tokens) {
                     foreach ($tokens as &$token) {
                         if ('useTrait' === $token) {
                             @trigger_error('Token "useTrait" is deprecated and will be removed in 3.0, use "use_trait" instead.', E_USER_DEPRECATED);

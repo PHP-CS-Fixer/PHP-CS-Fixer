@@ -10,11 +10,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\Smoke;
 
-use PhpCsFixer\FileRemoval;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Process\Process;
+use Keradus\CliExecutor\BashScriptExecutor;
+use Keradus\CliExecutor\CommandExecutor;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -23,41 +23,27 @@ use Symfony\Component\Process\Process;
  *
  * @requires OS Linux|Darwin
  * @coversNothing
+ * @large
  */
 final class CiIntegrationTest extends TestCase
 {
     public static $fixtureDir;
 
-    /**
-     * @var FileRemoval
-     */
-    private static $fileRemoval;
-
-    private static $tmpFilePath;
-    private static $tmpFileName;
-
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
 
-        static::$fixtureDir = __DIR__.'/Fixtures/ci-integration';
-
-        static::$tmpFileName = 'tmp.sh';
-        static::$tmpFilePath = static::$fixtureDir.'/'.static::$tmpFileName;
-        file_put_contents(static::$tmpFilePath, '');
-        chmod(static::$tmpFilePath, 0777);
-        self::$fileRemoval = new FileRemoval();
-        self::$fileRemoval->observe(static::$tmpFilePath);
+        self::$fixtureDir = __DIR__.'/../Fixtures/ci-integration';
 
         try {
-            static::executeCommand(implode(' && ', [
+            self::executeScript([
                 'rm -rf .git',
                 'git init -q',
                 'git config user.name test',
                 'git config user.email test',
                 'git add .',
                 'git commit -m "init" -q',
-            ]));
+            ]);
         } catch (\RuntimeException $e) {
             self::markTestSkipped($e->getMessage());
         }
@@ -67,21 +53,19 @@ final class CiIntegrationTest extends TestCase
     {
         parent::tearDownAfterClass();
 
-        static::executeCommand('rm -rf .git');
-
-        self::$fileRemoval->delete(static::$tmpFilePath);
+        self::executeCommand('rm -rf .git');
     }
 
     public function tearDown()
     {
         parent::tearDown();
 
-        static::executeCommand(implode(' && ', [
+        self::executeScript([
             'git reset . -q',
             'git checkout . -q',
             'git clean -fdq',
             'git checkout master -q',
-        ]));
+        ]);
     }
 
     /**
@@ -100,30 +84,30 @@ final class CiIntegrationTest extends TestCase
         array $expectedResult2Lines,
         $expectedResult3Files
     ) {
-        static::executeCommand(implode(' && ', array_merge(
+        self::executeScript(array_merge(
             [
-                "git checkout -b $branchName -q",
+                "git checkout -b ${branchName} -q",
             ],
             $caseCommands
-        )));
+        ));
 
-        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../dev-tools/ci-integration.sh')));
+        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../dev-tools/ci-integration.sh')));
         $steps = [
-            "COMMIT_RANGE=\"master..$branchName\"",
+            "COMMIT_RANGE=\"master..${branchName}\"",
             $integrationScript[3],
             $integrationScript[4],
             $integrationScript[5],
         ];
 
-        $result1 = static::executeScript([
+        $result1 = self::executeScript([
             $steps[0],
             $steps[1],
             'echo "$CHANGED_FILES"',
         ]);
 
-        $this->assertSame($expectedResult1Lines, explode("\n", rtrim($result1['output'])));
+        $this->assertSame(implode("\n", $expectedResult1Lines)."\n", $result1->getOutput());
 
-        $result2 = static::executeScript([
+        $result2 = self::executeScript([
             $steps[0],
             $steps[1],
             $steps[2],
@@ -135,9 +119,9 @@ final class CiIntegrationTest extends TestCase
             'echo "${EXTRA_ARGS[3]}"',
         ]);
 
-        $this->assertSame($expectedResult2Lines, explode("\n", rtrim($result2['output'])));
+        $this->assertSame(implode("\n", $expectedResult2Lines), $result2->getOutput());
 
-        $result3 = static::executeScript([
+        $result3 = self::executeScript([
             $steps[0],
             $steps[1],
             $steps[2],
@@ -153,7 +137,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
 ';
 
         $executionDetails = "Loaded config default from \".php_cs.dist\".
-$expectedResult3Files
+${expectedResult3Files}
 Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error";
 
         $this->assertRegExp(
@@ -163,13 +147,13 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                 preg_quote($optionalXdebugWarning, '/'),
                 preg_quote($executionDetails, '/')
             ),
-            trim($result3['stderr'])
+            $result3->getError()
         );
+
         $this->assertRegExp(
-            '/^Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used$/',
-            trim($result3['output'])
+            '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
+            $result3->getOutput()
         );
-        $this->assertSame(0, $result3['code']);
     }
 
     public function provideIntegrationCases()
@@ -196,6 +180,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     '--',
                     'dir a/file.php',
                     'dir b/file b.php',
+                    '',
                 ],
                 'S.',
             ],
@@ -214,7 +199,15 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     '.php_cs.dist',
                     'dir b/file b.php',
                 ],
-                ['0'],
+                [
+                    '0',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                ],
                 '...',
             ],
             [
@@ -230,7 +223,15 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     '.php_cs',
                     'dir b/file b.php',
                 ],
-                ['0'],
+                [
+                    '0',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                ],
                 '...',
             ],
             [
@@ -246,7 +247,15 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     'composer.lock',
                     'dir b/file b.php',
                 ],
-                ['0'],
+                [
+                    '0',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                ],
                 '...',
             ],
         ];
@@ -254,36 +263,11 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
 
     private static function executeCommand($command)
     {
-        $process = new Process($command, static::$fixtureDir);
-        $process->run();
-
-        $result = [
-            'code' => $process->getExitCode(),
-            'output' => $process->getOutput(),
-            'stderr' => $process->getErrorOutput(),
-        ];
-
-        if (0 !== $result['code']) {
-            throw new \RuntimeException(sprintf(
-                "Cannot execute `%s`:\n%s\nCode: %s\nExit text: %s\nError output: %s\nDetails:\n%s",
-                $command,
-                './'.static::$tmpFileName === $command
-                    ? implode('', array_map(function ($line) { return "$ $line"; }, file(static::$tmpFilePath)))."\n"
-                    : '',
-                $result['code'],
-                $process->getExitCodeText(),
-                $process->getErrorOutput(),
-                $result['output']
-            ));
-        }
-
-        return $result;
+        return CommandExecutor::create($command, self::$fixtureDir)->getResult();
     }
 
     private static function executeScript(array $scriptParts)
     {
-        file_put_contents(static::$tmpFilePath, implode("\n", array_merge(['#!/usr/bin/env bash', 'set -e', ''], $scriptParts)));
-
-        return static::executeCommand('./'.static::$tmpFileName);
+        return BashScriptExecutor::create($scriptParts, self::$fixtureDir)->getResult();
     }
 }

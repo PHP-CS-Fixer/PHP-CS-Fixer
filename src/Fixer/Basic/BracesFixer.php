@@ -288,7 +288,7 @@ class Foo
         $controlTokens = $this->getControlTokens();
         $indentTokens = array_filter(
             array_merge($classyAndFunctionTokens, $controlTokens),
-            function ($item) {
+            static function ($item) {
                 return T_SWITCH !== $item;
             }
         );
@@ -411,7 +411,9 @@ class Foo
                         // and it is not a `Foo::{bar}()` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals('(')) &&
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
-                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(['"', "'", [T_CONSTANT_ENCAPSED_STRING]]))
+                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(['"', "'", [T_CONSTANT_ENCAPSED_STRING]])) &&
+                        // and next token is not a closing tag that would break heredoc/nowdoc syntax
+                        !($tokens[$nestIndex - 1]->isGivenKind(T_END_HEREDOC) && $nextNonWhitespaceNestToken->isGivenKind(T_CLOSE_TAG))
                     ) {
                         if (
                             (
@@ -447,7 +449,42 @@ class Foo
                             $whitespace = $nextWhitespace.$this->whitespacesConfig->getLineEnding().$indent;
 
                             if (!$nextNonWhitespaceNestToken->equals('}')) {
-                                $whitespace .= $this->whitespacesConfig->getIndent();
+                                $determineIsIndentableBlockContent = function ($contentIndex) use ($tokens) {
+                                    if (!$tokens[$contentIndex]->isComment()) {
+                                        return true;
+                                    }
+
+                                    if (!$tokens[$tokens->getPrevMeaningfulToken($contentIndex)]->equals(';')) {
+                                        return true;
+                                    }
+
+                                    $nextIndex = $tokens->getNextMeaningfulToken($contentIndex);
+
+                                    if (!$tokens[$nextIndex]->equals('}')) {
+                                        return true;
+                                    }
+
+                                    $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+
+                                    if (null === $nextNextIndex) {
+                                        return true;
+                                    }
+
+                                    if ($tokens[$nextNextIndex]->equalsAny([
+                                        [T_ELSE],
+                                        [T_ELSEIF],
+                                        ',',
+                                    ])) {
+                                        return false;
+                                    }
+
+                                    return true;
+                                };
+
+                                // add extra indent only if current content is not a comment for content outside of current block
+                                if ($determineIsIndentableBlockContent($nestIndex + 2)) {
+                                    $whitespace .= $this->whitespacesConfig->getIndent();
+                                }
                             }
                         }
 

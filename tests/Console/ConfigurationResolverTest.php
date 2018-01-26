@@ -17,8 +17,8 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -414,7 +414,7 @@ final class ConfigurationResolverTest extends TestCase
         ], $config);
 
         $intersectionItems = array_map(
-            function (\SplFileInfo $file) {
+            static function (\SplFileInfo $file) {
                 return $file->getRealPath();
             },
             iterator_to_array($resolver->getFinder(), false)
@@ -429,9 +429,9 @@ final class ConfigurationResolverTest extends TestCase
     public function provideResolveIntersectionOfPathsCases()
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
-        $cb = function (array $items) use ($dir) {
+        $cb = static function (array $items) use ($dir) {
             return array_map(
-                function ($item) use ($dir) {
+                static function ($item) use ($dir) {
                     return realpath($dir.'/'.$item);
                 },
                 $items

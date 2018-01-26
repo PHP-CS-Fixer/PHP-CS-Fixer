@@ -78,9 +78,9 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDefinition()
     {
-        // Return a short description of the Fixer, it will be used in the README.rst.
+        // Return a definition of the fixer, it will be used in the README.rst.
     }
 }
 ```
@@ -235,9 +235,16 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDefinition()
     {
-        return 'Removes all comments of the code that are preceded by ";" (semicolon).'; // Trailing dot is important. We thrive to use English grammar properly.
+        return new FixerDefinition(
+            'Removes all comments of the code that are preceded by ";" (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
+            [
+                new CodeSample(
+                    '<?php echo 123; /* Comment */'
+                ),
+            ]
+        );
     }
 }
 ```
@@ -402,8 +409,16 @@ final class RemoveCommentsFixer extends AbstractFixer {
     /**
      * {@inheritdoc}
      */
-    public function getDescription() {
-        return 'Removes all comments of the code that are preceded by ";" (semicolon).';// Trailing dot is important. We thrive to use English grammar properly.
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Removes all comments of the code that are preceded by ";" (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
+            [
+                new CodeSample(
+                    '<?php echo 123; /* Comment */'
+                ),
+            ]
+        );
     }
 
     /**

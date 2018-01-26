@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\ConfigurationException;
 
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Runner;
 
 use PhpCsFixer\Cache\CacheManagerInterface;
+use PhpCsFixer\FileReader;
 use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -53,6 +54,15 @@ final class FileFilterIterator extends \FilterIterator
     public function accept()
     {
         $file = $this->current();
+        if (!$file instanceof \SplFileInfo) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Expected instance of "\SplFileInfo", got "%s".',
+                    is_object($file) ? get_class($file) : gettype($file)
+                )
+            );
+        }
+
         $path = $file->getRealPath();
 
         if (isset($this->visitedElements[$path])) {
@@ -61,11 +71,20 @@ final class FileFilterIterator extends \FilterIterator
 
         $this->visitedElements[$path] = true;
 
-        if ($file->isDir() || $file->isLink()) {
+        if (!$file->isFile() || $file->isLink()) {
             return false;
         }
 
-        $content = file_get_contents($path);
+        $content = @FileReader::createSingleton()->read($path);
+        if (false === $content) {
+            $error = error_get_last();
+
+            throw new \RuntimeException(sprintf(
+                'Failed to read content from "%s".%s',
+                $path,
+                $error ? ' '.$error['message'] : ''
+            ));
+        }
 
         // mark as skipped:
         if (

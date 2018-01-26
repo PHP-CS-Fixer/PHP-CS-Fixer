@@ -55,7 +55,7 @@ EOF;
 
     public function testFixMultiLineDesc()
     {
-        $this->fixer->configure(['tags' => ['param', 'property']]);
+        $this->fixer->configure(['tags' => ['param', 'property', 'method']]);
 
         $expected = <<<'EOF'
 <?php
@@ -70,6 +70,8 @@ EOF;
      * @param    mixed           &$reference A parameter passed by reference
      * @property mixed           $foo        A foo
      *                                       See constants
+     * @method   static          baz($bop)   A method that does a thing
+     *                                       It does it well
      */
 
 EOF;
@@ -87,6 +89,8 @@ EOF;
      * @param  mixed    &$reference     A parameter passed by reference
      * @property   mixed   $foo     A foo
      *                               See constants
+     * @method static   baz($bop)   A method that does a thing
+     *                          It does it well
      */
 
 EOF;
@@ -628,6 +632,151 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testDoesNotAlignMethodByDefault()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param  int       $foobar Description
+     * @return int
+     * @throws Exception
+     * @var    FooBar
+     * @type   BarFoo
+     * @method     string    foo(string $bar)   Hello World
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar   Description
+     * @return  int
+     * @throws Exception
+     * @var       FooBar
+     * @type      BarFoo
+     * @method     string    foo(string $bar)   Hello World
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testAlignsMethod()
+    {
+        $this->fixer->configure(['tags' => ['param', 'method', 'return', 'throws', 'type', 'var']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param  int       $foobar                                        Description
+     * @return int
+     * @throws Exception
+     * @var    FooBar
+     * @type   BarFoo
+     * @method int       foo(string $bar, string ...$things, int &$baz) Description
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar     Description
+     * @return  int
+     * @throws Exception
+     * @var       FooBar
+     * @type      BarFoo
+     * @method        int    foo(string $bar, string ...$things, int &$baz)   Description
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testAlignsMethodWithoutParameters()
+    {
+        $this->fixer->configure(['tags' => ['method', 'property']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @property string $foo  Desc
+     * @method   int    foo() Description
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @property    string   $foo     Desc
+     * @method int      foo()          Description
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDoesNotFormatMethod()
+    {
+        $this->fixer->configure(['tags' => ['method']]);
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @method int foo( string  $bar ) Description
+     */
+EOF;
+
+        $this->doTest($input);
+    }
+
+    public function testAlignsMethodWithoutReturnType()
+    {
+        $this->fixer->configure(['tags' => ['method', 'property']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @property string $foo  Desc
+     * @method   int    foo() Description
+     * @method          bar() Descrip
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @property    string   $foo     Desc
+     * @method int      foo()          Description
+     * @method    bar()   Descrip
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testAlignsMethodsWithoutReturnType()
+    {
+        $this->fixer->configure(['tags' => ['method']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @method fooBaz()         Description
+     * @method bar(string $foo) Descrip
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @method         fooBaz()  Description
+     * @method    bar(string $foo)   Descrip
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testDoesNotAlignWithEmptyConfig()
     {
         $this->fixer->configure(['tags' => []]);
@@ -641,6 +790,7 @@ EOF;
      * @var       FooBar
      * @type      BarFoo
      * @property     string    $foo   Hello World
+     * @method    int    bar() Description
      */
 EOF;
 
@@ -722,6 +872,51 @@ final class Sample
     }
 }
 ',
+            ],
+        ];
+    }
+
+    /**
+     * @param array  $config
+     * @param string $input
+     *
+     * @dataProvider provideInvalidPhpdocCases
+     */
+    public function testInvalidPhpdocsAreUnchanged(array $config, $input)
+    {
+        $this->fixer->configure($config);
+
+        $this->doTest($input);
+    }
+
+    public function provideInvalidPhpdocCases()
+    {
+        return [
+            [
+                ['tags' => ['param', 'return', 'throws', 'type', 'var']],
+                '<?php
+/**
+ * @ Security("is_granted(\'CANCEL\', giftCard)")
+ */
+ ',
+            ],
+            [
+                ['tags' => ['param', 'return', 'throws', 'type', 'var', 'method']],
+                '<?php
+/**
+ * @ Security("is_granted(\'CANCEL\', giftCard)")
+ */
+ ',
+            ],
+            [
+                ['tags' => ['param', 'return', 'throws', 'type', 'var']],
+                '<?php
+/**
+ * @ Security("is_granted(\'CANCEL\', giftCard)")
+ * @     foo   bar
+ *   @ foo
+ */
+ ',
             ],
         ];
     }
