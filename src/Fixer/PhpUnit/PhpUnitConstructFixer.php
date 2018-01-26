@@ -182,8 +182,6 @@ $this->assertNotSame(null, $d);
     {
         $sequence = $tokens->findSequence(
             [
-                [T_VARIABLE, '$this'],
-                [T_OBJECT_OPERATOR, '->'],
                 [T_STRING, $method],
                 '(',
             ],
@@ -195,23 +193,33 @@ $this->assertNotSame(null, $d);
         }
 
         $sequenceIndexes = array_keys($sequence);
-        $sequenceIndexes[4] = $tokens->getNextMeaningfulToken($sequenceIndexes[3]);
-        $firstParameterToken = $tokens[$sequenceIndexes[4]];
+        $operatorIndex = $tokens->getPrevMeaningfulToken($sequenceIndexes[0]);
+        $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
+        if (
+            !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
+            && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
+            && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
+        ) {
+            return null;
+        }
+
+        $sequenceIndexes[2] = $tokens->getNextMeaningfulToken($sequenceIndexes[1]);
+        $firstParameterToken = $tokens[$sequenceIndexes[2]];
 
         if (!$firstParameterToken->isNativeConstant()) {
-            return $sequenceIndexes[4];
+            return $sequenceIndexes[2];
         }
 
-        $sequenceIndexes[5] = $tokens->getNextMeaningfulToken($sequenceIndexes[4]);
+        $sequenceIndexes[3] = $tokens->getNextMeaningfulToken($sequenceIndexes[2]);
 
         // return if first method argument is an expression, not value
-        if (!$tokens[$sequenceIndexes[5]]->equals(',')) {
-            return $sequenceIndexes[5];
+        if (!$tokens[$sequenceIndexes[3]]->equals(',')) {
+            return $sequenceIndexes[3];
         }
 
-        $tokens[$sequenceIndexes[2]] = new Token([T_STRING, $map[$firstParameterToken->getContent()]]);
-        $tokens->clearRange($sequenceIndexes[4], $tokens->getNextNonWhitespace($sequenceIndexes[5]) - 1);
+        $tokens[$sequenceIndexes[0]] = new Token([T_STRING, $map[$firstParameterToken->getContent()]]);
+        $tokens->clearRange($sequenceIndexes[2], $tokens->getNextNonWhitespace($sequenceIndexes[3]) - 1);
 
-        return $sequenceIndexes[5];
+        return $sequenceIndexes[3];
     }
 }
