@@ -241,6 +241,20 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                     $c=30
                     );',
             ],
+            'multi line testing where previous whitespace token includes a trailing space' => [
+                '<?php '.
+'defraculate(
+    1,
+    2,
+    3
+);',
+                '<?php '.
+'defraculate(
+    1, 2, 3);',
+                [
+                    'ensure_fully_multiline' => true,
+                ],
+            ],
             'skip arrays but replace arg methods' => [
                 '<?php fnc(1, array(2, func2(6, 7) ,4), 5);',
                 '<?php fnc(1,array(2, func2(6,    7) ,4),    5);',

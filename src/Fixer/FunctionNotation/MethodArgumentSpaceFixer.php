@@ -199,6 +199,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             ? ltrim($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n\r")
             : '';
 
+        // " \r\n" may occur by a trailing whitespace in a previous line
+        // in which case it should be ignored
+        if (" \r\n" === $existingIndentation) {
+            $existingIndentation = '';
+        }
+
         $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
         if (!$this->isNewline($tokens[$endFunctionIndex - 1])) {
