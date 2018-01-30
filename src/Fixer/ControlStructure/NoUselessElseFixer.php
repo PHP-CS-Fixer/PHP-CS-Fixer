@@ -150,7 +150,7 @@ final class NoUselessElseFixer extends AbstractFixer
         $close = $previous = $tokens->getPrevMeaningfulToken($index);
         // short 'if' detection
         if ($tokens[$close]->equals('}')) {
-            $previous = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $close, false);
+            $previous = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $close);
         }
 
         $open = $tokens->getPrevTokenOfKind($previous, array(array(T_IF), array(T_ELSE), array(T_ELSEIF)));
@@ -230,7 +230,7 @@ final class NoUselessElseFixer extends AbstractFixer
         // token is always ')' here.
         // If it is part of the condition the token is always in, return false.
         // If it is not it is a nested condition so return true
-        $open = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $candidateIndex, false);
+        $open = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $candidateIndex);
 
         return $tokens->getPrevMeaningfulToken($open) > $lowerLimitIndex;
     }
@@ -278,10 +278,9 @@ final class NoUselessElseFixer extends AbstractFixer
                     return false; // like `else {`
                 }
 
-                $index = $tokens->findBlockEnd(
+                $index = $tokens->findBlockStart(
                     Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                    $index,
-                    false
+                    $index
                 );
 
                 $index = $tokens->getPrevMeaningfulToken($index);
@@ -290,10 +289,9 @@ final class NoUselessElseFixer extends AbstractFixer
                 }
             } elseif ($token->equals(')')) {
                 $type = Tokens::detectBlockType($token);
-                $index = $tokens->findBlockEnd(
+                $index = $tokens->findBlockStart(
                     $type['type'],
-                    $index,
-                    false
+                    $index
                 );
 
                 $index = $tokens->getPrevMeaningfulToken($index);
