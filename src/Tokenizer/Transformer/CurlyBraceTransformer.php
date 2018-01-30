@@ -192,7 +192,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
         if (
             $tokens[$prevIndex]->equals(')')
             && !$tokens[$tokens->getPrevMeaningfulToken(
-                $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevIndex, false)
+                $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevIndex)
             )]->isGivenKind(T_ARRAY)
         ) {
             return;

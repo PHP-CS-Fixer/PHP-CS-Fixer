@@ -444,6 +444,19 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Find block start.
+     *
+     * @param int $type        type of block, one of BLOCK_TYPE_*
+     * @param int $searchIndex index of closing brace
+     *
+     * @return int index of opening brace
+     */
+    public function findBlockStart($type, $searchIndex)
+    {
+        return $this->findBlockEnd($type, $searchIndex, false);
+    }
+
+    /**
      * Find tokens of given kind.
      *
      * @param array|int $possibleKind kind or array of kind
