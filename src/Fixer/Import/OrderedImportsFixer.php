@@ -474,11 +474,11 @@ use function CCC\AA;
     }
 
     /**
-     * @param $indexes
+     * @param array[] $indexes
      *
      * @return array
      */
-    private function sortByAlgorithm($indexes)
+    private function sortByAlgorithm(array $indexes)
     {
         switch ($this->configuration['sortAlgorithm']) {
             case self::SORT_ALPHA:
