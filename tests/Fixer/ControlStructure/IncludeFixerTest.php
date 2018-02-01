@@ -61,6 +61,36 @@ final class IncludeFixerTest extends AbstractFixerTestCase
                 '<?php include $a;',
                 '<?php include  (  $a  )  ;',
             ),
+            array(
+                '<?php
+require_once "test1.php";
+include_once "test2.php";
+require "test3.php";
+include "test4.php";',
+                '<?php
+require_once("test1.php");
+include_once("test2.php");
+require("test3.php");
+include("test4.php");',
+            ),
+            array(
+                '<?php
+require_once #1
+#2
+#3
+"test1.php"#4
+#5
+#6
+;',
+              '<?php
+require_once #1
+(#2
+#3
+"test1.php"#4
+)#5
+#6
+;',
+            ),
         );
 
         foreach (array('require', 'require_once', 'include', 'include_once') as $statement) {
@@ -241,19 +271,6 @@ final class IncludeFixerTest extends AbstractFixerTestCase
                 sprintf('<?php %s          SOME_CONST . "file1.php"; %s Foo::Bar($baz);', $statement, $statement),
             );
         }
-
-        $tests[] = array(
-            '<?php
-require_once "test1.php";
-include_once "test2.php";
-require "test3.php";
-include "test4.php";',
-            '<?php
-require_once("test1.php");
-include_once("test2.php");
-require("test3.php");
-include("test4.php");',
-        );
 
         return $tests;
     }
