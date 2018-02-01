@@ -1046,6 +1046,22 @@ echo $a;',
         );
     }
 
+    public function testRemoveLeadingWhitespace()
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php
+// foo
+     $bar;');
+
+        $tokens->removeLeadingWhitespace($tokens->count() - 2);
+
+        $this->assertSame(
+            '<?php
+// foo
+$bar;',
+            $tokens->generateCode());
+    }
+
     /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
