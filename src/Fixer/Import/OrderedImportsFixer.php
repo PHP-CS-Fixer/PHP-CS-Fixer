@@ -474,7 +474,7 @@ use function CCC\AA;
     }
 
     /**
-     * @param $indexes
+     * @param array $indexes
      *
      * @return array
      */
