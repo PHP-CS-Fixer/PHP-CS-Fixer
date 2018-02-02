@@ -211,7 +211,7 @@ if ($a = $obj instanceof A === true) {
             ['<?php $j = 2 * $myVar % 3 === $a;'],
             ['<?php return $k === 2 * $myVar % 3;'],
             ['<?php $l = $c > 2;'],
-            ['<?php return $this->myObject->{$index}+$b === "";'],
+            ['<?php return $this->myObject1->{$index}+$b === "";'],
             ['<?php return $m[2]+1 == 2;'],
             // https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/693
             ['<?php return array(2) == $o;'],
@@ -267,16 +267,20 @@ if ($a = $obj instanceof A === true) {
                 '<?php return $this->myArray[$index]->a === "";',
             ],
             [
-                '<?php return "" === $this->myObject->  {$index};',
-                '<?php return $this->myObject->  {$index} === "";',
+                '<?php return "" === $this->myObject2->  {$index};',
+                '<?php return $this->myObject2->  {$index} === "";',
             ],
             [
-                '<?php return "" === $this->myObject->{$index}->a;',
-                '<?php return $this->myObject->{$index}->a === "";',
+                '<?php return "" === $this->myObject3->{$index}->a;',
+                '<?php return $this->myObject3->{$index}->a === "";',
             ],
             [
-                '<?php return "" === $this->myObject->$index->a;',
-                '<?php return $this->myObject->$index->a === "";',
+                '<?php return "" === $this->myObject4->{$index}->{$index}->a;',
+                '<?php return $this->myObject4->{$index}->{$index}->a === "";',
+            ],
+            [
+                '<?php return "" === $this->myObject4->$index->a;',
+                '<?php return $this->myObject4->$index->a === "";',
             ],
             [
                 '<?php return self::MY_CONST === self::$myVariable;',
@@ -363,8 +367,28 @@ $a#4
                 '<?php $i = $this/*a*//*b*//*c*//*d*//*e*//*f*/->getStuff() === 2;',
             ],
             [
-                '<?php return "" === $this->myObject->{$index}->/*1*//*2*/b;',
-                '<?php return $this->myObject->{$index}->/*1*//*2*/b === "";',
+                '<?php return "" === $this->myObject5->{$index}->/*1*//*2*/b;',
+                '<?php return $this->myObject5->{$index}->/*1*//*2*/b === "";',
+            ],
+            [
+                '<?php
+                function hello() {}
+                1 === $a ? b() : c();
+                ',
+                '<?php
+                function hello() {}
+                $a === 1 ? b() : c();
+                ',
+            ],
+            [
+                '<?php
+                class A{}
+                1 === $a ? b() : c();
+                ',
+                '<?php
+                class A{}
+                $a === 1 ? b() : c();
+                ',
             ],
         ];
     }
