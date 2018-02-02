@@ -120,6 +120,7 @@ final class FixerFactoryTest extends TestCase
             array($fixers['no_useless_return'], $fixers['blank_line_before_return']),
             array($fixers['no_useless_return'], $fixers['no_extra_consecutive_blank_lines']),
             array($fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']),
+            array($fixers['no_whitespace_in_blank_line'], $fixers['no_blank_lines_after_phpdoc']),
             array($fixers['ordered_class_elements'], $fixers['method_separation']),
             array($fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']),
             array($fixers['ordered_class_elements'], $fixers['space_after_semicolon']),

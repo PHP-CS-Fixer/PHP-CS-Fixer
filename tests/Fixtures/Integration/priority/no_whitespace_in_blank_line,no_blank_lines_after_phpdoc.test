@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: no_whitespace_in_blank_line,no_blank_lines_after_phpdoc.
+--RULESET--
+{"no_blank_lines_after_phpdoc": true, "no_whitespace_in_blank_line": true}
+--EXPECT--
+<?php
+/**
+ * Note a trailing space in blank line
+ */
+class Foo
+{
+}
+
+--INPUT--
+<?php
+/**
+ * Note a trailing space in blank line
+ */
+ 
+class Foo
+{
+}
