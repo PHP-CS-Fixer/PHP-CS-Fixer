@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-12-08T16:03:44Z
+
+I've rebased to master since it's a new functionality, added the new configuration, made it backward compatible, created integration tests with #3155
+
+As often happens to me, I'm confident with the code, but the name of the new configuration it's a bit raw: `strings_containing_single_quote_chars`
