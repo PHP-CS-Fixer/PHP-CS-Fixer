@@ -65,8 +65,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
         }
 
         if ($settings['isExplicitPriorityCheck']) {
-            static::assertSame(
-                $settings['isExplicitPriorityCheck'],
+            static::assertTrue(
                 $fixedInputCode !== $fixedInputCodeWithReversedFixers,
                 sprintf('Test "%s" in "%s" is expected to be priority check.', $case->getTitle(), $case->getFileName())
             );
