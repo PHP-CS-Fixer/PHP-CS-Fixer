@@ -250,7 +250,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             $prevIndex = $tokens->getPrevNonWhitespace($index);
             if ($tokens[$prevIndex]->isComment()) {
                 $content = $tokens[$index]->getContent();
-                $tokens[$index]->setContent(substr($content, strrpos($content, "\n"))); // preserve indent only
+                $tokens[$index] = new Token(array(T_WHITESPACE, substr($content, strrpos($content, "\n")))); // preserve indent only
             } else {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
