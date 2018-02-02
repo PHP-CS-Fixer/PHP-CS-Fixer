@@ -482,11 +482,11 @@ use function CCC\AA;
     }
 
     /**
-     * @param $indexes
+     * @param array[] $indexes
      *
      * @return array
      */
-    private function sortByAlgorithm($indexes)
+    private function sortByAlgorithm(array $indexes)
     {
         if (self::SORT_ALPHA === $this->configuration['sortAlgorithm']) {
             uasort($indexes, [$this, 'sortAlphabetically']);
