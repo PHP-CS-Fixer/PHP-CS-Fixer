@@ -1401,6 +1401,11 @@ Choose from the list of available rules:
 
   Convert double quotes to single quotes for simple strings.
 
+  Configuration options:
+
+  - ``strings_containing_single_quote_chars`` (``bool``): whether to fix
+    double-quoted strings that contains single-quotes; defaults to ``false``
+
 * **space_after_semicolon** [@Symfony]
 
   Fix whitespace after a semicolon.
