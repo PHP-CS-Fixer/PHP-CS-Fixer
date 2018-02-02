@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-29T23:39:04Z
+
+tests are missing. I don't like features/bugfixes passing without touching tests
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-12-29T23:40:09Z
+
+Sure, can add more tests. I don't think our existing tests cover that whole array as is anyway, but sure, can add more tests.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2017-12-29T23:40:29Z
+
+Will do tomorrow, will need to pull down the code to my laptop.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-02T10:48:24Z
+
+:+1: for the idea, love to see those test :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-10T11:48:53Z
+
+ping @GrahamCampbell
