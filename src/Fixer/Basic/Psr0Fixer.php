@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractPsrAutoloadingFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Bram Gotink <bram@gotink.me>
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurationDefinitionFixerInterface
+final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}

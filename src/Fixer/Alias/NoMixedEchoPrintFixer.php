@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  * @author SpacePossum
  */
-final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var string

@@ -28,7 +28,7 @@ final class AbstractFixerTest extends TestCase
         $fixer = new UnconfigurableFixer();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        $this->expectExceptionMessage('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
 
         $fixer->configure(['foo' => 'bar']);
     }
@@ -38,7 +38,7 @@ final class AbstractFixerTest extends TestCase
         $fixer = new UnconfigurableFixer();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot get configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        $this->expectExceptionMessage('Cannot get configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
 
         $fixer->getConfigurationDefinition();
     }
@@ -48,7 +48,7 @@ final class AbstractFixerTest extends TestCase
         $fixer = new UnconfigurableFixer();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        $this->expectExceptionMessage('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
 
         $fixer->doSomethingWithCreateConfigDefinition();
     }
