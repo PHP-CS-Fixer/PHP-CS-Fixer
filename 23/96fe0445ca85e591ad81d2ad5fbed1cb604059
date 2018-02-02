@@ -1,0 +1,116 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-17T12:44:53Z
+
+Hi @weareoutman ! Nice catch, great the file was not saved to drive as post-fixing linter prevents it ;)
+Your PR is well addressed imho, utest that fails without a fix, proper target, nice info what and how! That's pretty nice to see ;)
+
+@SpacePossum , you did the magic in the fixer last time, could you please take a look here ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-02T13:55:18Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-26T20:24:15Z
+
+ping @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-04T16:51:52Z
+
+Looking into this and digging ever deeper.
+Sadly a test like;
+
+```php
+<?php false === $a = array();
+```
+
+gets "fixed" to:
+
+```php
+<?php $a === false = array();
+```
+
+which is invalid PHP.
+This is the case for both the current situation and for with the proposed changes in this PR.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-09T14:32:51Z
+
+Hi @weareoutman I found the bug too in another context with weird result:
+```diff
+ function foo() {
+-    foreach ($arr as $key => $value) {
+-        uniqid() !== false ? 1 : 2;
++    false !== foreach ($arr as $key => $value) {
++        false !== uniqid() ? 1 : 2;
+     }
+-    uniqid() !== false ? 1 : 2;
++    uniqid() ? 1 : 2;
+ }
+```
+May you merge https://github.com/weareoutman/PHP-CS-Fixer/pull/1 to prove it is fixed too?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-25T11:54:26Z
+
+@SpacePossum may you merge my https://github.com/weareoutman/PHP-CS-Fixer/pull/1 ? @weareoutman seems inactive :\
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-25T11:56:35Z
+
+I think @weareoutman is waiting on a reply from the members/maintainers ;)
+
+I just pushed a tweak I made during reviewing and testing. If the tests pass I think this is ready for merging, maybe someone can do a second review.
+
+Thanks @weareoutman for the fix, looking good and my apologies for the wait!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-25T12:43:45Z
+
+hmmm memory usage has been blown up on CircleCi?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-26T06:30:32Z
+
+Travis uses [~178MB](https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/333592604#L880)
+appveyor up to [512MB](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.9.1/.appveyor.yml#L26)
+CircleCI crashed around [128MB](https://circleci.com/gh/FriendsOfPHP/PHP-CS-Fixer/2417)
+(`PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted`)
+
+I suggest upping CircleCI mem. usage to max. 512MB as well
+(ping @keradus )
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-26T09:29:13Z
+
+we already have a linux build on travis, we use CircleCI only for mac so we cover that OS as well in the CI suit
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-02T14:33:39Z
+
+@SpacePossum , the yoda master, please confirm the PR or say what is missing
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-02T19:18:03Z
+
+@keradus this is good to go, we're waiting for your blessing on the Circle CI change :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-02T19:19:58Z
+
+cc. please squash all changes to the first commit authored by @weareoutman (if possible) during merging, thanks :)
