@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-14T12:39:34Z
+
+cc @SpacePossum as author of original concern and team member
+cc @julienfalque as team member
+also, cc @localheinz for his great autoreview experience
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-14T16:18:22Z
+
+Great work, love to see this! IIRC we used to test something like this, but it was removed because the implementation was not very good.
+I'm going to review / play around with this soon :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-14T17:35:30Z
+
+Grep for `shouldCheckPriority`, it is still there for compat reasons and was deprecated in #2483.
+It was enabling the check to test that rules have different priorities.
+It was deprecated to see that if output depends on order, the priorities are set.
+
+Yet now, we want to do it from other side, if we are setting the priorities, output must depend on it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-22T20:11:30Z
+
+@SpacePossum , could you review please ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-23T07:12:09Z
+
+one minor and good to go, very nice stuff!
