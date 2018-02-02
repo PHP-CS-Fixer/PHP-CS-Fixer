@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-02T11:56:02Z
+
+is fabbot outdated? I can't recall how the `for (;;)` should look like in SF style
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-02T12:24:30Z
+
+behaviour of rule was modified on higher branch to handle this case better, and on 2.2 we kept code matching old behaviour, as we are running fixer as well, so better to have failing fabbot than fixer from our perspective
