@@ -132,7 +132,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             throw new \UnexpectedValueException(sprintf('Given fixture dir "%s" is not a directory.', $fixturesDir));
         }
 
-        $factory = new IntegrationCaseFactory();
+        $factory = static::createIntegrationCaseFactory();
         $tests = array();
 
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
@@ -146,6 +146,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         return $tests;
+    }
+
+    /**
+     * @return IntegrationCaseFactoryInterface
+     */
+    protected static function createIntegrationCaseFactory()
+    {
+        return new IntegrationCaseFactory();
     }
 
     /**
@@ -199,7 +207,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         $errorsManager = new ErrorsManager();
-        $fixers = $this->createFixers($case);
+        $fixers = static::createFixers($case);
         $runner = new Runner(
             new \ArrayIterator(array(new \SplFileInfo($tmpFile))),
             $fixers,
@@ -275,23 +283,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $runner->fix();
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
 
-            // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
-            // If not, any order is valid.
-            if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
-                $this->assertGreaterThan(
-                    1,
-                    count(array_unique(array_map(
-                        function (FixerInterface $fixer) {
-                            return $fixer->getPriority();
-                        },
-                        $fixers
-                    ))),
-                    sprintf(
-                        'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
-                        $case->getFileName()
-                    )
-                );
-            }
+            $this->assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
         }
 
         // run the test again with the `expected` part, this should always stay the same
@@ -311,10 +303,36 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
     /**
      * @param IntegrationCase $case
+     * @param string          $fixedInputCode
+     * @param string          $fixedInputCodeWithReversedFixers
+     */
+    protected static function assertRevertedOrderFixing(IntegrationCase $case, $fixedInputCode, $fixedInputCodeWithReversedFixers)
+    {
+        // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
+        // If not, any order is valid.
+        if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
+            static::assertGreaterThan(
+                1,
+                count(array_unique(array_map(
+                    function (FixerInterface $fixer) {
+                        return $fixer->getPriority();
+                    },
+                    static::createFixers($case)
+                ))),
+                sprintf(
+                    'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
+                    $case->getFileName()
+                )
+            );
+        }
+    }
+
+    /**
+     * @param IntegrationCase $case
      *
      * @return FixerInterface[]
      */
-    private function createFixers(IntegrationCase $case)
+    private static function createFixers(IntegrationCase $case)
     {
         $config = $case->getConfig();
 

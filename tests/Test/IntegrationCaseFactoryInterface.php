@@ -12,11 +12,19 @@
 
 namespace PhpCsFixer\Tests\Test;
 
+use Symfony\Component\Finder\SplFileInfo;
+
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class IntegrationCaseFactory extends AbstractIntegrationCaseFactory
+interface IntegrationCaseFactoryInterface
 {
+    /**
+     * @param SplFileInfo $file
+     *
+     * @return IntegrationCase
+     */
+    public function create(SplFileInfo $file);
 }
