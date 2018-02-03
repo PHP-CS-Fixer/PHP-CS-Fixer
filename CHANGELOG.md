@@ -3,6 +3,28 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.10.1
+---------------------
+
+* bug #3265 YodaFixer - fix problems of block statements followed by ternary statements (weareoutman, keradus, SpacePossum)
+* bug #3367 NoUnusedImportsFixer - fix comment handling (SpacePossum, keradus)
+* bug #3438 PhpUnitTestAnnotationFixer: Do not prepend with test if method is test() (localheinz, SpacePossum)
+* bug #3455 NoEmptyCommentFixer - comment block detection for line ending different than LF (kubawerlos, SpacePossum)
+* bug #3458 SilencedDeprecationErrorFixer - fix edge cases (kubawerlos)
+* bug #3466 no_whitespace_in_blank_line and no_blank_lines_after_phpdoc fixers bug (kubawerlos, keradus)
+* bug #3472  YodaStyleFixer - do not un-Yoda if right side is assignment (SpacePossum, keradus)
+* bug #3492 PhpdocScalarFixer - Add callback pesudo-type to callable type (carusogabriel)
+* minor #3354 Added missing types to the PhpdocTypesFixer (GrahamCampbell)
+* minor #3406 Fix for escaping in README (kubawerlos)
+* minor #3430 Fix integration test (SpacePossum)
+* minor #3431 Add missing tests (SpacePossum)
+* minor #3440 Add a handful of integration tests (BackEndTea)
+* minor #3443 ConfigurableFixerInterface - not deprecated but TODO (SpacePossum)
+* minor #3444 IntegrationTest - ensure tests in priority dir are priority tests indeed (keradus)
+* minor #3494 Add missing PHPDoc param type (ntzm)
+* minor #3495 Swap @var type and element (ntzm)
+* minor #3498 NoUnusedImportsFixer - fix deprecation (keradus)
+
 Changelog for v2.10.0
 ---------------------
 
@@ -19,6 +41,26 @@ Changelog for v2.10.0
 * minor #3404 Deprecate "use_yoda_style" in IsNullFixer (kubawerlos, keradus)
 * minor #3418 ConfigurableFixerInterface, ConfigurationDefinitionFixerInterface - update deprecations (keradus)
 * minor #3419 Dont use deprecated fixer in itest (keradus)
+
+Changelog for v2.9.2
+--------------------
+
+* bug #3265 YodaFixer - fix problems of block statements followed by ternary statements (weareoutman, keradus, SpacePossum)
+* bug #3367 NoUnusedImportsFixer - fix comment handling (SpacePossum, keradus)
+* bug #3438 PhpUnitTestAnnotationFixer: Do not prepend with test if method is test() (localheinz, SpacePossum)
+* bug #3455 NoEmptyCommentFixer - comment block detection for line ending different than LF (kubawerlos, SpacePossum)
+* bug #3458 SilencedDeprecationErrorFixer - fix edge cases (kubawerlos)
+* bug #3466 no_whitespace_in_blank_line and no_blank_lines_after_phpdoc fixers bug (kubawerlos, keradus)
+* bug #3472  YodaStyleFixer - do not un-Yoda if right side is assignment (SpacePossum, keradus)
+* minor #3354 Added missing types to the PhpdocTypesFixer (GrahamCampbell)
+* minor #3406 Fix for escaping in README (kubawerlos)
+* minor #3430 Fix integration test (SpacePossum)
+* minor #3431 Add missing tests (SpacePossum)
+* minor #3440 Add a handful of integration tests (BackEndTea)
+* minor #3444 IntegrationTest - ensure tests in priority dir are priority tests indeed (keradus)
+* minor #3494 Add missing PHPDoc param type (ntzm)
+* minor #3495 Swap @var type and element (ntzm)
+* minor #3498 NoUnusedImportsFixer - fix deprecation (keradus)
 
 Changelog for v2.9.1
 --------------------
@@ -491,6 +533,22 @@ Changelog for v2.3.0
 * feature #2708 Add PhpUnitTestClassRequiresCoversFixer (keradus)
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
+
+Changelog for v2.2.15
+---------------------
+
+* bug #3367 NoUnusedImportsFixer - fix comment handling (SpacePossum, keradus)
+* bug #3455 NoEmptyCommentFixer - comment block detection for line ending different than LF (kubawerlos, SpacePossum)
+* bug #3458 SilencedDeprecationErrorFixer - fix edge cases (kubawerlos)
+* bug #3466 no_whitespace_in_blank_line and no_blank_lines_after_phpdoc fixers bug (kubawerlos, keradus)
+* minor #3354 Added missing types to the PhpdocTypesFixer (GrahamCampbell)
+* minor #3406 Fix for escaping in README (kubawerlos)
+* minor #3431 Add missing tests (SpacePossum)
+* minor #3440 Add a handful of integration tests (BackEndTea)
+* minor #3444 IntegrationTest - ensure tests in priority dir are priority tests indeed (keradus)
+* minor #3494 Add missing PHPDoc param type (ntzm)
+* minor #3495 Swap @var type and element (ntzm)
+* minor #3498 NoUnusedImportsFixer - fix deprecation (keradus)
 
 Changelog for v2.2.14
 ---------------------
