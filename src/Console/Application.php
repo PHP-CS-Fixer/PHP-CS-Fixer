@@ -35,7 +35,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.9.2-DEV';
+    const VERSION = '2.9.2';
     const VERSION_CODENAME = 'Speechless';
 
     /**
