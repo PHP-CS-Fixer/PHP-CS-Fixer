@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.9.3
+--------------------
+
+* bug #3502 Fix missing file in export (keradus)
+
 Changelog for v2.9.2
 --------------------
 
@@ -494,6 +499,11 @@ Changelog for v2.3.0
 * feature #2708 Add PhpUnitTestClassRequiresCoversFixer (keradus)
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
+
+Changelog for v2.2.16
+---------------------
+
+* bug #3502 Fix missing file in export (keradus)
 
 Changelog for v2.2.15
 ---------------------
