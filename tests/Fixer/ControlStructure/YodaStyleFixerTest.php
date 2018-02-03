@@ -390,6 +390,25 @@ $a#4
                 $a === 1 ? b() : c();
                 ',
             ],
+            [
+               '<?php
+                function foo() {
+                    foreach ($arr as $key => $value) {
+                        false !== uniqid() ? 1 : 2;
+                    }
+                    false !== uniqid() ? 1 : 2;
+                }',
+                '<?php
+                function foo() {
+                    foreach ($arr as $key => $value) {
+                        uniqid() !== false ? 1 : 2;
+                    }
+                    uniqid() !== false ? 1 : 2;
+                }',
+            ],
+            [
+                '<?php false === $a = array();',
+            ],
         ];
     }
 
@@ -676,6 +695,49 @@ function a() {
             [
                 '<?php $b = [$a] = 7 === [7];', // makes no sense, but valid PHP syntax
                 '<?php $b = [$a] = [7] === 7;',
+            ],
+        ];
+    }
+
+    /**
+     * @param array  $config
+     * @param string $expected
+     *
+     * @dataProvider provideFixWithConfigCases
+     */
+    public function testWithConfig(array $config, $expected)
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected);
+    }
+
+    public function provideFixWithConfigCases()
+    {
+        return [
+            [
+                [
+                    'identical' => false,
+                ],
+            '<?php
+$a = [1, 2, 3];
+while (2 !== $b = array_pop($c));
+',
+            ],
+            [
+                [
+                    'equal' => false,
+                    'identical' => false,
+                ],
+                '<?php
+                if ($revision->event == \'created\') {
+    foreach ($revision->getModified() as $col => $data) {
+        $model->$col = $data[\'new\'];
+    }
+} else {
+    foreach ($revision->getModified() as $col => $data) {
+        $model->$col = $data[\'old\'];
+    }
+}',
             ],
         ];
     }
