@@ -475,6 +475,22 @@ Changelog for v2.3.0
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
 
+Changelog for v2.2.15
+---------------------
+
+* bug #3367 NoUnusedImportsFixer - fix comment handling (SpacePossum, keradus)
+* bug #3455 NoEmptyCommentFixer - comment block detection for line ending different than LF (kubawerlos, SpacePossum)
+* bug #3458 SilencedDeprecationErrorFixer - fix edge cases (kubawerlos)
+* bug #3466 no_whitespace_in_blank_line and no_blank_lines_after_phpdoc fixers bug (kubawerlos, keradus)
+* minor #3354 Added missing types to the PhpdocTypesFixer (GrahamCampbell)
+* minor #3406 Fix for escaping in README (kubawerlos)
+* minor #3431 Add missing tests (SpacePossum)
+* minor #3440 Add a handful of integration tests (BackEndTea)
+* minor #3444 IntegrationTest - ensure tests in priority dir are priority tests indeed (keradus)
+* minor #3494 Add missing PHPDoc param type (ntzm)
+* minor #3495 Swap @var type and element (ntzm)
+* minor #3498 NoUnusedImportsFixer - fix deprecation (keradus)
+
 Changelog for v2.2.14
 ---------------------
 
