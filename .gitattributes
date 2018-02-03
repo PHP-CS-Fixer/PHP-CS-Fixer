@@ -6,7 +6,6 @@ tests/Fixtures/ export-ignore
 tests/Linter/AbstractLinterTestCase.php export-ignore
 tests/Report/AbstractReporterTestCase.php export-ignore
 tests/Test/AbstractTransformerTestCase.php export-ignore
-tests/Test/InternalIntegrationCaseFactory.php export-ignore
 
 .appveyor.yml export-ignore
 .composer-require-checker.json export-ignore
