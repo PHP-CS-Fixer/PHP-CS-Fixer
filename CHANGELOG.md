@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.2.16
+---------------------
+
+* bug #3502 Fix missing file in export (keradus)
+
 Changelog for v2.2.15
 ---------------------
 
