@@ -130,6 +130,20 @@ EOF;
         $this->doTest($input);
     }
 
+    public function testLineBeforeDeclareIsNotBeRemoved()
+    {
+        $expected = <<<'EOF'
+<?php
+/**
+ * This is some license header.
+ */
+
+declare(strict_types=1);
+EOF;
+
+        $this->doTest($expected);
+    }
+
     public function testFixesSimpleClass()
     {
         $expected = <<<'EOF'
