@@ -37,7 +37,8 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $template = "<?php\n\$a=\n<<<'EOT'\n%s\n\nEOT;\n";
+        $heredocTemplate = "<?php\n\$a=\n<<<EOT\n%s\n\nEOT;\n";
+        $nowdocTemplate = "<?php\n\$a=\n<<<'EOT'\n%s\n\nEOT;\n";
         $input = '/**
 * @SWG\Get(
 *     path="/api/v0/cards",
@@ -61,12 +62,20 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
                 "<?php \$a = \"my\r\nmulti\nline\r\nstring\nwith\r\n\$b\ninterpolation\";\r\n",
             ],
             [
-                sprintf($template, $input),
-                sprintf($template, str_replace("\n", "\r", $input)),
+                sprintf($heredocTemplate, $input),
+                sprintf($heredocTemplate, str_replace("\n", "\r", $input)),
             ],
             [
-                sprintf($template, $input),
-                sprintf($template, str_replace("\n", "\r\n", $input)),
+                sprintf($heredocTemplate, $input),
+                sprintf($heredocTemplate, str_replace("\n", "\r\n", $input)),
+            ],
+            [
+                sprintf($nowdocTemplate, $input),
+                sprintf($nowdocTemplate, str_replace("\n", "\r", $input)),
+            ],
+            [
+                sprintf($nowdocTemplate, $input),
+                sprintf($nowdocTemplate, str_replace("\n", "\r\n", $input)),
             ],
         ];
     }
