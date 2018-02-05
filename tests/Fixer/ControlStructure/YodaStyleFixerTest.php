@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -24,6 +25,65 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class YodaStyleFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @param bool   $expected
+     * @param string $input
+     *
+     * @dataProvider provideIsVariableCases
+     */
+    public function testIsVariable($expected, $input)
+    {
+        $tokens = Tokens::fromCode(sprintf('<?php $foo ===%s;', $input));
+
+        $reflection = new \ReflectionObject($this->fixer);
+        $isVariableMethod = $reflection->getMethod('isVariable');
+        $isVariableMethod->setAccessible(true);
+        $this->assertSame(
+            $expected,
+            $isVariableMethod->invoke(
+                $this->fixer,
+                $tokens,
+                4,
+                \count($tokens) - 2
+            )
+        );
+    }
+
+    public function provideIsVariableCases()
+    {
+        return [
+            [true, 'x()'],
+            [true, '(y())'],
+            [true, '((z()))'],
+            [true, '$a'],
+            [true, '$a+1'],
+            [true, '$b->a'],
+            [true, '$c->a[a]'],
+            [true, '$c1->a[a]->a'],
+            [true, '$c2->a[a][a]'],
+            [true, '$d->a[$a]'],
+            [true, '$c->a{a}'],
+            [true, '$c1->a{a}->a'],
+            [true, '$c2->a{a}{a}'],
+            [true, '$d->a{$a}'],
+            [true, '$j = 2 * $myVar % 3'],
+            // non-vars
+            [false, '1'],
+            [false, '"2"'],
+            [false, '(3)'],
+            [false, '((4))'],
+            [false, '( ( 5 )/**/ )'],
+            [false, '"abc"'],
+            [false, '[$a,$b] = 6'],
+            [false, ' <<<\'EOT\'
+<?php
+`echo a\"b`;
+`echo \'a"b\'`;
+EOT
+     '],
+        ];
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
@@ -213,6 +273,7 @@ if ($a = $obj instanceof A === true) {
             ['<?php $l = $c > 2;'],
             ['<?php return $this->myObject1->{$index}+$b === "";'],
             ['<?php return $m[2]+1 == 2;'],
+            ['<?php return $m{2}+1 == 2;'],
             // https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/693
             ['<?php return array(2) == $o;'],
             ['<?php return $p == array(2);'],
@@ -225,6 +286,52 @@ if ($a = $obj instanceof A === true) {
             ['<?php $a = function(){} === array(0);'],
             ['<?php $z = $n == list($a) = $b;'],
             ['<?php return $n == list($a) = $b;'],
+            ['<?php false === $a = array();'],
+            [
+                '<?php
+                    // []
+
+                    $a = $c[1] === $e[$f];
+                    $a = $c[1] === $e[$f][1];
+                    $a = $c[1] === $e[$f][1][2];
+                    $a = $c[1] === $e[$f][1][2][3];
+                    $a = $c[1] === $e[$f->a[$f->a[$f->a[$a->b()&&$d][3]]{$c->a()}][1]];
+
+                    // {}
+
+                    $a = $c[1] === $e{$f};
+                    $a = $c[1] === $e{$f}{1};
+                    $a = $c[1] === $e{$f}{1}{2};
+                    $a = $c[1] === $e{$f}{1}{2}{3};
+
+                    // mixed
+
+                    $a = $c[1] === $e{$f}[1]{2};
+                    $a = $c[1] === $e{$f}[1]{2}[3];
+                    $a = $c[1] === $e{$f}[1]{2}[3]{4}{5}{6}{7}[8];
+
+                    // ~ reverse
+
+                    // []
+
+                    $a = $e[$f][1] === $c[1];
+                    $a = $e[$f][1][2] === $c[1];
+                    $a = $e[$f][1][2][3] === $c[1];
+
+                    // {}
+
+                    $a = $e{$f} === $c[1];
+                    $a = $e{$f}{1} === $c[1];
+                    $a = $e{$f}{1}{2} === $c[1];
+                    $a = $e{$f}{1}{2}{3} === $c[1];
+
+                    // mixed
+
+                    $a = $e{$f}[1]{2} === $c[1];
+                    $a = $e{$f}[1]{2}[3] === $c[1];
+                    $a = $e{$f}[1]{2}[3]{4}{5}{6}{7}[8] === $c[1];
+               ',
+            ],
             // Fix cases.
             'Array destruct by ternary.' => [
                 '<?php list($a) = 11 === $c ? $b : $d;',
@@ -408,6 +515,14 @@ $a#4
             ],
             [
                 '<?php false === $a = array();',
+            ],
+            [
+                '<?php return 2 == $c->a[$b];',
+                '<?php return $c->a[$b] == 2;',
+            ],
+            [
+                '<?php return 2 == $c->a{$b};',
+                '<?php return $c->a{$b} == 2;',
             ],
         ];
     }
