@@ -144,6 +144,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']],
             [$fixers['ordered_class_elements'], $fixers['space_after_semicolon']],
             [$fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']],
+            [$fixers['php_unit_fqcn_annotation'], $fixers['php_unit_ordered_covers']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['php_unit_expectation']],
             [$fixers['php_unit_strict'], $fixers['php_unit_construct']],

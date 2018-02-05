@@ -1125,6 +1125,10 @@ Choose from the list of available rules:
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
+* **php_unit_ordered_covers**
+
+  Order ``@covers`` annotation of PHPUnit tests.
+
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of
