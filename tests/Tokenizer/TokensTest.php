@@ -1046,20 +1046,46 @@ echo $a;',
         );
     }
 
-    public function testRemoveLeadingWhitespace()
+    /**
+     * @dataProvider provideRemoveLeadingWhitespaceCases
+     *
+     * @param int         $index
+     * @param null|string $whitespaces
+     * @param string      $expected
+     * @param string      $input
+     */
+    public function testRemoveLeadingWhitespace($index, $whitespaces, $expected, $input = null)
     {
         Tokens::clearCache();
-        $tokens = Tokens::fromCode('<?php
-// foo
-     $bar;');
 
-        $tokens->removeLeadingWhitespace($tokens->count() - 2);
+        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens->removeLeadingWhitespace($index, $whitespaces);
 
-        $this->assertSame(
-            '<?php
-// foo
-$bar;',
-            $tokens->generateCode());
+        $this->assertSame($expected, $tokens->generateCode());
+    }
+
+    public function provideRemoveLeadingWhitespaceCases()
+    {
+        return array(
+            array(
+                7,
+                " \t",
+                "<?php echo 1;//\n//",
+                "<?php echo 1;//\n       //",
+            ),
+            array(
+                6,
+                "\t ",
+                '<?php echo 1;//',
+                "<?php echo 1;\t \t \t //",
+            ),
+            array(
+                8,
+                null,
+                '<?php $a = 1;//',
+                '<?php $a = 1;           //',
+            ),
+        );
     }
 
     /**
@@ -1073,6 +1099,7 @@ $bar;',
 
             return;
         }
+
         if (null === $input) {
             $this->fail('While "input" is <null>, "expected" is not.');
         }
