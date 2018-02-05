@@ -6,6 +6,7 @@ Integration of fixers: general_phpdoc_annotation_remove,phpdoc_trim.
 <?php
 /**
  * @return string
+ *
  * @param string $name
  */
 function hello($name)
@@ -16,10 +17,10 @@ function hello($name)
 --INPUT--
 <?php
 /**
- *
+ * @test
  *
  * @return string
- * @test
+ *
  * @param string $name
  */
 function hello($name)
