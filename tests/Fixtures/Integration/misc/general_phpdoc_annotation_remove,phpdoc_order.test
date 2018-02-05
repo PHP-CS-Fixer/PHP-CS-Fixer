@@ -1,12 +1,12 @@
 --TEST--
 Integration of fixers: general_phpdoc_annotation_remove,phpdoc_order.
 --RULESET--
-{"general_phpdoc_annotation_remove": {"annotations": ["test"] }, "phpdoc_order": true}
+{"general_phpdoc_annotation_remove": {"annotations": ["return"] }, "phpdoc_order": true}
 --EXPECT--
 <?php
 /**
  * @param string $name
- * @return string
+ * @throws \Exception
  */
 function hello($name)
 {
@@ -16,8 +16,8 @@ function hello($name)
 --INPUT--
 <?php
 /**
+ * @throws \Exception
  * @return string
- * @test
  * @param string $name
  */
 function hello($name)

@@ -76,7 +76,6 @@ final class FixerFactoryTest extends TestCase
             array($fixers['function_to_constant'], $fixers['no_trailing_whitespace']),
             array($fixers['function_to_constant'], $fixers['no_whitespace_in_blank_line']),
             array($fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_separation']),
-            array($fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_order']),
             array($fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_trim']),
             array($fixers['general_phpdoc_annotation_remove'], $fixers['no_empty_phpdoc']),
             array($fixers['indentation_type'], $fixers['phpdoc_indent']),
