@@ -60,17 +60,17 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isCandidate(Tokens $tokens)
     {
-        return true;
+        return $tokens->isAllTokenKindsFound([T_CLASS, T_FUNCTION]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isRisky()
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_FUNCTION]);
+        return true;
     }
 
     /**
