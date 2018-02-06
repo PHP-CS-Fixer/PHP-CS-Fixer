@@ -79,10 +79,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $comparableContent = preg_replace('/\*\s*@covers\s+(.+)/', '\1', strtolower(trim($rawContent)));
                 $coversMap[$comparableContent] = $rawContent;
             }
-            ksort($coversMap, SORT_STRING);
+            $orderedCoversMap = $coversMap;
+            ksort($orderedCoversMap, SORT_STRING);
+            if ($orderedCoversMap === $coversMap) {
+                continue;
+            }
 
             foreach ($linesToUpdate as $line) {
-                $newContent = array_shift($coversMap);
+                $newContent = array_shift($orderedCoversMap);
                 $line->setContent($newContent);
             }
 
