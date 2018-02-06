@@ -61,7 +61,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT) || false === strpos($tokens[$index]->getContent(), '@covers')) {
+            if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT) || 0 === preg_match('/@covers\s.+@covers\s/s', $tokens[$index]->getContent())) {
                 continue;
             }
 
@@ -76,7 +76,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
 
                 $linesToUpdate[] = $line;
-                $comparableContent = preg_replace('/\*\s*@covers\s+(.+)/', '\1', trim($rawContent));
+                $comparableContent = preg_replace('/\*\s*@covers\s+(.+)/', '\1', strtolower(trim($rawContent)));
                 $coversMap[$comparableContent] = $rawContent;
             }
             ksort($coversMap, SORT_STRING);

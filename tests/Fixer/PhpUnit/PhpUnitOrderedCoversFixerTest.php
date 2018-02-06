@@ -37,7 +37,25 @@ final class PhpUnitOrderedCoversFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
-            [
+            'skip on 1 or 0 occurrences' => [
+                '<?php
+                    class FooTest extends \PHPUnit_Framework_TestCase {
+                        /**
+                         * @covers Foo
+                         * @params bool $bool
+                         * @return void
+                         */
+                        public function testMe() {}
+
+                        /**
+                         * @params bool $bool
+                         * @return void
+                         */
+                        public function testMe2() {}
+                    }
+                ',
+            ],
+            'base case' => [
                 '<?php
                     /**
                      * @covers Bar
@@ -53,7 +71,7 @@ final class PhpUnitOrderedCoversFixerTest extends AbstractFixerTestCase
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
             ],
-            [
+            'preserve positions if other docblock parts are present' => [
                 '<?php
                     /**
                      * @covers Bar
@@ -69,6 +87,26 @@ final class PhpUnitOrderedCoversFixerTest extends AbstractFixerTestCase
                      *
                      *  MyComment
                      * @covers Bar
+                     */
+                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                ',
+            ],
+            'case-insensitive' => [
+                '<?php
+                    /**
+                     * @covers A
+                     * @covers c
+                     * @covers D
+                     * @covers E
+                     */
+                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                ',
+                '<?php
+                    /**
+                     * @covers A
+                     * @covers E
+                     * @covers c
+                     * @covers D
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
