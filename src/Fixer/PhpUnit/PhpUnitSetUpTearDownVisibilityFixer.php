@@ -86,7 +86,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * @param Tokens $tokens
      *
-     * @return \Generator
+     * @return int[]
      */
     private function findPhpUnitClasses(Tokens $tokens)
     {
