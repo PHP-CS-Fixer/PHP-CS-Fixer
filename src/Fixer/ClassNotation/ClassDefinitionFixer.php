@@ -208,7 +208,7 @@ interface Bar extends
      *
      * @return array
      */
-    private function fixClassyDefinitionExtends(Tokens $tokens, $classOpenIndex, $classExtendsInfo)
+    private function fixClassyDefinitionExtends(Tokens $tokens, $classOpenIndex, array $classExtendsInfo)
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
 
@@ -257,7 +257,7 @@ interface Bar extends
      *
      * @return int
      */
-    private function fixClassyDefinitionOpenSpacing(Tokens $tokens, $classDefInfo)
+    private function fixClassyDefinitionOpenSpacing(Tokens $tokens, array $classDefInfo)
     {
         if ($classDefInfo['anonymousClass']) {
             if (false !== $classDefInfo['implements']) {
