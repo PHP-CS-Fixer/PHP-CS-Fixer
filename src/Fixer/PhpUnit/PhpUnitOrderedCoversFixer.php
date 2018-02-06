@@ -50,6 +50,15 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should be run after PhpUnitFqcnAnnotationFixer
+        return -10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_DOC_COMMENT]);
