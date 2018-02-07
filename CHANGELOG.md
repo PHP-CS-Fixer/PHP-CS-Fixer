@@ -3,6 +3,140 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.10.2
+---------------------
+
+* bug #3502 Fix missing file in export (keradus)
+
+Changelog for v2.10.1
+---------------------
+
+* bug #3265 YodaFixer - fix problems of block statements followed by ternary statements (weareoutman, keradus, SpacePossum)
+* bug #3367 NoUnusedImportsFixer - fix comment handling (SpacePossum, keradus)
+* bug #3438 PhpUnitTestAnnotationFixer: Do not prepend with test if method is test() (localheinz, SpacePossum)
+* bug #3455 NoEmptyCommentFixer - comment block detection for line ending different than LF (kubawerlos, SpacePossum)
+* bug #3458 SilencedDeprecationErrorFixer - fix edge cases (kubawerlos)
+* bug #3466 no_whitespace_in_blank_line and no_blank_lines_after_phpdoc fixers bug (kubawerlos, keradus)
+* bug #3472  YodaStyleFixer - do not un-Yoda if right side is assignment (SpacePossum, keradus)
+* bug #3492 PhpdocScalarFixer - Add callback pesudo-type to callable type (carusogabriel)
+* minor #3354 Added missing types to the PhpdocTypesFixer (GrahamCampbell)
+* minor #3406 Fix for escaping in README (kubawerlos)
+* minor #3430 Fix integration test (SpacePossum)
+* minor #3431 Add missing tests (SpacePossum)
+* minor #3440 Add a handful of integration tests (BackEndTea)
+* minor #3443 ConfigurableFixerInterface - not deprecated but TODO (SpacePossum)
+* minor #3444 IntegrationTest - ensure tests in priority dir are priority tests indeed (keradus)
+* minor #3494 Add missing PHPDoc param type (ntzm)
+* minor #3495 Swap @var type and element (ntzm)
+* minor #3498 NoUnusedImportsFixer - fix deprecation (keradus)
+
+Changelog for v2.10.0
+---------------------
+
+* feature #3290 Add PhpdocOpeningClosingFixer (Slamdunk, keradus)
+* feature #3327 Add MultilineWhitespaceBeforeSemicolonsFixer (egircys, keradus)
+* feature #3351 PhuUnit: migrate getMock to createPartialMock when arguments count is 2 (Slamdunk)
+* feature #3362 Add BacktickToShellExecFixer (Slamdunk)
+* minor #3285 PHPUnit - use protective traits (keradus)
+* minor #3329 ConfigurationResolver - detect deprecated fixers (keradus, SpacePossum)
+* minor #3343 Tokens - improve block end lookup (keradus)
+* minor #3360 Adjust Symfony ruleset (keradus)
+* minor #3361 no_extra_consecutive_blank_lines - rename to no_extra_blank_lines (with BC layer) (keradus)
+* minor #3363 progress-type - name main option value 'dots' (keradus)
+* minor #3404 Deprecate "use_yoda_style" in IsNullFixer (kubawerlos, keradus)
+* minor #3418 ConfigurableFixerInterface, ConfigurationDefinitionFixerInterface - update deprecations (keradus)
+* minor #3419 Dont use deprecated fixer in itest (keradus)
+
+Changelog for v2.9.3
+--------------------
+
+* bug #3502 Fix missing file in export (keradus)
+
+Changelog for v2.9.2
+--------------------
+
+* bug #3265 YodaFixer - fix problems of block statements followed by ternary statements (weareoutman, keradus, SpacePossum)
+* bug #3367 NoUnusedImportsFixer - fix comment handling (SpacePossum, keradus)
+* bug #3438 PhpUnitTestAnnotationFixer: Do not prepend with test if method is test() (localheinz, SpacePossum)
+* bug #3455 NoEmptyCommentFixer - comment block detection for line ending different than LF (kubawerlos, SpacePossum)
+* bug #3458 SilencedDeprecationErrorFixer - fix edge cases (kubawerlos)
+* bug #3466 no_whitespace_in_blank_line and no_blank_lines_after_phpdoc fixers bug (kubawerlos, keradus)
+* bug #3472  YodaStyleFixer - do not un-Yoda if right side is assignment (SpacePossum, keradus)
+* minor #3354 Added missing types to the PhpdocTypesFixer (GrahamCampbell)
+* minor #3406 Fix for escaping in README (kubawerlos)
+* minor #3430 Fix integration test (SpacePossum)
+* minor #3431 Add missing tests (SpacePossum)
+* minor #3440 Add a handful of integration tests (BackEndTea)
+* minor #3444 IntegrationTest - ensure tests in priority dir are priority tests indeed (keradus)
+* minor #3494 Add missing PHPDoc param type (ntzm)
+* minor #3495 Swap @var type and element (ntzm)
+* minor #3498 NoUnusedImportsFixer - fix deprecation (keradus)
+
+Changelog for v2.9.1
+--------------------
+
+* bug #3298 DiffConsoleFormatter - fix output escaping. (SpacePossum)
+* bug #3312 PhpUnitTestAnnotationFixer: Only remove prefix if it really is a prefix (localheinz)
+* bug #3318 SingleLineCommentStyleFixer - fix closing tag inside comment causes an error (kubawerlos)
+* bug #3334 ExplicitStringVariableFixer: handle parsed array and object (Slamdunk)
+* bug #3337 BracesFixer: nowdoc bug on template files (Slamdunk)
+* bug #3349 Fix stdin handling and add tests for it (keradus)
+* bug #3350 PhpUnitNoExpectationAnnotationFixer - fix handling of multiline expectedExceptionMessage annotation (Slamdunk)
+* bug #3352 FunctionToConstantFixer - bugfix for get_class with leading backslash (kubawerlos)
+* bug #3359 BracesFixer - handle comment for content outside of given block (keradus)
+* bug #3371 IsNullFixer must be run before YodaStyleFixer (kubawerlos)
+* bug #3373 PhpdocAlignFixer - Fix removing of everything after @ when there is a space after the @ (ntzm)
+* bug #3415 FileFilterIterator - input checks and utests (SpacePossum, keradus)
+* bug #3420 SingleLineCommentStyleFixer - fix 'strpos() expects parameter 1 to be string, boolean given' (keradus, SpacePossum)
+* bug #3428 Fix archive analysing (keradus)
+* bug #3429 Fix archive analysing (keradus)
+* minor #3137 PHPUnit - use common base class (keradus)
+* minor #3311 FinalInternalClassFixer - fix typo (localheinz)
+* minor #3328 Remove duplicated space in exceptions (keradus)
+* minor #3342 PhpUnitDedicateAssertFixer - Remove unexistent method is_boolean  (carusogabriel)
+* minor #3345 StdinFileInfo - fix __toString (keradus)
+* minor #3346 StdinFileInfo - drop getContents (keradus)
+* minor #3347 DX: reapply newest CS (keradus)
+* minor #3365 COOKBOOK-FIXERS.md - update to provide definition instead of description (keradus)
+* minor #3370 AbstractFixer - FQCN in in exceptions (Slamdunk)
+* minor #3372 ProjectCodeTest - fix comment (keradus)
+* minor #3393 Method call typos (Slamdunk, keradus)
+* minor #3402 Always provide delimiter to `preg_quote` calls (ntzm)
+* minor #3403 Remove unused import (ntzm)
+* minor #3405 Fix `fopen` mode (ntzm)
+* minor #3407 CombineConsecutiveIssetsFixer - Improve description (kubawerlos)
+* minor #3408 Improving fixers descriptions (kubawerlos)
+* minor #3409 move itests from misc to priority (keradus)
+* minor #3411 Better type hinting for AbstractFixerTestCase::$fixer (kubawerlos)
+* minor #3412 Convert `strtolower` inside `strpos` to just `stripos` (ntzm)
+* minor #3421 DX: Use ::class (keradus)
+* minor #3424 AbstractFixerTest: fix expectException arguments (Slamdunk, keradus)
+* minor #3425 FixerFactoryTest - test that priority pair fixers have itest (keradus, SpacePossum)
+* minor #3427 ConfigurationResolver: fix @return annotation (Slamdunk)
+
+Changelog for v2.9.0
+--------------------
+
+* feature #3063 Method chaining indentation fixer (boliev, julienfalque)
+* feature #3076 Add ExplicitStringVariableFixer (Slamdunk, keradus)
+* feature #3098 MethodSeparationFixer - add class elements separation options (SpacePossum, keradus)
+* feature #3155 Add EscapeImplicitBackslashesFixer (Slamdunk)
+* feature #3164 Add ExplicitIndirectVariableFixer (Slamdunk, keradus)
+* feature #3183 FinalInternalClassFixer introduction (keradus, SpacePossum)
+* feature #3187 StaticLambdaFixer - introduction (SpacePossum, keradus)
+* feature #3209 PhpdocAlignFixer - Make @method alignable (ntzm)
+* feature #3275 Add PhpUnitTestAnnotationFixer (BackEndTea, keradus)
+
+Changelog for v2.8.4
+--------------------
+
+* bug #3281 SelfAccessorFixer - stop modifying traits (kubawerlos)
+* minor #3195 Add self-update command test (julienfalque)
+* minor #3287 FileCacheManagerTest - drop duplicated line (keradus)
+* minor #3292 PHPUnit - set memory limit (veewee)
+* minor #3306 Token - better input validation (keradus)
+* minor #3310 Upgrade PHP Coveralls (keradus)
+
 Changelog for v2.8.3
 --------------------
 
@@ -409,6 +543,62 @@ Changelog for v2.3.0
 * feature #2708 Add PhpUnitTestClassRequiresCoversFixer (keradus)
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
+
+Changelog for v2.2.16
+---------------------
+
+* bug #3502 Fix missing file in export (keradus)
+
+Changelog for v2.2.15
+---------------------
+
+* bug #3367 NoUnusedImportsFixer - fix comment handling (SpacePossum, keradus)
+* bug #3455 NoEmptyCommentFixer - comment block detection for line ending different than LF (kubawerlos, SpacePossum)
+* bug #3458 SilencedDeprecationErrorFixer - fix edge cases (kubawerlos)
+* bug #3466 no_whitespace_in_blank_line and no_blank_lines_after_phpdoc fixers bug (kubawerlos, keradus)
+* minor #3354 Added missing types to the PhpdocTypesFixer (GrahamCampbell)
+* minor #3406 Fix for escaping in README (kubawerlos)
+* minor #3431 Add missing tests (SpacePossum)
+* minor #3440 Add a handful of integration tests (BackEndTea)
+* minor #3444 IntegrationTest - ensure tests in priority dir are priority tests indeed (keradus)
+* minor #3494 Add missing PHPDoc param type (ntzm)
+* minor #3495 Swap @var type and element (ntzm)
+* minor #3498 NoUnusedImportsFixer - fix deprecation (keradus)
+
+Changelog for v2.2.14
+---------------------
+
+* bug #3298 DiffConsoleFormatter - fix output escaping. (SpacePossum)
+* bug #3337 BracesFixer: nowdoc bug on template files (Slamdunk)
+* bug #3349 Fix stdin handling and add tests for it (keradus)
+* bug #3359 BracesFixer - handle comment for content outside of given block (keradus)
+* bug #3415 FileFilterIterator - input checks and utests (SpacePossum, keradus)
+* bug #3429 Fix archive analysing (keradus)
+* minor #3137 PHPUnit - use common base class (keradus)
+* minor #3342 PhpUnitDedicateAssertFixer - Remove unexistent method is_boolean  (carusogabriel)
+* minor #3345 StdinFileInfo - fix `__toString` (keradus)
+* minor #3346 StdinFileInfo - drop getContents (keradus)
+* minor #3347 DX: reapply newest CS (keradus)
+* minor #3365 COOKBOOK-FIXERS.md - update to provide definition instead of description (keradus)
+* minor #3370 AbstractFixer - FQCN in in exceptions (Slamdunk)
+* minor #3372 ProjectCodeTest - fix comment (keradus)
+* minor #3402 Always provide delimiter to `preg_quote` calls (ntzm)
+* minor #3403 Remove unused import (ntzm)
+* minor #3405 Fix `fopen` mode (ntzm)
+* minor #3408 Improving fixers descriptions (kubawerlos)
+* minor #3409 move itests from misc to priority (keradus)
+* minor #3411 Better type hinting for AbstractFixerTestCase::$fixer (kubawerlos)
+* minor #3412 Convert `strtolower` inside `strpos` to just `stripos` (ntzm)
+* minor #3425 FixerFactoryTest - test that priority pair fixers have itest (keradus, SpacePossum)
+* minor #3427 ConfigurationResolver: fix @return annotation (Slamdunk)
+
+Changelog for v2.2.13
+---------------------
+
+* bug #3281 SelfAccessorFixer - stop modifying traits (kubawerlos)
+* minor #3195 Add self-update command test (julienfalque)
+* minor #3292 PHPUnit - set memory limit (veewee)
+* minor #3306 Token - better input validation (keradus)
 
 Changelog for v2.2.12
 ---------------------

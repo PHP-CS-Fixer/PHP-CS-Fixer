@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -61,7 +61,7 @@ final class LineTest extends TestCase
         "     *\n",
         "     * @param adkjbadjasbdand \$asdnjkasd\n",
         "     *\n",
-        "     * @throws \Exception asdnjkasd\n",
+        "     * @throws \\Exception asdnjkasd\n",
         "     * asdasdasdasdasdasdasdasd\n",
         "     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb\n",
         "     *\n",

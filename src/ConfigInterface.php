@@ -37,7 +37,7 @@ interface ConfigInterface
     /**
      * Returns files to scan.
      *
-     * @return iterable|string[]|\Traversable
+     * @return iterable|\Traversable
      */
     public function getFinder();
 

@@ -31,7 +31,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after PhpdocToCommentFixer and before NoExtraConsecutiveBlankLinesFixer, NoTrailingWhitespaceFixer and NoWhitespaceInBlankLineFixer.
+        // should be run after PhpdocToCommentFixer and before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer and NoWhitespaceInBlankLineFixer.
         return 2;
     }
 
@@ -141,7 +141,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     {
         $lineCount = 0;
         for ($i = $whiteStart; $i < $whiteEnd; ++$i) {
-            $lineCount += substr_count($tokens[$i]->getContent(), "\n");
+            $lineCount += preg_match_all('/\R/u', $tokens[$i]->getContent(), $matches);
         }
 
         return $lineCount;

@@ -12,9 +12,9 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -74,38 +74,47 @@ PHP;
                 9 => [
                     'token' => $tokens[9],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 14 => [
                     'token' => $tokens[14],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 19 => [
                     'token' => $tokens[19],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 28 => [
                     'token' => $tokens[28],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 42 => [
                     'token' => $tokens[42],
                     'type' => 'const',
+                    'classIndex' => 1,
                 ],
                 53 => [
                     'token' => $tokens[53],
                     'type' => 'method',
+                    'classIndex' => 1,
                 ],
                 83 => [
                     'token' => $tokens[83],
                     'type' => 'method',
+                    'classIndex' => 1,
                 ],
                 140 => [
                     'token' => $tokens[140],
                     'type' => 'method',
+                    'classIndex' => 1,
                 ],
                 164 => [
                     'token' => $tokens[164],
                     'type' => 'const',
+                    'classIndex' => 158,
                 ],
             ],
             $elements
@@ -144,26 +153,32 @@ PHP;
                 9 => [
                     'token' => $tokens[9],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 14 => [
                     'token' => $tokens[14],
                     'type' => 'method',
+                    'classIndex' => 1,
                 ],
                 33 => [
                     'token' => $tokens[33],
                     'type' => 'property',
+                    'classIndex' => 26,
                 ],
                 38 => [
                     'token' => $tokens[38],
                     'type' => 'method',
+                    'classIndex' => 26,
                 ],
                 56 => [
                     'token' => $tokens[56],
                     'type' => 'property',
+                    'classIndex' => 50,
                 ],
                 74 => [
                     'token' => $tokens[74],
                     'type' => 'method',
+                    'classIndex' => 1,
                 ],
             ],
             $elements
@@ -251,62 +266,62 @@ PHP;
                 9 => [
                     'token' => $tokens[9],
                     'type' => 'method',
-                    // 'classIndex' => 1, @TODO on master
+                     'classIndex' => 1,
                 ],
                 27 => [
                     'token' => $tokens[27],
                     'type' => 'method',
-                    //'classIndex' => 21, @TODO on master
+                    'classIndex' => 21,
                 ],
                 44 => [
                     'token' => $tokens[44],
                     'type' => 'method',
-                    // 'classIndex' => 1, @TODO on master
+                     'classIndex' => 1,
                 ],
                 64 => [
                     'token' => $tokens[64],
                     'type' => 'method',
-                    // 'classIndex' => 56, @TODO on master
+                     'classIndex' => 56,
                 ],
                 82 => [
                     'token' => $tokens[82],
                     'type' => 'method',
-                    // 'classIndex' => 76, @TODO on master
+                     'classIndex' => 76,
                 ],
                 100 => [
                     'token' => $tokens[100],
                     'type' => 'method',
-                    // 'classIndex' => 94, @TODO on master
+                     'classIndex' => 94,
                 ],
                 118 => [
                     'token' => $tokens[118],
                     'type' => 'method',
-                    // 'classIndex' => 112, @TODO on master
+                     'classIndex' => 112,
                 ],
                 139 => [
                     'token' => $tokens[139],
                     'type' => 'method',
-                    // 'classIndex' => 112, @TODO on master
+                     'classIndex' => 112,
                 ],
                 170 => [
                     'token' => $tokens[170],
                     'type' => 'method',
-                    // 'classIndex' => 76, @TODO on master
+                     'classIndex' => 76,
                 ],
                 188 => [
                     'token' => $tokens[188],
                     'type' => 'method',
-                    // 'classIndex' => 182, @TODO on master
+                     'classIndex' => 182,
                 ],
                 206 => [
                     'token' => $tokens[206],
                     'type' => 'method',
-                    // 'classIndex' => 200, @TODO on master
+                     'classIndex' => 200,
                 ],
                 242 => [
                     'token' => $tokens[242],
                     'type' => 'method',
-                    // 'classIndex' => 56, @TODO on master
+                     'classIndex' => 56,
                 ],
             ],
             $elements

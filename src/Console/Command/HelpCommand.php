@@ -47,7 +47,7 @@ final class HelpCommand extends BaseHelpCommand
     public static function getHelpCopy()
     {
         $template =
-            <<<EOF
+            <<<'EOF'
 The <info>%command.name%</info> command tries to fix as much coding standards
 problems as possible on a given file or files in a given directory and its subdirectories:
 
@@ -112,9 +112,10 @@ The <comment>--stop-on-violation</comment> flag stops the execution upon first f
 The <comment>--show-progress</comment> option allows you to choose the way process progress is rendered:
 
 * <comment>none</comment>: disables progress output;
-* <comment>run-in</comment>: simple single-line progress output;
-* <comment>estimating</comment>: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
-* <comment>estimating-max</comment>: same as <comment>estimating</comment> but using all terminal columns instead of default 80.
+* <comment>run-in</comment>: [deprecated] simple single-line progress output;
+* <comment>estimating</comment>: [deprecated] multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
+* <comment>estimating-max</comment>: [deprecated] same as <comment>dots</comment>;
+* <comment>dots</comment>: same as <comment>estimating</comment> but using all terminal columns instead of default 80.
 
 If the option is not provided, it defaults to <comment>run-in</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
@@ -156,7 +157,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
     <?php
 
-    \$finder = PhpCsFixer\Finder::create()
+    $finder = PhpCsFixer\Finder::create()
         ->exclude('somedir')
         ->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
         ->in(__DIR__)
@@ -168,7 +169,7 @@ The example below will add two rules to the default list of PSR2 set rules:
             'strict_param' => true,
             'array_syntax' => ['syntax' => 'short'],
         ])
-        ->setFinder(\$finder)
+        ->setFinder($finder)
     ;
 
     ?>
@@ -183,7 +184,7 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
 
     <?php
 
-    \$finder = PhpCsFixer\Finder::create()
+    $finder = PhpCsFixer\Finder::create()
         ->exclude('somedir')
         ->in(__DIR__)
     ;
@@ -193,7 +194,7 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
             '@Symfony' => true,
             'full_opening_tag' => false,
         ])
-        ->setFinder(\$finder)
+        ->setFinder($finder)
     ;
 
     ?>
@@ -204,8 +205,8 @@ configure them in your config file.
     <?php
 
     return PhpCsFixer\Config::create()
-        ->setIndent("\\t")
-        ->setLineEnding("\\r\\n")
+        ->setIndent("\t")
+        ->setLineEnding("\r\n")
     ;
 
     ?>
@@ -253,7 +254,7 @@ Then, add the following command to your CI:
 
 %%%CI_INTEGRATION%%%
 
-Where ``\$COMMIT_RANGE`` is your range of commits, eg ``\$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
+Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
 Exit codes
 ----------
@@ -278,7 +279,7 @@ EOF
                 self::getLatestReleaseVersionFromChangeLog()
             ),
             '%%%CI_INTEGRATION%%%' => implode("\n", array_map(
-                function ($line) { return '    $ '.$line; },
+                static function ($line) { return '    $ '.$line; },
                 array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
             )),
             '%%%FIXERS_DETAILS%%%' => self::getFixersHelp(),
@@ -338,11 +339,11 @@ EOF
         $allowed = $option->getAllowedValues();
 
         if (null !== $allowed) {
-            $allowed = array_filter($allowed, function ($value) {
+            $allowed = array_filter($allowed, static function ($value) {
                 return !($value instanceof \Closure);
             });
 
-            usort($allowed, function ($valueA, $valueB) {
+            usort($allowed, static function ($valueA, $valueB) {
                 return strcasecmp(
                     self::toString($valueA),
                     self::toString($valueB)
@@ -433,7 +434,7 @@ EOF
         // sort fixers by name
         usort(
             $fixers,
-            function (FixerInterface $a, FixerInterface $b) {
+            static function (FixerInterface $a, FixerInterface $b) {
                 return strcmp($a->getName(), $b->getName());
             }
         );
@@ -443,7 +444,7 @@ EOF
             $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
-        $getSetsWithRule = function ($rule) use ($ruleSets) {
+        $getSetsWithRule = static function ($rule) use ($ruleSets) {
             $sets = [];
 
             foreach ($ruleSets as $setName => $ruleSet) {
@@ -503,7 +504,7 @@ EOF
 
                     usort(
                         $configurationDefinitionOptions,
-                        function (FixerOptionInterface $optionA, FixerOptionInterface $optionB) {
+                        static function (FixerOptionInterface $optionA, FixerOptionInterface $optionB) {
                             return strcmp($optionA->getName(), $optionB->getName());
                         }
                     );
@@ -581,7 +582,7 @@ EOF
             $lineLength += $wordLength;
         }
 
-        return array_map(function ($line) {
+        return array_map(static function ($line) {
             return implode(' ', $line);
         }, $result);
     }

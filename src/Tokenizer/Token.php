@@ -56,6 +56,24 @@ class Token
     public function __construct($token)
     {
         if (is_array($token)) {
+            if (!is_int($token[0])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Id must be an int, got "%s".',
+                    is_object($token[0]) ? get_class($token[0]) : gettype($token[0])
+                ));
+            }
+
+            if (!is_string($token[1])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Content must be a string, got "%s".',
+                    is_object($token[1]) ? get_class($token[1]) : gettype($token[1])
+                ));
+            }
+
+            if ('' === $token[1]) {
+                throw new \InvalidArgumentException('Cannot set empty content for id-based Token.');
+            }
+
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];

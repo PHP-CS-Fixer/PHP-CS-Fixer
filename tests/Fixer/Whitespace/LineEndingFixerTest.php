@@ -78,7 +78,7 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
 
     public function provideMessyWhitespacesCases()
     {
-        $cases = array_map(function (array $case) {
+        $cases = array_map(static function (array $case) {
             return array_reverse($case);
         }, $this->provideCommonCases());
 

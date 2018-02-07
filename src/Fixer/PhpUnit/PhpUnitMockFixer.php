@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
@@ -23,15 +26,20 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitMockFixer extends AbstractFixer
+final class PhpUnitMockFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    /**
+     * @var bool
+     */
+    private $fixCreatePartialMock;
+
     /**
      * {@inheritdoc}
      */
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Usages of `->getMock` and `->getMockWithoutInvokingTheOriginalConstructor` methods MUST be replaced by `->createMock` method.',
+            'Usages of `->getMock` and `->getMockWithoutInvokingTheOriginalConstructor` methods MUST be replaced by `->createMock` or `->createPartialMock` methods.',
             [
                 new CodeSample(
                     '<?php
@@ -40,6 +48,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function testFoo()
     {
         $mock = $this->getMockWithoutInvokingTheOriginalConstructor("Foo");
+        $mock1 = $this->getMock("Foo");
+        $mock1 = $this->getMock("Bar", ["aaa"]);
+        $mock1 = $this->getMock("Baz", ["aaa"], ["argument"]); // version with more than 2 params is not supported
     }
 }
 '
@@ -54,7 +65,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $mock1 = $this->getMock("Bar", ["aaa"]); // version with multiple params is not supported
     }
 }
-'
+',
+                    ['target' => PhpUnitTargetVersion::VERSION_5_4]
                 ),
             ],
             null,
@@ -76,6 +88,16 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        parent::configure($configuration);
+
+        $this->fixCreatePartialMock = PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_5);
     }
 
     /**
@@ -113,8 +135,24 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
                 if (1 === $argumentsCount) {
                     $tokens[$index] = new Token([T_STRING, 'createMock']);
+                } elseif (2 === $argumentsCount && true === $this->fixCreatePartialMock) {
+                    $tokens[$index] = new Token([T_STRING, 'createPartialMock']);
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
+                ->setAllowedTypes(['string'])
+                ->setAllowedValues([PhpUnitTargetVersion::VERSION_5_4, PhpUnitTargetVersion::VERSION_5_5, PhpUnitTargetVersion::VERSION_NEWEST])
+                ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
+                ->getOption(),
+        ]);
     }
 }

@@ -51,7 +51,7 @@ whether you want to follow PHP coding standards as defined in the PSR-1, PSR-2, 
 or other community driven ones like the Symfony one.
 You can **also** define your (teams) style through configuration.
 
-It can modernize your code (like converting the `pow` function to the `**` operator on PHP 5.6)
+It can modernize your code (like converting the ``pow`` function to the ``**`` operator on PHP 5.6)
 and (micro) optimize it.
 
 If you are already using a linter to identify coding standards problems in your
@@ -236,15 +236,15 @@ EOF;
         $help = preg_replace("#^\n( +\\$ )#m", "\n.. code-block:: bash\n\n$1", $help);
         $help = preg_replace("#^\n( +<\\?php)#m", "\n.. code-block:: php\n\n$1", $help);
         $help = preg_replace_callback(
-            "#^\s*<\?(\w+).*?\?>#ms",
-            function ($matches) {
-                $result = preg_replace("#^\.\. code-block:: bash\n\n#m", '', $matches[0]);
+            '#^\s*<\?(\w+).*?\?>#ms',
+            static function ($matches) {
+                $result = preg_replace("#^\\.\\. code-block:: bash\n\n#m", '', $matches[0]);
 
                 if ('php' !== $matches[1]) {
-                    $result = preg_replace("#<\?{$matches[1]}\s*#", '', $result);
+                    $result = preg_replace("#<\\?{$matches[1]}\\s*#", '', $result);
                 }
 
-                $result = preg_replace("#\n\n +\?>#", '', $result);
+                $result = preg_replace("#\n\n +\\?>#", '', $result);
 
                 return $result;
             },
@@ -259,7 +259,7 @@ EOF;
 
         $help = preg_replace_callback(
            '#`(.+)`\s?\(<url>(.+)<\/url>\)#',
-            function (array $matches) {
+            static function (array $matches) {
                 return sprintf('`%s <%s>`_', str_replace('\\', '\\\\', $matches[1]), $matches[2]);
             },
             $help

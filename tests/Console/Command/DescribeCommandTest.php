@@ -20,9 +20,10 @@ use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -46,8 +47,8 @@ final class DescribeCommandTest extends TestCase
 
     public function testExecuteOutput()
     {
-        $expected = <<<'EOT'
-Description of Foo/bar rule.
+        $expected =
+"Description of Foo/bar rule.
 Fixes stuff. DEPRECATED: use `Foo/baz` instead.
 Replaces bad stuff with good stuff.
 
@@ -65,6 +66,7 @@ Fixing examples:
    @@ -1 +1 @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and bad thing';
+   "."
    ----------- end diff -----------
 
  * Example #2. Fixing with configuration: ['functions' => ['foo', 'bar']].
@@ -74,18 +76,17 @@ Fixing examples:
    @@ -1 +1 @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and good thing';
+   ".'
    ----------- end diff -----------
 
-
-EOT;
-
+';
         $this->assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
     }
 
     public function testExecuteOutputWithDecoration()
     {
-        $expected = <<<EOT
-\033[32mDescription of\033[39m Foo/bar \033[32mrule\033[39m.
+        $expected =
+"\033[32mDescription of\033[39m Foo/bar \033[32mrule\033[39m.
 Fixes stuff. \033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
 Replaces bad stuff with good stuff.
 
@@ -103,6 +104,7 @@ Fixing examples:
    \033[36m@@ -1 +1 @@\033[39m
    \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
    \033[32m+<?php echo 'good stuff and bad thing';\033[39m
+   "."
 \033[33m   ----------- end diff -----------\033[39m
 
  * Example #2. Fixing with configuration: \033[33m['functions' => ['foo', 'bar']]\033[39m.
@@ -112,11 +114,10 @@ Fixing examples:
    \033[36m@@ -1 +1 @@\033[39m
    \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
    \033[32m+<?php echo 'good stuff and good thing';\033[39m
+   "."
 \033[33m   ----------- end diff -----------\033[39m
 
-
-EOT;
-
+";
         $actual = $this->execute('Foo/bar', true)->getDisplay(true);
 
         $this->assertSame($expected, $actual);
@@ -179,6 +180,37 @@ EOT;
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageRegExp('#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
         $this->execute('Foo2/bar', false);
+    }
+
+    public function testFixerClassNameIsExposedWhenVerbose()
+    {
+        $fixerName = uniqid('Foo/bar_');
+
+        $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
+        $fixer->getName()->willReturn($fixerName);
+        $fixer->getPriority()->willReturn(0);
+        $fixer->isRisky()->willReturn(true);
+        $mock = $fixer->reveal();
+
+        $fixerFactory = new FixerFactory();
+        $fixerFactory->registerFixer($mock, true);
+
+        $this->application->add(new DescribeCommand($fixerFactory));
+
+        $command = $this->application->find('describe');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+            [
+                'command' => $command->getName(),
+                'name' => $fixerName,
+            ],
+            [
+                'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+            ]
+        );
+
+        $this->assertContains(get_class($mock), $commandTester->getDisplay(true));
     }
 
     /**
