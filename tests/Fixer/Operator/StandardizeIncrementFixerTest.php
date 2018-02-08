@@ -417,9 +417,6 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
                 '<?php $i += 1 >= 2;',
             ],
             [
-                '<?php $i += 1 <=> 2;',
-            ],
-            [
                 '<?php $i += 1 <> 2;',
             ],
             [
@@ -495,9 +492,6 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
                 '<?php $i -= 1 >= 2;',
             ],
             [
-                '<?php $i -= 1 <=> 2;',
-            ],
-            [
                 '<?php $i -= 1 <> 2;',
             ],
         ];
@@ -523,6 +517,12 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php $i += 1 ?? 2;',
+            ],
+            [
+                '<?php $i -= 1 <=> 2;',
+            ],
+            [
+                '<?php $i += 1 <=> 2;',
             ],
         ];
     }
