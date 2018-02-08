@@ -37,6 +37,14 @@ final class CommentToPhpdocFixer extends AbstractFixer implements WhitespacesAwa
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPriority()
     {
         // Should be run before PhpdocToCommentFixer
@@ -50,11 +58,9 @@ final class CommentToPhpdocFixer extends AbstractFixer implements WhitespacesAwa
     {
         return new FixerDefinition(
             'Comments with annotation should be docblock.',
-            [
-                new CodeSample(
-                    "<?php /* @var bool \$isFoo */\n"
-                ),
-            ]
+            [new CodeSample("<?php /* @var bool \$isFoo */\n")],
+            null,
+            "Risky as new docblocks might began mean more, e.g. Doctrine's entity might have a new column in database"
         );
     }
 

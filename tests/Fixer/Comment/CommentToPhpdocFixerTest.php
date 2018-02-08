@@ -52,6 +52,10 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php /** @var string $foo */',
+                '<?php /*@var string $foo */',
+            ],
+            [
+                '<?php /** @var string $foo */',
                 '<?php /*** @var string $foo */',
             ],
             [
