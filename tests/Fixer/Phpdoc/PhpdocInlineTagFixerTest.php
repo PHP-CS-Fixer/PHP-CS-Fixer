@@ -153,7 +153,7 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
         $cases[] = array(
             '<?php
     /**
-     * {@link http://www.ietf.org/rfc/rfc1035.text)
+     * {@link https://www.ietf.org/rfc/rfc1035.txt)
      */
     $someVar = "hello";',
         );
