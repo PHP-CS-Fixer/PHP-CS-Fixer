@@ -1444,6 +1444,11 @@ Choose from the list of available rules:
 
   Standardize spaces around ternary operator.
 
+* **ternary_to_elvis_operator**
+
+  Converts a ternary operation with first and second operands identicals
+  to an elvis operation (?:).
+
 * **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration]
 
   Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
