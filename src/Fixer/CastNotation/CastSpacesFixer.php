@@ -39,7 +39,7 @@ final class CastSpacesFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be ran after the NoShortBoolCastFixer
+        // should be run after the NoShortBoolCastFixer
         return -10;
     }
 
