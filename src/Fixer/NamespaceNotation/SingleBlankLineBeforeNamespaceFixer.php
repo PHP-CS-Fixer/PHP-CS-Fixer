@@ -49,7 +49,7 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
      */
     public function getPriority()
     {
-        // should be ran after the NoWhitespaceInBlankLineFixer.
+        // should be run after the NoWhitespaceInBlankLineFixer.
         return -21;
     }
 
