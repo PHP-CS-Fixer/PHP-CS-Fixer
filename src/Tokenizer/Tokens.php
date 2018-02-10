@@ -338,7 +338,7 @@ class Tokens extends \SplFixedArray
                 if (0 === strpos($whitespace, "\r\n")) {
                     $tokens[$index] = new Token(array(T_OPEN_TAG, rtrim($token->getContent())."\r\n"));
 
-                    return strlen($whitespace) > 2 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
+                    return strlen($whitespace) > 2 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
                         ? substr($whitespace, 2)
                         : ''
                     ;
@@ -346,7 +346,7 @@ class Tokens extends \SplFixedArray
 
                 $tokens[$index] = new Token(array(T_OPEN_TAG, rtrim($token->getContent()).$whitespace[0]));
 
-                return strlen($whitespace) > 1 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
+                return strlen($whitespace) > 1 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
                     ? substr($whitespace, 1)
                     : ''
                 ;
