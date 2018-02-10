@@ -67,9 +67,9 @@ final class IntegrationTest extends AbstractIntegrationTestCase
         if ($settings['isExplicitPriorityCheck']) {
             if ($fixedInputCode === $fixedInputCodeWithReversedFixers) {
                 if (in_array($case->getFileName(), [
-                    'priority/backtick_to_shell_exec,escape_implicit_backslashes.test',
-                    'priority/braces,indentation_type,no_break_comment.test',
-                    'priority/standardize_not_equals,binary_operator_spaces.test',
+                    'priority'.DIRECTORY_SEPARATOR.'backtick_to_shell_exec,escape_implicit_backslashes.test',
+                    'priority'.DIRECTORY_SEPARATOR.'braces,indentation_type,no_break_comment.test',
+                    'priority'.DIRECTORY_SEPARATOR.'standardize_not_equals,binary_operator_spaces.test',
                 ], true)) {
                     static::markTestIncomplete(sprintf(
                         'Integration test `%s` was defined as explicit priority test, but no priority conflict was detected.'
