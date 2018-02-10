@@ -894,6 +894,7 @@ PHP;
 
         $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex, true));
         $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex, false));
+        $this->assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
 
         $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
         $this->assertInternalType('array', $detectedType);
