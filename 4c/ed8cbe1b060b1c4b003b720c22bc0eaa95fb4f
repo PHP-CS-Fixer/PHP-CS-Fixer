@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-31T09:34:52Z
+
+I like this one :+1:
+If others agree, please deprecate the usage of the last argument (the flag) so we can remove it on 3.0.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-31T10:06:01Z
+
+> as this is an internal class (...)
+
+it is not internal class ;)
+we could add new feature in "component", as we release minor version according to new rules only (as for most users, they don't cares about using this repo as a lib, yet we cant break BC for them!).
+due to that, :+1: for adding new method on 2.2, but deprecation have to be added in next minor, due to SEMVER rules.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-06T20:47:01Z
+
+Deprecating the param has to be done in a new PR because it can only be done in a new minor.
+The implementation would be something like:
+- let the public methods `findStart` and `findEnd` call a new private method (directly, so find `findStart` no longer calls `findEnd`
+- in the `findEnd` method, check the number of arguments passed, if to much trigger the deprecation. An example can be found here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.10.2/src/FixerDefinition/FixerDefinition.php#L44
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-02-06T20:49:26Z
+
+Sorry accidentally deleted my comment instead of editing it 🤦‍♂️
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-06T20:51:14Z
+
+haha no worries man :)
