@@ -51,8 +51,6 @@ class Token
     private $changed = false;
 
     /**
-     * Constructor.
-     *
      * @param array|string $token token prototype
      */
     public function __construct($token)
@@ -91,8 +89,6 @@ class Token
     }
 
     /**
-     * Get cast token kinds.
-     *
      * @return int[]
      */
     public static function getCastTokenKinds()
@@ -223,8 +219,6 @@ class Token
     }
 
     /**
-     * Get token prototype.
-     *
      * @return array|string token prototype
      */
     public function getPrototype()
@@ -498,8 +492,6 @@ class Token
     }
 
     /**
-     * Set token's content.
-     *
      * @param string $content
      */
     public function setContent($content)

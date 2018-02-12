@@ -42,29 +42,21 @@ final class FixCommand extends Command
     const COMMAND_NAME = 'fix';
 
     /**
-     * EventDispatcher instance.
-     *
      * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
-     * ErrorsManager instance.
-     *
      * @var ErrorsManager
      */
     private $errorsManager;
 
     /**
-     * Stopwatch instance.
-     *
      * @var Stopwatch
      */
     private $stopwatch;
 
     /**
-     * Config instance.
-     *
      * @var ConfigInterface
      */
     private $defaultConfig;

@@ -101,7 +101,7 @@ class Annotation
     private $tag;
 
     /**
-     * The cached types content.
+     * Lazy loaded, cached types content.
      *
      * @var null|string
      */

@@ -103,8 +103,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     }
 
     /**
-     * Fix a given docblock.
-     *
      * @param string $content
      *
      * @return string
@@ -213,8 +211,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     }
 
     /**
-     * Get all matches.
-     *
      * @param string $line
      * @param bool   $matchCommentOnly
      *

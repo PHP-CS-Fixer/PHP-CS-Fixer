@@ -73,6 +73,10 @@ final class NoExtraConsecutiveBlankLinesFixer extends AbstractFixer implements C
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.SwitchStatement)
+     *
+     * @todo drop warning suppression
      */
     public function configure(array $configuration = null)
     {

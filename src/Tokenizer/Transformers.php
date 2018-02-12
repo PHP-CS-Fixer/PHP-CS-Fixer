@@ -74,8 +74,6 @@ final class Transformers
     }
 
     /**
-     * Register Transformer.
-     *
      * @param TransformerInterface $transformer Transformer
      */
     private function registerTransformer(TransformerInterface $transformer)
@@ -85,9 +83,6 @@ final class Transformers
         }
     }
 
-    /**
-     * Register all built in Transformers.
-     */
     private function registerBuiltInTransformers()
     {
         static $registered = false;

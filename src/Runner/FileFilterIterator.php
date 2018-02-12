@@ -107,8 +107,6 @@ final class FileFilterIterator extends \FilterIterator
     }
 
     /**
-     * Dispatch event.
-     *
      * @param string $name
      * @param Event  $event
      */

@@ -214,8 +214,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * Returns config instance.
-     *
      * @return ConfigInterface
      */
     public function getConfig()
@@ -248,8 +246,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * Returns config file path.
-     *
      * @return null|string
      */
     public function getConfigFile()
@@ -293,8 +289,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * Returns fixers.
-     *
      * @return FixerInterface[] An array of FixerInterface
      */
     public function getFixers()

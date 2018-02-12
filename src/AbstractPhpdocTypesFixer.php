@@ -106,8 +106,6 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     }
 
     /**
-     * Normalize the given types.
-     *
      * @param string[] $types
      *
      * @return string[]

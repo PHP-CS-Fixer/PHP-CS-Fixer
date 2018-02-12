@@ -201,8 +201,6 @@ echo 1;
     }
 
     /**
-     * Find the header comment index.
-     *
      * @param Tokens $tokens
      * @param int    $headerNewIndex
      *

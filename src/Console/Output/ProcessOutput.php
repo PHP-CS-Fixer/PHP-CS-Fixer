@@ -39,15 +39,11 @@ final class ProcessOutput implements ProcessOutputInterface
     );
 
     /**
-     * Event dispatcher instance.
-     *
      * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
-     * Stream output instance.
-     *
      * @var OutputInterface
      */
     private $output;

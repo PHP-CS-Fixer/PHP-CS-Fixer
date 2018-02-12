@@ -128,8 +128,6 @@ foreach($connections as $key => $sqlite) {
     }
 
     /**
-     * Check if token is a structural element.
-     *
      * @see https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#3-definitions
      *
      * @param Token $token
