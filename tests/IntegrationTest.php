@@ -73,7 +73,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                 ], true)) {
                     static::markTestIncomplete(sprintf(
                         'Integration test `%s` was defined as explicit priority test, but no priority conflict was detected.'
-                        ."\n".'Either integration test needs to be extended or be moved from `priority` to `misc`.'
+                        ."\n".'Either integration test needs to be extended or moved from `priority` to `misc`.'
                         ."\n".'But don\'t do it blindly - it deserves investigation!',
                         $case->getFileName()
                     ));
