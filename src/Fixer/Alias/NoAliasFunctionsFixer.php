@@ -29,6 +29,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer
     private static $aliases = [
         'chop' => 'rtrim',
         'close' => 'closedir',
+        'die' => 'exit',
         'doubleval' => 'floatval',
         'fputs' => 'fwrite',
         'imap_create' => 'imap_createmailbox',
