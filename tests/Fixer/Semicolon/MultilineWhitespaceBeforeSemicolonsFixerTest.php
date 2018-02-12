@@ -424,6 +424,17 @@ $this
                         ->method2();
                 ?>',
             ],
+            [
+                '<?php
+Foo::bar()
+    ->baz()
+;
+',
+                '<?php
+Foo::bar()
+    ->baz();
+',
+            ],
         ];
     }
 
