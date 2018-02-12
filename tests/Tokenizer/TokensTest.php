@@ -876,8 +876,8 @@ PHP;
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex, true));
-        $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex, false));
+        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex));
+        $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex));
         $this->assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
 
         $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
