@@ -210,7 +210,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
                 break;
             }
 
-            $index = $tokens->findBlockEnd($block['type'], $index, false) - 1;
+            $index = $tokens->findBlockStart($block['type'], $index) - 1;
         }
 
         return $tokens->getNextMeaningfulToken($index);
