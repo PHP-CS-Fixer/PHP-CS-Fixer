@@ -772,6 +772,17 @@ PHP;
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
     }
 
+    /**
+     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart or drop the argument.
+     * @group legacy
+     */
+    public function testFindBlockEndLastParameterDeprecated()
+    {
+        $tokens = Tokens::fromCode('<?php ${$bar};');
+
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 4, false);
+    }
+
     public function testEmptyTokens()
     {
         $code = '';

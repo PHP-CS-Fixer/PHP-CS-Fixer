@@ -440,6 +440,10 @@ class Tokens extends \SplFixedArray
      */
     public function findBlockEnd($type, $searchIndex, $findEnd = true)
     {
+        if (3 === func_num_args()) {
+            @trigger_error('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart or drop the argument.', E_USER_DEPRECATED);
+        }
+
         return $this->findOppositeBlockEdge($type, $searchIndex, $findEnd);
     }
 
@@ -1227,10 +1231,10 @@ class Tokens extends \SplFixedArray
 
     /**
      * @param int  $type        type of block, one of BLOCK_TYPE_*
-     * @param int  $searchIndex index of starting brace
-     * @param bool $findEnd     if method should find block's end or start
+     * @param int  $searchIndex index of opening or closing brace
+     * @param bool $findEnd     find end or start?
      *
-     * @return int index of opposite brace
+     * @return int index of the opposite brace
      */
     private function findOppositeBlockEdge($type, $searchIndex, $findEnd)
     {
