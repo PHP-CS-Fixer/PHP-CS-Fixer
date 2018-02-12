@@ -780,7 +780,7 @@ PHP;
     {
         $tokens = Tokens::fromCode('<?php ${$bar};');
 
-        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 4, false);
+        $this->assertSame(2, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 4, false));
     }
 
     public function testEmptyTokens()
@@ -877,7 +877,6 @@ PHP;
         $tokens = Tokens::fromCode($source);
 
         $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex));
-        $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex));
         $this->assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
 
         $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
