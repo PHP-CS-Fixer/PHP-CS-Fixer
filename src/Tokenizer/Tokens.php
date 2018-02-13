@@ -1235,10 +1235,10 @@ class Tokens extends \SplFixedArray
 
     /**
      * @param int  $type        type of block, one of BLOCK_TYPE_*
-     * @param int  $searchIndex index of opening or closing brace
-     * @param bool $findEnd     find end or start?
+     * @param int  $searchIndex index of starting brace
+     * @param bool $findEnd     if method should find block's end or start
      *
-     * @return int index of the opposite brace
+     * @return int index of opposite brace
      */
     private function findOppositeBlockEdge($type, $searchIndex, $findEnd)
     {
