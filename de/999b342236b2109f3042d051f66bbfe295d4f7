@@ -1,0 +1,78 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2017-11-16T19:57:55Z
+
+Struggling to find the time to fix the test cases. Should I close this PR and re-open when I've found the time to fix?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-11-16T21:33:44Z
+
+If you still plan to finish it (and/or want someone to help), you can leave it open. It would be easy to forget about it if it was closed :)
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-11-17T21:38:14Z
+
+I do plan on finishing this at some point! Hopefully early December because I've got some time off work. I'll keep it open!
+
+---------------------------------------------------------------------------
+
+by Soullivaneuh at 2017-12-05T16:21:09Z
+
+See also https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/3232#issuecomment-349356164
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-05T22:31:29Z
+
+we have very similar logic already here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3235/files#diff-ca612f63029ba7b7c2e1b238fdd2cda9R98
+
+```php
+[
+    '<?php ++$foo["bar"];',
+    '<?php $foo["bar"] = $foo["bar"] + 1;',
+]
+```
+
+What about splitting current fixer into 2:
+1st fixer:
+```diff
+-<?php $foo["bar"] = $foo["bar"] + $x;
++<?php $foo["bar"] += $x;
+```
+
+2nd fixer
+```diff
+-<?php $foo["bar"] += 1;
++<?php ++$foo["bar"];
+```
+
+?
+
+Then, using both of them would produce original diff, but combined power will be better, as it will handle cases when `$x != 1` as well.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-01-30T17:43:23Z
+
+Ok I've finally got some time to spend on this, I think it's a good idea to split into two fixers. I will implement the `+= 1` fixer first
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-30T19:31:44Z
+
+Thanks @ntzm for working on this again :+1:
+Splitting the functionality over two fixers makes sense to me, it will also give focus to this PR to get one thing done first, good call!
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-02-01T13:09:29Z
+
+This is no longer WIP
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-08T07:53:34Z
+
+👍 LGTM, just a minor thing to fix: the `<=>` operator does not exist in PHP 5.6 so the related test cases must be skipped on that version.
