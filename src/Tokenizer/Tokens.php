@@ -1154,7 +1154,7 @@ class Tokens extends \SplFixedArray
     /**
      * @param int  $type        type of block, one of BLOCK_TYPE_*
      * @param int  $searchIndex index of starting brace
-     * @param bool $findEnd     if method should find block's end, default true, otherwise method find block's start
+     * @param bool $findEnd     if method should find block's end or start
      *
      * @return int index of opposite brace
      */
