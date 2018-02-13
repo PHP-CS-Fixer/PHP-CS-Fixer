@@ -1,0 +1,29 @@
+--TEST--
+Integration of fixers: general_phpdoc_annotation_remove,phpdoc_trim.
+--RULESET--
+{"general_phpdoc_annotation_remove": {"annotations": ["test"] }, "phpdoc_trim": true}
+--EXPECT--
+<?php
+/**
+ * @return string
+ *
+ * @param string $name
+ */
+function hello($name)
+{
+    return 'hello'. $name;
+}
+
+--INPUT--
+<?php
+/**
+ * @test
+ *
+ * @return string
+ *
+ * @param string $name
+ */
+function hello($name)
+{
+    return 'hello'. $name;
+}

@@ -91,11 +91,11 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer
     private function skipNonArrayElements($index, Tokens $tokens)
     {
         if ($tokens[$index]->equals('}')) {
-            return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
+            return $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
         }
 
         if ($tokens[$index]->equals(')')) {
-            $startIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+            $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
             $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
             if (!$tokens[$startIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 return $startIndex;

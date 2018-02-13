@@ -41,7 +41,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\FileReader::class,
         \PhpCsFixer\FileRemoval::class,
-        \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
         \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
