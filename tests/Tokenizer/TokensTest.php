@@ -773,14 +773,25 @@ PHP;
     }
 
     /**
-     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart or drop the argument.
+     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart instead.
      * @group legacy
      */
-    public function testFindBlockEndLastParameterDeprecated()
+    public function testFindBlockEndLastParameterFalseDeprecated()
     {
         $tokens = Tokens::fromCode('<?php ${$bar};');
 
         $this->assertSame(2, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 4, false));
+    }
+
+    /**
+     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.
+     * @group legacy
+     */
+    public function testFindBlockEndLastParameterTrueDeprecated()
+    {
+        $tokens = Tokens::fromCode('<?php ${$bar};');
+
+        $this->assertSame(4, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2, true));
     }
 
     public function testEmptyTokens()
