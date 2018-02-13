@@ -79,6 +79,7 @@ class Bar {}
             T_GOTO,
             T_CONTINUE,
             T_BREAK,
+            T_DECLARE,
         ];
 
         foreach ($tokens as $index => $token) {
