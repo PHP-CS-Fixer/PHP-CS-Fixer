@@ -389,55 +389,7 @@ class Tokens extends \SplFixedArray
      */
     public function findBlockEnd($type, $searchIndex, $findEnd = true)
     {
-        $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
-
-        if (!isset($blockEdgeDefinitions[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
-        }
-
-        $startEdge = $blockEdgeDefinitions[$type]['start'];
-        $endEdge = $blockEdgeDefinitions[$type]['end'];
-        $startIndex = $searchIndex;
-        $endIndex = $this->count() - 1;
-        $indexOffset = 1;
-
-        if (!$findEnd) {
-            list($startEdge, $endEdge) = array($endEdge, $startEdge);
-            $indexOffset = -1;
-            $endIndex = 0;
-        }
-
-        if (!$this[$startIndex]->equals($startEdge)) {
-            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block %s.', $findEnd ? 'start' : 'end'));
-        }
-
-        $blockLevel = 0;
-
-        for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
-            $token = $this[$index];
-
-            if ($token->equals($startEdge)) {
-                ++$blockLevel;
-
-                continue;
-            }
-
-            if ($token->equals($endEdge)) {
-                --$blockLevel;
-
-                if (0 === $blockLevel) {
-                    break;
-                }
-
-                continue;
-            }
-        }
-
-        if (!$this[$index]->equals($endEdge)) {
-            throw new \UnexpectedValueException(sprintf('Missing block %s.', $findEnd ? 'end' : 'start'));
-        }
-
-        return $index;
+        return $this->findOppositeBlockEdge($type, $searchIndex, $findEnd);
     }
 
     /**
@@ -448,7 +400,7 @@ class Tokens extends \SplFixedArray
      */
     public function findBlockStart($type, $searchIndex)
     {
-        return $this->findBlockEnd($type, $searchIndex, false);
+        return $this->findOppositeBlockEdge($type, $searchIndex, false);
     }
 
     /**
@@ -1181,6 +1133,66 @@ class Tokens extends \SplFixedArray
         }
 
         $this->clearAt($nextIndex);
+    }
+
+    /**
+     * @param int  $type        type of block, one of BLOCK_TYPE_*
+     * @param int  $searchIndex index of starting brace
+     * @param bool $findEnd     if method should find block's end or start
+     *
+     * @return int index of opposite brace
+     */
+    private function findOppositeBlockEdge($type, $searchIndex, $findEnd)
+    {
+        $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
+
+        if (!isset($blockEdgeDefinitions[$type])) {
+            throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
+        }
+
+        $startEdge = $blockEdgeDefinitions[$type]['start'];
+        $endEdge = $blockEdgeDefinitions[$type]['end'];
+        $startIndex = $searchIndex;
+        $endIndex = $this->count() - 1;
+        $indexOffset = 1;
+
+        if (!$findEnd) {
+            list($startEdge, $endEdge) = array($endEdge, $startEdge);
+            $indexOffset = -1;
+            $endIndex = 0;
+        }
+
+        if (!$this[$startIndex]->equals($startEdge)) {
+            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block %s.', $findEnd ? 'start' : 'end'));
+        }
+
+        $blockLevel = 0;
+
+        for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
+            $token = $this[$index];
+
+            if ($token->equals($startEdge)) {
+                ++$blockLevel;
+
+                continue;
+            }
+
+            if ($token->equals($endEdge)) {
+                --$blockLevel;
+
+                if (0 === $blockLevel) {
+                    break;
+                }
+
+                continue;
+            }
+        }
+
+        if (!$this[$index]->equals($endEdge)) {
+            throw new \UnexpectedValueException(sprintf('Missing block %s.', $findEnd ? 'end' : 'start'));
+        }
+
+        return $index;
     }
 
     /**
