@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-04T21:21:12Z
+
+Looks good 👍 but shouldn't the fixer check whether `get_called_class` is called from inside a class?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-05T07:17:51Z
+
+from the issue description;
+
+```
+There is a small difference in behavior when calling "get_called_class" vs. using "static::class" outside of a class. Since this use case doesn't make sense and triggers a warning anyway I think it is not worth the trouble detecting if call is outside of a class.
+```
+
+for me it is like using `__CLASS__` outside a class scope;
+it doesn't work, triggers a warning, it is a mess, I don't think we've to reproduce that mess using different code or prevent/stop changing one mess into another.
