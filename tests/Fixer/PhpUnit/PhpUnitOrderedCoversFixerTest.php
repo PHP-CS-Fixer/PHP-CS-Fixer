@@ -111,6 +111,30 @@ final class PhpUnitOrderedCoversFixerTest extends AbstractFixerTestCase
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
             ],
+            'data provider' => [
+                '<?php
+                    class FooTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @covers Bar
+                         * @dataProvider provide
+                         * @covers Foo
+                         */
+                        public function testMe() {}
+                    }
+                ',
+                '<?php
+                    class FooTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @covers Foo
+                         * @dataProvider provide
+                         * @covers Bar
+                         */
+                        public function testMe() {}
+                    }
+                ',
+            ],
         ];
     }
 }
