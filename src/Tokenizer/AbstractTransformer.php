@@ -15,8 +15,6 @@ namespace PhpCsFixer\Tokenizer;
 use PhpCsFixer\Utils;
 
 /**
- * Abstract base for Transformer class.
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal

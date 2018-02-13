@@ -183,8 +183,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Return block edge definitions.
-     *
      * @return array
      */
     public static function getBlockEdgeDefinitions()
@@ -357,6 +355,7 @@ class Tokens extends \SplFixedArray
 
         if ($this[$index]->isWhitespace()) {
             $whitespace = $removeLastCommentLine($this, $index - 1, $indexOffset, $whitespace);
+
             if ('' === $whitespace) {
                 $this->clearAt($index);
             } else {
@@ -382,8 +381,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Find block end.
-     *
      * @param int  $type        type of block, one of BLOCK_TYPE_*
      * @param int  $searchIndex index of opening brace
      * @param bool $findEnd     if method should find block's end, default true, otherwise method find block's start
@@ -444,8 +441,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Find block start.
-     *
      * @param int $type        type of block, one of BLOCK_TYPE_*
      * @param int $searchIndex index of closing brace
      *
@@ -457,8 +452,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Find tokens of given kind.
-     *
      * @param array|int $possibleKind kind or array of kind
      * @param int       $start        optional offset
      * @param null|int  $end          optional limit
@@ -490,8 +483,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Generate code from tokens.
-     *
      * @return string
      */
     public function generateCode()
@@ -776,6 +767,7 @@ class Tokens extends \SplFixedArray
                 }
                 $token = new Token($token);
             }
+
             if ($token->isWhitespace() || $token->isComment() || '' === $token->getContent()) {
                 throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: %s.', $key));
             }
@@ -959,8 +951,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Removes all the leading whitespace.
-     *
      * @param int         $index
      * @param null|string $whitespaces optional whitespaces characters for Token::isWhitespace
      */
@@ -972,8 +962,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Removes all the trailing whitespace.
-     *
      * @param int         $index
      * @param null|string $whitespaces optional whitespaces characters for Token::isWhitespace
      */
@@ -1128,7 +1116,7 @@ class Tokens extends \SplFixedArray
             return false;
         }
 
-        $HHVM = defined('HHVM_VERSION');
+        $hhvm = defined('HHVM_VERSION');
         for ($index = 1; $index < $size; ++$index) {
             if (
                 $this[$index]->isGivenKind(array(T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO))
@@ -1139,7 +1127,7 @@ class Tokens extends \SplFixedArray
                      * @see https://github.com/facebook/hhvm/issues/4809
                      * @see https://github.com/facebook/hhvm/issues/7161
                      */
-                    $HHVM && $this[$index]->equals(array(T_ECHO, '<?='))
+                    $hhvm && $this[$index]->equals(array(T_ECHO, '<?='))
                 )
             ) {
                 return false;
@@ -1150,8 +1138,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Check if partial code is multiline.
-     *
      * @param int $start start index
      * @param int $end   end index
      *
@@ -1169,8 +1155,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Clear token and merge surrounding whitespace tokens.
-     *
      * @param int $index
      */
     public function clearTokenAndMergeSurroundingWhitespace($index)
@@ -1240,8 +1224,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Set cache item.
-     *
      * @param string $key   item key
      * @param Tokens $value item value
      */

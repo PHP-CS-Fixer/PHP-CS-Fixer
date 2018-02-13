@@ -162,9 +162,9 @@ $className = Baz::class;
      */
     private function replaceClassKeywordsSection(Tokens $tokens, $startIndex, $endIndex)
     {
-        $CTClassTokens = $tokens->findGivenKind(CT::T_CLASS_CONSTANT, $startIndex, $endIndex);
-        if (!empty($CTClassTokens)) {
-            $this->replaceClassKeyword($tokens, current(array_keys($CTClassTokens)));
+        $ctClassTokens = $tokens->findGivenKind(CT::T_CLASS_CONSTANT, $startIndex, $endIndex);
+        if (!empty($ctClassTokens)) {
+            $this->replaceClassKeyword($tokens, current(array_keys($ctClassTokens)));
             $this->replaceClassKeywordsSection($tokens, $startIndex, $endIndex);
         }
     }

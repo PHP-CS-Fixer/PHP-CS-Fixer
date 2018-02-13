@@ -113,8 +113,6 @@ class DocBlock
     }
 
     /**
-     * Get a single annotation.
-     *
      * @param int $pos
      *
      * @return null|Annotation
