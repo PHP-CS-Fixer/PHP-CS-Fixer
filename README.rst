@@ -1441,6 +1441,12 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
 
+* **string_line_ending**
+
+  All multi-line strings must use correct line ending.
+
+  *Risky rule: changing the line endings of multi-line strings might affect string comparisons and outputs.*
+
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 
   A case should be followed by a colon and not a semicolon.
