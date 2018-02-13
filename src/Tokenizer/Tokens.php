@@ -499,8 +499,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Find block start.
-     *
      * @param int $type        type of block, one of BLOCK_TYPE_*
      * @param int $searchIndex index of closing brace
      *
@@ -512,8 +510,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Find tokens of given kind.
-     *
      * @param array|int $possibleKind kind or array of kind
      * @param int       $start        optional offset
      * @param null|int  $end          optional limit

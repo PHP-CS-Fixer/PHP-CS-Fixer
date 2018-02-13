@@ -54,7 +54,6 @@ jobs:
                 - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^(src/Resources|tests/Fixtures)" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json
 
-
         - &STANDARD_TEST_JOB
             stage: Fast Test
             php: 7.0
