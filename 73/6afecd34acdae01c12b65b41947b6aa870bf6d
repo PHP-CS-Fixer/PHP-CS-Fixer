@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-09T09:55:29Z
+
+Do you mind handling https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3466#discussion_r165825898 here?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-09T10:09:50Z
+
+that one should be done on 2.2, while this typo is on 2.10 and up only so we would still still need another PR for it I'm afraid
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-12T09:27:39Z
+
+oh boy... we need a spellchecker somehow :D
