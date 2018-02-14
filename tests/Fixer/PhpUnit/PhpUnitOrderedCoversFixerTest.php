@@ -74,19 +74,21 @@ final class PhpUnitOrderedCoversFixerTest extends AbstractFixerTestCase
             'preserve positions if other docblock parts are present' => [
                 '<?php
                     /**
+                     * Comment 1
                      * @covers Bar
-                     *
-                     *  MyComment
+                     * Comment 3
                      * @covers Foo
+                     * Comment 2
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
                 '<?php
                     /**
+                     * Comment 1
                      * @covers Foo
-                     *
-                     *  MyComment
+                     * Comment 2
                      * @covers Bar
+                     * Comment 3
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
