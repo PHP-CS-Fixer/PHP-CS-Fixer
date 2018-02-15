@@ -75,16 +75,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             $docBlock = new DocBlock($tokens[$index]->getContent());
+            $covers = $docBlock->getAnnotationsOfType('covers');
 
             $coversMap = [];
-            $linesToUpdate = [];
-            foreach ($docBlock->getLines() as $line) {
-                $rawContent = $line->getContent();
-                if (false === strpos($rawContent, '@covers')) {
-                    continue;
-                }
+            foreach ($covers as $annotation) {
+                $rawContent = $annotation->getContent();
 
-                $linesToUpdate[] = $line;
                 $comparableContent = preg_replace('/\*\s*@covers\s+(.+)/', '\1', strtolower(trim($rawContent)));
                 $coversMap[$comparableContent] = $rawContent;
             }
@@ -94,12 +90,17 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
-            foreach ($linesToUpdate as $line) {
-                $newContent = array_shift($orderedCoversMap);
-                $line->setContent($newContent);
+            $lines = $docBlock->getLines();
+            foreach (array_reverse($covers) as $annotation) {
+                array_splice(
+                    $lines,
+                    $annotation->getStart(),
+                    $annotation->getEnd() - $annotation->getStart() + 1,
+                    array_pop($orderedCoversMap)
+                );
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $docBlock->getContent()]);
+            $tokens[$index] = new Token([T_DOC_COMMENT, implode($lines)]);
         }
     }
 }
