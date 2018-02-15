@@ -1,0 +1,29 @@
+--TEST--
+Integration of fixers: general_phpdoc_annotation_remove,phpdoc_separation.
+--RULESET--
+{"general_phpdoc_annotation_remove": {"annotations": ["test"] }, "phpdoc_separation": true}
+--EXPECT--
+<?php
+/**
+ * @param string $name
+ *
+ * @return string
+ */
+function hello($name)
+{
+    return 'hello'. $name;
+}
+
+--INPUT--
+<?php
+/**
+ * @param string $name
+ *
+ * @test
+ *
+ * @return string
+ */
+function hello($name)
+{
+    return 'hello'. $name;
+}

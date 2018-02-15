@@ -47,6 +47,15 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should be run after the NoWhitespaceInBlankLineFixer.
+        return -21;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {

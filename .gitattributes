@@ -1,4 +1,4 @@
-# @TODO 3.0 replace following `tests/... exportignore` with single `tests/ export-ignore`
+# @TODO 3.0 replace following `tests/... export-ignore` with single `tests/ export-ignore`
 tests/**/*Test.php export-ignore
 tests/AbstractDoctrineAnnotationFixerTestCase.php export-ignore
 tests/Differ/AbstractDifferTestCase.php export-ignore
