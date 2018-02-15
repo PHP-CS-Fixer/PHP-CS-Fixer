@@ -350,10 +350,9 @@ class Foo
                 $nestToken = $tokens[$nestIndex];
 
                 if ($nestToken->equalsAny(array(')', array(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)))) {
-                    $nestIndex = $tokens->findBlockEnd(
+                    $nestIndex = $tokens->findBlockStart(
                         $nestToken->equals(')') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION,
-                        $nestIndex,
-                        false
+                        $nestIndex
                     );
 
                     continue;

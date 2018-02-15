@@ -85,7 +85,7 @@ final class PreIncrementFixer extends AbstractFixer
 
             $blockType = Tokens::detectBlockType($token);
             if (null !== $blockType && !$blockType['isStart']) {
-                $index = $tokens->findBlockEnd($blockType['type'], $index, false);
+                $index = $tokens->findBlockStart($blockType['type'], $index);
                 $token = $tokens[$index];
             }
         } while (!$token->equalsAny(array('$', array(T_VARIABLE))));
