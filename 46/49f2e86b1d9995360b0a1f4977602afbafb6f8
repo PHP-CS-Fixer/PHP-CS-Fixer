@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-02-05T18:13:00Z
+
+Should it be case-insensitive?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-06T08:24:41Z
+
+> Should it be case-insensitive?
+
+I've looked at OrderedImport fixer and done the same way: case-insensitive like you suggested, thanks.
