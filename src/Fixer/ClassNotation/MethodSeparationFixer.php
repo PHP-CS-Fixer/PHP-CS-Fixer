@@ -118,7 +118,7 @@ final class Sample
                 $methodEnd = $tokens->getNextTokenOfKind($index, array(';'));
             } else {
                 $methodStart = $tokens->getNextTokenOfKind($index, array('{'));
-                $methodEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStart, true);
+                $methodEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStart);
             }
 
             $this->fixSpaceBelowMethod($tokens, $classEnd, $methodEnd);
