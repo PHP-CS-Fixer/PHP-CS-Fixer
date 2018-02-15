@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Console\Command;
 
-use PhpCsFixer\Diff\GeckoPackages\DiffOutputBuilder\UnifiedDiffOutputBuilder;
-use PhpCsFixer\Diff\v2_0\Differ;
+use PhpCsFixer\Diff\v3_0\Differ;
+use PhpCsFixer\Diff\v3_0\Output\StrictUnifiedDiffOutputBuilder;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
@@ -244,7 +244,7 @@ final class DescribeCommand extends Command
         } else {
             $output->writeln('Fixing examples:');
 
-            $differ = new Differ(new UnifiedDiffOutputBuilder([
+            $differ = new Differ(new StrictUnifiedDiffOutputBuilder([
                 'fromFile' => 'Original',
                 'toFile' => 'New',
             ]));
