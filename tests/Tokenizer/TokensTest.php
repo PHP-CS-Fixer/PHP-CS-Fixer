@@ -1069,6 +1069,23 @@ echo $a;',
         return array(
             array(
                 7,
+                null,
+                "<?php echo 1;//\necho 2;",
+            ),
+            array(
+                7,
+                null,
+                "<?php echo 1;//\necho 2;",
+                "<?php echo 1;//\n       echo 2;",
+            ),
+            array(
+                7,
+                null,
+                "<?php echo 1;//\r\necho 2;",
+                "<?php echo 1;//\r\n       echo 2;",
+            ),
+            array(
+                7,
                 " \t",
                 "<?php echo 1;//\n//",
                 "<?php echo 1;//\n       //",
