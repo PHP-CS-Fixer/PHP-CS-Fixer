@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -e
 
 TOKEN=$1
@@ -9,7 +9,7 @@ then
     MSG_SUFFIX=" for ${MSG_SUFFIX}"
 fi
 
-REPO=$(sed "s@/@%2F@g" <<< "PHP-CS-Fixer/PHP-CS-Fixer.github.io")
+REPO=$(echo "PHP-CS-Fixer/PHP-CS-Fixer.github.io" | sed "s@/@%2F@g")
 
 body="{
     \"request\": {
