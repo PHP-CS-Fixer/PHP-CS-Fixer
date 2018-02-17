@@ -1,15 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -e
 
 TOKEN=$1
 MSG_SUFFIX=$2
 
-if [ ! -z $MSG_SUFFIX ]
+if [ ! -z "$MSG_SUFFIX" ]
 then
     MSG_SUFFIX=" for ${MSG_SUFFIX}"
 fi
 
-REPO=$(sed "s@/@%2F@g" <<< "PHP-CS-Fixer/PHP-CS-Fixer.github.io")
+REPO=$(echo "PHP-CS-Fixer/PHP-CS-Fixer.github.io" | sed "s@/@%2F@g")
 
 body="{
     \"request\": {
@@ -25,4 +25,4 @@ curl -s -X POST \
     -H "User-Agent: API Explorer" \
     -H "Authorization: token ${TOKEN}" \
     -d "${body}" \
-    https://api.travis-ci.org/repo/${REPO}/requests
+    "https://api.travis-ci.org/repo/${REPO}/requests"
