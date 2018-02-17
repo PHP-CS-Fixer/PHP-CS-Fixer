@@ -1042,8 +1042,9 @@ Choose from the list of available rules:
 
   - ``importsOrder`` (``array``, ``null``): defines the order of import types; defaults
     to ``null``
-  - ``sortAlgorithm`` (``'alpha'``, ``'length'``): whether the statements should be
-    sorted alphabetically or by length; defaults to ``'alpha'``
+  - ``sortAlgorithm`` (``'alpha'``, ``'length'``, ``'none'``): whether the statements should
+    be sorted alphabetically or by length, or not sorted; defaults to
+    ``'alpha'``
 
 * **php_unit_construct** [@Symfony:risky]
 
