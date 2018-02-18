@@ -912,8 +912,7 @@ class Tokens extends \SplFixedArray
             $newContent = '';
             $tokenToCheck = $this[$index - 1];
 
-            // if the token candidate to remove is preceded by single line comment we do not consider the new line after this comment
-            // so we split the T_WHITESPACE token into 2 - newline character and the rest and call the function again
+            // if the token candidate to remove is preceded by single line comment we do not consider the new line after this comment as part of T_WHITESPACE
             if (isset($this[$index - 2]) && $this[$index - 2]->isComment() && '/*' !== substr($this[$index - 2]->getContent(), 0, 2)) {
                 list($emptyString, $newContent, $whitespacesToCheck) = preg_split('/^(\R)/', $this[$index - 1]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
                 if ('' === $whitespacesToCheck) {
