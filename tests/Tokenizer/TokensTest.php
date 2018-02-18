@@ -1102,6 +1102,18 @@ echo $a;',
                 '<?php $a = 1;//',
                 '<?php $a = 1;           //',
             ),
+            array(
+                6,
+                null,
+                '<?php echo 1;echo 2;',
+                "<?php echo 1;  \n          \n \n     \necho 2;",
+            ),
+            array(
+                8,
+                null,
+                "<?php echo 1;  // 1\necho 2;",
+                "<?php echo 1;  // 1\n          \n \n     \necho 2;",
+            ),
         );
     }
 

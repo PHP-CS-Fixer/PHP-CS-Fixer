@@ -909,20 +909,26 @@ class Tokens extends \SplFixedArray
     public function removeLeadingWhitespace($index, $whitespaces = null)
     {
         if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace()) {
+            $newContent = '';
+            $tokenToCheck = $this[$index - 1];
+
             // if the token candidate to remove is preceded by single line comment we do not consider the new line after this comment
             // so we split the T_WHITESPACE token into 2 - newline character and the rest and call the function again
             if (isset($this[$index - 2]) && $this[$index - 2]->isComment() && '/*' !== substr($this[$index - 2]->getContent(), 0, 2)) {
-                list($emptyString, $newLineCharacter, $remainingWhitespaces) = preg_split('/^(\R)/', $this[$index - 1]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
-                if ('' !== $remainingWhitespaces) {
-                    $this->overrideAt($index - 1, new Token(array(T_WHITESPACE, preg_replace('/^\R(.*)$/', '$1', $remainingWhitespaces))));
-                    $this->insertAt($index - 1, new Token(array(T_WHITESPACE, preg_replace('/^(\R).*$/', '$1', $newLineCharacter))));
-                    $this->removeLeadingWhitespace($index + 1, $whitespaces);
+                list($emptyString, $newContent, $whitespacesToCheck) = preg_split('/^(\R)/', $this[$index - 1]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
+                if ('' === $whitespacesToCheck) {
+                    return;
                 }
+                $tokenToCheck = new Token(array(T_WHITESPACE, $whitespacesToCheck));
+            }
 
+            if (!$tokenToCheck->isWhitespace($whitespaces)) {
                 return;
             }
-            if ($this[$index - 1]->isWhitespace($whitespaces)) {
-                $this->clearAt($index - 1);
+
+            $this->clearAt($index - 1);
+            if ('' !== $newContent) {
+                $this->insertAt($index - 1, new Token(array(T_WHITESPACE, $newContent)));
             }
         }
     }
