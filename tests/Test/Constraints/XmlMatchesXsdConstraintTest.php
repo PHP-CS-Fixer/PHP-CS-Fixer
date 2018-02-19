@@ -25,7 +25,7 @@ final class XmlMatchesXsdConstraintTest extends TestCase
         $constraint = new XmlMatchesXsdConstraint($this->getXSD());
         $this->assertTrue($constraint->evaluate(file_get_contents($this->getAssetsDir().'xliff_sample.xml'), '', true));
         // debug
-        $constraint->evaluate(file_get_contents($this->getAssetsDir().'xliff_sample.xml');
+        $constraint->evaluate(file_get_contents($this->getAssetsDir().'xliff_sample.xml'));
     }
 
     public function testXMLValidConstraintBasics()
