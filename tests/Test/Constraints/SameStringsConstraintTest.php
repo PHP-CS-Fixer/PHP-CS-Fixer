@@ -20,12 +20,13 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class SameStringsConstraintTest extends TestCase
 {
-    /**
-     * @expectedException PHPUnit_Framework_ExpectationFailedException
-     * @expectedExceptionMessageRegExp #^Failed asserting that two strings are identical.[\n] \#Warning\: Strings contain different line endings\! Debug using remapping \[\"\\r\" => \"R\", \"\\n\" => \"N\", \"\\t\" => \"T\"\]\:\n \-N\n \+RN$#
-     */
     public function testSameStringsConstraintFail()
     {
+        $this->setExpectedExceptionRegExp(
+            'PHPUnit_Framework_ExpectationFailedException',
+            '#^Failed asserting that two strings are identical\.[\n] \#Warning\: Strings contain different line endings\! Debug using remapping \["\\\\r" => "R", "\\\\n" => "N", "\\\\t" => "T"\]\:\n \-N\n \+RN$#'
+        );
+
         $constraint = new SameStringsConstraint("\r\n");
         $constraint->evaluate("\n");
     }

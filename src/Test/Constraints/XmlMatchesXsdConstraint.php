@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Test\Constraints;
 
 /**
+ * @author SpacePossum
+ *
  * @internal
  */
 final class XmlMatchesXsdConstraint extends \PHPUnit_Framework_Constraint
