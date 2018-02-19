@@ -127,6 +127,7 @@ final class FixerFactoryTest extends TestCase
             array($fixers['ordered_class_elements'], $fixers['method_separation']),
             array($fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']),
             array($fixers['ordered_class_elements'], $fixers['space_after_semicolon']),
+            array($fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']),
             array($fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']),
             array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']),
@@ -282,16 +283,74 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
+    public function testPriorityIntegrationTestFilesAreListedPriorityCases()
+    {
+        $priorityCases = array();
+        foreach ($this->provideFixersPriorityCases() as $priorityCase) {
+            $fixerName = $priorityCase[0]->getName();
+            if (!isset($priorityCases[$fixerName])) {
+                $priorityCases[$fixerName] = array();
+            }
+
+            $priorityCases[$fixerName][$priorityCase[1]->getName()] = true;
+        }
+
+        foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
+            if ($candidate->isDot()) {
+                continue;
+            }
+
+            $fileName = $candidate->getFilename();
+            $this->assertTrue($candidate->isFile(), sprintf('Expected only files in the priority integration test directory, got "%s".', $fileName));
+            $this->assertFalse($candidate->isLink(), sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
+            $this->assertSame(
+                1,
+                preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
+                sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
+            );
+
+            $fixerName1 = $matches[1];
+            $fixerName2 = $matches[2];
+
+            $this->assertTrue(
+                isset($priorityCases[$fixerName1][$fixerName2]) || isset($priorityCases[$fixerName2][$fixerName1]),
+                sprintf('Missing priority test entry for file "%s".', $fileName)
+            );
+        }
+    }
+
     /**
      * @private
+     *
+     * @param FixerInterface $first
+     * @param FixerInterface $second
+     *
+     * @return string
      */
     public function generateIntegrationTestName(FixerInterface $first, FixerInterface $second)
     {
         return "{$first->getName()},{$second->getName()}.test";
     }
 
+    /**
+     * @param FixerInterface $first
+     * @param FixerInterface $second
+     *
+     * @return bool
+     */
     private function doesIntegrationTestExist(FixerInterface $first, FixerInterface $second)
     {
-        return is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($first, $second)) || is_file(__DIR__.'/../Fixtures/Integration/priority/'.$this->generateIntegrationTestName($second, $first));
+        return
+            is_file($this->getIntegrationPriorityDirectory().$this->generateIntegrationTestName($first, $second))
+            || is_file($this->getIntegrationPriorityDirectory().$this->generateIntegrationTestName($second, $first))
+        ;
+    }
+
+    /**
+     * @return string
+     */
+    private function getIntegrationPriorityDirectory()
+    {
+        return __DIR__.'/../Fixtures/Integration/priority/';
     }
 }
