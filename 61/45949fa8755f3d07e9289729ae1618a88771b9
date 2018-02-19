@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-02-12T13:45:19Z
+
+Travis failing is unrelated to changes I made, do they need fixing on this PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-12T16:09:55Z
+
+> Travis failing is unrelated to changes I made, do they need fixing on this PR?
+
+hm... Travis is green for target branch:
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/branches
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-02-12T16:12:46Z
+
+The errors are to do with the docblocks that I didn't touch
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-12T20:31:32Z
+
+~ok, on branch check this check is not performed, as file that is causing the error is not modified on last merge into that branch.
+probably the issue was introduced directly into 2.2 branch, yet we don't run phpmd on 2.2 line, that's why issue was introduced to 2.2 and detected only on later branch.~
+
+~For that, could you prepare a fix in this PR, and if Travis will be happy, backport it to 2.2 line ?
+Thanks !
+If you want to go even further, maybe we shall backport phpmd into 2.2 branch as well, but up to you !~
+
+let's try: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3531
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-13T19:45:02Z
+
+#3532 got merged, please update PR @ntzm
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-15T09:15:02Z
+
+could any of method replacements to use non-deprecated version could be applied for 2.2 branch ?
