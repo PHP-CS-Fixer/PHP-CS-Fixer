@@ -36,7 +36,7 @@ final class XmlMatchesXsdConstraint extends \PHPUnit_Framework_Constraint
     {
         parent::__construct();
 
-        $this->xsd = str_replace('http://www.w3.org/2001/xml.xsd', 'file:////'.__DIR__.'/xml.xsd', $xsd);
+        $this->xsd = str_replace('http://www.w3.org/2001/xml.xsd', 'file://'.__DIR__.DIRECTORY_SEPARATOR.'xml.xsd', $xsd);
     }
 
     /**
