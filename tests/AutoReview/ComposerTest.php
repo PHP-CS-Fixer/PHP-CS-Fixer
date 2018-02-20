@@ -12,11 +12,8 @@
 
 namespace PhpCsFixer\tests\AutoReview;
 
-use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\TransformerInterface;
-use PhpCsFixer\Tokenizer\Transformers;
 use PhpCsFixer\Console\Application;
-use Composer\Semver\VersionParser;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -51,10 +48,13 @@ final class ComposerTest extends TestCase
 
     /**
      * @param string $version
+     *
      * @return strting
      */
-    private function convertAppVersionToAliasedVersion($version) {
+    private function convertAppVersionToAliasedVersion($version)
+    {
         $parts = explode('.', $version, 3);
+
         return sprintf('%d.%d-dev', $parts[0], $parts[1]);
     }
 }
