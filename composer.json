@@ -31,6 +31,9 @@
         "symfony/process": "^3.0 || ^4.0",
         "symfony/stopwatch": "^3.0 || ^4.0"
     },
+    "conflict": {
+        "hhvm": "*"
+    },
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.1 || ^2.0@dev",
         "justinrainbow/json-schema": "^5.0",
@@ -46,15 +49,19 @@
         "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
-    "conflict": {
-        "hhvm": "*"
-    },
     "config": {
         "optimize-autoloader": true,
         "sort-packages": true
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.11-dev"
+        }
+    },
     "autoload": {
-        "psr-4": { "PhpCsFixer\\": "src/" },
+        "psr-4": {
+            "PhpCsFixer\\": "src/"
+        },
         "classmap": [
             "tests/Test/AbstractFixerTestCase.php",
             "tests/Test/AbstractIntegrationCaseFactory.php",
@@ -68,12 +75,11 @@
         ]
     },
     "autoload-dev": {
-        "psr-4": { "PhpCsFixer\\Tests\\": "tests/" }
-    },
-    "bin": ["php-cs-fixer"],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.11-dev"
+        "psr-4": {
+            "PhpCsFixer\\Tests\\": "tests/"
         }
-    }
+    },
+    "bin": [
+        "php-cs-fixer"
+    ]
 }
