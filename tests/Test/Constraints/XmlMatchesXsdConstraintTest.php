@@ -23,7 +23,21 @@ final class XmlMatchesXsdConstraintTest extends TestCase
     public function testAssertXMLMatchesXSD()
     {
         $constraint = new XmlMatchesXsdConstraint($this->getXSD());
-        $this->assertTrue($constraint->evaluate(file_get_contents($this->getAssetsDir().'xliff_sample.xml'), '', true));
+        $sampleFile = $this->getAssetsDir().'xliff_sample.xml';
+        $content = @file_get_contents($sampleFile);
+
+        if (false === $content) {
+            $error = error_get_last();
+
+            throw new \RuntimeException(sprintf(
+                'Failed to read content of the sample file "%s".%s',
+                $content,
+                $error ? ' '.$error['message'] : ''
+            ));
+        }
+
+        $constraint->evaluate($content); // should not throw an exception
+        $this->assertTrue($constraint->evaluate($content, '', true));
     }
 
     public function testXMLValidConstraintBasics()
