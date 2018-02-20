@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2018-02-16T17:15:10Z
+
+Looks like I need to make some adjustments to the output, got extra empty lines: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/342438646#L681-L876.
