@@ -43,7 +43,7 @@ final class ComposerTest extends TestCase
         $this->assertTrue(isset($aliases['dev-master']), 'The only branch that could be aliased is "dev-master".');
 
         $this->assertSame(
-            $this->convertAppVersiontoAliasedVersion(Application::VERSION),
+            $this->convertAppVersionToAliasedVersion(Application::VERSION),
             $aliases['dev-master'],
             'Version from branch alias must match application version.'
         );
@@ -53,7 +53,7 @@ final class ComposerTest extends TestCase
      * @param string $version
      * @return strting
      */
-    private function convertAppVersiontoAliasedVersion($version) {
+    private function convertAppVersionToAliasedVersion($version) {
         $parts = explode('.', $version, 3);
         return sprintf('%d.%d-dev', $parts[0], $parts[1]);
     }
