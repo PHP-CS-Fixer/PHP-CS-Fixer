@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: php_unit_fqcn_annotation,php_unit_ordered_covers.
+--RULESET--
+{"php_unit_fqcn_annotation": true, "php_unit_ordered_covers": true}
+--EXPECT--
+<?php
+/**
+ * @covers \A
+ * @covers \B
+ * @covers \C
+ */
+class FooTest extends \PHPUnit_Framework_TestCase {}
+
+--INPUT--
+<?php
+/**
+ * @covers A
+ * @covers C
+ * @covers \B
+ */
+class FooTest extends \PHPUnit_Framework_TestCase {}
