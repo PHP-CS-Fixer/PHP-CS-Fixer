@@ -38,7 +38,18 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
      */
     public function provideFixCases()
     {
-        return $this->createTestCases(array(
+        $edgeCases = array(
+            array(
+                '<?php
+
+/**
+ * @see \User getId()
+ */
+',
+            ),
+        );
+
+        return $edgeCases + $this->createTestCases(array(
             array('
 /**
  * Foo.
