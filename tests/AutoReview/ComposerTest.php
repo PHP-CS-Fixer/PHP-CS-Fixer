@@ -30,19 +30,13 @@ final class ComposerTest extends TestCase
         $composerJson = json_decode(file_get_contents(__DIR__.'/../../composer.json'), true);
 
         if (!isset($composerJson['extra']['branch-alias'])) {
-            $this->assertTrue(true); // composer.json doesn't contain branch alias, all good!
+            $this->addToAssertionCount(1); // composer.json doesn't contain branch alias, all good!
             return;
         }
 
-        $aliases = $composerJson['extra']['branch-alias'];
-        $this->assertInternalType('array', $aliases);
-        $this->assertCount(1, $aliases, 'Only one branch alias is allowed per branch.');
-        $this->assertTrue(isset($aliases['dev-master']), 'The only branch that could be aliased is "dev-master".');
-
         $this->assertSame(
-            $this->convertAppVersionToAliasedVersion(Application::VERSION),
-            $aliases['dev-master'],
-            'Version from branch alias must match application version.'
+            ['dev-master' => $this->convertAppVersionToAliasedVersion(Application::VERSION)],
+            $composerJson['extra']['branch-alias']
         );
     }
 
