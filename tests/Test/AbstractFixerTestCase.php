@@ -12,13 +12,13 @@
 
 namespace PhpCsFixer\Tests\Test;
 
-use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\Test\Constraints\SameStringsConstraint;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
