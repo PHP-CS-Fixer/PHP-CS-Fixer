@@ -16,6 +16,8 @@ use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraint
  */
 final class SameStringsConstraintTest extends TestCase
 {

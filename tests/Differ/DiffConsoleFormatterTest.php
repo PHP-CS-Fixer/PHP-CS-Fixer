@@ -48,7 +48,8 @@ final class DiffConsoleFormatterTest extends TestCase
     {
         return array(
             array(
-                sprintf('<comment>   ---------- begin diff ----------</comment>
+                sprintf(
+                    '<comment>   ---------- begin diff ----------</comment>
    '.'
    <fg=cyan>%s</fg=cyan>
     no change
