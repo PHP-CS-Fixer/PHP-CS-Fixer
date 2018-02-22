@@ -1,0 +1,102 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2018-02-10T13:44:43Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-10T19:25:00Z
+
+Searching for `" ?"` gives a lot of false positive. I used `"@[a-z]+ \?"` (with PhpStorm) which gave 18 matches on master, including 15 test cases so 3 actual usages.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-10T22:19:32Z
+
+still, `?foo` is preferred type. as it's real type in php, `null|foo` is not, as it cannot be typehinted
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-02-12T08:40:17Z
+
+I thought the project was following PSR-5? Which says it should be `x|null` not `?x`
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-12T09:21:50Z
+
+PSR-5 allows any type that is proper in PHP.
+`?foo` is proper in PHP since 7.1
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-12T09:36:43Z
+
+Strictly speaking, I'm not sure that `?foo` is a valid syntax according to PSR-5, especially [PSR-5 types' ABNF definition](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#abnf).
+
+Also, using `?` may bring weird cases when a value can be of several different types in addition to `null`. Imagine a function with a parameter that can an instance of `Foo`, an instance of `Bar` or `null`. Would you write it `?Foo|Bar`? or maybe `?Foo|?Bar`? IMO `Foo|Bar|null` is better in such case.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-02-12T09:39:46Z
+
+Also
+
+> When the "Type" consists of multiple types then these MUST be separated with the vertical bar sign (|). Any interpreter supporting this specification MUST recognize this and split the "Type" before evaluating.
+> For example: `@return int|null`
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-12T21:10:17Z
+
+`Foo|Bar|null` is bullshit, I beg you, don't ever use it. be strict about input/output.
+
+Again, PHP 7.1. If you could use sth as a type, it's great, you can put it to docblock directly. if not, you need to make such monsters like `Foo|Bar|null`.
+
+yet.. for nullable type, `?Foo` is valid as-is from PHP point of view.
+
+> When the "Type" consists of multiple types then these MUST be separated with the vertical bar sign  (|)
+
+exactly,  `X|Y`, eg `Foo|null`, is type alternation that cannot be typehinted in php function prototype.
+
+Yet, `?X`, eg `?Foo`, is proper typehint for php function prototype (since 7.1). **it is not multiple types**, it's single type.
+
+Psr5 happened before PHP 7.1, so it doesn't contain example with `?X`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-12T22:09:52Z
+
+just my POV:
+`Foo|Bar|null` feels like something is off, either `Foo` and `Bar` should be interfaced to the same `FooBarInterface` or the type hint should be dropped because it doesn't add much.
+That said, I really like the intend of this PR to unify how we should type hint and check if new fixers could be in order following PHP7.1.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-13T20:14:56Z
+
+@SpacePossum , our peacemaker
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-02-15T16:39:32Z
+
+So what's the status on this? A huge majority of the PHPDocs in this project have `null|x` instead of `?x`. PSR-5 obviously doesn't say anything about it due to the last update being before 7.1. I think the best course of action is to normalise all usages to `null|x` for now, and (if|when) PSR-5 is updated to clarify, a more informed decision can be made
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-15T16:46:00Z
+
+Makes sense, we never update our CS if we don't have rules/fixers for it.
+So I'm :+1: to proceed with this PR and start a new one to create a fixer that takes care of `null|X` to `?X` (and we could discuss `null|X|Y` fixing there)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-15T16:58:57Z
+
+> and (if|when) PSR-5 is updated
+
+It won't gonna happen. PSR-5 is abandoned.
+
+`null|X|Y` shall not be touch.
