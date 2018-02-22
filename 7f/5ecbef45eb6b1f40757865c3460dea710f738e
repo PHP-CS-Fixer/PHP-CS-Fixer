@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-22T11:21:47Z
+
+I see that our AutoReview is doing great job :D
+
+great catch, but extra sad for me :(
+
+yet, IMO, we could try to fix it by not changing static method calls. WDYT ?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-22T11:31:30Z
+
+> yet, IMO, we could try to fix it by not changing static method calls. WDYT ?
+
+After years of usage of this Fixer, this is the first time I see it, and Yii2 is gonna remove that funcionality in the next release.
+
+I'm not gonna spend time on this edge case: risky comment is enough for me.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-22T12:57:03Z
+
+:+1: for keeping the behavior as-is and mark it as risky.
