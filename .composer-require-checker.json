@@ -1,7 +1,6 @@
 {
     "symbol-whitelist" : [
         "T_HH_ERROR",
-        "PHPUnit_Framework_Constraint",
         "PHPUnit_Framework_Constraint_IsIdentical",
         "PHPUnit\\Framework\\TestCase",
         "Prophecy\\Argument",
@@ -12,7 +11,6 @@
     ],
     "php-core-extensions" : [
         "dom", "mbstring", "Phar",
-        "Core", "date", "pcre", "Reflection", "SPL", "standard",
-        "libxml"
+        "Core", "date", "pcre", "Reflection", "SPL", "standard"
     ]
 }

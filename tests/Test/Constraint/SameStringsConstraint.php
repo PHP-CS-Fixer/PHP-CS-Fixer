@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Test\Constraints;
+namespace PhpCsFixer\Tests\Test\Constraint;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\XmlReporter;
-use PhpCsFixer\Test\Constraints\XmlMatchesXsdConstraint;
+use PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraint;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
