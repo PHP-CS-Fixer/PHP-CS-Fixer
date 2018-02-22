@@ -991,7 +991,7 @@ Choose from the list of available rules:
   - ``space_before`` (``'none'``, ``'one'``): spacing to apply before colon; defaults to
     ``'none'``
 
-* **self_accessor** [@Symfony]
+* **self_accessor** [@Symfony:risky]
 
   Inside class or interface element "self" should be preferred to the
   class name itself.
