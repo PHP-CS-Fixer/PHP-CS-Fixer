@@ -1,0 +1,104 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-12T09:04:30Z
+
+`composer-require-checker` cannot be told to read `autoload-dev` as well it seems :|
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-12T09:16:40Z
+
+> `composer-require-checker` cannot be told to read `autoload-dev` as well it seems :|
+
+it shouldn't load dev, that's the idea of checker. would your project work with only prod-deps
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-12T10:46:39Z
+
+>it shouldn't load dev, that's the idea of checker. would your project work with only prod-deps
+
+If it doesn't load dev, than it shouldn't check for unknown symbols in the dev folders either I think?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-12T11:19:45Z
+
+The report is legit: the classes you ported from Gecko package are defined in the `PhpCsFixer\Tests` namespace, which is similar to moving the package back to `require-dev`: it won't be available when using Composer with `--no-dev`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-12T11:37:52Z
+
+OK, thanks. This is such a energy-draining issue I take any idea to get it resolved.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-12T12:21:58Z
+
+Moving the constraints to a namespace in `src/` (with an `@internal` annotation) should be enough.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-19T09:51:22Z
+
+```
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Test/Constraints/XMLMatchesXSDConstraint.php:33	The parameter $XSD is not named in camelCase.
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Test/Constraints/XMLMatchesXSDConstraint.php:33	The variable $XSD is not named in camelCase.
+```
+
+¯\\_(ツ)_/¯
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-19T10:36:27Z
+
+name it `$xsd`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-19T10:52:21Z
+
+and class name? `XmlMatchesXsdConstraint` ? can't we white list abbreviations?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-19T10:56:31Z
+
+abbreviations shall be camelcased properly. like `is HTML` is camel cased into `isHtml`. same for XML and XSD
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-19T16:52:08Z
+
+@SpacePossum , if possible, avoid squashing ;)
+or was that just a rebase ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-19T20:42:43Z
+
+@SpacePossum , I'm getting lost, windows is failing, could you help ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-20T07:43:02Z
+
+thanks for the debugging @keradus
+I'm trying here as well
+This is a good example why the gecko has to go, Windows and Mac CI was never setup :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-20T09:18:01Z
+
+funny thing is that when we use this class in our tests, it works nicely,
+it just failing on it's own tests :|
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-20T11:43:05Z
+
+Test fixed :)
+
+@keradus please squash my commit when merging.
