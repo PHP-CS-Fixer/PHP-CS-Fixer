@@ -1,8 +1,9 @@
 {
     "symbol-whitelist" : [
-        "HHVM_VERSION_ID", "T_HH_ERROR",
-        "PHPUnit\\Framework\\TestCase", "Prophecy\\Argument",
-        "GeckoPackages\\PHPUnit\\Constraints\\SameStringsConstraint",
+        "T_HH_ERROR",
+        "PHPUnit_Framework_Constraint_IsIdentical",
+        "PHPUnit\\Framework\\TestCase",
+        "Prophecy\\Argument",
 
         "null", "true", "false",
         "static", "self", "parent",
@@ -10,7 +11,6 @@
     ],
     "php-core-extensions" : [
         "dom", "mbstring", "Phar",
-
         "Core", "date", "pcre", "Reflection", "SPL", "standard"
     ]
 }
