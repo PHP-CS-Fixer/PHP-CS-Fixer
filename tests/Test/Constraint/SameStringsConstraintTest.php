@@ -10,9 +10,8 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Test\Constraints;
+namespace PhpCsFixer\Tests\Test\Constraint;
 
-use PhpCsFixer\Test\Constraints\SameStringsConstraint;
 use PhpCsFixer\Tests\TestCase;
 
 /**

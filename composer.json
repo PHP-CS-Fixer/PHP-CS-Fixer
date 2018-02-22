@@ -65,6 +65,7 @@
             "tests/Test/AbstractFixerTestCase.php",
             "tests/Test/AbstractIntegrationCaseFactory.php",
             "tests/Test/AbstractIntegrationTestCase.php",
+            "tests/Test/Constraint/SameStringsConstraint.php",
             "tests/Test/IntegrationCase.php",
             "tests/Test/IntegrationCaseFactory.php",
             "tests/Test/IntegrationCaseFactoryInterface.php",
