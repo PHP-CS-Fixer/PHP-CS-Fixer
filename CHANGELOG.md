@@ -3,6 +3,33 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.10.3
+---------------------
+
+* bug #3504 NoBlankLinesAfterPhpdocFixer - allow blank line before declare statement (julienfalque)
+* bug #3522 Remove LOCK_EX (SpacePossum)
+* bug #3560 SelfAccessorFixer is risky (Slamdunk)
+* minor #3435 Add tests for general_phpdoc_annotation_remove (BackEndTea)
+* minor #3484 Create Tokens::findBlockStart (ntzm)
+* minor #3512 Add missing array typehints (ntzm)
+* minor #3513 Making AppVeyor happy (kubawerlos)
+* minor #3516 Use null|type instead of ?type in PHPDocs (ntzm)
+* minor #3518 FixerFactoryTest - Test each priority test file is listed as test (SpacePossum)
+* minor #3519 Fix typo (SpacePossum)
+* minor #3520 Fix typos: ran vs. run (SpacePossum)
+* minor #3521 Use HTTPS (carusogabriel)
+* minor #3526 Remove gecko dependency (SpacePossum, keradus, julienfalque)
+* minor #3531 Backport PHPMD to LTS version to ease maintainability (keradus)
+* minor #3532 Implement Tokens::findOppositeBlockEdge (ntzm)
+* minor #3533 DX: SCA - drop src/Resources exclusion (keradus)
+* minor #3538 Don't use third parameter of Tokens::findBlockStart (ntzm)
+* minor #3542 Enhancement: Run composer-normalize on Travis CI (localheinz, keradus)
+* minor #3550 AutoReview\FixerFactoryTest - fix missing priority test, mark not fully valid test as incomplete (keradus)
+* minor #3555 DX: composer.json - drop branch-alias, branch is already following the version (keradus)
+* minor #3556 DX: Add AutoReview/ComposerTest (keradus)
+* minor #3559 Don't expose new files under Test namespace (keradus)
+* minor #3561 PHPUnit5 - add in place missing compat layer for PHPUnit6 (keradus)
+
 Changelog for v2.10.2
 ---------------------
 
@@ -543,6 +570,29 @@ Changelog for v2.3.0
 * feature #2708 Add PhpUnitTestClassRequiresCoversFixer (keradus)
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
+
+Changelog for v2.2.17
+---------------------
+
+* bug #3504 NoBlankLinesAfterPhpdocFixer - allow blank line before declare statement (julienfalque)
+* bug #3522 Remove LOCK_EX (SpacePossum)
+* bug #3560 SelfAccessorFixer is risky (Slamdunk)
+* minor #3435 Add tests for general_phpdoc_annotation_remove (BackEndTea)
+* minor #3484 Create Tokens::findBlockStart (ntzm)
+* minor #3512 Add missing array typehints (ntzm)
+* minor #3516 Use null|type instead of ?type in PHPDocs (ntzm)
+* minor #3518 FixerFactoryTest - Test each priority test file is listed as test (SpacePossum)
+* minor #3520 Fix typos: ran vs. run (SpacePossum)
+* minor #3521 Use HTTPS (carusogabriel)
+* minor #3526 Remove gecko dependency (SpacePossum, keradus, julienfalque)
+* minor #3531 Backport PHPMD to LTS version to ease maintainability (keradus)
+* minor #3532 Implement Tokens::findOppositeBlockEdge (ntzm)
+* minor #3533 DX: SCA - drop src/Resources exclusion (keradus)
+* minor #3538 Don't use third parameter of Tokens::findBlockStart (ntzm)
+* minor #3542 Enhancement: Run composer-normalize on Travis CI (localheinz, keradus)
+* minor #3555 DX: composer.json - drop branch-alias, branch is already following the version (keradus)
+* minor #3556 DX: Add AutoReview/ComposerTest (keradus)
+* minor #3559 Don't expose new files under Test namespace (keradus)
 
 Changelog for v2.2.16
 ---------------------
