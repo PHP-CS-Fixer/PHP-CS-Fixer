@@ -14,6 +14,10 @@ namespace PhpCsFixer\Tests\Test\Constraint;
 
 use PhpCsFixer\Tests\TestCase;
 
+if (!class_exists('PHPUnit\Framework\ExpectationFailedException')) {
+    class_alias('PHPUnit_Framework_ExpectationFailedException', 'PHPUnit\Framework\ExpectationFailedException');
+}
+
 /**
  * @internal
  *

@@ -12,6 +12,10 @@
 
 namespace PhpCsFixer\Tests\Test\Constraint;
 
+if (!class_exists('PHPUnit\Framework\Constraint\IsIdentical')) {
+    class_alias('PHPUnit_Framework_Constraint_IsIdentical', 'PHPUnit\Framework\Constraint\IsIdentical');
+}
+
 use PHPUnit\Framework\Constraint\IsIdentical;
 
 /**

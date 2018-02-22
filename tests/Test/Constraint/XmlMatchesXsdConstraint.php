@@ -12,6 +12,10 @@
 
 namespace PhpCsFixer\Tests\Test\Constraint;
 
+if (!class_exists('PHPUnit\Framework\Constraint\Constraint')) {
+    class_alias('PHPUnit_Framework_Constraint', 'PHPUnit\Framework\Constraint\Constraint');
+}
+
 use PHPUnit\Framework\Constraint\Constraint;
 
 /**
