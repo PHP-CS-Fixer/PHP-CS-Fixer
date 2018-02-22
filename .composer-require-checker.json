@@ -1,12 +1,12 @@
 {
     "symbol-whitelist" : [
-        "HHVM_VERSION_ID",
-        "PHPUnit\\Framework\\TestCase", "Prophecy\\Argument",
-        "GeckoPackages\\PHPUnit\\Constraints\\SameStringsConstraint",
+        "PHPUnit\\Framework\\Constraint\\IsIdentical",
+        "PHPUnit\\Framework\\TestCase",
         "PHPUnitGoodPractices\\Traits\\ExpectationViaCodeOverAnnotationTrait",
         "PHPUnitGoodPractices\\Traits\\ExpectOverSetExceptionTrait",
         "PHPUnitGoodPractices\\Traits\\IdentityOverEqualityTrait",
         "PHPUnitGoodPractices\\Traits\\ProphecyOverMockObjectTrait",
+        "Prophecy\\Argument",
 
         "null", "true", "false",
         "static", "self", "parent",
@@ -14,7 +14,6 @@
     ],
     "php-core-extensions" : [
         "dom", "mbstring", "Phar",
-
         "Core", "date", "pcre", "Reflection", "SPL", "standard"
     ]
 }
