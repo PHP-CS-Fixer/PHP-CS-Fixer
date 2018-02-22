@@ -1000,8 +1000,27 @@ class Tokens extends \SplFixedArray
      */
     public function removeLeadingWhitespace($index, $whitespaces = null)
     {
-        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace($whitespaces)) {
+        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace()) {
+            $newContent = '';
+            $tokenToCheck = $this[$index - 1];
+
+            // if the token candidate to remove is preceded by single line comment we do not consider the new line after this comment as part of T_WHITESPACE
+            if (isset($this[$index - 2]) && $this[$index - 2]->isComment() && '/*' !== substr($this[$index - 2]->getContent(), 0, 2)) {
+                list($emptyString, $newContent, $whitespacesToCheck) = preg_split('/^(\R)/', $this[$index - 1]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
+                if ('' === $whitespacesToCheck) {
+                    return;
+                }
+                $tokenToCheck = new Token([T_WHITESPACE, $whitespacesToCheck]);
+            }
+
+            if (!$tokenToCheck->isWhitespace($whitespaces)) {
+                return;
+            }
+
             $this->clearAt($index - 1);
+            if ('' !== $newContent) {
+                $this->insertAt($index - 1, new Token([T_WHITESPACE, $newContent]));
+            }
         }
     }
 
