@@ -140,7 +140,6 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_var_without_name' => true,
             'protected_to_private' => true,
             'return_type_declaration' => true,
-            'self_accessor' => true,
             'semicolon_after_instruction' => true,
             'short_scalar_cast' => true,
             'single_blank_line_before_namespace' => true,
@@ -173,6 +172,7 @@ final class RuleSet implements RuleSetInterface
             ],
             'php_unit_construct' => true,
             'psr4' => true,
+            'self_accessor' => true,
             'silenced_deprecation_error' => true,
         ],
         '@DoctrineAnnotation' => [

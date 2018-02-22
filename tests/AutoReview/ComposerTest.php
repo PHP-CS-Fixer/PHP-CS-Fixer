@@ -35,7 +35,7 @@ final class ComposerTest extends TestCase
         }
 
         $this->assertSame(
-            array('dev-master' => $this->convertAppVersionToAliasedVersion(Application::VERSION)),
+            ['dev-master' => $this->convertAppVersionToAliasedVersion(Application::VERSION)],
             $composerJson['extra']['branch-alias']
         );
     }

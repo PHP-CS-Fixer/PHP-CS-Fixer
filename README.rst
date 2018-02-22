@@ -1335,10 +1335,12 @@ Choose from the list of available rules:
   - ``space_before`` (``'none'``, ``'one'``): spacing to apply before colon; defaults to
     ``'none'``
 
-* **self_accessor** [@Symfony]
+* **self_accessor** [@Symfony:risky]
 
   Inside class or interface element "self" should be preferred to the
   class name itself.
+
+  *Risky rule: risky when using dynamic calls like get_called_class() or late static binding.*
 
 * **semicolon_after_instruction** [@Symfony]
 
