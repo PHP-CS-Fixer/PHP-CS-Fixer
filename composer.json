@@ -52,11 +52,6 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.2-dev"
-        }
-    },
     "autoload": {
         "psr-4": {
             "PhpCsFixer\\": "src/"
