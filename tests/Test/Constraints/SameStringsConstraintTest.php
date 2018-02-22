@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Test\Constraints;
 
-use PhpCsFixer\Test\Constraints\SameStringsConstraint;
 use PhpCsFixer\Tests\TestCase;
 
 /**
