@@ -16,7 +16,7 @@ use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 final class FileFilterIterator extends \FilterIterator
 {
     /**
-     * @var null|EventDispatcher
+     * @var null|EventDispatcherInterface
      */
     private $eventDispatcher;
 
@@ -42,7 +42,7 @@ final class FileFilterIterator extends \FilterIterator
 
     public function __construct(
         \Iterator $iterator,
-        EventDispatcher $eventDispatcher = null,
+        EventDispatcherInterface $eventDispatcher = null,
         CacheManagerInterface $cacheManager
     ) {
         parent::__construct($iterator);
