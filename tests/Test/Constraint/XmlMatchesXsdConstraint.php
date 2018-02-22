@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Test\Constraints;
+namespace PhpCsFixer\Tests\Test\Constraint;
 
 /**
  * @author SpacePossum
