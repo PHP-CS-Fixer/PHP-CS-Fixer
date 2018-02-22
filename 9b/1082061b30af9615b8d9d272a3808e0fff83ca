@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-02-01T22:18:20Z
+
+I think I had a similar issue here: https://github.com/ntzm/PHP-CS-Fixer/blob/151b10d4b32103811e27f979944f0122e005d5e8/tests/Fixer/Operator/StandardizeIncrementFixerTest.php#L176-L179
+
+which I mitigated here: https://github.com/ntzm/PHP-CS-Fixer/blob/151b10d4b32103811e27f979944f0122e005d5e8/src/Fixer/Operator/StandardizeIncrementFixer.php#L155-L167
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-02-15T22:06:54Z
+
+@SpacePossum @keradus PR updated, any suggestion for improvement?
