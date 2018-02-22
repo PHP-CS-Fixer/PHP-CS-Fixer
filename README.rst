@@ -996,6 +996,8 @@ Choose from the list of available rules:
   Inside class or interface element "self" should be preferred to the
   class name itself.
 
+  *Risky rule: risky when using dynamic calls like get_called_class() or late static binding.*
+
 * **semicolon_after_instruction**
 
   Instructions must be terminated with a semicolon.
