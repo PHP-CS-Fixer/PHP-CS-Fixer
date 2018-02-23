@@ -109,8 +109,8 @@ class SomeClass
     /**
      * @param Tokens $tokens
      * @param int    $index
-     * @param array  $namespaces
-     * @param array  $useMap
+     * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
+     * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
      */
     private function fixFunctionArguments(Tokens $tokens, $index, array $namespaces, array $useMap)
     {
