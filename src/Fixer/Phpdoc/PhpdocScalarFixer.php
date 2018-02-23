@@ -28,6 +28,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
      */
     private static $types = [
         'boolean' => 'bool',
+        'callback' => 'callable',
         'double' => 'float',
         'integer' => 'int',
         'real' => 'float',

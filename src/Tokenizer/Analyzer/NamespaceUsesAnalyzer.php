@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -45,39 +46,57 @@ final class NamespaceUsesAnalyzer
         $uses = [];
 
         foreach ($useIndexes as $index) {
-            $declarationEndIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
-            $declarationContent = $tokens->generatePartialCode($index + 1, $declarationEndIndex - 1);
-            if (
-                false !== strpos($declarationContent, ',')    // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
-                || false !== strpos($declarationContent, '{') // do not touch group use declarations until the logic of this is added (for example: `use some\a\{ClassD};`)
-            ) {
-                continue;
+            $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+            $analysis = $this->parseDeclaration($tokens, $index, $endIndex);
+            if ($analysis) {
+                $uses[$analysis->getShortName()] = $analysis;
             }
-
-            $declarationParts = preg_split('/\s+as\s+/i', $declarationContent);
-
-            if (1 === count($declarationParts)) {
-                $fullName = $declarationContent;
-                $declarationParts = explode('\\', $fullName);
-                $shortName = end($declarationParts);
-                $aliased = false;
-            } else {
-                list($fullName, $shortName) = $declarationParts;
-                $declarationParts = explode('\\', $fullName);
-                $aliased = $shortName !== end($declarationParts);
-            }
-
-            $shortName = trim($shortName);
-
-            $uses[$shortName] = new NamespaceUseAnalysis(
-                trim($fullName),
-                $shortName,
-                $aliased,
-                $index,
-                $declarationEndIndex
-            );
         }
 
         return $uses;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int $startIndex
+     * @param int $endIndex
+     * @return null|NamespaceUseAnalysis
+     */
+    private function parseDeclaration(Tokens $tokens, int $startIndex, int $endIndex)
+    {
+        $fullName = $shortName = '';
+        $aliased = false;
+
+        for ($i = $startIndex; $i <= $endIndex; ++$i) {
+            $token = $tokens[$i];
+            if ($token->equals(',') || $token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                // do not touch group use declarations until the logic of this is added (for example: `use some\a\{ClassD};`)
+                // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
+                return null;
+            }
+
+            if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind(array(T_USE))) {
+                continue;
+            }
+
+            if ($token->isGivenKind(T_STRING)) {
+                $shortName = $token->getContent();
+                if (!$aliased) {
+                    $fullName .= $shortName;
+                }
+            } elseif ($token->isGivenKind(T_NS_SEPARATOR)) {
+                $fullName .= $token->getContent();
+            } elseif ($token->isGivenKind(T_AS)) {
+                $aliased = true;
+            }
+        }
+
+        return new NamespaceUseAnalysis(
+            trim($fullName),
+            $shortName,
+            $aliased,
+            $startIndex,
+            $endIndex
+        );
     }
 }

@@ -1,0 +1,15 @@
+<xliff version='1.2'
+       xmlns='urn:oasis:names:tc:xliff:document:1.2'>
+    <file original='hello.txt' source-language='en' target-language='fr'
+          datatype='plaintext'>
+        <body>
+            <trans-unit id='hi'>
+                <source>Hello world</source>
+                <target>Bonjour le monde</target>
+                <alt-trans>
+                    <target xml:lang='es'>Hola mundo</target>
+                </alt-trans>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

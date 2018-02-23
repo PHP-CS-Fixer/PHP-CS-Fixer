@@ -772,6 +772,28 @@ PHP;
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
     }
 
+    /**
+     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart instead.
+     * @group legacy
+     */
+    public function testFindBlockEndLastParameterFalseDeprecated()
+    {
+        $tokens = Tokens::fromCode('<?php ${$bar};');
+
+        $this->assertSame(2, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 4, false));
+    }
+
+    /**
+     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.
+     * @group legacy
+     */
+    public function testFindBlockEndLastParameterTrueDeprecated()
+    {
+        $tokens = Tokens::fromCode('<?php ${$bar};');
+
+        $this->assertSame(4, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2, true));
+    }
+
     public function testEmptyTokens()
     {
         $code = '';
@@ -865,8 +887,8 @@ PHP;
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex, true));
-        $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex, false));
+        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex));
+        $this->assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
 
         $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
         $this->assertInternalType('array', $detectedType);
@@ -1052,6 +1074,77 @@ echo $a;',
     }
 
     /**
+     * @dataProvider provideRemoveLeadingWhitespaceCases
+     *
+     * @param int         $index
+     * @param null|string $whitespaces
+     * @param string      $expected
+     * @param string      $input
+     */
+    public function testRemoveLeadingWhitespace($index, $whitespaces, $expected, $input = null)
+    {
+        Tokens::clearCache();
+
+        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens->removeLeadingWhitespace($index, $whitespaces);
+
+        $this->assertSame($expected, $tokens->generateCode());
+    }
+
+    public function provideRemoveLeadingWhitespaceCases()
+    {
+        return [
+            [
+                7,
+                null,
+                "<?php echo 1;//\necho 2;",
+            ],
+            [
+                7,
+                null,
+                "<?php echo 1;//\necho 2;",
+                "<?php echo 1;//\n       echo 2;",
+            ],
+            [
+                7,
+                null,
+                "<?php echo 1;//\r\necho 2;",
+                "<?php echo 1;//\r\n       echo 2;",
+            ],
+            [
+                7,
+                " \t",
+                "<?php echo 1;//\n//",
+                "<?php echo 1;//\n       //",
+            ],
+            [
+                6,
+                "\t ",
+                '<?php echo 1;//',
+                "<?php echo 1;\t \t \t //",
+            ],
+            [
+                8,
+                null,
+                '<?php $a = 1;//',
+                '<?php $a = 1;           //',
+            ],
+            [
+                6,
+                null,
+                '<?php echo 1;echo 2;',
+                "<?php echo 1;  \n          \n \n     \necho 2;",
+            ],
+            [
+                8,
+                null,
+                "<?php echo 1;  // 1\necho 2;",
+                "<?php echo 1;  // 1\n          \n \n     \necho 2;",
+            ],
+        ];
+    }
+
+    /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */
@@ -1062,6 +1155,7 @@ echo $a;',
 
             return;
         }
+
         if (null === $input) {
             $this->fail('While "input" is <null>, "expected" is not.');
         }
