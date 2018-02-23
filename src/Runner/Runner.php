@@ -27,7 +27,7 @@ use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
@@ -46,7 +46,7 @@ final class Runner
     private $directory;
 
     /**
-     * @var null|EventDispatcher
+     * @var null|EventDispatcherInterface
      */
     private $eventDispatcher;
 
@@ -89,7 +89,7 @@ final class Runner
         $finder,
         array $fixers,
         DifferInterface $differ,
-        EventDispatcher $eventDispatcher = null,
+        EventDispatcherInterface $eventDispatcher = null,
         ErrorsManager $errorsManager,
         LinterInterface $linter,
         $isDryRun,

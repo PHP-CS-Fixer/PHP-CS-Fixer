@@ -35,7 +35,7 @@ final class ProcessOutputTest extends TestCase
     {
         $processOutput = new ProcessOutput(
             $output = new BufferedOutput(),
-            $this->prophesize(\Symfony\Component\EventDispatcher\EventDispatcher::class)->reveal(),
+            $this->prophesize(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class)->reveal(),
             $width,
             null
         );
@@ -188,7 +188,7 @@ final class ProcessOutputTest extends TestCase
 
         $processOutput = new ProcessOutput(
             $output = new BufferedOutput(),
-            $this->prophesize(\Symfony\Component\EventDispatcher\EventDispatcher::class)->reveal(),
+            $this->prophesize(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class)->reveal(),
             $width,
             $nbFiles
         );
