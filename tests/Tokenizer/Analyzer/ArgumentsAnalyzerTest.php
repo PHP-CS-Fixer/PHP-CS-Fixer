@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -79,15 +80,11 @@ final class ArgumentsAnalyzerTest extends TestCase
                 '$a',
                 3,
                 null,
-                null,
-                null,
                 null
             )],
             ['<?php function($a, $b){};', 5, 6, new ArgumentAnalysis(
                 '$b',
                 6,
-                null,
-                null,
                 null,
                 null
             )],
@@ -95,49 +92,49 @@ final class ArgumentsAnalyzerTest extends TestCase
                 '$a',
                 3,
                 null,
-                null,
-                null,
                 null
             )],
             ['<?php function($a, $b = array(1,2), $c = 3){};', 5, 15, new ArgumentAnalysis(
                 '$b',
                 6,
                 'array(1,2)',
-                null,
-                null,
                 null
             )],
             ['<?php function($a, $b = array(1,2), $c = 3){};', 17, 22, new ArgumentAnalysis(
                 '$c',
                 18,
                 '3',
-                null,
-                null,
                 null
             )],
             ['<?php function(array $a = array()){};', 3, 11, new ArgumentAnalysis(
                 '$a',
                 5,
                 'array()',
-                'array',
-                3,
-                3
+                new TypeAnalysis(
+                    'array',
+                    3,
+                    3
+                )
             )],
             ['<?php function(array ... $a){};', 3, 7, new ArgumentAnalysis(
                 '$a',
                 7,
                 null,
-                'array',
-                3,
-                3
+                new TypeAnalysis(
+                    'array',
+                    3,
+                    3
+                )
             )],
             ['<?php function(\Foo\Bar $a){};', 3, 8, new ArgumentAnalysis(
                 '$a',
                 8,
                 null,
-                '\Foo\Bar',
-                3,
-                6
+                new TypeAnalysis(
+                    '\Foo\Bar',
+                    3,
+                    6
+                )
             )],
         ];
     }

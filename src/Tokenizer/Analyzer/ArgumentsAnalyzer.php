@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -132,9 +133,7 @@ final class ArgumentsAnalyzer
             $info['name'],
             $info['name_index'],
             $info['default'],
-            $info['type'],
-            $info['type_index_start'],
-            $info['type_index_end']
+            $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null
         );
     }
 }

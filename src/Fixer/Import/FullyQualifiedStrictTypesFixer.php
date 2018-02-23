@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
@@ -36,7 +37,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Transforms imported FQCN parameters and return types to short version.',
+            'Transforms imported FQCN parameters and return types in function arguments to short version.',
             [
                 new CodeSample(
                     '<?php
@@ -83,12 +84,8 @@ class SomeClass
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $namespaces = array_map(function (NamespaceAnalysis $info) {
-            return $info->getFullName();
-        }, (new NamespacesAnalyzer())->getDeclarations($tokens));
-        $useMap = array_map(function (NamespaceUseAnalysis $info) {
-            return $info->getFullName();
-        }, (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens));
+        $namespaces = $this->getNamespacesFromTokens($tokens);
+        $useMap = $this->getUseMapFromTokens($tokens);
 
         if (!count($namespaces) && !count($useMap)) {
             return;
@@ -107,10 +104,32 @@ class SomeClass
     }
 
     /**
+     * @param Tokens $tokens
+     * @return array<string, string> A list of all FQN namespaces in the file with the short name as key
+     */
+    private function getNamespacesFromTokens(Tokens $tokens)
+    {
+        return array_map(function (NamespaceAnalysis $info) {
+            return $info->getFullName();
+        }, (new NamespacesAnalyzer())->getDeclarations($tokens));
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @return array<string, string> A list of all FQN use statements in the file with the short name as key
+     */
+    private function getUseMapFromTokens(Tokens $tokens)
+    {
+        return array_map(function (NamespaceUseAnalysis $info) {
+            return $info->getFullName();
+        }, (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens));
+    }
+
+    /**
      * @param Tokens                $tokens
      * @param int                   $index
-     * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
-     * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
+     * @param array<string, string> $namespaces A list of all FQN namespaces in the file with the short name as key
+     * @param array<string, string> $useMap     A list of all FQN use statements in the file with the short name as key
      */
     private function fixFunctionArguments(Tokens $tokens, $index, array $namespaces, array $useMap)
     {
@@ -121,16 +140,7 @@ class SomeClass
                 continue;
             }
 
-            $shortType = $this->detectShortType($argument->getType(), $namespaces, $useMap);
-            if ($shortType === $argument->getType()) {
-                continue;
-            }
-
-            $tokens->overrideRange(
-                $argument->getTypeIndexStart(),
-                $argument->getTypeIndexEnd(),
-                $this->generateTokensForShortType($shortType)
-            );
+            $this->detectAndReplaceTypeWithShortType($tokens, $argument->getType(), $namespaces, $useMap);
         }
     }
 
@@ -151,19 +161,43 @@ class SomeClass
             return;
         }
 
-        $shortType = $this->detectShortType($returnType->getType(), $namespaces, $useMap);
-        if ($shortType === $returnType->getType()) {
+        $this->detectAndReplaceTypeWithShortType($tokens, $returnType, $namespaces, $useMap);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param TypeAnalysis $type
+     * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
+     * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
+     */
+    private function detectAndReplaceTypeWithShortType(
+        Tokens $tokens,
+        TypeAnalysis $type,
+        array $namespaces,
+        array $useMap
+    )
+    {
+        if ($type->isScalar()) {
+            return;
+        }
+
+        $typeName = $type->getName();
+        $shortType = $this->detectShortType($typeName, $namespaces, $useMap);
+        if ($shortType === $typeName) {
             return;
         }
 
         $tokens->overrideRange(
-            $returnType->getStartIndex(),
-            $returnType->getEndIndex(),
+            $type->getStartIndex(),
+            $type->getEndIndex(),
             $this->generateTokensForShortType($shortType)
         );
     }
 
     /**
+     * The short type is the last part of the FQCN.
+     * E.g.: use Foo\Bar => "Bar"
+     *
      * @param string                $type
      * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
      * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key

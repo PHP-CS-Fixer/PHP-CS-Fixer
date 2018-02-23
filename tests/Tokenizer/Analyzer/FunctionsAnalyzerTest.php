@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\FunctionReturnTypeAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -66,8 +67,6 @@ final class FunctionsAnalyzerTest extends TestCase
                     '$a',
                     3,
                     null,
-                    null,
-                    null,
                     null
                 ),
             ]],
@@ -76,15 +75,11 @@ final class FunctionsAnalyzerTest extends TestCase
                     '$a',
                     3,
                     null,
-                    null,
-                    null,
                     null
                 ),
                 '$b' => new ArgumentAnalysis(
                     '$b',
                     6,
-                    null,
-                    null,
                     null,
                     null
                 ),
@@ -94,24 +89,18 @@ final class FunctionsAnalyzerTest extends TestCase
                     '$a',
                     3,
                     null,
-                    null,
-                    null,
                     null
                 ),
                 '$b' => new ArgumentAnalysis(
                     '$b',
                     6,
                     'array(1,2)',
-                    null,
-                    null,
                     null
                 ),
                 '$c' => new ArgumentAnalysis(
                     '$c',
                     18,
                     '3',
-                    null,
-                    null,
                     null
                 ),
             ]],
@@ -120,9 +109,11 @@ final class FunctionsAnalyzerTest extends TestCase
                     '$a',
                     5,
                     'array()',
-                    'array',
-                    3,
-                    3
+                    new TypeAnalysis(
+                        'array',
+                        3,
+                        3
+                    )
                 ),
             ]],
             ['<?php function(array ... $a){};', 1, [
@@ -130,9 +121,11 @@ final class FunctionsAnalyzerTest extends TestCase
                     '$a',
                     7,
                     null,
-                    'array',
-                    3,
-                    3
+                    new TypeAnalysis(
+                        'array',
+                        3,
+                        3
+                    )
                 ),
             ]],
         ];
@@ -142,8 +135,8 @@ final class FunctionsAnalyzerTest extends TestCase
     {
         return [
             ['<?php function(){};', 1, null],
-            ['<?php function($a): array {};', 1, new FunctionReturnTypeAnalysis('array', 7, 7)],
-            ['<?php function($a): \Foo\Bar {};', 1, new FunctionReturnTypeAnalysis('\Foo\Bar', 7, 10)],
+            ['<?php function($a): array {};', 1, new TypeAnalysis('array', 7, 7)],
+            ['<?php function($a): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 10)],
         ];
     }
 }

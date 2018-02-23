@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\FunctionReturnTypeAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -46,7 +47,7 @@ final class FunctionsAnalyzer
      * @param Tokens $tokens
      * @param int    $methodIndex
      *
-     * @return null|FunctionReturnTypeAnalysis
+     * @return null|TypeAnalysis
      */
     public function getFunctionReturnType(Tokens $tokens, $methodIndex)
     {
@@ -70,6 +71,6 @@ final class FunctionsAnalyzer
             $typeEndIndex = $i;
         }
 
-        return new FunctionReturnTypeAnalysis($type, $typeStartIndex, $typeEndIndex);
+        return new TypeAnalysis($type, $typeStartIndex, $typeEndIndex);
     }
 }

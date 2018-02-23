@@ -41,19 +41,9 @@ final class ArgumentAnalysis
     /**
      * The type of the argument.
      *
-     * @var null|string
+     * @var null|TypeAnalysis
      */
     private $type;
-
-    /**
-     * @var null|int
-     */
-    private $typeIndexStart;
-
-    /**
-     * @var null|int
-     */
-    private $typeIndexEnd;
 
     /**
      * ArgumentAnalysis constructor.
@@ -61,18 +51,14 @@ final class ArgumentAnalysis
      * @param string      $name
      * @param int         $nameIndex
      * @param null|string $default
-     * @param null|string $type
-     * @param null|int    $typeIndexStart
-     * @param null|int    $typeIndexEnd
+     * @param null|TypeAnalysis $type
      */
-    public function __construct($name, $nameIndex, $default, $type, $typeIndexStart, $typeIndexEnd)
+    public function __construct($name, $nameIndex, $default, TypeAnalysis $type = null)
     {
         $this->name = $name;
         $this->nameIndex = $nameIndex;
         $this->default = $default ?: null;
         $this->type = $type ?: null;
-        $this->typeIndexStart = $typeIndexStart ?: null;
-        $this->typeIndexEnd = $typeIndexEnd ?: null;
     }
 
     /**
@@ -108,7 +94,7 @@ final class ArgumentAnalysis
     }
 
     /**
-     * @return null|string
+     * @return null|TypeAnalysis
      */
     public function getType()
     {
@@ -121,21 +107,5 @@ final class ArgumentAnalysis
     public function hasType()
     {
         return null !== $this->type;
-    }
-
-    /**
-     * @return null|int
-     */
-    public function getTypeIndexStart()
-    {
-        return $this->typeIndexStart;
-    }
-
-    /**
-     * @return null|int
-     */
-    public function getTypeIndexEnd()
-    {
-        return $this->typeIndexEnd;
     }
 }
