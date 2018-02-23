@@ -17,13 +17,12 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
-use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Generator\NamespacedStringTokenGenerator;
+use PhpCsFixer\Tokenizer\Resolver\TypeShortNameResolver;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -84,10 +83,10 @@ class SomeClass
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $namespaces = $this->getNamespacesFromTokens($tokens);
-        $useMap = $this->getUseMapFromTokens($tokens);
+        $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
+        $uses = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
 
-        if (!count($namespaces) && !count($useMap)) {
+        if (!count($namespaces) && !count($uses)) {
             return;
         }
 
@@ -98,42 +97,16 @@ class SomeClass
             }
 
             // Return types are only available since PHP 7.0
-            $this->fixFunctionReturnType($tokens, $index, $namespaces, $useMap);
-            $this->fixFunctionArguments($tokens, $index, $namespaces, $useMap);
+            $this->fixFunctionReturnType($tokens, $index);
+            $this->fixFunctionArguments($tokens, $index);
         }
     }
 
     /**
      * @param Tokens $tokens
-     *
-     * @return array<string, string> A list of all FQN namespaces in the file with the short name as key
+     * @param int    $index
      */
-    private function getNamespacesFromTokens(Tokens $tokens)
-    {
-        return array_map(function (NamespaceAnalysis $info) {
-            return $info->getFullName();
-        }, (new NamespacesAnalyzer())->getDeclarations($tokens));
-    }
-
-    /**
-     * @param Tokens $tokens
-     *
-     * @return array<string, string> A list of all FQN use statements in the file with the short name as key
-     */
-    private function getUseMapFromTokens(Tokens $tokens)
-    {
-        return array_map(function (NamespaceUseAnalysis $info) {
-            return $info->getFullName();
-        }, (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens));
-    }
-
-    /**
-     * @param Tokens                $tokens
-     * @param int                   $index
-     * @param array<string, string> $namespaces A list of all FQN namespaces in the file with the short name as key
-     * @param array<string, string> $useMap     A list of all FQN use statements in the file with the short name as key
-     */
-    private function fixFunctionArguments(Tokens $tokens, $index, array $namespaces, array $useMap)
+    private function fixFunctionArguments(Tokens $tokens, $index)
     {
         $arguments = (new FunctionsAnalyzer())->getFunctionArguments($tokens, $index);
 
@@ -142,17 +115,15 @@ class SomeClass
                 continue;
             }
 
-            $this->detectAndReplaceTypeWithShortType($tokens, $argument->getType(), $namespaces, $useMap);
+            $this->detectAndReplaceTypeWithShortType($tokens, $argument->getType());
         }
     }
 
     /**
-     * @param Tokens                $tokens
-     * @param int                   $index
-     * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
-     * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
+     * @param Tokens $tokens
+     * @param int    $index
      */
-    private function fixFunctionReturnType(Tokens $tokens, $index, array $namespaces, array $useMap)
+    private function fixFunctionReturnType(Tokens $tokens, $index)
     {
         if (PHP_VERSION_ID < 70000) {
             return;
@@ -163,27 +134,23 @@ class SomeClass
             return;
         }
 
-        $this->detectAndReplaceTypeWithShortType($tokens, $returnType, $namespaces, $useMap);
+        $this->detectAndReplaceTypeWithShortType($tokens, $returnType);
     }
 
     /**
-     * @param Tokens                $tokens
-     * @param TypeAnalysis          $type
-     * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
-     * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
+     * @param Tokens       $tokens
+     * @param TypeAnalysis $type
      */
     private function detectAndReplaceTypeWithShortType(
         Tokens $tokens,
-        TypeAnalysis $type,
-        array $namespaces,
-        array $useMap
+        TypeAnalysis $type
     ) {
         if ($type->isScalar()) {
             return;
         }
 
         $typeName = $type->getName();
-        $shortType = $this->detectShortType($typeName, $namespaces, $useMap);
+        $shortType = (new TypeShortNameResolver())->resolve($tokens, $type);
         if ($shortType === $typeName) {
             return;
         }
@@ -191,71 +158,7 @@ class SomeClass
         $tokens->overrideRange(
             $type->getStartIndex(),
             $type->getEndIndex(),
-            $this->generateTokensForShortType($shortType)
+            (new NamespacedStringTokenGenerator())->generate($shortType)
         );
-    }
-
-    /**
-     * The short type is the last part of the FQCN.
-     * E.g.: use Foo\Bar => "Bar".
-     *
-     * @param string                $type
-     * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
-     * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
-     *
-     * @return string
-     */
-    private function detectShortType($type, array $namespaces, array $useMap)
-    {
-        // First match explicit imports:
-        foreach ($useMap as $shortName => $fullName) {
-            $regex = '/^\\\\?'.preg_quote($fullName, '/').'$/';
-            if (preg_match($regex, $type)) {
-                return $shortName;
-            }
-        }
-
-        // Next try to match (partial) classes inside the same namespace
-        // For now only support one namespace per file:
-        if (1 === count($namespaces)) {
-            foreach ($namespaces as $shortName => $fullName) {
-                $matches = [];
-                $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
-                if (preg_match($regex, $type, $matches)) {
-                    return $matches['className'];
-                }
-            }
-        }
-
-        // Next: Try to match partial use statements:
-        foreach ($useMap as $shortName => $fullName) {
-            $matches = [];
-            $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
-            if (preg_match($regex, $type, $matches)) {
-                return $shortName.'\\'.$matches['className'];
-            }
-        }
-
-        return $type;
-    }
-
-    /**
-     * @param string $shortType
-     *
-     * @return Token[]
-     */
-    private function generateTokensForShortType($shortType)
-    {
-        $tokens = [];
-        $parts = explode('\\', $shortType);
-
-        foreach ($parts as $index => $part) {
-            $tokens[] = new Token([T_STRING, $part]);
-            if ($index !== count($parts) - 1) {
-                $tokens[] = new Token([T_NS_SEPARATOR, '\\']);
-            }
-        }
-
-        return $tokens;
     }
 }

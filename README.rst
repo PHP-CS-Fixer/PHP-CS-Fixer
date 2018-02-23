@@ -1,3 +1,7 @@
+
+Warning: PHP Startup: Unable to load dynamic library '/usr/local/opt/php71-intl/intl.so' - dlopen(/usr/local/opt/php71-intl/intl.so, 9): Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.59.dylib
+  Referenced from: /usr/local/opt/php71-intl/intl.so
+  Reason: image not found in Unknown on line 0
 PHP Coding Standards Fixer
 ==========================
 
@@ -599,7 +603,8 @@ Choose from the list of available rules:
 
 * **fully_qualified_strict_types**
 
-  Transforms imported FQCN parameters and return types to short version.
+  Transforms imported FQCN parameters and return types in function
+  arguments to short version.
 
 * **function_declaration** [@PSR2, @Symfony]
 
