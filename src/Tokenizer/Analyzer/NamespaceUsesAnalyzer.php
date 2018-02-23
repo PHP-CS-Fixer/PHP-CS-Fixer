@@ -63,7 +63,7 @@ final class NamespaceUsesAnalyzer
      *
      * @return null|NamespaceUseAnalysis
      */
-    private function parseDeclaration(Tokens $tokens, int $startIndex, int $endIndex)
+    private function parseDeclaration(Tokens $tokens, $startIndex, $endIndex)
     {
         $fullName = $shortName = '';
         $aliased = false;
