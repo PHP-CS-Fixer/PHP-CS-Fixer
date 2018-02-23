@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tokenizer\Resolver;
 
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -28,16 +27,14 @@ final class TypeShortNameResolver
      * This method will resolve the shortName of a FQCN if possible or otherwise return the inserted type name.
      * E.g.: use Foo\Bar => "Bar".
      *
-     * @param TypeAnalysis          $type
+     * @param string          $type
      * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
      * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
      *
      * @return string
      */
-    public function resolve(Tokens $tokens, $type)
+    public function resolve(Tokens $tokens, $typeName)
     {
-        $typeName = $type->getName();
-
         // First match explicit imports:
         $useMap = $this->getUseMapFromTokens($tokens);
         foreach ($useMap as $shortName => $fullName) {
