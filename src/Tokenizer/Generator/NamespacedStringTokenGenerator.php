@@ -16,7 +16,10 @@ namespace PhpCsFixer\Tokenizer\Generator;
 
 use PhpCsFixer\Tokenizer\Token;
 
-class NamespacedStringTokenGenerator
+/**
+ * @internal
+ */
+final class NamespacedStringTokenGenerator
 {
     /**
      * Parse a string that contains a namespace into tokens.

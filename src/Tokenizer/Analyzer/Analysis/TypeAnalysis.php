@@ -12,7 +12,10 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
-class TypeAnalysis implements StartEndTokenAwareAnalysis
+/**
+ * @internal
+ */
+final class TypeAnalysis implements StartEndTokenAwareAnalysis
 {
     private static $scalarTypes = [
         'array',
