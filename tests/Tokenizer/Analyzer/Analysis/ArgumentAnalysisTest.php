@@ -49,10 +49,10 @@ final class ArgumentAnalysisTest extends TestCase
     public function testType()
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, new TypeAnalysis('string', 1, 4));
-        $this->assertTrue($analysis->hasType());
-        $this->assertSame('string', $analysis->getType()->getName());
-        $this->assertSame(1, $analysis->getType()->getStartIndex());
-        $this->assertSame(4, $analysis->getType()->getEndIndex());
+        $this->assertTrue($analysis->hasTypeAnalysis());
+        $this->assertSame('string', $analysis->getTypeAnalysis()->getName());
+        $this->assertSame(1, $analysis->getTypeAnalysis()->getStartIndex());
+        $this->assertSame(4, $analysis->getTypeAnalysis()->getEndIndex());
     }
 
     public function testNoTypeFound()

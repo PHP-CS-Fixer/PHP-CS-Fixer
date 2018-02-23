@@ -107,11 +107,11 @@ class SomeClass
         $arguments = (new FunctionsAnalyzer())->getFunctionArguments($tokens, $index);
 
         foreach ($arguments as $argument) {
-            if (!$argument->hasType()) {
+            if (!$argument->hasTypeAnalysis()) {
                 continue;
             }
 
-            $this->detectAndReplaceTypeWithShortType($tokens, $argument->getType());
+            $this->detectAndReplaceTypeWithShortType($tokens, $argument->getTypeAnalysis());
         }
     }
 

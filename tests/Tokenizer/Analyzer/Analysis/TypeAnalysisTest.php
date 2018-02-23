@@ -69,7 +69,9 @@ final class TypeAnalysisTest extends TestCase
             ['int', true],
             ['iteratable', true],
             ['float', true],
+            ['self', true],
             ['string', true],
+            ['void', true],
             ['other', false],
         ];
     }

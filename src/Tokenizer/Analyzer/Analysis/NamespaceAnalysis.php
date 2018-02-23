@@ -46,8 +46,6 @@ final class NamespaceAnalysis implements StartEndTokenAwareAnalysis
     private $endIndex;
 
     /**
-     * NamespaceAnalysis constructor.
-     *
      * @param string $fullName
      * @param string $shortName
      * @param int    $startIndex

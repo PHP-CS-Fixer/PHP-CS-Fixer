@@ -39,26 +39,24 @@ final class ArgumentAnalysis
     private $nameIndex;
 
     /**
-     * The type of the argument.
+     * The type analysis of the argument.
      *
      * @var null|TypeAnalysis
      */
-    private $type;
+    private $typeAnalysis;
 
     /**
-     * ArgumentAnalysis constructor.
-     *
      * @param string            $name
      * @param int               $nameIndex
      * @param null|string       $default
      * @param null|TypeAnalysis $type
      */
-    public function __construct($name, $nameIndex, $default, TypeAnalysis $type = null)
+    public function __construct($name, $nameIndex, $default, TypeAnalysis $typeAnalysis = null)
     {
         $this->name = $name;
         $this->nameIndex = $nameIndex;
         $this->default = $default ?: null;
-        $this->type = $type ?: null;
+        $this->typeAnalysis = $typeAnalysis ?: null;
     }
 
     /**
@@ -96,16 +94,16 @@ final class ArgumentAnalysis
     /**
      * @return null|TypeAnalysis
      */
-    public function getType()
+    public function getTypeAnalysis()
     {
-        return $this->type;
+        return $this->typeAnalysis;
     }
 
     /**
      * @return bool
      */
-    public function hasType()
+    public function hasTypeAnalysis()
     {
-        return null !== $this->type;
+        return null !== $this->typeAnalysis;
     }
 }

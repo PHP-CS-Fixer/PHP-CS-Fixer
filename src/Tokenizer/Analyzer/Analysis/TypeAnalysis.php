@@ -24,7 +24,9 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         'int',
         'iteratable',
         'float',
+        'self',
         'string',
+        'void',
     ];
 
     /**
@@ -43,8 +45,6 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
     private $endIndex;
 
     /**
-     * TypeAnalysis constructor.
-     *
      * @param string $name
      * @param int    $startIndex
      * @param int    $endIndex
