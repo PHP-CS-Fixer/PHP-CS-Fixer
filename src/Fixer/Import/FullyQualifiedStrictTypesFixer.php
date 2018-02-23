@@ -107,8 +107,8 @@ class SomeClass
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param Tokens                $tokens
+     * @param int                   $index
      * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
      * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
      */
