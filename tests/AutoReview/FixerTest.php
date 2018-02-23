@@ -125,6 +125,12 @@ final class FixerTest extends TestCase
             } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
                 $this->assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
+
+            $options = $fixer->getConfigurationDefinition()->getOptions();
+
+            foreach ($options as $option) {
+                $this->assertRegExp('/^[a-z_]*$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
+            }
         }
 
         if ($fixer->isRisky()) {
@@ -193,7 +199,7 @@ final class FixerTest extends TestCase
         $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface', $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
-            $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerOption', $option);
+            $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\FixerOptionInterface', $option);
             $this->assertNotEmpty($option->getDescription());
 
             $this->assertSame(

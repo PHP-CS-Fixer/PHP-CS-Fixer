@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -43,7 +44,7 @@ Fixer applying this rule is risky.
 Can break stuff.
 
 Fixer is configurable using following option:
-* functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']
+* functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']; DEPRECATED alias: funcs
 
 Fixing examples:
  * Example #1. Fixing with the default configuration.
@@ -81,7 +82,7 @@ Replaces bad stuff with good stuff.
 Can break stuff.
 
 Fixer is configurable using following option:
-* \033[32mfunctions\033[39m (a subset of \033[33m['foo', 'test']\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
+* \033[32mfunctions\033[39m (a subset of \033[33m['foo', 'test']\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m; DEPRECATED alias: \033[33mfuncs\033[39m
 
 Fixing examples:
  * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
@@ -190,7 +191,7 @@ Fixing examples:
         $fixer->isRisky()->willReturn(true);
 
         $functionNames = array('foo', 'test');
-        $functions = new FixerOptionBuilder('functions', 'List of `function` names to fix.');
+        $functions = new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs');
         $functions = $functions
             ->setAllowedTypes(array('array'))
             ->setAllowedValues(array(new AllowedValueSubset($functionNames)))

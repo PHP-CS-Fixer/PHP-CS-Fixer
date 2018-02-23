@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
+use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
@@ -39,6 +40,16 @@ final class FixerConfigurationResolverTest extends TestCase
 
         new FixerConfigurationResolver(array(
             new FixerOption('foo', 'Bar-1.'),
+            new FixerOption('foo', 'Bar-2.'),
+        ));
+    }
+
+    public function testWithDuplicateAliasOptions()
+    {
+        $this->setExpectedException('LogicException', 'The "foo" option is defined multiple times.');
+
+        new FixerConfigurationResolver(array(
+            new AliasedFixerOption(new FixerOption('foo', 'Bar-1.'), 'baz'),
             new FixerOption('foo', 'Bar-2.'),
         ));
     }
@@ -170,5 +181,19 @@ final class FixerConfigurationResolverTest extends TestCase
         }
 
         $this->assertSame($exception, $caught);
+    }
+
+    public function testResolveWithAliasedDuplicateConfig()
+    {
+        $configuration = new FixerConfigurationResolver(array(
+            new AliasedFixerOption(new FixerOption('bar', 'Bar.'), 'baz'),
+        ));
+
+        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException', 'Aliased option bar/baz is passed multiple times');
+
+        $configuration->resolve(array(
+            'bar' => '1',
+            'baz' => '2',
+        ));
     }
 }

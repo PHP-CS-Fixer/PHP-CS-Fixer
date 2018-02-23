@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
@@ -201,6 +202,10 @@ final class DescribeCommand extends Command
                     );
                 } else {
                     $line .= '<comment>required</comment>';
+                }
+
+                if ($option instanceof AliasedFixerOption) {
+                    $line .= '; DEPRECATED alias: <comment>'.$option->getAlias().'</comment>';
                 }
 
                 $output->writeln($line);
