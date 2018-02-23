@@ -16,6 +16,8 @@ use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraint
  */
 final class XmlMatchesXsdConstraintTest extends TestCase
 {
