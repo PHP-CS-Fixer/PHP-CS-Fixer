@@ -38,11 +38,16 @@ final class FunctionReturnTypeAnalysis implements StartEndTokenAwareAnalysis
      */
     private $endIndex;
 
+    /**
+     * @param string $type
+     * @param int    $startIndex
+     * @param int    $endIndex
+     */
     public function __construct($type, $startIndex, $endIndex)
     {
-        $this->type = (string) $type;
-        $this->startIndex = (int) $startIndex;
-        $this->endIndex = (int) $endIndex;
+        $this->type = $type;
+        $this->startIndex = $startIndex;
+        $this->endIndex = $endIndex;
     }
 
     /**

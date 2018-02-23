@@ -55,10 +55,10 @@ final class NamespaceAnalysis implements StartEndTokenAwareAnalysis
      */
     public function __construct($fullName, $shortName, $startIndex, $endIndex)
     {
-        $this->fullName = (string) $fullName;
-        $this->shortName = (string) $shortName;
-        $this->startIndex = (int) $startIndex;
-        $this->endIndex = (int) $endIndex;
+        $this->fullName = $fullName;
+        $this->shortName = $shortName;
+        $this->startIndex = $startIndex;
+        $this->endIndex = $endIndex;
     }
 
     /**

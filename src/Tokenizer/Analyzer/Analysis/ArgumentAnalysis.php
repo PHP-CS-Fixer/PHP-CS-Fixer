@@ -67,12 +67,12 @@ final class ArgumentAnalysis
      */
     public function __construct($name, $nameIndex, $default, $type, $typeIndexStart, $typeIndexEnd)
     {
-        $this->name = (string) $name;
-        $this->nameIndex = (int) $nameIndex;
-        $this->default = $default ? (string) $default : null;
-        $this->type = $type ? (string) $type : null;
-        $this->typeIndexStart = $typeIndexStart ? (int) $typeIndexStart : null;
-        $this->typeIndexEnd = $typeIndexEnd ? (int) $typeIndexEnd : null;
+        $this->name = $name;
+        $this->nameIndex = $nameIndex;
+        $this->default = $default ?: null;
+        $this->type = $type ?: null;
+        $this->typeIndexStart = $typeIndexStart ?: null;
+        $this->typeIndexEnd = $typeIndexEnd ?: null;
     }
 
     /**

@@ -36,7 +36,7 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
      *
      * @var bool
      */
-    private $aliased;
+    private $isAliased;
 
     /**
      * The start index of the namespace declaration in the analyzed Tokens.
@@ -57,17 +57,17 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
      *
      * @param string $fullName
      * @param string $shortName
-     * @param bool   $aliased
+     * @param bool   $isAliased
      * @param int    $startIndex
      * @param int    $endIndex
      */
-    public function __construct($fullName, $shortName, $aliased, $startIndex, $endIndex)
+    public function __construct($fullName, $shortName, $isAliased, $startIndex, $endIndex)
     {
-        $this->fullName = (string) $fullName;
-        $this->shortName = (string) $shortName;
-        $this->aliased = (bool) $aliased;
-        $this->startIndex = (int) $startIndex;
-        $this->endIndex = (int) $endIndex;
+        $this->fullName = $fullName;
+        $this->shortName = $shortName;
+        $this->isAliased = $isAliased;
+        $this->startIndex = $startIndex;
+        $this->endIndex = $endIndex;
     }
 
     /**
@@ -91,7 +91,7 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
      */
     public function isAliased()
     {
-        return $this->aliased;
+        return $this->isAliased;
     }
 
     /**

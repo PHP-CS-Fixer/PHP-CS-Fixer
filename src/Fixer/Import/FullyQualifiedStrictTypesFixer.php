@@ -101,9 +101,7 @@ class SomeClass
             }
 
             // Return types are only available since PHP 7.0
-            if (PHP_VERSION_ID >= 70000) {
-                $this->fixFunctionReturnType($tokens, $index, $namespaces, $useMap);
-            }
+            $this->fixFunctionReturnType($tokens, $index, $namespaces, $useMap);
             $this->fixFunctionArguments($tokens, $index, $namespaces, $useMap);
         }
     }
@@ -137,13 +135,17 @@ class SomeClass
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param array  $namespaces
-     * @param array  $useMap
+     * @param Tokens                $tokens
+     * @param int                   $index
+     * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
+     * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
      */
     private function fixFunctionReturnType(Tokens $tokens, $index, array $namespaces, array $useMap)
     {
+        if (PHP_VERSION_ID < 70000) {
+            return;
+        }
+
         $returnType = (new FunctionsAnalyzer())->getFunctionReturnType($tokens, $index);
         if (!$returnType) {
             return;
@@ -162,9 +164,9 @@ class SomeClass
     }
 
     /**
-     * @param string $type
-     * @param array  $namespaces
-     * @param array  $useMap
+     * @param string                $type
+     * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
+     * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
      *
      * @return string
      */
