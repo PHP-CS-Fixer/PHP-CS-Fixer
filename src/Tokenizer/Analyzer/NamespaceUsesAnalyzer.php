@@ -58,8 +58,9 @@ final class NamespaceUsesAnalyzer
 
     /**
      * @param Tokens $tokens
-     * @param int $startIndex
-     * @param int $endIndex
+     * @param int    $startIndex
+     * @param int    $endIndex
+     *
      * @return null|NamespaceUseAnalysis
      */
     private function parseDeclaration(Tokens $tokens, int $startIndex, int $endIndex)
@@ -75,7 +76,7 @@ final class NamespaceUsesAnalyzer
                 return null;
             }
 
-            if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind(array(T_USE))) {
+            if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind([T_USE])) {
                 continue;
             }
 
