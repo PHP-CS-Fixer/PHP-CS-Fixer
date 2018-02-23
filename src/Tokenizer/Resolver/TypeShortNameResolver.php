@@ -27,9 +27,10 @@ final class TypeShortNameResolver
      * This method will resolve the shortName of a FQCN if possible or otherwise return the inserted type name.
      * E.g.: use Foo\Bar => "Bar".
      *
-     * @param string          $type
+     * @param string                $type
      * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
      * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
+     * @param mixed                 $typeName
      *
      * @return string
      */
