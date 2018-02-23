@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\FunctionReturnTypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 

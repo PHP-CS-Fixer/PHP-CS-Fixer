@@ -48,9 +48,9 @@ final class ArgumentAnalysis
     /**
      * ArgumentAnalysis constructor.
      *
-     * @param string      $name
-     * @param int         $nameIndex
-     * @param null|string $default
+     * @param string            $name
+     * @param int               $nameIndex
+     * @param null|string       $default
      * @param null|TypeAnalysis $type
      */
     public function __construct($name, $nameIndex, $default, TypeAnalysis $type = null)

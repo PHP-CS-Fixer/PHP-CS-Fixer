@@ -105,6 +105,7 @@ class SomeClass
 
     /**
      * @param Tokens $tokens
+     *
      * @return array<string, string> A list of all FQN namespaces in the file with the short name as key
      */
     private function getNamespacesFromTokens(Tokens $tokens)
@@ -116,6 +117,7 @@ class SomeClass
 
     /**
      * @param Tokens $tokens
+     *
      * @return array<string, string> A list of all FQN use statements in the file with the short name as key
      */
     private function getUseMapFromTokens(Tokens $tokens)
@@ -165,8 +167,8 @@ class SomeClass
     }
 
     /**
-     * @param Tokens $tokens
-     * @param TypeAnalysis $type
+     * @param Tokens                $tokens
+     * @param TypeAnalysis          $type
      * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key
      * @param array<string, string> $useMap     a list of all FQN use statements in the file with the short name as key
      */
@@ -175,8 +177,7 @@ class SomeClass
         TypeAnalysis $type,
         array $namespaces,
         array $useMap
-    )
-    {
+    ) {
         if ($type->isScalar()) {
             return;
         }
@@ -196,7 +197,7 @@ class SomeClass
 
     /**
      * The short type is the last part of the FQCN.
-     * E.g.: use Foo\Bar => "Bar"
+     * E.g.: use Foo\Bar => "Bar".
      *
      * @param string                $type
      * @param array<string, string> $namespaces a list of all FQN namespaces in the file with the short name as key

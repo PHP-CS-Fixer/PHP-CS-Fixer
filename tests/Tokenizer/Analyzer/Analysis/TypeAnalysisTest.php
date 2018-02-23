@@ -13,8 +13,8 @@
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -51,6 +51,9 @@ final class TypeAnalysisTest extends TestCase
 
     /**
      * @dataProvider provideScalarCases
+     *
+     * @param mixed $type
+     * @param mixed $expected
      */
     public function testScalar($type, $expected)
     {
