@@ -41,7 +41,7 @@ final class TokenizerLintingResultTest extends TestCase
         $result = new TokenizerLintingResult($error);
 
         $this->expectException(
-            'PhpCsFixer\Linter\LintingException'
+            \PhpCsFixer\Linter\LintingException::class
         );
         $this->expectExceptionMessageRegExp(
             sprintf('#^PHP Parse error: PHPUnit on line %d.#', $line)
