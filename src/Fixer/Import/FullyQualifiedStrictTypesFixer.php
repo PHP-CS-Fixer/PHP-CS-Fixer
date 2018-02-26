@@ -141,7 +141,7 @@ class SomeClass
         Tokens $tokens,
         TypeAnalysis $type
     ) {
-        if ($type->isScalar()) {
+        if ($type->isReservedType()) {
             return;
         }
 

@@ -50,25 +50,30 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @dataProvider provideScalarCases
+     * @dataProvider provideReservedCases
      *
      * @param mixed $type
      * @param mixed $expected
      */
-    public function testScalar($type, $expected)
+    public function testReserved($type, $expected)
     {
         $analysis = new TypeAnalysis($type, 1, 2);
-        $this->assertSame($expected, $analysis->isScalar());
+        $this->assertSame($expected, $analysis->isReservedType());
     }
 
-    public function provideScalarCases()
+    public function provideReservedCases()
     {
         return [
             ['array', true],
             ['bool', true],
+            ['callable', true],
             ['int', true],
             ['iteratable', true],
             ['float', true],
+            ['mixed', true],
+            ['numeric', true],
+            ['object', true],
+            ['resource', true],
             ['self', true],
             ['string', true],
             ['void', true],

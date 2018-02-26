@@ -17,13 +17,28 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  */
 final class TypeAnalysis implements StartEndTokenAwareAnalysis
 {
-    private static $scalarTypes = [
+    /**
+     * Thist list contains soft and hard reserved types that can be used or will be used by PHP at some point.
+     *
+     * More info:
+     *
+     * @link http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.types
+     * @link http://php.net/manual/en/reserved.other-reserved-words.php
+     * @link http://php.net/manual/en/language.pseudo-types.php
+     *
+     * @var array
+     */
+    private static $reservedTypes = [
         'array',
         'bool',
         'callable',
         'int',
         'iteratable',
         'float',
+        'mixed',
+        'numeric',
+        'object',
+        'resource',
         'self',
         'string',
         'void',
@@ -83,8 +98,8 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
     /**
      * @return bool
      */
-    public function isScalar()
+    public function isReservedType()
     {
-        return \in_array($this->name, self::$scalarTypes, true);
+        return \in_array($this->name, self::$reservedTypes, true);
     }
 }
