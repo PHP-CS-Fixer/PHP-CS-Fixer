@@ -93,7 +93,11 @@ function foo() {}',
                 $annotation->remove();
             }
 
-            $tokens[$index] = new Token(array(T_DOC_COMMENT, $doc->getContent()));
+            if ('' === $doc->getContent()) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            } else {
+                $tokens[$index] = new Token(array(T_DOC_COMMENT, $doc->getContent()));
+            }
         }
     }
 
