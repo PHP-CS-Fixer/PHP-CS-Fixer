@@ -62,7 +62,7 @@ include_once("sample4.php");
 
     private function clearIncludies(Tokens $tokens, array $includies)
     {
-        foreach (array_reverse($includies) as $includy) {
+        foreach ($includies as $includy) {
             if ($includy['end'] && !$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
                 $afterEndIndex = $tokens->getNextNonWhitespace($includy['end']);
                 if (null === $afterEndIndex || !$tokens[$afterEndIndex]->isComment()) {
@@ -80,19 +80,10 @@ include_once("sample4.php");
                     $this->removeWhitespaceAroundIfPossible($tokens, $braces['close']);
                     $tokens->clearTokenAndMergeSurroundingWhitespace($braces['open']);
                     $tokens->clearTokenAndMergeSurroundingWhitespace($braces['close']);
-
-                    $nextSiblingIndex = $tokens->getNonEmptySibling($includy['begin'], 1);
-                    if (!$tokens[$nextSiblingIndex]->isWhitespace()) {
-                        $tokens->insertAt($nextSiblingIndex, new Token(array(T_WHITESPACE, ' ')));
-                    }
                 }
             }
 
-            $nextIndex = $includy['begin'] + 1;
-
-            while ($tokens->isEmptyAt($nextIndex)) {
-                ++$nextIndex;
-            }
+            $nextIndex = $tokens->getNonEmptySibling($includy['begin'], 1);
 
             if ($tokens[$nextIndex]->isWhitespace()) {
                 $tokens[$nextIndex] = new Token(array(T_WHITESPACE, ' '));
@@ -132,9 +123,11 @@ include_once("sample4.php");
                     }
                 }
 
-                $includies[] = $includy;
+                $includies[$index] = $includy;
             }
         }
+
+        krsort($includies);
 
         return $includies;
     }
