@@ -62,7 +62,18 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function provideFixAllCases()
     {
-        return $this->createTestCases(array(
+        $edgeCases = array(
+            array(
+                '<?php
+
+/**
+ * @see \User getId()
+ */
+',
+            ),
+        );
+
+        return $edgeCases + $this->createTestCases(array(
             array('
 /**
  * @Foo
