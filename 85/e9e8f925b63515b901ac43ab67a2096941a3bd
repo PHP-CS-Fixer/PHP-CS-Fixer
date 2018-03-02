@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-23T06:54:02Z
+
+thanks for picking this up @kubawerlos :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-01T10:48:21Z
+
+The clearing/removing of the tokens happens in an unsave way, which causes issues.
+For example, when a spacing token contains a linebreak is removed (or replaced with spacing without a linebreak) the next line might get append to a comment.
+For example:
+```
+# a
+echo 1;
+```
+becomes
+```
+# a echo 1;
+```
+
+I've added a test to prove the issue; removing `#6`, `#5` and `#4` from there in any order show additional fail cases.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-22T21:57:16Z
+
+#3496 got merged, please rebase @kubawerlos
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-02-27T23:08:34Z
+
+@keradus rebased
