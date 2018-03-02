@@ -172,6 +172,17 @@ function hello($name)
                 null,
                 ['annotations' => ['author', 'test', 'return', 'deprecated']],
             ],
+            [
+                '<?php
+
+while ($something = myFunction($foo)) {}
+',
+                '<?php
+/** @noinspection PhpAssignmentInConditionInspection */
+while ($something = myFunction($foo)) {}
+',
+                ['annotations' => ['noinspection']],
+            ],
         ];
     }
 }
