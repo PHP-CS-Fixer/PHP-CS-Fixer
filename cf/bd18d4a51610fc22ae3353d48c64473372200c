@@ -1,0 +1,62 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-21T10:16:14Z
+
+Occured with a DocComment at the end of a file?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-21T10:18:47Z
+
+In production? No, at start of a regular class file.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-21T10:19:51Z
+
+But with multiple DocComment, and the error isin the first one. Between the two DocComments there are 2 new lines.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-21T10:37:11Z
+
+> Then I'm not sure the new test case actually covers the error you got.
+
+It covers the first `AbstractDoctrineAnnotationFixer` change I made, because I follow TDD.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-28T10:51:53Z
+
+@Slamdunk I think the changes here still don't cover the initial error you had. Did you try putting the whole PHP file that triggered it as a test case?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-28T11:02:17Z
+
+https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/347214072#L802
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-28T11:23:36Z
+
+What I meant is that the test case you added represents a PHP file that contains a DocComment only, which, indeed, fails and is fixed by your patch. But you said the file that actually triggered the error when you used the tool contains two DocComments followed by a class definition. Unless I'm missing something, `$tokens->getNextMeaningfulToken()` should not return `null` when processing such file.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-28T11:25:43Z
+
+Likely I was wrong on the original file: I only know that I tested this patch in that repository and worked.
+Sorry if I get you to spend time on my erroneous words :cry:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-01T16:33:51Z
+
+@keradus Higher branches have an additional Doctrine Annotation fixer. Do you mind adding the test case in the related test class while merging? Or do you prefer this to be done in a dedicated PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-02T18:19:19Z
+
+@julienfalque , please do me a favor and open dedicated PR for it, then we will know I didnt fucked up when applying changes locally - as there is no CI for my local changes (well, there is, when it's already merged and it's too late;P)
