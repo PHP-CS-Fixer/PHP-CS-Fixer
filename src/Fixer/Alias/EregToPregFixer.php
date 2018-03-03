@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\PregWrapper;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -140,7 +141,13 @@ final class EregToPregFixer extends AbstractFixer
      */
     private function checkPreg($pattern)
     {
-        return false !== @preg_match($pattern, '');
+        try {
+            PregWrapper::match($pattern, '');
+
+            return true;
+        } catch (\RuntimeException $e) {
+            return false;
+        }
     }
 
     /**

@@ -21,6 +21,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\PregWrapper;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -299,7 +300,7 @@ use function CCC\AA;
      */
     private function prepareNamespace($namespace)
     {
-        return trim(preg_replace('%/\*(.*)\*/%s', '', $namespace));
+        return trim(PregWrapper::replace('%/\*(.*)\*/%s', '', $namespace));
     }
 
     private function getNewOrder(array $uses, Tokens $tokens)
