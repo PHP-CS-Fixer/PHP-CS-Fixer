@@ -39,18 +39,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      */
     public function provideFixWithBracesCases()
     {
-        $edgeCases = array(
-            array(
-                '<?php
-
-/**
- * @see \User getId()
- */
-',
-            ),
-        );
-
-        return $edgeCases + $this->createTestCases(array(
+        $cases = $this->createTestCases(array(
             array('
 /**
  * @Foo()
@@ -273,6 +262,17 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @todo: foo
  */'),
         ));
+
+        $cases[] = array(
+            '<?php
+
+/**
+* @see \User getId()
+*/
+',
+        );
+
+        return $cases;
     }
 
     /**
@@ -294,18 +294,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      */
     public function provideFixWithoutBracesCases()
     {
-        $edgeCases = array(
-            array(
-                '<?php
-
-/**
- * @see \User getId()
- */
-',
-            ),
-        );
-
-        return $edgeCases + $this->createTestCases(array(
+        $cases = $this->createTestCases(array(
             array('
 /**
  * Foo.
@@ -545,6 +534,17 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @todo: foo()
  */'),
         ));
+
+        $cases[] = array(
+            '<?php
+
+/**
+* @see \User getId()
+*/
+',
+        );
+
+        return $cases;
     }
 
     /**
