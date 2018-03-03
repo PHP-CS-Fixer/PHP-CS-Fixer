@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -77,20 +78,20 @@ function foo ($bar) {}
                 $content = $annotation->getContent();
 
                 if (
-                    1 !== preg_match('/[.。]$/u', $content)
-                    || 0 !== preg_match('/[.。](?!$)/u', $content, $matches)
+                    1 !== Preg::match('/[.。]$/u', $content)
+                    || 0 !== Preg::match('/[.。](?!$)/u', $content, $matches)
                 ) {
                     continue;
                 }
 
                 $endLine = $doc->getLine($annotation->getEnd());
-                $endLine->setContent(preg_replace('/(?<![.。])[.。](\s+)$/u', '\1', $endLine->getContent()));
+                $endLine->setContent(Preg::replace('/(?<![.。])[.。](\s+)$/u', '\1', $endLine->getContent()));
 
                 $startLine = $doc->getLine($annotation->getStart());
                 $optionalTypeRegEx = $annotation->supportTypes()
                     ? sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
                     : '';
-                $content = preg_replace_callback(
+                $content = Preg::replaceCallback(
                     '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
                     function (array $matches) {
                         return $matches[1].strtolower($matches[2]).$matches[3];

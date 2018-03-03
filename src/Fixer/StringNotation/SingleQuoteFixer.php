@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\StringNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -58,7 +59,7 @@ final class SingleQuoteFixer extends AbstractFixer
                 '"' === $content[0] &&
                 false === strpos($content, "'") &&
                 // regex: odd number of backslashes, not followed by double quote or dollar
-                !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
+                !Preg::match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
             ) {
                 $content = substr($content, 1, -1);
                 $content = str_replace(array('\\"', '\\$'), array('"', '$'), $content);

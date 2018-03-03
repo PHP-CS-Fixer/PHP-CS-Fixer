@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Options;
@@ -304,8 +305,8 @@ echo 1;
         $prev = $tokens->getPrevNonWhitespace($headerIndex);
 
         $regex = '/[\t ]$/';
-        if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && preg_match($regex, $tokens[$prev]->getContent())) {
-            $tokens[$prev] = new Token(array(T_OPEN_TAG, preg_replace($regex, $lineEnding, $tokens[$prev]->getContent())));
+        if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && Preg::match($regex, $tokens[$prev]->getContent())) {
+            $tokens[$prev] = new Token(array(T_OPEN_TAG, Preg::replace($regex, $lineEnding, $tokens[$prev]->getContent())));
         }
 
         $lineBreakCount = $this->getLineBreakCount($tokens, $prev, $headerIndex);
