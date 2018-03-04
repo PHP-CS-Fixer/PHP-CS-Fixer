@@ -43,7 +43,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideTestFixLegacyCases
      * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
+     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0. Use option "target" instead.
      */
     public function testFixLegacy($expected, $input = null)
     {
@@ -320,7 +320,7 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
+     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0. Use option "target" instead.
      */
     public function testConfig()
     {
@@ -340,8 +340,8 @@ $a#
     public function testInvalidConfig()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "functions" .*\.$/');
+        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "target" .*\.$/');
 
-        $this->fixer->configure(['functions' => ['_unknown_']]);
+        $this->fixer->configure(['target' => '_unknown_']);
     }
 }

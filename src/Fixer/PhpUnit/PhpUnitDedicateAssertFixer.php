@@ -67,7 +67,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         parent::configure($configuration);
 
         if (isset($this->configuration['functions'])) {
-            @trigger_error('Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.', E_USER_DEPRECATED);
             $this->functions = $this->configuration['functions'];
 
             return;
@@ -234,13 +233,14 @@ $this->assertTrue(is_readable($a));
         sort($values);
 
         return new FixerConfigurationResolverRootless('functions', [
-            (new FixerOptionBuilder('functions', '(deprecated, use `target` instead) List of assertions to fix (overrides `target`).'))
+            (new FixerOptionBuilder('functions', 'List of assertions to fix (overrides `target`).'))
                 ->setAllowedTypes(['null', 'array'])
                 ->setAllowedValues([
                     null,
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
                 ])
                 ->setDefault(null)
+                ->setDeprecationMessage('Use option `target` instead.')
                 ->getOption(),
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
                 ->setAllowedTypes(['string'])
