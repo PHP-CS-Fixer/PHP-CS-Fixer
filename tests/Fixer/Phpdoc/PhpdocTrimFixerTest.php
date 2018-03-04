@@ -59,6 +59,17 @@ function deactivateCompleted()
     return 0;
 }',
             ),
+            array(
+                mb_convert_encoding('
+<?php
+
+/**
+ * Test à
+ */
+function foo(){}
+
+', 'Windows-1252', 'UTF-8'),
+            ),
         );
     }
 
