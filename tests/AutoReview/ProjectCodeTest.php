@@ -260,6 +260,10 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThereIsNoPregFunctionUsedDirectly($className)
     {
+        if (extension_loaded('xdebug') && false === getenv('CI')) {
+            $this->markTestSkipped('Data provider too slow when Xdebug is loaded.');
+        }
+
         $rc = new \ReflectionClass($className);
         $tokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
         $stringTokens = array_filter(
@@ -396,10 +400,6 @@ final class ProjectCodeTest extends TestCase
 
     public function provideClassesWherePregFunctionsAreForbiddenCases()
     {
-        if (extension_loaded('xdebug') && false === getenv('CI')) {
-            $this->markTestSkipped('Data provider too slow when Xdebug is loaded.');
-        }
-
         return array_map(
             function ($item) {
                 return array($item);

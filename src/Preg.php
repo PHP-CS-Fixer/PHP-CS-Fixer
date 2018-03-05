@@ -13,7 +13,8 @@
 namespace PhpCsFixer;
 
 /**
- * This class replaces preg_* functions to better handle UTF8 strings.
+ * This class replaces preg_* functions to better handling UTF8 strings,
+ * ensuring no matter "u" modifier is present or absent subject will be handled correctly.
  *
  * @author Kuba Werłos <werlos@gmail.com>
  *

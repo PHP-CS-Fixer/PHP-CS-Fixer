@@ -19,6 +19,6 @@ namespace PhpCsFixer;
  *
  * @internal
  */
-class PregException extends \RuntimeException
+final class PregException extends \RuntimeException
 {
 }
