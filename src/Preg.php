@@ -26,7 +26,7 @@ final class Preg
      * @param int           $flags
      * @param int           $offset
      *
-     * @throws \RuntimeException
+     * @throws PregException
      *
      * @return int
      */
@@ -42,7 +42,7 @@ final class Preg
             return $result;
         }
 
-        throw new \RuntimeException('Error occurred when calling preg_match.', preg_last_error());
+        throw new PregException('Error occurred when calling preg_match.', preg_last_error());
     }
 
     /**
@@ -52,7 +52,7 @@ final class Preg
      * @param int           $flags
      * @param int           $offset
      *
-     * @throws \RuntimeException
+     * @throws PregException
      *
      * @return int
      */
@@ -68,7 +68,7 @@ final class Preg
             return $result;
         }
 
-        throw new \RuntimeException('Error occurred when calling preg_match_all.', preg_last_error());
+        throw new PregException('Error occurred when calling preg_match_all.', preg_last_error());
     }
 
     /**
@@ -78,7 +78,7 @@ final class Preg
      * @param int             $limit
      * @param null|int        &$count
      *
-     * @throws \RuntimeException
+     * @throws PregException
      *
      * @return string|string[]
      */
@@ -94,7 +94,7 @@ final class Preg
             return $result;
         }
 
-        throw new \RuntimeException('Error occurred when calling preg_replace.', preg_last_error());
+        throw new PregException('Error occurred when calling preg_replace.', preg_last_error());
     }
 
     /**
@@ -104,7 +104,7 @@ final class Preg
      * @param int             $limit
      * @param null|int        &$count
      *
-     * @throws \RuntimeException
+     * @throws PregException
      *
      * @return string|string[]
      */
@@ -120,7 +120,7 @@ final class Preg
             return $result;
         }
 
-        throw new \RuntimeException('Error occurred when calling preg_replace_callback.', preg_last_error());
+        throw new PregException('Error occurred when calling preg_replace_callback.', preg_last_error());
     }
 
     /**

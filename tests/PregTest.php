@@ -26,7 +26,7 @@ final class PregTest extends TestCase
     public function testMatchFailing()
     {
         $this->setExpectedException(
-            'RuntimeException',
+            'PhpCsFixer\\PregException',
             'Error occurred when calling preg_match.'
         );
 
@@ -51,7 +51,7 @@ final class PregTest extends TestCase
     public function testMatchAllFailing()
     {
         $this->setExpectedException(
-            'RuntimeException',
+            'PhpCsFixer\\PregException',
             'Error occurred when calling preg_match_all.'
         );
 
@@ -76,7 +76,7 @@ final class PregTest extends TestCase
     public function testReplaceFailing()
     {
         $this->setExpectedException(
-            'RuntimeException',
+            'PhpCsFixer\\PregException',
             'Error occurred when calling preg_replace.'
         );
 
@@ -101,7 +101,7 @@ final class PregTest extends TestCase
     public function testReplaceCallbackFailing()
     {
         $this->setExpectedException(
-            'RuntimeException',
+            'PhpCsFixer\\PregException',
             'Error occurred when calling preg_replace_callback.'
         );
 
