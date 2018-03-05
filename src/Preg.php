@@ -20,11 +20,11 @@ namespace PhpCsFixer;
 final class Preg
 {
     /**
-     * @param string   $pattern
-     * @param string   $subject
-     * @param string[] &$matches
-     * @param int      $flags
-     * @param int      $offset
+     * @param string        $pattern
+     * @param string        $subject
+     * @param null|string[] &$matches
+     * @param int           $flags
+     * @param int           $offset
      *
      * @throws \RuntimeException
      *
@@ -46,11 +46,11 @@ final class Preg
     }
 
     /**
-     * @param string   $pattern
-     * @param string   $subject
-     * @param string[] &$matches
-     * @param int      $flags
-     * @param int      $offset
+     * @param string        $pattern
+     * @param string        $subject
+     * @param null|string[] &$matches
+     * @param int           $flags
+     * @param int           $offset
      *
      * @throws \RuntimeException
      *
@@ -76,7 +76,7 @@ final class Preg
      * @param string|string[] $replacement
      * @param string|string[] $subject
      * @param int             $limit
-     * @param int             $count
+     * @param null|int        &$count
      *
      * @throws \RuntimeException
      *
@@ -102,7 +102,7 @@ final class Preg
      * @param callable        $callback
      * @param string|string[] $subject
      * @param int             $limit
-     * @param int             $count
+     * @param null|int        &$count
      *
      * @throws \RuntimeException
      *
