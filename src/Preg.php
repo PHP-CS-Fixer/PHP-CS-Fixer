@@ -40,7 +40,7 @@ final class Preg
             return $result;
         }
 
-        $result = preg_match(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
+        $result = @preg_match(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
         if (false !== $result) {
             return $result;
         }
@@ -66,7 +66,7 @@ final class Preg
             return $result;
         }
 
-        $result = preg_match_all(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
+        $result = @preg_match_all(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
         if (false !== $result) {
             return $result;
         }
@@ -92,7 +92,7 @@ final class Preg
             return $result;
         }
 
-        $result = preg_replace(self::removeUtf8Modifier($pattern), $replacement, $subject, $limit, $count);
+        $result = @preg_replace(self::removeUtf8Modifier($pattern), $replacement, $subject, $limit, $count);
         if (null !== $result) {
             return $result;
         }
@@ -118,7 +118,7 @@ final class Preg
             return $result;
         }
 
-        $result = preg_replace_callback(self::removeUtf8Modifier($pattern), $callback, $subject, $limit, $count);
+        $result = @preg_replace_callback(self::removeUtf8Modifier($pattern), $callback, $subject, $limit, $count);
         if (null !== $result) {
             return $result;
         }
@@ -132,6 +132,8 @@ final class Preg
      * @param int    $limit
      * @param int    $flags
      *
+     * @throws PregException
+     *
      * @return string[]
      */
     public static function split($pattern, $subject, $limit = -1, $flags = 0)
@@ -141,7 +143,12 @@ final class Preg
             return $result;
         }
 
-        return preg_split(self::removeUtf8Modifier($pattern), $subject, $limit, $flags);
+        $result = @preg_split(self::removeUtf8Modifier($pattern), $subject, $limit, $flags);
+        if (false !== $result) {
+            return $result;
+        }
+
+        throw new PregException('Error occurred when calling preg_split.', preg_last_error());
     }
 
     /**

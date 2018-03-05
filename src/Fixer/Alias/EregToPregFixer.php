@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
+use PhpCsFixer\PregException;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -145,7 +146,7 @@ final class EregToPregFixer extends AbstractFixer
             Preg::match($pattern, '');
 
             return true;
-        } catch (\RuntimeException $e) {
+        } catch (PregException $e) {
             return false;
         }
     }

@@ -30,7 +30,7 @@ final class PregTest extends TestCase
             'Error occurred when calling preg_match.'
         );
 
-        Preg::match('/(?:\D+|<\d+>)*[!?]/', 'foobar foobar foobar', $matches);
+        Preg::match('', 'foo', $matches);
     }
 
     /**
@@ -55,7 +55,7 @@ final class PregTest extends TestCase
             'Error occurred when calling preg_match_all.'
         );
 
-        Preg::matchAll('/(?:\D+|<\d+>)*[!?]/', 'foobar foobar foobar', $matches);
+        Preg::matchAll('', 'foo', $matches);
     }
 
     /**
@@ -80,7 +80,7 @@ final class PregTest extends TestCase
             'Error occurred when calling preg_replace.'
         );
 
-        Preg::replace('/(?:\D+|<\d+>)*[!?]/', 'foo', 'foobar foobar foobar');
+        Preg::replace('', 'foo', 'bar');
     }
 
     /**
@@ -105,7 +105,7 @@ final class PregTest extends TestCase
             'Error occurred when calling preg_replace_callback.'
         );
 
-        Preg::replaceCallback('/(?:\D+|<\d+>)*[!?]/', 'sort', 'foobar foobar foobar');
+        Preg::replaceCallback('', 'sort', 'foo');
     }
 
     /**
@@ -144,20 +144,27 @@ final class PregTest extends TestCase
         );
     }
 
-    public function testSplitUtf8Pattern()
+    public function testSplitFailing()
     {
-        $expectedResult = preg_split('/à/u', 'àbc');
-        $actual = Preg::split('/à/u', 'àbc');
+        $this->setExpectedException(
+            'PhpCsFixer\\PregException',
+            'Error occurred when calling preg_split.'
+        );
 
-        $this->assertSame($expectedResult, $actual);
+        Preg::split('', 'foo');
     }
 
-    public function testSplitNonUtf8Pattern()
+    /**
+     * @param string $pattern
+     *
+     * @dataProvider provideCommonCases
+     */
+    public function testSplit($pattern)
     {
-        $expectedResult = preg_split('/'.chr(224).'|í/', 'àbc');
-        $actual = Preg::split('/'.chr(224).'|í/', 'àbc');
+        $expectedResult = preg_split($pattern, 'foo');
+        $actualResult = Preg::split($pattern, 'foo');
 
-        $this->assertSame($expectedResult, $actual);
+        $this->assertSame($expectedResult, $actualResult);
     }
 
     public function testCorrectnessForUtf8String()
