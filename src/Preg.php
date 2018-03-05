@@ -176,7 +176,11 @@ final class Preg
             return array_map(__METHOD__, $pattern);
         }
 
-        $delimiter = $pattern[0];
+        if ('' === $pattern) {
+            return '';
+        }
+
+        $delimiter = substr($pattern, 0, 1);
 
         $endDelimiterPosition = strrpos($pattern, $delimiter);
 
