@@ -13,6 +13,8 @@
 namespace PhpCsFixer;
 
 /**
+ * This class replaces preg_* functions to better handle UTF8 strings.
+ *
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @internal

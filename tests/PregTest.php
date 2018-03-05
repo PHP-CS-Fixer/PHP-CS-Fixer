@@ -159,4 +159,22 @@ final class PregTest extends TestCase
 
         $this->assertSame($expectedResult, $actual);
     }
+
+    public function testCorrectnessForUtf8String()
+    {
+        Preg::match('/./', 'àbc', $methodMatches);
+        preg_match('/./', 'àbc', $functionMatches);
+
+        $this->assertSame(array('à'), $methodMatches);
+        $this->assertNotSame(array('à'), $functionMatches);
+    }
+
+    public function testCorrectnessForNonUtf8String()
+    {
+        Preg::match('/./u', chr(224).'bc', $methodMatches);
+        preg_match('/./u', chr(224).'bc', $functionMatches);
+
+        $this->assertSame(array(chr(224)), $methodMatches);
+        $this->assertNotSame(array(chr(224)), $functionMatches);
+    }
 }
