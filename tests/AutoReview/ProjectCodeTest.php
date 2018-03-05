@@ -275,7 +275,7 @@ final class ProjectCodeTest extends TestCase
             $stringTokens
         );
         $strings = array_unique($strings);
-        $message = sprintf('Tested file: %s', $rc->getFileName());
+        $message = sprintf('Class %s must not use preg_*, it shall use Preg::* instead.', $className);
         $this->assertNotContains('preg_filter', $strings, $message);
         $this->assertNotContains('preg_grep', $strings, $message);
         $this->assertNotContains('preg_match', $strings, $message);
