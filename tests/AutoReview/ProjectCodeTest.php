@@ -407,7 +407,7 @@ final class ProjectCodeTest extends TestCase
             array_filter(
                 $this->getSrcClasses(),
                 function ($className) {
-                    return 'PhpCsFixer\\PregWrapper' !== $className;
+                    return 'PhpCsFixer\\Preg' !== $className;
                 }
             )
         );

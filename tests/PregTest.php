@@ -12,16 +12,16 @@
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\PregWrapper;
+use PhpCsFixer\Preg;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  *
- * @covers \PhpCsFixer\PregWrapper
+ * @covers \PhpCsFixer\Preg
  *
  * @internal
  */
-final class PregWrapperTest extends TestCase
+final class PregTest extends TestCase
 {
     public function testMatchFailing()
     {
@@ -30,7 +30,7 @@ final class PregWrapperTest extends TestCase
             'Error occurred when calling preg_match.'
         );
 
-        PregWrapper::match('/(?:\D+|<\d+>)*[!?]/', 'foobar foobar foobar', $matches);
+        Preg::match('/(?:\D+|<\d+>)*[!?]/', 'foobar foobar foobar', $matches);
     }
 
     /**
@@ -42,7 +42,7 @@ final class PregWrapperTest extends TestCase
     public function testMatch($pattern, $subject)
     {
         $expectedResult = preg_match($pattern, $subject, $expectedMatches);
-        $actualResult = PregWrapper::match($pattern, $subject, $actualMatches);
+        $actualResult = Preg::match($pattern, $subject, $actualMatches);
 
         $this->assertSame($expectedResult, $actualResult);
         $this->assertSame($expectedMatches, $actualMatches);
@@ -55,7 +55,7 @@ final class PregWrapperTest extends TestCase
             'Error occurred when calling preg_match_all.'
         );
 
-        PregWrapper::matchAll('/(?:\D+|<\d+>)*[!?]/', 'foobar foobar foobar', $matches);
+        Preg::matchAll('/(?:\D+|<\d+>)*[!?]/', 'foobar foobar foobar', $matches);
     }
 
     /**
@@ -67,7 +67,7 @@ final class PregWrapperTest extends TestCase
     public function testMatchAll($pattern, $subject)
     {
         $expectedResult = preg_match_all($pattern, $subject, $expectedMatches);
-        $actualResult = PregWrapper::matchAll($pattern, $subject, $actualMatches);
+        $actualResult = Preg::matchAll($pattern, $subject, $actualMatches);
 
         $this->assertSame($expectedResult, $actualResult);
         $this->assertSame($expectedMatches, $actualMatches);
@@ -80,7 +80,7 @@ final class PregWrapperTest extends TestCase
             'Error occurred when calling preg_replace.'
         );
 
-        PregWrapper::replace('/(?:\D+|<\d+>)*[!?]/', 'foo', 'foobar foobar foobar');
+        Preg::replace('/(?:\D+|<\d+>)*[!?]/', 'foo', 'foobar foobar foobar');
     }
 
     /**
@@ -93,7 +93,7 @@ final class PregWrapperTest extends TestCase
     public function testReplace($pattern, $subject)
     {
         $expectedResult = preg_replace($pattern, 'foo', $subject);
-        $actualResult = PregWrapper::replace($pattern, 'foo', $subject);
+        $actualResult = Preg::replace($pattern, 'foo', $subject);
 
         $this->assertSame($expectedResult, $actualResult);
     }
@@ -105,7 +105,7 @@ final class PregWrapperTest extends TestCase
             'Error occurred when calling preg_replace_callback.'
         );
 
-        PregWrapper::replaceCallback('/(?:\D+|<\d+>)*[!?]/', 'sort', 'foobar foobar foobar');
+        Preg::replaceCallback('/(?:\D+|<\d+>)*[!?]/', 'sort', 'foobar foobar foobar');
     }
 
     /**
@@ -120,7 +120,7 @@ final class PregWrapperTest extends TestCase
         $callback = function (array $x) { return implode('-', $x); };
 
         $expectedResult = preg_replace_callback($pattern, $callback, $subject);
-        $actualResult = PregWrapper::replaceCallback($pattern, $callback, $subject);
+        $actualResult = Preg::replaceCallback($pattern, $callback, $subject);
 
         $this->assertSame($expectedResult, $actualResult);
     }
@@ -147,7 +147,7 @@ final class PregWrapperTest extends TestCase
     public function testSplitUtf8Pattern()
     {
         $expectedResult = preg_split('/à/u', 'àbc');
-        $actual = PregWrapper::split('/à/u', 'àbc');
+        $actual = Preg::split('/à/u', 'àbc');
 
         $this->assertSame($expectedResult, $actual);
     }
@@ -155,7 +155,7 @@ final class PregWrapperTest extends TestCase
     public function testSplitNonUtf8Pattern()
     {
         $expectedResult = preg_split('/'.chr(224).'|í/', 'àbc');
-        $actual = PregWrapper::split('/'.chr(224).'|í/', 'àbc');
+        $actual = Preg::split('/'.chr(224).'|í/', 'àbc');
 
         $this->assertSame($expectedResult, $actual);
     }

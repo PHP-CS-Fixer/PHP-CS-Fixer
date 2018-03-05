@@ -17,7 +17,7 @@ namespace PhpCsFixer;
  *
  * @internal
  */
-final class PregWrapper
+final class Preg
 {
     /**
      * @param string   $pattern

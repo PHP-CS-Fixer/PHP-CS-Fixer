@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\PregWrapper;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -140,7 +140,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     private function fixToken(Tokens $tokens, $tokenIndex)
     {
         $count = 0;
-        $content = PregWrapper::replaceCallback(
+        $content = Preg::replaceCallback(
             '#(\h*(?:@{*|{*\h*@)\h*inheritdoc\h*)([^}]*)((?:}*)\h*)#i',
             function ($matches) {
                 return ' '.$matches[2];

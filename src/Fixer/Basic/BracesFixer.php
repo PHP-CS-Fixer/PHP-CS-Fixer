@@ -19,7 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\PregWrapper;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -383,7 +383,7 @@ class Foo
 
                         if ($nextLineCanBeIndented || $i === $startBraceIndex) {
                             $nextToken = $tokens[$nestIndex + 1];
-                            $nextLineCanBeIndented = $nextToken->isWhitespace() && 1 === PregWrapper::match('/\R/', $nextToken->getContent());
+                            $nextLineCanBeIndented = $nextToken->isWhitespace() && 1 === Preg::match('/\R/', $nextToken->getContent());
                         }
                     }
 
@@ -398,7 +398,7 @@ class Foo
                         // next Token is not a comment on its own line
                         !($nextNonWhitespaceNestToken->isComment() && (
                             !$tokens[$nextNonWhitespaceNestIndex - 1]->isWhitespace()
-                            || !PregWrapper::match('/\R/', $tokens[$nextNonWhitespaceNestIndex - 1]->getContent())
+                            || !Preg::match('/\R/', $tokens[$nextNonWhitespaceNestIndex - 1]->getContent())
                         )) &&
                         // and it is not a `$foo = function () {};` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny(array(';', ',', ']', array(CT::T_ARRAY_SQUARE_BRACE_CLOSE)))) &&
@@ -429,7 +429,7 @@ class Foo
                                 $nextWhitespace = rtrim($nextToken->getContent(), " \t");
 
                                 if ('' !== $nextWhitespace) {
-                                    $nextWhitespace = PregWrapper::replace(
+                                    $nextWhitespace = Preg::replace(
                                         sprintf('/%s$/', $this->whitespacesConfig->getLineEnding()),
                                         '',
                                         $nextWhitespace,
@@ -891,15 +891,15 @@ class Foo
             // do not indent inline comments used to comment out unused code
             if (
                 (0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextToken->getContent())
-                && $previousToken->isWhitespace() && 1 === PregWrapper::match('/\R$/', $previousToken->getContent())
+                && $previousToken->isWhitespace() && 1 === Preg::match('/\R$/', $previousToken->getContent())
             ) {
                 return;
             }
             $tokens[$nextTokenIndex] = new Token(array(
                 $nextToken->getId(),
-                PregWrapper::replace(
+                Preg::replace(
                     '/(\R)'.$this->detectIndent($tokens, $nextTokenIndex).'/',
-                    '$1'.PregWrapper::replace('/^.*\R([ \t]*)$/s', '$1', $whitespace),
+                    '$1'.Preg::replace('/^.*\R([ \t]*)$/s', '$1', $whitespace),
                     $nextToken->getContent()
                 ),
             ));
@@ -1006,8 +1006,8 @@ class Foo
 
         $newLines = 0;
         for ($i = min($siblingIndex, $index) + 1, $max = max($siblingIndex, $index); $i < $max; ++$i) {
-            if ($tokens[$i]->isWhitespace() && PregWrapper::match('/\R/', $tokens[$i]->getContent())) {
-                if (1 === $newLines || PregWrapper::match('/\R.*\R/', $tokens[$i]->getContent())) {
+            if ($tokens[$i]->isWhitespace() && Preg::match('/\R/', $tokens[$i]->getContent())) {
+                if (1 === $newLines || Preg::match('/\R.*\R/', $tokens[$i]->getContent())) {
                     return null;
                 }
 

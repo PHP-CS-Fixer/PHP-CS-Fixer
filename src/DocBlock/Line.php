@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\DocBlock;
 
-use PhpCsFixer\PregWrapper;
+use PhpCsFixer\Preg;
 
 /**
  * This represents a line of a docblock.
@@ -67,7 +67,7 @@ class Line
      */
     public function containsUsefulContent()
     {
-        return 0 !== PregWrapper::match('/\\*\s*\S+/', $this->content) && !$this->isTheStart() && !$this->isTheEnd();
+        return 0 !== Preg::match('/\\*\s*\S+/', $this->content) && !$this->isTheStart() && !$this->isTheEnd();
     }
 
     /**
@@ -79,7 +79,7 @@ class Line
      */
     public function containsATag()
     {
-        return 0 !== PregWrapper::match('/\\*\s*@/', $this->content);
+        return 0 !== Preg::match('/\\*\s*@/', $this->content);
     }
 
     /**
@@ -133,7 +133,7 @@ class Line
      */
     public function addBlank()
     {
-        $matched = PregWrapper::match('/^([ \t]*\*)[^\r\n]*(\r?\n)$/', $this->content, $matches);
+        $matched = Preg::match('/^([ \t]*\*)[^\r\n]*(\r?\n)$/', $this->content, $matches);
 
         if (1 !== $matched) {
             return;

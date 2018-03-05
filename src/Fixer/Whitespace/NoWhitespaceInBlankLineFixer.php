@@ -16,7 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\PregWrapper;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -73,7 +73,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     private function fixWhitespaceToken(Tokens $tokens, $index)
     {
         $content = $tokens[$index]->getContent();
-        $lines = PregWrapper::split("/(\r\n|\n)/", $content);
+        $lines = Preg::split("/(\r\n|\n)/", $content);
         $lineCount = count($lines);
 
         if (
@@ -90,7 +90,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
             }
 
             for ($l = $lStart; $l < $lMax; ++$l) {
-                $lines[$l] = PregWrapper::replace('/^\h+$/', '', $lines[$l]);
+                $lines[$l] = Preg::replace('/^\h+$/', '', $lines[$l]);
             }
             $content = implode($this->whitespacesConfig->getLineEnding(), $lines);
             if ('' !== $content) {

@@ -28,9 +28,9 @@ final class FixerNameValidator
     public function isValid($name, $isCustom)
     {
         if (!$isCustom) {
-            return 1 === PregWrapper::match('/^[a-z][a-z0-9_]*$/', $name);
+            return 1 === Preg::match('/^[a-z][a-z0-9_]*$/', $name);
         }
 
-        return 1 === PregWrapper::match('/^[A-Z][a-zA-Z0-9]*\/[a-z][a-z0-9_]*$/', $name);
+        return 1 === Preg::match('/^[A-Z][a-zA-Z0-9]*\/[a-z][a-z0-9_]*$/', $name);
     }
 }
