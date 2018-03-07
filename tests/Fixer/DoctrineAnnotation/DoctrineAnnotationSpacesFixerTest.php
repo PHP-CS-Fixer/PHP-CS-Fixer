@@ -107,18 +107,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      */
     public function provideFixAllCases()
     {
-        $edgeCases = [
-            [
-                '<?php
-
-/**
- * @see \User getId()
- */
-',
-            ],
-        ];
-
-        return $edgeCases + $this->createTestCases([
+        $cases = $this->createTestCases([
             ['
 /**
  * @Foo
@@ -376,6 +365,17 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
  */'],
         ]);
+
+        $cases[] = [
+            '<?php
+
+/**
+ * @see \User getId()
+ */
+',
+        ];
+
+        return $cases;
     }
 
     /**
