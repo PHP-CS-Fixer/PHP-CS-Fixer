@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-18T17:01:37Z
+
+@FriendsOfPHP/php-cs-fixer
+I am :+1: for putting this into 2.2, not master. It will fix dozen of encoding issues, and as a side effect ease LTS branch merging. Do you agree guys ?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-01-19T19:29:02Z
+
+So, first implementation done.
+
+Few things worth notice:
+- `preg_quote` is not included as it is not using patterns
+- `preg_split` is implemented differently as I was unable to find a case where it return `false` for both UTF-8 and non-UTF-8 calls
+- `@` are added and each usage is covered by test case
+- 2 classes that have `PregWrapper` already used are only ones requiring changes in code - all other changes are simple replacements of `preg_` functions with wrapper - not included yet, to make code review easier
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-02-27T23:40:17Z
+
+@julienfalque @keradus PR updated, unfortunately fabbot.io cannot be satisfied in this case - what do you think about it? I'm not sure if we want to wrap preg_ functions in tests directory - do we?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-28T08:32:45Z
+
+You can ignore fabbot.io's report, the applied rule does not exist on branch 2.2 but it exists and is applied on branch 2.10.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-03-03T21:33:18Z
+
+@julienfalque I know we have to ignore fabbot.io report in this case - I mean what do you think about this PR? Can you continue review so we have this merged?
+
+@keradus I've removed wrapper from tests as we spoke, feel free to do code review as well.
