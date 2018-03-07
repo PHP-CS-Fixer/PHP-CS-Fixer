@@ -428,7 +428,7 @@ Choose from the list of available rules:
     'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
     'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
     'startuml', 'fix', 'FIXME', 'fixme', 'override']``
-  - ``operator`` (``':'``, ``'='``): the operator to use; defaults to ``'='``
+  - ``operator`` (``':'``, ``'='``): the operator to use; defaults to ``':'``
 
 * **doctrine_annotation_braces** [@DoctrineAnnotation]
 
