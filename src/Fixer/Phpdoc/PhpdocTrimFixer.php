@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -91,7 +92,7 @@ final class Foo {}
      */
     private function fixStart($content)
     {
-        return preg_replace(
+        return Preg::replace(
             '~
                 (^/\*\*)                  # DocComment begin
                 (?:
@@ -114,7 +115,7 @@ final class Foo {}
      */
     private function fixEnd($content)
     {
-        return preg_replace(
+        return Preg::replace(
             '~
                 (\R[ \t]*(?:\*[ \t]*)?\S.*?) # last line with useful content
                 (?:

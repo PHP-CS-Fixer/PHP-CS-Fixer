@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Preg;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -225,26 +226,26 @@ EOF;
         $help = $command->getHelp();
         $help = str_replace('%command.full_name%', 'php-cs-fixer.phar '.$command->getName(), $help);
         $help = str_replace('%command.name%', $command->getName(), $help);
-        $help = preg_replace('#</?(comment|info)>#', '``', $help);
-        $help = preg_replace('#`(``.+?``)`#', '$1', $help);
-        $help = preg_replace('#^(\s+)``(.+)``$#m', '$1$2', $help);
-        $help = preg_replace('#^ \* ``(.+)``(.*?\n)#m', "* **$1**$2\n", $help);
-        $help = preg_replace('#^   \\| #m', '  ', $help);
-        $help = preg_replace('#^   \\|#m', '', $help);
-        $help = preg_replace('#^(?=  \\*Risky rule: )#m', "\n", $help);
-        $help = preg_replace("#^(  Configuration options:\n)(  - )#m", "$1\n$2", $help);
-        $help = preg_replace("#^\n( +\\$ )#m", "\n.. code-block:: bash\n\n$1", $help);
-        $help = preg_replace("#^\n( +<\\?php)#m", "\n.. code-block:: php\n\n$1", $help);
-        $help = preg_replace_callback(
+        $help = Preg::replace('#</?(comment|info)>#', '``', $help);
+        $help = Preg::replace('#`(``.+?``)`#', '$1', $help);
+        $help = Preg::replace('#^(\s+)``(.+)``$#m', '$1$2', $help);
+        $help = Preg::replace('#^ \* ``(.+)``(.*?\n)#m', "* **$1**$2\n", $help);
+        $help = Preg::replace('#^   \\| #m', '  ', $help);
+        $help = Preg::replace('#^   \\|#m', '', $help);
+        $help = Preg::replace('#^(?=  \\*Risky rule: )#m', "\n", $help);
+        $help = Preg::replace("#^(  Configuration options:\n)(  - )#m", "$1\n$2", $help);
+        $help = Preg::replace("#^\n( +\\$ )#m", "\n.. code-block:: bash\n\n$1", $help);
+        $help = Preg::replace("#^\n( +<\\?php)#m", "\n.. code-block:: php\n\n$1", $help);
+        $help = Preg::replaceCallback(
             '#^\\s*<\\?(\\w+).*?\\?>#ms',
             function ($matches) {
-                $result = preg_replace("#^\\.\\. code-block:: bash\n\n#m", '', $matches[0]);
+                $result = Preg::replace("#^\\.\\. code-block:: bash\n\n#m", '', $matches[0]);
 
                 if ('php' !== $matches[1]) {
-                    $result = preg_replace("#<\\?{$matches[1]}\\s*#", '', $result);
+                    $result = Preg::replace("#<\\?{$matches[1]}\\s*#", '', $result);
                 }
 
-                $result = preg_replace("#\n\n +\\?>#", '', $result);
+                $result = Preg::replace("#\n\n +\\?>#", '', $result);
 
                 return $result;
             },
@@ -257,7 +258,7 @@ EOF;
         // Make to RST http://www.sphinx-doc.org/en/stable/rest.html#hyperlinks
         //      `description <http://...>`_
 
-        $help = preg_replace_callback(
+        $help = Preg::replaceCallback(
            '#`(.+)`\s?\(<url>(.+)<\/url>\)#',
             function (array $matches) {
                 return sprintf('`%s <%s>`_', str_replace('\\', '\\\\', $matches[1]), $matches[2]);
@@ -265,8 +266,8 @@ EOF;
             $help
         );
 
-        $help = preg_replace('#^                        #m', '  ', $help);
-        $help = preg_replace('#\*\* +\[#', '** [', $help);
+        $help = Preg::replace('#^                        #m', '  ', $help);
+        $help = Preg::replace('#\*\* +\[#', '** [', $help);
 
         $downloadLatestUrl = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v%s/php-cs-fixer.phar', HelpCommand::getLatestReleaseVersionFromChangeLog());
         $downloadUrl = 'http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar';

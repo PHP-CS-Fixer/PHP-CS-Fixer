@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Doctrine\Annotation;
 
 use Doctrine\Common\Annotations\DocLexer;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token as PhpToken;
 
 /**
@@ -42,7 +43,7 @@ final class Tokens extends \SplFixedArray
         $ignoredTextPosition = 0;
         $currentPosition = 0;
         while (false !== $nextAtPosition = strpos($content, '@', $currentPosition)) {
-            if (0 !== $nextAtPosition && !preg_match('/\s/', $content[$nextAtPosition - 1])) {
+            if (0 !== $nextAtPosition && !Preg::match('/\s/', $content[$nextAtPosition - 1])) {
                 $currentPosition = $nextAtPosition + 1;
 
                 continue;
@@ -197,7 +198,7 @@ final class Tokens extends \SplFixedArray
                 isset($this[$index + 3])
                 && $this[$index + 2]->isType(DocLexer::T_NONE)
                 && $this[$index + 3]->isType(DocLexer::T_OPEN_PARENTHESIS)
-                && preg_match('/^(\R\s*\*\s*)*\s*$/', $this[$index + 2]->getContent())
+                && Preg::match('/^(\R\s*\*\s*)*\s*$/', $this[$index + 2]->getContent())
             ) {
                 $currentIndex = $index + 3;
             }
