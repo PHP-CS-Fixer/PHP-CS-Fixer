@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
-use PhpCsFixer\Console\Command\CompareCommand;
+use PhpCsFixer\Console\Command\ShowCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -23,9 +23,9 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Console\Command\CompareCommand
+ * @covers \PhpCsFixer\Console\Command\ShowCommand
  */
-final class CompareCommandTest extends TestCase
+final class ShowCommandTest extends TestCase
 {
     /**
      * @var Application
@@ -37,7 +37,7 @@ final class CompareCommandTest extends TestCase
         $this->application = new Application();
     }
 
-    public function testCompareCommand()
+    public function testShowCommand()
     {
         $cmdTester = $this->doTestExecute();
 
@@ -49,9 +49,9 @@ final class CompareCommandTest extends TestCase
      */
     private function doTestExecute()
     {
-        $this->application->add(new CompareCommand());
+        $this->application->add(new ShowCommand());
 
-        $command = $this->application->find('compare');
+        $command = $this->application->find('show');
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
