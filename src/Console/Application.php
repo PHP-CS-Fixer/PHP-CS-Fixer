@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Console;
 
-use PhpCsFixer\Console\Command\CompareCommand;
+use PhpCsFixer\Console\Command\ShowCommand;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
@@ -52,7 +52,7 @@ final class Application extends BaseApplication
 
         $this->toolInfo = new ToolInfo();
 
-        $this->add(new CompareCommand());
+        $this->add(new ShowCommand());
         $this->add(new DescribeCommand());
         $this->add(new FixCommand($this->toolInfo));
         $this->add(new ReadmeCommand());

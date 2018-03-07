@@ -28,9 +28,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Adamo Aerendir Crespi <hello@aerendir.me>
  */
-final class CompareCommand extends Command
+final class ShowCommand extends Command
 {
-    const COMMAND_NAME = 'compare';
+    const COMMAND_NAME = 'show';
     const THICK = "\xE2\x9C\x94";
     const CROSS = "\xE2\x9C\x96";
     const PLUS = "\xe2\x9c\x9a";
@@ -110,7 +110,7 @@ final class CompareCommand extends Command
                     new InputOption('dump', '', InputOption::VALUE_NONE, 'Dumps the comparing result in a copy-and-pastable format ready for the .php_cs file.'),
                 ]
             )
-            ->setDescription('Compares existent Fixers with the ones actually configured or enabled by inheritance.')
+            ->setDescription('Shows existent Fixers with the ones actually configured or enabled by inheritance.')
         ;
     }
 
