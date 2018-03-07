@@ -34,7 +34,7 @@
         "hhvm": "*"
     },
     "require-dev": {
-        "johnkary/phpunit-speedtrap": "^1.1 || ^2.0@dev",
+        "johnkary/phpunit-speedtrap": "^1.1 || ^2.0 || ^3.0",
         "justinrainbow/json-schema": "^5.0",
         "keradus/cli-executor": "^1.0",
         "mikey179/vfsStream": "^1.6",
