@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Differ;
 
+use PhpCsFixer\Preg;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -53,7 +54,7 @@ final class DiffConsoleFormatter
 
         $template = $isDecorated
             ? $this->template
-            : preg_replace('/<[^<>]+>/', '', $this->template)
+            : Preg::replace('/<[^<>]+>/', '', $this->template)
         ;
 
         return sprintf(
@@ -63,7 +64,7 @@ final class DiffConsoleFormatter
                 array_map(
                     function ($string) use ($isDecorated, $lineTemplate) {
                         if ($isDecorated) {
-                            $string = preg_replace_callback(
+                            $string = Preg::replaceCallback(
                                 [
                                     '/^(\+.*)/',
                                     '/^(\-.*)/',
@@ -86,7 +87,7 @@ final class DiffConsoleFormatter
 
                         return sprintf($lineTemplate, $string);
                     },
-                    preg_split('#\R#u', $diff)
+                    Preg::split('#\R#u', $diff)
                 )
             )
         );
