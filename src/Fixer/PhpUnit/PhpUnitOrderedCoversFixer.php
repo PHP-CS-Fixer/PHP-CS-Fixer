@@ -17,6 +17,7 @@ use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -70,7 +71,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT) || 0 === preg_match('/@covers\s.+@covers\s/s', $tokens[$index]->getContent())) {
+            if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT) || 0 === Preg::match('/@covers\s.+@covers\s/s', $tokens[$index]->getContent())) {
                 continue;
             }
 
@@ -81,7 +82,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             foreach ($covers as $annotation) {
                 $rawContent = $annotation->getContent();
 
-                $comparableContent = preg_replace('/\*\s*@covers\s+(.+)/', '\1', strtolower(trim($rawContent)));
+                $comparableContent = Preg::replace('/\*\s*@covers\s+(.+)/', '\1', strtolower(trim($rawContent)));
                 $coversMap[$comparableContent] = $rawContent;
             }
             $orderedCoversMap = $coversMap;
