@@ -38,18 +38,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
      */
     public function provideFixCases()
     {
-        $edgeCases = array(
-            array(
-                '<?php
-
-/**
- * @see \User getId()
- */
-',
-            ),
-        );
-
-        return $edgeCases + $this->createTestCases(array(
+        $cases = $this->createTestCases(array(
             array('
 /**
  * Foo.
@@ -304,5 +293,16 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  */
 '),
         ));
+
+        $cases[] = array(
+            '<?php
+
+/**
+* @see \User getId()
+*/
+',
+        );
+
+        return $cases;
     }
 }
