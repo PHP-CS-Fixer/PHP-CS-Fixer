@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-01T14:54:54Z
+
+AppVeyor is sad, can we retrigger?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-02T18:08:13Z
+
+retrigger, but It wasn't because of code, but issues with PHP installation itself. let us see now
