@@ -14,8 +14,8 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\ShowCommand;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
