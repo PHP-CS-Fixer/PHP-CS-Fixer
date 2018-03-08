@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\ShowCommand;
+use PhpCsFixer\ToolInfo;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -49,7 +50,7 @@ final class ShowCommandTest extends TestCase
      */
     private function doTestExecute()
     {
-        $this->application->add(new ShowCommand());
+        $this->application->add(new ShowCommand(new ToolInfo()));
 
         $command = $this->application->find('show');
         $commandTester = new CommandTester($command);

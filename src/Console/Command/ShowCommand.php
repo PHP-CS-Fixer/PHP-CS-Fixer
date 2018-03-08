@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\RuleSetInterface;
+use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,6 +35,9 @@ final class ShowCommand extends Command
     const THICK = "\xE2\x9C\x94";
     const CROSS = "\xE2\x9C\x96";
     const PLUS = "\xe2\x9c\x9a";
+
+    /** @var ToolInfoInterface */
+    private $toolInfo;
 
     /** @var ConfigInterface $defaultConfig */
     private $defaultConfig;
@@ -80,9 +84,11 @@ final class ShowCommand extends Command
     /**
      * @param null|FixerFactory $fixerFactory
      */
-    public function __construct(FixerFactory $fixerFactory = null)
+    public function __construct(ToolInfoInterface $toolInfo, FixerFactory $fixerFactory = null)
     {
         parent::__construct();
+
+        $this->toolInfo = $toolInfo;
 
         if (null === $fixerFactory) {
             $fixerFactory = new FixerFactory();
@@ -151,7 +157,8 @@ final class ShowCommand extends Command
                 'allow-risky' => true,
                 'config' => $input->getOption('config'),
             ],
-            getcwd()
+            getcwd(),
+            $this->toolInfo
         );
 
         $this->builtInFixers = $this->fixerFactory->getFixers();
