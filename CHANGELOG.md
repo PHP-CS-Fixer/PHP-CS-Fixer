@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.2.18
+---------------------
+
+* bug #3446 Add PregWrapper (kubawerlos)
+* bug #3464 IncludeFixer - fix incorrect order of fixing (kubawerlos, SpacePossum)
+* bug #3496 Bug in Tokens::removeLeadingWhitespace (kubawerlos, SpacePossum, keradus)
+* bug #3557 AbstractDoctrineAnnotationFixer: edge case bugfix (Slamdunk)
+* bug #3574 GeneralPhpdocAnnotationRemoveFixer - remove PHPDoc if no content is left (SpacePossum)
+* minor #3563 DX add missing covers annotations (keradus)
+* minor #3565 Use EventDispatcherInterface instead of EventDispatcher when possible (keradus)
+* minor #3572 DX: allow for more phpunit-speedtrap versions to support more PHPUnit versions (keradus)
+* minor #3576 Fix Doctrine Annotation test cases merging (julienfalque)
+
 Changelog for v2.2.17
 ---------------------
 
