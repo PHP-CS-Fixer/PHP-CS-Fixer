@@ -1369,6 +1369,11 @@ Choose from the list of available rules:
     ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'rand' =>
     'mt_rand', 'srand' => 'mt_srand']``
 
+* **return_assignment**
+
+  Non global, static or indirectly referenced variables should not be
+  assigned and directly returned by a function or method.
+
 * **return_type_declaration** [@Symfony]
 
   There should be one or no space before colon, and one space after it in
