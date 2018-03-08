@@ -29,7 +29,9 @@ final class ProcessLintingResultTest extends TestCase
      */
     public function testCheckOK()
     {
-        $process = $this->prophesize(\Symfony\Component\Process\Process::class);
+        $process = $this->prophesize();
+        $process->willExtend(\Symfony\Component\Process\Process::class);
+
         $process
             ->wait()
             ->willReturn(0)
@@ -46,7 +48,9 @@ final class ProcessLintingResultTest extends TestCase
 
     public function testCheckFail()
     {
-        $process = $this->prophesize(\Symfony\Component\Process\Process::class);
+        $process = $this->prophesize();
+        $process->willExtend(\Symfony\Component\Process\Process::class);
+
         $process
             ->wait()
             ->willReturn(0)
