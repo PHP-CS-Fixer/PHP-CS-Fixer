@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -276,7 +277,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
         //  2) no space after comma
         if ($nextToken->isWhitespace()) {
             if (
-                ($this->configuration['keep_multiple_spaces_after_comma'] && !preg_match('/\R/', $nextToken->getContent()))
+                ($this->configuration['keep_multiple_spaces_after_comma'] && !Preg::match('/\R/', $nextToken->getContent()))
                 || $this->isCommentLastLineToken($tokens, $index + 2)
             ) {
                 return;

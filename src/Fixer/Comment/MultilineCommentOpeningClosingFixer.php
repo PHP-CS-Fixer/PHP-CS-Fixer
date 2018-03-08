@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Comment;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -80,11 +81,11 @@ EOT
 
             // Fix opening
             if ($token->isGivenKind(T_COMMENT)) {
-                $newContent = preg_replace('/^\\/\\*\\*+/', '/*', $newContent);
+                $newContent = Preg::replace('/^\\/\\*\\*+/', '/*', $newContent);
             }
 
             // Fix closing
-            $newContent = preg_replace('/\\*+\\*\\/$/', '*/', $newContent);
+            $newContent = Preg::replace('/\\*+\\*\\/$/', '*/', $newContent);
 
             if ($newContent !== $originalContent) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);

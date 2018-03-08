@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -120,7 +121,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurab
             if (
                 null !== $insideForParenthesesUntil
                 && ($tokens[$index + 2]->equals(';') || $index + 2 === $insideForParenthesesUntil)
-                && !preg_match('/\R/', $tokens[$index + 1]->getContent())
+                && !Preg::match('/\R/', $tokens[$index + 1]->getContent())
             ) {
                 $tokens->clearAt($index + 1);
 

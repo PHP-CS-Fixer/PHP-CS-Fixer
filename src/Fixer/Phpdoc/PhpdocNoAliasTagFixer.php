@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -130,7 +131,7 @@ final class Example
                             ));
                         }
 
-                        if (1 !== preg_match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
+                        if (1 !== Preg::match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
                             throw new InvalidOptionsException(sprintf(
                                 'Tag "%s" cannot be replaced by invalid tag "%s".',
                                 $from,

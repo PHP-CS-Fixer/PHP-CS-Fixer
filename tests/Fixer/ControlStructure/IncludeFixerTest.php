@@ -61,6 +61,36 @@ final class IncludeFixerTest extends AbstractFixerTestCase
                 '<?php include $a;',
                 '<?php include  (  $a  )  ;',
             ],
+            [
+                '<?php
+require_once "test1.php";
+include_once "test2.php";
+require "test3.php";
+include "test4.php";',
+                '<?php
+require_once("test1.php");
+include_once("test2.php");
+require("test3.php");
+include("test4.php");',
+            ],
+            [
+                '<?php
+require_once #1
+#2
+#3
+"test1.php"#4
+#5
+#6
+;',
+              '<?php
+require_once #1
+(#2
+#3
+"test1.php"#4
+)#5
+#6
+;',
+            ],
         ];
 
         foreach (['require', 'require_once', 'include', 'include_once'] as $statement) {
