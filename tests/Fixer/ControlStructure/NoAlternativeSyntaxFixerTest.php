@@ -40,35 +40,36 @@ final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
         return [
             ['<?php if ($some) { $test = true; } else { $test = false; }'],
             [
-                '<?php if ($some) { $test = true; } else { $test = false; };',
-                '<?php if ($some) : $test = true; else : $test = false; endif;',
+                '<?php if ($some) { $test = true; } else { $test = false; }',
+                '<?php if ($some) : $test = true; else :$test = false; endif;',
             ],
             [
-                '<?php if ($some) { $test = true;if($test){echo $test;}; }else { $test = false; };',
-                '<?php if ($some) : $test = true;if($test){echo $test;};else : $test = false; endif;',
+                '<?php if ($some) { if($test){echo $test;}$test = true; } else { $test = false; }',
+                '<?php if ($some) : if($test){echo $test;}$test = true; else : $test = false; endif;',
             ],
             [
-                '<?php foreach (array("d") as $item){echo $item;};',
+                '<?php foreach (array("d") as $item) { echo $item;}',
                 '<?php foreach (array("d") as $item):echo $item;endforeach;',
             ],
             [
-                '<?php foreach (array("d") as $item){if($item){echo $item;};};',
-                '<?php foreach (array("d") as $item):if($item){echo $item;};endforeach;',
+                '<?php foreach (array("d") as $item) { if($item){echo $item;}}',
+                '<?php foreach (array("d") as $item):if($item){echo $item;}endforeach;',
             ],
             [
-                '<?php while (true){echo "c";};',
+                '<?php while (true) { echo "c";}',
                 '<?php while (true):echo "c";endwhile;',
             ],
+
             [
-                '<?php foreach (array("d") as $item){while ($item){echo "dd";};};',
+                '<?php foreach (array("d") as $item) { while ($item) { echo "dd";}}',
                 '<?php foreach (array("d") as $item):while ($item):echo "dd";endwhile;endforeach;',
             ],
             [
-                '<?php foreach (array("d") as $item){ while ($item) { echo "dd" ; } ; };',
-                '<?php foreach (array("d") as $item): while ($item) : echo "dd" ; endwhile ; endforeach;',
+                '<?php foreach (array("d") as $item) { while ($item) { echo "dd" ; } }',
+                '<?php foreach (array("d") as $item): while ($item) : echo "dd" ; endwhile; endforeach;',
             ],
             [
-                '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; };',
+                '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
                 '<?php if ($some) : $test = true; elseif ($some !== "test") : $test = false; endif;',
             ],
         ];

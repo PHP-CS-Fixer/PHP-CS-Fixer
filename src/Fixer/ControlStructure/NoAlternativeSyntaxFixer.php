@@ -55,13 +55,8 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
     {
         return $tokens->isAnyTokenKindsFound(
             [
-                T_IF,
                 T_ENDIF,
-                T_ELSE,
-                T_ELSEIF,
-                T_WHILE,
                 T_ENDWHILE,
-                T_FOREACH,
                 T_ENDFOREACH,
             ]
         );
@@ -72,9 +67,12 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $this->fixElseif($tokens);
-        $this->fixElse($tokens);
-        $this->fixOpenCloseControls($tokens);
+        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+            $token = $tokens[$index];
+            $this->fixElseif($index, $token, $tokens);
+            $this->fixElse($index, $token, $tokens);
+            $this->fixOpenCloseControls($index, $token, $tokens);
+        }
     }
 
     private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)
@@ -91,104 +89,132 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
     }
 
     /**
-     * Handle the elsif(): cases.
-     *
-     * @param Tokens $tokens
-     *
-     * @author Eddilbert Macharia <edd.cowan@gmail.com>
-     */
-    private function fixElseif(Tokens $tokens)
-    {
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-            if (!$token->isGivenKind(T_ELSEIF)) {
-                continue;
-            }
-
-            $prevIndex = $tokens->getPrevNonWhitespace($index);
-            $prevToken = $tokens[$prevIndex];
-            if (!$prevToken->equals('}')) {
-                // insert closing brace
-                $tokens->insertAt($prevIndex + 1, [new Token([T_WHITESPACE, ' ']), new Token('}')]);
-                // stop, and rescan the tokens again
-                // taking into account the new tokens added
-                $this->fixElseif($tokens);
-
-                break;
-            }
-
-            $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-            $tokenAfterParenthesis = $tokens[$tokens->getNextMeaningfulToken($parenthesisEndIndex)];
-            if ($tokenAfterParenthesis->equals(self::SINGLE_COLON)) {
-                // insert closing brace
-                $tokens[$tokens->getNextMeaningfulToken($parenthesisEndIndex)] = new Token('{');
-            }
-        }
-    }
-
-    /**
      * Handle both extremes of the control structures.
      * e.g. if(): or endif;.
      *
-     * @param Tokens $tokens
-     *
-     * @author Eddilbert Macharia <edd.cowan@gmail.com>
+     * @param int    $index  the index of the token being processed
+     * @param Token  $token  the token being processed
+     * @param Tokens $tokens the collection of tokens
      */
-    private function fixOpenCloseControls(Tokens $tokens)
+    private function fixOpenCloseControls($index, Token $token, Tokens $tokens)
     {
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind([T_IF, T_FOREACH, T_WHILE])) {
-                $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
-                $afterParenthesisIndex = $tokens->getNextNonWhitespace($closeIndex);
-                $afterParenthesis = $tokens[$afterParenthesisIndex];
+        if ($token->isGivenKind([T_IF, T_FOREACH, T_WHILE])) {
+            $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $afterParenthesisIndex = $tokens->getNextNonWhitespace($closeIndex);
+            $afterParenthesis = $tokens[$afterParenthesisIndex];
 
-                if ($afterParenthesis->equals(self::SINGLE_COLON)) {
-                    $tokens[$afterParenthesisIndex] = new Token('{');
-                } else {
-                    continue;
-                }
+            if (!$afterParenthesis->equals(self::SINGLE_COLON)) {
+                return;
             }
+            $items = [];
+            if (!$tokens[$afterParenthesisIndex - 1]->isWhitespace()) {
+                $items[] = new Token([T_WHITESPACE, ' ']);
+            }
+            $items[] = new Token('{');
 
-            if ($token->isGivenKind([T_ENDIF, T_ENDFOREACH, T_ENDWHILE])) {
-                $tokens[$index] = new Token('}');
-            } else {
-                continue;
+            if (!$tokens[$afterParenthesisIndex + 1]->isWhitespace()) {
+                $items[] = new Token([T_WHITESPACE, ' ']);
             }
+            $tokens->clearAt($afterParenthesisIndex);
+            $tokens->insertAt($afterParenthesisIndex, $items);
+        }
+
+        if (!$token->isGivenKind([T_ENDIF, T_ENDFOREACH, T_ENDWHILE])) {
+            return;
+        }
+
+        $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
+        $nextToken = $tokens[$nextTokenIndex];
+        $tokens[$index] = new Token('}');
+        if ($nextToken->equals(';')) {
+            $tokens->clearAt($nextTokenIndex);
         }
     }
 
     /**
      * Handle the else:.
      *
-     * @param Tokens $tokens
-     *
-     * @author Eddilbert Macharia <edd.cowan@gmail.com>
+     * @param int    $index  the index of the token being processed
+     * @param Token  $token  the token being processed
+     * @param Tokens $tokens the collection of tokens
      */
-    private function fixElse(Tokens $tokens)
+    private function fixElse($index, Token $token, Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-            if (!$token->isGivenKind(T_ELSE)) {
-                continue;
-            }
-
-            $prevIndex = $tokens->getPrevNonWhitespace($index);
-            $prevToken = $tokens[$prevIndex];
-            if (!$prevToken->equals('}')) {
-                // insert closing brace
-                $tokens->insertAt($prevIndex + 1, [new Token([T_WHITESPACE, ' ']), new Token('}')]);
-                $this->fixElse($tokens);
-
-                break;
-            }
-
-            $tokenAfterParenthesisIndex = $tokens->getNextMeaningfulToken($index);
-            $tokenAfterParenthesis = $tokens[$tokenAfterParenthesisIndex];
-            if ($tokenAfterParenthesis->equals(self::SINGLE_COLON)) {
-                // insert closing brace
-                $tokens[$tokenAfterParenthesisIndex] = new Token('{');
-            }
+        if (!$token->isGivenKind(T_ELSE)) {
+            return;
         }
+
+        $tokenAfterElseIndex = $tokens->getNextMeaningfulToken($index);
+        $tokenAfterElse = $tokens[$tokenAfterElseIndex];
+        if (!$tokenAfterElse->equals(self::SINGLE_COLON)) {
+            return;
+        }
+
+        $this->addBraces($tokens, new Token([T_ELSE, 'else']), $index, $tokenAfterElseIndex);
+    }
+
+    /**
+     * Handle the elsif(): cases.
+     *
+     * @param int    $index  the index of the token being processed
+     * @param Token  $token  the token being processed
+     * @param Tokens $tokens the collection of tokens
+     */
+    private function fixElseif($index, Token $token, Tokens $tokens)
+    {
+        if (!$token->isGivenKind(T_ELSEIF)) {
+            return;
+        }
+        $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
+        $tokenAfterParenthesisIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
+        $tokenAfterParenthesis = $tokens[$tokenAfterParenthesisIndex];
+        if (!$tokenAfterParenthesis->equals(self::SINGLE_COLON)) {
+            return;
+        }
+
+        $this->addBraces($tokens, new Token([T_ELSEIF, 'elseif']), $index, $tokenAfterParenthesisIndex);
+    }
+
+    /**
+     * Add opening and closing braces to the else: and elseif: .
+     *
+     * @param Tokens $tokens     the tokens collection
+     * @param Token  $token      the current token
+     * @param int    $index      the current token index
+     * @param int    $colonIndex the index of the colon
+     */
+    private function addBraces(Tokens $tokens, Token $token, $index, $colonIndex)
+    {
+        // ***************  closing opening token
+        $items = [
+            new Token('}'),
+            new Token([T_WHITESPACE, ' ']),
+            $token,
+        ];
+        if (!$tokens[$index + 1]->isWhitespace()) {
+            $items[] = new Token([T_WHITESPACE, ' ']);
+        }
+        $tokens->clearAt($index);
+        $tokens->insertAt(
+            $index,
+            $items
+        );
+
+        // *************** insert opening brace
+
+        // increment the position of the colon by number of items inserted
+        $colonIndex += count($items);
+
+        $items = [new Token('{')];
+        if (!$tokens[$colonIndex + 1]->isWhitespace()) {
+            $items[] = new Token([T_WHITESPACE, ' ']);
+        }
+
+        $tokens->clearAt($colonIndex);
+        $tokens->insertAt(
+            $colonIndex,
+            $items
+        );
     }
 }
