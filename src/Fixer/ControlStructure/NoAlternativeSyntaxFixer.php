@@ -21,9 +21,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Class NoAlternativeSyntaxFixer.
  *
- * @author Eddilbert Macharia <edd.cowan@gmail.com>(eddmash.com)
+ * @author Eddilbert Macharia <edd.cowan@gmail.com>
  */
-class NoAlternativeSyntaxFixer extends AbstractFixer
+final class NoAlternativeSyntaxFixer extends AbstractFixer
 {
     const SINGLE_COLON = ':';
 
@@ -33,17 +33,16 @@ class NoAlternativeSyntaxFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Replace alternative syntax on if():endif;,foreach():endforeach; and while()endwhile()'.
-            ' to use braces.', // Trailing dot is important. We thrive to use English grammar properly.
+            'Replace control structure alternative syntax to use braces.',
             [
                 new CodeSample(
-                    '<?php if(){}else{}'
+                    "<?php\nif(true):echo 't';else:echo 'f';endif;\n"
                 ),
                 new CodeSample(
-                    '<?php while(){}'
+                    "<?php\nwhile(true):echo 'red';endwhile;\n"
                 ),
                 new CodeSample(
-                    '<?php foreach(){}'
+                    "<?php\nforeach(array('a') as \$item):echo 'xc';endforeach;\n"
                 ),
             ]
         );
@@ -54,8 +53,18 @@ class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_IF, T_ENDIF, T_ELSE, T_ELSEIF, T_WHILE, T_ENDWHILE,
-            T_FOREACH, T_ENDFOREACH]);
+        return $tokens->isAnyTokenKindsFound(
+            [
+                T_IF,
+                T_ENDIF,
+                T_ELSE,
+                T_ELSEIF,
+                T_WHILE,
+                T_ENDWHILE,
+                T_FOREACH,
+                T_ENDFOREACH,
+            ]
+        );
     }
 
     /**
@@ -82,9 +91,11 @@ class NoAlternativeSyntaxFixer extends AbstractFixer
     }
 
     /**
+     * Handle the elsif(): cases.
+     *
      * @param Tokens $tokens
      *
-     * @author Eddilbert Macharia <edd.cowan@gmail.com>(eddmash.com)
+     * @author Eddilbert Macharia <edd.cowan@gmail.com>
      */
     private function fixElseif(Tokens $tokens)
     {
@@ -99,6 +110,8 @@ class NoAlternativeSyntaxFixer extends AbstractFixer
             if (!$prevToken->equals('}')) {
                 // insert closing brace
                 $tokens->insertAt($prevIndex + 1, [new Token([T_WHITESPACE, ' ']), new Token('}')]);
+                // stop, and rescan the tokens again
+                // taking into account the new tokens added
                 $this->fixElseif($tokens);
 
                 break;
@@ -114,9 +127,12 @@ class NoAlternativeSyntaxFixer extends AbstractFixer
     }
 
     /**
+     * Handle both extremes of the control structures.
+     * e.g. if(): or endif;.
+     *
      * @param Tokens $tokens
      *
-     * @author Eddilbert Macharia <edd.cowan@gmail.com>(eddmash.com)
+     * @author Eddilbert Macharia <edd.cowan@gmail.com>
      */
     private function fixOpenCloseControls(Tokens $tokens)
     {
@@ -143,9 +159,11 @@ class NoAlternativeSyntaxFixer extends AbstractFixer
     }
 
     /**
+     * Handle the else:.
+     *
      * @param Tokens $tokens
      *
-     * @author Eddilbert Macharia <edd.cowan@gmail.com>(eddmash.com)
+     * @author Eddilbert Macharia <edd.cowan@gmail.com>
      */
     private function fixElse(Tokens $tokens)
     {
@@ -165,10 +183,11 @@ class NoAlternativeSyntaxFixer extends AbstractFixer
                 break;
             }
 
-            $tokenAfterParenthesis = $tokens[$tokens->getNextMeaningfulToken($index)];
+            $tokenAfterParenthesisIndex = $tokens->getNextMeaningfulToken($index);
+            $tokenAfterParenthesis = $tokens[$tokenAfterParenthesisIndex];
             if ($tokenAfterParenthesis->equals(self::SINGLE_COLON)) {
                 // insert closing brace
-                $tokens[$tokens->getNextMeaningfulToken($index)] = new Token('{');
+                $tokens[$tokenAfterParenthesisIndex] = new Token('{');
             }
         }
     }

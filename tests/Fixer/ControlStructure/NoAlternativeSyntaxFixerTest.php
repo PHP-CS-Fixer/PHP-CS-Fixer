@@ -17,10 +17,12 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * Class NoAlternativeSyntaxFixerTest.
  *
- * @author Eddilbert Macharia <edd.cowan@gmail.com>(eddmash.com)
+ * @author Eddilbert Macharia <edd.cowan@gmail.com>
  * @coversNothing
+ *
+ * @internal
  */
-class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
+final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases

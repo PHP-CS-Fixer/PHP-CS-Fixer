@@ -799,8 +799,7 @@ Choose from the list of available rules:
 
 * **no_alternative_syntax**
 
-  Replace alternative syntax on if():endif;,foreach():endforeach; and
-  while()endwhile() to use braces.
+  Replace control structure alternative syntax to use braces.
 
 * **no_blank_lines_after_class_opening** [@Symfony]
 
