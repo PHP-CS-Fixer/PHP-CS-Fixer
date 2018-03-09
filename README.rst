@@ -797,6 +797,11 @@ Choose from the list of available rules:
 
   *Risky rule: risky when any of the alias functions are overridden.*
 
+* **no_alternative_syntax**
+
+  Replace alternative syntax on if():endif;,foreach():endforeach; and
+  while()endwhile() to use braces.
+
 * **no_blank_lines_after_class_opening** [@Symfony]
 
   There should be no empty lines after class opening brace.
