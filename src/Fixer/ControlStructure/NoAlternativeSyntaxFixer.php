@@ -19,8 +19,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Class NoAlternativeSyntaxFixer.
- *
  * @author Eddilbert Macharia <edd.cowan@gmail.com>
  */
 final class NoAlternativeSyntaxFixer extends AbstractFixer

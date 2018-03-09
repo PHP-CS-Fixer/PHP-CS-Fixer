@@ -15,8 +15,6 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * Class NoAlternativeSyntaxFixerTest.
- *
  * @author Eddilbert Macharia <edd.cowan@gmail.com>
  * @coversNothing
  *
