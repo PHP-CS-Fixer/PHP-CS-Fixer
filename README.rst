@@ -1129,6 +1129,10 @@ Choose from the list of available rules:
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
+* **php_unit_ordered_covers**
+
+  Order ``@covers`` annotation of PHPUnit tests.
+
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of
@@ -1407,6 +1411,11 @@ Choose from the list of available rules:
 
   Convert double quotes to single quotes for simple strings.
 
+  Configuration options:
+
+  - ``strings_containing_single_quote_chars`` (``bool``): whether to fix
+    double-quoted strings that contains single-quotes; defaults to ``false``
+
 * **space_after_semicolon** [@Symfony]
 
   Fix whitespace after a semicolon.
@@ -1415,6 +1424,10 @@ Choose from the list of available rules:
 
   - ``remove_in_empty_for_expressions`` (``bool``): whether spaces should be removed
     for empty ``for`` expressions; defaults to ``false``
+
+* **standardize_increment** [@Symfony]
+
+  Increment and decrement operators should be used if possible.
 
 * **standardize_not_equals** [@Symfony]
 
@@ -1437,6 +1450,12 @@ Choose from the list of available rules:
   Functions should be used with ``$strict`` param set to ``true``.
 
   *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
+
+* **string_line_ending**
+
+  All multi-line strings must use correct line ending.
+
+  *Risky rule: changing the line endings of multi-line strings might affect string comparisons and outputs.*
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 
