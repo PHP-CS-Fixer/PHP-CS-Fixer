@@ -54,7 +54,13 @@ try {
     }
 }
 
+use Composer\XdebugHandler\XdebugHandler;
 use PhpCsFixer\Console\Application;
+
+// Restart if xdebug is loaded, unless the environment variable PHP_CS_FIXER_ALLOW_XDEBUG is set.
+$xdebug = new XdebugHandler('PHP_CS_FIXER', '--ansi');
+$xdebug->check();
+unset($xdebug);
 
 $application = new Application();
 $application->run();
