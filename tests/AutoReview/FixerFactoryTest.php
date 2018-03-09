@@ -62,6 +62,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
             [$fixers['blank_line_after_opening_tag'], $fixers['no_blank_lines_before_namespace']],
+            [$fixers['braces'], $fixers['array_indentation']],
             [$fixers['class_attributes_separation'], $fixers['braces']],
             [$fixers['class_attributes_separation'], $fixers['indentation_type']],
             [$fixers['class_keyword_remove'], $fixers['no_unused_imports']],
@@ -146,6 +147,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['ordered_class_elements'], $fixers['space_after_semicolon']],
             [$fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']],
             [$fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']],
+            [$fixers['php_unit_fqcn_annotation'], $fixers['php_unit_ordered_covers']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['php_unit_expectation']],
             [$fixers['php_unit_strict'], $fixers['php_unit_construct']],
@@ -186,6 +188,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['single_import_per_statement'], $fixers['no_singleline_whitespace_before_semicolons']],
             [$fixers['single_import_per_statement'], $fixers['no_unused_imports']],
             [$fixers['single_import_per_statement'], $fixers['space_after_semicolon']],
+            [$fixers['standardize_increment'], $fixers['increment_style']],
             [$fixers['standardize_not_equals'], $fixers['binary_operator_spaces']],
             [$fixers['strict_comparison'], $fixers['binary_operator_spaces']],
             [$fixers['unary_operator_spaces'], $fixers['not_operator_with_space']],
@@ -194,6 +197,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['void_return'], $fixers['return_type_declaration']],
             [$fixers['php_unit_test_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_test_annotation'], $fixers['phpdoc_trim']],
+            [$fixers['no_alternative_syntax'], $fixers['braces']],
+            [$fixers['no_alternative_syntax'], $fixers['elseif']],
         ];
     }
 
@@ -307,18 +312,8 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public function testPriorityIntegrationTestFilesAreListedPriorityCases()
+    public function testPriorityIntegrationDirectoryOnlyContainsFiles()
     {
-        $priorityCases = [];
-        foreach ($this->provideFixersPriorityCases() as $priorityCase) {
-            $fixerName = $priorityCase[0]->getName();
-            if (!isset($priorityCases[$fixerName])) {
-                $priorityCases[$fixerName] = [];
-            }
-
-            $priorityCases[$fixerName][$priorityCase[1]->getName()] = true;
-        }
-
         foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
             if ($candidate->isDot()) {
                 continue;
@@ -327,27 +322,72 @@ final class FixerFactoryTest extends TestCase
             $fileName = $candidate->getFilename();
             $this->assertTrue($candidate->isFile(), sprintf('Expected only files in the priority integration test directory, got "%s".', $fileName));
             $this->assertFalse($candidate->isLink(), sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
+        }
+    }
 
-            if (in_array($fileName, [
-                'braces,indentation_type,no_break_comment.test',
-            ], true)) {
-                $this->markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
+    /**
+     * @dataProvider provideIntegrationTestFilesCases
+     *
+     * @param string $fileName
+     */
+    public function testPriorityIntegrationTestFilesAreListedPriorityCases($fileName)
+    {
+        static $priorityCases;
+
+        if (null === $priorityCases) {
+            foreach ($this->provideFixersPriorityCases() as $priorityCase) {
+                $fixerName = $priorityCase[0]->getName();
+                if (!isset($priorityCases[$fixerName])) {
+                    $priorityCases[$fixerName] = [];
+                }
+
+                $priorityCases[$fixerName][$priorityCase[1]->getName()] = true;
             }
 
-            $this->assertSame(
-                1,
-                preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
-                sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
-            );
-
-            $fixerName1 = $matches[1];
-            $fixerName2 = $matches[2];
-
-            $this->assertTrue(
-                isset($priorityCases[$fixerName1][$fixerName2]) || isset($priorityCases[$fixerName2][$fixerName1]),
-                sprintf('Missing priority test entry for file "%s".', $fileName)
-            );
+            ksort($priorityCases);
         }
+
+        if (in_array($fileName, [
+            'braces,indentation_type,no_break_comment.test',
+        ], true)) {
+            $this->markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
+        }
+
+        if (in_array($fileName, [
+            'combine_consecutive_issets,no_singleline_whitespace_before_semicolons.test',
+        ], true)) {
+            $this->markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));
+        }
+
+        $this->assertSame(
+            1,
+            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
+            sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
+        );
+
+        $fixerName1 = $matches[1];
+        $fixerName2 = $matches[2];
+
+        $this->assertTrue(
+            isset($priorityCases[$fixerName1][$fixerName2]) || isset($priorityCases[$fixerName2][$fixerName1]),
+            sprintf('Missing priority test entry for file "%s".', $fileName)
+        );
+    }
+
+    public function provideIntegrationTestFilesCases()
+    {
+        $fileNames = [];
+        foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
+            if ($candidate->isDot()) {
+                continue;
+            }
+
+            $fileNames[] = [$candidate->getFilename()];
+        }
+
+        sort($fileNames);
+
+        return $fileNames;
     }
 
     /**

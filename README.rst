@@ -248,6 +248,10 @@ Choose from the list of available rules:
     whose lines all start with an asterisk (``phpdocs_like``) or any
     multi-line comment (``all_multiline``); defaults to ``'phpdocs_only'``
 
+* **array_indentation**
+
+  Each element of an array must be indented exactly once.
+
 * **array_syntax**
 
   PHP arrays should be declared using the configured syntax.
@@ -377,6 +381,12 @@ Choose from the list of available rules:
 
   - ``spacing`` (``'none'``, ``'one'``): spacing to apply around concatenation operator;
     defaults to ``'none'``
+
+* **date_time_immutable**
+
+  Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
+
+  *Risky rule: risky when the code relies on modifying ``DateTime`` object or if any of the ``date_create*`` functions are overridden.*
 
 * **declare_equal_normalize** [@Symfony]
 
@@ -797,6 +807,10 @@ Choose from the list of available rules:
 
   *Risky rule: risky when any of the alias functions are overridden.*
 
+* **no_alternative_syntax**
+
+  Replace control structure alternative syntax to use braces.
+
 * **no_blank_lines_after_class_opening** [@Symfony]
 
   There should be no empty lines after class opening brace.
@@ -1125,6 +1139,17 @@ Choose from the list of available rules:
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
+* **php_unit_ordered_covers**
+
+  Order ``@covers`` annotation of PHPUnit tests.
+
+* **php_unit_set_up_tear_down_visibility**
+
+  Changes the visibility of the setUp and tearDown functions of phpunit to
+  protected, to match the PHPUnit TestCase.
+
+  *Risky rule: this fixer may change functions named setUp or tearDown outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
+
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of
@@ -1403,6 +1428,11 @@ Choose from the list of available rules:
 
   Convert double quotes to single quotes for simple strings.
 
+  Configuration options:
+
+  - ``strings_containing_single_quote_chars`` (``bool``): whether to fix
+    double-quoted strings that contains single-quotes; defaults to ``false``
+
 * **space_after_semicolon** [@Symfony]
 
   Fix whitespace after a semicolon.
@@ -1411,6 +1441,10 @@ Choose from the list of available rules:
 
   - ``remove_in_empty_for_expressions`` (``bool``): whether spaces should be removed
     for empty ``for`` expressions; defaults to ``false``
+
+* **standardize_increment** [@Symfony]
+
+  Increment and decrement operators should be used if possible.
 
 * **standardize_not_equals** [@Symfony]
 
@@ -1433,6 +1467,12 @@ Choose from the list of available rules:
   Functions should be used with ``$strict`` param set to ``true``.
 
   *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
+
+* **string_line_ending**
+
+  All multi-line strings must use correct line ending.
+
+  *Risky rule: changing the line endings of multi-line strings might affect string comparisons and outputs.*
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 

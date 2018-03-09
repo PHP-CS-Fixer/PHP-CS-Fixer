@@ -148,6 +148,7 @@ $a =
                     trait A
                     {
                         public function A() {
+                            echo get_called_class(); // not in the default
                             var_dump(__CLASS__);
                         }
                     }
@@ -171,6 +172,7 @@ $a =
                     trait A
                     {
                         public function A() {
+                            echo get_called_class(); // not in the default
                             var_dump(get_class());
                         }
                     }
@@ -184,6 +186,48 @@ $a =
             'get_class with leading backslash' => [
                 '<?php __CLASS__;',
                 '<?php \get_class();',
+            ],
+            [
+                '<?php class A { function B(){ echo static::class; }}',
+                '<?php class A { function B(){ echo get_called_class(); }}',
+                ['functions' => ['get_called_class']],
+            ],
+            [
+                '<?php class A { function B(){
+echo#.
+#0
+static::class#1
+#2
+#3
+#4
+#5
+#6
+;#7
+}}
+                ',
+                '<?php class A { function B(){
+echo#.
+#0
+get_called_class#1
+#2
+(#3
+#4
+)#5
+#6
+;#7
+}}
+                ',
+                ['functions' => ['get_called_class']],
+            ],
+            'get_called_class with leading backslash' => [
+                '<?php class A { function B(){echo static::class; }}',
+                '<?php class A { function B(){echo \get_called_class(); }}',
+                ['functions' => ['get_called_class']],
+            ],
+            'get_called_class overridden' => [
+                '<?php echo get_called_class(1);',
+                null,
+                ['functions' => ['get_called_class']],
             ],
         ];
     }

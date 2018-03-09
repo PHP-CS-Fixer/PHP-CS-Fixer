@@ -177,7 +177,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
         return
             !$tokens[$end]->equals(')')
-            || $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end, false) >= $start
+            || $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end) >= $start
         ;
     }
 }

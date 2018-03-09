@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: no_alternative_syntax, elseif
+--RULESET--
+{"no_alternative_syntax": true, "elseif": true}
+
+--EXPECT--
+
+<?php
+if ($x) { foo(); } elseif ($y) { bar(); }
+
+--INPUT--
+
+<?php
+if ($x) { foo(); } else if ($y): bar(); endif;
