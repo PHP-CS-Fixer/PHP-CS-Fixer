@@ -1,18 +1,14 @@
- --TEST--
- Integration of fixers: no_alternative_syntax, elseif
- --RULESET--
- {"no_alternative_syntax": true, "elseif": true}
+--TEST--
+Integration of fixers: no_alternative_syntax, elseif
+--RULESET--
+{"no_alternative_syntax": true, "elseif": true}
 
 --EXPECT--
+
 <?php
-if (1 == 1) {
-    $var = 1;
-} elseif (1 == 2) {
-    $var = 2;
-}
+if(1 == 1) { $var = 1;}
 
 --INPUT--
+
 <?php
-if(1 == 1) :
-    $var = 1; elseif (1 == 2) :
-    $var = 2; endif;
+if(1 == 1) :$var = 1;endif;
