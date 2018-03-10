@@ -42,7 +42,6 @@
                 </array>
             </arguments>
         </listener>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
     </listeners>
 
     <php>
