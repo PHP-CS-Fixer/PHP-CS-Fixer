@@ -94,6 +94,7 @@ final class ElseifFixerTest extends AbstractFixerTestCase
                 '<?php if ($a) {} /**/elseif ($b){}',
                 '<?php if ($a) {} /**/else if ($b){}',
             ),
+            array('<?php if ($x) { foo(); } else if ($y): bar(); endif;'),
         );
     }
 }
