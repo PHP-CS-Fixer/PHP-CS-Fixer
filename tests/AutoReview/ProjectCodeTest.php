@@ -16,6 +16,7 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnitGoodPractices\Traits\PHPUnitVersionRetriever;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -480,6 +481,18 @@ final class ProjectCodeTest extends TestCase
             },
             iterator_to_array($finder, false)
         );
+
+        $incomatibleClasses = version_compare(PHPUnitVersionRetriever::getVersion(), '7.0.0') < 0 ? [
+            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV7::class,
+            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV7::class,
+        ] : [
+            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV5::class,
+            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV5::class,
+        ];
+
+        $classes = array_filter($classes, function ($className) use ($incomatibleClasses) {
+            return !in_array($className, $incomatibleClasses, true);
+        });
 
         sort($classes);
 
