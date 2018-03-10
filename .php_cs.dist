@@ -55,6 +55,7 @@ $config = PhpCsFixer\Config::create()
         'strict_comparison' => true,
         'strict_param' => true,
         'yoda_style' => true,
+        'no_alternative_syntax' => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
