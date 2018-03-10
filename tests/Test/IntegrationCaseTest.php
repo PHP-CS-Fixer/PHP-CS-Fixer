@@ -24,6 +24,7 @@ use PhpCsFixer\Tests\TestCase;
 final class IntegrationCaseTest extends TestCase
 {
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      * @expectedDeprecation The "PhpCsFixer\Test\IntegrationCase::shouldCheckPriority" method is deprecated. You should stop using it, as it will be removed in 3.0 version.
      */

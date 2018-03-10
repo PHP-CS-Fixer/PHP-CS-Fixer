@@ -1111,6 +1111,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      * @expectedDeprecation Fixer `Vendor4/foo` is deprecated, use `testA` and `testB` instead.
      */
