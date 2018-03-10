@@ -5,7 +5,9 @@ Integration of fixers: escape_implicit_backslashes,single_quote.
 --EXPECT--
 <?php
 $var = 'a\\b';
+$baz = "a\\'b";
 
 --INPUT--
 <?php
 $var = "a\b";
+$baz = "a\'b";
