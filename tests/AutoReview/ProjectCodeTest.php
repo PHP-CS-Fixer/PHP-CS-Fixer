@@ -12,6 +12,10 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+if (!class_exists(\PHPUnit\Runner\Version::class)) {
+    class_alias('PHPUnit_Runner_Version', \PHPUnit\Runner\Version::class);
+}
+
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
@@ -480,6 +484,18 @@ final class ProjectCodeTest extends TestCase
             },
             iterator_to_array($finder, false)
         );
+
+        $incomatibleClasses = version_compare(\PHPUnit\Runner\Version::id(), '7.0.0') < 0 ? [
+            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV7::class,
+            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV7::class,
+        ] : [
+            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV5::class,
+            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV5::class,
+        ];
+
+        $classes = array_filter($classes, function ($className) use ($incomatibleClasses) {
+            return !in_array($className, $incomatibleClasses, true);
+        });
 
         sort($classes);
 
