@@ -57,6 +57,9 @@ final class ShowCommand extends Command
     /** @var bool $hideRisky */
     private $hideInherited;
 
+    /** @var bool $hidePath */
+    private $hidePath;
+
     /** @var array $builtInFixers */
     private $builtInFixers;
 
@@ -77,9 +80,6 @@ final class ShowCommand extends Command
 
     /** @var array $list */
     private $list = [];
-
-    /** @var array $dump */
-    private $dump;
 
     /**
      * @param null|FixerFactory $fixerFactory
@@ -113,7 +113,7 @@ final class ShowCommand extends Command
                     new InputOption('hide-enabled', '', InputOption::VALUE_NONE, 'Hide fixers that are currently enabled (the ones that are not disabled with [\'fixer_name\' => false]).'),
                     new InputOption('hide-risky', '', InputOption::VALUE_NONE, 'Hide fixers that are marked as risky.'),
                     new InputOption('hide-inherited', '', InputOption::VALUE_NONE, 'Hide fixers that inherited from RuleSets.'),
-                    new InputOption('dump', '', InputOption::VALUE_NONE, 'Dumps the comparing result in a copy-and-pastable format ready for the .php_cs file.'),
+                    new InputOption('hide-path', '', InputOption::VALUE_NONE, 'Hide the addition path information.'),
                 ]
             )
             ->setDescription('Shows existent Fixers with the ones actually configured or enabled by inheritance.')
@@ -140,10 +140,6 @@ final class ShowCommand extends Command
 
         // Render the table
         $this->buildTable($output)->render();
-
-        if ($input->getOption('dump')) {
-            $this->dump($output);
-        }
     }
 
     /**
@@ -179,6 +175,7 @@ final class ShowCommand extends Command
         $this->hideEnabled = $input->getOption('hide-enabled');
         $this->hideRisky = $input->getOption('hide-risky');
         $this->hideInherited = $input->getOption('hide-inherited');
+        $this->hidePath = $input->getOption('hide-path');
     }
 
     /**
@@ -232,11 +229,10 @@ final class ShowCommand extends Command
 
         $columns = [
             sprintf('Fixer (%s)', count($this->builtInFixers)),
-            sprintf("Configured (%s)\nAre hidden: %s", count($this->configuredFixers), $this->hideConfigured ? self::THICK : self::CROSS),
-            sprintf("Enabled (%s)\nAre hidden: %s", count($this->enabledFixers), $this->hideEnabled ? self::THICK : self::CROSS),
-            sprintf("Risky (%s)\nAre hidden: %s", count($this->riskyFixers), $this->hideRisky ? self::THICK : self::CROSS),
-            sprintf("Inherited (%s)\nAre hidden: %s", $this->countInherited, $this->hideInherited ? self::THICK : self::CROSS),
-            //'In RuleSet',
+            sprintf("Configured (%s)", count($this->configuredFixers)),
+            sprintf("Enabled (%s)", count($this->enabledFixers)),
+            sprintf("Risky (%s)", count($this->riskyFixers)),
+            sprintf("Inherited (%s)", $this->countInherited),
         ];
 
         $table->setHeaders([$columns]);
@@ -276,12 +272,10 @@ final class ShowCommand extends Command
             return true;
         });
 
-        $this->dump = $rows;
-
         return array_map(function (array $fixer) {
-            $path = '.php_cs';
+            $path = null;
             if (isset($fixer['in_set'])) {
-                $path = implode(' > ', array_reverse($fixer['in_set']));
+                $path = implode("\n  ", array_reverse($fixer['in_set']));
             }
 
             $color = '<fg=green>%s %s</>';
@@ -297,10 +291,14 @@ final class ShowCommand extends Command
                 $icon = self::CROSS;
             }
 
+            $nameFormat = '<fg=green>%s</>';
+            if (!$this->hidePath && null !== $path) {
+                $nameFormat .= "\n  %s";
+            }
             $name = sprintf($color, $icon, $fixer['name']);
 
             return [
-                'name' => sprintf("<fg=green>%s</>\n  %s", $name, $path),
+                'name' => sprintf($nameFormat, $name, $path),
                 'is_configured' => $fixer['is_configured'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
                 'is_enabled' => $fixer['is_enabled'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
                 'is_risky' => $fixer['is_risky'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
@@ -308,28 +306,6 @@ final class ShowCommand extends Command
                 //'in_set' => $path,
             ];
         }, $rows);
-    }
-
-    /**
-     * @param OutputInterface $output
-     */
-    private function dump(OutputInterface $output)
-    {
-        $line = empty($this->dump)
-            ? 'You are aware of all exsisting rules! Yeah!'
-            : var_export(
-                array_map(function () {return false; }, $this->dump),
-                true
-            );
-
-        $output->writeln(
-            empty($this->dump)
-                ? $line
-                : "\nCopy and paste the following rules in your .php_cs file:\n\n"
-                .'\\\\ Below the rules I don\'t want to use'."\n"
-                .'\''.$line."\n"
-                .'\\\\ END Rules to never use'."\n"
-        );
     }
 
     /**
