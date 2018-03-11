@@ -13,8 +13,8 @@
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Config;
-use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
@@ -28,6 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Adamo Aerendir Crespi <hello@aerendir.me>
+ * @author Patrick Landolt <landolt@gmail.com>
  */
 final class ShowCommand extends Command
 {
@@ -39,11 +40,20 @@ final class ShowCommand extends Command
     /** @var ToolInfoInterface */
     private $toolInfo;
 
-    /** @var ConfigInterface $defaultConfig */
-    private $defaultConfig;
-
     /** @var FixerFactory $fixerFactory */
     private $fixerFactory;
+
+    /** @var array $builtInFixers */
+    private $builtInFixers;
+
+    /** @var array $configuredFixers */
+    private $configuredFixers;
+
+    /** @var array $enabledFixers */
+    private $enabledFixers;
+
+    /** @var array $list Stores all Fixers */
+    private $list = [];
 
     /** @var bool $hideConfigured */
     private $hideConfigured;
@@ -57,29 +67,26 @@ final class ShowCommand extends Command
     /** @var bool $hideRisky */
     private $hideInherited;
 
-    /** @var bool $hidePath */
-    private $hidePath;
+    /** @var bool $hideDeprecated */
+    private $hideDeprecated;
 
-    /** @var array $builtInFixers */
-    private $builtInFixers;
+    /** @var bool $hideInheritance */
+    private $hideInheritance;
 
-    /** @var array $configuredFixers */
-    private $configuredFixers;
+    /** @var int $countConfiguredFixers */
+    private $countConfiguredFixers = 0;
 
-    /** @var array $enabledFixers */
-    private $enabledFixers;
+    /** @var int $countRiskyFixers */
+    private $countRiskyFixers = 0;
 
-    /** @var array $riskyFixers */
-    private $riskyFixers;
+    /** @var int $countEnabledFixers */
+    private $countEnabledFixers = 0;
 
-    /** @var int $countInherited */
-    private $countInherited = 0;
+    /** @var int $countInheritedFixers */
+    private $countInheritedFixers = 0;
 
-    /** @var array $ruleSets Stores all the RuleSets and the Fixers they have */
-    private $ruleSets = [];
-
-    /** @var array $list */
-    private $list = [];
+    /** @var int $countDeprecatedFixers */
+    private $countDeprecatedFixers = 0;
 
     /**
      * @param null|FixerFactory $fixerFactory
@@ -96,7 +103,6 @@ final class ShowCommand extends Command
         }
 
         $this->fixerFactory = $fixerFactory;
-        $this->defaultConfig = new Config();
     }
 
     /**
@@ -113,7 +119,8 @@ final class ShowCommand extends Command
                     new InputOption('hide-enabled', '', InputOption::VALUE_NONE, 'Hide fixers that are currently enabled (the ones that are not disabled with [\'fixer_name\' => false]).'),
                     new InputOption('hide-risky', '', InputOption::VALUE_NONE, 'Hide fixers that are marked as risky.'),
                     new InputOption('hide-inherited', '', InputOption::VALUE_NONE, 'Hide fixers that inherited from RuleSets.'),
-                    new InputOption('hide-path', '', InputOption::VALUE_NONE, 'Hide the addition path information.'),
+                    new InputOption('hide-deprecated', '', InputOption::VALUE_NONE, 'Hide fixers that are deprecated.'),
+                    new InputOption('hide-inheritance', '', InputOption::VALUE_NONE, 'Hide the addition inheritance information.'),
                 ]
             )
             ->setDescription('Shows existent Fixers with the ones actually configured or enabled by inheritance.')
@@ -125,37 +132,23 @@ final class ShowCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /**
-         * @var string
-         * @var RuleSet $set
-         */
-        foreach ($this->ruleSets as $name => $set) {
-            $this->processRuleSet($name, $set);
-        }
+        $this->hideConfigured = $input->getOption('hide-configured');
+        $this->hideEnabled = $input->getOption('hide-enabled');
+        $this->hideRisky = $input->getOption('hide-risky');
+        $this->hideInherited = $input->getOption('hide-inherited');
+        $this->hideDeprecated = $input->getOption('hide-deprecated');
+        $this->hideInheritance = $input->getOption('hide-inheritance');
 
-        /** @var FixerInterface $fixer */
-        foreach ($this->builtInFixers as $fixer) {
-            $this->processFixer($fixer);
-        }
-
-        // Render the table
-        $this->buildTable($output)->render();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
         $resolver = new ConfigurationResolver(
-            $this->defaultConfig,
+            new Config(),
             [
-                'allow-risky' => true,
                 'config' => $input->getOption('config'),
             ],
             getcwd(),
             $this->toolInfo
         );
+
+        $output->writeln(sprintf('Loaded config <comment>%s</comment> from %s.', $resolver->getConfig()->getName(), $resolver->getConfigFile()));
 
         $this->builtInFixers = $this->fixerFactory->getFixers();
         $this->configuredFixers = $resolver->getConfig()->getRules();
@@ -163,19 +156,29 @@ final class ShowCommand extends Command
 
         // Get the RuleSets and their Fixers
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
-            $this->ruleSets[$setName] = new RuleSet([$setName => true]);
+            $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
-        // Order alphabetically
+        // Order fixers alphabetically
         usort($this->builtInFixers, function (FixerInterface $a, FixerInterface $b) {
             return strcmp($a->getName(), $b->getName());
         });
 
-        $this->hideConfigured = $input->getOption('hide-configured');
-        $this->hideEnabled = $input->getOption('hide-enabled');
-        $this->hideRisky = $input->getOption('hide-risky');
-        $this->hideInherited = $input->getOption('hide-inherited');
-        $this->hidePath = $input->getOption('hide-path');
+        /** @var FixerInterface $fixer */
+        foreach ($this->builtInFixers as $fixer) {
+            $this->processFixer($fixer);
+        }
+
+        /**
+         * @var string
+         * @var RuleSet $set
+         */
+        foreach ($ruleSets as $name => $set) {
+            $this->processRuleSet($name, $set);
+        }
+
+        // Render the table
+        $this->buildTable($output)->render();
     }
 
     /**
@@ -189,10 +192,8 @@ final class ShowCommand extends Command
          * @var bool   $value
          */
         foreach ($set->getRules() as $rule => $value) {
-            if (false === isset($this->list[$rule]['in_set'])) {
-                $this->list[$rule]['in_set'] = [];
-            }
             $this->list[$rule]['in_set'][] = $name;
+            $this->list[$rule]['is_inherited'] = true;
         }
     }
 
@@ -201,21 +202,13 @@ final class ShowCommand extends Command
      */
     private function processFixer(FixerInterface $fixer)
     {
-        $isInherited = !empty($this->list[$fixer->getName()]['in_set']);
-
-        if ($isInherited) {
-            ++$this->countInherited;
-        }
-
         $this->list[$fixer->getName()]['name'] = $fixer->getName();
         $this->list[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
         $this->list[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
         $this->list[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
-        $this->list[$fixer->getName()]['is_inherited'] = $isInherited;
-
-        if ($this->isFixerRisky($fixer)) {
-            $this->riskyFixers[] = $fixer->getName();
-        }
+        $this->list[$fixer->getName()]['is_inherited'] = false;
+        $this->list[$fixer->getName()]['is_deprecated'] = $this->isFixerDeprecated($fixer);
+//        $this->list[$fixer->getName()]['is_custom'] = false;
     }
 
     /**
@@ -227,17 +220,18 @@ final class ShowCommand extends Command
     {
         $table = new Table($output);
 
-        $columns = [
-            sprintf('Fixer (%s)', count($this->builtInFixers)),
-            sprintf("Configured (%s)", count($this->configuredFixers)),
-            sprintf("Enabled (%s)", count($this->enabledFixers)),
-            sprintf("Risky (%s)", count($this->riskyFixers)),
-            sprintf("Inherited (%s)", $this->countInherited),
-        ];
-
-        $table->setHeaders([$columns]);
-
         $table->setRows($this->filterFixers());
+
+        $columns = [
+            sprintf('Fixer (%d)', \count($this->builtInFixers)),
+            sprintf('Configured (%d)', $this->countConfiguredFixers),
+            sprintf('Enabled (%d)', $this->countEnabledFixers),
+            sprintf('Risky (%d)', $this->countRiskyFixers),
+            sprintf('Inherited (%d)', $this->countInheritedFixers),
+            sprintf('Deprecated (%d)', $this->countDeprecatedFixers),
+//            sprintf("Custom (%d)", 0),
+        ];
+        $table->setHeaders([$columns]);
 
         return $table;
     }
@@ -251,22 +245,42 @@ final class ShowCommand extends Command
         $hideEnabled = $this->hideEnabled;
         $hideRisky = $this->hideRisky;
         $hideInherited = $this->hideInherited;
+        $hideDeprecated = $this->hideDeprecated;
 
-        $rows = array_filter($this->list, function (array $fixer) use ($hideConfigured, $hideEnabled, $hideRisky, $hideInherited) {
-            if ($hideConfigured && $fixer['is_configured']) {
-                return false;
+        $rows = array_filter($this->list, function (array $fixer) use ($hideConfigured, $hideEnabled, $hideRisky, $hideInherited, $hideDeprecated) {
+            if ($fixer['is_configured']) {
+                if ($hideConfigured) {
+                    return false;
+                }
+                ++$this->countConfiguredFixers;
             }
 
-            if ($hideEnabled && $fixer['is_enabled']) {
-                return false;
+            if ($fixer['is_enabled']) {
+                if ($hideEnabled) {
+                    return false;
+                }
+                ++$this->countEnabledFixers;
             }
 
-            if ($hideRisky && $fixer['is_risky']) {
-                return false;
+            if ($fixer['is_risky']) {
+                if ($hideRisky) {
+                    return false;
+                }
+                ++$this->countRiskyFixers;
             }
 
-            if ($hideInherited && $fixer['is_inherited']) {
-                return false;
+            if ($fixer['is_deprecated']) {
+                if ($hideDeprecated) {
+                    return false;
+                }
+                ++$this->countDeprecatedFixers;
+            }
+
+            if ($fixer['is_inherited']) {
+                if ($hideInherited) {
+                    return false;
+                }
+                ++$this->countInheritedFixers;
             }
 
             return true;
@@ -278,21 +292,21 @@ final class ShowCommand extends Command
                 $path = implode("\n  ", array_reverse($fixer['in_set']));
             }
 
-            $color = '<fg=green>%s %s</>';
-            $icon = self::THICK;
+            $color = '<fg=yellow>%s %s</>';
+            $icon = self::PLUS;
 
-            if ($fixer['is_inherited']) {
-                $color = '<fg=yellow>%s %s</>';
-                $icon = self::PLUS;
+            if ($fixer['is_enabled']) {
+                $color = '<fg=green>%s %s</>';
+                $icon = self::THICK;
             }
 
-            if (false === $fixer['is_enabled']) {
+            if (!$fixer['is_enabled'] && $fixer['is_configured']) {
                 $color = '<fg=red>%s %s</>';
                 $icon = self::CROSS;
             }
 
             $nameFormat = '<fg=green>%s</>';
-            if (!$this->hidePath && null !== $path) {
+            if (!$this->hideInheritance && null !== $path) {
                 $nameFormat .= "\n  %s";
             }
             $name = sprintf($color, $icon, $fixer['name']);
@@ -303,7 +317,8 @@ final class ShowCommand extends Command
                 'is_enabled' => $fixer['is_enabled'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
                 'is_risky' => $fixer['is_risky'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
                 'is_inherited' => $fixer['is_inherited'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
-                //'in_set' => $path,
+                'is_deprecated' => $fixer['is_deprecated'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
+//                'is_custom' => $fixer['is_custom'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
             ];
         }, $rows);
     }
@@ -323,6 +338,16 @@ final class ShowCommand extends Command
      *
      * @return bool
      */
+    private function isFixerEnabled(FixerInterface $fixer)
+    {
+        return isset($this->enabledFixers[$fixer->getName()]);
+    }
+
+    /**
+     * @param FixerInterface $fixer
+     *
+     * @return bool
+     */
     private function isFixerRisky(FixerInterface $fixer)
     {
         return $fixer->isRisky();
@@ -333,8 +358,8 @@ final class ShowCommand extends Command
      *
      * @return bool
      */
-    private function isFixerEnabled(FixerInterface $fixer)
+    private function isFixerDeprecated(FixerInterface $fixer)
     {
-        return isset($this->enabledFixers[$fixer->getName()]);
+        return $fixer instanceof DeprecatedFixerInterface;
     }
 }
