@@ -221,7 +221,7 @@ final class ShowCommand extends Command
      * @param FixerInterface $fixer
      * @param bool           $isCustom
      */
-    private function processFixer(FixerInterface $fixer, bool $isCustom = false)
+    private function processFixer(FixerInterface $fixer, $isCustom = false)
     {
         $this->list[$fixer->getName()]['name'] = $fixer->getName();
         $this->list[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
