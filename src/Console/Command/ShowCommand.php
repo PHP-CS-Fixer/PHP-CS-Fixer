@@ -63,6 +63,9 @@ final class ShowCommand extends Command
     private $enabledFixers;
 
     /** @var FixerInterface[] */
+    private $enabledFixersTroughInheritance;
+
+    /** @var FixerInterface[] */
     private $undefinedFixers;
 
     /** @var array */
@@ -181,6 +184,9 @@ final class ShowCommand extends Command
         $this->configuredFixers = $resolver->getConfig()->getRules();
         $this->enabledFixers = $resolver->getRules();
 
+        // fixers that are in enabled, but not in configured!
+        $this->enabledFixersTroughInheritance = array_diff_key($this->enabledFixers, $this->configuredFixers);
+
         // Get the RuleSets and their Fixers
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
             $ruleSets[$setName] = new RuleSet([$setName => true]);
@@ -232,6 +238,7 @@ final class ShowCommand extends Command
         $this->fixerList[$fixer->getName()]['name'] = $fixer->getName();
         $this->fixerList[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
         $this->fixerList[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
+        $this->fixerList[$fixer->getName()]['is_enabled_trough_inheritance'] = $this->isFixerEnabledTroughInheritance($fixer);
         $this->fixerList[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
         $this->fixerList[$fixer->getName()]['is_inherited'] = false;
         $this->fixerList[$fixer->getName()]['is_deprecated'] = $this->isFixerDeprecated($fixer);
@@ -355,6 +362,11 @@ final class ShowCommand extends Command
                 $icon = self::THICK;
             }
 
+            if ($fixer['is_enabled_trough_inheritance']) {
+                $color = '<fg=green>%s %s (>)</>';
+                $icon = self::THICK;
+            }
+
             if (!$fixer['is_enabled'] && $fixer['is_configured']) {
                 $color = '<fg=red>%s %s</>';
                 $icon = self::CROSS;
@@ -451,6 +463,16 @@ final class ShowCommand extends Command
     private function isFixerEnabled(FixerInterface $fixer)
     {
         return isset($this->enabledFixers[$fixer->getName()]);
+    }
+
+    /**
+     * @param FixerInterface $fixer
+     *
+     * @return bool
+     */
+    private function isFixerEnabledTroughInheritance(FixerInterface $fixer)
+    {
+        return isset($this->enabledFixersTroughInheritance[$fixer->getName()]);
     }
 
     /**
