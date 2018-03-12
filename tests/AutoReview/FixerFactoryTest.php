@@ -32,7 +32,7 @@ final class FixerFactoryTest extends TestCase
         $factory->registerBuiltInFixers();
         $fixers = $factory->getFixers();
 
-        $this->assertSame('encoding', $fixers[0]->getName(), 'Expected "encoding" fixer to have the highest priority.');
+        $this->assertSame('encoding', $fixers[0]->getName(), 'Expected "encoding" fixer to have the highest priority.'); // kick ci
         $this->assertSame('full_opening_tag', $fixers[1]->getName(), 'Expected "full_opening_tag" fixer has second highest priority.');
         $this->assertSame('single_blank_line_at_eof', $fixers[count($fixers) - 1]->getName(), 'Expected "single_blank_line_at_eof" to have the lowest priority.');
     }
