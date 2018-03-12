@@ -6,6 +6,7 @@
         "PHPUnitGoodPractices\\Traits\\ExpectOverSetExceptionTrait",
         "PHPUnitGoodPractices\\Traits\\IdentityOverEqualityTrait",
         "PHPUnitGoodPractices\\Traits\\ProphecyOverMockObjectTrait",
+        "PHPUnitGoodPractices\\Traits\\ProphesizeOnlyInterfaceTrait",
         "Prophecy\\Argument",
 
         "null", "true", "false",

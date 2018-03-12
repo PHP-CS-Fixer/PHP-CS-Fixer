@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
@@ -109,7 +110,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $usages = [];
 
         foreach ($useDeclarations as $shortName => $useDeclaration) {
-            $usages[$shortName] = (bool) preg_match('/(?<![\$\\\\])(?<!->)\b'.preg_quote($shortName, '/').'\b/i', $content);
+            $usages[$shortName] = (bool) Preg::match('/(?<![\$\\\\])(?<!->)\b'.preg_quote($shortName, '/').'\b/i', $content);
         }
 
         return $usages;
@@ -209,7 +210,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $nextToken = $tokens[$nextIndex];
 
         if ($nextToken->isWhitespace()) {
-            $content = preg_replace(
+            $content = Preg::replace(
                 "#^\r\n|^\n#",
                 '',
                 ltrim($nextToken->getContent(), " \t"),

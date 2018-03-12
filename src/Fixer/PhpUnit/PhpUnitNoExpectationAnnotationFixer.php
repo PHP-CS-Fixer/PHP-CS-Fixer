@@ -22,6 +22,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -283,10 +284,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $tag = $annotation->getTag()->getName();
 
-        preg_match('/^\s*\*\s*@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches);
+        Preg::match('/^\s*\*\s*@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches);
         $content = $matches[1];
-        if (preg_match('/\R/u', $content)) {
-            $content = preg_replace('/\s*\R+\s*\*\s*/u', ' ', $content);
+        if (Preg::match('/\R/u', $content)) {
+            $content = Preg::replace('/\s*\R+\s*\*\s*/u', ' ', $content);
         }
 
         return rtrim($content);
