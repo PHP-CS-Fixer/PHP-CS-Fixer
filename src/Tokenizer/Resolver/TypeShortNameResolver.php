@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer\Resolver;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
@@ -40,7 +41,7 @@ final class TypeShortNameResolver
         $useMap = $this->getUseMapFromTokens($tokens);
         foreach ($useMap as $shortName => $fullName) {
             $regex = '/^\\\\?'.preg_quote($fullName, '/').'$/';
-            if (preg_match($regex, $typeName)) {
+            if (Preg::match($regex, $typeName)) {
                 return $shortName;
             }
         }
@@ -52,7 +53,7 @@ final class TypeShortNameResolver
             foreach ($namespaces as $shortName => $fullName) {
                 $matches = [];
                 $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
-                if (preg_match($regex, $typeName, $matches)) {
+                if (Preg::match($regex, $typeName, $matches)) {
                     return $matches['className'];
                 }
             }
@@ -63,7 +64,7 @@ final class TypeShortNameResolver
         foreach ($useMap as $shortName => $fullName) {
             $matches = [];
             $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
-            if (preg_match($regex, $typeName, $matches)) {
+            if (Preg::match($regex, $typeName, $matches)) {
                 return $shortName.'\\'.$matches['className'];
             }
         }
