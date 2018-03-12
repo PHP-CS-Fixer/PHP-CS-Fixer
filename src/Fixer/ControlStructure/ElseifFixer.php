@@ -58,12 +58,19 @@ final class ElseifFixer extends AbstractFixer
 
             $ifTokenIndex = $tokens->getNextMeaningfulToken($index);
 
-            // if next meaning token is not T_IF - continue searching, this is not the case for fixing
+            // if next meaningful token is not T_IF - continue searching, this is not the case for fixing
             if (!$tokens[$ifTokenIndex]->isGivenKind(T_IF)) {
                 continue;
             }
 
-            // now we have T_ELSE following by T_IF so we could fix this
+            // if next meaningful token is T_IF, but uses an alternative syntax - this is not the case for fixing neither
+            $conditionEndBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextMeaningfulToken($ifTokenIndex));
+            $afterConditionIndex = $tokens->getNextMeaningfulToken($conditionEndBraceIndex);
+            if ($tokens[$afterConditionIndex]->equals(':')) {
+                continue;
+            }
+
+            // now we have T_ELSE following by T_IF with no alternative syntax so we could fix this
             // 1. clear whitespaces between T_ELSE and T_IF
             $tokens->clearAt($index + 1);
 
