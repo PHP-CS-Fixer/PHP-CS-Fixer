@@ -236,7 +236,6 @@ final class ShowCommand extends Command
         $this->fixerList[$fixer->getName()]['is_inherited'] = false;
         $this->fixerList[$fixer->getName()]['is_deprecated'] = $this->isFixerDeprecated($fixer);
         $this->fixerList[$fixer->getName()]['is_custom'] = $this->isCustomFixer($fixer);
-        $this->fixerList[$fixer->getName()]['in_set'] = [];
     }
 
     /**
@@ -248,17 +247,37 @@ final class ShowCommand extends Command
     {
         $table = new Table($output);
 
-        $table->setRows($this->filterFixers());
+        $rows = $this->filterFixers();
+        $table->setRows($rows);
 
         $columns = [
-            sprintf('Fixer (%d)', \count($this->availableFixers)),
-            sprintf('Configured (%d)', $this->countConfiguredFixers),
-            sprintf('Enabled (%d)', $this->countEnabledFixers),
-            sprintf('Risky (%d)', $this->countRiskyFixers),
-            sprintf('Inherited (%d)', $this->countInheritedFixers),
-            sprintf('Deprecated (%d)', $this->countDeprecatedFixers),
-            sprintf('Custom (%d)', $this->countCustomFixers),
+            sprintf('Fixer (%d)', \count($rows)),
         ];
+
+        if (!$this->hideConfigured) {
+            $columns[] = sprintf('Configured (%d)', $this->countConfiguredFixers);
+        }
+
+        if (!$this->hideEnabled) {
+            $columns[] = sprintf('Enabled (%d)', $this->countEnabledFixers);
+        }
+
+        if (!$this->hideRisky) {
+            $columns[] = sprintf('Risky (%d)', $this->countRiskyFixers);
+        }
+
+        if (!$this->hideInherited) {
+            $columns[] = sprintf('Inherited (%d)', $this->countInheritedFixers);
+        }
+
+        if (!$this->hideDeprecated) {
+            $columns[] = sprintf('Deprecated (%d)', $this->countDeprecatedFixers);
+        }
+
+        if (!$this->hideCustom) {
+            $columns[] = sprintf('Custom (%d)', $this->countCustomFixers);
+        }
+
         $table->setHeaders([$columns]);
 
         return $table;
@@ -347,15 +366,35 @@ final class ShowCommand extends Command
             }
             $name = sprintf($color, $icon, $fixer['name']);
 
-            return [
+            $row = [
                 'name' => sprintf($nameFormat, $name, $path),
-                'is_configured' => $fixer['is_configured'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
-                'is_enabled' => $fixer['is_enabled'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
-                'is_risky' => $fixer['is_risky'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
-                'is_inherited' => $fixer['is_inherited'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
-                'is_deprecated' => $fixer['is_deprecated'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
-                'is_custom' => $fixer['is_custom'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS),
             ];
+
+            if (!$this->hideConfigured) {
+                $row['is_configured'] = $fixer['is_configured'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
+            }
+
+            if (!$this->hideEnabled) {
+                $row['is_enabled'] = $fixer['is_enabled'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
+            }
+
+            if (!$this->hideRisky) {
+                $row['is_risky'] = $fixer['is_risky'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
+            }
+
+            if (!$this->hideInherited) {
+                $row['is_inherited'] = $fixer['is_inherited'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
+            }
+
+            if (!$this->hideDeprecated) {
+                $row['is_deprecated'] = $fixer['is_deprecated'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
+            }
+
+            if (!$this->hideCustom) {
+                $row['is_custom'] = $fixer['is_custom'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
+            }
+
+            return $row;
         }, $rows);
     }
 
