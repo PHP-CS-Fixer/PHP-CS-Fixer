@@ -17,6 +17,7 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\FixerNameValidator;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\RuleSetInterface;
 use PhpCsFixer\ToolInfoInterface;
@@ -40,61 +41,70 @@ final class ShowCommand extends Command
     /** @var ToolInfoInterface */
     private $toolInfo;
 
-    /** @var FixerFactory $fixerFactory */
+    /** @var FixerFactory */
     private $fixerFactory;
 
-    /** @var FixerInterface[] $builtInFixers */
-    private $builtInFixers;
+    /** @var FixerNameValidator */
+    private $fixerNameValidator;
 
-    /** @var FixerInterface[] $customFixers */
-    private $customFixers;
+    /** @var string */
+    private $configName;
 
-    /** @var FixerInterface[] $configuredFixers */
+    /** @var string */
+    private $configFile;
+
+    /** @var FixerInterface[] */
+    private $availableFixers;
+
+    /** @var FixerInterface[] */
     private $configuredFixers;
 
-    /** @var FixerInterface[] $enabledFixers */
+    /** @var FixerInterface[] */
     private $enabledFixers;
 
-    /** @var array $list Stores all Fixers */
-    private $list = [];
+    /** @var FixerInterface[] */
+    private $undefinedFixers;
 
-    /** @var bool $hideConfigured */
+    /** @var array */
+    private $fixerList = [];
+
+    /** @var bool */
     private $hideConfigured;
 
-    /** @var bool $hideEnabled */
+    /** @var bool */
     private $hideEnabled;
 
-    /** @var bool $hideRisky */
+    /** @var bool */
     private $hideRisky;
 
-    /** @var bool $hideRisky */
+    /** @var bool */
     private $hideInherited;
 
-    /** @var bool $hideDeprecated */
+    /** @var bool */
     private $hideDeprecated;
 
-    /** @var bool $hideCustom */
+    /** @var bool */
     private $hideCustom;
 
-    /** @var bool $hideInheritance */
+    /** @var bool */
     private $hideInheritance;
 
-    /** @var int $countConfiguredFixers */
+    /** @var int */
     private $countConfiguredFixers = 0;
 
-    /** @var int $countRiskyFixers */
+    /** @var int */
     private $countRiskyFixers = 0;
 
-    /** @var int $countEnabledFixers */
+    /** @var int */
     private $countEnabledFixers = 0;
 
-    /** @var int $countInheritedFixers */
+    /** @var int */
     private $countInheritedFixers = 0;
 
-    /** @var int $countDeprecatedFixers */
+    /** @var int */
     private $countDeprecatedFixers = 0;
 
-    /** @var int $countCustomFixers */
+    /** @var int */
     private $countCustomFixers = 0;
 
     /**
@@ -112,6 +122,8 @@ final class ShowCommand extends Command
         }
 
         $this->fixerFactory = $fixerFactory;
+
+        $this->fixerNameValidator = new FixerNameValidator();
     }
 
     /**
@@ -131,6 +143,7 @@ final class ShowCommand extends Command
                     new InputOption('hide-deprecated', '', InputOption::VALUE_NONE, 'Hide fixers that are deprecated.'),
                     new InputOption('hide-custom', '', InputOption::VALUE_NONE, 'Hide fixers that are custom.'),
                     new InputOption('hide-inheritance', '', InputOption::VALUE_NONE, 'Hide the addition inheritance information.'),
+                    new InputOption('compare', '', InputOption::VALUE_NONE, 'Dumps the comparing result between your config and all available fixers in a copy-and-pastable format ready for the .php_cs file.'),
                 ]
             )
             ->setDescription('Shows existent Fixers with the ones actually configured or enabled by inheritance.')
@@ -159,46 +172,40 @@ final class ShowCommand extends Command
             $this->toolInfo
         );
 
-        $output->writeln(sprintf('Loaded config <comment>%s</comment> from %s.', $resolver->getConfig()->getName(), $resolver->getConfigFile()));
+        $this->configName = $resolver->getConfig()->getName();
+        $this->configFile = $resolver->getConfigFile();
 
-        $this->builtInFixers = $this->fixerFactory->getFixers();
+        $output->writeln(sprintf('Loaded config <comment>%s</comment> from %s.', $this->configName, $this->configFile));
+
+        $this->availableFixers = array_merge($this->fixerFactory->getFixers(), $resolver->getConfig()->getCustomFixers());
         $this->configuredFixers = $resolver->getConfig()->getRules();
         $this->enabledFixers = $resolver->getRules();
-        $this->customFixers = $resolver->getConfig()->getCustomFixers();
 
         // Get the RuleSets and their Fixers
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
             $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
-        // Order built in fixers alphabetically
-        usort($this->builtInFixers, function (FixerInterface $a, FixerInterface $b) {
+        // Order fixers alphabetically
+        usort($this->availableFixers, function (FixerInterface $a, FixerInterface $b) {
             return strcmp($a->getName(), $b->getName());
         });
 
-        // Order custom fixers alphabetically
-        usort($this->customFixers, function (FixerInterface $a, FixerInterface $b) {
-            return strcmp($a->getName(), $b->getName());
-        });
-
-        foreach ($this->builtInFixers as $fixer) {
+        foreach ($this->availableFixers as $fixer) {
             $this->processFixer($fixer);
         }
 
-        foreach ($this->customFixers as $fixer) {
-            $this->processFixer($fixer, true);
-        }
-
-        /**
-         * @var string
-         * @var RuleSet $set
-         */
         foreach ($ruleSets as $name => $set) {
             $this->processRuleSet($name, $set);
         }
 
         // Render the table
         $this->buildTable($output)->render();
+
+        if ($input->getOption('compare')) {
+            $this->calculateComparison();
+            $this->dumpComparison($output);
+        }
     }
 
     /**
@@ -212,24 +219,24 @@ final class ShowCommand extends Command
          * @var bool   $value
          */
         foreach ($set->getRules() as $rule => $value) {
-            $this->list[$rule]['in_set'][] = $name;
-            $this->list[$rule]['is_inherited'] = true;
+            $this->fixerList[$rule]['in_set'][] = $name;
+            $this->fixerList[$rule]['is_inherited'] = true;
         }
     }
 
     /**
      * @param FixerInterface $fixer
-     * @param bool           $isCustom
      */
-    private function processFixer(FixerInterface $fixer, $isCustom = false)
+    private function processFixer(FixerInterface $fixer)
     {
-        $this->list[$fixer->getName()]['name'] = $fixer->getName();
-        $this->list[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
-        $this->list[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
-        $this->list[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
-        $this->list[$fixer->getName()]['is_inherited'] = false;
-        $this->list[$fixer->getName()]['is_deprecated'] = $this->isFixerDeprecated($fixer);
-        $this->list[$fixer->getName()]['is_custom'] = $isCustom;
+        $this->fixerList[$fixer->getName()]['name'] = $fixer->getName();
+        $this->fixerList[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
+        $this->fixerList[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
+        $this->fixerList[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
+        $this->fixerList[$fixer->getName()]['is_inherited'] = false;
+        $this->fixerList[$fixer->getName()]['is_deprecated'] = $this->isFixerDeprecated($fixer);
+        $this->fixerList[$fixer->getName()]['is_custom'] = $this->isCustomFixer($fixer);
+        $this->fixerList[$fixer->getName()]['in_set'] = [];
     }
 
     /**
@@ -244,7 +251,7 @@ final class ShowCommand extends Command
         $table->setRows($this->filterFixers());
 
         $columns = [
-            sprintf('Fixer (%d)', \count($this->builtInFixers)),
+            sprintf('Fixer (%d)', \count($this->availableFixers)),
             sprintf('Configured (%d)', $this->countConfiguredFixers),
             sprintf('Enabled (%d)', $this->countEnabledFixers),
             sprintf('Risky (%d)', $this->countRiskyFixers),
@@ -269,7 +276,7 @@ final class ShowCommand extends Command
         $hideDeprecated = $this->hideDeprecated;
         $hideCustom = $this->hideCustom;
 
-        $rows = array_filter($this->list, function (array $fixer) use ($hideConfigured, $hideEnabled, $hideRisky, $hideInherited, $hideDeprecated, $hideCustom) {
+        $rows = array_filter($this->fixerList, function (array $fixer) use ($hideConfigured, $hideEnabled, $hideRisky, $hideInherited, $hideDeprecated, $hideCustom) {
             if ($fixer['is_configured']) {
                 if ($hideConfigured) {
                     return false;
@@ -352,6 +359,41 @@ final class ShowCommand extends Command
         }, $rows);
     }
 
+    private function calculateComparison()
+    {
+        $this->undefinedFixers = array_diff_key($this->fixerList, $this->configuredFixers, $this->enabledFixers);
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    private function dumpComparison(OutputInterface $output)
+    {
+        if (empty($this->undefinedFixers)) {
+            $output->writeln("\nYou are aware of all exsisting rules! Yeah!");
+
+            return;
+        }
+
+        $line = var_export(
+            array_map(function () {return false; }, $this->undefinedFixers),
+            true
+        );
+
+        $output->writeln(
+            sprintf(
+            "\nCopy and paste the following <info>%d</info> undefined rules in your <comment>%s</comment> config file %s.\n\n"
+            ."// Below the rules I don't want to use\n"
+            ."%s;\n"
+            .'// END Rules to never use',
+            \count($this->undefinedFixers),
+            $this->configName,
+            $this->configFile,
+            $line
+        )
+        );
+    }
+
     /**
      * @param FixerInterface $fixer
      *
@@ -390,5 +432,15 @@ final class ShowCommand extends Command
     private function isFixerDeprecated(FixerInterface $fixer)
     {
         return $fixer instanceof DeprecatedFixerInterface;
+    }
+
+    /**
+     * @param FixerInterface $fixer
+     *
+     * @return bool
+     */
+    private function isCustomFixer(FixerInterface $fixer)
+    {
+        return $this->fixerNameValidator->isValid($fixer->getName(), true);
     }
 }
