@@ -69,7 +69,6 @@ final class FixerFactoryTest extends TestCase
             array($fixers['combine_consecutive_unsets'], $fixers['space_after_semicolon']),
             array($fixers['declare_strict_types'], $fixers['blank_line_after_opening_tag']),
             array($fixers['declare_strict_types'], $fixers['declare_equal_normalize']),
-            array($fixers['declare_strict_types'], $fixers['single_blank_line_before_namespace']),
             array($fixers['elseif'], $fixers['braces']),
             array($fixers['function_to_constant'], $fixers['native_function_casing']),
             array($fixers['function_to_constant'], $fixers['no_extra_consecutive_blank_lines']),
