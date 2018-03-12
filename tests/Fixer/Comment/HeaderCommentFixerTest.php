@@ -303,6 +303,25 @@ echo \'x\';',
 
 echo \'x\';',
             ),
+            array(
+                array('header' => 'Foo'),
+                '<?php
+
+declare(strict_types=1);
+
+/*
+ * Foo
+ */
+
+echo 0;',
+                '<?php
+/*
+ * Foo
+ */
+declare(strict_types=1);
+
+echo 0;',
+            ),
         );
     }
 

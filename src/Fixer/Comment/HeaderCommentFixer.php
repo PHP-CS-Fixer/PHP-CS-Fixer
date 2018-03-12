@@ -125,7 +125,7 @@ echo 1;
             }
 
             $this->insertHeader($tokens, $headerNewIndex);
-        } elseif ($this->getHeaderAsComment() !== $tokens[$headerCurrentIndex]->getContent()) {
+        } elseif ($headerCurrentIndex < $headerNewIndex || $this->getHeaderAsComment() !== $tokens[$headerCurrentIndex]->getContent()) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($headerCurrentIndex);
             if ('' === $this->configuration['header']) {
                 return; // header found and cleared, none should be set, return
@@ -209,9 +209,15 @@ echo 1;
      */
     private function findHeaderCommentCurrentIndex(Tokens $tokens, $headerNewIndex)
     {
-        $index = $tokens->getNextNonWhitespace($headerNewIndex);
+        $maxIndex = $tokens->getNextNonWhitespace($headerNewIndex);
 
-        return null === $index || !$tokens[$index]->isComment() ? null : $index;
+        if (null === $maxIndex) {
+            return null;
+        }
+
+        $index = $tokens->getNextTokenOfKind(0, array(array(T_COMMENT), array(T_DOC_COMMENT)));
+
+        return null === $index || $index > $maxIndex ? null : $index;
     }
 
     /**
