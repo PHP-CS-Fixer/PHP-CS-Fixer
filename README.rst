@@ -644,8 +644,8 @@ Choose from the list of available rules:
   - ``commentType`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to
     ``'comment'``
   - ``header`` (``string``): proper header content; required
-  - ``location`` (``'after_declare_strict'``, ``'after_open'``): the location of the
-    inserted header; defaults to ``'after_declare_strict'``
+  - ``location`` (``'after_declare_strict'``, ``'after_namespace'``, ``'after_open'``): the
+    location of the inserted header; defaults to ``'after_declare_strict'``
   - ``separate`` (``'both'``, ``'bottom'``, ``'none'``, ``'top'``): whether the header should be
     separated from the file content with a new line; defaults to ``'both'``
 

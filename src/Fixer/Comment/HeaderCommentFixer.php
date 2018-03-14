@@ -160,7 +160,7 @@ echo 1;
                 ->setDefault(self::HEADER_COMMENT)
                 ->getOption(),
             (new FixerOptionBuilder('location', 'The location of the inserted header.'))
-                ->setAllowedValues(['after_open', 'after_declare_strict'])
+                ->setAllowedValues(['after_open', 'after_declare_strict', 'after_namespace'])
                 ->setDefault('after_declare_strict')
                 ->getOption(),
             (new FixerOptionBuilder('separate', 'Whether the header should be separated from the file content with a new line.'))
@@ -221,6 +221,23 @@ echo 1;
             return 1;
         }
 
+        if ('after_namespace' === $this->configuration['location']) {
+            return $this->findHeaderCommentInsertionIndexForNamespace($tokens);
+        }
+
+        return $this->findHeaderCommentInsertionIndexForDeclareStrict($tokens);
+    }
+
+    /**
+     * Find the index where the header comment must be inserted if location is after_declare_strict.
+     *
+     * @param Tokens $tokens
+     *
+     * @return int
+     */
+    private function findHeaderCommentInsertionIndexForDeclareStrict(Tokens $tokens)
+    {
+        $index = $tokens->getNextMeaningfulToken(0);
         if (!$tokens[$index]->isGivenKind(T_DECLARE)) {
             return 1;
         }
@@ -253,6 +270,36 @@ echo 1;
         $next = $tokens->getNextMeaningfulToken($next);
         if (null === $next || !$tokens[$next]->equals(';')) { // don't insert after close tag
             return 1;
+        }
+
+        return $next + 1;
+    }
+
+    /**
+     * Find the index where the header comment must be inserted if location is after_namespace.
+     *
+     * @param Tokens $tokens
+     *
+     * @return int
+     */
+    private function findHeaderCommentInsertionIndexForNamespace(Tokens $tokens)
+    {
+        $index = $tokens->getNextMeaningfulToken(0);
+        while (null !== $index && !$tokens[$index]->isGivenKind(T_NAMESPACE)) {
+            $index = $tokens->getNextMeaningfulToken($index);
+        }
+
+        if (null === $index) {
+            return $this->findHeaderCommentInsertionIndexForDeclareStrict($tokens);
+        }
+
+        $next = $tokens->getNextMeaningfulToken($index);
+        while (null !== $next && !$tokens[$next]->equals(';')) {
+            $next = $tokens->getNextMeaningfulToken($next);
+        }
+
+        if (null === $next) {
+            return $this->findHeaderCommentInsertionIndexForDeclareStrict($tokens);
         }
 
         return $next + 1;

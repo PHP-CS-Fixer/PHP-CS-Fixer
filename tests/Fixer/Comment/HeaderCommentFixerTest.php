@@ -375,7 +375,7 @@ echo 1;'
                     'header' => '',
                     'location' => new \stdClass(),
                 ],
-                'Invalid configuration: The option "location" with value stdClass is invalid. Accepted values are: "after_open", "after_declare_strict".',
+                'Invalid configuration: The option "location" with value stdClass is invalid. Accepted values are: "after_open", "after_declare_strict", "after_namespace".',
             ],
             [
                 [
