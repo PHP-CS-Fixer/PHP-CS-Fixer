@@ -40,6 +40,9 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
                     "<?php\nwhile(true):echo 'red';endwhile;\n"
                 ),
                 new CodeSample(
+                    "<?php\nfor(;;):echo 'xc';endfor;\n"
+                ),
+                new CodeSample(
                     "<?php\nforeach(array('a') as \$item):echo 'xc';endforeach;\n"
                 ),
             ]
@@ -56,6 +59,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
                 T_ENDIF,
                 T_ENDWHILE,
                 T_ENDFOREACH,
+                T_ENDFOR,
             ]
         );
     }
@@ -104,7 +108,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     private function fixOpenCloseControls($index, Token $token, Tokens $tokens)
     {
-        if ($token->isGivenKind([T_IF, T_FOREACH, T_WHILE])) {
+        if ($token->isGivenKind([T_IF, T_FOREACH, T_WHILE, T_FOR])) {
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
             $afterParenthesisIndex = $tokens->getNextNonWhitespace($closeIndex);
@@ -126,7 +130,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
             $tokens->insertAt($afterParenthesisIndex, $items);
         }
 
-        if (!$token->isGivenKind([T_ENDIF, T_ENDFOREACH, T_ENDWHILE])) {
+        if (!$token->isGivenKind([T_ENDIF, T_ENDFOREACH, T_ENDWHILE, T_ENDFOR])) {
             return;
         }
 
