@@ -106,7 +106,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $usages = [];
 
         foreach ($useDeclarations as $shortName => $useDeclaration) {
-            $usages[$shortName] = (bool) Preg::match('/(?<![\$\\\\])(?<!->)\b'.preg_quote($shortName, '/').'\b/i', $content);
+            $usages[$shortName] = (bool) Preg::match('/(?<![\$\\\\"\'])(?<!->)\b'.preg_quote($shortName, '/').'\b/i', $content);
         }
 
         return $usages;
