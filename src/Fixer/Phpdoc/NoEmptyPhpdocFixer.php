@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -62,8 +63,23 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
                 continue;
             }
 
-            if (Preg::match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
-                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            if (!Preg::match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
+                continue;
+            }
+
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+
+            $previousToken = $tokens[$index - 1];
+            if ($previousToken->isWhitespace()) {
+                $previousWhitespaceContent = $previousToken->getContent();
+
+                $lastLineBreak = strrpos($previousWhitespaceContent, PHP_EOL);
+                $newWhitespaceContent = substr($previousWhitespaceContent, 0, $lastLineBreak);
+                if ($newWhitespaceContent) {
+                    $tokens[$index - 1] = new Token([T_WHITESPACE, $newWhitespaceContent]);
+                } else {
+                    $tokens->clearAt($index - 1);
+                }
             }
         }
     }
