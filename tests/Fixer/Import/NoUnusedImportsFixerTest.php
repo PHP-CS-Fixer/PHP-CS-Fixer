@@ -48,6 +48,7 @@ class AnnotatedClass
     {
         $bar = $foo->toArray();
         /** @var ArrayInterface $bar */
+        $baz = 'baz';
     }
 }
 EOF;
@@ -80,6 +81,7 @@ class AnnotatedClass
     {
         $bar = $foo->toArray();
         /** @var ArrayInterface $bar */
+        $baz = 'baz';
     }
 }
 EOF;
