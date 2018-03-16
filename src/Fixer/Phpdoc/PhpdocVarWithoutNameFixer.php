@@ -42,10 +42,9 @@ final class Foo
     public $bar;
 
     /**
-     * @var $baz float
+     * @type $baz float
      */
     public $baz;
-
 }
 '))
         );
