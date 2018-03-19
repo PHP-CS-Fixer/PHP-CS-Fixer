@@ -158,3 +158,4 @@ jobs:
 
     allow_failures:
         - php: nightly
+        - php: hhvm
