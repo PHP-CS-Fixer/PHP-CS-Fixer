@@ -369,7 +369,8 @@ Choose from the list of available rules:
 
 * **comment_to_phpdoc**
 
-  Comments with annotation should be docblock.
+  Comments with annotation should be docblock when used on structural
+  elements.
 
   *Risky rule: risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.*
 
