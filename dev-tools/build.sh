@@ -15,7 +15,7 @@ composer info -D | sort
 composer global show kherge/box -q || composer global require --no-interaction --no-progress kherge/box:^2.7
 
 # build phar file
-php -d phar.readonly=false $(composer config home)/vendor/bin/box build
+php -d phar.readonly=false "$(composer config home)/vendor/bin/box" build
 
 # revert changes to composer
 git checkout composer.json

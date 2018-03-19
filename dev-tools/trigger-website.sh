@@ -4,7 +4,7 @@ set -e
 TOKEN=$1
 MSG_SUFFIX=$2
 
-if [ ! -z $MSG_SUFFIX ]
+if [ ! -z "$MSG_SUFFIX" ]
 then
     MSG_SUFFIX=" for ${MSG_SUFFIX}"
 fi
@@ -25,4 +25,4 @@ curl -s -X POST \
     -H "User-Agent: API Explorer" \
     -H "Authorization: token ${TOKEN}" \
     -d "${body}" \
-    https://api.travis-ci.org/repo/${REPO}/requests
+    "https://api.travis-ci.org/repo/${REPO}/requests"
