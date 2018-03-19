@@ -548,16 +548,6 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 );
         }
 
-        // HHVM parses '<?=' as T_ECHO instead of T_OPEN_TAG_WITH_ECHO
-        // test the fixer doesn't break anything
-        if (ini_get('short_open_tag') && !defined('HHVM_VERSION')) {
-            $cases[] =
-                array(
-                    '<?= ',
-                    '<?= ;',
-                );
-        }
-
         if (count($cases) < 1) {
             $this->markTestSkipped('No short tag tests possible.');
         }
