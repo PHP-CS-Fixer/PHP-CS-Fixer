@@ -46,28 +46,28 @@ final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
                 '<?php `$var1 ls ${var2} -lah {$var3} file1.txt {$var4[0]} file2.txt {$var5->call()}`;',
             ],
             'with single quote' => [
-<<<'EOT'
+                <<<'EOT'
 <?php
 `echo a\'b`;
 `echo 'ab'`;
 EOT
-,
+                ,
             ],
             'with double quote' => [
-<<<'EOT'
+                <<<'EOT'
 <?php
 `echo a\"b`;
 `echo 'a"b'`;
 EOT
-,
+                ,
             ],
             'with backtick' => [
-<<<'EOT'
+                <<<'EOT'
 <?php
 `echo 'a\`b'`;
 `echo a\\\`b`;
 EOT
-,
+                ,
             ],
         ];
     }

@@ -82,7 +82,7 @@ require_once #1
 #5
 #6
 ;',
-              '<?php
+                '<?php
 require_once #1
 (#2
 #3
