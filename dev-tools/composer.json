@@ -1,8 +1,9 @@
 {
     "require": {
-        "php": "^7.0"
+        "php": "^7.1"
     },
     "require-dev": {
+        "localheinz/composer-normalize": "^0.6.0",
         "maglnet/composer-require-checker": "^0.1.5",
         "mi-schi/phpmd-extension": "^4.2",
         "phpmd/phpmd": "^2.4.3"

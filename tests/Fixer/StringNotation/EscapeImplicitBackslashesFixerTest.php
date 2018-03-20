@@ -43,24 +43,24 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-<<<'EOF'
+                <<<'EOF'
 <?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';
 EOF
-,
+                ,
             ],
             [
-<<<'EOF'
+                <<<'EOF'
 <?php $var = 'String (\\\'\\r\\n\\x0) for My\\Prefix\\';
 EOF
-,
-<<<'EOF'
+                ,
+                <<<'EOF'
 <?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';
 EOF
-,
-            ['single_quoted' => true],
+                ,
+                ['single_quoted' => true],
             ],
             [
-<<<'EOF'
+                <<<'EOF'
 <?php
 $var = "\\A\\B\\C\\D\\E\\F\\G\\H\\I\\J\\K\\L\\M\\N\\O\\P\\Q\\R\\S\\T\\U\\V\\W\\X\\Y\\Z";
 $var = "\\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z \\' \\8\\9 \\xZ \\u";
@@ -87,8 +87,8 @@ $var = <<<'NOWDOC_SYNTAX'
 NOWDOC_SYNTAX;
 
 EOF
-,
-<<<'EOF'
+                ,
+                <<<'EOF'
 <?php
 $var = "\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z";
 $var = "\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z \' \8\9 \xZ \u";
@@ -115,10 +115,10 @@ $var = <<<'NOWDOC_SYNTAX'
 NOWDOC_SYNTAX;
 
 EOF
-,
+                ,
             ],
             [
-<<<'EOF'
+                <<<'EOF'
 <?php
 $var = "\e\f\n\r\t\v \\ \$ \"";
 $var = "$foo \e\f\n\r\t\v \\ \$ \" ${bar}";
@@ -130,10 +130,10 @@ $foo \e\f\n\r\t\v \\ \$ ${bar}
 HEREDOC_SYNTAX;
 
 EOF
-,
+                ,
             ],
             [
-<<<'EOF'
+                <<<'EOF'
 <?php
 $var = "\0 \00 \000 \0000 \00000";
 $var = "$foo \0 \00 \000 \0000 \00000 ${bar}";
@@ -145,10 +145,10 @@ $foo \0 \00 \000 \0000 \00000 ${bar}
 HEREDOC_SYNTAX;
 
 EOF
-,
+                ,
             ],
             [
-<<<'EOF'
+                <<<'EOF'
 <?php
 $var = "\xA \x99 \u{0}";
 $var = "$foo \xA \x99 \u{0} ${bar}";
@@ -160,10 +160,10 @@ $foo \xA \x99 \u{0} ${bar}
 HEREDOC_SYNTAX;
 
 EOF
-,
+                ,
             ],
             [
-<<<'EOF'
+                <<<'EOF'
 <?php
 $var = 'backslash \\ already escaped';
 $var = 'code coverage';
@@ -183,20 +183,20 @@ code coverage
 NOWDOC_SYNTAX;
 
 EOF
-,
+                ,
             ],
             [
-<<<'EOF'
+                <<<'EOF'
 <?php
 $var = "\A\a \' \8\9 \xZ \u";
 $var = "$foo \A\a \' \8\9 \xZ \u ${bar}";
 EOF
-,
-            null,
-            ['double_quoted' => false],
+                ,
+                null,
+                ['double_quoted' => false],
             ],
             [
-<<<'EOF'
+                <<<'EOF'
 <?php
 $var = <<<HEREDOC_SYNTAX
 \A\Z
@@ -218,9 +218,9 @@ ${bar}
 HEREDOC_SYNTAX;
 
 EOF
-,
-            null,
-            ['heredoc_syntax' => false],
+                ,
+                null,
+                ['heredoc_syntax' => false],
             ],
         ];
     }

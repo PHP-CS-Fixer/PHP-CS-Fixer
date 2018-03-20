@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -61,7 +62,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
                 continue;
             }
 
-            if (preg_match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
+            if (Preg::match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
         }

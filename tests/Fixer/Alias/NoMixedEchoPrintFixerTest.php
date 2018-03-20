@@ -57,7 +57,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             ],
             /*
              * `echo` can take multiple parameters (although such usage is rare) while `print` can take only one argument,
-             * @see https://secure.php.net/manual/en/function.echo.php and @see https://secure.php.net/manual/en/function.print.php
+             * @see https://php.net/manual/en/function.echo.php and @see https://php.net/manual/en/function.print.php
              */
             [
                 '<?php
@@ -178,7 +178,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 ',
             ],
             // echo has no return value while print has a return value of 1 so it can be used in expressions.
-            // http://www.w3schools.com/php/php_echo_print.asp
+            // https://www.w3schools.com/php/php_echo_print.asp
             [
                 '<?php
                 $ret = print "test";

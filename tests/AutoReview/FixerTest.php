@@ -249,8 +249,6 @@ final class FixerTest extends TestCase
     }
 
     /**
-     * copy paste from GeckoPackages/GeckoPHPUnit StringsAssertTrait, to replace with Trait when possible.
-     *
      * @param mixed  $actual
      * @param string $message
      */

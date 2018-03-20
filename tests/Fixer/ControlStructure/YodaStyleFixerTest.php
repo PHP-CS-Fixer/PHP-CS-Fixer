@@ -391,7 +391,7 @@ $a#4
                 ',
             ],
             [
-               '<?php
+                '<?php
                 function foo() {
                     foreach ($arr as $key => $value) {
                         false !== uniqid() ? 1 : 2;
@@ -718,7 +718,7 @@ function a() {
                 [
                     'identical' => false,
                 ],
-            '<?php
+                '<?php
 $a = [1, 2, 3];
 while (2 !== $b = array_pop($c));
 ',

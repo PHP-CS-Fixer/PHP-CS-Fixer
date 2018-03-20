@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Utils;
 
 /**
@@ -387,7 +388,7 @@ class Tokens extends \SplFixedArray
                 if (0 === strpos($whitespace, "\r\n")) {
                     $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
 
-                    return strlen($whitespace) > 2 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
+                    return strlen($whitespace) > 2 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
                         ? substr($whitespace, 2)
                         : ''
                     ;
@@ -395,7 +396,7 @@ class Tokens extends \SplFixedArray
 
                 $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent()).$whitespace[0]]);
 
-                return strlen($whitespace) > 1 // can be removed on PHP 7; http://php.net/manual/en/function.substr.php
+                return strlen($whitespace) > 1 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
                     ? substr($whitespace, 1)
                     : ''
                 ;
@@ -440,62 +441,26 @@ class Tokens extends \SplFixedArray
      */
     public function findBlockEnd($type, $searchIndex, $findEnd = true)
     {
-        $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
-
-        if (!isset($blockEdgeDefinitions[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
-        }
-
-        if (!self::isLegacyMode() && isset($this->blockEndCache[$searchIndex])) {
-            return $this->blockEndCache[$searchIndex];
-        }
-
-        $startEdge = $blockEdgeDefinitions[$type]['start'];
-        $endEdge = $blockEdgeDefinitions[$type]['end'];
-        $startIndex = $searchIndex;
-        $endIndex = $this->count() - 1;
-        $indexOffset = 1;
-
-        if (!$findEnd) {
-            list($startEdge, $endEdge) = [$endEdge, $startEdge];
-            $indexOffset = -1;
-            $endIndex = 0;
-        }
-
-        if (!$this[$startIndex]->equals($startEdge)) {
-            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block %s.', $findEnd ? 'start' : 'end'));
-        }
-
-        $blockLevel = 0;
-
-        for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
-            $token = $this[$index];
-
-            if ($token->equals($startEdge)) {
-                ++$blockLevel;
-
-                continue;
-            }
-
-            if ($token->equals($endEdge)) {
-                --$blockLevel;
-
-                if (0 === $blockLevel) {
-                    break;
-                }
-
-                continue;
+        if (3 === func_num_args()) {
+            if ($findEnd) {
+                @trigger_error('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.', E_USER_DEPRECATED);
+            } else {
+                @trigger_error('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart instead.', E_USER_DEPRECATED);
             }
         }
 
-        if (!$this[$index]->equals($endEdge)) {
-            throw new \UnexpectedValueException(sprintf('Missing block %s.', $findEnd ? 'end' : 'start'));
-        }
+        return $this->findOppositeBlockEdge($type, $searchIndex, $findEnd);
+    }
 
-        $this->blockEndCache[$startIndex] = $index;
-        $this->blockEndCache[$index] = $startIndex;
-
-        return $index;
+    /**
+     * @param int $type        type of block, one of BLOCK_TYPE_*
+     * @param int $searchIndex index of closing brace
+     *
+     * @return int index of opening brace
+     */
+    public function findBlockStart($type, $searchIndex)
+    {
+        return $this->findOppositeBlockEdge($type, $searchIndex, false);
     }
 
     /**
@@ -1036,8 +1001,27 @@ class Tokens extends \SplFixedArray
      */
     public function removeLeadingWhitespace($index, $whitespaces = null)
     {
-        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace($whitespaces)) {
+        if (isset($this[$index - 1]) && $this[$index - 1]->isWhitespace()) {
+            $newContent = '';
+            $tokenToCheck = $this[$index - 1];
+
+            // if the token candidate to remove is preceded by single line comment we do not consider the new line after this comment as part of T_WHITESPACE
+            if (isset($this[$index - 2]) && $this[$index - 2]->isComment() && '/*' !== substr($this[$index - 2]->getContent(), 0, 2)) {
+                list($emptyString, $newContent, $whitespacesToCheck) = Preg::split('/^(\R)/', $this[$index - 1]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
+                if ('' === $whitespacesToCheck) {
+                    return;
+                }
+                $tokenToCheck = new Token([T_WHITESPACE, $whitespacesToCheck]);
+            }
+
+            if (!$tokenToCheck->isWhitespace($whitespaces)) {
+                return;
+            }
+
             $this->clearAt($index - 1);
+            if ('' !== $newContent) {
+                $this->insertAt($index - 1, new Token([T_WHITESPACE, $newContent]));
+            }
         }
     }
 
@@ -1267,6 +1251,73 @@ class Tokens extends \SplFixedArray
         }
 
         $this->clearAt($nextIndex);
+    }
+
+    /**
+     * @param int  $type        type of block, one of BLOCK_TYPE_*
+     * @param int  $searchIndex index of starting brace
+     * @param bool $findEnd     if method should find block's end or start
+     *
+     * @return int index of opposite brace
+     */
+    private function findOppositeBlockEdge($type, $searchIndex, $findEnd)
+    {
+        $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
+
+        if (!isset($blockEdgeDefinitions[$type])) {
+            throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
+        }
+
+        if (!self::isLegacyMode() && isset($this->blockEndCache[$searchIndex])) {
+            return $this->blockEndCache[$searchIndex];
+        }
+
+        $startEdge = $blockEdgeDefinitions[$type]['start'];
+        $endEdge = $blockEdgeDefinitions[$type]['end'];
+        $startIndex = $searchIndex;
+        $endIndex = $this->count() - 1;
+        $indexOffset = 1;
+
+        if (!$findEnd) {
+            list($startEdge, $endEdge) = [$endEdge, $startEdge];
+            $indexOffset = -1;
+            $endIndex = 0;
+        }
+
+        if (!$this[$startIndex]->equals($startEdge)) {
+            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block %s.', $findEnd ? 'start' : 'end'));
+        }
+
+        $blockLevel = 0;
+
+        for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
+            $token = $this[$index];
+
+            if ($token->equals($startEdge)) {
+                ++$blockLevel;
+
+                continue;
+            }
+
+            if ($token->equals($endEdge)) {
+                --$blockLevel;
+
+                if (0 === $blockLevel) {
+                    break;
+                }
+
+                continue;
+            }
+        }
+
+        if (!$this[$index]->equals($endEdge)) {
+            throw new \UnexpectedValueException(sprintf('Missing block %s.', $findEnd ? 'end' : 'start'));
+        }
+
+        $this->blockEndCache[$startIndex] = $index;
+        $this->blockEndCache[$index] = $startIndex;
+
+        return $index;
     }
 
     /**

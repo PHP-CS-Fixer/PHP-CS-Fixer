@@ -83,7 +83,7 @@ final class FileHandler implements FileHandlerInterface
             @chmod($this->file, 0666);
         }
 
-        $bytesWritten = @file_put_contents($this->file, $content, LOCK_EX);
+        $bytesWritten = @file_put_contents($this->file, $content);
 
         if (false === $bytesWritten) {
             $error = error_get_last();

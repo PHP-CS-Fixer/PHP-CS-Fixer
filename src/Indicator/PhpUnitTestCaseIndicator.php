@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Indicator;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -26,7 +27,7 @@ final class PhpUnitTestCaseIndicator
         }
 
         $classNameIndex = $tokens->getNextMeaningfulToken($index);
-        if (0 !== preg_match('/(?:Test|TestCase)$/', $tokens[$classNameIndex]->getContent())) {
+        if (0 !== Preg::match('/(?:Test|TestCase)$/', $tokens[$classNameIndex]->getContent())) {
             return true;
         }
 
@@ -35,7 +36,7 @@ final class PhpUnitTestCaseIndicator
 
         if (
             $maybeParentSubNameToken->isGivenKind(T_STRING) &&
-            0 !== preg_match('/(?:Test|TestCase)$/', $maybeParentSubNameToken->getContent())
+            0 !== Preg::match('/(?:Test|TestCase)$/', $maybeParentSubNameToken->getContent())
         ) {
             return true;
         }
