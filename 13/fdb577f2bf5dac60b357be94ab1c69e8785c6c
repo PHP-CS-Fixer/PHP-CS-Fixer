@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-02T14:30:08Z
+
+`broken pipe` issue again, I restarted travis
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-14T14:52:53Z
+
+Rebased to master as for https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3478#issuecomment-365404119
