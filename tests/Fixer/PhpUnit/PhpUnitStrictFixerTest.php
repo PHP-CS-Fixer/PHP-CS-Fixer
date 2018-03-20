@@ -97,6 +97,14 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
                 "<?php \$this->${methodAfter}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
                 "<?php \$this->${methodBefore}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
             ];
+            $cases[] = [
+                "<?php self::${methodAfter}(1, 2);",
+                "<?php self::${methodBefore}(1, 2);",
+            ];
+            $cases[] = [
+                "<?php static::${methodAfter}(1, 2);",
+                "<?php static::${methodBefore}(1, 2);",
+            ];
         }
 
         return $cases;

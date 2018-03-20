@@ -969,16 +969,16 @@ final class ConfigurationResolverTest extends TestCase
         );
 
         $resolver = $this->createConfigurationResolver([
-                'path-mode' => 'intersection',
-                'allow-risky' => 'yes',
-                'config' => null,
-                'dry-run' => true,
-                'rules' => 'php_unit_construct',
-                'using-cache' => false,
-                'diff' => true,
-                'diff-format' => 'udiff',
-                'format' => 'json',
-                'stop-on-violation' => true,
+            'path-mode' => 'intersection',
+            'allow-risky' => 'yes',
+            'config' => null,
+            'dry-run' => true,
+            'rules' => 'php_unit_construct',
+            'using-cache' => false,
+            'diff' => true,
+            'diff-format' => 'udiff',
+            'format' => 'json',
+            'stop-on-violation' => true,
         ]);
 
         $this->assertTrue($resolver->shouldStopOnViolation());

@@ -89,11 +89,11 @@ comment
                                 /** buahaha */->bar7();',
             ],
             [
-            '<?php
+                '<?php
 $foo
     ->bar1()
     ->bar2();',
-            '<?php
+                '<?php
 $foo
 ->bar1()
 ->bar2();',
