@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-10T07:07:32Z
+
+That's weird. Let us try to fix the cause first, symptom later. If we have instability in tests, I want to track it down.
+`master` branch is passing on my local machine as well, so it's not only CI.
+
+Upgrade master & deps and try again. If issue still occurs, please provide version of your OS, PHP and PHPUnit.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-10T07:14:34Z
+
+OK, files from `/priorities/` are loaded in random order.
+
+reason: `testPriorityIntegrationTestFilesAreListedPriorityCases`
+it's one test with loop inside instead of test with data provider.
+
+when it hit `markTestIncomplete`, it stops testing rest of the cases
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-12T08:03:57Z
+
+2.2 shall be the target IMO
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-12T09:23:02Z
+
+Rebased on 2.2, where the test doesn't fail. It will fail on master so that must be fixed during merging.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-12T10:32:40Z
+
+awesome :D
+i wanted to be sure that we won't hit this issue again, as we do fixes on 2.2 but don't verify they are fully covered
