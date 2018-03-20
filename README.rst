@@ -369,6 +369,12 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
+* **comment_to_phpdoc**
+
+  Comments with annotation should be docblock.
+
+  *Risky rule: risky as new docblocks might began mean more, e.g. Doctrine's entity might have a new column in database.*
+
 * **compact_nullable_typehint**
 
   Remove extra spaces in a nullable typehint.

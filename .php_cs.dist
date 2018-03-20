@@ -35,6 +35,7 @@ $config = PhpCsFixer\Config::create()
         'blank_line_before_statement' => true,
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
+        'comment_to_phpdoc' => true,
         'compact_nullable_typehint' => true,
         'escape_implicit_backslashes' => true,
         'explicit_indirect_variable' => true,
