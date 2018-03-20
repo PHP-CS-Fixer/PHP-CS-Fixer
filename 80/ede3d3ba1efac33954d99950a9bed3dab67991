@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-14T20:53:59Z
+
+thanks @ntzm looking good :)
+I would place the check before calling `fixFunction` as here we are not fixing a function but dealing with an import,
+in other words; for single responsibility principle sense leaving `fixFunction` to fix a function and the caller being responsible for detecting if it is a function that needs fixing (hope it makes sense ;) )
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-03-14T21:03:11Z
+
+Ah thanks @SpacePossum, that's a good point. Will do
