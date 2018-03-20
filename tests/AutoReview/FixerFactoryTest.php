@@ -307,18 +307,8 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public function testPriorityIntegrationTestFilesAreListedPriorityCases()
+    public function testPriorityIntegrationDirectoryOnlyContainsFiles()
     {
-        $priorityCases = [];
-        foreach ($this->provideFixersPriorityCases() as $priorityCase) {
-            $fixerName = $priorityCase[0]->getName();
-            if (!isset($priorityCases[$fixerName])) {
-                $priorityCases[$fixerName] = [];
-            }
-
-            $priorityCases[$fixerName][$priorityCase[1]->getName()] = true;
-        }
-
         foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
             if ($candidate->isDot()) {
                 continue;
@@ -327,27 +317,72 @@ final class FixerFactoryTest extends TestCase
             $fileName = $candidate->getFilename();
             $this->assertTrue($candidate->isFile(), sprintf('Expected only files in the priority integration test directory, got "%s".', $fileName));
             $this->assertFalse($candidate->isLink(), sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
+        }
+    }
 
-            if (in_array($fileName, [
-                'braces,indentation_type,no_break_comment.test',
-            ], true)) {
-                $this->markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
+    /**
+     * @dataProvider provideIntegrationTestFilesCases
+     *
+     * @param string $fileName
+     */
+    public function testPriorityIntegrationTestFilesAreListedPriorityCases($fileName)
+    {
+        static $priorityCases;
+
+        if (null === $priorityCases) {
+            foreach ($this->provideFixersPriorityCases() as $priorityCase) {
+                $fixerName = $priorityCase[0]->getName();
+                if (!isset($priorityCases[$fixerName])) {
+                    $priorityCases[$fixerName] = [];
+                }
+
+                $priorityCases[$fixerName][$priorityCase[1]->getName()] = true;
             }
 
-            $this->assertSame(
-                1,
-                preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
-                sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
-            );
-
-            $fixerName1 = $matches[1];
-            $fixerName2 = $matches[2];
-
-            $this->assertTrue(
-                isset($priorityCases[$fixerName1][$fixerName2]) || isset($priorityCases[$fixerName2][$fixerName1]),
-                sprintf('Missing priority test entry for file "%s".', $fileName)
-            );
+            ksort($priorityCases);
         }
+
+        if (in_array($fileName, [
+            'braces,indentation_type,no_break_comment.test',
+        ], true)) {
+            $this->markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
+        }
+
+        if (in_array($fileName, [
+            'combine_consecutive_issets,no_singleline_whitespace_before_semicolons.test',
+        ], true)) {
+            $this->markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));
+        }
+
+        $this->assertSame(
+            1,
+            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
+            sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
+        );
+
+        $fixerName1 = $matches[1];
+        $fixerName2 = $matches[2];
+
+        $this->assertTrue(
+            isset($priorityCases[$fixerName1][$fixerName2]) || isset($priorityCases[$fixerName2][$fixerName1]),
+            sprintf('Missing priority test entry for file "%s".', $fileName)
+        );
+    }
+
+    public function provideIntegrationTestFilesCases()
+    {
+        $fileNames = [];
+        foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
+            if ($candidate->isDot()) {
+                continue;
+            }
+
+            $fileNames[] = [$candidate->getFilename()];
+        }
+
+        sort($fileNames);
+
+        return $fileNames;
     }
 
     /**
