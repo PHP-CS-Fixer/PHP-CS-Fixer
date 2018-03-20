@@ -12,11 +12,14 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+if (!class_exists(\PHPUnit\Runner\Version::class)) {
+    class_alias('PHPUnit_Runner_Version', \PHPUnit\Runner\Version::class);
+}
+
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnitGoodPractices\Traits\PHPUnitVersionRetriever;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -482,7 +485,7 @@ final class ProjectCodeTest extends TestCase
             iterator_to_array($finder, false)
         );
 
-        $incomatibleClasses = version_compare(PHPUnitVersionRetriever::getVersion(), '7.0.0') < 0 ? [
+        $incomatibleClasses = version_compare(\PHPUnit\Runner\Version::id(), '7.0.0') < 0 ? [
             \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV7::class,
             \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV7::class,
         ] : [
