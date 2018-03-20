@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-15T05:32:38Z
+
+thanks for picking this up :+1:  :)
+could you update the test (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3448/files#diff-c9d2c6319e460e4cee69052c73377d77R339) to show how the sorting is done for PHP 7.1s class constants with visibility?
+
+---------------------------------------------------------------------------
+
+by meridius at 2018-01-18T18:33:38Z
+
+I took the liberty to rebase the banch to master.
+Builds are passing, so if you don't have anything else then I think this can be merged.
+
+---------------------------------------------------------------------------
+
+by meridius at 2018-02-03T18:24:23Z
+
+Another rebase.
+AppVeyor is failing with unrelated errors, other CIs are green.
+
+Could you please merge?
