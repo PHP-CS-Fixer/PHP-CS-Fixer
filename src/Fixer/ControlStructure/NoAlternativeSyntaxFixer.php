@@ -194,7 +194,6 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     private function addBraces(Tokens $tokens, Token $token, $index, $colonIndex)
     {
-        // ***************  closing opening token
         $items = [
             new Token('}'),
             new Token([T_WHITESPACE, ' ']),
@@ -208,8 +207,6 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
             $index,
             $items
         );
-
-        // *************** insert opening brace
 
         // increment the position of the colon by number of items inserted
         $colonIndex += count($items);
