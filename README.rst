@@ -1058,6 +1058,8 @@ Choose from the list of available rules:
     'constant_private', 'property_public', 'property_protected',
     'property_private', 'construct', 'destruct', 'magic', 'phpunit',
     'method_public', 'method_protected', 'method_private']``
+  - ``sortAlgorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
+    statements should be sorted; defaults to ``'none'``
 
 * **ordered_imports**
 
