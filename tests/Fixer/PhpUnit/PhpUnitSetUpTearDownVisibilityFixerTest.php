@@ -183,7 +183,7 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
 ',
             ],
             'It works even with messy comments' => [
-                    '<?php
+                '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
     protected /** foo */ function setUp() {}
@@ -191,7 +191,7 @@ class FixerTest extends \PhpUnit\FrameWork\TestCase
     /** foo */protected function tearDown() {}
 }
 ',
-                    '<?php
+                '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase
 {
     public /** foo */ function setUp() {}
