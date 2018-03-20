@@ -10,6 +10,18 @@ This source file is subject to the MIT license that is bundled
 with this source code in the file LICENSE.
 EOF;
 
+$finder = PhpCsFixer\Finder::create()
+    ->exclude('tests/Fixtures')
+    ->in(__DIR__)
+;
+
+if (PHP_VERSION_ID < 70000) {
+    $finder
+        ->notPath('tests/Test/Constraint/SameStringsConstraintForV7.php')
+        ->notPath('tests/Test/Constraint/XmlMatchesXsdConstraintForV7.php')
+    ;
+}
+
 $config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
@@ -59,11 +71,7 @@ $config = PhpCsFixer\Config::create()
         'string_line_ending' => true,
         'yoda_style' => true,
     ])
-    ->setFinder(
-        PhpCsFixer\Finder::create()
-            ->exclude('tests/Fixtures')
-            ->in(__DIR__)
-    )
+    ->setFinder($finder)
 ;
 
 // special handling of fabbot.io service if it's using too old PHP CS Fixer version
