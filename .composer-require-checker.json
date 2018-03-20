@@ -2,6 +2,7 @@
     "symbol-whitelist" : [
         "PHPUnit\\Framework\\Constraint\\IsIdentical",
         "PHPUnit\\Framework\\TestCase",
+        "PHPUnit\\Runner\\Version",
         "PHPUnitGoodPractices\\Traits\\ExpectationViaCodeOverAnnotationTrait",
         "PHPUnitGoodPractices\\Traits\\ExpectOverSetExceptionTrait",
         "PHPUnitGoodPractices\\Traits\\IdentityOverEqualityTrait",
