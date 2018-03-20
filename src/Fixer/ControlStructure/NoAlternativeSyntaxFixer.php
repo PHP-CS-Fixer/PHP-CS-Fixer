@@ -23,8 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoAlternativeSyntaxFixer extends AbstractFixer
 {
-    const SINGLE_COLON = ':';
-
     /**
      * {@inheritdoc}
      */
@@ -114,7 +112,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
             $afterParenthesisIndex = $tokens->getNextNonWhitespace($closeIndex);
             $afterParenthesis = $tokens[$afterParenthesisIndex];
 
-            if (!$afterParenthesis->equals(self::SINGLE_COLON)) {
+            if (!$afterParenthesis->equals(':')) {
                 return;
             }
             $items = [];
@@ -157,7 +155,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
 
         $tokenAfterElseIndex = $tokens->getNextMeaningfulToken($index);
         $tokenAfterElse = $tokens[$tokenAfterElseIndex];
-        if (!$tokenAfterElse->equals(self::SINGLE_COLON)) {
+        if (!$tokenAfterElse->equals(':')) {
             return;
         }
 
@@ -179,7 +177,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
         $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
         $tokenAfterParenthesisIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
         $tokenAfterParenthesis = $tokens[$tokenAfterParenthesisIndex];
-        if (!$tokenAfterParenthesis->equals(self::SINGLE_COLON)) {
+        if (!$tokenAfterParenthesis->equals(':')) {
             return;
         }
 
