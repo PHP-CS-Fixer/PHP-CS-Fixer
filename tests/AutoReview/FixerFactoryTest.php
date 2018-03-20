@@ -32,9 +32,9 @@ final class FixerFactoryTest extends TestCase
         $factory->registerBuiltInFixers();
         $fixers = $factory->getFixers();
 
-        $this->assertSame('encoding', $fixers[0]->getName());
-        $this->assertSame('full_opening_tag', $fixers[1]->getName());
-        $this->assertSame('single_blank_line_at_eof', $fixers[count($fixers) - 1]->getName());
+        $this->assertSame('encoding', $fixers[0]->getName(), 'Expected "encoding" fixer to have the highest priority.');
+        $this->assertSame('full_opening_tag', $fixers[1]->getName(), 'Expected "full_opening_tag" fixer has second highest priority.');
+        $this->assertSame('single_blank_line_at_eof', $fixers[count($fixers) - 1]->getName(), 'Expected "single_blank_line_at_eof" to have the lowest priority.');
     }
 
     /**
@@ -283,18 +283,8 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public function testPriorityIntegrationTestFilesAreListedPriorityCases()
+    public function testPriorityIntegrationDirectoryOnlyContainsFiles()
     {
-        $priorityCases = array();
-        foreach ($this->provideFixersPriorityCases() as $priorityCase) {
-            $fixerName = $priorityCase[0]->getName();
-            if (!isset($priorityCases[$fixerName])) {
-                $priorityCases[$fixerName] = array();
-            }
-
-            $priorityCases[$fixerName][$priorityCase[1]->getName()] = true;
-        }
-
         foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
             if ($candidate->isDot()) {
                 continue;
@@ -303,20 +293,60 @@ final class FixerFactoryTest extends TestCase
             $fileName = $candidate->getFilename();
             $this->assertTrue($candidate->isFile(), sprintf('Expected only files in the priority integration test directory, got "%s".', $fileName));
             $this->assertFalse($candidate->isLink(), sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
-            $this->assertSame(
-                1,
-                preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
-                sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
-            );
-
-            $fixerName1 = $matches[1];
-            $fixerName2 = $matches[2];
-
-            $this->assertTrue(
-                isset($priorityCases[$fixerName1][$fixerName2]) || isset($priorityCases[$fixerName2][$fixerName1]),
-                sprintf('Missing priority test entry for file "%s".', $fileName)
-            );
         }
+    }
+
+    /**
+     * @dataProvider provideIntegrationTestFilesCases
+     *
+     * @param string $fileName
+     */
+    public function testPriorityIntegrationTestFilesAreListedPriorityCases($fileName)
+    {
+        static $priorityCases;
+
+        if (null === $priorityCases) {
+            foreach ($this->provideFixersPriorityCases() as $priorityCase) {
+                $fixerName = $priorityCase[0]->getName();
+                if (!isset($priorityCases[$fixerName])) {
+                    $priorityCases[$fixerName] = array();
+                }
+
+                $priorityCases[$fixerName][$priorityCase[1]->getName()] = true;
+            }
+
+            ksort($priorityCases);
+        }
+
+        $this->assertSame(
+            1,
+            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
+            sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
+        );
+
+        $fixerName1 = $matches[1];
+        $fixerName2 = $matches[2];
+
+        $this->assertTrue(
+            isset($priorityCases[$fixerName1][$fixerName2]) || isset($priorityCases[$fixerName2][$fixerName1]),
+            sprintf('Missing priority test entry for file "%s".', $fileName)
+        );
+    }
+
+    public function provideIntegrationTestFilesCases()
+    {
+        $fileNames = array();
+        foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
+            if ($candidate->isDot()) {
+                continue;
+            }
+
+            $fileNames[] = array($candidate->getFilename());
+        }
+
+        sort($fileNames);
+
+        return $fileNames;
     }
 
     /**
