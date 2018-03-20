@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-18T13:04:32Z
+
+hi @ktomk ! Your reasoning sounds damn valid if you ask me!
+I see that some jobs started to fail at Travis, but that's probably due to travis update of meta-versions like `nightly`, not sth specific to this PR
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-18T13:05:17Z
+
+did you actually got any issue on your env about lack of Phar ext? I thought it's standard already
+
+---------------------------------------------------------------------------
+
+by ktomk at 2018-03-19T06:48:50Z
+
+Your mileage may vary, but what I did to speed things up was invoking PHP with the `-n` switch which loads no extensions at all. So I then needed to add one extension after the other on the command line and with this small edit as phar is not needed to run it.
+
+In the end I did this to not load xdebug for speed reasons, just in case you're wondering.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-19T10:25:23Z
+
+oooh, `-n` was the reason, cool to know ;)
+yeah, i removed xdebug totally, never using it after phpdbg was born ;)
