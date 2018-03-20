@@ -35,11 +35,13 @@ $config = PhpCsFixer\Config::create()
         'blank_line_before_statement' => true,
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
+        'comment_to_phpdoc' => true,
         'compact_nullable_typehint' => true,
         'escape_implicit_backslashes' => true,
         'explicit_indirect_variable' => true,
         'explicit_string_variable' => true,
         'final_internal_class' => true,
+        'fully_qualified_strict_types' => true,
         'function_to_constant' => ['functions' => ['get_class', 'get_called_class', 'php_sapi_name', 'phpversion', 'pi']],
         'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
@@ -72,22 +74,25 @@ $config = PhpCsFixer\Config::create()
         'strict_param' => true,
         'string_line_ending' => true,
         'yoda_style' => true,
+        'no_alternative_syntax' => true,
     ])
     ->setFinder($finder)
 ;
 
 // special handling of fabbot.io service if it's using too old PHP CS Fixer version
-try {
-    PhpCsFixer\FixerFactory::create()
-        ->registerBuiltInFixers()
-        ->registerCustomFixers($config->getCustomFixers())
-        ->useRuleSet(new PhpCsFixer\RuleSet($config->getRules()));
-} catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
-    $config->setRules([]);
-} catch (UnexpectedValueException $e) {
-    $config->setRules([]);
-} catch (InvalidArgumentException $e) {
-    $config->setRules([]);
+if (false !== getenv('FABBOT_IO')) {
+    try {
+        PhpCsFixer\FixerFactory::create()
+            ->registerBuiltInFixers()
+            ->registerCustomFixers($config->getCustomFixers())
+            ->useRuleSet(new PhpCsFixer\RuleSet($config->getRules()));
+    } catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
+        $config->setRules([]);
+    } catch (UnexpectedValueException $e) {
+        $config->setRules([]);
+    } catch (InvalidArgumentException $e) {
+        $config->setRules([]);
+    }
 }
 
 return $config;

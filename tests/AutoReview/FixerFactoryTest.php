@@ -197,6 +197,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['void_return'], $fixers['return_type_declaration']],
             [$fixers['php_unit_test_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_test_annotation'], $fixers['phpdoc_trim']],
+            [$fixers['no_alternative_syntax'], $fixers['braces']],
+            [$fixers['no_alternative_syntax'], $fixers['elseif']],
         ];
     }
 
@@ -214,11 +216,13 @@ final class FixerFactoryTest extends TestCase
         $cases = [];
 
         // prepare bulk tests for phpdoc fixers to test that:
-        // * `phpdoc_to_comment` is first
-        // * `phpdoc_indent` is second
-        // * `phpdoc_types` is third
-        // * `phpdoc_scalar` is fourth
+        // * `comment_to_phpdoc` is first
+        // * `phpdoc_to_comment` is second
+        // * `phpdoc_indent` is third
+        // * `phpdoc_types` is fourth
+        // * `phpdoc_scalar` is fifth
         // * `phpdoc_align` is last
+        $cases[] = [$fixers['comment_to_phpdoc'], $fixers['phpdoc_to_comment']];
         $cases[] = [$fixers['phpdoc_indent'], $fixers['phpdoc_types']];
         $cases[] = [$fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']];
         $cases[] = [$fixers['phpdoc_types'], $fixers['phpdoc_scalar']];
@@ -231,7 +235,8 @@ final class FixerFactoryTest extends TestCase
         );
 
         foreach ($docFixerNames as $docFixerName) {
-            if (!in_array($docFixerName, ['phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'], true)) {
+            if (!in_array($docFixerName, ['comment_to_phpdoc', 'phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'], true)) {
+                $cases[] = [$fixers['comment_to_phpdoc'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_indent'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_scalar'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_to_comment'], $fixers[$docFixerName]];
@@ -333,6 +338,8 @@ final class FixerFactoryTest extends TestCase
         static $priorityCases;
 
         if (null === $priorityCases) {
+            $priorityCases = [];
+
             foreach ($this->provideFixersPriorityCases() as $priorityCase) {
                 $fixerName = $priorityCase[0]->getName();
                 if (!isset($priorityCases[$fixerName])) {
