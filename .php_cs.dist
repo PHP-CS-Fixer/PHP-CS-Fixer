@@ -40,6 +40,7 @@ $config = PhpCsFixer\Config::create()
         'explicit_indirect_variable' => true,
         'explicit_string_variable' => true,
         'final_internal_class' => true,
+        'fully_qualified_strict_types' => true,
         'function_to_constant' => ['functions' => ['get_class', 'get_called_class', 'php_sapi_name', 'phpversion', 'pi']],
         'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
