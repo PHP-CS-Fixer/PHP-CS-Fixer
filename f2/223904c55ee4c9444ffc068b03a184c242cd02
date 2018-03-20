@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by EvgenyOrekhov at 2018-02-17T11:59:26Z
+
+Am I supposed to use "Fix #3543" in my commit message? Or in PR title?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-18T19:04:06Z
+
+no.
+`closes #3543` and similar in opening comment are enough
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-28T10:58:06Z
+
+> Should it be allowed to use such configuration, or should I implement a check for it?
+
+There are other fixers that can be configured in a way that disables them. Though it doesn't make much sense to use it, such configuration is not considered invalid currently, so we don't prevent it.
