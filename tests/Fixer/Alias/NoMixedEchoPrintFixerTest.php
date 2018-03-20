@@ -55,8 +55,10 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 print("test");
                 ',
             ],
-            // `echo` can take multiple parameters (although such usage is rare) while `print` can take only one argument,
-            // @see https://php.net/manual/en/function.echo.php and @see https://php.net/manual/en/function.print.php
+            /*
+             * `echo` can take multiple parameters (although such usage is rare) while `print` can take only one argument,
+             * @see https://php.net/manual/en/function.echo.php and @see https://php.net/manual/en/function.print.php
+             */
             [
                 '<?php
                 echo "This ", "string ", "was ", "made ", "with multiple parameters.";

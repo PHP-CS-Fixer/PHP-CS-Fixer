@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -98,7 +99,7 @@ final class CommentsAnalyzer
     {
         $lineCount = 0;
         for ($i = $whiteStart; $i < $whiteEnd; ++$i) {
-            $lineCount += preg_match_all('/\R/u', $tokens[$i]->getContent());
+            $lineCount += Preg::matchAll('/\R/u', $tokens[$i]->getContent());
         }
 
         return $lineCount;

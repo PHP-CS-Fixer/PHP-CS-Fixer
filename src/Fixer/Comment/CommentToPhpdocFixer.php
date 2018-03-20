@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -99,7 +100,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements WhitespacesAwa
         return array_reduce(
             $indices,
             function ($carry, $index) use ($tokens) {
-                return $carry || 1 === preg_match('~(#|//|/\*+|\R(\s*\*)?)\s*\@[a-zA-Z0-9_\\\\-]+(?=\s|\(|$)~', $tokens[$index]->getContent());
+                return $carry || 1 === Preg::match('~(#|//|/\*+|\R(\s*\*)?)\s*\@[a-zA-Z0-9_\\\\-]+(?=\s|\(|$)~', $tokens[$index]->getContent());
             },
             false
         );
