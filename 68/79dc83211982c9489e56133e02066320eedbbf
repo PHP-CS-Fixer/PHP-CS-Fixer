@@ -1,0 +1,151 @@
+---------------------------------------------------------------------------
+
+by EikeDawid at 2018-01-24T10:15:15Z
+
+@julienfalque are you still working on this PR or has it been abandoned? - I would love to have a consistent way to format arrays.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-24T10:26:36Z
+
+The PR is not abandoned but it needs more review. If you have time, any help is welcome :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-21T19:29:53Z
+
+@EikeDawid, why won't you help and make a decent review? it would help merging the PR for sure
+
+---------------------------------------------------------------------------
+
+by EikeDawid at 2018-02-21T22:15:34Z
+
+@keradus let me see if i can find somebody
+
+---------------------------------------------------------------------------
+
+by mgarciadelojo at 2018-02-23T16:19:20Z
+
+Hi!
+
+First of all, thank you @julienfalque for the Pull Request. Looks amazing!
+
+I've been playing with it for a while, and everything seems fine to me. You can see a few examples below:
+
+**Input:**
+
+```
+<?php
+
+$array = array(
+		'a' => 1,
+		'asdf'      => 2,
+		'adddd' => 3,
+		'c' => 4,
+	);
+
+$array = array(
+		 1,
+		2,
+		  3,
+		4,
+		    5,
+		6
+		);
+
+$array = array(1,2,3,4,5,    );
+
+$this->assertEquals(
+    [
+    'firstKey' 		=> '50',
+    'secondKey' 		=> '90',
+    'whateverKey' 		=> '/tmp/report',
+    ],
+    $this->configuration->getLoggingConfiguration()
+);
+
+return array(
+  'first-name'	 => 'First Name',
+  'last-name' 	 => 'Last Name',
+  'language' => array(
+    	'en' => 'English',
+    	'es'  =>    'Spanish',
+  ),
+);
+```
+
+**Output:**
+
+```
+<?php
+
+$array = [
+    'a' => 1,
+    'asdf' => 2,
+    'adddd' => 3,
+    'c' => 4,
+];
+
+$array = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+];
+
+$array = [1, 2, 3, 4, 5];
+
+$this->assertSame(
+    [
+        'firstKey' => '50',
+        'secondKey' => '90',
+        'whateverKey' => '/tmp/report',
+    ],
+    $this->configuration->getLoggingConfiguration()
+);
+
+return [
+    'first-name' => 'First Name',
+    'last-name' => 'Last Name',
+    'language' => [
+        'en' => 'English',
+        'es' => 'Spanish',
+    ],
+];
+```
+
+The only thing I am missing are more tests, but apart from that, works great.
+
+Cheers
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-27T23:25:51Z
+
+WIP as I found test cases that currently fail.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-04T18:29:18Z
+
+I refactored the fixer a bit, added and fixed test cases. I feel more confident about the stability of the fixer now. Though I found an edge case that is still not supported where the fixer applies the following changes:
+
+```diff
+ $foo = [
+     0 =>
+-        'bar',
++    'bar',
+     1 =>
+-        'baz',
++    'baz',
+ ];
+```
+IMO this case should be left untouched, i.e. values that are on their own line (rather than after `=>`) should be indented once. But I assume this is a very rare edge case (found only once in Symfony codebase), I'd say this should be a separate PR so this one can get merged. WDYT?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-04T21:29:20Z
+
+I would say that for this case we do have `no_multiline_whitespace_around_double_arrow` rule ;)
