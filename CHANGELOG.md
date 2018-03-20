@@ -587,6 +587,17 @@ Changelog for v2.3.0
 * minor #2568 Require PHP 5.6+ (keradus)
 * minor #2672 Bump symfony/* deps (keradus)
 
+Changelog for v2.2.19
+---------------------
+
+* bug #3594 ElseifFixer - Bug with alternative syntax (kubawerlos)
+* bug #3600 StrictParamFixer - Fix issue when functions are imported (ntzm, keradus)
+* minor #3589 FixerFactoryTest - add missing test (SpacePossum, keradus)
+* minor #3610 make phar extension optional (Tom Klingenberg, keradus)
+* minor #3612 Travis - allow for hhvm failures (keradus)
+* minor #3615 Detect fabbot.io (julienfalque, keradus)
+* minor #3616 FixerFactoryTest - Don't rely on autovivification (keradus)
+
 Changelog for v2.2.18
 ---------------------
 
