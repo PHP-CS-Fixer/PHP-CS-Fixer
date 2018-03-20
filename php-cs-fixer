@@ -39,11 +39,17 @@ set_error_handler(function ($severity, $message, $file, $line) {
     }
 });
 
-try {
+$require = true;
+if (class_exists('Phar')) {
     // Maybe this file is used as phar-stub? Let's try!
-    Phar::mapPhar('php-cs-fixer.phar');
-    require_once 'phar://php-cs-fixer.phar/vendor/autoload.php';
-} catch (PharException $e) {
+    try {
+        Phar::mapPhar('php-cs-fixer.phar');
+        require_once 'phar://php-cs-fixer.phar/vendor/autoload.php';
+        $require = false;
+    } catch (PharException $e) {
+    }
+}
+if ($require) {
     // OK, it's not, let give Composer autoloader a try!
     if (file_exists($a = __DIR__.'/../../autoload.php')) {
         require_once $a;
@@ -51,6 +57,7 @@ try {
         require_once __DIR__.'/vendor/autoload.php';
     }
 }
+unset($require);
 
 use PhpCsFixer\Console\Application;
 
