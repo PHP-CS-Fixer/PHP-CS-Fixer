@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-12-27T09:53:02Z
+
+@keradus sorry, refactored it all:
+
+1. `src/Linter/LintingException.php ` now unaltered
+1. diff details now saved into additional constructor arguments of `src/Error/Error.php`, which is both invariable and internal, so no BC break, only new internal API
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-02T13:32:11Z
+
+I like the idea of having more details on failure, so :+1: for that :) Thanks for the efforts so far.
+
+I'm wondering, the diff and applied fixers up till the problem: is this info the `Error` class should know about, or maybe better if the error-manager and the error-output-builder know how to deal with this meta info? Not sure about the composition of the classes here.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-02T13:39:34Z
+
+> is this info the Error class should know about, or maybe better if the error-manager
+
+I would definitely say the Error: it already knows the type, the filename and all the details about the error because it has the exception. Applied fixers and diff are part of the context of the error.
+
+I am not saying that the implementation in this PR is the ideal solution because I do not have extensive knowledge about the framework behing PHP-CS-Fixer, but speaking by abstract concepts, the error's details should fall into an Error entity, not into the ErrorManager service.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-10T16:10:46Z
+
+Rebased after https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3405
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-10T16:20:36Z
+
+@FriendsOfPHP/php-cs-fixer could one pick this up for a review please?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-18T07:13:22Z
+
+The new details are outputted no matter what the verbosity level is?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-18T07:33:37Z
+
+> The new details are outputted no matter what the verbosity level is?
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3340/files#diff-8b503f34245ee1ed487e7160d1a1eb44R56
+The applied fixers are always shown near the exception message, and the exception message is shown when on verbosity `>= OutputInterface::VERBOSITY_DEBUG`.
+
+For the diff you need both `>= OutputInterface::VERBOSITY_DEBUG` and `--diff`.
