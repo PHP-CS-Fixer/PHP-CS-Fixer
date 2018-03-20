@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-13T09:33:17Z
+
+please add to `.php_cs.dist`
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-01-17T16:18:14Z
+
+@keradus test cases added.
+
+I've added `CommentsAnalyzer` I intent to use in `NoEmptyCommentFixer` after https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3455 is merged to `master` (in separate PR).
