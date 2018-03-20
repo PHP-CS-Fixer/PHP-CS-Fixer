@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-14T09:35:59Z
+
+rebased, conflict resolved and forced pushed
+this should also trigger the CI again
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-20T16:14:48Z
+
+not sure why fabbot is asking to use long array syntax... cc @julienfalque
