@@ -382,6 +382,12 @@ Choose from the list of available rules:
   - ``spacing`` (``'none'``, ``'one'``): spacing to apply around concatenation operator;
     defaults to ``'none'``
 
+* **date_time_immutable**
+
+  Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
+
+  *Risky rule: risky when the code relies on modifying ``DateTime`` object or if any of the ``date_create*`` functions are overridden.*
+
 * **declare_equal_normalize** [@Symfony]
 
   Equal sign in declare statement should be surrounded by spaces or not
