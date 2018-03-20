@@ -318,12 +318,6 @@ final class FixerFactoryTest extends TestCase
             ksort($priorityCases);
         }
 
-        if ('braces,indentation_type,no_break_comment.test' === $fileName) {
-            $this->markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
-
-            return;
-        }
-
         $this->assertSame(
             1,
             preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
