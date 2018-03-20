@@ -34,6 +34,7 @@ final class FixerConfigurationResolverRootlessTest extends TestCase
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      * @expectedDeprecation Passing "foo" at the root of the configuration is deprecated and will not be supported in 3.0, use "foo" => array(...) option instead.
      */

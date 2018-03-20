@@ -719,6 +719,7 @@ INPUT
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0.
      */

@@ -769,6 +769,7 @@ $b;
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'single_space']] as replacement for ['align_equals' => true, 'align_double_arrow' => false].
      */
@@ -781,6 +782,7 @@ $b;
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => null].
      */
@@ -793,6 +795,7 @@ $b;
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=>' => 'align']] as replacement for ['align_equals' => null, 'align_double_arrow' => true].
      */
@@ -805,6 +808,7 @@ $b;
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'single_space', '=>' => 'align']] as replacement for ['align_equals' => false, 'align_double_arrow' => true].
      */
