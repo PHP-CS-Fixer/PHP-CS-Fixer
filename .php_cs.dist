@@ -72,6 +72,7 @@ $config = PhpCsFixer\Config::create()
         'strict_param' => true,
         'string_line_ending' => true,
         'yoda_style' => true,
+        'no_alternative_syntax' => true,
     ])
     ->setFinder($finder)
 ;

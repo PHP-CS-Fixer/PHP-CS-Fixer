@@ -197,6 +197,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['void_return'], $fixers['return_type_declaration']],
             [$fixers['php_unit_test_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_test_annotation'], $fixers['phpdoc_trim']],
+            [$fixers['no_alternative_syntax'], $fixers['braces']],
+            [$fixers['no_alternative_syntax'], $fixers['elseif']],
         ];
     }
 
