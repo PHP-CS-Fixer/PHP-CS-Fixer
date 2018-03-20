@@ -43,7 +43,7 @@ $config = PhpCsFixer\Config::create()
 ;
 
 // special handling of fabbot.io service if it's using too old PHP CS Fixer version
-if ('1' === getenv('FABBOT_IO')) {
+if (false !== getenv('FABBOT_IO')) {
     try {
         PhpCsFixer\FixerFactory::create()
             ->registerBuiltInFixers()
