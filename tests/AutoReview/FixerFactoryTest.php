@@ -330,7 +330,7 @@ final class FixerFactoryTest extends TestCase
         static $priorityCases;
 
         if (null === $priorityCases) {
-            $priorityCases = array();
+            $priorityCases = [];
 
             foreach ($this->provideFixersPriorityCases() as $priorityCase) {
                 $fixerName = $priorityCase[0]->getName();
