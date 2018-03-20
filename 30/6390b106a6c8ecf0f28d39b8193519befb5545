@@ -1,0 +1,70 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-13T16:18:36Z
+
+Hi, thanks for the PR, good idea to get this done :)
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-01-15T12:50:54Z
+
+@SpacePossum This is once again ready for review
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-19T05:14:38Z
+
+@BackEndTea if you've the time, could you rebase your branch and add this new fixer to the [.php_cs.dist](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/.php_cs.dist) of the project?
+(maybe this should go the SF set, btw. is this fixer `risky`, we might change the visibility of a non-PHPUnit test I think?)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-19T08:40:31Z
+
+> btw. is this fixer `risky`
+
+wow, why it is not marked as risky ?
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-01-19T09:54:51Z
+
+I have rebased on master, marked the fixer as risky, added it to `.php_cs.dist` and ran the fixer
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-02-06T08:16:24Z
+
+@keradus @SpacePossum Is this good for the next release, or are there still things that need to be fixed?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-06T12:14:00Z
+
+@BackEndTea please pull my commits in if you want to keep up working in this.
+I think this looks good, but we've to wait for people to find the time to merge and release and such, please be patient with us, busy days! :)
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-02-06T19:07:39Z
+
+No problem, just wanted to make sure that you weren't waiting for something from my side.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-15T13:06:57Z
+
+@BackEndTea
+@SpacePossum , please finish review
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-15T13:26:05Z
+
+I finished my review 9 days ago, we are waiting for a second OK
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-15T14:28:26Z
+
+ah, didn't saw your approval on PR ;)
