@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.10.5
+---------------------
+
+* bug #3344 Fix method chaining indentation in HTML (julienfalque)
+* bug #3594 ElseifFixer - Bug with alternative syntax (kubawerlos)
+* bug #3600 StrictParamFixer - Fix issue when functions are imported (ntzm, keradus)
+* minor #3589 FixerFactoryTest - add missing test (SpacePossum, keradus)
+* minor #3610 make phar extension optional (Tom Klingenberg, keradus)
+* minor #3612 Travis - allow for hhvm failures (keradus)
+* minor #3615 Detect fabbot.io (julienfalque, keradus)
+* minor #3616 FixerFactoryTest - Don't rely on autovivification (keradus)
+* minor #3621 FixerFactoryTest - apply CS (keradus)
+
 Changelog for v2.10.4
 ---------------------
 

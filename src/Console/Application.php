@@ -35,7 +35,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.10.5-DEV';
+    const VERSION = '2.10.5';
     const VERSION_CODENAME = 'Bowling Bear';
 
     /**
