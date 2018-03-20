@@ -128,8 +128,7 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
         }
 
         if ($isUsedWithLeadingBackslash || $isUsedAlone && ($isInNamespace && $isImported || !$isInNamespace)) {
-            $tokens->clearAt($index);
-            $tokens->insertAt($index, new Token([T_STRING, 'DateTimeImmutable']));
+            $tokens[$index] = new Token([T_STRING, 'DateTimeImmutable']);
             if ($isInNamespace && $isUsedAlone) {
                 $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
             }
@@ -149,7 +148,6 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
             }
         }
 
-        $tokens->clearAt($index);
-        $tokens->insertAt($index, new Token([T_STRING, $replacement]));
+        $tokens[$index] = new Token([T_STRING, $replacement]);
     }
 }

@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.10.4/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.11.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -369,6 +369,12 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
+* **comment_to_phpdoc**
+
+  Comments with annotation should be docblock.
+
+  *Risky rule: risky as new docblocks might began mean more, e.g. Doctrine's entity might have a new column in database.*
+
 * **compact_nullable_typehint**
 
   Remove extra spaces in a nullable typehint.
@@ -607,6 +613,11 @@ Choose from the list of available rules:
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
   other tag variations.
 
+* **fully_qualified_strict_types**
+
+  Transforms imported FQCN parameters and return types in function
+  arguments to short version.
+
 * **function_declaration** [@PSR2, @Symfony]
 
   Spaces should be properly placed in a function declaration.
@@ -806,6 +817,10 @@ Choose from the list of available rules:
   Master functions shall be used instead of aliases.
 
   *Risky rule: risky when any of the alias functions are overridden.*
+
+* **no_alternative_syntax**
+
+  Replace control structure alternative syntax to use braces.
 
 * **no_blank_lines_after_class_opening** [@Symfony]
 
@@ -1043,6 +1058,8 @@ Choose from the list of available rules:
     'constant_private', 'property_public', 'property_protected',
     'property_private', 'construct', 'destruct', 'magic', 'phpunit',
     'method_public', 'method_protected', 'method_private']``
+  - ``sortAlgorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
+    statements should be sorted; defaults to ``'none'``
 
 * **ordered_imports**
 
@@ -1052,8 +1069,9 @@ Choose from the list of available rules:
 
   - ``importsOrder`` (``array``, ``null``): defines the order of import types; defaults
     to ``null``
-  - ``sortAlgorithm`` (``'alpha'``, ``'length'``): whether the statements should be
-    sorted alphabetically or by length; defaults to ``'alpha'``
+  - ``sortAlgorithm`` (``'alpha'``, ``'length'``, ``'none'``): whether the statements should
+    be sorted alphabetically or by length, or not sorted; defaults to
+    ``'alpha'``
 
 * **php_unit_construct** [@Symfony:risky]
 
@@ -1549,7 +1567,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.10.4/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.11.0/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

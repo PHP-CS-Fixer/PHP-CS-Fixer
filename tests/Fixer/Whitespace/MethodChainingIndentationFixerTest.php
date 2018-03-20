@@ -186,6 +186,30 @@ $foo
 ->bar()
 ;',
             ],
+            [
+                '<div>
+    <?php $object
+        ->method()
+        ->method();
+    ?>
+</div>
+
+<?= $object
+    ->method()
+    ->method();
+?>',
+                '<div>
+    <?php $object
+        ->method()
+    ->method();
+    ?>
+</div>
+
+<?= $object
+    ->method()
+        ->method();
+?>',
+            ],
         ];
     }
 
