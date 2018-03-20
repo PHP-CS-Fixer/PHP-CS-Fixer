@@ -371,7 +371,7 @@ Choose from the list of available rules:
 
   Comments with annotation should be docblock.
 
-  *Risky rule: risky as new docblocks might began mean more, e.g. Doctrine's entity might have a new column in database.*
+  *Risky rule: risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.*
 
 * **compact_nullable_typehint**
 
@@ -390,7 +390,7 @@ Choose from the list of available rules:
 
   Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
 
-  *Risky rule: risky when the code relies on modifying ``DateTime`` object or if any of the ``date_create*`` functions are overridden.*
+  *Risky rule: risky when the code relies on modifying ``DateTime`` objects or if any of the ``date_create*`` functions are overridden.*
 
 * **declare_equal_normalize** [@Symfony]
 
@@ -1159,10 +1159,10 @@ Choose from the list of available rules:
 
 * **php_unit_set_up_tear_down_visibility**
 
-  Changes the visibility of the ``setUp`` and ``tearDown`` functions of
-  PHPUnit to protected, to match the PHPUnit TestCase.
+  Changes the visibility of the ``setUp()`` and ``tearDown()`` functions of
+  PHPUnit to ``protected``, to match the PHPUnit TestCase.
 
-  *Risky rule: this fixer may change functions named setUp or tearDown outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
+  *Risky rule: this fixer may change functions named ``setUp()`` or ``tearDown()`` outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
 
 * **php_unit_strict**
 
