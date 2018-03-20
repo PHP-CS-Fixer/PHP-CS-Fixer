@@ -1,0 +1,207 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-24T19:21:48Z
+
+what about going even forward and having input like:
+```
+<?php
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Baz
+    {
+    }
+}
+```
+
+so even add imports when they are missing
+
+---------------------------------------------------------------------------
+
+by veewee at 2017-11-24T19:29:04Z
+
+Going forward doesnt seems like a good idea since I am changing more tokens into less tokens right?
+I was indeed thinking of adding the use statements, but the problem is that I don't know where the imports should be added at te moment. Even if you find the index of the last use statement: at that point you will be adding multiple tokens to the file which makes it hard to loop through the document. Any help is appreciated, but currently I try to focus on getting the basics ready :)
+
+---------------------------------------------------------------------------
+
+by veewee at 2017-11-25T08:50:12Z
+
+@keradus : Is it possible to partially mark a fixer for a specific PHP version? Strict return types are only available from PHP 7.0 on. Should I target PHP >= 7.0 or maybe it's better to split the fixer in 2 different fixers. how do you see this?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-25T17:24:43Z
+
+@keradus I think it would raise a lot the complexity, since the fixer would also need to check already imported class to avoid conflicts, like:
+
+```php
+use Foo\Bar;
+
+var_dump(\Other\Bar::class);
+```
+
+@veewee I suggest to try to fix also:
+
+* Partial namespace imported:
+
+```php
+use Foo\Bar;
+
+// From
+var_dump(\Foo\Bar\Baz::class);
+// To
+var_dump(Bar\Baz::class);
+```
+
+* Partial namespace declared:
+
+```php
+namespace Foo\Bar;
+
+// From
+var_dump(\Foo\Bar\Baz::class);
+// To
+var_dump(Baz::class);
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-26T17:22:04Z
+
+very well, let us keep moving FQCN into imports as separated fixer (so feature request that would not be solved in your PR)
+
+---------------------------------------------------------------------------
+
+by veewee at 2017-11-28T17:31:18Z
+
+@Slamdunk : implemented the partial use + namespaces
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-02T17:02:55Z
+
+code in PR is nice, yet reviewing it requires some time. I wonder, maybe you could extract sth from this PR to separated one (like extracting refactoring of analyzers) ?
+
+---------------------------------------------------------------------------
+
+by veewee at 2017-12-05T07:36:59Z
+
+Hi @keradus,
+
+I've applied the remarks. I would prefer to keep both the fixer and the analyzers as one PR. Otherwise it would take me too much time to split them up and bring them together afterwards again.
+The code inside the analyzers is code that was taken from existing fixers to make it more reusable.
+
+Take all the time you need to review :)
+
+(BTW: not sure why circle fails. You might want to add more memory?)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-12-05T11:51:39Z
+
+OK, thanks for update. Please be aware that I will rather not be able to do it this week. Sorry for that :(
+Or, perhaps, someone else is willing to take a look as well ? ;)
+
+(CircleCI: we faced the limit when we recently added new tests on 2.2, CirlceCI still works, merged 2.2->master, too much tests, CircleCI crashed. If you are willing to adjust memory, please raise new PR, thanks !)
+
+---------------------------------------------------------------------------
+
+by veewee at 2017-12-29T08:15:47Z
+
+@keradus : I don't understand why the test is failing. It worked before rebasing against master :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-02T11:23:52Z
+
+Hi @veewee,
+ the failing `CiIntegrationTest::testIntegration` with `Broken pipe` is not related to the changes you made in the PR, no worries about that one (it is an unstable test we haven't completely figured out yet)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-02T11:26:40Z
+
+Lot of work so far, thanks!
+I've a question about the fixer, both the sample code and unit test work with class methods; would this fixer also work for `functions` and methods within `traits` and `interfaces` ?
+
+---------------------------------------------------------------------------
+
+by veewee at 2018-01-02T12:19:54Z
+
+@SpacePossum : It should, but I did not test those cases either. I'll add some test cases for that as well.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-15T13:38:28Z
+
+@veewee , sorry for lack of update on this one from my side recently.
+Please rebase and double confirm it's ready for new review round (maybe last one?)
+
+---------------------------------------------------------------------------
+
+by veewee at 2018-01-18T19:29:01Z
+
+@keradus  : rebased against master. Feel free to do a new review. To me, this PR is at a final state; Additional work could be done in another one.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-15T16:19:57Z
+
+@veewee , please solve conflicts, I can't merge
+
+---------------------------------------------------------------------------
+
+by veewee at 2018-02-23T07:27:08Z
+
+Resolved.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-23T10:45:29Z
+
+@TomasVotruba , as you have offered your help whenever we need to review sth, I would like to use it once more. Could you please help with that one ?
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2018-02-23T11:14:53Z
+
+@keradus Well, not whenever ("as a service" ;)), but when I find time and joy, I'll help.
+Will look into this one
+
+---------------------------------------------------------------------------
+
+by veewee at 2018-02-23T12:35:52Z
+
+@TomasVotruba
+Thanks for the review! Your enthousiasm is amazing :)
+
+---------------------------------------------------------------------------
+
+by veewee at 2018-02-23T13:37:11Z
+
+@TomasVotruba
+I moved everything that shouldn't be in the fixer to separate classes (Token Resolvers, Token Generators and Token Analyzers)
+Code looks even better now :)
+
+---------------------------------------------------------------------------
+
+by veewee at 2018-03-01T19:22:14Z
+
+@keradus : I would love to finish this one up. What's the state of this PR from your point of view?
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2018-03-15T19:52:07Z
+
+LGTM. What needs to be done here?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-20T17:22:00Z
+
+@veewee , I see amazing job of yours here and I do appreciate it fully ! It looks really great, and I know this fixer was highly awaited by community!
+My point of view is always the same - community need to review, I don't insist it has to be me every single time ;)
+Sadly, it's hard to me to keep an eye on every single PR, sorry for big delays here, I take them on my foot :(
+
+@TomasVotruba , thanks for big help with reviewing the PR, it's highly appreciated as well!
