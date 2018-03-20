@@ -1,0 +1,89 @@
+---------------------------------------------------------------------------
+
+by robfrawley at 2018-03-09T05:19:55Z
+
+@eddmash You need to remove the `.idea/` directory (the PHPStorm project files) from your commit.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-09T15:22:16Z
+
+Hi! Sounds like super nice feature to have!
+Sadly, I won't be able to make full review during the weekend, but maybe one of the other guys will help? :)
+
+Small adjustment I made - I retargetted the PR against master branch (as main branch, currently 2.10, is always last stable release - that is good target for bugfixes, but new features shall go to master)
+
+One thing for sure - this rule has to run before `braces` and `elseif`. To do that, you need to adjust `getPriority` and write some integration tests.
+
+---------------------------
+
+A little help about priorities/integration tests, if you are not familiar with them yet:
+
+How to ensure proper priority between 2 fixers: `FooFixer` (`foo` rule) and `BarFixer` (`bar` rule)?
+Let say we want to ensure that `foo` runs before `bar`.
+Configuring proper priority could be problematic, for that we will follow Test Driven Development here, first preparing the tests, then adjusting code to ensure priority relation is proper and tests are passing.
+1. Create new explicit priority unit test case in `PhpCsFixer\Tests\AutoReview\FixerFactoryTest::provideFixersPriorityCases`
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.10/tests/AutoReview/FixerFactoryTest.php#L60
+by adding `[$fixers['foo'], $fixers['bar']]` item into returned array
+2. Creat new implicit priority integration test case by creating file:
+`tests/Fixtures/Integration/priority/foo,bar.test`
+```
+--TEST--
+Integration of fixers: foo,bar.
+--RULESET--
+{"foo": true, "bar": true}
+--EXPECT--
+<?php
+// fill expected code
+
+--INPUT--
+<?php
+// fill input code
+// ensure that this code sample is violating both, `foo` and `bar` rule in a way that would be problematic if rules would be applied in wrong order
+```
+3. Override `getPriority` of `FooFixer` to put comment it has to run before `BarFixer` (or `BarFixer` to put a comment that it has to run after `FooFixer`).
+4. Run the tests. If they are failing, adjust value returned by `getPriority` to have tests passing.
+
+---------------------------------------------------------------------------
+
+by eddmash at 2018-03-12T11:13:05Z
+
+Having a test that checks for **no_alternative_syntax** is run before **elseif**  always results in a fail on the reverse check. i.e. **elseif** is run before **no_alternative_syntax**
+
+The following regardless of which fixer is run first, the end result is the same. i have not been able to come up with a way to get different results on the reverse check. any ideas ?
+
+> input
+
+```
+if (1 == 1) :
+    $var = 1;
+elseif (1 == 2):
+    $var = 2;
+endif;
+```
+
+> results
+
+```
+if (1 == 1) {
+    $var = 1;
+} elseif (1 == 2){
+    $var = 2;
+}
+```
+The **no_alternative_syntax**  priority is set to 1.
+
+---------------------------------------------------------------------------
+
+by eddmash at 2018-03-12T17:55:32Z
+
+Finally got a scenario to test reverse check i.e. **elseif** running before **no_alternative_syntax** .
+This will definetly fail if  **elseif** runs before **no_alternative_syntax**
+
+`if ($x) { foo(); } else if ($y): bar(); endif;`
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-12T20:24:09Z
+
+great you found it, really nice !
