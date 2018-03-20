@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-02T11:08:42Z
+
+```php
+            [
+                '<div>
+    <?php $object
+        ->method()
+        ->method();
+    ?>
+</div>
+
+<?= $object
+    ->method()
+    ->method();
+?>',
+                '<div>
+    <?php $object
+        ->method()
+    ->method();
+    ?>
+</div>
+
+<?= $object
+    ->method()
+        ->method();
+?>',
+            ],
+```
+
+please update so we see both `<?=` and `<?php` combined with inline HTML fixed.
+
+Nice fix, thanks! :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-10T11:45:08Z
+
+ping @julienfalque
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-11T18:11:59Z
+
+Test updated.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-12T11:43:46Z
+
+@SpacePossum please review ;)
