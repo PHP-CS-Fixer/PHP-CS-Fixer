@@ -3,6 +3,33 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.11.0
+---------------------
+
+* feature #3135 Add ArrayIndentationFixer (julienfalque)
+* feature #3235 Implement StandardizeIncrementFixer (ntzm, SpacePossum)
+* feature #3260 Add DateTimeImmutableFixer (kubawerlos)
+* feature #3276 Transform Fully Qualified parameters and return types to short version (veewee, keradus)
+* feature #3299 SingleQuoteFixer - fix single quote char (Slamdunk)
+* feature #3340 Verbose LintingException after fixing (Slamdunk)
+* feature #3423 FunctionToConstantFixer - add fix "get_called_class" option (SpacePossum)
+* feature #3434 Add PhpUnitSetUpTearDownVisibilityFixer (BackEndTea, SpacePossum)
+* feature #3442 Add CommentToPhpdocFixer (kubawerlos, keradus)
+* feature #3448 OrderedClassElementsFixer - added sortAlgorithm option (meridius)
+* feature #3454 Add StringLineEndingFixer (iluuu1994, SpacePossum, keradus, julienfalque)
+* feature #3477 PhpUnitStrictFixer: handle static calls (Slamdunk)
+* feature #3479 PhpUnitConstructFixer: handle static calls (Slamdunk)
+* feature #3507 Add PhpUnitOrderedCoversFixer (Slamdunk)
+* feature #3545 Add the 'none' sort algorithm to OrderedImportsFixer (EvgenyOrekhov)
+* feature #3588 Add NoAlternativeSyntaxFixer (eddmash, keradus)
+* minor #3414 DescribeCommand: add fixer class when verbose (Slamdunk)
+* minor #3432 ConfigurationDefinitionFixerInterface - fix deprecation notice (keradus)
+* minor #3527 Deprecate last param of Tokens::findBlockEnd (ntzm, keradus)
+* minor #3539 Update UnifiedDiffOutputBuilder from gecko-packages/gecko-diff-output-builder usage after it was incorporated into sebastian/diff (keradus)
+* minor #3549 DescribeCommand - use our Differ wrapper class, not external one directly (keradus)
+* minor #3592 Support PHPUnit 7 (keradus)
+* minor #3619 Travis - extend additional files list (keradus)
+
 Changelog for v2.10.5
 ---------------------
 
