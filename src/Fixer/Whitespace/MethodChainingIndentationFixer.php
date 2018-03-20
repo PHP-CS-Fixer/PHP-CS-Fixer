@@ -140,22 +140,32 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     private function getIndentAt(Tokens $tokens, $index)
     {
-        $content = '';
-
-        if ($tokens[$index]->isWhitespace()) {
-            $content = $tokens[$index]->getContent();
-            --$index;
-        }
-
-        if ($tokens[$index]->isGivenKind(T_OPEN_TAG)) {
-            $content = $tokens[$index]->getContent().$content;
-        }
-
-        if (1 === Preg::match('/\R{1}([ \t]*)$/', $content, $matches)) {
+        if (1 === Preg::match('/\R{1}([ \t]*)$/', $this->getIndentContentAt($tokens, $index), $matches)) {
             return $matches[1];
         }
 
         return null;
+    }
+
+    private function getIndentContentAt(Tokens $tokens, $index)
+    {
+        for ($i = $index; $i >= 0; --$i) {
+            if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
+                continue;
+            }
+
+            $content = $tokens[$index]->getContent();
+
+            if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
+                $content = $tokens[$index - 1]->getContent().$content;
+            }
+
+            if (Preg::match('/\R/', $content)) {
+                return $content;
+            }
+        }
+
+        return '';
     }
 
     /**

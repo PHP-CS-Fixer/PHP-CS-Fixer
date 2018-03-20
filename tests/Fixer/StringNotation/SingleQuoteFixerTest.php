@@ -113,7 +113,7 @@ EOF
                 '<?php $a = "foo \'bar\'";',
             ],
             [
-<<<'EOT'
+                <<<'EOT'
 <?php
 // none
 $a = 'start \' end';
@@ -122,8 +122,8 @@ $b = 'start \\\' end';
 // two escaped baskslash
 $c = 'start \\\\\' end';
 EOT
-,
-<<<'EOT'
+                ,
+                <<<'EOT'
 <?php
 // none
 $a = "start ' end";
@@ -132,17 +132,17 @@ $b = "start \\' end";
 // two escaped baskslash
 $c = "start \\\\' end";
 EOT
-,
+                ,
             ],
             [
-<<<'EOT'
+                <<<'EOT'
 <?php
 // one unescaped backslash
 $a = "start \' end";
 // one escaped + one unescaped baskslash
 $b = "start \\\' end";
 EOT
-,
+                ,
             ],
         ];
     }

@@ -248,6 +248,10 @@ Choose from the list of available rules:
     whose lines all start with an asterisk (``phpdocs_like``) or any
     multi-line comment (``all_multiline``); defaults to ``'phpdocs_only'``
 
+* **array_indentation**
+
+  Each element of an array must be indented exactly once.
+
 * **array_syntax**
 
   PHP arrays should be declared using the configured syntax.
@@ -377,6 +381,12 @@ Choose from the list of available rules:
 
   - ``spacing`` (``'none'``, ``'one'``): spacing to apply around concatenation operator;
     defaults to ``'none'``
+
+* **date_time_immutable**
+
+  Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
+
+  *Risky rule: risky when the code relies on modifying ``DateTime`` object or if any of the ``date_create*`` functions are overridden.*
 
 * **declare_equal_normalize** [@Symfony]
 
@@ -802,6 +812,10 @@ Choose from the list of available rules:
 
   *Risky rule: risky when any of the alias functions are overridden.*
 
+* **no_alternative_syntax**
+
+  Replace control structure alternative syntax to use braces.
+
 * **no_blank_lines_after_class_opening** [@Symfony]
 
   There should be no empty lines after class opening brace.
@@ -1133,6 +1147,13 @@ Choose from the list of available rules:
 * **php_unit_ordered_covers**
 
   Order ``@covers`` annotation of PHPUnit tests.
+
+* **php_unit_set_up_tear_down_visibility**
+
+  Changes the visibility of the setUp and tearDown functions of phpunit to
+  protected, to match the PHPUnit TestCase.
+
+  *Risky rule: this fixer may change functions named setUp or tearDown outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
 
 * **php_unit_strict**
 

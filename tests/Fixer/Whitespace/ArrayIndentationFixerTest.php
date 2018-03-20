@@ -1,0 +1,757 @@
+<?php
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Tests\Fixer\Whitespace;
+
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
+
+/**
+ * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer
+ */
+final class ArrayIndentationFixerTest extends AbstractFixerTestCase
+{
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCases
+     */
+    public function testFix($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCases()
+    {
+        return $this->withLongArraySyntaxCases([
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    'foo',
+    'bar' => 'baz',
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  'foo',
+        'bar' => 'baz',
+ ];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+    $foo = [
+        'foo',
+        'bar' => 'baz',
+    ];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+    $foo = [
+  'foo',
+        'bar' => 'baz',
+ ];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    ['bar', 'baz'],
+    [
+        'bar',
+        'baz'
+    ],
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+        ['bar', 'baz'],
+     [
+        'bar',
+         'baz'
+         ],
+ ];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    ['foo',
+        'bar',
+        ['foo',
+            'bar',
+            ['foo',
+                'bar',
+                'baz']],
+        'baz'],
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+ ['foo',
+  'bar',
+  ['foo',
+   'bar',
+   ['foo',
+    'bar',
+    'baz']],
+  'baz'],
+ ];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+class Foo
+{
+    public $foo = [
+        ['bar', 'baz'],
+        [
+            'bar',
+            'baz'
+        ],
+    ];
+
+    public function bar()
+    {
+        return [
+            ['bar', 'baz'],
+            [
+                'bar',
+                'baz'
+            ],
+        ];
+    }
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+class Foo
+{
+    public $foo = [
+        ['bar', 'baz'],
+     [
+        'bar',
+         'baz'
+         ],
+ ];
+
+    public function bar()
+    {
+        return [
+                ['bar', 'baz'],
+             [
+                'bar',
+                 'baz'
+                 ],
+         ];
+    }
+}
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    'foo' => foo(
+               1,
+                2
+             ),
+    'bar' => bar(
+               1,
+                2
+             ),
+    'baz' => baz(
+               1,
+                2
+             ),
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+   'foo' => foo(
+              1,
+               2
+            ),
+      'bar' => bar(
+                 1,
+                  2
+               ),
+         'baz' => baz(
+                    1,
+                     2
+                  ),
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    'foo' => ['bar' => [
+        'baz',
+    ]],
+    'qux',
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  'foo' => ['bar' => [
+   'baz',
+  ]],
+  'qux',
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    'foo' => [
+        (new Foo())
+                   ->foo(),
+    ],
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  'foo' => [
+     (new Foo())
+                ->foo(),
+  ],
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    [new Foo(
+            )],
+    [new Foo(
+            )],
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+      [new Foo(
+              )],
+  [new Foo(
+          )],
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = new Foo([
+    (new Bar())
+        ->foo([
+            'foo',
+            'foo',
+        ])
+         ->bar(['bar', 'bar'])
+          ->baz([
+              'baz',
+              'baz',
+          ])
+    ,
+]);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = new Foo([
+               (new Bar())
+                   ->foo([
+                           'foo',
+            'foo',
+               ])
+                    ->bar(['bar', 'bar'])
+                     ->baz([
+                           'baz',
+            'baz',
+               ])
+         ,
+]);
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+
+class Foo
+{
+    public function bar()
+    {
+        $foo = [
+            'foo',
+            'foo',
+        ];
+
+        $bar = [
+            'bar',
+            'bar',
+        ];
+    }
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+
+class Foo
+{
+    public function bar()
+    {
+        $foo = [
+              'foo',
+         'foo',
+    ];
+
+        $bar = [
+  'bar',
+    'bar',
+                 ];
+    }
+}
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+
+class Foo
+{
+    public function bar()
+    {
+        return new Bar([
+            (new Baz())
+                ->qux([function ($a) {
+                    foreach ($a as $b) {
+                        if ($b) {
+                            throw new Exception(sprintf(
+                                'Oops: %s',
+                                $b
+                            ));
+                        }
+                    }
+                }]),
+        ]);
+    }
+}
+
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+
+class Foo
+{
+    public function bar()
+    {
+        return new Bar([
+(new Baz())
+    ->qux([function ($a) {
+        foreach ($a as $b) {
+            if ($b) {
+                throw new Exception(sprintf(
+                    'Oops: %s',
+                    $b
+                ));
+            }
+        }
+    }]),
+        ]);
+    }
+}
+
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+
+$foo = [
+    'Foo'.
+        foo()
+        .bar()
+    ,
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+
+$foo = [
+  'Foo'.
+      foo()
+      .bar()
+,
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    [new \stdClass()],
+    'foo',
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  [new \stdClass()],
+ 'foo',
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    $bar
+        ? 'bar'
+        : 'foo'
+    ,
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  $bar
+      ? 'bar'
+      : 'foo'
+      ,
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    $bar ?
+        'bar' :
+        'foo'
+    ,
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  $bar ?
+      'bar' :
+      'foo'
+      ,
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+
+$foo = [
+    [
+        'foo',
+    ], [
+        'bar',
+    ],
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+
+$foo = [
+      [
+               'foo',
+ ], [
+   'bar',
+  ],
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    'foo', // comment
+    'bar',
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  'foo', // comment
+'bar',
+ ];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [[[
+    'foo',
+    'bar',
+],
+],
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [[[
+  'foo',
+'bar',
+],
+ ],
+  ];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    [
+        [
+            'foo',
+            'bar',
+        ]]];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+[
+[
+    'foo',
+    'bar',
+ ]]];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    [
+        [[
+            [[[
+                'foo',
+                'bar',
+            ]
+            ]]
+        ]
+        ]
+    ]];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+[
+[[
+[[[
+    'foo',
+    'bar',
+ ]
+]]
+]
+ ]
+]];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [[
+    [
+        [[[],[[
+            [[[
+                'foo',
+                'bar',
+            ],[[],[]]]
+            ]],[
+            'baz',
+        ]]
+        ],[]],[]]
+]
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [[
+[
+[[[],[[
+[[[
+'foo',
+'bar',
+],[[],[]]]
+]],[
+'baz',
+]]
+],[]],[]]
+]
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php if ($foo): ?>
+    <?php foo([
+        'bar',
+        'baz',
+    ]) ?>
+<?php endif ?>
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php if ($foo): ?>
+    <?php foo([
+          'bar',
+      'baz',
+   ]) ?>
+<?php endif ?>
+INPUT
+                ,
+            ],
+        ]);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithTabsCases
+     */
+    public function testFixWithTabs($expected, $input = null)
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithTabsCases()
+    {
+        return $this->withLongArraySyntaxCases([
+            [
+                <<<EXPECTED
+<?php
+\$foo = [
+\t'foo',
+\t'bar' => 'baz',
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  'foo',
+        'bar' => 'baz',
+ ];
+INPUT
+                ,
+            ],
+            [
+                <<<EXPECTED
+<?php
+\$foo = [
+\t'foo',
+\t'bar' => 'baz',
+];
+EXPECTED
+                ,
+                <<<INPUT
+<?php
+\$foo = [
+\t\t\t'foo',
+\t\t'bar' => 'baz',
+ ];
+INPUT
+                ,
+            ],
+        ]);
+    }
+
+    private function withLongArraySyntaxCases(array $cases)
+    {
+        $longSyntaxCases = [];
+
+        foreach ($cases as $case) {
+            $case[0] = $this->toLongArraySyntax($case[0]);
+            if (isset($case[1])) {
+                $case[1] = $this->toLongArraySyntax($case[1]);
+            }
+
+            $longSyntaxCases[] = $case;
+        }
+
+        return array_merge($cases, $longSyntaxCases);
+    }
+
+    private function toLongArraySyntax($php)
+    {
+        return strtr($php, [
+            '[' => 'array(',
+            ']' => ')',
+        ]);
+    }
+}
