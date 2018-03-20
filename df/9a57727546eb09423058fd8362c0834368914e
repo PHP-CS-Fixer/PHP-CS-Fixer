@@ -1,0 +1,86 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-16T10:44:37Z
+
+:+1: for immutability conversion
+:-1: for timezone one
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-11-18T13:44:37Z
+
+@Slamdunk timezone at all or the default value? It won't be UTC. but `date_default_timezone_get` and I'd use this rule in project where users can choose their time zone to make sure nowhere in code I forgot to use it.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-18T14:55:32Z
+
+Immutability can easily be forgotten and is an extremely valuable good practice to enforce.
+
+Timezone instead for a project can be easily set up in a config once-for-all, and not having it written in each call reduce the verbosity and ease the find of pieces of code where  timezone must differs from default one. Moreover, what if I decide to change it after the first run? Would you change them all? If yes, this can easily alter the app domain logic without being noticed in a continuous integration environment. Too deep change for a coding style tool like this one.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-18T14:57:58Z
+
+@kubawerlos TL,DR: both timezone at all and the default value.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-18T20:33:29Z
+
+@Slamdunk , I must admit I would not rely on globaly set timezone.
+I experienced situation, where project was using one timezone global config, and team managing a dependency decided, that it's easier to them to adjust global timezone for their needs, and as it is a global state, those two requirements were conflicting. Outcome? One part of app was working incorrectly (providing end-user wrong times), and it took a while to figure out that it is a stupid dependency which is overriding default timezone.
+
+For me, it's better to rely on explicit timezone parameter instead of implicit timezone config, that could be altered during runtime.
+
+> Too deep change for a coding style tool like this one.
+
+actually, same could be told for fourth of our rules, like upgrading PHP or a library, enforcing strict comparisons, declaring strict types and... things like enforcing immutability.
+or, you upgrade `coding style` definition to not only mention whitespaces... ;) but include all good practices that could be automated.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-19T06:29:11Z
+
+What I dislike is explicit string timezone.
+
+I can accept something like
+```php
+new DateTimeImmutable('now', MyApp::defaultTimezone());
+```
+But a low level string like `'UTC'`, once written, becomes hard to track, change and maintain.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-19T10:36:02Z
+
+totally agree with that, it shall not be a magic value.
+yet, if you forgot to put your own constant there, fixer has to inject "sth".
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-20T15:31:52Z
+
+I raise another concern. Regarding the timezone parameter, the manual says:
+
+> Note:
+> The $timezone parameter and the current timezone are ignored when the $time parameter either is a UNIX timestamp (e.g. @946684800) or specifies a timezone (e.g. 2010-01-28T15:00:00+02:00).
+
+So it would be confusing to have a mandatory parameter that is then ignored.
+
+I agree to the problem, but still I don't see PHP-CS-Fixer as the appropriate tool to solve it.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2017-11-20T16:43:35Z
+
+In such case fixer won't  add the timezone parameter - it will be added only when omission might result with problem. Calling `new \DateTime()` is always kind of magic - there is timezone of PHP and probably timezone of database connection to consider.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-20T17:36:23Z
+
+> it will be added only when omission might result with problem
+
+And how are you going to detect this? I can use variables or whatever complex code for first argument.
