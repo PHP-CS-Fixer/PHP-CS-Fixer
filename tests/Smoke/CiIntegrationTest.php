@@ -98,7 +98,7 @@ final class CiIntegrationTest extends TestCase
             "{$integrationScript[3]}\n{$integrationScript[4]}",
             $integrationScript[5],
             $integrationScript[6],
-            $integrationScript[8],
+            $integrationScript[7],
         );
 
         $result1 = self::executeScript(array(
