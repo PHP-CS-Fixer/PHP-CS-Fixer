@@ -92,7 +92,8 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
             $lowercaseContent = strtolower($token->getContent());
 
             if ('datetime' === $lowercaseContent) {
-                $this->fixClassUpdate($tokens, $index, $isInNamespace, $isImported);
+                $this->fixClassUsage($tokens, $index, $isInNamespace, $isImported);
+                $limit = $tokens->count(); // update limit, as fixing class usage may insert new token
             } elseif ('date_create' === $lowercaseContent) {
                 $this->fixFunctionUsage($tokens, $index, 'date_create_immutable');
             } elseif ('date_create_from_format' === $lowercaseContent) {
@@ -101,7 +102,13 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
         }
     }
 
-    private function fixClassUpdate(Tokens $tokens, $index, $isInNamespace, $isImported)
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param bool   $isInNamespace
+     * @param bool   $isImported
+     */
+    private function fixClassUsage(Tokens $tokens, $index, $isInNamespace, $isImported)
     {
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         if ($tokens[$nextIndex]->isGivenKind(T_DOUBLE_COLON)) {
@@ -136,6 +143,11 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
         }
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param string $replacement
+     */
     private function fixFunctionUsage(Tokens $tokens, $index, $replacement)
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
