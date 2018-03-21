@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: binary_operator_spaces,array_indentation.
+--RULESET--
+{"binary_operator_spaces": {"default": "align_single_space"}, "array_indentation": true}
+--EXPECT--
+<?php
+$foo = [
+    'bar'   => 1,
+    'baz'   => 2,
+];
+
+--INPUT--
+<?php
+$foo = [
+    'bar'   => 1,
+        'baz' => 2,
+];
