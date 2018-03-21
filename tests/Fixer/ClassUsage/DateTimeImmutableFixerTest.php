@@ -34,6 +34,9 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return array
+     */
     public function provideFixCases()
     {
         return [
@@ -143,6 +146,28 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php new Foo\date_create();',
+            ],
+            [
+                '<?php
+                namespace Foo;
+                use DateTime\Bar;
+                use DateTime;
+                use Baz\DateTime as BazDateTime;
+                new \DateTimeImmutable();
+                new \DateTimeImmutable();
+                new \DateTimeImmutable();
+                new \DateTimeImmutable();
+                ',
+                '<?php
+                namespace Foo;
+                use DateTime\Bar;
+                use DateTime;
+                use Baz\DateTime as BazDateTime;
+                new DateTime();
+                new DateTime();
+                new DateTime();
+                new DateTime();
+                ',
             ],
         ];
     }
