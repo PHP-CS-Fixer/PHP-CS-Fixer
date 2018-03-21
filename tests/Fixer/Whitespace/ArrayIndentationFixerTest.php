@@ -220,6 +220,42 @@ INPUT
                 <<<'EXPECTED'
 <?php
 $foo = [
+    'foo' =>
+        'My'
+        . ' very'
+        . ' long'
+        . ' string',
+    'bar' =>
+        'My'
+        . ' second'
+        . ' very'
+        . ' long'
+        . ' string',
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+    'foo' =>
+        'My'
+        . ' very'
+        . ' long'
+        . ' string',
+        'bar' =>
+            'My'
+            . ' second'
+            . ' very'
+            . ' long'
+            . ' string',
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
     'foo' => ['bar' => [
         'baz',
     ]],
