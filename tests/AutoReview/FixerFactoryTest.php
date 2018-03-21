@@ -58,6 +58,8 @@ final class FixerFactoryTest extends TestCase
         }
 
         return [
+            [$fixers['array_indentation'], $fixers['binary_operator_spaces']],
+            [$fixers['array_indentation'], $fixers['method_chaining_indentation']],
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
@@ -360,6 +362,7 @@ final class FixerFactoryTest extends TestCase
 
         if (in_array($fileName, [
             'combine_consecutive_issets,no_singleline_whitespace_before_semicolons.test',
+            'comment_to_phpdoc,phpdoc_to_comment.test',
         ], true)) {
             $this->markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));
         }
