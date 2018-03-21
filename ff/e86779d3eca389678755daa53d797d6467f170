@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-08T08:16:51Z
+
+> 👍 but I would merge it as a new feature.
+
+I would not :\\
+Let's listen what others say.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-13T19:49:19Z
+
+@SpacePossum , @localheinz , what would be your opinion? bugfix or feature ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-13T21:06:17Z
+
+I like the change very much even though I nearly never use the static calls, I know of some people who prefer those.
+My vote however is `feature` or `improvement`. I would not go for `bugfix` as the cases here that are being fixed were never intended to be fixed. So yeah, really nice additional so lets release it in a new minor :)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-14T15:12:04Z
+
+Rebased to master.
