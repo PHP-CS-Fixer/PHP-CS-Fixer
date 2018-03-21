@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.11.1
+---------------------
+
+* bug #3626 ArrayIndentationFixer: priority bug with BinaryOperatorSpacesFixer and MethodChainingIndentationFixer (Slamdunk)
+* bug #3632 DateTimeImmutableFixer bug with adding tokens while iterating over them (kubawerlos)
+* minor #3478 PhpUnitDedicateAssertFixer: handle static calls (Slamdunk)
+* minor #3618 DateTimeImmutableFixer - grooming (keradus)
+
 Changelog for v2.11.0
 ---------------------
 
