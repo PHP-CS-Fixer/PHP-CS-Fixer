@@ -58,9 +58,10 @@ final class FixerFactoryTest extends TestCase
         }
 
         return [
+            [$fixers['array_indentation'], $fixers['binary_operator_spaces']],
+            [$fixers['array_indentation'], $fixers['method_chaining_indentation']],
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
-            [$fixers['array_indentation'], $fixers['binary_operator_spaces']],
             [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
             [$fixers['blank_line_after_opening_tag'], $fixers['no_blank_lines_before_namespace']],
             [$fixers['braces'], $fixers['array_indentation']],
