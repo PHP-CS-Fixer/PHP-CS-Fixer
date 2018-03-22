@@ -66,7 +66,6 @@
             "tests/Test/AbstractIntegrationCaseFactory.php",
             "tests/Test/AbstractIntegrationTestCase.php",
             "tests/Test/Assert/AssertTokensTrait.php",
-            "tests/Test/Constraint/SameStringsConstraint.php",
             "tests/Test/Constraint/SameStringsConstraintForV5.php",
             "tests/Test/Constraint/SameStringsConstraintForV7.php",
             "tests/Test/IntegrationCase.php",
@@ -74,6 +73,9 @@
             "tests/Test/IntegrationCaseFactoryInterface.php",
             "tests/Test/InternalIntegrationCaseFactory.php",
             "tests/TestCase.php"
+        ],
+        "files": [
+            "tests/Test/Constraint/SameStringsConstraint.php"
         ]
     },
     "autoload-dev": {
