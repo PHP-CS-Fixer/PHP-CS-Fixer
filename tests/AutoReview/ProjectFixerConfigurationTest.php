@@ -34,14 +34,13 @@ final class ProjectFixerConfigurationTest extends TestCase
 
     protected function setUp()
     {
-        $file = __DIR__.'/../../.php_cs.dist';
-        $this->assertFileExists($file);
+        $file = __DIR__.'/../../.php_cs.dist';       
         $this->config = require $file;
-        $this->assertInstanceOf(Config::class, $this->config);
     }
 
     public function testCreate()
     {
+        $this->assertInstanceOf(Config::class, $this->config);
         $this->assertEmpty($this->config->getCustomFixers());
         $this->assertNotEmpty($this->config->getRules());
 
@@ -60,7 +59,6 @@ final class ProjectFixerConfigurationTest extends TestCase
     {
         $rules = $rulesSorted = array_keys($this->config->getRules());
         sort($rulesSorted);
-
         $this->assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php_cs.dist` of this project.');
     }
 }
