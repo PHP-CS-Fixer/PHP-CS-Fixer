@@ -34,7 +34,7 @@ final class ProjectFixerConfigurationTest extends TestCase
 
     protected function setUp()
     {
-        $file = __DIR__.'/../../.php_cs.dist';       
+        $file = __DIR__.'/../../.php_cs.dist';
         $this->config = require $file;
     }
 
