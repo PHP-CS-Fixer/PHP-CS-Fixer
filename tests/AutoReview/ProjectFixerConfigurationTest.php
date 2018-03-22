@@ -28,7 +28,7 @@ use PhpCsFixer\ToolInfo;
 final class ProjectFixerConfigurationTest extends TestCase
 {
     /**
-     * @var \PhpCsFixer\Config
+     * @var Config
      */
     private $config;
 
@@ -40,7 +40,7 @@ final class ProjectFixerConfigurationTest extends TestCase
 
     public function testCreate()
     {
-        $this->assertInstanceOf(Config::class, $this->config);
+        $this->assertInstanceOf('PhpCsFixer\Config', $this->config);
         $this->assertEmpty($this->config->getCustomFixers());
         $this->assertNotEmpty($this->config->getRules());
 
