@@ -26,18 +26,6 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class FixCommandTest extends TestCase
 {
-    /**
-     * @var Application
-     */
-    private $application;
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->application = new Application();
-    }
-
     public function testEmptyRulesValue()
     {
         $this->setExpectedExceptionRegExp(
@@ -73,9 +61,10 @@ final class FixCommandTest extends TestCase
      */
     private function doTestExecute(array $arguments)
     {
-        $this->application->add(new FixCommand(new ToolInfo()));
+        $application = new Application();
+        $application->add(new FixCommand(new ToolInfo()));
 
-        $command = $this->application->find('fix');
+        $command = $application->find('fix');
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
