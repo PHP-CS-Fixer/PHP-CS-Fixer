@@ -1,0 +1,31 @@
+--TEST--
+Integration of fixers: no_empty_comment,class_attributes_separation.
+--RULESET--
+{"no_empty_comment": true, "class_attributes_separation": true}
+--EXPECT--
+<?php
+class Foo
+{
+    public function one()
+    {
+    }
+
+    public function two()
+    {
+    }
+}
+
+--INPUT--
+<?php
+class Foo
+{
+    public function one()
+    {
+    }
+
+/*
+*/
+    public function two()
+    {
+    }
+}
