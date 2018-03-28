@@ -23,6 +23,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class FixerFactoryTest extends TestCase
 {
