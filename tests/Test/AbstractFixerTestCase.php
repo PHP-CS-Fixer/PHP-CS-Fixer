@@ -280,7 +280,8 @@ abstract class AbstractFixerTestCase extends TestCase
         return $this->fixerClassName;
     }
 
-    private static function createSameStringsConstraint($expected) {
+    private static function createSameStringsConstraint($expected)
+    {
         $candidates = array_filter(array(
             'PhpCsFixer\PhpunitGenericConstraints\Constraint\SameStringsConstraint',
             'PHPUnit\Framework\Constraint\IsIdentical',
