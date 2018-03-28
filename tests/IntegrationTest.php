@@ -24,6 +24,7 @@ use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
  * @internal
  *
  * @coversNothing
+ * @group covers-nothing
  */
 final class IntegrationTest extends AbstractIntegrationTestCase
 {

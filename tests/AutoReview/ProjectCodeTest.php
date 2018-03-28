@@ -30,6 +30,7 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class ProjectCodeTest extends TestCase
 {
