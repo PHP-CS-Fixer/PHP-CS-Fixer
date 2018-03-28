@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Report;
 
+use PhpCsFixer\PhpunitGenericConstraints\Constraint\XmlMatchesXsdConstraint;
 use PhpCsFixer\Report\CheckstyleReporter;
-use PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraint;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**

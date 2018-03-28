@@ -21,6 +21,7 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\PhpunitGenericConstraints\Constraint\SameStringsConstraint;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -260,7 +261,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $fixedInputCode = file_get_contents($tmpFile);
         $this->assertThat(
             $fixedInputCode,
-            self::createSameStringsConstraint($expected),
+            new SameStringsConstraint($expected),
             sprintf(
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
@@ -395,22 +396,5 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         return $linter;
-    }
-
-    private static function createSameStringsConstraint($expected)
-    {
-        $candidates = array_filter(array(
-            'PhpCsFixer\PhpunitGenericConstraints\Constraint\SameStringsConstraint',
-            'PHPUnit\Framework\Constraint\IsIdentical',
-            'PHPUnit_Framework_Constraint_IsIdentical',
-        ), function ($className) { return class_exists($className); });
-
-        if (empty($candidates)) {
-            throw new \RuntimeException('PHPUnit not installed?!');
-        }
-
-        $candidate = $candidates[0];
-
-        return new $candidate($expected);
     }
 }
