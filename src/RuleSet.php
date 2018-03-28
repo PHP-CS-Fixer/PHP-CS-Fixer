@@ -154,7 +154,7 @@ final class RuleSet implements RuleSetInterface
         '@Symfony:risky' => [
             'dir_constant' => true,
             'ereg_to_preg' => true,
-            'function_to_constant' => true,
+            'function_to_constant' => ['functions' => ['get_class', 'php_sapi_name', 'phpversion', 'pi']], // @TODO: consider changing to true
             'is_null' => true,
             'modernize_types_casting' => true,
             'no_alias_functions' => true,

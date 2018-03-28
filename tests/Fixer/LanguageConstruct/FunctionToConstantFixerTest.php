@@ -145,14 +145,6 @@ $a =
                         }
                     }
 
-                    trait A
-                    {
-                        public function A() {
-                            echo get_called_class(); // not in the default
-                            var_dump(__CLASS__);
-                        }
-                    }
-
                     class B
                     {
                         use A;
@@ -166,14 +158,6 @@ $a =
                             echo get_class($notMe);
                             echo get_class(/** 1 *//* 2 */);
                             echo GET_Class();
-                        }
-                    }
-
-                    trait A
-                    {
-                        public function A() {
-                            echo get_called_class(); // not in the default
-                            var_dump(get_class());
                         }
                     }
 

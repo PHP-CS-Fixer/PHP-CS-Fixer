@@ -617,7 +617,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``functions`` (``array``): list of function names to fix; defaults to
-    ``['get_class', 'php_sapi_name', 'phpversion', 'pi']``
+    ``['get_called_class', 'get_class', 'php_sapi_name', 'phpversion', 'pi']``
 
 * **function_typehint_space** [@Symfony]
 
