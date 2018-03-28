@@ -414,7 +414,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             throw new \RuntimeException('PHPUnit not installed?!');
         }
 
-        $candidate = $candidates[0];
+        $candidate = array_shift($candidates);
 
         return new $candidate($expected);
     }
