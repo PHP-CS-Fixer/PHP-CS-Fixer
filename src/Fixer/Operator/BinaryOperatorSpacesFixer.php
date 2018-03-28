@@ -204,8 +204,8 @@ $h = $i===  $j;
      */
     public function getPriority()
     {
-        // must run after ArraySyntaxFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer and StrictComparisonFixer.
-        return -1;
+        // must run after ArraySyntaxFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer, StrictComparisonFixer and ArrayIndentationFixer.
+        return -31;
     }
 
     /**

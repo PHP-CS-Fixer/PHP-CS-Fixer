@@ -1,0 +1,31 @@
+--TEST--
+Integration of fixers: comment_to_phpdoc,phpdoc_to_comment.
+--RULESET--
+{"comment_to_phpdoc": true, "phpdoc_to_comment": true}
+--EXPECT--
+<?php
+$first = true;// needed because by default first docblock is ignored by phpdoc_to_comment.
+
+/** @var string $content */
+while ($content = $this->getContent()) {
+    $name .= $content;
+}
+
+/* @var string $notContent */
+while ($content = $this->getContent()) {
+    $name .= $content;
+}
+
+--INPUT--
+<?php
+$first = true;// needed because by default first docblock is ignored by phpdoc_to_comment.
+
+/* @var string $content */
+while ($content = $this->getContent()) {
+    $name .= $content;
+}
+
+/* @var string $notContent */
+while ($content = $this->getContent()) {
+    $name .= $content;
+}

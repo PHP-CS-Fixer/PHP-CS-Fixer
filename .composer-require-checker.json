@@ -1,7 +1,9 @@
 {
     "symbol-whitelist" : [
+        "PhpCsFixer\\Tests\\Test\\Constraint\\SameStringsConstraint",
         "PHPUnit\\Framework\\Constraint\\IsIdentical",
         "PHPUnit\\Framework\\TestCase",
+        "PHPUnit\\Runner\\Version",
         "PHPUnitGoodPractices\\Traits\\ExpectationViaCodeOverAnnotationTrait",
         "PHPUnitGoodPractices\\Traits\\ExpectOverSetExceptionTrait",
         "PHPUnitGoodPractices\\Traits\\IdentityOverEqualityTrait",

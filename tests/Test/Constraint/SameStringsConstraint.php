@@ -12,32 +12,12 @@
 
 namespace PhpCsFixer\Tests\Test\Constraint;
 
-if (!class_exists('PHPUnit\Framework\Constraint\IsIdentical')) {
-    class_alias('PHPUnit_Framework_Constraint_IsIdentical', 'PHPUnit\Framework\Constraint\IsIdentical');
+if (!class_exists(\PHPUnit\Runner\Version::class)) {
+    class_alias('PHPUnit_Runner_Version', \PHPUnit\Runner\Version::class);
 }
 
-use PHPUnit\Framework\Constraint\IsIdentical;
-
-/**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
- */
-final class SameStringsConstraint extends IsIdentical
-{
-    protected function additionalFailureDescription($other)
-    {
-        if (
-            $other === $this->value
-            || preg_replace('/(\r\n|\n\r|\r)/', "\n", $other) !== preg_replace('/(\r\n|\n\r|\r)/', "\n", $this->value)
-        ) {
-            return '';
-        }
-
-        return ' #Warning: Strings contain different line endings! Debug using remapping ["\r" => "R", "\n" => "N", "\t" => "T"]:'
-            ."\n"
-            .' -'.str_replace(["\r", "\n", "\t"], ['R', 'N', 'T'], $other)
-            ."\n"
-            .' +'.str_replace(["\r", "\n", "\t"], ['R', 'N', 'T'], $this->value);
-    }
+if (version_compare(\PHPUnit\Runner\Version::id(), '7.0.0') < 0) {
+    class_alias(SameStringsConstraintForV5::class, SameStringsConstraint::class);
+} else {
+    class_alias(SameStringsConstraintForV7::class, SameStringsConstraint::class);
 }

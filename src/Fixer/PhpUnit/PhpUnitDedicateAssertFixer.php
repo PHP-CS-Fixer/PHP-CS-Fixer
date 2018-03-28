@@ -170,23 +170,28 @@ $this->assertTrue(is_readable($a));
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $searchSequence = [
-            [T_VARIABLE, '$this'],
-            [T_OBJECT_OPERATOR, '->'],
-            [T_STRING],
-        ];
-
-        $index = 1;
-        $candidate = $tokens->findSequence($searchSequence, $index);
-        while (null !== $candidate) {
-            end($candidate);
-            $index = $this->getAssertCandidate($tokens, key($candidate));
-            if (is_array($index)) {
-                $index = $this->fixAssert($tokens, $index);
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING]]);
+            if (null === $methodIndex) {
+                break;
             }
 
-            ++$index;
-            $candidate = $tokens->findSequence($searchSequence, $index);
+            $operatorIndex = $tokens->getPrevMeaningfulToken($methodIndex);
+            $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
+            if (
+                !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
+                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
+                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
+            ) {
+                continue;
+            }
+
+            $index = $this->getAssertCandidate($tokens, $methodIndex);
+            if (!is_array($index)) {
+                continue;
+            }
+
+            $index = $this->fixAssert($tokens, $index);
         }
     }
 

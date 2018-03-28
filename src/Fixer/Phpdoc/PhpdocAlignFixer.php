@@ -155,8 +155,10 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             ->setAllowedValues([
                 $generator->allowedValueIsSubsetOf(self::$alignableTags),
             ])
-            // By default, all tags apart from @property and @method will be aligned for backwards compatibility
-            // @TODO 3.0 Align all available tags by default
+            /*
+             * By default, all tags apart from @property and @method will be aligned for backwards compatibility
+             * @TODO 3.0 Align all available tags by default
+             */
             ->setDefault([
                 'param',
                 'return',

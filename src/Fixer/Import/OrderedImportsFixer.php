@@ -62,6 +62,8 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      */
     const SORT_LENGTH = 'length';
 
+    const SORT_NONE = 'none';
+
     /**
      * Array of supported sort types in configuration.
      *
@@ -74,7 +76,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      *
      * @var string[]
      */
-    private $supportedSortAlgorithms = [self::SORT_ALPHA, self::SORT_LENGTH];
+    private $supportedSortAlgorithms = [self::SORT_ALPHA, self::SORT_LENGTH, self::SORT_NONE];
 
     /**
      * {@inheritdoc}
@@ -135,6 +137,28 @@ use function CCC\AA;
                     new VersionSpecification(70000),
                     [
                         'sortAlgorithm' => self::SORT_ALPHA,
+                        'importsOrder' => [
+                            self::IMPORT_TYPE_CONST,
+                            self::IMPORT_TYPE_CLASS,
+                            self::IMPORT_TYPE_FUNCTION,
+                        ],
+                    ]
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php
+use const BBB;
+use const AAAA;
+
+use function DDD;
+use function CCC\AA;
+
+use Acme;
+use AAC;
+use Bar;
+',
+                    new VersionSpecification(70000),
+                    [
+                        'sortAlgorithm' => self::SORT_NONE,
                         'importsOrder' => [
                             self::IMPORT_TYPE_CONST,
                             self::IMPORT_TYPE_CLASS,
@@ -219,7 +243,7 @@ use function CCC\AA;
         $supportedSortTypes = $this->supportedSortTypes;
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length'))
+            (new FixerOptionBuilder('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length, or not sorted'))
                 ->setAllowedValues($this->supportedSortAlgorithms)
                 ->setDefault(self::SORT_ALPHA)
                 ->getOption(),
@@ -342,7 +366,7 @@ use function CCC\AA;
                 $token = $tokens[$index];
 
                 if ($index === $endIndex || (!$group && $token->equals(','))) {
-                    if ($group) {
+                    if ($group && self::SORT_NONE !== $this->configuration['sortAlgorithm']) {
                         // if group import, sort the items within the group definition
 
                         // figure out where the list of namespace parts within the group def. starts
@@ -493,8 +517,6 @@ use function CCC\AA;
             uasort($indexes, [$this, 'sortAlphabetically']);
         } elseif (self::SORT_LENGTH === $this->configuration['sortAlgorithm']) {
             uasort($indexes, [$this, 'sortByLength']);
-        } else {
-            throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
         }
 
         return $indexes;
