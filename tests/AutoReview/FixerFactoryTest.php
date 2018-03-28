@@ -265,7 +265,6 @@ final class FixerFactoryTest extends TestCase
             'indentation_type,phpdoc_indent.test',
             'method_separation,braces.test',
             'method_separation,indentation_type.test',
-            'no_empty_statement,multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_singleline_whitespace_before_semicolons.test',
             'php_unit_strict,php_unit_construct.test',
