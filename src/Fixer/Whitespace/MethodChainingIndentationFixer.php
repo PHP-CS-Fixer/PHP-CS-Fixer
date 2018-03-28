@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -34,6 +35,15 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
             'Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.',
             [new CodeSample("<?php\n\$user->setEmail('voff.web@gmail.com')\n         ->setPassword('233434');\n")]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must run after ArrayIndentationFixer
+        return -31;
     }
 
     /**
@@ -123,7 +133,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                 continue;
             }
 
-            if ($tokens[$i]->isWhitespace() && 1 === preg_match('/\R/', $tokens[$i]->getContent())) {
+            if ($tokens[$i]->isWhitespace() && 1 === Preg::match('/\R/', $tokens[$i]->getContent())) {
                 return $hasCommentBefore;
             }
         }
@@ -139,22 +149,32 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     private function getIndentAt(Tokens $tokens, $index)
     {
-        $content = '';
-
-        if ($tokens[$index]->isWhitespace()) {
-            $content = $tokens[$index]->getContent();
-            --$index;
-        }
-
-        if ($tokens[$index]->isGivenKind(T_OPEN_TAG)) {
-            $content = $tokens[$index]->getContent().$content;
-        }
-
-        if (1 === preg_match('/\R{1}([ \t]*)$/', $content, $matches)) {
+        if (1 === Preg::match('/\R{1}([ \t]*)$/', $this->getIndentContentAt($tokens, $index), $matches)) {
             return $matches[1];
         }
 
         return null;
+    }
+
+    private function getIndentContentAt(Tokens $tokens, $index)
+    {
+        for ($i = $index; $i >= 0; --$i) {
+            if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
+                continue;
+            }
+
+            $content = $tokens[$index]->getContent();
+
+            if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
+                $content = $tokens[$index - 1]->getContent().$content;
+            }
+
+            if (Preg::match('/\R/', $content)) {
+                return $content;
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -176,7 +196,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
         return
             !$tokens[$end]->equals(')')
-            || $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end, false) >= $start
+            || $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end) >= $start
         ;
     }
 }

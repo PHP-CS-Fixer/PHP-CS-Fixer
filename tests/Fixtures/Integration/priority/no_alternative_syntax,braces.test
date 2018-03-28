@@ -1,0 +1,18 @@
+--TEST--
+Integration of fixers: no_alternative_syntax,braces.
+--RULESET--
+{"no_alternative_syntax": true, "braces": true}
+
+--EXPECT--
+<?php
+if (1 == 1) {
+    $var = 1;
+} elseif (1 == 2) {
+    $var = 2;
+}
+
+--INPUT--
+<?php
+if(1 == 1) :
+    $var = 1; elseif (1 == 2) :
+    $var = 2; endif;

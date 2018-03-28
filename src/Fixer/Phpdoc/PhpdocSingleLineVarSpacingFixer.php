@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -41,7 +42,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be ran after PhpdocNoAliasTagFixer.
+        // should be run after PhpdocNoAliasTagFixer.
         return -10;
     }
 
@@ -85,7 +86,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      */
     private function fixTokenContent($content)
     {
-        return preg_replace_callback(
+        return Preg::replaceCallback(
             '#^/\*\*[ \t]*@var[ \t]+(\S+)[ \t]*(\$\S+)?[ \t]*([^\n]*)\*/$#',
             static function (array $matches) {
                 $content = '/** @var';

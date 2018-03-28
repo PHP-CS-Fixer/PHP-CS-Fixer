@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: increment_style,standardize_increment.
+--RULESET--
+{"increment_style": {"style": "post"}, "standardize_increment": true}
+--EXPECT--
+<?php
+$i++;
+
+--INPUT--
+<?php
+$i += 1;

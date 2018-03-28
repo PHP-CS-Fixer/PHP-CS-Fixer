@@ -23,6 +23,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @requires OS Linux|Darwin
  * @coversNothing
+ * @group covers-nothing
  * @large
  */
 final class CiIntegrationTest extends TestCase
@@ -56,7 +57,7 @@ final class CiIntegrationTest extends TestCase
         self::executeCommand('rm -rf .git');
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
 

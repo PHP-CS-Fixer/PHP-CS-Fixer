@@ -14,6 +14,8 @@ dependencies:
         - brew update
         - brew tap homebrew/homebrew-php
         - brew install php71
+        - mkdir $(brew --prefix)/etc/php/7.1/conf.d
+        - echo "memory_limit = 512M" > $(brew --prefix)/etc/php/7.1/conf.d/memory.ini
         - curl -sS https://getcomposer.org/installer | php
         - php composer.phar global show hirak/prestissimo -q || php composer.phar global require --no-interaction --no-progress --optimize-autoloader hirak/prestissimo
     override:
