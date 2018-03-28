@@ -132,7 +132,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        self::assertSame($expectedFileContents, file_get_contents($this->getToolPath()));
+        self::assertStringEqualsFile($this->getToolPath(), $expectedFileContents);
         $this->assertDisplay($expectedDisplay, $commandTester);
         self::assertSame(0, $commandTester->getStatusCode());
     }
