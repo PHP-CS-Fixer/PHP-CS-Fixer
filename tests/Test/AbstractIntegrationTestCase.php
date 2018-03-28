@@ -398,6 +398,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
         return $linter;
     }
 
+    /**
+     * @todo Remove me when this class will end up in dedicated package.
+     */
     private static function createSameStringsConstraint($expected)
     {
         $candidates = array_filter(array(
