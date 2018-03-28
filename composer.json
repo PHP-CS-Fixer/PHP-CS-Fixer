@@ -46,6 +46,7 @@
     },
     "suggest": {
         "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
+        "php-cs-fixer/phpunit-generic-constraints": "For extra PHPUnit Constraints",
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
     "config": {
@@ -66,9 +67,6 @@
             "tests/Test/AbstractIntegrationCaseFactory.php",
             "tests/Test/AbstractIntegrationTestCase.php",
             "tests/Test/Assert/AssertTokensTrait.php",
-            "tests/Test/Constraint/SameStringsConstraint.php",
-            "tests/Test/Constraint/SameStringsConstraintForV5.php",
-            "tests/Test/Constraint/SameStringsConstraintForV7.php",
             "tests/Test/IntegrationCase.php",
             "tests/Test/IntegrationCaseFactory.php",
             "tests/Test/IntegrationCaseFactoryInterface.php",
