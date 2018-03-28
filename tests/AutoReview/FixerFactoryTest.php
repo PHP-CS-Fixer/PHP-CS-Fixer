@@ -268,7 +268,6 @@ final class FixerFactoryTest extends TestCase
             'no_empty_statement,no_singleline_whitespace_before_semicolons.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
-            'phpdoc_no_empty_return,phpdoc_trim.test',
             'phpdoc_no_package,phpdoc_order.test',
             'phpdoc_no_package,phpdoc_trim.test',
             'phpdoc_order,phpdoc_separation.test',
