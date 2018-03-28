@@ -16,7 +16,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Eddilbert Macharia <edd.cowan@gmail.com>
+ *
  * @coversNothing
+ * @group covers-nothing
  *
  * @internal
  */
