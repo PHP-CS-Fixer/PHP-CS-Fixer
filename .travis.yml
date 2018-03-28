@@ -61,8 +61,8 @@ jobs:
             php: 7.0
             install:
                 # Composer: enforce given Symfony components version
-                - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"^2[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'
-                - 'if [ "$MIN_STABILITY" != "" ]; then composer config minimum-stability $MIN_STABILITY; fi'
+                - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/force-lowest:$SYMFONY_VERSION; fi
+                - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/lts:$(echo $SYMFONY_VERSION | grep -o 'v[0-9]\+') || true; fi
 
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
@@ -93,13 +93,13 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 5.6
-            env: SYMFONY_VERSION="^2.8"
+            env: SYMFONY_VERSION="v2.8"
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.1
-            env: PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^4.0" MIN_STABILITY=dev
+            env: PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="v4.0"
 
         -
             <<: *STANDARD_TEST_JOB
