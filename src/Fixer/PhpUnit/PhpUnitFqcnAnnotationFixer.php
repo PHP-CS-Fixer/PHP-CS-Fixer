@@ -31,7 +31,7 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHPUnit annotations should be a FQCNs including a root namespace.',
-            array(new CodeSample(
+            [new CodeSample(
 '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,7 +46,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 '
-            ))
+            )]
         );
     }
 
@@ -74,11 +74,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token(array(T_DOC_COMMENT, Preg::replace(
+                $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replace(
                     '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(\w.*)$~m',
                     '$1\\\\$2',
                     $token->getContent()
-                )));
+                )]);
             }
         }
     }

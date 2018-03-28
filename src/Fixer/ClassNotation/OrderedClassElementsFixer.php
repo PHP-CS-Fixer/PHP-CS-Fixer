@@ -28,45 +28,60 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    /** @internal */
+    const SORT_ALPHA = 'alpha';
+    /** @internal */
+    const SORT_NONE = 'none';
+
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)
      */
-    private static $typeHierarchy = array(
+    private static $typeHierarchy = [
         'use_trait' => null,
         'public' => null,
         'protected' => null,
         'private' => null,
         'constant' => null,
-        'constant_public' => array('constant', 'public'),
-        'constant_protected' => array('constant', 'protected'),
-        'constant_private' => array('constant', 'private'),
+        'constant_public' => ['constant', 'public'],
+        'constant_protected' => ['constant', 'protected'],
+        'constant_private' => ['constant', 'private'],
         'property' => null,
-        'property_static' => array('property'),
-        'property_public' => array('property', 'public'),
-        'property_protected' => array('property', 'protected'),
-        'property_private' => array('property', 'private'),
-        'property_public_static' => array('property_static', 'property_public'),
-        'property_protected_static' => array('property_static', 'property_protected'),
-        'property_private_static' => array('property_static', 'property_private'),
+        'property_static' => ['property'],
+        'property_public' => ['property', 'public'],
+        'property_protected' => ['property', 'protected'],
+        'property_private' => ['property', 'private'],
+        'property_public_static' => ['property_static', 'property_public'],
+        'property_protected_static' => ['property_static', 'property_protected'],
+        'property_private_static' => ['property_static', 'property_private'],
         'method' => null,
-        'method_static' => array('method'),
-        'method_public' => array('method', 'public'),
-        'method_protected' => array('method', 'protected'),
-        'method_private' => array('method', 'private'),
-        'method_public_static' => array('method_static', 'method_public'),
-        'method_protected_static' => array('method_static', 'method_protected'),
-        'method_private_static' => array('method_static', 'method_private'),
-    );
+        'method_static' => ['method'],
+        'method_public' => ['method', 'public'],
+        'method_protected' => ['method', 'protected'],
+        'method_private' => ['method', 'private'],
+        'method_public_static' => ['method_static', 'method_public'],
+        'method_protected_static' => ['method_static', 'method_protected'],
+        'method_private_static' => ['method_static', 'method_private'],
+    ];
 
     /**
      * @var array Array containing special method types
      */
-    private static $specialTypes = array(
+    private static $specialTypes = [
         'construct' => null,
         'destruct' => null,
         'magic' => null,
         'phpunit' => null,
-    );
+    ];
+
+    /**
+     * Array of supported sort algorithms in configuration.
+     *
+     * @var string[]
+     */
+    private $supportedSortAlgorithms = [
+        self::SORT_NONE,
+        self::SORT_ALPHA,
+    ];
 
     /**
      * @var array Resolved configuration array (type => position)
@@ -80,7 +95,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     {
         parent::configure($configuration);
 
-        $this->typePosition = array();
+        $this->typePosition = [];
         $pos = 0;
         foreach ($this->configuration['order'] as $type) {
             $this->typePosition[$type] = $pos++;
@@ -133,7 +148,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     {
         return new FixerDefinition(
             'Orders the elements of classes/interfaces/traits.',
-            array(
+            [
                 new CodeSample(
                     '<?php
 final class Example
@@ -173,10 +188,23 @@ class Example
 {
     public function A(){}
     private function B(){}
-}',
-array('order' => array('method_private', 'method_public'))
+}
+',
+                    ['order' => ['method_private', 'method_public']]
                 ),
-            )
+                new CodeSample(
+                    '<?php
+class Example
+{
+    public function D(){}
+    public function B(){}
+    public function A(){}
+    public function C(){}
+}
+',
+                    ['order' => ['method_public'], 'sortAlgorithm' => 'alpha']
+                ),
+            ]
         );
     }
 
@@ -200,7 +228,7 @@ array('order' => array('method_private', 'method_public'))
                 continue;
             }
 
-            $i = $tokens->getNextTokenOfKind($i, array('{'));
+            $i = $tokens->getNextTokenOfKind($i, ['{']);
             $elements = $this->getElements($tokens, $i);
 
             if (!$elements) {
@@ -223,34 +251,34 @@ array('order' => array('method_private', 'method_public'))
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
-
-        $order = new FixerOptionBuilder('order', 'List of strings defining order of elements.');
-        $order = $order
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes))),
-            ))
-            ->setDefault(array(
-                'use_trait',
-                'constant_public',
-                'constant_protected',
-                'constant_private',
-                'property_public',
-                'property_protected',
-                'property_private',
-                'construct',
-                'destruct',
-                'magic',
-                'phpunit',
-                'method_public',
-                'method_protected',
-                'method_private',
-            ))
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('order', array($order));
+        return new FixerConfigurationResolverRootless('order', [
+            (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes))),
+                ])
+                ->setDefault([
+                    'use_trait',
+                    'constant_public',
+                    'constant_protected',
+                    'constant_private',
+                    'property_public',
+                    'property_protected',
+                    'property_private',
+                    'construct',
+                    'destruct',
+                    'magic',
+                    'phpunit',
+                    'method_public',
+                    'method_protected',
+                    'method_private',
+                ])
+                ->getOption(),
+            (new FixerOptionBuilder('sortAlgorithm', 'How multiple occurrences of same type statements should be sorted'))
+                ->setAllowedValues($this->supportedSortAlgorithms)
+                ->setDefault(self::SORT_NONE)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -261,19 +289,19 @@ array('order' => array('method_private', 'method_public'))
      */
     private function getElements(Tokens $tokens, $startIndex)
     {
-        static $elementTokenKinds = array(CT::T_USE_TRAIT, T_CONST, T_VARIABLE, T_FUNCTION);
+        static $elementTokenKinds = [CT::T_USE_TRAIT, T_CONST, T_VARIABLE, T_FUNCTION];
 
         ++$startIndex;
-        $elements = array();
+        $elements = [];
 
         while (true) {
-            $element = array(
+            $element = [
                 'start' => $startIndex,
                 'visibility' => 'public',
                 'static' => false,
-            );
+            ];
 
-            for ($i = $startIndex; ; ++$i) {
+            for ($i = $startIndex;; ++$i) {
                 $token = $tokens[$i];
 
                 // class end
@@ -287,7 +315,7 @@ array('order' => array('method_private', 'method_public'))
                     continue;
                 }
 
-                if ($token->isGivenKind(array(T_PROTECTED, T_PRIVATE))) {
+                if ($token->isGivenKind([T_PROTECTED, T_PRIVATE])) {
                     $element['visibility'] = strtolower($token->getContent());
 
                     continue;
@@ -303,6 +331,12 @@ array('order' => array('method_private', 'method_public'))
                     $element['name'] = $type[1];
                 } else {
                     $element['type'] = $type;
+                }
+
+                if ('property' === $element['type']) {
+                    $element['name'] = $tokens[$i]->getContent();
+                } elseif (in_array($element['type'], ['use_trait', 'constant', 'method', 'magic'], true)) {
+                    $element['name'] = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
                 }
 
                 $element['end'] = $this->findElementEnd($tokens, $i);
@@ -339,23 +373,23 @@ array('order' => array('method_private', 'method_public'))
 
         $nameToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
-        if ($nameToken->equals(array(T_STRING, '__construct'), false)) {
+        if ($nameToken->equals([T_STRING, '__construct'], false)) {
             return 'construct';
         }
 
-        if ($nameToken->equals(array(T_STRING, '__destruct'), false)) {
+        if ($nameToken->equals([T_STRING, '__destruct'], false)) {
             return 'destruct';
         }
 
         if (
-            $nameToken->equalsAny(array(
-                array(T_STRING, 'setUpBeforeClass'),
-                array(T_STRING, 'tearDownAfterClass'),
-                array(T_STRING, 'setUp'),
-                array(T_STRING, 'tearDown'),
-            ), false)
+            $nameToken->equalsAny([
+                [T_STRING, 'setUpBeforeClass'],
+                [T_STRING, 'tearDownAfterClass'],
+                [T_STRING, 'setUp'],
+                [T_STRING, 'tearDown'],
+            ], false)
         ) {
-            return array('phpunit', strtolower($nameToken->getContent()));
+            return ['phpunit', strtolower($nameToken->getContent())];
         }
 
         if ('__' === substr($nameToken->getContent(), 0, 2)) {
@@ -373,7 +407,7 @@ array('order' => array('method_private', 'method_public'))
      */
     private function findElementEnd(Tokens $tokens, $index)
     {
-        $index = $tokens->getNextTokenOfKind($index, array('{', ';'));
+        $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
         if ($tokens[$index]->equals('{')) {
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
@@ -393,12 +427,12 @@ array('order' => array('method_private', 'method_public'))
      */
     private function sortElements(array $elements)
     {
-        static $phpunitPositions = array(
+        static $phpunitPositions = [
             'setupbeforeclass' => 1,
             'teardownafterclass' => 2,
             'setup' => 3,
             'teardown' => 4,
-        );
+        ];
 
         foreach ($elements as &$element) {
             $type = $element['type'];
@@ -416,7 +450,7 @@ array('order' => array('method_private', 'method_public'))
                 $type = 'method';
             }
 
-            if (in_array($type, array('constant', 'property', 'method'), true)) {
+            if (in_array($type, ['constant', 'property', 'method'], true)) {
                 $type .= '_'.$element['visibility'];
                 if ($element['static']) {
                     $type .= '_static';
@@ -429,14 +463,24 @@ array('order' => array('method_private', 'method_public'))
 
         usort($elements, function (array $a, array $b) {
             if ($a['position'] === $b['position']) {
-                // same group, preserve current order
-                return $a['start'] > $b['start'] ? 1 : -1;
+                return $this->sortGroupElements($a, $b);
             }
 
             return $a['position'] > $b['position'] ? 1 : -1;
         });
 
         return $elements;
+    }
+
+    private function sortGroupElements(array $a, array $b)
+    {
+        $selectedSortAlgorithm = $this->configuration['sortAlgorithm'];
+
+        if (self::SORT_ALPHA === $selectedSortAlgorithm) {
+            return strcasecmp($a['name'], $b['name']);
+        }
+
+        return $a['start'] > $b['start'] ? 1 : -1;
     }
 
     /**
@@ -447,7 +491,7 @@ array('order' => array('method_private', 'method_public'))
      */
     private function sortTokens(Tokens $tokens, $startIndex, $endIndex, array $elements)
     {
-        $replaceTokens = array();
+        $replaceTokens = [];
 
         foreach ($elements as $element) {
             for ($i = $element['start']; $i <= $element['end']; ++$i) {

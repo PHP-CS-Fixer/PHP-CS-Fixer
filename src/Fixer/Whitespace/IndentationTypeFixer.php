@@ -39,9 +39,9 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     {
         return new FixerDefinition(
             'Code MUST use configured indentation type.',
-            array(
-                new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}"),
-            )
+            [
+                new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}\n"),
+            ]
         );
     }
 
@@ -58,7 +58,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE));
+        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]);
     }
 
     /**
@@ -101,11 +101,11 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         $indent = $this->indent;
 
         // change indent to expected one
-        $content = Preg::replaceCallback('/^(?:    )+/m', function ($matches) use ($indent) {
+        $content = Preg::replaceCallback('/^(?:    )+/m', static function ($matches) use ($indent) {
             return str_replace('    ', $indent, $matches[0]);
         }, $content);
 
-        return new Token(array($tokens[$index]->getId(), $content));
+        return new Token([$tokens[$index]->getId(), $content]);
     }
 
     /**
@@ -119,7 +119,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         $content = $tokens[$index]->getContent();
         $previousTokenHasTrailingLinebreak = false;
 
-        // TODO on 3.x this can be removed when we have a transformer for "T_OPEN_TAG" to "T_OPEN_TAG + T_WHITESPACE"
+        // @TODO 3.0 this can be removed when we have a transformer for "T_OPEN_TAG" to "T_OPEN_TAG + T_WHITESPACE"
         if (false !== strpos($tokens[$index - 1]->getContent(), "\n")) {
             $content = "\n".$content;
             $previousTokenHasTrailingLinebreak = true;
@@ -128,7 +128,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         $indent = $this->indent;
         $newContent = Preg::replaceCallback(
             '/(\R)(\h+)/', // find indent
-            function (array $matches) use ($indent) {
+            static function (array $matches) use ($indent) {
                 // normalize mixed indent
                 $content = Preg::replace('/(?:(?<! ) {1,3})?\t/', '    ', $matches[2]);
 
@@ -142,6 +142,6 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             $newContent = substr($newContent, 1);
         }
 
-        return new Token(array(T_WHITESPACE, $newContent));
+        return new Token([T_WHITESPACE, $newContent]);
     }
 }

@@ -1,8 +1,14 @@
 {
     "symbol-whitelist" : [
-        "T_HH_ERROR",
-        "PHPUnit_Framework_Constraint_IsIdentical",
+        "PhpCsFixer\\Tests\\Test\\Constraint\\SameStringsConstraint",
+        "PHPUnit\\Framework\\Constraint\\IsIdentical",
         "PHPUnit\\Framework\\TestCase",
+        "PHPUnit\\Runner\\Version",
+        "PHPUnitGoodPractices\\Traits\\ExpectationViaCodeOverAnnotationTrait",
+        "PHPUnitGoodPractices\\Traits\\ExpectOverSetExceptionTrait",
+        "PHPUnitGoodPractices\\Traits\\IdentityOverEqualityTrait",
+        "PHPUnitGoodPractices\\Traits\\ProphecyOverMockObjectTrait",
+        "PHPUnitGoodPractices\\Traits\\ProphesizeOnlyInterfaceTrait",
         "Prophecy\\Argument",
 
         "null", "true", "false",

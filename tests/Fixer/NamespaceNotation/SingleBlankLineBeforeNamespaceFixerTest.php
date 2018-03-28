@@ -45,21 +45,21 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
      */
     public function provideFixCases()
     {
-        return array(
-            array("<?php\n\nnamespace X;"),
-            array("<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"),
-            array("<?php\r\n\r\nnamespace X;"),
-            array("<?php\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"),
-            array("<?php\n\nfoo();\nnamespace\\bar\\baz();"),
-            array("<?php\n\nnamespace X;", "<?php\nnamespace X;"),
-            array("<?php\n\nnamespace X;", '<?php namespace X;'),
-            array("<?php\n\nnamespace X;", "<?php\t\nnamespace X;"),
-            array("<?php \n\nnamespace X;"),
-            array("<?php\r\n\r\nnamespace X;", '<?php namespace X;', new WhitespacesFixerConfig('    ', "\r\n")),
-            array("<?php\r\n\r\nnamespace X;", "<?php\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")),
-            array("<?php\r\n\r\nnamespace X;", "<?php\n\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")),
-            array("<?php\r\n\r\nnamespace X;", "<?php\r\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")),
-        );
+        return [
+            ["<?php\n\nnamespace X;"],
+            ["<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"],
+            ["<?php\r\n\r\nnamespace X;"],
+            ["<?php\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
+            ["<?php\n\nfoo();\nnamespace\\bar\\baz();"],
+            ["<?php\n\nnamespace X;", "<?php\nnamespace X;"],
+            ["<?php\n\nnamespace X;", '<?php namespace X;'],
+            ["<?php\n\nnamespace X;", "<?php\t\nnamespace X;"],
+            ["<?php \n\nnamespace X;"],
+            ["<?php\r\n\r\nnamespace X;", '<?php namespace X;', new WhitespacesFixerConfig('    ', "\r\n")],
+            ["<?php\r\n\r\nnamespace X;", "<?php\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
+            ["<?php\r\n\r\nnamespace X;", "<?php\n\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
+            ["<?php\r\n\r\nnamespace X;", "<?php\r\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
+        ];
     }
 
     public function testFixExampleWithCommentTooMuch()

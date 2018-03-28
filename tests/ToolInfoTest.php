@@ -45,7 +45,7 @@ final class ToolInfoTest extends TestCase
     {
         $toolInfo = new ToolInfo();
 
-        $this->setExpectedException('LogicException');
+        $this->expectException(\LogicException::class);
 
         $toolInfo->getComposerVersion();
     }

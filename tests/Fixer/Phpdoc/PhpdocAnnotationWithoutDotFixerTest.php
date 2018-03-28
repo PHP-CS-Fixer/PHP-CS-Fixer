@@ -36,8 +36,8 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     /**
      * Summary.
@@ -88,8 +88,8 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      *
      * @SomeCustomAnnotation This is important sentence that must not be modified.
      */',
-            ),
-            array(
+            ],
+            [
                 // invalid char inside line won't crash the fixer
                 '<?php
     /**
@@ -101,21 +101,21 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @var string This: '.chr(174).' is an odd character.
      * @var string This: '.chr(174).' is an odd character 2nd time。
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @deprecated since version 2. Use emergency() which is PSR-3 compatible.
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @internal This method is public to be usable as callback. It should not
      *           be used in user code.
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @deprecated this is
@@ -126,8 +126,8 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @deprecated This is
      *             deprecated.
      */',
-            ),
-            array(
+            ],
+            [
                 '<?php
     /**
      * @return bool|null returns `true` if the class has a single-column ID
@@ -138,7 +138,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @return bool|null Returns `true` if the class has a single-column ID
      *                   and Returns `false` otherwise.
      */',
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -41,38 +41,38 @@ final class WordMatcherTest extends TestCase
      */
     public function provideMatchCases()
     {
-        return array(
-            array(
+        return [
+            [
                 null,
                 'foo',
-                array(
+                [
                     'no_blank_lines_after_class_opening',
                     'no_blank_lines_after_phpdoc',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'no_blank_lines_after_phpdoc',
                 'no_blank_lines_after_phpdocs',
-                array(
+                [
                     'no_blank_lines_after_class_opening',
                     'no_blank_lines_after_phpdoc',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'no_blank_lines_after_foo',
                 'no_blank_lines_foo',
-                array(
+                [
                     'no_blank_lines_after_foo',
                     'no_blank_lines_before_foo',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 null,
                 'braces',
-                array(
+                [
                     'elseif',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

@@ -48,7 +48,7 @@ final class ProjectFixerConfigurationTest extends TestCase
         // call so the fixers get configured to reveal issue (like deprecated configuration used etc.)
         $resolver = new ConfigurationResolver(
             $this->config,
-            array(),
+            [],
             __DIR__,
             new ToolInfo()
         );

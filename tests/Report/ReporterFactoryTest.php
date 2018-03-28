@@ -28,7 +28,7 @@ final class ReporterFactoryTest extends TestCase
     {
         $factory = ReporterFactory::create();
 
-        $this->assertInstanceOf('PhpCsFixer\Report\ReporterFactory', $factory);
+        $this->assertInstanceOf(\PhpCsFixer\Report\ReporterFactory::class, $factory);
     }
 
     public function testInterfaceIsFluent()
@@ -51,7 +51,7 @@ final class ReporterFactoryTest extends TestCase
 
         $builder->registerBuiltInReporters();
         $this->assertSame(
-            array('json', 'junit', 'txt', 'xml'),
+            ['checkstyle', 'json', 'junit', 'txt', 'xml'],
             $builder->getFormats()
         );
     }
@@ -85,15 +85,13 @@ final class ReporterFactoryTest extends TestCase
         $builder->registerReporter($r2);
         $builder->registerReporter($r3);
 
-        $this->assertSame(array('r1', 'r2', 'r3'), $builder->getFormats());
+        $this->assertSame(['r1', 'r2', 'r3'], $builder->getFormats());
     }
 
     public function testRegisterReportWithOccupiedFormat()
     {
-        $this->setExpectedException(
-            'UnexpectedValueException',
-            'Reporter for format "non_unique_name" is already registered.'
-        );
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Reporter for format "non_unique_name" is already registered.');
 
         $factory = new ReporterFactory();
 
@@ -105,10 +103,8 @@ final class ReporterFactoryTest extends TestCase
 
     public function testGetNonRegisteredReport()
     {
-        $this->setExpectedException(
-            'UnexpectedValueException',
-            'Reporter for format "non_registered_format" is not registered.'
-        );
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Reporter for format "non_registered_format" is not registered.');
 
         $builder = new ReporterFactory();
 
@@ -117,7 +113,7 @@ final class ReporterFactoryTest extends TestCase
 
     private function createReporterDouble($format)
     {
-        $reporter = $this->prophesize('PhpCsFixer\Report\ReporterInterface');
+        $reporter = $this->prophesize(\PhpCsFixer\Report\ReporterInterface::class);
         $reporter->getFormat()->willReturn($format);
 
         return $reporter->reveal();

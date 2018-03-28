@@ -46,8 +46,8 @@ final class DiffConsoleFormatterTest extends TestCase
 
     public function provideTestCases()
     {
-        return array(
-            array(
+        return [
+            [
                 sprintf(
                     '<comment>   ---------- begin diff ----------</comment>
    '.'
@@ -77,8 +77,8 @@ final class DiffConsoleFormatterTest extends TestCase
 +A
 ',
                 '   %s',
-            ),
-            array(
+            ],
+            [
                 '[start]
 | '.'
 | @@ -12,51 +12,151 @@
@@ -100,7 +100,7 @@ final class DiffConsoleFormatterTest extends TestCase
 +A
 ',
                 '| %s',
-            ),
-        );
+            ],
+        ];
     }
 }

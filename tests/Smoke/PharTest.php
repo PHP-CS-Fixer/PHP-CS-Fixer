@@ -48,7 +48,7 @@ final class PharTest extends TestCase
     public function testVersion()
     {
         $this->assertRegExp(
-            '/^.* '.Application::VERSION.' by .*$/',
+            '/^.* '.Application::VERSION.'(?: '.Application::VERSION_CODENAME.')? by .*$/',
             self::executePharCommand('--version')->getOutput()
         );
     }
@@ -73,10 +73,10 @@ final class PharTest extends TestCase
         $application->add($command);
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
+        $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'header_comment',
-        ));
+        ]);
 
         $this->assertSame(
             $commandTester->getDisplay(),

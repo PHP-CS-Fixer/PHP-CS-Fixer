@@ -75,7 +75,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             }
             // Remove new lines in opening token
             if ($newlineInOpening) {
-                $tokens[$openingTokenIndex] = new Token(array(T_OPEN_TAG, rtrim($openingToken->getContent()).' '));
+                $tokens[$openingTokenIndex] = new Token([T_OPEN_TAG, rtrim($openingToken->getContent()).' ']);
             }
 
             return;
@@ -87,7 +87,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             // Use the configured line ending for the PHP opening tag
             $content = rtrim($openingToken->getContent());
             $newContent = $content.$lineEnding;
-            $tokens[$openingTokenIndex] = new Token(array(T_OPEN_TAG, $newContent));
+            $tokens[$openingTokenIndex] = new Token([T_OPEN_TAG, $newContent]);
             --$newlinesForWhitespaceToken;
         }
         if (0 === $newlinesForWhitespaceToken) {
@@ -99,7 +99,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
 
             return;
         }
-        $newWhitespaceToken = new Token(array(T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)));
+        $newWhitespaceToken = new Token([T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]);
         if ($previous->isWhitespace()) {
             // Fix the previous whitespace token
             $tokens[$previousIndex] = $newWhitespaceToken;

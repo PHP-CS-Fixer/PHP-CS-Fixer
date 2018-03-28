@@ -37,9 +37,9 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
+        return [
             // fix cases
-            array(
+            [
                 '<?php
                     echo 0;
 echo 1;
@@ -48,8 +48,8 @@ echo 1;
                     echo 0;//
 echo 1;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     echo 0;
     echo 1;
@@ -58,16 +58,16 @@ echo 1;
                     echo 0;//
     echo 1;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     echo 1;
                 ',
                 '<?php
                     echo 1;//
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 echo 2;
                     '.'
@@ -78,62 +78,62 @@ echo 1;
                     //
 echo 1;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
                 ?>',
                 '<?php
 
                 //?>',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     '.'
                 ',
                 '<?php
                     //
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     '.'
                 ',
                 '<?php
                     #
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     '.'
                 ',
                 '<?php
                     /**/
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     echo 0;echo 1;
                 ',
                 '<?php
                     echo 0;/**/echo 1;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     echo 0;echo 1;
                 ',
                 '<?php
                     echo 0;/**//**//**/echo 1/**/;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 ',
                 '<?php
                 //',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 ',
                 '<?php
@@ -141,33 +141,47 @@ echo 1;
 
 
                 */',
-            ),
-            array(
+            ],
+            [
+                '<?php
+                    '.'
+                    '.'
+                    '.'
+                    '.'
+                ',
+                '<?php
+                    //
+                    //
+                    //
+                    /**///
+                ',
+            ],
+            [
                 "<?php\n                    \n                    \n                    \n                    \n                ",
                 "<?php\n                    //\n                    //\n                    //\n                    /**///\n                ",
-            ),
-            array(
+            ],
+            [
                 "<?php\r                    \r                    \r                    \r                    \r                ",
                 "<?php\r                    //\r                    //\r                    //\r                    /**///\r                ",
-            ),
-            array(
+            ],
+            [
                 "<?php\r\n                    \r\n                    \r\n                    \r\n                    \r\n                ",
                 "<?php\r\n                    //\r\n                    //\r\n                    //\r\n                    /**///\r\n                ",
-            ),
-            array(
+            ],
+            [
                 "<?php\necho 1;\r\recho 2;",
                 "<?php\necho 1;\r//\recho 2;",
-            ),
+            ],
             // do not fix cases
-            array(
+            [
                 '<?php
                 // a
             // /**/
               // #
 /* b */ // s
           #                        c',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     // This comment could be nicely formatted.
                     //
@@ -197,8 +211,8 @@ echo 1;
 
                     $bar = 2;
                 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -227,14 +241,14 @@ echo 1;
 
     public function provideCommentBlockCases()
     {
-        $cases = array(
-            array(
+        $cases = [
+            [
                 '<?php // a',
                 1,
                 1,
                 false,
-            ),
-            array(
+            ],
+            [
                 '<?php
                     // This comment could be nicely formatted.
                     //
@@ -244,15 +258,15 @@ echo 1;
                 2,
                 11,
                 false,
-            ),
-            array(
+            ],
+            [
                 '<?php
 /**///',
                 1,
                 1,
                 true,
-            ),
-            array(
+            ],
+            [
                 '<?php
 //
 //
@@ -263,8 +277,8 @@ echo 1;
                 5,
                 8,
                 true,
-            ),
-            array(
+            ],
+            [
                 '<?php
 //
 //
@@ -275,8 +289,8 @@ echo 1;
                 5,
                 8,
                 true,
-            ),
-            array(
+            ],
+            [
                 '<?php
 //
 //
@@ -287,20 +301,20 @@ echo 1;
                 1,
                 3,
                 true,
-            ),
-            array(
+            ],
+            [
                 str_replace("\n", "\r", "<?php\n//\n//\n\n//\n//\n"),
                 1,
                 3,
                 true,
-            ),
-            array(
+            ],
+            [
                 str_replace("\n", "\r\n", "<?php\n//\n//\n\n//\n//\n"),
                 1,
                 3,
                 true,
-            ),
-            array(
+            ],
+            [
                 '<?php
 //
 
@@ -309,8 +323,8 @@ echo 1;
                 1,
                 1,
                 true,
-            ),
-            array(
+            ],
+            [
                 '<?php
 //
 //
@@ -318,15 +332,15 @@ echo 1;
                 1,
                 4,
                 true,
-            ),
-            array(
+            ],
+            [
                 '<?php
 //',
                 1,
                 1,
                 true,
-            ),
-        );
+            ],
+        ];
 
         $src = '<?php
                 // a2
@@ -335,13 +349,13 @@ echo 1;
 /* b8 */ // s10
           #                        c12';
 
-        foreach (array(2, 4, 6) as $i) {
-            $cases[] = array($src, $i, 7, false);
+        foreach ([2, 4, 6] as $i) {
+            $cases[] = [$src, $i, 7, false];
         }
 
-        $cases[] = array($src, 8, 9, false);
-        $cases[] = array($src, 10, 11, false);
-        $cases[] = array($src, 12, 12, false);
+        $cases[] = [$src, 8, 9, false];
+        $cases[] = [$src, 10, 11, false];
+        $cases[] = [$src, 12, 12, false];
 
         return $cases;
     }

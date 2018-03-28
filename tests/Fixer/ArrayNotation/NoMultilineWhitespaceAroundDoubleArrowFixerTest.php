@@ -38,8 +38,8 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     $arr = array(
         $a => array(1),
@@ -53,8 +53,8 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
             array(0 =>
             array())
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         "aaaaaa"    =>    "b",
@@ -75,8 +75,8 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
         "hh"      =>
             [],
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $hello = array(
         "foo" =>
@@ -92,7 +92,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
          */
         array()
     );',
-            ),
-        );
+            ],
+        ];
     }
 }

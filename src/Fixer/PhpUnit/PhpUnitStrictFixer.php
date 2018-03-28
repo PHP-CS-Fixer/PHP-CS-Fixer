@@ -27,12 +27,12 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    private static $assertionMap = array(
+    private static $assertionMap = [
         'assertAttributeEquals' => 'assertAttributeSame',
         'assertAttributeNotEquals' => 'assertAttributeNotSame',
         'assertEquals' => 'assertSame',
         'assertNotEquals' => 'assertNotSame',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurationDef
     {
         return new FixerDefinition(
             'PHPUnit methods like `assertSame` should be used instead of `assertEquals`.',
-            array(
+            [
                 new CodeSample(
 '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
@@ -67,10 +67,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(a(), b());
         $this->assertNotEquals(a(), b());
     }
-}',
-                    array('assertions' => array('assertEquals'))
+}
+',
+                    ['assertions' => ['assertEquals']]
                 ),
-            ),
+            ],
             null,
             'Risky when any of the functions are overridden.'
         );
@@ -101,24 +102,25 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $methodAfter = self::$assertionMap[$methodBefore];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $sequence = $tokens->findSequence(
-                    array(
-                        array(T_VARIABLE, '$this'),
-                        array(T_OBJECT_OPERATOR, '->'),
-                        array(T_STRING, $methodBefore),
-                        '(',
-                    ),
-                    $index
-                );
+                $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING, $methodBefore]]);
 
-                if (null === $sequence) {
+                if (null === $methodIndex) {
                     break;
                 }
 
-                $sequenceIndexes = array_keys($sequence);
-                $tokens[$sequenceIndexes[2]] = new Token(array(T_STRING, $methodAfter));
+                $operatorIndex = $tokens->getPrevMeaningfulToken($methodIndex);
+                $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
+                if (
+                    !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
+                    && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
+                    && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
+                ) {
+                    continue;
+                }
 
-                $index = $sequenceIndexes[3];
+                $tokens[$methodIndex] = new Token([T_STRING, $methodAfter]);
+
+                $index = $methodIndex;
             }
         }
     }
@@ -128,23 +130,19 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
-
-        $assertions = new FixerOptionBuilder('assertions', 'List of assertion methods to fix.');
-        $assertions = $assertions
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf(array_keys(self::$assertionMap)),
-            ))
-            ->setDefault(array(
-                'assertAttributeEquals',
-                'assertAttributeNotEquals',
-                'assertEquals',
-                'assertNotEquals',
-            ))
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('assertions', array($assertions));
+        return new FixerConfigurationResolverRootless('assertions', [
+            (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([
+                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$assertionMap)),
+                ])
+                ->setDefault([
+                    'assertAttributeEquals',
+                    'assertAttributeNotEquals',
+                    'assertEquals',
+                    'assertNotEquals',
+                ])
+                ->getOption(),
+        ]);
     }
 }

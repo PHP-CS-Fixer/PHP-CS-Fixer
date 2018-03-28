@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Smoke;
 
-use Keradus\CliExecutor\BashScriptExecutor;
 use Keradus\CliExecutor\CommandExecutor;
+use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -37,14 +37,14 @@ final class CiIntegrationTest extends TestCase
         self::$fixtureDir = __DIR__.'/../Fixtures/ci-integration';
 
         try {
-            self::executeScript(array(
+            self::executeScript([
                 'rm -rf .git',
                 'git init -q',
                 'git config user.name test',
                 'git config user.email test',
                 'git add .',
                 'git commit -m "init" -q',
-            ));
+            ]);
         } catch (\RuntimeException $e) {
             self::markTestSkipped($e->getMessage());
         }
@@ -57,16 +57,16 @@ final class CiIntegrationTest extends TestCase
         self::executeCommand('rm -rf .git');
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
 
-        self::executeScript(array(
+        self::executeScript([
             'git reset . -q',
             'git checkout . -q',
             'git clean -fdq',
             'git checkout master -q',
-        ));
+        ]);
     }
 
     /**
@@ -86,50 +86,49 @@ final class CiIntegrationTest extends TestCase
         $expectedResult3Files
     ) {
         self::executeScript(array_merge(
-            array(
+            [
                 "git checkout -b ${branchName} -q",
-            ),
+            ],
             $caseCommands
         ));
 
         $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../dev-tools/ci-integration.sh')));
-        $steps = array(
+        $steps = [
             "COMMIT_RANGE=\"master..${branchName}\"",
-            $integrationScript[3],
-            $integrationScript[4],
+            "{$integrationScript[3]}\n{$integrationScript[4]}",
             $integrationScript[5],
-        );
+            $integrationScript[6],
+            $integrationScript[7],
+        ];
 
-        $result1 = self::executeScript(array(
-            $steps[0],
-            $steps[1],
-            'echo "$CHANGED_FILES"',
-        ));
-
-        $this->assertSame(implode("\n", $expectedResult1Lines)."\n", $result1->getOutput());
-
-        $result2 = self::executeScript(array(
+        $result1 = self::executeScript([
             $steps[0],
             $steps[1],
             $steps[2],
-            'echo "${#EXTRA_ARGS[@]}"',
-            'echo "${EXTRA_ARGS[@]}"',
-            'echo "${EXTRA_ARGS[0]}"',
-            'echo "${EXTRA_ARGS[1]}"',
-            'echo "${EXTRA_ARGS[2]}"',
-            'echo "${EXTRA_ARGS[3]}"',
-        ));
+            'echo "$CHANGED_FILES"',
+        ]);
 
-        $this->assertSame(implode("\n", $expectedResult2Lines), $result2->getOutput());
+        $this->assertSame(implode("\n", $expectedResult1Lines)."\n", $result1->getOutput());
 
-        $result3 = self::executeScript(array(
+        $result2 = self::executeScript([
             $steps[0],
             $steps[1],
             $steps[2],
             $steps[3],
-        ));
+            'echo "${EXTRA_ARGS}"',
+        ]);
 
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.3.6 and maximum version of PHP 7.2.*.
+        $this->assertSame(implode("\n", $expectedResult2Lines), $result2->getOutput());
+
+        $result3 = self::executeScript([
+            $steps[0],
+            $steps[1],
+            $steps[2],
+            $steps[3],
+            $steps[4],
+        ]);
+
+        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.2.*.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 
@@ -137,19 +136,22 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
 ';
 
-        $executionDetails = "Loaded config default from \".php_cs.dist\".
-${expectedResult3Files}
-Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error";
-
-        $this->assertRegExp(
-            sprintf(
-                '/^(%s)?(%s)?%s$/',
-                preg_quote($optionalIncompatibilityWarning, '/'),
-                preg_quote($optionalXdebugWarning, '/'),
-                preg_quote($executionDetails, '/')
-            ),
-            $result3->getError()
+        $pattern = sprintf(
+            '/^(?:%s)?(?:%s)?%s\n([\.S]{%d})\n%s$/',
+            preg_quote($optionalIncompatibilityWarning, '/'),
+            preg_quote($optionalXdebugWarning, '/'),
+            preg_quote('Loaded config default from ".php_cs.dist".', '/'),
+            strlen($expectedResult3Files),
+            preg_quote('Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error', '/')
         );
+
+        $this->assertRegExp($pattern, $result3->getError());
+
+        preg_match($pattern, $result3->getError(), $matches);
+
+        $this->assertArrayHasKey(1, $matches);
+        $this->assertSame(substr_count($expectedResult3Files, '.'), substr_count($matches[1], '.'));
+        $this->assertSame(substr_count($expectedResult3Files, 'S'), substr_count($matches[1], 'S'));
 
         $this->assertRegExp(
             '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
@@ -159,35 +161,33 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
 
     public function provideIntegrationCases()
     {
-        return array(
-            array(
+        return [
+            [
                 'random-changes',
-                array(
+                [
                     'touch dir\ a/file.php',
                     'rm -r dir\ c',
                     'echo "" >> dir\ b/file\ b.php',
                     'echo "echo 1;" >> dir\ b/file\ b.php',
                     'git add .',
                     'git commit -m "Random changes" -q',
-                ),
-                array(
+                ],
+                [
                     'dir a/file.php',
                     'dir b/file b.php',
-                ),
-                array(
-                    '4',
-                    '--path-mode=intersection -- dir a/file.php dir b/file b.php',
+                ],
+                [
                     '--path-mode=intersection',
                     '--',
                     'dir a/file.php',
                     'dir b/file b.php',
                     '',
-                ),
+                ],
                 'S.',
-            ),
-            array(
+            ],
+            [
                 'changes-including-dist-config-file',
-                array(
+                [
                     'echo "" >> dir\ b/file\ b.php',
                     'echo "echo 1;" >> dir\ b/file\ b.php',
                     // `sed -i ...` is not handled the same on Linux and macOS
@@ -195,71 +195,56 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     'mv .php_cs.dist.new .php_cs.dist',
                     'git add .',
                     'git commit -m "Random changes including config file" -q',
-                ),
-                array(
+                ],
+                [
                     '.php_cs.dist',
                     'dir b/file b.php',
-                ),
-                array(
-                    '0',
+                ],
+                [
                     '',
                     '',
-                    '',
-                    '',
-                    '',
-                    '',
-                ),
+                ],
                 '...',
-            ),
-            array(
+            ],
+            [
                 'changes-including-custom-config-file-creation',
-                array(
+                [
                     'echo "" >> dir\ b/file\ b.php',
                     'echo "echo 1;" >> dir\ b/file\ b.php',
                     'sed -e \'s/@Symfony/@PSR2/\' .php_cs.dist > .php_cs',
                     'git add .',
                     'git commit -m "Random changes including custom config file creation" -q',
-                ),
-                array(
+                ],
+                [
                     '.php_cs',
                     'dir b/file b.php',
-                ),
-                array(
-                    '0',
+                ],
+                [
                     '',
                     '',
-                    '',
-                    '',
-                    '',
-                    '',
-                ),
+                ],
                 '...',
-            ),
-            array(
+            ],
+            [
                 'changes-including-composer-lock',
-                array(
+                [
                     'echo "" >> dir\ b/file\ b.php',
                     'echo "echo 1;" >> dir\ b/file\ b.php',
                     'touch composer.lock',
                     'git add .',
                     'git commit -m "Random changes including composer.lock" -q',
-                ),
-                array(
+                ],
+                [
                     'composer.lock',
                     'dir b/file b.php',
-                ),
-                array(
-                    '0',
+                ],
+                [
                     '',
                     '',
-                    '',
-                    '',
-                    '',
-                    '',
-                ),
+                ],
                 '...',
-            ),
-        );
+            ],
+        ];
     }
 
     private static function executeCommand($command)
@@ -269,6 +254,9 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
 
     private static function executeScript(array $scriptParts)
     {
-        return BashScriptExecutor::create($scriptParts, self::$fixtureDir)->getResult();
+        // @TODO: drop $scriptInit, for now it's needed, as defaut `set -eu` is causing our scripts to crash
+        $scriptInit = ['#!/bin/sh', 'set -e', ''];
+
+        return ScriptExecutor::create($scriptParts, self::$fixtureDir, $scriptInit)->getResult();
     }
 }

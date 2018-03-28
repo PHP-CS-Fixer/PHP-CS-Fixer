@@ -23,7 +23,25 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
-    protected function doTest($source, array $expectedTokens = array(), array $observedKindsOrPrototypes = array())
+    protected function setUp()
+    {
+        parent::setUp();
+
+        // @todo remove at 3.0 together with env var itself
+        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
+            Tokens::setLegacyMode(true);
+        }
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        // @todo remove at 3.0
+        Tokens::setLegacyMode(false);
+    }
+
+    protected function doTest($source, array $expectedTokens = [], array $observedKindsOrPrototypes = [])
     {
         $tokens = Tokens::fromCode($source);
 
@@ -32,8 +50,8 @@ abstract class AbstractTransformerTestCase extends TestCase
             $this->countTokenPrototypes(
                 $tokens,
                 array_map(
-                    function ($kindOrPrototype) {
-                        return is_int($kindOrPrototype) ? array($kindOrPrototype) : $kindOrPrototype;
+                    static function ($kindOrPrototype) {
+                        return is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype;
                     },
                     array_unique(array_merge($observedKindsOrPrototypes, $expectedTokens))
                 )

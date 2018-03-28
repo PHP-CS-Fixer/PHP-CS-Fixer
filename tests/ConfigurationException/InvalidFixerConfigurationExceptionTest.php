@@ -25,6 +25,13 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class InvalidFixerConfigurationExceptionTest extends TestCase
 {
+    public function testIsInvalidArgumentException()
+    {
+        $exception = new InvalidFixerConfigurationException('foo', 'I cannot do that, Dave.');
+
+        $this->assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, $exception);
+    }
+
     public function testDefaults()
     {
         $fixerName = 'hal';
@@ -35,7 +42,6 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        $this->assertInstanceOf('PhpCsFixer\ConfigurationException\InvalidConfigurationException', $exception);
         $this->assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
         $this->assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
         $this->assertSame($fixerName, $exception->getFixerName());
@@ -54,7 +60,6 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
             $previous
         );
 
-        $this->assertInstanceOf('PhpCsFixer\ConfigurationException\InvalidConfigurationException', $exception);
         $this->assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
         $this->assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
         $this->assertSame($fixerName, $exception->getFixerName());

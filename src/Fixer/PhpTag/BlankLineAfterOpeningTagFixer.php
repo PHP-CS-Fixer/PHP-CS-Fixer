@@ -31,7 +31,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
     {
         return new FixerDefinition(
             'Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.',
-            array(new CodeSample("<?php \$a = 1;\n\$b = 1;"))
+            [new CodeSample("<?php \$a = 1;\n\$b = 1;\n")]
         );
     }
 
@@ -82,11 +82,11 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
         $token = $tokens[0];
 
         if (false === strpos($token->getContent(), "\n")) {
-            $tokens[0] = new Token(array($token->getId(), rtrim($token->getContent()).$lineEnding));
+            $tokens[0] = new Token([$token->getId(), rtrim($token->getContent()).$lineEnding]);
         }
 
         if (!$tokens[1]->isWhitespace() && false === strpos($tokens[1]->getContent(), "\n")) {
-            $tokens->insertAt(1, new Token(array(T_WHITESPACE, $lineEnding)));
+            $tokens->insertAt(1, new Token([T_WHITESPACE, $lineEnding]));
         }
     }
 }

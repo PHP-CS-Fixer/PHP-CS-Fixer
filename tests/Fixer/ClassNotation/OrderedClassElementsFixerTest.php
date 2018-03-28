@@ -36,8 +36,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 <<<'EOT'
 <?php
 
@@ -47,8 +47,8 @@ class Bar
 {
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -59,8 +59,8 @@ EOT
 
 class Foo { private function bar1($x) { return 1; } protected $abc = 'abc'; const C1 = 1; public function baz($y, $z) {} }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -103,8 +103,8 @@ interface FooInterface
     public function def();
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -261,8 +261,8 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     }
 }
 EOT
-            ),
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -297,26 +297,8 @@ class Bar
     public function baz() {}
 }
 EOT
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix54Cases
-     * @requires PHP 5.4
-     */
-    public function testFix54($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix54Cases()
-    {
-        return array(
-            array(
+            ],
+            [
                 <<<'EOT'
 <?php
 
@@ -343,26 +325,56 @@ trait FooTrait
     use BazTrait;
 }
 EOT
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param array       $configuration
      *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input = null)
+    public function testFix71(array $configuration, $expected, $input = null)
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
     public function provideFix71Cases()
     {
-        return array(
-            array(
+        return [
+            [
+                [],
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    const C2 = 2;
+    public const C1 = 1;
+    public const C3 = 3;
+    protected const C4 = 4;
+    private const C5 = 5;
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    private const C5 = 5;
+    const C2 = 2;
+    public const C1 = 1;
+    protected const C4 = 4;
+    public const C3 = 3;
+}
+EOT
+            ],
+            [
+                ['sortAlgorithm' => 'alpha'],
                 <<<'EOT'
 <?php
 
@@ -381,14 +393,14 @@ EOT
 class Foo
 {
     private const C5 = 5;
+    const C2 = 2;
     public const C1 = 1;
     protected const C4 = 4;
-    const C2 = 2;
     public const C3 = 3;
 }
 EOT
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -478,15 +490,15 @@ class Foo
     protected static function protStatFunc() {}
 }
 EOT;
-        $this->fixer->configure(array('order' => $configuration));
+        $this->fixer->configure(['order' => $configuration]);
         $this->doTest($expected, $input);
     }
 
     public function provideConfigurationCases()
     {
-        return array(
-            array(
-                array('use_trait', 'constant', 'property', 'construct', 'method', 'destruct'),
+        return [
+            [
+                ['use_trait', 'constant', 'property', 'construct', 'method', 'destruct'],
                 <<<'EOT'
 <?php
 
@@ -520,9 +532,9 @@ class Foo
     public function __destruct() {}
 }
 EOT
-            ),
-            array(
-                array('public', 'protected', 'private'),
+            ],
+            [
+                ['public', 'protected', 'private'],
                 <<<'EOT'
 <?php
 
@@ -556,9 +568,9 @@ class Foo
     use BazTrait;
 }
 EOT
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     'use_trait',
                     'constant',
                     'property_public_static',
@@ -576,7 +588,7 @@ EOT
                     'method_public',
                     'method_protected',
                     'method_private',
-                ),
+                ],
                 <<<'EOT'
 <?php
 
@@ -610,17 +622,180 @@ class Foo
     private function privFunc() {}
 }
 EOT
-            ),
-        );
+            ],
+        ];
+    }
+
+    /**
+     * @param array  $configuration
+     * @param string $input
+     * @param string $expected
+     *
+     * @dataProvider provideSortingConfigurationCases
+     */
+    public function testFixWithSortingAlhorithm(array $configuration, $input, $expected)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideSortingConfigurationCases()
+    {
+        return [
+            [
+                [
+                    'order' => [
+                        'property_public_static',
+                        'method_public',
+                        'method_private',
+                    ],
+                    'sortAlgorithm' => 'alpha',
+                ],
+                <<<'EOT'
+<?php
+class Example
+{
+    public function D(){}
+    public static $pubStatProp2;
+    public function B1(){}
+    public function B2(){}
+    private function E(){}
+    public static $pubStatProp1;
+    public function A(){}
+    public function C(){}
+    public function C1(){}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+class Example
+{
+    public static $pubStatProp1;
+    public static $pubStatProp2;
+    public function A(){}
+    public function B1(){}
+    public function B2(){}
+    public function C(){}
+    public function C1(){}
+    public function D(){}
+    private function E(){}
+}
+EOT
+            ],
+            [
+                [
+                    'order' => [
+                        'use_trait',
+                        'constant',
+                        'property_public_static',
+                        'property_protected_static',
+                        'property_private_static',
+                        'property_public',
+                        'property_protected',
+                        'property_private',
+                        'construct',
+                        'destruct',
+                        'magic',
+                        'method_public_static',
+                        'method_protected_static',
+                        'method_private_static',
+                        'method_public',
+                        'method_protected',
+                        'method_private',
+                    ],
+                    'sortAlgorithm' => 'alpha',
+                ],
+                <<<'EOT'
+<?php
+class Foo
+{
+    private static function privStatFunc() {}
+    protected static $protStatProp;
+    use BazTrait;
+    public static $pubStatProp2;
+    public $pubProp3;
+    use BarTrait;
+    public function __toString() {}
+    protected function protFunc() {}
+    protected $protProp;
+    function pubFunc2() {}
+    public $pubProp1;
+    public function __destruct() {}
+    var $pubProp2;
+    public function __magicB() {}
+    const C2 = 2;
+    public static $pubStatProp1;
+    public function __magicA() {}
+    private static $privStatProp;
+    static function pubStatFunc2() {}
+    public function pubFunc3(int $b, int $c) {
+        $a = $b*$c;
+
+        return $a % 4;
+    }
+    private $privProp;
+    const C1 = 1;
+    public static function pubStatFunc3() {
+        return $this->privFunc();
+    }
+    public function pubFunc1() {}
+    public static function pubStatFunc1() {}
+    private function privFunc() {}
+    protected function __construct() {}
+    protected static function protStatFunc() {}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+class Foo
+{
+    use BarTrait;
+    use BazTrait;
+    const C1 = 1;
+    const C2 = 2;
+    public static $pubStatProp1;
+    public static $pubStatProp2;
+    protected static $protStatProp;
+    private static $privStatProp;
+    public $pubProp1;
+    var $pubProp2;
+    public $pubProp3;
+    protected $protProp;
+    private $privProp;
+    protected function __construct() {}
+    public function __destruct() {}
+    public function __magicA() {}
+    public function __magicB() {}
+    public function __toString() {}
+    public static function pubStatFunc1() {}
+    static function pubStatFunc2() {}
+    public static function pubStatFunc3() {
+        return $this->privFunc();
+    }
+    protected static function protStatFunc() {}
+    private static function privStatFunc() {}
+    public function pubFunc1() {}
+    function pubFunc2() {}
+    public function pubFunc3(int $b, int $c) {
+        $a = $b*$c;
+
+        return $a % 4;
+    }
+    protected function protFunc() {}
+    private function privFunc() {}
+}
+EOT
+            ],
+        ];
     }
 
     public function testWrongConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[ordered_class_elements\] Invalid configuration: The option "order" .*\.$/'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[ordered_class_elements\] Invalid configuration: The option "order" .*\.$/');
 
-        $this->fixer->configure(array('order' => array('foo')));
+        $this->fixer->configure(['order' => ['foo']]);
     }
 }

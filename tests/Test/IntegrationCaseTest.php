@@ -32,9 +32,9 @@ final class IntegrationCaseTest extends TestCase
         $integrationCase = new LegacyIntegrationCase(
             'foo',
             'Foo',
-            array(),
-            array(),
-            array(),
+            [],
+            [],
+            [],
             new RuleSet(),
             'Bar',
             'Baz'

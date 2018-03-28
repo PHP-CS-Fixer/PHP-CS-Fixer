@@ -29,32 +29,32 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = array())
+    public function testProcess($source, array $expectedTokens = [])
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            array(
+            [
                 CT::T_RETURN_REF,
-            )
+            ]
         );
     }
 
     public function provideProcessCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php function & foo(): array { return []; }',
-                array(
+                [
                     3 => CT::T_RETURN_REF,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php $a = 1 & 2;',
-            ),
-            array(
+            ],
+            [
                 '<?php function fnc(array & $arr) {}',
-            ),
-        );
+            ],
+        ];
     }
 }

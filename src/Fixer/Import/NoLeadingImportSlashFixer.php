@@ -31,7 +31,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove leading slashes in use clauses.',
-            array(new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;"))
+            [new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;\n")]
         );
     }
 
@@ -66,7 +66,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
 
             if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
                 $tokens->clearAt($nextTokenIdx);
-            } elseif ($nextToken->isGivenKind(array(CT::T_FUNCTION_IMPORT, CT::T_CONST_IMPORT))) {
+            } elseif ($nextToken->isGivenKind([CT::T_FUNCTION_IMPORT, CT::T_CONST_IMPORT])) {
                 $nextTokenIdx = $tokens->getNextMeaningfulToken($nextTokenIdx);
                 if ($tokens[$nextTokenIdx]->isGivenKind(T_NS_SEPARATOR)) {
                     $tokens->clearAt($nextTokenIdx);

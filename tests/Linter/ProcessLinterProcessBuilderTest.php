@@ -35,11 +35,6 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
     {
-        // @TODO drop condition at 2.4 (as 2.4 does not support HHVM)
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for PHP compiler when running on HHVM compiler.');
-        }
-
         $builder = new ProcessLinterProcessBuilder($executable);
 
         $this->assertSame(
@@ -64,23 +59,6 @@ final class ProcessLinterProcessBuilderTest extends TestCase
         $this->assertSame(
             $expected,
             $builder->build($file)->getCommandLine()
-        );
-    }
-
-    /**
-     * @TODO drop condition at 2.4 (as 2.4 does not support HHVM)
-     */
-    public function testPrepareCommandOnHhvm()
-    {
-        if (!defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Skip tests for HHVM compiler when running on PHP compiler.');
-        }
-
-        $builder = new ProcessLinterProcessBuilder('hhvm');
-
-        $this->assertSame(
-            '"hhvm" --php -l "foo.php"',
-            $builder->build('foo.php')->getCommandLine()
         );
     }
 }

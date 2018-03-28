@@ -47,13 +47,13 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
             }
 
             $match = array_merge(
-                array(
+                [
                     'config' => null,
                     'settings' => null,
                     'requirements' => null,
                     'expect' => null,
                     'input' => null,
-                ),
+                ],
                 $match
             );
 
@@ -86,10 +86,10 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineConfig(SplFileInfo $file, $config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'indent' => '    ',
             'lineEnding' => "\n",
-        ));
+        ]);
 
         if (!is_string($parsed['indent'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -118,22 +118,14 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineRequirements(SplFileInfo $file, $config)
     {
-        $parsed = $this->parseJson($config, array(
-            'hhvm' => true,
+        $parsed = $this->parseJson($config, [
             'php' => PHP_VERSION_ID,
-        ));
+        ]);
 
-        if (!is_int($parsed['php']) || $parsed['php'] < 50306) {
+        if (!is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
-                'Expected int >= 50306 value for "php", got "%s".',
+                'Expected int value like 50509 for "php", got "%s".',
                 is_object($parsed['php']) ? get_class($parsed['php']) : gettype($parsed['php']).'#'.$parsed['php']
-            ));
-        }
-
-        if (!is_bool($parsed['hhvm'])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Expected bool value for "hhvm", got "%s".',
-                is_object($parsed['hhvm']) ? get_class($parsed['hhvm']) : gettype($parsed['hhvm']).'#'.$parsed['hhvm']
             ));
         }
 
@@ -176,9 +168,9 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineSettings(SplFileInfo $file, $config)
     {
-        $parsed = $this->parseJson($config, array(
+        $parsed = $this->parseJson($config, [
             'checkPriority' => true,
-        ));
+        ]);
 
         if (!is_bool($parsed['checkPriority'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -247,7 +239,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     {
         // content is optional if template is provided
         if (!$encoded && null !== $template) {
-            $decoded = array();
+            $decoded = [];
         } else {
             $decoded = json_decode($encoded, true);
 

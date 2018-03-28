@@ -22,7 +22,7 @@ use PhpCsFixer\Fixer\FixerInterface;
 class Config implements ConfigInterface
 {
     private $cacheFile = '.php_cs.cache';
-    private $customFixers = array();
+    private $customFixers = [];
     private $finder;
     private $format = 'txt';
     private $hideProgress = false;
@@ -31,7 +31,7 @@ class Config implements ConfigInterface
     private $lineEnding = "\n";
     private $name;
     private $phpExecutable;
-    private $rules = array('@PSR2' => true);
+    private $rules = ['@PSR2' => true];
     private $usingCache = true;
 
     public function __construct($name = 'default')

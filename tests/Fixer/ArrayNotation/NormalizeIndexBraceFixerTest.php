@@ -36,19 +36,19 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php echo $arr[$index];',
                 '<?php echo $arr{$index};',
-            ),
-            array(
+            ],
+            [
                 '<?php echo $nestedArray[$index][$index2][$index3][$index4];',
                 '<?php echo $nestedArray{$index}{$index2}[$index3]{$index4};',
-            ),
-            array(
+            ],
+            [
                 '<?php echo $array[0]->foo . $collection->items[1]->property;',
                 '<?php echo $array{0}->foo . $collection->items{1}->property;',
-            ),
-        );
+            ],
+        ];
     }
 }

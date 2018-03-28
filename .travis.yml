@@ -8,6 +8,7 @@ git:
 cache:
     directories:
         - $HOME/.composer
+        - $HOME/bin
 
 env:
     global:
@@ -33,6 +34,9 @@ jobs:
 
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
+
+                - wget --no-clobber --output-document=$HOME/bin/checkbashisms https://sourceforge.net/projects/checkbaskisms/files/2.0.0.2/checkbashisms/download || true
+                - chmod +x $HOME/bin/checkbashisms
             before_script:
                 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
                 - export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
@@ -44,7 +48,6 @@ jobs:
                     | grep -v tests/Test/AbstractIntegrationCaseFactory.php \
                     | grep -v tests/Test/AbstractIntegrationTestCase.php \
                     | grep -v tests/Test/Assert/AssertTokensTrait.php \
-                    | grep -v tests/Test/Constraint/SameStringsConstraint.php \
                     | grep -v tests/Test/IntegrationCase.php \
                     | grep -v tests/Test/IntegrationCaseFactory.php \
                     | grep -v tests/Test/IntegrationCaseFactoryInterface.php \
@@ -55,6 +58,7 @@ jobs:
                 - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^tests/Fixtures" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json || travis_terminate 1
                 - composer normalize -d ./dev-tools ./../composer.json --dry-run
+                - ./dev-tools/check-shell-scripts.sh
 
         - &STANDARD_TEST_JOB
             stage: Fast Test
@@ -68,44 +72,25 @@ jobs:
                 - composer info -D | sort
             script:
                 - vendor/bin/phpunit || travis_terminate 1
-                - php php-cs-fixer --diff --dry-run -v fix
-
-        -
-            <<: *STANDARD_TEST_JOB
-            stage: Test
-            php: 5.3
-            env: SKIP_LINT_TEST_CASES=1 COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
-            dist: precise
-
-        -
-            <<: *STANDARD_TEST_JOB
-            stage: Test
-            php: 5.4
-            env: SKIP_LINT_TEST_CASES=1
-
-        -
-            <<: *STANDARD_TEST_JOB
-            stage: Test
-            php: 5.5
-            env: SKIP_LINT_TEST_CASES=1
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 5.6
-            env: SYMFONY_VERSION="v2.8"
+            env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.1
-            env: PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="v4.0"
+            env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="v4.0"
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.2
-            env: COLLECT_COVERAGE=1 SYMFONY_DEPRECATIONS_HELPER=weak
+            env: COLLECT_COVERAGE=1
             before_script:
                 # check phpdbg
                 - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export COLLECT_COVERAGE=0; }
@@ -116,8 +101,8 @@ jobs:
                 - if [ $COLLECT_COVERAGE == 0 ]; then vendor/bin/phpunit || travis_terminate 1; fi
                 - if [ $COLLECT_COVERAGE == 1 ]; then vendor/bin/phpunit --group covers-nothing || travis_terminate 1; fi
                 - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
-                - php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
-                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/coveralls -v; fi
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
+                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/php-coveralls -v; fi
 
         -
             <<: *STANDARD_TEST_JOB
@@ -125,19 +110,10 @@ jobs:
             php: nightly
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
             script:
-                - php php-cs-fixer fix --rules @PHP70Migration:risky,@PHP71Migration,native_function_invocation -q || travis_terminate 1
+                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,native_function_invocation -q || travis_terminate 1
                 - vendor/bin/phpunit || travis_terminate 1
                 - git checkout . -q
-                - php php-cs-fixer --diff --dry-run -v fix
-
-        -
-            <<: *STANDARD_TEST_JOB
-            stage: Test
-            php: hhvm
-            env: SKIP_LINT_TEST_CASES=1
-            sudo: required
-            dist: trusty
-            group: edge
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
             stage: Deployment
@@ -159,4 +135,3 @@ jobs:
 
     allow_failures:
         - php: nightly
-        - php: hhvm

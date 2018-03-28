@@ -72,7 +72,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
                 $this->fixTypes($annotation);
             }
 
-            $tokens[$index] = new Token(array(T_DOC_COMMENT, $doc->getContent()));
+            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 

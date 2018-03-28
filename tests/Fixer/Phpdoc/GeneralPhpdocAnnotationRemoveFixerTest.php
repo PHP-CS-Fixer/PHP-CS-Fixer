@@ -29,7 +29,7 @@ final class GeneralPhpdocAnnotationRemoveFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      * @param null|array  $config
      */
-    public function testFix($expected, $input = null, array $config = array())
+    public function testFix($expected, $input = null, array $config = [])
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -40,8 +40,8 @@ final class GeneralPhpdocAnnotationRemoveFixerTest extends AbstractFixerTestCase
      */
     public function provideFixCases()
     {
-        return array(
-            'An Annotation gets removed' => array(
+        return [
+            'An Annotation gets removed' => [
                 '<?php
 /**
  * @internal
@@ -59,9 +59,9 @@ function hello($name)
 {
     return "hello " . $name;
 }',
-                array('annotations' => array('param')),
-            ),
-            'It removes multiple annotations' => array(
+                ['annotations' => ['param']],
+            ],
+            'It removes multiple annotations' => [
                 '<?php
 /**
  * @author me
@@ -83,9 +83,9 @@ function hello($name)
 {
     return "hello " . $name;
 }',
-                array('annotations' => array('param', 'return', 'throws')),
-            ),
-            'It does nothing if no configuration is given' => array(
+                ['annotations' => ['param', 'return', 'throws']],
+            ],
+            'It does nothing if no configuration is given' => [
                 '<?php
 /**
  * @author me
@@ -98,8 +98,8 @@ function hello($name)
 {
     return "hello " . $name;
 }',
-            ),
-            'It works on multiple functions' => array(
+            ],
+            'It works on multiple functions' => [
                 '<?php
 /**
  * @param string $name
@@ -144,9 +144,9 @@ function noComment()
 {
     callOtherFunction();
 }',
-                array('annotations' => array('author', 'return', 'internal')),
-            ),
-            'Nothing happens to non doc-block comments' => array(
+                ['annotations' => ['author', 'return', 'internal']],
+            ],
+            'Nothing happens to non doc-block comments' => [
                 '<?php
 /*
  * @internal
@@ -157,9 +157,9 @@ function hello($name)
     return "hello " . $name;
 }',
                 null,
-                array('annotations' => array('internal', 'param', 'return')),
-            ),
-            'Nothing happens if to be deleted annotations are not present' => array(
+                ['annotations' => ['internal', 'param', 'return']],
+            ],
+            'Nothing happens if to be deleted annotations are not present' => [
                 '<?php
 /**
  * @internal
@@ -170,9 +170,9 @@ function hello($name)
     return "hello " . $name;
 }',
                 null,
-                array('annotations' => array('author', 'test', 'return', 'deprecated')),
-            ),
-            array(
+                ['annotations' => ['author', 'test', 'return', 'deprecated']],
+            ],
+            [
                 '<?php
 
 while ($something = myFunction($foo)) {}
@@ -181,8 +181,8 @@ while ($something = myFunction($foo)) {}
 /** @noinspection PhpAssignmentInConditionInspection */
 while ($something = myFunction($foo)) {}
 ',
-                array('annotations' => array('noinspection')),
-            ),
-        );
+                ['annotations' => ['noinspection']],
+            ],
+        ];
     }
 }

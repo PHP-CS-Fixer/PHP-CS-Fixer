@@ -41,10 +41,10 @@ final class DescribeCommandTest extends TestCase
         $application->add($command);
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
+        $commandTester->execute([
             'command' => $command->getName(),
             'name' => $fixerName,
-        ));
+        ]);
 
         $this->assertSame(0, $commandTester->getStatusCode());
     }
@@ -54,10 +54,10 @@ final class DescribeCommandTest extends TestCase
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
-        $cases = array();
+        $cases = [];
 
         foreach ($factory->getFixers() as $fixer) {
-            $cases[] = array($factory, $fixer->getName());
+            $cases[] = [$factory, $fixer->getName()];
         }
 
         return $cases;

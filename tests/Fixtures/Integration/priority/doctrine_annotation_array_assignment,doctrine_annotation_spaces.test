@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: doctrine_annotation_array_assignment,doctrine_annotation_spaces.
+--RULESET--
+{"doctrine_annotation_array_assignment": {"operator":":"}, "doctrine_annotation_spaces": {"before_argument_assignments":false,"after_argument_assignments":false,"before_array_assignments_equals":false,"after_array_assignments_equals":false,"before_array_assignments_colon":false,"after_array_assignments_colon":true}}
+--EXPECT--
+<?php
+
+/**
+ * @Foo(foo="bar", {bar: "baz"})
+ */
+class Foo
+{
+}
+
+--INPUT--
+<?php
+
+/**
+ * @Foo(foo ="bar", {bar ="baz"})
+ */
+class Foo
+{
+}

@@ -32,7 +32,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after PhpdocToCommentFixer and before NoExtraConsecutiveBlankLinesFixer, NoTrailingWhitespaceFixer and NoWhitespaceInBlankLineFixer.
+        // should be run after PhpdocToCommentFixer and before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer and NoWhitespaceInBlankLineFixer.
         return 2;
     }
 
@@ -43,7 +43,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be any empty comments.',
-            array(new CodeSample("<?php\n//\n#\n/* */\n"))
+            [new CodeSample("<?php\n//\n#\n/* */\n")]
         );
     }
 
@@ -110,7 +110,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
             }
         }
 
-        return array($start, $index - 1, $empty);
+        return [$start, $index - 1, $empty];
     }
 
     /**
@@ -155,11 +155,11 @@ final class NoEmptyCommentFixer extends AbstractFixer
      */
     private function isEmptyComment($content)
     {
-        static $mapper = array(
+        static $mapper = [
             self::TYPE_HASH => '|^#\s*$|', // single line comment starting with '#'
             self::TYPE_SLASH_ASTERISK => '|^/\*\s*\*/$|', // comment starting with '/*' and ending with '*/' (but not a PHPDoc)
             self::TYPE_DOUBLE_SLASH => '|^//\s*$|', // single line comment starting with '//'
-        );
+        ];
 
         $type = $this->getCommentType($content);
 

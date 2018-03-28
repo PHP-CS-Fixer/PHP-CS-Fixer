@@ -53,7 +53,8 @@ final class FixerOptionTest extends TestCase
     {
         $option = new FixerOption('foo', 'Bar.');
 
-        $this->setExpectedException('LogicException', 'No default value defined.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No default value defined.');
         $option->getDefault();
     }
 
@@ -62,11 +63,11 @@ final class FixerOptionTest extends TestCase
         $option = new FixerOption('foo', 'Bar.');
         $this->assertNull($option->getAllowedTypes());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, array('bool'));
-        $this->assertSame(array('bool'), $option->getAllowedTypes());
+        $option = new FixerOption('foo', 'Bar.', true, null, ['bool']);
+        $this->assertSame(['bool'], $option->getAllowedTypes());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, array('bool', 'string'));
-        $this->assertSame(array('bool', 'string'), $option->getAllowedTypes());
+        $option = new FixerOption('foo', 'Bar.', true, null, ['bool', 'string']);
+        $this->assertSame(['bool', 'string'], $option->getAllowedTypes());
     }
 
     public function testGetAllowedValues()
@@ -74,18 +75,18 @@ final class FixerOptionTest extends TestCase
         $option = new FixerOption('foo', 'Bar.');
         $this->assertNull($option->getAllowedValues());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, array('baz'));
-        $this->assertSame(array('baz'), $option->getAllowedValues());
+        $option = new FixerOption('foo', 'Bar.', true, null, null, ['baz']);
+        $this->assertSame(['baz'], $option->getAllowedValues());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, array('baz', 'qux'));
-        $this->assertSame(array('baz', 'qux'), $option->getAllowedValues());
+        $option = new FixerOption('foo', 'Bar.', true, null, null, ['baz', 'qux']);
+        $this->assertSame(['baz', 'qux'], $option->getAllowedValues());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, array(function () {}));
+        $option = new FixerOption('foo', 'Bar.', true, null, null, [static function () {}]);
         $allowedTypes = $option->getAllowedValues();
         $this->assertInternalType('array', $allowedTypes);
         $this->assertCount(1, $allowedTypes);
         $this->assertArrayHasKey(0, $allowedTypes);
-        $this->assertInstanceOf('Closure', $allowedTypes[0]);
+        $this->assertInstanceOf(\Closure::class, $allowedTypes[0]);
     }
 
     public function testGetNormalizers()
@@ -93,13 +94,14 @@ final class FixerOptionTest extends TestCase
         $option = new FixerOption('foo', 'Bar.');
         $this->assertNull($option->getNormalizer());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, null, function () {});
-        $this->assertInstanceOf('Closure', $option->getNormalizer());
+        $option = new FixerOption('foo', 'Bar.', true, null, null, null, static function () {});
+        $this->assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 
     public function testRequiredWithDefaultValue()
     {
-        $this->setExpectedException('LogicException', 'Required options cannot have a default value.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Required options cannot have a default value.');
 
         new FixerOption('foo', 'Bar.', true, false);
     }

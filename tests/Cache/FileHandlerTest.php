@@ -43,7 +43,7 @@ final class FileHandlerTest extends TestCase
 
         $handler = new FileHandler($file);
 
-        $this->assertInstanceOf('PhpCsFixer\Cache\FileHandlerInterface', $handler);
+        $this->assertInstanceOf(\PhpCsFixer\Cache\FileHandlerInterface::class, $handler);
     }
 
     public function testConstructorSetsFile()
@@ -82,10 +82,10 @@ final class FileHandlerTest extends TestCase
         $signature = new Signature(
             PHP_VERSION,
             '2.0',
-            array(
+            [
                 'foo',
                 'bar',
-            )
+            ]
         );
 
         $cache = new Cache($signature);
@@ -96,7 +96,7 @@ final class FileHandlerTest extends TestCase
 
         $cached = $handler->read();
 
-        $this->assertInstanceOf('PhpCsFixer\Cache\CacheInterface', $cached);
+        $this->assertInstanceOf(\PhpCsFixer\Cache\CacheInterface::class, $cached);
         $this->assertTrue($cached->getSignature()->equals($signature));
     }
 
@@ -104,18 +104,19 @@ final class FileHandlerTest extends TestCase
     {
         $file = __DIR__.'/non-existent-directory/.php_cs.cache';
 
-        $this->setExpectedExceptionRegExp('Symfony\Component\Filesystem\Exception\IOException', sprintf(
-            '#^Failed to write file "%s", ".*"\.#',
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
+        $this->expectExceptionMessageRegExp(sprintf(
+            '#^Failed to write file "%s"(, ".*")?.#',
             preg_quote($file, '#')
         ));
 
         $cache = new Cache(new Signature(
             PHP_VERSION,
             '2.0',
-            array(
+            [
                 'foo',
                 'bar',
-            )
+            ]
         ));
 
         $handler = new FileHandler($file);
@@ -130,10 +131,10 @@ final class FileHandlerTest extends TestCase
         $cache = new Cache(new Signature(
             PHP_VERSION,
             '2.0',
-            array(
+            [
                 'foo',
                 'bar',
-            )
+            ]
         ));
 
         $handler = new FileHandler($file);
@@ -153,21 +154,19 @@ final class FileHandlerTest extends TestCase
 
         $handler = new FileHandler($dir);
 
-        $this->setExpectedExceptionRegExp(
-            'Symfony\Component\Filesystem\Exception\IOException',
-            sprintf(
-                '#^%s$#',
-                preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
-            )
-        );
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
+        $this->expectExceptionMessageRegExp(sprintf(
+            '#^%s$#',
+            preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
+        ));
 
         $handler->write(new Cache(new Signature(
             PHP_VERSION,
             '2.0',
-            array(
+            [
                 'foo',
                 'bar',
-            )
+            ]
         )));
     }
 
@@ -182,21 +181,19 @@ final class FileHandlerTest extends TestCase
 
         $handler = new FileHandler($file);
 
-        $this->setExpectedExceptionRegExp(
-            'Symfony\Component\Filesystem\Exception\IOException',
-            sprintf(
-                '#^%s$#',
-                preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
-            )
-        );
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
+        $this->expectExceptionMessageRegExp(sprintf(
+            '#^%s$#',
+            preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
+        ));
 
         $handler->write(new Cache(new Signature(
             PHP_VERSION,
             '2.0',
-            array(
+            [
                 'foo',
                 'bar',
-            )
+            ]
         )));
     }
 
@@ -211,10 +208,10 @@ final class FileHandlerTest extends TestCase
         $handler->write(new Cache(new Signature(
             PHP_VERSION,
             '2.0',
-            array(
+            [
                 'foo',
                 'bar',
-            )
+            ]
         )));
 
         $this->assertFileExists($file);

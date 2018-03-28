@@ -29,7 +29,9 @@ final class ProcessLintingResultTest extends TestCase
      */
     public function testCheckOK()
     {
-        $process = $this->prophesize('Symfony\Component\Process\Process');
+        $process = $this->prophesize();
+        $process->willExtend(\Symfony\Component\Process\Process::class);
+
         $process
             ->wait()
             ->willReturn(0)
@@ -46,7 +48,9 @@ final class ProcessLintingResultTest extends TestCase
 
     public function testCheckFail()
     {
-        $process = $this->prophesize('Symfony\Component\Process\Process');
+        $process = $this->prophesize();
+        $process->willExtend(\Symfony\Component\Process\Process::class);
+
         $process
             ->wait()
             ->willReturn(0)
@@ -69,9 +73,13 @@ final class ProcessLintingResultTest extends TestCase
 
         $result = new ProcessLintingResult($process->reveal());
 
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\Linter\LintingException',
-            '#^test$#',
+        $this->expectException(
+            \PhpCsFixer\Linter\LintingException::class
+        );
+        $this->expectExceptionMessageRegExp(
+            '#^test$#'
+        );
+        $this->expectExceptionCode(
             123
         );
 

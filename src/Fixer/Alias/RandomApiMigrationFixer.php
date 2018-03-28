@@ -31,12 +31,12 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     /**
      * @var array
      */
-    private static $argumentCounts = array(
-        'getrandmax' => array(0),
-        'mt_rand' => array(1, 2),
-        'rand' => array(0, 2),
-        'srand' => array(0, 1),
-    );
+    private static $argumentCounts = [
+        'getrandmax' => [0],
+        'mt_rand' => [1, 2],
+        'rand' => [0, 2],
+        'srand' => [0, 1],
+    ];
 
     /**
      * {@inheritdoc}
@@ -46,10 +46,10 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
         parent::configure($configuration);
 
         foreach ($this->configuration['replacements'] as $functionName => $replacement) {
-            $this->configuration['replacements'][$functionName] = array(
+            $this->configuration['replacements'][$functionName] = [
                 'alternativeName' => $replacement,
                 'argumentCount' => self::$argumentCounts[$functionName],
-            );
+            ];
         }
     }
 
@@ -60,13 +60,13 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     {
         return new FixerDefinition(
             'Replaces `rand`, `srand`, `getrandmax` functions calls with their `mt_*` analogs.',
-            array(
-                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();"),
+            [
+                new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n"),
                 new CodeSample(
-                    "<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();",
-                    array('replacements' => array('getrandmax' => 'mt_getrandmax'))
+                    "<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n",
+                    ['replacements' => ['getrandmax' => 'mt_getrandmax']]
                 ),
-            ),
+            ],
             null,
             'Risky when the configured functions are overridden.'
         );
@@ -110,17 +110,17 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
 
-                $tokens[$functionName] = new Token(array(T_STRING, $functionReplacement['alternativeName']));
+                $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
 
                 if (0 === $count && 'random_int' === $functionReplacement['alternativeName']) {
-                    $tokens->insertAt($currIndex + 1, array(
-                        new Token(array(T_LNUMBER, '0')),
+                    $tokens->insertAt($currIndex + 1, [
+                        new Token([T_LNUMBER, '0']),
                         new Token(','),
-                        new Token(array(T_WHITESPACE, ' ')),
-                        new Token(array(T_STRING, 'getrandmax')),
+                        new Token([T_WHITESPACE, ' ']),
+                        new Token([T_STRING, 'getrandmax']),
                         new Token('('),
                         new Token(')'),
-                    ));
+                    ]);
 
                     $currIndex += 6;
                 }
@@ -133,39 +133,35 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
      */
     protected function createConfigurationDefinition()
     {
-        $argumentCounts = self::$argumentCounts;
+        return new FixerConfigurationResolverRootless('replacements', [
+            (new FixerOptionBuilder('replacements', 'Mapping between replaced functions with the new ones.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([static function ($value) {
+                    foreach ($value as $functionName => $replacement) {
+                        if (!array_key_exists($functionName, self::$argumentCounts)) {
+                            throw new InvalidOptionsException(sprintf(
+                                'Function "%s" is not handled by the fixer.',
+                                $functionName
+                            ));
+                        }
 
-        $replacements = new FixerOptionBuilder('replacements', 'Mapping between replaced functions with the new ones.');
-        $replacements = $replacements
-            ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(function ($value) use ($argumentCounts) {
-                foreach ($value as $functionName => $replacement) {
-                    if (!array_key_exists($functionName, $argumentCounts)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Function "%s" is not handled by the fixer.',
-                            $functionName
-                        ));
+                        if (!is_string($replacement)) {
+                            throw new InvalidOptionsException(sprintf(
+                                'Replacement for function "%s" must be a string, "%s" given.',
+                                $functionName,
+                                is_object($replacement) ? get_class($replacement) : gettype($replacement)
+                            ));
+                        }
                     }
 
-                    if (!is_string($replacement)) {
-                        throw new InvalidOptionsException(sprintf(
-                            'Replacement for function "%s" must be a string, "%s" given.',
-                            $functionName,
-                            is_object($replacement) ? get_class($replacement) : gettype($replacement)
-                        ));
-                    }
-                }
-
-                return true;
-            }))
-            ->setDefault(array(
-                'getrandmax' => 'mt_getrandmax',
-                'rand' => 'mt_rand',
-                'srand' => 'mt_srand',
-            ))
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolverRootless('replacements', array($replacements));
+                    return true;
+                }])
+                ->setDefault([
+                    'getrandmax' => 'mt_getrandmax',
+                    'rand' => 'mt_rand',
+                    'srand' => 'mt_srand',
+                ])
+                ->getOption(),
+        ]);
     }
 }

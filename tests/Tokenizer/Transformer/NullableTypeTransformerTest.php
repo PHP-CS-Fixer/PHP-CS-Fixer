@@ -30,41 +30,41 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      * @dataProvider provideProcessCases
      * @requires PHP 7.1
      */
-    public function testProcess($source, array $expectedTokens = array())
+    public function testProcess($source, array $expectedTokens = [])
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            array(
+            [
                 CT::T_NULLABLE_TYPE,
-            )
+            ]
         );
     }
 
     public function provideProcessCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php function foo(?Barable $barA, ?Barable $barB): ?Fooable {}',
-                array(
+                [
                     5 => CT::T_NULLABLE_TYPE,
                     11 => CT::T_NULLABLE_TYPE,
                     18 => CT::T_NULLABLE_TYPE,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php interface Fooable { function foo(): ?Fooable; }',
-                array(
+                [
                     14 => CT::T_NULLABLE_TYPE,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php
                     $a = 1 ? "aaa" : "bbb";
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
                 ',
-            ),
-        );
+            ],
+        ];
     }
 }

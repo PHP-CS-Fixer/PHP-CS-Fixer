@@ -36,57 +36,114 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a = \'\';',
                 '<?php $a = "";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo bar\';',
                 '<?php $a = "foo bar";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo
                     bar\';',
                 '<?php $a = "foo
                     bar";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo\'.\'bar\'."$baz";',
                 '<?php $a = \'foo\'."bar"."$baz";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo "bar"\';',
                 '<?php $a = "foo \"bar\"";',
-            ),
-            array(<<<'EOF'
+            ],
+            [<<<'EOF'
 <?php $a = '\\foo\\bar\\\\';
 EOF
                 , <<<'EOF'
 <?php $a = "\\foo\\bar\\\\";
 EOF
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo $bar7\';',
                 '<?php $a = "foo \$bar7";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo $(bar7)\';',
                 '<?php $a = "foo \$(bar7)";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = \'foo \\\\($bar8)\';',
                 '<?php $a = "foo \\\\(\$bar8)";',
-            ),
-            array('<?php $a = "foo \\" \\$$bar";'),
-            array('<?php $a = "foo \'bar\'";'),
-            array('<?php $a = "foo $bar";'),
-            array('<?php $a = "foo ${bar}";'),
-            array('<?php $a = "foo\n bar";'),
-            array(<<<'EOF'
+            ],
+            ['<?php $a = "foo \\" \\$$bar";'],
+            ['<?php $a = "foo \'bar\'";'],
+            ['<?php $a = "foo $bar";'],
+            ['<?php $a = "foo ${bar}";'],
+            ['<?php $a = "foo\n bar";'],
+            [<<<'EOF'
 <?php $a = "\\\n";
 EOF
-            ),
-        );
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideTestSingleQuoteFixCases
+     */
+    public function testSingleQuoteFix($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'strings_containing_single_quote_chars' => true,
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestSingleQuoteFixCases()
+    {
+        return [
+            [
+                '<?php $a = \'foo \\\'bar\\\'\';',
+                '<?php $a = "foo \'bar\'";',
+            ],
+            [
+                <<<'EOT'
+<?php
+// none
+$a = 'start \' end';
+// one escaped baskslash
+$b = 'start \\\' end';
+// two escaped baskslash
+$c = 'start \\\\\' end';
+EOT
+                ,
+                <<<'EOT'
+<?php
+// none
+$a = "start ' end";
+// one escaped baskslash
+$b = "start \\' end";
+// two escaped baskslash
+$c = "start \\\\' end";
+EOT
+                ,
+            ],
+            [
+                <<<'EOT'
+<?php
+// one unescaped backslash
+$a = "start \' end";
+// one escaped + one unescaped baskslash
+$b = "start \\\' end";
+EOT
+                ,
+            ],
+        ];
     }
 }

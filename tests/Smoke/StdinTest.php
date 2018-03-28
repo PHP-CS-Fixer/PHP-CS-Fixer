@@ -42,7 +42,7 @@ final class StdinTest extends TestCase
         $stdinResult = CommandExecutor::create("${command} - < ${inputFile}", self::$cwd)->getResult(false);
 
         $this->assertSame(
-            array(
+            [
                 'code' => $fileResult->getCode(),
                 'error' => str_replace(
                     'Paths from configuration file have been overridden by paths provided as command arguments.'."\n",
@@ -54,12 +54,12 @@ final class StdinTest extends TestCase
                     'php://stdin',
                     $this->unifyFooter($fileResult->getOutput())
                 ),
-            ),
-            array(
+            ],
+            [
                 'code' => $stdinResult->getCode(),
                 'error' => $stdinResult->getError(),
                 'output' => $this->unifyFooter($stdinResult->getOutput()),
-            )
+            ]
         );
     }
 

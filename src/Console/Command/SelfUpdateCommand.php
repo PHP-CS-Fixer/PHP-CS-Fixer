@@ -68,11 +68,11 @@ final class SelfUpdateCommand extends Command
     {
         $this
             ->setName(self::COMMAND_NAME)
-            ->setAliases(array('selfupdate'))
+            ->setAliases(['selfupdate'])
             ->setDefinition(
-                array(
+                [
                     new InputOption('--force', '-f', InputOption::VALUE_NONE, 'Force update to next major version if available.'),
-                )
+                ]
             )
             ->setDescription('Update php-cs-fixer.phar to the latest stable version.')
             ->setHelp(

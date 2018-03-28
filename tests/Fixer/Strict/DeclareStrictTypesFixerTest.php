@@ -38,8 +38,8 @@ final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 declare(ticks=1);
 //
@@ -48,30 +48,30 @@ declare(strict_types=1);
 namespace A\B\C;
 class A {
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php declare/* A b C*/(strict_types=1);',
-            ),
-            array(
+            ],
+            [
                 '<?php /**/ /**/ deClarE  (strict_types=1)    ?>Test',
                 '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>Test',
-            ),
-            array(
+            ],
+            [
                 '<?php            DECLARE  (    strict_types=1   )   ;',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 /**/
                 declare(strict_types=1);',
-            ),
-            array(
+            ],
+            [
                 '<?php declare(strict_types=1);
                 phpinfo();',
                 '<?php
 
                 phpinfo();',
-            ),
-            array(
+            ],
+            [
                 '<?php declare(strict_types=1);
 /**
  * Foo
@@ -83,26 +83,26 @@ phpinfo();',
  * Foo
  */
 phpinfo();',
-            ),
-            array(
+            ],
+            [
                 '<?php declare(strict_types=1);
 phpinfo();',
                 '<?php phpinfo();',
-            ),
-            array(
+            ],
+            [
                 '<?php declare(strict_types=1);
 $a = 456;
 ',
                 '<?php
 $a = 456;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php declare(strict_types=1);
 /**/',
                 '<?php /**/',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -117,10 +117,10 @@ $a = 456;
 
     public function provideDoNotFixCases()
     {
-        return array(
-            array('  <?php echo 123;'), // first statement must be a open tag
-            array('<?= 123;'), // first token open with echo is not fixed
-        );
+        return [
+            ['  <?php echo 123;'], // first statement must be a open tag
+            ['<?= 123;'], // first token open with echo is not fixed
+        ];
     }
 
     /**
@@ -139,15 +139,15 @@ $a = 456;
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 "<?php declare(strict_types=1);\r\nphpinfo();",
                 "<?php\r\n\tphpinfo();",
-            ),
-            array(
+            ],
+            [
                 "<?php declare(strict_types=1);\r\nphpinfo();",
                 "<?php\nphpinfo();",
-            ),
-        );
+            ],
+        ];
     }
 }

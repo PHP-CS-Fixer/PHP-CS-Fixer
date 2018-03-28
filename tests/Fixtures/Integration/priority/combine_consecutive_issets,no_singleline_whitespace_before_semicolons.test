@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: combine_consecutive_issets,no_singleline_whitespace_before_semicolons.
+--RULESET--
+{"combine_consecutive_issets": true, "no_singleline_whitespace_before_semicolons": true}
+--EXPECT--
+<?php
+$a = isset($a, $b);
+
+--INPUT--
+<?php
+$a = isset($a) && isset($b);

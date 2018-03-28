@@ -36,7 +36,7 @@ final class Psr0Fixer extends AbstractPsrAutoloadingFixer implements Configurati
     {
         return new FixerDefinition(
             'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
-            array(
+            [
                 new FileSpecificCodeSample(
                     '<?php
 namespace PhpCsFixer\FIXER\Basic;
@@ -50,9 +50,9 @@ namespace PhpCsFixer\FIXER\Basic;
 class InvalidName {}
 ',
                     new \SplFileInfo(__FILE__),
-                    array('dir' => realpath(__DIR__.'/../..'))
+                    ['dir' => realpath(__DIR__.'/../..')]
                 ),
-            ),
+            ],
             null,
             'This fixer may change your class name, which will break the code that is depended on old name.'
         );
@@ -77,7 +77,7 @@ class InvalidName {}
                 }
 
                 $namespaceIndex = $tokens->getNextMeaningfulToken($index);
-                $namespaceEndIndex = $tokens->getNextTokenOfKind($index, array(';'));
+                $namespaceEndIndex = $tokens->getNextTokenOfKind($index, [';']);
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
@@ -128,7 +128,7 @@ class InvalidName {}
             $filename = basename($path, '.php');
 
             if ($classyName !== $filename) {
-                $tokens[$classyIndex] = new Token(array(T_STRING, $filename));
+                $tokens[$classyIndex] = new Token([T_STRING, $filename]);
             }
 
             if ($normNamespace !== $dir && strtolower($normNamespace) === strtolower($dir)) {
@@ -149,7 +149,7 @@ class InvalidName {}
             $filename = substr($path, -strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
-                $tokens[$classyIndex] = new Token(array(T_STRING, str_replace('/', '_', $filename)));
+                $tokens[$classyIndex] = new Token([T_STRING, str_replace('/', '_', $filename)]);
             }
         }
     }
@@ -159,13 +159,11 @@ class InvalidName {}
      */
     protected function createConfigurationDefinition()
     {
-        $dir = new FixerOptionBuilder('dir', 'The directory where the project code is placed.');
-        $dir = $dir
-            ->setAllowedTypes(array('string'))
-            ->setDefault('')
-            ->getOption()
-        ;
-
-        return new FixerConfigurationResolver(array($dir));
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('dir', 'The directory where the project code is placed.'))
+                ->setAllowedTypes(['string'])
+                ->setDefault('')
+                ->getOption(),
+        ]);
     }
 }

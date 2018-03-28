@@ -36,9 +36,9 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
-<<<'EOF'
+        return [
+            [
+                <<<'EOF'
                 <?php
     /**
      * @param EngineInterface $templating
@@ -47,8 +47,8 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
      */
 
 EOF
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 /**
@@ -58,8 +58,8 @@ function deactivateCompleted()
 {
     return 0;
 }',
-            ),
-            array(
+            ],
+            [
                 mb_convert_encoding('
 <?php
 /**
@@ -67,8 +67,8 @@ function deactivateCompleted()
  */
 function foo(){}
 ', 'Windows-1252', 'UTF-8'),
-            ),
-        );
+            ],
+        ];
     }
 
     public function testFixMore()

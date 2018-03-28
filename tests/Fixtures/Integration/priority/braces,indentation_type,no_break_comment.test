@@ -1,0 +1,59 @@
+--TEST--
+Integration of fixers: braces,indentation_type,no_break_comment.
+--RULESET--
+{"braces": true, "indentation_type": true, "no_break_comment": true}
+--EXPECT--
+<?php
+
+switch ($foo) {
+    case 1:
+        foo();
+        // no break
+    case 2:
+        bar();
+        // no break
+    default:
+        baz();
+}
+
+switch ($foo) {
+    case 1:
+
+        foo();
+
+        // no break
+    case 2:
+
+        bar();
+
+        // no break
+    default:
+
+        baz();
+}
+
+--INPUT--
+<?php
+
+switch ($foo) {
+    case 1:
+        foo();
+    case 2:
+        bar();
+    default:
+        baz();
+}
+
+switch ($foo) {
+    case 1:
+
+        foo();
+
+    case 2:
+
+        bar();
+
+    default:
+
+        baz();
+}

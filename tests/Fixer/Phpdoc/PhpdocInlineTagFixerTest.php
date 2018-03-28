@@ -34,8 +34,8 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixInlineDocCases()
     {
-        $cases = array(
-            array(
+        $cases = [
+            [
                 '<?php
     /**
      * {link} { LINK }
@@ -66,73 +66,73 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
      * end comment {@inheritdoc here we are done} @spacepossum {1}
      */
 ',
-            ),
-        );
+            ],
+        ];
 
-        foreach (array('example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial') as $tag) {
-            $cases[] = array(
+        foreach (['example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * {@%s}a\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * @{%s}a\n      */\n", $tag),
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * {@%s} b\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * {{@%s}} b\n      */\n", $tag),
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * c {@%s}\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * c @{{%s}}\n      */\n", $tag),
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * c @{{%s test}}\n      */\n", $tag),
-            );
+            ];
             // test unbalanced { tags
-            $cases[] = array(
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * c {@%s test}}\n      */\n", $tag),
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * c {{@%s test}\n      */\n", $tag),
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * c {@%s test}}\n      */\n", $tag),
-            );
-            $cases[] = array(
+            ];
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * c @{{%s test}}}\n      */\n", $tag),
-            );
+            ];
         }
 
         // don't touch custom tags
         $tag = 'foo';
-        $cases[] = array(
+        $cases[] = [
             sprintf("<?php\n     /**\n      * @{%s}a\n      */\n", $tag),
-        );
-        $cases[] = array(
+        ];
+        $cases[] = [
             sprintf("<?php\n     /**\n      * {{@%s}} b\n      */\n", $tag),
-        );
-        $cases[] = array(
+        ];
+        $cases[] = [
             sprintf("<?php\n     /**\n      * c @{{%s}}\n      */\n", $tag),
-        );
+        ];
 
         // don't auto inline tags with the exception of inheritdoc
-        foreach (array('example', 'id', 'internal', 'foo', 'link', 'source', 'toc', 'tutorial') as $tag) {
-            $cases[] = array(
+        foreach (['example', 'id', 'internal', 'foo', 'link', 'source', 'toc', 'tutorial'] as $tag) {
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * @%s\n      */\n", $tag),
-            );
+            ];
         }
 
         // don't touch well formatted tags
-        foreach (array('example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial') as $tag) {
-            $cases[] = array(
+        foreach (['example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {
+            $cases[] = [
                 sprintf("<?php\n     /**\n      * {@%s}\n      */\n", $tag),
-            );
+            ];
         }
 
         // common typos
-        $cases[] = array(
+        $cases[] = [
             '<?php
     /**
      * Typo {@inheritdoc} {@example} {@id} {@source} {@tutorial} {links}
@@ -145,16 +145,16 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
      * inheritdocs
      */
 ',
-        );
+        ];
 
         // invalid syntax
-        $cases[] = array(
+        $cases[] = [
             '<?php
     /**
      * {@link https://www.ietf.org/rfc/rfc1035.txt)
      */
     $someVar = "hello";',
-        );
+        ];
 
         return $cases;
     }
@@ -169,8 +169,8 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixInheritDocCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     /**
      * {@inheritdoc} should this be inside the tag?
@@ -190,7 +190,7 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
      * inheritdoc
      */
 ',
-            ),
-        );
+            ],
+        ];
     }
 }

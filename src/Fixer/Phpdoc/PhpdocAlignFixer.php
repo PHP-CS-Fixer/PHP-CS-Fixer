@@ -13,7 +13,11 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
@@ -28,24 +32,59 @@ use PhpCsFixer\Utils;
  * @author Graham Campbell <graham@alt-three.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     private $regex;
     private $regexCommentLine;
 
-    public function __construct()
+    private static $alignableTags = [
+        'param',
+        'property',
+        'return',
+        'throws',
+        'type',
+        'var',
+        'method',
+    ];
+
+    private static $tagsWithName = [
+        'param',
+        'property',
+    ];
+
+    private static $tagsWithMethodSignature = [
+        'method',
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
     {
-        parent::__construct();
+        parent::configure($configuration);
+
+        $tagsWithNameToAlign = array_intersect($this->configuration['tags'], self::$tagsWithName);
+        $tagsWithMethodSignatureToAlign = array_intersect($this->configuration['tags'], self::$tagsWithMethodSignature);
+        $tagsWithoutNameToAlign = array_diff($this->configuration['tags'], $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
+        $types = [];
 
         $indent = '(?P<indent>(?: {2}|\t)*)';
         // e.g. @param <hint> <$var>
-        $paramTag = '(?P<tag>param)\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
+        if (!empty($tagsWithNameToAlign)) {
+            $types[] = '(?P<tag>'.implode('|', $tagsWithNameToAlign).')\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
+        }
         // e.g. @return <hint>
-        $otherTags = '(?P<tag2>return|throws|var|type)\s+(?P<hint2>[^\s]+?)';
+        if (!empty($tagsWithoutNameToAlign)) {
+            $types[] = '(?P<tag2>'.implode('|', $tagsWithoutNameToAlign).')\s+(?P<hint2>[^\s]+?)';
+        }
+        // e.g. @method <hint> <signature>
+        if (!empty($tagsWithMethodSignatureToAlign)) {
+            $types[] = '(?P<tag3>'.implode('|', $tagsWithMethodSignatureToAlign).')(\s+(?P<hint3>[^\s(]+)|)\s+(?P<signature>.+\))';
+        }
         // optional <desc>
         $desc = '(?:\s+(?P<desc>\V*))';
 
-        $this->regex = '/^'.$indent.' \* @(?:'.$paramTag.'|'.$otherTags.')'.$desc.'\s*$/u';
+        $this->regex = '/^'.$indent.' \* @(?:'.implode('|', $types).')'.$desc.'\s*$/u';
         $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)$/u';
     }
 
@@ -55,8 +94,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     public function getDefinition()
     {
         return new FixerDefinition(
-            'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.',
-            array(new CodeSample('<?php
+            'All items of the given phpdoc tags must be aligned vertically.',
+            [new CodeSample('<?php
 /**
  * @param  EngineInterface $templating
  * @param string      $format
@@ -64,7 +103,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
  * @param    bool         $debug
  * @param  mixed    &$reference     a parameter passed by reference
  */
-'))
+')]
         );
     }
 
@@ -98,9 +137,38 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token(array(T_DOC_COMMENT, $this->fixDocBlock($token->getContent())));
+                $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixDocBlock($token->getContent())]);
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        $generator = new FixerOptionValidatorGenerator();
+
+        $tags = new FixerOptionBuilder('tags', 'The tags that should be aligned.');
+        $tags
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([
+                $generator->allowedValueIsSubsetOf(self::$alignableTags),
+            ])
+            /*
+             * By default, all tags apart from @property and @method will be aligned for backwards compatibility
+             * @TODO 3.0 Align all available tags by default
+             */
+            ->setDefault([
+                'param',
+                'return',
+                'throws',
+                'type',
+                'var',
+            ])
+        ;
+
+        return new FixerConfigurationResolver([$tags->getOption()]);
     }
 
     /**
@@ -116,7 +184,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
         $l = count($lines);
 
         for ($i = 0; $i < $l; ++$i) {
-            $items = array();
+            $items = [];
             $matches = $this->getMatches($lines[$i]);
 
             if (null === $matches) {
@@ -166,10 +234,16 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
                         continue;
                     }
 
+                    $extraIndent = 2;
+
+                    if (in_array($currTag, self::$tagsWithName, true) || in_array($currTag, self::$tagsWithMethodSignature, true)) {
+                        $extraIndent = 3;
+                    }
+
                     $line =
                         $item['indent']
                         .' *  '
-                        .str_repeat(' ', $tagMax + $hintMax + $varMax + ('param' === $currTag ? 3 : 2))
+                        .str_repeat(' ', $tagMax + $hintMax + $varMax + $extraIndent)
                         .$item['desc']
                         .$lineEnding;
 
@@ -190,7 +264,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
 
                 if (!empty($item['var'])) {
                     $line .=
-                        str_repeat(' ', $hintMax - strlen($item['hint']) + 1)
+                        str_repeat(' ', ($hintMax ?: -1) - strlen($item['hint']) + 1)
                         .$item['var']
                         .(
                             !empty($item['desc'])
@@ -224,6 +298,12 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
                 $matches['var'] = '';
+            }
+
+            if (!empty($matches['tag3'])) {
+                $matches['tag'] = $matches['tag3'];
+                $matches['hint'] = $matches['hint3'];
+                $matches['var'] = $matches['signature'];
             }
 
             return $matches;

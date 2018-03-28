@@ -52,7 +52,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
     {
         if ($this instanceof ConfigurableFixerInterface) {
             try {
-                $this->configure(array());
+                $this->configure([]);
             } catch (RequiredFixerConfigurationException $e) {
                 // ignore
             }
@@ -87,7 +87,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
      */
     public function getName()
     {
-        $nameParts = explode('\\', get_called_class());
+        $nameParts = explode('\\', static::class);
         $name = substr(end($nameParts), 0, -strlen('Fixer'));
 
         return Utils::camelCaseToUnderscore($name);
@@ -116,12 +116,16 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
         }
 
         if (null === $configuration) {
+            if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                throw new \InvalidArgumentException('Parameter must not be `null`. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+            }
+
             @trigger_error(
                 'Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.',
                 E_USER_DEPRECATED
             );
 
-            $configuration = array();
+            $configuration = [];
         }
 
         try {

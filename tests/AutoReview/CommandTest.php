@@ -42,7 +42,7 @@ final class CommandTest extends TestCase
         $application = new Application();
         $commands = $application->all();
 
-        $names = array_filter(array_keys($commands), function ($name) use ($commands) {
+        $names = array_filter(array_keys($commands), static function ($name) use ($commands) {
             return
                 // is not an alias
                 !in_array($name, $commands[$name]->getAliases(), true)
@@ -51,8 +51,8 @@ final class CommandTest extends TestCase
             ;
         });
 
-        return array_map(function ($name) use ($commands) {
-            return array($commands[$name]);
+        return array_map(static function ($name) use ($commands) {
+            return [$commands[$name]];
         }, $names);
     }
 }

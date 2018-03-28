@@ -31,13 +31,14 @@ final class ReadmeCommandTest extends TestCase
     {
         $readmeFile = __DIR__.'/../../../README.rst';
         $this->assertFileExists($readmeFile, sprintf('README file "%s" not found.', $readmeFile)); // switch to `assertFileIsReadable` on PHPUnit6
-        $this->assertTrue(is_readable($readmeFile), sprintf('Cannot read "%s".', $readmeFile));
+        $this->assertIsReadable($readmeFile, sprintf('Cannot read "%s".', $readmeFile));
         $this->assertTrue(is_file($readmeFile), sprintf('Expected file "%s" to be a file.', $readmeFile));
         $fileContent = file_get_contents($readmeFile);
         $this->assertInternalType('string', $fileContent, sprintf('Failed to get content of "%s"', $readmeFile));
 
         $app = new Application();
-        $input = new ArrayInput(array('readme'));
+        $input = new ArrayInput(['readme']);
+
         $output = new BufferedOutput();
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $output->setDecorated(false);

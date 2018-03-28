@@ -41,12 +41,12 @@ final class FixerOptionValidatorGeneratorTest extends TestCase
 
     public function provideAllowedValueIsSubsetOfCases()
     {
-        return array(
-            array(true, array(1, 2, 3), array(1)),
-            array(true, array(1, 2, 3), array(3, 1)),
-            array(false, array(1, 2, 3), array('1')),
-            array(false, array(1, 2, 3), array(3, '1')),
-            array(false, array(1), array(true)),
-        );
+        return [
+            [true, [1, 2, 3], [1]],
+            [true, [1, 2, 3], [3, 1]],
+            [false, [1, 2, 3], ['1']],
+            [false, [1, 2, 3], [3, '1']],
+            [false, [1], [true]],
+        ];
     }
 }

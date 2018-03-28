@@ -22,6 +22,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class ComposerTest extends TestCase
 {
@@ -35,7 +36,7 @@ final class ComposerTest extends TestCase
         }
 
         $this->assertSame(
-            array('dev-master' => $this->convertAppVersionToAliasedVersion(Application::VERSION)),
+            ['dev-master' => $this->convertAppVersionToAliasedVersion(Application::VERSION)],
             $composerJson['extra']['branch-alias']
         );
     }

@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -22,9 +23,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractAlignFixerHelper
- * @covers \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper
- * @covers \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper
  * @covers \PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer
  */
 final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
@@ -32,24 +30,401 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $configuration
+     *
+     * @dataProvider provideWithTabsCases
+     */
+    public function testWithTabs($expected, $input = null, array $configuration = null)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideWithTabsCases()
+    {
+        return [
+            [
+                "<?php function myFunction() {
+\t\$foo         = 1;
+\t\$looooongVar = 2;
+\t\$middleVar   = 1;
+}",
+                "<?php function myFunction() {
+\t\$foo= \t1;
+\t\$looooongVar\t  = 2;
+\t\$middleVar\t= 1;
+}",
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                "<?php class A{
+public function myFunction() {
+\t \$foo         = 1;
+\t \$looooongVar = 2;
+\t \$middleVar   = 1;
+}
+}",
+                "<?php class A{
+public function myFunction() {
+\t \$foo = 1;
+\t \$looooongVar = 2;
+\t \$middleVar = 1;
+}
+}",
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $configuration
+     *
+     * @dataProvider provideTestCases
+     */
+    public function testConfigured($expected, $input = null, array $configuration = null)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestCases()
+    {
+        return [
+            [
+                '<?php
+$this->a
+ = $this->b
+ = 1
+;',
+                '<?php
+$this->a
+= $this->b
+= 1
+;',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+        $this->newName
+                = $this->path
+                = $this->randomName
+                = $this->remoteFile
+                = $this->tmpContent
+                = null;',
+                '<?php
+        $this->newName
+                =     $this->path
+               =    $this->randomName
+              =   $this->remoteFile
+             =  $this->tmpContent
+            = null;',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+$a//
+     = 1;
+                ',
+                '<?php
+$a//
+     =  1;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE]],
+            ],
+            [
+                '<?php
+    $var = [];
+    foreach ([
+                1 => 2,
+                2 => 3,
+            ] as $k => $v) {
+        $var[] = [$i => $bar];
+    }',
+                '<?php
+    $var = [];
+    foreach ([
+                1=> 2,
+                2   =>3,
+            ] as $k => $v) {
+        $var[] = [$i => $bar];
+    }',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a = array(
+                    1 => 2, 4 => 5,
+                    5 => 2, 6 => 5, 7 => 8, 9 => 10, 11 => 1222,
+                );',
+                '<?php $a = array(
+                    1=>2, 4=>5,
+                    5=>2, 6 =>   5, 7=>8, 9=>10, 11=>1222,
+                );',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a = array(1 => 2, 4 => 5);',
+                '<?php $a = array(1=>2, 4  =>  5);',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a = array(1 => 2, 4 => 5 && $b, 5 => 5 && $b, 6 => 5 && $b, 7 => 5 && $b);',
+                '<?php $a = array(1 => 2, 4 => 5&&$b, 5 => 5  &&  $b, 6 => 5&&  $b, 7 => 5  &&$b);',
+                ['operators' => ['&&' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+                    [1 =>   "foo"];
+                    [2    => "foo"];
+                    [3 => "foo"];
+                ',
+                '<?php
+                    [1 =>   "foo"];
+                    [2    =>"foo"];
+                    [3=>"foo"];
+                ',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            [
+                '<?php
+                    [1 => "foo"];
+                    [2 => "foo"];
+                    [3 => "foo"];
+                ',
+                '<?php
+                    [1 =>   "foo"];
+                    [2    =>"foo"];
+                    [3=>"foo"];
+                ',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a += 1;',
+                '<?php $a+=1;',
+                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            [
+                '<?php $a += 1;',
+                '<?php $a+=1;',
+                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a+=1;',
+                null,
+                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN]],
+            ],
+            [
+                '<?php
+    $ade = $b !==   $a;
+    $b = $b   !==   $a;
+    $c = $b   !== $a;
+                ',
+                '<?php
+    $ade = $b!==   $a;
+    $b = $b!==   $a;
+    $c = $b!==$a;
+                ',
+                ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            [
+                '<?php
+    $aab = $b !== $e;
+    $b = $b   !== $c;
+    $c = $b   !== $d;
+                ',
+                '<?php
+    $aab = $b         !==$e;
+    $b = $b     !==$c;
+    $c = $b             !==$d;
+                ',
+                ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+    $aaa*= 11;
+    $b  *= 21;
+    $c  *=31;
+
+    $d = $e and $f;
+    $d = $g   or    $h;
+                ',
+                '<?php
+    $aaa*= 11;
+    $b *= 21;
+    $c*=31;
+
+    $d = $e   and    $f;
+    $d = $g   or    $h;
+                ',
+                [
+                    'operators' => [
+                        'and' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
+                        '*=' => BinaryOperatorSpacesFixer::ALIGN,
+                        'or' => null,
+                    ],
+                ],
+            ],
+            [
+                '<?php
+    $abc = $b !== $a;
+    $b = $b   !== $a;
+    $c = $b   !== $a;
+                ',
+                '<?php
+    $abc = $b         !==    $a;
+    $b = $b     !==     $a;
+    $c = $b             !==    $a;
+                ',
+                ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a = [
+                    1 => 2,
+                    2 => 3,
+                ];',
+                '<?php $a = [
+                    1=>2,
+                    2  =>   3,
+                ];',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+                    [1 => "foo",
+                     2 => "foo"];
+                ',
+                '<?php
+                    [1 =>   "foo",
+                     2   => "foo"];
+                ',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+                    [1 => "foo"];
+                    $i += 1;
+                ',
+                '<?php
+                    [1 => "foo"];
+                    $i+= 1;
+                ',
+                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a    =   1   +    2; $b = array(
+                    13 =>3,
+                    4  =>  3,
+                    5=>2,
+                );',
+                null,
+                ['default' => null],
+            ],
+            [
+                '<?php $a = 1 + 2; $b = array(
+                    $øøø => $ø0ø0ø,
+                    $ø4  => $ø1ø1ø,
+                    $ø5  => $ø2ø2ø,
+                );
+                $a = 12 + 1;
+                $a = 13 + 41;
+                ',
+                '<?php $a    =   1   +    2; $b = array(
+                    $øøø =>$ø0ø0ø,
+                    $ø4  =>  $ø1ø1ø,
+                    $ø5=>$ø2ø2ø,
+                );
+                $a = 12   +  1;
+                $a = 13+41;
+                ',
+                ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
+            ],
+            'do not align with nor touch strings' => [
+                '<?php
+                    \putenv("{$name}= {$value}");
+                $b                     = $c + 1;
+                                    $b = $c - 1;
+                ',
+                '<?php
+                    \putenv("{$name}= {$value}");
+                $b =$c+1;
+                                    $b =$c  -  1;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            'do not align with declare' => [
+                '<?php
+                    declare(ticks=1);
+                    $a = 1;
+                    $b = 1;
+                ',
+                '<?php
+                    declare(ticks=1);
+                    $a   = 1;
+                    $b              = 1;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            'do not align with multibyte character in array key' => [
+                '<?php
+                    $map = [
+                        "ø" => "oe",
+                    ];
+                ',
+                null,
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+            'align correctly with multibyte characters in array key' => [
+                '<?php
+                    $inflect_male = array(
+                        "aitė\b" => "øasø",
+                        "ytė\b"  => "øisø",
+                        "iūtė\b" => "øiusø",
+                        "utė\b"  => array(
+                            "aitė\b" => "øas",
+                            "ytė\b"  => "øis",
+                            "iūtė\b" => $øøius,
+                            "utė\b"  => "us",
+                        ),
+                    );',
+                '<?php
+                    $inflect_male = array(
+                        "aitė\b" => "øasø",
+                        "ytė\b" => "øisø",
+                        "iūtė\b" => "øiusø",
+                        "utė\b" => array(
+                            "aitė\b" => "øas",
+                            "ytė\b" => "øis",
+                            "iūtė\b" => $øøius,
+                            "utė\b"  =>     "us",
+                        ),
+                    );',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFixDefaults($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php $a +      /** */
                 $b;',
                 '<?php $a    +      /** */
                 $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php '.'
                     $a
                     + $b
@@ -60,8 +435,8 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                     +$b
                     +  $d;
                 ;',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     $a
                /***/ + $b
@@ -72,137 +447,162 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                /***/+   $b
             /***/   +$d;
                 ;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a + $b;',
                 '<?php $a+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php 1 + $b;',
                 '<?php 1+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php 0.2 + $b;',
                 '<?php 0.2+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a[1] + $b;',
                 '<?php $a[1]+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php FOO + $b;',
                 '<?php FOO+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php foo() + $b;',
                 '<?php foo()+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php ${"foo"} + $b;',
                 '<?php ${"foo"}+$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a & $b;',
                 '<?php $a&$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &= $b;',
                 '<?php $a&=$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &= $b;',
                 '<?php $a &=$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &= $b;',
                 '<?php $a&= $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &= $b;',
                 '<?php $a  &=   $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a &=
 $b;',
-            ),
-
-            array(
+            ],
+            [
                 '<?php $a
 &= $b;',
                 '<?php $a
 &=$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php (1) and 2;',
                 '<?php (1)and 2;',
-            ),
-            array(
+            ],
+            [
                 '<?php 1 or ($b - $c);',
                 '<?php 1 or($b-$c);',
-            ),
-            array(
+            ],
+            [
                 '<?php "a" xor (2);',
                 '<?php "a"xor(2);',
-            ),
-            array(
+            ],
+            [
                 '<?php $a * -$b;',
                 '<?php $a*-$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = -2 / +5;',
                 '<?php $a=-2/+5;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = &$b;',
                 '<?php $a=&$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a++ + $b;',
                 '<?php $a+++$b;',
-            ),
-            array(
+            ],
+            [
                 '<?php __LINE__ - 1;',
                 '<?php __LINE__-1;',
-            ),
-            array(
+            ],
+            [
                 '<?php `echo 1` + 1;',
                 '<?php `echo 1`+1;',
-            ),
-            array(
+            ],
+            [
                 '<?php function foo(&$a, array &$b, Bar &$c) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = 1 //
                     || 2;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php $a =
                     2;',
-            ),
-            array(
+            ],
+            [
                 '<?php declare(ticks=1);',
-            ),
-            array(
+            ],
+            [
                 '<?php declare(ticks =  1);',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = 1;declare(ticks =  1);$b = 1;',
                 '<?php $a=1;declare(ticks =  1);$b=1;',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = array("b" => "c", );',
                 '<?php $a = array("b"=>"c", );',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = array("b" => "c", );',
                 '<?php $a = array("b" =>"c", );',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = array("b" => "c", );',
                 '<?php $a = array("b"=> "c", );',
-            ),
-        );
+            ],
+            [
+                '<?php [1, 2] + [3, 4];',
+                '<?php [1, 2]+[3, 4];',
+            ],
+            [
+                '<?php [1, 2] + [3, 4];',
+                '<?php [1, 2]   +   [3, 4];',
+            ],
+            [
+                '<?php [1, 2] + //   '.'
+                [3, 4];',
+                '<?php [1, 2]   + //   '.'
+                [3, 4];',
+            ],
+            [
+                '<?php $a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;',
+                '<?php $a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;',
+            ],
+            [
+                '<?php
+$c =
+$a
++
+$b;
+',
+            ],
+        ];
     }
 
     /**
@@ -218,26 +618,26 @@ $b;',
 
     public function provideUnalignEqualsCases()
     {
-        return array(
-            array(
-                '<?php $a = "c";',
-                '<?php $a="c";',
-            ),
-            array(
+        return [
+            [
+                '<?php $a = "c"?>',
+                '<?php $a="c"?>',
+            ],
+            [
                 '<?php $a = "c";',
                 '<?php $a ="c";',
-            ),
-            array(
+            ],
+            [
                 '<?php $a = "c";',
                 '<?php $a= "c";',
-            ),
-            array(
-                '<?php $d = $c + $a +     //
+            ],
+            [
+                '<?php $d = $c + $a/**/ +     //
                 $b;',
-                '<?php $d =    $c+$a+     //
+                '<?php $d =    $c+$a/**/+     //
                 $b;',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = 1;
     $bbbb = \'
@@ -248,8 +648,8 @@ $b;',
     $bbbb = \'
     $cccccccc = 3;
     \';',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $ccc = 1;
     $bb = 1;
@@ -344,60 +744,147 @@ $b;',
         $aa    = 2;
         $a[$b] = array();
     }',
-            ),
-        );
+            ],
+        ];
     }
 
     public function testWrongConfigItem()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "align_double_arrow", "align_equals"\.$/'
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "align_double_arrow", "align_equals", "default", "operators"\.$/'
         );
 
-        $this->fixer->configure(array('foo' => true));
+        $this->fixer->configure(['foo' => true]);
     }
 
-    public function testWrongConfigValue()
+    public function testWrongConfigOldValue()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(
             '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid\. Accepted values are: true, false, null\.$/'
         );
 
-        $this->fixer->configure(array('align_double_arrow' => 123));
+        $this->fixer->configure(['align_double_arrow' => 123]);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix54Cases
-     * @requires PHP 5.4
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'single_space']] as replacement for ['align_equals' => true, 'align_double_arrow' => false].
      */
-    public function testFix54($expected, $input = null)
+    public function testWrongConfigOldDeprecated()
     {
-        $this->doTest($expected, $input);
+        $this->fixer->configure([
+            'align_equals' => true,
+            'align_double_arrow' => false,
+        ]);
     }
 
-    public function provideFix54Cases()
+    /**
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => null].
+     */
+    public function testWrongConfigOldDeprecated2()
     {
-        return array(
-            array(
-                '<?php [1, 2] + [3, 4];',
-                '<?php [1, 2]+[3, 4];',
-            ),
-            array(
-                '<?php [1, 2] + [3, 4];',
-                '<?php [1, 2]   +   [3, 4];',
-            ),
-            array(
-                '<?php [1, 2] + //   '.'
-                [3, 4];',
-                '<?php [1, 2]   + //   '.'
-                [3, 4];',
-            ),
+        $this->fixer->configure([
+            'align_equals' => true,
+            'align_double_arrow' => null,
+        ]);
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=>' => 'align']] as replacement for ['align_equals' => null, 'align_double_arrow' => true].
+     */
+    public function testWrongConfigOldDeprecated3()
+    {
+        $this->fixer->configure([
+            'align_equals' => null,
+            'align_double_arrow' => true,
+        ]);
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'single_space', '=>' => 'align']] as replacement for ['align_equals' => false, 'align_double_arrow' => true].
+     */
+    public function testWrongConfigOldDeprecated4()
+    {
+        $this->fixer->configure([
+            'align_equals' => false,
+            'align_double_arrow' => true,
+        ]);
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => true].
+     */
+    public function testWrongConfigOldDeprecated5()
+    {
+        $this->fixer->configure([
+            'align_equals' => true,
+            'align_double_arrow' => true,
+        ]);
+
+        // simple test to see if the old config is still used
+        $this->doTest(
+            '<?php
+                $a = array(
+                    1  => 2,
+                    2  => 3,
+                );
+
+                $b   = 1;
+                $c   =  2;
+            ',
+            '<?php
+                $a = array(
+                    1 => 2,
+                    2  => 3,
+                );
+
+                $b = 1;
+                $c   =  2;
+            '
         );
+    }
+
+    public function testWrongConfigOldAndNewMixed()
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Mixing old configuration with new configuration is not allowed\.$/');
+
+        $this->fixer->configure([
+            'align_double_arrow' => true,
+            'operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN],
+        ]);
+    }
+
+    public function testWrongConfigTypeForOperators()
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "operators" with value true is expected to be of type "array", but is of type "boolean"\.$/'
+        );
+
+        $this->fixer->configure(['operators' => true]);
+    }
+
+    public function testWrongConfigTypeForOperatorsKey()
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/');
+
+        $this->fixer->configure(['operators' => [123 => 1]]);
+    }
+
+    public function testWrongConfigTypeForOperatorsKeyValue()
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/');
+
+        $this->fixer->configure(['operators' => ['+' => 'abc']]);
     }
 
     /**
@@ -413,8 +900,8 @@ $b;',
 
     public function provideUnalignDoubleArrowCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     $data = [
         "foo" => "Bar",
@@ -441,8 +928,8 @@ $b;',
         ),
         "bar"  => array(),
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo" => "Bar",
@@ -473,8 +960,8 @@ $b;',
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo" => "Bar",
@@ -487,8 +974,8 @@ $b;',
         "main" => [array("baz" => "Test")],
         "bar"  => array(),
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = array(
         "foo" => "Bar",
@@ -501,8 +988,8 @@ $b;',
         "main" => array("baz" => "Test"),
         "bar"  => array(),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = array(
         "foo" => "Bar",
@@ -515,8 +1002,8 @@ $b;',
         "main" => array(array("baz" => "Test")),
         "bar"  => array(),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
@@ -527,29 +1014,29 @@ $b;',
     foreach ($foo as $i  =>  $bar) {
         $var[] = /* Comment */ [$i  =>  $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ([1 => 2] as $k => $v) {
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach (fncCall() as $k => $v){
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $bar) {
@@ -566,8 +1053,8 @@ $b;',
             $iaaa => $bar,
         ];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo" => "Bar",
@@ -580,8 +1067,8 @@ $b;',
         "main" => [["baz" => "Test", "bar" => "Test2"]],
         "bar"  => [],
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = [
         0 => 1,
@@ -606,8 +1093,8 @@ $b;',
             22 => 3,
         ]
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         0 => 1,
@@ -632,8 +1119,8 @@ $b;',
             22 => 3,
         )
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $arr = array(
         $a => 1,
@@ -648,8 +1135,8 @@ $b;',
         $cccccccc = 3;
         \',
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $arr = [
         $a => 1,
@@ -664,8 +1151,8 @@ $b;',
         $cccccccc = 3;
         \',
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     foreach($arr as $k => $v){
         $arr = array($k => 1,
@@ -684,8 +1171,8 @@ $b;',
             \',
         );
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         10 => 11,
@@ -704,8 +1191,8 @@ $b;',
             =>
                 44,
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         " " => "",    "\t" => "",
@@ -718,8 +1205,8 @@ $b;',
         "\n"   => "", "\r"   => "",
         "\0"  => "", "\x0B"    => "",
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return $this->grabAttribsBeforeToken(
         $tokens,
@@ -744,8 +1231,8 @@ $b;',
             "static"     => null,
         )
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         self::STATUS_UNKNOWN_0 => array("symbol" => "?", "description" => "unknown"),
@@ -756,8 +1243,8 @@ $b;',
         self::STATUS_UNKNOWN_0 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_0    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $array = array(
         "bazab" => b(array(
@@ -782,19 +1269,19 @@ $b;',
             10      => 11,
         )),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function foo() {
         yield 1 => 2;
     }',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -805,14 +1292,14 @@ $b;',
      */
     public function testFixAlignEquals($expected, $input = null)
     {
-        $this->fixer->configure(array('align_equals' => true));
+        $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]]);
         $this->doTest($expected, $input);
     }
 
     public function provideAlignEqualsCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     $a    = 1;
     $bbbb = \'
@@ -823,8 +1310,8 @@ $b;',
     $bbbb = \'
     $ddcccccc1 = 3;
     \';',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $ccc = 1;
     $bb  = 1;
@@ -919,8 +1406,8 @@ $b;',
         $aa = 2;
         $a[$b] = array();
     }',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -931,34 +1418,34 @@ $b;',
      */
     public function testFixAlignDoubleArrow($expected, $input = null)
     {
-        $this->fixer->configure(array('align_double_arrow' => true));
+        $this->fixer->configure(['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN]]);
         $this->doTest($expected, $input);
     }
 
     public function provideAlignDoubleArrowCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                 switch ($a) {
                     case "prod":
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $array = array(
         "closure" => function ($param1, $param2) {
             return;
         }
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return new JsonResponse(array(
         "result" => "OK",
-        "html"   => 1, array(
+        "html"   => 1, /**/array(
             "foo"    => "bar",
             "foofoo" => array(
                 "a"  => 1,
@@ -969,7 +1456,7 @@ $b;',
                 '<?php
     return new JsonResponse(array(
         "result" => "OK",
-        "html" => 1, array(
+        "html" => 1, /**/array(
             "foo" => "bar",
             "foofoo" => array(
                 "a" => 1,
@@ -977,8 +1464,8 @@ $b;',
             )
         ),)
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return new JsonResponse([
         "result" => "OK",
@@ -995,8 +1482,8 @@ $b;',
             "foofoo" => 43,
         )),
     ]);',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return new JsonResponse([
         "result" => "OK",
@@ -1015,8 +1502,8 @@ $b;',
         ]),
         "baz" => "OK",
     ]);',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
@@ -1043,8 +1530,8 @@ $b;',
         ),
         "bar"  => array(),
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
@@ -1060,60 +1547,60 @@ $b;',
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [array("baz" => "Test")],
         "bar"  => array(),
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = array(
         "foo"  => "Bar",
         "main" => array("baz" => "Test"),
         "bar"  => array(),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = array(
         "foo"  => "Bar",
         "main" => array(array("baz" => "Test")),
         "bar"  => array(),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ([1 => 2] as $k => $v) {
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach (fncCall() as $k => $v){
         $var[] = [$i => $bar];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $var = [];
     foreach ($foo as $bar) {
@@ -1122,24 +1609,24 @@ $b;',
             $iaaa => $bar,
         ];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [["baz" => "Test", "bar" => "Test2"]],
         "bar"  => [],
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $data = [
         "foo"  => "Bar",
         "main" => ["baz" => "Test"],
         "bar"  => [],
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = [
         0              => 1,
@@ -1164,8 +1651,8 @@ $b;',
             22 => 3,
         ]
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         0  => 1,
@@ -1178,8 +1665,8 @@ $b;',
             22 => 3,
         )
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $arr = array(
         $a    => 1,
@@ -1194,8 +1681,8 @@ $b;',
         $cccccccc2 = 3;
         \',
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $arr = [
         $a    => 1,
@@ -1210,8 +1697,8 @@ $b;',
         $cccccccc3 = 3;
         \',
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     foreach($arr as $k => $v){
         $arr = array($k => 1,
@@ -1221,8 +1708,8 @@ $b;',
             \',
         );
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = array(
         10    => 11,
@@ -1241,8 +1728,8 @@ $b;',
             =>
                 44,
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         " "    => "",    "\t"    => "",
@@ -1255,8 +1742,8 @@ $b;',
         "\n"   => "", "\r"   => "",
         "\0"  => "", "\x0B"    => "",
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return $this->grabAttribsBeforeToken(
         $tokens,
@@ -1281,8 +1768,8 @@ $b;',
             "static" => null,
         )
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         self::STATUS_UNKNOWN_1    => array("symbol" => "?", "description" => "unknown"),
@@ -1293,8 +1780,8 @@ $b;',
         self::STATUS_UNKNOWN_1 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $array = array(
         "bazab" => b(array(
@@ -1319,13 +1806,13 @@ $b;',
             10      => 11,
         )),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $inflect_male = array(
         "aitė\b" => "as",
@@ -1340,60 +1827,60 @@ $b;',
         "iūtė\b" => "ius",
         "utė\b" => "us",
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $formMapper
                     ->add(\'foo\', null, [\'required\' => false])
                     ->add(\'dummy_field\', null, [\'required\' => false])
                 ;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $formMapper
                     ->add(\'foo\', null, array(\'required\' => false))
                     ->add(\'dummy_field\', null, array(\'required\' => false))
                 ;
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
     function foo() {}
@@ -1420,8 +1907,8 @@ $b;',
         "b" => 1,
     ];
     ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         self::STATUS_UNKNOWN_2    => array("symbol" => "?", "description" => "unknown"),
@@ -1432,8 +1919,8 @@ $b;',
         self::STATUS_UNKNOWN_2 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return array(
         self::STATUS_UNKNOWN_3    => array((1 + 11)=> "?", "description" => "unknown"),
@@ -1444,8 +1931,8 @@ $b;',
         self::STATUS_UNKNOWN_3 => array((1+11)=> "?", "description" => "unknown"),
         self::STATUS_INVALID_3    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return [
         self::STATUS_UNKNOWN_4    => ["symbol" => "?", "description" => "unknown"],
@@ -1456,8 +1943,8 @@ $b;',
         self::STATUS_UNKNOWN_4 => ["symbol" => "?", "description" => "unknown"],
         self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
     ];',
-            ),
-            array(
+            ],
+            [
                 '<?php
     return [
         self::STATUS_UNKNOWN_7    => [(1 + 11)=> "?", "description" => "unknown"],
@@ -1468,16 +1955,20 @@ $b;',
         self::STATUS_UNKNOWN_7 => [(1+11)=> "?", "description" => "unknown"],
         self::STATUS_INVALID_7    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
     ];',
-            ),
-        );
+            ],
+        ];
     }
 
     public function testDoNotTouchEqualsAndArrowByConfig()
     {
-        $this->fixer->configure(array(
-            'align_equals' => null,
-            'align_double_arrow' => null,
-        ));
+        $this->fixer->configure(
+            [
+                'operators' => [
+                    '=' => null,
+                    '=>' => null,
+                ],
+            ]
+        );
 
         $this->doTest(
             '<?php
@@ -1498,33 +1989,93 @@ $b;',
     }
 
     /**
-     * @requires PHP 7.1
+     * @requires PHP 7.0
      */
-    public function testAlignArrayDestruction()
+    public function testPHP70Cases()
     {
-        $this->fixer->configure(array('align_equals' => true));
+        $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]]);
         $this->doTest(
-            '<?php
-                $c = [$d] = $e[1];
-                function A(){}[$a] = $a[$c];
-                $b                 = 1;
-            ',
-            '<?php
-                $c = [$d] = $e[1];
-                function A(){}[$a] = $a[$c];
-                $b = 1;
-            '
+            '<?php declare(strict_types=1);
+$a = 1;
+echo 1 <=> 1;
+echo 1 <=> 2;
+echo 2 <=> 1;
+echo 2 <=> 1;
+
+$a = $a  ?? $b;
+$a = $ab ?? $b;
+$a = $ac ?? $b;
+$a = $ad ?? $b;
+$a = $ae ?? $b;
+',
+            '<?php declare(strict_types=1);
+$a = 1;
+echo 1<=>1;
+echo 1 <=>2;
+echo 2<=> 1;
+echo 2  <=>   1;
+
+$a = $a ?? $b;
+$a = $ab   ?? $b;
+$a = $ac    ?? $b;
+$a = $ad  ?? $b;
+$a = $ae?? $b;
+'
         );
     }
 
     /**
      * @requires PHP 7.1
+     *
+     * @param string      $expected
+     * @param null|string $input
+     * @param array       $configuration
+     *
+     * @dataProvider providePHP71Cases
      */
-    public function testSpacesMultipleException()
+    public function testPHP71Cases($expected, $input = null, array $configuration = [])
     {
-        $this->doTest(
-            '<?php try {} catch (A | B $e) {}',
-            '<?php try {} catch (A   |     B $e) {}'
-        );
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP71Cases()
+    {
+        return [
+            'align array destruction' => [
+                '<?php
+                    $c = [$d] = $e[1];
+                    function A(){}[$a] = $a[$c];
+                    $b                 = 1;
+                ',
+                '<?php
+                    $c = [$d] = $e[1];
+                    function A(){}[$a] = $a[$c];
+                    $b = 1;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
+            ],
+            'align array destruction with assignments' => [
+                '<?php
+                    $d = [
+                        "a" => $a,
+                        "b" => $b,
+                        "c" => $c
+                    ] = $array;
+                ',
+                '<?php
+                    $d = [
+                        "a"=>$a,
+                        "b"   => $b,
+                        "c" =>   $c
+                    ] = $array;
+                ',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            'multiple exceptions catch' => [
+                '<?php try {} catch (A | B $e) {}',
+                '<?php try {} catch (A   |     B $e) {}',
+            ],
+        ];
     }
 }

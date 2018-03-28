@@ -30,7 +30,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Function defined by PHP should be called using the correct casing.',
-            array(new CodeSample("<?php\nSTRLEN(\$str);"))
+            [new CodeSample("<?php\nSTRLEN(\$str);\n")]
         );
     }
 
@@ -67,14 +67,14 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             }
 
             $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$functionNamePrefix]->isGivenKind(array(T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION))) {
+            if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
                 continue;
             }
 
             if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
                 // skip if the call is to a constructor or to a function in a namespace other than the default
                 $prev = $tokens->getPrevMeaningfulToken($functionNamePrefix);
-                if ($tokens[$prev]->isGivenKind(array(T_STRING, T_NEW))) {
+                if ($tokens[$prev]->isGivenKind([T_STRING, T_NEW])) {
                     continue;
                 }
             }
@@ -85,7 +85,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index] = new Token(array(T_STRING, $nativeFunctionNames[$lower]));
+            $tokens[$index] = new Token([T_STRING, $nativeFunctionNames[$lower]]);
             $index = $next;
         }
     }
@@ -96,7 +96,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     private function getNativeFunctionNames()
     {
         $allFunctions = get_defined_functions();
-        $functions = array();
+        $functions = [];
         foreach ($allFunctions['internal'] as $function) {
             $functions[strtolower($function)] = $function;
         }

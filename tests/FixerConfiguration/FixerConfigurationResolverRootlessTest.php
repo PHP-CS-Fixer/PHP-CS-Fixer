@@ -25,11 +25,12 @@ final class FixerConfigurationResolverRootlessTest extends TestCase
 {
     public function testMapRootConfigurationTo()
     {
-        $this->setExpectedException('LogicException', 'The "bar" option is not defined.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('The "bar" option is not defined.');
 
-        $configuration = new FixerConfigurationResolverRootless('bar', array(
+        $configuration = new FixerConfigurationResolverRootless('bar', [
             new FixerOption('foo', 'Bar.'),
-        ));
+        ]);
     }
 
     /**
@@ -38,9 +39,9 @@ final class FixerConfigurationResolverRootlessTest extends TestCase
      */
     public function testResolveWithMappedRoot()
     {
-        $configuration = new FixerConfigurationResolverRootless('foo', array(
+        $configuration = new FixerConfigurationResolverRootless('foo', [
             new FixerOption('foo', 'Bar.'),
-        ));
-        $configuration->resolve(array('baz', 'qux'));
+        ]);
+        $configuration->resolve(['baz', 'qux']);
     }
 }

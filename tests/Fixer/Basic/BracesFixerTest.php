@@ -24,16 +24,16 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class BracesFixerTest extends AbstractFixerTestCase
 {
-    private static $configurationOopPositionSameLine = array('position_after_functions_and_oop_constructs' => 'same');
+    private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => 'same'];
+    private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => 'next'];
+    private static $configurationAnonymousPositionNextLine = ['position_after_anonymous_constructs' => 'next'];
 
     public function testInvalidConfigurationClassyConstructs()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException',
-            '#^\[braces\] Invalid configuration: The option "position_after_functions_and_oop_constructs" with value "neither" is invalid\. Accepted values are: "next", "same"\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[braces\] Invalid configuration: The option "position_after_functions_and_oop_constructs" with value "neither" is invalid\. Accepted values are: "next", "same"\.$#');
 
-        $this->fixer->configure(array('position_after_functions_and_oop_constructs' => 'neither'));
+        $this->fixer->configure(['position_after_functions_and_oop_constructs' => 'neither']);
     }
 
     /**
@@ -54,22 +54,22 @@ final class BracesFixerTest extends AbstractFixerTestCase
 
     public function provideFixControlContinuationBracesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     $a = function() {
         $a = 1;
         while (false);
     };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = function() {
         $a = 1;
         for ($i=0;$i<5;++$i);
     };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo
     {
@@ -81,8 +81,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
             $a = 1;
         }
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         $a = 1;
@@ -96,8 +96,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
     else {
         $b = 2;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     try {
         throw new \Exception();
@@ -115,8 +115,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
     catch (\Exception $e) {
         // do nothing
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         echo 1;
@@ -130,8 +130,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         echo 2;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     try {
         echo 1;
@@ -147,8 +147,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         echo 2;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo
     {
@@ -169,8 +169,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
         ){
         }
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (1) {
         self::${$key} = $val;
@@ -179,31 +179,31 @@ final class BracesFixerTest extends AbstractFixerTestCase
         self::${$type}[$rule] = $pattern + self::${$type}["rules"];
     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (1) {
         do {
             $a = 1;
         } while (true);
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if /* 1 */ (2) {
     }',
                 '<?php
     if /* 1 */ (2) {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (1) {
                         echo $items{0}->foo;
                         echo $collection->items{1}->property;
                     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = function() {
         $a = 1;
@@ -211,8 +211,22 @@ final class BracesFixerTest extends AbstractFixerTestCase
     };',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    $a = function()
+    {
+        $a = 1;
+        while (false);
+    };',
+                '<?php
+    $a = function() {
+        $a = 1;
+        while (false);
+    };',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
     $a = function() {
         $a = 1;
@@ -220,8 +234,22 @@ final class BracesFixerTest extends AbstractFixerTestCase
     };',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    $a = function()
+    {
+        $a = 1;
+        for ($i=0;$i<5;++$i);
+    };',
+                '<?php
+    $a = function() {
+        $a = 1;
+        for ($i=0;$i<5;++$i);
+    };',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
     class Foo {
         public function A() {
@@ -243,8 +271,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
         }
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         $a = 1;
@@ -259,8 +287,27 @@ final class BracesFixerTest extends AbstractFixerTestCase
         $b = 2;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    if (true)
+    {
+        $a = 1;
+    }
+    else
+    {
+        $b = 2;
+    }',
+                '<?php
+    if (true) {
+        $a = 1;
+    }
+    else {
+        $b = 2;
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
     try {
         throw new \Exception();
@@ -279,8 +326,33 @@ final class BracesFixerTest extends AbstractFixerTestCase
         // do nothing
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    try
+    {
+        throw new \Exception();
+    }
+    catch (\LogicException $e)
+    {
+        // do nothing
+    }
+    catch (\Exception $e)
+    {
+        // do nothing
+    }',
+                '<?php
+    try {
+        throw new \Exception();
+    }catch (\LogicException $e) {
+        // do nothing
+    }
+    catch (\Exception $e) {
+        // do nothing
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
     if (true) {
         echo 1;
@@ -295,8 +367,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
         echo 2;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     try {
         echo 1;
@@ -313,8 +385,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
         echo 2;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo {
         public function bar(
@@ -335,8 +407,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
         }
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (1) {
         self::${$key} = $val;
@@ -347,8 +419,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
                 ',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (1) {
         do {
@@ -357,16 +429,16 @@ final class BracesFixerTest extends AbstractFixerTestCase
     }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if /* 1 */ (2) {
     }',
                 '<?php
     if /* 1 */ (2) {}',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
                     if (1) {
                         echo $items{0}->foo;
@@ -375,16 +447,16 @@ final class BracesFixerTest extends AbstractFixerTestCase
                 ',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php class A
 /** */
 {
 }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo
 {
@@ -406,8 +478,8 @@ class Foo
     bar();
     }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo
 {
@@ -419,8 +491,8 @@ class Foo
         ;
     }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo
 {
@@ -446,8 +518,8 @@ class Foo {
    */
   public $bar;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo
 {
@@ -473,8 +545,8 @@ class Foo {
    */
   public $bar;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1==1) {
     $a = 1;
@@ -487,8 +559,8 @@ if (1==1) {
   // test
   $b = 2;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1==1) {
     $a = 1;
@@ -501,8 +573,8 @@ if (1==1) {
   # test
   $b = 2;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1==1) {
     $a = 1;
@@ -515,8 +587,8 @@ if (1==1) {
     /** @var int $b */
 $b = a();
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if ($b) {
         if (1==1) {
@@ -535,8 +607,8 @@ $b = a();
         }
     }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if ($b) {
         if (1==1) {
@@ -557,8 +629,8 @@ $b = a();
         }
     }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class A
 {
@@ -576,8 +648,8 @@ class A {
       $a = 1;
     }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class B
 {
@@ -597,8 +669,8 @@ class B {
        $a = 1;
     }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class C
 {
@@ -616,8 +688,8 @@ class C {
        $a = 1;
     }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($a) { /*
 */
@@ -628,8 +700,8 @@ if ($a){ /*
 */
 echo 1;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($a) { /**/ /*
 */
@@ -642,8 +714,8 @@ if ($a){ /**/ /*
 echo 1;
 echo 2;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 foreach ($foo as $bar) {
     if (true) {
@@ -652,8 +724,8 @@ foreach ($foo as $bar) {
     elseif (false) {
     }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo()
 {
@@ -661,8 +733,8 @@ function foo()
                                 // ... comment
     $baz  = 2;                  // next comment
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo()
 {
@@ -681,8 +753,8 @@ function foo()
         // ... comment
         return $foo;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo()
 {
@@ -690,8 +762,8 @@ function foo()
                                 // ... comment
     $baz  = 2;    /* baz */     // next comment
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function test()
 {
@@ -702,8 +774,8 @@ function test()
 //    };
     $a = 3;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function test()
 {
@@ -714,8 +786,8 @@ function test()
 //    };
     $a = 3;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo
 {
@@ -735,8 +807,8 @@ class Foo {
         }
     }
 }',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -757,48 +829,48 @@ class Foo {
 
     public function provideFixMissingBracesAndIndentCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 if (true):
     $foo = 0;
 endif;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true)  :
     $foo = 0;
 endif;',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) : $foo = 1; endif;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $foo = 1;
 }',
                 '<?php
 if (true)$foo = 1;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $foo = 2;
 }',
                 '<?php
 if (true)    $foo = 2;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $foo = 3;
 }',
                 '<?php
 if (true){$foo = 3;}',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     echo 1;
@@ -807,8 +879,8 @@ if (true) {
 }',
                 '<?php
 if(true) { echo 1; } else echo 2;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     echo 3;
@@ -817,8 +889,8 @@ if (true) {
 }',
                 '<?php
 if(true) echo 3; else { echo 4; }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     echo 5;
@@ -827,8 +899,8 @@ if (true) {
 }',
                 '<?php
 if (true) echo 5; else echo 6;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     while (true) {
@@ -838,8 +910,8 @@ if (true) {
 }',
                 '<?php
 if (true) while (true) { $foo = 1; $bar = 2;}',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -852,8 +924,8 @@ if (true) {
 }',
                 '<?php
 if (true) if (true) echo 1; else echo 2; else echo 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     // sth here...
@@ -868,8 +940,8 @@ if (true) {
 
     if ($a && ($b || $c)) $d = 1;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 for ($i = 1; $i < 10; ++$i) {
     echo $i;
@@ -880,8 +952,8 @@ for ($i = 1; $i < 10; ++$i) {
                 '<?php
 for ($i = 1; $i < 10; ++$i) echo $i;
 for ($i = 1; $i < 10; ++$i) { echo $i; }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 for ($i = 1; $i < 5; ++$i) {
     for ($i = 1; $i < 10; ++$i) {
@@ -890,36 +962,36 @@ for ($i = 1; $i < 5; ++$i) {
 }',
                 '<?php
 for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 do {
     echo 1;
 } while (false);',
                 '<?php
 do { echo 1; } while (false);',
-            ),
-            array(
+            ],
+            [
                 '<?php
 while ($foo->next());',
-            ),
-            array(
+            ],
+            [
                 '<?php
 foreach ($foo as $bar) {
     echo $bar;
 }',
                 '<?php
 foreach ($foo as $bar) echo $bar;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $a = 1;
 }',
                 '<?php
 if (true) {$a = 1;}',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $a = 1;
@@ -928,8 +1000,8 @@ if (true) {
 if (true) {
  $a = 1;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $a = 1;
@@ -948,8 +1020,8 @@ if (true) {
                         }
         $d = 4;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $a = 1;
@@ -957,16 +1029,16 @@ if (true) {
 
     $b = 2;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1) {
     $a = 1;
 
     // comment at end
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1) {
     if (2) {
@@ -979,8 +1051,8 @@ if (1) {
     }
     $d = "d";
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 foreach ($numbers as $num) {
     for ($i = 0; $i < $num; ++$i) {
@@ -988,8 +1060,8 @@ foreach ($numbers as $num) {
     }
     $b = "b";
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1) {
     if (2) {
@@ -1000,8 +1072,8 @@ if (1) {
         }
     }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     declare(ticks = 1) {
         $ticks = 1;
@@ -1011,8 +1083,8 @@ if (1) {
     ticks = 1  ) {
   $ticks = 1;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         foo();
@@ -1027,8 +1099,8 @@ if (1) {
     {
         bar();
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     while (true) {
         foo();
@@ -1038,8 +1110,8 @@ if (1) {
     {
         foo();
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     do {
         echo $test;
@@ -1050,8 +1122,8 @@ if (1) {
         echo $test;
     }
     while ($test = $this->getTest());',
-            ),
-            array(
+            ],
+            [
                 '<?php
     do {
         echo $test;
@@ -1061,8 +1133,8 @@ if (1) {
     {
         echo $test;
     }while ($test = $this->getTest());',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class ClassName
     {
@@ -1089,8 +1161,8 @@ if (1) {
 
 
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     while ($true) {
         try {
@@ -1099,22 +1171,22 @@ if (1) {
             // do nothing
         }
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     interface Foo
     {
         public function setConfig(ConfigInterface $config);
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function bar()
 {
     $a = 1; //comment
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 function & lambda()
@@ -1122,15 +1194,15 @@ function & lambda()
     return function () {
     };
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function nested()
 {
     $a = "a{$b->c()}d";
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo()
 {
@@ -1141,29 +1213,29 @@ function foo()
     $p = array($q->{$r}, $s->{$t});
     $u->{$v}->w = 1;
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function mixed()
 {
     $a = $b->{"a{$c}d"}();
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function mixedComplex()
 {
     $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function mixedComplex()
 {
     $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true):
         echo 1;
@@ -1171,14 +1243,14 @@ function mixedComplex()
         echo 2;
     endif;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if ($test) { //foo
         echo 1;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         // foo
@@ -1199,8 +1271,8 @@ function mixedComplex()
             print("bar");
         }
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         // foo
@@ -1220,14 +1292,14 @@ function mixedComplex()
             print("bar");
         }
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php if (true) {
     echo "s";
 } ?>x',
                 '<?php if (true) echo "s" ?>x',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo
     {
@@ -1257,8 +1329,8 @@ function mixedComplex()
                 });
         }
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -1279,8 +1351,8 @@ if(true)
     else
         echo 3;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -1303,8 +1375,8 @@ if(true)
         echo 3;
 echo 4;
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -1317,8 +1389,8 @@ if (true) {
 }',
                 '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -1331,8 +1403,8 @@ if (true) {
 }',
                 '<?php
 if(true) if(true) echo 1; else echo 2; else echo 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 foreach ($data as $val) {
     // test val
@@ -1346,8 +1418,8 @@ foreach ($data as $val)
     if ($val === "errors") {
         echo "!";
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1) {
     foreach ($data as $val) {
@@ -1364,9 +1436,9 @@ if (1)
         if ($val === "errors") {
             echo "!";
         }',
-            ),
+            ],
 
-            array(
+            [
                 '<?php
     class Foo
     {
@@ -1383,9 +1455,9 @@ if (1)
         echo "Hello";
       }
     }',
-            ),
+            ],
 
-            array(
+            [
                 '<?php
 class Foo
 {
@@ -1402,8 +1474,8 @@ class Foo
     echo "Hello";
   }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo
     {
@@ -1416,15 +1488,15 @@ class Foo
                 public $bar;
                 public $baz;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function myFunction($foo, $bar)
     {
         return \Foo::{$foo}($bar);
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class C
     {
@@ -1441,30 +1513,30 @@ class Foo
         //comment
         {}
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true):
     $foo = 0;
 endif;',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true)  :
     $foo = 0;
 endif;',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) : $foo = 1; endif;',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $foo = 1;
@@ -1472,8 +1544,8 @@ if (true) {
                 '<?php
 if (true)$foo = 1;',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $foo = 2;
@@ -1481,8 +1553,8 @@ if (true) {
                 '<?php
 if (true)    $foo = 2;',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $foo = 3;
@@ -1490,8 +1562,8 @@ if (true) {
                 '<?php
 if (true){$foo = 3;}',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     echo 1;
@@ -1501,8 +1573,8 @@ if (true) {
                 '<?php
 if(true) { echo 1; } else echo 2;',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     echo 3;
@@ -1512,8 +1584,8 @@ if (true) {
                 '<?php
 if(true) echo 3; else { echo 4; }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     echo 5;
@@ -1523,8 +1595,8 @@ if (true) {
                 '<?php
 if (true) echo 5; else echo 6;',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     while (true) {
@@ -1535,8 +1607,8 @@ if (true) {
                 '<?php
 if (true) while (true) { $foo = 1; $bar = 2;}',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -1550,8 +1622,8 @@ if (true) {
                 '<?php
 if (true) if (true) echo 1; else echo 2; else echo 3;',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     // sth here...
@@ -1567,8 +1639,8 @@ if (true) {
     if ($a && ($b || $c)) $d = 1;
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 for ($i = 1; $i < 10; ++$i) {
     echo $i;
@@ -1580,8 +1652,8 @@ for ($i = 1; $i < 10; ++$i) {
 for ($i = 1; $i < 10; ++$i) echo $i;
 for ($i = 1; $i < 10; ++$i) { echo $i; }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 for ($i = 1; $i < 5; ++$i) {
     for ($i = 1; $i < 10; ++$i) {
@@ -1591,8 +1663,8 @@ for ($i = 1; $i < 5; ++$i) {
                 '<?php
 for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 do {
     echo 1;
@@ -1600,14 +1672,14 @@ do {
                 '<?php
 do { echo 1; } while (false);',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 while ($foo->next());',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 foreach ($foo as $bar) {
     echo $bar;
@@ -1615,8 +1687,8 @@ foreach ($foo as $bar) {
                 '<?php
 foreach ($foo as $bar) echo $bar;',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $a = 1;
@@ -1624,8 +1696,8 @@ if (true) {
                 '<?php
 if (true) {$a = 1;}',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $a = 1;
@@ -1635,8 +1707,8 @@ if (true) {
  $a = 1;
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $a = 1;
@@ -1656,8 +1728,8 @@ if (true) {
         $d = 4;
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     $a = 1;
@@ -1667,8 +1739,8 @@ if (true) {
 }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1) {
     $a = 1;
@@ -1677,8 +1749,8 @@ if (1) {
 }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1) {
     if (2) {
@@ -1693,8 +1765,8 @@ if (1) {
 }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 foreach ($numbers as $num) {
     for ($i = 0; $i < $num; ++$i) {
@@ -1704,8 +1776,8 @@ foreach ($numbers as $num) {
 }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1) {
     if (2) {
@@ -1718,8 +1790,8 @@ if (1) {
 }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     declare(ticks = 1) {
         $ticks = 1;
@@ -1730,8 +1802,8 @@ if (1) {
   $ticks = 1;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         foo();
@@ -1747,8 +1819,8 @@ if (1) {
         bar();
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     while (true) {
         foo();
@@ -1759,8 +1831,8 @@ if (1) {
         foo();
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     do {
         echo $test;
@@ -1772,8 +1844,8 @@ if (1) {
     }
     while ($test = $this->getTest());',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     do {
         echo $test;
@@ -1784,8 +1856,8 @@ if (1) {
         echo $test;
     }while ($test = $this->getTest());',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     class ClassName {
 
@@ -1812,8 +1884,36 @@ if (1) {
 
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    class ClassName {
+
+
+
+
+        /**
+         * comment
+         */
+        public $foo = null;
+    }',
+                '<?php
+    class ClassName
+    {
+
+
+
+
+        /**
+         * comment
+         */
+        public $foo = null;
+
+
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
     while ($true) {
         try {
@@ -1824,8 +1924,31 @@ if (1) {
     }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    while ($true)
+    {
+        try
+        {
+            throw new \Exception();
+        }
+        catch (\Exception $e)
+        {
+            // do nothing
+        }
+    }',
+                '<?php
+    while ($true) {
+        try {
+            throw new \Exception();
+        } catch (\Exception $e) {
+            // do nothing
+        }
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
     interface Foo {
         public function setConfig(ConfigInterface $config);
@@ -1836,8 +1959,20 @@ if (1) {
         public function setConfig(ConfigInterface $config);
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    interface Foo {
+        public function setConfig(ConfigInterface $config);
+    }',
+                '<?php
+    interface Foo
+    {
+        public function setConfig(ConfigInterface $config);
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
 function bar() {
     $a = 1; //comment
@@ -1848,8 +1983,8 @@ function bar()
     $a = 1; //comment
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 function & lambda() {
@@ -1864,8 +1999,41 @@ function & lambda()
     };
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+
+function & lambda() {
+    return function ()
+    {
+    };
+}',
+                '<?php
+
+function & lambda()
+{
+    return function () {
+    };
+}',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+
+function & lambda() {
+    return function () {
+    };
+}',
+                '<?php
+
+function & lambda()
+{
+    return function () {
+    };
+}',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
 function nested() {
     $a = "a{$b->c()}d";
@@ -1876,8 +2044,20 @@ function nested()
     $a = "a{$b->c()}d";
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+function nested() {
+    $a = "a{$b->c()}d";
+}',
+                '<?php
+function nested()
+{
+    $a = "a{$b->c()}d";
+}',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
 function foo() {
     $a = $b->{$c->d}($e);
@@ -1898,8 +2078,30 @@ function foo()
     $u->{$v}->w = 1;
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+function foo() {
+    $a = $b->{$c->d}($e);
+    $f->{$g} = $h;
+    $i->{$j}[$k] = $l;
+    $m = $n->{$o};
+    $p = array($q->{$r}, $s->{$t});
+    $u->{$v}->w = 1;
+}',
+                '<?php
+function foo()
+{
+    $a = $b->{$c->d}($e);
+    $f->{$g} = $h;
+    $i->{$j}[$k] = $l;
+    $m = $n->{$o};
+    $p = array($q->{$r}, $s->{$t});
+    $u->{$v}->w = 1;
+}',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
 function mixed() {
     $a = $b->{"a{$c}d"}();
@@ -1910,8 +2112,8 @@ function mixed()
     $a = $b->{"a{$c}d"}();
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 function mixedComplex() {
     $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
@@ -1922,8 +2124,8 @@ function mixedComplex()
     $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 function mixedComplex() {
     $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
@@ -1934,8 +2136,8 @@ function mixedComplex()
     $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true):
         echo 1;
@@ -1945,16 +2147,27 @@ function mixedComplex()
 ',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    if (true):
+        echo 1;
+    else:
+        echo 2;
+    endif;
+',
+                null,
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
     if ($test) { //foo
         echo 1;
     }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         // foo
@@ -1976,8 +2189,33 @@ function mixedComplex()
         }
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    if (true)
+    {
+        // foo
+        // bar
+        if (true)
+        {
+            print("foo");
+            print("bar");
+        }
+    }',
+                '<?php
+    if (true)
+        // foo
+        // bar
+            {
+        if (true)
+        {
+            print("foo");
+            print("bar");
+        }
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
     if (true) {
         // foo
@@ -1998,15 +2236,15 @@ function mixedComplex()
         }
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php if (true) {
     echo "s";
 } ?>x',
                 '<?php if (true) echo "s" ?>x',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo {
         public function getFaxNumbers() {
@@ -2035,8 +2273,71 @@ function mixedComplex()
         }
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    class Foo {
+        public function getFaxNumbers() {
+            if (1)
+            {
+                return $this->phoneNumbers->filter(function ($phone) {
+                    $a = 1;
+                    $b = 1;
+                    $c = 1;
+                    return ($phone->getType() === 1) ? true : false;
+                });
+            }
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public function getFaxNumbers()
+        {
+            if (1)
+                return $this->phoneNumbers->filter(function ($phone) {
+                    $a = 1;
+                    $b = 1;
+                    $c = 1;
+                    return ($phone->getType() === 1) ? true : false;
+                });
+        }
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    class Foo {
+        public function getFaxNumbers() {
+            if (1)
+            {
+                return $this->phoneNumbers->filter(function ($phone)
+                {
+                    $a = 1;
+                    $b = 1;
+                    $c = 1;
+                    return ($phone->getType() === 1) ? true : false;
+                });
+            }
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public function getFaxNumbers()
+        {
+            if (1)
+                return $this->phoneNumbers->filter(function ($phone) {
+                    $a = 1;
+                    $b = 1;
+                    $c = 1;
+                    return ($phone->getType() === 1) ? true : false;
+                });
+        }
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -2058,8 +2359,8 @@ if(true)
         echo 3;
 ',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -2083,8 +2384,8 @@ if(true)
 echo 4;
 ',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -2098,8 +2399,8 @@ if (true) {
                 '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
     if (true) {
@@ -2113,8 +2414,8 @@ if (true) {
                 '<?php
 if(true) if(true) echo 1; else echo 2; else echo 3;',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 foreach ($data as $val) {
     // test val
@@ -2129,8 +2430,8 @@ foreach ($data as $val)
         echo "!";
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1) {
     foreach ($data as $val) {
@@ -2148,9 +2449,9 @@ if (1)
             echo "!";
         }',
                 self::$configurationOopPositionSameLine,
-            ),
+            ],
 
-            array(
+            [
                 '<?php
     class Foo {
         public function main() {
@@ -2166,9 +2467,8 @@ if (1)
       }
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-
-            array(
+            ],
+            [
                 '<?php
 class Foo {
     public function main() {
@@ -2184,8 +2484,25 @@ class Foo
   }
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+class Foo {
+    public function main() {
+        echo "Hello";
+    }
+}',
+                '<?php
+class Foo
+{
+  public function main()
+  {
+    echo "Hello";
+  }
+}',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
     class Foo {
         public $bar;
@@ -2198,8 +2515,8 @@ class Foo
                 public $baz;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     function myFunction($foo, $bar) {
         return \Foo::{$foo}($bar);
@@ -2210,8 +2527,8 @@ class Foo
         return \Foo::{$foo}($bar);
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     class C {
         public function __construct(
@@ -2228,8 +2545,8 @@ class Foo
         {}
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Something # a
 {
@@ -2269,8 +2586,8 @@ function D() /**
 {
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($foo) {
     foo();
@@ -2282,8 +2599,8 @@ if ($foo) {
     bar();
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($foo) {
     foo();
@@ -2295,8 +2612,8 @@ if ($foo) {
     bar();
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($foo) {
     foo();
@@ -2310,8 +2627,8 @@ if ($foo) {
     bar();
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($foo) {
     foo();
@@ -2323,8 +2640,8 @@ if ($foo) {
     bar();
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($foo) {
     foo();
@@ -2335,8 +2652,8 @@ if ($foo) {
     bar();
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($foo) {
     foo();
@@ -2347,8 +2664,8 @@ if ($foo) {
     bar();
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($foo) {
     foo();
@@ -2358,8 +2675,8 @@ if ($foo) {
     bar();
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo()
 {
@@ -2376,8 +2693,8 @@ function foo()
     return $a;
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo()
 {
@@ -2398,8 +2715,8 @@ function foo()
     return $a;
 }
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo()
 {
@@ -2422,8 +2739,8 @@ function foo()
     return $a;
 }
 ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2444,24 +2761,24 @@ function foo()
 
     public function provideFixClassyBracesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
                     class FooA
                     {
                     }',
                 '<?php
                     class FooA {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     class FooB
                     {
                     }',
                 '<?php
                     class FooB{}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     class FooC
                     {
@@ -2469,16 +2786,16 @@ function foo()
                 '<?php
                     class FooC
 {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     interface FooD
                     {
                     }',
                 '<?php
                     interface FooD {}',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 class TestClass extends BaseTestClass implements TestInterface
                 {
@@ -2486,8 +2803,8 @@ function foo()
                 }',
                 '<?php
                 class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
-            ),
-            array(
+            ],
+            [
                 '<?php
 abstract class Foo
 {
@@ -2496,30 +2813,30 @@ abstract class Foo
         return true;
     }
 }',
-            ),
-            array('<?php
+            ],
+            ['<?php
 function foo()
 {
     return "$c ($d)";
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
                     class FooA {
                     }',
                 '<?php
                     class FooA {}',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
                     class FooB {
                     }',
                 '<?php
                     class FooB{}',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
                     class FooC {
                     }',
@@ -2527,16 +2844,16 @@ function foo()
                     class FooC
 {}',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
                     interface FooD {
                     }',
                 '<?php
                     interface FooD {}',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
                 class TestClass extends BaseTestClass implements TestInterface {
                     private $foo;
@@ -2544,8 +2861,8 @@ function foo()
                 '<?php
                 class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 abstract class Foo {
     public function getProcess($foo) {
@@ -2561,8 +2878,8 @@ abstract class Foo
     }
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 function foo() {
     return "$c ($d)";
@@ -2573,31 +2890,8 @@ function foo()
     return "$c ($d)";
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|array  $configuration
-     *
-     * @dataProvider provideFixClassyBraces54Cases
-     * @requires PHP 5.4
-     */
-    public function testFixClassyBraces54($expected, $input = null, array $configuration = null)
-    {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixClassyBraces54Cases()
-    {
-        return array(
-            array(
+            ],
+            [
                 '<?php
     trait TFoo
     {
@@ -2605,8 +2899,8 @@ function foo()
     }',
                 '<?php
     trait TFoo {public $a;}',
-            ),
-            array(
+            ],
+            [
                 '<?php
     trait TFoo {
         public $a;
@@ -2614,8 +2908,26 @@ function foo()
                 '<?php
     trait TFoo {public $a;}',
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+            [
+                '<?php
+    trait TFoo
+    {
+        public $a;
+    }',
+                '<?php
+    trait TFoo {public $a;}',
+            ],
+            [
+                '<?php
+    trait TFoo {
+        public $a;
+    }',
+                '<?php
+    trait TFoo {public $a;}',
+                self::$configurationOopPositionSameLine,
+            ],
+        ];
     }
 
     /**
@@ -2623,10 +2935,9 @@ function foo()
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provideFixAnonFunctionInShortArraySyntax54Cases
-     * @requires PHP 5.4
+     * @dataProvider provideFixAnonFunctionInShortArraySyntaxCases
      */
-    public function testFixAnonFunctionInShortArraySyntax54($expected, $input = null, array $configuration = null)
+    public function testFixAnonFunctionInShortArraySyntax($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -2635,10 +2946,10 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAnonFunctionInShortArraySyntax54Cases()
+    public function provideFixAnonFunctionInShortArraySyntaxCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     function myFunction()
     {
@@ -2669,8 +2980,8 @@ function foo()
             ],
         ];
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function myFunction() {
         return [
@@ -2701,8 +3012,42 @@ function foo()
         ];
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+            [
+                '<?php
+    function myFunction() {
+        return [
+            [
+                "callback" => function ($data)
+                {
+                    return true;
+                }
+            ],
+            [
+                "callback" => function ($data)
+                {
+                    return true;
+                },
+            ],
+        ];
+    }',
+                '<?php
+    function myFunction()
+    {
+        return [
+            [
+                "callback" => function ($data) {
+                        return true;
+                    }
+            ],
+            [
+                "callback" => function ($data) { return true; },
+            ],
+        ];
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+        ];
     }
 
     /**
@@ -2723,11 +3068,11 @@ function foo()
 
     public function provideFixCommentBeforeBraceCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if ($test) { // foo
         echo 1;
@@ -2737,8 +3082,8 @@ function foo()
     {
         echo 1;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $foo = function ($x) use ($y) { // foo
         echo 1;
@@ -2748,13 +3093,13 @@ function foo()
     {
         echo 1;
     };',
-            ),
-            array(
+            ],
+            [
                 '<?php ',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if ($test) { // foo
         echo 1;
@@ -2765,8 +3110,8 @@ function foo()
         echo 1;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     $foo = function ($x) use ($y) { // foo
         echo 1;
@@ -2777,8 +3122,8 @@ function foo()
         echo 1;
     };',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     // 2.5+ API
     if (isNewApi()) {
@@ -2798,8 +3143,8 @@ function foo()
     // ... due to sth...
     }, false);
     ',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2821,8 +3166,8 @@ function foo()
 
     public function provideFixCommentBeforeBrace70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     $foo = new class ($a) extends Foo implements Bar { // foo
         private $x;
@@ -2832,8 +3177,8 @@ function foo()
     {
         private $x;
     };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $foo = new class ($a) extends Foo implements Bar { // foo
         private $x;
@@ -2844,8 +3189,8 @@ function foo()
         private $x;
     };',
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -2866,8 +3211,8 @@ function foo()
 
     public function provideFixWhitespaceBeforeBraceCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     if (true) {
         echo 1;
@@ -2877,8 +3222,8 @@ function foo()
     {
         echo 1;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         echo 1;
@@ -2887,8 +3232,8 @@ function foo()
     if (true){
         echo 1;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         echo 1;
@@ -2897,8 +3242,8 @@ function foo()
     if (true)           {
         echo 1;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     while ($file = $this->getFile()) {
     }',
@@ -2906,8 +3251,8 @@ function foo()
     while ($file = $this->getFile())
     {
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     switch (n) {
         case label1:
@@ -2929,8 +3274,8 @@ function foo()
             echo 3;
             echo 4;
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         echo 1;
@@ -2941,8 +3286,8 @@ function foo()
         echo 1;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         echo 1;
@@ -2952,8 +3297,8 @@ function foo()
         echo 1;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
         echo 1;
@@ -2963,8 +3308,8 @@ function foo()
         echo 1;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     while ($file = $this->getFile()) {
     }',
@@ -2973,8 +3318,8 @@ function foo()
     {
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     switch (n) {
         case label1:
@@ -2997,8 +3342,76 @@ function foo()
             echo 4;
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+            [
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true)
+    {
+        echo 1;
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true){
+        echo 1;
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    if (true) {
+        echo 1;
+    }',
+                '<?php
+    if (true)           {
+        echo 1;
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    while ($file = $this->getFile()) {
+    }',
+                '<?php
+    while ($file = $this->getFile())
+    {
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    switch (n) {
+        case label1:
+            echo 1;
+            echo 2;
+            break;
+        default:
+            echo 3;
+            echo 4;
+    }',
+                '<?php
+    switch (n)
+    {
+        case label1:
+            echo 1;
+            echo 2;
+            break;
+        default:
+            echo 3;
+            echo 4;
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+        ];
     }
 
     /**
@@ -3019,8 +3432,8 @@ function foo()
 
     public function provideFixFunctionsCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     function download()
     {
@@ -3028,8 +3441,8 @@ function foo()
                 '<?php
     function download() {
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo
 {
@@ -3058,30 +3471,30 @@ class Foo
     {
     }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     filter(function () {
         return true;
     });
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     filter(function   ($a) {
     });',
                 '<?php
     filter(function   ($a)
     {});',
-            ),
-            array(
+            ],
+            [
                 '<?php
     filter(function   ($b) {
     });',
                 '<?php
     filter(function   ($b){});',
-            ),
-            array(
+            ],
+            [
                 '<?php
     foo(array_map(function ($object) use ($x, $y) {
         return array_filter($object->bar(), function ($o) {
@@ -3090,8 +3503,8 @@ class Foo
     }, $collection));',
                 '<?php
     foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo
 {
@@ -3100,14 +3513,14 @@ class Foo
         return 1;
     }
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     usort($this->fixers, function &($a, $b) use ($selfName) {
         return 1;
     });',
-            ),
-            array(
+            ],
+            [
                 '<?php
     usort(
         $this->fixers,
@@ -3115,8 +3528,8 @@ class Foo
             return 1;
         }
     );',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $fnc = function ($a, $b) { // random comment
         return 0;
@@ -3126,8 +3539,8 @@ class Foo
     {
         return 0;
     };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $fnc = function ($a, $b) { # random comment
         return 0;
@@ -3137,8 +3550,8 @@ class Foo
     {
         return 0;
     };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $fnc = function ($a, $b) /* random comment */ {
         return 0;
@@ -3148,8 +3561,8 @@ class Foo
     {
         return 0;
     };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $fnc = function ($a, $b) /** random comment */ {
         return 0;
@@ -3159,15 +3572,15 @@ class Foo
     {
         return 0;
     };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function download() {
     }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 class Foo {
     public function AAAA() {
@@ -3193,8 +3606,8 @@ class Foo
     }
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     filter(function () {
         return true;
@@ -3202,8 +3615,8 @@ class Foo
 ',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     filter(function   ($a) {
     });',
@@ -3211,16 +3624,16 @@ class Foo
     filter(function   ($a)
     {});',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     filter(function   ($b) {
     });',
                 '<?php
     filter(function   ($b){});',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     foo(array_map(function ($object) use ($x, $y) {
         return array_filter($object->bar(), function ($o) {
@@ -3230,8 +3643,21 @@ class Foo
                 '<?php
     foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    foo(array_map(function ($object) use ($x, $y)
+    {
+        return array_filter($object->bar(), function ($o)
+        {
+            return $o->isBaz();
+        });
+    }, $collection));',
+                '<?php
+    foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
 class Foo {
     public static function bar() {
@@ -3247,16 +3673,50 @@ class Foo
     }
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+class Foo {
+    public static function bar() {
+        return 1;
+    }
+}',
+                '<?php
+class Foo
+{
+    public static function bar()
+    {
+        return 1;
+    }
+}',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+class Foo {
+    public static function bar() {
+        return 1;
+    }
+}',
+                '<?php
+class Foo
+{
+    public static function bar()
+    {
+        return 1;
+    }
+}',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
     usort($this->fixers, function &($a, $b) use ($selfName) {
         return 1;
     });',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     usort(
         $this->fixers,
@@ -3266,8 +3726,8 @@ class Foo
     );',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     $fnc = function ($a, $b) { // random comment
         return 0;
@@ -3278,8 +3738,8 @@ class Foo
         return 0;
     };',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     $fnc = function ($a, $b) { # random comment
         return 0;
@@ -3290,8 +3750,8 @@ class Foo
         return 0;
     };',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     $fnc = function ($a, $b) /* random comment */ {
         return 0;
@@ -3302,8 +3762,8 @@ class Foo
         return 0;
     };',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     $fnc = function ($a, $b) /** random comment */ {
         return 0;
@@ -3314,8 +3774,132 @@ class Foo
         return 0;
     };',
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $configuration
+     *
+     * @dataProvider provideFixMultiLineStructuresCases
+     */
+    public function testFixMultiLineStructures($expected, $input = null, array $configuration = null)
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixMultiLineStructuresCases()
+    {
+        return [
+            [
+                '<?php
+    if (true === true
+        && true === true
+    ) {
+    }',
+                '<?php
+    if(true === true
+        && true === true
+    )
+    {
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    foreach (
+        $boo as $bar => $fooBarBazBuzz
+    ) {
+    }',
+                '<?php
+    foreach (
+        $boo as $bar => $fooBarBazBuzz
+    )
+    {
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    $foo = function (
+        $baz,
+        $boo
+    ) {
+    };',
+                '<?php
+    $foo = function (
+        $baz,
+        $boo
+    )
+    {
+    };',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    class Foo
+    {
+        public static function bar(
+            $baz,
+            $boo
+        ) {
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public static function bar(
+            $baz,
+            $boo
+        )
+        {
+        }
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    if (true === true
+        && true === true
+    ) {
+    }',
+                '<?php
+    if(true === true
+        && true === true
+    )
+    {
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    if ($foo)
+    {
+    }
+    elseif (
+        true === true
+        && true === true
+    ) {
+    }',
+                '<?php
+    if ($foo)
+    {
+    }
+    elseif (
+        true === true
+        && true === true
+    )
+    {
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+        ];
     }
 
     /**
@@ -3336,8 +3920,8 @@ class Foo
 
     public function provideFixSpaceAroundTokenCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     try {
         throw new Exception();
@@ -3350,8 +3934,8 @@ class Foo
     }catch (Exception $e){
         log($e);
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     do {
         echo 1;
@@ -3360,8 +3944,8 @@ class Foo
     do{
         echo 1;
     }while($test);',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true === true
         && true === true
@@ -3372,8 +3956,8 @@ class Foo
         && true === true
     )     {
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (1) {
     }
@@ -3384,8 +3968,8 @@ class Foo
     }
     if ($this->tesT ($test)) {
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
     } elseif (false) {
@@ -3396,15 +3980,15 @@ class Foo
     }elseif(false){
     }else{
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $foo = function& () use ($bar) {
     };',
                 '<?php
     $foo = function& ()use($bar){};',
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 // comment
@@ -3413,16 +3997,16 @@ declare(strict_types=1);
 // comment
 while (true) {
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 declare(ticks   =   1) {
 }',
                 '<?php
 declare   (   ticks   =   1   )   {
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     try {
         throw new Exception();
@@ -3436,8 +4020,8 @@ declare   (   ticks   =   1   )   {
         log($e);
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     do {
         echo 1;
@@ -3447,8 +4031,8 @@ declare   (   ticks   =   1   )   {
         echo 1;
     }while($test);',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true === true
         && true === true
@@ -3460,8 +4044,8 @@ declare   (   ticks   =   1   )   {
     )     {
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (1) {
     }
@@ -3473,8 +4057,8 @@ declare   (   ticks   =   1   )   {
     if ($this->tesT ($test)) {
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     if (true) {
     } elseif (false) {
@@ -3486,16 +4070,16 @@ declare   (   ticks   =   1   )   {
     }else{
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
     $foo = function& () use ($bar) {
     };',
                 '<?php
     $foo = function& ()use($bar){};',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 
 // comment
@@ -3506,8 +4090,8 @@ while (true) {
 }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
                 '<?php
 declare(ticks   =   1) {
 }',
@@ -3515,8 +4099,8 @@ declare(ticks   =   1) {
 declare   (   ticks   =   1   )   {
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -3524,10 +4108,9 @@ declare   (   ticks   =   1   )   {
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provideFix55Cases
-     * @requires PHP 5.5
+     * @dataProvider provideFinallyCases
      */
-    public function testFix55($expected, $input = null, array $configuration = null)
+    public function testFinally($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -3536,10 +4119,10 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix55Cases()
+    public function provideFinallyCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     try {
         throw new \Exception();
@@ -3562,8 +4145,8 @@ declare   (   ticks   =   1   )   {
     finally     {
         echo "finish!";
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     try {
         throw new \Exception();
@@ -3587,8 +4170,40 @@ declare   (   ticks   =   1   )   {
         echo "finish!";
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+            [
+                '<?php
+    try
+    {
+        throw new \Exception();
+    }
+    catch (\LogicException $e)
+    {
+        // do nothing
+    }
+    catch (\Exception $e)
+    {
+        // do nothing
+    }
+    finally
+    {
+        echo "finish!";
+    }',
+                '<?php
+    try {
+        throw new \Exception();
+    }catch (\LogicException $e) {
+        // do nothing
+    }
+    catch (\Exception $e) {
+        // do nothing
+    }
+    finally     {
+        echo "finish!";
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+        ];
     }
 
     /**
@@ -3596,10 +4211,9 @@ declare   (   ticks   =   1   )   {
      * @param null|string $input
      * @param null|array  $configuration
      *
-     * @dataProvider provideFix56Cases
-     * @requires PHP 5.6
+     * @dataProvider provideFunctionImportCases
      */
-    public function testFix56($expected, $input = null, array $configuration = null)
+    public function testFunctionImport($expected, $input = null, array $configuration = null)
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -3608,24 +4222,42 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix56Cases()
+    public function provideFunctionImportCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     use function Foo\bar;
     if (true) {
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     use function Foo\bar;
     if (true) {
     }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+            [
+                '<?php
+    use function Foo\bar;
+    if (true)
+    {
+    }',
+                '<?php
+    use function Foo\bar;
+    if (true) {
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    use function Foo\bar;
+    if (true) {
+    }',
+            ],
+        ];
     }
 
     /**
@@ -3647,8 +4279,8 @@ declare   (   ticks   =   1   )   {
 
     public function provideFix70Cases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     function foo($a)
     {
@@ -3665,8 +4297,8 @@ declare   (   ticks   =   1   )   {
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     foo(1, new class implements Logger {
         public function log($message)
@@ -3676,20 +4308,20 @@ declare   (   ticks   =   1   )   {
     }, 3);',
                 '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
-            ),
-            array(
+            ],
+            [
                 '<?php
 $message = (new class() implements FooInterface {
 });',
                 '<?php
 $message = (new class() implements FooInterface{});',
-            ),
-            array(
+            ],
+            [
                 '<?php $message = (new class() {
 });',
                 '<?php $message = (new class() {});',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (1) {
     $message = (new class() extends Foo {
@@ -3706,8 +4338,8 @@ if (1) {
     public function bar() { echo 1; }
   });
 }',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Foo
     {
@@ -3730,8 +4362,8 @@ if (1) {
         }
     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $a = function (int $foo): string {
         echo $foo;
@@ -3759,8 +4391,8 @@ if (1) {
     function a() {
     }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     class Something
     {
@@ -3779,23 +4411,23 @@ if (1) {
             return function (int $foo) use ($bar): string { return $bar; };
         }
     }',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use function some\a\{
      test1,
     test2
  };
 test();',
-            ),
-            array(
+            ],
+            [
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     function foo($a) {
         // foo
@@ -3811,8 +4443,82 @@ use const some\a\{ConstA, ConstB, ConstC};
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo {
+            public function bar()
+            {
+            }
+        };
+    }',
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo { public function bar() {} };
+    }',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    function foo($a) {
+        // foo
+        $foo = new class($a) extends Foo {
+            public function bar() {
+            }
+        };
+    }',
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo { public function bar() {} };
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo
+        {
+            public function bar()
+            {
+            }
+        };
+    }',
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo { public function bar() {} };
+    }',
+                self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+    function foo($a) {
+        // foo
+        $foo = new class($a) extends Foo
+        {
+            public function bar() {
+            }
+        };
+    }',
+                '<?php
+    function foo($a)
+    {
+        // foo
+        $foo = new class($a) extends Foo { public function bar() {} };
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
     foo(1, new class implements Logger {
         public function log($message) {
@@ -3822,22 +4528,76 @@ use const some\a\{ConstA, ConstB, ConstC};
                 '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    foo(1, new class implements Logger {
+        public function log($message)
+        {
+            log($message);
+        }
+    }, 3);',
+                '<?php
+    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+    foo(1, new class implements Logger
+    {
+        public function log($message) {
+            log($message);
+        }
+    }, 3);',
+                '<?php
+    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
 $message = (new class() implements FooInterface {
 });',
                 '<?php
 $message = (new class() implements FooInterface{});',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+$message = (new class() implements FooInterface {
+});',
+                '<?php
+$message = (new class() implements FooInterface{});',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+$message = (new class() implements FooInterface
+{
+});',
+                '<?php
+$message = (new class() implements FooInterface{});',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php $message = (new class() {
 });',
                 '<?php $message = (new class() {});',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php $message = (new class() {
+});',
+                '<?php $message = (new class() {});',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php $message = (new class()
+{
+});',
+                '<?php $message = (new class() {});',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
 if (1) {
     $message = (new class() extends Foo {
@@ -3854,8 +4614,107 @@ if (1) {
   });
 }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+if (1)
+{
+    $message = (new class() extends Foo {
+        public function bar()
+        {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+                self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+if (1) {
+    $message = (new class() extends Foo
+    {
+        public function bar() {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+if (1) {
+    $message = (new class() extends Foo
+    {
+        public function bar() {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+if (1)
+{
+    $message = (new class() extends Foo
+    {
+        public function bar()
+        {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+                self::$configurationCtrlStructPositionNextLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
+                '<?php
+if (1)
+{
+    $message = (new class() extends Foo
+    {
+        public function bar() {
+            echo 1;
+        }
+    });
+}',
+                '<?php
+if (1) {
+  $message = (new class() extends Foo
+  {
+    public function bar() { echo 1; }
+  });
+}',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
     class Foo {
         public function use() {
@@ -3876,8 +4735,30 @@ if (1) {
     }
                 ',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    class Foo {
+        public function use() {
+        }
+
+        public function use1(): string {
+        }
+    }
+                ',
+                '<?php
+    class Foo
+    {
+        public function use() {
+        }
+
+        public function use1(): string {
+        }
+    }
+                ',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 '<?php
     $a = function (int $foo): string {
         echo $foo;
@@ -3905,8 +4786,39 @@ if (1) {
     }
                 ',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    $a = function (int $foo): string
+    {
+        echo $foo;
+    };
+
+    $b = function (int $foo) use ($bar): string
+    {
+        echo $foo . $bar;
+    };
+
+    function a() {
+    }
+                ',
+                '<?php
+    $a = function (int $foo): string
+    {
+        echo $foo;
+    };
+
+    $b = function (int $foo) use($bar): string
+    {
+        echo $foo . $bar;
+    };
+
+    function a() {
+    }
+                ',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
     class Something {
         public function sth(): string {
@@ -3924,8 +4836,28 @@ if (1) {
         }
     }',
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+    class Something {
+        public function sth(): string {
+            return function (int $foo) use ($bar): string
+            {
+                return $bar;
+            };
+        }
+    }',
+                '<?php
+    class Something
+    {
+        public function sth(): string
+        {
+            return function (int $foo) use ($bar): string { return $bar; };
+        }
+    }',
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
 use function some\a\{
      test1,
@@ -3934,8 +4866,28 @@ use function some\a\{
 test();',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+use function some\a\{
+     test1,
+    test2
+ };
+test();',
+                null,
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+use function some\a\{
+     test1,
+    test2
+ };
+test();',
+                null,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+            [
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
@@ -3943,8 +4895,26 @@ use const some\a\{ConstA, ConstB, ConstC};
 ',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+            [
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use const some\a\{ConstA, ConstB, ConstC};
+',
+                null,
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use const some\a\{ConstA, ConstB, ConstC};
+',
+                null,
+                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+            ],
+        ];
     }
 
     /**
@@ -3965,8 +4935,8 @@ use const some\a\{ConstA, ConstB, ConstC};
 
     public function providePreserveLineAfterControlBraceCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 if (1==1) { // test
     $a = 1;
@@ -3976,8 +4946,8 @@ echo $a;',
 if (1==1) // test
 { $a = 1; }
 echo $a;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if ($test) { // foo
     echo 1;
@@ -4000,8 +4970,8 @@ echo $a;
 if ($a === 3) /**/
 {echo 1;}
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
 
@@ -4012,11 +4982,11 @@ if (true) {
 
     // if body
 }',
-            ),
-            array(
+            ],
+            [
                 "<?php if (true) {\r\n\r\n// CRLF newline\n}",
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {
 
@@ -4029,13 +4999,44 @@ if (true) {
 }',
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-            array(
+            ],
+            [
+                '<?php
+if (true)
+{
+
+    //  The blank line helps with legibility in nested control structures
+    if (true)
+    {
+        // if body
+    }
+
+    // if body
+}',
+                '<?php
+if (true) {
+
+    //  The blank line helps with legibility in nested control structures
+    if (true) {
+        // if body
+    }
+
+    // if body
+}',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+            [
                 "<?php if (true) {\r\n\r\n// CRLF newline\n}",
                 null,
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+            [
+                "<?php if (true)
+{\r\n\r\n// CRLF newline\n}",
+                "<?php if (true){\r\n\r\n// CRLF newline\n}",
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+        ];
     }
 
     /**
@@ -4051,33 +5052,33 @@ if (true) {
             $this->fixer->configure($configuration);
         }
 
-        $this->fixer->configure(array(
+        $this->fixer->configure([
             'allow_single_line_closure' => true,
-        ));
+        ]);
 
         $this->doTest($expected, $input);
     }
 
     public function provideFixWithAllowOnelineLambdaCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     $callback = function () { return true; };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $callback = function () { if ($a) { return true; } return false; };',
                 '<?php
     $callback = function () { if($a){ return true; } return false; };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $callback = function () { if ($a) { return true; } return false; };',
                 '<?php
     $callback = function () { if($a) return true; return false; };',
-            ),
-            array(
+            ],
+            [
                 '<?php
     $callback = function () {
         if ($a) {
@@ -4088,8 +5089,8 @@ if (true) {
                 '<?php
     $callback = function () { if($a) return true;
     return false; };',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -4105,8 +5106,8 @@ if (true) {
 
     public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 if (true) {
     do {
@@ -4118,8 +5119,8 @@ if (true)
     do {
         echo 1;
     } while (false);',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -4142,8 +5143,8 @@ if (true)
 
     public function provideMessyWhitespacesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
 if (true) {'."\r\n"
     ."\t".'if (true) {'."\r\n"
@@ -4156,8 +5157,8 @@ if (true) {'."\r\n"
 .'}',
                 '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-            ),
-            array(
+            ],
+            [
                 '<?php
 if (true) {'."\r\n"
     ."\t".'if (true) {'."\r\n"
@@ -4171,8 +5172,28 @@ if (true) {'."\r\n"
                 '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 self::$configurationOopPositionSameLine,
-            ),
-        );
+            ],
+            [
+                '<?php
+if (true)'
+."\r\n".'{'."\r\n"
+    ."\t".'if (true)'."\r\n\t".'{'."\r\n"
+        ."\t\t".'echo 1;'."\r\n"
+    ."\t".'}'
+    ."\r\n\t".'elseif (true)'
+    ."\r\n\t".'{'."\r\n"
+        ."\t\t".'echo 2;'."\r\n"
+    ."\t".'}'
+    ."\r\n\t".'else'
+    ."\r\n\t".'{'."\r\n"
+        ."\t\t".'echo 3;'."\r\n"
+    ."\t".'}'."\r\n"
+.'}',
+                '<?php
+if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+            ],
+        ];
     }
 
     /**
@@ -4188,8 +5209,8 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
 
     public function provideNowdocInTemplatesCases()
     {
-        return array(
-            array(
+        return [
+            [
                 <<<'EOT'
 <?php
 if (true) {
@@ -4200,7 +5221,7 @@ NOWDOC;
 }
 
 EOT
-,
+                ,
                 <<<'EOT'
 <?php
 if (true) {
@@ -4211,9 +5232,9 @@ NOWDOC;
 }
 
 EOT
-,
-            ),
-            array(
+                ,
+            ],
+            [
                 <<<'EOT'
 <?php
 if (true) {
@@ -4224,7 +5245,7 @@ HEREDOC;
 }
 
 EOT
-,
+                ,
                 <<<'EOT'
 <?php
 if (true) {
@@ -4235,8 +5256,8 @@ HEREDOC;
 }
 
 EOT
-,
-            ),
-        );
+                ,
+            ],
+        ];
     }
 }

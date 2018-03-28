@@ -30,7 +30,7 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Replace all `<>` with `!=`.',
-            array(new CodeSample("<?php\n\$a = \$b <> \$c;"))
+            [new CodeSample("<?php\n\$a = \$b <> \$c;\n")]
         );
     }
 
@@ -49,7 +49,7 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_IS_NOT_EQUAL)) {
-                $tokens[$index] = new Token(array(T_IS_NOT_EQUAL, '!='));
+                $tokens[$index] = new Token([T_IS_NOT_EQUAL, '!=']);
             }
         }
     }

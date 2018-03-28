@@ -31,7 +31,7 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
     {
         return new FixerDefinition(
             'Ensure there is no code on the same line as the PHP open tag.',
-            array(new CodeSample("<?php \$a = 1;\n\$b = 3;"))
+            [new CodeSample("<?php \$a = 1;\n\$b = 3;\n")]
         );
     }
 
@@ -68,6 +68,6 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
         }
 
         $token = $tokens[0];
-        $tokens[0] = new Token(array($token->getId(), rtrim($token->getContent()).$this->whitespacesConfig->getLineEnding()));
+        $tokens[0] = new Token([$token->getId(), rtrim($token->getContent()).$this->whitespacesConfig->getLineEnding()]);
     }
 }

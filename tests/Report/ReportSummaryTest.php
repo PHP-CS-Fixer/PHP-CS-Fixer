@@ -26,7 +26,7 @@ final class ReportSummaryTest extends TestCase
 {
     public function testReportSummary()
     {
-        $changed = array('', 5);
+        $changed = ['', 5];
         $time = time();
         $memory = 123456789;
         $addAppliedFixers = true;

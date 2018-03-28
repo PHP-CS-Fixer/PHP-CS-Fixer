@@ -45,15 +45,15 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
      */
     public function provideFixCases()
     {
-        return array(
-            array('<?php namespace Some\Name\Space;'),
-            array("<?php\nnamespace X;"),
-            array("<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"),
-            array("<?php\r\nnamespace X;"),
-            array("<?php\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"),
-            array("<?php\r\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")),
-            array("<?php\n\nnamespace\\Sub\\Foo::bar();"),
-        );
+        return [
+            ['<?php namespace Some\Name\Space;'],
+            ["<?php\nnamespace X;"],
+            ["<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"],
+            ["<?php\r\nnamespace X;"],
+            ["<?php\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
+            ["<?php\r\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
+            ["<?php\n\nnamespace\\Sub\\Foo::bar();"],
+        ];
     }
 
     public function testFixExampleWithComment()

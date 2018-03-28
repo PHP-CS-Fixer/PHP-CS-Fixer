@@ -40,13 +40,15 @@ final class FixCommandTest extends TestCase
 
     public function testEmptyRulesValue()
     {
-        $this->setExpectedExceptionRegExp(
-            'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
+        $this->expectException(
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class
+        );
+        $this->expectExceptionMessageRegExp(
             '#^Empty rules value is not allowed\.$#'
         );
 
         $this->doTestExecute(
-            array('--rules' => '')
+            ['--rules' => '']
         );
     }
 
@@ -57,10 +59,10 @@ final class FixCommandTest extends TestCase
     public function testEmptyFormatValue()
     {
         $cmdTester = $this->doTestExecute(
-            array(
+            [
                 '--using-cache' => 'not today',
                 '--rules' => 'switch_case_semicolon_to_colon',
-            )
+            ]
         );
 
         $this->assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
@@ -80,15 +82,15 @@ final class FixCommandTest extends TestCase
 
         $commandTester->execute(
             array_merge(
-                array('command' => $command->getName()),
+                ['command' => $command->getName()],
                 $this->getDefaultArguments(),
                 $arguments
             ),
-            array(
+            [
                 'interactive' => false,
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_DEBUG,
-            )
+            ]
         );
 
         return $commandTester;
@@ -96,13 +98,13 @@ final class FixCommandTest extends TestCase
 
     private function getDefaultArguments()
     {
-        return array(
-            'path' => array(__FILE__),
+        return [
+            'path' => [__FILE__],
             '--path-mode' => 'override',
             '--allow-risky' => true,
             '--dry-run' => true,
             '--using-cache' => 'no',
             '--show-progress' => 'none',
-        );
+        ];
     }
 }

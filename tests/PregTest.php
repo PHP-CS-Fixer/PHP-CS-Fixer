@@ -25,8 +25,10 @@ final class PregTest extends TestCase
 {
     public function testMatchFailing()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\\PregException',
+        $this->expectException(
+            'PhpCsFixer\\PregException'
+        );
+        $this->expectExceptionMessage(
             'Error occurred when calling preg_match.'
         );
 
@@ -50,8 +52,10 @@ final class PregTest extends TestCase
 
     public function testMatchAllFailing()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\\PregException',
+        $this->expectException(
+            'PhpCsFixer\\PregException'
+        );
+        $this->expectExceptionMessage(
             'Error occurred when calling preg_match_all.'
         );
 
@@ -75,8 +79,10 @@ final class PregTest extends TestCase
 
     public function testReplaceFailing()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\\PregException',
+        $this->expectException(
+            'PhpCsFixer\\PregException'
+        );
+        $this->expectExceptionMessage(
             'Error occurred when calling preg_replace.'
         );
 
@@ -100,8 +106,10 @@ final class PregTest extends TestCase
 
     public function testReplaceCallbackFailing()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\\PregException',
+        $this->expectException(
+            'PhpCsFixer\\PregException'
+        );
+        $this->expectExceptionMessage(
             'Error occurred when calling preg_replace_callback.'
         );
 
@@ -127,27 +135,29 @@ final class PregTest extends TestCase
 
     public function provideCommonCases()
     {
-        return array(
-            array('/u/u', 'u'),
-            array('/u/u', 'u/u'),
-            array('/./', chr(224).'bc'),
-            array('/à/', 'àbc'),
-            array('/'.chr(224).'|í/', 'àbc'),
-        );
+        return [
+            ['/u/u', 'u'],
+            ['/u/u', 'u/u'],
+            ['/./', chr(224).'bc'],
+            ['/à/', 'àbc'],
+            ['/'.chr(224).'|í/', 'àbc'],
+        ];
     }
 
     public function provideArrayOfPatternsCases()
     {
-        return array(
-            array(array('/à/', '/í/'), 'Tàíl'),
-            array(array('/'.chr(174).'/', '/'.chr(224).'/'), 'foo'),
-        );
+        return [
+            [['/à/', '/í/'], 'Tàíl'],
+            [['/'.chr(174).'/', '/'.chr(224).'/'], 'foo'],
+        ];
     }
 
     public function testSplitFailing()
     {
-        $this->setExpectedException(
-            'PhpCsFixer\\PregException',
+        $this->expectException(
+            'PhpCsFixer\\PregException'
+        );
+        $this->expectExceptionMessage(
             'Error occurred when calling preg_split.'
         );
 
@@ -175,8 +185,8 @@ final class PregTest extends TestCase
         Preg::match($pattern, $subject, $methodMatches);
         preg_match($pattern, $subject, $functionMatches);
 
-        $this->assertSame(array('à'), $methodMatches);
-        $this->assertNotSame(array('à'), $functionMatches);
+        $this->assertSame(['à'], $methodMatches);
+        $this->assertNotSame(['à'], $functionMatches);
     }
 
     public function testCorrectnessForNonUtf8String()
@@ -187,7 +197,7 @@ final class PregTest extends TestCase
         Preg::match($pattern, $subject, $methodMatches);
         preg_match($pattern, $subject, $functionMatches);
 
-        $this->assertSame(array(chr(224)), $methodMatches);
-        $this->assertNotSame(array(chr(224)), $functionMatches);
+        $this->assertSame([chr(224)], $methodMatches);
+        $this->assertNotSame([chr(224)], $functionMatches);
     }
 }

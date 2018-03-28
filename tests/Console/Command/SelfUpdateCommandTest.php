@@ -65,9 +65,9 @@ final class SelfUpdateCommandTest extends TestCase
     public function testCommandName($name)
     {
         $command = new SelfUpdateCommand(
-            $this->prophesize('PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface')->reveal(),
+            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
             $this->createToolInfo(),
-            $this->prophesize('PhpCsFixer\PharCheckerInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
         );
 
         $application = new Application();
@@ -78,10 +78,10 @@ final class SelfUpdateCommandTest extends TestCase
 
     public function provideCommandNameCases()
     {
-        return array(
-            array('self-update'),
-            array('selfupdate'),
-        );
+        return [
+            ['self-update'],
+            ['selfupdate'],
+        ];
     }
 
     /**
@@ -104,7 +104,7 @@ final class SelfUpdateCommandTest extends TestCase
         $expectedFileContents,
         $expectedDisplay
     ) {
-        $versionChecker = $this->prophesize('PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface');
+        $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $versionChecker->getLatestVersion()->willReturn($latestVersion);
 
@@ -114,7 +114,7 @@ final class SelfUpdateCommandTest extends TestCase
         ;
 
         $actualVersionCheck = new NewVersionChecker(
-            $this->prophesize('PhpCsFixer\Console\SelfUpdate\GithubClientInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\GithubClientInterface::class)->reveal()
         );
 
         $versionChecker
@@ -127,7 +127,7 @@ final class SelfUpdateCommandTest extends TestCase
         $command = new SelfUpdateCommand(
             $versionChecker->reveal(),
             $this->createToolInfo(),
-            $this->prophesize('PhpCsFixer\PharCheckerInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -166,65 +166,65 @@ OUTPUT;
 
 OUTPUT;
 
-        return array(
+        return [
             // no new version available
-            array(Application::VERSION, Application::VERSION, array(), true, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, Application::VERSION, array(), false, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, Application::VERSION, array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, Application::VERSION, array('-f' => true), false, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, Application::VERSION, array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, Application::VERSION, array('-f' => true), false, $currentContents, $upToDateDisplay),
+            [Application::VERSION, Application::VERSION, [], true, $currentContents, $upToDateDisplay],
+            [Application::VERSION, Application::VERSION, [], false, $currentContents, $upToDateDisplay],
+            [Application::VERSION, Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay],
+            [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay],
+            [Application::VERSION, Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay],
+            [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay],
 
             // new minor version available
-            array($minor, $minor, array(), true, $minorContents, $newMinorDisplay),
-            array($minor, $minor, array('--force' => true), true, $minorContents, $newMinorDisplay),
-            array($minor, $minor, array('-f' => true), true, $minorContents, $newMinorDisplay),
-            array($minor, $minor, array(), false, $minorContents, $newMinorDisplay),
-            array($minor, $minor, array('--force' => true), false, $minorContents, $newMinorDisplay),
-            array($minor, $minor, array('-f' => true), false, $minorContents, $newMinorDisplay),
+            [$minor, $minor, [], true, $minorContents, $newMinorDisplay],
+            [$minor, $minor, ['--force' => true], true, $minorContents, $newMinorDisplay],
+            [$minor, $minor, ['-f' => true], true, $minorContents, $newMinorDisplay],
+            [$minor, $minor, [], false, $minorContents, $newMinorDisplay],
+            [$minor, $minor, ['--force' => true], false, $minorContents, $newMinorDisplay],
+            [$minor, $minor, ['-f' => true], false, $minorContents, $newMinorDisplay],
 
             // new major version available
-            array($major, Application::VERSION, array(), true, $currentContents, $majorInfoNoMinorDisplay),
-            array($major, Application::VERSION, array(), false, $currentContents, $majorInfoNoMinorDisplay),
-            array($major, Application::VERSION, array('--force' => true), true, $majorContents, $newMajorDisplay),
-            array($major, Application::VERSION, array('-f' => true), false, $majorContents, $newMajorDisplay),
-            array($major, Application::VERSION, array('--force' => true), true, $majorContents, $newMajorDisplay),
-            array($major, Application::VERSION, array('-f' => true), false, $majorContents, $newMajorDisplay),
+            [$major, Application::VERSION, [], true, $currentContents, $majorInfoNoMinorDisplay],
+            [$major, Application::VERSION, [], false, $currentContents, $majorInfoNoMinorDisplay],
+            [$major, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay],
+            [$major, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay],
+            [$major, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay],
+            [$major, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay],
 
             // new minor version and new major version available
-            array($major, $minor, array(), true, $minorContents, $majorInfoNewMinorDisplay),
-            array($major, $minor, array(), false, $minorContents, $majorInfoNewMinorDisplay),
-            array($major, $minor, array('--force' => true), true, $majorContents, $newMajorDisplay),
-            array($major, $minor, array('-f' => true), false, $majorContents, $newMajorDisplay),
-            array($major, $minor, array('--force' => true), true, $majorContents, $newMajorDisplay),
-            array($major, $minor, array('-f' => true), false, $majorContents, $newMajorDisplay),
+            [$major, $minor, [], true, $minorContents, $majorInfoNewMinorDisplay],
+            [$major, $minor, [], false, $minorContents, $majorInfoNewMinorDisplay],
+            [$major, $minor, ['--force' => true], true, $majorContents, $newMajorDisplay],
+            [$major, $minor, ['-f' => true], false, $majorContents, $newMajorDisplay],
+            [$major, $minor, ['--force' => true], true, $majorContents, $newMajorDisplay],
+            [$major, $minor, ['-f' => true], false, $majorContents, $newMajorDisplay],
 
             // weird/unexpected versions
-            array('v0.1.0', 'v0.1.0', array(), true, $currentContents, $upToDateDisplay),
-            array('v0.1.0', 'v0.1.0', array(), false, $currentContents, $upToDateDisplay),
-            array('v0.1.0', 'v0.1.0', array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array('v0.1.0', 'v0.1.0', array('-f' => true), false, $currentContents, $upToDateDisplay),
-            array('v0.1.0', 'v0.1.0', array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array('v0.1.0', 'v0.1.0', array('-f' => true), false, $currentContents, $upToDateDisplay),
-            array('v0.1.0', null, array(), true, $currentContents, $upToDateDisplay),
-            array('v0.1.0', null, array(), false, $currentContents, $upToDateDisplay),
-            array('v0.1.0', null, array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array('v0.1.0', null, array('-f' => true), false, $currentContents, $upToDateDisplay),
-            array('v0.1.0', null, array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array('v0.1.0', null, array('-f' => true), false, $currentContents, $upToDateDisplay),
-            array('v0.1.0', Application::VERSION, array(), true, $currentContents, $upToDateDisplay),
-            array('v0.1.0', Application::VERSION, array(), false, $currentContents, $upToDateDisplay),
-            array('v0.1.0', Application::VERSION, array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array('v0.1.0', Application::VERSION, array('-f' => true), false, $currentContents, $upToDateDisplay),
-            array('v0.1.0', Application::VERSION, array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array('v0.1.0', Application::VERSION, array('-f' => true), false, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, 'v0.1.0', array(), true, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, 'v0.1.0', array(), false, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, 'v0.1.0', array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, 'v0.1.0', array('-f' => true), false, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, 'v0.1.0', array('--force' => true), true, $currentContents, $upToDateDisplay),
-            array(Application::VERSION, 'v0.1.0', array('-f' => true), false, $currentContents, $upToDateDisplay),
-        );
+            ['v0.1.0', 'v0.1.0', [], true, $currentContents, $upToDateDisplay],
+            ['v0.1.0', 'v0.1.0', [], false, $currentContents, $upToDateDisplay],
+            ['v0.1.0', 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay],
+            ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay],
+            ['v0.1.0', 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay],
+            ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay],
+            ['v0.1.0', null, [], true, $currentContents, $upToDateDisplay],
+            ['v0.1.0', null, [], false, $currentContents, $upToDateDisplay],
+            ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay],
+            ['v0.1.0', null, ['-f' => true], false, $currentContents, $upToDateDisplay],
+            ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay],
+            ['v0.1.0', null, ['-f' => true], false, $currentContents, $upToDateDisplay],
+            ['v0.1.0', Application::VERSION, [], true, $currentContents, $upToDateDisplay],
+            ['v0.1.0', Application::VERSION, [], false, $currentContents, $upToDateDisplay],
+            ['v0.1.0', Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay],
+            ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay],
+            ['v0.1.0', Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay],
+            ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay],
+            [Application::VERSION, 'v0.1.0', [], true, $currentContents, $upToDateDisplay],
+            [Application::VERSION, 'v0.1.0', [], false, $currentContents, $upToDateDisplay],
+            [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay],
+            [Application::VERSION, 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay],
+            [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay],
+            [Application::VERSION, 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay],
+        ];
     }
 
     /**
@@ -241,7 +241,7 @@ OUTPUT;
         array $input,
         $decorated
     ) {
-        $versionChecker = $this->prophesize('PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface');
+        $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $newMajorVersion = $this->getNewMajorVersion();
         $versionChecker->getLatestVersion()->will(function () use ($latestVersionSuccess, $newMajorVersion) {
@@ -267,7 +267,7 @@ OUTPUT;
         $command = new SelfUpdateCommand(
             $versionChecker->reveal(),
             $this->createToolInfo(),
-            $this->prophesize('PhpCsFixer\PharCheckerInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -281,26 +281,26 @@ OUTPUT;
 
     public function provideExecuteWhenNotAbleToGetLatestVersionsCases()
     {
-        return array(
-            array(false, false, array(), true),
-            array(false, false, array('--force' => true), true),
-            array(false, false, array('-f' => true), true),
-            array(false, false, array(), false),
-            array(false, false, array('--force' => true), false),
-            array(false, false, array('-f' => true), false),
-            array(true, false, array(), true),
-            array(true, false, array('--force' => true), true),
-            array(true, false, array('-f' => true), true),
-            array(true, false, array(), false),
-            array(true, false, array('--force' => true), false),
-            array(true, false, array('-f' => true), false),
-            array(false, true, array(), true),
-            array(false, true, array('--force' => true), true),
-            array(false, true, array('-f' => true), true),
-            array(false, true, array(), false),
-            array(false, true, array('--force' => true), false),
-            array(false, true, array('-f' => true), false),
-        );
+        return [
+            [false, false, [], true],
+            [false, false, ['--force' => true], true],
+            [false, false, ['-f' => true], true],
+            [false, false, [], false],
+            [false, false, ['--force' => true], false],
+            [false, false, ['-f' => true], false],
+            [true, false, [], true],
+            [true, false, ['--force' => true], true],
+            [true, false, ['-f' => true], true],
+            [true, false, [], false],
+            [true, false, ['--force' => true], false],
+            [true, false, ['-f' => true], false],
+            [false, true, [], true],
+            [false, true, ['--force' => true], true],
+            [false, true, ['-f' => true], true],
+            [false, true, [], false],
+            [false, true, ['--force' => true], false],
+            [false, true, ['-f' => true], false],
+        ];
     }
 
     /**
@@ -312,9 +312,9 @@ OUTPUT;
     public function testExecuteWhenNotInstalledAsPhar(array $input, $decorated)
     {
         $command = new SelfUpdateCommand(
-            $this->prophesize('PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface')->reveal(),
+            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
             $this->createToolInfo(false),
-            $this->prophesize('PhpCsFixer\PharCheckerInterface')->reveal()
+            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -328,14 +328,14 @@ OUTPUT;
 
     public function provideExecuteWhenNotInstalledAsPharCases()
     {
-        return array(
-            array(array(), true),
-            array(array('--force' => true), true),
-            array(array('-f' => true), true),
-            array(array(), false),
-            array(array('--force' => true), false),
-            array(array('-f' => true), false),
-        );
+        return [
+            [[], true],
+            [['--force' => true], true],
+            [['-f' => true], true],
+            [[], false],
+            [['--force' => true], false],
+            [['-f' => true], false],
+        ];
     }
 
     private function execute(Command $command, array $input, $decorated)
@@ -343,14 +343,14 @@ OUTPUT;
         $application = new Application();
         $application->add($command);
 
-        $input = array('command' => $command->getName()) + $input;
+        $input = ['command' => $command->getName()] + $input;
 
         $commandTester = new CommandTester($command);
 
         $realPath = $_SERVER['argv'][0];
         $_SERVER['argv'][0] = $this->getToolPath();
 
-        $commandTester->execute($input, array('decorated' => $decorated));
+        $commandTester->execute($input, ['decorated' => $decorated]);
 
         $_SERVER['argv'][0] = $realPath;
 
@@ -378,7 +378,7 @@ OUTPUT;
     {
         $root = $this->root;
 
-        $toolInfo = $this->prophesize('PhpCsFixer\ToolInfoInterface');
+        $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
         $toolInfo->isInstalledAsPhar()->willReturn($isInstalledAsPhar);
         $toolInfo
             ->getPharDownloadUri(Argument::type('string'))

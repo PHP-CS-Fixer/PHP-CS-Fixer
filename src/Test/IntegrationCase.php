@@ -18,8 +18,9 @@ use PhpCsFixer\Tests\Test\IntegrationCase as BaseIntegrationCase;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @TODO 3.0 While removing, remove from `.composer-require-checker.json`.
  * @TODO 3.0 While removing, remove loading `tests/Test` from `autoload` section of `composer.json`.
+ *
+ * @deprecated since v2.4
  */
 final class IntegrationCase
 {
@@ -57,6 +58,13 @@ final class IntegrationCase
             $ruleset,
             $expectedCode,
             $inputCode
+        );
+        @trigger_error(
+            sprintf(
+                'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.',
+                __CLASS__
+            ),
+            E_USER_DEPRECATED
         );
     }
 

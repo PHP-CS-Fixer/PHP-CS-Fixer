@@ -36,8 +36,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return array(
-            array(
+        return [
+            [
                 '<?php
     switch (1) {
         case (1 #
@@ -47,8 +47,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
     }
 ?>
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
     switch (1) {
         case 1 #
@@ -56,24 +56,24 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
     }
 ?>
 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case 42:
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case false:
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case false:
@@ -81,8 +81,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                     default:
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case "prod":
@@ -95,8 +95,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case "prod":
@@ -109,8 +109,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case 42:
@@ -123,8 +123,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case false:
@@ -137,8 +137,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case false:
@@ -153,8 +153,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                     default :
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case 42:
@@ -167,8 +167,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case $b ? "c" : "d":
@@ -181,8 +181,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case $b ? "c" : "d": break;
@@ -193,8 +193,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                     case $b ? "c" : "d" : break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case $b ? "c" : "this" ? "is" : "ugly":
@@ -207,8 +207,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 switch ($a) {
                     case $b ?: $c:
@@ -221,8 +221,8 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         break;
                 }
                 ',
-            ),
-            array(
+            ],
+            [
                 '<?php
                 $a = 5.1;
                 $b = 1.0;
@@ -289,7 +289,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-                array(
+                [
                     '<?php
                     switch ($a) {
                         case 42:
@@ -316,9 +316,9 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                             }
                     }
                     ',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '<?php
                     switch($foo) {
                         case 4:  ; ;
@@ -343,7 +343,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         default ;
                             return 2;
                 }',
-            ),
-        );
+            ],
+        ];
     }
 }

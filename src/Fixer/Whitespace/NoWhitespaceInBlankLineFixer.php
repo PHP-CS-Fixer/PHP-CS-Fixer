@@ -32,7 +32,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     {
         return new FixerDefinition(
             'Remove trailing whitespace at the end of blank lines.',
-            array(new CodeSample("<?php\n   \n\$a = 1;"))
+            [new CodeSample("<?php\n   \n\$a = 1;\n")]
         );
     }
 
@@ -94,7 +94,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
             }
             $content = implode($this->whitespacesConfig->getLineEnding(), $lines);
             if ('' !== $content) {
-                $tokens[$index] = new Token(array(T_WHITESPACE, $content));
+                $tokens[$index] = new Token([T_WHITESPACE, $content]);
             } else {
                 $tokens->clearAt($index);
             }
