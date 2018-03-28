@@ -39,7 +39,7 @@ final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
     {
         return array(
             array(
-                '<?php',
+                "<?php\n",
             ),
             array(
                 '<?php  ',

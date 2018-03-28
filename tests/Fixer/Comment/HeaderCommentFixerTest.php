@@ -516,8 +516,8 @@ declare(strict_types=1)?>',
             array("<?php\nphpinfo();\n?><hr/>"),
             array("  <?php\n"),
             array('<?= 1?>'),
-            array('<?= 1?><?php'),
-            array("<?= 1?>\n<?php"),
+            array("<?= 1?><?php\n"),
+            array("<?= 1?>\n<?php\n"),
         );
     }
 
