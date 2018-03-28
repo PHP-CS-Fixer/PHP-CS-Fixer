@@ -18,7 +18,6 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
-use PhpCsFixer\PhpunitGenericConstraints\Constraint\SameStringsConstraint;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -264,7 +263,8 @@ abstract class AbstractFixerTestCase extends TestCase
         return $this->fixerClassName;
     }
 
-    private static function createSameStringsConstraint($expected) {
+    private static function createSameStringsConstraint($expected)
+    {
         $candidates = array_filter(array(
             'PhpCsFixer\PhpunitGenericConstraints\Constraint\SameStringsConstraint',
             'PHPUnit\Framework\Constraint\IsIdentical',
