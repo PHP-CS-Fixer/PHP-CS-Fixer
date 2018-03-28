@@ -22,6 +22,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class ComposerTest extends TestCase
 {

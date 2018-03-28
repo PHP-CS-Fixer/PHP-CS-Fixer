@@ -23,6 +23,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @requires OS Linux|Darwin
  * @coversNothing
+ * @group covers-nothing
  * @large
  */
 final class CiIntegrationTest extends TestCase
