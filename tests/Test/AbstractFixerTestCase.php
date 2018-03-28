@@ -17,7 +17,6 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\PhpunitGenericConstraints\Constraint\SameStringsConstraint;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
@@ -287,11 +286,11 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     private static function createSameStringsConstraint($expected)
     {
-        $candidates = array_filter(array(
+        $candidates = array_filter([
             'PhpCsFixer\PhpunitGenericConstraints\Constraint\SameStringsConstraint',
             'PHPUnit\Framework\Constraint\IsIdentical',
             'PHPUnit_Framework_Constraint_IsIdentical',
-        ), function ($className) { return class_exists($className); });
+        ], function ($className) { return class_exists($className); });
 
         if (empty($candidates)) {
             throw new \RuntimeException('PHPUnit not installed?!');
