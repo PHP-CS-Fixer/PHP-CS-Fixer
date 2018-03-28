@@ -1,0 +1,8 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-21T16:50:34Z
+
+For some reason that I was unable to hunt down, execution of `proc_open` (execution of command, like we do for smoke tests, for example) under `phpdbg` is never-ending process, for which we hit timeout exception. I tried to investigate is it related to PHP ver/listeners, but apparently it is not. I'm unable to find why it started failing and was passing week ago.
+I was thinking about solution when problematic tests are grouped and executed from execution under phpdbg, and that approach actually works. Then I extended it to have a group not only for manually pointed problematic tests, but to all tests that collects no coverage.
+
+Could you give opinion, @julienfalque , @SpacePossum , @localheinz , please?
