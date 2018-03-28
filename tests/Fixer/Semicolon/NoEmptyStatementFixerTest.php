@@ -507,10 +507,6 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 '<? ',
                 '<? ;',
             ],
-            [
-                '<?= ',
-                '<?= ;',
-            ],
         ];
     }
 
