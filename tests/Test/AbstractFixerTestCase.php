@@ -282,6 +282,8 @@ abstract class AbstractFixerTestCase extends TestCase
 
     /**
      * @todo Remove me when this class will end up in dedicated package.
+     *
+     * @param string $expected
      */
     private static function createSameStringsConstraint($expected)
     {
