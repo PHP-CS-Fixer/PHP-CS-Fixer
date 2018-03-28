@@ -45,6 +45,7 @@ final class ProjectCodeTest extends TestCase
         'PhpCsFixer\FileRemoval',
         'PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper',
         'PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper',
+        'PhpCsFixer\Linter\CachingLinter',
         'PhpCsFixer\Runner\FileCachingLintingIterator',
         'PhpCsFixer\Runner\FileLintingIterator',
         'PhpCsFixer\StdinFileInfo',
