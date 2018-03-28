@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by ktomk at 2018-03-20T14:19:53Z
+
+If fine with this **LinterInterface::isAsync()** has proven superfluous as well which actually kind of makes sense when chewing this a bit. Why as for type differences via the common interface (async or not async linter on the same linter interface). Your mileage may vary, just saying. Let me know if we can change that interface, I would recommend to remove that method from it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-20T15:54:46Z
+
+> Additionally a fix removing a caching iterator as it behaved unstable in the fix linting iteration.
+
+elaborate what is unstable, show logs, etc...
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-21T11:19:58Z
+
+@ktomk , revert last commit, then we could merge
+
+---------------------------------------------------------------------------
+
+by ktomk at 2018-03-21T14:48:19Z
+
+@keradus: Indeed I was throwing out the baby w/ the bathwater ... for the reasons you wrote. I must admit it was not entirely clear for me what that caching was for (as I've been written yesterday already). Anyway the update is far less invasive. Let's see if Travis likes it. Local tests for me w/ PHP 5.6 and 7.2 were fine again.
+
+Do you have interest to batch up more than two files within iteration? E.g. four parallel processes in linting? currently my setups I/we normally use  eight parallel tasks like so:
+
+~~~
+find ./*.php bin application library/what-not tests -xdev -type f \
+  \( -name '*.php' -o -name '*.phtml' \) -print0 \
+  | 2>/dev/null xargs -0 -n1 -P8 php -d short_open_tag=0 -l \
+  | grep -v '^No syntax errors detected'
+
+test $? -eq 1
+~~~
+
+Just asking I hacked together one batching iterator recently (w/ tests) that fills up a batch of X iterations from the decorated iterator and then iterates over the batch. Would just need another decorator that does the linting (or a re-use of the non-caching one). Then the number of parallel lints is configurable.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-21T15:12:36Z
+
+running the linter on second core and running whole app in parallel calls are to different things. for later, simply use `parallel` (GNU)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-28T07:06:35Z
+
+as this PR is now (with the revert done by @keradus ) , RTM from me :+1:
