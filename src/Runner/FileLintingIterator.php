@@ -20,7 +20,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
  *
  * @internal
  */
-final class FileLintingIterator extends \CachingIterator
+final class FileLintingIterator extends \IteratorIterator
 {
     /**
      * @var LintingResultInterface
