@@ -38,7 +38,7 @@
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.0.1 || ^2.0 || ^3.0",
         "justinrainbow/json-schema": "^5.0",
-        "keradus/cli-executor": "^1.0",
+        "keradus/cli-executor": "^1.1",
         "mikey179/vfsStream": "^1.6",
         "php-coveralls/php-coveralls": "^1.0.2",
         "phpunit/phpunit": "^4.8.35 || ^5.4.3",
@@ -46,6 +46,8 @@
     },
     "suggest": {
         "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
+        "php-cs-fixer/phpunit-constraint-isidenticalstring": "For IsIdenticalString constraint.",
+        "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "For XmlMatchesXsd constraint.",
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
     "config": {
@@ -60,7 +62,6 @@
             "tests/Test/AbstractFixerTestCase.php",
             "tests/Test/AbstractIntegrationCaseFactory.php",
             "tests/Test/AbstractIntegrationTestCase.php",
-            "tests/Test/Constraint/SameStringsConstraint.php",
             "tests/Test/IntegrationCase.php",
             "tests/Test/IntegrationCaseFactory.php",
             "tests/Test/IntegrationCaseFactoryInterface.php",
