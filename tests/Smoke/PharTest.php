@@ -25,6 +25,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @coversNothing
+ * @group covers-nothing
  * @large
  */
 final class PharTest extends TestCase

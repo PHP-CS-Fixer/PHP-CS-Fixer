@@ -114,7 +114,8 @@ jobs:
                 - if [ $TRAVIS_TAG ]; then export COLLECT_COVERAGE=0; fi
             script:
                 - if [ $COLLECT_COVERAGE == 0 ]; then vendor/bin/phpunit || travis_terminate 1; fi
-                - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
+                - if [ $COLLECT_COVERAGE == 1 ]; then vendor/bin/phpunit --group covers-nothing || travis_terminate 1; fi
+                - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
                 - php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
                 - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/coveralls -v; fi
 

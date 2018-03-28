@@ -24,6 +24,7 @@ use PhpCsFixer\ToolInfo;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
