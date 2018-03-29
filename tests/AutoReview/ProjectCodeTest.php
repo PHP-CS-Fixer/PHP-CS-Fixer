@@ -49,7 +49,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
-        \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\StdinFileInfo::class,
