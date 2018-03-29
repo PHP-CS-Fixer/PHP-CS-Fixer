@@ -210,7 +210,7 @@ $this->assertTrue(is_readable($a));
                     PhpUnitTargetVersion::VERSION_5_6,
                     PhpUnitTargetVersion::VERSION_NEWEST,
                 ])
-                ->setDefault(PhpUnitTargetVersion::VERSION_5_0) // @TODO 3.x: change to `VERSION_NEWEST`
+                ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
                 ->getOption(),
         ]);
     }

@@ -149,11 +149,11 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($functionNames),
                 ])
                 ->setDefault([
+                    'get_called_class',
                     'get_class',
                     'php_sapi_name',
                     'phpversion',
                     'pi',
-                    // TODO on v3.0 add 'get_called_class' here
                 ])
                 ->getOption(),
         ]);

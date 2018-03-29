@@ -40,7 +40,7 @@ final class RuleSet implements RuleSetInterface
             'line_ending' => true,
             'lowercase_constants' => true,
             'lowercase_keywords' => true,
-            'method_argument_space' => ['ensure_fully_multiline' => true],
+            'method_argument_space' => true,
             'no_break_comment' => true,
             'no_closing_tag' => true,
             'no_spaces_after_function_name' => true,
@@ -75,7 +75,9 @@ final class RuleSet implements RuleSetInterface
             'increment_style' => true,
             'lowercase_cast' => true,
             'magic_constant_casing' => true,
-            'method_argument_space' => true,
+            'method_argument_space' => [
+                'ensure_fully_multiline' => false,
+            ],
             'native_function_casing' => true,
             'new_with_braces' => true,
             'no_blank_lines_after_class_opening' => true,
@@ -109,18 +111,7 @@ final class RuleSet implements RuleSetInterface
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
             'php_unit_fqcn_annotation' => true,
-            'phpdoc_align' => [
-                // @TODO: on 3.0 switch whole rule to `=> true`, currently we use custom config that will be default on 3.0
-                'tags' => [
-                    'method',
-                    'param',
-                    'property',
-                    'return',
-                    'throws',
-                    'type',
-                    'var',
-                ],
-            ],
+            'phpdoc_align' => true,
             'phpdoc_annotation_without_dot' => true,
             'phpdoc_indent' => true,
             'phpdoc_inline_tag' => true,
@@ -163,7 +154,7 @@ final class RuleSet implements RuleSetInterface
         '@Symfony:risky' => [
             'dir_constant' => true,
             'ereg_to_preg' => true,
-            'function_to_constant' => true,
+            'function_to_constant' => ['functions' => ['get_class', 'php_sapi_name', 'phpversion', 'pi']], // @TODO: consider changing to true
             'is_null' => true,
             'modernize_types_casting' => true,
             'no_alias_functions' => true,
