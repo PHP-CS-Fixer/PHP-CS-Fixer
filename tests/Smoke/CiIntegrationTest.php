@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Smoke;
 
-use Keradus\CliExecutor\BashScriptExecutor;
+use Keradus\CliExecutor\ScriptExecutor;
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Tests\TestCase;
 
@@ -251,6 +251,9 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
 
     private static function executeScript(array $scriptParts)
     {
-        return BashScriptExecutor::create($scriptParts, self::$fixtureDir)->getResult();
+        // @TODO: drop $scriptInit, for now it's needed, as defaut `set -eu` is causing our scripts to crash
+        $scriptInit = array('#!/bin/sh', 'set -e', '');
+
+        return ScriptExecutor::create($scriptParts, self::$fixtureDir, $scriptInit)->getResult();
     }
 }
