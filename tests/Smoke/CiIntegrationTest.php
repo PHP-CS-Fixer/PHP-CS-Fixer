@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Smoke;
 
-use Keradus\CliExecutor\ScriptExecutor;
 use Keradus\CliExecutor\CommandExecutor;
+use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Tests\TestCase;
 
 /**
