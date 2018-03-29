@@ -8,6 +8,7 @@ git:
 cache:
     directories:
         - $HOME/.composer
+        - $HOME/bin
 
 env:
     global:
@@ -33,6 +34,9 @@ jobs:
 
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
+
+                - wget --no-clobber --output-document=$HOME/bin/checkbashisms https://sourceforge.net/projects/checkbaskisms/files/2.0.0.2/checkbashisms/download || true
+                - chmod +x $HOME/bin/checkbashisms
             before_script:
                 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
                 - export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
@@ -60,6 +64,7 @@ jobs:
                 - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^tests/Fixtures" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json || travis_terminate 1
                 - composer normalize -d ./dev-tools ./../composer.json --dry-run
+                - ./dev-tools/check-shell-scripts.sh
 
         - &STANDARD_TEST_JOB
             stage: Fast Test
