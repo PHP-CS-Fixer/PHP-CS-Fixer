@@ -1,0 +1,78 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-08T10:46:26Z
+
+@EvgenyOrekhov , any update on this one ? :)
+
+---------------------------------------------------------------------------
+
+by EvgenyOrekhov at 2018-03-08T18:30:34Z
+
+@keradus I will try to rewrite CiIntegrationTest and ci-integration.sh when I have time.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-19T10:21:03Z
+
+does last comment means you were already able to fix ci-integration and all posix-comaptible is changes are ready?
+sorry for delay, but last notification I got for this PR was your comment, not commit.
+
+if so, please, could you fix up Travis build?
+
+---------------------------------------------------------------------------
+
+by EvgenyOrekhov at 2018-03-19T10:28:07Z
+
+@keradus Yes, I made all the scripts POSIX-compatible, but I am unable to fix the build due to a bug in README generation command. When I run `php php-cs-fixer readme > README.rst` it generates a trailing space on one of the lines, as you can see here: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/352442019#L647. If I remove that trailing space, then the build fails saying that I need to regenerate README.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-19T11:15:20Z
+
+why readme generation doesn't produce trailing whitespaces on 2.2 and does on your branch ?
+
+---------------------------------------------------------------------------
+
+by EvgenyOrekhov at 2018-03-19T11:28:19Z
+
+@keradus Because I changed ci-integration.sh, and it gets copy-pasted to README.rst during generation. But my version of ci-integration.sh doesn't contain trailing spaces. This is weird.
+
+---------------------------------------------------------------------------
+
+by EvgenyOrekhov at 2018-03-19T15:25:37Z
+
+@keradus I added `$HOME/bin` to cache, and I added `--no-clobber` to `wget` in .travis.yml.
+
+Sorry if I messed up the conversation. I can't figure out how to properly use GitHub reviews/comments.
+
+---------------------------------------------------------------------------
+
+by EvgenyOrekhov at 2018-03-19T16:26:21Z
+
+@keradus It was proposed [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3546#issuecomment-366521838), [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3609#issuecomment-374119509), and [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/3613#issuecomment-374263680) to add ShellCheck to CI in this PR.
+
+I can do that, but it will make this PR's scope broader (making the shell scripts POSIX-compatible + refactoring), which, IMHO, not very good.
+
+What do you say? Should I add ShellCheck to CI and lint the shell scripts according to its warnings in this PR?
+
+---------------------------------------------------------------------------
+
+by EvgenyOrekhov at 2018-03-19T17:21:56Z
+
+@keradus I went ahead and added ShellCheck to CI and linted all shell scripts.
+
+This PR now fixes #3544, #3613, and closes #3609.
+
+---------------------------------------------------------------------------
+
+by EvgenyOrekhov at 2018-03-19T17:39:07Z
+
+@keradus `wget` always exits with code `1` when used with `--no-clobber` and `--output-document` and the file exists: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/355473873#L566
+
+Should I just add `|| true` after `wget` to ignore the error?
+
+---------------------------------------------------------------------------
+
+by EvgenyOrekhov at 2018-03-21T13:48:16Z
+
+@keradus I think I'm finished. Please review.
