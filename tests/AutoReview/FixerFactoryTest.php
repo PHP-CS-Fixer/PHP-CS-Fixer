@@ -213,8 +213,6 @@ final class FixerFactoryTest extends TestCase
             $fixers[$fixer->getName()] = $fixer;
         }
 
-        $cases = [];
-
         // prepare bulk tests for phpdoc fixers to test that:
         // * `comment_to_phpdoc` is first
         // * `phpdoc_to_comment` is second
@@ -222,10 +220,12 @@ final class FixerFactoryTest extends TestCase
         // * `phpdoc_types` is fourth
         // * `phpdoc_scalar` is fifth
         // * `phpdoc_align` is last
-        $cases[] = [$fixers['comment_to_phpdoc'], $fixers['phpdoc_to_comment']];
-        $cases[] = [$fixers['phpdoc_indent'], $fixers['phpdoc_types']];
-        $cases[] = [$fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']];
-        $cases[] = [$fixers['phpdoc_types'], $fixers['phpdoc_scalar']];
+        $cases = [
+            [$fixers['comment_to_phpdoc'], $fixers['phpdoc_to_comment']],
+            [$fixers['phpdoc_indent'], $fixers['phpdoc_types']],
+            [$fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']],
+            [$fixers['phpdoc_types'], $fixers['phpdoc_scalar']],
+        ];
 
         $docFixerNames = array_filter(
             array_keys($fixers),
