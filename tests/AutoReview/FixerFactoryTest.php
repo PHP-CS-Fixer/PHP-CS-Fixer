@@ -275,7 +275,6 @@ final class FixerFactoryTest extends TestCase
             'phpdoc_separation,phpdoc_trim.test',
             'phpdoc_summary,phpdoc_trim.test',
             'phpdoc_var_without_name,phpdoc_trim.test',
-            'unary_operator_spaces,not_operator_with_successor_space.test',
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
