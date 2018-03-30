@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  */
-final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterface
+final class DateTimeImmutableFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
