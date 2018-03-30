@@ -49,7 +49,7 @@ $withVar = `ls -lah $var1 ${var2} {$var3} {$var4[0]} {$var5->call()}`;
 EOT
                 ),
             ],
-            'Convertion is done only when it is non risky, so when special chars like single-quotes, double-quotes and backticks are not used inside the command.'
+            'Conversion is done only when it is non risky, so when special chars like single-quotes, double-quotes and backticks are not used inside the command.'
         );
     }
 
@@ -106,7 +106,7 @@ EOT
         array_shift($backtickTokens);
         array_pop($backtickTokens);
 
-        // Double-quoted strings are parsed differenly if they contain
+        // Double-quoted strings are parsed differently if they contain
         // variables or not, so we need to build the new token array accordingly
         $count = count($backtickTokens);
 

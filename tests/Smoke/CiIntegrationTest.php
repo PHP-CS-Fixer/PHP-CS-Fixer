@@ -159,7 +159,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
     public function provideIntegrationCases()
     {
         return [
-            [
+            'random-changes' => [
                 'random-changes',
                 [
                     'touch dir\ a/file.php',
@@ -182,7 +182,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                 ],
                 'S.',
             ],
-            [
+            'changes-including-dist-config-file' => [
                 'changes-including-dist-config-file',
                 [
                     'echo "" >> dir\ b/file\ b.php',
@@ -203,7 +203,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                 ],
                 '...',
             ],
-            [
+            'changes-including-custom-config-file-creation' => [
                 'changes-including-custom-config-file-creation',
                 [
                     'echo "" >> dir\ b/file\ b.php',
@@ -222,7 +222,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                 ],
                 '...',
             ],
-            [
+            'changes-including-composer-lock' => [
                 'changes-including-composer-lock',
                 [
                     'echo "" >> dir\ b/file\ b.php',

@@ -63,7 +63,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['array_indentation'], $fixers['method_chaining_indentation']],
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
-            [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
             [$fixers['blank_line_after_opening_tag'], $fixers['no_blank_lines_before_namespace']],
             [$fixers['braces'], $fixers['array_indentation']],
             [$fixers['class_attributes_separation'], $fixers['braces']],
@@ -94,7 +93,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['general_phpdoc_annotation_remove'], $fixers['no_empty_phpdoc']],
             [$fixers['indentation_type'], $fixers['phpdoc_indent']],
             [$fixers['is_null'], $fixers['yoda_style']],
-            [$fixers['line_ending'], $fixers['single_blank_line_at_eof']],
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['method_separation'], $fixers['braces']],
@@ -153,7 +151,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['php_unit_fqcn_annotation'], $fixers['php_unit_ordered_covers']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['php_unit_expectation']],
-            [$fixers['php_unit_strict'], $fixers['php_unit_construct']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']],
             [$fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']],
@@ -216,8 +213,6 @@ final class FixerFactoryTest extends TestCase
             $fixers[$fixer->getName()] = $fixer;
         }
 
-        $cases = [];
-
         // prepare bulk tests for phpdoc fixers to test that:
         // * `comment_to_phpdoc` is first
         // * `phpdoc_to_comment` is second
@@ -225,10 +220,12 @@ final class FixerFactoryTest extends TestCase
         // * `phpdoc_types` is fourth
         // * `phpdoc_scalar` is fifth
         // * `phpdoc_align` is last
-        $cases[] = [$fixers['comment_to_phpdoc'], $fixers['phpdoc_to_comment']];
-        $cases[] = [$fixers['phpdoc_indent'], $fixers['phpdoc_types']];
-        $cases[] = [$fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']];
-        $cases[] = [$fixers['phpdoc_types'], $fixers['phpdoc_scalar']];
+        $cases = [
+            [$fixers['comment_to_phpdoc'], $fixers['phpdoc_to_comment']],
+            [$fixers['phpdoc_indent'], $fixers['phpdoc_types']],
+            [$fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']],
+            [$fixers['phpdoc_types'], $fixers['phpdoc_scalar']],
+        ];
 
         $docFixerNames = array_filter(
             array_keys($fixers),
@@ -265,25 +262,18 @@ final class FixerFactoryTest extends TestCase
             'class_attributes_separation,braces.test',
             'class_attributes_separation,indentation_type.test',
             'indentation_type,phpdoc_indent.test',
-            'line_ending,single_blank_line_at_eof.test',
             'method_separation,braces.test',
             'method_separation,indentation_type.test',
-            'no_empty_statement,multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_singleline_whitespace_before_semicolons.test',
-            'php_unit_strict,php_unit_construct.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
-            'phpdoc_no_empty_return,phpdoc_trim.test',
             'phpdoc_no_package,phpdoc_order.test',
-            'phpdoc_no_package,phpdoc_trim.test',
             'phpdoc_order,phpdoc_separation.test',
             'phpdoc_order,phpdoc_trim.test',
             'phpdoc_separation,phpdoc_trim.test',
             'phpdoc_summary,phpdoc_trim.test',
             'phpdoc_var_without_name,phpdoc_trim.test',
-            'unary_operator_spaces,not_operator_with_space.test',
-            'unary_operator_spaces,not_operator_with_successor_space.test',
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
