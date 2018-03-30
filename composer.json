@@ -46,7 +46,8 @@
     },
     "suggest": {
         "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
-        "php-cs-fixer/phpunit-generic-constraints": "For extra PHPUnit Constraints",
+        "php-cs-fixer/phpunit-constraint-isidenticalstring": "For IsIdenticalString constraint.",
+        "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "For XmlMatchesXsd constraint.",
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
     "config": {
