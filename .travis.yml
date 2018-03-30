@@ -149,7 +149,7 @@ jobs:
             php: 7.1
             install: ./dev-tools/build.sh
             script:
-                - vendor/bin/phpunit tests/Smoke/PharTest.php
+                - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_PHAR_TESTS=0 vendor/bin/phpunit tests/Smoke/
             deploy:
                 provider: releases
                 api_key:
