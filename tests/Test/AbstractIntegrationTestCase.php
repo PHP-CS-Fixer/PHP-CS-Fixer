@@ -30,6 +30,7 @@ use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Integration test base class.
@@ -143,12 +144,13 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $factory = static::createIntegrationCaseFactory();
         $tests = array();
 
+        /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
             if ('test' !== $file->getExtension()) {
                 continue;
             }
 
-            $tests[] = array(
+            $tests[$file->getPathname()] = array(
                 $factory->create($file),
             );
         }
