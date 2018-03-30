@@ -18,7 +18,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 final class TypeAnalysis implements StartEndTokenAwareAnalysis
 {
     /**
-     * Thist list contains soft and hard reserved types that can be used or will be used by PHP at some point.
+     * This list contains soft and hard reserved types that can be used or will be used by PHP at some point.
      *
      * More info:
      *

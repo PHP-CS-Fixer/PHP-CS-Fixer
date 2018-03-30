@@ -1,11 +1,11 @@
 --TEST--
 Integration of fixers: standardize_not_equals,binary_operator_spaces.
 --RULESET--
-{"standardize_not_equals": true, "binary_operator_spaces": {"operators":{"!==":"align"}}}
+{"standardize_not_equals": true, "binary_operator_spaces": {"operators":{"<>":"align_single_space_minimal", "!=":"align"}}}
 --EXPECT--
 <?php
-$a = $b != $c;
-$d = $e != $f;
+$a = $b   != $c;
+$d = $e   !=   $f;
 
 --INPUT--
 <?php
