@@ -32,7 +32,7 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
      */
     public function getDefinition()
     {
-        $codeSamble = <<<'EOF'
+        $codeSample = <<<'EOF'
 <?php
 
 $singleQuoted = 'String with \" and My\Prefix\\';
@@ -48,17 +48,17 @@ EOF;
         return new FixerDefinition(
             'Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.',
             [
-                new CodeSample($codeSamble),
+                new CodeSample($codeSample),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['single_quoted' => true]
                 ),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['double_quoted' => false]
                 ),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['heredoc_syntax' => false]
                 ),
             ],

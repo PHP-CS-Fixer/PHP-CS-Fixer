@@ -43,7 +43,7 @@ final class ComposerTest extends TestCase
     /**
      * @param string $version
      *
-     * @return strting
+     * @return string
      */
     private function convertAppVersionToAliasedVersion($version)
     {
