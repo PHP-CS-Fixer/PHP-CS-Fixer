@@ -260,7 +260,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $fixedInputCode = file_get_contents($tmpFile);
         $this->assertThat(
             $fixedInputCode,
-            self::createSameStringsConstraint($expected),
+            self::createIsIdenticalStringConstraint($expected),
             sprintf(
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
@@ -402,10 +402,10 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @param string $expected
      */
-    private static function createSameStringsConstraint($expected)
+    private static function createIsIdenticalStringConstraint($expected)
     {
         $candidates = array_filter([
-            'PhpCsFixer\PhpunitGenericConstraints\Constraint\SameStringsConstraint',
+            'PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString',
             'PHPUnit\Framework\Constraint\IsIdentical',
             'PHPUnit_Framework_Constraint_IsIdentical',
         ], function ($className) { return class_exists($className); });
