@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Differ;
 
-use PhpCsFixer\Diff\v3_0\Differ;
-use PhpCsFixer\Diff\v3_0\Output\StrictUnifiedDiffOutputBuilder;
+use PhpCsFixer\Diff\Differ;
+use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
 
 /**
  * @author SpacePossum
