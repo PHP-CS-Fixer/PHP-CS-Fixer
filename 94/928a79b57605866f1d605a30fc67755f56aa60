@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-30T16:26:21Z
+
+please retarget to 2.11
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-30T17:08:17Z
+
+that would be a BC on 2.11 I think, as we've different differ-delegated classes/options there (for some there is no alternative anymore on `php-cs-fixer/diff`)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-30T17:15:43Z
+
+good point, we remove all but strict udiff at 3.0
