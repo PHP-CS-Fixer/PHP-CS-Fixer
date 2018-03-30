@@ -38,7 +38,7 @@
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.0.1 || ^2.0 || ^3.0",
         "justinrainbow/json-schema": "^5.0",
-        "keradus/cli-executor": "^1.0",
+        "keradus/cli-executor": "^1.1",
         "mikey179/vfsStream": "^1.6",
         "php-coveralls/php-coveralls": "^1.0.2",
         "phpunit/phpunit": "^4.8.35 || ^5.4.3",
