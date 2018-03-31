@@ -251,9 +251,6 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
 
     private static function executeScript(array $scriptParts)
     {
-        // @TODO: drop $scriptInit, for now it's needed, as defaut `set -eu` is causing our scripts to crash
-        $scriptInit = array('#!/bin/sh', 'set -e', '');
-
-        return ScriptExecutor::create($scriptParts, self::$fixtureDir, $scriptInit)->getResult();
+        return ScriptExecutor::create($scriptParts, self::$fixtureDir)->getResult();
     }
 }

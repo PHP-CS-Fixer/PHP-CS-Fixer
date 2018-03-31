@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eu
 
 files_with_trailing_spaces=$(
     find . \

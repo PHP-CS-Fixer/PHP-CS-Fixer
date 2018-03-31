@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -eu
 
 # ensure that deps will work on lowest supported PHP version
 composer config platform.php 2> /dev/null || composer config platform.php 5.3.6
