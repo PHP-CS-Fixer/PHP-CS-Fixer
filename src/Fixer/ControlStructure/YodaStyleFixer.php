@@ -544,23 +544,29 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             }
 
             // $a-> or a-> (as in $b->a->c)
-            if ($current->isGivenKind($expectString ? T_STRING : T_VARIABLE) && $next->isGivenKind(T_OBJECT_OPERATOR)) {
+            if ($current->isGivenKind([T_STRING, T_VARIABLE]) && $next->isGivenKind(T_OBJECT_OPERATOR)) {
                 $index = $tokens->getNextMeaningfulToken($nextIndex);
                 $expectString = true;
 
                 continue;
             }
 
-            // $a[...] or a[...] (as in $c->a[$b])
-            if ($current->isGivenKind($expectString ? T_STRING : T_VARIABLE) && $next->equals('[')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index + 1);
+            // $a[...], a[...] (as in $c->a[$b]), $a{...} or a{...} (as in $c->a{$b})
+            if (
+                $current->isGivenKind($expectString ? T_STRING : T_VARIABLE)
+                && $next->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])
+            ) {
+                $index = $tokens->findBlockEnd(
+                    $next->equals('[') ? Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE : Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
+                    $index + 1
+                );
                 if ($index === $end) {
                     return true;
                 }
 
                 $index = $tokens->getNextMeaningfulToken($index);
 
-                if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+                if (!$tokens[$index]->equalsAny([[T_OBJECT_OPERATOR, '->'], '[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])) {
                     return false;
                 }
 
