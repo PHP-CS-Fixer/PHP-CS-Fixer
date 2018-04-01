@@ -14,9 +14,9 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
@@ -43,7 +43,7 @@ Fixer applying this rule is risky.
 Can break stuff.
 
 Fixer is configurable using following option:
-* functions (array): list of `function` names to fix; defaults to ['foo', 'test']
+* functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']
 
 Fixing examples:
  * Example #1. Fixing with the default configuration.
@@ -81,7 +81,7 @@ Replaces bad stuff with good stuff.
 Can break stuff.
 
 Fixer is configurable using following option:
-* \033[32mfunctions\033[39m (\033[33marray\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
+* \033[32mfunctions\033[39m (a subset of \033[33m['foo', 'test']\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
 
 Fixing examples:
  * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
@@ -189,14 +189,11 @@ Fixing examples:
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(true);
 
-        $generator = new FixerOptionValidatorGenerator();
         $functionNames = array('foo', 'test');
         $functions = new FixerOptionBuilder('functions', 'List of `function` names to fix.');
         $functions = $functions
             ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf($functionNames),
-            ))
+            ->setAllowedValues(array(new AllowedValueSubset($functionNames)))
             ->setDefault($functionNames)
             ->getOption()
         ;

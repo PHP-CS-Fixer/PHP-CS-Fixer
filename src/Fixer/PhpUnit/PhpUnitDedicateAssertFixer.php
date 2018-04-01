@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -154,14 +154,11 @@ $this->assertTrue(is_nan($a));
             'is_scalar',
             'is_string',
         );
-        $generator = new FixerOptionValidatorGenerator();
 
         $functions = new FixerOptionBuilder('functions', 'List of assertions to fix.');
         $functions = $functions
             ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf($values),
-            ))
+            ->setAllowedValues(array(new AllowedValueSubset($values)))
             ->setDefault($values)
             ->getOption()
         ;
