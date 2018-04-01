@@ -1,10 +1,14 @@
 #!/bin/sh
+set -eu
 
 command -v php >/dev/null 2>&1 || { echo "I require \`php\` but it's not available. Aborting." >&2; exit 255; }
 command -v grep >/dev/null 2>&1 || { echo "I require \`grep\` but it's not available. Aborting." >&2; exit 255; }
 command -v awk >/dev/null 2>&1 || { echo "I require \`awk\` but it's not available. Aborting." >&2; exit 255; }
 
-if [ "" = "$1" ] || [ "" = "$2" ];
+BRANCH1=${1:-''}
+BRANCH2=${2:-''}
+
+if [ "" = "$BRANCH1" ] || [ "" = "$BRANCH2" ];
 then
     echo "Usage: bash benchmark.sh BRANCH1 BRANCH2 ...BRANCHN"
     exit 1;
