@@ -48,7 +48,6 @@ jobs:
                     | grep -v tests/Test/AbstractIntegrationCaseFactory.php \
                     | grep -v tests/Test/AbstractIntegrationTestCase.php \
                     | grep -v tests/Test/Assert/AssertTokensTrait.php \
-                    | grep -v tests/Test/Constraint/SameStringsConstraint.php \
                     | grep -v tests/Test/IntegrationCase.php \
                     | grep -v tests/Test/IntegrationCaseFactory.php \
                     | grep -v tests/Test/IntegrationCaseFactoryInterface.php \
@@ -70,6 +69,8 @@ jobs:
                 - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/lts:$(echo $SYMFONY_VERSION | grep -o 'v[0-9]\+') || true; fi
 
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
+                - composer require --dev php-cs-fixer/phpunit-constraint-isidenticalstring:^1.0 || true # install if possible, move to require-dev section on 2.11
+                - composer require --dev php-cs-fixer/phpunit-constraint-xmlmatchesxsd:^1.0 || true # install if possible, move to require-dev section on 2.11
                 - composer info -D | sort
             script:
                 - vendor/bin/phpunit || travis_terminate 1
