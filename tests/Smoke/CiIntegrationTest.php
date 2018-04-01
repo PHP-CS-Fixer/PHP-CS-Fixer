@@ -254,9 +254,6 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
 
     private static function executeScript(array $scriptParts)
     {
-        // @TODO: drop $scriptInit, for now it's needed, as defaut `set -eu` is causing our scripts to crash
-        $scriptInit = ['#!/bin/sh', 'set -e', ''];
-
-        return ScriptExecutor::create($scriptParts, self::$fixtureDir, $scriptInit)->getResult();
+        return ScriptExecutor::create($scriptParts, self::$fixtureDir)->getResult();
     }
 }
