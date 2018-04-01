@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-03-31T11:50:30Z
+
+As [Homebrew/php](https://github.com/Homebrew/homebrew-php) went [deprecated](https://brew.sh/2018/01/19/homebrew-1.5.0/) it's removed.
+
+BTW I've updated PHP version to 7.2.
+
+@keradus when merging to 2.11 please remove also `mkdir $(brew --prefix)/etc/php/7.1/conf.d` as it's not needed anymore.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-31T11:51:09Z
+
+looks great !
