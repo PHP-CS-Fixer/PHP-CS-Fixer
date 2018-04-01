@@ -136,17 +136,19 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
 ';
 
-        $executionDetails = "Loaded config default from \".php_cs.dist\".
-${expectedResult3Files}
-Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error";
+        $executionDetails = 'Loaded config default from ".php_cs.dist".
+@@@
+Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error';
 
+        $patternBuffer = sprintf(
+            '/^(?:%s)?(?:%s)?%s$/',
+            preg_quote($optionalIncompatibilityWarning, '/'),
+            preg_quote($optionalXdebugWarning, '/'),
+            preg_quote($executionDetails, '/')
+        );
+        $patternBuffer = strtr($patternBuffer, array('@@@' => $expectedResult3Files));
         $this->assertRegExp(
-            sprintf(
-                '/^(%s)?(%s)?%s$/',
-                preg_quote($optionalIncompatibilityWarning, '/'),
-                preg_quote($optionalXdebugWarning, '/'),
-                preg_quote($executionDetails, '/')
-            ),
+            $patternBuffer,
             $result3->getError()
         );
 
@@ -180,7 +182,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     'dir b/file b.php',
                     '',
                 ),
-                'S.',
+                '(?:S[.]|[.]S)',
             ),
             array(
                 'changes-including-dist-config-file',
@@ -201,7 +203,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     '',
                     '',
                 ),
-                '...',
+                '\Q...\E',
             ),
             array(
                 'changes-including-custom-config-file-creation',
@@ -220,7 +222,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     '',
                     '',
                 ),
-                '...',
+                '\Q...\E',
             ),
             array(
                 'changes-including-composer-lock',
@@ -239,7 +241,7 @@ Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes,
                     '',
                     '',
                 ),
-                '...',
+                '\Q...\E',
             ),
         );
     }
