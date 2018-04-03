@@ -358,10 +358,11 @@ Choose from the list of available rules:
     the opening brace should be placed on "next" or "same" line after
     classy constructs (non-anonymous classes, interfaces, traits, methods
     and non-lambda functions); defaults to ``'next'``
-  - ``position_after_multiline_functions_and_oop_constructs`` (``'next'``, ``'same'``): whether
-    the opening brace should be placed on "next" or "same" line after
-    classy constructs with the argument list is split across multiple lines (non-anonymous classes, interfaces, traits, methods
-    and non-lambda functions); defaults to ``'same'``
+  - ``position_after_multiline_functions_and_oop_constructs`` (``'next'``, ``'same'``):
+    whether the opening brace should be placed on "next" or "same" line
+    after classy constructs with the argument list is split across multiple
+    lines (non-anonymous classes, interfaces, traits, methods and
+    non-lambda functions); defaults to ``'same'``
 
 * **cast_spaces** [@Symfony, @PhpCsFixer]
 
