@@ -117,6 +117,37 @@ class Foo
 ',
                     ['position_after_functions_and_oop_constructs' => self::LINE_SAME]
                 ),
+                new CodeSample(
+                    '<?php
+
+class Foo
+{
+    public function bar($baz)
+    {
+        if ($baz = 900) echo "Hello!";
+
+        if ($baz = 9000)
+            echo "Wait!";
+
+        if ($baz == true)
+        {
+            echo "Why?";
+        }
+        else
+        {
+            echo "Ha?";
+        }
+
+        if (is_array($baz))
+            foreach ($baz as $b)
+            {
+                echo $b;
+            }
+    }
+}
+',
+                    ['position_after_multiline_functions_and_oop_constructs' => self::LINE_SAME]
+                ),
             ]
         );
     }
@@ -170,6 +201,10 @@ class Foo
             (new FixerOptionBuilder('position_after_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).'))
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_NEXT)
+                ->getOption(),
+            (new FixerOptionBuilder('position_after_multiline_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs with the argument list is split across multiple lines (non-anonymous classes, interfaces, traits, methods and non-lambda functions).'))
+                ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
+                ->setDefault(self::LINE_SAME)
                 ->getOption(),
             (new FixerOptionBuilder('position_after_control_structures', 'whether the opening brace should be placed on "next" or "same" line after control structures.'))
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
@@ -596,6 +631,7 @@ class Foo
                     !$isAnonymousClass
                     && $tokens[$closingParenthesisIndex - 1]->isWhitespace()
                     && false !== strpos($tokens[$closingParenthesisIndex - 1]->getContent(), "\n")
+                    && self::LINE_SAME === $this->configuration['position_after_multiline_functions_and_oop_constructs']
                 ) {
                     if (!$tokens[$startBraceIndex - 2]->isComment()) {
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
@@ -613,7 +649,6 @@ class Foo
                     } else {
                         $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
                     }
-
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
                 }
             } else {
