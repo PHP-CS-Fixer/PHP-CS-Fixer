@@ -86,7 +86,8 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
             (new FixerOptionBuilder('style', 'Whether to use pre- or post-increment and decrement operators.'))
                 ->setAllowedValues([self::STYLE_PRE, self::STYLE_POST])
                 ->setDefault(self::STYLE_PRE)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

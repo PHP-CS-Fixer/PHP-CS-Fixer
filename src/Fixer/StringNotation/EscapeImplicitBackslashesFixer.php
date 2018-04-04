@@ -157,15 +157,18 @@ EOF;
             (new FixerOptionBuilder('single_quoted', 'Whether to fix single-quoted strings.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('double_quoted', 'Whether to fix double-quoted strings.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('heredoc_syntax', 'Whether to fix heredoc syntax.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 }

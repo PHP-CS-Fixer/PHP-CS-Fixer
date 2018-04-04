@@ -137,7 +137,8 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
                     'assertNotEquals',
                     'assertNotSame',
                 ])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

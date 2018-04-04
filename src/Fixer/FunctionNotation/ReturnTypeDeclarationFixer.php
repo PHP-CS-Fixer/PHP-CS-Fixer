@@ -125,7 +125,8 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
             (new FixerOptionBuilder('space_before', 'Spacing to apply before colon.'))
                 ->setAllowedValues(['one', 'none'])
                 ->setDefault('none')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 }

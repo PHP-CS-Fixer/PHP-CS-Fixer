@@ -212,19 +212,23 @@ echo 1;
 
                     return $value;
                 })
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('comment_type', 'Comment syntax type.'))
                 ->setAllowedValues([self::HEADER_PHPDOC, self::HEADER_COMMENT])
                 ->setDefault(self::HEADER_COMMENT)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('location', 'The location of the inserted header.'))
                 ->setAllowedValues(['after_open', 'after_declare_strict'])
                 ->setDefault('after_declare_strict')
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('separate', 'Whether the header should be separated from the file content with a new line.'))
                 ->setAllowedValues(['both', 'top', 'bottom', 'none'])
                 ->setDefault('both')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

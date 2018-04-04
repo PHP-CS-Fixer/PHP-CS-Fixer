@@ -1112,6 +1112,8 @@ List of Available Rules
 
    Forbid multi-line whitespace before the closing semicolon or move the semicolon to the new line for chained calls.
 
+   *warning deprecated*   Use ``whitespace_before_statement_end`` instead.
+
    Configuration options:
 
    - | ``strategy``
@@ -1119,8 +1121,6 @@ List of Available Rules
      | Allowed values: ``'new_line_for_chained_calls'``, ``'no_multi_line'``
      | Default value: ``'no_multi_line'``
 
-
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php>`_
 -  `native_constant_invocation <./rules/constant_notation/native_constant_invocation.rst>`_
@@ -1471,7 +1471,7 @@ List of Available Rules
 
    Single-line whitespace before closing semicolon are prohibited.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``whitespace_before_statement_end`` instead.
 
    `Source PhpCsFixer\\Fixer\\Semicolon\\NoSinglelineWhitespaceBeforeSemicolonsFixer <./../src/Fixer/Semicolon/NoSinglelineWhitespaceBeforeSemicolonsFixer.php>`_
 -  `no_spaces_after_function_name <./rules/function_notation/no_spaces_after_function_name.rst>`_
@@ -1704,6 +1704,8 @@ List of Available Rules
 
    In array declaration, there MUST NOT be a whitespace before each comma.
 
+   *warning deprecated*   Use ``whitespace_before_statement_end`` instead.
+
    Configuration options:
 
    - | ``after_heredoc``
@@ -1711,8 +1713,6 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``false``
 
-
-   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\NoWhitespaceBeforeCommaInArrayFixer <./../src/Fixer/ArrayNotation/NoWhitespaceBeforeCommaInArrayFixer.php>`_
 -  `no_whitespace_in_blank_line <./rules/whitespace/no_whitespace_in_blank_line.rst>`_
@@ -2950,6 +2950,25 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixer <./../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php>`_
+-  `whitespace_before_statement_end <./rules/whitespace/whitespace_before_statement_end.rst>`_
+
+   Forbid multi-line whitespace before a statement end (comma or semicolon) or moves it to the next line for multiline statements.
+
+   Configuration options:
+
+   - | ``semicolon_strategy``
+     | Strategy to apply to semicolon.
+     | Allowed values: ``'new_line_for_multiline_statement'``, ``'no_whitespace'``, ``'none'``
+     | Default value: ``'new_line_for_multiline_statement'``
+   - | ``comma_strategy``
+     | Strategy to apply to comma.
+     | Allowed values: ``'new_line_for_multiline_statement'``, ``'no_whitespace'``, ``'none'``
+     | Default value: ``'new_line_for_multiline_statement'``
+
+
+   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\WhitespaceBeforeStatementEndFixer <./../src/Fixer/Whitespace/WhitespaceBeforeStatementEndFixer.php>`_
 -  `yoda_style <./rules/control_structure/yoda_style.rst>`_
 
    Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false, 'identical' => false, 'less_and_greater' => false]``) or ignore those conditions (``null``) based on configuration.

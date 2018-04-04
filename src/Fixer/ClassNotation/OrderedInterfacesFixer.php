@@ -214,11 +214,13 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
             (new FixerOptionBuilder(self::OPTION_ORDER, 'How the interfaces should be ordered'))
                 ->setAllowedValues(self::SUPPORTED_ORDER_OPTIONS)
                 ->setDefault(self::ORDER_ALPHA)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder(self::OPTION_DIRECTION, 'Which direction the interfaces should be ordered'))
                 ->setAllowedValues(self::SUPPORTED_DIRECTION_OPTIONS)
                 ->setDefault(self::DIRECTION_ASCEND)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

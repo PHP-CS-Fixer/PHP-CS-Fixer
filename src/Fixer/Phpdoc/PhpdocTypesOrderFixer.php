@@ -116,11 +116,13 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
             (new FixerOptionBuilder('sort_algorithm', 'The sorting algorithm to apply.'))
                 ->setAllowedValues(['alpha', 'none'])
                 ->setDefault('alpha')
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('null_adjustment', 'Forces the position of `null` (overrides `sort_algorithm`).'))
                 ->setAllowedValues(['always_first', 'always_last', 'none'])
                 ->setDefault('always_first')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

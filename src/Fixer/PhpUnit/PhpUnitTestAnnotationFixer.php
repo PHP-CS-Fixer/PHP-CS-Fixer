@@ -101,7 +101,8 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             (new FixerOptionBuilder('style', 'Whether to use the @test annotation or not.'))
                 ->setAllowedValues(['prefix', 'annotation'])
                 ->setDefault('prefix')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

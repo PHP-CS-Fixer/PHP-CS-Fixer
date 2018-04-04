@@ -134,11 +134,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([PhpUnitTargetVersion::VERSION_3_2, PhpUnitTargetVersion::VERSION_4_3, PhpUnitTargetVersion::VERSION_NEWEST])
                 ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('use_class_const', 'Use ::class notation.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

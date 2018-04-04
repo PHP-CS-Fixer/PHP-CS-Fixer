@@ -114,7 +114,8 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
             (new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` array syntax.'))
                 ->setAllowedValues(['long', 'short'])
                 ->setDefault('short')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

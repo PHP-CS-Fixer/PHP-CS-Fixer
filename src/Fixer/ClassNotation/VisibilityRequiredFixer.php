@@ -87,7 +87,8 @@ class Sample
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset(['property', 'method', 'const'])])
                 ->setDefault(['property', 'method', 'const'])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

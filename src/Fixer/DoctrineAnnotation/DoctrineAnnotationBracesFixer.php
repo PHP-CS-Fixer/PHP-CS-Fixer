@@ -60,7 +60,8 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
                 (new FixerOptionBuilder('syntax', 'Whether to add or remove braces.'))
                     ->setAllowedValues(['with_braces', 'without_braces'])
                     ->setDefault('without_braces')
-                    ->getOption(),
+                    ->getOption()
+                ,
             ]
         ));
     }

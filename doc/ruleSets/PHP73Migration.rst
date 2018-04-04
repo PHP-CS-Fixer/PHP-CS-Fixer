@@ -12,9 +12,9 @@ Rules
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
   config:
   ``['after_heredoc' => true]``
-- `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
-  config:
-  ``['after_heredoc' => true]``
 - `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
   config:
   ``['after_heredoc' => true]``
+- `whitespace_before_statement_end <./../rules/whitespace/whitespace_before_statement_end.rst>`_
+  config:
+  ``['comma_strategy' => 'no_whitespace', 'semicolon_strategy' => 'no_whitespace']``

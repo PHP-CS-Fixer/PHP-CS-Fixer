@@ -173,11 +173,13 @@ final class NewWithBracesFixer extends AbstractFixer implements ConfigurableFixe
             (new FixerOptionBuilder('named_class', 'Whether named classes should be followed by parentheses.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('anonymous_class', 'Whether anonymous classes should be followed by parentheses.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

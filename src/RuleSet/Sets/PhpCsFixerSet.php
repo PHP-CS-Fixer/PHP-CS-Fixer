@@ -60,9 +60,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'method_chaining_indentation' => true,
             'multiline_comment_opening_closing' => true,
-            'multiline_whitespace_before_semicolons' => [
-                'strategy' => 'new_line_for_chained_calls',
-            ],
             'no_extra_blank_lines' => [
                 'tokens' => [
                     'break',
@@ -99,6 +96,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'simple_to_complex_string_variable' => true,
             'single_line_comment_style' => true,
             'single_line_throw' => false,
+            'whitespace_before_statement_end' => true,
         ];
     }
 

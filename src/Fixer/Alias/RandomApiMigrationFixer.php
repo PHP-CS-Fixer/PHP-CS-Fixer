@@ -161,7 +161,8 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                     'rand' => 'mt_rand', // @TODO change to `random_int` as default on 4.0
                     'srand' => 'mt_srand',
                 ])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 }

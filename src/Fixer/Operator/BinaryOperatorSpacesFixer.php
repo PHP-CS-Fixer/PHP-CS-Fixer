@@ -306,7 +306,8 @@ $array = [
             (new FixerOptionBuilder('default', 'Default fix strategy.'))
                 ->setDefault(self::SINGLE_SPACE)
                 ->setAllowedValues(self::$allowedValues)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `'.implode('`, `', self::SUPPORTED_OPERATORS).'`'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $option): bool {
@@ -336,7 +337,8 @@ $array = [
                     return true;
                 }])
                 ->setDefault([])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

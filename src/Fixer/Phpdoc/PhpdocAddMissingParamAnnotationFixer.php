@@ -224,7 +224,8 @@ function f9(string $foo, $bar, $baz) {}
             (new FixerOptionBuilder('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.'))
                 ->setDefault(true)
                 ->setAllowedTypes(['bool'])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

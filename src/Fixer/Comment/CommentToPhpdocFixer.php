@@ -107,7 +107,8 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
             (new FixerOptionBuilder('ignored_tags', 'List of ignored tags'))
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

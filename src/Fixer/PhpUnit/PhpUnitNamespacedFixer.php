@@ -201,7 +201,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([PhpUnitTargetVersion::VERSION_4_8, PhpUnitTargetVersion::VERSION_5_7, PhpUnitTargetVersion::VERSION_6_0, PhpUnitTargetVersion::VERSION_NEWEST])
                 ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

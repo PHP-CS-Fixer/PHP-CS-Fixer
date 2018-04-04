@@ -167,7 +167,8 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
                     'phpversion',
                     'pi',
                 ])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

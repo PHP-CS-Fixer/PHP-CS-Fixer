@@ -131,7 +131,8 @@ final class EmptyLoopBodyFixer extends AbstractFixer implements ConfigurableFixe
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([self::STYLE_BRACES, self::STYLE_SEMICOLON])
                 ->setDefault(self::STYLE_SEMICOLON)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 }

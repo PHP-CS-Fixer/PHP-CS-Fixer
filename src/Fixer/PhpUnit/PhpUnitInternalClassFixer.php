@@ -74,7 +74,8 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
                 ->setAllowedValues([(new AllowedValueSubset($types))])
                 ->setAllowedTypes(['array'])
                 ->setDefault(['normal', 'final'])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

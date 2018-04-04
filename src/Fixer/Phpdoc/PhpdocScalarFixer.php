@@ -111,7 +111,8 @@ function sample($a, $b, $c)
             (new FixerOptionBuilder('types', 'A list of types to fix.'))
                 ->setAllowedValues([new AllowedValueSubset($types)])
                 ->setDefault($types)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

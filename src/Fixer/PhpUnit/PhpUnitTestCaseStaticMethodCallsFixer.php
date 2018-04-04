@@ -364,7 +364,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues(array_keys($this->allowedValues))
                 ->setDefault('static')
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('methods', 'Dictionary of `method` => `call_type` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $option) use ($thisFixer): bool {
@@ -394,7 +395,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }])
                 ->setDefault([])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

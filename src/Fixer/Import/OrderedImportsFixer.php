@@ -253,7 +253,8 @@ use Bar;
             (new FixerOptionBuilder('sort_algorithm', 'whether the statements should be sorted alphabetically or by length, or not sorted'))
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_ALPHA)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('imports_order', 'Defines the order of import types.'))
                 ->setAllowedTypes(['array', 'null'])
                 ->setAllowedValues([static function (?array $value) use ($supportedSortTypes): bool {
@@ -280,7 +281,8 @@ use Bar;
                     return true;
                 }])
                 ->setDefault(null)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

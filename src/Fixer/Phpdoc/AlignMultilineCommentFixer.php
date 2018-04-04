@@ -176,7 +176,8 @@ with a line not prefixed with asterisk
             (new FixerOptionBuilder('comment_type', 'Whether to fix PHPDoc comments only (`phpdocs_only`), any multi-line comment whose lines all start with an asterisk (`phpdocs_like`) or any multi-line comment (`all_multiline`).'))
                 ->setAllowedValues(['phpdocs_only', 'phpdocs_like', 'all_multiline'])
                 ->setDefault('phpdocs_only')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 }

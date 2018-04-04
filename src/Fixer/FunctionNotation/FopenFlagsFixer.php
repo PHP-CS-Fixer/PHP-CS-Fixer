@@ -52,7 +52,8 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurab
             (new FixerOptionBuilder('b_mode', 'The `b` flag must be used (`true`) or omitted (`false`).'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

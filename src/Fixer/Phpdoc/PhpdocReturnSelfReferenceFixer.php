@@ -177,7 +177,8 @@ class Sample
                     return $normalizedValue;
                 })
                 ->setDefault($default)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

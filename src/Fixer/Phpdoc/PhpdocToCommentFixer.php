@@ -124,7 +124,8 @@ foreach($connections as $key => $sqlite) {
             (new FixerOptionBuilder('ignored_tags', 'List of ignored tags (matched case insensitively)'))
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

@@ -159,15 +159,18 @@ if (count($x)) {
             (new FixerOptionBuilder('import_constants', 'Whether to import, not import or ignore global constants.'))
                 ->setDefault(null)
                 ->setAllowedValues([true, false, null])
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('import_functions', 'Whether to import, not import or ignore global functions.'))
                 ->setDefault(null)
                 ->setAllowedValues([true, false, null])
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('import_classes', 'Whether to import, not import or ignore global classes.'))
                 ->setDefault(true)
                 ->setAllowedValues([true, false, null])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

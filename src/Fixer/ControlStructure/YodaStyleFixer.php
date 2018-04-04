@@ -145,19 +145,23 @@ return $foo === count($bar);
             (new FixerOptionBuilder('equal', 'Style for equal (`==`, `!=`) statements.'))
                 ->setAllowedTypes(['bool', 'null'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('identical', 'Style for identical (`===`, `!==`) statements.'))
                 ->setAllowedTypes(['bool', 'null'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('less_and_greater', 'Style for less and greater than (`<`, `<=`, `>`, `>=`) statements.'))
                 ->setAllowedTypes(['bool', 'null'])
                 ->setDefault(null)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('always_move_variable', 'Whether variables should always be on non assignable side when applying Yoda style.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

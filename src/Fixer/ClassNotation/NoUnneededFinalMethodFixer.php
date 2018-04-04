@@ -125,7 +125,8 @@ class Bar
             (new FixerOptionBuilder('private_methods', 'Private methods of non-`final` classes must not be declared `final`.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

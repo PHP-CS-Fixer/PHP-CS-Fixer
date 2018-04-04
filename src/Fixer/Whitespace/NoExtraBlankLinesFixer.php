@@ -308,7 +308,8 @@ switch($a) {
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset(self::$availableTokens)])
                 ->setDefault(['extra'])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

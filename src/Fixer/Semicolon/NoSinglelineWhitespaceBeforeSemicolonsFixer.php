@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -22,8 +23,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @deprecated since 3.9
+ *
+ * @todo remove in 4.0
  */
-final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
+final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements DeprecatedFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -52,6 +57,14 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(';');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSuccessorsNames(): array
+    {
+        return ['whitespace_before_statement_end'];
     }
 
     /**
