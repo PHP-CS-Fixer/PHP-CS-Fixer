@@ -1,8 +1,8 @@
 #!/bin/sh
-set -e
+set -eu
 
 TOKEN=$1
-MSG_SUFFIX=$2
+MSG_SUFFIX=${2:-''}
 
 if [ ! -z "$MSG_SUFFIX" ]
 then

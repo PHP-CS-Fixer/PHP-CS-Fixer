@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Report;
 
+use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use PhpCsFixer\Report\XmlReporter;
-use PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraint;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -33,6 +33,11 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
     public static function setUpBeforeClass()
     {
+        // @TODO 2.11 remove me
+        if (!class_exists('PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd')) {
+            self::markTestSkipped('Cannot execute test, install `php-cs-fixer/phpunit-constraint-xmlmatchesxsd` first.');
+        }
+
         self::$xsd = file_get_contents(__DIR__.'/../../doc/xml.xsd');
     }
 
@@ -153,7 +158,7 @@ XML;
         $formatter = new OutputFormatter();
         $input = $formatter->format($input);
 
-        $this->assertThat($input, new XmlMatchesXsdConstraint(self::$xsd));
+        $this->assertThat($input, new XmlMatchesXsd(self::$xsd));
         $this->assertXmlStringEqualsXmlString($expected, $input);
     }
 }
