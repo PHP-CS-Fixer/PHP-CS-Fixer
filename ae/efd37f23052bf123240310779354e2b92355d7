@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-04-02T19:34:37Z
+
+Failing build example: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/361316355
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-02T20:09:39Z
+
+woooot :|
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-05T07:57:09Z
+
+it's reverted on Sf, so if we would merge it, next release of Sf would make our tests to fail again...
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-05T08:55:17Z
+
+Thought about it too but actually it should work anyway: what Symfony reverted is normalizing paths in its results. But if the given path is already normalized, normalizing it has no effect anyway, so if Symfony reverts the normalization on its side, it should have no effect on our side.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-05T11:11:55Z
+
+```diff
+-/foo/.../bar
++/foo
+```
+
+that's the normalization we are talking about.
+2.8.37 does it, 2.8.36 and 2.8.28`@dev` doesn't.
+if we will do it on our side, it will fail on 2.8.28, won't it ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-05T11:49:58Z
+
+No, because we normalize it *before* passing it to the finder, which will then use it as-is so the test will still pass.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-05T12:00:48Z
+
+didn't spot that. awesome !
