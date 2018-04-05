@@ -722,6 +722,13 @@ Choose from the list of available rules:
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
     syntax; defaults to ``'long'``
 
+* **logical_operators_short_variation**
+
+  Operators ``&&`` and ``||`` should be should be used instead of ``and`` and
+  ``or``, respectively.
+
+  *Risky rule: replaced pair operate at different precedences.*
+
 * **lowercase_cast** [@Symfony]
 
   Cast should be written in lower case.

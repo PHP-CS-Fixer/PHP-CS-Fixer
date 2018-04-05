@@ -46,6 +46,7 @@ $config = PhpCsFixer\Config::create()
         'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
         'list_syntax' => ['syntax' => 'long'],
+        'logical_operators_short_variation' => true,
         'method_argument_space' => ['ensure_fully_multiline' => true],
         'method_chaining_indentation' => true,
         'multiline_comment_opening_closing' => true,
