@@ -19,7 +19,6 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
-use PhpCsFixer\Tests\Test\Constraint\SameStringsConstraint;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -157,7 +156,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             $this->assertThat(
                 $tokens->generateCode(),
-                new SameStringsConstraint($expected),
+                self::createIsIdenticalStringConstraint($expected),
                 'Code build on input code must match expected code.'
             );
             $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
@@ -189,7 +188,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $this->assertThat(
             $tokens->generateCode(),
-            new SameStringsConstraint($expected),
+            self::createIsIdenticalStringConstraint($expected),
             'Code build on expected code must not change.'
         );
         $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
@@ -278,5 +277,27 @@ abstract class AbstractFixerTestCase extends TestCase
         $this->fixerClassName = get_class($fixers[0]);
 
         return $this->fixerClassName;
+    }
+
+    /**
+     * @todo Remove me when this class will end up in dedicated package.
+     *
+     * @param string $expected
+     */
+    private static function createIsIdenticalStringConstraint($expected)
+    {
+        $candidates = array_filter([
+            'PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString',
+            'PHPUnit\Framework\Constraint\IsIdentical',
+            'PHPUnit_Framework_Constraint_IsIdentical',
+        ], function ($className) { return class_exists($className); });
+
+        if (empty($candidates)) {
+            throw new \RuntimeException('PHPUnit not installed?!');
+        }
+
+        $candidate = array_shift($candidates);
+
+        return new $candidate($expected);
     }
 }

@@ -17,10 +17,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @author Eddilbert Macharia <edd.cowan@gmail.com>
  *
- * @coversNothing
- * @group covers-nothing
- *
  * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoAlternativeSyntaxFixer
  */
 final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
 {
