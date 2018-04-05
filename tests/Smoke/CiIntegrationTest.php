@@ -74,7 +74,7 @@ final class CiIntegrationTest extends TestCase
      * @param string[] $caseCommands
      * @param string[] $expectedResult1Lines
      * @param string[] $expectedResult2Lines
-     * @param string   $expectedResult3Files
+     * @param string   $expectedResult3FilesLine
      *
      * @dataProvider provideIntegrationCases
      */
@@ -83,7 +83,7 @@ final class CiIntegrationTest extends TestCase
         array $caseCommands,
         array $expectedResult1Lines,
         array $expectedResult2Lines,
-        $expectedResult3Files
+        $expectedResult3FilesLine
     ) {
         self::executeScript(array_merge(
             [
@@ -136,8 +136,10 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
 ';
 
+        $expectedResult3Files = substr($expectedResult3FilesLine, 0, strpos($expectedResult3FilesLine, ' '));
+
         $pattern = sprintf(
-            '/^(?:%s)?(?:%s)?%s\n([\.S]{%d})\n%s$/',
+            '/^(?:%s)?(?:%s)?%s\n([\.S]{%d})(?: [^\n]*)?\n%s$/',
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
             preg_quote('Loaded config default from ".php_cs.dist".', '/'),
