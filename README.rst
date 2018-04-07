@@ -289,6 +289,18 @@ Choose from the list of available rules:
   Ensure there is no code on the same line as the PHP open tag and it is
   followed by a blank line.
 
+* **blank_line_around_class_body**
+
+  Ensure that class body contains one blank line after class definition
+  and before its end.
+
+  Configuration options:
+
+  - ``apply_to_anonymous_classes`` (``bool``): whether this fixer should be applied
+    to anonymous classes; defaults to ``false``
+  - ``blank_lines_count`` (``int``): adjusts an amount of the blank lines; defaults
+    to ``1``
+
 * **blank_line_before_return**
 
   An empty line feed should precede a return statement. DEPRECATED: use
