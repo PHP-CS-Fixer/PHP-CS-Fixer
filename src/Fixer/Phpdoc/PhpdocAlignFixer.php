@@ -55,7 +55,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     public function getDefinition()
     {
         return new FixerDefinition(
-            'All items of the @param, @throws, @return, @var, and @type phpdoc tags must be aligned vertically.',
+            'All items of the `@param`, `@throws`, `@return`, `@var`, and `@type` phpdoc tags must be aligned vertically.',
             array(new CodeSample('<?php
 /**
  * @param  EngineInterface $templating

@@ -30,7 +30,7 @@ final class SelfAccessorFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Inside class or interface element "self" should be preferred to the class name itself.',
+            'Inside class or interface element `self` should be preferred to the class name itself.',
             array(
                 new CodeSample(
                     '<?php
