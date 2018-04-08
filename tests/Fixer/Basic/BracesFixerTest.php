@@ -5235,7 +5235,7 @@ NOWDOC;
 }
 
 EOT
-,
+                ,
                 <<<'EOT'
 <?php
 if (true) {
@@ -5246,7 +5246,7 @@ NOWDOC;
 }
 
 EOT
-,
+                ,
             ],
             [
                 <<<'EOT'
@@ -5259,7 +5259,7 @@ HEREDOC;
 }
 
 EOT
-,
+                ,
                 <<<'EOT'
 <?php
 if (true) {
@@ -5270,7 +5270,7 @@ HEREDOC;
 }
 
 EOT
-,
+                ,
             ],
         ];
     }

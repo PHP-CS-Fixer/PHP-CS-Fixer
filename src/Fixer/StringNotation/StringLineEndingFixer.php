@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -73,7 +74,7 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
 
             $tokens[$tokenIndex] = new Token([
                 $token->getId(),
-                preg_replace(
+                Preg::replace(
                     '#\R#u',
                     $ending,
                     $token->getContent()

@@ -24,12 +24,12 @@ namespace PhpCsFixer;
 final class FileReader
 {
     /**
-     * @var ?self
+     * @var null|self
      */
     private static $instance;
 
     /**
-     * @var ?string
+     * @var null|string
      */
     private $stdinContent;
 

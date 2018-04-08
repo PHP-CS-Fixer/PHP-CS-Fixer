@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractNoUselessElseFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -83,7 +84,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
         $whitespace = '';
         for ($previous = $index - 1; $previous > 0; --$previous) {
             $token = $tokens[$previous];
-            if ($token->isWhitespace() && preg_match('/(\R[^\R]*)$/', $token->getContent(), $matches)) {
+            if ($token->isWhitespace() && Preg::match('/(\R[^\R]*)$/', $token->getContent(), $matches)) {
                 $whitespace = $matches[1];
 
                 break;
@@ -93,7 +94,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
         $previousToken = $tokens[$index - 1];
         if (!$previousToken->isWhitespace()) {
             $tokens->insertAt($index, new Token([T_WHITESPACE, $whitespace]));
-        } elseif (!preg_match('/\R/', $previousToken->getContent())) {
+        } elseif (!Preg::match('/\R/', $previousToken->getContent())) {
             $tokens[$index - 1] = new Token([T_WHITESPACE, $whitespace]);
         }
     }

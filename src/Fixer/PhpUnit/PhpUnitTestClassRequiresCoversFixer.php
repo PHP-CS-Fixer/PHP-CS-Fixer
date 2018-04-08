@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -85,7 +86,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $index = $tokens[$prevIndex]->isGivenKind(T_FINAL) ? $prevIndex : $index;
 
             $indent = $tokens[$index - 1]->isGivenKind(T_WHITESPACE)
-                ? preg_replace('/^.*\R*/', '', $tokens[$index - 1]->getContent())
+                ? Preg::replace('/^.*\R*/', '', $tokens[$index - 1]->getContent())
                 : '';
 
             $prevIndex = $tokens->getPrevNonWhitespace($index);

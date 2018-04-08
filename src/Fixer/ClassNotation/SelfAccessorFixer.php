@@ -47,7 +47,9 @@ class Sample
 }
 '
                 ),
-            ]
+            ],
+            null,
+            'Risky when using dynamic calls like get_called_class() or late static binding.'
         );
     }
 
@@ -57,6 +59,14 @@ class Sample
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     /**
