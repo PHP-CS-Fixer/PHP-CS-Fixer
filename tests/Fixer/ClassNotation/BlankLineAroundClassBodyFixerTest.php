@@ -46,12 +46,17 @@ final class BlankLineAroundClassBodyFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param array       $configuration
      *
-     *
-     * @dataProvider provideTraitsCases
+     * @dataProvider provideAnonymousClassesCases
+     * @requires PHP 7.0
      */
-    public function testFixTraits($expected, $input = null)
+    public function testFixAnonymousClasses($expected, $input = null, array $configuration = null)
     {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -179,36 +184,80 @@ trait Good
         ];
         $cases[] = [
             '<?php
-$class = new class extends \DateTime {
-    public $field;
+class Good
+{
+    use Foo\bar;
 
-    public function firstMethod() {}
-};',
+    public function firstMethod()
+    {
+        //code here
+    }
+
+}',
             '<?php
-$class = new class extends \DateTime {
+class Good
+{
+    use Foo\bar;
 
-    public $field;
-
-    public function firstMethod() {}
-
-};',
+    public function firstMethod()
+    {
+        //code here
+    }
+}',
         ];
         $cases[] = [
             '<?php
-$class = new class extends \DateTime {
+class Good
+{
+    use Foo\bar;
+    use Foo\baz;
 
-    public $field;
+    public function firstMethod()
+    {
+        //code here
+    }
 
-    public function firstMethod() {}
-
-};',
+}',
             '<?php
-$class = new class extends \DateTime {
-    public $field;
+class Good
+{
+    use Foo\bar;
+    use Foo\baz;
 
-    public function firstMethod() {}
-};',
-            self::$configurationApplyForAnonymousClasses,
+    public function firstMethod()
+    {
+        //code here
+    }
+}',
+        ];
+        $cases[] = [
+            '<?php
+class Good
+{
+    use Foo, Bar {
+        Bar::smallTalk insteadof A;
+        Foo::bigTalk insteadof B;
+    }
+
+    public function firstMethod()
+    {
+        //code here
+    }
+
+}',
+            '<?php
+class Good
+{
+    use Foo, Bar {
+        Bar::smallTalk insteadof A;
+        Foo::bigTalk insteadof B;
+    }
+
+    public function firstMethod()
+    {
+        //code here
+    }
+}',
         ];
         $cases[] = [
             '<?php
@@ -253,86 +302,42 @@ class Good
         return $cases;
     }
 
-    public function provideTraitsCases()
+    public function provideAnonymousClassesCases()
     {
         $cases = [];
 
         $cases[] = [
             '<?php
-class Good
-{
-    use Foo\bar;
+$class = new class extends \Foo {
+    public $field;
 
-    public function firstMethod()
-    {
-        //code here
-    }
-
-}',
+    public function firstMethod() {}
+};',
             '<?php
-class Good
-{
-    use Foo\bar;
+$class = new class extends \Foo {
 
-    public function firstMethod()
-    {
-        //code here
-    }
-}',
+    public $field;
+
+    public function firstMethod() {}
+
+};',
         ];
         $cases[] = [
             '<?php
-class Good
-{
-    use Foo\bar;
-    use Foo\baz;
+$class = new class extends \Foo {
 
-    public function firstMethod()
-    {
-        //code here
-    }
+    public $field;
 
-}',
+    public function firstMethod() {}
+
+};',
             '<?php
-class Good
-{
-    use Foo\bar;
-    use Foo\baz;
+$class = new class extends \Foo {
+    public $field;
 
-    public function firstMethod()
-    {
-        //code here
-    }
-}',
-        ];
-        $cases[] = [
-            '<?php
-class Good
-{
-    use Foo, Bar {
-        Bar::smallTalk insteadof A;
-        Foo::bigTalk insteadof B;
-    }
-
-    public function firstMethod()
-    {
-        //code here
-    }
-
-}',
-            '<?php
-class Good
-{
-    use Foo, Bar {
-        Bar::smallTalk insteadof A;
-        Foo::bigTalk insteadof B;
-    }
-
-    public function firstMethod()
-    {
-        //code here
-    }
-}',
+    public function firstMethod() {}
+};',
+            self::$configurationApplyForAnonymousClasses,
         ];
 
         return $cases;
