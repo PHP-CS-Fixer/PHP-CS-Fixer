@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Test;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet;
@@ -245,7 +246,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
                 $linter = $linterProphecy->reveal();
             } else {
-                $linter = new Linter();
+                $linter = new CachingLinter(new Linter());
             }
         }
 
