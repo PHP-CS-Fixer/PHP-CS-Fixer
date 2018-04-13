@@ -1,0 +1,79 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-30T20:15:52Z
+
+When running on PR that would cause an error:
+```
+ker@dus:~/github/PHP-CS-Fixer λ vendor/bin/phpunit tests/Smoke/InstallViaComposerTest.php
+PHPUnit 7.0.3 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 7.2.1-1+ubuntu17.04.1+deb.sury.org+1
+Configuration: /home/keradus/github/PHP-CS-Fixer/phpunit.xml.dist
+
+Testing PhpCsFixer\Tests\Smoke\InstallViaComposerTest
+E                                                                                                                            1 / 1 (100%)
+
+You should really fix these slow tests (>100ms)...
+ 1. 25547ms to run PhpCsFixer\Tests\Smoke\InstallViaComposerTest:testFoo
+
+Time: 25.69 seconds, Memory: 4.00MB
+
+There was 1 error:
+
+1) PhpCsFixer\Tests\Smoke\InstallViaComposerTest::testFoo
+Keradus\CliExecutor\ExecutionException: Cannot execute `php vendor/autoload.php`:
+Code: 255
+Exit text: Unknown exit code
+Error output: PHP Warning:  Class 'PHPUnit_Runner_Version' not found in /home/keradus/github/PHP-CS-Fixer/tests/Test/Constraint/SameStringsConstraint.php on line 16
+PHP Fatal error:  Uncaught Error: Class 'PHPUnit\Runner\Version' not found in /home/keradus/github/PHP-CS-Fixer/tests/Test/Constraint/SameStringsConstraint.php:19
+Stack trace:
+#0 /tmp/cs_fixer_tmp_qNOARt/vendor/composer/autoload_real.php(66): require()
+#1 /tmp/cs_fixer_tmp_qNOARt/vendor/composer/autoload_real.php(56): composerRequire10079d131e3de5b8dce2b81f25c894c4('fb17371873febc4...', '/tmp/cs_fixer_t...')
+#2 /tmp/cs_fixer_tmp_qNOARt/vendor/autoload.php(7): ComposerAutoloaderInit10079d131e3de5b8dce2b81f25c894c4::getLoader()
+#3 {main}
+  thrown in /home/keradus/github/PHP-CS-Fixer/tests/Test/Constraint/SameStringsConstraint.php on line 19
+
+Details:
+
+/home/keradus/github/PHP-CS-Fixer/vendor/keradus/cli-executor/src/CommandExecutor.php:75
+/home/keradus/github/PHP-CS-Fixer/tests/Smoke/InstallViaComposerTest.php:71
+
+ERRORS!
+Tests: 1, Assertions: 2, Errors: 1.
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-30T20:16:07Z
+
+When running on working branch:
+```
+ker@dus:~/github/PHP-CS-Fixer λ vendor/bin/phpunit tests/Smoke/InstallViaComposerTest.php
+PHPUnit 7.0.3 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 7.2.1-1+ubuntu17.04.1+deb.sury.org+1
+Configuration: /home/keradus/github/PHP-CS-Fixer/phpunit.xml.dist
+
+Testing PhpCsFixer\Tests\Smoke\InstallViaComposerTest
+.                                                                                                                            1 / 1 (100%)
+
+You should really fix these slow tests (>100ms)...
+ 1. 28211ms to run PhpCsFixer\Tests\Smoke\InstallViaComposerTest:testFoo
+
+Time: 28.34 seconds, Memory: 4.00MB
+
+OK (1 test, 4 assertions)
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-04T06:49:10Z
+
+is `circleci` fail related to this PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-04T07:57:45Z
+
+@SpacePossum no they are not, they were fix by @kubawerlos in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3665 already ;)
+retriggering CI by updating branch with target one...
