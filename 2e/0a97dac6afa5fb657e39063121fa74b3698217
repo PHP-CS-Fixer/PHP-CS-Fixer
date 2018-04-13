@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-04T22:03:26Z
+
+Looks like AppVeyor works fine again. There is still one failure but we know it's related to a recent change in symfony/finder.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-06T17:58:36Z
+
+Green now :)
+
+This should be merged on 2.11 I think.
