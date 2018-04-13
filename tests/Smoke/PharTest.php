@@ -41,7 +41,11 @@ final class PharTest extends TestCase
         self::$pharPath = self::$pharCwd.'/'.self::$pharName;
 
         if (!file_exists(self::$pharPath)) {
-            static::markTestSkipped('No phar file available.');
+            if (getenv('PHP_CS_FIXER_TEST_ALLOW_SKIPPING_PHAR_TESTS')) {
+                self::markTestSkipped('No phar file available.');
+            }
+
+            self::fail('No phar file available. Failing as test is obligatory because of `PHP_CS_FIXER_TEST_ALLOW_SKIPPING_PHAR_TESTS=0`.');
         }
     }
 
