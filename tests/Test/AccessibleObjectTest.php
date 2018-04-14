@@ -34,6 +34,13 @@ final class AccessibleObjectTest extends TestCase
         $this->accessibleObject = new AccessibleObject(new DummyClass());
     }
 
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        $this->accessibleObject = null;
+    }
+
     public function testCreate()
     {
         $object = AccessibleObject::create(new \stdClass());

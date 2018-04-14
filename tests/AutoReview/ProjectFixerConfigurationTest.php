@@ -28,26 +28,17 @@ use PhpCsFixer\ToolInfo;
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
-    /**
-     * @var Config
-     */
-    private $config;
-
-    protected function setUp()
-    {
-        $file = __DIR__.'/../../.php_cs.dist';
-        $this->config = require $file;
-    }
-
     public function testCreate()
     {
-        $this->assertInstanceOf('PhpCsFixer\Config', $this->config);
-        $this->assertEmpty($this->config->getCustomFixers());
-        $this->assertNotEmpty($this->config->getRules());
+        $config = $this->loadConfig();
+
+        $this->assertInstanceOf('PhpCsFixer\Config', $config);
+        $this->assertEmpty($config->getCustomFixers());
+        $this->assertNotEmpty($config->getRules());
 
         // call so the fixers get configured to reveal issue (like deprecated configuration used etc.)
         $resolver = new ConfigurationResolver(
-            $this->config,
+            $config,
             array(),
             __DIR__,
             new ToolInfo()
@@ -58,8 +49,16 @@ final class ProjectFixerConfigurationTest extends TestCase
 
     public function testRuleDefinedAlpha()
     {
-        $rules = $rulesSorted = array_keys($this->config->getRules());
+        $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
         sort($rulesSorted);
         $this->assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php_cs.dist` of this project.');
+    }
+
+    /**
+     * @return Config
+     */
+    private function loadConfig()
+    {
+        return require __DIR__.'/../../.php_cs.dist';
     }
 }
