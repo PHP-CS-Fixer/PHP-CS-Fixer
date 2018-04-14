@@ -1,0 +1,40 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-15T11:36:30Z
+
+could you propose a fix @Slamdunk ?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-15T11:38:19Z
+
+I don't get very well @julienfalque algorithm :\
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-20T16:23:24Z
+
+@keradus @julienfalque I've pushed the fix, can you review it please?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-20T16:31:10Z
+
+ping @julienfalque
+could you take a look please? this one is waiting too long
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-03-22T09:42:53Z
+
+Rebased.
+
+Only nightly is failing, I'll ignore it.
+
+Ping @julienfalque :)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-04-03T06:42:34Z
+
+Ping @julienfalque :\
