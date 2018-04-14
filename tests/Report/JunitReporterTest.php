@@ -37,6 +37,8 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         // @TODO 2.11 remove me
         if (!class_exists('PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd')) {
             self::markTestSkipped('Cannot execute test, install `php-cs-fixer/phpunit-constraint-xmlmatchesxsd` first.');
@@ -47,6 +49,8 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     public static function tearDownAfterClass()
     {
+        parent::tearDownAfterClass();
+
         self::$xsd = null;
     }
 

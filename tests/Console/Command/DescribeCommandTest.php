@@ -33,18 +33,6 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DescribeCommandTest extends TestCase
 {
-    /**
-     * @var Application
-     */
-    private $application;
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->application = new Application();
-    }
-
     public function testExecuteOutput()
     {
         $expected =
@@ -130,9 +118,10 @@ Fixing examples:
 
     public function testExecuteWithUnknownRuleName()
     {
-        $this->application->add(new DescribeCommand(new FixerFactory()));
+        $application = new Application();
+        $application->add(new DescribeCommand(new FixerFactory()));
 
-        $command = $this->application->find('describe');
+        $command = $application->find('describe');
 
         $commandTester = new CommandTester($command);
 
@@ -146,9 +135,10 @@ Fixing examples:
 
     public function testExecuteWithUnknownSetName()
     {
-        $this->application->add(new DescribeCommand(new FixerFactory()));
+        $application = new Application();
+        $application->add(new DescribeCommand(new FixerFactory()));
 
-        $command = $this->application->find('describe');
+        $command = $application->find('describe');
 
         $commandTester = new CommandTester($command);
 
@@ -162,9 +152,10 @@ Fixing examples:
 
     public function testExecuteWithoutName()
     {
-        $this->application->add(new DescribeCommand(new FixerFactory()));
+        $application = new Application();
+        $application->add(new DescribeCommand(new FixerFactory()));
 
-        $command = $this->application->find('describe');
+        $command = $application->find('describe');
 
         $commandTester = new CommandTester($command);
 
@@ -195,9 +186,10 @@ Fixing examples:
         $fixerFactory = new FixerFactory();
         $fixerFactory->registerFixer($mock, true);
 
-        $this->application->add(new DescribeCommand($fixerFactory));
+        $application = new Application();
+        $application->add(new DescribeCommand($fixerFactory));
 
-        $command = $this->application->find('describe');
+        $command = $application->find('describe');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -280,9 +272,10 @@ Fixing examples:
         $fixerFactory = new FixerFactory();
         $fixerFactory->registerFixer($fixer->reveal(), true);
 
-        $this->application->add(new DescribeCommand($fixerFactory));
+        $application = new Application();
+        $application->add(new DescribeCommand($fixerFactory));
 
-        $command = $this->application->find('describe');
+        $command = $application->find('describe');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
