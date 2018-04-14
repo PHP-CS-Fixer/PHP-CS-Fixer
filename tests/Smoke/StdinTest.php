@@ -26,20 +26,15 @@ use PHPUnit\Framework\TestCase;
  */
 final class StdinTest extends TestCase
 {
-    private static $cwd;
-
-    public static function setUpBeforeClass()
-    {
-        self::$cwd = __DIR__.'/../..';
-    }
-
     public function testFixingStdin()
     {
+        $cwd = __DIR__.'/../..';
+
         $command = 'php php-cs-fixer fix --rules=@PSR2 --dry-run --diff --using-cache=no';
         $inputFile = 'tests/Fixtures/Integration/set/@PSR2.test-in.php';
 
-        $fileResult = CommandExecutor::create("${command} ${inputFile}", self::$cwd)->getResult(false);
-        $stdinResult = CommandExecutor::create("${command} - < ${inputFile}", self::$cwd)->getResult(false);
+        $fileResult = CommandExecutor::create("${command} ${inputFile}", $cwd)->getResult(false);
+        $stdinResult = CommandExecutor::create("${command} - < ${inputFile}", $cwd)->getResult(false);
 
         $this->assertSame(
             [

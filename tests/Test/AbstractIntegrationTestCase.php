@@ -98,6 +98,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $tmpFile = static::getTempFile();
 
         self::$fileRemoval->delete($tmpFile);
+        self::$fileRemoval = null;
     }
 
     protected function setUp()
@@ -115,6 +116,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
+
+        $this->linter = null;
 
         // @todo remove at 3.0
         Tokens::setLegacyMode(false);
