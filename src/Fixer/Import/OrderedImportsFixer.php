@@ -69,7 +69,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Ordering use statements.',
+            'Ordering `use` statements.',
             [
                 new CodeSample("<?php\nuse Z; use A;\n"),
                 new CodeSample(

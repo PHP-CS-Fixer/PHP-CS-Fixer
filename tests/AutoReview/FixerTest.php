@@ -60,7 +60,7 @@ final class FixerTest extends TestCase
         $definition = $fixer->getDefinition();
         $fixerIsConfigurable = $fixer instanceof ConfigurationDefinitionFixerInterface;
 
-        $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixerName));
+        $this->assertRegExp('/^[A-Z`].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or a ` and end with dot.', $fixerName));
 
         $samples = $definition->getCodeSamples();
         $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));

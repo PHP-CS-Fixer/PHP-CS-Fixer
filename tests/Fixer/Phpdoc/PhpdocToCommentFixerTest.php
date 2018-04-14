@@ -534,6 +534,25 @@ class A
 ',
         ];
 
+        $cases[] = ['<?php
+/** header */
+echo 123;
+
+/** @var int $bar1 */
+(print($bar1 = 0));
+            ',
+        ];
+
+        $cases[] = [
+            '<?php
+/** header */
+echo 123;
+
+/** @var ClassLoader $loader */
+$loader = require __DIR__.\'/../vendor/autoload.php\';
+',
+        ];
+
         return $cases;
     }
 
@@ -551,6 +570,36 @@ trait DocBlocks
 {
     public function test() {}
 }',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        return [
+            [
+                '<?php
+/** header */
+echo 123;
+
+/** @var User $bar3 */
+($bar3 = tmp())->doSomething();
+
+/** @var Session $session */ # test
+$session = new Session();
+                ',
             ],
         ];
     }
