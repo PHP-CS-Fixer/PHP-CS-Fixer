@@ -50,6 +50,11 @@ final class FixerOptionBuilder
     private $normalizer;
 
     /**
+     * @var null|string
+     */
+    private $deprecationMessage;
+
+    /**
      * @param string $name
      * @param string $description
      */
@@ -109,11 +114,23 @@ final class FixerOptionBuilder
     }
 
     /**
+     * @param null|string $deprecationMessage
+     *
+     * @return $this
+     */
+    public function setDeprecationMessage($deprecationMessage)
+    {
+        $this->deprecationMessage = $deprecationMessage;
+
+        return $this;
+    }
+
+    /**
      * @return FixerOption
      */
     public function getOption()
     {
-        return new FixerOption(
+        $option = new FixerOption(
             $this->name,
             $this->description,
             $this->isRequired,
@@ -122,5 +139,11 @@ final class FixerOptionBuilder
             $this->allowedValues,
             $this->normalizer
         );
+
+        if (null !== $this->deprecationMessage) {
+            $option = new DeprecatedFixerOption($option, $this->deprecationMessage);
+        }
+
+        return $option;
     }
 }

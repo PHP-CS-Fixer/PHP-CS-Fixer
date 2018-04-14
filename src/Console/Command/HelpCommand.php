@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
@@ -535,6 +536,14 @@ EOF
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
                         } else {
                             $line .= 'required';
+                        }
+
+                        if ($option instanceof DeprecatedFixerOption) {
+                            $line .= '. DEPRECATED: '.Preg::replace(
+                                '/(`.+?`)/',
+                                '<info>$1</info>',
+                                lcfirst(Preg::replace('/\.$/', '', OutputFormatter::escape($option->getDeprecationMessage())))
+                            );
                         }
 
                         foreach (self::wordwrap($line, 72) as $index => $line) {
