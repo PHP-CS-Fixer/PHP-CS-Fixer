@@ -52,7 +52,7 @@ EOF;
 /**
  * @method int foo()
  * @property int $foo
- * @property callable $foo
+ * @property callback $foo
  * @property-read bool $bar
  * @property-write float $baz
  */
@@ -316,6 +316,37 @@ EOF;
      */
 
 EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixCallback()
+    {
+        $expected = <<<'EOF'
+<?php
+/**
+ * @method int foo()
+ * @property int $foo
+ * @property callable $foo
+ * @property-read bool $bar
+ * @property-write float $baz
+ */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+/**
+ * @method integer foo()
+ * @property integer $foo
+ * @property callback $foo
+ * @property-read boolean $bar
+ * @property-write double $baz
+ */
+
+EOF;
+
+        $this->fixer->configure(['types' => ['boolean', 'callback', 'double', 'integer', 'real', 'str']]);
 
         $this->doTest($expected, $input);
     }
