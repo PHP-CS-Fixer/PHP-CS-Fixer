@@ -36,7 +36,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Unused use statements must be removed.',
+            'Unused `use` statements must be removed.',
             [new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();\n")]
         );
     }

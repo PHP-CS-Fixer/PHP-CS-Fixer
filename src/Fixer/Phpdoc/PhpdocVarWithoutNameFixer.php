@@ -32,7 +32,7 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            '@var and @type annotations should not contain the variable name.',
+            '`@var` and `@type` annotations should not contain the variable name.',
             [new CodeSample('<?php
 final class Foo
 {
