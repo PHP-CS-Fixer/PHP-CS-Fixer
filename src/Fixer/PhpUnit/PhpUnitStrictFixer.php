@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -97,6 +98,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+
         foreach ($this->configuration['assertions'] as $methodBefore) {
             $methodAfter = self::$assertionMap[$methodBefore];
 
@@ -116,6 +119,17 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
 
                 $sequenceIndexes = array_keys($sequence);
+
+                $argumentsCount = $argumentsAnalyzer->countArguments(
+                    $tokens,
+                    $sequenceIndexes[3],
+                    $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $sequenceIndexes[3])
+                );
+
+                if (2 !== $argumentsCount && 3 !== $argumentsCount) {
+                    continue;
+                }
+
                 $tokens[$sequenceIndexes[2]] = new Token(array(T_STRING, $methodAfter));
 
                 $index = $sequenceIndexes[3];

@@ -33,12 +33,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
      */
     public function testLegacyFix($expected, $input = null)
     {
-        $this->fixer->configure(array(
-            'assertAttributeEquals',
-            'assertAttributeNotEquals',
-            'assertEquals',
-            'assertNotEquals',
-        ));
+        $this->fixer->configure(array_keys($this->getMethodsMap()));
         $this->doTest($expected, $input);
     }
 
@@ -52,29 +47,17 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     {
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(array('assertions' => array(
-            'assertAttributeEquals',
-            'assertAttributeNotEquals',
-            'assertEquals',
-            'assertNotEquals',
-        )));
+        $this->fixer->configure(array('assertions' => array_keys($this->getMethodsMap())));
         $this->doTest($expected, $input);
     }
 
     public function provideTestFixCases()
     {
-        $methodsMap = array(
-            'assertAttributeEquals' => 'assertAttributeSame',
-            'assertAttributeNotEquals' => 'assertAttributeNotSame',
-            'assertEquals' => 'assertSame',
-            'assertNotEquals' => 'assertNotSame',
-        );
-
         $cases = array(
             array('<?php $self->foo();'),
         );
 
-        foreach ($methodsMap as $methodBefore => $methodAfter) {
+        foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
             $cases[] = array("<?php \$sth->${methodBefore}(1, 1);");
             $cases[] = array("<?php \$sth->${methodAfter}(1, 1);");
             $cases[] = array(
@@ -102,6 +85,41 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         return $cases;
     }
 
+    /**
+     * Only method calls with 2 or 3 arguments should be fixed.
+     *
+     * @param string $expected
+     *
+     * @dataProvider provideTestNoFixWithWrongNumberOfArgumentsCases
+     */
+    public function testNoFixWithWrongNumberOfArguments($expected)
+    {
+        $this->fixer->configure(array('assertions' => array_keys($this->getMethodsMap())));
+        $this->doTest($expected);
+    }
+
+    public function provideTestNoFixWithWrongNumberOfArgumentsCases()
+    {
+        $cases = array();
+        foreach ($this->getMethodsMap() as $candidate => $fix) {
+            $cases[sprintf('do not change call to "%s" without arguments.', $candidate)] = array(
+                sprintf('<?php $this->%s();', $candidate),
+            );
+
+            foreach (array(1, 4, 5, 10) as $argumentCount) {
+                $cases[sprintf('do not change call to "%s" with #%d arguments.', $candidate, $argumentCount)] = array(
+                    sprintf(
+                        '<?php $this->%s(%s);',
+                        $candidate,
+                        substr(str_repeat('$a, ', $argumentCount), 0, -2)
+                    ),
+                );
+            }
+        }
+
+        return $cases;
+    }
+
     public function testInvalidConfig()
     {
         $this->setExpectedExceptionRegExp(
@@ -110,5 +128,18 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         );
 
         $this->fixer->configure(array('assertions' => array('__TEST__')));
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getMethodsMap()
+    {
+        return array(
+            'assertAttributeEquals' => 'assertAttributeSame',
+            'assertAttributeNotEquals' => 'assertAttributeNotSame',
+            'assertEquals' => 'assertSame',
+            'assertNotEquals' => 'assertNotSame',
+        );
     }
 }
