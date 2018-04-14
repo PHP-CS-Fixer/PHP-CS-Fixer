@@ -424,6 +424,62 @@ $this
                         ->method2();
                 ?>',
             ],
+            [
+                '<?php
+
+                    function foo($bar)
+                    {
+                        if ($bar === 1) {
+                            $baz
+                                ->bar()
+                            ;
+                        }
+
+                        return (new Foo($bar))
+                            ->baz()
+                        ;
+                    }
+                ?>',
+                '<?php
+
+                    function foo($bar)
+                    {
+                        if ($bar === 1) {
+                            $baz
+                                ->bar();
+                        }
+
+                        return (new Foo($bar))
+                            ->baz();
+                    }
+                ?>',
+            ],
+            [
+                '<?php
+
+                    $foo = (new Foo($bar))
+                        ->baz()
+                    ;
+
+                    function foo($bar)
+                    {
+                        $foo = (new Foo($bar))
+                            ->baz()
+                        ;
+                    }
+                ?>',
+                '<?php
+
+                    $foo = (new Foo($bar))
+                        ->baz();
+
+                    function foo($bar)
+                    {
+                        $foo = (new Foo($bar))
+                            ->baz();
+                    }
+                ?>',
+            ],
         ];
     }
 
