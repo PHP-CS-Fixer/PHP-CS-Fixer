@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -208,6 +209,14 @@ final class DescribeCommand extends Command
                     );
                 } else {
                     $line .= '<comment>required</comment>';
+                }
+
+                if ($option instanceof DeprecatedFixerOption) {
+                    $line .= '. <error>DEPRECATED</error>: '.Preg::replace(
+                        '/(`.+?`)/',
+                        '<info>$1</info>',
+                        OutputFormatter::escape(lcfirst($option->getDeprecationMessage()))
+                    );
                 }
 
                 $output->writeln($line);

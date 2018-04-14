@@ -271,10 +271,12 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``align_double_arrow`` (``false``, ``null``, ``true``): (deprecated) Whether to apply,
-    remove or ignore double arrows alignment; defaults to ``false``
-  - ``align_equals`` (``false``, ``null``, ``true``): (deprecated) Whether to apply, remove
-    or ignore equals alignment; defaults to ``false``
+  - ``align_double_arrow`` (``false``, ``null``, ``true``): whether to apply, remove or
+    ignore double arrows alignment; defaults to ``false``. DEPRECATED: use
+    options ``operators`` and ``default`` instead
+  - ``align_equals`` (``false``, ``null``, ``true``): whether to apply, remove or ignore
+    equals alignment; defaults to ``false``. DEPRECATED: use options
+    ``operators`` and ``default`` instead
   - ``default`` (``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``,
     ``'single_space'``, ``null``): default fix strategy; defaults to ``'single_space'``
   - ``operators`` (``array``): dictionary of ``binary operator`` => ``fix strategy``
@@ -517,12 +519,13 @@ Choose from the list of available rules:
   - ``after_array_assignments_equals`` (``null``, ``bool``): whether to add, remove or
     ignore spaces after array assignment ``=`` operator; defaults to ``true``
   - ``around_argument_assignments`` (``bool``): whether to fix spaces around
-    argument assignment operator (deprecated, use
-    ``before_argument_assignments`` and ``after_argument_assignments`` options
-    instead); defaults to ``true``
+    argument assignment operator; defaults to ``true``. DEPRECATED: use options
+    ``before_argument_assignments`` and ``after_argument_assignments`` instead
   - ``around_array_assignments`` (``bool``): whether to fix spaces around array
-    assignment operators (deprecated, use ``before_array_assignments_*`` and
-    ``after_array_assignments_*`` options instead); defaults to ``true``
+    assignment operators; defaults to ``true``. DEPRECATED: use options
+    ``before_array_assignments_equals``, ``after_array_assignments_equals``,
+    ``before_array_assignments_colon`` and ``after_array_assignments_colon``
+    instead
   - ``around_commas`` (``bool``): whether to fix spaces around commas; defaults to
     ``true``
   - ``around_parentheses`` (``bool``): whether to fix spaces around parentheses;
@@ -701,8 +704,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``use_yoda_style`` (``bool``): (deprecated) Whether Yoda style conditions should
-    be used; defaults to ``true``
+  - ``use_yoda_style`` (``bool``): whether Yoda style conditions should be used;
+    defaults to ``true``. DEPRECATED: use ``yoda_style`` fixer instead
 
 * **line_ending** [@PSR2, @Symfony]
 
@@ -1094,8 +1097,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``functions`` (``null``): (deprecated, use ``target`` instead) List of assertions
-    to fix (overrides ``target``); defaults to ``null``
+  - ``functions`` (``null``): list of assertions to fix (overrides ``target``);
+    defaults to ``null``. DEPRECATED: use option ``target`` instead
   - ``target`` (``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``): target version of
     PHPUnit; defaults to ``'5.0'``
 
@@ -1273,6 +1276,11 @@ Choose from the list of available rules:
 
   Scalar types should always be written in the same form. ``int`` not
   ``integer``, ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.
+
+  Configuration options:
+
+  - ``types``: a map of types to fix; defaults to ``['boolean', 'double',
+    'integer', 'real', 'str']``
 
 * **phpdoc_separation** [@Symfony]
 

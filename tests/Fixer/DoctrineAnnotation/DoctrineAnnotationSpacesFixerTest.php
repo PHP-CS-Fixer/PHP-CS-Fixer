@@ -28,8 +28,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAllCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAll($expected, $input = null)
     {
@@ -73,8 +73,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAllCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAllWithDifferentLineEnding($expected, $input = null)
     {
@@ -384,8 +384,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundParenthesesOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundParenthesesOnly($expected, $input = null)
     {
@@ -443,8 +443,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundParenthesesOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundParenthesesOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -693,8 +693,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundCommasOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundCommasOnly($expected, $input = null)
     {
@@ -752,8 +752,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundCommasOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundCommasOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1025,8 +1025,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundArgumentAssignmentsOnly($expected, $input = null)
     {
@@ -1052,8 +1052,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundArgumentAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1301,8 +1301,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundArrayAssignmentsOnly($expected, $input = null)
     {
@@ -1328,8 +1328,8 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
+     * @expectedDeprecation Option "around_argument_assignments" is deprecated and will be removed in 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
+     * @expectedDeprecation Option "around_array_assignments" is deprecated and will be removed in 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundArrayAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
     {
