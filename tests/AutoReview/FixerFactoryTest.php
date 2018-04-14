@@ -60,7 +60,6 @@ final class FixerFactoryTest extends TestCase
 
         return [
             [$fixers['array_indentation'], $fixers['binary_operator_spaces']],
-            [$fixers['array_indentation'], $fixers['method_chaining_indentation']],
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
@@ -79,7 +78,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['combine_consecutive_unsets'], $fixers['space_after_semicolon']],
             [$fixers['declare_strict_types'], $fixers['blank_line_after_opening_tag']],
             [$fixers['declare_strict_types'], $fixers['declare_equal_normalize']],
-            [$fixers['declare_strict_types'], $fixers['single_blank_line_before_namespace']],
             [$fixers['doctrine_annotation_array_assignment'], $fixers['doctrine_annotation_spaces']],
             [$fixers['elseif'], $fixers['braces']],
             [$fixers['escape_implicit_backslashes'], $fixers['heredoc_to_nowdoc']],
