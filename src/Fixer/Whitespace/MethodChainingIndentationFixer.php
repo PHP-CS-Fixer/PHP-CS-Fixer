@@ -99,7 +99,11 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $index = $tokens->getPrevMeaningfulToken($index);
         $indent = $this->whitespacesConfig->getIndent();
 
-        for ($i = $index - 1; $i >= 0; --$i) {
+        for ($i = $index; $i >= 0; --$i) {
+            if ($tokens[$i]->equals(')')) {
+                $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i);
+            }
+
             $currentIndent = $this->getIndentAt($tokens, $i);
             if (null === $currentIndent) {
                 continue;
