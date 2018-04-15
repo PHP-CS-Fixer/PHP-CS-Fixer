@@ -19,6 +19,7 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Runner\Runner;
@@ -362,7 +363,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         static $linter = null;
 
         if (null === $linter) {
-            $linter = new Linter();
+            $linter = new CachingLinter(new Linter());
         }
 
         return $linter;

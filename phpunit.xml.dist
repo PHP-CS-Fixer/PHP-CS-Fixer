@@ -48,5 +48,6 @@
     <php>
         <ini name="zend.enable_gc" value="0"/>
         <ini name="memory_limit" value="1G"/>
+        <env name="PHP_CS_FIXER_TEST_ALLOW_SKIPPING_PHAR_TESTS" value="1"/>
     </php>
 </phpunit>
