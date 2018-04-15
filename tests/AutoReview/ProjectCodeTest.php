@@ -487,18 +487,6 @@ final class ProjectCodeTest extends TestCase
             iterator_to_array($finder, false)
         );
 
-        $incomatibleClasses = version_compare(\PHPUnit\Runner\Version::id(), '7.0.0') < 0 ? [
-            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV7::class,
-            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV7::class,
-        ] : [
-            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV5::class,
-            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV5::class,
-        ];
-
-        $classes = array_filter($classes, function ($className) use ($incomatibleClasses) {
-            return !in_array($className, $incomatibleClasses, true);
-        });
-
         sort($classes);
 
         return $classes;
