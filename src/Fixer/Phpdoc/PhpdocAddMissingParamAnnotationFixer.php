@@ -37,7 +37,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Phpdoc should contain `@param` for all params.',
+            'PHPDoc should contain `@param` for all params.',
             [
                 new CodeSample(
                     '<?php

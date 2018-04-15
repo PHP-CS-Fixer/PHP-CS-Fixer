@@ -38,7 +38,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Converts backtick operators to shell_exec calls.',
+            'Converts backtick operators to `shell_exec` calls.',
             [
                 new CodeSample(
 <<<'EOT'
