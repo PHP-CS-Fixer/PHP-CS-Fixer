@@ -59,7 +59,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'The correct case must be used for standard PHP types in phpdoc.',
+            'The correct case must be used for standard PHP types in PHPDoc.',
             array(
                 new CodeSample(
                     '<?php

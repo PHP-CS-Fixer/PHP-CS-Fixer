@@ -28,7 +28,7 @@ final class PhpdocNoPackageFixer extends AbstractProxyFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            '`@package` and `@subpackage` annotations should be omitted from phpdocs.',
+            '`@package` and `@subpackage` annotations should be omitted from PHPDocs.',
             array(
                 new CodeSample(
                     '<?php
