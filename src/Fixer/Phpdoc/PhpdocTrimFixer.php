@@ -30,7 +30,7 @@ final class PhpdocTrimFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Phpdocs should start and end with content, excluding the very first and last line of the docblocks.',
+            'PHPDocs should start and end with content, excluding the very first and last line of the docblocks.',
             array(new CodeSample('<?php
 /**
  *
@@ -49,7 +49,7 @@ final class Foo {}
     public function getPriority()
     {
         /*
-         * Should be run after all phpdoc fixers that add or remove tags, or
+         * Should be run after all PHPDoc fixers that add or remove tags, or
          * alter descriptions. This is so that they don't leave behind blank
          * lines this fixer would have otherwise cleaned up.
          */

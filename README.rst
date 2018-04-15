@@ -460,7 +460,7 @@ Choose from the list of available rules:
 
 * **general_phpdoc_annotation_remove**
 
-  Configured annotations should be omitted from phpdocs.
+  Configured annotations should be omitted from PHPDocs.
 
   Configuration options:
 
@@ -698,7 +698,7 @@ Choose from the list of available rules:
 
 * **no_trailing_whitespace_in_comment** [@PSR2, @Symfony]
 
-  There MUST be no trailing spaces inside comments and phpdocs.
+  There MUST be no trailing spaces inside comments and PHPDocs.
 
 * **no_unneeded_control_parentheses** [@Symfony]
 
@@ -832,7 +832,7 @@ Choose from the list of available rules:
 
 * **phpdoc_add_missing_param_annotation**
 
-  Phpdoc should contain ``@param`` for all params.
+  PHPDoc should contain ``@param`` for all params.
 
   Configuration options:
 
@@ -842,11 +842,11 @@ Choose from the list of available rules:
 * **phpdoc_align** [@Symfony]
 
   All items of the ``@param``, ``@throws``, ``@return``, ``@var``, and ``@type``
-  phpdoc tags must be aligned vertically.
+  PHPDoc tags must be aligned vertically.
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 
-  Phpdocs annotation descriptions should not be a sentence.
+  PHPDocs annotation descriptions should not be a sentence.
 
 * **phpdoc_indent** [@Symfony]
 
@@ -854,11 +854,11 @@ Choose from the list of available rules:
 
 * **phpdoc_inline_tag** [@Symfony]
 
-  Fix phpdoc inline tags, make ``@inheritdoc`` always inline.
+  Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
 
 * **phpdoc_no_access** [@Symfony]
 
-  ``@access`` annotations should be omitted from phpdocs.
+  ``@access`` annotations should be omitted from PHPDocs.
 
 * **phpdoc_no_alias_tag** [@Symfony]
 
@@ -873,11 +873,11 @@ Choose from the list of available rules:
 * **phpdoc_no_empty_return** [@Symfony]
 
   ``@return`` void and ``@return null`` annotations should be omitted from
-  phpdocs.
+  PHPDocs.
 
 * **phpdoc_no_package** [@Symfony]
 
-  ``@package`` and ``@subpackage`` annotations should be omitted from phpdocs.
+  ``@package`` and ``@subpackage`` annotations should be omitted from PHPDocs.
 
 * **phpdoc_no_useless_inheritdoc** [@Symfony]
 
@@ -885,7 +885,7 @@ Choose from the list of available rules:
 
 * **phpdoc_order**
 
-  Annotations in phpdocs should be ordered so that ``@param`` annotations
+  Annotations in PHPDocs should be ordered so that ``@param`` annotations
   come first, then ``@throws`` annotations, then ``@return`` annotations.
 
 * **phpdoc_return_self_reference** [@Symfony]
@@ -907,7 +907,7 @@ Choose from the list of available rules:
 
 * **phpdoc_separation** [@Symfony]
 
-  Annotations in phpdocs should be grouped together so that annotations of
+  Annotations in PHPDocs should be grouped together so that annotations of
   the same type immediately follow each other, and annotations of a
   different type are separated by a single blank line.
 
@@ -917,7 +917,7 @@ Choose from the list of available rules:
 
 * **phpdoc_summary** [@Symfony]
 
-  Phpdocs summary should end in either a full stop, exclamation mark, or
+  PHPDocs summary should end in either a full stop, exclamation mark, or
   question mark.
 
 * **phpdoc_to_comment** [@Symfony]
@@ -926,12 +926,12 @@ Choose from the list of available rules:
 
 * **phpdoc_trim** [@Symfony]
 
-  Phpdocs should start and end with content, excluding the very first and
+  PHPDocs should start and end with content, excluding the very first and
   last line of the docblocks.
 
 * **phpdoc_types** [@Symfony]
 
-  The correct case must be used for standard PHP types in phpdoc.
+  The correct case must be used for standard PHP types in PHPDoc.
 
 * **phpdoc_var_without_name** [@Symfony]
 

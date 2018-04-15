@@ -18,7 +18,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * This abstract fixer provides a base for fixers to fix types in phpdoc.
+ * This abstract fixer provides a base for fixers to fix types in PHPDoc.
  *
  * @author Graham Campbell <graham@alt-three.com>
  *
