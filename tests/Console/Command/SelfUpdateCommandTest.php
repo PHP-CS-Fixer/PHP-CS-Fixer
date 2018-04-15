@@ -38,6 +38,8 @@ final class SelfUpdateCommandTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->root = vfsStream::setup();
 
         file_put_contents($this->getToolPath(), 'Current PHP CS Fixer.');
@@ -48,7 +50,9 @@ final class SelfUpdateCommandTest extends TestCase
 
     protected function tearDown()
     {
-        unset($this->root);
+        parent::tearDown();
+
+        $this->root = null;
 
         try {
             vfsStreamWrapper::unregister();

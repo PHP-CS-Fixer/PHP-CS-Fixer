@@ -14,16 +14,13 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -44,11 +41,6 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     protected $fixer;
 
-    /**
-     * @var null|string
-     */
-    private $fixerClassName;
-
     protected function setUp()
     {
         parent::setUp();
@@ -57,36 +49,22 @@ abstract class AbstractFixerTestCase extends TestCase
         $this->fixer = $this->createFixer();
     }
 
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        $this->linter = null;
+        $this->fixer = null;
+    }
+
     /**
      * @return FixerInterface
      */
     protected function createFixer()
     {
-        $fixerClassName = $this->getFixerClassName();
+        $fixerClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
 
         return new $fixerClassName();
-    }
-
-    /**
-     * Create fixer factory with all needed fixers registered.
-     *
-     * @return FixerFactory
-     */
-    protected function createFixerFactory()
-    {
-        return FixerFactory::create()->registerBuiltInFixers();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getFixerName()
-    {
-        $reflection = new \ReflectionClass($this);
-
-        $name = preg_replace('/FixerTest$/', '', $reflection->getShortName());
-
-        return Utils::camelCaseToUnderscore($name);
     }
 
     /**
@@ -228,33 +206,6 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         return $linter;
-    }
-
-    /**
-     * @return string
-     */
-    private function getFixerClassName()
-    {
-        if (null !== $this->fixerClassName) {
-            return $this->fixerClassName;
-        }
-
-        try {
-            $fixers = $this->createFixerFactory()
-                ->useRuleSet(new RuleSet([$this->getFixerName() => true]))
-                ->getFixers()
-            ;
-        } catch (\UnexpectedValueException $e) {
-            throw new \UnexpectedValueException('Cannot determine fixer class, perhaps you forget to override `getFixerName` or `createFixerFactory` method?', 0, $e);
-        }
-
-        if (1 !== count($fixers)) {
-            throw new \UnexpectedValueException(sprintf('Determine fixer class should result in one fixer, got "%d". Perhaps you configured the fixer to "false" ?', count($fixers)));
-        }
-
-        $this->fixerClassName = get_class($fixers[0]);
-
-        return $this->fixerClassName;
     }
 
     /**

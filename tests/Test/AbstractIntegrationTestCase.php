@@ -97,6 +97,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $tmpFile = static::getTempFile();
 
         self::$fileRemoval->delete($tmpFile);
+        self::$fileRemoval = null;
     }
 
     protected function setUp()
@@ -104,6 +105,13 @@ abstract class AbstractIntegrationTestCase extends TestCase
         parent::setUp();
 
         $this->linter = $this->getLinter();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        $this->linter = null;
     }
 
     /**

@@ -32,15 +32,15 @@ final class PharTest extends TestCase
 {
     private static $pharCwd;
     private static $pharName;
-    private static $pharPath;
 
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         self::$pharCwd = __DIR__.'/../..';
         self::$pharName = 'php-cs-fixer.phar';
-        self::$pharPath = self::$pharCwd.'/'.self::$pharName;
 
-        if (!file_exists(self::$pharPath)) {
+        if (!file_exists(self::$pharCwd.'/'.self::$pharName)) {
             if (getenv('PHP_CS_FIXER_TEST_ALLOW_SKIPPING_PHAR_TESTS')) {
                 self::markTestSkipped('No phar file available.');
             }
