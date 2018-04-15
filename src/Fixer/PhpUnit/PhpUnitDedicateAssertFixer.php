@@ -134,7 +134,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHPUnit assertions like "assertInternalType", "assertFileExists", should be used over "assertTrue".',
+            'PHPUnit assertions like `assertInternalType`, `assertFileExists`, should be used over `assertTrue`.',
             [
                 new CodeSample(
                     '<?php

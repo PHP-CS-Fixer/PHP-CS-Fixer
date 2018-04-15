@@ -31,7 +31,7 @@ final class PhpUnitSetUpTearDownVisibilityFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Changes the visibility of the setUp and tearDown functions of phpunit to protected, to match the PHPUnit TestCase.',
+            'Changes the visibility of the `setUp` and `tearDown` functions of PHPUnit to protected, to match the PHPUnit TestCase.',
             [
                 new CodeSample(
                     '<?php

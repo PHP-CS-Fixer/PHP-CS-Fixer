@@ -7,11 +7,11 @@ Integration of fixers: method_chaining_indentation,array_indentation.
 Foo::bar([
     'baz',
 ])
-->call();
+    ->call();
 
 --INPUT--
 <?php
 Foo::bar([
 		'baz',
 	])
-	->call();
+	    ->call();

@@ -260,7 +260,7 @@ Choose from the list of available rules:
 
 * **backtick_to_shell_exec**
 
-  Converts backtick operators to shell_exec calls.
+  Converts backtick operators to ``shell_exec`` calls.
 
 * **binary_operator_spaces** [@Symfony]
 
@@ -546,7 +546,7 @@ Choose from the list of available rules:
 
 * **ereg_to_preg** [@Symfony:risky]
 
-  Replace deprecated ``ereg`` regular expression functions with preg.
+  Replace deprecated ``ereg`` regular expression functions with ``preg``.
 
   *Risky rule: risky if the ``ereg`` function is overridden.*
 
@@ -625,7 +625,7 @@ Choose from the list of available rules:
 
 * **general_phpdoc_annotation_remove**
 
-  Configured annotations should be omitted from phpdocs.
+  Configured annotations should be omitted from PHPDocs.
 
   Configuration options:
 
@@ -843,7 +843,7 @@ Choose from the list of available rules:
 
 * **no_leading_import_slash** [@Symfony]
 
-  Remove leading slashes in use clauses.
+  Remove leading slashes in ``use`` clauses.
 
 * **no_leading_namespace_whitespace** [@Symfony]
 
@@ -921,7 +921,7 @@ Choose from the list of available rules:
 
 * **no_trailing_whitespace_in_comment** [@PSR2, @Symfony]
 
-  There MUST be no trailing spaces inside comments and phpdocs.
+  There MUST be no trailing spaces inside comments and PHPDocs.
 
 * **no_unneeded_control_parentheses** [@Symfony]
 
@@ -951,7 +951,7 @@ Choose from the list of available rules:
 
 * **no_unused_imports** [@Symfony]
 
-  Unused use statements must be removed.
+  Unused ``use`` statements must be removed.
 
 * **no_useless_else**
 
@@ -959,7 +959,8 @@ Choose from the list of available rules:
 
 * **no_useless_return**
 
-  There should not be an empty return statement at the end of a function.
+  There should not be an empty ``return`` statement at the end of a
+  function.
 
 * **no_whitespace_before_comma_in_array** [@Symfony]
 
@@ -1015,7 +1016,7 @@ Choose from the list of available rules:
 
 * **ordered_imports**
 
-  Ordering use statements.
+  Ordering ``use`` statements.
 
   Configuration options:
 
@@ -1027,8 +1028,8 @@ Choose from the list of available rules:
 
 * **php_unit_construct** [@Symfony:risky]
 
-  PHPUnit assertion method calls like "->assertSame(true, $foo)" should be
-  written with dedicated method like "->assertTrue($foo)".
+  PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be
+  written with dedicated method like ``->assertTrue($foo)``.
 
   *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
 
@@ -1039,8 +1040,8 @@ Choose from the list of available rules:
 
 * **php_unit_dedicate_assert** [@PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
-  PHPUnit assertions like "assertInternalType", "assertFileExists", should
-  be used over "assertTrue".
+  PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should
+  be used over ``assertTrue``.
 
   *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
 
@@ -1109,8 +1110,8 @@ Choose from the list of available rules:
 
 * **php_unit_set_up_tear_down_visibility**
 
-  Changes the visibility of the setUp and tearDown functions of phpunit to
-  protected, to match the PHPUnit TestCase.
+  Changes the visibility of the ``setUp`` and ``tearDown`` functions of
+  PHPUnit to protected, to match the PHPUnit TestCase.
 
   *Risky rule: this fixer may change functions named setUp or tearDown outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
 
@@ -1147,7 +1148,7 @@ Choose from the list of available rules:
 
 * **phpdoc_add_missing_param_annotation**
 
-  Phpdoc should contain @param for all params.
+  PHPDoc should contain ``@param`` for all params.
 
   Configuration options:
 
@@ -1156,7 +1157,7 @@ Choose from the list of available rules:
 
 * **phpdoc_align** [@Symfony]
 
-  All items of the given phpdoc tags must be aligned vertically.
+  All items of the given PHPDoc tags must be aligned vertically.
 
   Configuration options:
 
@@ -1165,7 +1166,7 @@ Choose from the list of available rules:
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 
-  Phpdocs annotation descriptions should not be a sentence.
+  PHPDocs annotation descriptions should not be a sentence.
 
 * **phpdoc_indent** [@Symfony]
 
@@ -1173,11 +1174,11 @@ Choose from the list of available rules:
 
 * **phpdoc_inline_tag** [@Symfony]
 
-  Fix phpdoc inline tags, make inheritdoc always inline.
+  Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
 
 * **phpdoc_no_access** [@Symfony]
 
-  @access annotations should be omitted from phpdocs.
+  ``@access`` annotations should be omitted from PHPDocs.
 
 * **phpdoc_no_alias_tag** [@Symfony]
 
@@ -1191,21 +1192,21 @@ Choose from the list of available rules:
 
 * **phpdoc_no_empty_return** [@Symfony]
 
-  @return void and @return null annotations should be omitted from
-  phpdocs.
+  ``@return`` void and ``@return null`` annotations should be omitted from
+  PHPDocs.
 
 * **phpdoc_no_package** [@Symfony]
 
-  @package and @subpackage annotations should be omitted from phpdocs.
+  ``@package`` and ``@subpackage`` annotations should be omitted from PHPDocs.
 
 * **phpdoc_no_useless_inheritdoc** [@Symfony]
 
-  Classy that does not inherit must not have inheritdoc tags.
+  Classy that does not inherit must not have ``@inheritdoc`` tags.
 
 * **phpdoc_order**
 
-  Annotations in phpdocs should be ordered so that param annotations come
-  first, then throws annotations, then return annotations.
+  Annotations in PHPDocs should be ordered so that ``@param`` annotations
+  come first, then ``@throws`` annotations, then ``@return`` annotations.
 
 * **phpdoc_return_self_reference** [@Symfony]
 
@@ -1231,17 +1232,17 @@ Choose from the list of available rules:
 
 * **phpdoc_separation** [@Symfony]
 
-  Annotations in phpdocs should be grouped together so that annotations of
+  Annotations in PHPDocs should be grouped together so that annotations of
   the same type immediately follow each other, and annotations of a
   different type are separated by a single blank line.
 
 * **phpdoc_single_line_var_spacing** [@Symfony]
 
-  Single line @var PHPDoc should have proper spacing.
+  Single line ``@var`` PHPDoc should have proper spacing.
 
 * **phpdoc_summary** [@Symfony]
 
-  Phpdocs summary should end in either a full stop, exclamation mark, or
+  PHPDocs summary should end in either a full stop, exclamation mark, or
   question mark.
 
 * **phpdoc_to_comment** [@Symfony]
@@ -1250,12 +1251,12 @@ Choose from the list of available rules:
 
 * **phpdoc_trim** [@Symfony]
 
-  Phpdocs should start and end with content, excluding the very first and
+  PHPDocs should start and end with content, excluding the very first and
   last line of the docblocks.
 
 * **phpdoc_types** [@Symfony]
 
-  The correct case must be used for standard PHP types in phpdoc.
+  The correct case must be used for standard PHP types in PHPDoc.
 
 * **phpdoc_types_order**
 
@@ -1271,7 +1272,7 @@ Choose from the list of available rules:
 
 * **phpdoc_var_without_name** [@Symfony]
 
-  @var and @type annotations should not contain the variable name.
+  ``@var`` and ``@type`` annotations should not contain the variable name.
 
 * **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
@@ -1326,7 +1327,7 @@ Choose from the list of available rules:
 
 * **self_accessor** [@Symfony:risky]
 
-  Inside class or interface element "self" should be preferred to the
+  Inside class or interface element ``self`` should be preferred to the
   class name itself.
 
   *Risky rule: risky when using dynamic calls like get_called_class() or late static binding.*
@@ -1469,9 +1470,9 @@ Choose from the list of available rules:
 
 * **visibility_required** [@PSR2, @Symfony, @PHP71Migration]
 
-  Visibility MUST be declared on all properties and methods; abstract and
-  final MUST be declared before the visibility; static MUST be declared
-  after the visibility.
+  Visibility MUST be declared on all properties and methods; ``abstract``
+  and ``final`` MUST be declared before the visibility; ``static`` MUST be
+  declared after the visibility.
 
   Configuration options:
 

@@ -94,7 +94,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     public function getDefinition()
     {
         return new FixerDefinition(
-            'All items of the given phpdoc tags must be aligned vertically.',
+            'All items of the given PHPDoc tags must be aligned vertically.',
             [new CodeSample('<?php
 /**
  * @param  EngineInterface $templating

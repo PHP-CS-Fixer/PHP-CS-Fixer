@@ -56,7 +56,7 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".',
+            'PHPUnit assertion method calls like `->assertSame(true, $foo)` should be written with dedicated method like `->assertTrue($foo)`.',
             [
                 new CodeSample(
                     '<?php
