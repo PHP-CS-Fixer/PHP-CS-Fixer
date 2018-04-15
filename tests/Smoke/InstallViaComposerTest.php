@@ -43,7 +43,7 @@ final class InstallViaComposerTest extends TestCase
         }
     }
 
-    public function testFoo()
+    public function testInstallationIsPossible()
     {
         $fs = new Filesystem();
 
