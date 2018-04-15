@@ -247,7 +247,7 @@ function foo () {
             }
 
             // must be the variable of the first call in the chain
-            if ($tokens[$index]->isGivenKind(T_VARIABLE) && 0 === $closingBrackets) {
+            if ($tokens[$index]->isGivenKind([T_VARIABLE, T_RETURN]) && 0 === $closingBrackets) {
                 if ($tokens[--$index]->isGivenKind(T_WHITESPACE)
                     || $tokens[$index]->isGivenKind(T_OPEN_TAG)) {
                     return $this->getIndentAt($tokens, $index);

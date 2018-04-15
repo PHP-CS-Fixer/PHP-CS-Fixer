@@ -13,13 +13,17 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
+final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements ConfigurableFixerInterface
 {
     /**
      * The types to fix.
@@ -75,9 +79,26 @@ function sample($a, $b, $c)
     /**
      * {@inheritdoc}
      */
+    protected function createConfigurationDefinition()
+    {
+        $generator = new FixerOptionValidatorGenerator();
+
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('types', 'A map of types to fix.'))
+                ->setAllowedValues([
+                    $generator->allowedValueIsSubsetOf(array_keys(self::$types)),
+                ])
+                ->setDefault(['boolean', 'double', 'integer', 'real', 'str']) // TODO 3.0 add "callback"
+                ->getOption(),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function normalize($type)
     {
-        if (array_key_exists($type, self::$types)) {
+        if (in_array($type, $this->configuration['types'], true)) {
             return self::$types[$type];
         }
 

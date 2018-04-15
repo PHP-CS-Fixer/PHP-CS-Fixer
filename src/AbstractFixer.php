@@ -15,9 +15,11 @@ namespace PhpCsFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -111,6 +113,22 @@ abstract class AbstractFixer implements FixerInterface
     {
         if (!$this instanceof ConfigurableFixerInterface) {
             throw new \LogicException('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
+        }
+
+        foreach ($this->getConfigurationDefinition()->getOptions() as $option) {
+            if (!$option instanceof DeprecatedFixerOption) {
+                continue;
+            }
+
+            $name = $option->getName();
+            if (array_key_exists($name, $configuration)) {
+                @trigger_error(sprintf(
+                    'Option "%s" is deprecated and will be removed in %d.0. %s',
+                    $name,
+                    Application::VERSION + 1,
+                    str_replace('`', '"', $option->getDeprecationMessage())
+                ), E_USER_DEPRECATED);
+            }
         }
 
         try {

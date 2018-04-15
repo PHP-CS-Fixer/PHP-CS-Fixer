@@ -187,7 +187,7 @@ final class FixerTest extends TestCase
         $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
-            $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOption::class, $option);
+            $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOptionInterface::class, $option);
             $this->assertNotEmpty($option->getDescription());
 
             $this->assertSame(
@@ -200,6 +200,12 @@ final class FixerTest extends TestCase
                     $option->getName(),
                     $fixer->getName()
                 )
+            );
+
+            $this->assertNotContains(
+                'DEPRECATED',
+                $option->getDescription(),
+                'Option description cannot contain word "DEPRECATED"'
             );
         }
     }
