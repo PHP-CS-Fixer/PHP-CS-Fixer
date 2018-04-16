@@ -1001,7 +1001,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeLeadingWhitespace($index, $whitespaces = null)
     {
-        $this->saveRemoveSpace($index, 1, $whitespaces);
+        $this->removeWhitespaceSafely($index, 1, $whitespaces);
     }
 
     /**
@@ -1010,7 +1010,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeTrailingWhitespace($index, $whitespaces = null)
     {
-        $this->saveRemoveSpace($index, -1, $whitespaces);
+        $this->removeWhitespaceSafely($index, -1, $whitespaces);
     }
 
     /**
@@ -1230,7 +1230,7 @@ class Tokens extends \SplFixedArray
         $this->clearAt($nextIndex);
     }
 
-    private function saveRemoveSpace($index, $offset, $whitespaces = null)
+    private function removeWhitespaceSafely($index, $offset, $whitespaces = null)
     {
         if (isset($this[$index - $offset]) && $this[$index - $offset]->isWhitespace()) {
             $newContent = '';
