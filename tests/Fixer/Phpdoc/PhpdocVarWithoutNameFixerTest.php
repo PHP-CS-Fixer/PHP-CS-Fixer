@@ -23,64 +23,83 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 {
-    public function testFixVar()
+    /**
+     * @dataProvider provideFixVarCases
+     *
+     * @param string      $expected
+     * @param string|null $input
+     */
+    public function testFixVar($expected, $input = null)
     {
-        $expected = <<<'EOF'
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideFixVarCases
+     *
+     * @param string      $expected
+     * @param string|null $input
+     */
+    public function testFixType($expected, $input = null)
+    {
+        $expected = str_replace('@var', '@type', $expected);
+        if (null !== $input) {
+            $input = str_replace('@var', '@type', $input);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixVarCases()
+    {
+        return array(
+            'testFixVar' => array(
+<<<'EOF'
 <?php
     /**
      * @var string Hello!
      */
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+,
+<<<'EOF'
 <?php
     /**
      * @var string $foo Hello!
      */
 
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixType()
-    {
-        $expected = <<<'EOF'
+EOF
+,
+            ),
+            'testFixType' => array(
+<<<'EOF'
 <?php
     /**
      * @var int|null
      */
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+,
+<<<'EOF'
 <?php
     /**
      * @var int|null $bar
      */
 
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testDoNothing()
-    {
-        $expected = <<<'EOF'
+EOF
+,
+            ),
+            'testDoNothing' => array(
+                <<<'EOF'
 <?php
     /**
      * @var Foo\Bar This is a variable.
      */
 
-EOF;
-
-        $this->doTest($expected);
-    }
-
-    public function testFixVarWithOtherAnnotation()
-    {
-        $expected = <<<'EOF'
+EOF
+            ),
+            'testFixVarWithOtherAnnotation' => array(
+                <<<'EOF'
 <?php
     /**
      * @var string Hello!
@@ -88,9 +107,9 @@ EOF;
      * @deprecated
      */
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
     /**
      * @var string $foo Hello!
@@ -98,14 +117,11 @@ EOF;
      * @deprecated
      */
 
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixVarWithNestedKeys()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ),
+            'testFixVarWithNestedKeys' => array(
+<<<'EOF'
 <?php
     /**
      * @var array {
@@ -114,9 +130,9 @@ EOF;
      * }
      */
 
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+<<<'EOF'
 <?php
     /**
      * @var array $options {
@@ -125,39 +141,29 @@ EOF;
      * }
      */
 
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testSingleLine()
-    {
-        $expected = <<<'EOF'
-<?php
+EOF
+            ),
+            'testSingleLine' => array(
+<<<'EOF'
+                <?php
     /** @var Foo\Bar $bar */
     $bar;
-EOF;
-
-        $this->doTest($expected);
-    }
-
-    public function testEmpty()
-    {
-        $expected = <<<'EOF'
-<?php
+EOF
+                ,
+            ),
+            'testEmpty' => array(
+<<<'EOF'
+                <?php
     /**
      *
      */
 
-EOF;
-
-        $this->doTest($expected);
-    }
-
-    public function testInlineDoc()
-    {
-        $expected = <<<'EOF'
-<?php
+EOF
+                ,
+            ),
+            'testInlineDoc' => array(
+<<<'EOF'
+                <?php
     /**
      * Initializes this class with the given options.
      *
@@ -167,14 +173,11 @@ EOF;
      * }
      */
 
-EOF;
-
-        $this->doTest($expected);
-    }
-
-    public function testInlineDocAgain()
-    {
-        $expected = <<<'EOF'
+EOF
+                ,
+            ),
+            'testInlineDocAgain' => array(
+<<<'EOF'
 <?php
     /**
      * @param int[] $stuff {
@@ -184,8 +187,9 @@ EOF;
      * @return void
      */
 
-EOF;
-
-        $this->doTest($expected);
+EOF
+                ,
+            ),
+        );
     }
 }
