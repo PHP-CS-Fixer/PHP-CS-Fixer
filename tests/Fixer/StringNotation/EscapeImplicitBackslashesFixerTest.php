@@ -582,6 +582,94 @@ EOF
                 null,
                 ['heredoc_syntax' => false],
             ],
+            [
+                <<<'EOF'
+<?php
+$var = "\\bar";
+$var = "\\bar";
+$var = "\\\\bar";
+$var = "\\\\bar";
+$var = "\\\\\\bar";
+$var = "\\\\\\bar";
+EOF
+                ,
+                <<<'EOF'
+<?php
+$var = "\bar";
+$var = "\\bar";
+$var = "\\\bar";
+$var = "\\\\bar";
+$var = "\\\\\bar";
+$var = "\\\\\\bar";
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = '\\bar';
+$var = '\\bar';
+$var = '\\\\bar';
+$var = '\\\\bar';
+$var = '\\\\\\bar';
+$var = '\\\\\\bar';
+EOF
+                ,
+                <<<'EOF'
+<?php
+$var = '\bar';
+$var = '\\bar';
+$var = '\\\bar';
+$var = '\\\\bar';
+$var = '\\\\\bar';
+$var = '\\\\\\bar';
+EOF
+                ,
+                ['single_quoted' => true],
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = <<<TXT
+\\bar
+\\bar
+\\\\bar
+\\\\bar
+\\\\\\bar
+\\\\\\bar
+TXT;
+
+EOF
+                ,
+                <<<'EOF'
+<?php
+$var = <<<TXT
+\bar
+\\bar
+\\\bar
+\\\\bar
+\\\\\bar
+\\\\\\bar
+TXT;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = <<<'TXT'
+\bar
+\\bar
+\\\bar
+\\\\bar
+\\\\\bar
+\\\\\\bar
+TXT;
+
+EOF
+                ,
+            ],
         ];
     }
 }
