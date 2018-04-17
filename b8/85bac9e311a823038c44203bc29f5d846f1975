@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by AJenbo at 2018-03-09T12:49:21Z
+
+Fix type "loading" -> "loaded"
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-16T07:47:51Z
+
+the warning would still be valid if the command is used outside of the phar I think?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-16T07:57:01Z
+
+I assumed the Xdebug handler works for any PHP CLI process, not only phar files. @AJenbo is that right? If so the warning would never be shown, unless one explicitly disables the handler at runtime somehow, but then showing a warning would not make sense as the user *does* want to use Xdebug.
+
+---------------------------------------------------------------------------
+
+by AJenbo at 2018-03-16T08:14:42Z
+
+Correct, setting the constant PHP_CS_FIXER_ALLOW_XDEBUG will allow running with xdebug, I'll update the PR with the warning stripped
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-16T09:23:33Z
+
+> unless one explicitly disables the handler at runtime somehow
+
+if I use the command in my app I by-pass the handler, but not explicit (I use my own bootstrap and not the `/php-cs-fixer` file)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-16T09:26:18Z
+
+I'd say that in this case your app should be responsible of showing the warning, not each single command.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-16T09:31:23Z
+
+fair enough :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-03T20:09:30Z
+
+ping @AJenbo could you add some tests (using the tool as a PHAR and as a regular PHP file) please?
+
+---------------------------------------------------------------------------
+
+by AJenbo at 2018-04-08T18:04:31Z
+
+@julienfalque not sure how to set that up but I will give it a stab.
