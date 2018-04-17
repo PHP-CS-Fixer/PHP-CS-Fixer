@@ -1390,6 +1390,12 @@ Choose from the list of available rules:
 
   Instructions must be terminated with a semicolon.
 
+* **set_type_to_cast**
+
+  Cast shall be used, not ``settype``.
+
+  *Risky rule: risky when the ``settype`` function is overridden or when used as the 2nd or 3rd expression in a ``for`` loop .*
+
 * **short_scalar_cast** [@Symfony]
 
   Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
