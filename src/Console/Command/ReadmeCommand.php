@@ -127,13 +127,9 @@ Then make sure you have the global Composer binaries directory in your ``PATH``.
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
 
-PHP-CS-Fixer is part of the homebrew-php project. Follow the installation
-instructions at https://github.com/homebrew/homebrew-php if you don't
-already have it.
-
 .. code-block:: bash
 
-    $ brew install homebrew/php/php-cs-fixer
+    $ brew install php-cs-fixer
 
 Update
 ------

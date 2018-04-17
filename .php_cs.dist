@@ -15,13 +15,6 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
 ;
 
-if (PHP_VERSION_ID < 70000) {
-    $finder
-        ->notPath('tests/Test/Constraint/SameStringsConstraintForV7.php')
-        ->notPath('tests/Test/Constraint/XmlMatchesXsdConstraintForV7.php')
-    ;
-}
-
 $config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
