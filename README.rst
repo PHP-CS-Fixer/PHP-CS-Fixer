@@ -297,7 +297,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``apply_to_anonymous_classes`` (``bool``): whether this fixer should be applied
-    to anonymous classes; defaults to ``false``
+    to anonymous classes; defaults to ``true``
   - ``blank_lines_count`` (``int``): adjusts an amount of the blank lines; defaults
     to ``1``
 

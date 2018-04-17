@@ -134,7 +134,7 @@ new class extends Foo {
                 ->getOption(),
             (new FixerOptionBuilder('apply_to_anonymous_classes', 'whether this fixer should be applied to anonymous classes.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false)
+                ->setDefault(true)
                 ->getOption(),
         ]);
     }

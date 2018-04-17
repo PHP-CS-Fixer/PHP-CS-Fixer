@@ -24,7 +24,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class BlankLineAroundClassBodyFixerTest extends AbstractFixerTestCase
 {
-    private static $configurationApplyForAnonymousClasses = ['apply_to_anonymous_classes' => true];
+    private static $configurationDoNotApplyForAnonymousClasses = ['apply_to_anonymous_classes' => false];
     private static $configurationTwoEmptyLines = ['blank_lines_count' => 2];
 
     /**
@@ -309,35 +309,35 @@ class Good
         $cases[] = [
             '<?php
 $class = new class extends \Foo {
+
     public $field;
 
     public function firstMethod() {}
+
 };',
             '<?php
 $class = new class extends \Foo {
-
     public $field;
 
     public function firstMethod() {}
-
 };',
         ];
         $cases[] = [
             '<?php
 $class = new class extends \Foo {
-
     public $field;
 
     public function firstMethod() {}
-
 };',
             '<?php
 $class = new class extends \Foo {
+
     public $field;
 
     public function firstMethod() {}
+
 };',
-            self::$configurationApplyForAnonymousClasses,
+            self::$configurationDoNotApplyForAnonymousClasses,
         ];
 
         return $cases;
