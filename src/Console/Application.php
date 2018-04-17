@@ -74,9 +74,6 @@ final class Application extends BaseApplication
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
-            if (FixCommand::COMMAND_NAME === $this->getCommandName($input)) {
-                $warningsDetector->detectXdebug();
-            }
             foreach ($warningsDetector->getWarnings() as $warning) {
                 $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
             }
