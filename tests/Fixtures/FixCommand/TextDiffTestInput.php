@@ -11,7 +11,7 @@
  */
 
 /**
- * Input for @see \Symfony\CS\Tests\Console\TextDiffTest.
+ * Input for @see \PhpCsFixer\Tests\TextDiffTest.
  *
  * @author SpacePossum
  *

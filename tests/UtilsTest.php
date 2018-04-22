@@ -158,4 +158,41 @@ final class UtilsTest extends TestCase
 
         Utils::calculateTrailingWhitespaceIndent($token);
     }
+
+    /**
+     * @param int   $expected
+     * @param array $options
+     *
+     * @dataProvider provideCalculateBitmaskCases
+     */
+    public function testCalculateBitmask($expected, array $options)
+    {
+        $this->assertSame($expected, Utils::calculateBitmask($options));
+    }
+
+    public function provideCalculateBitmaskCases()
+    {
+        return array(
+            array(
+                JSON_HEX_TAG | JSON_HEX_QUOT,
+                array('JSON_HEX_TAG', 'JSON_HEX_QUOT'),
+            ),
+            array(
+                JSON_HEX_TAG | JSON_HEX_QUOT,
+                array('JSON_HEX_TAG', 'JSON_HEX_QUOT', 'NON_EXISTENT_CONST'),
+            ),
+            array(
+                JSON_HEX_TAG,
+                array('JSON_HEX_TAG'),
+            ),
+            array(
+                JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS,
+                array('JSON_HEX_TAG', 'JSON_HEX_QUOT', 'JSON_HEX_AMP', 'JSON_HEX_APOS'),
+            ),
+            array(
+                0,
+                array(),
+            ),
+        );
+    }
 }
