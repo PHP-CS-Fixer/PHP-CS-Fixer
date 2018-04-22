@@ -204,9 +204,11 @@ final class CacheTest extends TestCase
         $invalidUtf8Sequence = "\xB1\x31";
 
         $signature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
-        $signature->getPhpVersion()->willReturn($invalidUtf8Sequence);
+        $signature->getPhpVersion()->willReturn('7.1.0');
         $signature->getFixerVersion()->willReturn('2.2.0');
-        $signature->getRules()->willReturn(array());
+        $signature->getRules()->willReturn(array(
+            $invalidUtf8Sequence => true,
+        ));
 
         $cache = new Cache($signature->reveal());
 
