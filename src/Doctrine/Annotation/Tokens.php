@@ -295,7 +295,7 @@ final class Tokens extends \SplFixedArray
             }
 
             throw new \InvalidArgumentException(sprintf(
-                'Token must be an instance of Symfony\\CS\\Doctrine\\Annotation\\Token, %s given.',
+                'Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, %s given.',
                 $type
             ));
         }
