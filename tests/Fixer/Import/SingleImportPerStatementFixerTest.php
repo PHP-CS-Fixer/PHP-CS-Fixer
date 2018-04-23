@@ -269,6 +269,25 @@ use const some\b\E;
 use function some\b\A\B;',
                 '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
             ),
+            array(
+                '<?php
+use Foo\Bar;
+use Foo\Baz;',
+                '<?php
+use Foo\ {
+    Bar, Baz
+};',
+            ),
+            array(
+                '<?php
+use Foo\Bar;
+use Foo\Baz;',
+                '<?php
+use Foo\
+{
+    Bar, Baz
+};',
+            ),
         );
     }
 

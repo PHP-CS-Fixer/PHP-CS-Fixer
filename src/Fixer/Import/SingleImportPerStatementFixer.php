@@ -127,7 +127,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         }
 
         return array(
-            $groupPrefix,
+            rtrim($groupPrefix),
             $groupOpenIndex,
             $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $groupOpenIndex),
             $comment,
