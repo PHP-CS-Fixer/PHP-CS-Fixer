@@ -1,0 +1,112 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-11T20:59:01Z
+
+PR scope reduced as discussed in https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/3153#issuecomment-379725393.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-11T21:56:32Z
+
+Thanks for picking this up :)
+I was struggling to get the possible repeated access detected correctly as well,
+for example
+```
+$c2->a{a}{a}']
+$c1->a{a}->a']
+$a[1][2][3+5]/**/[4*2-1]
+```
+
+for more samples, please see this test; https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3505/files
+
+I didn't test your solution yet, will do soon!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-13T18:30:23Z
+
+In the tests you added, which one are supposed to be swapped? All that should be detected as a variable (`$expected = true`)?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-15T08:42:01Z
+
+I think;
+```php
++            [true, '$a'],
++            [true, '$a+1'],
++            [true, '$b->a'],
++            [true, '$c->a[a]'],
++            [true, '$c1->a[a]->a'],
++            [true, '$c2->a[a][a]'],
++            [true, '$d->a[$a]'],
++            [true, '$c->a{a}'],
++            [true, '$c1->a{a}->a'],
++            [true, '$c2->a{a}{a}'],
++            [true, '$d->a{$a}'],
+```
+and these
+```
+$c2->a{a}{a}']
+$c1->a{a}->a']
+$a[1][2][3+5]/**/[4*2-1]
+```
+for sure
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-15T11:03:34Z
+
+So `$a+1` should be detected as a variable but it's not. Does it mean you want me to add the following test case?
+
+```php
+['<?php return $b === $a+1;'],
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-15T11:44:30Z
+
+that looks like a mistake in my testset, sorry about that one. IIRC the bug is handling single level array access different than deeper levels. So $a[1] vs $a[1][2] and deeper. Also for $a->$A vs $a->$a->$a and combinations of that.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-16T18:42:51Z
+
+@SpacePossum I added more test cases from `provideFixCases()` in your PR. Most already pass (some with the changes in the fixer, some even without) so I didn't add them all. I'm still not sure how to proceed with test cases in `provideIsVariableCases()` to be honest. Could you show how those would look like if used in `provideFixCases()`?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-18T16:35:55Z
+
+I've added more test in your branch to make it a bit more easy I hope. I'm fine with not having dedicated tests for `provideIsVariableCases`-especially as the method name is misleading anyway ;)
+
+So, after all the awesome work you did there is one case left I could find:
+
+```php
+<?php return $foo->$a === $foo->$b->$c;
+```
+
+IMHO this should not be fixed/touched, as both the left and right side of the `===` are the same type of access to something, WDYT?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-19T06:56:12Z
+
+Thanks, I'll have a look shortly!
+
+> IMHO this should not be fixed/touched, as both the left and right side of the === are the same type of access to something, WDYT?
+
+I agree it should not be changed though I think it's because both sides are assignable, not because they are of the same access type.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-21T09:05:55Z
+
+Green :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-21T14:00:28Z
+
+nice, thanks! looking good @julienfalque :)
