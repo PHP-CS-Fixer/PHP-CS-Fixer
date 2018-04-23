@@ -36,8 +36,10 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
      */
     private static $tokenMap = [
         'break' => T_BREAK,
+        'case' => T_CASE,
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
+        'default' => T_DEFAULT,
         'die' => T_EXIT,
         'do' => T_DO,
         'exit' => T_EXIT,
@@ -251,8 +253,8 @@ if (true) {
      */
     public function getPriority()
     {
-        // should be run after NoUselessReturnFixer
-        return -19;
+        // should be run after NoUselessReturnFixer and NoExtraBlankLinesFixer
+        return -21;
     }
 
     /**
