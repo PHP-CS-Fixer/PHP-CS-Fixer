@@ -56,41 +56,35 @@ final class CachingLinterTest extends TestCase
             'baz.php' => '<?php echo "foobarbaz";',
         ));
 
-        $result = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
+        $result1 = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
+        $result2 = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
 
         $sublinter = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
-        $sublinter->lintFile($fs->url().'/foo.php')->shouldBeCalledTimes(1)->willReturn($result->reveal());
+        $sublinter->lintFile($fs->url().'/foo.php')->shouldBeCalledTimes(1)->willReturn($result1->reveal());
         $sublinter->lintFile($fs->url().'/bar.php')->shouldNotBeCalled();
-        $sublinter->lintFile($fs->url().'/baz.php')->shouldBeCalledTimes(1)->willReturn($result->reveal());
+        $sublinter->lintFile($fs->url().'/baz.php')->shouldBeCalledTimes(1)->willReturn($result2->reveal());
 
         $linter = new CachingLinter($sublinter->reveal());
 
-        $results = array(
-            $linter->lintFile($fs->url().'/foo.php'),
-            $linter->lintFile($fs->url().'/foo.php'),
-            $linter->lintFile($fs->url().'/bar.php'),
-            $linter->lintFile($fs->url().'/baz.php'),
-        );
-
-        $this->assertContainsOnlyInstancesOf('PhpCsFixer\Linter\LintingResultInterface', $results);
+        $this->assertSame($result1->reveal(), $linter->lintFile($fs->url().'/foo.php'));
+        $this->assertSame($result1->reveal(), $linter->lintFile($fs->url().'/foo.php'));
+        $this->assertSame($result1->reveal(), $linter->lintFile($fs->url().'/bar.php'));
+        $this->assertSame($result2->reveal(), $linter->lintFile($fs->url().'/baz.php'));
     }
 
     public function testLintSourceIsCalledOnceOnSameContent()
     {
-        $result = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
+        $result1 = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
+        $result2 = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
 
         $sublinter = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
-        $sublinter->lintSource('<?php echo "baz";')->shouldBeCalledTimes(1)->willReturn($result->reveal());
-        $sublinter->lintSource('<?php echo "foobarbaz";')->shouldBeCalledTimes(1)->willReturn($result->reveal());
+        $sublinter->lintSource('<?php echo "baz";')->shouldBeCalledTimes(1)->willReturn($result1->reveal());
+        $sublinter->lintSource('<?php echo "foobarbaz";')->shouldBeCalledTimes(1)->willReturn($result2->reveal());
 
         $linter = new CachingLinter($sublinter->reveal());
 
-        $results = array(
-            $linter->lintSource('<?php echo "baz";'),
-            $linter->lintSource('<?php echo "baz";'),
-            $linter->lintSource('<?php echo "foobarbaz";'),
-        );
-
-        $this->assertContainsOnlyInstancesOf('PhpCsFixer\Linter\LintingResultInterface', $results);
+        $this->assertSame($result1->reveal(), $linter->lintSource('<?php echo "baz";'));
+        $this->assertSame($result1->reveal(), $linter->lintSource('<?php echo "baz";'));
+        $this->assertSame($result2->reveal(), $linter->lintSource('<?php echo "foobarbaz";'));
     }
 }
