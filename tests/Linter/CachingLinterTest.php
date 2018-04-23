@@ -61,14 +61,18 @@ final class CachingLinterTest extends TestCase
         $sublinter = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
         $sublinter->lintFile($fs->url().'/foo.php')->shouldBeCalledTimes(1)->willReturn($result->reveal());
         $sublinter->lintFile($fs->url().'/bar.php')->shouldNotBeCalled();
-        $sublinter->lintFile($fs->url().'/baz.php')->shouldBeCalled()->willReturn($result->reveal());
+        $sublinter->lintFile($fs->url().'/baz.php')->shouldBeCalledTimes(1)->willReturn($result->reveal());
 
         $linter = new CachingLinter($sublinter->reveal());
 
-        $linter->lintFile($fs->url().'/foo.php');
-        $linter->lintFile($fs->url().'/foo.php');
-        $linter->lintFile($fs->url().'/bar.php');
-        $linter->lintFile($fs->url().'/baz.php');
+        $results = array(
+            $linter->lintFile($fs->url().'/foo.php'),
+            $linter->lintFile($fs->url().'/foo.php'),
+            $linter->lintFile($fs->url().'/bar.php'),
+            $linter->lintFile($fs->url().'/baz.php'),
+        );
+
+        $this->assertContainsOnlyInstancesOf('PhpCsFixer\Linter\LintingResultInterface', $results);
     }
 
     public function testLintSourceIsCalledOnceOnSameContent()
@@ -77,12 +81,16 @@ final class CachingLinterTest extends TestCase
 
         $sublinter = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
         $sublinter->lintSource('<?php echo "baz";')->shouldBeCalledTimes(1)->willReturn($result->reveal());
-        $sublinter->lintSource('<?php echo "foobarbaz";')->shouldBeCalled()->willReturn($result->reveal());
+        $sublinter->lintSource('<?php echo "foobarbaz";')->shouldBeCalledTimes(1)->willReturn($result->reveal());
 
         $linter = new CachingLinter($sublinter->reveal());
 
-        $linter->lintSource('<?php echo "baz";');
-        $linter->lintSource('<?php echo "baz";');
-        $linter->lintSource('<?php echo "foobarbaz";');
+        $results = array(
+            $linter->lintSource('<?php echo "baz";'),
+            $linter->lintSource('<?php echo "baz";'),
+            $linter->lintSource('<?php echo "foobarbaz";'),
+        );
+
+        $this->assertContainsOnlyInstancesOf('PhpCsFixer\Linter\LintingResultInterface', $results);
     }
 }
