@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-04-23T06:53:57Z
+
+Thanks @keradus, in the future should I group new tests and stuff into one PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-23T06:56:11Z
+
+for cleaning/refactoring, yeah. (for features/bugfixes - nope)
+even if this PR will collect other 10 (or so), it will still be smaller than most of the PRs
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-04-23T17:49:47Z
+
+Updated to test FileReader now, had a fun time with it, not sure if the solution is optimal...
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-24T23:24:46Z
+
+damn. fabbot is wrongly suggesting to fix paths that are excluded in config.
+cc @fabpot
