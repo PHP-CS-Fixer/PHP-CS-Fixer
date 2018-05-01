@@ -86,62 +86,26 @@ final class NoUnusedImportsFixer extends AbstractFixer
             return;
         }
 
-        $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $useDeclarationsIndexes);
-        $namespaceDeclarations = $this->getNamespaceDeclarations($tokens);
-        $contentWithoutUseDeclarations = $this->generateCodeWithoutPartials($tokens, array_merge($namespaceDeclarations, $useDeclarations));
-        $useUsages = $this->detectUseUsages($contentWithoutUseDeclarations, $useDeclarations);
+        foreach ($this->getNamespaces($tokens) as $namespace) {
+            $useDeclarations = $this->getNamespaceUseDeclarations($tokens, $namespace, $useDeclarationsIndexes);
 
-        $this->removeUnusedUseDeclarations($tokens, $useDeclarations, $useUsages);
-        $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespaceDeclarations);
-    }
+            $usagesSearchIgnoredIndexes = array();
 
-    /**
-     * @param string $content
-     * @param array  $useDeclarations
-     *
-     * @return array
-     */
-    private function detectUseUsages($content, array $useDeclarations)
-    {
-        $usages = array();
+            foreach ($useDeclarations as $useDeclaration) {
+                $usagesSearchIgnoredIndexes[$useDeclaration['start']] = $useDeclaration['end'];
+            }
 
-        foreach ($useDeclarations as $shortName => $useDeclaration) {
-            $usages[$shortName] = (bool) Preg::match('/(?<![\$\\\\])(?<!->)\b'.preg_quote($shortName, '/').'\b/i', $content);
-        }
-
-        return $usages;
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param array  $partials
-     *
-     * @return string
-     */
-    private function generateCodeWithoutPartials(Tokens $tokens, array $partials)
-    {
-        $content = '';
-
-        foreach ($tokens as $index => $token) {
-            $allowToAppend = true;
-
-            foreach ($partials as $partial) {
-                if ($partial['start'] <= $index && $index <= $partial['end']) {
-                    $allowToAppend = false;
-
-                    break;
+            foreach ($useDeclarations as $shortName => $useDeclaration) {
+                if (!$this->importIsUsed($tokens, $namespace, $usagesSearchIgnoredIndexes, $shortName)) {
+                    $this->removeUseDeclaration($tokens, $useDeclaration);
                 }
             }
 
-            if ($allowToAppend) {
-                $content .= $token->getContent();
-            }
+            $this->removeUsesInSameNamespace($tokens, $useDeclarations, $namespace);
         }
-
-        return $content;
     }
 
-    private function getNamespaceDeclarations(Tokens $tokens)
+    private function getNamespaces(Tokens $tokens)
     {
         $namespaces = array();
 
@@ -152,21 +116,43 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             $declarationEndIndex = $tokens->getNextTokenOfKind($index, array(';', '{'));
 
+            if ($tokens[$declarationEndIndex]->equals('{')) {
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $declarationEndIndex);
+            } else {
+                $endIndex = $tokens->getNextTokenOfKind($declarationEndIndex, array(array(T_NAMESPACE)));
+                if (null === $endIndex) {
+                    $endIndex = count($tokens);
+                }
+                --$endIndex;
+            }
+
             $namespaces[] = array(
                 'name' => trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1)),
-                'start' => $index,
-                'end' => $declarationEndIndex,
+                'start' => $declarationEndIndex,
+                'end' => $endIndex,
+            );
+        }
+
+        if (0 === count($namespaces)) {
+            $namespaces[] = array(
+                'name' => '',
+                'start' => 0,
+                'end' => count($tokens) - 1,
             );
         }
 
         return $namespaces;
     }
 
-    private function getNamespaceUseDeclarations(Tokens $tokens, array $useIndexes)
+    private function getNamespaceUseDeclarations(Tokens $tokens, array $namespace, array $useIndexes)
     {
         $uses = array();
 
         foreach ($useIndexes as $index) {
+            if ($index < $namespace['start'] || $index > $namespace['end']) {
+                continue;
+            }
+
             $info = $this->getNamespaceUseDeclarationDetails($tokens, $index, $tokens->getNextTokenOfKind($index, array(';', array(T_CLOSE_TAG))));
 
             if (!$info['group']) {
@@ -225,13 +211,34 @@ final class NoUnusedImportsFixer extends AbstractFixer
         );
     }
 
-    private function removeUnusedUseDeclarations(Tokens $tokens, array $useDeclarations, array $useUsages)
+    private function importIsUsed(Tokens $tokens, array $namespace, array $ignoredIndexes, $shortName)
     {
-        foreach ($useDeclarations as $shortName => $useDeclaration) {
-            if (!$useUsages[$shortName]) {
-                $this->removeUseDeclaration($tokens, $useDeclaration);
+        for ($index = $namespace['start']; $index <= $namespace['end']; ++$index) {
+            if (isset($ignoredIndexes[$index])) {
+                $index = $ignoredIndexes[$index];
+
+                continue;
+            }
+
+            $token = $tokens[$index];
+
+            if (
+                $token->isGivenKind(T_STRING)
+                && 0 === strcasecmp($shortName, $token->getContent())
+                && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(array(T_NS_SEPARATOR, T_CONST, T_OBJECT_OPERATOR))
+            ) {
+                return true;
+            }
+
+            if ($token->isComment() && Preg::match(
+                '/(?<![[:alnum:]])(?<!\\\\)'.$shortName.'(?![[:alnum:]])/i',
+                $token->getContent()
+            )) {
+                return true;
             }
         }
+
+        return false;
     }
 
     private function removeUseDeclaration(Tokens $tokens, array $useDeclaration)
@@ -319,14 +326,9 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
     }
 
-    private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, array $namespaceDeclarations)
+    private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, array $namespaceDeclaration)
     {
-        // safeguard for files with multiple namespaces to avoid breaking them until we support this case
-        if (1 !== count($namespaceDeclarations)) {
-            return;
-        }
-
-        $namespace = $namespaceDeclarations[0]['name'];
+        $namespace = $namespaceDeclaration['name'];
         $nsLength = strlen($namespace.'\\');
 
         foreach ($useDeclarations as $useDeclaration) {
