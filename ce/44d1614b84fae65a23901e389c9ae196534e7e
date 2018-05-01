@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-20T07:50:47Z
+
+Thanks, awesome :)
+Great to see the releases on `cs.sensiolabs.org` can be fetch over HTTPS.
+
+Practical question at the maintainers, do we want the changes on `2.2` as well (`1.13` still exists as branch but is EOL so doesn't matter to much I think)?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-20T07:58:37Z
+
+I'd say 2.2 for the README changes and 2.11 for `TypeAnalysis` as it does not exist in branch 2.2.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-20T09:15:03Z
+
+thanks for pointing this out @fabpot !
+
+as a side effect, you can see your PR is failing on fabbot, which is asking to use long-array syntax, even if we have config to use short syntax. Can you take a look?
