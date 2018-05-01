@@ -27,31 +27,43 @@ final class NamespaceAnalysisTest extends TestCase
 {
     public function testStartEndTokenAwareAnalysis()
     {
-        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2);
+        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         $this->assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
     }
 
     public function testFullName()
     {
-        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2);
+        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         $this->assertSame('Full\NamespaceName', $analysis->getFullName());
     }
 
     public function testShortName()
     {
-        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2);
+        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         $this->assertSame('NamespaceName', $analysis->getShortName());
     }
 
     public function testStartIndex()
     {
-        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2);
+        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         $this->assertSame(1, $analysis->getStartIndex());
     }
 
     public function testEndIndex()
     {
-        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2);
+        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         $this->assertSame(2, $analysis->getEndIndex());
+    }
+
+    public function testScopeStartIndex()
+    {
+        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
+        $this->assertSame(1, $analysis->getScopeStartIndex());
+    }
+
+    public function testScopeEndIndex()
+    {
+        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
+        $this->assertSame(10, $analysis->getScopeEndIndex());
     }
 }

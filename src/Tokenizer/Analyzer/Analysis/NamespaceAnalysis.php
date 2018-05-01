@@ -46,17 +46,35 @@ final class NamespaceAnalysis implements StartEndTokenAwareAnalysis
     private $endIndex;
 
     /**
+     * The start index of the scope of the namespace in the analyzed Tokens.
+     *
+     * @var int
+     */
+    private $scopeStartIndex;
+
+    /**
+     * The end index of the scope of the namespace in the analyzed Tokens.
+     *
+     * @var int
+     */
+    private $scopeEndIndex;
+
+    /**
      * @param string $fullName
      * @param string $shortName
      * @param int    $startIndex
      * @param int    $endIndex
+     * @param int    $scopeStartIndex
+     * @param int    $scopeEndIndex
      */
-    public function __construct($fullName, $shortName, $startIndex, $endIndex)
+    public function __construct($fullName, $shortName, $startIndex, $endIndex, $scopeStartIndex, $scopeEndIndex)
     {
         $this->fullName = $fullName;
         $this->shortName = $shortName;
         $this->startIndex = $startIndex;
         $this->endIndex = $endIndex;
+        $this->scopeStartIndex = $scopeStartIndex;
+        $this->scopeEndIndex = $scopeEndIndex;
     }
 
     /**
@@ -89,5 +107,21 @@ final class NamespaceAnalysis implements StartEndTokenAwareAnalysis
     public function getEndIndex()
     {
         return $this->endIndex;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScopeStartIndex()
+    {
+        return $this->scopeStartIndex;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScopeEndIndex()
+    {
+        return $this->scopeEndIndex;
     }
 }
