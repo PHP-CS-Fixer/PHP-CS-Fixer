@@ -41,7 +41,7 @@ final class NamespaceUsesAnalyzer
      *
      * @return NamespaceUseAnalysis[]
      */
-    public function getDeclarations(Tokens $tokens, array $useIndexes)
+    private function getDeclarations(Tokens $tokens, array $useIndexes)
     {
         $uses = [];
 
@@ -49,7 +49,7 @@ final class NamespaceUsesAnalyzer
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
             $analysis = $this->parseDeclaration($tokens, $index, $endIndex);
             if ($analysis) {
-                $uses[$analysis->getShortName()] = $analysis;
+                $uses[] = $analysis;
             }
         }
 

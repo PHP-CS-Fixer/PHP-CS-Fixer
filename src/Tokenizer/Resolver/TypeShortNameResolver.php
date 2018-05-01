@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tokenizer\Resolver;
 
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -91,8 +90,12 @@ final class TypeShortNameResolver
      */
     private function getUseMapFromTokens(Tokens $tokens)
     {
-        return array_map(function (NamespaceUseAnalysis $info) {
-            return $info->getFullName();
-        }, (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens));
+        $map = [];
+
+        foreach ((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens) as $useDeclaration) {
+            $map[$useDeclaration->getShortName()] = $useDeclaration->getFullName();
+        }
+
+        return $map;
     }
 }

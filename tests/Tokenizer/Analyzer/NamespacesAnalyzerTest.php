@@ -43,11 +43,22 @@ final class NamespacesAnalyzerTest extends TestCase
     public function provideNamespacesCases()
     {
         return [
-            ['<?php // no namespaces', []],
+            ['<?php // no namespaces', [
+                new NamespaceAnalysis(
+                    '',
+                    '',
+                    0,
+                    0,
+                    0,
+                    1
+                ),
+            ]],
             ['<?php namespace Foo\Bar;', [
                 new NamespaceAnalysis(
                     'Foo\Bar',
                     'Bar',
+                    1,
+                    6,
                     1,
                     6
                 ),
@@ -57,13 +68,17 @@ final class NamespacesAnalyzerTest extends TestCase
                     'Foo\Bar',
                     'Bar',
                     1,
-                    6
+                    6,
+                    1,
+                    7
                 ),
                 new NamespaceAnalysis(
                     'Foo\Baz',
                     'Baz',
                     10,
-                    16
+                    16,
+                    10,
+                    17
                 ),
             ]],
         ];

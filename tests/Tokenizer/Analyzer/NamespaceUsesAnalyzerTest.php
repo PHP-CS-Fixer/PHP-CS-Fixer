@@ -40,27 +40,12 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         $this->assertSame(serialize($expected), serialize($analyzer->getDeclarationsFromTokens($tokens)));
     }
 
-    /**
-     * @param string $code
-     * @param array  $expected
-     * @param array  $useIndexes
-     *
-     * @dataProvider provideNamespaceUsesCases
-     */
-    public function testUsesFromIndexes($code, $expected, $useIndexes)
-    {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new NamespaceUsesAnalyzer();
-
-        $this->assertSame(serialize($expected), serialize($analyzer->getDeclarations($tokens, $useIndexes)));
-    }
-
     public function provideNamespaceUsesCases()
     {
         return [
             ['<?php // no uses', [], []],
             ['<?php use Foo\Bar;', [
-                'Bar' => new NamespaceUseAnalysis(
+                new NamespaceUseAnalysis(
                     'Foo\Bar',
                     'Bar',
                     false,
@@ -69,14 +54,14 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 ),
             ], [1]],
             ['<?php use Foo\Bar; use Foo\Baz;', [
-                'Bar' => new NamespaceUseAnalysis(
+                new NamespaceUseAnalysis(
                     'Foo\Bar',
                     'Bar',
                     false,
                     1,
                     6
                 ),
-                'Baz' => new NamespaceUseAnalysis(
+                new NamespaceUseAnalysis(
                     'Foo\Baz',
                     'Baz',
                     false,
@@ -85,7 +70,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 ),
             ], [1, 8]],
             ['<?php use \Foo\Bar;', [
-                'Bar' => new NamespaceUseAnalysis(
+                new NamespaceUseAnalysis(
                     '\Foo\Bar',
                     'Bar',
                     false,
@@ -94,7 +79,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 ),
             ], [1]],
             ['<?php use Foo\Bar as Baz;', [
-                'Baz' => new NamespaceUseAnalysis(
+                new NamespaceUseAnalysis(
                     'Foo\Bar',
                     'Baz',
                     true,
@@ -103,7 +88,14 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 ),
             ], [1]],
             ['<?php use Foo\Bar as Baz; use Foo\Buz as Baz;', [
-                'Baz' => new NamespaceUseAnalysis(
+                new NamespaceUseAnalysis(
+                    'Foo\Bar',
+                    'Baz',
+                    true,
+                    1,
+                    10
+                ),
+                new NamespaceUseAnalysis(
                     'Foo\Buz',
                     'Baz',
                     true,
