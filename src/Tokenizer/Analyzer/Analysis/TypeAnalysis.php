@@ -22,9 +22,9 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
      *
      * More info:
      *
-     * @see http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.types
-     * @see http://php.net/manual/en/reserved.other-reserved-words.php
-     * @see http://php.net/manual/en/language.pseudo-types.php
+     * @see https://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.types
+     * @see https://php.net/manual/en/reserved.other-reserved-words.php
+     * @see https://php.net/manual/en/language.pseudo-types.php
      *
      * @var array
      */
