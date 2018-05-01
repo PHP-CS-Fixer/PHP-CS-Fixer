@@ -1,0 +1,84 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-14T16:06:58Z
+
+can we merge https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3367 first, to prevent merge hell ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-16T17:43:15Z
+
+Rebased onto 2.2, squashing @kubawerlos' commits and fixing conflicts.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-02T15:06:20Z
+
+please rebase, now, 2.2 contains other fix to this fixer done by SpacePossum.
+you need to keep it in tests, about src - up to you how to handle that
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-02T19:37:39Z
+
+sorry for the merge issues @julienfalque , lemme know if you've questions about my changes.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-03T18:19:44Z
+
+Rebased.
+
+No worries @SpacePossum, conflicts were not hard to solve, thanks :)
+
+---------------------------------------------------------------------------
+
+by IchHabRecht at 2018-03-15T16:35:50Z
+
+If you don't mind, I did a rebase to 2.10.4 here https://github.com/IchHabRecht/PHP-CS-Fixer/tree/no-unused-imports-rewrite
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-15T18:33:20Z
+
+@IchHabRecht This PR targets 2.2 as it is the lowest maintained branch where the fixer can be improved.
+
+---------------------------------------------------------------------------
+
+by IchHabRecht at 2018-03-15T22:18:32Z
+
+Thanks for working on it again. Needed the patch file for a project of mine anyway ;-)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-20T17:48:36Z
+
+@julienfalque , could you open a sibling PR (without closing this one!) but targetting `master`, as I got too many conflicts after merge of #3276 ?
+thanks !
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-20T18:38:34Z
+
+@keradus Why do you need to duplicate the PR againt master?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-21T13:25:33Z
+
+because I have no clue how to resolve conflicts during merging this PR into master (with 2.2 in the middle, of course).
+
+for that, if you would show how this fixer shall look like on master, i would pick it up for conflicts resolving during 2.2->master merging
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-30T17:14:41Z
+
+ping @julienfalque
+please ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-01T17:36:54Z
+
+See #3668.
