@@ -40,7 +40,7 @@ your system:
 
 .. code-block:: bash
 
-    $ wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O php-cs-fixer
+    $ wget https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O php-cs-fixer
 
 or with specified version:
 
@@ -52,7 +52,7 @@ or with curl:
 
 .. code-block:: bash
 
-    $ curl -L http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -o php-cs-fixer
+    $ curl -L https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -o php-cs-fixer
 
 then:
 
@@ -1679,7 +1679,7 @@ scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
-.. _php-cs-fixer.phar: http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
+.. _php-cs-fixer.phar: https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          https://medium.com/@valeryan/how-to-configure-phpstorm-to-use-php-cs-fixer-1844991e521f

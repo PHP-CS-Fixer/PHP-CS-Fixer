@@ -213,6 +213,13 @@ if ($a = $obj instanceof A === true) {
             ['<?php $l = $c > 2;'],
             ['<?php return $this->myObject1->{$index}+$b === "";'],
             ['<?php return $m[2]+1 == 2;'],
+            ['<?php return $m{2}+1 == 2;'],
+            ['<?php return $m->a{2}+1 == 2;'],
+            ['<?php return $foo === $bar[$baz][1];'],
+            ['<?php return $foo === $bar[$baz]{1};'],
+            ['<?php $a = $b[$key]["1"] === $c["2"];'],
+            ['<?php return $foo->$a[1] === $bar[$baz]{1}->$a[1][2][3]->$d[$z]{1};'],
+            ['<?php return $foo->$a === $foo->$b->$c;'],
             // https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/693
             ['<?php return array(2) == $o;'],
             ['<?php return $p == array(2);'],

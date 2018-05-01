@@ -226,7 +226,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             // update
             foreach ($items as $j => $item) {
                 if (null === $item['tag']) {
-                    if ($item['desc'][0] === '@') {
+                    if ('@' === $item['desc'][0]) {
                         $lines[$current + $j] = $item['indent'].' * '.$item['desc'].$lineEnding;
 
                         continue;
