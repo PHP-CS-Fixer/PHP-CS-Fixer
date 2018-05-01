@@ -116,6 +116,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_empty_statement'], $fixers['no_whitespace_in_blank_line']],
             [$fixers['no_empty_statement'], $fixers['space_after_semicolon']],
             [$fixers['no_empty_statement'], $fixers['switch_case_semicolon_to_colon']],
+            [$fixers['no_extra_blank_lines'], $fixers['blank_line_before_statement']],
             [$fixers['no_leading_import_slash'], $fixers['ordered_imports']],
             [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['binary_operator_spaces']],
             [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']],
