@@ -1,0 +1,80 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-24T05:51:09Z
+
+Hi @dmvdbrugge and thanks for your PR :)
+I like the idea! Could you update the FixerFactory test (in the autoreview namespace) together with adding a priority test fixture to provide a way to test the new priority change?
+
+Please add a test with both a `default` and multiple `case` statements and a test that the default behavior of the fixer is not changed (so no BC break).
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-04-24T08:57:25Z
+
+> Could you update the FixerFactory test (...) together with adding a priority test fixture
+
+Done.
+
+> Please add a test with both a default and multiple case statements
+
+Done.
+
+> test that the default behavior of the fixer is not changed (so no BC break)
+
+This was already guaranteed by one of the existing tests, but I extended it so that future changes still guarantee no BC break.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-25T11:34:04Z
+
+thanks @dmvdbrugge :)
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-04-30T09:35:14Z
+
+So I guess the state of this PR is "waiting to be mergeable because it's not up-to-date with base"?
+
+Do you want me to merge base in, or rebase on top of it?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-30T10:30:52Z
+
+You need one more vote of a member/maintainer, but I think you'll get it ;)
+
+Besides that keradus will need some time to merge PR's and make releases. This might take some time based on his agenda as he typically merges a whole bunch of things and releases it all in one go.
+
+Till than, feel free to rebase or merge in the changes from the base (as merge-commits will be removed during the merging of the PR anyway)  :)
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-04-30T12:14:31Z
+
+> You need one more vote of a member/maintainer
+
+Ah, I had not seen that requirement anywhere. Might be an idea to add that to CONTRIBUTING.md? (Or am I just blind?)
+
+> This might take some time based on his agenda
+
+No hurry, just wondering :)
+
+> Till than, feel free to rebase or merge in the changes from the base (as merge-commits will be removed during the merging of the PR anyway) :)
+
+Ok, so I rebased (and again: nice magic)
+
+Thanks for the answers! This is my first time contributing to a repo that has such strict rules 😆
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-01T09:08:30Z
+
+> Ah, I had not seen that requirement anywhere. Might be an idea to add that to CONTRIBUTING.md? (Or am I just blind?)
+
+it's not hard rule. Like, if thing is trivial, one approval is enough.
+If not, we like to have 2 of them.
+As ppl are often running PHP CS Fixer blindly, trusting it won't break their code, we want to double check PRs to prevent that happening.
+
+> This is my first time contributing to a repo that has such strict rules
+
+could you elaborate please? what strictness you are referring to? tests in code, 2nd approval, or... ?
