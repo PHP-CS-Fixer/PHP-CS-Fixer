@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-19T11:24:52Z
+
+any chances to fix tests ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-11-20T07:07:24Z
+
+I don't think I've the time needed to fix this soon, as it will take me a long time as I find the fixer hard. Sorry about that.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-20T21:16:00Z
+
+Sure, just asking about state, so we know what we stay on ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-14T09:28:04Z
+
+I took out the other failing test because it is a different issue that should be handled in another PR.
+This PR should fix the problem with "\n" vs. "\r\n" endings
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-27T06:39:15Z
+
+rebased and squashed
