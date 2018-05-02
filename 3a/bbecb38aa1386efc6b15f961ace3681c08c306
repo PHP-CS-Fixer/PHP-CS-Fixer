@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-30T11:27:15Z
+
+is Travis failing on
+```
+Remaining deprecation notices (21)
+  21x: `\Keradus\CliExecutor\BashScriptExecutor` is deprecated, use `\Keradus\CliExecutor\ScriptExecutor` instead.
+    16x in CiIntegrationTest::testIntegration from PhpCsFixer\Tests\Smoke
+    4x in CiIntegrationTest::tearDown from PhpCsFixer\Tests\Smoke
+    1x in CiIntegrationTest::setUpBeforeClass from PhpCsFixer\Tests\Smoke
+```
+
+or am I missing some real issue here?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-30T11:35:00Z
+
+ref #3652
