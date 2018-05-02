@@ -162,7 +162,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
     public function provideIntegrationCases()
     {
         return [
-            [
+            'random-changes' => [
                 'random-changes',
                 [
                     'touch dir\ a/file.php',
@@ -185,7 +185,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                 ],
                 'S.',
             ],
-            [
+            'changes-including-dist-config-file' => [
                 'changes-including-dist-config-file',
                 [
                     'echo "" >> dir\ b/file\ b.php',
@@ -206,7 +206,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                 ],
                 '...',
             ],
-            [
+            'changes-including-custom-config-file-creation' => [
                 'changes-including-custom-config-file-creation',
                 [
                     'echo "" >> dir\ b/file\ b.php',
@@ -225,7 +225,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                 ],
                 '...',
             ],
-            [
+            'changes-including-composer-lock' => [
                 'changes-including-composer-lock',
                 [
                     'echo "" >> dir\ b/file\ b.php',
