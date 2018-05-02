@@ -79,7 +79,6 @@ final class FixerFactoryTest extends TestCase
             array($fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_trim']),
             array($fixers['general_phpdoc_annotation_remove'], $fixers['no_empty_phpdoc']),
             array($fixers['indentation_type'], $fixers['phpdoc_indent']),
-            array($fixers['line_ending'], $fixers['single_blank_line_at_eof']),
             array($fixers['method_separation'], $fixers['braces']),
             array($fixers['method_separation'], $fixers['indentation_type']),
             array($fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']),
@@ -129,7 +128,6 @@ final class FixerFactoryTest extends TestCase
             array($fixers['ordered_class_elements'], $fixers['space_after_semicolon']),
             array($fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']),
             array($fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']),
-            array($fixers['php_unit_strict'], $fixers['php_unit_construct']),
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']),
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']),
             array($fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']),
@@ -229,24 +227,18 @@ final class FixerFactoryTest extends TestCase
         // It may only shrink, never add anything to it.
         $casesWithoutTests = array(
             'indentation_type,phpdoc_indent.test',
-            'line_ending,single_blank_line_at_eof.test',
             'method_separation,braces.test',
             'method_separation,indentation_type.test',
             'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_singleline_whitespace_before_semicolons.test',
-            'php_unit_strict,php_unit_construct.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
-            'phpdoc_no_empty_return,phpdoc_trim.test',
             'phpdoc_no_package,phpdoc_order.test',
-            'phpdoc_no_package,phpdoc_trim.test',
             'phpdoc_order,phpdoc_separation.test',
             'phpdoc_order,phpdoc_trim.test',
             'phpdoc_separation,phpdoc_trim.test',
             'phpdoc_summary,phpdoc_trim.test',
             'phpdoc_var_without_name,phpdoc_trim.test',
-            'unary_operator_spaces,not_operator_with_space.test',
-            'unary_operator_spaces,not_operator_with_successor_space.test',
         );
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
