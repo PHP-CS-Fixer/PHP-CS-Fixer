@@ -85,7 +85,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
         $desc = '(?:\s+(?P<desc>\V*))';
 
         $this->regex = '/^'.$indent.' \* @(?:'.implode('|', $types).')'.$desc.'\s*$/u';
-        $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)$/u';
+        $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/u';
     }
 
     /**
@@ -136,8 +136,14 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixDocBlock($token->getContent())]);
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $content = $token->getContent();
+            $newContent = $this->fixDocBlock($content);
+            if ($newContent !== $content) {
+                $tokens[$index] = new Token([T_DOC_COMMENT, $newContent]);
             }
         }
     }
@@ -181,9 +187,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $lines = Utils::splitLines($content);
 
-        $l = count($lines);
-
-        for ($i = 0; $i < $l; ++$i) {
+        for ($i = 0, $l = count($lines); $i < $l; ++$i) {
             $items = [];
             $matches = $this->getMatches($lines[$i]);
 
@@ -200,8 +204,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                 }
 
                 $matches = $this->getMatches($lines[$i], true);
-
-                if (!$matches) {
+                if (null === $matches) {
                     break;
                 }
 
