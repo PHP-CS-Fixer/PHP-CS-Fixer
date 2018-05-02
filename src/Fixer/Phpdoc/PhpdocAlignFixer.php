@@ -46,7 +46,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
         $desc = '(?:\s+(?P<desc>\V*))';
 
         $this->regex = '/^'.$indent.' \* @(?:'.$paramTag.'|'.$otherTags.')'.$desc.'\s*$/u';
-        $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)$/u';
+        $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/u';
     }
 
     /**
@@ -97,8 +97,14 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token(array(T_DOC_COMMENT, $this->fixDocBlock($token->getContent())));
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $content = $token->getContent();
+            $newContent = $this->fixDocBlock($content);
+            if ($newContent !== $content) {
+                $tokens[$index] = new Token(array(T_DOC_COMMENT, $newContent));
             }
         }
     }
@@ -113,9 +119,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $lines = Utils::splitLines($content);
 
-        $l = count($lines);
-
-        for ($i = 0; $i < $l; ++$i) {
+        for ($i = 0, $l = count($lines); $i < $l; ++$i) {
             $items = array();
             $matches = $this->getMatches($lines[$i]);
 
@@ -132,8 +136,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements WhitespacesAwareFi
                 }
 
                 $matches = $this->getMatches($lines[$i], true);
-
-                if (!$matches) {
+                if (null === $matches) {
                     break;
                 }
 
