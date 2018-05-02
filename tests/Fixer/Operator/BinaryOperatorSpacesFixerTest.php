@@ -401,6 +401,17 @@ $a//
                     );',
                 ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
             ],
+            [
+                '<?php
+$fooooo = 111    === 0;
+$bar    = 333333 === 0;
+                ',
+                '<?php
+$fooooo = 111 === 0;
+$bar = 333333 === 0;
+                ',
+                ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE],
+            ],
         ];
     }
 
