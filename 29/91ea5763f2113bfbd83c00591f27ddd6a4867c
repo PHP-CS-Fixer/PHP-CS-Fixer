@@ -1,0 +1,116 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-17T12:55:44Z
+
+`settype` ? kerad is crying :(
+where did you faced it ? :(
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-04-17T13:15:58Z
+
+Seeing as
+
+> Return Values ¶
+> Returns TRUE on success or FALSE on failure.
+
+I think we shouldn't fix if assigning somewhere
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-04-17T13:17:21Z
+
+Also it modifies by reference, so surely should fix to `$foo = (array) $foo` instead of just `(array) $foo`?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-17T13:47:58Z
+
+>I think we shouldn't fix if assigning somewhere
+
+I think the fixer doesn't `fix` if assigning
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-17T13:48:45Z
+
+>Also it modifies by reference, so surely should fix to $foo = (array) $foo instead of just (array) $foo?
+
+indeed, seems I lost a commit somewhere...
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-17T13:49:31Z
+
+> where did you faced it :(
+
+on one of those older code bases :(
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-04-20T07:26:53Z
+
+Nice work and nice try, but the correct fix for [settype](https://secure.php.net/manual/en/function.settype.php) usage in PHP should be:
+```diff
+-settype($foo, "integer");
++settype($foo, "integer"); // Really?
++// Look at me, pay attention to my lips
++// and repeat after me: "I shall not mess with PHP typecasting"
++// Now, I'm good this time and I'll only add the next line for now
++// @TODO Refactor this typesystem mess
+```
+That should be enforced on a secon run by:
+
+```diff
+-settype($foo, "integer");
++throw new \Exception('settype($foo, "integer");'); // TOLD YA!
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-01T09:26:23Z
+
+@SpacePossum , you removed `WIP` flag, but Travis is still sad. Could you make him happy?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-02T08:13:35Z
+
+I fixed the test, but than added `settype` `null` support, breaking the space control around the statements.
+Hope to fix this later.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-03T09:35:36Z
+
+> or when used as the 2nd or 3rd expression in a `for` loop
+
+I don't want to know how you found this out 😆
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-03T09:47:30Z
+
+>I don't want to know how you found this out
+
+consider this check in the fixer
+
+```php
+if (!$tokens[$prev]->isGivenKind(T_OPEN_TAG) && !$tokens[$prev]->equalsAny([';', '{'])) {
+    continue; // return value of the function is used
+}
+```
+
+Therefore `for(; settype($a, 'int'); settype($a, 'int')) {}` both calls are fixed, changing the meaning of the code. It is just such an edge case I think it is not worth checking ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-08T20:17:44Z
+
+is there anything left here ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-08T21:19:48Z
+
+I think this one is all good
