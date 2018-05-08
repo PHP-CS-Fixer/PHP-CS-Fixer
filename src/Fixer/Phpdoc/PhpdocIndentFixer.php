@@ -105,7 +105,11 @@ class DocBlocks
 
             $newPrevContent = $this->fixWhitespaceBeforeDocblock($prevToken->getContent(), $indent);
             if ($newPrevContent) {
-                $tokens[$prevIndex] = new Token([$prevToken->getId(), $newPrevContent]);
+                if ($prevToken->isArray()) {
+                    $tokens[$prevIndex] = new Token([$prevToken->getId(), $newPrevContent]);
+                } else {
+                    $tokens[$prevIndex] = new Token($newPrevContent);
+                }
             } else {
                 $tokens->clearAt($prevIndex);
             }
