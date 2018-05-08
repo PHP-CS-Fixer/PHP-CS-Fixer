@@ -1,0 +1,341 @@
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-06T23:53:27Z
+
+Hi. Thank you for opening a PR !
+
+1. I do not see much value in allowing for `&& => and` transformation
+2. Please analyse the context of logic term and modify code only when safe / add missing parenthesis, this fixer may not be risky when one will not use naive approach.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-07T00:07:10Z
+
+@keradus Thanks for your quick feedback!
+
+> 1. I do not see much value in allowing for && => and transformation
+
+I agree. I've added it, because some coding standards would actually require the keywords approach. E.g. Kohana :( Anyway, if others don't see value in it I'll be happy to remove this and make the fixer non-configurable.
+
+> 2. Please analyse the context of logic term and modify code only when safe / add missing parenthesis, this fixer may not be risky when one will not use naive approach.
+
+If we remove conversion from `&&` to `and` then the fixer is quite safe. It should be still be marked as risky as it is theoretically possible to change behaviour, but it's the opposite conversion which is riskier.
+
+Example:
+```php
+$a = $b and $c;
+```
+In the code above, the `and $c` part is executed only when the `$b` condition evaluates to true and it doesn't affect the value of `$a`. It's most probably a bug and most certainly was not the original intent.
+
+After running the fixer we get:
+```php
+$a = $b && $c;
+```
+Now we have `$a` which is always a boolean depending on both `$b` and `$c` conditions.
+
+When using the keywords approach people should normally write:
+```php
+$a = ($b and $c);
+```
+
+Converting this we get:
+```php
+$a = ($b && $c);
+```
+The parentheses here are obsolete, but if we have the conversion only in this direction, then we can make it quite safer without adding more complexity to it.
+
+What do you think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-07T00:15:08Z
+
+Quick note:
+please avoid squashing on your side, it's easier to review changes when they are not squashed all the time (I noticed this PR has been pushed with force at least 2 times).
+Then, I will squash your commits during merging.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-07T00:23:08Z
+
+Reasoning makes sense to me.
+I know this feature is problematic, but it was already requested few times and ppl want to use it, even if they have to be careful about it - definitely not a rule to blindly run on existing legacy code (`$db = connect() or die;`), but a guard to not use `and` in nice, new code base.
+
+Regardless of implementation - what do you think @SpacePossum ?
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-07T00:26:19Z
+
+I think this fixer would most likely be used by people who understand the difference and are not using the low precedence of `and` and `or`, but just want to unify their codebase.
+
+@Anahkiasen @dkarlovi I'd be happy to get your feedback on this as you have previously opened #1212 and #2201. Thanks!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-07T07:53:10Z
+
+Allowing conversion from `&&`/`||` to `and`/`or` has no much added value to me too but, if someone may use it, why not? It doesn't make the implementation much complicated.
+
+Anyway, I vote 👍 for making the fixer aware of the precedence of the operators in the expressions it tries to fix, and remove the need to mark it risky.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-07T07:58:25Z
+
+@hkdobrev thanks for picking this up and sending a PR :+1:
+
+On concept level I like the idea of having a fixer that changes `and` to `&&`, `or` to `||`, while dealing with precedence issues by adding braces when needed.
+I know this leaves risky cases, but I think there are enough valid fixable cases. Marking the fixer `riskly` with good documentation would help.
+I think there is enough community support for this fixer (which helps when maintaining it after development and possibly additional development on it later).
+I don't think there is a lot of community support for fixing the other way around TBH.
+
+@julienfalque
+>if someone may use it, why not? It doesn't make the implementation much complicated.
+
+It adds quite a bit of complexity to the fixer (i.e. making it configurable for example, but also possibly more complex priority cases and such), and if we know of no people who might want to use and help out to maintain it I think it is better left out.
+
+---------------------------------------------------------------------------
+
+by dkarlovi at 2017-03-07T08:10:34Z
+
+@hkdobrev my use case is only to enforce consistency across the entire team, all the enumerated use cases where `and` is actually the correct solution look like huge gotchas to me. I'm all for `and => &&`, not the other way around (would not use it).
+
+Thank you for making this contribution!
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-07T08:21:50Z
+
+OK, I'll remove the configuration from the fixer. Yay! 🎉
+
+@julienfalque
+> Anyway, I vote 👍 for making the fixer aware of the precedence of the operators in the expressions it tries to fix, and remove the need to mark it risky.
+
+I don't think there's a way to make the fixer no risky, though. Even when converting only `and->&&`, `or->||`, there are still cases where the logic of the code would change and there is no easy way to fix it safely. And even if there was an easy way, it's not just about fixing it, because the programmer needs to check whether the initial version was a mistake or intentional. Therefore, it would always stay a risky fixer which needs to be double-checked.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-07T08:22:02Z
+
+> Allowing conversion from `&&`/`||` to `and`/`or` has no much added value to me too but, if someone may use it, why not?
+
+to not spread bad standards
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-07T08:36:25Z
+
+I've updated the fixer and the PR description. ✅
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-07T08:49:53Z
+
+> there are still cases where the logic of the code would change and there is no easy way to fix it safely
+
+Which cases?
+
+> the programmer needs to check whether the initial version was a mistake or intentional
+
+As the purpose of this tool is to fix code style, if the behavior of the code doesn't change, then it's perfectly fine IMO. It should not care if the code contains bugs or not.
+
+The programmer should check his code even if he doesn't run the tool at all. Adding parentheses where he doesn't expect it might even help spot a bug.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-07T08:56:08Z
+
+> As the purpose of this tool is to fix code style, if the behavior of the code doesn't change, then it's perfectly fine IMO. It should not care if the code contains bugs or not.
+
+Not only. It also fix trivial issues of non-experienced devs. Like enforcing strict comparisons (which obviously change code behaviour).
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-07T08:59:54Z
+
+@keradus Yes but `strict_comparison` fixer is _expected_ to change code behavior. I think the one we're talking about here can be implemented in a way that never changes code behavior, then marking it as risky does not make sense to me.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-07T09:10:39Z
+
+I think we all agree having this fixer not be risky would be the best, lets aim for that and see if it is possible :)
+thanks for taking the config option out @hkdobrev
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-08T13:19:09Z
+
+Do you guys think it's worth it to detect whether there was an assignment combined with `and`, `or` keywords?
+
+```php
+// Lower precedence is used intentionally here
+$connection = $db->connect() or die();
+// Parentheses need to be around the assignment
+($connection = $db->connect()) || die();
+
+// Wrong previous logic
+$result = $this->isActive() and $this->isEnabled();
+// Parentheses around assignments would keep wrong logic
+($result = $this->isActive()) && $this->isEnabled();
+```
+
+I just want to get a consensus, before I spend more time on it. Also ideas about how to approach this are very welcome! I don't have much experience with AST and tokens.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T13:31:53Z
+
+That's exactly what I (and @keradus too, I think) suggested 😅. This would allow the fixer to always replace `and`/`or` operators without changing code behavior. Note that you would have to do the same for all operators that have more precedence than `and`/`or` and less than `&&`/`||`, so that would be `??`, `?:`, `=`, `+=`,  `-=`,  `*=`,  `**=`,  `/=`,  `.=`,  `%=`,  `&=`,  `|=`,  `^=`,  `<<=` and `>>=`.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-08T13:44:56Z
+
+@julienfalque But I don't want to keep the wrong logic in place with parentheses. Look at my second example. I think having a risky fixer which doesn't put parentheses and you need to look through the changes would be more useful to the people who would want this replacement.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-08T13:51:05Z
+
+IMO having the fixer add the parentheses anyway would actually help me spot the issue as it would appear in `fix --diff` output, in `git diff` and even in commits if I still didn't fix the issue. If I see parentheses like in your second example, I would find it weird and check why it happens.
+
+On the other hand, if the fixer does not touch the wrong line, it won't attract my attention and I won't see it, just like I didn't see it when I actually wrote the code or merged it from someone else.
+
+To me, a risky fixer means that it may break the code when it actually changes it, not that it doesn't touch code because it looks broken.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-08T14:20:07Z
+
+I see the point for not wanting to keep code we prop. think of as not good, however the scope of the tool is to fix CS and/or optimize code where possible while trying to not effect functional execution of the code.
+This scopes out doing SCA/sniffing for cases we cannot fix and also that we should try to not change code behavior.
+Fixing code to functional the same code can be done here and is therefor preferred.
+There are various ways the user can take note that the code is changed (or needs changing) (exit code, CLI options, file changes, etc.).
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-03-08T14:24:02Z
+
+OK, so in order to do this I understand we need to do the following:
+- If the `and`/`or` keywords are on the right side of an assignment operation, we should put a single set of parentheses surrounding the left side of the assignment, the equals sign, the first part on the right side of the assignment before the first `and`/`or` keyword.
+- If we find `and`/`or` keywords without assignment operators, we wouldn't put parentheses.
+
+Are my assumptions correct? Am I missing some cases? How would I go about in detecting that? Going through the tokens manually? Could you point me to some fixers changing similar things? Thanks!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-04-06T17:55:27Z
+
+@julienfalque can you confirm the the assumptions of @hkdobrev ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-04-08T09:41:44Z
+
+@hkdobrev your assumptions are correct. Also, when there is an assignment operator, the fixer should check if there are parentheses before adding them.
+
+And yes, you will have to go through the tokens manually but methods from `Tokens` may help you. I don't think there already are similar fixers.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-06-06T12:58:35Z
+
+@hkdobrev, do you think you would have time to finish this PR?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-09-26T08:26:38Z
+
+ping @hkdobrev  :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-26T14:50:10Z
+
+friendly reminder @hkdobrev :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-04-05T20:06:28Z
+
+Maybe I'm bit pessimistic but I think making it non-risky would be really hard - with many, many cases to consider - would need to handle nested operators with needed parentheses, also sequences of mixed comparison, assignments with ternary operators. Like this:
+
+```php
+$hereBeDragons1 or $hereBeDragons2 || $hereBeDragons3 and $foo = $hereBeDragons4 ? $hereBeDragons5 and $hereBeDragons6 && $hereBeDragons7 : $hereBeDragons8 xor $hereBeDragons9
+```
+
+where each of `$hereBeDragons` is at least as complex as:
+```php
+in_array($baz->getValue(15, function ($x) { return @Crazy\Package::someService($x); }), array_map(SOME_CONST_WITH_ARRAY));
+```
+
+Point is we won't be able to make it non-risky at reasonable cost of time, so maybe let's stick with having it risky?
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2018-04-05T20:48:47Z
+
+> Point is we won't be able to make it non-risky at reasonable cost of time, so maybe let's stick with having it risky?
+
+👍 I've tried to take this up a couple of times, but my skills with the AST are not good enough to do handle all cases and I couldn't continue.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2018-04-05T20:49:52Z
+
+I was able to test it in our codebase and the review wasn't that hard. A couple of regex searches validated we didn't have many assignment with `and/or` to go through.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-06T17:11:16Z
+
+Yeah I think @kubawerlos is right. We could start with a risky version of the fixer and improve it later.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2018-04-06T21:31:29Z
+
+Well, the current version of this branch is a risky fixer. Has something updated in the fixers API that needs to be reflected? Should I rebase on top of latest master?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-06T22:04:37Z
+
+After re-re-reading all of this and looking at what this fixer is doing, I'm :+1: for the current state (after rebase ;) ).
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-05-06T21:18:07Z
+
+@hkdobrev any chance for update to have this merged?
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2018-05-08T20:43:55Z
+
+@keradus Thanks for picking this up! I've updated the code style so the build could pass.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-08T20:47:43Z
+
+please stop any changes here, i'm in middle of merging this one.
+i need to drop your ~comment~ commit, it's will cause Travis to fail
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-08T20:53:33Z
+
+So, dropped.
+You followed the hint of `fabbot.io` CI. Sadly, for 2.11+ branches fabbot goes crazy and nobody knows why, it ask us to follow some rules, but we don't know which and why :(
+eg, since 2.3, we use short array syntax, while fabbot is asking to use long syntax again.
+cc @fabpot
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-08T21:29:32Z
+
+It was quite a thing here. Happy to finally merge this - over a year in fridge!
+Thanks @hkdobrev !
