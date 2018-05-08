@@ -721,6 +721,12 @@ Choose from the list of available rules:
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
     syntax; defaults to ``'long'``
 
+* **logical_operators**
+
+  Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
+
+  *Risky rule: risky, because you must double-check if using and/or with lower precedence was intentional.*
+
 * **lowercase_cast** [@Symfony]
 
   Cast should be written in lower case.
