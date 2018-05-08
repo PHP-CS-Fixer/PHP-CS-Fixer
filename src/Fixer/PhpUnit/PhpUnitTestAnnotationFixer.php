@@ -443,13 +443,12 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $lineContent = $this->getSingleLineDocBlockEntry($lines);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
-        $lines = [
+
+        return [
             new Line('/**'.$lineEnd),
             new Line($originalIndent.' * '.$lineContent.$lineEnd),
             new Line($originalIndent.' */'),
         ];
-
-        return $lines;
     }
 
     /**
@@ -471,9 +470,8 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             ++$i;
         }
         $line = array_slice($line, $i);
-        $line = implode($line);
 
-        return $line;
+        return implode($line);
     }
 
     /**

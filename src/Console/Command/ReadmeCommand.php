@@ -241,9 +241,7 @@ EOF;
                     $result = Preg::replace("#<\\?{$matches[1]}\\s*#", '', $result);
                 }
 
-                $result = Preg::replace("#\n\n +\\?>#", '', $result);
-
-                return $result;
+                return Preg::replace("#\n\n +\\?>#", '', $result);
             },
             $help
         );

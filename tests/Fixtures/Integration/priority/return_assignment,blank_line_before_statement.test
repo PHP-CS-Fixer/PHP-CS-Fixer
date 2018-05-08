@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: return_assignment,blank_line_before_statement.
+--RULESET--
+{"return_assignment": true, "blank_line_before_statement": true}
+--EXPECT--
+<?php
+
+function foo($a)
+{
+    $foo = [1, 2, 3];
+
+    return array_filter($foo, $a);
+}
+
+--INPUT--
+<?php
+
+function foo($a)
+{
+    $foo = [1, 2, 3];
+    $bar = array_filter($foo, $a);
+
+    return $bar;
+}

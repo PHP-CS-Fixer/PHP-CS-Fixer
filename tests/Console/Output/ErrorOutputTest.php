@@ -170,9 +170,7 @@ EOT;
         // normalize line breaks,
         // as we output using SF `writeln` we are not sure what line ending has been used as it is
         // based on the platform/console/terminal used
-        $displayed = str_replace(PHP_EOL, "\n", $displayed);
-
-        return $displayed;
+        return str_replace(PHP_EOL, "\n", $displayed);
     }
 
     private function getErrorAndLineNumber()
