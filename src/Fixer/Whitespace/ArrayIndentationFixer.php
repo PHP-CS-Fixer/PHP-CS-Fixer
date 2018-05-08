@@ -300,7 +300,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
 
     private function extractIndent($content)
     {
-        if (Preg::match('/\R([\t ]*)$/', $content, $matches)) {
+        if (Preg::match('/\R([\t ]*)[^\r\n]*$/', $content, $matches)) {
             return $matches[1];
         }
 

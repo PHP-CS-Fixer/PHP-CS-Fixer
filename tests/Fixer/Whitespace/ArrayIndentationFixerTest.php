@@ -674,6 +674,36 @@ EXPECTED
 INPUT
                 ,
             ],
+            [
+                <<<'EXPECTED'
+<div>
+    <a
+        class="link"
+        href="<?= Url::to([
+            '/site/page',
+            'id' => 123,
+        ]); ?>"
+    >
+        Link text
+    </a>
+</div>
+EXPECTED
+                ,
+                <<<'INPUT'
+<div>
+    <a
+        class="link"
+        href="<?= Url::to([
+              '/site/page',
+          'id' => 123,
+    ]); ?>"
+    >
+        Link text
+    </a>
+</div>
+INPUT
+                ,
+            ],
         ]);
     }
 
