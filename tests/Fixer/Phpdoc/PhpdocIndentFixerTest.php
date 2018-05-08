@@ -402,6 +402,18 @@ class Foo
 }',
         );
 
+        $cases[] = array(
+            '<?php
+class Application
+{
+}/**
+ */
+class Dispatcher
+{
+}
+',
+        );
+
         return $cases;
     }
 }
