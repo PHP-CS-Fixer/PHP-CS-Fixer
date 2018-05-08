@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-18T07:32:46Z
+
+note @localheinz I rebased your branch to remove the conflict so be careful when update locally, hope you  don't mind!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2018-04-18T08:56:13Z
+
+@SpacePossum
+
+Do I need to do anything here? If so, let me please know what it is.
+
+🤓
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-18T09:40:56Z
+
+I think we're good here, no @julienfalque ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-18T11:44:15Z
+
+Ah sorry, I thought https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3622#discussion_r178939702 was still to be done.
