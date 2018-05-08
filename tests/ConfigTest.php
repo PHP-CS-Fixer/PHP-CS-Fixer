@@ -218,11 +218,9 @@ final class ConfigTest extends TestCase
             new \PhpCsFixer\Fixer\ControlStructure\IncludeFixer(),
         ];
 
-        $cases = [
+        return [
             [$fixers, $fixers],
             [$fixers, new \ArrayIterator($fixers)],
         ];
-
-        return $cases;
     }
 }

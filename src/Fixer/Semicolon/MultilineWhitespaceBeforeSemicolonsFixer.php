@@ -226,8 +226,8 @@ function foo () {
             return null;
         }
 
-        // ->
-        if (!$tokens[--$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+        // -> or ::
+        if (!$tokens[--$index]->isGivenKind([T_OBJECT_OPERATOR, T_DOUBLE_COLON])) {
             return null;
         }
 
@@ -247,7 +247,7 @@ function foo () {
             }
 
             // must be the variable of the first call in the chain
-            if ($tokens[$index]->isGivenKind([T_VARIABLE, T_RETURN]) && 0 === $closingBrackets) {
+            if ($tokens[$index]->isGivenKind([T_VARIABLE, T_RETURN, T_STRING]) && 0 === $closingBrackets) {
                 if ($tokens[--$index]->isGivenKind(T_WHITESPACE)
                     || $tokens[$index]->isGivenKind(T_OPEN_TAG)) {
                     return $this->getIndentAt($tokens, $index);

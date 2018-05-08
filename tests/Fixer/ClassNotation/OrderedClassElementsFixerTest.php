@@ -586,7 +586,7 @@ EOT
      *
      * @dataProvider provideSortingConfigurationCases
      */
-    public function testFixWithSortingAlhorithm(array $configuration, $input, $expected)
+    public function testFixWithSortingAlgorithm(array $configuration, $input, $expected)
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);

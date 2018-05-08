@@ -821,7 +821,7 @@ $b;',
 
     public function provideIsArrayCases()
     {
-        $cases = [
+        return [
             [
                 '<?php
                     array("a" => 1);
@@ -881,8 +881,6 @@ $b;',
                 2, true,
             ],
         ];
-
-        return $cases;
     }
 
     /**
@@ -981,14 +979,12 @@ $b;',
 
     public function provideArrayExceptionsCases()
     {
-        $cases = [
+        return [
             ['<?php $a;', 1],
             ["<?php\n \$a = (0+1); // [0,1]", 4],
             ['<?php $text = "foo $bbb[0] bar";', 8],
             ['<?php $text = "foo ${aaa[123]} bar";', 9],
         ];
-
-        return $cases;
     }
 
     /**

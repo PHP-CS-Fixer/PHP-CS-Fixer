@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: unary_operator_spaces,not_operator_with_space.
+--RULESET--
+{"unary_operator_spaces": true, "not_operator_with_space": true}
+--EXPECT--
+<?php
+$sample = ! ! $a;
+
+--INPUT--
+<?php
+$sample = !    !    $a;

@@ -357,7 +357,7 @@ Choose from the list of available rules:
 
   Comments with annotation should be docblock.
 
-  *Risky rule: risky as new docblocks might began mean more, e.g. Doctrine's entity might have a new column in database.*
+  *Risky rule: risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.*
 
 * **compact_nullable_typehint**
 
@@ -376,7 +376,7 @@ Choose from the list of available rules:
 
   Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
 
-  *Risky rule: risky when the code relies on modifying ``DateTime`` object or if any of the ``date_create*`` functions are overridden.*
+  *Risky rule: risky when the code relies on modifying ``DateTime`` objects or if any of the ``date_create*`` functions are overridden.*
 
 * **declare_equal_normalize** [@Symfony]
 
@@ -688,6 +688,12 @@ Choose from the list of available rules:
 
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
     syntax; defaults to ``'long'``
+
+* **logical_operators**
+
+  Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
+
+  *Risky rule: risky, because you must double-check if using and/or with lower precedence was intentional.*
 
 * **lowercase_cast** [@Symfony]
 
@@ -1106,10 +1112,10 @@ Choose from the list of available rules:
 
 * **php_unit_set_up_tear_down_visibility**
 
-  Changes the visibility of the ``setUp`` and ``tearDown`` functions of
-  PHPUnit to protected, to match the PHPUnit TestCase.
+  Changes the visibility of the ``setUp()`` and ``tearDown()`` functions of
+  PHPUnit to ``protected``, to match the PHPUnit TestCase.
 
-  *Risky rule: this fixer may change functions named setUp or tearDown outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
+  *Risky rule: this fixer may change functions named ``setUp()`` or ``tearDown()`` outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
 
 * **php_unit_strict**
 
@@ -1311,6 +1317,11 @@ Choose from the list of available rules:
     ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'rand' =>
     'mt_rand', 'srand' => 'mt_srand']``
 
+* **return_assignment**
+
+  Non global, static or indirectly referenced variables should not be
+  assigned and directly returned by a function or method.
+
 * **return_type_declaration** [@Symfony]
 
   There should be one or no space before colon, and one space after it in
@@ -1331,6 +1342,12 @@ Choose from the list of available rules:
 * **semicolon_after_instruction** [@Symfony]
 
   Instructions must be terminated with a semicolon.
+
+* **set_type_to_cast**
+
+  Cast shall be used, not ``settype``.
+
+  *Risky rule: risky when the ``settype`` function is overridden or when used as the 2nd or 3rd expression in a ``for`` loop .*
 
 * **short_scalar_cast** [@Symfony]
 

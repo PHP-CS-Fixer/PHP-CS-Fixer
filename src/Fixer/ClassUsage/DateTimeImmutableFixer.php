@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Fixer\ClassUsage;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -22,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  */
-final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterface
+final class DateTimeImmutableFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -33,7 +32,7 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
             'Class `DateTimeImmutable` should be used instead of `DateTime`.',
             [new CodeSample("<?php\nnew DateTime();\n")],
             null,
-            'Risky when the code relies on modifying `DateTime` object or if any of the `date_create*` functions are overridden.'
+            'Risky when the code relies on modifying `DateTime` objects or if any of the `date_create*` functions are overridden.'
         );
     }
 
