@@ -61,7 +61,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements WhitespacesAwa
             'Comments with annotation should be docblock.',
             [new CodeSample("<?php /* @var bool \$isFoo */\n")],
             null,
-            "Risky as new docblocks might began mean more, e.g. Doctrine's entity might have a new column in database"
+            'Risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database'
         );
     }
 
