@@ -17,6 +17,8 @@ use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\FixerConfiguration\AllowedValueSubset
  */
 final class AllowedValueSubsetTest extends TestCase
 {
