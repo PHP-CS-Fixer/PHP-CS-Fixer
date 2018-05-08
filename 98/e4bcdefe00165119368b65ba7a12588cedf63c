@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-13T23:02:34Z
+
+Note:
+target shall be the same as it will be decided in same situation here:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3478
+
+---------------------------------------------------------------------------
+
+by egircys at 2018-02-17T15:57:11Z
+
+Thank you @ntzm !
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-20T17:42:44Z
+
+Travis is failing on PHP 5.6.
+Could you take a look @ntzm ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-18T07:20:07Z
+
+@ntzm please rebase and resolve the conflicts when you've the time :)
