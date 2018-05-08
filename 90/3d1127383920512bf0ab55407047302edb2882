@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-15T17:17:40Z
+
+hint: you just pinged an organisation in your commitlog :D backticks are not preventing that in commitlogs
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-15T18:05:29Z
+
+haha sorry at that organisation (great name btw :P), is there a way to escape such an annotation in a commit message?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-15T18:47:26Z
+
+for my best knowledge, nope
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-02T06:28:22Z
+
+rebased and forced pushed after resolving conflict
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-03T07:20:44Z
+
+@SpacePossum then, you would also need to revert rename of the integration test file
