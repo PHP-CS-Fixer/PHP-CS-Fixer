@@ -1026,6 +1026,12 @@ Choose from the list of available rules:
 
   *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
 
+* **no_unset_on_property**
+
+  Properties should be set to ``null`` instead of using ``unset``.
+
+  *Risky rule: changing variables to ``null`` instead of unsetting them will mean they still show up when looping over class variables.*
+
 * **no_unused_imports** [@Symfony]
 
   Unused ``use`` statements must be removed.
