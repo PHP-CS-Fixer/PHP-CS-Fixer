@@ -17,13 +17,20 @@ namespace PhpCsFixer\FixerConfiguration;
  */
 final class AllowedValueSubset
 {
-    private $values;
+    private $allowedValues;
 
-    public function __construct(array $values)
+    public function __construct(array $allowedValues)
     {
-        $this->values = $values;
+        $this->allowedValues = $allowedValues;
     }
 
+    /**
+     * Checks whether the given values are a subset of the allowed ones.
+     *
+     * @param mixed $values the value to validate
+     *
+     * @return bool
+     */
     public function __invoke($values)
     {
         if (!is_array($values)) {
@@ -31,7 +38,7 @@ final class AllowedValueSubset
         }
 
         foreach ($values as $value) {
-            if (!in_array($value, $this->values, true)) {
+            if (!in_array($value, $this->allowedValues, true)) {
                 return false;
             }
         }
@@ -39,8 +46,8 @@ final class AllowedValueSubset
         return true;
     }
 
-    public function getValues()
+    public function getAllowedValues()
     {
-        return $this->values;
+        return $this->allowedValues;
     }
 }

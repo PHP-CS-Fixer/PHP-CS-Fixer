@@ -498,7 +498,7 @@ EOF
                         if (null !== $allowed) {
                             foreach ($allowed as &$value) {
                                 if ($value instanceof AllowedValueSubset) {
-                                    $value = 'a subset of <comment>'.self::toString($value->getValues()).'</comment>';
+                                    $value = 'a subset of <comment>'.self::toString($value->getAllowedValues()).'</comment>';
                                 } else {
                                     $value = '<comment>'.self::toString($value).'</comment>';
                                 }

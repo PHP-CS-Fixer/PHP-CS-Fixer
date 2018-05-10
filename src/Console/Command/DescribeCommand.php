@@ -174,7 +174,7 @@ final class DescribeCommand extends Command
                 if (null !== $allowed) {
                     foreach ($allowed as &$value) {
                         if ($value instanceof AllowedValueSubset) {
-                            $value = 'a subset of <comment>'.HelpCommand::toString($value->getValues()).'</comment>';
+                            $value = 'a subset of <comment>'.HelpCommand::toString($value->getAllowedValues()).'</comment>';
                         } else {
                             $value = '<comment>'.HelpCommand::toString($value).'</comment>';
                         }
