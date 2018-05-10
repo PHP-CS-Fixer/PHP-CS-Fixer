@@ -181,7 +181,7 @@ final class DescribeCommand extends Command
                     }
                 } else {
                     $allowed = array_map(
-                        static function ($type) {
+                        function ($type) {
                             return '<comment>'.$type.'</comment>';
                         },
                         $option->getAllowedTypes()
