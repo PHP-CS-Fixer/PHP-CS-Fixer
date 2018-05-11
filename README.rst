@@ -1377,8 +1377,8 @@ Choose from the list of available rules:
 
 * **return_assignment**
 
-  Non global, static or indirectly referenced variables should not be
-  assigned and directly returned by a function or method.
+  Local, dynamic and directly referenced variables should not be assigned
+  and directly returned by a function or method.
 
 * **return_type_declaration** [@Symfony]
 

@@ -30,7 +30,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Non global, static or indirectly referenced variables should not be assigned and directly returned by a function or method.',
+            'Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.',
             [new CodeSample("<?php\nfunction a() {\n    \$a = 1;\n    return \$a;\n}\n")]
         );
     }
