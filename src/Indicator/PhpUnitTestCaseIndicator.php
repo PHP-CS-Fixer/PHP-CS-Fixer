@@ -51,24 +51,27 @@ final class PhpUnitTestCaseIndicator
 
     /**
      * @param Tokens $tokens
+     * @param bool   $beginAtBottom whether we should start yielding PHPUnit classes from the bottom of the file
      *
      * @return \Generator array of [int start, int end] indexes from sooner to later classes
      */
-    public function findPhpUnitClasses(Tokens $tokens)
+    public function findPhpUnitClasses(Tokens $tokens, $beginAtBottom = true)
     {
-        for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+        $direction = $beginAtBottom ? -1 : 1;
+
+        for ($index = 1 === $direction ? 0 : $tokens->count() - 1; $tokens->offsetExists($index); $index += $direction) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->isPhpUnitClass($tokens, $index)) {
                 continue;
             }
 
-            $classIndex = $index;
-            $index = $tokens->getNextTokenOfKind($index, ['{']);
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-            if ($this->isPhpUnitClass($tokens, $classIndex)) {
-                yield [$index, $endIndex];
+            $startIndex = $tokens->getNextTokenOfKind($index, ['{'], false);
+
+            if (null === $startIndex) {
+                return;
             }
 
-            $index = $endIndex;
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+            yield [$startIndex, $endIndex];
         }
     }
 }
