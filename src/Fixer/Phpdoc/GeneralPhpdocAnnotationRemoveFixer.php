@@ -34,7 +34,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Configured annotations should be omitted from PHPDocs.',
+            'Configured annotations should be omitted from PHPDoc.',
             array(
                 new CodeSample(
                     '<?php
