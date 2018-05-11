@@ -17,7 +17,7 @@ dependencies:
         - curl -sS https://getcomposer.org/installer | php
         - php composer.phar global show hirak/prestissimo -q || php composer.phar global require --no-interaction --no-progress --optimize-autoloader hirak/prestissimo
     override:
-        - php composer.phar install --no-interaction --no-progress --no-suggest
+        - php composer.phar install --optimize-autoloader --no-interaction --no-progress --no-suggest
 
 test:
     override:
