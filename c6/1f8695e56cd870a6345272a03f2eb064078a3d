@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-08T20:14:08Z
+
+cc @localheinz ,
+I know you are using this flag as well. Did you experienced problems with it ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-11T06:02:13Z
+
+There is no need, however there should be performance gain. With the changes in this PR, when someone uses requires the project with composer it wouldn't get the optimized class map generated for it by default would it?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-11T06:36:53Z
+
+This will have no impact on projects that require `friendsofphp/php-cs-fixer` because [`config` is a root-only property of the composer.json schema](https://getcomposer.org/doc/04-schema.md#config), which means it is only taken into account inside the project where it is defined like e.g. `require-dev`.
