@@ -52,7 +52,6 @@
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
     "config": {
-        "optimize-autoloader": true,
         "sort-packages": true
     },
     "autoload": {
