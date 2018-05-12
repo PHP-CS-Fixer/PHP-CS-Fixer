@@ -93,14 +93,18 @@ foreach($connections as $key => $sqlite) {
                 continue;
             }
 
-            $nextIndex = $tokens->getNextMeaningfulToken($index);
-            $nextToken = null !== $nextIndex ? $tokens[$nextIndex] : null;
+            $nextIndex = $index;
+            do {
+                $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+            } while (null !== $nextIndex && $tokens[$nextIndex]->equals('('));
 
-            if (null === $nextToken || $nextToken->equals('}')) {
+            if (null === $nextIndex || $tokens[$nextIndex]->equals('}')) {
                 $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
 
                 continue;
             }
+
+            $nextToken = $tokens[$nextIndex];
 
             if ($this->isStructuralElement($nextToken)) {
                 continue;

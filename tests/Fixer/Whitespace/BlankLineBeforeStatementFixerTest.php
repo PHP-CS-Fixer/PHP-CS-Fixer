@@ -166,6 +166,47 @@ while (true) {
     }
 
     /**
+     * @dataProvider provideFixWithCaseCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithCase($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['case'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFixWithCaseCases()
+    {
+        return [
+            [
+                '<?php
+switch ($a) {
+    case 1:
+        return 1;
+
+    case 2:
+        return 2;
+}',
+                '<?php
+switch ($a) {
+    case 1:
+        return 1;
+    case 2:
+        return 2;
+}',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideFixWithContinueCases
      *
      * @param string      $expected
@@ -302,6 +343,47 @@ do {
 } while (true);
 $foo = "bar";
 declare(ticks=1);',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithDefaultCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithDefault($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['default'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFixWithDefaultCases()
+    {
+        return [
+            [
+                '<?php
+switch ($a) {
+    case 1:
+        return 1;
+
+    default:
+        return 2;
+}',
+                '<?php
+switch ($a) {
+    case 1:
+        return 1;
+    default:
+        return 2;
+}',
             ],
         ];
     }
@@ -1228,7 +1310,7 @@ function foo() {
 
     public function provideFixWithMultipleConfigStatementsCases()
     {
-        $allStatements = [
+        $statementsWithoutCaseOrDefault = [
             'break',
             'continue',
             'declare',
@@ -1247,9 +1329,11 @@ function foo() {
             'while',
         ];
 
+        $allStatements = array_merge($statementsWithoutCaseOrDefault, ['case', 'default']);
+
         return [
             [
-                $allStatements,
+                $statementsWithoutCaseOrDefault,
                 '<?php
                     while($a) {
                         if ($c) {
@@ -1260,6 +1344,30 @@ function foo() {
                                     break;
                                 case 5:
                                     return 1;
+                                default:
+                                    return 0;
+                            }
+                        }
+                    }
+                ',
+            ],
+            [
+                $allStatements,
+                '<?php
+                    while($a) {
+                        if ($c) {
+                            switch ($d) {
+                                case $e:
+                                    continue 2;
+
+                                case 4:
+                                    break;
+
+                                case 5:
+                                    return 1;
+
+                                default:
+                                    return 0;
                             }
                         }
                     }

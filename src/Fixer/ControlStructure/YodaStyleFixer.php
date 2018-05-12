@@ -136,6 +136,12 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
         $count = count($tokens);
         while ($index < $count) {
             $token = $tokens[$index];
+            if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+                ++$index;
+
+                continue;
+            }
+
             if ($this->isOfLowerPrecedence($token)) {
                 break;
             }
@@ -175,8 +181,16 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
     private function findComparisonStart(Tokens $tokens, $index)
     {
         --$index;
+        $nonBlockFound = false;
+
         while (0 <= $index) {
             $token = $tokens[$index];
+            if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+                --$index;
+
+                continue;
+            }
+
             if ($this->isOfLowerPrecedence($token)) {
                 break;
             }
@@ -184,15 +198,19 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             $block = Tokens::detectBlockType($token);
             if (null === $block) {
                 --$index;
+                $nonBlockFound = true;
 
                 continue;
             }
 
-            if ($block['isStart']) {
+            if (
+                $block['isStart']
+                || ($nonBlockFound && Tokens::BLOCK_TYPE_CURLY_BRACE === $block['type']) // closing of structure not related to the comparison
+            ) {
                 break;
             }
 
-            $index = $tokens->findBlockEnd($block['type'], $index, false) - 1;
+            $index = $tokens->findBlockStart($block['type'], $index) - 1;
         }
 
         return $tokens->getNextMeaningfulToken($index);
@@ -330,6 +348,11 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             }
 
             $right = $this->getRightSideCompareFixableInfo($tokens, $index);
+
+            if ($tokens[$tokens->getNextMeaningfulToken($right['end'])]->equals('=')) {
+                return null;
+            }
+
             $otherIsVar = $this->isVariable($tokens, $right['start'], $right['end']);
         }
 
@@ -400,10 +423,6 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      */
     private function isOfLowerPrecedence(Token $token)
     {
-        if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
-            return false;
-        }
-
         static $tokens;
 
         if (null === $tokens) {
@@ -525,23 +544,29 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             }
 
             // $a-> or a-> (as in $b->a->c)
-            if ($current->isGivenKind($expectString ? T_STRING : T_VARIABLE) && $next->isGivenKind(T_OBJECT_OPERATOR)) {
+            if ($current->isGivenKind([T_STRING, T_VARIABLE]) && $next->isGivenKind(T_OBJECT_OPERATOR)) {
                 $index = $tokens->getNextMeaningfulToken($nextIndex);
                 $expectString = true;
 
                 continue;
             }
 
-            // $a[...] or a[...] (as in $c->a[$b])
-            if ($current->isGivenKind($expectString ? T_STRING : T_VARIABLE) && $next->equals('[')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index + 1);
+            // $a[...], a[...] (as in $c->a[$b]), $a{...} or a{...} (as in $c->a{$b})
+            if (
+                $current->isGivenKind($expectString ? T_STRING : T_VARIABLE)
+                && $next->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])
+            ) {
+                $index = $tokens->findBlockEnd(
+                    $next->equals('[') ? Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE : Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
+                    $index + 1
+                );
                 if ($index === $end) {
                     return true;
                 }
 
                 $index = $tokens->getNextMeaningfulToken($index);
 
-                if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+                if (!$tokens[$index]->equalsAny([[T_OBJECT_OPERATOR, '->'], '[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])) {
                     return false;
                 }
 

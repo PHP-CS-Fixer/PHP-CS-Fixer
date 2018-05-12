@@ -8,7 +8,7 @@ Integration of fixers: class_definition, no_trailing_whitespace.
 --EXPECT--
 <?php
 class Aaa implements
-    Symfony\CS\Tests\Fixer,
+    PhpCsFixer\Tests\Fixer,
     \RFb,
     \Fcc1,
     \GFdd
@@ -18,7 +18,7 @@ class Aaa implements
 --INPUT--
 <?php
 class Aaa implements
-    Symfony\CS\Tests\Fixer,\RFb,
+    PhpCsFixer\Tests\Fixer,\RFb,
     \Fcc1, \GFdd
 {
 }

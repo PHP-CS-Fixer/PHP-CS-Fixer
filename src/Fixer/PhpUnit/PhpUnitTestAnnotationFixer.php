@@ -22,6 +22,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -58,7 +59,7 @@ class Test extends \\PhpUnit\\FrameWork\\TestCase
 class Test extends \\PhpUnit\\FrameWork\\TestCase
 {
 public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEnding(), ['style' => 'annotation']),
-                ],
+            ],
             null,
             'This fixer may change the name of your tests, and could cause incompatibility with'.
             ' abstract classes or interfaces.'
@@ -316,7 +317,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function removeTestPrefix($functionName)
     {
-        $remainder = preg_replace('/^test_?/', '', $functionName);
+        $remainder = Preg::replace('/^test_?/', '', $functionName);
 
         if ('' === $remainder || is_numeric($remainder[0])) {
             return $functionName;
@@ -442,13 +443,12 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $lineContent = $this->getSingleLineDocBlockEntry($lines);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
-        $lines = [
+
+        return [
             new Line('/**'.$lineEnd),
             new Line($originalIndent.' * '.$lineContent.$lineEnd),
             new Line($originalIndent.' */'),
         ];
-
-        return $lines;
     }
 
     /**
@@ -470,9 +470,8 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             ++$i;
         }
         $line = array_slice($line, $i);
-        $line = implode($line);
 
-        return $line;
+        return implode($line);
     }
 
     /**

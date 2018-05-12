@@ -488,16 +488,17 @@ EOF;
     }
 
     /**
-     * @param array       $config
-     * @param string      $expected
-     * @param null|string $input
+     * @param array                  $config
+     * @param string                 $expected
+     * @param string                 $input
+     * @param WhitespacesFixerConfig $whitespacesFixerConfig
      *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces(array $config, $expected, $input = null)
+    public function testMessyWhitespaces(array $config, $expected, $input, WhitespacesFixerConfig $whitespacesFixerConfig)
     {
         $this->fixer->configure($config);
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->setWhitespacesConfig($whitespacesFixerConfig);
 
         $this->doTest($expected, $input);
     }
@@ -509,11 +510,31 @@ EOF;
                 ['tags' => ['type']],
                 "<?php\r\n\t/**\r\n\t * @type Type This is a variable.\r\n\t */",
                 "<?php\r\n\t/**\r\n\t * @type   Type   This is a variable.\r\n\t */",
+                new WhitespacesFixerConfig("\t", "\r\n"),
             ],
             [
                 ['tags' => ['param', 'return']],
                 "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
                 "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
+                new WhitespacesFixerConfig("\t", "\r\n"),
+            ],
+            [
+                [],
+                "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
+                "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
+                new WhitespacesFixerConfig("\t", "\r\n"),
+            ],
+            [
+                [],
+                "<?php\n/**\n * @param int \$a\n * @param int \$b\n *               ABC\n */",
+                "<?php\n/**\n * @param    int \$a\n * @param    int   \$b\n * ABC\n */",
+                new WhitespacesFixerConfig('    ', "\n"),
+            ],
+            [
+                [],
+                "<?php\r\n/**\r\n * @param int \$z\r\n * @param int \$b\r\n *               XYZ\r\n */",
+                "<?php\r\n/**\r\n * @param    int \$z\r\n * @param    int   \$b\r\n * XYZ\r\n */",
+                new WhitespacesFixerConfig('    ', "\r\n"),
             ],
         ];
     }

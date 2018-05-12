@@ -41,7 +41,7 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurati
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.',
+            'Visibility MUST be declared on all properties and methods; `abstract` and `final` MUST be declared before the visibility; `static` MUST be declared after the visibility.',
             [
                 new CodeSample(
 '<?php

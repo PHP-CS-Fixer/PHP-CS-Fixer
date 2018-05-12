@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -31,7 +32,7 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
      */
     public function getDefinition()
     {
-        $codeSamble = <<<'EOF'
+        $codeSample = <<<'EOF'
 <?php
 
 $singleQuoted = 'String with \" and My\Prefix\\';
@@ -47,17 +48,17 @@ EOF;
         return new FixerDefinition(
             'Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.',
             [
-                new CodeSample($codeSamble),
+                new CodeSample($codeSample),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['single_quoted' => true]
                 ),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['double_quoted' => false]
                 ),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['heredoc_syntax' => false]
                 ),
             ],
@@ -134,7 +135,7 @@ EOF;
                 $regex = $doubleQuotedRegex;
             }
 
-            $newContent = preg_replace($regex, '\\\\\\\\', $content);
+            $newContent = Preg::replace($regex, '\\\\\\\\', $content);
             if ($newContent !== $content) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);
             }

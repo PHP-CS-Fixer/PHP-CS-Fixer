@@ -43,7 +43,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideTestFixLegacyCases
      * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
+     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0. Use option "target" instead.
      */
     public function testFixLegacy($expected, $input = null)
     {
@@ -237,6 +237,26 @@ $a#
 ;',
         ];
 
+        $cases[] = [
+            '<?php static::assertInternalType(\'float\', $a);',
+            '<?php static::assertTrue(is_float( $a));',
+        ];
+
+        $cases[] = [
+            '<?php self::assertInternalType(\'float\', $a);',
+            '<?php self::assertTrue(is_float( $a));',
+        ];
+
+        $cases[] = [
+            '<?php static::assertNull($a);',
+            '<?php static::assertTrue(is_null($a));',
+        ];
+
+        $cases[] = [
+            '<?php self::assertNull($a);',
+            '<?php self::assertTrue(is_null($a));',
+        ];
+
         return $cases;
     }
 
@@ -272,6 +292,8 @@ $a#
                     $this->assertFalse(is_nan($a));
                     $this->assertTrue(is_int($a) || \is_bool($b));
                     $this->assertTrue($a&&is_int($a));
+                    static::assertTrue(is_null);
+                    self::assertTrue(is_null);
                 ',
             ],
         ];
@@ -298,7 +320,7 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
+     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0. Use option "target" instead.
      */
     public function testConfig()
     {
@@ -318,8 +340,8 @@ $a#
     public function testInvalidConfig()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "functions" .*\.$/');
+        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "target" .*\.$/');
 
-        $this->fixer->configure(['functions' => ['_unknown_']]);
+        $this->fixer->configure(['target' => '_unknown_']);
     }
 }

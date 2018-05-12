@@ -32,6 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class FixerTest extends TestCase
 {
@@ -59,7 +60,7 @@ final class FixerTest extends TestCase
         $definition = $fixer->getDefinition();
         $fixerIsConfigurable = $fixer instanceof ConfigurationDefinitionFixerInterface;
 
-        $this->assertRegExp('/^[A-Z@].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or an @ and end with dot.', $fixerName));
+        $this->assertRegExp('/^[A-Z`].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or a ` and end with dot.', $fixerName));
 
         $samples = $definition->getCodeSamples();
         $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));
@@ -213,7 +214,7 @@ final class FixerTest extends TestCase
         $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
-            $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOption::class, $option);
+            $this->assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOptionInterface::class, $option);
             $this->assertNotEmpty($option->getDescription());
 
             $this->assertSame(
@@ -226,6 +227,12 @@ final class FixerTest extends TestCase
                     $option->getName(),
                     $fixer->getName()
                 )
+            );
+
+            $this->assertNotContains(
+                'DEPRECATED',
+                $option->getDescription(),
+                'Option description cannot contain word "DEPRECATED"'
             );
         }
     }
@@ -249,8 +256,6 @@ final class FixerTest extends TestCase
     }
 
     /**
-     * copy paste from GeckoPackages/GeckoPHPUnit StringsAssertTrait, to replace with Trait when possible.
-     *
      * @param mixed  $actual
      * @param string $message
      */

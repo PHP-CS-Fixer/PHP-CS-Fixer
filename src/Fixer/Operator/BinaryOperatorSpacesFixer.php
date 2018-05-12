@@ -20,6 +20,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -211,8 +212,8 @@ $h = $i===  $j;
      */
     public function getPriority()
     {
-        // must run after ArraySyntaxFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer and StrictComparisonFixer.
-        return -1;
+        // must run after ArraySyntaxFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer, StrictComparisonFixer and ArrayIndentationFixer.
+        return -31;
     }
 
     /**
@@ -297,13 +298,15 @@ $h = $i===  $j;
                 ->setDefault([])
                 ->getOption(),
             // add deprecated options as BC layer
-            (new FixerOptionBuilder('align_double_arrow', '(deprecated) Whether to apply, remove or ignore double arrows alignment.'))
+            (new FixerOptionBuilder('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.'))
                 ->setDefault(false)
                 ->setAllowedValues([true, false, null])
+                ->setDeprecationMessage('Use options `operators` and `default` instead.')
                 ->getOption(),
-            (new FixerOptionBuilder('align_equals', '(deprecated) Whether to apply, remove or ignore equals alignment.'))
+            (new FixerOptionBuilder('align_equals', 'Whether to apply, remove or ignore equals alignment.'))
                 ->setDefault(false)
                 ->setAllowedValues([true, false, null])
+                ->setDeprecationMessage('Use options `operators` and `default` instead.')
                 ->getOption(),
         ]);
     }
@@ -755,7 +758,7 @@ $h = $i===  $j;
                                 $before .= ' ';
                             }
                         } elseif (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
-                            if (1 !== preg_match('/^\h+$/', $before)) { // if indent; do not move, leave to other fixer
+                            if (1 !== Preg::match('/^\h+$/', $before)) { // if indent; do not move, leave to other fixer
                                 $before = rtrim($before).' ';
                             }
                         }

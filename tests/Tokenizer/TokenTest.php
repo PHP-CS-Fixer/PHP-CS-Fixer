@@ -143,15 +143,13 @@ final class TokenTest extends TestCase
 
     public function provideIsClassyCases()
     {
-        $cases = [
+        return [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
             [new Token([T_CLASS, 'class', 1]), true],
             [new Token([T_INTERFACE, 'interface', 1]), true],
             [new Token([T_TRAIT, 'trait', 1]), true],
         ];
-
-        return $cases;
     }
 
     /**
