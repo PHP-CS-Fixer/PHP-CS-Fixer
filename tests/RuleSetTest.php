@@ -18,7 +18,6 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -280,7 +279,7 @@ final class RuleSetTest extends TestCase
     {
         $setDefinitionNames = RuleSet::create()->getSetDefinitionNames();
 
-        return array_map(function ($setDefinitionName) {
+        return array_map(static function ($setDefinitionName) {
             return [$setDefinitionName];
         }, $setDefinitionNames);
     }

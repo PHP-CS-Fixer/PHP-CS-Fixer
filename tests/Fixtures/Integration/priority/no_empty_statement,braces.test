@@ -1,0 +1,27 @@
+--TEST--
+Integration of fixers: no_empty_statement, braces
+--RULESET--
+{"no_empty_statement": true, "braces": true}
+--EXPECT--
+<?php
+
+class Foo
+{
+    private $var;
+
+    public function __construct()
+    {
+        $var = 3;
+    }
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    private $var;
+
+    public function __construct() {
+        $var = 3;
+        ;}}

@@ -42,7 +42,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
 
     public function getPriority()
     {
-        // must be run before NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer.
+        // must be run before NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, MultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer.
         return 1;
     }
 
@@ -127,7 +127,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         }
 
         return [
-            $groupPrefix,
+            rtrim($groupPrefix),
             $groupOpenIndex,
             $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $groupOpenIndex),
             $comment,

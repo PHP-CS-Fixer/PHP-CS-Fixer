@@ -6,7 +6,7 @@ whether you want to follow PHP coding standards as defined in the PSR-1, PSR-2, 
 or other community driven ones like the Symfony one.
 You can **also** define your (teams) style through configuration.
 
-It can modernize your code (like converting the `pow` function to the `**` operator on PHP 5.6)
+It can modernize your code (like converting the ``pow`` function to the ``**`` operator on PHP 5.6)
 and (micro) optimize it.
 
 If you are already using a linter to identify coding standards problems in your
@@ -40,19 +40,19 @@ your system:
 
 .. code-block:: bash
 
-    $ wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O php-cs-fixer
+    $ wget https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O php-cs-fixer
 
 or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.3/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.11.1/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    $ curl -L http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -o php-cs-fixer
+    $ curl -L https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -o php-cs-fixer
 
 then:
 
@@ -81,13 +81,9 @@ Then make sure you have the global Composer binaries directory in your ``PATH``.
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
 
-PHP-CS-Fixer is part of the homebrew-php project. Follow the installation
-instructions at https://github.com/homebrew/homebrew-php if you don't
-already have it.
-
 .. code-block:: bash
 
-    $ brew install homebrew/php/php-cs-fixer
+    $ brew install php-cs-fixer
 
 Update
 ------
@@ -209,9 +205,10 @@ The ``--stop-on-violation`` flag stops the execution upon first file that needs 
 The ``--show-progress`` option allows you to choose the way process progress is rendered:
 
 * ``none``: disables progress output;
-* ``run-in``: simple single-line progress output;
-* ``estimating``: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
-* ``estimating-max``: same as ``estimating`` but using all terminal columns instead of default 80.
+* ``run-in``: [deprecated] simple single-line progress output;
+* ``estimating``: [deprecated] multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
+* ``estimating-max``: [deprecated] same as ``dots``;
+* ``dots``: same as ``estimating`` but using all terminal columns instead of default 80.
 
 If the option is not provided, it defaults to ``run-in`` unless a config file that disables output is used, in which case it defaults to ``none``. This option has no effect if the verbosity of the command is less than ``verbose``.
 
@@ -247,6 +244,10 @@ Choose from the list of available rules:
     whose lines all start with an asterisk (``phpdocs_like``) or any
     multi-line comment (``all_multiline``); defaults to ``'phpdocs_only'``
 
+* **array_indentation**
+
+  Each element of an array must be indented exactly once.
+
 * **array_syntax**
 
   PHP arrays should be declared using the configured syntax.
@@ -256,16 +257,22 @@ Choose from the list of available rules:
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` array
     syntax; defaults to ``'long'``
 
+* **backtick_to_shell_exec**
+
+  Converts backtick operators to ``shell_exec`` calls.
+
 * **binary_operator_spaces** [@Symfony]
 
   Binary operators should be surrounded by space as configured.
 
   Configuration options:
 
-  - ``align_double_arrow`` (``false``, ``null``, ``true``): (deprecated) Whether to apply,
-    remove or ignore double arrows alignment; defaults to ``false``
-  - ``align_equals`` (``false``, ``null``, ``true``): (deprecated) Whether to apply, remove
-    or ignore equals alignment; defaults to ``false``
+  - ``align_double_arrow`` (``false``, ``null``, ``true``): whether to apply, remove or
+    ignore double arrows alignment; defaults to ``false``. DEPRECATED: use
+    options ``operators`` and ``default`` instead
+  - ``align_equals`` (``false``, ``null``, ``true``): whether to apply, remove or ignore
+    equals alignment; defaults to ``false``. DEPRECATED: use options
+    ``operators`` and ``default`` instead
   - ``default`` (``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``,
     ``'single_space'``, ``null``): default fix strategy; defaults to ``'single_space'``
   - ``operators`` (``array``): dictionary of ``binary operator`` => ``fix strategy``
@@ -324,6 +331,16 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply between cast and variable;
     defaults to ``'single'``
 
+* **class_attributes_separation** [@Symfony]
+
+  Class, trait and interface elements must be separated with one blank
+  line.
+
+  Configuration options:
+
+  - ``elements`` (``array``): list of classy elements; 'const', 'method',
+    'property'; defaults to ``['const', 'method', 'property']``
+
 * **class_definition** [@PSR2, @Symfony]
 
   Whitespace around the keywords of a class, trait or interfaces
@@ -344,11 +361,17 @@ Choose from the list of available rules:
 
 * **combine_consecutive_issets**
 
-  Using ``isset(X) &&`` multiple times should be done in one call.
+  Using ``isset($var) &&`` multiple times should be done in one call.
 
 * **combine_consecutive_unsets**
 
   Calling ``unset`` on multiple items should be done in one call.
+
+* **comment_to_phpdoc**
+
+  Comments with annotation should be docblock.
+
+  *Risky rule: risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.*
 
 * **compact_nullable_typehint**
 
@@ -362,6 +385,12 @@ Choose from the list of available rules:
 
   - ``spacing`` (``'none'``, ``'one'``): spacing to apply around concatenation operator;
     defaults to ``'none'``
+
+* **date_time_immutable**
+
+  Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
+
+  *Risky rule: risky when the code relies on modifying ``DateTime`` objects or if any of the ``date_create*`` functions are overridden.*
 
 * **declare_equal_normalize** [@Symfony]
 
@@ -384,7 +413,7 @@ Choose from the list of available rules:
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
 
-  *Risky rule: risky when the function ``dirname()`` is overridden.*
+  *Risky rule: risky when the function ``dirname`` is overridden.*
 
 * **doctrine_annotation_array_assignment** [@DoctrineAnnotation]
 
@@ -486,12 +515,13 @@ Choose from the list of available rules:
   - ``after_array_assignments_equals`` (``null``, ``bool``): whether to add, remove or
     ignore spaces after array assignment ``=`` operator; defaults to ``true``
   - ``around_argument_assignments`` (``bool``): whether to fix spaces around
-    argument assignment operator (deprecated, use
-    ``before_argument_assignments`` and ``after_argument_assignments`` options
-    instead); defaults to ``true``
+    argument assignment operator; defaults to ``true``. DEPRECATED: use options
+    ``before_argument_assignments`` and ``after_argument_assignments`` instead
   - ``around_array_assignments`` (``bool``): whether to fix spaces around array
-    assignment operators (deprecated, use ``before_array_assignments_*`` and
-    ``after_array_assignments_*`` options instead); defaults to ``true``
+    assignment operators; defaults to ``true``. DEPRECATED: use options
+    ``before_array_assignments_equals``, ``after_array_assignments_equals``,
+    ``before_array_assignments_colon`` and ``after_array_assignments_colon``
+    instead
   - ``around_commas`` (``bool``): whether to fix spaces around commas; defaults to
     ``true``
   - ``around_parentheses`` (``bool``): whether to fix spaces around parentheses;
@@ -534,19 +564,58 @@ Choose from the list of available rules:
 
 * **ereg_to_preg** [@Symfony:risky]
 
-  Replace deprecated ``ereg`` regular expression functions with preg.
+  Replace deprecated ``ereg`` regular expression functions with ``preg``.
 
   *Risky rule: risky if the ``ereg`` function is overridden.*
+
+* **escape_implicit_backslashes**
+
+  Escape implicit backslashes in strings and heredocs to ease the
+  understanding of which are special chars interpreted by PHP and which
+  not.
+
+  Configuration options:
+
+  - ``double_quoted`` (``bool``): whether to fix double-quoted strings; defaults to
+    ``true``
+  - ``heredoc_syntax`` (``bool``): whether to fix heredoc syntax; defaults to ``true``
+  - ``single_quoted`` (``bool``): whether to fix single-quoted strings; defaults to
+    ``false``
 
 * **explicit_indirect_variable**
 
   Add curly braces to indirect variables to make them clear to understand.
   Requires PHP >= 7.0.
 
+* **explicit_string_variable**
+
+  Converts implicit variables into explicit ones in double-quoted strings
+  or heredoc syntax.
+
+* **final_internal_class**
+
+  Internal classes should be ``final``.
+
+  *Risky rule: changing classes to ``final`` might cause code execution to break.*
+
+  Configuration options:
+
+  - ``annotation-black-list`` (``array``): class level annotations tags that must be
+    omitted to fix the class, even if all of the white list ones are used
+    as well. (case insensitive); defaults to ``['@final', '@Entity', '@ORM']``
+  - ``annotation-white-list`` (``array``): class level annotations tags that must be
+    set in order to fix the class. (case insensitive); defaults to
+    ``['@internal']``
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
   other tag variations.
+
+* **fully_qualified_strict_types**
+
+  Transforms imported FQCN parameters and return types in function
+  arguments to short version.
 
 * **function_declaration** [@PSR2, @Symfony]
 
@@ -574,7 +643,7 @@ Choose from the list of available rules:
 
 * **general_phpdoc_annotation_remove**
 
-  Configured annotations should be omitted from phpdocs.
+  Configured annotations should be omitted from PHPDocs.
 
   Configuration options:
 
@@ -625,14 +694,14 @@ Choose from the list of available rules:
 
 * **is_null** [@Symfony:risky]
 
-  Replaces is_null(parameter) expression with ``null === parameter``.
+  Replaces ``is_null($var)`` expression with ``null === $var``.
 
-  *Risky rule: risky when the function ``is_null()`` is overridden.*
+  *Risky rule: risky when the function ``is_null`` is overridden.*
 
   Configuration options:
 
   - ``use_yoda_style`` (``bool``): whether Yoda style conditions should be used;
-    defaults to ``true``
+    defaults to ``true``. DEPRECATED: use ``yoda_style`` fixer instead
 
 * **line_ending** [@PSR2, @Symfony]
 
@@ -651,6 +720,12 @@ Choose from the list of available rules:
 
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
     syntax; defaults to ``'long'``
+
+* **logical_operators**
+
+  Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
+
+  *Risky rule: risky, because you must double-check if using and/or with lower precedence was intentional.*
 
 * **lowercase_cast** [@Symfony]
 
@@ -689,9 +764,15 @@ Choose from the list of available rules:
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
 
-* **method_separation** [@Symfony]
+* **method_chaining_indentation**
 
-  Methods must be separated with one blank line.
+  Method chaining MUST be properly indented. Method chaining with
+  different levels of indentation is not supported.
+
+* **method_separation**
+
+  Methods must be separated with one blank line. DEPRECATED: use
+  ``class_attributes_separation`` instead.
 
 * **modernize_types_casting** [@Symfony:risky]
 
@@ -699,6 +780,23 @@ Choose from the list of available rules:
   function calls with according type casting operator.
 
   *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
+
+* **multiline_comment_opening_closing**
+
+  DocBlocks must start with two asterisks, multiline comments must start
+  with a single asterisk, after the opening slash. Both must end with a
+  single asterisk before the closing slash.
+
+* **multiline_whitespace_before_semicolons**
+
+  Forbid multi-line whitespace before the closing semicolon or move the
+  semicolon to the new line for chained calls.
+
+  Configuration options:
+
+  - ``strategy`` (``'new_line_for_chained_calls'``, ``'no_multi_line'``): forbid
+    multi-line whitespace or move the semicolon to the new line for chained
+    calls; defaults to ``'no_multi_line'``
 
 * **native_function_casing** [@Symfony]
 
@@ -724,6 +822,10 @@ Choose from the list of available rules:
   Master functions shall be used instead of aliases.
 
   *Risky rule: risky when any of the alias functions are overridden.*
+
+* **no_alternative_syntax**
+
+  Replace control structure alternative syntax to use braces.
 
 * **no_blank_lines_after_class_opening** [@Symfony]
 
@@ -764,9 +866,18 @@ Choose from the list of available rules:
 
   Remove useless semicolon statements.
 
-* **no_extra_consecutive_blank_lines** [@Symfony]
+* **no_extra_blank_lines** [@Symfony]
 
   Removes extra blank lines and/or blank lines following configuration.
+
+  Configuration options:
+
+  - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
+
+* **no_extra_consecutive_blank_lines**
+
+  Removes extra blank lines and/or blank lines following configuration.
+  DEPRECATED: use ``no_extra_blank_lines`` instead.
 
   Configuration options:
 
@@ -780,7 +891,7 @@ Choose from the list of available rules:
 
 * **no_leading_import_slash** [@Symfony]
 
-  Remove leading slashes in use clauses.
+  Remove leading slashes in ``use`` clauses.
 
 * **no_leading_namespace_whitespace** [@Symfony]
 
@@ -802,6 +913,7 @@ Choose from the list of available rules:
 * **no_multiline_whitespace_before_semicolons**
 
   Multi-line whitespace before closing semicolon are prohibited.
+  DEPRECATED: use ``multiline_whitespace_before_semicolons`` instead.
 
 * **no_null_property_initialization**
 
@@ -862,7 +974,7 @@ Choose from the list of available rules:
 
 * **no_trailing_whitespace_in_comment** [@PSR2, @Symfony]
 
-  There MUST be no trailing spaces inside comments and phpdocs.
+  There MUST be no trailing spaces inside comments and PHPDocs.
 
 * **no_unneeded_control_parentheses** [@Symfony]
 
@@ -892,7 +1004,7 @@ Choose from the list of available rules:
 
 * **no_unused_imports** [@Symfony]
 
-  Unused use statements must be removed.
+  Unused ``use`` statements must be removed.
 
 * **no_useless_else**
 
@@ -900,7 +1012,8 @@ Choose from the list of available rules:
 
 * **no_useless_return**
 
-  There should not be an empty return statement at the end of a function.
+  There should not be an empty ``return`` statement at the end of a
+  function.
 
 * **no_whitespace_before_comma_in_array** [@Symfony]
 
@@ -951,22 +1064,25 @@ Choose from the list of available rules:
     'constant_private', 'property_public', 'property_protected',
     'property_private', 'construct', 'destruct', 'magic', 'phpunit',
     'method_public', 'method_protected', 'method_private']``
+  - ``sortAlgorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
+    statements should be sorted; defaults to ``'none'``
 
 * **ordered_imports**
 
-  Ordering use statements.
+  Ordering ``use`` statements.
 
   Configuration options:
 
   - ``importsOrder`` (``array``, ``null``): defines the order of import types; defaults
     to ``null``
-  - ``sortAlgorithm`` (``'alpha'``, ``'length'``): whether the statements should be
-    sorted alphabetically or by length; defaults to ``'alpha'``
+  - ``sortAlgorithm`` (``'alpha'``, ``'length'``, ``'none'``): whether the statements should
+    be sorted alphabetically or by length, or not sorted; defaults to
+    ``'alpha'``
 
 * **php_unit_construct** [@Symfony:risky]
 
-  PHPUnit assertion method calls like "->assertSame(true, $foo)" should be
-  written with dedicated method like "->assertTrue($foo)".
+  PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be
+  written with dedicated method like ``->assertTrue($foo)``.
 
   *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
 
@@ -975,21 +1091,21 @@ Choose from the list of available rules:
   - ``assertions`` (``array``): list of assertion methods to fix; defaults to
     ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
 
-* **php_unit_dedicate_assert** [@Symfony:risky, @PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+* **php_unit_dedicate_assert** [@PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
-  PHPUnit assertions like "assertInternalType", "assertFileExists", should
-  be used over "assertTrue".
+  PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should
+  be used over ``assertTrue``.
 
   *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
 
   Configuration options:
 
-  - ``functions`` (``null``): (deprecated, use ``target`` instead) List of assertions
-    to fix (overrides ``target``); defaults to ``null``
+  - ``functions`` (``null``): list of assertions to fix (overrides ``target``);
+    defaults to ``null``. DEPRECATED: use option ``target`` instead
   - ``target`` (``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``): target version of
     PHPUnit; defaults to ``'5.0'``
 
-* **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+* **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   Usages of ``->setExpectedException*`` methods MUST be replaced by
   ``->expectException*`` methods.
@@ -1005,15 +1121,20 @@ Choose from the list of available rules:
 
   PHPUnit annotations should be a FQCNs including a root namespace.
 
-* **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+* **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   Usages of ``->getMock`` and
   ``->getMockWithoutInvokingTheOriginalConstructor`` methods MUST be
-  replaced by ``->createMock`` method.
+  replaced by ``->createMock`` or ``->createPartialMock`` methods.
 
   *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
 
-* **php_unit_namespaced** [@PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+  Configuration options:
+
+  - ``target`` (``'5.4'``, ``'5.5'``, ``'newest'``): target version of PHPUnit; defaults to
+    ``'newest'``
+
+* **php_unit_namespaced** [@PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   PHPUnit classes MUST be used in namespaced version, eg
   ``\PHPUnit\Framework\TestCase`` instead of ``\PHPUnit_Framework_TestCase``.
@@ -1025,7 +1146,7 @@ Choose from the list of available rules:
   - ``target`` (``'4.8'``, ``'5.7'``, ``'6.0'``, ``'newest'``): target version of PHPUnit;
     defaults to ``'newest'``
 
-* **php_unit_no_expectation_annotation** [@PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
+* **php_unit_no_expectation_annotation** [@PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   Usages of ``@expectedException*`` annotations MUST be replaced by
   ``->setExpectedException*`` methods.
@@ -1037,6 +1158,17 @@ Choose from the list of available rules:
   - ``target`` (``'3.2'``, ``'4.3'``, ``'newest'``): target version of PHPUnit; defaults to
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
+
+* **php_unit_ordered_covers**
+
+  Order ``@covers`` annotation of PHPUnit tests.
+
+* **php_unit_set_up_tear_down_visibility**
+
+  Changes the visibility of the ``setUp()`` and ``tearDown()`` functions of
+  PHPUnit to ``protected``, to match the PHPUnit TestCase.
+
+  *Risky rule: this fixer may change functions named ``setUp()`` or ``tearDown()`` outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
 
 * **php_unit_strict**
 
@@ -1051,6 +1183,19 @@ Choose from the list of available rules:
     ``['assertAttributeEquals', 'assertAttributeNotEquals', 'assertEquals',
     'assertNotEquals']``
 
+* **php_unit_test_annotation**
+
+  Adds or removes @test annotations from tests, following configuration.
+
+  *Risky rule: this fixer may change the name of your tests, and could cause incompatibility with abstract classes or interfaces.*
+
+  Configuration options:
+
+  - ``case`` (``'camel'``, ``'snake'``): whether to camel or snake case when adding the
+    test prefix; defaults to ``'camel'``
+  - ``style`` (``'annotation'``, ``'prefix'``): whether to use the @test annotation or
+    not; defaults to ``'prefix'``
+
 * **php_unit_test_class_requires_covers**
 
   Adds a default ``@coversNothing`` annotation to PHPUnit test classes that
@@ -1058,7 +1203,7 @@ Choose from the list of available rules:
 
 * **phpdoc_add_missing_param_annotation**
 
-  Phpdoc should contain @param for all params.
+  PHPDoc should contain ``@param`` for all params.
 
   Configuration options:
 
@@ -1067,7 +1212,7 @@ Choose from the list of available rules:
 
 * **phpdoc_align** [@Symfony]
 
-  All items of the given phpdoc tags must be aligned vertically.
+  All items of the given PHPDoc tags must be aligned vertically.
 
   Configuration options:
 
@@ -1076,7 +1221,7 @@ Choose from the list of available rules:
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 
-  Phpdocs annotation descriptions should not be a sentence.
+  PHPDocs annotation descriptions should not be a sentence.
 
 * **phpdoc_indent** [@Symfony]
 
@@ -1084,11 +1229,11 @@ Choose from the list of available rules:
 
 * **phpdoc_inline_tag** [@Symfony]
 
-  Fix phpdoc inline tags, make inheritdoc always inline.
+  Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
 
 * **phpdoc_no_access** [@Symfony]
 
-  @access annotations should be omitted from phpdocs.
+  ``@access`` annotations should be omitted from PHPDocs.
 
 * **phpdoc_no_alias_tag** [@Symfony]
 
@@ -1102,21 +1247,21 @@ Choose from the list of available rules:
 
 * **phpdoc_no_empty_return** [@Symfony]
 
-  @return void and @return null annotations should be omitted from
-  phpdocs.
+  ``@return`` void and ``@return null`` annotations should be omitted from
+  PHPDocs.
 
 * **phpdoc_no_package** [@Symfony]
 
-  @package and @subpackage annotations should be omitted from phpdocs.
+  ``@package`` and ``@subpackage`` annotations should be omitted from PHPDocs.
 
 * **phpdoc_no_useless_inheritdoc** [@Symfony]
 
-  Classy that does not inherit must not have inheritdoc tags.
+  Classy that does not inherit must not have ``@inheritdoc`` tags.
 
 * **phpdoc_order**
 
-  Annotations in phpdocs should be ordered so that param annotations come
-  first, then throws annotations, then return annotations.
+  Annotations in PHPDocs should be ordered so that ``@param`` annotations
+  come first, then ``@throws`` annotations, then ``@return`` annotations.
 
 * **phpdoc_return_self_reference** [@Symfony]
 
@@ -1135,19 +1280,24 @@ Choose from the list of available rules:
   Scalar types should always be written in the same form. ``int`` not
   ``integer``, ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.
 
+  Configuration options:
+
+  - ``types``: a map of types to fix; defaults to ``['boolean', 'double',
+    'integer', 'real', 'str']``
+
 * **phpdoc_separation** [@Symfony]
 
-  Annotations in phpdocs should be grouped together so that annotations of
+  Annotations in PHPDocs should be grouped together so that annotations of
   the same type immediately follow each other, and annotations of a
   different type are separated by a single blank line.
 
 * **phpdoc_single_line_var_spacing** [@Symfony]
 
-  Single line @var PHPDoc should have proper spacing.
+  Single line ``@var`` PHPDoc should have proper spacing.
 
 * **phpdoc_summary** [@Symfony]
 
-  Phpdocs summary should end in either a full stop, exclamation mark, or
+  PHPDocs summary should end in either a full stop, exclamation mark, or
   question mark.
 
 * **phpdoc_to_comment** [@Symfony]
@@ -1156,12 +1306,12 @@ Choose from the list of available rules:
 
 * **phpdoc_trim** [@Symfony]
 
-  Phpdocs should start and end with content, excluding the very first and
+  PHPDocs should start and end with content, excluding the very first and
   last line of the docblocks.
 
 * **phpdoc_types** [@Symfony]
 
-  The correct case must be used for standard PHP types in phpdoc.
+  The correct case must be used for standard PHP types in PHPDoc.
 
 * **phpdoc_types_order**
 
@@ -1177,13 +1327,13 @@ Choose from the list of available rules:
 
 * **phpdoc_var_without_name** [@Symfony]
 
-  @var and @type annotations should not contain the variable name.
+  ``@var`` and ``@type`` annotations should not contain the variable name.
 
 * **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
-  Converts ``pow()`` to the ``**`` operator.
+  Converts ``pow`` to the ``**`` operator.
 
-  *Risky rule: risky when the function ``pow()`` is overridden.*
+  *Risky rule: risky when the function ``pow`` is overridden.*
 
 * **pre_increment**
 
@@ -1225,6 +1375,11 @@ Choose from the list of available rules:
     ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'rand' =>
     'mt_rand', 'srand' => 'mt_srand']``
 
+* **return_assignment**
+
+  Local, dynamic and directly referenced variables should not be assigned
+  and directly returned by a function or method.
+
 * **return_type_declaration** [@Symfony]
 
   There should be one or no space before colon, and one space after it in
@@ -1235,14 +1390,22 @@ Choose from the list of available rules:
   - ``space_before`` (``'none'``, ``'one'``): spacing to apply before colon; defaults to
     ``'none'``
 
-* **self_accessor** [@Symfony]
+* **self_accessor** [@Symfony:risky]
 
-  Inside a classy element "self" should be preferred to the class name
-  itself.
+  Inside class or interface element ``self`` should be preferred to the
+  class name itself.
+
+  *Risky rule: risky when using dynamic calls like get_called_class() or late static binding.*
 
 * **semicolon_after_instruction** [@Symfony]
 
   Instructions must be terminated with a semicolon.
+
+* **set_type_to_cast**
+
+  Cast shall be used, not ``settype``.
+
+  *Risky rule: risky when the ``settype`` function is overridden or when used as the 2nd or 3rd expression in a ``for`` loop .*
 
 * **short_scalar_cast** [@Symfony]
 
@@ -1301,6 +1464,11 @@ Choose from the list of available rules:
 
   Convert double quotes to single quotes for simple strings.
 
+  Configuration options:
+
+  - ``strings_containing_single_quote_chars`` (``bool``): whether to fix
+    double-quoted strings that contains single-quotes; defaults to ``false``
+
 * **space_after_semicolon** [@Symfony]
 
   Fix whitespace after a semicolon.
@@ -1310,9 +1478,19 @@ Choose from the list of available rules:
   - ``remove_in_empty_for_expressions`` (``bool``): whether spaces should be removed
     for empty ``for`` expressions; defaults to ``false``
 
+* **standardize_increment** [@Symfony]
+
+  Increment and decrement operators should be used if possible.
+
 * **standardize_not_equals** [@Symfony]
 
   Replace all ``<>`` with ``!=``.
+
+* **static_lambda**
+
+  Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
+
+  *Risky rule: risky when using "->bindTo" on lambdas without referencing to ``$this``.*
 
 * **strict_comparison**
 
@@ -1325,6 +1503,12 @@ Choose from the list of available rules:
   Functions should be used with ``$strict`` param set to ``true``.
 
   *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
+
+* **string_line_ending**
+
+  All multi-line strings must use correct line ending.
+
+  *Risky rule: changing the line endings of multi-line strings might affect string comparisons and outputs.*
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 
@@ -1357,9 +1541,9 @@ Choose from the list of available rules:
 
 * **visibility_required** [@PSR2, @Symfony, @PHP71Migration]
 
-  Visibility MUST be declared on all properties and methods; abstract and
-  final MUST be declared before the visibility; static MUST be declared
-  after the visibility.
+  Visibility MUST be declared on all properties and methods; ``abstract``
+  and ``final`` MUST be declared before the visibility; ``static`` MUST be
+  declared after the visibility.
 
   Configuration options:
 
@@ -1405,7 +1589,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.8.3/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.11.1/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -1436,7 +1620,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
 **NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
 
-See `Symfony\\Finder <http://symfony.com/doc/current/components/finder.html>`_
+See `Symfony\\Finder <https://symfony.com/doc/current/components/finder.html>`_
 online documentation for other `Finder` methods.
 
 You may also use a blacklist for the rules instead of the above shown whitelist approach.
@@ -1516,9 +1700,11 @@ Then, add the following command to your CI:
 
 .. code-block:: bash
 
+    $ IFS='
+    $ '
     $ CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")
-    $ if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php_cs(\\.dist)?|composer\\.lock)$"; then IFS=$'\n' EXTRA_ARGS=('--path-mode=intersection' '--' ${CHANGED_FILES[@]}); fi
-    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no "${EXTRA_ARGS[@]}"
+    $ if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php_cs(\\.dist)?|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
+    $ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no ${EXTRA_ARGS}
 
 Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
@@ -1568,7 +1754,7 @@ scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
-.. _php-cs-fixer.phar: http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
+.. _php-cs-fixer.phar: https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          https://medium.com/@valeryan/how-to-configure-phpstorm-to-use-php-cs-fixer-1844991e521f

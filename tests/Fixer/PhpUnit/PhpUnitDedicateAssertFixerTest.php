@@ -43,7 +43,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideTestFixLegacyCases
      * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
+     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0. Use option "target" instead.
      */
     public function testFixLegacy($expected, $input = null)
     {
@@ -53,7 +53,6 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
             'file_exists',
             'is_array',
             'is_bool',
-            'is_boolean',
             'is_callable',
             'is_double',
             'is_float',
@@ -199,7 +198,7 @@ $this->assertTrue(is_readable($a));
             ],
         ];
 
-        foreach (['array', 'bool', 'boolean', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
+        foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
             $cases[] = [
                 sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
                 sprintf('<?php $this->assertTrue(is_%s($a));', $type),
@@ -238,6 +237,26 @@ $a#
 ;',
         ];
 
+        $cases[] = [
+            '<?php static::assertInternalType(\'float\', $a);',
+            '<?php static::assertTrue(is_float( $a));',
+        ];
+
+        $cases[] = [
+            '<?php self::assertInternalType(\'float\', $a);',
+            '<?php self::assertTrue(is_float( $a));',
+        ];
+
+        $cases[] = [
+            '<?php static::assertNull($a);',
+            '<?php static::assertTrue(is_null($a));',
+        ];
+
+        $cases[] = [
+            '<?php self::assertNull($a);',
+            '<?php self::assertTrue(is_null($a));',
+        ];
+
         return $cases;
     }
 
@@ -273,6 +292,8 @@ $a#
                     $this->assertFalse(is_nan($a));
                     $this->assertTrue(is_int($a) || \is_bool($b));
                     $this->assertTrue($a&&is_int($a));
+                    static::assertTrue(is_null);
+                    self::assertTrue(is_null);
                 ',
             ],
         ];
@@ -299,7 +320,7 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.
+     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0. Use option "target" instead.
      */
     public function testConfig()
     {
@@ -319,8 +340,8 @@ $a#
     public function testInvalidConfig()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "functions" .*\.$/');
+        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "target" .*\.$/');
 
-        $this->fixer->configure(['functions' => ['_unknown_']]);
+        $this->fixer->configure(['target' => '_unknown_']);
     }
 }

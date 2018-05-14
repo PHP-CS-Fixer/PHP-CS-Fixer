@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -29,7 +30,7 @@ final class PhpdocTrimFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Phpdocs should start and end with content, excluding the very first and last line of the docblocks.',
+            'PHPDocs should start and end with content, excluding the very first and last line of the docblocks.',
             [new CodeSample('<?php
 /**
  *
@@ -91,7 +92,7 @@ final class Foo {}
      */
     private function fixStart($content)
     {
-        return preg_replace(
+        return Preg::replace(
             '~
                 (^/\*\*)                  # DocComment begin
                 (?:
@@ -114,7 +115,7 @@ final class Foo {}
      */
     private function fixEnd($content)
     {
-        return preg_replace(
+        return Preg::replace(
             '~
                 (\R[ \t]*(?:\*[ \t]*)?\S.*?) # last line with useful content
                 (?:

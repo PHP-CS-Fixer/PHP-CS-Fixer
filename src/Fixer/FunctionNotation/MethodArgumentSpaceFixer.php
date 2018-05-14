@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -152,19 +153,19 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             $token = $tokens[$index];
 
             if ($token->equals(')')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                 continue;
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
                 continue;
             }
 
             if ($token->equals('}')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
                 continue;
             }
@@ -211,20 +212,20 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
 
             // skip nested method calls and arrays
             if ($token->equals(')')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                 continue;
             }
 
             // skip nested arrays
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
                 continue;
             }
 
             if ($token->equals('}')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index, false);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
                 continue;
             }
@@ -234,7 +235,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             }
         }
 
-        $this->fixNewLine($tokens, $startFunctionIndex, $indentation, false);
+        $this->fixNewline($tokens, $startFunctionIndex, $indentation, false);
     }
 
     /**
@@ -253,7 +254,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
 
         if ($tokens[$index + 2]->isComment()) {
             $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index + 2);
-            if (!$this->isNewLine($tokens[$nextMeaningfulTokenIndex - 1])) {
+            if (!$this->isNewline($tokens[$nextMeaningfulTokenIndex - 1])) {
                 $tokens->ensureWhitespaceAtIndex($nextMeaningfulTokenIndex, 0, $this->whitespacesConfig->getLineEnding().$indentation);
             }
 
@@ -288,7 +289,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         //  2) no space after comma
         if ($nextToken->isWhitespace()) {
             if (
-                ($this->configuration['keep_multiple_spaces_after_comma'] && !preg_match('/\R/', $nextToken->getContent()))
+                ($this->configuration['keep_multiple_spaces_after_comma'] && !Preg::match('/\R/', $nextToken->getContent()))
                 || $this->isCommentLastLineToken($tokens, $index + 2)
             ) {
                 return;
@@ -331,7 +332,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      *
      * @return bool
      */
-    private function isNewLine(Token $token)
+    private function isNewline(Token $token)
     {
         return $token->isWhitespace() && false !== strpos($token->getContent(), "\n");
     }

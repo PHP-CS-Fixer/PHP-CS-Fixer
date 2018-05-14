@@ -12,13 +12,13 @@ print valid PHP code. It does all transformations in multiple passes,
 a.k.a., multi-pass compiler.
 
 Therefore, a new fixer is meant to be ideally
-[idempotent](http://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning),
+[idempotent](https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning),
 or at least atomic in its actions. More on this later.
 
 All contributions go through a code review process. Do not feel
 discouraged - it is meant only to give more people more chance to
 contribute, and to detect bugs ([Linus'
-Law](http://en.wikipedia.org/wiki/Linus%27s_Law)).
+Law](https://en.wikipedia.org/wiki/Linus%27s_Law)).
 
 If possible, try to get acquainted with the public interface for the
 [Tokens class](/src/Tokenizer/Tokens.php)
@@ -78,9 +78,9 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDefinition()
     {
-        // Return a short description of the Fixer, it will be used in the README.rst.
+        // Return a definition of the fixer, it will be used in the README.rst.
     }
 }
 ```
@@ -235,9 +235,16 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDefinition()
     {
-        return 'Removes all comments of the code that are preceded by ";" (semicolon).'; // Trailing dot is important. We thrive to use English grammar properly.
+        return new FixerDefinition(
+            'Removes all comments of the code that are preceded by ";" (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
+            [
+                new CodeSample(
+                    '<?php echo 123; /* Comment */'
+                ),
+            ]
+        );
     }
 }
 ```
@@ -295,7 +302,7 @@ one of them check if they are preceded by a semicolon symbol.
 
 Now you need to do some reading, because all these symbols obey a list
 defined by the PHP compiler. It is the ["List of Parser
-Tokens"](http://php.net/manual/en/tokens.php).
+Tokens"](https://php.net/manual/en/tokens.php).
 
 Internally, PHP CS Fixer transforms some of PHP native tokens into custom
 tokens through the use of [Transfomers](/src/Tokenizer/Transformer),
@@ -402,8 +409,16 @@ final class RemoveCommentsFixer extends AbstractFixer {
     /**
      * {@inheritdoc}
      */
-    public function getDescription() {
-        return 'Removes all comments of the code that are preceded by ";" (semicolon).';// Trailing dot is important. We thrive to use English grammar properly.
+    public function getDefinition()
+    {
+        return new FixerDefinition(
+            'Removes all comments of the code that are preceded by ";" (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
+            [
+                new CodeSample(
+                    '<?php echo 123; /* Comment */'
+                ),
+            ]
+        );
     }
 
     /**

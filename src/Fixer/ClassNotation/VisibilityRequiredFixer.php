@@ -41,7 +41,7 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurati
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.',
+            'Visibility MUST be declared on all properties and methods; `abstract` and `final` MUST be declared before the visibility; `static` MUST be declared after the visibility.',
             [
                 new CodeSample(
 '<?php
@@ -112,7 +112,7 @@ class Sample
                 ->setAllowedValues([
                     (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(['property', 'method', 'const']),
                 ])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value) {
                     if (PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
                         throw new InvalidOptionsForEnvException('"const" option can only be enabled with PHP 7.1+.');
                     }

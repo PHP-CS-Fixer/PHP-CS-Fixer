@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Test;
 
-use GeckoPackages\PHPUnit\Constraints\SameStringsConstraint;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Error\Error;
@@ -20,16 +19,18 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Integration test base class.
@@ -98,6 +99,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $tmpFile = static::getTempFile();
 
         self::$fileRemoval->delete($tmpFile);
+        self::$fileRemoval = null;
     }
 
     protected function setUp()
@@ -115,6 +117,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
+
+        $this->linter = null;
 
         // @todo remove at 3.0
         Tokens::setLegacyMode(false);
@@ -144,20 +148,29 @@ abstract class AbstractIntegrationTestCase extends TestCase
             throw new \UnexpectedValueException(sprintf('Given fixture dir "%s" is not a directory.', $fixturesDir));
         }
 
-        $factory = new IntegrationCaseFactory();
+        $factory = static::createIntegrationCaseFactory();
         $tests = [];
 
+        /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
             if ('test' !== $file->getExtension()) {
                 continue;
             }
 
-            $tests[] = [
+            $tests[$file->getPathname()] = [
                 $factory->create($file),
             ];
         }
 
         return $tests;
+    }
+
+    /**
+     * @return IntegrationCaseFactoryInterface
+     */
+    protected static function createIntegrationCaseFactory()
+    {
+        return new IntegrationCaseFactory();
     }
 
     /**
@@ -207,7 +220,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         $errorsManager = new ErrorsManager();
-        $fixers = $this->createFixers($case);
+        $fixers = static::createFixers($case);
         $runner = new Runner(
             new \ArrayIterator([new \SplFileInfo($tmpFile)]),
             $fixers,
@@ -253,7 +266,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $fixedInputCode = file_get_contents($tmpFile);
         $this->assertThat(
             $fixedInputCode,
-            new SameStringsConstraint($expected),
+            self::createIsIdenticalStringConstraint($expected),
             sprintf(
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
@@ -283,23 +296,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $runner->fix();
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
 
-            // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
-            // If not, any order is valid.
-            if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
-                $this->assertGreaterThan(
-                    1,
-                    count(array_unique(array_map(
-                        function (FixerInterface $fixer) {
-                            return $fixer->getPriority();
-                        },
-                        $fixers
-                    ))),
-                    sprintf(
-                        'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
-                        $case->getFileName()
-                    )
-                );
-            }
+            $this->assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
         }
 
         // run the test again with the `expected` part, this should always stay the same
@@ -319,10 +316,36 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
     /**
      * @param IntegrationCase $case
+     * @param string          $fixedInputCode
+     * @param string          $fixedInputCodeWithReversedFixers
+     */
+    protected static function assertRevertedOrderFixing(IntegrationCase $case, $fixedInputCode, $fixedInputCodeWithReversedFixers)
+    {
+        // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
+        // If not, any order is valid.
+        if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
+            static::assertGreaterThan(
+                1,
+                count(array_unique(array_map(
+                    static function (FixerInterface $fixer) {
+                        return $fixer->getPriority();
+                    },
+                    static::createFixers($case)
+                ))),
+                sprintf(
+                    'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
+                    $case->getFileName()
+                )
+            );
+        }
+    }
+
+    /**
+     * @param IntegrationCase $case
      *
      * @return FixerInterface[]
      */
-    private function createFixers(IntegrationCase $case)
+    private static function createFixers(IntegrationCase $case)
     {
         $config = $case->getConfig();
 
@@ -373,10 +396,32 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
                 $linter = $linterProphecy->reveal();
             } else {
-                $linter = new Linter();
+                $linter = new CachingLinter(new Linter());
             }
         }
 
         return $linter;
+    }
+
+    /**
+     * @todo Remove me when this class will end up in dedicated package.
+     *
+     * @param string $expected
+     */
+    private static function createIsIdenticalStringConstraint($expected)
+    {
+        $candidates = array_filter([
+            'PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString',
+            'PHPUnit\Framework\Constraint\IsIdentical',
+            'PHPUnit_Framework_Constraint_IsIdentical',
+        ], function ($className) { return class_exists($className); });
+
+        if (empty($candidates)) {
+            throw new \RuntimeException('PHPUnit not installed?!');
+        }
+
+        $candidate = array_shift($candidates);
+
+        return new $candidate($expected);
     }
 }

@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -31,7 +32,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Single line @var PHPDoc should have proper spacing.',
+            'Single line `@var` PHPDoc should have proper spacing.',
             [new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();\n")]
         );
     }
@@ -41,7 +42,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be ran after PhpdocNoAliasTagFixer.
+        // should be run after PhpdocNoAliasTagFixer.
         return -10;
     }
 
@@ -85,9 +86,9 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      */
     private function fixTokenContent($content)
     {
-        return preg_replace_callback(
+        return Preg::replaceCallback(
             '#^/\*\*[ \t]*@var[ \t]+(\S+)[ \t]*(\$\S+)?[ \t]*([^\n]*)\*/$#',
-            function (array $matches) {
+            static function (array $matches) {
                 $content = '/** @var';
                 for ($i = 1, $m = count($matches); $i < $m; ++$i) {
                     if ('' !== $matches[$i]) {

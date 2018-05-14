@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -98,28 +99,40 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+
         foreach ($this->configuration['assertions'] as $methodBefore) {
             $methodAfter = self::$assertionMap[$methodBefore];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $sequence = $tokens->findSequence(
-                    [
-                        [T_VARIABLE, '$this'],
-                        [T_OBJECT_OPERATOR, '->'],
-                        [T_STRING, $methodBefore],
-                        '(',
-                    ],
-                    $index
-                );
+                $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING, $methodBefore]]);
 
-                if (null === $sequence) {
+                if (null === $methodIndex) {
                     break;
                 }
 
-                $sequenceIndexes = array_keys($sequence);
-                $tokens[$sequenceIndexes[2]] = new Token([T_STRING, $methodAfter]);
+                $operatorIndex = $tokens->getPrevMeaningfulToken($methodIndex);
+                $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
+                if (
+                    !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
+                    && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
+                    && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
+                ) {
+                    continue;
+                }
 
-                $index = $sequenceIndexes[3];
+                $openingParenthesisIndex = $tokens->getNextmeaningfulToken($methodIndex);
+                $argumentsCount = $argumentsAnalyzer->countArguments(
+                    $tokens,
+                    $openingParenthesisIndex,
+                    $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex)
+                );
+
+                if (2 === $argumentsCount || 3 === $argumentsCount) {
+                    $tokens[$methodIndex] = new Token([T_STRING, $methodAfter]);
+                }
+
+                $index = $methodIndex;
             }
         }
     }

@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\Report\ReportSummary;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -33,6 +33,13 @@ abstract class AbstractReporterTestCase extends TestCase
         parent::setUp();
 
         $this->reporter = $this->createReporter();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        $this->reporter = null;
     }
 
     final public function testGetFormat()

@@ -15,8 +15,8 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -143,7 +143,7 @@ final class CacheTest extends TestCase
             'hashes' => [],
         ];
 
-        return array_map(function ($missingKey) use ($data) {
+        return array_map(static function ($missingKey) use ($data) {
             unset($data[$missingKey]);
 
             return [
@@ -192,6 +192,29 @@ final class CacheTest extends TestCase
                 ]
             )],
         ];
+    }
+
+    public function testToJsonThrowsExceptionOnInvalid()
+    {
+        $invalidUtf8Sequence = "\xB1\x31";
+
+        $signature = $this->prophesize('PhpCsFixer\Cache\SignatureInterface');
+        $signature->getPhpVersion()->willReturn('7.1.0');
+        $signature->getFixerVersion()->willReturn('2.2.0');
+        $signature->getRules()->willReturn([
+            $invalidUtf8Sequence => true,
+        ]);
+
+        $cache = new Cache($signature->reveal());
+
+        $this->expectException(
+            'UnexpectedValueException'
+        );
+        $this->expectExceptionMessage(
+            'Can not encode cache signature to JSON, error: "Malformed UTF-8 characters, possibly incorrectly encoded". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.'
+        );
+
+        $cache->toJson();
     }
 
     /**

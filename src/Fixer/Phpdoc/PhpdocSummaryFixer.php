@@ -32,7 +32,7 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.',
+            'PHPDocs summary should end in either a full stop, exclamation mark, or question mark.',
             [new CodeSample('<?php
 /**
  * Foo function is great
@@ -116,7 +116,7 @@ function foo () {}
      */
     private function isCorrectlyFormatted($content)
     {
-        if (false !== strpos(strtolower($content), '{@inheritdoc}')) {
+        if (false !== stripos($content, '{@inheritdoc}')) {
             return true;
         }
 

@@ -20,6 +20,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -65,19 +66,26 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
         $tagsWithNameToAlign = array_intersect($this->configuration['tags'], self::$tagsWithName);
         $tagsWithMethodSignatureToAlign = array_intersect($this->configuration['tags'], self::$tagsWithMethodSignature);
         $tagsWithoutNameToAlign = array_diff($this->configuration['tags'], $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
+        $types = [];
 
         $indent = '(?P<indent>(?: {2}|\t)*)';
         // e.g. @param <hint> <$var>
-        $tagsWithName = '(?P<tag>'.implode('|', $tagsWithNameToAlign).')\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
+        if (!empty($tagsWithNameToAlign)) {
+            $types[] = '(?P<tag>'.implode('|', $tagsWithNameToAlign).')\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
+        }
         // e.g. @return <hint>
-        $tagsWithoutName = '(?P<tag2>'.implode('|', $tagsWithoutNameToAlign).')\s+(?P<hint2>[^\s]+?)';
+        if (!empty($tagsWithoutNameToAlign)) {
+            $types[] = '(?P<tag2>'.implode('|', $tagsWithoutNameToAlign).')\s+(?P<hint2>[^\s]+?)';
+        }
         // e.g. @method <hint> <signature>
-        $tagsWithMethodSignature = '(?P<tag3>'.implode('|', $tagsWithMethodSignatureToAlign).')(\s+(?P<hint3>[^\s(]+)|)\s+(?P<signature>.+\))';
+        if (!empty($tagsWithMethodSignatureToAlign)) {
+            $types[] = '(?P<tag3>'.implode('|', $tagsWithMethodSignatureToAlign).')(\s+(?P<hint3>[^\s(]+)|)\s+(?P<signature>.+\))';
+        }
         // optional <desc>
         $desc = '(?:\s+(?P<desc>\V*))';
 
-        $this->regex = '/^'.$indent.' \* @(?:'.$tagsWithName.'|'.$tagsWithoutName.'|'.$tagsWithMethodSignature.')'.$desc.'\s*$/u';
-        $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)$/u';
+        $this->regex = '/^'.$indent.' \* @(?:'.implode('|', $types).')'.$desc.'\s*$/u';
+        $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/u';
     }
 
     /**
@@ -86,7 +94,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
     public function getDefinition()
     {
         return new FixerDefinition(
-            'All items of the given phpdoc tags must be aligned vertically.',
+            'All items of the given PHPDoc tags must be aligned vertically.',
             [new CodeSample('<?php
 /**
  * @param  EngineInterface $templating
@@ -111,7 +119,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
          * annotations are of the correct type, and are grouped correctly
          * before running this fixer.
          */
-        return -11;
+        return -21;
     }
 
     /**
@@ -128,8 +136,14 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixDocBlock($token->getContent())]);
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $content = $token->getContent();
+            $newContent = $this->fixDocBlock($content);
+            if ($newContent !== $content) {
+                $tokens[$index] = new Token([T_DOC_COMMENT, $newContent]);
             }
         }
     }
@@ -147,8 +161,10 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             ->setAllowedValues([
                 $generator->allowedValueIsSubsetOf(self::$alignableTags),
             ])
-            // By default, all tags apart from @property and @method will be aligned for backwards compatibility
-            // @TODO 3.0 Align all available tags by default
+            /*
+             * By default, all tags apart from @property and @method will be aligned for backwards compatibility
+             * @TODO 3.0 Align all available tags by default
+             */
             ->setDefault([
                 'param',
                 'return',
@@ -171,9 +187,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $lines = Utils::splitLines($content);
 
-        $l = count($lines);
-
-        for ($i = 0; $i < $l; ++$i) {
+        for ($i = 0, $l = count($lines); $i < $l; ++$i) {
             $items = [];
             $matches = $this->getMatches($lines[$i]);
 
@@ -190,8 +204,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
                 }
 
                 $matches = $this->getMatches($lines[$i], true);
-
-                if (!$matches) {
+                if (null === $matches) {
                     break;
                 }
 
@@ -218,7 +231,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             // update
             foreach ($items as $j => $item) {
                 if (null === $item['tag']) {
-                    if ($item['desc'][0] === '@') {
+                    if ('@' === $item['desc'][0]) {
                         $lines[$current + $j] = $item['indent'].' * '.$item['desc'].$lineEnding;
 
                         continue;
@@ -283,7 +296,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
      */
     private function getMatches($line, $matchCommentOnly = false)
     {
-        if (preg_match($this->regex, $line, $matches)) {
+        if (Preg::match($this->regex, $line, $matches)) {
             if (!empty($matches['tag2'])) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
@@ -299,7 +312,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
             return $matches;
         }
 
-        if ($matchCommentOnly && preg_match($this->regexCommentLine, $line, $matches)) {
+        if ($matchCommentOnly && Preg::match($this->regexCommentLine, $line, $matches)) {
             $matches['tag'] = null;
             $matches['var'] = '';
             $matches['hint'] = '';

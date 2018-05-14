@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author SpacePossum
@@ -49,5 +48,14 @@ final class ToolInfoTest extends TestCase
         $this->expectException(\LogicException::class);
 
         $toolInfo->getComposerVersion();
+    }
+
+    public function testGetPharDownloadUri()
+    {
+        $toolInfo = new ToolInfo();
+        $this->assertSame(
+            'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/foo/php-cs-fixer.phar',
+            $toolInfo->getPharDownloadUri('foo')
+        );
     }
 }

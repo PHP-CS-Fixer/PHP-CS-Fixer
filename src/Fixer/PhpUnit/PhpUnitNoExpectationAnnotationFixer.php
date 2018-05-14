@@ -22,6 +22,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -283,9 +284,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $tag = $annotation->getTag()->getName();
 
-        preg_match('/^\s*\*\s*@'.$tag.'\s+(.+)$/', $annotation->getContent(), $matches);
+        Preg::match('/^\s*\*\s*@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches);
+        $content = $matches[1];
+        if (Preg::match('/\R/u', $content)) {
+            $content = Preg::replace('/\s*\R+\s*\*\s*/u', ' ', $content);
+        }
 
-        return rtrim($matches[1]);
+        return rtrim($content);
     }
 
     private function annotationsToParamList(array $annotations)
@@ -296,7 +301,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         if ($this->configuration['use_class_const']) {
             $params[] = $exceptionClass.'::class';
         } else {
-            $params[] = "'$exceptionClass'";
+            $params[] = "'${exceptionClass}'";
         }
 
         if (isset($annotations['expectedExceptionMessage'])) {

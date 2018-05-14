@@ -15,7 +15,6 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Utils;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -180,25 +179,25 @@ final class UtilsTest extends TestCase
             [
                 ['a', 'b', 'c', 'd', 'e'],
                 ['b', 'd', 'e', 'a', 'c'],
-                function ($element) { return $element; },
+                static function ($element) { return $element; },
                 'strcmp',
             ],
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
-                function ($element) { return 'foo'; },
+                static function ($element) { return 'foo'; },
                 'strcmp',
             ],
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
-                function ($element) { return $element; },
-                function ($a, $b) { return 0; },
+                static function ($element) { return $element; },
+                static function ($a, $b) { return 0; },
             ],
             [
                 ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
                 ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
-                function ($element) { return preg_replace('/([a-z]+)(\d+)/', '$2$1', $element); },
+                static function ($element) { return preg_replace('/([a-z]+)(\d+)/', '$2$1', $element); },
                 'strcmp',
             ],
         ];
@@ -256,6 +255,43 @@ final class UtilsTest extends TestCase
             [
                 '`a`, `b` and `c`',
                 ['a', 'b', 'c'],
+            ],
+        ];
+    }
+
+    /**
+     * @param int   $expected
+     * @param array $options
+     *
+     * @dataProvider provideCalculateBitmaskCases
+     */
+    public function testCalculateBitmask($expected, array $options)
+    {
+        $this->assertSame($expected, Utils::calculateBitmask($options));
+    }
+
+    public function provideCalculateBitmaskCases()
+    {
+        return [
+            [
+                JSON_HEX_TAG | JSON_HEX_QUOT,
+                ['JSON_HEX_TAG', 'JSON_HEX_QUOT'],
+            ],
+            [
+                JSON_HEX_TAG | JSON_HEX_QUOT,
+                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'NON_EXISTENT_CONST'],
+            ],
+            [
+                JSON_HEX_TAG,
+                ['JSON_HEX_TAG'],
+            ],
+            [
+                JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS,
+                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'JSON_HEX_AMP', 'JSON_HEX_APOS'],
+            ],
+            [
+                0,
+                [],
             ],
         ];
     }

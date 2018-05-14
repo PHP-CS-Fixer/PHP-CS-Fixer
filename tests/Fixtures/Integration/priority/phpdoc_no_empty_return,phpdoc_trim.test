@@ -1,0 +1,28 @@
+--TEST--
+Integration of fixers: phpdoc_no_empty_return,phpdoc_trim.
+--RULESET--
+{"phpdoc_no_empty_return": true, "phpdoc_trim": true}
+--EXPECT--
+<?php
+
+/**
+ * @api
+ */
+function a()
+{
+
+}
+
+--INPUT--
+<?php
+
+/**
+ *
+ *         @return void
+ *
+ * @api
+ */
+function a()
+{
+
+}

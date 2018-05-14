@@ -20,7 +20,7 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Runner\Runner;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Finder\Finder;
 
@@ -106,7 +106,7 @@ final class RunnerTest extends TestCase
     {
         $errorsManager = new ErrorsManager();
 
-        $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid';
+        $path = realpath(__DIR__.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid';
         $runner = new Runner(
             Finder::create()->in($path),
             [

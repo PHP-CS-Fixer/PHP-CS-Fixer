@@ -75,6 +75,11 @@ final class StrictParamFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
+            $previousIndex = $tokens->getPrevMeaningfulToken($index);
+            if (null !== $previousIndex && $tokens[$previousIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+                return;
+            }
+
             if ($token->isGivenKind(T_STRING) && isset($map[$token->getContent()])) {
                 $this->fixFunction($tokens, $index, $map[$token->getContent()]);
             }

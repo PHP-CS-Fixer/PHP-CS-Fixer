@@ -12,9 +12,14 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+if (!class_exists(\PHPUnit\Runner\Version::class)) {
+    class_alias('PHPUnit_Runner_Version', \PHPUnit\Runner\Version::class);
+}
+
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -25,6 +30,7 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class ProjectCodeTest extends TestCase
 {
@@ -36,28 +42,13 @@ final class ProjectCodeTest extends TestCase
      * @var string[]
      */
     private static $classesWithoutTests = [
-        \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class,
-        \PhpCsFixer\Console\Command\SelfUpdateCommand::class,
-        \PhpCsFixer\Console\Output\NullOutput::class,
         \PhpCsFixer\Console\SelfUpdate\GithubClient::class,
-        \PhpCsFixer\Console\WarningsDetector::class,
-        \PhpCsFixer\Differ\DiffConsoleFormatter::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
-        \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
-        \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
-        \PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator::class,
-        \PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException::class,
-        \PhpCsFixer\FixerFileProcessedEvent::class,
-        \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator::class,
-        \PhpCsFixer\Linter\ProcessLintingResult::class,
-        \PhpCsFixer\Linter\TokenizerLintingResult::class,
-        \PhpCsFixer\Report\ReportSummary::class,
+        \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
-        \PhpCsFixer\Runner\FileFilterIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
-        \PhpCsFixer\StdinFileInfo::class,
         \PhpCsFixer\Test\AccessibleObject::class,
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
@@ -66,7 +57,7 @@ final class ProjectCodeTest extends TestCase
     {
         $unknownClasses = array_filter(
             self::$classesWithoutTests,
-            function ($class) { return !class_exists($class) && !trait_exists($class); }
+            static function ($class) { return !class_exists($class) && !trait_exists($class); }
         );
 
         $this->assertSame([], $unknownClasses);
@@ -87,7 +78,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         $this->assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
-        $this->assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PHPUnit\Framework\TestCase".', $testClassName));
+        $this->assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PhpCsFixer\Tests\TestCase".', $testClassName));
     }
 
     /**
@@ -116,7 +107,7 @@ final class ProjectCodeTest extends TestCase
 
         $exceptionMethods = [
             'configure', // due to AbstractFixer::configure
-            'getConfigurationDefinition', // due to AbstractFixer::getDefaultConfiguration
+            'getConfigurationDefinition', // due to AbstractFixer::getConfigurationDefinition
             'getDefaultConfiguration', // due to AbstractFixer::getDefaultConfiguration
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
         ];
@@ -143,8 +134,8 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(function ($item) {
-                    return " * $item";
+                implode("\n", array_map(static function ($item) {
+                    return " * ${item}";
                 }, $extraMethods))
             )
         );
@@ -182,10 +173,10 @@ final class ProjectCodeTest extends TestCase
             $allowedProps = $rc->getParentClass()->getProperties(\ReflectionProperty::IS_PROTECTED);
         }
 
-        $allowedProps = array_map(function (\ReflectionProperty $item) {
+        $allowedProps = array_map(static function (\ReflectionProperty $item) {
             return $item->getName();
         }, $allowedProps);
-        $definedProps = array_map(function (\ReflectionProperty $item) {
+        $definedProps = array_map(static function (\ReflectionProperty $item) {
             return $item->getName();
         }, $definedProps);
 
@@ -211,8 +202,8 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(function ($item) {
-                    return " * $item";
+                implode("\n", array_map(static function ($item) {
+                    return " * ${item}";
                 }, $extraProps))
             )
         );
@@ -264,10 +255,42 @@ final class ProjectCodeTest extends TestCase
         ));
     }
 
+    /**
+     * @dataProvider provideClassesWherePregFunctionsAreForbiddenCases
+     *
+     * @param string $className
+     */
+    public function testThereIsNoPregFunctionUsedDirectly($className)
+    {
+        $rc = new \ReflectionClass($className);
+        $tokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
+        $stringTokens = array_filter(
+            $tokens->toArray(),
+            function (Token $token) {
+                return $token->isGivenKind(T_STRING);
+            }
+        );
+        $strings = array_map(
+            function (Token $token) {
+                return $token->getContent();
+            },
+            $stringTokens
+        );
+        $strings = array_unique($strings);
+        $message = sprintf('Class %s must not use preg_*, it shall use Preg::* instead.', $className);
+        $this->assertNotContains('preg_filter', $strings, $message);
+        $this->assertNotContains('preg_grep', $strings, $message);
+        $this->assertNotContains('preg_match', $strings, $message);
+        $this->assertNotContains('preg_match_all', $strings, $message);
+        $this->assertNotContains('preg_replace', $strings, $message);
+        $this->assertNotContains('preg_replace_callback', $strings, $message);
+        $this->assertNotContains('preg_split', $strings, $message);
+    }
+
     public function provideSrcClassCases()
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
             $this->getSrcClasses()
@@ -277,10 +300,10 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcClassesNotAbuseInterfacesCases()
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
-            array_filter($this->getSrcClasses(), function ($className) {
+            array_filter($this->getSrcClasses(), static function ($className) {
                 $rc = new \ReflectionClass($className);
 
                 $doc = false !== $rc->getDocComment()
@@ -311,10 +334,10 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcConcreteClassCases()
     {
         return array_map(
-            function ($item) { return [$item]; },
+            static function ($item) { return [$item]; },
             array_filter(
                 $this->getSrcClasses(),
-                function ($className) {
+                static function ($className) {
                     $rc = new \ReflectionClass($className);
 
                     return !$rc->isAbstract() && !$rc->isInterface();
@@ -326,7 +349,7 @@ final class ProjectCodeTest extends TestCase
     public function provideTestClassCases()
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
             $this->getTestClasses()
@@ -375,6 +398,25 @@ final class ProjectCodeTest extends TestCase
         return $data;
     }
 
+    public function provideClassesWherePregFunctionsAreForbiddenCases()
+    {
+        if (extension_loaded('xdebug') && false === getenv('CI')) {
+            $this->markTestSkipped('Test too slow when Xdebug is loaded.');
+        }
+
+        return array_map(
+            function ($item) {
+                return [$item];
+            },
+            array_filter(
+                $this->getSrcClasses(),
+                function ($className) {
+                    return 'PhpCsFixer\\Preg' !== $className;
+                }
+            )
+        );
+    }
+
     private function getSrcClasses()
     {
         static $classes;
@@ -393,7 +435,7 @@ final class ProjectCodeTest extends TestCase
         ;
 
         $classes = array_map(
-            function (SplFileInfo $file) {
+            static function (SplFileInfo $file) {
                 return sprintf(
                     '%s\\%s%s%s',
                     'PhpCsFixer',
@@ -428,7 +470,7 @@ final class ProjectCodeTest extends TestCase
         ;
 
         $classes = array_map(
-            function (SplFileInfo $file) {
+            static function (SplFileInfo $file) {
                 return sprintf(
                     'PhpCsFixer\\Tests\\%s%s%s',
                     strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
@@ -452,7 +494,7 @@ final class ProjectCodeTest extends TestCase
     private function getPublicMethodNames(\ReflectionClass $rc)
     {
         return array_map(
-            function (\ReflectionMethod $rm) {
+            static function (\ReflectionMethod $rm) {
                 return $rm->getName();
             },
             $rc->getMethods(\ReflectionMethod::IS_PUBLIC)
