@@ -400,7 +400,10 @@ EOF
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $output->getFormatter()->setStyle('url', new OutputFormatterStyle('blue'));
+        $formatter = $output->getFormatter();
+        $formatter->setStyle('url', new OutputFormatterStyle('blue'));
+        $formatter->setStyle('default_block', new OutputFormatterStyle('white'));
+        $formatter->setStyle('default_line', new OutputFormatterStyle('yellow'));
     }
 
     /**
@@ -469,14 +472,18 @@ EOF
             }
 
             if ($fixer->isRisky()) {
-                $help .= sprintf(
-                    "   | *Risky rule: %s.*\n",
+                $riskyDescription = sprintf(
+                    '*Risky rule: %s.*',
                     Preg::replace(
                         '/(`.+?`)/',
                         '<info>$1</info>',
                         lcfirst(Preg::replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
                     )
                 );
+
+                foreach (self::wordwrap($riskyDescription, 73) as $index => $line) {
+                    $help .= (0 === $index ? '   | ' : '   |  ').$line."\n";
+                }
             }
 
             if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
@@ -522,8 +529,9 @@ EOF
                             '<info>$1</info>',
                             lcfirst(Preg::replace('/\.$/', '', $option->getDescription()))
                         ).'; ';
+
                         if ($option->hasDefault()) {
-                            $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
+                            $line .= 'defaults to:<default_block>';
                         } else {
                             $line .= 'required';
                         }
@@ -534,6 +542,13 @@ EOF
 
                         foreach (self::wordwrap($line, 72) as $index => $line) {
                             $help .= (0 === $index ? '   | - ' : '   |   ').$line."\n";
+                        }
+
+                        if ($option->hasDefault()) {
+                            foreach (self::wordwrap(self::toString($option->getDefault()), 65) as $default) {
+                                $help .= sprintf("   |   <default_line>%s</default_line>\n", $default);
+                            }
+                            $help .= '</default_block>';
                         }
                     }
                 }

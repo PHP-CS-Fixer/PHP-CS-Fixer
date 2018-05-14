@@ -221,7 +221,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` array
-    syntax; defaults to ``'long'``
+    syntax; defaults to:
+    ``'long'``
 
 * **binary_operator_spaces** [@Symfony]
 
@@ -230,9 +231,11 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``align_double_arrow`` (``false``, ``null``, ``true``): whether to apply, remove or
-    ignore double arrows alignment; defaults to ``false``
+    ignore double arrows alignment; defaults to:
+    ``false``
   - ``align_equals`` (``false``, ``null``, ``true``): whether to apply, remove or ignore
-    equals alignment; defaults to ``false``
+    equals alignment; defaults to:
+    ``false``
 
 * **blank_line_after_namespace** [@PSR2, @Symfony]
 
@@ -255,11 +258,13 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``allow_single_line_closure`` (``bool``): whether single line lambda notation
-    should be allowed; defaults to ``false``
+    should be allowed; defaults to:
+    ``false``
   - ``position_after_functions_and_oop_constructs`` (``'next'``, ``'same'``): whether
     the opening brace should be placed on "next" or "same" line after
     classy constructs (non-anonymous classes, interfaces, traits, methods
-    and non-lambda functions); defaults to ``'next'``
+    and non-lambda functions); defaults to:
+    ``'next'``
 
 * **cast_spaces** [@Symfony]
 
@@ -273,13 +278,16 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``multi_line_extends_each_single_line`` (``bool``): whether definitions should
-    be multiline; defaults to ``false``; DEPRECATED alias:
+    be multiline; defaults to:<default_block>; DEPRECATED alias:
     ``multiLineExtendsEachSingleLine``
+    false``
   - ``single_item_single_line`` (``bool``): whether definitions should be single
-    line when including a single item; defaults to ``false``; DEPRECATED alias:
+    line when including a single item; defaults to:<default_block>; DEPRECATED alias:
     ``singleItemSingleLine``
+    false``
   - ``single_line`` (``bool``): whether definitions should be single line; defaults
-    to ``false``; DEPRECATED alias: ``singleLine``
+    to:<default_block>; DEPRECATED alias: ``singleLine``
+    false``
 
 * **class_keyword_remove**
 
@@ -296,7 +304,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``spacing`` (``'none'``, ``'one'``): spacing to apply around concatenation operator;
-    defaults to ``'none'``
+    defaults to:
+    ``'none'``
 
 * **declare_equal_normalize** [@Symfony]
 
@@ -306,13 +315,15 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``space`` (``'none'``, ``'single'``): spacing to apply around the equal sign;
-    defaults to ``'none'``
+    defaults to:
+    ``'none'``
 
 * **declare_strict_types** [@PHP70Migration:risky]
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
 
-  *Risky rule: forcing strict types will stop non strict code from working.*
+  *Risky rule: forcing strict types will stop non strict code from
+   working.*
 
 * **dir_constant** [@Symfony:risky]
 
@@ -328,27 +339,30 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
-    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
-    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
-    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    Annotations; defaults to:
+    ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception',
+    'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name',
+    'toc', 'tutorial', 'private', 'static', 'staticvar',
     'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
-    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
-    'license', 'link', 'method', 'package', 'param', 'property',
-    'property-read', 'property-write', 'return', 'see', 'since', 'source',
-    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
-    'version', 'after', 'afterClass', 'backupGlobals',
-    'backupStaticAttributes', 'before', 'beforeClass',
-    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'deprecated', 'example', 'filesource', 'global', 'ignore',
+    'internal', 'license', 'link', 'method', 'package', 'param',
+    'property', 'property-read', 'property-write', 'return', 'see',
+    'since', 'source', 'subpackage', 'throws', 'todo', 'TODO',
+    'usedBy', 'uses', 'var', 'version', 'after', 'afterClass',
+    'backupGlobals', 'backupStaticAttributes', 'before',
+    'beforeClass', 'codeCoverageIgnore', 'codeCoverageIgnoreStart',
     'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
     'coversNothing', 'dataProvider', 'depends', 'expectedException',
     'expectedExceptionCode', 'expectedExceptionMessage',
     'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
-    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
-    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
-    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
-    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+    'preserveGlobalState', 'requires',
+    'runTestsInSeparateProcesses', 'runInSeparateProcess', 'small',
+    'test', 'testdox', 'ticket', 'uses', 'SuppressWarnings',
+    'noinspection', 'package_version', 'enduml', 'startuml', 'fix',
+    'FIXME', 'fixme', 'override']``
   - ``syntax`` (``'with_braces'``, ``'without_braces'``): whether to add or remove
-    braces; defaults to ``'without_braces'``
+    braces; defaults to:
+    ``'without_braces'``
 
 * **doctrine_annotation_indentation**
 
@@ -357,25 +371,27 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
-    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
-    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
-    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    Annotations; defaults to:
+    ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception',
+    'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name',
+    'toc', 'tutorial', 'private', 'static', 'staticvar',
     'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
-    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
-    'license', 'link', 'method', 'package', 'param', 'property',
-    'property-read', 'property-write', 'return', 'see', 'since', 'source',
-    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
-    'version', 'after', 'afterClass', 'backupGlobals',
-    'backupStaticAttributes', 'before', 'beforeClass',
-    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'deprecated', 'example', 'filesource', 'global', 'ignore',
+    'internal', 'license', 'link', 'method', 'package', 'param',
+    'property', 'property-read', 'property-write', 'return', 'see',
+    'since', 'source', 'subpackage', 'throws', 'todo', 'TODO',
+    'usedBy', 'uses', 'var', 'version', 'after', 'afterClass',
+    'backupGlobals', 'backupStaticAttributes', 'before',
+    'beforeClass', 'codeCoverageIgnore', 'codeCoverageIgnoreStart',
     'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
     'coversNothing', 'dataProvider', 'depends', 'expectedException',
     'expectedExceptionCode', 'expectedExceptionMessage',
     'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
-    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
-    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
-    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
-    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+    'preserveGlobalState', 'requires',
+    'runTestsInSeparateProcesses', 'runInSeparateProcess', 'small',
+    'test', 'testdox', 'ticket', 'uses', 'SuppressWarnings',
+    'noinspection', 'package_version', 'enduml', 'startuml', 'fix',
+    'FIXME', 'fixme', 'override']``
 
 * **doctrine_annotation_spaces**
 
@@ -384,33 +400,38 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``around_argument_assignments`` (``bool``): whether to fix spaces around
-    argument assignment operator; defaults to ``true``
+    argument assignment operator; defaults to:
+    ``true``
   - ``around_array_assignments`` (``bool``): whether to fix spaces around array
-    assignment operators; defaults to ``true``
-  - ``around_commas`` (``bool``): whether to fix spaces around commas; defaults to
+    assignment operators; defaults to:
+    ``true``
+  - ``around_commas`` (``bool``): whether to fix spaces around commas; defaults to:
     ``true``
   - ``around_parentheses`` (``bool``): whether to fix spaces around parentheses;
-    defaults to ``true``
+    defaults to:
+    ``true``
   - ``ignored_tags`` (``array``): list of tags that must not be treated as Doctrine
-    Annotations; defaults to ``['abstract', 'access', 'code', 'deprec',
-    'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc',
-    'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar',
+    Annotations; defaults to:
+    ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception',
+    'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name',
+    'toc', 'tutorial', 'private', 'static', 'staticvar',
     'staticVar', 'throw', 'api', 'author', 'category', 'copyright',
-    'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal',
-    'license', 'link', 'method', 'package', 'param', 'property',
-    'property-read', 'property-write', 'return', 'see', 'since', 'source',
-    'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var',
-    'version', 'after', 'afterClass', 'backupGlobals',
-    'backupStaticAttributes', 'before', 'beforeClass',
-    'codeCoverageIgnore', 'codeCoverageIgnoreStart',
+    'deprecated', 'example', 'filesource', 'global', 'ignore',
+    'internal', 'license', 'link', 'method', 'package', 'param',
+    'property', 'property-read', 'property-write', 'return', 'see',
+    'since', 'source', 'subpackage', 'throws', 'todo', 'TODO',
+    'usedBy', 'uses', 'var', 'version', 'after', 'afterClass',
+    'backupGlobals', 'backupStaticAttributes', 'before',
+    'beforeClass', 'codeCoverageIgnore', 'codeCoverageIgnoreStart',
     'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass',
     'coversNothing', 'dataProvider', 'depends', 'expectedException',
     'expectedExceptionCode', 'expectedExceptionMessage',
     'expectedExceptionMessageRegExp', 'group', 'large', 'medium',
-    'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses',
-    'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses',
-    'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
-    'startuml', 'fix', 'FIXME', 'fixme', 'override']``
+    'preserveGlobalState', 'requires',
+    'runTestsInSeparateProcesses', 'runInSeparateProcess', 'small',
+    'test', 'testdox', 'ticket', 'uses', 'SuppressWarnings',
+    'noinspection', 'package_version', 'enduml', 'startuml', 'fix',
+    'FIXME', 'fixme', 'override']``
 
 * **elseif** [@PSR2, @Symfony]
 
@@ -439,19 +460,21 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``closure_function_spacing`` (``'none'``, ``'one'``): spacing to use before open
-    parenthesis for closures; defaults to ``'one'``
+    parenthesis for closures; defaults to:
+    ``'one'``
 
 * **function_to_constant** [@Symfony:risky]
 
   Replace core functions calls returning constants with the constants.
 
-  *Risky rule: risky when any of the configured functions to replace are overridden.*
+  *Risky rule: risky when any of the configured functions to replace are
+   overridden.*
 
   Configuration options:
 
   - ``functions`` (a subset of ``['phpversion', 'php_sapi_name', 'pi']``): list of
-    function names to fix; defaults to ``['phpversion', 'php_sapi_name',
-    'pi']``
+    function names to fix; defaults to:
+    ``['phpversion', 'php_sapi_name', 'pi']``
 
 * **function_typehint_space** [@Symfony]
 
@@ -464,7 +487,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
-    defaults to ``[]``
+    defaults to:
+    ``[]``
 
 * **hash_to_slash_comment** [@Symfony]
 
@@ -476,13 +500,16 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``comment_type`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to
-    ``'comment'``; DEPRECATED alias: ``commentType``
+  - ``comment_type`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to:<default_block>;
+    DEPRECATED alias: ``commentType``
+    'comment'``
   - ``header`` (``string``): proper header content; required
   - ``location`` (``'after_declare_strict'``, ``'after_open'``): the location of the
-    inserted header; defaults to ``'after_declare_strict'``
+    inserted header; defaults to:
+    ``'after_declare_strict'``
   - ``separate`` (``'both'``, ``'bottom'``, ``'none'``, ``'top'``): whether the header should be
-    separated from the file content with a new line; defaults to ``'both'``
+    separated from the file content with a new line; defaults to:
+    ``'both'``
 
 * **heredoc_to_nowdoc**
 
@@ -506,7 +533,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``use_yoda_style`` (``bool``): whether Yoda style conditions should be used;
-    defaults to ``true``
+    defaults to:
+    ``true``
 
 * **line_ending** [@PSR2, @Symfony]
 
@@ -546,7 +574,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
-    after comma; defaults to ``false``
+    after comma; defaults to:
+    ``false``
 
 * **method_separation** [@Symfony]
 
@@ -557,7 +586,8 @@ Choose from the list of available rules:
   Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
   function calls with according type casting operator.
 
-  *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
+  *Risky rule: risky if any of the functions ``intval``, ``floatval``,
+   ``doubleval``, ``strval`` or ``boolval`` are overridden.*
 
 * **native_function_casing** [@Symfony]
 
@@ -572,7 +602,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``exclude`` (``array``): list of functions to ignore; defaults to ``[]``
+  - ``exclude`` (``array``): list of functions to ignore; defaults to:
+    ``[]``
 
 * **new_with_braces** [@Symfony]
 
@@ -622,7 +653,8 @@ Choose from the list of available rules:
   - ``tokens`` (a subset of ``['break', 'continue', 'extra', 'return', 'throw',
     'use', 'useTrait', 'use_trait', 'curly_brace_block',
     'parenthesis_brace_block', 'square_brace_block']``): list of tokens to
-    fix; defaults to ``['extra']``
+    fix; defaults to:
+    ``['extra']``
 
 * **no_leading_import_slash** [@Symfony]
 
@@ -638,7 +670,7 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``use`` (``'echo'``, ``'print'``): the desired language construct; defaults to
+  - ``use`` (``'echo'``, ``'print'``): the desired language construct; defaults to:
     ``'echo'``
 
 * **no_multiline_whitespace_around_double_arrow** [@Symfony]
@@ -653,7 +685,8 @@ Choose from the list of available rules:
 
   Convert PHP4-style constructors to ``__construct``.
 
-  *Risky rule: risky when old style constructor being fixed is overridden or overrides parent one.*
+  *Risky rule: risky when old style constructor being fixed is overridden
+   or overrides parent one.*
 
 * **no_short_bool_cast** [@Symfony]
 
@@ -679,8 +712,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``positions`` (a subset of ``['inside', 'outside']``): whether spacing should be
-    fixed inside and/or outside the offset braces; defaults to ``['inside',
-    'outside']``
+    fixed inside and/or outside the offset braces; defaults to:
+    ``['inside', 'outside']``
 
 * **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
 
@@ -709,16 +742,18 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``statements`` (``array``): list of control statements to fix; defaults to
-    ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case',
-    'yield']``
+  - ``statements`` (``array``): list of control statements to fix; defaults to:
+    ``['break', 'clone', 'continue', 'echo_print', 'return',
+    'switch_case', 'yield']``
 
 * **no_unreachable_default_argument_value**
 
   In function arguments there must not be arguments with default values
   before non-default ones.
 
-  *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
+  *Risky rule: modifies the signature of functions; therefore risky when
+   using systems (such as some Symfony components) that rely on those (for
+   example through reflection).*
 
 * **no_unused_imports** [@Symfony]
 
@@ -780,11 +815,11 @@ Choose from the list of available rules:
     'method_static', 'method_public', 'method_protected', 'method_private',
     'method_public_static', 'method_protected_static',
     'method_private_static', 'construct', 'destruct', 'magic', 'phpunit']``):
-    list of strings defining order of elements; defaults to ``['use_trait',
-    'constant_public', 'constant_protected', 'constant_private',
-    'property_public', 'property_protected', 'property_private',
-    'construct', 'destruct', 'magic', 'phpunit', 'method_public',
-    'method_protected', 'method_private']``
+    list of strings defining order of elements; defaults to:
+    ``['use_trait', 'constant_public', 'constant_protected',
+    'constant_private', 'property_public', 'property_protected',
+    'property_private', 'construct', 'destruct', 'magic', 'phpunit',
+    'method_public', 'method_protected', 'method_private']``
 
 * **ordered_imports**
 
@@ -793,23 +828,27 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``imports_order`` (``array``, ``null``): defines the order of import types; defaults
-    to ``null``; DEPRECATED alias: ``importsOrder``
+    to:<default_block>; DEPRECATED alias: ``importsOrder``
+    null``
   - ``sort_algorithm`` (``'alpha'``, ``'length'``): whether the statements should be
-    sorted alphabetically or by length; defaults to ``'alpha'``; DEPRECATED
-    alias: ``sortAlgorithm``
+    sorted alphabetically or by length; defaults to:<default_block>; DEPRECATED alias:
+    ``sortAlgorithm``
+    'alpha'``
 
 * **php_unit_construct** [@Symfony:risky]
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be
   written with dedicated method like ``->assertTrue($foo)``.
 
-  *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
+  *Risky rule: fixer could be risky if one is overriding PHPUnit's native
+   methods.*
 
   Configuration options:
 
   - ``assertions`` (a subset of ``['assertSame', 'assertEquals',
     'assertNotEquals', 'assertNotSame']``): list of assertion methods to fix;
-    defaults to ``['assertEquals', 'assertSame', 'assertNotEquals',
+    defaults to:
+    ``['assertEquals', 'assertSame', 'assertNotEquals',
     'assertNotSame']``
 
 * **php_unit_dedicate_assert** [@Symfony:risky]
@@ -817,7 +856,8 @@ Choose from the list of available rules:
   PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should
   be used over ``assertTrue``.
 
-  *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
+  *Risky rule: fixer could be risky if one is overriding PHPUnit's native
+   methods.*
 
   Configuration options:
 
@@ -825,11 +865,12 @@ Choose from the list of available rules:
     'is_infinite', 'is_nan', 'is_null', 'is_array', 'is_bool',
     'is_callable', 'is_double', 'is_float', 'is_int', 'is_integer',
     'is_long', 'is_numeric', 'is_object', 'is_real', 'is_resource',
-    'is_scalar', 'is_string']``): list of assertions to fix; defaults to
-    ``['array_key_exists', 'empty', 'file_exists', 'is_infinite', 'is_nan',
-    'is_null', 'is_array', 'is_bool', 'is_callable', 'is_double',
-    'is_float', 'is_int', 'is_integer', 'is_long', 'is_numeric',
-    'is_object', 'is_real', 'is_resource', 'is_scalar', 'is_string']``
+    'is_scalar', 'is_string']``): list of assertions to fix; defaults to:
+    ``['array_key_exists', 'empty', 'file_exists', 'is_infinite',
+    'is_nan', 'is_null', 'is_array', 'is_bool', 'is_callable',
+    'is_double', 'is_float', 'is_int', 'is_integer', 'is_long',
+    'is_numeric', 'is_object', 'is_real', 'is_resource',
+    'is_scalar', 'is_string']``
 
 * **php_unit_fqcn_annotation** [@Symfony]
 
@@ -840,14 +881,16 @@ Choose from the list of available rules:
   PHPUnit methods like ``assertSame`` should be used instead of
   ``assertEquals``.
 
-  *Risky rule: risky when any of the functions are overridden or when testing object equality.*
+  *Risky rule: risky when any of the functions are overridden or when
+   testing object equality.*
 
   Configuration options:
 
   - ``assertions`` (a subset of ``['assertAttributeEquals',
     'assertAttributeNotEquals', 'assertEquals', 'assertNotEquals']``): list
-    of assertion methods to fix; defaults to ``['assertAttributeEquals',
-    'assertAttributeNotEquals', 'assertEquals', 'assertNotEquals']``
+    of assertion methods to fix; defaults to:
+    ``['assertAttributeEquals', 'assertAttributeNotEquals',
+    'assertEquals', 'assertNotEquals']``
 
 * **phpdoc_add_missing_param_annotation**
 
@@ -856,7 +899,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``only_untyped`` (``bool``): whether to add missing ``@param`` annotations for
-    untyped parameters only; defaults to ``true``
+    untyped parameters only; defaults to:
+    ``true``
 
 * **phpdoc_align** [@Symfony]
 
@@ -886,8 +930,9 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``replacements`` (``array``): mapping between replaced annotations with new
-    ones; defaults to ``['property-read' => 'property', 'property-write' =>
-    'property', 'type' => 'var', 'link' => 'see']``
+    ones; defaults to:
+    ``['property-read' => 'property', 'property-write' => 'property',
+    'type' => 'var', 'link' => 'see']``
 
 * **phpdoc_no_empty_return** [@Symfony]
 
@@ -915,9 +960,9 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``replacements`` (``array``): mapping between replaced return types with new
-    ones; defaults to ``['this' => '$this', '@this' => '$this', '$self' =>
-    'self', '@self' => 'self', '$static' => 'static', '@static' =>
-    'static']``
+    ones; defaults to:
+    ``['this' => '$this', '@this' => '$this', '$self' => 'self',
+    '@self' => 'self', '$static' => 'static', '@static' => 'static']``
 
 * **phpdoc_scalar** [@Symfony]
 
@@ -975,18 +1020,21 @@ Choose from the list of available rules:
   Classes must be in a path that matches their namespace, be at least one
   namespace deep and the class name should match the file name.
 
-  *Risky rule: this fixer may change your class name, which will break the code that is depended on old name.*
+  *Risky rule: this fixer may change your class name, which will break the
+   code that is depended on old name.*
 
   Configuration options:
 
   - ``dir`` (``string``): the directory where the project code is placed; defaults
-    to ``''``
+    to:
+    ``''``
 
 * **psr4** [@Symfony:risky]
 
   Class names should match the file name.
 
-  *Risky rule: this fixer may change your class name, which will break the code that is depended on old name.*
+  *Risky rule: this fixer may change your class name, which will break the
+   code that is depended on old name.*
 
 * **random_api_migration** [@PHP70Migration:risky]
 
@@ -998,8 +1046,9 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``replacements`` (``array``): mapping between replaced functions with the new
-    ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'rand' =>
-    'mt_rand', 'srand' => 'mt_srand']``
+    ones; defaults to:
+    ``['getrandmax' => 'mt_getrandmax', 'rand' => 'mt_rand', 'srand' =>
+    'mt_srand']``
 
 * **return_type_declaration** [@Symfony]
 
@@ -1008,7 +1057,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``space_before`` (``'none'``, ``'one'``): spacing to apply before colon; defaults to
+  - ``space_before`` (``'none'``, ``'one'``): spacing to apply before colon; defaults
+    to:
     ``'none'``
 
 * **self_accessor** [@Symfony:risky]
@@ -1016,7 +1066,8 @@ Choose from the list of available rules:
   Inside class or interface element ``self`` should be preferred to the
   class name itself.
 
-  *Risky rule: risky when using dynamic calls like get_called_class() or late static binding.*
+  *Risky rule: risky when using dynamic calls like get_called_class() or
+   late static binding.*
 
 * **semicolon_after_instruction**
 
@@ -1031,7 +1082,8 @@ Choose from the list of available rules:
 
   Ensures deprecation notices are silenced.
 
-  *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
+  *Risky rule: silencing of deprecation errors might cause changes to code
+   behaviour.*
 
 * **simplified_null_return**
 
@@ -1054,7 +1106,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``elements`` (a subset of ``['const', 'property']``): list of strings which
-    element should be modified; defaults to ``['const', 'property']``
+    element should be modified; defaults to:
+    ``['const', 'property']``
 
 * **single_import_per_statement** [@PSR2, @Symfony]
 
@@ -1087,7 +1140,8 @@ Choose from the list of available rules:
 
   Functions should be used with ``$strict`` param set to ``true``.
 
-  *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
+  *Risky rule: risky when the fixed function is overridden or if the code
+   relies on non-strict usage.*
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 
@@ -1127,7 +1181,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``elements`` (a subset of ``['property', 'method', 'const']``): the structural
-    elements to fix (PHP >= 7.1 required for ``const``); defaults to
+    elements to fix (PHP >= 7.1 required for ``const``); defaults to:
     ``['property', 'method']``
 
 * **whitespace_after_comma_in_array** [@Symfony]
