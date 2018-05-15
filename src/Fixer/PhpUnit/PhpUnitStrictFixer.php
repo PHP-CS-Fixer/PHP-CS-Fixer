@@ -73,7 +73,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             null,
-            'Risky when any of the functions are overridden.'
+            'Risky when any of the functions are overridden or when testing object equality.'
         );
     }
 
