@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-14T07:18:44Z
+
+can we add the same for phpdoc, also normalizing phpdoc vs phpdocs ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-14T07:58:07Z
+
+:+1:
+
+Would you keep PHPDoc or PHPDocs?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-14T08:26:49Z
+
+`PHPDoc`
+https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md
