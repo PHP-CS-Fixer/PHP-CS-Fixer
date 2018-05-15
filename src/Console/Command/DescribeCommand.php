@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
@@ -190,14 +191,23 @@ final class DescribeCommand extends Command
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
                 if (null !== $allowed) {
                     foreach ($allowed as &$value) {
-                        $value = HelpCommand::toString($value);
+                        if ($value instanceof AllowedValueSubset) {
+                            $value = 'a subset of <comment>'.HelpCommand::toString($value->getAllowedValues()).'</comment>';
+                        } else {
+                            $value = '<comment>'.HelpCommand::toString($value).'</comment>';
+                        }
                     }
                 } else {
-                    $allowed = $option->getAllowedTypes();
+                    $allowed = array_map(
+                        function ($type) {
+                            return '<comment>'.$type.'</comment>';
+                        },
+                        $option->getAllowedTypes()
+                    );
                 }
 
                 if (null !== $allowed) {
-                    $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
+                    $line .= ' ('.implode(', ', $allowed).')';
                 }
 
                 $description = Preg::replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));

@@ -15,9 +15,9 @@ namespace PhpCsFixer\Fixer\Whitespace;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
@@ -310,9 +310,7 @@ switch($a) {
         return new FixerConfigurationResolverRootless('tokens', [
             (new FixerOptionBuilder('tokens', 'List of tokens to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(self::$availableTokens),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(self::$availableTokens)])
                 ->setNormalizer(static function (Options $options, $tokens) {
                     foreach ($tokens as &$token) {
                         if ('useTrait' === $token) {

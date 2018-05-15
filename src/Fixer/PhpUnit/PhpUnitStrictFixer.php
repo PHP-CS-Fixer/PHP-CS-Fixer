@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
@@ -145,9 +145,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return new FixerConfigurationResolverRootless('assertions', [
             (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$assertionMap)),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$assertionMap))])
                 ->setDefault([
                     'assertAttributeEquals',
                     'assertAttributeNotEquals',

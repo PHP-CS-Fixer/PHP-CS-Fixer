@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -254,9 +254,7 @@ class Example
         return new FixerConfigurationResolverRootless('order', [
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes))),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes)))])
                 ->setDefault([
                     'use_trait',
                     'constant_public',
