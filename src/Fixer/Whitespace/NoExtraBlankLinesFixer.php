@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -325,7 +326,7 @@ switch($a) {
                                 throw new InvalidConfigurationException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
                             }
 
-                            @trigger_error($message, E_USER_DEPRECATED);
+                            Application::triggerDeprecation($message);
                             $token = 'use_trait';
 
                             break;

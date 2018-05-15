@@ -43,6 +43,12 @@ final class Application extends BaseApplication
      */
     private $toolInfo;
 
+    private $deprecationWarningsEnabled = false;
+
+    private $customErrorHandlerRegistered = false;
+
+    private static $printCurrentDeprecationNotice = false;
+
     public function __construct()
     {
         if (!getenv('PHP_CS_FIXER_FUTURE_MODE')) {
@@ -63,6 +69,21 @@ final class Application extends BaseApplication
         ));
     }
 
+    public function enableDeprecationWarnings()
+    {
+        $this->deprecationWarningsEnabled = true;
+    }
+
+    /**
+     * @param string $message
+     */
+    public static function triggerDeprecation($message)
+    {
+        self::$printCurrentDeprecationNotice = true;
+        @trigger_error($message, E_USER_DEPRECATED);
+        self::$printCurrentDeprecationNotice = false;
+    }
+
     /**
      * @return int
      */
@@ -80,7 +101,24 @@ final class Application extends BaseApplication
             ? $output->getErrorOutput()
             : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output)
         ;
+
+        $previousErrorHandler = null;
+
         if (null !== $stdErr) {
+            if ($this->deprecationWarningsEnabled && !$this->customErrorHandlerRegistered) {
+                $previousErrorHandler = set_error_handler(function ($severity, $message, $file, $line) use (&$previousErrorHandler, $stdErr) {
+                    if (self::$printCurrentDeprecationNotice && $severity & E_USER_DEPRECATED) {
+                        $stdErr->writeln("<bg=yellow;fg=black;>{$message}</>");
+                    }
+
+                    if (\is_callable($previousErrorHandler)) {
+                        $previousErrorHandler($severity, $message, $file, $line);
+                    }
+                });
+
+                $this->customErrorHandlerRegistered = true;
+            }
+
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
@@ -89,7 +127,17 @@ final class Application extends BaseApplication
             }
         }
 
-        return parent::doRun($input, $output);
+        $exitCode = parent::doRun($input, $output);
+
+        if (null !== $previousErrorHandler) {
+            set_error_handler($previousErrorHandler);
+        } else {
+            restore_error_handler();
+        }
+
+        $this->customErrorHandlerRegistered = false;
+
+        return $exitCode;
     }
 
     /**

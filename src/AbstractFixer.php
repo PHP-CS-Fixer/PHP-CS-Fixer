@@ -124,7 +124,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
                 throw new \InvalidArgumentException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
             }
 
-            @trigger_error($message, E_USER_DEPRECATED);
+            Application::triggerDeprecation($message);
 
             $configuration = [];
         }
@@ -148,7 +148,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
                     throw new \InvalidArgumentException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
                 }
 
-                @trigger_error($message, E_USER_DEPRECATED);
+                Application::triggerDeprecation($message);
             }
         }
 

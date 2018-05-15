@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\FixerConfiguration;
 
+use PhpCsFixer\Console\Application;
+
 /**
  * @internal
  *
@@ -88,7 +90,7 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
                     throw new \RuntimeException("{$message}. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
                 }
 
-                @trigger_error($message, E_USER_DEPRECATED);
+                Application::triggerDeprecation($message);
 
                 $options = [$this->root => $options];
             }

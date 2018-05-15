@@ -95,6 +95,7 @@ $xdebug->check();
 unset($xdebug);
 
 $application = new Application();
+$application->enableDeprecationWarnings();
 $application->run();
 
 __HALT_COMPILER();

@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -525,7 +526,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             throw new InvalidFixerConfigurationException($this->getName(), "{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
         }
 
-        @trigger_error($message, E_USER_DEPRECATED);
+        Application::triggerDeprecation($message);
 
         return $newConfig;
     }

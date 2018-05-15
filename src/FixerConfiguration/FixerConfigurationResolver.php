@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\FixerConfiguration;
 
+use PhpCsFixer\Console\Application;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -67,7 +68,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
                         throw new InvalidOptionsException(sprintf('Aliased option %s/%s is passed multiple times.', $name, $alias));
                     }
 
-                    @trigger_error(sprintf('Option "%s" is deprecated, use "%s" instead.', $alias, $name), E_USER_DEPRECATED);
+                    Application::triggerDeprecation(sprintf('Option "%s" is deprecated, use "%s" instead.', $alias, $name));
 
                     $options[$name] = $options[$alias];
                     unset($options[$alias]);

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -195,7 +196,7 @@ class Sample
                     $deprecated = array_intersect($values, self::SUPPORTED_TYPES);
                     if (\count($deprecated) > 0) {
                         $message = 'A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.';
-                        @trigger_error($message, E_USER_DEPRECATED);
+                        Application::triggerDeprecation($message);
 
                         return array_fill_keys($deprecated, self::SPACING_ONE);
                     }

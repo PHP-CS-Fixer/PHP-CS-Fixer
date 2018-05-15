@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -88,7 +89,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
 
         foreach ($this->configuration['statements'] as $key) {
             if ('die' === $key) {
-                @trigger_error('Option "die" is deprecated, use "exit" instead.', E_USER_DEPRECATED);
+                Application::triggerDeprecation('Option "die" is deprecated, use "exit" instead.');
             }
 
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
