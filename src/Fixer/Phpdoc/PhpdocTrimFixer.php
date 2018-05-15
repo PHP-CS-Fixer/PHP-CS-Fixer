@@ -30,7 +30,7 @@ final class PhpdocTrimFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHPDocs should start and end with content, excluding the very first and last line of the docblocks.',
+            'PHPDoc should start and end with content, excluding the very first and last line of the docblocks.',
             [new CodeSample('<?php
 /**
  *

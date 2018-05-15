@@ -648,7 +648,7 @@ Choose from the list of available rules:
 
 * **general_phpdoc_annotation_remove**
 
-  Configured annotations should be omitted from PHPDocs.
+  Configured annotations should be omitted from PHPDoc.
 
   Configuration options:
 
@@ -986,7 +986,7 @@ Choose from the list of available rules:
 
 * **no_trailing_whitespace_in_comment** [@PSR2, @Symfony]
 
-  There MUST be no trailing spaces inside comments and PHPDocs.
+  There MUST be no trailing spaces inside comment or PHPDoc.
 
 * **no_unneeded_control_parentheses** [@Symfony]
 
@@ -1249,7 +1249,7 @@ Choose from the list of available rules:
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 
-  PHPDocs annotation descriptions should not be a sentence.
+  PHPDoc annotation descriptions should not be a sentence.
 
 * **phpdoc_indent** [@Symfony]
 
@@ -1261,7 +1261,7 @@ Choose from the list of available rules:
 
 * **phpdoc_no_access** [@Symfony]
 
-  ``@access`` annotations should be omitted from PHPDocs.
+  ``@access`` annotations should be omitted from PHPDoc.
 
 * **phpdoc_no_alias_tag** [@Symfony]
 
@@ -1276,11 +1276,11 @@ Choose from the list of available rules:
 * **phpdoc_no_empty_return** [@Symfony]
 
   ``@return`` void and ``@return null`` annotations should be omitted from
-  PHPDocs.
+  PHPDoc.
 
 * **phpdoc_no_package** [@Symfony]
 
-  ``@package`` and ``@subpackage`` annotations should be omitted from PHPDocs.
+  ``@package`` and ``@subpackage`` annotations should be omitted from PHPDoc.
 
 * **phpdoc_no_useless_inheritdoc** [@Symfony]
 
@@ -1288,7 +1288,7 @@ Choose from the list of available rules:
 
 * **phpdoc_order**
 
-  Annotations in PHPDocs should be ordered so that ``@param`` annotations
+  Annotations in PHPDoc should be ordered so that ``@param`` annotations
   come first, then ``@throws`` annotations, then ``@return`` annotations.
 
 * **phpdoc_return_self_reference** [@Symfony]
@@ -1316,7 +1316,7 @@ Choose from the list of available rules:
 
 * **phpdoc_separation** [@Symfony]
 
-  Annotations in PHPDocs should be grouped together so that annotations of
+  Annotations in PHPDoc should be grouped together so that annotations of
   the same type immediately follow each other, and annotations of a
   different type are separated by a single blank line.
 
@@ -1326,7 +1326,7 @@ Choose from the list of available rules:
 
 * **phpdoc_summary** [@Symfony]
 
-  PHPDocs summary should end in either a full stop, exclamation mark, or
+  PHPDoc summary should end in either a full stop, exclamation mark, or
   question mark.
 
 * **phpdoc_to_comment** [@Symfony]
@@ -1335,7 +1335,7 @@ Choose from the list of available rules:
 
 * **phpdoc_trim** [@Symfony]
 
-  PHPDocs should start and end with content, excluding the very first and
+  PHPDoc should start and end with content, excluding the very first and
   last line of the docblocks.
 
 * **phpdoc_types** [@Symfony]

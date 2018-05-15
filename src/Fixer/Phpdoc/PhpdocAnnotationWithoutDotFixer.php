@@ -33,7 +33,7 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHPDocs annotation descriptions should not be a sentence.',
+            'PHPDoc annotation descriptions should not be a sentence.',
             [new CodeSample('<?php
 /**
  * @param string $bar Some string.
