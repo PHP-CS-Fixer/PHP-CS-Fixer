@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -237,7 +237,7 @@ $this->assertTrue(is_readable($a));
                 ->setAllowedTypes(['null', 'array'])
                 ->setAllowedValues([
                     null,
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
+                    new AllowedValueSubset($values),
                 ])
                 ->setDefault(null)
                 ->setDeprecationMessage('Use option `target` instead.')

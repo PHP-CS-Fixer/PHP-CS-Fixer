@@ -14,9 +14,9 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
@@ -44,7 +44,7 @@ Fixer applying this rule is risky.
 Can break stuff.
 
 Fixer is configurable using following options:
-* functions (array): list of `function` names to fix; defaults to ['foo', 'test']
+* functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']
 * deprecated_option (bool): a deprecated option; defaults to false. DEPRECATED: use option `functions` instead.
 
 Fixing examples:
@@ -83,7 +83,7 @@ Replaces bad stuff with good stuff.
 Can break stuff.
 
 Fixer is configurable using following options:
-* \033[32mfunctions\033[39m (\033[33marray\033[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
+* \033[32mfunctions\033[39m (a subset of \e[33m['foo', 'test']\e[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m
 * \033[32mdeprecated_option\033[39m (\033[33mbool\033[39m): a deprecated option; defaults to \e[33mfalse\e[39m. \033[37;41mDEPRECATED\033[39;49m: use option \e[32m`functions`\e[39m instead.
 
 Fixing examples:
@@ -225,15 +225,12 @@ Fixing examples:
         $fixer->isRisky()->willReturn(true);
         $fixer->getSuccessorsNames()->willReturn(['Foo/baz']);
 
-        $generator = new FixerOptionValidatorGenerator();
         $functionNames = ['foo', 'test'];
 
         $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
             (new FixerOptionBuilder('functions', 'List of `function` names to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    $generator->allowedValueIsSubsetOf($functionNames),
-                ])
+                ->setAllowedValues([new AllowedValueSubset($functionNames)])
                 ->setDefault($functionNames)
                 ->getOption(),
             (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
@@ -242,6 +239,7 @@ Fixing examples:
                 ->setDeprecationMessage('Use option `functions` instead.')
                 ->getOption(),
         ]));
+
         $fixer->getDefinition()->willReturn(new FixerDefinition(
             'Fixes stuff.',
             [
