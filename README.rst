@@ -1169,7 +1169,7 @@ Choose from the list of available rules:
   PHPUnit methods like ``assertSame`` should be used instead of
   ``assertEquals``.
 
-  *Risky rule: risky when any of the functions are overridden.*
+  *Risky rule: risky when any of the functions are overridden or when testing object equality.*
 
   Configuration options:
 
