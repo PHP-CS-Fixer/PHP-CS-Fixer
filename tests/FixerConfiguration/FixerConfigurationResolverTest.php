@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\Tests\TestCase;
@@ -29,14 +30,14 @@ final class FixerConfigurationResolverTest extends TestCase
     {
         $this->setExpectedException('LogicException', 'Options cannot be empty.');
 
-        $configuration = new FixerConfigurationResolver(array());
+        new FixerConfigurationResolver(array());
     }
 
     public function testWithDuplicatesOptions()
     {
         $this->setExpectedException('LogicException', 'The "foo" option is defined multiple times.');
 
-        $configuration = new FixerConfigurationResolver(array(
+        new FixerConfigurationResolver(array(
             new FixerOption('foo', 'Bar-1.'),
             new FixerOption('foo', 'Bar-2.'),
         ));
@@ -98,10 +99,7 @@ final class FixerConfigurationResolverTest extends TestCase
         );
 
         $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
-        $this->assertSame(
-            array('foo' => 1),
-            $configuration->resolve(array('foo' => '1'))
-        );
+        $configuration->resolve(array('foo' => '1'));
     }
 
     public function testResolveWithAllowedValues()
@@ -116,10 +114,22 @@ final class FixerConfigurationResolverTest extends TestCase
         );
 
         $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
+        $configuration->resolve(array('foo' => 1));
+    }
+
+    public function testResolveWithAllowedValuesSubset()
+    {
+        $configuration = new FixerConfigurationResolver(array(
+            new FixerOption('foo', 'Bar.', true, null, null, array(new AllowedValueSubset(array('foo', 'bar')))),
+        ));
+
         $this->assertSame(
-            array('foo' => 1),
-            $configuration->resolve(array('foo' => 1))
+            array('foo' => array('bar')),
+            $configuration->resolve(array('foo' => array('bar')))
         );
+
+        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
+        $configuration->resolve(array('foo' => array('baz')));
     }
 
     public function testResolveWithUndefinedOption()

@@ -66,6 +66,14 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
             $allowedValues = $option->getAllowedValues();
             if (null !== $allowedValues) {
+                foreach ($allowedValues as &$allowedValue) {
+                    if (is_object($allowedValue) && is_callable($allowedValue)) {
+                        $allowedValue = function ($values) use ($allowedValue) {
+                            return $allowedValue($values);
+                        };
+                    }
+                }
+
                 $resolver->setAllowedValues($name, $allowedValues);
             }
 

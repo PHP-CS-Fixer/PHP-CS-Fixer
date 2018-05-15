@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -124,14 +124,11 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
         $functionNames = array_keys(self::$availableFunctions);
         $functions = new FixerOptionBuilder('functions', 'List of function names to fix.');
         $functions = $functions
             ->setAllowedTypes(array('array'))
-            ->setAllowedValues(array(
-                $generator->allowedValueIsSubsetOf($functionNames),
-            ))
+            ->setAllowedValues(array(new AllowedValueSubset($functionNames)))
             ->setDefault($functionNames)
             ->getOption()
         ;

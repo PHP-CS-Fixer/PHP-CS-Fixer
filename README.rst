@@ -447,8 +447,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``functions`` (``array``): list of function names to fix; defaults to
-    ``['phpversion', 'php_sapi_name', 'pi']``
+  - ``functions`` (a subset of ``['phpversion', 'php_sapi_name', 'pi']``): list of
+    function names to fix; defaults to ``['phpversion', 'php_sapi_name',
+    'pi']``
 
 * **function_typehint_space** [@Symfony]
 
@@ -616,7 +617,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
+  - ``tokens`` (a subset of ``['break', 'continue', 'extra', 'return', 'throw',
+    'use', 'useTrait', 'use_trait', 'curly_brace_block',
+    'parenthesis_brace_block', 'square_brace_block']``): list of tokens to
+    fix; defaults to ``['extra']``
 
 * **no_leading_import_slash** [@Symfony]
 
@@ -672,8 +676,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``positions`` (``array``): whether spacing should be fixed inside and/or outside
-    the offset braces; defaults to ``['inside', 'outside']``
+  - ``positions`` (a subset of ``['inside', 'outside']``): whether spacing should be
+    fixed inside and/or outside the offset braces; defaults to ``['inside',
+    'outside']``
 
 * **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
 
@@ -765,11 +770,19 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``order`` (``array``): list of strings defining order of elements; defaults to
-    ``['use_trait', 'constant_public', 'constant_protected',
-    'constant_private', 'property_public', 'property_protected',
-    'property_private', 'construct', 'destruct', 'magic', 'phpunit',
-    'method_public', 'method_protected', 'method_private']``
+  - ``order`` (a subset of ``['use_trait', 'public', 'protected', 'private',
+    'constant', 'constant_public', 'constant_protected',
+    'constant_private', 'property', 'property_static', 'property_public',
+    'property_protected', 'property_private', 'property_public_static',
+    'property_protected_static', 'property_private_static', 'method',
+    'method_static', 'method_public', 'method_protected', 'method_private',
+    'method_public_static', 'method_protected_static',
+    'method_private_static', 'construct', 'destruct', 'magic', 'phpunit']``):
+    list of strings defining order of elements; defaults to ``['use_trait',
+    'constant_public', 'constant_protected', 'constant_private',
+    'property_public', 'property_protected', 'property_private',
+    'construct', 'destruct', 'magic', 'phpunit', 'method_public',
+    'method_protected', 'method_private']``
 
 * **ordered_imports**
 
@@ -791,8 +804,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``assertions`` (``array``): list of assertion methods to fix; defaults to
-    ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
+  - ``assertions`` (a subset of ``['assertSame', 'assertEquals',
+    'assertNotEquals', 'assertNotSame']``): list of assertion methods to fix;
+    defaults to ``['assertEquals', 'assertSame', 'assertNotEquals',
+    'assertNotSame']``
 
 * **php_unit_dedicate_assert** [@Symfony:risky]
 
@@ -803,7 +818,11 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``functions`` (``array``): list of assertions to fix; defaults to
+  - ``functions`` (a subset of ``['array_key_exists', 'empty', 'file_exists',
+    'is_infinite', 'is_nan', 'is_null', 'is_array', 'is_bool',
+    'is_callable', 'is_double', 'is_float', 'is_int', 'is_integer',
+    'is_long', 'is_numeric', 'is_object', 'is_real', 'is_resource',
+    'is_scalar', 'is_string']``): list of assertions to fix; defaults to
     ``['array_key_exists', 'empty', 'file_exists', 'is_infinite', 'is_nan',
     'is_null', 'is_array', 'is_bool', 'is_callable', 'is_double',
     'is_float', 'is_int', 'is_integer', 'is_long', 'is_numeric',
@@ -822,9 +841,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``assertions`` (``array``): list of assertion methods to fix; defaults to
-    ``['assertAttributeEquals', 'assertAttributeNotEquals', 'assertEquals',
-    'assertNotEquals']``
+  - ``assertions`` (a subset of ``['assertAttributeEquals',
+    'assertAttributeNotEquals', 'assertEquals', 'assertNotEquals']``): list
+    of assertion methods to fix; defaults to ``['assertAttributeEquals',
+    'assertAttributeNotEquals', 'assertEquals', 'assertNotEquals']``
 
 * **phpdoc_add_missing_param_annotation**
 
@@ -1030,8 +1050,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``elements`` (``array``): list of strings which element should be modified;
-    defaults to ``['const', 'property']``
+  - ``elements`` (a subset of ``['const', 'property']``): list of strings which
+    element should be modified; defaults to ``['const', 'property']``
 
 * **single_import_per_statement** [@PSR2, @Symfony]
 
@@ -1103,8 +1123,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``elements`` (``array``): the structural elements to fix (PHP >= 7.1 required
-    for ``const``); defaults to ``['property', 'method']``
+  - ``elements`` (a subset of ``['property', 'method', 'const']``): the structural
+    elements to fix (PHP >= 7.1 required for ``const``); defaults to
+    ``['property', 'method']``
 
 * **whitespace_after_comma_in_array** [@Symfony]
 
