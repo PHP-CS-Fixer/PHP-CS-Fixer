@@ -74,6 +74,8 @@ final class InstallViaComposerTest extends TestCase
         } catch (ProcessTimedOutException $e) {
             if (false === getenv('CI')) {
                 self::markTestSkipped('Install by `composer` failed. Details:'."\n".$e->getMessage());
+            } else {
+                throw $e;
             }
         }
 
