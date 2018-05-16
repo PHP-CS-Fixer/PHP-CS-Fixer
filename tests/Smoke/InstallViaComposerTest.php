@@ -16,6 +16,7 @@ use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Utils;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -33,13 +34,13 @@ final class InstallViaComposerTest extends TestCase
         try {
             CommandExecutor::create('php --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkipped('Missing `php` env script. Details:'."\n".$e->getMessage());
+            self::markTestSkipped("Missing `php` env script. Details:\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkipped('Missing `composer` env script. Details:'."\n".$e->getMessage());
+            self::markTestSkipped("Missing `composer` env script. Details:\n".$e->getMessage());
         }
     }
 
@@ -68,7 +69,16 @@ final class InstallViaComposerTest extends TestCase
             json_encode($initialComposerFileState, Utils::calculateBitmask(array('JSON_PRETTY_PRINT')))
         );
 
-        $this->assertSame(0, CommandExecutor::create('composer install -q', $tmpPath)->getResult()->getCode());
+        try {
+            $this->assertSame(0, CommandExecutor::create('composer install -q', $tmpPath)->getResult()->getCode());
+        } catch (ProcessTimedOutException $e) {
+            if (false === getenv('CI')) {
+                self::markTestSkipped('Install by `composer` failed. Details:'."\n".$e->getMessage());
+            } else {
+                throw $e;
+            }
+        }
+
         $this->assertSame(0, CommandExecutor::create('composer dump-autoload --optimize', $tmpPath)->getResult()->getCode());
         $this->assertSame(0, CommandExecutor::create('php vendor/autoload.php', $tmpPath)->getResult()->getCode());
         $this->assertSame(0, CommandExecutor::create('vendor/bin/php-cs-fixer --version', $tmpPath)->getResult()->getCode());
