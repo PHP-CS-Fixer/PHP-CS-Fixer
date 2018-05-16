@@ -62,6 +62,10 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
     {
         return [
             [
+                '<?php return 1 !== $a [$b];',
+                '<?php return $a [$b] !== 1;',
+            ],
+            [
                 '<?= 1 === $a ? 5 : 7;',
                 '<?= $a === 1 ? 5 : 7;',
             ],
