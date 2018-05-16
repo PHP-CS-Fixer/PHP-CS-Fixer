@@ -262,6 +262,10 @@ if ($a = $obj instanceof A === true) {
                 '<?php return $a[2] == null;',
             ],
             [
+                '<?php return "" === $this->myArray [$index];',
+                '<?php return $this->myArray [$index] === "";',
+            ],
+            [
                 '<?php return "" === $this->myArray[$index];',
                 '<?php return $this->myArray[$index] === "";',
             ],
