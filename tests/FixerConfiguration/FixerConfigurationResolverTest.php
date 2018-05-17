@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\Tests\TestCase;
@@ -30,7 +31,7 @@ final class FixerConfigurationResolverTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Options cannot be empty.');
 
-        $configuration = new FixerConfigurationResolver([]);
+        new FixerConfigurationResolver([]);
     }
 
     public function testWithDuplicatesOptions()
@@ -38,7 +39,7 @@ final class FixerConfigurationResolverTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The "foo" option is defined multiple times.');
 
-        $configuration = new FixerConfigurationResolver([
+        new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar-1.'),
             new FixerOption('foo', 'Bar-2.'),
         ]);
@@ -100,10 +101,7 @@ final class FixerConfigurationResolverTest extends TestCase
         );
 
         $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
-        $this->assertSame(
-            ['foo' => 1],
-            $configuration->resolve(['foo' => '1'])
-        );
+        $configuration->resolve(['foo' => '1']);
     }
 
     public function testResolveWithAllowedValues()
@@ -118,10 +116,22 @@ final class FixerConfigurationResolverTest extends TestCase
         );
 
         $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $configuration->resolve(['foo' => 1]);
+    }
+
+    public function testResolveWithAllowedValuesSubset()
+    {
+        $configuration = new FixerConfigurationResolver([
+            new FixerOption('foo', 'Bar.', true, null, null, [new AllowedValueSubset(['foo', 'bar'])]),
+        ]);
+
         $this->assertSame(
-            ['foo' => 1],
-            $configuration->resolve(['foo' => 1])
+            ['foo' => ['bar']],
+            $configuration->resolve(['foo' => ['bar']])
         );
+
+        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $configuration->resolve(['foo' => ['baz']]);
     }
 
     public function testResolveWithUndefinedOption()

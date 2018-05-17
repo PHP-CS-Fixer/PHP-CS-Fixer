@@ -558,8 +558,9 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
             ) {
                 $index = $tokens->findBlockEnd(
                     $next->equals('[') ? Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE : Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
-                    $index + 1
+                    $nextIndex
                 );
+
                 if ($index === $end) {
                     return true;
                 }

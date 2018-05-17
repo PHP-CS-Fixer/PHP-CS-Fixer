@@ -284,9 +284,12 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``statements`` (``array``): list of statements which must be preceded by an
-    empty line; defaults to ``['break', 'continue', 'declare', 'return',
-    'throw', 'try']``
+  - ``statements`` (a subset of ``['break', 'case', 'continue', 'declare',
+    'default', 'die', 'do', 'exit', 'for', 'foreach', 'goto', 'if',
+    'include', 'include_once', 'require', 'require_once', 'return',
+    'switch', 'throw', 'try', 'while', 'yield']``): list of statements which
+    must be preceded by an empty line; defaults to ``['break', 'continue',
+    'declare', 'return', 'throw', 'try']``
 
 * **braces** [@PSR2, @Symfony]
 
@@ -324,8 +327,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``elements`` (``array``): list of classy elements; 'const', 'method',
-    'property'; defaults to ``['const', 'method', 'property']``
+  - ``elements`` (a subset of ``['const', 'method', 'property']``): list of classy
+    elements; 'const', 'method', 'property'; defaults to ``['const',
+    'method', 'property']``
 
 * **class_definition** [@PSR2, @Symfony]
 
@@ -355,7 +359,8 @@ Choose from the list of available rules:
 
 * **comment_to_phpdoc**
 
-  Comments with annotation should be docblock.
+  Comments with annotation should be docblock when used on structural
+  elements.
 
   *Risky rule: risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.*
 
@@ -612,8 +617,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``functions`` (``array``): list of function names to fix; defaults to
-    ``['get_called_class', 'get_class', 'php_sapi_name', 'phpversion', 'pi']``
+  - ``functions`` (a subset of ``['get_called_class', 'get_class',
+    'php_sapi_name', 'phpversion', 'pi']``): list of function names to fix;
+    defaults to ``['get_called_class', 'get_class', 'php_sapi_name',
+    'phpversion', 'pi']``
 
 * **function_typehint_space** [@Symfony]
 
@@ -621,7 +628,7 @@ Choose from the list of available rules:
 
 * **general_phpdoc_annotation_remove**
 
-  Configured annotations should be omitted from PHPDocs.
+  Configured annotations should be omitted from PHPDoc.
 
   Configuration options:
 
@@ -835,7 +842,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``tokens`` (``array``): list of tokens to fix; defaults to ``['extra']``
+  - ``tokens`` (a subset of ``['break', 'case', 'continue', 'curly_brace_block',
+    'default', 'extra', 'parenthesis_brace_block', 'return',
+    'square_brace_block', 'switch', 'throw', 'use', 'use_trait']``): list of
+    tokens to fix; defaults to ``['extra']``
 
 * **no_homoglyph_names** [@Symfony:risky]
 
@@ -897,8 +907,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``positions`` (``array``): whether spacing should be fixed inside and/or outside
-    the offset braces; defaults to ``['inside', 'outside']``
+  - ``positions`` (a subset of ``['inside', 'outside']``): whether spacing should be
+    fixed inside and/or outside the offset braces; defaults to ``['inside',
+    'outside']``
 
 * **no_spaces_inside_parenthesis** [@PSR2, @Symfony]
 
@@ -923,7 +934,7 @@ Choose from the list of available rules:
 
 * **no_trailing_whitespace_in_comment** [@PSR2, @Symfony]
 
-  There MUST be no trailing spaces inside comments and PHPDocs.
+  There MUST be no trailing spaces inside comment or PHPDoc.
 
 * **no_unneeded_control_parentheses** [@Symfony]
 
@@ -1008,11 +1019,19 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``order`` (``array``): list of strings defining order of elements; defaults to
-    ``['use_trait', 'constant_public', 'constant_protected',
-    'constant_private', 'property_public', 'property_protected',
-    'property_private', 'construct', 'destruct', 'magic', 'phpunit',
-    'method_public', 'method_protected', 'method_private']``
+  - ``order`` (a subset of ``['use_trait', 'public', 'protected', 'private',
+    'constant', 'constant_public', 'constant_protected',
+    'constant_private', 'property', 'property_static', 'property_public',
+    'property_protected', 'property_private', 'property_public_static',
+    'property_protected_static', 'property_private_static', 'method',
+    'method_static', 'method_public', 'method_protected', 'method_private',
+    'method_public_static', 'method_protected_static',
+    'method_private_static', 'construct', 'destruct', 'magic', 'phpunit']``):
+    list of strings defining order of elements; defaults to ``['use_trait',
+    'constant_public', 'constant_protected', 'constant_private',
+    'property_public', 'property_protected', 'property_private',
+    'construct', 'destruct', 'magic', 'phpunit', 'method_public',
+    'method_protected', 'method_private']``
   - ``sortAlgorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
     statements should be sorted; defaults to ``'none'``
 
@@ -1037,8 +1056,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``assertions`` (``array``): list of assertion methods to fix; defaults to
-    ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
+  - ``assertions`` (a subset of ``['assertSame', 'assertEquals',
+    'assertNotEquals', 'assertNotSame']``): list of assertion methods to fix;
+    defaults to ``['assertEquals', 'assertSame', 'assertNotEquals',
+    'assertNotSame']``
 
 * **php_unit_dedicate_assert** [@PHPUnit30Migration:risky, @PHPUnit32Migration:risky, @PHPUnit35Migration:risky, @PHPUnit43Migration:risky, @PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
@@ -1122,13 +1143,14 @@ Choose from the list of available rules:
   PHPUnit methods like ``assertSame`` should be used instead of
   ``assertEquals``.
 
-  *Risky rule: risky when any of the functions are overridden.*
+  *Risky rule: risky when any of the functions are overridden or when testing object equality.*
 
   Configuration options:
 
-  - ``assertions`` (``array``): list of assertion methods to fix; defaults to
-    ``['assertAttributeEquals', 'assertAttributeNotEquals', 'assertEquals',
-    'assertNotEquals']``
+  - ``assertions`` (a subset of ``['assertAttributeEquals',
+    'assertAttributeNotEquals', 'assertEquals', 'assertNotEquals']``): list
+    of assertion methods to fix; defaults to ``['assertAttributeEquals',
+    'assertAttributeNotEquals', 'assertEquals', 'assertNotEquals']``
 
 * **php_unit_test_annotation**
 
@@ -1163,12 +1185,13 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``tags`` (``array``): the tags that should be aligned; defaults to ``['method',
-    'param', 'property', 'return', 'throws', 'type', 'var']``
+  - ``tags`` (a subset of ``['param', 'property', 'return', 'throws', 'type',
+    'var', 'method']``): the tags that should be aligned; defaults to
+    ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
 
 * **phpdoc_annotation_without_dot** [@Symfony]
 
-  PHPDocs annotation descriptions should not be a sentence.
+  PHPDoc annotation descriptions should not be a sentence.
 
 * **phpdoc_indent** [@Symfony]
 
@@ -1180,7 +1203,7 @@ Choose from the list of available rules:
 
 * **phpdoc_no_access** [@Symfony]
 
-  ``@access`` annotations should be omitted from PHPDocs.
+  ``@access`` annotations should be omitted from PHPDoc.
 
 * **phpdoc_no_alias_tag** [@Symfony]
 
@@ -1195,11 +1218,11 @@ Choose from the list of available rules:
 * **phpdoc_no_empty_return** [@Symfony]
 
   ``@return`` void and ``@return null`` annotations should be omitted from
-  PHPDocs.
+  PHPDoc.
 
 * **phpdoc_no_package** [@Symfony]
 
-  ``@package`` and ``@subpackage`` annotations should be omitted from PHPDocs.
+  ``@package`` and ``@subpackage`` annotations should be omitted from PHPDoc.
 
 * **phpdoc_no_useless_inheritdoc** [@Symfony]
 
@@ -1207,7 +1230,7 @@ Choose from the list of available rules:
 
 * **phpdoc_order**
 
-  Annotations in PHPDocs should be ordered so that ``@param`` annotations
+  Annotations in PHPDoc should be ordered so that ``@param`` annotations
   come first, then ``@throws`` annotations, then ``@return`` annotations.
 
 * **phpdoc_return_self_reference** [@Symfony]
@@ -1229,12 +1252,13 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``types``: a map of types to fix; defaults to ``['boolean', 'double',
+  - ``types`` (a subset of ``['boolean', 'callback', 'double', 'integer', 'real',
+    'str']``): a map of types to fix; defaults to ``['boolean', 'double',
     'integer', 'real', 'str']``
 
 * **phpdoc_separation** [@Symfony]
 
-  Annotations in PHPDocs should be grouped together so that annotations of
+  Annotations in PHPDoc should be grouped together so that annotations of
   the same type immediately follow each other, and annotations of a
   different type are separated by a single blank line.
 
@@ -1244,7 +1268,7 @@ Choose from the list of available rules:
 
 * **phpdoc_summary** [@Symfony]
 
-  PHPDocs summary should end in either a full stop, exclamation mark, or
+  PHPDoc summary should end in either a full stop, exclamation mark, or
   question mark.
 
 * **phpdoc_to_comment** [@Symfony]
@@ -1253,7 +1277,7 @@ Choose from the list of available rules:
 
 * **phpdoc_trim** [@Symfony]
 
-  PHPDocs should start and end with content, excluding the very first and
+  PHPDoc should start and end with content, excluding the very first and
   last line of the docblocks.
 
 * **phpdoc_types** [@Symfony]
@@ -1319,8 +1343,8 @@ Choose from the list of available rules:
 
 * **return_assignment**
 
-  Non global, static or indirectly referenced variables should not be
-  assigned and directly returned by a function or method.
+  Local, dynamic and directly referenced variables should not be assigned
+  and directly returned by a function or method.
 
 * **return_type_declaration** [@Symfony]
 
@@ -1380,8 +1404,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``elements`` (``array``): list of strings which element should be modified;
-    defaults to ``['const', 'property']``
+  - ``elements`` (a subset of ``['const', 'property']``): list of strings which
+    element should be modified; defaults to ``['const', 'property']``
 
 * **single_import_per_statement** [@PSR2, @Symfony]
 
@@ -1399,8 +1423,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``comment_types`` (``array``): list of comment types to fix; defaults to
-    ``['asterisk', 'hash']``
+  - ``comment_types`` (a subset of ``['asterisk', 'hash']``): list of comment types
+    to fix; defaults to ``['asterisk', 'hash']``
 
 * **single_quote** [@Symfony]
 
@@ -1489,8 +1513,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``elements`` (``array``): the structural elements to fix (PHP >= 7.1 required
-    for ``const``); defaults to ``['property', 'method']``
+  - ``elements`` (a subset of ``['property', 'method', 'const']``): the structural
+    elements to fix (PHP >= 7.1 required for ``const``); defaults to
+    ``['property', 'method']``
 
 * **void_return** [@PHP71Migration:risky]
 

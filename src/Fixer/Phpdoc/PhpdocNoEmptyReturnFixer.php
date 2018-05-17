@@ -40,7 +40,7 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            '`@return` void and `@return null` annotations should be omitted from PHPDocs.',
+            '`@return` void and `@return null` annotations should be omitted from PHPDoc.',
             [
                 new CodeSample(
                     '<?php

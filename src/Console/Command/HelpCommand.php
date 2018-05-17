@@ -16,6 +16,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
@@ -341,6 +342,14 @@ EOF
             });
 
             usort($allowed, static function ($valueA, $valueB) {
+                if ($valueA instanceof AllowedValueSubset) {
+                    return -1;
+                }
+
+                if ($valueB instanceof AllowedValueSubset) {
+                    return 1;
+                }
+
                 return strcasecmp(
                     self::toString($valueA),
                     self::toString($valueB)
@@ -507,14 +516,23 @@ EOF
                         $allowed = self::getDisplayableAllowedValues($option);
                         if (null !== $allowed) {
                             foreach ($allowed as &$value) {
-                                $value = self::toString($value);
+                                if ($value instanceof AllowedValueSubset) {
+                                    $value = 'a subset of <comment>'.self::toString($value->getAllowedValues()).'</comment>';
+                                } else {
+                                    $value = '<comment>'.self::toString($value).'</comment>';
+                                }
                             }
                         } else {
-                            $allowed = $option->getAllowedTypes();
+                            $allowed = array_map(
+                                function ($type) {
+                                    return '<comment>'.$type.'</comment>';
+                                },
+                                $option->getAllowedTypes()
+                            );
                         }
 
                         if (null !== $allowed) {
-                            $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
+                            $line .= ' ('.implode(', ', $allowed).')';
                         }
 
                         $line .= ': '.Preg::replace(
