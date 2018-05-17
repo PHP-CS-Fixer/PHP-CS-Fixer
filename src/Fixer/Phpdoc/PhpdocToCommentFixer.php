@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -73,169 +73,22 @@ foreach($connections as $key => $sqlite) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $controlStructures = [
-            T_FOREACH,
-            T_IF,
-            T_SWITCH,
-            T_WHILE,
-            T_FOR,
-        ];
-
-        static $languageStructures = [
-            T_LIST,
-            T_PRINT,
-            T_ECHO,
-            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-        ];
+        $commentsAnalyzer = new CommentsAnalyzer();
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
 
-            $nextIndex = $index;
-            do {
-                $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-            } while (null !== $nextIndex && $tokens[$nextIndex]->equals('('));
-
-            if (null === $nextIndex || $tokens[$nextIndex]->equals('}')) {
-                $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
-
+            if ($commentsAnalyzer->isHeaderComment($tokens, $index)) {
                 continue;
             }
 
-            $nextToken = $tokens[$nextIndex];
-
-            if ($this->isStructuralElement($nextToken)) {
-                continue;
-            }
-
-            if ($nextToken->isGivenKind($controlStructures) && $this->isValidControl($tokens, $token, $nextIndex)) {
-                continue;
-            }
-
-            if ($nextToken->isGivenKind(T_VARIABLE) && $this->isValidVariable($tokens, $nextIndex)) {
-                continue;
-            }
-
-            if ($nextToken->isGivenKind($languageStructures) && $this->isValidLanguageConstruct($tokens, $token, $nextIndex)) {
-                continue;
-            }
-
-            // First docblock after open tag can be file-level docblock, so its left as is.
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind([T_OPEN_TAG, T_NAMESPACE])) {
+            if ($commentsAnalyzer->isBeforeStructuralElement($tokens, $index)) {
                 continue;
             }
 
             $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
         }
-    }
-
-    /**
-     * @see https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#3-definitions
-     *
-     * @param Token $token
-     *
-     * @return bool
-     */
-    private function isStructuralElement(Token $token)
-    {
-        static $skip = [
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_VAR,
-            T_FUNCTION,
-            T_ABSTRACT,
-            T_CONST,
-            T_NAMESPACE,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
-            T_FINAL,
-            T_STATIC,
-        ];
-
-        return $token->isClassy() || $token->isGivenKind($skip);
-    }
-
-    /**
-     * Checks control structures (while, if, foreach, switch) for correct docblock usage.
-     *
-     * @param Tokens $tokens
-     * @param Token  $docsToken    docs Token
-     * @param int    $controlIndex index of control structure Token
-     *
-     * @return bool
-     */
-    private function isValidControl(Tokens $tokens, Token $docsToken, $controlIndex)
-    {
-        $index = $tokens->getNextMeaningfulToken($controlIndex);
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-        $docsContent = $docsToken->getContent();
-
-        for ($index = $index + 1; $index < $endIndex; ++$index) {
-            $token = $tokens[$index];
-
-            if (
-                $token->isGivenKind(T_VARIABLE) &&
-                false !== strpos($docsContent, $token->getContent())
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks variable assignments through `list()`, `print()` etc. calls for correct docblock usage.
-     *
-     * @param Tokens $tokens
-     * @param Token  $docsToken              docs Token
-     * @param int    $languageConstructIndex index of variable Token
-     *
-     * @return bool
-     */
-    private function isValidLanguageConstruct(Tokens $tokens, Token $docsToken, $languageConstructIndex)
-    {
-        $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)
-            ? [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]
-            : ')'
-        ;
-
-        $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, [$endKind]);
-
-        $docsContent = $docsToken->getContent();
-
-        for ($index = $languageConstructIndex + 1; $index < $endIndex; ++$index) {
-            $token = $tokens[$index];
-
-            if (
-                $token->isGivenKind(T_VARIABLE)
-                && false !== strpos($docsContent, $token->getContent())
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks variable assignments for correct docblock usage.
-     *
-     * @param Tokens $tokens
-     * @param int    $variableIndex index of variable Token
-     *
-     * @return bool
-     */
-    private function isValidVariable(Tokens $tokens, $variableIndex)
-    {
-        $nextIndex = $tokens->getNextMeaningfulToken($variableIndex);
-
-        return $tokens[$nextIndex]->equals('=');
     }
 }
