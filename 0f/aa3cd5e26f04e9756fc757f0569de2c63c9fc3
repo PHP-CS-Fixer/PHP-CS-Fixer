@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-21T09:21:12Z
+
+please rebase/merge with master
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-05-06T21:07:52Z
+
+Rebased and applied @SpacePossum [changes](https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/74f7dfc04b651ea518f6af09b19466541775f9e5#diff-1a91600c0e19a60c53f3238da093ee49).
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-10T16:50:24Z
+
+what about https://github.com/kubawerlos/PHP-CS-Fixer/blob/c1e4530a22cd2bb529cef3c801436d927a89f1af/src/Fixer/Comment/CommentToPhpdocFixer.php#L51 ?
