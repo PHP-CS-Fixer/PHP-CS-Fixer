@@ -94,6 +94,36 @@ public function myFunction() {
         return [
             [
                 '<?php
+xyz(function ($a = 1) {
+    $x["foo"]["foo"]   = 1;
+    $xy["foo"]["foo1"] = 1;
+});
+',
+                '<?php
+xyz(function ($a = 1) {
+    $x["foo"]["foo"] = 1;
+    $xy["foo"]["foo1"] = 1;
+});
+',
+                ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
+            ],
+            [
+                '<?php
+$abc = function ($a = 1) {
+    $bar["foo"]["key_1"]       = 1;
+    $barFoo["foofoo"]["key_1"] = 1;
+};
+',
+                '<?php
+$abc = function ($a = 1) {
+    $bar["foo"]["key_1"]    = 1;
+    $barFoo["foofoo"]["key_1"] = 1;
+};
+',
+                ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
+            ],
+            [
+                '<?php
 $this->a
  = $this->b
  = 1
@@ -2076,6 +2106,27 @@ $a = $ae?? $b;
                 '<?php try {} catch (A | B $e) {}',
                 '<?php try {} catch (A   |     B $e) {}',
             ],
+            'anonymous class as argument in function call' => [
+                '<?php
+xyz(new class ($a = 1) {
+    public function Foo(int $bar = 1)
+    {
+        $x["foo"]["foo"]   = 1;
+        $xy["foo"]["foo1"] = 1;
+    }
+});
+',
+                '<?php
+xyz(new class ($a = 1) {
+    public function Foo(int $bar = 1)
+    {
+        $x["foo"]["foo"] = 1;
+        $xy["foo"]["foo1"] = 1;
+    }
+});
+',                ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
+            ],
+
         ];
     }
 }
