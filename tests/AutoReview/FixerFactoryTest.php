@@ -353,7 +353,6 @@ final class FixerFactoryTest extends TestCase
 
         if (in_array($fileName, [
             'combine_consecutive_issets,no_singleline_whitespace_before_semicolons.test',
-            'comment_to_phpdoc,phpdoc_to_comment.test',
         ], true)) {
             $this->markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));
         }
