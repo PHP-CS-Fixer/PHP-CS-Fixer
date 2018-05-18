@@ -54,6 +54,12 @@ final class SingleQuoteFixer extends AbstractFixer
             }
 
             $content = $token->getContent();
+            $prefix = '';
+
+            if ('b' === strtolower($content[0])) {
+                $prefix = $content[0];
+                $content = substr($content, 1);
+            }
 
             if (
                 '"' === $content[0] &&
@@ -63,7 +69,7 @@ final class SingleQuoteFixer extends AbstractFixer
             ) {
                 $content = substr($content, 1, -1);
                 $content = str_replace(array('\\"', '\\$'), array('"', '$'), $content);
-                $tokens[$index] = new Token(array(T_CONSTANT_ENCAPSED_STRING, '\''.$content.'\''));
+                $tokens[$index] = new Token(array(T_CONSTANT_ENCAPSED_STRING, $prefix.'\''.$content.'\''));
             }
         }
     }

@@ -42,8 +42,24 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 '<?php $a = "";',
             ),
             array(
+                '<?php $a = b\'\';',
+                '<?php $a = b"";',
+            ),
+            array(
+                '<?php $a = B\'\';',
+                '<?php $a = B"";',
+            ),
+            array(
                 '<?php $a = \'foo bar\';',
                 '<?php $a = "foo bar";',
+            ),
+            array(
+                '<?php $a = b\'foo bar\';',
+                '<?php $a = b"foo bar";',
+            ),
+            array(
+                '<?php $a = B\'foo bar\';',
+                '<?php $a = B"foo bar";',
             ),
             array(
                 '<?php $a = \'foo
@@ -79,10 +95,20 @@ EOF
                 '<?php $a = "foo \\\\(\$bar8)";',
             ),
             array('<?php $a = "foo \\" \\$$bar";'),
+            array('<?php $a = b"foo \\" \\$$bar";'),
+            array('<?php $a = B"foo \\" \\$$bar";'),
             array('<?php $a = "foo \'bar\'";'),
+            array('<?php $a = b"foo \'bar\'";'),
+            array('<?php $a = B"foo \'bar\'";'),
             array('<?php $a = "foo $bar";'),
+            array('<?php $a = b"foo $bar";'),
+            array('<?php $a = B"foo $bar";'),
             array('<?php $a = "foo ${bar}";'),
+            array('<?php $a = b"foo ${bar}";'),
+            array('<?php $a = B"foo ${bar}";'),
             array('<?php $a = "foo\n bar";'),
+            array('<?php $a = b"foo\n bar";'),
+            array('<?php $a = B"foo\n bar";'),
             array(<<<'EOF'
 <?php $a = "\\\n";
 EOF
