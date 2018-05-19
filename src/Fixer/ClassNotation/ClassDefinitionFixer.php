@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -78,7 +79,7 @@ extends Bar
 implements Baz, BarBaz
 {}
 ',
-                    array('singleLine' => true)
+                    array('single_line' => true)
                 ),
                 new CodeSample(
 '<?php
@@ -88,7 +89,7 @@ extends Bar
 implements Baz
 {}
 ',
-                    array('singleItemSingleLine' => true)
+                    array('single_item_single_line' => true)
                 ),
                 new CodeSample(
 '<?php
@@ -97,7 +98,7 @@ interface Bar extends
     Bar, BarBaz, FooBarBaz
 {}
 ',
-                    array('multiLineExtendsEachSingleLine' => true)
+                    array('multi_line_extends_each_single_line' => true)
                 ),
             )
         );
@@ -129,19 +130,28 @@ interface Bar extends
      */
     protected function createConfigurationDefinition()
     {
-        $multiLineExtendsEachSingleLine = new FixerOptionBuilder('multiLineExtendsEachSingleLine', 'Whether definitions should be multiline.');
+        $multiLineExtendsEachSingleLine = new AliasedFixerOptionBuilder(
+            new FixerOptionBuilder('multi_line_extends_each_single_line', 'Whether definitions should be multiline.'),
+            'multiLineExtendsEachSingleLine'
+        );
         $multiLineExtendsEachSingleLine
             ->setAllowedTypes(array('bool'))
             ->setDefault(false)
         ;
 
-        $singleItemSingleLine = new FixerOptionBuilder('singleItemSingleLine', 'Whether definitions should be single line when including a single item.');
+        $singleItemSingleLine = new AliasedFixerOptionBuilder(
+            new FixerOptionBuilder('single_item_single_line', 'Whether definitions should be single line when including a single item.'),
+            'singleItemSingleLine'
+        );
         $singleItemSingleLine
             ->setAllowedTypes(array('bool'))
             ->setDefault(false)
         ;
 
-        $singleLine = new FixerOptionBuilder('singleLine', 'Whether definitions should be single line.');
+        $singleLine = new AliasedFixerOptionBuilder(
+            new FixerOptionBuilder('single_line', 'Whether definitions should be single line.'),
+            'singleLine'
+        );
         $singleLine
             ->setAllowedTypes(array('bool'))
             ->setDefault(false)
@@ -212,13 +222,13 @@ interface Bar extends
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
 
-        if ($this->configuration['singleLine'] || false === $classExtendsInfo['multiLine']) {
+        if ($this->configuration['single_line'] || false === $classExtendsInfo['multiLine']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classExtendsInfo['start'], $endIndex);
             $classExtendsInfo['multiLine'] = false;
-        } elseif ($this->configuration['singleItemSingleLine'] && 1 === $classExtendsInfo['numberOfExtends']) {
+        } elseif ($this->configuration['single_item_single_line'] && 1 === $classExtendsInfo['numberOfExtends']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classExtendsInfo['start'], $endIndex);
             $classExtendsInfo['multiLine'] = false;
-        } elseif ($this->configuration['multiLineExtendsEachSingleLine'] && $classExtendsInfo['multiLine']) {
+        } elseif ($this->configuration['multi_line_extends_each_single_line'] && $classExtendsInfo['multiLine']) {
             $this->makeClassyInheritancePartMultiLine($tokens, $classExtendsInfo['start'], $endIndex);
             $classExtendsInfo['multiLine'] = true;
         }
@@ -237,10 +247,10 @@ interface Bar extends
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
 
-        if ($this->configuration['singleLine'] || false === $classImplementsInfo['multiLine']) {
+        if ($this->configuration['single_line'] || false === $classImplementsInfo['multiLine']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
             $classImplementsInfo['multiLine'] = false;
-        } elseif ($this->configuration['singleItemSingleLine'] && 1 === $classImplementsInfo['numberOfImplements']) {
+        } elseif ($this->configuration['single_item_single_line'] && 1 === $classImplementsInfo['numberOfImplements']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
             $classImplementsInfo['multiLine'] = false;
         } else {

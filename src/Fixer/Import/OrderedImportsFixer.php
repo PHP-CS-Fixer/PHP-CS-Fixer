@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -77,7 +78,7 @@ use Acme;
 use Barr;
 use Acme\Bar;
 ',
-                    array('sortAlgorithm' => self::SORT_LENGTH)
+                    array('sort_algorithm' => self::SORT_LENGTH)
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nuse function AAA;\nuse const AAB;\nuse AAC;",
@@ -97,8 +98,8 @@ use function DDD;
 ',
                     new VersionSpecification(70000),
                     array(
-                        'sortAlgorithm' => self::SORT_LENGTH,
-                        'importsOrder' => array(
+                        'sort_algorithm' => self::SORT_LENGTH,
+                        'imports_order' => array(
                             self::IMPORT_TYPE_CONST,
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
@@ -119,8 +120,8 @@ use function CCC\AA;
 ',
                     new VersionSpecification(70000),
                     array(
-                        'sortAlgorithm' => self::SORT_ALPHA,
-                        'importsOrder' => array(
+                        'sort_algorithm' => self::SORT_ALPHA,
+                        'imports_order' => array(
                             self::IMPORT_TYPE_CONST,
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
@@ -202,13 +203,19 @@ use function CCC\AA;
     {
         $supportedSortTypes = $this->supportedSortTypes;
 
-        $sortAlgorithm = new FixerOptionBuilder('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length');
+        $sortAlgorithm = new AliasedFixerOptionBuilder(
+            new FixerOptionBuilder('sort_algorithm', 'whether the statements should be sorted alphabetically or by length'),
+            'sortAlgorithm'
+        );
         $sortAlgorithm
             ->setAllowedValues($this->supportedSortAlgorithms)
             ->setDefault(self::SORT_ALPHA)
         ;
 
-        $importsOrder = new FixerOptionBuilder('importsOrder', 'Defines the order of import types.');
+        $importsOrder = new AliasedFixerOptionBuilder(
+            new FixerOptionBuilder('imports_order', 'Defines the order of import types.'),
+            'importsOrder'
+        );
         $importsOrder
             ->setAllowedTypes(array('array', 'null'))
             ->setAllowedValues(array(function ($value) use ($supportedSortTypes) {
@@ -434,7 +441,7 @@ use function CCC\AA;
         }
 
         // Is sort types provided, sorting by groups and each group by algorithm
-        if ($this->configuration['importsOrder']) {
+        if ($this->configuration['imports_order']) {
             // Grouping indexes by import type.
             $groupedByTypes = array();
             foreach ($indexes as $startIndex => $item) {
@@ -448,7 +455,7 @@ use function CCC\AA;
 
             // Ordering groups
             $sortedGroups = array();
-            foreach ($this->configuration['importsOrder'] as $type) {
+            foreach ($this->configuration['imports_order'] as $type) {
                 if (isset($groupedByTypes[$type]) && !empty($groupedByTypes[$type])) {
                     foreach ($groupedByTypes[$type] as $startIndex => $item) {
                         $sortedGroups[$startIndex] = $item;
@@ -479,12 +486,12 @@ use function CCC\AA;
      */
     private function sortByAlgorithm(array $indexes)
     {
-        if (self::SORT_ALPHA === $this->configuration['sortAlgorithm']) {
+        if (self::SORT_ALPHA === $this->configuration['sort_algorithm']) {
             uasort($indexes, array($this, 'sortAlphabetically'));
-        } elseif (self::SORT_LENGTH === $this->configuration['sortAlgorithm']) {
+        } elseif (self::SORT_LENGTH === $this->configuration['sort_algorithm']) {
             uasort($indexes, array($this, 'sortByLength'));
         } else {
-            throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sortAlgorithm']));
+            throw new \LogicException(sprintf('Sort algorithm "%s" is not supported.', $this->configuration['sort_algorithm']));
         }
 
         return $indexes;
