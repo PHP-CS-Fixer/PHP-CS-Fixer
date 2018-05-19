@@ -67,7 +67,7 @@ final class RuleSet implements RuleSetInterface
             ],
             'cast_spaces' => true,
             'class_attributes_separation' => ['elements' => ['method']],
-            'class_definition' => ['singleLine' => true],
+            'class_definition' => ['single_line' => true],
             'concat_space' => ['spacing' => 'none'],
             'declare_equal_normalize' => true,
             'function_typehint_space' => true,

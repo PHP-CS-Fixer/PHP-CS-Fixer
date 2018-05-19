@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
@@ -227,6 +228,9 @@ final class DescribeCommand extends Command
                         '<info>$1</info>',
                         OutputFormatter::escape(lcfirst($option->getDeprecationMessage()))
                     );
+                }
+                if ($option instanceof AliasedFixerOption) {
+                    $line .= '; <error>DEPRECATED</error> alias: <comment>'.$option->getAlias().'</comment>';
                 }
 
                 $output->writeln($line);

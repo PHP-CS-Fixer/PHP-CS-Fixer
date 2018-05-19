@@ -352,12 +352,14 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``multiLineExtendsEachSingleLine`` (``bool``): whether definitions should be
-    multiline; defaults to ``false``
-  - ``singleItemSingleLine`` (``bool``): whether definitions should be single line
-    when including a single item; defaults to ``false``
-  - ``singleLine`` (``bool``): whether definitions should be single line; defaults
-    to ``false``
+  - ``multi_line_extends_each_single_line`` (``bool``): whether definitions should
+    be multiline; defaults to ``false``; DEPRECATED alias:
+    ``multiLineExtendsEachSingleLine``
+  - ``single_item_single_line`` (``bool``): whether definitions should be single
+    line when including a single item; defaults to ``false``; DEPRECATED alias:
+    ``singleItemSingleLine``
+  - ``single_line`` (``bool``): whether definitions should be single line; defaults
+    to ``false``; DEPRECATED alias: ``singleLine``
 
 * **class_keyword_remove**
 
@@ -667,8 +669,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``commentType`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to
-    ``'comment'``
+  - ``comment_type`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to
+    ``'comment'``; DEPRECATED alias: ``commentType``
   - ``header`` (``string``): proper header content; required
   - ``location`` (``'after_declare_strict'``, ``'after_open'``): the location of the
     inserted header; defaults to ``'after_declare_strict'``
@@ -1094,11 +1096,11 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``importsOrder`` (``array``, ``null``): defines the order of import types; defaults
-    to ``null``
-  - ``sortAlgorithm`` (``'alpha'``, ``'length'``, ``'none'``): whether the statements should
-    be sorted alphabetically or by length, or not sorted; defaults to
-    ``'alpha'``
+  - ``imports_order`` (``array``, ``null``): defines the order of import types; defaults
+    to ``null``; DEPRECATED alias: ``importsOrder``
+  - ``sort_algorithm`` (``'alpha'``, ``'length'``, ``'none'``): whether the statements
+    should be sorted alphabetically or by length, or not sorted; defaults
+    to ``'alpha'``; DEPRECATED alias: ``sortAlgorithm``
 
 * **php_unit_construct** [@Symfony:risky]
 
