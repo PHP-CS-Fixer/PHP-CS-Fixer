@@ -128,6 +128,20 @@ final class FixerTest extends TestCase
             } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
                 $this->assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
+
+            $options = $fixer->getConfigurationDefinition()->getOptions();
+
+            foreach ($options as $option) {
+                // @TODO 2.12 adjust fixers to use new casing and deprecate old one
+                if (in_array($fixerName, [
+                    'final_internal_class',
+                    'ordered_class_elements',
+                ], true)) {
+                    $this->markTestIncomplete(sprintf('Rule "%s" is not following new option casing yet, please help.', $fixerName));
+                }
+
+                $this->assertRegExp('/^[a-z_]*$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
+            }
         }
 
         if ($fixer->isRisky()) {
