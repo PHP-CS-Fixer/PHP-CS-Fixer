@@ -190,8 +190,6 @@ function baz($options)
      */
     private function normalizeFunctionNames(array $functionNames)
     {
-        return \array_map(function ($functionName) {
-            return \strtolower($functionName);
-        }, $functionNames);
+        return \array_map('\strtolower', $functionNames);
     }
 }
