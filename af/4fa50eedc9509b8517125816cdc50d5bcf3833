@@ -1,0 +1,6 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-18T15:02:32Z
+
+nice catch,
+we should really make a fixer to ditch the `b` at some point, it will never have any value since PHP6 didn't work out as planned ;)
