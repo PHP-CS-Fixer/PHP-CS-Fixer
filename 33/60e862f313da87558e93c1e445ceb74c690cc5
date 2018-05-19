@@ -1,0 +1,98 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-05T09:09:20Z
+
+Shouldn't we deprecate options that have the wrong casing?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-03-05T14:56:11Z
+
+@julienfalque I was under the impression that the deprecation should happen in the master branch not 2.2?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-05T15:12:37Z
+
+`trigger_error(E_USER_DEPRECATED, ...` shall not go to 2.2, only master
+docs update that option is deprecated could go to 2.2, sure
+
+eventually, both of those changes shall be applied ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-05T16:42:17Z
+
+Ah indeed, deprecations must be merged on master... But if we are to actually deprecate wrong options, shouldn't we avoid giving them visibility via aliases? I mean, aliases give the impression that both names are fine and choice is up to final user.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-05T16:44:41Z
+
+we shall put stress on that aliased options are deprecated, but one shall not un-document aliased values - as then, one is not able to search for docs of them
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-05T16:52:47Z
+
+I know. I meant to simply deprecate wrong options like we did for already deprecated one: mark the current ones as `deprecated` in the doc and create the new options that replace them.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-08T10:57:04Z
+
+@ntzm , it looks like this one is very close to be ready, could you finish it please ?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-03-08T11:51:07Z
+
+Yes sorry, will finish tonight
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-12T07:53:27Z
+
+please remove `WIP` from PR title whenever you finish @ntzm , thanks !
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-03-21T08:56:06Z
+
+This is no longer WIP :)
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-04-04T19:25:23Z
+
+Will sort those issues soon @julienfalque, on holiday atm
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-04T20:22:45Z
+
+@julienfalque , are those 2 comments only missing parts, and then we good to merge ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-04T20:27:31Z
+
+See https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3568#discussion_r178953652 as well.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-03T13:07:17Z
+
+Anything else I need to do to get this approved?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-11T11:23:44Z
+
+Thanks @julienfalque, will get on those shortly
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-18T18:49:05Z
+
+please re-run readme generation
