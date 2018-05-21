@@ -716,6 +716,11 @@ Choose from the list of available rules:
 
   PHP keywords MUST be in lower case.
 
+* **lowercase_static_reference** [@Symfony]
+
+  Class static references ``self``, ``static`` and ``parent`` MUST be in lower
+  case.
+
 * **magic_constant_casing** [@Symfony]
 
   Magic constants should be referred to using the correct casing.
@@ -798,6 +803,10 @@ Choose from the list of available rules:
 * **no_alternative_syntax**
 
   Replace control structure alternative syntax to use braces.
+
+* **no_binary_string**
+
+  There should not be a binary flag before strings.
 
 * **no_blank_lines_after_class_opening** [@Symfony]
 

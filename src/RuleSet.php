@@ -74,6 +74,7 @@ final class RuleSet implements RuleSetInterface
             'include' => true,
             'increment_style' => true,
             'lowercase_cast' => true,
+            'lowercase_static_reference' => true,
             'magic_constant_casing' => true,
             'method_argument_space' => [
                 'ensure_fully_multiline' => false,

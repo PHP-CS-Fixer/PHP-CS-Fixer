@@ -85,7 +85,8 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach (array_reverse($this->findPhpUnitClasses($tokens)) as $indexes) {
+        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
+        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
             if ('annotation' === $this->configuration['style']) {
                 $this->applyTestAnnotation($tokens, $indexes[0], $indexes[1]);
             } else {
@@ -109,28 +110,6 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
                 ->setDefault('camel')
                 ->getOption(),
         ]);
-    }
-
-    /**
-     * @param Tokens $tokens
-     *
-     * @return int[][] array of [start, end] indexes from sooner to later classes
-     */
-    private function findPhpUnitClasses(Tokens $tokens)
-    {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-        $phpunitClasses = [];
-
-        for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
-                $index = $tokens->getNextTokenOfKind($index, ['{']);
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-                $phpunitClasses[] = [$index, $endIndex];
-                $index = $endIndex;
-            }
-        }
-
-        return $phpunitClasses;
     }
 
     /**

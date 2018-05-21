@@ -44,6 +44,7 @@ $config = PhpCsFixer\Config::create()
         'method_chaining_indentation' => true,
         'multiline_comment_opening_closing' => true,
         'no_alternative_syntax' => true,
+        'no_binary_string' => true,
         'no_extra_blank_lines' => ['tokens' => ['break', 'continue', 'extra', 'return', 'throw', 'use', 'parenthesis_brace_block', 'square_brace_block', 'curly_brace_block']],
         'no_null_property_initialization' => true,
         'no_short_echo_tag' => true,
