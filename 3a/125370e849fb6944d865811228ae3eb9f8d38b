@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-18T07:53:52Z
+
+Looks good :)
+@keradus as we are about to have this same method in 3 PHPUnit related fixers, how you feel about introducing an `AbstractPHPUnitTestFixer` which provides it childs with this method to find PHPUnit classes in the Tokens?
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-01-19T10:25:17Z
+
+@SpacePossum How about adding it to the `PhpUnitTestCaseIndicator` class?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-19T15:08:49Z
+
+all the refactoring and unification of code shall be send to 2.2, as LTS
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-01-19T15:11:33Z
+
+2.2 Does not have these fixers and therefor not the functions
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-19T15:14:57Z
+
+yey :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-02T14:38:33Z
+
+ping @BackEndTea
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-02-05T16:45:10Z
+
+@keradus & @SpacePossum  sorry for the delay, i optimized the code a bit and moved it to the `PhpUnitTestCaseIndicator` class. I'd like to hear your thoughts
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-14T06:26:33Z
+
+@BackEndTea FYI I've add a little unit test method for this. @keradus feel free to squash my commit out before/during merging.
