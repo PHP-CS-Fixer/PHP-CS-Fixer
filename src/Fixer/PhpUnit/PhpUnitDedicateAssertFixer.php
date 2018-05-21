@@ -253,7 +253,7 @@ $this->assertTrue(is_readable($a));
                 ])
                 ->setDefault(PhpUnitTargetVersion::VERSION_5_0) // @TODO 3.x: change to `VERSION_NEWEST`
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     /**

@@ -28,20 +28,20 @@ final class FixerConfigurationResolverRootlessTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The "bar" option is not defined.');
 
-        $configuration = new FixerConfigurationResolverRootless('bar', [
+        new FixerConfigurationResolverRootless('bar', [
             new FixerOption('foo', 'Bar.'),
-        ]);
+        ], 'bar');
     }
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing "foo" at the root of the configuration is deprecated and will not be supported in 3.0, use "foo" => array(...) option instead.
+     * @expectedDeprecation Passing "foo" at the root of the configuration for rule "bar" is deprecated and will not be supported in 3.0, use "foo" => array(...) option instead.
      */
     public function testResolveWithMappedRoot()
     {
         $configuration = new FixerConfigurationResolverRootless('foo', [
             new FixerOption('foo', 'Bar.'),
-        ]);
+        ], 'bar');
         $configuration->resolve(['baz', 'qux']);
     }
 }
