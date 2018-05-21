@@ -122,4 +122,69 @@ class Foo implements TestInterface, SomethingElse
 
         $this->indicator->isPhpUnitClass($tokens, 1);
     }
+
+    /**
+     * @param array<[int, int]> $expectedIndexes
+     * @param string            $code
+     *
+     * @dataProvider provideFindPhpUnitClassesCases
+     */
+    public function testFindPhpUnitClasses(array $expectedIndexes, $code)
+    {
+        $tokens = Tokens::fromCode($code);
+
+        $classes = $this->indicator->findPhpUnitClasses($tokens);
+        $classes = iterator_to_array($classes);
+
+        $this->assertSame($expectedIndexes, $classes);
+    }
+
+    public function provideFindPhpUnitClassesCases()
+    {
+        return [
+            'empty' => [
+                [],
+                '',
+            ],
+            'empty script' => [
+                [],
+                "<?php\n",
+            ],
+            'no test class' => [
+                [],
+                '<?php class Foo{}',
+            ],
+            'single test class' => [
+                [
+                    [6, 7],
+                ],
+                '<?php
+                    class MyTest {}
+                ',
+            ],
+            'two PHPUnit classes' => [
+                [
+                    [6, 7],
+                    [13, 26],
+                ],
+                '<?php
+                    class My1Test {}
+                    class My2Test { public function A() {} }
+                ',
+            ],
+            'mixed classes' => [
+                [
+                    [25, 38],
+                    [63, 76],
+                ],
+                '<?php
+                    class Foo1 { public function A() {} }
+                    class My1Test { public function A() {} }
+                    class Foo2 { public function A() {} }
+                    class My2Test { public function A() {} }
+                    class Foo3 { public function A() { return function (){}; } }
+                ',
+            ],
+        ];
+    }
 }
