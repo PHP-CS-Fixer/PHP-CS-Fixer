@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-19T09:48:48Z
+
+What about converting `(binary)` cast to `(string)`?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-19T10:04:41Z
+
+Is that worth doing in the same fixer?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-19T10:07:35Z
+
+You're right, this should be a different fixer.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-19T13:33:23Z
+
+@ntzm , FYI - I have squashed your PR. feel free to push your original branch (with `--force`) or use squashed one
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-20T09:20:14Z
+
+Pushed using force, added a HEREDOC code sample
