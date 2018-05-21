@@ -15,6 +15,11 @@
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
+
+if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+    error_reporting(-1);
+}
+
 if (defined('HHVM_VERSION_ID')) {
     fwrite(STDERR, "HHVM is not supported.\n");
 
