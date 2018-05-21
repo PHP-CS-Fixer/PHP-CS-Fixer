@@ -835,6 +835,10 @@ Choose from the list of available rules:
 
   Replace control structure alternative syntax to use braces.
 
+* **no_binary_string**
+
+  There should not be a binary flag before strings.
+
 * **no_blank_lines_after_class_opening** [@Symfony]
 
   There should be no empty lines after class opening brace.
