@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-21T13:25:26Z
+
+Oops! My bad
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-21T18:09:35Z
+
+don't worry @ntzm !
+it seems that Travis, when applying PR patch to target branch, is not commiting it to temporary branch, but leave it uncommited. For that, `git archive` is not looking at any changes from PR, it fails only after commit (Travis don't see it, we are doing merge-commit and after that all builds are failing).
+
+that's my theory why original PR was not failing at `git archive` check. if anyone is willing to confirm it, would be super great
