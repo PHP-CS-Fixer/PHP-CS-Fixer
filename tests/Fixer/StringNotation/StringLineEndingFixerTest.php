@@ -77,6 +77,22 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
                 sprintf($nowdocTemplate, $input),
                 sprintf($nowdocTemplate, str_replace("\n", "\r\n", $input)),
             ],
+            [
+                sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), $input),
+                sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
+            ],
+            [
+                sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), $input),
+                sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
+            ],
+            [
+                sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), $input),
+                sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
+            ],
+            [
+                sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), $input),
+                sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
+            ],
         ];
     }
 
