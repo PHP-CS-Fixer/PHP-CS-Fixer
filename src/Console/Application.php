@@ -45,10 +45,6 @@ final class Application extends BaseApplication
 
     public function __construct()
     {
-        if (!getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            error_reporting(-1);
-        }
-
         parent::__construct('PHP CS Fixer', self::VERSION);
 
         $this->toolInfo = new ToolInfo();
