@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-11T05:51:31Z
+
+Thanks for working on this, great idea for a new fixer :)
+
+Please add the following test cases for `static`:
+```php
+    <?php
+    $a = STATIC function() {};
+```
+```php
+    <?php
+    class A
+    {
+        public function B()
+        {
+            STATIC $a; echo $a;
+        }
+    }
+```
+```php
+    <?php
+    class A
+    {
+        public function B()
+        {
+            $collection = $static ? new STATIC($b) : new self();
+        }
+    }
+```
+```php
+    <?php
+    class A
+    {
+        STATIC public function A()
+        {
+        }
+    }
+```
+```php
+    <?php
+        $a = function () {
+            STATIC $B = false;
+            if ($B) {
+                echo 1;
+            }
+            $B = true;
+        };
+```
