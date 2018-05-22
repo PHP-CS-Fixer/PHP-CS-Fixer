@@ -339,25 +339,6 @@ final class ConfigurationResolver
                     throw new InvalidConfigurationException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky option?', implode(', ', $riskyFixers)));
                 }
             }
-
-            foreach ($this->fixers as $fixer) {
-                if ($fixer instanceof DeprecatedFixerInterface) {
-                    $successors = $fixer->getSuccessorsNames();
-                    $message = sprintf(
-                        'Fixer `%s` is deprecated%s',
-                        $fixer->getName(),
-                        [] === $successors
-                            ? ' and will be removed on next major version.'
-                            : sprintf(', use %s instead.', Utils::naturalLanguageJoinWithBackticks($successors))
-                    );
-
-                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                        throw new \RuntimeException($message.' This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
-                    }
-
-                    @trigger_error($message, E_USER_DEPRECATED);
-                }
-            }
         }
 
         return $this->fixers;
@@ -728,10 +709,12 @@ final class ConfigurationResolver
         /** @var string[] $configuredFixers */
         $configuredFixers = array_keys($ruleSet->getRules());
 
+        $fixers = $this->createFixerFactory()->getFixers();
+
         /** @var string[] $availableFixers */
         $availableFixers = array_map(static function (FixerInterface $fixer) {
             return $fixer->getName();
-        }, $this->createFixerFactory()->getFixers());
+        }, $fixers);
 
         $unknownFixers = array_diff(
             $configuredFixers,
@@ -752,6 +735,24 @@ final class ConfigurationResolver
             }
 
             throw new InvalidConfigurationException(substr($message, 0, -2).'.');
+        }
+
+        foreach ($fixers as $fixer) {
+            $fixerName = $fixer->getName();
+            if (isset($rules[$fixerName]) && $fixer instanceof DeprecatedFixerInterface) {
+                $successors = $fixer->getSuccessorsNames();
+                $messageEnd = [] === $successors
+                    ? sprintf(' and will be removed in version %d.0.', (int) Application::VERSION + 1)
+                    : sprintf('. Use %s instead.', str_replace('`', '"', Utils::naturalLanguageJoinWithBackticks($successors)));
+
+                $message = "Rule \"{$fixerName}\" is deprecated{$messageEnd}";
+
+                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                    throw new \RuntimeException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
+                }
+
+                @trigger_error($message, E_USER_DEPRECATED);
+            }
         }
     }
 
@@ -896,14 +897,13 @@ final class ConfigurationResolver
             return false;
         }
 
+        $message = sprintf('Expected "yes" or "no" for option "%s", other values are deprecated and support will be removed in 3.0. Got "%s", this implicitly set the option to "false".', $optionName, $value);
+
         if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            throw new InvalidConfigurationException(sprintf('Expected "yes" or "no" for option "%s", got "%s". This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.', $optionName, $value));
+            throw new InvalidConfigurationException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
         }
 
-        @trigger_error(
-            sprintf('Expected "yes" or "no" for option "%s", other values are deprecated and support will be removed in 3.0. Got "%s", this implicitly set the option to "false".', $optionName, $value),
-            E_USER_DEPRECATED
-        );
+        @trigger_error($message, E_USER_DEPRECATED);
 
         return false;
     }

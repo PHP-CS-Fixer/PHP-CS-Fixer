@@ -119,7 +119,7 @@ class Sample
                 })
                 ->setDefault(['property', 'method'])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     /**

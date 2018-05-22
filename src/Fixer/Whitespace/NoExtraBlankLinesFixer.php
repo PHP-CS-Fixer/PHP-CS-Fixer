@@ -311,7 +311,7 @@ switch($a) {
                 ->setAllowedValues([new AllowedValueSubset(self::$availableTokens)])
                 ->setDefault(['extra'])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     private function fixByToken(Token $token, $index)

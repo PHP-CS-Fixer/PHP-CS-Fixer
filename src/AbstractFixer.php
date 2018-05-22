@@ -122,12 +122,19 @@ abstract class AbstractFixer implements FixerInterface
 
             $name = $option->getName();
             if (array_key_exists($name, $configuration)) {
-                @trigger_error(sprintf(
-                    'Option "%s" is deprecated and will be removed in %d.0. %s',
+                $message = sprintf(
+                    'Option "%s" for rule "%s" is deprecated and will be removed in version %d.0. %s',
                     $name,
-                    Application::VERSION + 1,
+                    $this->getName(),
+                    (int) Application::VERSION + 1,
                     str_replace('`', '"', $option->getDeprecationMessage())
-                ), E_USER_DEPRECATED);
+                );
+
+                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                    throw new \InvalidArgumentException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
+                }
+
+                @trigger_error($message, E_USER_DEPRECATED);
             }
         }
 

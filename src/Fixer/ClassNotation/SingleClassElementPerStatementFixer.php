@@ -104,7 +104,7 @@ final class Example
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset($values)])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     /**

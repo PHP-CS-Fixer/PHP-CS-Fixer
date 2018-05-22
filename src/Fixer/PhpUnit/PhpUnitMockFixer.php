@@ -108,35 +108,27 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
-        $inPhpUnitClass = false;
+        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
+            for ($index = $indexes[0]; $index < $indexes[1]; ++$index) {
+                if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+                    continue;
+                }
 
-        for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
-            if (!$inPhpUnitClass && $tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
-                $inPhpUnitClass = true;
-            }
+                $index = $tokens->getNextMeaningfulToken($index);
 
-            if (!$inPhpUnitClass) {
-                continue;
-            }
-
-            if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
-                continue;
-            }
-
-            $index = $tokens->getNextMeaningfulToken($index);
-
-            if ($tokens[$index]->equals([T_STRING, 'getMockWithoutInvokingTheOriginalConstructor'], false)) {
-                $tokens[$index] = new Token([T_STRING, 'createMock']);
-            } elseif ($tokens[$index]->equals([T_STRING, 'getMock'], false)) {
-                $openingParenthesis = $tokens->getNextMeaningfulToken($index);
-                $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesis);
-
-                $argumentsCount = $argumentsAnalyzer->countArguments($tokens, $openingParenthesis, $closingParenthesis);
-
-                if (1 === $argumentsCount) {
+                if ($tokens[$index]->equals([T_STRING, 'getMockWithoutInvokingTheOriginalConstructor'], false)) {
                     $tokens[$index] = new Token([T_STRING, 'createMock']);
-                } elseif (2 === $argumentsCount && true === $this->fixCreatePartialMock) {
-                    $tokens[$index] = new Token([T_STRING, 'createPartialMock']);
+                } elseif ($tokens[$index]->equals([T_STRING, 'getMock'], false)) {
+                    $openingParenthesis = $tokens->getNextMeaningfulToken($index);
+                    $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesis);
+
+                    $argumentsCount = $argumentsAnalyzer->countArguments($tokens, $openingParenthesis, $closingParenthesis);
+
+                    if (1 === $argumentsCount) {
+                        $tokens[$index] = new Token([T_STRING, 'createMock']);
+                    } elseif (2 === $argumentsCount && true === $this->fixCreatePartialMock) {
+                        $tokens[$index] = new Token([T_STRING, 'createPartialMock']);
+                    }
                 }
             }
         }
