@@ -145,6 +145,38 @@ EOF;
                 '<?php $a = "end {$a[1]}";',
                 '<?php $a = "end $a[1]";',
             ],
+            [
+                '<?php $a = b"{$a->b} start";',
+                '<?php $a = b"$a->b start";',
+            ],
+            [
+                '<?php $a = b"end {$a->b}";',
+                '<?php $a = b"end $a->b";',
+            ],
+            [
+                '<?php $a = b"{$a[1]} start";',
+                '<?php $a = b"$a[1] start";',
+            ],
+            [
+                '<?php $a = b"end {$a[1]}";',
+                '<?php $a = b"end $a[1]";',
+            ],
+            [
+                '<?php $a = B"{$a->b} start";',
+                '<?php $a = B"$a->b start";',
+            ],
+            [
+                '<?php $a = B"end {$a->b}";',
+                '<?php $a = B"end $a->b";',
+            ],
+            [
+                '<?php $a = B"{$a[1]} start";',
+                '<?php $a = B"$a[1] start";',
+            ],
+            [
+                '<?php $a = B"end {$a[1]}";',
+                '<?php $a = B"end $a[1]";',
+            ],
         ];
     }
 
@@ -174,6 +206,14 @@ EOF;
             [
                 '<?php $a = "end {$a[-1]}";',
                 '<?php $a = "end $a[-1]";',
+            ],
+            [
+                '<?php $a = b"end {$a[-1]}";',
+                '<?php $a = b"end $a[-1]";',
+            ],
+            [
+                '<?php $a = B"end {$a[-1]}";',
+                '<?php $a = B"end $a[-1]";',
             ],
         ];
     }
