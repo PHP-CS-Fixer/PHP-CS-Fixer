@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-21T21:02:44Z
+
+just wondering - did you encounter `b`-strings in real code ?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-21T21:07:37Z
+
+Yes, looks like someone was preparing for PHP 6 a bit too far in advance 😆
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-22T05:33:51Z
+
+hehe. don't worry, I still know few hostings that are proud to support php6 !
