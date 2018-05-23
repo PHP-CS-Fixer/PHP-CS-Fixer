@@ -1451,7 +1451,8 @@ Choose from the list of available rules:
 * **short_scalar_cast** [@Symfony]
 
   Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
-  ``(int)``, ``(double)`` and ``(real)`` as ``(float)``.
+  ``(int)``, ``(double)`` and ``(real)`` as ``(float)``, ``(binary)`` as
+  ``(string)``.
 
 * **silenced_deprecation_error** [@Symfony:risky]
 
