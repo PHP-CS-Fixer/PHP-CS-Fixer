@@ -102,7 +102,7 @@ EOF;
         $doubleQuoteOpened = false;
         foreach ($tokens as $index => $token) {
             $content = $token->getContent();
-            if ($token->equals('"')) {
+            if ($token->equalsAny(['"', 'b"', 'B"'])) {
                 $doubleQuoteOpened = !$doubleQuoteOpened;
             }
             if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || false === strpos($content, '\\')) {
@@ -114,9 +114,10 @@ EOF;
                 continue;
             }
 
-            $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '\'' === $content[0];
+            $firstTwoCharacters = strtolower(substr($content, 0, 2));
+            $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('\'' === $content[0] || 'b\'' === $firstTwoCharacters);
             $isDoubleQuotedString =
-                ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '"' === $content[0])
+                ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
                 || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened)
             ;
             $isHeredocSyntax = !$isSingleQuotedString && !$isDoubleQuotedString;

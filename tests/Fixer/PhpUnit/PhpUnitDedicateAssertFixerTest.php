@@ -43,7 +43,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideTestFixLegacyCases
      * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0. Use option "target" instead.
+     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
      */
     public function testFixLegacy($expected, $input = null)
     {
@@ -301,7 +301,7 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing "functions" at the root of the configuration is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
+     * @expectedDeprecation Passing "functions" at the root of the configuration for rule "php_unit_dedicate_assert" is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
      */
     public function testLegacyConfig()
     {
@@ -320,7 +320,7 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "functions" is deprecated and will be removed in 3.0. Use option "target" instead.
+     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
      */
     public function testConfig()
     {

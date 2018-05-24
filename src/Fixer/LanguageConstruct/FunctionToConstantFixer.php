@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -145,9 +145,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('functions', 'List of function names to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($functionNames),
-                ])
+                ->setAllowedValues([new AllowedValueSubset($functionNames)])
                 ->setDefault([
                     'get_class',
                     'php_sapi_name',

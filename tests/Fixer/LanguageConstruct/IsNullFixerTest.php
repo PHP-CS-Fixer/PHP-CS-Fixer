@@ -35,27 +35,24 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
      */
     public function testConfigurationWrongValue()
     {
-        $fixer = new IsNullFixer();
-
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[is_null] Invalid configuration: The option "use_yoda_style" with value -1 is expected to be of type "bool", but is of type "integer".');
-        $fixer->configure(['use_yoda_style' => -1]);
+        $this->fixer->configure(['use_yoda_style' => -1]);
     }
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
      */
     public function testCorrectConfiguration()
     {
-        $fixer = new IsNullFixer();
-        $fixer->configure(['use_yoda_style' => false]);
+        $this->fixer->configure(['use_yoda_style' => false]);
 
-        $configuration = static::getObjectAttribute($fixer, 'configuration');
+        $configuration = static::getObjectAttribute($this->fixer, 'configuration');
         static::assertFalse($configuration['use_yoda_style']);
     }
 
@@ -230,7 +227,7 @@ FIXED;
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
      *
      * @dataProvider provideNonYodaFixCases
      *

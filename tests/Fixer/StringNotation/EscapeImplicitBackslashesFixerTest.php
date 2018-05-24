@@ -222,6 +222,366 @@ EOF
                 null,
                 ['heredoc_syntax' => false],
             ],
+            [
+                <<<'EOF'
+<?php $var = b'String (\\\'\r\n\x0) for My\Prefix\\';
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php $var = b'String (\\\'\\r\\n\\x0) for My\\Prefix\\';
+EOF
+                ,
+                <<<'EOF'
+<?php $var = b'String (\\\'\r\n\x0) for My\Prefix\\';
+EOF
+                ,
+                ['single_quoted' => true],
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = b"\\A\\B\\C\\D\\E\\F\\G\\H\\I\\J\\K\\L\\M\\N\\O\\P\\Q\\R\\S\\T\\U\\V\\W\\X\\Y\\Z";
+$var = b"\\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z \\' \\8\\9 \\xZ \\u";
+$var = b"$foo \\A \\a \\' \\8\\9 \\xZ \\u ${bar}";
+$var = b<<<HEREDOC_SYNTAX
+\\A\\B\\C\\D\\E\\F\\G\\H\\I\\J\\K\\L\\M\\N\\O\\P\\Q\\R\\S\\T\\U\\V\\W\\X\\Y\\Z
+\\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z
+\\"
+\\'
+\\8\\9
+\\xZ
+\\u
+HEREDOC_SYNTAX;
+$var = b<<<HEREDOC_SYNTAX
+$foo \\A \\a \\" \\' \\8\\9 \\xZ \\u ${bar}
+HEREDOC_SYNTAX;
+$var = b<<<'NOWDOC_SYNTAX'
+\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
+\'
+\8\9
+\xZ
+\u
+NOWDOC_SYNTAX;
+
+EOF
+                ,
+                <<<'EOF'
+<?php
+$var = b"\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z";
+$var = b"\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z \' \8\9 \xZ \u";
+$var = b"$foo \A \a \' \8\9 \xZ \u ${bar}";
+$var = b<<<HEREDOC_SYNTAX
+\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
+\"
+\'
+\8\9
+\xZ
+\u
+HEREDOC_SYNTAX;
+$var = b<<<HEREDOC_SYNTAX
+$foo \A \a \" \' \8\9 \xZ \u ${bar}
+HEREDOC_SYNTAX;
+$var = b<<<'NOWDOC_SYNTAX'
+\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
+\'
+\8\9
+\xZ
+\u
+NOWDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = b"\e\f\n\r\t\v \\ \$ \"";
+$var = b"$foo \e\f\n\r\t\v \\ \$ \" ${bar}";
+$var = b<<<HEREDOC_SYNTAX
+\e\f\n\r\t\v \\ \$
+HEREDOC_SYNTAX;
+$var = b<<<HEREDOC_SYNTAX
+$foo \e\f\n\r\t\v \\ \$ ${bar}
+HEREDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = b"\0 \00 \000 \0000 \00000";
+$var = b"$foo \0 \00 \000 \0000 \00000 ${bar}";
+$var = b<<<HEREDOC_SYNTAX
+\0 \00 \000 \0000 \00000
+HEREDOC_SYNTAX;
+$var = b<<<HEREDOC_SYNTAX
+$foo \0 \00 \000 \0000 \00000 ${bar}
+HEREDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = b"\xA \x99 \u{0}";
+$var = b"$foo \xA \x99 \u{0} ${bar}";
+$var = b<<<HEREDOC_SYNTAX
+\xA \x99 \u{0}
+HEREDOC_SYNTAX;
+$var = b<<<HEREDOC_SYNTAX
+$foo \xA \x99 \u{0} ${bar}
+HEREDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = b'backslash \\ already escaped';
+$var = b'code coverage';
+$var = b"backslash \\ already escaped";
+$var = b"code coverage";
+$var = b<<<HEREDOC_SYNTAX
+backslash \\ already escaped
+HEREDOC_SYNTAX;
+$var = b<<<HEREDOC_SYNTAX
+code coverage
+HEREDOC_SYNTAX;
+$var = b<<<'NOWDOC_SYNTAX'
+backslash \\ already escaped
+NOWDOC_SYNTAX;
+$var = b<<<'NOWDOC_SYNTAX'
+code coverage
+NOWDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = b"\A\a \' \8\9 \xZ \u";
+$var = b"$foo \A\a \' \8\9 \xZ \u ${bar}";
+EOF
+                ,
+                null,
+                ['double_quoted' => false],
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = b<<<HEREDOC_SYNTAX
+\A\Z
+\a\z
+\'
+\8\9
+\xZ
+\u
+HEREDOC_SYNTAX;
+$var = b<<<HEREDOC_SYNTAX
+$foo
+\A\Z
+\a\z
+\'
+\8\9
+\xZ
+\u
+${bar}
+HEREDOC_SYNTAX;
+
+EOF
+                ,
+                null,
+                ['heredoc_syntax' => false],
+            ],
+            [
+                <<<'EOF'
+<?php $var = B'String (\\\'\r\n\x0) for My\Prefix\\';
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php $var = B'String (\\\'\\r\\n\\x0) for My\\Prefix\\';
+EOF
+                ,
+                <<<'EOF'
+<?php $var = B'String (\\\'\r\n\x0) for My\Prefix\\';
+EOF
+                ,
+                ['single_quoted' => true],
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = B"\\A\\B\\C\\D\\E\\F\\G\\H\\I\\J\\K\\L\\M\\N\\O\\P\\Q\\R\\S\\T\\U\\V\\W\\X\\Y\\Z";
+$var = B"\\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z \\' \\8\\9 \\xZ \\u";
+$var = B"$foo \\A \\a \\' \\8\\9 \\xZ \\u ${bar}";
+$var = B<<<HEREDOC_SYNTAX
+\\A\\B\\C\\D\\E\\F\\G\\H\\I\\J\\K\\L\\M\\N\\O\\P\\Q\\R\\S\\T\\U\\V\\W\\X\\Y\\Z
+\\a\\b\\c\\d\\g\\h\\i\\j\\k\\l\\m\\o\\p\\q\\s\\w\\y\\z
+\\"
+\\'
+\\8\\9
+\\xZ
+\\u
+HEREDOC_SYNTAX;
+$var = B<<<HEREDOC_SYNTAX
+$foo \\A \\a \\" \\' \\8\\9 \\xZ \\u ${bar}
+HEREDOC_SYNTAX;
+$var = B<<<'NOWDOC_SYNTAX'
+\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
+\'
+\8\9
+\xZ
+\u
+NOWDOC_SYNTAX;
+
+EOF
+                ,
+                <<<'EOF'
+<?php
+$var = B"\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z";
+$var = B"\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z \' \8\9 \xZ \u";
+$var = B"$foo \A \a \' \8\9 \xZ \u ${bar}";
+$var = B<<<HEREDOC_SYNTAX
+\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
+\"
+\'
+\8\9
+\xZ
+\u
+HEREDOC_SYNTAX;
+$var = B<<<HEREDOC_SYNTAX
+$foo \A \a \" \' \8\9 \xZ \u ${bar}
+HEREDOC_SYNTAX;
+$var = B<<<'NOWDOC_SYNTAX'
+\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+\a\b\c\d\g\h\i\j\k\l\m\o\p\q\s\w\y\z
+\'
+\8\9
+\xZ
+\u
+NOWDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = B"\e\f\n\r\t\v \\ \$ \"";
+$var = B"$foo \e\f\n\r\t\v \\ \$ \" ${bar}";
+$var = B<<<HEREDOC_SYNTAX
+\e\f\n\r\t\v \\ \$
+HEREDOC_SYNTAX;
+$var = B<<<HEREDOC_SYNTAX
+$foo \e\f\n\r\t\v \\ \$ ${bar}
+HEREDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = B"\0 \00 \000 \0000 \00000";
+$var = B"$foo \0 \00 \000 \0000 \00000 ${bar}";
+$var = B<<<HEREDOC_SYNTAX
+\0 \00 \000 \0000 \00000
+HEREDOC_SYNTAX;
+$var = B<<<HEREDOC_SYNTAX
+$foo \0 \00 \000 \0000 \00000 ${bar}
+HEREDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = B"\xA \x99 \u{0}";
+$var = B"$foo \xA \x99 \u{0} ${bar}";
+$var = B<<<HEREDOC_SYNTAX
+\xA \x99 \u{0}
+HEREDOC_SYNTAX;
+$var = B<<<HEREDOC_SYNTAX
+$foo \xA \x99 \u{0} ${bar}
+HEREDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = B'backslash \\ already escaped';
+$var = B'code coverage';
+$var = B"backslash \\ already escaped";
+$var = B"code coverage";
+$var = B<<<HEREDOC_SYNTAX
+backslash \\ already escaped
+HEREDOC_SYNTAX;
+$var = B<<<HEREDOC_SYNTAX
+code coverage
+HEREDOC_SYNTAX;
+$var = B<<<'NOWDOC_SYNTAX'
+backslash \\ already escaped
+NOWDOC_SYNTAX;
+$var = B<<<'NOWDOC_SYNTAX'
+code coverage
+NOWDOC_SYNTAX;
+
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = B"\A\a \' \8\9 \xZ \u";
+$var = B"$foo \A\a \' \8\9 \xZ \u ${bar}";
+EOF
+                ,
+                null,
+                ['double_quoted' => false],
+            ],
+            [
+                <<<'EOF'
+<?php
+$var = B<<<HEREDOC_SYNTAX
+\A\Z
+\a\z
+\'
+\8\9
+\xZ
+\u
+HEREDOC_SYNTAX;
+$var = B<<<HEREDOC_SYNTAX
+$foo
+\A\Z
+\a\z
+\'
+\8\9
+\xZ
+\u
+${bar}
+HEREDOC_SYNTAX;
+
+EOF
+                ,
+                null,
+                ['heredoc_syntax' => false],
+            ],
         ];
     }
 }

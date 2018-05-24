@@ -61,6 +61,9 @@ final class FixerTest extends TestCase
         $fixerIsConfigurable = $fixer instanceof ConfigurationDefinitionFixerInterface;
 
         $this->assertRegExp('/^[A-Z`].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or a ` and end with dot.', $fixerName));
+        $this->assertNotContains('phpdocs', $definition->getSummary(), sprintf('[%s] `PHPDoc` must not be in the plural in description.', $fixerName), true);
+        $this->assertCorrectCasing($definition->getSummary(), 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in description.', $fixerName));
+        $this->assertCorrectCasing($definition->getSummary(), 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in description.', $fixerName));
 
         $samples = $definition->getCodeSamples();
         $this->assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));
@@ -128,10 +131,27 @@ final class FixerTest extends TestCase
             } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
                 $this->assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
+
+            $options = $fixer->getConfigurationDefinition()->getOptions();
+
+            foreach ($options as $option) {
+                // @TODO 2.12 adjust fixers to use new casing and deprecate old one
+                if (in_array($fixerName, [
+                    'final_internal_class',
+                    'ordered_class_elements',
+                ], true)) {
+                    $this->markTestIncomplete(sprintf('Rule "%s" is not following new option casing yet, please help.', $fixerName));
+                }
+
+                $this->assertRegExp('/^[a-z_]*$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
+            }
         }
 
         if ($fixer->isRisky()) {
             $this->assertStringIsNotEmpty($definition->getRiskyDescription(), sprintf('[%s] Risky reasoning is required.', $fixerName));
+            $this->assertNotContains('phpdocs', $definition->getRiskyDescription(), sprintf('[%s] `PHPDoc` must not be in the plural in risky reasoning.', $fixerName), true);
+            $this->assertCorrectCasing($definition->getRiskyDescription(), 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in risky reasoning.', $fixerName));
+            $this->assertCorrectCasing($definition->getRiskyDescription(), 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in risky reasoning.', $fixerName));
         } else {
             $this->assertNull($definition->getRiskyDescription(), sprintf('[%s] Fixer is not risky so no description of it expected.', $fixerName));
         }
@@ -263,5 +283,15 @@ final class FixerTest extends TestCase
     {
         self::assertInternalType('string', $actual, $message);
         self::assertNotEmpty($actual, $message);
+    }
+
+    /**
+     * @param string $needle
+     * @param string $haystack
+     * @param string $message
+     */
+    private static function assertCorrectCasing($needle, $haystack, $message)
+    {
+        self::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
     }
 }

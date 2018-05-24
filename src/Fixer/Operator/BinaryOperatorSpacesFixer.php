@@ -474,11 +474,17 @@ $h = $i===  $j;
             }
         }
 
-        @trigger_error(sprintf(
+        $message = sprintf(
             'Given configuration is deprecated and will be removed in 3.0. Use configuration %s as replacement for %s.',
             HelpCommand::toString($newConfig),
             HelpCommand::toString($configuration)
-        ), E_USER_DEPRECATED);
+        );
+
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            throw new InvalidFixerConfigurationException($this->getName(), "{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
+        }
+
+        @trigger_error($message, E_USER_DEPRECATED);
 
         return $newConfig;
     }
