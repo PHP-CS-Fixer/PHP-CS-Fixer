@@ -20,6 +20,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 
 /**
  * Fixes spaces around commas and assignment operators in Doctrine annotations.
@@ -35,7 +36,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
             'Fixes spaces in Doctrine annotations.',
             [
                 new CodeSample(
-                    "<?php\n/**\n * @Foo ( )\n */\nclass Bar {}\n\n/**\n * @Foo(\"bar\" ,\"baz\")\n */\nclass Bar2 {}\n\n/**\n * @Foo(foo = \"foo\", bar = {\"foo\":\"foo\", \"bar\"=\"bar\"})\n */\nclass Bar3 {}"
+                    "<?php\n/**\n * @Foo ( )\n */\nclass Bar {}\n\n/**\n * @Foo(\"bar\" ,\"baz\")\n */\nclass Bar2 {}\n\n/**\n * @Foo(foo = \"foo\", bar = {\"foo\":\"foo\", \"bar\"=\"bar\"})\n */\nclass Bar3 {}\n"
                 ),
             ],
             'There must not be any space around parentheses; commas must be preceded by no space and followed by one space; there must be no space around named arguments assignment operator; there must be one space around array assignment operator.'
@@ -45,15 +46,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     public function configure(array $configuration = null)
     {
         parent::configure($configuration);
-
-        if (null !== $configuration) {
-            if (array_key_exists('around_argument_assignments', $configuration)) {
-                @trigger_error('Option "around_argument_assignments" is deprecated and will be removed in 3.0, use options "before_argument_assignments" and "after_argument_assignments" instead.', E_USER_DEPRECATED);
-            }
-            if (array_key_exists('around_array_assignments', $configuration)) {
-                @trigger_error('Option "around_array_assignments" is deprecated and will be removed in 3.0, use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.', E_USER_DEPRECATED);
-            }
-        }
 
         if (!$this->configuration['around_argument_assignments']) {
             foreach ([
@@ -96,9 +88,10 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                     ->setAllowedTypes(['bool'])
                     ->setDefault(true)
                     ->getOption(),
-                (new FixerOptionBuilder('around_argument_assignments', 'Whether to fix spaces around argument assignment operator (deprecated, use `before_argument_assignments` and `after_argument_assignments` options instead).'))
+                (new FixerOptionBuilder('around_argument_assignments', 'Whether to fix spaces around argument assignment operator.'))
                     ->setAllowedTypes(['bool'])
                     ->setDefault(true)
+                    ->setDeprecationMessage('Use options `before_argument_assignments` and `after_argument_assignments` instead.')
                     ->getOption(),
                 (new FixerOptionBuilder('before_argument_assignments', 'Whether to add, remove or ignore spaces before argument assignment operator.'))
                     ->setAllowedTypes(['null', 'bool'])
@@ -108,9 +101,10 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                     ->setAllowedTypes(['null', 'bool'])
                     ->setDefault(false)
                     ->getOption(),
-                (new FixerOptionBuilder('around_array_assignments', 'Whether to fix spaces around array assignment operators (deprecated, use `before_array_assignments_*` and `after_array_assignments_*` options instead).'))
+                (new FixerOptionBuilder('around_array_assignments', 'Whether to fix spaces around array assignment operators.'))
                     ->setAllowedTypes(['bool'])
                     ->setDefault(true)
+                    ->setDeprecationMessage('Use options `before_array_assignments_equals`, `after_array_assignments_equals`, `before_array_assignments_colon` and `after_array_assignments_colon` instead.')
                     ->getOption(),
                 (new FixerOptionBuilder('before_array_assignments_equals', 'Whether to add, remove or ignore spaces before array `=` assignment operator.'))
                     ->setAllowedTypes(['null', 'bool'])
@@ -245,7 +239,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                 $token->clear();
             }
 
-            if ($index < count($tokens) - 1 && !preg_match('/^\s/', $tokens[$index + 1]->getContent())) {
+            if ($index < count($tokens) - 1 && !Preg::match('/^\s/', $tokens[$index + 1]->getContent())) {
                 $tokens->insertAt($index + 1, new Token(DocLexer::T_NONE, ' '));
             }
         }

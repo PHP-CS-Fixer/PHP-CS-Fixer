@@ -35,7 +35,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             'Force strict types declaration in all files. Requires PHP >= 7.0.',
             [
                 new VersionSpecificCodeSample(
-                    '<?php ',
+                    "<?php\n",
                     new VersionSpecification(70000)
                 ),
             ],
@@ -49,7 +49,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
      */
     public function getPriority()
     {
-        // must ran before SingleBlankLineBeforeNamespaceFixer, BlankLineAfterOpeningTagFixer and DeclareEqualNormalizeFixer.
+        // must run before BlankLineAfterOpeningTagFixer and DeclareEqualNormalizeFixer.
         return 2;
     }
 
@@ -161,10 +161,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         }
 
         $content = $tokens[1 + $endIndex]->getContent();
-        if (false !== strpos($content, "\n")) {
-            return;
-        }
-
-        $tokens[1 + $endIndex] = new Token([T_WHITESPACE, $lineEnding.ltrim($content)]);
+        $tokens[1 + $endIndex] = new Token([T_WHITESPACE, $lineEnding.ltrim($content, " \t")]);
     }
 }

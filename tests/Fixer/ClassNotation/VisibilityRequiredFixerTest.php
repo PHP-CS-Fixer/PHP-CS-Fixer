@@ -433,20 +433,16 @@ EOF;
 
     public function testInvalidConfigurationType()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => [null]]);
     }
 
     public function testInvalidConfigurationValue()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => ['_unknown_']]);
     }
@@ -456,15 +452,8 @@ EOF;
      */
     public function testInvalidConfigurationValueForPHPVersion()
     {
-        // @TODO remove condition after PHPUnit upgrade (and leave annotation)
-        if (PHP_VERSION_ID >= 70100) {
-            $this->markTestSkipped('PHP version to high.');
-        }
-
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class,
-            '/^\[visibility_required\] Invalid configuration for env: "const" option can only be enabled with PHP 7\.1\+\.$/'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration for env: "const" option can only be enabled with PHP 7\.1\+\.$/');
 
         $this->fixer->configure(['elements' => ['const']]);
     }
@@ -476,7 +465,7 @@ EOF;
      * @group legacy
      * @requires PHP 7.1
      * @dataProvider provideFixClassConstCases
-     * @expectedDeprecation Passing "elements" at the root of the configuration is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
+     * @expectedDeprecation Passing "elements" at the root of the configuration for rule "visibility_required" is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
      */
     public function testLegacyFixClassConst($expected, $input)
     {

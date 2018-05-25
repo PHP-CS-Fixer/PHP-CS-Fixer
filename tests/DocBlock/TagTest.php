@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\Tag;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -39,7 +39,8 @@ final class TagTest extends TestCase
         $this->assertSame($expected, $tag->getName());
 
         if ('other' === $expected) {
-            $this->setExpectedException(\RuntimeException::class, 'Cannot set name on unknown tag');
+            $this->expectException(\RuntimeException::class);
+            $this->expectExceptionMessage('Cannot set name on unknown tag');
         }
 
         $tag->setName($new);

@@ -76,7 +76,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideTestCases
-     * @expectedDeprecation Passing "replacements" at the root of the configuration is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
+     * @expectedDeprecation Passing "replacements" at the root of the configuration for rule "phpdoc_return_self_reference" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
      */
     public function testLegacyFix($expected, $input = null, array $configuration = [])
     {
@@ -183,10 +183,8 @@ class F
      */
     public function testInvalidConfiguration(array $configuration, $message)
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/'))
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
 
         $this->fixer->configure($configuration);
     }

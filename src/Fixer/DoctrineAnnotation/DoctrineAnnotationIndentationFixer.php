@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 
 final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotationFixer
 {
@@ -30,9 +31,9 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         return new FixerDefinition(
             'Doctrine annotations must be indented with four spaces.',
             [
-                new CodeSample("<?php\n/**\n *  @Foo(\n *   foo=\"foo\"\n *  )\n */\nclass Bar {}"),
+                new CodeSample("<?php\n/**\n *  @Foo(\n *   foo=\"foo\"\n *  )\n */\nclass Bar {}\n"),
                 new CodeSample(
-                    "<?php\n/**\n *  @Foo({@Bar,\n *   @Baz})\n */\nclass Bar {}",
+                    "<?php\n/**\n *  @Foo({@Bar,\n *   @Baz})\n */\nclass Bar {}\n",
                     ['indent_mixed_lines' => true]
                 ),
             ]
@@ -75,7 +76,6 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
             $index = $annotationEndIndex;
         }
 
-        $previousLineBracesDelta = 0;
         $indentLevel = 0;
         foreach ($tokens as $index => $token) {
             if (!$token->isType(DocLexer::T_NONE) || false === strpos($token->getContent(), "\n")) {
@@ -86,13 +86,12 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
                 continue;
             }
 
-            $currentLineDelta = $this->getLineBracesDelta($tokens, $index);
-
+            $braces = $this->getLineBracesCount($tokens, $index);
+            $delta = $braces[0] - $braces[1];
+            $mixedBraces = 0 === $delta && $braces[0] > 0;
             $extraIndentLevel = 0;
-            if ($previousLineBracesDelta > 0) {
-                ++$indentLevel;
-            }
-            if ($currentLineDelta < 0) {
+
+            if ($indentLevel > 0 && ($delta < 0 || $mixedBraces)) {
                 --$indentLevel;
 
                 if ($this->configuration['indent_mixed_lines'] && $this->isClosingLineWithMeaningfulContent($tokens, $index)) {
@@ -100,13 +99,15 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
                 }
             }
 
-            $previousLineBracesDelta = $currentLineDelta;
-
-            $token->setContent(preg_replace(
+            $token->setContent(Preg::replace(
                 '/(\n( +\*)?) *$/',
                 '$1'.str_repeat(' ', 4 * ($indentLevel + $extraIndentLevel) + 1),
                 $token->getContent()
             ));
+
+            if ($delta > 0 || $mixedBraces) {
+                ++$indentLevel;
+            }
         }
     }
 
@@ -114,11 +115,13 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
      * @param Tokens $tokens
      * @param int    $index
      *
-     * @return int
+     * @return int[]
      */
-    private function getLineBracesDelta(Tokens $tokens, $index)
+    private function getLineBracesCount(Tokens $tokens, $index)
     {
-        $lineBracesDelta = 0;
+        $opening = 0;
+        $closing = 0;
+
         while (isset($tokens[++$index])) {
             $token = $tokens[$index];
             if ($token->isType(DocLexer::T_NONE) && false !== strpos($token->getContent(), "\n")) {
@@ -126,19 +129,23 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
             }
 
             if ($token->isType([DocLexer::T_OPEN_PARENTHESIS, DocLexer::T_OPEN_CURLY_BRACES])) {
-                ++$lineBracesDelta;
+                ++$opening;
 
                 continue;
             }
 
-            if ($token->isType([DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES])) {
-                --$lineBracesDelta;
-
+            if (!$token->isType([DocLexer::T_CLOSE_PARENTHESIS, DocLexer::T_CLOSE_CURLY_BRACES])) {
                 continue;
+            }
+
+            if ($opening > 0) {
+                --$opening;
+            } else {
+                ++$closing;
             }
         }
 
-        return $lineBracesDelta;
+        return [$opening, $closing];
     }
 
     /**

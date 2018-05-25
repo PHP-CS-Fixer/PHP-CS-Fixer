@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\ProcessLinterProcessBuilder;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -29,8 +29,8 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      * @param string $file
      * @param string $expected
      *
-     * @testWith ["php", "foo.php", "'php' '-l' 'foo.php'"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
+     * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
+     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
      * @requires OS Linux|Darwin
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
@@ -48,7 +48,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      * @param string $file
      * @param string $expected
      *
-     * @testWith ["php", "foo.php", "php -l foo.php"]
+     * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
      *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
      * @requires OS ^Win
      */

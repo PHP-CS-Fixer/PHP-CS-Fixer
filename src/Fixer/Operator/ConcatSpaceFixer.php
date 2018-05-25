@@ -52,14 +52,14 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
             'Concatenation should be spaced according configuration.',
             [
                 new CodeSample(
-                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';"
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n"
                 ),
                 new CodeSample(
-                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n",
                     ['spacing' => 'none']
                 ),
                 new CodeSample(
-                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';",
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n",
                     ['spacing' => 'one']
                 ),
             ]
@@ -82,7 +82,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
         $callBack = $this->fixCallback;
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens[$index]->equals('.')) {
-                $this->$callBack($tokens, $index);
+                $this->{$callBack}($tokens, $index);
             }
         }
     }
@@ -106,7 +106,8 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
      */
     private function fixConcatenationToNoSpace(Tokens $tokens, $index)
     {
-        if (!$tokens[$tokens->getPrevNonWhitespace($index)]->isGivenKind(T_LNUMBER)) {
+        $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
+        if (!$prevNonWhitespaceToken->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT]) || '/*' === substr($prevNonWhitespaceToken->getContent(), 0, 2)) {
             $tokens->removeLeadingWhitespace($index, " \t");
         }
 

@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\ReporterFactory;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -51,7 +51,7 @@ final class ReporterFactoryTest extends TestCase
 
         $builder->registerBuiltInReporters();
         $this->assertSame(
-            ['json', 'junit', 'txt', 'xml'],
+            ['checkstyle', 'json', 'junit', 'txt', 'xml'],
             $builder->getFormats()
         );
     }
@@ -90,10 +90,8 @@ final class ReporterFactoryTest extends TestCase
 
     public function testRegisterReportWithOccupiedFormat()
     {
-        $this->setExpectedException(
-            \UnexpectedValueException::class,
-            'Reporter for format "non_unique_name" is already registered.'
-        );
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Reporter for format "non_unique_name" is already registered.');
 
         $factory = new ReporterFactory();
 
@@ -105,10 +103,8 @@ final class ReporterFactoryTest extends TestCase
 
     public function testGetNonRegisteredReport()
     {
-        $this->setExpectedException(
-            \UnexpectedValueException::class,
-            'Reporter for format "non_registered_format" is not registered.'
-        );
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Reporter for format "non_registered_format" is not registered.');
 
         $builder = new ReporterFactory();
 

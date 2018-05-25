@@ -82,7 +82,7 @@ final class CombineConsecutiveIssetsFixerTest extends AbstractFixerTestCase
                 '<?php $a = isset($a,$c) && isset($b,$c) && isset($b,$c,$d,$f) && isset($b);',
             ],
             'comments' => [
-'<?php
+                '<?php
 
 $a =#0
 isset#1
@@ -99,7 +99,7 @@ $a, $b,$c, $d#3
 */
  '.'
 ;',
-'<?php
+                '<?php
 
 $a =#0
 isset#1

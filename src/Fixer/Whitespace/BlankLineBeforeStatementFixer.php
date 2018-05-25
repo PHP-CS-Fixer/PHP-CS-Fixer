@@ -15,9 +15,9 @@ namespace PhpCsFixer\Fixer\Whitespace;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -36,8 +36,10 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
      */
     private static $tokenMap = [
         'break' => T_BREAK,
+        'case' => T_CASE,
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
+        'default' => T_DEFAULT,
         'die' => T_EXIT,
         'do' => T_DO,
         'exit' => T_EXIT,
@@ -89,7 +91,8 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
 function A() {
     echo 1;
     return 1;
-}'
+}
+'
                 ),
                 new CodeSample(
                     '<?php
@@ -99,7 +102,8 @@ switch ($foo) {
         break;
     case 44:
         break;
-}',
+}
+',
                     [
                         'statements' => ['break'],
                     ]
@@ -111,7 +115,8 @@ foreach ($foo as $bar) {
         $bar->sleep();
         continue;
     }
-}',
+}
+',
                     [
                         'statements' => ['continue'],
                     ]
@@ -123,7 +128,8 @@ if ($foo === false) {
 } else {
     $bar = 9000;
     die(1);
-}',
+}
+',
                     [
                         'statements' => ['die'],
                     ]
@@ -146,7 +152,8 @@ if ($foo === false) {
 } else {
     $bar = 9000;
     exit(1);
-}',
+}
+',
                     [
                         'statements' => ['exit'],
                     ]
@@ -160,7 +167,8 @@ if ($foo === false) {
 } else {
     $bar = 9000;
     goto b;
-}',
+}
+',
                     [
                         'statements' => ['goto'],
                     ]
@@ -170,7 +178,8 @@ if ($foo === false) {
 $a = 9000;
 if (true) {
     $foo = $bar;
-}',
+}
+',
                     [
                         'statements' => ['if'],
                     ]
@@ -181,7 +190,8 @@ if (true) {
 if (true) {
     $foo = $bar;
     return;
-}',
+}
+',
                     [
                         'statements' => ['return'],
                     ]
@@ -192,7 +202,8 @@ $a = 9000;
 switch ($a) {
     case 42:
         break;
-}',
+}
+',
                     [
                         'statements' => ['switch'],
                     ]
@@ -202,7 +213,8 @@ switch ($a) {
 if (null === $a) {
     $foo->bar();
     throw new \UnexpectedValueException("A cannot be null");
-}',
+}
+',
                     [
                         'statements' => ['throw'],
                     ]
@@ -214,7 +226,8 @@ try {
     $foo->bar();
 } catch (\Exception $exception) {
     $a = -1;
-}',
+}
+',
                     [
                         'statements' => ['try'],
                     ]
@@ -225,7 +238,8 @@ try {
 if (true) {
     $foo = $bar;
     yield $foo;
-}',
+}
+',
                     [
                         'statements' => ['yield'],
                     ]
@@ -239,8 +253,8 @@ if (true) {
      */
     public function getPriority()
     {
-        // should be run after NoUselessReturnFixer
-        return -19;
+        // should be run after NoUselessReturnFixer and NoExtraBlankLinesFixer
+        return -21;
     }
 
     /**
@@ -301,9 +315,7 @@ if (true) {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$tokenMap)),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$tokenMap))])
                 ->setDefault([
                     'break',
                     'continue',

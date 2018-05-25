@@ -31,7 +31,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove useless semicolon statements.',
-            [new CodeSample('<?php $a = 1;;')]
+            [new CodeSample("<?php \$a = 1;;\n")]
         );
     }
 
@@ -40,7 +40,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before the BracesFixer, CombineConsecutiveUnsetsFixer, NoExtraConsecutiveBlankLinesFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer,
+        // should be run before the BracesFixer, CombineConsecutiveUnsetsFixer, NoExtraBlankLinesFixer, MultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer,
         // NoTrailingCommaInListCallFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, SpaceAfterSemicolonFixer, SwitchCaseSemicolonToColonFixer.
         return 26;
     }
@@ -111,7 +111,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             $beforeCurlyOpeningKinds = [T_ELSE, T_FINALLY, T_NAMESPACE, T_OPEN_TAG];
         }
 
-        $curlyOpeningIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $curlyCloseIndex, false);
+        $curlyOpeningIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $curlyCloseIndex);
         $beforeCurlyOpening = $tokens->getPrevMeaningfulToken($curlyOpeningIndex);
         if ($tokens[$beforeCurlyOpening]->isGivenKind($beforeCurlyOpeningKinds) || $tokens[$beforeCurlyOpening]->equalsAny([';', '{', '}'])) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
@@ -143,7 +143,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             return;
         }
 
-        $openingBrace = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $beforeCurlyOpening, false);
+        $openingBrace = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $beforeCurlyOpening);
         $beforeOpeningBrace = $tokens->getPrevMeaningfulToken($openingBrace);
 
         if ($tokens[$beforeOpeningBrace]->isGivenKind([T_IF, T_ELSEIF, T_FOR, T_FOREACH, T_WHILE, T_SWITCH, T_CATCH, T_DECLARE])) {

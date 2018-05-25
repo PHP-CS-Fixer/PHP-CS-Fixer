@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -104,7 +105,11 @@ class DocBlocks
 
             $newPrevContent = $this->fixWhitespaceBeforeDocblock($prevToken->getContent(), $indent);
             if ($newPrevContent) {
-                $tokens[$prevIndex] = new Token([$prevToken->getId(), $newPrevContent]);
+                if ($prevToken->isArray()) {
+                    $tokens[$prevIndex] = new Token([$prevToken->getId(), $newPrevContent]);
+                } else {
+                    $tokens[$prevIndex] = new Token($newPrevContent);
+                }
             } else {
                 $tokens->clearAt($prevIndex);
             }
@@ -123,7 +128,7 @@ class DocBlocks
      */
     private function fixDocBlock($content, $indent)
     {
-        return ltrim(preg_replace('/^[ \t]*/m', $indent.' ', $content));
+        return ltrim(Preg::replace('/^[ \t]*\*/m', $indent.' *', $content));
     }
 
     /**

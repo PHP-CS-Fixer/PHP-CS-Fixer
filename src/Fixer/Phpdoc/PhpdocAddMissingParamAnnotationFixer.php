@@ -21,6 +21,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -36,7 +37,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Phpdoc should contain @param for all params.',
+            'PHPDoc should contain `@param` for all params.',
             [
                 new CodeSample(
                     '<?php
@@ -45,7 +46,8 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
  *
  * @return void
  */
-function f9(string $foo, $bar, $baz) {}'
+function f9(string $foo, $bar, $baz) {}
+'
                 ),
                 new CodeSample(
                     '<?php
@@ -54,7 +56,8 @@ function f9(string $foo, $bar, $baz) {}'
  *
  * @return void
  */
-function f9(string $foo, $bar, $baz) {}',
+function f9(string $foo, $bar, $baz) {}
+',
                     ['only_untyped' => true]
                 ),
                 new CodeSample(
@@ -64,7 +67,8 @@ function f9(string $foo, $bar, $baz) {}',
  *
  * @return void
  */
-function f9(string $foo, $bar, $baz) {}',
+function f9(string $foo, $bar, $baz) {}
+',
                     ['only_untyped' => false]
                 ),
             ]
@@ -165,7 +169,7 @@ function f9(string $foo, $bar, $baz) {}',
             $lastParamLine = null;
 
             foreach ($doc->getAnnotationsOfType('param') as $annotation) {
-                $pregMatched = preg_match('/^[^$]+(\$\w+).*$/s', $annotation->getContent(), $matches);
+                $pregMatched = Preg::match('/^[^$]+(\$\w+).*$/s', $annotation->getContent(), $matches);
 
                 if (1 === $pregMatched) {
                     unset($arguments[$matches[1]]);
@@ -181,7 +185,7 @@ function f9(string $foo, $bar, $baz) {}',
             $lines = $doc->getLines();
             $linesCount = count($lines);
 
-            preg_match('/^(\s*).*$/', $lines[$linesCount - 1]->getContent(), $matches);
+            Preg::match('/^(\s*).*$/', $lines[$linesCount - 1]->getContent(), $matches);
             $indent = $matches[1];
 
             $newLines = [];

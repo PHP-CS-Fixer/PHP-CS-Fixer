@@ -47,14 +47,14 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurationDefini
             'A single space or none should be between cast and variable.',
             [
                 new CodeSample(
-                    "<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;"
+                    "<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;\n"
                 ),
                 new CodeSample(
-                    "<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;",
+                    "<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;\n",
                     ['space' => 'single']
                 ),
                 new CodeSample(
-                    "<?php\n\$bar = ( string )  \$a;\n\$foo = (int) \$b;",
+                    "<?php\n\$bar = ( string )  \$a;\n\$foo = (int) \$b;\n",
                     ['space' => 'none']
                 ),
             ]
@@ -66,7 +66,7 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurationDefini
      */
     public function getPriority()
     {
-        // should be ran after the NoShortBoolCastFixer
+        // should be run after the NoShortBoolCastFixer
         return -10;
     }
 

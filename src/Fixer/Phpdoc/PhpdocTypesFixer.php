@@ -31,6 +31,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
         'bool',
         'boolean',
         'callable',
+        'callback',
         'double',
         'false',
         'float',
@@ -40,8 +41,10 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
         'mixed',
         'null',
         'object',
+        'parent',
         'real',
         'resource',
+        'scalar',
         'self',
         'static',
         'string',
@@ -56,7 +59,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'The correct case must be used for standard PHP types in phpdoc.',
+            'The correct case must be used for standard PHP types in PHPDoc.',
             [
                 new CodeSample(
                     '<?php

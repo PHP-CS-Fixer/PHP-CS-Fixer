@@ -87,8 +87,16 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
             ],
             [
-                '<?php trait Foo { function bar() { self::bar(); } }',
-                '<?php trait Foo { function bar() { Foo::bar(); } }',
+                // In trait "self" will reference the class it's used in, not the actual trait, so we can't replace "Foo" with "self" here
+                '<?php trait Foo { function bar() { Foo::bar(); } } class Bar { use Foo; }',
+            ],
+            [
+                '<?php class Foo { public function bar(self $foo, self $bar) { return new self(); } }',
+                '<?php class Foo { public function bar(Foo $foo, Foo $bar) { return new Foo(); } }',
+            ],
+            [
+                '<?php interface Foo { public function bar(self $foo, self $bar); }',
+                '<?php interface Foo { public function bar(Foo $foo, Foo $bar); }',
             ],
         ];
     }
@@ -115,6 +123,40 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php class Foo { protected $foo; function bar() { return $this->foo::find(2); } }',
+            ],
+            [
+                '<?php class Foo { public function bar(self $foo, self $bar): self { return new self(); } }',
+                '<?php class Foo { public function bar(Foo $foo, Foo $bar): Foo { return new Foo(); } }',
+            ],
+            [
+                '<?php interface Foo { public function bar(self $foo, self $bar): self; }',
+                '<?php interface Foo { public function bar(Foo $foo, Foo $bar): Foo; }',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix71Cases
+     * @requires PHP 7.1
+     */
+    public function testFix71($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix71Cases()
+    {
+        return [
+            [
+                '<?php class Foo { public function bar(?self $foo, ?self $bar): ?self { return new self(); } }',
+                '<?php class Foo { public function bar(?Foo $foo, ?Foo $bar): ?Foo { return new Foo(); } }',
+            ],
+            [
+                "<?php interface Foo{ public function bar()\t/**/:?/**/self; }",
+                "<?php interface Foo{ public function bar()\t/**/:?/**/Foo; }",
             ],
         ];
     }

@@ -33,14 +33,22 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Replaces is_null(parameter) expression with `null === parameter`.',
+            'Replaces `is_null($var)` expression with `null === $var`.',
             [
-                new CodeSample("<?php\n\$a = is_null(\$b);"),
-                new CodeSample("<?php\n\$a = is_null(\$b);", ['use_yoda_style' => false]),
+                new CodeSample("<?php\n\$a = is_null(\$b);\n"),
             ],
             null,
-            'Risky when the function `is_null()` is overridden.'
+            'Risky when the function `is_null` is overridden.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // must be run before YodaStyleFixer
+        return 1;
     }
 
     /**
@@ -187,10 +195,12 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
      */
     protected function createConfigurationDefinition()
     {
+        // @todo 3.0 drop `ConfigurationDefinitionFixerInterface`
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('use_yoda_style', 'Whether Yoda style conditions should be used.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
+                ->setDeprecationMessage('Use `yoda_style` fixer instead.')
                 ->getOption(),
         ]);
     }

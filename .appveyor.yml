@@ -28,15 +28,17 @@ install:
     - echo extension_dir=ext >> php.ini
     - echo extension=php_curl.dll >> php.ini
     - echo extension=php_openssl.dll >> php.ini
+    - echo extension=php_mbstring.dll >> php.ini
     - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/download/1.4.1/composer.phar)
     - cd C:\projects\php-cs-fixer
     - php C:\tools\composer.phar global show hirak/prestissimo -q || php C:\tools\composer.phar global require hirak/prestissimo
 
 before_test:
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\composer.phar update --no-interaction --no-progress --prefer-stable --no-ansi
+    - php C:\tools\composer.phar update --optimize-autoloader --no-interaction --no-progress --prefer-stable --no-ansi
 
 test_script:
     - cd C:\projects\php-cs-fixer
     - vendor\bin\phpunit
+    - set PHP_CS_FIXER_FUTURE_MODE=1
     - php php-cs-fixer --diff --dry-run -v fix

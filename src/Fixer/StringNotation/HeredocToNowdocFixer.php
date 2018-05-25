@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\StringNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -76,7 +77,7 @@ EOF
 
             $content = $tokens[$index + 1]->getContent();
             // regex: odd number of backslashes, not followed by dollar
-            if (preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?![$\\\\])/', $content)) {
+            if (Preg::match('/(?<!\\\\)(?:\\\\{2})*\\\\(?![$\\\\])/', $content)) {
                 continue;
             }
 
@@ -94,13 +95,13 @@ EOF
      *
      * @param Token $token
      *
-     * @return $token
+     * @return Token
      */
     private function convertToNowdoc(Token $token)
     {
         return new Token([
             $token->getId(),
-            preg_replace('/(?<=^<<<)([ \t]*)"?([^\s"]+)"?/', '$1\'$2\'', $token->getContent()),
+            Preg::replace('/(?<=^<<<)([ \t]*)"?([^\s"]+)"?/', '$1\'$2\'', $token->getContent()),
         ]);
     }
 }

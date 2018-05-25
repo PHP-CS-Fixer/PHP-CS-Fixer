@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -24,6 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author SpacePossum
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class PhpUnitDedicateAssertFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
@@ -31,25 +32,92 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         'array_key_exists' => ['assertArrayNotHasKey', 'assertArrayHasKey'],
         'empty' => ['assertNotEmpty', 'assertEmpty'],
         'file_exists' => ['assertFileNotExists', 'assertFileExists'],
-        'is_infinite' => ['assertFinite', 'assertInfinite'],
-        'is_nan' => [false, 'assertNan'],
-        'is_null' => ['assertNotNull', 'assertNull'],
         'is_array' => true,
         'is_bool' => true,
-        'is_boolean' => true,
         'is_callable' => true,
+        'is_dir' => ['assertDirectoryNotExists', 'assertDirectoryExists'],
         'is_double' => true,
         'is_float' => true,
+        'is_infinite' => ['assertFinite', 'assertInfinite'],
         'is_int' => true,
         'is_integer' => true,
         'is_long' => true,
+        'is_nan' => [false, 'assertNan'],
+        'is_null' => ['assertNotNull', 'assertNull'],
         'is_numeric' => true,
         'is_object' => true,
+        'is_readable' => ['assertNotIsReadable', 'assertIsReadable'],
         'is_real' => true,
         'is_resource' => true,
         'is_scalar' => true,
         'is_string' => true,
+        'is_writable' => ['assertNotIsWritable', 'assertIsWritable'],
     ];
+
+    /**
+     * @var string[]
+     */
+    private $functions = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        parent::configure($configuration);
+
+        if (isset($this->configuration['functions'])) {
+            $this->functions = $this->configuration['functions'];
+
+            return;
+        }
+
+        // assertions added in 3.0: assertArrayNotHasKey assertArrayHasKey assertFileNotExists assertFileExists assertNotNull, assertNull
+        $this->functions = [
+            'array_key_exists',
+            'file_exists',
+            'is_null',
+        ];
+
+        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_3_5)) {
+            // assertions added in 3.5: assertInternalType assertNotEmpty assertEmpty
+            $this->functions = array_merge($this->functions, [
+                'empty',
+                'is_array',
+                'is_bool',
+                'is_boolean',
+                'is_callable',
+                'is_double',
+                'is_float',
+                'is_int',
+                'is_integer',
+                'is_long',
+                'is_numeric',
+                'is_object',
+                'is_real',
+                'is_resource',
+                'is_scalar',
+                'is_string',
+            ]);
+        }
+
+        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_0)) {
+            // assertions added in 5.0: assertFinite assertInfinite assertNan
+            $this->functions = array_merge($this->functions, [
+                'is_infinite',
+                'is_nan',
+            ]);
+        }
+
+        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_6)) {
+            // assertions added in 5.6: assertDirectoryExists assertDirectoryNotExists assertIsReadable assertNotIsReadable assertIsWritable assertNotIsWritable
+            $this->functions = array_merge($this->functions, [
+                'is_dir',
+                'is_readable',
+                'is_writable',
+            ]);
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -73,7 +141,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHPUnit assertions like "assertInternalType", "assertFileExists", should be used over "assertTrue".',
+            'PHPUnit assertions like `assertInternalType`, `assertFileExists`, should be used over `assertTrue`.',
             [
                 new CodeSample(
                     '<?php
@@ -83,10 +151,11 @@ $this->assertTrue(is_nan($a));
                 ),
                 new CodeSample(
                     '<?php
-$this->assertTrue(is_float( $a), "my message");
-$this->assertTrue(is_nan($a));
+$this->assertTrue(is_dir($a));
+$this->assertTrue(is_writable($a));
+$this->assertTrue(is_readable($a));
 ',
-                    ['functions' => ['is_nan']]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_6]
                 ),
             ],
             null,
@@ -108,23 +177,28 @@ $this->assertTrue(is_nan($a));
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $searchSequence = [
-            [T_VARIABLE, '$this'],
-            [T_OBJECT_OPERATOR, '->'],
-            [T_STRING],
-        ];
-
-        $index = 1;
-        $candidate = $tokens->findSequence($searchSequence, $index);
-        while (null !== $candidate) {
-            end($candidate);
-            $index = $this->getAssertCandidate($tokens, key($candidate));
-            if (is_array($index)) {
-                $index = $this->fixAssert($tokens, $index);
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING]]);
+            if (null === $methodIndex) {
+                break;
             }
 
-            ++$index;
-            $candidate = $tokens->findSequence($searchSequence, $index);
+            $operatorIndex = $tokens->getPrevMeaningfulToken($methodIndex);
+            $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
+            if (
+                !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
+                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
+                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
+            ) {
+                continue;
+            }
+
+            $index = $this->getAssertCandidate($tokens, $methodIndex);
+            if (!is_array($index)) {
+                continue;
+            }
+
+            $index = $this->fixAssert($tokens, $index);
         }
     }
 
@@ -137,18 +211,17 @@ $this->assertTrue(is_nan($a));
             'array_key_exists',
             'empty',
             'file_exists',
-            'is_infinite',
-            'is_nan',
-            'is_null',
             'is_array',
             'is_bool',
-            'is_boolean',
             'is_callable',
             'is_double',
             'is_float',
+            'is_infinite',
             'is_int',
             'is_integer',
             'is_long',
+            'is_nan',
+            'is_null',
             'is_numeric',
             'is_object',
             'is_real',
@@ -157,15 +230,30 @@ $this->assertTrue(is_nan($a));
             'is_string',
         ];
 
+        sort($values);
+
         return new FixerConfigurationResolverRootless('functions', [
-            (new FixerOptionBuilder('functions', 'List of assertions to fix.'))
-                ->setAllowedTypes(['array'])
+            (new FixerOptionBuilder('functions', 'List of assertions to fix (overrides `target`).'))
+                ->setAllowedTypes(['null', 'array'])
                 ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
+                    null,
+                    new AllowedValueSubset($values),
                 ])
-                ->setDefault($values)
+                ->setDefault(null)
+                ->setDeprecationMessage('Use option `target` instead.')
                 ->getOption(),
-        ]);
+            (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
+                ->setAllowedTypes(['string'])
+                ->setAllowedValues([
+                    PhpUnitTargetVersion::VERSION_3_0,
+                    PhpUnitTargetVersion::VERSION_3_5,
+                    PhpUnitTargetVersion::VERSION_5_0,
+                    PhpUnitTargetVersion::VERSION_5_6,
+                    PhpUnitTargetVersion::VERSION_NEWEST,
+                ])
+                ->setDefault(PhpUnitTargetVersion::VERSION_5_0) // @TODO 3.x: change to `VERSION_NEWEST`
+                ->getOption(),
+        ], $this->getName());
     }
 
     /**
@@ -247,7 +335,7 @@ $this->assertTrue(is_nan($a));
         ) = $assertIndexes;
 
         $content = strtolower($tokens[$testIndex]->getContent());
-        if (!in_array($content, $this->configuration['functions'], true)) {
+        if (!in_array($content, $this->functions, true)) {
             return $assertCallCloseIndex;
         }
 

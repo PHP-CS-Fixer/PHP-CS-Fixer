@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -26,7 +26,7 @@ final class VersionSpecificationTest extends TestCase
 {
     public function testConstructorRequiresEitherMinimumOrMaximum()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         new VersionSpecification();
     }
@@ -38,7 +38,7 @@ final class VersionSpecificationTest extends TestCase
      */
     public function testConstructorRejectsInvalidMinimum($minimum)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         new VersionSpecification($minimum);
     }
@@ -50,7 +50,7 @@ final class VersionSpecificationTest extends TestCase
      */
     public function testConstructorRejectsInvalidMaximum($maximum)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         new VersionSpecification(
             PHP_VERSION_ID,
@@ -76,7 +76,7 @@ final class VersionSpecificationTest extends TestCase
 
     public function testConstructorRejectsMaximumLessThanMinimum()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         new VersionSpecification(
             PHP_VERSION_ID,

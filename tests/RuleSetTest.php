@@ -15,9 +15,9 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -69,6 +69,23 @@ final class RuleSetTest extends TestCase
         }
     }
 
+    /**
+     * @param string $ruleName
+     * @param string $setName
+     *
+     * @dataProvider provideAllRulesFromSetsCases
+     */
+    public function testThatThereIsNoDeprecatedFixerInRuleSet($setName, $ruleName)
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+        $factory->useRuleSet(new RuleSet([$ruleName => true]));
+
+        $fixer = current($factory->getFixers());
+
+        $this->assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
+    }
+
     public function provideAllRulesFromSetsCases()
     {
         $cases = [];
@@ -106,10 +123,8 @@ final class RuleSetTest extends TestCase
 
     public function testResolveRulesWithInvalidSet()
     {
-        $this->setExpectedException(
-            \InvalidArgumentException::class,
-            'Set "@foo" does not exist.'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Set "@foo" does not exist.');
 
         RuleSet::create([
             '@foo' => true,
@@ -118,10 +133,8 @@ final class RuleSetTest extends TestCase
 
     public function testResolveRulesWithMissingRuleValue()
     {
-        $this->setExpectedException(
-            \InvalidArgumentException::class,
-            'Missing value for "braces" rule/set.'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing value for "braces" rule/set.');
 
         RuleSet::create([
             'braces',
@@ -266,7 +279,7 @@ final class RuleSetTest extends TestCase
     {
         $setDefinitionNames = RuleSet::create()->getSetDefinitionNames();
 
-        return array_map(function ($setDefinitionName) {
+        return array_map(static function ($setDefinitionName) {
             return [$setDefinitionName];
         }, $setDefinitionNames);
     }
@@ -333,10 +346,8 @@ final class RuleSetTest extends TestCase
 
     public function testInvalidConfigNestedSets()
     {
-        $this->setExpectedExceptionRegExp(
-            \UnexpectedValueException::class,
-            '#^Nested rule set "@PSR1" configuration must be a boolean\.$#'
-        );
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessageRegExp('#^Nested rule set "@PSR1" configuration must be a boolean\.$#');
 
         new RuleSet(
             ['@PSR1' => ['@PSR2' => 'no']]
@@ -499,10 +510,8 @@ final class RuleSetTest extends TestCase
     {
         $ruleSet = new RuleSet();
 
-        $this->setExpectedExceptionRegExp(
-            \InvalidArgumentException::class,
-            '#^Rule "_not_exists" is not in the set\.$#'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('#^Rule "_not_exists" is not in the set\.$#');
 
         $ruleSet->getRuleConfiguration('_not_exists');
     }

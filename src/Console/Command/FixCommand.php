@@ -21,6 +21,7 @@ use PhpCsFixer\Console\Output\ProcessOutput;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,6 +30,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Terminal;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
@@ -42,7 +44,7 @@ final class FixCommand extends Command
     const COMMAND_NAME = 'fix';
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
@@ -61,7 +63,12 @@ final class FixCommand extends Command
      */
     private $defaultConfig;
 
-    public function __construct()
+    /**
+     * @var ToolInfoInterface
+     */
+    private $toolInfo;
+
+    public function __construct(ToolInfoInterface $toolInfo)
     {
         parent::__construct();
 
@@ -69,6 +76,7 @@ final class FixCommand extends Command
         $this->errorsManager = new ErrorsManager();
         $this->eventDispatcher = new EventDispatcher();
         $this->stopwatch = new Stopwatch();
+        $this->toolInfo = $toolInfo;
     }
 
     /**
@@ -99,9 +107,10 @@ final class FixCommand extends Command
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no).'),
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                     new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file.'),
+                    new InputOption('diff-format', '', InputOption::VALUE_REQUIRED, 'Specify diff format.'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, estimating or estimating-max).'),
+                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, estimating, estimating-max or dots).'),
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
@@ -131,11 +140,13 @@ final class FixCommand extends Command
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
                 'diff' => $input->getOption('diff'),
+                'diff-format' => $input->getOption('diff-format'),
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
             ],
-            getcwd()
+            getcwd(),
+            $this->toolInfo
         );
 
         $reporter = $resolver->getReporter();
@@ -147,6 +158,10 @@ final class FixCommand extends Command
 
         if (null !== $stdErr) {
             if (null !== $passedConfig && null !== $passedRules) {
+                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                    throw new \RuntimeException('Passing both `config` and `rules` options is not possible. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
+                }
+
                 $stdErr->writeln([
                     sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'When passing both "--config" and "--rules" the rules within the configuration file are not used.'),
                     sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Passing both options is deprecated; version v3.0 PHP-CS-Fixer will exit with a configuration error code.'),
@@ -173,7 +188,7 @@ final class FixCommand extends Command
             );
         }
 
-        // @TODO remove `run-in` and `estimating` in 3.0
+        // @TODO 3.0 remove `run-in` and `estimating`
         if ('none' === $progressType || null === $stdErr) {
             $progressOutput = new NullOutput();
         } elseif ('run-in' === $progressType) {
@@ -183,7 +198,7 @@ final class FixCommand extends Command
             $progressOutput = new ProcessOutput(
                 $stdErr,
                 $this->eventDispatcher,
-                'estimating-max' === $progressType ? (new Terminal())->getWidth() : null,
+                'estimating' !== $progressType ? (new Terminal())->getWidth() : null,
                 count($finder)
             );
         }

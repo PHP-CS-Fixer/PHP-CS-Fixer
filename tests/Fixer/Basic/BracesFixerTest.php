@@ -30,10 +30,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigurationClassyConstructs()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '#^\[braces\] Invalid configuration: The option "position_after_functions_and_oop_constructs" with value "neither" is invalid\. Accepted values are: "next", "same"\.$#'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[braces\] Invalid configuration: The option "position_after_functions_and_oop_constructs" with value "neither" is invalid\. Accepted values are: "next", "same"\.$#');
 
         $this->fixer->configure(['position_after_functions_and_oop_constructs' => 'neither']);
     }
@@ -591,7 +589,7 @@ $b = a();
 }',
             ],
             [
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
             $a = 1;
@@ -600,7 +598,7 @@ $b = a();
         }
     }
 ',
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
          $a = 1;
@@ -611,7 +609,7 @@ $b = a();
 ',
             ],
             [
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
             $a = 1;
@@ -621,7 +619,7 @@ $b = a();
         }
     }
 ',
-'<?php
+                '<?php
     if ($b) {
         if (1==1) {
          $a = 1;
@@ -787,6 +785,27 @@ function test()
 //        return true;
 //    };
     $a = 3;
+}',
+            ],
+            [
+                '<?php
+class Foo
+{
+    public function bar()
+    {
+        foreach (new Bar() as $file) {
+            foo();
+        }
+    }
+}',
+                '<?php
+class Foo {
+    public function bar() {
+        foreach (new Bar() as $file)
+        {
+            foo();
+        }
+    }
 }',
             ],
         ];
@@ -1026,7 +1045,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // comment
+    // comment
     } else {
         $c = "c";
     }
@@ -1738,7 +1757,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-        // comment
+    // comment
     } else {
         $c = "c";
     }
@@ -3103,6 +3122,27 @@ function foo()
         echo 1;
     };',
                 self::$configurationOopPositionSameLine,
+            ],
+            [
+                '<?php
+    // 2.5+ API
+    if (isNewApi()) {
+        echo "new API";
+    // 2.4- API
+    } elseif (isOldApi()) {
+        echo "old API";
+    // 2.4- API
+    } else {
+        echo "unknown API";
+        // sth
+    }
+
+    return $this->guess($class, $property, function (Constraint $constraint) use ($guesser) {
+        return $guesser->guessRequiredForConstraint($constraint);
+    // Fallback to false...
+    // ... due to sth...
+    }, false);
+    ',
             ],
         ];
     }
@@ -5056,6 +5096,36 @@ if (true) {
     /**
      * @param string      $expected
      * @param null|string $input
+     *
+     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
+     */
+    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
+    {
+        return [
+            [
+                '<?php
+if (true) {
+    do {
+        echo 1;
+    } while (false);
+}',
+                '<?php
+if (true)
+    do {
+        echo 1;
+    } while (false);',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
      * @param null|array  $configuration
      *
      * @dataProvider provideMessyWhitespacesCases
@@ -5126,33 +5196,68 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
         ];
     }
 
-    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
-    {
-        return [
-            [
-                '<?php
-if (true) {
-    do {
-        echo 1;
-    } while (false);
-}',
-                '<?php
-if (true)
-    do {
-        echo 1;
-    } while (false);',
-            ],
-        ];
-    }
-
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
+     * @dataProvider provideNowdocInTemplatesCases
      */
-    public function testDoWhileLoopInsideAnIfWithoutBrackets($expected, $input = null)
+    public function testNowdocInTemplates($expected, $input = null)
     {
         $this->doTest($expected, $input);
+    }
+
+    public function provideNowdocInTemplatesCases()
+    {
+        return [
+            [
+                <<<'EOT'
+<?php
+if (true) {
+    $var = <<<'NOWDOC'
+NOWDOC;
+?>
+<?php
+}
+
+EOT
+                ,
+                <<<'EOT'
+<?php
+if (true) {
+$var = <<<'NOWDOC'
+NOWDOC;
+?>
+<?php
+}
+
+EOT
+                ,
+            ],
+            [
+                <<<'EOT'
+<?php
+if (true) {
+    $var = <<<HEREDOC
+HEREDOC;
+?>
+<?php
+}
+
+EOT
+                ,
+                <<<'EOT'
+<?php
+if (true) {
+$var = <<<HEREDOC
+HEREDOC;
+?>
+<?php
+}
+
+EOT
+                ,
+            ],
+        ];
     }
 }

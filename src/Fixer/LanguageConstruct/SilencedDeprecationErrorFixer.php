@@ -30,7 +30,7 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Ensures deprecation notices are silenced.',
-            [new CodeSample("<?php\ntrigger_error('Warning.', E_USER_DEPRECATED);")],
+            [new CodeSample("<?php\ntrigger_error('Warning.', E_USER_DEPRECATED);\n")],
             null,
             'Silencing of deprecation errors might cause changes to code behaviour.'
         );
@@ -70,7 +70,7 @@ final class SilencedDeprecationErrorFixer extends AbstractFixer
                 $prev = $tokens->getPrevMeaningfulToken($start);
             }
 
-            if ($tokens[$prev]->isGivenKind(T_STRING) || $tokens[$prev]->equals('@')) {
+            if ($tokens[$prev]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_STRING]) || $tokens[$prev]->equals('@')) {
                 continue;
             }
 

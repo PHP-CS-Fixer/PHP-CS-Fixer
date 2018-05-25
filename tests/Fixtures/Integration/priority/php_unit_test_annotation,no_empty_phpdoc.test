@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: php_unit_test_annotation,no_empty_phpdoc.
+--RULESET--
+{"php_unit_test_annotation": true, "no_empty_phpdoc" : true}
+--EXPECT--
+<?php
+class Test
+{
+    
+    public function testFooBar() {}
+}
+
+--INPUT--
+<?php
+class Test
+{
+    /**
+     * @test
+     */
+    public function fooBar() {}
+}

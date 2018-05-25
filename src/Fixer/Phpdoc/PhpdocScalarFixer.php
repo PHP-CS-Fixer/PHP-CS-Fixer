@@ -13,13 +13,17 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
+final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * The types to fix.
@@ -28,6 +32,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
      */
     private static $types = [
         'boolean' => 'bool',
+        'callback' => 'callable',
         'double' => 'float',
         'integer' => 'int',
         'real' => 'float',
@@ -52,7 +57,8 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer
 function sample($a, $b, $c)
 {
     return sample2($a, $b, $c);
-}')]
+}
+')]
         );
     }
 
@@ -73,9 +79,22 @@ function sample($a, $b, $c)
     /**
      * {@inheritdoc}
      */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('types', 'A map of types to fix.'))
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$types))])
+                ->setDefault(['boolean', 'double', 'integer', 'real', 'str']) // TODO 3.0 add "callback"
+                ->getOption(),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function normalize($type)
     {
-        if (array_key_exists($type, self::$types)) {
+        if (in_array($type, $this->configuration['types'], true)) {
             return self::$types[$type];
         }
 

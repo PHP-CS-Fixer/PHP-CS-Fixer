@@ -13,9 +13,9 @@
 namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -287,10 +287,8 @@ final class TokensTest extends TestCase
      */
     public function testFindSequenceException($message, array $sequence)
     {
-        $this->setExpectedException(
-            \InvalidArgumentException::class,
-            $message
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($message);
 
         $tokens = Tokens::fromCode('<?php $x = 1;');
         $tokens->findSequence($sequence);
@@ -707,6 +705,28 @@ PHP;
             [5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3],
             [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
             [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5],
+            [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
+        ];
+    }
+
+    /**
+     * @param int    $expectedIndex
+     * @param string $source
+     * @param int    $type
+     * @param int    $searchIndex
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideFindBlockEnd70Cases
+     */
+    public function testFindBlockEnd70($expectedIndex, $source, $type, $searchIndex)
+    {
+        $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    public function provideFindBlockEnd70Cases()
+    {
+        return [
+            [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
         ];
     }
 
@@ -734,10 +754,8 @@ PHP;
 
     public function testFindBlockEndInvalidType()
     {
-        $this->setExpectedExceptionRegExp(
-            \InvalidArgumentException::class,
-            '/^Invalid param type: -1\.$/'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('/^Invalid param type: -1\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
@@ -746,14 +764,34 @@ PHP;
 
     public function testFindBlockEndInvalidStart()
     {
-        $this->setExpectedExceptionRegExp(
-            \InvalidArgumentException::class,
-            '/^Invalid param \$startIndex - not a proper block start\.$/'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('/^Invalid param \$startIndex - not a proper block start\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
+    }
+
+    /**
+     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart instead.
+     * @group legacy
+     */
+    public function testFindBlockEndLastParameterFalseDeprecated()
+    {
+        $tokens = Tokens::fromCode('<?php ${$bar};');
+
+        $this->assertSame(2, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 4, false));
+    }
+
+    /**
+     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.
+     * @group legacy
+     */
+    public function testFindBlockEndLastParameterTrueDeprecated()
+    {
+        $tokens = Tokens::fromCode('<?php ${$bar};');
+
+        $this->assertSame(4, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2, true));
     }
 
     public function testEmptyTokens()
@@ -849,8 +887,8 @@ PHP;
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex, true));
-        $this->assertSame($searchIndex, $tokens->findBlockEnd($type, $expectedIndex, false));
+        $this->assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex));
+        $this->assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
 
         $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
         $this->assertInternalType('array', $detectedType);
@@ -1036,6 +1074,107 @@ echo $a;',
     }
 
     /**
+     * @dataProvider provideRemoveLeadingWhitespaceCases
+     *
+     * @param int         $index
+     * @param null|string $whitespaces
+     * @param string      $expected
+     * @param string      $input
+     */
+    public function testRemoveLeadingWhitespace($index, $whitespaces, $expected, $input = null)
+    {
+        Tokens::clearCache();
+
+        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens->removeLeadingWhitespace($index, $whitespaces);
+
+        $this->assertSame($expected, $tokens->generateCode());
+    }
+
+    public function provideRemoveLeadingWhitespaceCases()
+    {
+        return [
+            [
+                7,
+                null,
+                "<?php echo 1;//\necho 2;",
+            ],
+            [
+                7,
+                null,
+                "<?php echo 1;//\necho 2;",
+                "<?php echo 1;//\n       echo 2;",
+            ],
+            [
+                7,
+                null,
+                "<?php echo 1;//\r\necho 2;",
+                "<?php echo 1;//\r\n       echo 2;",
+            ],
+            [
+                7,
+                " \t",
+                "<?php echo 1;//\n//",
+                "<?php echo 1;//\n       //",
+            ],
+            [
+                6,
+                "\t ",
+                '<?php echo 1;//',
+                "<?php echo 1;\t \t \t //",
+            ],
+            [
+                8,
+                null,
+                '<?php $a = 1;//',
+                '<?php $a = 1;           //',
+            ],
+            [
+                6,
+                null,
+                '<?php echo 1;echo 2;',
+                "<?php echo 1;  \n          \n \n     \necho 2;",
+            ],
+            [
+                8,
+                null,
+                "<?php echo 1;  // 1\necho 2;",
+                "<?php echo 1;  // 1\n          \n \n     \necho 2;",
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideRemoveTrailingWhitespaceCases
+     *
+     * @param int         $index
+     * @param null|string $whitespaces
+     * @param string      $expected
+     * @param string      $input
+     */
+    public function testRemoveTrailingWhitespace($index, $whitespaces, $expected, $input = null)
+    {
+        Tokens::clearCache();
+
+        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens->removeTrailingWhitespace($index, $whitespaces);
+
+        $this->assertSame($expected, $tokens->generateCode());
+    }
+
+    public function provideRemoveTrailingWhitespaceCases()
+    {
+        $cases = [];
+        $leadingCases = $this->provideRemoveLeadingWhitespaceCases();
+        foreach ($leadingCases as $leadingCase) {
+            $leadingCase[0] -= 2;
+            $cases[] = $leadingCase;
+        }
+
+        return $cases;
+    }
+
+    /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */
@@ -1046,6 +1185,7 @@ echo $a;',
 
             return;
         }
+
         if (null === $input) {
             $this->fail('While "input" is <null>, "expected" is not.');
         }

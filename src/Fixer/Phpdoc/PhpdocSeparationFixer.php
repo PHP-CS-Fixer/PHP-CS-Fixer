@@ -32,7 +32,7 @@ final class PhpdocSeparationFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Annotations in phpdocs should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line.',
+            'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line.',
             [
                 new CodeSample(
                     '<?php
@@ -45,7 +45,8 @@ final class PhpdocSeparationFixer extends AbstractFixer
  * @throws Exception|RuntimeException
  * @return bool
  */
-function fnc($foo, $bar) {}'
+function fnc($foo, $bar) {}
+'
                 ),
             ]
         );

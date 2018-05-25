@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: array_syntax,binary_operator_spaces.
 --RULESET--
-{"array_syntax": {"syntax":"short"}, "binary_operator_spaces": {"align_equals":false}}
+{"array_syntax": {"syntax":"short"}, "binary_operator_spaces": {"operators":{"=":"single_space"}}}
 --EXPECT--
 <?php
 $a = [];

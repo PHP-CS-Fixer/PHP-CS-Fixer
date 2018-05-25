@@ -28,46 +28,46 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     {
         $fixer = new IsNullFixer();
 
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '[is_null] Invalid configuration: The option "yoda" does not exist.'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[is_null] Invalid configuration: The option "yoda" does not exist.');
         $fixer->configure(['yoda' => true]);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
+     */
     public function testConfigurationWrongValue()
     {
-        $fixer = new IsNullFixer();
-
-        $this->setExpectedException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '[is_null] Invalid configuration: The option "use_yoda_style" with value -1 is expected to be of type "bool", but is of type "integer".'
-        );
-        $fixer->configure(['use_yoda_style' => -1]);
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[is_null] Invalid configuration: The option "use_yoda_style" with value -1 is expected to be of type "bool", but is of type "integer".');
+        $this->fixer->configure(['use_yoda_style' => -1]);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
+     */
     public function testCorrectConfiguration()
     {
-        $fixer = new IsNullFixer();
-        $fixer->configure(['use_yoda_style' => false]);
+        $this->fixer->configure(['use_yoda_style' => false]);
 
-        $configuration = static::getObjectAttribute($fixer, 'configuration');
+        $configuration = static::getObjectAttribute($this->fixer, 'configuration');
         static::assertFalse($configuration['use_yoda_style']);
     }
 
     /**
-     * @dataProvider provideYodaFixCases
+     * @dataProvider provideFixCases
      *
      * @param string      $expected
      * @param null|string $input
      */
-    public function testYodaFix($expected, $input = null)
+    public function testFix($expected, $input = null)
     {
-        $this->fixer->configure(['use_yoda_style' => true]);
         $this->doTest($expected, $input);
     }
 
-    public function provideYodaFixCases()
+    public function provideFixCases()
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =
@@ -226,6 +226,9 @@ FIXED;
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
+     *
      * @dataProvider provideNonYodaFixCases
      *
      * @param string      $expected
@@ -248,8 +251,8 @@ FIXED;
                 '<?php $b = \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));',
             ],
             [
-              '<?php if ($x === null && $y) echo "foo";',
-              '<?php if (is_null($x) && $y) echo "foo";',
+                '<?php if ($x === null && $y) echo "foo";',
+                '<?php if (is_null($x) && $y) echo "foo";',
             ],
             [
                 '<?php $x = ($x = array()) === null;',

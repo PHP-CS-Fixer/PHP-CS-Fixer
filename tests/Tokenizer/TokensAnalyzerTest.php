@@ -12,14 +12,15 @@
 
 namespace PhpCsFixer\Tests\Tokenizer;
 
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Max Voloshin <voloshin.dp@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ * @author SpacePossum
  *
  * @internal
  *
@@ -73,38 +74,47 @@ PHP;
                 9 => [
                     'token' => $tokens[9],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 14 => [
                     'token' => $tokens[14],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 19 => [
                     'token' => $tokens[19],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 28 => [
                     'token' => $tokens[28],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 42 => [
                     'token' => $tokens[42],
                     'type' => 'const',
+                    'classIndex' => 1,
                 ],
                 53 => [
                     'token' => $tokens[53],
                     'type' => 'method',
+                    'classIndex' => 1,
                 ],
                 83 => [
                     'token' => $tokens[83],
                     'type' => 'method',
+                    'classIndex' => 1,
                 ],
                 140 => [
                     'token' => $tokens[140],
                     'type' => 'method',
+                    'classIndex' => 1,
                 ],
                 164 => [
                     'token' => $tokens[164],
                     'type' => 'const',
+                    'classIndex' => 158,
                 ],
             ],
             $elements
@@ -143,26 +153,175 @@ PHP;
                 9 => [
                     'token' => $tokens[9],
                     'type' => 'property',
+                    'classIndex' => 1,
                 ],
                 14 => [
                     'token' => $tokens[14],
                     'type' => 'method',
+                    'classIndex' => 1,
                 ],
                 33 => [
                     'token' => $tokens[33],
                     'type' => 'property',
+                    'classIndex' => 26,
                 ],
                 38 => [
                     'token' => $tokens[38],
                     'type' => 'method',
+                    'classIndex' => 26,
                 ],
                 56 => [
                     'token' => $tokens[56],
                     'type' => 'property',
+                    'classIndex' => 50,
                 ],
                 74 => [
                     'token' => $tokens[74],
                     'type' => 'method',
+                    'classIndex' => 1,
+                ],
+            ],
+            $elements
+        );
+    }
+
+    public function testGetClassyElementsWithMultipleAnonymousClass()
+    {
+        $source = <<<'PHP'
+<?php class A0
+{
+    public function AA0()
+    {
+        return new class
+        {
+            public function BB0()
+            {
+            }
+        };
+    }
+
+    public function otherFunction0()
+    {
+    }
+}
+
+class A1
+{
+    public function AA1()
+    {
+        return new class
+        {
+            public function BB1()
+            {
+                return new class
+                {
+                    public function CC1()
+                    {
+                        return new class
+                        {
+                            public function DD1()
+                            {
+                                return new class{};
+                            }
+
+                            public function DD2()
+                            {
+                                return new class{};
+                            }
+                        };
+                    }
+                };
+            }
+
+            public function BB2()
+            {
+                return new class
+                {
+                    public function CC2()
+                    {
+                        return new class
+                        {
+                            public function DD2()
+                            {
+                                return new class{};
+                            }
+                        };
+                    }
+                };
+            }
+        };
+    }
+
+    public function otherFunction1()
+    {
+    }
+}
+PHP;
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        $this->assertSame(
+            [
+                9 => [
+                    'token' => $tokens[9],
+                    'type' => 'method',
+                    'classIndex' => 1,
+                ],
+                27 => [
+                    'token' => $tokens[27],
+                    'type' => 'method',
+                    'classIndex' => 21,
+                ],
+                44 => [
+                    'token' => $tokens[44],
+                    'type' => 'method',
+                    'classIndex' => 1,
+                ],
+                64 => [
+                    'token' => $tokens[64],
+                    'type' => 'method',
+                    'classIndex' => 56,
+                ],
+                82 => [
+                    'token' => $tokens[82],
+                    'type' => 'method',
+                    'classIndex' => 76,
+                ],
+                100 => [
+                    'token' => $tokens[100],
+                    'type' => 'method',
+                    'classIndex' => 94,
+                ],
+                118 => [
+                    'token' => $tokens[118],
+                    'type' => 'method',
+                    'classIndex' => 112,
+                ],
+                139 => [
+                    'token' => $tokens[139],
+                    'type' => 'method',
+                    'classIndex' => 112,
+                ],
+                170 => [
+                    'token' => $tokens[170],
+                    'type' => 'method',
+                    'classIndex' => 76,
+                ],
+                188 => [
+                    'token' => $tokens[188],
+                    'type' => 'method',
+                    'classIndex' => 182,
+                ],
+                206 => [
+                    'token' => $tokens[206],
+                    'type' => 'method',
+                    'classIndex' => 200,
+                ],
+                242 => [
+                    'token' => $tokens[242],
+                    'type' => 'method',
+                    'classIndex' => 56,
                 ],
             ],
             $elements
@@ -662,7 +821,7 @@ $b;',
 
     public function provideIsArrayCases()
     {
-        $cases = [
+        return [
             [
                 '<?php
                     array("a" => 1);
@@ -722,8 +881,6 @@ $b;',
                 2, true,
             ],
         ];
-
-        return $cases;
     }
 
     /**
@@ -765,6 +922,35 @@ $b;',
 
     /**
      * @param string $source
+     *
+     * @dataProvider provideIsBinaryOperator71Cases
+     * @requires PHP 7.1
+     */
+    public function testIsBinaryOperator71($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
+                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public function provideIsBinaryOperator71Cases()
+    {
+        return [
+            [
+                '<?php try {} catch (A | B $e) {}',
+                [11 => true],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
      * @param int    $tokenIndex
      *
      * @dataProvider provideArrayExceptionsCases
@@ -784,7 +970,7 @@ $b;',
      */
     public function testIsMultiLineArrayException($source, $tokenIndex)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -793,14 +979,12 @@ $b;',
 
     public function provideArrayExceptionsCases()
     {
-        $cases = [
+        return [
             ['<?php $a;', 1],
             ["<?php\n \$a = (0+1); // [0,1]", 4],
             ['<?php $text = "foo $bbb[0] bar";', 8],
             ['<?php $text = "foo ${aaa[123]} bar";', 9],
         ];
-
-        return $cases;
     }
 
     /**
@@ -1057,6 +1241,43 @@ use const some\a\{ConstA, ConstB, ConstC};
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
+                ',
+                true,
+            ],
+        ];
+    }
+
+    /**
+     * @param string $input
+     * @param bool   $perNamespace
+     *
+     * @dataProvider provideGetImportUseIndexesPHP72Cases
+     * @requires PHP 7.2
+     */
+    public function testGetImportUseIndexesPHP72(array $expected, $input, $perNamespace = false)
+    {
+        $tokens = Tokens::fromCode($input);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $this->assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
+    }
+
+    public function provideGetImportUseIndexesPHP72Cases()
+    {
+        return [
+            [
+                [1, 23, 43],
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA, ConstB, ConstC,};
+                ',
+            ],
+            [
+                [[1, 23, 43]],
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA, ConstB, ConstC,};
                 ',
                 true,
             ],

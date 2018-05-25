@@ -29,8 +29,8 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Using `isset(X) &&` multiple times should be done in one call.',
-            [new CodeSample("<?php\n\$a = isset(\$a) && isset(\$b);")]
+            'Using `isset($var) &&` multiple times should be done in one call.',
+            [new CodeSample("<?php\n\$a = isset(\$a) && isset(\$b);\n")]
         );
     }
 
@@ -39,7 +39,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should ran before NoMultilineWhitespaceBeforeSemicolonsFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer and NoSpacesInsideParenthesisFixer.
+        // should be run before MultilineWhitespaceBeforeSemicolonsFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer and NoSpacesInsideParenthesisFixer.
         return 3;
     }
 
@@ -125,7 +125,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
         $braceOpenCount = 1;
         $meaningfulTokenIndexes = [$openIndex];
 
-        for ($i = $openIndex + 1; ; ++$i) {
+        for ($i = $openIndex + 1;; ++$i) {
             if ($tokens[$i]->isWhitespace() || $tokens[$i]->isComment()) {
                 continue;
             }

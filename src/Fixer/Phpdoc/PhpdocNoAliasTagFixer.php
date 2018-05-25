@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -115,7 +116,7 @@ final class Example
         return new FixerConfigurationResolverRootless('replacements', [
             (new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.'))
                 ->setAllowedTypes(['array'])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value) {
                     $normalizedValue = [];
 
                     foreach ($value as $from => $to) {
@@ -130,7 +131,7 @@ final class Example
                             ));
                         }
 
-                        if (1 !== preg_match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
+                        if (1 !== Preg::match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
                             throw new InvalidOptionsException(sprintf(
                                 'Tag "%s" cannot be replaced by invalid tag "%s".',
                                 $from,
@@ -161,6 +162,6 @@ final class Example
                     'link' => 'see',
                 ])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 }

@@ -390,6 +390,30 @@ function foo()
 }',
         ];
 
+        $cases[] = [
+            '<?php
+
+/**
+ * Foo
+       Bar
+ */
+class Foo
+{
+}',
+        ];
+
+        $cases[] = [
+            '<?php
+class Application
+{
+}/**
+ */
+class Dispatcher
+{
+}
+',
+        ];
+
         return $cases;
     }
 }

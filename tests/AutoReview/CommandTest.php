@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Console\Application;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Command\Command;
 
 /**
@@ -23,6 +23,7 @@ use Symfony\Component\Console\Command\Command;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class CommandTest extends TestCase
 {
@@ -41,7 +42,7 @@ final class CommandTest extends TestCase
         $application = new Application();
         $commands = $application->all();
 
-        $names = array_filter(array_keys($commands), function ($name) use ($commands) {
+        $names = array_filter(array_keys($commands), static function ($name) use ($commands) {
             return
                 // is not an alias
                 !in_array($name, $commands[$name]->getAliases(), true)
@@ -50,7 +51,7 @@ final class CommandTest extends TestCase
             ;
         });
 
-        return array_map(function ($name) use ($commands) {
+        return array_map(static function ($name) use ($commands) {
             return [$commands[$name]];
         }, $names);
     }

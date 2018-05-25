@@ -36,13 +36,13 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     {
         return new FixerDefinition(
             'There MUST be one use keyword per declaration.',
-            [new CodeSample("<?php\nuse Foo, Sample, Sample\\Sample as Sample2;")]
+            [new CodeSample("<?php\nuse Foo, Sample, Sample\\Sample as Sample2;\n")]
         );
     }
 
     public function getPriority()
     {
-        // must be run before NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, NoMultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer.
+        // must be run before NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer, MultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer.
         return 1;
     }
 
@@ -101,7 +101,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     {
         $groupPrefix = '';
         $comment = '';
-        for ($i = $index + 1; ; ++$i) {
+        for ($i = $index + 1;; ++$i) {
             if ($tokens[$i]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupOpenIndex = $i;
 
@@ -127,7 +127,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         }
 
         return [
-            $groupPrefix,
+            rtrim($groupPrefix),
             $groupOpenIndex,
             $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $groupOpenIndex),
             $comment,

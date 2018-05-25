@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -26,29 +27,41 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param array       $config
      *
-     * @dataProvider provideInternalTypeMethodsCases
+     * @dataProvider provideTestFixCases
      */
-    public function testInternalTypeMethods($expected, $input = null)
+    public function testFix($expected, $input = null, array $config = [])
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
+    }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideTestFixLegacyCases
+     * @group legacy
+     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
+     */
+    public function testFixLegacy($expected, $input = null)
+    {
         $defaultFunctions = [
             'array_key_exists',
             'empty',
             'file_exists',
-            'is_infinite',
-            'is_nan',
-            'is_null',
             'is_array',
             'is_bool',
-            'is_boolean',
             'is_callable',
             'is_double',
             'is_float',
+            'is_infinite',
             'is_int',
             'is_integer',
             'is_long',
+            'is_nan',
+            'is_null',
             'is_numeric',
             'is_object',
             'is_real',
@@ -61,66 +74,9 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideInternalTypeMethodsCases()
+    public function provideTestFixCases()
     {
-        $cases = [];
-
-        foreach (['array', 'bool', 'boolean', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
-            $cases[] = [
-                sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
-                sprintf('<?php $this->assertTrue(is_%s($a));', $type),
-            ];
-
-            $cases[] = [
-                sprintf('<?php $this->assertNotInternalType(\'%s\', $a);', $type),
-                sprintf('<?php $this->assertFalse(is_%s($a));', $type),
-            ];
-        }
-
-        $cases[] = [
-            '<?php $this->assertInternalType(\'float\', $a, "my message");',
-            '<?php $this->assertTrue(is_float( $a), "my message");',
-        ];
-
-        $cases[] = [
-            '<?php $this->assertInternalType(\'float\', $a);',
-            '<?php $this->assertTrue(\IS_FLOAT($a));',
-        ];
-
-        $cases[] = [
-            '<?php $this->assertInternalType(#
-\'float\'#
-, #
-$a#
-#
-)#
-;',
-            '<?php $this->assertTrue(#
-\IS_FLOAT#
-(#
-$a#
-)#
-)#
-;',
-        ];
-
-        return $cases;
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideDedicatedAssertsCases
-     */
-    public function testDedicatedAsserts($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideDedicatedAssertsCases()
-    {
-        return [
+        $cases = [
             [
                 '<?php
                     $this->assertNan($a);
@@ -197,7 +153,116 @@ $a#
                     $this->ASSERTFALSE(array_key_exists($b, $a), $c);
                 ',
             ],
+            [
+                '<?php
+$this->assertTrue(is_dir($a));
+$this->assertTrue(is_writable($a));
+$this->assertTrue(is_readable($a));
+',
+                null,
+            ],
+            [
+                '<?php
+$this->assertTrue(is_dir($a));
+$this->assertTrue(is_writable($a));
+$this->assertTrue(is_readable($a));
+',
+                null,
+                ['target' => PhpUnitTargetVersion::VERSION_3_0],
+            ],
+            [
+                '<?php
+$this->assertDirectoryNotExists($a);
+$this->assertNotIsWritable($a);
+$this->assertNotIsReadable($a);
+',
+                '<?php
+$this->assertFalse(is_dir($a));
+$this->assertFalse(is_writable($a));
+$this->assertFalse(is_readable($a));
+',
+                ['target' => PhpUnitTargetVersion::VERSION_5_6],
+            ],
+            [
+                '<?php
+$this->assertDirectoryExists($a);
+$this->assertIsWritable($a);
+$this->assertIsReadable($a);
+',
+                '<?php
+$this->assertTrue(is_dir($a));
+$this->assertTrue(is_writable($a));
+$this->assertTrue(is_readable($a));
+',
+                ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
+            ],
         ];
+
+        foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
+            $cases[] = [
+                sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
+                sprintf('<?php $this->assertTrue(is_%s($a));', $type),
+            ];
+
+            $cases[] = [
+                sprintf('<?php $this->assertNotInternalType(\'%s\', $a);', $type),
+                sprintf('<?php $this->assertFalse(is_%s($a));', $type),
+            ];
+        }
+
+        $cases[] = [
+            '<?php $this->assertInternalType(\'float\', $a, "my message");',
+            '<?php $this->assertTrue(is_float( $a), "my message");',
+        ];
+
+        $cases[] = [
+            '<?php $this->assertInternalType(\'float\', $a);',
+            '<?php $this->assertTrue(\IS_FLOAT($a));',
+        ];
+
+        $cases[] = [
+            '<?php $this->assertInternalType(#
+\'float\'#
+, #
+$a#
+#
+)#
+;',
+            '<?php $this->assertTrue(#
+\IS_FLOAT#
+(#
+$a#
+)#
+)#
+;',
+        ];
+
+        $cases[] = [
+            '<?php static::assertInternalType(\'float\', $a);',
+            '<?php static::assertTrue(is_float( $a));',
+        ];
+
+        $cases[] = [
+            '<?php self::assertInternalType(\'float\', $a);',
+            '<?php self::assertTrue(is_float( $a));',
+        ];
+
+        $cases[] = [
+            '<?php static::assertNull($a);',
+            '<?php static::assertTrue(is_null($a));',
+        ];
+
+        $cases[] = [
+            '<?php self::assertNull($a);',
+            '<?php self::assertTrue(is_null($a));',
+        ];
+
+        return $cases;
+    }
+
+    public function provideTestFixLegacyCases()
+    {
+        return array_filter($this->provideTestFixCases(), function (array $case) { return !isset($case[2]); });
     }
 
     /**
@@ -227,6 +292,8 @@ $a#
                     $this->assertFalse(is_nan($a));
                     $this->assertTrue(is_int($a) || \is_bool($b));
                     $this->assertTrue($a&&is_int($a));
+                    static::assertTrue(is_null);
+                    self::assertTrue(is_null);
                 ',
             ],
         ];
@@ -234,7 +301,7 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing "functions" at the root of the configuration is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
+     * @expectedDeprecation Passing "functions" at the root of the configuration for rule "php_unit_dedicate_assert" is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
      */
     public function testLegacyConfig()
     {
@@ -251,6 +318,10 @@ $a#
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
+     */
     public function testConfig()
     {
         $this->fixer->configure(['functions' => ['file_exists']]);
@@ -268,11 +339,9 @@ $a#
 
     public function testInvalidConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[php_unit_dedicate_assert\] Invalid configuration: The option "functions" .*\.$/'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "target" .*\.$/');
 
-        $this->fixer->configure(['functions' => ['_unknown_']]);
+        $this->fixer->configure(['target' => '_unknown_']);
     }
 }

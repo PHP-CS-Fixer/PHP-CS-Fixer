@@ -14,7 +14,8 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -25,24 +26,17 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class FixCommandTest extends TestCase
 {
-    /**
-     * @var Application
-     */
-    private $application;
-
-    protected function setUp()
-    {
-        $this->application = new Application();
-    }
-
     public function testEmptyRulesValue()
     {
+        $this->expectException(
+            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class
+        );
+        $this->expectExceptionMessageRegExp(
+            '#^Empty rules value is not allowed\.$#'
+        );
+
         $this->doTestExecute(
-            ['--rules' => ''],
-            [
-                'class' => 'PhpCsFixer\ConfigurationException\InvalidConfigurationException',
-                'regex' => '#^Empty rules value is not allowed\.$#',
-            ]
+            ['--rules' => '']
         );
     }
 
@@ -63,21 +57,17 @@ final class FixCommandTest extends TestCase
     }
 
     /**
-     * @param array      $arguments
-     * @param null|array $expectedException
+     * @param array $arguments
      *
      * @return CommandTester
      */
-    private function doTestExecute(array $arguments, array $expectedException = null)
+    private function doTestExecute(array $arguments)
     {
-        $this->application->add(new FixCommand());
+        $application = new Application();
+        $application->add(new FixCommand(new ToolInfo()));
 
-        $command = $this->application->find('fix');
+        $command = $application->find('fix');
         $commandTester = new CommandTester($command);
-
-        if (null !== $expectedException) {
-            $this->setExpectedExceptionRegExp($expectedException['class'], $expectedException['regex']);
-        }
 
         $commandTester->execute(
             array_merge(

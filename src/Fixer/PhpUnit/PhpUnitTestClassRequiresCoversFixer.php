@@ -18,7 +18,8 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitIndicator;
+use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -63,14 +64,21 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $phpUnitIndicator = new PhpUnitIndicator();
+        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if (!$tokens[$index]->isGivenKind(T_CLASS)) {
                 continue;
             }
 
-            if (!$phpUnitIndicator->isPhpUnitClass($tokens, $index)) {
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            // don't add `@covers` annotation for abstract base classes
+            if ($tokens[$prevIndex]->isGivenKind(T_ABSTRACT)) {
+                continue;
+            }
+
+            if (!$phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
                 continue;
             }
 
@@ -78,7 +86,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $index = $tokens[$prevIndex]->isGivenKind(T_FINAL) ? $prevIndex : $index;
 
             $indent = $tokens[$index - 1]->isGivenKind(T_WHITESPACE)
-                ? preg_replace('/^.*\R*/', '', $tokens[$index - 1]->getContent())
+                ? Preg::replace('/^.*\R*/', '', $tokens[$index - 1]->getContent())
                 : '';
 
             $prevIndex = $tokens->getPrevNonWhitespace($index);

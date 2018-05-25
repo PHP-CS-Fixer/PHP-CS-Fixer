@@ -14,7 +14,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Report\ReporterFactory;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -24,6 +24,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @coversNothing
+ * @group covers-nothing
  */
 final class TextDiffTest extends TestCase
 {
@@ -36,7 +37,7 @@ final class TextDiffTest extends TestCase
      */
     public function testDiffReportingDecorated($expected, $format, $isDecorated)
     {
-        $command = new FixCommand();
+        $command = new FixCommand(new ToolInfo());
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             [
@@ -93,7 +94,7 @@ TEST;
         sort($formats);
 
         $this->assertSame(
-            ['json', 'junit', 'txt', 'xml'],
+            ['checkstyle', 'json', 'junit', 'txt', 'xml'],
             $formats
         );
     }

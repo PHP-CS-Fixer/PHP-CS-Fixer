@@ -29,7 +29,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideTestFixCases
-     * @expectedDeprecation Passing "assertions" at the root of the configuration is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
+     * @expectedDeprecation Passing "assertions" at the root of the configuration for rule "php_unit_construct" is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
      */
     public function testLegacyFix($expected, $input = null)
     {
@@ -117,21 +117,29 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         "foo" . $bar#
     );',
             ],
+            [
+                '<?php $this->assertSame("a", $a); $this->assertTrue($b);',
+                '<?php $this->assertSame("a", $a); $this->assertSame(true, $b);',
+            ],
+            [
+                '<?php $this->assertSame(true || $a, $b); $this->assertTrue($c);',
+                '<?php $this->assertSame(true || $a, $b); $this->assertSame(true, $c);',
+            ],
         ];
 
         return array_merge(
             $cases,
             $this->generateCases('<?php $this->assert%s%s($a); //%s %s', '<?php $this->assert%s(%s, $a); //%s %s'),
-            $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");')
+            $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");'),
+            $this->generateCases('<?php static::assert%s%s($a); //%s %s', '<?php static::assert%s(%s, $a); //%s %s'),
+            $this->generateCases('<?php self::assert%s%s($a); //%s %s', '<?php self::assert%s(%s, $a); //%s %s')
         );
     }
 
     public function testInvalidConfig()
     {
-        $this->setExpectedExceptionRegExp(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/'
-        );
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/');
 
         $this->fixer->configure(['assertions' => ['__TEST__']]);
     }

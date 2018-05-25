@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -56,7 +56,7 @@ final class PhpUnitConstructFixer extends AbstractFixer implements Configuration
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".',
+            'PHPUnit assertion method calls like `->assertSame(true, $foo)` should be written with dedicated method like `->assertTrue($foo)`.',
             [
                 new CodeSample(
                     '<?php
@@ -104,7 +104,7 @@ $this->assertNotSame(null, $d);
             $assertionFixer = self::$assertionFixers[$assertionMethod];
 
             for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $index = $this->$assertionFixer($tokens, $index, $assertionMethod);
+                $index = $this->{$assertionFixer}($tokens, $index, $assertionMethod);
 
                 if (null === $index) {
                     break;
@@ -121,9 +121,7 @@ $this->assertNotSame(null, $d);
         return new FixerConfigurationResolverRootless('assertions', [
             (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$assertionFixers)),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$assertionFixers))])
                 ->setDefault([
                     'assertEquals',
                     'assertSame',
@@ -131,7 +129,7 @@ $this->assertNotSame(null, $d);
                     'assertNotSame',
                 ])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     /**
@@ -182,8 +180,6 @@ $this->assertNotSame(null, $d);
     {
         $sequence = $tokens->findSequence(
             [
-                [T_VARIABLE, '$this'],
-                [T_OBJECT_OPERATOR, '->'],
                 [T_STRING, $method],
                 '(',
             ],
@@ -195,23 +191,33 @@ $this->assertNotSame(null, $d);
         }
 
         $sequenceIndexes = array_keys($sequence);
-        $sequenceIndexes[4] = $tokens->getNextMeaningfulToken($sequenceIndexes[3]);
-        $firstParameterToken = $tokens[$sequenceIndexes[4]];
+        $operatorIndex = $tokens->getPrevMeaningfulToken($sequenceIndexes[0]);
+        $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
+        if (
+            !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
+            && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
+            && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
+        ) {
+            return null;
+        }
+
+        $sequenceIndexes[2] = $tokens->getNextMeaningfulToken($sequenceIndexes[1]);
+        $firstParameterToken = $tokens[$sequenceIndexes[2]];
 
         if (!$firstParameterToken->isNativeConstant()) {
-            return null;
+            return $sequenceIndexes[2];
         }
 
-        $sequenceIndexes[5] = $tokens->getNextMeaningfulToken($sequenceIndexes[4]);
+        $sequenceIndexes[3] = $tokens->getNextMeaningfulToken($sequenceIndexes[2]);
 
         // return if first method argument is an expression, not value
-        if (!$tokens[$sequenceIndexes[5]]->equals(',')) {
-            return null;
+        if (!$tokens[$sequenceIndexes[3]]->equals(',')) {
+            return $sequenceIndexes[3];
         }
 
-        $tokens[$sequenceIndexes[2]] = new Token([T_STRING, $map[$firstParameterToken->getContent()]]);
-        $tokens->clearRange($sequenceIndexes[4], $tokens->getNextNonWhitespace($sequenceIndexes[5]) - 1);
+        $tokens[$sequenceIndexes[0]] = new Token([T_STRING, $map[$firstParameterToken->getContent()]]);
+        $tokens->clearRange($sequenceIndexes[2], $tokens->getNextNonWhitespace($sequenceIndexes[3]) - 1);
 
-        return $sequenceIndexes[5];
+        return $sequenceIndexes[3];
     }
 }

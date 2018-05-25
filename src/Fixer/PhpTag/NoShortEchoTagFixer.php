@@ -30,7 +30,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Replace short-echo `<?=` with long format `<?php echo` syntax.',
-            [new CodeSample('<?= "foo";')]
+            [new CodeSample("<?= \"foo\";\n")]
         );
     }
 

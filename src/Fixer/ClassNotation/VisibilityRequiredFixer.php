@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -41,7 +41,7 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurati
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.',
+            'Visibility MUST be declared on all properties and methods; `abstract` and `final` MUST be declared before the visibility; `static` MUST be declared after the visibility.',
             [
                 new CodeSample(
 '<?php
@@ -109,10 +109,8 @@ class Sample
         return new FixerConfigurationResolverRootless('elements', [
             (new FixerOptionBuilder('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(['property', 'method', 'const']),
-                ])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setAllowedValues([new AllowedValueSubset(['property', 'method', 'const'])])
+                ->setNormalizer(static function (Options $options, $value) {
                     if (PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
                         throw new InvalidOptionsForEnvException('"const" option can only be enabled with PHP 7.1+.');
                     }
@@ -121,7 +119,7 @@ class Sample
                 })
                 ->setDefault(['property', 'method'])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     /**

@@ -2,6 +2,7 @@
 PHP 7.2 test.
 --RULESET--
 {
+    "@Symfony": true,
     "single_import_per_statement": true
 }
 --REQUIREMENTS--
@@ -12,13 +13,44 @@ PHP 7.2 test.
 namespace Foo;
 
 use Bar\A;
-use Bar\B;
 
 class C
 {
-    public function A($a, object $b): object {
+    public function A($a, object $b): object
+    {
         unset($a);
+
         return $b;
+    }
+}
+
+// Allow abstract function override
+abstract class XA
+{
+    abstract public function bar(stdClass $x);
+}
+abstract class XB extends XA
+{
+    abstract public function bar($x): stdClass;
+}
+class XC extends XB
+{
+    public function bar($x): stdClass
+    {
+    }
+}
+
+// Parameter Type Widening
+class ArrayClass
+{
+    public function foo(array $foo)
+    { /* ... */
+    }
+}
+class EverythingClass extends ArrayClass
+{
+    public function foo($foo)
+    { /* ... */
     }
 }
 
@@ -38,4 +70,17 @@ class C
         unset($a);
         return $b;
     }
+}
+
+// Allow abstract function override
+abstract class XA            { abstract function bar(stdClass $x);  }
+abstract class XB extends XA { abstract function bar($x): stdClass; }
+class XC extends XB          { function bar($x): stdClass{} }
+
+// Parameter Type Widening
+class ArrayClass {
+  public function foo(array $foo) { /* ... */ }
+}
+class EverythingClass extends ArrayClass {
+  public function foo($foo) { /* ... */ }
 }

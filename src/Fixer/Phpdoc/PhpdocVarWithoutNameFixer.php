@@ -17,6 +17,7 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -31,7 +32,7 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            '@var and @type annotations should not contain the variable name.',
+            '`@var` and `@type` annotations should not contain the variable name.',
             [new CodeSample('<?php
 final class Foo
 {
@@ -41,10 +42,9 @@ final class Foo
     public $bar;
 
     /**
-     * @var $baz float
+     * @type $baz float
      */
     public $baz;
-
 }
 ')]
         );
@@ -92,7 +92,7 @@ final class Foo
     {
         $content = $line->getContent();
 
-        preg_match_all('/ \$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $content, $matches);
+        Preg::matchAll('/ \$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $content, $matches);
 
         if (isset($matches[0][0])) {
             $line->setContent(str_replace($matches[0][0], '', $content));

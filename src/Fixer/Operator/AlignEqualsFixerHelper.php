@@ -20,9 +20,22 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  * @author Graham Campbell <graham@alt-three.com>
+ *
+ * @deprecated
  */
 final class AlignEqualsFixerHelper extends AbstractAlignFixerHelper
 {
+    public function __construct()
+    {
+        @trigger_error(
+            sprintf(
+                'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.',
+                __CLASS__
+            ),
+            E_USER_DEPRECATED
+        );
+    }
+
     /**
      * {@inheritdoc}
      */

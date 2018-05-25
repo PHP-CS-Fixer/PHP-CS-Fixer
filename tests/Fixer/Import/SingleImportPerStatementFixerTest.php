@@ -67,7 +67,7 @@ use FooJ;
 use FooZ;
 
 EOF
-            ,
+                ,
                 <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
@@ -118,7 +118,7 @@ namespace Boo {
 }
 
 EOF
-            ,
+                ,
                 <<<'EOF'
 <?php
 
@@ -268,6 +268,25 @@ use function some\b\D;
 use const some\b\E;
 use function some\b\A\B;',
                 '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
+            ],
+            [
+                '<?php
+use Foo\Bar;
+use Foo\Baz;',
+                '<?php
+use Foo\ {
+    Bar, Baz
+};',
+            ],
+            [
+                '<?php
+use Foo\Bar;
+use Foo\Baz;',
+                '<?php
+use Foo\
+{
+    Bar, Baz
+};',
             ],
         ];
     }

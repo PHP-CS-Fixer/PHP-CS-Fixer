@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -35,9 +35,9 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
         return new FixerDefinition(
             'There MUST NOT be spaces around offset braces.',
             [
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];"),
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", ['positions' => ['inside']]),
-                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];", ['positions' => ['outside']]),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n"),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['inside']]),
+                new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['outside']]),
             ]
         );
     }
@@ -99,11 +99,9 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
         return new FixerConfigurationResolverRootless('positions', [
             (new FixerOptionBuilder('positions', 'Whether spacing should be fixed inside and/or outside the offset braces.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
-                ])
+                ->setAllowedValues([new AllowedValueSubset($values)])
                 ->setDefault($values)
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 }

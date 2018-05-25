@@ -31,6 +31,14 @@ final class NoAliasFunctionsFixer extends AbstractFixer
         'close' => 'closedir',
         'doubleval' => 'floatval',
         'fputs' => 'fwrite',
+        'imap_create' => 'imap_createmailbox',
+        'imap_fetchtext' => 'imap_body',
+        'imap_header' => 'imap_headerinfo',
+        'imap_listmailbox' => 'imap_list',
+        'imap_listsubscribed' => 'imap_lsub',
+        'imap_rename' => 'imap_renamemailbox',
+        'imap_scan' => 'imap_listscan',
+        'imap_scanmailbox' => 'imap_listscan',
         'ini_alter' => 'ini_set',
         'is_double' => 'is_float',
         'is_integer' => 'is_int',
@@ -102,7 +110,7 @@ $a = strchr($haystack, $needle);
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        /** @var $token \PhpCsFixer\Tokenizer\Token */
+        /** @var \PhpCsFixer\Tokenizer\Token $token */
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
             // check mapping hit
             $tokenContent = strtolower($token->getContent());

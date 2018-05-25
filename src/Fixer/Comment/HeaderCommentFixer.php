@@ -15,10 +15,12 @@ namespace PhpCsFixer\Fixer\Comment;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Options;
@@ -76,7 +78,7 @@ echo 1;
 ',
                     [
                         'header' => 'Made with love.',
-                        'commentType' => 'PHPDoc',
+                        'comment_type' => 'PHPDoc',
                         'location' => 'after_open',
                         'separate' => 'bottom',
                     ]
@@ -91,7 +93,7 @@ echo 1;
 ',
                     [
                         'header' => 'Made with love.',
-                        'commentType' => 'comment',
+                        'comment_type' => 'comment',
                         'location' => 'after_declare_strict',
                     ]
                 ),
@@ -146,7 +148,7 @@ echo 1;
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('header', 'Proper header content.'))
                 ->setAllowedTypes(['string'])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value) {
                     if ('' === trim($value)) {
                         return '';
                     }
@@ -154,7 +156,10 @@ echo 1;
                     return $value;
                 })
                 ->getOption(),
-            (new FixerOptionBuilder('commentType', 'Comment syntax type.'))
+            (new AliasedFixerOptionBuilder(
+                new FixerOptionBuilder('comment_type', 'Comment syntax type.'),
+                'commentType'
+            ))
                 ->setAllowedValues([self::HEADER_PHPDOC, self::HEADER_COMMENT])
                 ->setDefault(self::HEADER_COMMENT)
                 ->getOption(),
@@ -178,7 +183,7 @@ echo 1;
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        $comment = (self::HEADER_COMMENT === $this->configuration['commentType'] ? '/*' : '/**').$lineEnding;
+        $comment = (self::HEADER_COMMENT === $this->configuration['comment_type'] ? '/*' : '/**').$lineEnding;
         $lines = explode("\n", str_replace("\r", '', $this->configuration['header']));
 
         foreach ($lines as $line) {
@@ -292,8 +297,8 @@ echo 1;
         $prev = $tokens->getPrevNonWhitespace($headerIndex);
 
         $regex = '/[\t ]$/';
-        if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && preg_match($regex, $tokens[$prev]->getContent())) {
-            $tokens[$prev] = new Token([T_OPEN_TAG, preg_replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
+        if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && Preg::match($regex, $tokens[$prev]->getContent())) {
+            $tokens[$prev] = new Token([T_OPEN_TAG, Preg::replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
         }
 
         $lineBreakCount = $this->getLineBreakCount($tokens, $prev, $headerIndex);
@@ -326,6 +331,6 @@ echo 1;
      */
     private function insertHeader(Tokens $tokens, $index)
     {
-        $tokens->insertAt($index, new Token([self::HEADER_COMMENT === $this->configuration['commentType'] ? T_COMMENT : T_DOC_COMMENT, $this->getHeaderAsComment()]));
+        $tokens->insertAt($index, new Token([self::HEADER_COMMENT === $this->configuration['comment_type'] ? T_COMMENT : T_DOC_COMMENT, $this->getHeaderAsComment()]));
     }
 }

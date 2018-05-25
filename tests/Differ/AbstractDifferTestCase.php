@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Differ;
 
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -29,7 +29,7 @@ abstract class AbstractDifferTestCase extends TestCase
             str_replace(
                 'PhpCsFixer\\Tests\\Differ\\',
                 'PhpCsFixer\\Differ\\',
-                get_called_class()
+                static::class
             )
         );
 
