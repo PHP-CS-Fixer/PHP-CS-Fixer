@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_unset_on_property, combine_consecutive_unsets.
+--RULESET--
+{"no_unset_on_property": true,"combine_consecutive_unsets": true}
+--EXPECT--
+<?php
+$foo->bar = null; unset($foo, $bar, $baz);   $this->ab = null;
+
+--INPUT--
+<?php
+unset($foo->bar, $foo, $bar, $baz, $this->ab);
