@@ -1251,10 +1251,12 @@ Choose from the list of available rules:
 
 * **phpdoc_align** [@Symfony]
 
-  All items of the given PHPDoc tags must be aligned vertically.
+  All items of the given phpdoc tags must be either left-aligned or (by
+  default) aligned vertically.
 
   Configuration options:
 
+  - ``align`` (``'left'``, ``'vertical'``): align comments; defaults to ``'vertical'``
   - ``tags`` (a subset of ``['param', 'property', 'return', 'throws', 'type',
     'var', 'method']``): the tags that should be aligned; defaults to
     ``['param', 'return', 'throws', 'type', 'var']``
