@@ -64,6 +64,7 @@ $config = PhpCsFixer\Config::create()
         'php_unit_test_class_requires_covers' => true,
         'phpdoc_add_missing_param_annotation' => true,
         'phpdoc_order' => true,
+        'phpdoc_trim_after_description' => true,
         'phpdoc_types_order' => true,
         'return_assignment' => true,
         'semicolon_after_instruction' => true,
