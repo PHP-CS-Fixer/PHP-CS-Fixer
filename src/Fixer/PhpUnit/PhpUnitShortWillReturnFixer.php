@@ -23,17 +23,37 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Michał Adamski <michal.adamski@gmail.com>
- *
- * @internal
  */
 final class PhpUnitShortWillReturnFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    /**
+     * @internal
+     */
     const METHOD_RETURN_SELF = 'returnSelf';
+
+    /**
+     * @internal
+     */
     const METHOD_RETURN_VALUE = 'returnValue';
+
+    /**
+     * @internal
+     */
     const METHOD_RETURN_ARGUMENT = 'returnArgument';
+
+    /**
+     * @internal
+     */
     const METHOD_RETURN_CALLBACK = 'returnCallback';
+
+    /**
+     * @internal
+     */
     const METHOD_RETURN_VALUE_MAP = 'returnValueMap';
 
+    /**
+     * @internal
+     */
     const RETURN_METHODS_MAP = [
         self::METHOD_RETURN_VALUE => 'willReturn',
         self::METHOD_RETURN_SELF => 'willReturnSelf',
@@ -42,6 +62,9 @@ final class PhpUnitShortWillReturnFixer extends AbstractFixer implements Configu
         self::METHOD_RETURN_CALLBACK => 'willReturnCallback',
     ];
 
+    /**
+     * @internal
+     */
     const SEQUENCE = [
         [T_OBJECT_OPERATOR, '->'],
         [T_STRING, 'will'],
@@ -58,7 +81,7 @@ final class PhpUnitShortWillReturnFixer extends AbstractFixer implements Configu
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Usage of `->will($this->returnValue(..))` statements must be replaced by it\'s shorter equivalent `->willReturn(...)`.',
+            'Usage of `->will($this->returnValue(..))` statements must be replaced by its shorter equivalent `->willReturn(...)`.',
             [
                 new CodeSample('<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
@@ -104,27 +127,22 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(static::METHOD_RETURN_VALUE, 'Fix `returnValue` occurrence'))
                 ->setAllowedTypes(['bool'])
-                ->setAllowedValues([false, true])
                 ->setDefault(true)
                 ->getOption(),
             (new FixerOptionBuilder(static::METHOD_RETURN_SELF, 'Fix `returnSelf` occurrence'))
                 ->setAllowedTypes(['bool'])
-                ->setAllowedValues([false, true])
                 ->setDefault(true)
                 ->getOption(),
             (new FixerOptionBuilder(static::METHOD_RETURN_ARGUMENT, 'Fix `returnArgument` occurrence'))
                 ->setAllowedTypes(['bool'])
-                ->setAllowedValues([false, true])
                 ->setDefault(true)
                 ->getOption(),
             (new FixerOptionBuilder(static::METHOD_RETURN_CALLBACK, 'Fix `returnCallback` occurrence'))
                 ->setAllowedTypes(['bool'])
-                ->setAllowedValues([false, true])
                 ->setDefault(true)
                 ->getOption(),
             (new FixerOptionBuilder(static::METHOD_RETURN_VALUE_MAP, 'Fix `returnValueMap` occurrence'))
                 ->setAllowedTypes(['bool'])
-                ->setAllowedValues([false, true])
                 ->setDefault(true)
                 ->getOption(),
         ]);
