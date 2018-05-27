@@ -13,6 +13,7 @@ cache:
 env:
     global:
         - DEFAULT_COMPOSER_FLAGS="--optimize-autoloader --no-interaction --no-progress"
+        - COLLECT_COVERAGE=0
         - COMPOSER_FLAGS=""
 
 before_install:
@@ -90,19 +91,31 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.2
+
+        -
+            <<: *STANDARD_TEST_JOB
+            stage: Test
+            php: 7.2
             env: COLLECT_COVERAGE=1
-            before_script:
+            before_install:
                 # check phpdbg
                 - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export COLLECT_COVERAGE=0; }
 
                 # for building a tag release we don't need to collect code coverage
                 - if [ $TRAVIS_TAG ]; then export COLLECT_COVERAGE=0; fi
+
+                # terminate job when no coverage collecting shall be performed
+                - if [ $COLLECT_COVERAGE == 0 ]; then travis_terminate 0; fi
+
+                ## regular `before_install`
+                # turn off XDebug
+                - phpenv config-rm xdebug.ini || return 0
+
+                # Composer: boost installation
+                - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
             script:
-                - if [ $COLLECT_COVERAGE == 0 ]; then vendor/bin/phpunit || travis_terminate 1; fi
-                - if [ $COLLECT_COVERAGE == 1 ]; then vendor/bin/phpunit --group covers-nothing || travis_terminate 1; fi
-                - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
-                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
-                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/php-coveralls -v; fi
+                - phpdbg -qrr vendor/bin/phpunit --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
+                - php vendor/bin/php-coveralls -v
 
         -
             <<: *STANDARD_TEST_JOB
@@ -135,3 +148,4 @@ jobs:
 
     allow_failures:
         - php: nightly
+        - env: COLLECT_COVERAGE=1
