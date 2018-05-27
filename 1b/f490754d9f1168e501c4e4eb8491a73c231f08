@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-23T07:35:43Z
+
+my diff patch (https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3779/files/3af46c57d08ec227bdca9eb4428b869d7ed9ee9a#diff-d2157600e5393b9d87c2cd0a61273255) was wrongly applied. I let myself fix it
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-23T07:36:30Z
+
+Oops was in a rush 😄
