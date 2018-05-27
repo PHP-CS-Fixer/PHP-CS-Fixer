@@ -24,8 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitShortWillReturnFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string        $expected
-     * @param string | null $input
+     * @param string      $expected
+     * @param string|null $input
      *
      * @dataProvider provideFixCases
      */
