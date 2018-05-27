@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -225,8 +226,8 @@ function foo () {
             return null;
         }
 
-        // ->
-        if (!$tokens[--$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+        // -> or ::
+        if (!$tokens[--$index]->isGivenKind([T_OBJECT_OPERATOR, T_DOUBLE_COLON])) {
             return null;
         }
 
@@ -246,7 +247,7 @@ function foo () {
             }
 
             // must be the variable of the first call in the chain
-            if ($tokens[$index]->isGivenKind(T_VARIABLE) && 0 === $closingBrackets) {
+            if ($tokens[$index]->isGivenKind([T_VARIABLE, T_RETURN, T_STRING]) && 0 === $closingBrackets) {
                 if ($tokens[--$index]->isGivenKind(T_WHITESPACE)
                     || $tokens[$index]->isGivenKind(T_OPEN_TAG)) {
                     return $this->getIndentAt($tokens, $index);
@@ -283,7 +284,7 @@ function foo () {
             $content = $tokens[$index]->getContent().$content;
         }
 
-        if (1 === preg_match('/\R{1}([ \t]*)$/', $content, $matches)) {
+        if (1 === Preg::match('/\R{1}([ \t]*)$/', $content, $matches)) {
             return $matches[1];
         }
 

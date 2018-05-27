@@ -70,21 +70,6 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
-    {
-        if (null !== $configuration && array_key_exists('use_yoda_style', $configuration)) {
-            @trigger_error(
-                'Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        parent::configure($configuration);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $sequenceNeeded = [[T_STRING, 'is_null'], '('];
@@ -212,9 +197,10 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     {
         // @todo 3.0 drop `ConfigurationDefinitionFixerInterface`
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('use_yoda_style', '(deprecated) Whether Yoda style conditions should be used.'))
+            (new FixerOptionBuilder('use_yoda_style', 'Whether Yoda style conditions should be used.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
+                ->setDeprecationMessage('Use `yoda_style` fixer instead.')
                 ->getOption(),
         ]);
     }

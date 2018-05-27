@@ -17,6 +17,7 @@ use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -39,7 +40,7 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            '@return void and @return null annotations should be omitted from phpdocs.',
+            '`@return` void and `@return null` annotations should be omitted from PHPDoc.',
             [
                 new CodeSample(
                     '<?php
@@ -103,7 +104,7 @@ function foo() {}
      */
     private function fixAnnotation(DocBlock $doc, Annotation $annotation)
     {
-        if (1 === preg_match('/@return\s+(void|null)(?!\|)/', $doc->getLine($annotation->getStart())->getContent())) {
+        if (1 === Preg::match('/@return\s+(void|null)(?!\|)/', $doc->getLine($annotation->getStart())->getContent())) {
             $annotation->remove();
         }
     }

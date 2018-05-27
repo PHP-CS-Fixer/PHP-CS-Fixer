@@ -1037,6 +1037,25 @@ class Test extends \PhpUnit\FrameWork\TestCase
 }',
                 ['style' => 'prefix'],
             ],
+            'Annotation present, but method is test prefix' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     *
+     */
+    public function test() {}
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function test() {}
+}',
+                ['style' => 'prefix'],
+            ],
             'Abstract test gets annotation added' => [
                 '<?php
 abstract class Test extends \PhpUnit\FrameWork\TestCase

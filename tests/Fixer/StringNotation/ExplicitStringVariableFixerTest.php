@@ -52,11 +52,11 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
                 '<?php $a = "My name is $name!";',
             ],
             [
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 My name is ${name}!
 EOF;
 ',
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 My name is $name!
 EOF;
 ',
@@ -74,11 +74,11 @@ EOF;
                 '<?php $a = "end $b";',
             ],
             [
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 ${b}
 EOF;
 ',
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 $b
 EOF;
 ',
@@ -87,20 +87,20 @@ EOF;
             ['<?php $a = "My name is " . $name;'],
             ['<?php $a = "My name is {$name}!";'],
             [
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 My name is {$name}!
 EOF;
 ',
-],
+            ],
             ['<?php $a = "My name is {$user->name}";'],
             [
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 My name is {$user->name}
 EOF;
 ',
-],
+            ],
             [
-'<?php $a = <<<\'EOF\'
+                '<?php $a = <<<\'EOF\'
 $b
 EOF;
 ',
@@ -145,6 +145,38 @@ EOF;
                 '<?php $a = "end {$a[1]}";',
                 '<?php $a = "end $a[1]";',
             ],
+            [
+                '<?php $a = b"{$a->b} start";',
+                '<?php $a = b"$a->b start";',
+            ],
+            [
+                '<?php $a = b"end {$a->b}";',
+                '<?php $a = b"end $a->b";',
+            ],
+            [
+                '<?php $a = b"{$a[1]} start";',
+                '<?php $a = b"$a[1] start";',
+            ],
+            [
+                '<?php $a = b"end {$a[1]}";',
+                '<?php $a = b"end $a[1]";',
+            ],
+            [
+                '<?php $a = B"{$a->b} start";',
+                '<?php $a = B"$a->b start";',
+            ],
+            [
+                '<?php $a = B"end {$a->b}";',
+                '<?php $a = B"end $a->b";',
+            ],
+            [
+                '<?php $a = B"{$a[1]} start";',
+                '<?php $a = B"$a[1] start";',
+            ],
+            [
+                '<?php $a = B"end {$a[1]}";',
+                '<?php $a = B"end $a[1]";',
+            ],
         ];
     }
 
@@ -174,6 +206,14 @@ EOF;
             [
                 '<?php $a = "end {$a[-1]}";',
                 '<?php $a = "end $a[-1]";',
+            ],
+            [
+                '<?php $a = b"end {$a[-1]}";',
+                '<?php $a = b"end $a[-1]";',
+            ],
+            [
+                '<?php $a = B"end {$a[-1]}";',
+                '<?php $a = B"end $a[-1]";',
             ],
         ];
     }

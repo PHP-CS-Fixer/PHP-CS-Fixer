@@ -89,11 +89,11 @@ comment
                                 /** buahaha */->bar7();',
             ],
             [
-            '<?php
+                '<?php
 $foo
     ->bar1()
     ->bar2();',
-            '<?php
+                '<?php
 $foo
 ->bar1()
 ->bar2();',
@@ -185,6 +185,56 @@ $foo
   ->foo()
 ->bar()
 ;',
+            ],
+            [
+                '<div>
+    <?php $object
+        ->method()
+        ->method();
+    ?>
+</div>
+
+<?= $object
+    ->method()
+    ->method();
+?>',
+                '<div>
+    <?php $object
+        ->method()
+    ->method();
+    ?>
+</div>
+
+<?= $object
+    ->method()
+        ->method();
+?>',
+            ],
+            [
+                '<?php
+
+    $user->setFoo(1)
+        ->setBar([
+                1 => 1,
+                ])
+        ->setBaz(true)
+        ->setX(array(
+    2 => 2,
+))
+        ->setY();
+',
+                '<?php
+
+    $user->setFoo(1)
+            ->setBar([
+                1 => 1,
+                ])
+  ->setBaz(true)
+->setX(array(
+    2 => 2,
+))
+                    ->setY();
+',
             ],
         ];
     }

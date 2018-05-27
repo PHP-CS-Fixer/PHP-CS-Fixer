@@ -14,6 +14,7 @@ namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface;
 use PhpCsFixer\PharCheckerInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -99,7 +100,7 @@ EOT
         }
 
         $currentVersion = $this->getApplication()->getVersion();
-        preg_match('/^v?(?<major>\d+)\./', $currentVersion, $matches);
+        Preg::match('/^v?(?<major>\d+)\./', $currentVersion, $matches);
         $currentMajor = (int) $matches['major'];
 
         try {

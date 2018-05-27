@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Report;
 
+use PhpCsFixer\Preg;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -115,7 +116,7 @@ final class JunitReporter implements ReporterInterface
     {
         $appliedFixersCount = count($fixResult['appliedFixers']);
 
-        $testName = str_replace('.', '_DOT_', preg_replace('@\.'.pathinfo($file, PATHINFO_EXTENSION).'$@', '', $file));
+        $testName = str_replace('.', '_DOT_', Preg::replace('@\.'.pathinfo($file, PATHINFO_EXTENSION).'$@', '', $file));
 
         $testcase = $dom->createElement('testcase');
         $testcase->setAttribute('name', $testName);

@@ -29,7 +29,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideTestFixCases
-     * @expectedDeprecation Passing "assertions" at the root of the configuration is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
+     * @expectedDeprecation Passing "assertions" at the root of the configuration for rule "php_unit_construct" is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
      */
     public function testLegacyFix($expected, $input = null)
     {
@@ -130,7 +130,9 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         return array_merge(
             $cases,
             $this->generateCases('<?php $this->assert%s%s($a); //%s %s', '<?php $this->assert%s(%s, $a); //%s %s'),
-            $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");')
+            $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");'),
+            $this->generateCases('<?php static::assert%s%s($a); //%s %s', '<?php static::assert%s(%s, $a); //%s %s'),
+            $this->generateCases('<?php self::assert%s%s($a); //%s %s', '<?php self::assert%s(%s, $a); //%s %s')
         );
     }
 

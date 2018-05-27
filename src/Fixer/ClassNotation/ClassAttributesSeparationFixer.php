@@ -15,11 +15,12 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -168,9 +169,7 @@ class Sample
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', sprintf('List of classy elements; \'%s\'.', implode("', '", $types))))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($types),
-                ])
+                ->setAllowedValues([new AllowedValueSubset($types)])
                 ->setDefault(['const', 'method', 'property'])
                 ->getOption(),
         ]);
@@ -332,7 +331,7 @@ class Sample
         if (1 === $numbOfWhiteTokens) {
             $tokens[$startIndex] = new Token([
                 T_WHITESPACE,
-                preg_replace('/\r\n|\n/', '', $tokens[$startIndex]->getContent(), $lineBreakCount - $reqLineCount),
+                Preg::replace('/\r\n|\n/', '', $tokens[$startIndex]->getContent(), $lineBreakCount - $reqLineCount),
             ]);
 
             return;
@@ -345,7 +344,7 @@ class Sample
             if ($tokenLineCount > 0) {
                 $tokens[$i] = new Token([
                     T_WHITESPACE,
-                    preg_replace('/\r\n|\n/', '', $tokens[$i]->getContent(), min($toReplaceCount, $tokenLineCount)),
+                    Preg::replace('/\r\n|\n/', '', $tokens[$i]->getContent(), min($toReplaceCount, $tokenLineCount)),
                 ]);
                 $toReplaceCount -= $tokenLineCount;
             }

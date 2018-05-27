@@ -12,20 +12,23 @@
 
 namespace PhpCsFixer\Console\Command;
 
-use PhpCsFixer\Diff\GeckoPackages\DiffOutputBuilder\UnifiedDiffOutputBuilder;
-use PhpCsFixer\Diff\v2_0\Differ;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -152,11 +155,15 @@ final class DescribeCommand extends Command
             $message = [] === $successors
                 ? 'will be removed on next major version'
                 : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
-            $message = preg_replace('/(`.+?`)/', '<info>$1</info>', $message);
+            $message = Preg::replace('/(`.+?`)/', '<info>$1</info>', $message);
             $description .= sprintf(' <error>DEPRECATED</error>: %s.', $message);
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', get_class($fixer)));
+        }
+
         $output->writeln($description);
         if ($definition->getDescription()) {
             $output->writeln($definition->getDescription());
@@ -185,18 +192,27 @@ final class DescribeCommand extends Command
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
                 if (null !== $allowed) {
                     foreach ($allowed as &$value) {
-                        $value = HelpCommand::toString($value);
+                        if ($value instanceof AllowedValueSubset) {
+                            $value = 'a subset of <comment>'.HelpCommand::toString($value->getAllowedValues()).'</comment>';
+                        } else {
+                            $value = '<comment>'.HelpCommand::toString($value).'</comment>';
+                        }
                     }
                 } else {
-                    $allowed = $option->getAllowedTypes();
+                    $allowed = array_map(
+                        function ($type) {
+                            return '<comment>'.$type.'</comment>';
+                        },
+                        $option->getAllowedTypes()
+                    );
                 }
 
                 if (null !== $allowed) {
-                    $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
+                    $line .= ' ('.implode(', ', $allowed).')';
                 }
 
-                $description = preg_replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
-                $line .= ': '.lcfirst(preg_replace('/\.$/', '', $description)).'; ';
+                $description = Preg::replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
+                $line .= ': '.lcfirst(Preg::replace('/\.$/', '', $description)).'; ';
                 if ($option->hasDefault()) {
                     $line .= sprintf(
                         'defaults to <comment>%s</comment>',
@@ -204,6 +220,17 @@ final class DescribeCommand extends Command
                     );
                 } else {
                     $line .= '<comment>required</comment>';
+                }
+
+                if ($option instanceof DeprecatedFixerOption) {
+                    $line .= '. <error>DEPRECATED</error>: '.Preg::replace(
+                        '/(`.+?`)/',
+                        '<info>$1</info>',
+                        OutputFormatter::escape(lcfirst($option->getDeprecationMessage()))
+                    );
+                }
+                if ($option instanceof AliasedFixerOption) {
+                    $line .= '; <error>DEPRECATED</error> alias: <comment>'.$option->getAlias().'</comment>';
                 }
 
                 $output->writeln($line);
@@ -240,11 +267,7 @@ final class DescribeCommand extends Command
         } else {
             $output->writeln('Fixing examples:');
 
-            $differ = new Differ(new UnifiedDiffOutputBuilder([
-                'fromFile' => 'Original',
-                'toFile' => 'New',
-            ]));
-
+            $differ = new UnifiedDiffer();
             $diffFormatter = new DiffConsoleFormatter($output->isDecorated(), sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                 PHP_EOL,

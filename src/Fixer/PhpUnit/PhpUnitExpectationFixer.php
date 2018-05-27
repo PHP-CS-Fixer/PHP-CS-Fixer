@@ -133,8 +133,29 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $argumentsAnalyzer = new ArgumentsAnalyzer();
         $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
+        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
+            $this->fixExpectation($tokens, $indexes[0], $indexes[1]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
+                ->setAllowedTypes(['string'])
+                ->setAllowedValues([PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_NEWEST])
+                ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
+                ->getOption(),
+        ]);
+    }
+
+    private function fixExpectation($tokens, $startIndex, $endIndex)
+    {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $oldMethodSequence = [
             new Token([T_VARIABLE, '$this']),
@@ -142,17 +163,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             [T_STRING],
         ];
 
-        $inPhpUnitClass = false;
-
-        for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
-            if (!$inPhpUnitClass && $tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
-                $inPhpUnitClass = true;
-            }
-
-            if (!$inPhpUnitClass) {
-                continue;
-            }
-
+        for ($index = $startIndex; $startIndex < $endIndex; ++$index) {
             $match = $tokens->findSequence($oldMethodSequence, $index);
 
             if (null === $match) {
@@ -230,20 +241,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $tokens[$index] = new Token([T_STRING, 'expectException']);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
-    {
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
-                ->setAllowedTypes(['string'])
-                ->setAllowedValues([PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_NEWEST])
-                ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
-                ->getOption(),
-        ]);
     }
 
     /**

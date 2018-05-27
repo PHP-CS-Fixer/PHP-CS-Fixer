@@ -22,6 +22,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -131,7 +132,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach (array_reverse($this->findPhpUnitClasses($tokens)) as $indexes) {
+        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
+        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
             $this->fixPhpUnitClass($tokens, $indexes[0], $indexes[1]);
         }
     }
@@ -169,28 +171,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $explodedContent = explode("\n", $tokens[$index - 1]->getContent());
 
         return end($explodedContent);
-    }
-
-    /**
-     * @param Tokens $tokens
-     *
-     * @return int[][] array of [start, end] indexes from sooner to later classes
-     */
-    private function findPhpUnitClasses(Tokens $tokens)
-    {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-        $phpunitClasses = [];
-
-        for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
-                $index = $tokens->getNextTokenOfKind($index, ['{']);
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-                $phpunitClasses[] = [$index, $endIndex];
-                $index = $endIndex;
-            }
-        }
-
-        return $phpunitClasses;
     }
 
     /**
@@ -283,10 +263,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $tag = $annotation->getTag()->getName();
 
-        preg_match('/^\s*\*\s*@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches);
+        Preg::match('/^\s*\*\s*@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches);
         $content = $matches[1];
-        if (preg_match('/\R/u', $content)) {
-            $content = preg_replace('/\s*\R+\s*\*\s*/u', ' ', $content);
+        if (Preg::match('/\R/u', $content)) {
+            $content = Preg::replace('/\s*\R+\s*\*\s*/u', ' ', $content);
         }
 
         return rtrim($content);

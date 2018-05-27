@@ -266,7 +266,7 @@ PHP;
                 9 => [
                     'token' => $tokens[9],
                     'type' => 'method',
-                     'classIndex' => 1,
+                    'classIndex' => 1,
                 ],
                 27 => [
                     'token' => $tokens[27],
@@ -276,52 +276,52 @@ PHP;
                 44 => [
                     'token' => $tokens[44],
                     'type' => 'method',
-                     'classIndex' => 1,
+                    'classIndex' => 1,
                 ],
                 64 => [
                     'token' => $tokens[64],
                     'type' => 'method',
-                     'classIndex' => 56,
+                    'classIndex' => 56,
                 ],
                 82 => [
                     'token' => $tokens[82],
                     'type' => 'method',
-                     'classIndex' => 76,
+                    'classIndex' => 76,
                 ],
                 100 => [
                     'token' => $tokens[100],
                     'type' => 'method',
-                     'classIndex' => 94,
+                    'classIndex' => 94,
                 ],
                 118 => [
                     'token' => $tokens[118],
                     'type' => 'method',
-                     'classIndex' => 112,
+                    'classIndex' => 112,
                 ],
                 139 => [
                     'token' => $tokens[139],
                     'type' => 'method',
-                     'classIndex' => 112,
+                    'classIndex' => 112,
                 ],
                 170 => [
                     'token' => $tokens[170],
                     'type' => 'method',
-                     'classIndex' => 76,
+                    'classIndex' => 76,
                 ],
                 188 => [
                     'token' => $tokens[188],
                     'type' => 'method',
-                     'classIndex' => 182,
+                    'classIndex' => 182,
                 ],
                 206 => [
                     'token' => $tokens[206],
                     'type' => 'method',
-                     'classIndex' => 200,
+                    'classIndex' => 200,
                 ],
                 242 => [
                     'token' => $tokens[242],
                     'type' => 'method',
-                     'classIndex' => 56,
+                    'classIndex' => 56,
                 ],
             ],
             $elements
@@ -821,7 +821,7 @@ $b;',
 
     public function provideIsArrayCases()
     {
-        $cases = [
+        return [
             [
                 '<?php
                     array("a" => 1);
@@ -881,8 +881,6 @@ $b;',
                 2, true,
             ],
         ];
-
-        return $cases;
     }
 
     /**
@@ -981,14 +979,12 @@ $b;',
 
     public function provideArrayExceptionsCases()
     {
-        $cases = [
+        return [
             ['<?php $a;', 1],
             ["<?php\n \$a = (0+1); // [0,1]", 4],
             ['<?php $text = "foo $bbb[0] bar";', 8],
             ['<?php $text = "foo ${aaa[123]} bar";', 9],
         ];
-
-        return $cases;
     }
 
     /**

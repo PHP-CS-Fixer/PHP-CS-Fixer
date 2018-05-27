@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\CT;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,6 +28,41 @@ final class CTTest extends TestCase
     {
         $constants = $this->getConstants();
         $this->assertSame($constants, array_flip(array_flip($constants)), 'Values of CT::T_* constants must be unique.');
+    }
+
+    /**
+     * @param string $name
+     * @param int    $value
+     *
+     * @dataProvider provideConstantsCases
+     */
+    public function testHas($name, $value)
+    {
+        $this->assertTrue(CT::has($value));
+    }
+
+    public function testHasNotExists()
+    {
+        $this->assertFalse(CT::has(123));
+    }
+
+    /**
+     * @param string $name
+     * @param int    $value
+     *
+     * @dataProvider provideConstantsCases
+     */
+    public function testGetName($name, $value)
+    {
+        $this->assertSame('CT::'.$name, CT::getName($value));
+    }
+
+    public function testGetNameNotExists()
+    {
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('No custom token was found for "123".');
+
+        CT::getName(123);
     }
 
     /**

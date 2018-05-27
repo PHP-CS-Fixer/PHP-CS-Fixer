@@ -106,7 +106,7 @@ EOF;
      *
      * @group legacy
      * @dataProvider provideWithConfigCases
-     * @expectedDeprecation Passing "tokens" at the root of the configuration is deprecated and will not be supported in 3.0, use "tokens" => array(...) option instead.
+     * @expectedDeprecation Passing "tokens" at the root of the configuration for rule "no_extra_blank_lines" is deprecated and will not be supported in 3.0, use "tokens" => array(...) option instead.
      */
     public function testLegacyWithConfig(array $lineNumberRemoved, array $config)
     {
@@ -714,7 +714,7 @@ $a = new Qux();',
 
     /**
      * @group legacy
-     * @expectedDeprecation Token "useTrait" is deprecated and will be removed in 3.0, use "use_trait" instead.
+     * @expectedDeprecation Token "useTrait" in option "tokens" for rule "no_extra_blank_lines" is deprecated and will be removed in 3.0, use "use_trait" instead.
      */
     public function testRemoveBetweenUseTraitsDeprecatedToken()
     {

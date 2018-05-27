@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Naming;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -228,7 +229,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
                 continue;
             }
 
-            $replaced = preg_replace_callback('/[^[:ascii:]]/u', static function ($matches) {
+            $replaced = Preg::replaceCallback('/[^[:ascii:]]/u', static function ($matches) {
                 return isset(self::$replacements[$matches[0]])
                     ? self::$replacements[$matches[0]]
                     : $matches[0]

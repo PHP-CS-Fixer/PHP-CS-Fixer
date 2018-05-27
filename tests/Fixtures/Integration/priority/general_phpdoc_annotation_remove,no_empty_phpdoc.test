@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: general_phpdoc_annotation_remove,no_empty_phpdoc.
+--RULESET--
+{"general_phpdoc_annotation_remove": {"annotations": ["test", "return", "param"] }, "no_empty_phpdoc": true}
+--EXPECT--
+<?php
+
+function hello($name)
+{
+    return 'hello'. $name;
+}
+
+--INPUT--
+<?php
+/**
+ *
+ *
+ * @return string
+ * @test
+ * @param string $name
+ */
+function hello($name)
+{
+    return 'hello'. $name;
+}

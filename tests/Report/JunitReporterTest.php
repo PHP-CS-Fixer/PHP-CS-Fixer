@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Report;
 
-use GeckoPackages\PHPUnit\Constraints\XML\XMLMatchesXSDConstraint;
+use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use PhpCsFixer\Report\JunitReporter;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
@@ -37,11 +37,15 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         self::$xsd = file_get_contents(__DIR__.'/../../doc/junit-10.xsd');
     }
 
     public static function tearDownAfterClass()
     {
+        parent::tearDownAfterClass();
+
         self::$xsd = null;
     }
 
@@ -163,7 +167,7 @@ XML;
         $formatter = new OutputFormatter();
         $input = $formatter->format($input);
 
-        $this->assertThat($input, new XMLMatchesXSDConstraint(self::$xsd));
+        $this->assertThat($input, new XmlMatchesXsd(self::$xsd));
         $this->assertXmlStringEqualsXmlString($expected, $input);
     }
 

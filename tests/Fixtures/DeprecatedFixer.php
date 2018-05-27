@@ -13,10 +13,13 @@
 namespace PhpCsFixer\Tests\Fixtures;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class DeprecatedFixer extends AbstractFixer implements DeprecatedFixerInterface
+final class DeprecatedFixer extends AbstractFixer implements DeprecatedFixerInterface, ConfigurationDefinitionFixerInterface
 {
     public function getDefinition()
     {
@@ -43,5 +46,12 @@ final class DeprecatedFixer extends AbstractFixer implements DeprecatedFixerInte
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+    }
+
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('foo', 'Foo.'))->getOption()
+        ]);
     }
 }

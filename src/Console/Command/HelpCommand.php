@@ -18,8 +18,12 @@ use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\Utils;
 use Symfony\Component\Console\Command\HelpCommand as BaseHelpCommand;
@@ -176,7 +180,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
 **NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
 
-See `Symfony\Finder` (<url>http://symfony.com/doc/current/components/finder.html</url>)
+See `Symfony\Finder` (<url>https://symfony.com/doc/current/components/finder.html</url>)
 online documentation for other `Finder` methods.
 
 You may also use a blacklist for the rules instead of the above shown whitelist approach.
@@ -308,7 +312,7 @@ EOF
 
             $str = var_export($value, true);
             do {
-                $strNew = preg_replace(
+                $strNew = Preg::replace(
                     $replaces[0],
                     $replaces[1],
                     $str
@@ -324,7 +328,7 @@ EOF
             $str = var_export($value, true);
         }
 
-        return preg_replace('/\bNULL\b/', 'null', $str);
+        return Preg::replace('/\bNULL\b/', 'null', $str);
     }
 
     /**
@@ -344,6 +348,14 @@ EOF
             });
 
             usort($allowed, static function ($valueA, $valueB) {
+                if ($valueA instanceof AllowedValueSubset) {
+                    return -1;
+                }
+
+                if ($valueB instanceof AllowedValueSubset) {
+                    return 1;
+                }
+
                 return strcasecmp(
                     self::toString($valueA),
                     self::toString($valueB)
@@ -390,7 +402,7 @@ EOF
         }
 
         for ($i = (int) Application::VERSION; $i > 0; --$i) {
-            if (1 === preg_match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
+            if (1 === Preg::match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
                 $version = $matches[1];
 
                 break;
@@ -475,7 +487,7 @@ EOF
             }
 
             $description = implode("\n   | ", self::wordwrap(
-                preg_replace('/(`.+?`)/', '<info>$1</info>', $description),
+                Preg::replace('/(`.+?`)/', '<info>$1</info>', $description),
                 72
             ));
 
@@ -488,10 +500,10 @@ EOF
             if ($fixer->isRisky()) {
                 $help .= sprintf(
                     "   | *Risky rule: %s.*\n",
-                    preg_replace(
+                    Preg::replace(
                         '/(`.+?`)/',
                         '<info>$1</info>',
-                        lcfirst(preg_replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
+                        lcfirst(Preg::replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
                     )
                 );
             }
@@ -515,25 +527,46 @@ EOF
                         $allowed = self::getDisplayableAllowedValues($option);
                         if (null !== $allowed) {
                             foreach ($allowed as &$value) {
-                                $value = self::toString($value);
+                                if ($value instanceof AllowedValueSubset) {
+                                    $value = 'a subset of <comment>'.self::toString($value->getAllowedValues()).'</comment>';
+                                } else {
+                                    $value = '<comment>'.self::toString($value).'</comment>';
+                                }
                             }
                         } else {
-                            $allowed = $option->getAllowedTypes();
+                            $allowed = array_map(
+                                function ($type) {
+                                    return '<comment>'.$type.'</comment>';
+                                },
+                                $option->getAllowedTypes()
+                            );
                         }
 
                         if (null !== $allowed) {
-                            $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
+                            $line .= ' ('.implode(', ', $allowed).')';
                         }
 
-                        $line .= ': '.preg_replace(
+                        $line .= ': '.Preg::replace(
                             '/(`.+?`)/',
                             '<info>$1</info>',
-                            lcfirst(preg_replace('/\.$/', '', OutputFormatter::escape($option->getDescription())))
+                            lcfirst(Preg::replace('/\.$/', '', OutputFormatter::escape($option->getDescription())))
                         ).'; ';
                         if ($option->hasDefault()) {
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
                         } else {
                             $line .= 'required';
+                        }
+
+                        if ($option instanceof DeprecatedFixerOption) {
+                            $line .= '. DEPRECATED: '.Preg::replace(
+                                '/(`.+?`)/',
+                                '<info>$1</info>',
+                                lcfirst(Preg::replace('/\.$/', '', OutputFormatter::escape($option->getDeprecationMessage())))
+                            );
+                        }
+
+                        if ($option instanceof AliasedFixerOption) {
+                            $line .= '; DEPRECATED alias: <comment>'.$option->getAlias().'</comment>';
                         }
 
                         foreach (self::wordwrap($line, 72) as $index => $line) {
@@ -551,7 +584,7 @@ EOF
         }
 
         // prevent "\</foo>" from being rendered as an escaped literal style tag
-        return preg_replace('#\\\\(</.*?>)#', '<<$1', $help);
+        return Preg::replace('#\\\\(</.*?>)#', '<<$1', $help);
     }
 
     /**
@@ -568,7 +601,7 @@ EOF
         $currentLine = 0;
         $lineLength = 0;
         foreach (explode(' ', $string) as $word) {
-            $wordLength = strlen(preg_replace('~</?(\w+)>~', '', $word));
+            $wordLength = strlen(Preg::replace('~</?(\w+)>~', '', $word));
             if (0 !== $lineLength) {
                 ++$wordLength; // space before word
             }
