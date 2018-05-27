@@ -1,0 +1,68 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-23T12:13:58Z
+
+imo a feature, thus 2.12
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-24T11:57:23Z
+
+The default behavior of the fixer is changing, shouldn't we add an option?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-24T12:20:26Z
+
+Agreed, will update shortly
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-24T12:58:03Z
+
+:-1: for option, but I agree it's always fuzzy
+it's not that we now change possible behaviour, we simply fix more cases, imo it;s good without option
+we simply fix more cases, "rule" remains the same, "fixer" that implements it implement it more completely.
+
+@julienfalque , do you remember #3445 ? it was not just refactoring, it was refactoring to cover (detect & fix) more edge cases. but we didn't introduce any option shall newly detected cases be fixed or not, we just took it as good coin - we fix more.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-24T13:09:04Z
+
+#3445 is not a good example IMO as it was a bugfix (it didn't aim to cover more cases, it aimed to fix cases that didn't work as they should have). I think a better example would be #3478. But yes, it's really fuzzy. :+1: for tweaking the default behavior directly.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-24T13:18:03Z
+
+in #3445 we had to adjust existing unittests to follow new impelemntation, thus it was "behaviuor change", but ultimately not "rule change"
+
+#3478 is good example as well ;)
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-24T13:47:23Z
+
+So keep this PR as-is?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-24T13:54:45Z
+
+Yes, sorry if you started working on something :/
+
+Travis is failing on 7.2 but I'm not sure this is related to changes from this PR.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-24T13:55:54Z
+
+Nope I didn't no worries! Thanks
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-25T06:53:12Z
+
+The test failed because of a time out.
+Ignore my the rest of my old comment, failed to read the test script...
