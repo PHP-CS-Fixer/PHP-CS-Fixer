@@ -90,6 +90,11 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.2
+
+        -
+            <<: *STANDARD_TEST_JOB
+            stage: Test
+            php: 7.2
             env: COLLECT_COVERAGE=1
             before_script:
                 # check phpdbg
