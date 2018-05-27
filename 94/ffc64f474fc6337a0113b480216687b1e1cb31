@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-16T12:45:51Z
+
+Actually I find these ones pretty simple, but I don't worry about that: I know we would have @keradus to the rescue if needed ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-16T15:36:08Z
+
+give me the spec via unit tests, and I will make regex for you ;)
+kerad: remote regex generator service
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-04T17:12:13Z
+
+Rebased.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-11T06:11:22Z
+
+I like to request @keradus as reviewer here as the regex is a bit out of my regex-understanding-capabilities;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-11T06:44:24Z
+
+@SpacePossum When I have difficulties understanding regular expressions, I use https://regex101.com. It is very helpful so I would recommand you try it :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-25T08:41:13Z
+
+please resolve the conflict @julienfalque
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-26T16:08:40Z
+
+PR rebased.
