@@ -21,6 +21,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Bram Gotink <bram@gotink.me>
@@ -33,6 +34,11 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      * @var array<int|string, Token>
      */
     private $candidatesMap;
+
+    /**
+     * @var array<string, null|bool>
+     */
+    private $candidateTypesConfiguration;
 
     /**
      * @var array<int|string>
@@ -76,6 +82,14 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
                         'less_and_greater' => null,
                     ]
                 ),
+                new CodeSample(
+                    '<?php
+return $foo === count($bar);
+',
+                    [
+                        'always_move_variable' => true,
+                    ]
+                ),
             ]
         );
     }
@@ -113,6 +127,10 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             (new FixerOptionBuilder('less_and_greater', 'Style for less and greater than (`<`, `<=`, `>`, `>=`) statements.'))
                 ->setAllowedTypes(['bool', 'null'])
                 ->setDefault(null)
+                ->getOption(),
+            (new FixerOptionBuilder('always_move_variable', 'Whether variables should always be on non assignable side when applying Yoda style.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
@@ -225,12 +243,12 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
     {
         for ($i = count($tokens) - 1; $i > 1; --$i) {
             if ($tokens[$i]->isGivenKind($this->candidateTypes)) {
-                $yoda = $this->configuration[$tokens[$i]->getId()];
+                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getId()];
             } elseif (
                 ($tokens[$i]->equals('<') && in_array('<', $this->candidateTypes, true))
                 || ($tokens[$i]->equals('>') && in_array('>', $this->candidateTypes, true))
             ) {
-                $yoda = $this->configuration[$tokens[$i]->getContent()];
+                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getContent()];
             } else {
                 continue;
             }
@@ -333,31 +351,36 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      */
     private function getCompareFixableInfo(Tokens $tokens, $index, $yoda)
     {
+        $left = $this->getLeftSideCompareFixableInfo($tokens, $index);
+        $right = $this->getRightSideCompareFixableInfo($tokens, $index);
+
         if ($yoda) {
-            $right = $this->getRightSideCompareFixableInfo($tokens, $index);
-            if ($this->isVariable($tokens, $right['start'], $right['end']) || $this->isListStatement($tokens, $right['start'], $right['end'])) {
-                return null;
-            }
-
-            $left = $this->getLeftSideCompareFixableInfo($tokens, $index);
-            $otherIsVar = $this->isVariable($tokens, $left['start'], $left['end']);
+            $expectedAssignableSide = $right;
+            $expectedValueSide = $left;
         } else {
-            $left = $this->getLeftSideCompareFixableInfo($tokens, $index);
-            if ($this->isVariable($tokens, $left['start'], $left['end']) || $this->isListStatement($tokens, $left['start'], $left['end'])) {
-                return null;
-            }
-
-            $right = $this->getRightSideCompareFixableInfo($tokens, $index);
-
             if ($tokens[$tokens->getNextMeaningfulToken($right['end'])]->equals('=')) {
                 return null;
             }
 
-            $otherIsVar = $this->isVariable($tokens, $right['start'], $right['end']);
+            $expectedAssignableSide = $left;
+            $expectedValueSide = $right;
         }
 
-        // edge case handling, for example `$a === 1 === 2;`
-        if (!$otherIsVar) {
+        if (
+            // variable cannot be moved to expected side
+            !(
+                !$this->isVariable($tokens, $expectedAssignableSide['start'], $expectedAssignableSide['end'], false)
+                && !$this->isListStatement($tokens, $expectedAssignableSide['start'], $expectedAssignableSide['end'])
+                && $this->isVariable($tokens, $expectedValueSide['start'], $expectedValueSide['end'], false)
+            )
+            // variable cannot be moved to expected side (strict mode)
+            && !(
+                $this->configuration['always_move_variable']
+                && !$this->isVariable($tokens, $expectedAssignableSide['start'], $expectedAssignableSide['end'], true)
+                && !$this->isListStatement($tokens, $expectedAssignableSide['start'], $expectedAssignableSide['end'])
+                && $this->isVariable($tokens, $expectedValueSide['start'], $expectedValueSide['end'], true)
+            )
+        ) {
             return null;
         }
 
@@ -481,16 +504,38 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
      * variable.
      *
      * @param Tokens $tokens The token list
-     * @param int    $index  The first index of the possible variable
+     * @param int    $start  The first index of the possible variable
      * @param int    $end    The last index of the possible variable
+     * @param bool   $strict Enable strict variable detection
      *
      * @return bool Whether the tokens describe a variable
      */
-    private function isVariable(Tokens $tokens, $index, $end)
+    private function isVariable(Tokens $tokens, $start, $end, $strict)
     {
-        if ($end === $index) {
-            return $tokens[$index]->isGivenKind(T_VARIABLE);
+        $tokenAnalyzer = new TokensAnalyzer($tokens);
+
+        if ($start === $end) {
+            return $tokens[$start]->isGivenKind(T_VARIABLE);
         }
+
+        if ($strict) {
+            if ($tokens[$start]->equals('(')) {
+                return false;
+            }
+
+            for ($index = $start; $index <= $end; ++$index) {
+                if (
+                    $tokens[$index]->isCast()
+                    || $tokens[$index]->isGivenKind(T_INSTANCEOF)
+                    || $tokens[$index]->equalsAny(['.', '!'])
+                    || $tokenAnalyzer->isBinaryOperator($index)
+                ) {
+                    return false;
+                }
+            }
+        }
+
+        $index = $start;
 
         // handle multiple braces around statement ((($a === 1)))
         while (
@@ -577,6 +622,11 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
                 continue;
             }
 
+            // $a(...) or $a->b(...)
+            if ($strict && $current->isGivenKind([T_STRING, T_VARIABLE]) && $next->equals('(')) {
+                return false;
+            }
+
             // {...} (as in $a->{$b})
             if ($expectString && $current->isGivenKind(CT::T_DYNAMIC_PROP_BRACE_OPEN)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, $index);
@@ -597,6 +647,47 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             }
 
             break;
+        }
+
+        return !$this->isConstant($tokens, $start, $end);
+    }
+
+    private function isConstant(Tokens $tokens, $index, $end)
+    {
+        $expectNumberOnly = false;
+        $expectNothing = false;
+
+        for (; $index <= $end; ++$index) {
+            $token = $tokens[$index];
+
+            if ($token->isComment() || $token->isWhitespace()) {
+                if ($expectNothing) {
+                    return false;
+                }
+
+                continue;
+            }
+
+            if ($expectNumberOnly && !$token->isGivenKind([T_LNUMBER, T_DNUMBER])) {
+                return false;
+            }
+
+            if ($token->equals('-')) {
+                $expectNumberOnly = true;
+
+                continue;
+            }
+
+            if (
+                $token->isGivenKind([T_LNUMBER, T_DNUMBER, T_CONSTANT_ENCAPSED_STRING])
+                || $token->equalsAny([[T_STRING, 'true'], [T_STRING, 'false'], [T_STRING, 'null']])
+            ) {
+                $expectNothing = true;
+
+                continue;
+            }
+
+            return false;
         }
 
         return true;
@@ -634,7 +725,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
             $this->candidatesMap['>'] = new Token('<');
         }
 
-        $this->configuration = $candidateTypes;
+        $this->candidateTypesConfiguration = $candidateTypes;
         $this->candidateTypes = array_keys($candidateTypes);
     }
 }

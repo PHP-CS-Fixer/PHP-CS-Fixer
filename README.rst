@@ -1611,6 +1611,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
+  - ``always_move_variable`` (``bool``): whether variables should always be on non
+    assignable side when applying Yoda style; defaults to ``false``
   - ``equal`` (``bool``, ``null``): style for equal (``==``, ``!=``) statements; defaults to
     ``true``
   - ``identical`` (``bool``, ``null``): style for identical (``===``, ``!==``) statements;
