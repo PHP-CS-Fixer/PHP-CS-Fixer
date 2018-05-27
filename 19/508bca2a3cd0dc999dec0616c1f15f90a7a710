@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-04T17:01:55Z
+
+Rebased.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-14T05:16:44Z
+
+Please add a code sample showing how the new options work.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-15T18:07:33Z
+
+> Please add a code sample showing how the new options work.
+
+Done.
+
+I also removed the `always_move_constant` option I introduced, I noticed it actually has no effect: constants are moved even without the option. Not sure why I introduced it. Maybe something fixed in upstream branches.
