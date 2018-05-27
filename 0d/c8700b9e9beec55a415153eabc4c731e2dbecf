@@ -1,0 +1,79 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-01-19T05:24:32Z
+
+Hi,
+With the new option; would fixing like the following be possible?
+
+```php
+<?php
+
+class SomeTest
+{
+    /**
+     * @param int $a
+     * @param string $b
+     *
+     * @dataProvider           dataJobCreation
+     */
+    public function testSomething($a, $b)
+    {
+    }
+}
+```
+
+```php
+<?php
+
+class SomeTest
+{
+    /**
+     * @param int    $a
+     * @param string $b
+     *
+     * @dataProvider dataJobCreation
+     */
+    public function testSomething($a, $b)
+    {
+    }
+}
+```
+
+---------------------------------------------------------------------------
+
+by zored at 2018-01-19T08:15:36Z
+
+@SpacePossum hi! What you show is the default behavior without `'collapse' => true`. New flag forbids vertical align (i.e. "collapses" spaces) for shorter diffs in pull-requests.
+
+Maybe I misunderstood the question and I need to clarify my solution with additional tests. 😃
+
+---------------------------------------------------------------------------
+
+by zored at 2018-01-22T10:23:10Z
+
+Added `dataProvider` support.
+
+---------------------------------------------------------------------------
+
+by zored at 2018-01-25T07:07:11Z
+
+Any other comments? :)
+
+---------------------------------------------------------------------------
+
+by zored at 2018-05-20T08:58:40Z
+
+Merge, please 😄
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-25T08:15:19Z
+
+Rebased, conflict resolved, CS fixed, squashed and forced pushed.
+@zored please feel free to reclaim the authorship of the commit.
+
+---------------------------------------------------------------------------
+
+by zored at 2018-05-25T08:20:13Z
+
+@SpacePossum thanks. Let commit be yours :)
