@@ -74,18 +74,26 @@ $config = PhpCsFixer\Config::create()
 
 // special handling of fabbot.io service if it's using too old PHP CS Fixer version
 if (false !== getenv('FABBOT_IO')) {
-    try {
-        PhpCsFixer\FixerFactory::create()
-            ->registerBuiltInFixers()
-            ->registerCustomFixers($config->getCustomFixers())
-            ->useRuleSet(new PhpCsFixer\RuleSet($config->getRules()));
-    } catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
-        $config->setRules([]);
-    } catch (UnexpectedValueException $e) {
-        $config->setRules([]);
-    } catch (InvalidArgumentException $e) {
-        $config->setRules([]);
-    }
+    $config->setRules(array_filter(
+        $config->getRules(),
+        function ($config, $name) {
+            try {
+                if ('@' === $name[0]) {
+                    return in_array($name, PhpCsFixer\RuleSet::create()->getSetDefinitionNames(), true);
+                }
+                PhpCsFixer\FixerFactory::create()
+                    ->registerBuiltInFixers()
+                    ->useRuleSet(new PhpCsFixer\RuleSet([$name => $config]));
+
+                return true;
+            } catch (PhpCsFixer\ConfigurationException\InvalidConfigurationException $e) {
+                return false;
+            } catch (UnexpectedValueException $e) {
+                return false;
+            }
+        },
+        ARRAY_FILTER_USE_BOTH
+    ));
 }
 
 return $config;
