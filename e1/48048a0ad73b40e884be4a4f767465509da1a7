@@ -1,0 +1,80 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-07T17:43:19Z
+
+@TomasVotruba , could you please help our community once more ?
+This PR needs a decent review for quite a long already. Not only the code needs it, but also the idea itself.
+Could you please take care of it ?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-01-07T17:53:37Z
+
+@keradus it needs update - I see test are not covering all cases
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2018-01-07T23:19:41Z
+
+@keradus Sure I'll give it some time, when you asked so nicely :+1:
+
+**Personally I'd split it to 2 fixers**, since:
+
+- one feature is `trigger_error` `E_USER_DEPRECATED` with `@`
+    - also this fixer it would be useful mostly to frameworks than to local projects
+- second is remove (almost) all `@`
+    - here should be option to whitelist functions to skip with `trigger_error` as default; also many people use `@mkdir` for checking already existing directory etc.
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2018-01-07T23:28:52Z
+
+I've just read original issue and discussion.
+If I understand that correctly, this should cover only the 2nd fixer is suggested.
+
+So this fixer should only take care of  `@` removal with `trigger_error` function as default.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-07T23:58:49Z
+
+that's the thing, we can not have 2 fixers, one adding `@` (even only in some cases), one removing `@` , as they will be conflicting, and whole PHP CS Fixer project is written in a way to avoid conflicting rules.
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2018-01-08T00:15:30Z
+
+The other case is to keep this fixer as it is and add reference to other fixer - "we skip trigger_error here, because it is covered by @see AnotherFixer". And still add "allowed_functions" option.
+
+That would definitelly made my code review less wtf.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-01-20T22:20:11Z
+
+@TomasVotruba thanks for the review, I've reworked fixer, it should be much easier to read it's code. Also older version was missing some cases.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-02-10T18:18:11Z
+
+Is there a specific reason not to implement some `exclude` option as proposed in #3035? IMO it's a must have, as some `@` usages are legit, e.g.:
+```php
+// failure is handled so one doesn't care about the E_WARNING
+if (false === $file = @fopen(...)) {
+    // throw some exception
+}
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-20T17:18:07Z
+
+ping @kubawerlos
+what is the state of this PR ?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-04-05T18:18:15Z
+
+@keradus added exclude list - ready for review
