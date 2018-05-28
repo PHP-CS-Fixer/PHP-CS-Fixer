@@ -66,6 +66,22 @@ function baz($options)
                         ],
                     ]
                 ),
+                new CodeSample(
+'<?php
+
+function baz($options)
+{
+    if (!is_array($options)) {
+        throw new \InvalidArgumentException();
+    }
+
+    return json_encode($options);
+}
+',
+                    [
+                        'opcache-only' => true,
+                    ]
+                ),
             ],
             null,
             'Risky when any of the functions are overridden.'
@@ -167,6 +183,10 @@ function baz($options)
                 }])
                 ->setDefault([])
                 ->getOption(),
+            (new FixerOptionBuilder('opcache-only', 'Only prefix functions that will be optimized by the Zend OPcache.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false) // backwards compatibility
+                ->getOption(),
         ]);
     }
 
@@ -175,10 +195,8 @@ function baz($options)
      */
     private function getFunctionNames()
     {
-        $definedFunctions = \get_defined_functions();
-
         return \array_diff(
-            $this->normalizeFunctionNames($definedFunctions['internal']),
+            $this->normalizeFunctionNames($this->getDefinedFunctions()),
             \array_unique($this->normalizeFunctionNames($this->configuration['exclude']))
         );
     }
@@ -193,5 +211,56 @@ function baz($options)
         return \array_map(static function ($functionName) {
             return \strtolower($functionName);
         }, $functionNames);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getDefinedFunctions()
+    {
+        if (!$this->configuration['opcache-only']) {
+            return \get_defined_functions()['internal'];
+        }
+
+        return [
+            'array_slice',
+            'assert',
+            'boolval',
+            'call_user_func',
+            'call_user_func_array',
+            'chr',
+            'constant',
+            'count',
+            'define',
+            'defined',
+            'dirname',
+            'doubleval',
+            'extension_loaded',
+            'floatval',
+            'func_get_args',
+            'func_num_args',
+            'function_exists',
+            'get_called_class',
+            'get_class',
+            'gettype',
+            'in_array',
+            'intval',
+            'is_array',
+            'is_bool',
+            'is_callable',
+            'is_double',
+            'is_float',
+            'is_int',
+            'is_integer',
+            'is_long',
+            'is_null',
+            'is_object',
+            'is_real',
+            'is_resource',
+            'is_string',
+            'ord',
+            'strlen',
+            'strval',
+        ];
     }
 }
