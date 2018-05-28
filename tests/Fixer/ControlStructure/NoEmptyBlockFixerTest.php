@@ -25,7 +25,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
-     * @param string|null $input
+     * @param null|string $input
      *
      * @dataProvider provideTestFixCases
      */
