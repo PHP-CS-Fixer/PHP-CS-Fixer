@@ -191,6 +191,12 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             ['<?php switch ($foo) { /* keep */ }'],
             ['<?php try { /* keep */ } catch (Throwable $e) {}'],
             ['<?php while ($foo) { /* keep */ }'],
+            ['<?php do { /** keep */ } while ($foo);'],
+            ['<?php try { foo(); } finally { /** keep */ }'],
+            ['<?php if ($foo) { /** keep */ }'],
+            ['<?php switch ($foo) { /** keep */ }'],
+            ['<?php try { /** keep */ } catch (Throwable $e) {}'],
+            ['<?php while ($foo) { /** keep */ }'],
         ];
     }
 }
