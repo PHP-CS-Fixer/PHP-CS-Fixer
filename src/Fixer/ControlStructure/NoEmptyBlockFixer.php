@@ -77,7 +77,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     private function fixDoWhile($doIndex, Tokens $tokens)
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($doIndex);
-        $closeBodyIndex = $tokens->getNextMeaningfulToken($openBodyIndex);
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
         if (!$tokens[$closeBodyIndex]->equals('}')) {
             return;
@@ -101,7 +101,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     private function fixFinally($finallyIndex, Tokens $tokens)
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($finallyIndex);
-        $closeBodyIndex = $tokens->getNextMeaningfulToken($openBodyIndex);
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
         if (!$tokens[$closeBodyIndex]->equals('}')) {
             return;
@@ -124,7 +124,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
-        $closeBodyIndex = $tokens->getNextMeaningfulToken($openBodyIndex);
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
         if (!$tokens[$closeBodyIndex]->equals('}')) {
             return;
@@ -153,7 +153,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
-        $closeBodyIndex = $tokens->getNextMeaningfulToken($openBodyIndex);
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
         if ($tokens[$closeBodyIndex]->equals('}')) {
             $this->clearRangeKeepComments($tokens, $switchIndex, $closeBodyIndex);
@@ -176,7 +176,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     private function fixTry($tryIndex, Tokens $tokens)
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($tryIndex);
-        $closeBodyIndex = $tokens->getNextMeaningfulToken($openBodyIndex);
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
         if (!$tokens[$closeBodyIndex]->equals('}')) {
             return;
