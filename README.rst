@@ -278,16 +278,17 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``multi_line_extends_each_single_line`` (``bool``): whether definitions should
-    be multiline; defaults to:<default_block>; DEPRECATED alias:
-    ``multiLineExtendsEachSingleLine``
-    false``
+    be multiline; defaults to:
+    ``false``
+    DEPRECATED alias: ``multiLineExtendsEachSingleLine``
   - ``single_item_single_line`` (``bool``): whether definitions should be single
-    line when including a single item; defaults to:<default_block>; DEPRECATED alias:
-    ``singleItemSingleLine``
-    false``
+    line when including a single item; defaults to:
+    ``false``
+    DEPRECATED alias: ``singleItemSingleLine``
   - ``single_line`` (``bool``): whether definitions should be single line; defaults
-    to:<default_block>; DEPRECATED alias: ``singleLine``
-    false``
+    to:
+    ``false``
+    DEPRECATED alias: ``singleLine``
 
 * **class_keyword_remove**
 
@@ -500,9 +501,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``comment_type`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to:<default_block>;
+  - ``comment_type`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to:
+    ``'comment'``
     DEPRECATED alias: ``commentType``
-    'comment'``
   - ``header`` (``string``): proper header content; required
   - ``location`` (``'after_declare_strict'``, ``'after_open'``): the location of the
     inserted header; defaults to:
@@ -828,12 +829,13 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``imports_order`` (``array``, ``null``): defines the order of import types; defaults
-    to:<default_block>; DEPRECATED alias: ``importsOrder``
-    null``
+    to:
+    ``null``
+    DEPRECATED alias: ``importsOrder``
   - ``sort_algorithm`` (``'alpha'``, ``'length'``): whether the statements should be
-    sorted alphabetically or by length; defaults to:<default_block>; DEPRECATED alias:
-    ``sortAlgorithm``
-    'alpha'``
+    sorted alphabetically or by length; defaults to:
+    ``'alpha'``
+    DEPRECATED alias: ``sortAlgorithm``
 
 * **php_unit_construct** [@Symfony:risky]
 

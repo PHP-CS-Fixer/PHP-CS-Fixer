@@ -536,10 +536,6 @@ EOF
                             $line .= 'required';
                         }
 
-                        if ($option instanceof AliasedFixerOption) {
-                            $line .= '; DEPRECATED alias: <comment>'.$option->getAlias().'</comment>';
-                        }
-
                         foreach (self::wordwrap($line, 72) as $index => $line) {
                             $help .= (0 === $index ? '   | - ' : '   |   ').$line."\n";
                         }
@@ -549,6 +545,10 @@ EOF
                                 $help .= sprintf("   |   <default_line>%s</default_line>\n", $default);
                             }
                             $help .= '</default_block>';
+                        }
+
+                        if ($option instanceof AliasedFixerOption) {
+                            $help .= '   |   DEPRECATED alias: <comment>'.$option->getAlias()."</comment>\n";
                         }
                     }
                 }
