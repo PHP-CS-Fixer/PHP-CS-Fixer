@@ -212,7 +212,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
      */
     private function fixWhile($whileIndex, Tokens $tokens)
     {
-        // make sure it's not part of a do-while statement, which is dealt with
+        // make sure it's not part of a do-while statement
         $closeDoBodyIndex = $tokens->getPrevMeaningfulToken($whileIndex);
 
         if ($tokens[$closeDoBodyIndex]->equals('}')) {
