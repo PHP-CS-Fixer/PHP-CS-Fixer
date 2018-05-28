@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-15T13:22:07Z
+
+Hi !
+First of all, thanks for contributing and sorry for delay in getting any feedback, I was on little break in real life.
+Your PR looks really promising! Let me write some small remarks ;)
+
+---------------------------------------------------------------------------
+
+by nobuf at 2018-05-26T23:39:01Z
+
+The fixer definition is updated, and `@param` are present in all methods.
+
+Travis CI got failed, though maybe just the CI  wasn't stable? I can't trigger a rebuild.
+Let me know if I should rebase against `master` and make this PR a single commit.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-27T16:24:05Z
+
+> I can't trigger a rebuild.
+
+you can always do it by committing new, empty commit, eg `git commit --allow-empty -m "kick CI"`
+
+there is indeed issue on master build with 7.2 with coverage collection, dunno why to be honest
+
+> Let me know if I should rebase against master and make this PR a single commit.
+
+no worry, we will do it during merge of PR
