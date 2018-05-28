@@ -239,7 +239,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
             return;
         }
 
-        $closeBodyIndex = $tokens->getNextMeaningfulToken($openBodyIndex);
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
         if ($tokens[$closeBodyIndex]->equals('}')) {
             $this->clearRangeKeepComments($tokens, $whileIndex, $closeBodyIndex);
