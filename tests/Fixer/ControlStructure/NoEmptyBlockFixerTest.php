@@ -38,6 +38,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
     {
         return [
             [
+                '<?php if ($foo) { echo 1; } ',
+                '<?php if ($foo) { echo 1; } while ($foo);',
+            ],
+            [
                 '<?php ',
                 '<?php do {} while ($foo);',
             ],
@@ -137,6 +141,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             ['<?php do {} while (foo());'],
             ['<?php do {} while ($foo->bar());'],
             ['<?php do {} while ($foo->bar);'],
+            ['<?php do { echo 1; } while ($foo);'],
             ['<?php switch (foo()) {}'],
             ['<?php switch ($foo->bar()) {}'],
             ['<?php switch ($foo->bar) {}'],

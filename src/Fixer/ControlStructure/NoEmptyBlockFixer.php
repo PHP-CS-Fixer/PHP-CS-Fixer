@@ -85,7 +85,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
 
         $whileIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
         $openBraceIndex = $tokens->getNextMeaningfulToken($whileIndex);
-        $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBodyIndex);
+        $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
 
         if ($this->canHaveSideEffects($tokens, $openBraceIndex + 1, $closeBraceIndex - 1)) {
             return;
@@ -212,6 +212,18 @@ final class NoEmptyBlockFixer extends AbstractFixer
      */
     private function fixWhile($whileIndex, Tokens $tokens)
     {
+        // make sure it's not part of a do-while statement, which is dealt with
+        $closeDoBodyIndex = $tokens->getPrevMeaningfulToken($whileIndex);
+
+        if ($tokens[$closeDoBodyIndex]->equals('}')) {
+            $openDoBodyIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $closeDoBodyIndex);
+            $doIndex = $tokens->getPrevMeaningfulToken($openDoBodyIndex);
+
+            if ($tokens[$doIndex]->isGivenKind(T_DO)) {
+                return;
+            }
+        }
+
         $openBraceIndex = $tokens->getNextMeaningfulToken($whileIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
 
