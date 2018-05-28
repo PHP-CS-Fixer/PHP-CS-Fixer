@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2018-05-08T12:51:26Z
+
+What about this case?
+
+```php
+/**
+ * @param Foo $foo
+ */
+function bar(?Foo $foo) {}
+```
+
+(forgotten `|null` in phpdoc..)
+
+Will the phpdoc be removed?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-08T13:12:52Z
+
+No, the current version only removes PHPDocs types when they match the actual typehints exactly. In some cases, the difference can be intended.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-27T22:41:04Z
+
+IMO, this shall be default behaviour:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/2979#issuecomment-323092084
+
+adding option to define behaviour later means that default behaviour won't be good
+
+or, mark it as experimental ;P
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-27T22:49:51Z
+
+While I'm :+1: for an option like `only_when_all_superfluous`, I'm :-1: to enable it by default: with PHP 7, PHPDocs should only be their to fill the remaining gaps, nothing more. This would also be in contradiction with the default behavior of `phpdoc_add_missing_param_annotation` (option `only_untyped` defaults to `true`).
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-28T08:42:09Z
+
+convinced with `only_untyped`
