@@ -984,6 +984,11 @@ Choose from the list of available rules:
 
   Replaces superfluous ``elseif`` with ``if``.
 
+* **no_superfluous_phpdoc_tags**
+
+  Removes ``@param`` and ``@return`` tags that don't provide any useful
+  information.
+
 * **no_trailing_comma_in_list_call** [@Symfony]
 
   Remove trailing commas in list function calls.

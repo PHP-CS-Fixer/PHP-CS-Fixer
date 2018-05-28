@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_superfluous_phpdoc_tags,no_empty_phpdoc.
+--RULESET--
+{"no_superfluous_phpdoc_tags": true, "no_empty_phpdoc": true}
+--EXPECT--
+<?php
+
+class Foo {
+    
+    public function doFoo(Bar $bar) {}
+}
+
+--INPUT--
+<?php
+
+class Foo {
+    /**
+     * @param Bar $bar
+     */
+    public function doFoo(Bar $bar) {}
+}
