@@ -91,7 +91,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
             return;
         }
 
-        $tokens->clearRange($doIndex, $tokens->getNextMeaningfulToken($closeBraceIndex));
+        $this->clearRangeKeepComments($tokens, $doIndex, $tokens->getNextMeaningfulToken($closeBraceIndex));
     }
 
     /**
@@ -107,7 +107,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
             return;
         }
 
-        $tokens->clearRange($finallyIndex, $closeBodyIndex);
+        $this->clearRangeKeepComments($tokens, $finallyIndex, $closeBodyIndex);
     }
 
     /**
@@ -136,7 +136,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
             return;
         }
 
-        $tokens->clearRange($ifIndex, $closeBodyIndex);
+        $this->clearRangeKeepComments($tokens, $ifIndex, $closeBodyIndex);
     }
 
     /**
@@ -156,7 +156,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $closeBodyIndex = $tokens->getNextMeaningfulToken($openBodyIndex);
 
         if ($tokens[$closeBodyIndex]->equals('}')) {
-            $tokens->clearRange($switchIndex, $closeBodyIndex);
+            $this->clearRangeKeepComments($tokens, $switchIndex, $closeBodyIndex);
 
             return;
         }
@@ -166,7 +166,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         // endswitch must have a semicolon after
-        $tokens->clearRange($switchIndex, $tokens->getNextMeaningfulToken($closeBodyIndex));
+        $this->clearRangeKeepComments($tokens, $switchIndex, $tokens->getNextMeaningfulToken($closeBodyIndex));
     }
 
     /**
@@ -203,7 +203,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
             $clearRangeIndexEnd = $closeFinallyBodyIndex;
         }
 
-        $tokens->clearRange($tryIndex, $clearRangeIndexEnd);
+        $this->clearRangeKeepComments($tokens, $tryIndex, $clearRangeIndexEnd);
     }
 
     /**
@@ -234,7 +234,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
 
         if ($tokens[$openBodyIndex]->equals(';')) {
-            $tokens->clearRange($whileIndex, $openBodyIndex);
+            $this->clearRangeKeepComments($tokens, $whileIndex, $openBodyIndex);
 
             return;
         }
@@ -242,7 +242,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $closeBodyIndex = $tokens->getNextMeaningfulToken($openBodyIndex);
 
         if ($tokens[$closeBodyIndex]->equals('}')) {
-            $tokens->clearRange($whileIndex, $closeBodyIndex);
+            $this->clearRangeKeepComments($tokens, $whileIndex, $closeBodyIndex);
 
             return;
         }
@@ -252,7 +252,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         // endwhile must have a semicolon after
-        $tokens->clearRange($whileIndex, $tokens->getNextMeaningfulToken($closeBodyIndex));
+        $this->clearRangeKeepComments($tokens, $whileIndex, $tokens->getNextMeaningfulToken($closeBodyIndex));
     }
 
     /**
@@ -307,5 +307,19 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         return false;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $startIndex
+     * @param int    $endIndex
+     */
+    private function clearRangeKeepComments(Tokens $tokens, $startIndex, $endIndex)
+    {
+        for ($index = $endIndex; $startIndex <= $index; --$index) {
+            if (!$tokens[$index]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
+                $tokens->clearAt($index);
+            }
+        }
     }
 }

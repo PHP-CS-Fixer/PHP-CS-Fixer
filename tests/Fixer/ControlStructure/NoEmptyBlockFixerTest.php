@@ -46,12 +46,20 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php do {} while ($foo);',
             ],
             [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
+                '<?php do/*1*/{/*2*/}/*3*/while/*4*/(/*5*/$foo/*6*/)/*7*/;/*8*/',
+            ],
+            [
                 '<?php try { foo(); } ',
                 '<?php try { foo(); } finally {}',
             ],
             [
                 '<?php try { foo(); } catch (Throwable $e) {} ',
                 '<?php try { foo(); } catch (Throwable $e) {} finally {}',
+            ],
+            [
+                '<?php try { foo(); } catch (Throwable $e) {}/*1*//*2*//*3*//*4*/',
+                '<?php try { foo(); } catch (Throwable $e) {}/*1*/finally/*2*/{/*3*/}/*4*/',
             ],
             [
                 '<?php try { foo(); } catch (Throwable $e) {} catch (Exception $e) {} ',
@@ -78,6 +86,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo) {}',
             ],
             [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{/*6*/}/*7*/',
+            ],
+            [
                 '<?php ',
                 '<?php if ($foo): endif;',
             ],
@@ -88,6 +100,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             [
                 '<?php ',
                 '<?php switch ($foo) {}',
+            ],
+            [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+                '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/{/*6*/}/*7*/',
             ],
             [
                 '<?php ',
@@ -102,12 +118,24 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php while ($foo) {}',
             ],
             [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/{/*6*/}/*7*/',
+            ],
+            [
                 '<?php ',
                 '<?php while ($foo);',
             ],
             [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
+                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/;/*6*/',
+            ],
+            [
                 '<?php ',
                 '<?php while ($foo): endwhile;',
+            ],
+            [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
+                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/:/*6*/endwhile/*7*/;/*8*/',
             ],
             [
                 '<?php ',
