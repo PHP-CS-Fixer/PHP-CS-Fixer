@@ -49,7 +49,7 @@ final class ArgumentAnalysis
      * @param string            $name
      * @param int               $nameIndex
      * @param null|string       $default
-     * @param null|TypeAnalysis $type
+     * @param null|TypeAnalysis $typeAnalysis
      */
     public function __construct($name, $nameIndex, $default, TypeAnalysis $typeAnalysis = null)
     {

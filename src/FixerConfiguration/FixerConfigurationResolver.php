@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\FixerConfiguration;
 
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FixerConfigurationResolver implements FixerConfigurationResolverInterface
@@ -58,6 +59,20 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
         foreach ($this->options as $option) {
             $name = $option->getName();
 
+            if ($option instanceof AliasedFixerOption) {
+                $alias = $option->getAlias();
+
+                if (array_key_exists($alias, $options)) {
+                    // @TODO 2.12 Trigger a deprecation notice and add a test for it
+                    if (array_key_exists($name, $options)) {
+                        throw new InvalidOptionsException(sprintf('Aliased option %s/%s is passed multiple times.', $name, $alias));
+                    }
+
+                    $options[$name] = $options[$alias];
+                    unset($options[$alias]);
+                }
+            }
+
             if ($option->hasDefault()) {
                 $resolver->setDefault($name, $option->getDefault());
             } else {
@@ -66,6 +81,14 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
             $allowedValues = $option->getAllowedValues();
             if (null !== $allowedValues) {
+                foreach ($allowedValues as &$allowedValue) {
+                    if (is_object($allowedValue) && is_callable($allowedValue)) {
+                        $allowedValue = function ($values) use ($allowedValue) {
+                            return $allowedValue($values);
+                        };
+                    }
+                }
+
                 $resolver->setAllowedValues($name, $allowedValues);
             }
 

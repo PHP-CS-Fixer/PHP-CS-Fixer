@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -79,7 +80,7 @@ use Acme;
 use Barr;
 use Acme\Bar;
 ',
-                    ['sortAlgorithm' => self::SORT_LENGTH]
+                    ['sort_algorithm' => self::SORT_LENGTH]
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nuse function AAA;\nuse const AAB;\nuse AAC;\n",
@@ -99,8 +100,8 @@ use function DDD;
 ',
                     new VersionSpecification(70000),
                     [
-                        'sortAlgorithm' => self::SORT_LENGTH,
-                        'importsOrder' => [
+                        'sort_algorithm' => self::SORT_LENGTH,
+                        'imports_order' => [
                             self::IMPORT_TYPE_CONST,
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
@@ -121,8 +122,8 @@ use function CCC\AA;
 ',
                     new VersionSpecification(70000),
                     [
-                        'sortAlgorithm' => self::SORT_ALPHA,
-                        'importsOrder' => [
+                        'sort_algorithm' => self::SORT_ALPHA,
+                        'imports_order' => [
                             self::IMPORT_TYPE_CONST,
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
@@ -143,8 +144,8 @@ use Bar;
 ',
                     new VersionSpecification(70000),
                     [
-                        'sortAlgorithm' => self::SORT_NONE,
-                        'importsOrder' => [
+                        'sort_algorithm' => self::SORT_NONE,
+                        'imports_order' => [
                             self::IMPORT_TYPE_CONST,
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
@@ -228,11 +229,17 @@ use Bar;
         $supportedSortTypes = $this->supportedSortTypes;
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sortAlgorithm', 'whether the statements should be sorted alphabetically or by length, or not sorted'))
+            (new AliasedFixerOptionBuilder(
+                new FixerOptionBuilder('sort_algorithm', 'whether the statements should be sorted alphabetically or by length, or not sorted'),
+                'sortAlgorithm'
+            ))
                 ->setAllowedValues($this->supportedSortAlgorithms)
                 ->setDefault(self::SORT_ALPHA)
                 ->getOption(),
-            (new FixerOptionBuilder('importsOrder', 'Defines the order of import types.'))
+            (new AliasedFixerOptionBuilder(
+                new FixerOptionBuilder('imports_order', 'Defines the order of import types.'),
+                'importsOrder'
+            ))
                 ->setAllowedTypes(['array', 'null'])
                 ->setAllowedValues([static function ($value) use ($supportedSortTypes) {
                     if (null !== $value) {
@@ -351,7 +358,7 @@ use Bar;
                 $token = $tokens[$index];
 
                 if ($index === $endIndex || (!$group && $token->equals(','))) {
-                    if ($group && self::SORT_NONE !== $this->configuration['sortAlgorithm']) {
+                    if ($group && self::SORT_NONE !== $this->configuration['sort_algorithm']) {
                         // if group import, sort the items within the group definition
 
                         // figure out where the list of namespace parts within the group def. starts
@@ -453,7 +460,7 @@ use Bar;
         }
 
         // Is sort types provided, sorting by groups and each group by algorithm
-        if ($this->configuration['importsOrder']) {
+        if ($this->configuration['imports_order']) {
             // Grouping indexes by import type.
             $groupedByTypes = [];
             foreach ($indexes as $startIndex => $item) {
@@ -467,7 +474,7 @@ use Bar;
 
             // Ordering groups
             $sortedGroups = [];
-            foreach ($this->configuration['importsOrder'] as $type) {
+            foreach ($this->configuration['imports_order'] as $type) {
                 if (isset($groupedByTypes[$type]) && !empty($groupedByTypes[$type])) {
                     foreach ($groupedByTypes[$type] as $startIndex => $item) {
                         $sortedGroups[$startIndex] = $item;
@@ -498,9 +505,9 @@ use Bar;
      */
     private function sortByAlgorithm(array $indexes)
     {
-        if (self::SORT_ALPHA === $this->configuration['sortAlgorithm']) {
+        if (self::SORT_ALPHA === $this->configuration['sort_algorithm']) {
             uasort($indexes, [$this, 'sortAlphabetically']);
-        } elseif (self::SORT_LENGTH === $this->configuration['sortAlgorithm']) {
+        } elseif (self::SORT_LENGTH === $this->configuration['sort_algorithm']) {
             uasort($indexes, [$this, 'sortByLength']);
         }
 

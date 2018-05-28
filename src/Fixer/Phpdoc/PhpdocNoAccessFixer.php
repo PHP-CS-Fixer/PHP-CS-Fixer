@@ -28,7 +28,7 @@ final class PhpdocNoAccessFixer extends AbstractProxyFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            '`@access` annotations should be omitted from PHPDocs.',
+            '`@access` annotations should be omitted from PHPDoc.',
             [
                 new CodeSample(
                     '<?php

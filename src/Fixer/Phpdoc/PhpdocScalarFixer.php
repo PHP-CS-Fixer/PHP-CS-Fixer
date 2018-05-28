@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 
@@ -81,13 +81,9 @@ function sample($a, $b, $c)
      */
     protected function createConfigurationDefinition()
     {
-        $generator = new FixerOptionValidatorGenerator();
-
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('types', 'A map of types to fix.'))
-                ->setAllowedValues([
-                    $generator->allowedValueIsSubsetOf(array_keys(self::$types)),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$types))])
                 ->setDefault(['boolean', 'double', 'integer', 'real', 'str']) // TODO 3.0 add "callback"
                 ->getOption(),
         ]);

@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
-use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -21,7 +21,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @covers \PhpCsFixer\Fixer\Comment\HeaderCommentFixer
  */
-final class HeaderCommentFixerTest extends AbstractFixerTestCase
+final class HeaderCommentFixerTest extends AbstractFixerWithAliasedOptionsTestCase
 {
     /**
      * @param string $expected
@@ -31,7 +31,7 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
      */
     public function testFix(array $configuration, $expected, $input)
     {
-        $this->fixer->configure($configuration);
+        $this->configureFixerWithAliasedOptions($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -345,7 +345,7 @@ echo 1;'
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[header_comment] '.$exceptionMessage);
 
-        $this->fixer->configure($configuration);
+        $this->configureFixerWithAliasedOptions($configuration);
     }
 
     public function provideMisconfigurationCases()
@@ -361,14 +361,14 @@ echo 1;'
                     'header' => '',
                     'commentType' => 'foo',
                 ],
-                'Invalid configuration: The option "commentType" with value "foo" is invalid. Accepted values are: "PHPDoc", "comment".',
+                'Invalid configuration: The option "comment_type" with value "foo" is invalid. Accepted values are: "PHPDoc", "comment".',
             ],
             [
                 [
                     'header' => '',
                     'commentType' => new \stdClass(),
                 ],
-                'Invalid configuration: The option "commentType" with value stdClass is invalid. Accepted values are: "PHPDoc", "comment".',
+                'Invalid configuration: The option "comment_type" with value stdClass is invalid. Accepted values are: "PHPDoc", "comment".',
             ],
             [
                 [
@@ -396,7 +396,7 @@ echo 1;'
      */
     public function testHeaderGeneration($expected, $header, $type)
     {
-        $this->fixer->configure([
+        $this->configureFixerWithAliasedOptions([
             'header' => $header,
             'commentType' => $type,
         ]);
@@ -533,7 +533,7 @@ declare(strict_types=1)?>',
     public function testMessyWhitespaces(array $configuration, $expected, $input = null)
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->fixer->configure($configuration);
+        $this->configureFixerWithAliasedOptions($configuration);
 
         $this->doTest($expected, $input);
     }
