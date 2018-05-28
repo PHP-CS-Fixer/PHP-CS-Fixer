@@ -23,6 +23,29 @@ final class FunctionsAnalyzer
 {
     /**
      * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return bool
+     */
+    public function isGlobalFunctionIndex(Tokens $tokens, $index)
+    {
+        if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            return false;
+        }
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+        }
+
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
+
+        return !$tokens[$prevIndex]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_STRING])
+            && !$tokens[$nextIndex]->isGivenKind([T_DOUBLE_COLON, T_NS_SEPARATOR]);
+    }
+
+    /**
+     * @param Tokens $tokens
      * @param int    $methodIndex
      *
      * @return ArgumentAnalysis[]
