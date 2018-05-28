@@ -141,6 +141,30 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php ',
                 '<?php while ($foo): eNdWhIlE;',
             ],
+            [
+                "<?php\n",
+                "<?php\ndo {\n\n}\nwhile (\$foo);",
+            ],
+            [
+                "<?php\ntry {\nfoo();\n} ",
+                "<?php\ntry {\nfoo();\n} finally {\n}",
+            ],
+            [
+                "<?php\n",
+                "<?php\nif (\$foo) {\n}",
+            ],
+            [
+                "<?php\n",
+                "<?php\nswitch (\$foo) {\n}",
+            ],
+            [
+                "<?php\n",
+                "<?php\ntry {\n} catch (Throwable \$e) {\n}",
+            ],
+            [
+                "<?php\n",
+                "<?php\nwhile (\$foo) {\n}",
+            ],
             ['<?php if (foo()) {}'],
             ['<?php if ($foo->bar()) {}'],
             ['<?php if ($foo->bar) {}'],
