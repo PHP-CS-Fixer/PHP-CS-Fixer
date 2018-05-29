@@ -19,9 +19,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author ntzm
- *
- * @todo correct if/elseif/else
- * @todo correct alternate syntax
  */
 final class NoEmptyBlockFixer extends AbstractFixer
 {
@@ -40,6 +37,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound([
+            T_ELSE,
             T_FINALLY,
             T_FOR,
             T_IF,
@@ -54,7 +52,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
         for ($index = count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_DO)) {
+            if ($token->isGivenKind(T_ELSE)) {
+                $this->fixElse($index, $tokens);
+            } elseif ($token->isGivenKind(T_DO)) {
                 $this->fixDoWhile($index, $tokens);
             } elseif ($token->isGivenKind(T_FOR)) {
                 $this->fixFor($index, $tokens);
@@ -70,6 +70,34 @@ final class NoEmptyBlockFixer extends AbstractFixer
                 $this->fixWhile($index, $tokens);
             }
         }
+    }
+
+    /**
+     * @param int    $elseIndex
+     * @param Tokens $tokens
+     */
+    private function fixElse($elseIndex, Tokens $tokens)
+    {
+        $openBodyIndex = $tokens->getNextMeaningfulToken($elseIndex);
+
+        if ($tokens[$openBodyIndex]->equals(':')) {
+            $endifIndex = $tokens->getNextNonWhitespace($openBodyIndex);
+
+            if ($tokens[$endifIndex]->isGivenKind(T_ENDIF)) {
+                // keep the endif as the if statement will break without it
+                $this->clearRangeKeepComments($tokens, $elseIndex, $openBodyIndex);
+            }
+
+            return;
+        }
+
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
+
+        if (!$tokens[$closeBodyIndex]->equals('}')) {
+            return;
+        }
+
+        $this->clearRangeKeepComments($tokens, $elseIndex, $closeBodyIndex);
     }
 
     /**
@@ -164,17 +192,52 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
-        if (!$tokens[$closeBodyIndex]->equals('}')) {
-            return;
+        if ($tokens[$openBodyIndex]->equals(':')) {
+            if (!$tokens[$closeBodyIndex]->isGivenKind([T_ELSE, T_ELSEIF, T_ENDIF])) {
+                return;
+            }
+        } else {
+            if (!$tokens[$closeBodyIndex]->equals('}')) {
+                return;
+            }
         }
 
-        $possibleElseOrElseifIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+        $clearRangeIndexEnd = $closeBodyIndex;
 
-        if (null !== $possibleElseOrElseifIndex && $tokens[$possibleElseOrElseifIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
-            return;
+        $elseOrElseifIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+
+        while (null !== $elseOrElseifIndex && $tokens[$elseOrElseifIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
+            if ($tokens[$elseOrElseifIndex]->isGivenKind(T_ELSE)) {
+                // else will have been dealt with earlier in `fixElse`, if it
+                // still exists it means that it's not empty
+                return;
+            }
+
+            $openElseifBraceIndex = $tokens->getNextMeaningfulToken($elseOrElseifIndex);
+            $closeElseifBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openElseifBraceIndex);
+
+            if ($this->canHaveSideEffects($tokens, $openElseifBraceIndex + 1, $closeElseifBraceIndex - 1)) {
+                return;
+            }
+
+            $openElseifBodyIndex = $tokens->getNextMeaningfulToken($closeElseifBraceIndex);
+            $closeElseifBodyIndex = $tokens->getNextNonWhitespace($openElseifBodyIndex);
+
+            if ($tokens[$openElseifBodyIndex]->equals(':')) {
+                if (!$tokens[$closeElseifBodyIndex]->isGivenKind([T_ELSE, T_ELSEIF, T_ENDIF])) {
+                    return;
+                }
+            } else {
+                if (!$tokens[$closeElseifBodyIndex]->equals('}')) {
+                    return;
+                }
+            }
+
+            $elseOrElseifIndex = $tokens->getNextMeaningfulToken($closeElseifBodyIndex);
+            $clearRangeIndexEnd = $closeElseifBodyIndex;
         }
 
-        $this->clearRangeKeepComments($tokens, $ifIndex, $closeBodyIndex);
+        $this->clearRangeKeepComments($tokens, $ifIndex, $clearRangeIndexEnd);
     }
 
     /**

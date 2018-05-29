@@ -189,6 +189,37 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 "<?php\n",
                 "<?php\nwhile (\$foo) {\n}",
             ],
+            [
+                '<?php  ',
+                '<?php if ($foo) {} else {}',
+            ],
+            [
+                '<?php if ($foo) { bar(); } ',
+                '<?php if ($foo) { bar(); } else {}',
+            ],
+            [
+                '<?php ',
+                '<?php if ($foo) {} elseif ($bar) {} else {}',
+            ],
+            [
+                '<?php ',
+                '<?php if ($foo) {} elseif ($bar) {} elseif ($baz) {} else {}',
+            ],
+            [
+                '<?php ',
+                '<?php if ($foo): else: endif;',
+            ],
+            [
+                '<?php ',
+                '<?php if ($foo): elseif ($bar): elseif ($baz): else: endif;',
+            ],
+            [
+                '<?php if (foo()):  endif;',
+                '<?php if (foo()): else: endif;'
+            ],
+            [
+                '<?php if (foo()):  endif;',
+            ],
             ['<?php if (foo()) {}'],
             ['<?php if ($foo->bar()) {}'],
             ['<?php if ($foo->bar) {}'],
