@@ -170,7 +170,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php while ($foo);',
             ],
             [
-                '<?php ',
+                '<?php  ?>',
                 '<?php while ($foo) ?>',
             ],
             [
@@ -182,7 +182,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php while ($foo): endwhile;',
             ],
             [
-                '<?php ',
+                '<?php  ?>',
                 '<?php while ($foo): endwhile ?>',
             ],
             [

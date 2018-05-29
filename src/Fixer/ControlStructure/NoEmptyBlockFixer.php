@@ -121,7 +121,15 @@ final class NoEmptyBlockFixer extends AbstractFixer
             return;
         }
 
-        $this->clearRangeKeepComments($tokens, $doIndex, $tokens->getNextMeaningfulToken($closeBraceIndex));
+        $semicolonIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
+
+        if ($tokens[$semicolonIndex]->equals(';')) {
+            $this->clearRangeKeepComments($tokens, $doIndex, $semicolonIndex);
+
+            return;
+        }
+
+        $this->clearRangeKeepComments($tokens, $doIndex, $closeBraceIndex);
     }
 
     /**
@@ -138,8 +146,15 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
+        $openBody = $tokens[$openBodyIndex];
 
-        if ($tokens[$openBodyIndex]->equals(';')) {
+        if ($openBody->isGivenKind(T_CLOSE_TAG)) {
+            $this->clearRangeKeepComments($tokens, $forIndex, $closeBraceIndex);
+
+            return;
+        }
+
+        if ($openBody->equalsAny([';'])) {
             $this->clearRangeKeepComments($tokens, $forIndex, $openBodyIndex);
 
             return;
@@ -157,7 +172,15 @@ final class NoEmptyBlockFixer extends AbstractFixer
             return;
         }
 
-        $this->clearRangeKeepComments($tokens, $forIndex, $tokens->getNextMeaningfulToken($closeBodyIndex));
+        $semicolonIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+
+        if ($tokens[$semicolonIndex]->equals(';')) {
+            $this->clearRangeKeepComments($tokens, $forIndex, $semicolonIndex);
+
+            return;
+        }
+
+        $this->clearRangeKeepComments($tokens, $forIndex, $closeBodyIndex);
     }
 
     /**
@@ -266,8 +289,15 @@ final class NoEmptyBlockFixer extends AbstractFixer
             return;
         }
 
-        // endswitch must have a semicolon after
-        $this->clearRangeKeepComments($tokens, $switchIndex, $tokens->getNextMeaningfulToken($closeBodyIndex));
+        $semicolonIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+
+        if ($tokens[$semicolonIndex]->equals(';')) {
+            $this->clearRangeKeepComments($tokens, $switchIndex, $semicolonIndex);
+
+            return;
+        }
+
+        $this->clearRangeKeepComments($tokens, $switchIndex, $closeBodyIndex);
     }
 
     /**
@@ -333,8 +363,15 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
+        $openBody = $tokens[$openBodyIndex];
 
-        if ($tokens[$openBodyIndex]->equals(';')) {
+        if ($openBody->isGivenKind(T_CLOSE_TAG)) {
+            $this->clearRangeKeepComments($tokens, $whileIndex, $closeBraceIndex);
+
+            return;
+        }
+
+        if ($openBody->equals(';')) {
             $this->clearRangeKeepComments($tokens, $whileIndex, $openBodyIndex);
 
             return;
@@ -352,8 +389,15 @@ final class NoEmptyBlockFixer extends AbstractFixer
             return;
         }
 
-        // endwhile must have a semicolon after
-        $this->clearRangeKeepComments($tokens, $whileIndex, $tokens->getNextMeaningfulToken($closeBodyIndex));
+        $semicolonIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+
+        if ($tokens[$semicolonIndex]->equals(';')) {
+            $this->clearRangeKeepComments($tokens, $whileIndex, $semicolonIndex);
+
+            return;
+        }
+
+        $this->clearRangeKeepComments($tokens, $whileIndex, $closeBodyIndex);
     }
 
     /**
