@@ -46,6 +46,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php do {} while ($foo);',
             ],
             [
+                '<?php  ?>',
+                '<?php do {} while ($foo) ?>',
+            ],
+            [
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
                 '<?php do/*1*/{}/*2*/while/*3*/(/*4*/$foo/*5*/)/*6*/;/*7*/',
             ],
@@ -62,8 +66,16 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php for (;;);',
             ],
             [
+                '<?php  ?>',
+                '<?php for (;;) ?>',
+            ],
+            [
                 '<?php ',
                 '<?php for (;;): endfor;',
+            ],
+            [
+                '<?php  ?>',
+                '<?php for (;;): endfor ?>',
             ],
             [
                 '<?php ',
@@ -118,6 +130,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo): endif;',
             ],
             [
+                '<?php  ?>',
+                '<?php if ($foo): endif ?>',
+            ],
+            [
                 '<?php ',
                 '<?php if ($foo): EnDiF;',
             ],
@@ -132,6 +148,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             [
                 '<?php ',
                 '<?php switch ($foo): endswitch;',
+            ],
+            [
+                '<?php  ?>',
+                '<?php switch ($foo): endswitch ?>',
             ],
             [
                 '<?php ',
@@ -150,12 +170,20 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php while ($foo);',
             ],
             [
+                '<?php ',
+                '<?php while ($foo) ?>',
+            ],
+            [
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
                 '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/;/*6*/',
             ],
             [
                 '<?php ',
                 '<?php while ($foo): endwhile;',
+            ],
+            [
+                '<?php ',
+                '<?php while ($foo): endwhile ?>',
             ],
             [
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
@@ -216,9 +244,6 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             [
                 '<?php if (foo()):  endif;',
                 '<?php if (foo()): else: endif;'
-            ],
-            [
-                '<?php if (foo()):  endif;',
             ],
             ['<?php if (foo()) {}'],
             ['<?php if ($foo->bar()) {}'],
