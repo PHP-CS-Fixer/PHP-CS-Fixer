@@ -20,7 +20,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author ntzm
  *
- * @todo for
  * @todo correct if/elseif/else
  * @todo correct alternate syntax
  */
@@ -42,6 +41,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     {
         return $tokens->isAnyTokenKindsFound([
             T_FINALLY,
+            T_FOR,
             T_IF,
             T_SWITCH,
             T_TRY,
@@ -56,6 +56,8 @@ final class NoEmptyBlockFixer extends AbstractFixer
 
             if ($token->isGivenKind(T_DO)) {
                 $this->fixDoWhile($index, $tokens);
+            } elseif ($token->isGivenKind(T_FOR)) {
+                $this->fixFor($index, $tokens);
             } elseif ($token->isGivenKind(T_FINALLY)) {
                 $this->fixFinally($index, $tokens);
             } elseif ($token->isGivenKind(T_IF)) {
@@ -92,6 +94,42 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         $this->clearRangeKeepComments($tokens, $doIndex, $tokens->getNextMeaningfulToken($closeBraceIndex));
+    }
+
+    /**
+     * @param int    $forIndex
+     * @param Tokens $tokens
+     */
+    private function fixFor($forIndex, Tokens $tokens)
+    {
+        $openBraceIndex = $tokens->getNextMeaningfulToken($forIndex);
+        $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
+
+        if ($this->canHaveSideEffects($tokens, $openBraceIndex + 1, $closeBraceIndex - 1)) {
+            return;
+        }
+
+        $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
+
+        if ($tokens[$openBodyIndex]->equals(';')) {
+            $this->clearRangeKeepComments($tokens, $forIndex, $openBodyIndex);
+
+            return;
+        }
+
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
+
+        if ($tokens[$closeBodyIndex]->equals('}')) {
+            $this->clearRangeKeepComments($tokens, $forIndex, $closeBodyIndex);
+
+            return;
+        }
+
+        if (!$tokens[$closeBodyIndex]->isGivenKind(T_ENDFOR)) {
+            return;
+        }
+
+        $this->clearRangeKeepComments($tokens, $forIndex, $tokens->getNextMeaningfulToken($closeBodyIndex));
     }
 
     /**

@@ -50,6 +50,30 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php do/*1*/{}/*2*/while/*3*/(/*4*/$foo/*5*/)/*6*/;/*7*/',
             ],
             [
+                '<?php ',
+                '<?php for (;$i < $b;) {}',
+            ],
+            [
+                '<?php ',
+                '<?php for (;;) {}',
+            ],
+            [
+                '<?php ',
+                '<?php for (;;);',
+            ],
+            [
+                '<?php ',
+                '<?php for (;;): endfor;',
+            ],
+            [
+                '<?php ',
+                '<?php for (;;): EnDfOr;',
+            ],
+            [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+                '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/{}/*7*/',
+            ],
+            [
                 '<?php try { foo(); } ',
                 '<?php try { foo(); } finally {}',
             ],
@@ -193,6 +217,12 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             ['<?php do {} while (foo());'],
             ['<?php do {} while ($foo->bar());'],
             ['<?php do {} while ($foo->bar);'],
+            ['<?php for ($i = foo(); $i < bar(); ++$i) {}'],
+            ['<?php for ($i = $foo->bar(); $i < bar(); ++$i) {}'],
+            ['<?php for ($i = $foo->bar; $i < bar(); ++$i) {}'],
+            ['<?php for ($i = foo(); $i < bar(); ++$i);'],
+            ['<?php for ($i = $foo->bar(); $i < bar(); ++$i);'],
+            ['<?php for ($i = $foo->bar; $i < bar(); ++$i);'],
             ['<?php do { echo 1; } while ($foo);'],
             ['<?php switch (foo()) {}'],
             ['<?php switch ($foo->bar()) {}'],
@@ -210,6 +240,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             ['<?php if ($foo): elseif ($bar): doSomething(); endif;'],
             ['<?php if ($foo): elseif ($bar): else: doSomething(); endif;'],
             ['<?php do { /* keep */ } while ($foo);'],
+            ['<?php for (;;) { /* keep */ }'],
             ['<?php try { foo(); } finally { /* keep */ }'],
             ['<?php if ($foo) { /* keep */ }'],
             ['<?php switch ($foo) { /* keep */ }'],
@@ -221,6 +252,11 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             ['<?php switch ($foo) { /** keep */ }'],
             ['<?php try { /** keep */ } catch (Throwable $e) {}'],
             ['<?php while ($foo) { /** keep */ }'],
+            ['<?php do { /* keep */ } while ($foo);'],
+            ['<?php for (;;): /* keep */ endfor;'],
+            ['<?php if ($foo): /* keep */ endif;'],
+            ['<?php switch ($foo): /* keep */ endswitch;'],
+            ['<?php while ($foo): /* keep */ endwhile;'],
         ];
     }
 }
