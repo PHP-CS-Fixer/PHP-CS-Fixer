@@ -215,8 +215,16 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
+        $clearRangeIndexEnd = $closeBodyIndex;
+
         if ($tokens[$openBodyIndex]->equals(':')) {
-            if (!$tokens[$closeBodyIndex]->isGivenKind([T_ELSE, T_ELSEIF, T_ENDIF])) {
+            if ($tokens[$closeBodyIndex]->isGivenKind(T_ENDIF)) {
+                $semicolonIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+
+                if ($tokens[$semicolonIndex]->equals(';')) {
+                    $clearRangeIndexEnd = $semicolonIndex;
+                }
+            } elseif (!$tokens[$closeBodyIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
                 return;
             }
         } else {
@@ -224,8 +232,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
                 return;
             }
         }
-
-        $clearRangeIndexEnd = $closeBodyIndex;
 
         $elseOrElseifIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
 
