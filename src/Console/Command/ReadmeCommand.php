@@ -232,7 +232,6 @@ EOF;
         $help = Preg::replace("#\s*</default_block>#", "``\n", $help);
         $help = Preg::replace('#^   \\| #m', '  ', $help);
         $help = Preg::replace('#^   \\|#m', '', $help);
-        $help = Preg::replace("#^(  Configuration options:\n)(  - )#m", "\n$1\n$2", $help);
         $help = Preg::replace("#^\n( +\\$ )#m", "\n.. code-block:: bash\n\n$1", $help);
         $help = Preg::replace("#^\n( +<\\?php)#m", "\n.. code-block:: php\n\n$1", $help);
         $help = Preg::replaceCallback(

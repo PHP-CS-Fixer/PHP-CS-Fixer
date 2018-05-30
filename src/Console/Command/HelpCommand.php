@@ -457,14 +457,13 @@ EOF
 
             if ($fixer instanceof DefinedFixerInterface) {
                 $description = $fixer->getDefinition()->getSummary();
+                $description = implode("\n   | ", self::wordwrap(
+                    Preg::replace('/(`.+?`)/', '<info>$1</info>', $description),
+                    72
+                ));
             } else {
                 $description = '[n/a]';
             }
-
-            $description = implode("\n   | ", self::wordwrap(
-                Preg::replace('/(`.+?`)/', '<info>$1</info>', $description),
-                72
-            ));
 
             $help .= empty($sets)
                 ? sprintf(" * <comment>%s</comment>\n   | %s\n", $fixer->getName(), $description)
@@ -479,8 +478,7 @@ EOF
             }
 
             if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
-                $configurationDefinition = $fixer->getConfigurationDefinition();
-                $configurationDefinitionOptions = $configurationDefinition->getOptions();
+                $configurationDefinitionOptions = $fixer->getConfigurationDefinition()->getOptions();
                 if (count($configurationDefinitionOptions)) {
                     $help .= "   | Configuration options:\n";
 
@@ -512,21 +510,17 @@ EOF
                                         $help .= sprintf("   |   <default_line>%s</default_line>\n", ltrim($default));
                                     }
                                 } else {
-                                    $help .= sprintf("   |   <default_line>%s</default_line>\n", self::toString($value));
+                                    $help .= sprintf("   |   <comment>%s</comment>\n", self::toString($value));
                                 }
                             }
                         }
 
-                        $line = '';
-                        if ($option->hasDefault()) {
-                            $line .= 'Defaults to:<default_block>';
-                        } else {
-                            $line .= 'Required';
-                        }
+                        $help .= $option->hasDefault()
+                            ? '   |   Defaults to:<default_block>'
+                            : '   |   Required'
+                        ;
 
-                        foreach (self::wordwrap($line, 72) as $index => $line) {
-                            $help .= '   |   '.ltrim($line)."\n";
-                        }
+                        $help .= "\n";
 
                         if ($option->hasDefault()) {
                             foreach (self::wordwrap(self::toString($option->getDefault()), 65) as $default) {
