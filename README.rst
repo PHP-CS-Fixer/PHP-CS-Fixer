@@ -217,6 +217,7 @@ Choose from the list of available rules:
 
   PHP arrays should be declared using the configured syntax (requires PHP
   >= 5.4 for short syntax).
+
   Configuration options:
 
   - ``syntax``
@@ -229,6 +230,7 @@ Choose from the list of available rules:
 * **binary_operator_spaces** [@Symfony]
 
   Binary operators should be surrounded by at least one space.
+
   Configuration options:
 
   - ``align_double_arrow``
@@ -263,6 +265,7 @@ Choose from the list of available rules:
 
   The body of each structure MUST be enclosed by braces. Braces should be
   properly placed. Body of braces should be properly indented.
+
   Configuration options:
 
   - ``allow_single_line_closure``
@@ -287,6 +290,7 @@ Choose from the list of available rules:
 
   Whitespace around the keywords of a class, trait or interfaces
   definition should be one space.
+
   Configuration options:
 
   - ``multi_line_extends_each_single_line``
@@ -319,6 +323,7 @@ Choose from the list of available rules:
 * **concat_space** [@Symfony]
 
   Concatenation should be spaced according configuration.
+
   Configuration options:
 
   - ``spacing``
@@ -332,6 +337,7 @@ Choose from the list of available rules:
 
   Equal sign in declare statement should be surrounded by spaces or not
   following configuration.
+
   Configuration options:
 
   - ``space``
@@ -357,6 +363,7 @@ Choose from the list of available rules:
 * **doctrine_annotation_braces**
 
   Doctrine annotations without arguments must use the configured syntax.
+
   Configuration options:
 
   - ``ignored_tags``
@@ -393,6 +400,7 @@ Choose from the list of available rules:
 * **doctrine_annotation_indentation**
 
   Doctrine annotations must be indented with four spaces.
+
   Configuration options:
 
   - ``ignored_tags``
@@ -423,6 +431,7 @@ Choose from the list of available rules:
 * **doctrine_annotation_spaces**
 
   Fixes spaces in Doctrine annotations.
+
   Configuration options:
 
   - ``around_argument_assignments``
@@ -493,6 +502,7 @@ Choose from the list of available rules:
 * **function_declaration** [@PSR2, @Symfony]
 
   Spaces should be properly placed in a function declaration.
+
   Configuration options:
 
   - ``closure_function_spacing``
@@ -507,6 +517,7 @@ Choose from the list of available rules:
   Replace core functions calls returning constants with the constants.
   *Risky rule*
   Risky when any of the configured functions to replace are overridden.
+
   Configuration options:
 
   - ``functions``
@@ -523,6 +534,7 @@ Choose from the list of available rules:
 * **general_phpdoc_annotation_remove**
 
   Configured annotations should be omitted from PHPDoc.
+
   Configuration options:
 
   - ``annotations``
@@ -538,6 +550,7 @@ Choose from the list of available rules:
 * **header_comment**
 
   Add, replace or remove header comment.
+
   Configuration options:
 
   - ``comment_type``
@@ -585,6 +598,7 @@ Choose from the list of available rules:
   Replaces ``is_null($var)`` expression with ``null === $var``.
   *Risky rule*
   Risky when the function `is_null` is overridden.
+
   Configuration options:
 
   - ``use_yoda_style``
@@ -627,6 +641,7 @@ Choose from the list of available rules:
 
   In method arguments and method call, there MUST NOT be a space before
   each comma and there MUST be one space after each comma.
+
   Configuration options:
 
   - ``keep_multiple_spaces_after_comma``
@@ -657,6 +672,7 @@ Choose from the list of available rules:
   up resolving.
   *Risky rule*
   Risky when any of the functions are overridden.
+
   Configuration options:
 
   - ``exclude``
@@ -707,6 +723,7 @@ Choose from the list of available rules:
 * **no_extra_consecutive_blank_lines** [@Symfony]
 
   Removes extra blank lines and/or blank lines following configuration.
+
   Configuration options:
 
   - ``tokens``
@@ -729,6 +746,7 @@ Choose from the list of available rules:
 * **no_mixed_echo_print** [@Symfony]
 
   Either language construct ``print`` or ``echo`` should be used.
+
   Configuration options:
 
   - ``use``
@@ -773,6 +791,7 @@ Choose from the list of available rules:
 * **no_spaces_around_offset** [@Symfony]
 
   There MUST NOT be spaces around offset braces.
+
   Configuration options:
 
   - ``positions``
@@ -806,6 +825,7 @@ Choose from the list of available rules:
 * **no_unneeded_control_parentheses** [@Symfony]
 
   Removes unneeded parentheses around control statements.
+
   Configuration options:
 
   - ``statements``
@@ -873,6 +893,7 @@ Choose from the list of available rules:
 * **ordered_class_elements**
 
   Orders the elements of classes/interfaces/traits.
+
   Configuration options:
 
   - ``order``
@@ -897,6 +918,7 @@ Choose from the list of available rules:
 * **ordered_imports**
 
   Ordering ``use`` statements.
+
   Configuration options:
 
   - ``imports_order``
@@ -919,6 +941,7 @@ Choose from the list of available rules:
   written with dedicated method like ``->assertTrue($foo)``.
   *Risky rule*
   Fixer could be risky if one is overriding PHPUnit's native methods.
+
   Configuration options:
 
   - ``assertions``
@@ -936,6 +959,7 @@ Choose from the list of available rules:
   be used over ``assertTrue``.
   *Risky rule*
   Fixer could be risky if one is overriding PHPUnit's native methods.
+
   Configuration options:
 
   - ``functions``
@@ -964,6 +988,7 @@ Choose from the list of available rules:
   *Risky rule*
   Risky when any of the functions are overridden or when testing object
   equality.
+
   Configuration options:
 
   - ``assertions``
@@ -978,6 +1003,7 @@ Choose from the list of available rules:
 * **phpdoc_add_missing_param_annotation**
 
   PHPDoc should contain ``@param`` for all params.
+
   Configuration options:
 
   - ``only_untyped``
@@ -1010,6 +1036,7 @@ Choose from the list of available rules:
 * **phpdoc_no_alias_tag** [@Symfony]
 
   No alias PHPDoc tags should be used.
+
   Configuration options:
 
   - ``replacements``
@@ -1041,6 +1068,7 @@ Choose from the list of available rules:
 
   The type of ``@return`` annotations of methods returning a reference to
   itself must the configured one.
+
   Configuration options:
 
   - ``replacements``
@@ -1108,6 +1136,7 @@ Choose from the list of available rules:
   *Risky rule*
   This fixer may change your class name, which will break the code that is
   depended on old name.
+
   Configuration options:
 
   - ``dir``
@@ -1129,6 +1158,7 @@ Choose from the list of available rules:
   analogs.
   *Risky rule*
   Risky when the configured functions are overridden.
+
   Configuration options:
 
   - ``replacements``
@@ -1142,6 +1172,7 @@ Choose from the list of available rules:
 
   There should be one or no space before colon, and one space after it in
   return type declarations, according to configuration.
+
   Configuration options:
 
   - ``space_before``
@@ -1191,6 +1222,7 @@ Choose from the list of available rules:
 
   There MUST NOT be more than one property or constant declared per
   statement.
+
   Configuration options:
 
   - ``elements``
@@ -1268,6 +1300,7 @@ Choose from the list of available rules:
   Visibility MUST be declared on all properties and methods; ``abstract``
   and ``final`` MUST be declared before the visibility; ``static`` MUST be
   declared after the visibility.
+
   Configuration options:
 
   - ``elements``
