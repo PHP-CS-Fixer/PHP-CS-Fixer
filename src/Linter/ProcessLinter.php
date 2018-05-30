@@ -73,16 +73,13 @@ final class ProcessLinter implements LinterInterface
 
         var_dump([__METHOD__, __LINE__, $executable]);
         $this->processBuilder = new ProcessLinterProcessBuilder($executable);
-        var_dump([__METHOD__, __LINE__, 'after process']);
+
         $this->fileRemoval = new FileRemoval();
-        var_dump([__METHOD__, __LINE__, 'after file removal']);
     }
 
     public function __destruct()
     {
-        var_dump([__METHOD__, __LINE__]);
         if (null !== $this->temporaryFile) {
-            var_dump([__METHOD__, __LINE__, 'call file removal']);
             $this->fileRemoval->delete($this->temporaryFile);
         }
     }
@@ -92,8 +89,6 @@ final class ProcessLinter implements LinterInterface
      */
     public function isAsync()
     {
-        var_dump([__METHOD__, __LINE__]);
-
         return true;
     }
 

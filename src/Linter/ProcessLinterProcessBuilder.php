@@ -41,12 +41,6 @@ final class ProcessLinterProcessBuilder
      */
     public function build($path)
     {
-        var_dump([__METHOD__, __LINE__, sprintf(
-            '"%s" -l "%s"',
-            $this->executable,
-            $path
-        )]);
-
         return new Process(sprintf(
             '"%s" -l "%s"',
             $this->executable,

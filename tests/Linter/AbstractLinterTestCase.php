@@ -28,17 +28,13 @@ abstract class AbstractLinterTestCase extends TestCase
 
     public function testLintingAfterTokenManipulation()
     {
-        var_dump([__METHOD__, __LINE__]);
         $linter = $this->createLinter();
-        var_dump([__METHOD__, __LINE__]);
+
         $tokens = Tokens::fromCode("<?php \n#EOF\n");
-        var_dump([__METHOD__, __LINE__]);
         $tokens->insertAt(1, new Token([T_NS_SEPARATOR, '\\']));
-        var_dump([__METHOD__, __LINE__]);
+
         $this->expectException(\PhpCsFixer\Linter\LintingException::class);
-        var_dump([__METHOD__, __LINE__]);
         $linter->lintSource($tokens->generateCode())->check();
-        var_dump([__METHOD__, __LINE__]);
     }
 
     /**
