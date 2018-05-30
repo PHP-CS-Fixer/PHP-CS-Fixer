@@ -267,7 +267,7 @@ Choose from the list of available rules:
 
   - ``allow_single_line_closure``
     Whether single line lambda notation should be allowed.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``false``
   - ``position_after_functions_and_oop_constructs``
@@ -291,19 +291,19 @@ Choose from the list of available rules:
 
   - ``multi_line_extends_each_single_line``
     Whether definitions should be multiline.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``false``
     **Deprecated alias**: ``multiLineExtendsEachSingleLine``
   - ``single_item_single_line``
     Whether definitions should be single line when including a single item.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``false``
     **Deprecated alias**: ``singleItemSingleLine``
   - ``single_line``
     Whether definitions should be single line.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``false``
     **Deprecated alias**: ``singleLine``
@@ -361,7 +361,7 @@ Choose from the list of available rules:
 
   - ``ignored_tags``
     List of tags that must not be treated as Doctrine Annotations.
-    Types: ``array``
+    Type: ``array``
     Defaults to:
     ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception',
     'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name',
@@ -397,7 +397,7 @@ Choose from the list of available rules:
 
   - ``ignored_tags``
     List of tags that must not be treated as Doctrine Annotations.
-    Types: ``array``
+    Type: ``array``
     Defaults to:
     ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception',
     'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name',
@@ -427,27 +427,27 @@ Choose from the list of available rules:
 
   - ``around_argument_assignments``
     Whether to fix spaces around argument assignment operator.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``true``
   - ``around_array_assignments``
     Whether to fix spaces around array assignment operators.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``true``
   - ``around_commas``
     Whether to fix spaces around commas.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``true``
   - ``around_parentheses``
     Whether to fix spaces around parentheses.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``true``
   - ``ignored_tags``
     List of tags that must not be treated as Doctrine Annotations.
-    Types: ``array``
+    Type: ``array``
     Defaults to:
     ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception',
     'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name',
@@ -527,7 +527,7 @@ Choose from the list of available rules:
 
   - ``annotations``
     List of annotations to remove, e.g. `["author"]`.
-    Types: ``array``
+    Type: ``array``
     Defaults to:
     ``[]``
 
@@ -549,7 +549,7 @@ Choose from the list of available rules:
     **Deprecated alias**: ``commentType``
   - ``header``
     Proper header content.
-    Types: ``string``
+    Type: ``string``
     Required
   - ``location``
     The location of the inserted header.
@@ -589,7 +589,7 @@ Choose from the list of available rules:
 
   - ``use_yoda_style``
     Whether Yoda style conditions should be used.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``true``
 
@@ -631,7 +631,7 @@ Choose from the list of available rules:
 
   - ``keep_multiple_spaces_after_comma``
     Whether keep multiple spaces after comma.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``false``
 
@@ -661,7 +661,7 @@ Choose from the list of available rules:
 
   - ``exclude``
     List of functions to ignore.
-    Types: ``array``
+    Type: ``array``
     Defaults to:
     ``[]``
 
@@ -810,7 +810,7 @@ Choose from the list of available rules:
 
   - ``statements``
     List of control statements to fix.
-    Types: ``array``
+    Type: ``array``
     Defaults to:
     ``['break', 'clone', 'continue', 'echo_print', 'return',
     'switch_case', 'yield']``
@@ -982,7 +982,7 @@ Choose from the list of available rules:
 
   - ``only_untyped``
     Whether to add missing `@param` annotations for untyped parameters only.
-    Types: ``bool``
+    Type: ``bool``
     Defaults to:
     ``true``
 
@@ -1014,7 +1014,7 @@ Choose from the list of available rules:
 
   - ``replacements``
     Mapping between replaced annotations with new ones.
-    Types: ``array``
+    Type: ``array``
     Defaults to:
     ``['property-read' => 'property', 'property-write' => 'property',
     'type' => 'var', 'link' => 'see']``
@@ -1045,7 +1045,7 @@ Choose from the list of available rules:
 
   - ``replacements``
     Mapping between replaced return types with new ones.
-    Types: ``array``
+    Type: ``array``
     Defaults to:
     ``['this' => '$this', '@this' => '$this', '$self' => 'self',
     '@self' => 'self', '$static' => 'static', '@static' => 'static']``
@@ -1112,7 +1112,7 @@ Choose from the list of available rules:
 
   - ``dir``
     The directory where the project code is placed.
-    Types: ``string``
+    Type: ``string``
     Defaults to:
     ``''``
 
@@ -1133,7 +1133,7 @@ Choose from the list of available rules:
 
   - ``replacements``
     Mapping between replaced functions with the new ones.
-    Types: ``array``
+    Type: ``array``
     Defaults to:
     ``['getrandmax' => 'mt_getrandmax', 'rand' => 'mt_rand', 'srand' =>
     'mt_srand']``

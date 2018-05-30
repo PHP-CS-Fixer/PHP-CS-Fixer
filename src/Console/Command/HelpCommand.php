@@ -499,7 +499,11 @@ EOF
 
                         $allowed = self::getDisplayableAllowedValues($option);
                         if (null === $allowed) {
-                            $help .= '   |   Types: <comment>'.implode('</comment>, <comment>', $option->getAllowedTypes())."</comment>\n";
+                            $types = $option->getAllowedTypes();
+                            $help .= count($types) > 1
+                                ? '   |   Types: <comment>'.implode('</comment>, <comment>', $types)."</comment>\n"
+                                : '   |   Type: <comment>'.reset($types)."</comment>\n"
+                            ;
                         } else {
                             foreach ($allowed as $value) {
                                 if ($value instanceof AllowedValueSubset) {
