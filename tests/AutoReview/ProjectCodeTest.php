@@ -365,8 +365,8 @@ final class ProjectCodeTest extends TestCase
 
     public function provideClassesWherePregFunctionsAreForbiddenCases()
     {
-        if (extension_loaded('xdebug') && false === getenv('CI')) {
-            $this->markTestSkipped('Test too slow when Xdebug is loaded.');
+        if ((extension_loaded('xdebug') || 'phpdbg' === PHP_SAPI) && false === getenv('CI')) {
+            $this->markTestSkipped('Data provider too slow when Xdebug is loaded or running under phpdbg.');
         }
 
         return array_map(

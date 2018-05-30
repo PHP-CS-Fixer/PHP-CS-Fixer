@@ -21,8 +21,13 @@
     verbose="true"
 >
     <testsuites>
-        <testsuite>
+        <testsuite name="all">
             <directory>./tests</directory>
+        </testsuite>
+        <testsuite name="coverage">
+            <directory>./tests</directory>
+            <exclude>./tests/AutoReview</exclude>
+            <exclude>./tests/Smoke</exclude>
         </testsuite>
     </testsuites>
 
