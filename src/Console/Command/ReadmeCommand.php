@@ -224,7 +224,7 @@ EOF;
         $help = str_replace('%command.name%', $command->getName(), $help);
         $help = Preg::replace('#</?(default_line)>#', '', $help);
         $help = Preg::replace('#</?(comment|info)>#', '``', $help);
-        $help = Preg::replace('#</?(risky)>#', '**', $help);
+        $help = Preg::replace('#</?(risky)>#', '*', $help);
         $help = Preg::replace('#`(``.+?``)`#', '$1', $help);
         $help = Preg::replace('#^(\s+)``(.+)``$#m', '$1$2', $help);
         $help = Preg::replace('#^ \* ``(.+)``(.*?\n)#m', "* **$1**$2\n", $help);
