@@ -402,6 +402,7 @@ EOF
     {
         $formatter = $output->getFormatter();
         $formatter->setStyle('url', new OutputFormatterStyle('blue'));
+        $formatter->setStyle('risky', new OutputFormatterStyle('black', 'yellow'));
         $formatter->setStyle('default_block', new OutputFormatterStyle('white'));
         $formatter->setStyle('default_line', new OutputFormatterStyle('yellow'));
     }
@@ -473,7 +474,7 @@ EOF
 
             if ($fixer->isRisky()) {
                 $riskyDescription = sprintf(
-                    '*Risky rule: %s.*',
+                    '<risky>Risky rule</risky>: %s.',
                     Preg::replace(
                         '/(`.+?`)/',
                         '<info>$1</info>',
@@ -500,44 +501,36 @@ EOF
                     );
 
                     foreach ($configurationDefinitionOptions as $option) {
-                        $line = '<info>'.$option->getName().'</info>';
+                        $help .= '   | - <info>'.$option->getName()."</info>\n";
+                        foreach (self::wordwrap($option->getDescription(), 72) as $index => $line) {
+                            $help .= '   |   '.$line."\n";
+                        }
 
                         $allowed = self::getDisplayableAllowedValues($option);
-                        if (null !== $allowed) {
-                            foreach ($allowed as &$value) {
+                        if (null === $allowed) {
+                            $help .= '   |   Types: <comment>'.implode('</comment>, <comment>', $option->getAllowedTypes())."</comment>\n";
+                        } else {
+                            foreach ($allowed as $value) {
                                 if ($value instanceof AllowedValueSubset) {
-                                    $value = 'a subset of <comment>'.self::toString($value->getAllowedValues()).'</comment>';
+                                    $help .= "   |   Subset of:\n";
+                                    foreach (self::wordwrap(self::toString($value->getAllowedValues()), 65) as $default) {
+                                        $help .= sprintf("   |   <default_line>%s</default_line>\n", $default);
+                                    }
                                 } else {
-                                    $value = '<comment>'.self::toString($value).'</comment>';
+                                    $help .= sprintf("   |   <default_line>%s</default_line>\n", self::toString($value));
                                 }
                             }
-                        } else {
-                            $allowed = array_map(
-                                function ($type) {
-                                    return '<comment>'.$type.'</comment>';
-                                },
-                                $option->getAllowedTypes()
-                            );
                         }
 
-                        if (null !== $allowed) {
-                            $line .= ' ('.implode(', ', $allowed).')';
-                        }
-
-                        $line .= ': '.Preg::replace(
-                            '/(`.+?`)/',
-                            '<info>$1</info>',
-                            lcfirst(Preg::replace('/\.$/', '', $option->getDescription()))
-                        ).'; ';
-
+                        $line = '';
                         if ($option->hasDefault()) {
-                            $line .= 'defaults to:<default_block>';
+                            $line .= 'Defaults to:<default_block>';
                         } else {
-                            $line .= 'required';
+                            $line .= 'Required';
                         }
 
                         foreach (self::wordwrap($line, 72) as $index => $line) {
-                            $help .= (0 === $index ? '   | - ' : '   |   ').$line."\n";
+                            $help .= '   |   '.$line."\n";
                         }
 
                         if ($option->hasDefault()) {
@@ -548,7 +541,7 @@ EOF
                         }
 
                         if ($option instanceof AliasedFixerOption) {
-                            $help .= '   |   DEPRECATED alias: <comment>'.$option->getAlias()."</comment>\n";
+                            $help .= '   |   <risky>Deprecated alias</risky>: <comment>'.$option->getAlias()."</comment>\n";
                         }
                     }
                 }
