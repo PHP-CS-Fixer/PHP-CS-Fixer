@@ -226,11 +226,11 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo) { bar(); } else {}',
             ],
             [
-                '<?php ',
+                '<?php  ',
                 '<?php if ($foo) {} elseif ($bar) {} else {}',
             ],
             [
-                '<?php ',
+                '<?php  ',
                 '<?php if ($foo) {} elseif ($bar) {} elseif ($baz) {} else {}',
             ],
             [
