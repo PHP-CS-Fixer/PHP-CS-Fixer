@@ -216,15 +216,30 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
         $clearRangeIndexEnd = $closeBodyIndex;
+        $elseOrElseifIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
 
         if ($tokens[$openBodyIndex]->equals(':')) {
             if ($tokens[$closeBodyIndex]->isGivenKind(T_ENDIF)) {
                 $semicolonIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
 
                 if ($tokens[$semicolonIndex]->equals(';')) {
-                    $clearRangeIndexEnd = $semicolonIndex;
+                    $this->clearRangeKeepComments($tokens, $ifIndex, $semicolonIndex);
+
+                    return;
                 }
-            } elseif (!$tokens[$closeBodyIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
+
+                $this->clearRangeKeepComments($tokens, $ifIndex, $closeBodyIndex);
+
+                return;
+            }
+
+            if ($tokens[$closeBodyIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
+                $elseOrElseifIndex = $tokens->getNextMeaningfulToken($elseOrElseifIndex);
+
+                if (!$tokens[$elseOrElseifIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
+                    return;
+                }
+            } else {
                 return;
             }
         } else {
@@ -232,8 +247,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
                 return;
             }
         }
-
-        $elseOrElseifIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
 
         while (null !== $elseOrElseifIndex && $tokens[$elseOrElseifIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
             if ($tokens[$elseOrElseifIndex]->isGivenKind(T_ELSE)) {
