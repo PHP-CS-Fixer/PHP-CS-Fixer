@@ -154,7 +154,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
             return;
         }
 
-        if ($openBody->equalsAny([';'])) {
+        if ($openBody->equals(';')) {
             $this->clearRangeKeepComments($tokens, $forIndex, $openBodyIndex);
 
             return;
