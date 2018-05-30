@@ -37,7 +37,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         $cases = [];
-        foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'real' => 'float'] as $from => $to) {
+        foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'real' => 'float', 'binary' => 'string'] as $from => $to) {
             $cases[] =
                 [
                     sprintf('<?php echo ( %s  )$a;', $to),
@@ -81,7 +81,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     public function provideNoFixCases()
     {
         $cases = [];
-        foreach (['string', 'array', 'object', 'unset', 'binary'] as $cast) {
+        foreach (['string', 'array', 'object', 'unset'] as $cast) {
             $cases[] = [sprintf('<?php $b=(%s) $d;', $cast)];
             $cases[] = [sprintf('<?php $b=( %s ) $d;', $cast)];
             $cases[] = [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
