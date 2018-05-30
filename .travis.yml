@@ -39,4 +39,4 @@ jobs:
             php: 7.2
             env: COLLECT_COVERAGE=1
             script:
-                - phpdbg -qrr vendor/bin/phpunit --stop-on-error --stop-on-failure --exclude-group covers-nothing --coverage-clover build/logs/clover.xml
+                - phpdbg -qrr vendor/bin/phpunit  --testsuite coverage --stop-on-error --stop-on-failure --exclude-group covers-nothing --coverage-clover build/logs/clover.xml
