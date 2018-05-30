@@ -466,24 +466,15 @@ EOF
                 72
             ));
 
-            if (!empty($sets)) {
-                $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description);
-            } else {
-                $help .= sprintf(" * <comment>%s</comment>\n   | %s\n", $fixer->getName(), $description);
-            }
+            $help .= empty($sets)
+                ? sprintf(" * <comment>%s</comment>\n   | %s\n", $fixer->getName(), $description)
+                : sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description)
+            ;
 
             if ($fixer->isRisky()) {
-                $riskyDescription = sprintf(
-                    '<risky>Risky rule</risky>: %s.',
-                    Preg::replace(
-                        '/(`.+?`)/',
-                        '<info>$1</info>',
-                        lcfirst(Preg::replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
-                    )
-                );
-
-                foreach (self::wordwrap($riskyDescription, 73) as $index => $line) {
-                    $help .= (0 === $index ? '   | ' : '   |  ').$line."\n";
+                $help .= "   | <risky>Risky rule</risky>\n";
+                foreach (self::wordwrap($fixer->getDefinition()->getRiskyDescription(), 73) as $line) {
+                    $help .= '   | '.ltrim($line)."\n";
                 }
             }
 
@@ -491,7 +482,7 @@ EOF
                 $configurationDefinition = $fixer->getConfigurationDefinition();
                 $configurationDefinitionOptions = $configurationDefinition->getOptions();
                 if (count($configurationDefinitionOptions)) {
-                    $help .= "   |\n   | Configuration options:\n";
+                    $help .= "   | Configuration options:\n";
 
                     usort(
                         $configurationDefinitionOptions,
@@ -503,7 +494,7 @@ EOF
                     foreach ($configurationDefinitionOptions as $option) {
                         $help .= '   | - <info>'.$option->getName()."</info>\n";
                         foreach (self::wordwrap($option->getDescription(), 72) as $index => $line) {
-                            $help .= '   |   '.$line."\n";
+                            $help .= '   |   '.ltrim($line)."\n";
                         }
 
                         $allowed = self::getDisplayableAllowedValues($option);
@@ -514,7 +505,7 @@ EOF
                                 if ($value instanceof AllowedValueSubset) {
                                     $help .= "   |   Subset of:\n";
                                     foreach (self::wordwrap(self::toString($value->getAllowedValues()), 65) as $default) {
-                                        $help .= sprintf("   |   <default_line>%s</default_line>\n", $default);
+                                        $help .= sprintf("   |   <default_line>%s</default_line>\n", ltrim($default));
                                     }
                                 } else {
                                     $help .= sprintf("   |   <default_line>%s</default_line>\n", self::toString($value));
@@ -530,12 +521,12 @@ EOF
                         }
 
                         foreach (self::wordwrap($line, 72) as $index => $line) {
-                            $help .= '   |   '.$line."\n";
+                            $help .= '   |   '.ltrim($line)."\n";
                         }
 
                         if ($option->hasDefault()) {
                             foreach (self::wordwrap(self::toString($option->getDefault()), 65) as $default) {
-                                $help .= sprintf("   |   <default_line>%s</default_line>\n", $default);
+                                $help .= sprintf("   |   <default_line>%s</default_line>\n", ltrim($default));
                             }
                             $help .= '</default_block>';
                         }

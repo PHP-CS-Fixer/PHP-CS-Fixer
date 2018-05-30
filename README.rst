@@ -217,7 +217,6 @@ Choose from the list of available rules:
 
   PHP arrays should be declared using the configured syntax (requires PHP
   >= 5.4 for short syntax).
-
   Configuration options:
 
   - ``syntax``
@@ -230,7 +229,6 @@ Choose from the list of available rules:
 * **binary_operator_spaces** [@Symfony]
 
   Binary operators should be surrounded by at least one space.
-
   Configuration options:
 
   - ``align_double_arrow``
@@ -265,7 +263,6 @@ Choose from the list of available rules:
 
   The body of each structure MUST be enclosed by braces. Braces should be
   properly placed. Body of braces should be properly indented.
-
   Configuration options:
 
   - ``allow_single_line_closure``
@@ -290,7 +287,6 @@ Choose from the list of available rules:
 
   Whitespace around the keywords of a class, trait or interfaces
   definition should be one space.
-
   Configuration options:
 
   - ``multi_line_extends_each_single_line``
@@ -323,7 +319,6 @@ Choose from the list of available rules:
 * **concat_space** [@Symfony]
 
   Concatenation should be spaced according configuration.
-
   Configuration options:
 
   - ``spacing``
@@ -337,7 +332,6 @@ Choose from the list of available rules:
 
   Equal sign in declare statement should be surrounded by spaces or not
   following configuration.
-
   Configuration options:
 
   - ``space``
@@ -350,18 +344,19 @@ Choose from the list of available rules:
 * **declare_strict_types** [@PHP70Migration:risky]
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
-  **Risky rule**: forcing strict types will stop non strict code from working.
+  **Risky rule**
+  Forcing strict types will stop non strict code from working.
 
 * **dir_constant** [@Symfony:risky]
 
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
-  **Risky rule**: risky when the function ``dirname`` is overridden.
+  **Risky rule**
+  Risky when the function `dirname` is overridden.
 
 * **doctrine_annotation_braces**
 
   Doctrine annotations without arguments must use the configured syntax.
-
   Configuration options:
 
   - ``ignored_tags``
@@ -398,7 +393,6 @@ Choose from the list of available rules:
 * **doctrine_annotation_indentation**
 
   Doctrine annotations must be indented with four spaces.
-
   Configuration options:
 
   - ``ignored_tags``
@@ -429,7 +423,6 @@ Choose from the list of available rules:
 * **doctrine_annotation_spaces**
 
   Fixes spaces in Doctrine annotations.
-
   Configuration options:
 
   - ``around_argument_assignments``
@@ -489,7 +482,8 @@ Choose from the list of available rules:
 * **ereg_to_preg** [@Symfony:risky]
 
   Replace deprecated ``ereg`` regular expression functions with ``preg``.
-  **Risky rule**: risky if the ``ereg`` function is overridden.
+  **Risky rule**
+  Risky if the `ereg` function is overridden.
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
@@ -499,7 +493,6 @@ Choose from the list of available rules:
 * **function_declaration** [@PSR2, @Symfony]
 
   Spaces should be properly placed in a function declaration.
-
   Configuration options:
 
   - ``closure_function_spacing``
@@ -512,9 +505,8 @@ Choose from the list of available rules:
 * **function_to_constant** [@Symfony:risky]
 
   Replace core functions calls returning constants with the constants.
-  **Risky rule**: risky when any of the configured functions to replace are
-   overridden.
-
+  **Risky rule**
+  Risky when any of the configured functions to replace are overridden.
   Configuration options:
 
   - ``functions``
@@ -531,7 +523,6 @@ Choose from the list of available rules:
 * **general_phpdoc_annotation_remove**
 
   Configured annotations should be omitted from PHPDoc.
-
   Configuration options:
 
   - ``annotations``
@@ -547,7 +538,6 @@ Choose from the list of available rules:
 * **header_comment**
 
   Add, replace or remove header comment.
-
   Configuration options:
 
   - ``comment_type``
@@ -593,8 +583,8 @@ Choose from the list of available rules:
 * **is_null** [@Symfony:risky]
 
   Replaces ``is_null($var)`` expression with ``null === $var``.
-  **Risky rule**: risky when the function ``is_null`` is overridden.
-
+  **Risky rule**
+  Risky when the function `is_null` is overridden.
   Configuration options:
 
   - ``use_yoda_style``
@@ -630,13 +620,13 @@ Choose from the list of available rules:
 * **mb_str_functions**
 
   Replace non multibyte-safe functions with corresponding mb function.
-  **Risky rule**: risky when any of the functions are overridden.
+  **Risky rule**
+  Risky when any of the functions are overridden.
 
 * **method_argument_space** [@PSR2, @Symfony]
 
   In method arguments and method call, there MUST NOT be a space before
   each comma and there MUST be one space after each comma.
-
   Configuration options:
 
   - ``keep_multiple_spaces_after_comma``
@@ -653,8 +643,9 @@ Choose from the list of available rules:
 
   Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
   function calls with according type casting operator.
-  **Risky rule**: risky if any of the functions ``intval``, ``floatval``,
-   ``doubleval``, ``strval`` or ``boolval`` are overridden.
+  **Risky rule**
+  Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval`
+  or `boolval` are overridden.
 
 * **native_function_casing** [@Symfony]
 
@@ -664,8 +655,8 @@ Choose from the list of available rules:
 
   Add leading ``\`` before function invocation of internal function to speed
   up resolving.
-  **Risky rule**: risky when any of the functions are overridden.
-
+  **Risky rule**
+  Risky when any of the functions are overridden.
   Configuration options:
 
   - ``exclude``
@@ -681,7 +672,8 @@ Choose from the list of available rules:
 * **no_alias_functions** [@Symfony:risky]
 
   Master functions shall be used instead of aliases.
-  **Risky rule**: risky when any of the alias functions are overridden.
+  **Risky rule**
+  Risky when any of the alias functions are overridden.
 
 * **no_blank_lines_after_class_opening** [@Symfony]
 
@@ -715,7 +707,6 @@ Choose from the list of available rules:
 * **no_extra_consecutive_blank_lines** [@Symfony]
 
   Removes extra blank lines and/or blank lines following configuration.
-
   Configuration options:
 
   - ``tokens``
@@ -738,7 +729,6 @@ Choose from the list of available rules:
 * **no_mixed_echo_print** [@Symfony]
 
   Either language construct ``print`` or ``echo`` should be used.
-
   Configuration options:
 
   - ``use``
@@ -759,8 +749,9 @@ Choose from the list of available rules:
 * **no_php4_constructor**
 
   Convert PHP4-style constructors to ``__construct``.
-  **Risky rule**: risky when old style constructor being fixed is overridden or
-   overrides parent one.
+  **Risky rule**
+  Risky when old style constructor being fixed is overridden or overrides
+  parent one.
 
 * **no_short_bool_cast** [@Symfony]
 
@@ -782,7 +773,6 @@ Choose from the list of available rules:
 * **no_spaces_around_offset** [@Symfony]
 
   There MUST NOT be spaces around offset braces.
-
   Configuration options:
 
   - ``positions``
@@ -816,7 +806,6 @@ Choose from the list of available rules:
 * **no_unneeded_control_parentheses** [@Symfony]
 
   Removes unneeded parentheses around control statements.
-
   Configuration options:
 
   - ``statements``
@@ -830,9 +819,10 @@ Choose from the list of available rules:
 
   In function arguments there must not be arguments with default values
   before non-default ones.
-  **Risky rule**: modifies the signature of functions; therefore risky when
-   using systems (such as some Symfony components) that rely on those (for
-   example through reflection).
+  **Risky rule**
+  Modifies the signature of functions; therefore risky when using systems
+  (such as some Symfony components) that rely on those (for example
+  through reflection).
 
 * **no_unused_imports** [@Symfony]
 
@@ -859,7 +849,8 @@ Choose from the list of available rules:
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.
-  **Risky rule**: risky when strings contain intended invisible characters.
+  **Risky rule**
+  Risky when strings contain intended invisible characters.
 
 * **normalize_index_brace** [@Symfony]
 
@@ -882,7 +873,6 @@ Choose from the list of available rules:
 * **ordered_class_elements**
 
   Orders the elements of classes/interfaces/traits.
-
   Configuration options:
 
   - ``order``
@@ -907,7 +897,6 @@ Choose from the list of available rules:
 * **ordered_imports**
 
   Ordering ``use`` statements.
-
   Configuration options:
 
   - ``imports_order``
@@ -928,9 +917,8 @@ Choose from the list of available rules:
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be
   written with dedicated method like ``->assertTrue($foo)``.
-  **Risky rule**: fixer could be risky if one is overriding PHPUnit's native
-   methods.
-
+  **Risky rule**
+  Fixer could be risky if one is overriding PHPUnit's native methods.
   Configuration options:
 
   - ``assertions``
@@ -946,9 +934,8 @@ Choose from the list of available rules:
 
   PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should
   be used over ``assertTrue``.
-  **Risky rule**: fixer could be risky if one is overriding PHPUnit's native
-   methods.
-
+  **Risky rule**
+  Fixer could be risky if one is overriding PHPUnit's native methods.
   Configuration options:
 
   - ``functions``
@@ -974,9 +961,9 @@ Choose from the list of available rules:
 
   PHPUnit methods like ``assertSame`` should be used instead of
   ``assertEquals``.
-  **Risky rule**: risky when any of the functions are overridden or when
-   testing object equality.
-
+  **Risky rule**
+  Risky when any of the functions are overridden or when testing object
+  equality.
   Configuration options:
 
   - ``assertions``
@@ -991,7 +978,6 @@ Choose from the list of available rules:
 * **phpdoc_add_missing_param_annotation**
 
   PHPDoc should contain ``@param`` for all params.
-
   Configuration options:
 
   - ``only_untyped``
@@ -1024,7 +1010,6 @@ Choose from the list of available rules:
 * **phpdoc_no_alias_tag** [@Symfony]
 
   No alias PHPDoc tags should be used.
-
   Configuration options:
 
   - ``replacements``
@@ -1056,7 +1041,6 @@ Choose from the list of available rules:
 
   The type of ``@return`` annotations of methods returning a reference to
   itself must the configured one.
-
   Configuration options:
 
   - ``replacements``
@@ -1106,7 +1090,8 @@ Choose from the list of available rules:
 * **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky]
 
   Converts ``pow`` to the ``**`` operator. Requires PHP >= 5.6.
-  **Risky rule**: risky when the function ``pow`` is overridden.
+  **Risky rule**
+  Risky when the function `pow` is overridden.
 
 * **pre_increment** [@Symfony]
 
@@ -1120,9 +1105,9 @@ Choose from the list of available rules:
 
   Classes must be in a path that matches their namespace, be at least one
   namespace deep and the class name should match the file name.
-  **Risky rule**: this fixer may change your class name, which will break the
-   code that is depended on old name.
-
+  **Risky rule**
+  This fixer may change your class name, which will break the code that is
+  depended on old name.
   Configuration options:
 
   - ``dir``
@@ -1134,15 +1119,16 @@ Choose from the list of available rules:
 * **psr4** [@Symfony:risky]
 
   Class names should match the file name.
-  **Risky rule**: this fixer may change your class name, which will break the
-   code that is depended on old name.
+  **Risky rule**
+  This fixer may change your class name, which will break the code that is
+  depended on old name.
 
 * **random_api_migration** [@PHP70Migration:risky]
 
   Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
   analogs.
-  **Risky rule**: risky when the configured functions are overridden.
-
+  **Risky rule**
+  Risky when the configured functions are overridden.
   Configuration options:
 
   - ``replacements``
@@ -1156,7 +1142,6 @@ Choose from the list of available rules:
 
   There should be one or no space before colon, and one space after it in
   return type declarations, according to configuration.
-
   Configuration options:
 
   - ``space_before``
@@ -1170,8 +1155,9 @@ Choose from the list of available rules:
 
   Inside class or interface element ``self`` should be preferred to the
   class name itself.
-  **Risky rule**: risky when using dynamic calls like get_called_class() or
-   late static binding.
+  **Risky rule**
+  Risky when using dynamic calls like get_called_class() or late static
+  binding.
 
 * **semicolon_after_instruction**
 
@@ -1185,8 +1171,8 @@ Choose from the list of available rules:
 * **silenced_deprecation_error** [@Symfony:risky]
 
   Ensures deprecation notices are silenced.
-  **Risky rule**: silencing of deprecation errors might cause changes to code
-   behaviour.
+  **Risky rule**
+  Silencing of deprecation errors might cause changes to code behaviour.
 
 * **simplified_null_return**
 
@@ -1205,7 +1191,6 @@ Choose from the list of available rules:
 
   There MUST NOT be more than one property or constant declared per
   statement.
-
   Configuration options:
 
   - ``elements``
@@ -1239,13 +1224,15 @@ Choose from the list of available rules:
 * **strict_comparison**
 
   Comparisons should be strict.
-  **Risky rule**: changing comparisons to strict might change code behavior.
+  **Risky rule**
+  Changing comparisons to strict might change code behavior.
 
 * **strict_param**
 
   Functions should be used with ``$strict`` param set to ``true``.
-  **Risky rule**: risky when the fixed function is overridden or if the code
-   relies on non-strict usage.
+  **Risky rule**
+  Risky when the fixed function is overridden or if the code relies on
+  non-strict usage.
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 
@@ -1281,7 +1268,6 @@ Choose from the list of available rules:
   Visibility MUST be declared on all properties and methods; ``abstract``
   and ``final`` MUST be declared before the visibility; ``static`` MUST be
   declared after the visibility.
-
   Configuration options:
 
   - ``elements``
