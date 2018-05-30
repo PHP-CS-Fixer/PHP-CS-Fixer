@@ -31,7 +31,7 @@ jobs:
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
             script:
-                - vendor/bin/phpunit || travis_terminate 1
+                - vendor/bin/phpunit --stop-on-error --stop-on-failure --exclude-group covers-nothing
 
         -
             <<: *STANDARD_TEST_JOB
@@ -39,14 +39,4 @@ jobs:
             php: 7.2
             env: COLLECT_COVERAGE=1
             script:
-                - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --testdox --exclude-group covers-nothing --coverage-clover build/logs/clover.xml --debug --random-order --random-order-seed=123123123 || travis_terminate 1; fi
-                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/php-coveralls -v; fi
-
-        -
-            <<: *STANDARD_TEST_JOB
-            stage: Test
-            php: 7.2
-            env: COLLECT_COVERAGE=1
-            script:
-                - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --testdox --exclude-group covers-nothing --coverage-clover build/logs/clover.xml tests/Linter --debug --random-order --random-order-seed=123123123 || travis_terminate 1; fi
-                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/php-coveralls -v; fi
+                - phpdbg -qrr vendor/bin/phpunit --stop-on-error --stop-on-failure --exclude-group covers-nothing --coverage-clover build/logs/clover.xml

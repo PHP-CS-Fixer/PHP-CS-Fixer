@@ -42,7 +42,7 @@
         "php-cs-fixer/accessible-object": "^1.0",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.0",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.0",
-        "phpunit/phpunit": "^7.2@dev"
+        "phpunit/phpunit": "^7.1"
     },
     "suggest": {
         "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
