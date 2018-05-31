@@ -221,7 +221,15 @@ final class NoEmptyBlockFixer extends AbstractFixer
             }
 
             if ($tokens[$closeBodyIndex]->equals('}')) {
-                $closeBodyIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+                $nextIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+
+                if ($nextIndex === null) {
+                    $this->clearRangeKeepComments($tokens, $ifIndex, $closeBodyIndex);
+
+                    return;
+                }
+
+                $closeBodyIndex = $nextIndex;
             }
 
             if ($closeBodyIndex === null) {
