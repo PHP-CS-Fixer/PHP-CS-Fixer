@@ -234,6 +234,7 @@ EOF;
         $help = Preg::replace('#^   \\|#m', '', $help);
         $help = Preg::replace("#^\n( +\\$ )#m", "\n.. code-block:: bash\n\n$1", $help);
         $help = Preg::replace("#^\n( +<\\?php)#m", "\n.. code-block:: php\n\n$1", $help);
+        $help = str_replace('  Configuration options:', "\n  Configuration options:\n", $help);
         $help = Preg::replaceCallback(
             '#^\\s*<\\?(\\w+).*?\\?>#ms',
             function ($matches) {
