@@ -142,7 +142,7 @@ final class FixerTest extends TestCase
                     sprintf('[%s] Option %s has no allowed types and values set.', $fixerName, $option->getName())
                 );
 
-                if ($values !== null) {
+                if (null !== $values) {
                     foreach ($values as $value) {
                         if ($value instanceof AllowedValueSubset) {
                             $this->assertContains('array', $types, sprintf('[%s] Option %s has allowed value of type "AllowedValueSubset" but not allowed type "array".', $fixerName, $option->getName()));
