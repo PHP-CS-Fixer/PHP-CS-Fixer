@@ -104,6 +104,15 @@ class Sample
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must run before NoSuperfluousPhpdocTagsFixer
+        return 10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);

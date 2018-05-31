@@ -553,6 +553,22 @@ Choose from the list of available rules:
 
   *Risky rule: risky if the ``ereg`` function is overridden.*
 
+* **error_suppression** [@Symfony:risky]
+
+  Error control operator should be added to deprecation notices and/or
+  removed from other cases.
+
+  *Risky rule: risky because adding/removing ``@`` might cause changes to code behaviour or if ``trigger_error`` function is overridden.*
+
+  Configuration options:
+
+  - ``mute_deprecation_error`` (``bool``): whether to add ``@`` in deprecation
+    notices; defaults to ``true``
+  - ``noise_remaining_usages`` (``bool``): whether to remove ``@`` in remaining
+    usages; defaults to ``false``
+  - ``noise_remaining_usages_exclude`` (``array``): list of global functions to
+    exclude from removing ``@``; defaults to ``[]``
+
 * **escape_implicit_backslashes**
 
   Escape implicit backslashes in strings and heredocs to ease the
@@ -931,6 +947,11 @@ Choose from the list of available rules:
 
   Replaces superfluous ``elseif`` with ``if``.
 
+* **no_superfluous_phpdoc_tags**
+
+  Removes ``@param`` and ``@return`` tags that don't provide any useful
+  information.
+
 * **no_trailing_comma_in_list_call** [@Symfony]
 
   Remove trailing commas in list function calls.
@@ -972,6 +993,12 @@ Choose from the list of available rules:
   before non-default ones.
 
   *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
+
+* **no_unset_on_property**
+
+  Properties should be set to ``null`` instead of using ``unset``.
+
+  *Risky rule: changing variables to ``null`` instead of unsetting them will mean they still show up when looping over class variables.*
 
 * **no_unused_imports** [@Symfony]
 
@@ -1099,6 +1126,15 @@ Choose from the list of available rules:
 * **php_unit_fqcn_annotation** [@Symfony]
 
   PHPUnit annotations should be a FQCNs including a root namespace.
+
+* **php_unit_internal_class**
+
+  All PHPUnit test classes should be marked as internal.
+
+  Configuration options:
+
+  - ``types`` (a subset of ``['normal', 'final', 'abstract']``): what types of
+    classes to mark as internal; defaults to ``['normal', 'final']``
 
 * **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
@@ -1293,6 +1329,10 @@ Choose from the list of available rules:
   PHPDoc should start and end with content, excluding the very first and
   last line of the docblocks.
 
+* **phpdoc_trim_after_description**
+
+  Removes extra blank lines after summary and after description in PHPDoc.
+
 * **phpdoc_types** [@Symfony]
 
   The correct case must be used for standard PHP types in PHPDoc.
@@ -1389,11 +1429,13 @@ Choose from the list of available rules:
 * **short_scalar_cast** [@Symfony]
 
   Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
-  ``(int)``, ``(double)`` and ``(real)`` as ``(float)``.
+  ``(int)``, ``(double)`` and ``(real)`` as ``(float)``, ``(binary)`` as
+  ``(string)``.
 
-* **silenced_deprecation_error** [@Symfony:risky]
+* **silenced_deprecation_error**
 
-  Ensures deprecation notices are silenced.
+  Ensures deprecation notices are silenced. DEPRECATED: use
+  ``error_suppression`` instead.
 
   *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
 
