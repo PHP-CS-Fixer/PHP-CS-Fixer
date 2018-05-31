@@ -29,8 +29,6 @@ final class CommandTest extends TestCase
 {
     /**
      * @dataProvider provideCommandHasNameConstCases
-     *
-     * @param Command $command
      */
     public function testCommandHasNameConst(Command $command)
     {

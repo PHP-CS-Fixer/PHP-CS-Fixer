@@ -28,8 +28,8 @@ final class AllowedValueSubsetTest extends TestCase
     }
 
     /**
-     * @param mixed $inputValue
      * @param bool  $expectedResult
+     * @param mixed $inputValue
      *
      * @dataProvider provideInvokeCases
      */

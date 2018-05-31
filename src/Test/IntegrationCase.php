@@ -35,7 +35,6 @@ final class IntegrationCase
      * @param array       $settings
      * @param array       $requirements
      * @param array       $config
-     * @param RuleSet     $ruleset
      * @param string      $expectedCode
      * @param null|string $inputCode
      */

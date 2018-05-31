@@ -24,8 +24,8 @@ use PhpCsFixer\Tests\TestCase;
 final class ShortDescriptionTest extends TestCase
 {
     /**
-     * @param mixed      $expected
      * @param null|mixed $input
+     * @param mixed      $expected
      *
      * @dataProvider provideGetEndCases
      */

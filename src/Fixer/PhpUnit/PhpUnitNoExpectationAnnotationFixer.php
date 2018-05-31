@@ -157,8 +157,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return string
      */
@@ -174,9 +173,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
     private function fixPhpUnitClass(Tokens $tokens, $startIndex, $endIndex)
     {
@@ -255,8 +253,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param Annotation $annotation
-     *
      * @return string
      */
     private function extractContentFromAnnotation(Annotation $annotation)

@@ -27,9 +27,8 @@ final class ArgumentsAnalyzer
     /**
      * Count amount of parameters in a function/method reference.
      *
-     * @param Tokens $tokens
-     * @param int    $openParenthesis
-     * @param int    $closeParenthesis
+     * @param int $openParenthesis
+     * @param int $closeParenthesis
      *
      * @return int
      */
@@ -46,9 +45,8 @@ final class ArgumentsAnalyzer
      * such as comments and white space tokens, but without the separation
      * tokens like '(', ',' and ')'.
      *
-     * @param Tokens $tokens
-     * @param int    $openParenthesis
-     * @param int    $closeParenthesis
+     * @param int $openParenthesis
+     * @param int $closeParenthesis
      *
      * @return array<int, int>
      */
@@ -87,9 +85,8 @@ final class ArgumentsAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $argumentStart
-     * @param int    $argumentEnd
+     * @param int $argumentStart
+     * @param int $argumentEnd
      *
      * @return ArgumentAnalysis
      */

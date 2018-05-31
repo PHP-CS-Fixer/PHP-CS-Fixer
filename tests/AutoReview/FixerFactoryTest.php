@@ -396,9 +396,6 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @param FixerInterface $first
-     * @param FixerInterface $second
-     *
      * @return string
      */
     private function generateIntegrationTestName(FixerInterface $first, FixerInterface $second)
@@ -407,9 +404,6 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @param FixerInterface $first
-     * @param FixerInterface $second
-     *
      * @return bool
      */
     private function doesIntegrationTestExist(FixerInterface $first, FixerInterface $second)

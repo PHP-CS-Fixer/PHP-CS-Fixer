@@ -29,10 +29,9 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
     /**
      * Make sure # of line breaks prefixing namespace is within given range.
      *
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param int    $expectedMin min. # of line breaks
-     * @param int    $expectedMax max. # of line breaks
+     * @param int $index
+     * @param int $expectedMin min. # of line breaks
+     * @param int $expectedMax max. # of line breaks
      */
     protected function fixLinesBeforeNamespace(Tokens $tokens, $index, $expectedMin, $expectedMax)
     {

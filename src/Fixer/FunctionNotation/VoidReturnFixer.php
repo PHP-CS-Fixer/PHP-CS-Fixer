@@ -123,8 +123,7 @@ final class VoidReturnFixer extends AbstractFixer
     /**
      * Determine whether there is a non-void return annotation in the function's PHPDoc comment.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the function token
+     * @param int $index The index of the function token
      *
      * @return bool
      */
@@ -142,8 +141,7 @@ final class VoidReturnFixer extends AbstractFixer
     /**
      * Determine whether there is a void return annotation in the function's PHPDoc comment.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the function token
+     * @param int $index The index of the function token
      *
      * @return bool
      */
@@ -161,8 +159,7 @@ final class VoidReturnFixer extends AbstractFixer
     /**
      * Determine whether the function already has a return type hint.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the end of the function definition line, EG at { or ;
+     * @param int $index The index of the end of the function definition line, EG at { or ;
      *
      * @return bool
      */
@@ -177,9 +174,8 @@ final class VoidReturnFixer extends AbstractFixer
     /**
      * Determine whether the function has a void return.
      *
-     * @param Tokens $tokens
-     * @param int    $startIndex Start of function body
-     * @param int    $endIndex   End of function body
+     * @param int $startIndex Start of function body
+     * @param int $endIndex   End of function body
      *
      * @return bool
      */
@@ -218,8 +214,7 @@ final class VoidReturnFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index  The index of the end of the function definition line, EG at { or ;
+     * @param int $index The index of the end of the function definition line, EG at { or ;
      */
     private function fixFunctionDefinition(Tokens $tokens, $index)
     {
@@ -234,8 +229,7 @@ final class VoidReturnFixer extends AbstractFixer
     /**
      * Find all the return annotations in the function's PHPDoc comment.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the function token
+     * @param int $index The index of the function token
      *
      * @return Annotation[]
      */

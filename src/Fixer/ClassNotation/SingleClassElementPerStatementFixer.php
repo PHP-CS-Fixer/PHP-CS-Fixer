@@ -108,8 +108,7 @@ final class Example
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixElement(Tokens $tokens, $index)
     {
@@ -149,9 +148,8 @@ final class Example
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
     private function expandElement(Tokens $tokens, $startIndex, $endIndex)
     {
@@ -199,9 +197,8 @@ final class Example
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      *
      * @return Token[]
      */

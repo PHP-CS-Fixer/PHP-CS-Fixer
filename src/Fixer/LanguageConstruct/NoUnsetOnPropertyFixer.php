@@ -98,8 +98,6 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
 
     /**
      * Attempts to change unset into is null where possible.
-     *
-     * @param Tokens $tokens
      */
     private function updateUnset(Tokens $tokens)
     {
@@ -129,8 +127,6 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $filteredTokens
-     *
      * @return Token[]
      */
     private function createReplacementIsNull(Tokens $filteredTokens)
@@ -148,8 +144,6 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $filteredTokens
-     *
      * @return Token[]
      */
     private function createReplacementUnset(Tokens $filteredTokens)
@@ -176,9 +170,8 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      *
      * @return Tokens
      */
@@ -191,8 +184,6 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     *
      * @return bool
      */
     private function doTokensInvolveProperty(Tokens $tokens)
@@ -201,8 +192,6 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     *
      * @return bool
      */
     private function doTokensInvolveArrayAccess(Tokens $tokens)

@@ -100,9 +100,8 @@ final class NoEmptyStatementFixer extends AbstractFixer
      * - declare (with '{' '}')
      * - namespace (with '{' '}')
      *
-     * @param Tokens $tokens
-     * @param int    $index           Semicolon index
-     * @param int    $curlyCloseIndex
+     * @param int $index           Semicolon index
+     * @param int $curlyCloseIndex
      */
     private function fixSemicolonAfterCurlyBraceClose(Tokens $tokens, $index, $curlyCloseIndex)
     {

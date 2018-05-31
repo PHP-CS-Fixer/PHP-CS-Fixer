@@ -30,8 +30,7 @@ final class CommentsAnalyzer
     const TYPE_SLASH_ASTERISK = 3;
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -51,8 +50,7 @@ final class CommentsAnalyzer
      *
      * @see https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#3-definitions
      *
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -97,8 +95,7 @@ final class CommentsAnalyzer
     /**
      * Return array of indices that are part of a comment started at given index.
      *
-     * @param Tokens $tokens
-     * @param int    $index  T_COMMENT index
+     * @param int $index T_COMMENT index
      *
      * @return null|array
      */
@@ -140,8 +137,6 @@ final class CommentsAnalyzer
     /**
      * @see https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#3-definitions
      *
-     * @param Token $token
-     *
      * @return bool
      */
     private function isStructuralElement(Token $token)
@@ -169,9 +164,8 @@ final class CommentsAnalyzer
     /**
      * Checks control structures (for, foreach, if, switch, while) for correct docblock usage.
      *
-     * @param Tokens $tokens
-     * @param Token  $docsToken    docs Token
-     * @param int    $controlIndex index of control structure Token
+     * @param Token $docsToken    docs Token
+     * @param int   $controlIndex index of control structure Token
      *
      * @return bool
      */
@@ -210,9 +204,8 @@ final class CommentsAnalyzer
     /**
      * Checks variable assignments through `list()`, `print()` etc. calls for correct docblock usage.
      *
-     * @param Tokens $tokens
-     * @param Token  $docsToken              docs Token
-     * @param int    $languageConstructIndex index of variable Token
+     * @param Token $docsToken              docs Token
+     * @param int   $languageConstructIndex index of variable Token
      *
      * @return bool
      */
@@ -252,8 +245,7 @@ final class CommentsAnalyzer
     /**
      * Checks variable assignments for correct docblock usage.
      *
-     * @param Tokens $tokens
-     * @param int    $index  index of variable Token
+     * @param int $index index of variable Token
      *
      * @return bool
      */
@@ -287,9 +279,8 @@ final class CommentsAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $whiteStart
-     * @param int    $whiteEnd
+     * @param int $whiteStart
+     * @param int $whiteEnd
      *
      * @return int
      */

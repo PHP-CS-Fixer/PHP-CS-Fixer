@@ -28,8 +28,8 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideCodeWithReturnTypesCases
      *
-     * @param mixed      $expected
      * @param null|mixed $input
+     * @param mixed      $expected
      */
     public function testCodeWithReturnTypes($expected, $input = null)
     {
@@ -39,8 +39,8 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideCodeWithoutReturnTypesCases
      *
-     * @param mixed      $expected
      * @param null|mixed $input
+     * @param mixed      $expected
      */
     public function testCodeWithoutReturnTypes($expected, $input = null)
     {

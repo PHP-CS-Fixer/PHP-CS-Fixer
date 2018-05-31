@@ -31,8 +31,6 @@ interface FixerOptionInterface
 
     /**
      * @throws \LogicException when no default value is defined
-     *
-     * @return mixed
      */
     public function getDefault();
 

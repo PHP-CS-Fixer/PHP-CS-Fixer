@@ -79,11 +79,6 @@ final class JunitReporter implements ReporterInterface
         $testsuite->setAttribute('errors', '0');
     }
 
-    /**
-     * @param \DOMDocument  $dom
-     * @param \DOMElement   $testsuite
-     * @param ReportSummary $reportSummary
-     */
     private function createFailedTestCases(\DOMDocument $dom, \DOMElement $testsuite, ReportSummary $reportSummary)
     {
         $assertionsCount = 0;
@@ -105,10 +100,9 @@ final class JunitReporter implements ReporterInterface
     }
 
     /**
-     * @param \DOMDocument $dom
-     * @param string       $file
-     * @param array        $fixResult
-     * @param bool         $shouldAddAppliedFixers
+     * @param string $file
+     * @param array  $fixResult
+     * @param bool   $shouldAddAppliedFixers
      *
      * @return \DOMElement
      */

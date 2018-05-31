@@ -81,8 +81,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param Tokens $tokens
-     * @param array  $prototypes
+     * @param array $prototypes
      *
      * @return int
      */

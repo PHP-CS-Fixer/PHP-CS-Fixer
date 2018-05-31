@@ -291,9 +291,9 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideConfigureFixerWithNonArrayCases
+     *
+     * @param mixed $value
      */
     public function testConfigureFixerWithNonArray($value)
     {

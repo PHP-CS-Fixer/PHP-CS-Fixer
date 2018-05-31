@@ -84,8 +84,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return Token
      */
@@ -109,8 +108,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return Token
      */

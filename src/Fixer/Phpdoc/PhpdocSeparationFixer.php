@@ -88,8 +88,6 @@ function fnc($foo, $bar) {}
 
     /**
      * Make sure the description is separated from the annotations.
-     *
-     * @param DocBlock $doc
      */
     private function fixDescription(DocBlock $doc)
     {
@@ -112,8 +110,6 @@ function fnc($foo, $bar) {}
 
     /**
      * Make sure the annotations are correctly separated.
-     *
-     * @param DocBlock $doc
      *
      * @return string
      */
@@ -140,10 +136,6 @@ function fnc($foo, $bar) {}
 
     /**
      * Force the given annotations to immediately follow each other.
-     *
-     * @param DocBlock   $doc
-     * @param Annotation $first
-     * @param Annotation $second
      */
     private function ensureAreTogether(DocBlock $doc, Annotation $first, Annotation $second)
     {
@@ -157,10 +149,6 @@ function fnc($foo, $bar) {}
 
     /**
      * Force the given annotations to have one empty line between each other.
-     *
-     * @param DocBlock   $doc
-     * @param Annotation $first
-     * @param Annotation $second
      */
     private function ensureAreSeparate(DocBlock $doc, Annotation $first, Annotation $second)
     {

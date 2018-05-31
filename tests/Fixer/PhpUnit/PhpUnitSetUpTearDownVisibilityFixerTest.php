@@ -26,8 +26,8 @@ final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCas
     /**
      * @dataProvider provideFixCases
      *
-     * @param mixed       $expected
      * @param null|string $input
+     * @param mixed       $expected
      */
     public function testFix($expected, $input = null)
     {

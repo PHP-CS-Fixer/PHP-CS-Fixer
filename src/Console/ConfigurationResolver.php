@@ -152,10 +152,8 @@ final class ConfigurationResolver
     /**
      * ConfigurationResolver constructor.
      *
-     * @param ConfigInterface   $config
-     * @param array             $options
-     * @param string            $cwd
-     * @param ToolInfoInterface $toolInfo
+     * @param array  $options
+     * @param string $cwd
      */
     public function __construct(
         ConfigInterface $config,

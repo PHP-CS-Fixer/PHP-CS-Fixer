@@ -133,8 +133,7 @@ include_once("sample4.php");
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function removeWhitespaceAroundIfPossible(Tokens $tokens, $index)
     {

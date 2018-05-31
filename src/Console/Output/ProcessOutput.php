@@ -66,10 +66,8 @@ final class ProcessOutput implements ProcessOutputInterface
     /**
      * @TODO 3.0 make all parameters mandatory (`null` not allowed)
      *
-     * @param OutputInterface          $output
-     * @param EventDispatcherInterface $dispatcher
-     * @param null|int                 $width
-     * @param null|int                 $nbFiles
+     * @param null|int $width
+     * @param null|int $nbFiles
      */
     public function __construct(OutputInterface $output, EventDispatcherInterface $dispatcher, $width, $nbFiles)
     {

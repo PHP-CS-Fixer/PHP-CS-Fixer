@@ -95,8 +95,7 @@ final class XmlReporter implements ReporterInterface
     }
 
     /**
-     * @param \DOMDocument $dom
-     * @param array        $fixResult
+     * @param array $fixResult
      *
      * @return \DOMElement
      */
@@ -109,8 +108,7 @@ final class XmlReporter implements ReporterInterface
     }
 
     /**
-     * @param float        $time
-     * @param \DOMDocument $dom
+     * @param float $time
      *
      * @return \DOMElement
      */
@@ -128,8 +126,7 @@ final class XmlReporter implements ReporterInterface
     }
 
     /**
-     * @param float        $memory
-     * @param \DOMDocument $dom
+     * @param float $memory
      *
      * @return \DOMElement
      */

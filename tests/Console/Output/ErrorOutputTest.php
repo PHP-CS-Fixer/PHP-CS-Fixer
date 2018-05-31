@@ -29,7 +29,6 @@ use Symfony\Component\Console\Output\StreamOutput;
 final class ErrorOutputTest extends TestCase
 {
     /**
-     * @param Error  $error
      * @param int    $verbosityLevel
      * @param int    $lineNumber
      * @param int    $exceptionLineNumber

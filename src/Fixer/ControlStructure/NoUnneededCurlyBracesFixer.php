@@ -76,9 +76,8 @@ switch ($b) {
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $openIndex  index of `{` token
-     * @param int    $closeIndex index of `}` token
+     * @param int $openIndex  index of `{` token
+     * @param int $closeIndex index of `}` token
      */
     private function clearOverCompleteBraces(Tokens $tokens, $openIndex, $closeIndex)
     {
@@ -96,8 +95,7 @@ switch ($b) {
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index  index of `{` token
+     * @param int $index index of `{` token
      *
      * @return bool
      */

@@ -123,8 +123,7 @@ class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixMethodVisibility(Tokens $tokens, $index)
     {
@@ -137,8 +136,7 @@ class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixPropertyVisibility(Tokens $tokens, $index)
     {
@@ -150,8 +148,7 @@ class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixConstVisibility(Tokens $tokens, $index)
     {

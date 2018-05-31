@@ -80,9 +80,9 @@ final class DeprecatedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param mixed $default
-     *
      * @dataProvider provideGetDefaultCases
+     *
+     * @param mixed $default
      */
     public function testGetDefault($default)
     {
