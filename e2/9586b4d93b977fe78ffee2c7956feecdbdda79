@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-15T10:44:46Z
+
+Looks promising, super :+1: for working on this @BackEndTea ;)
+
+Please add this rule to local `.php_cs.dist` file
+
+(review is still needed)
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-05-15T11:05:29Z
+
+> Please add this rule to local .php_cs.dist file
+
+I did that, but it 'fixes' some classes that aren't meant to be internal.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-15T11:39:59Z
+
+Then it shows some shortcomings of the implementation
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-28T07:49:13Z
+
+@BackEndTea , can you adjust tets as well?
