@@ -184,7 +184,7 @@ switch ($foo) {
 
         $text = preg_quote($this->configuration['comment_text'], '~');
 
-        return Preg::match("~^((//|#)\\s*${text}\\s*)|(/\\*\\*?\\s*${text}\\s*\\*/)$~i", $token->getContent());
+        return 1 === Preg::match("~^((//|#)\\s*${text}\\s*)|(/\\*\\*?\\s*${text}\\s*\\*/)$~i", $token->getContent());
     }
 
     /**

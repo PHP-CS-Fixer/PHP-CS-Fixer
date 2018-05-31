@@ -241,18 +241,25 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideDataProviderMethodNameCases
+     * @dataProvider provideTestClassCases
      *
      * @param string $testClassName
-     * @param string $dataProviderMethodName
      */
-    public function testThatDataProvidersAreCorrectlyNamed($testClassName, $dataProviderMethodName)
+    public function testThatDataProvidersAreCorrectlyNamed($testClassName)
     {
-        $this->assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
-            'Data provider in "%s" with name "%s" is not correctly named.',
-            $testClassName,
-            $dataProviderMethodName
-        ));
+        $dataProviderMethodNames = $this->getDataProviderMethodNames($testClassName);
+
+        if (empty($dataProviderMethodNames)) {
+            $this->addToAssertionCount(1); // no data providers to test, all good!
+        }
+
+        foreach ($dataProviderMethodNames as $dataProviderMethodName) {
+            $this->assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
+                'Data provider in "%s" with name "%s" is not correctly named.',
+                $testClassName,
+                $dataProviderMethodName
+            ));
+        }
     }
 
     /**
@@ -356,48 +363,6 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideDataProviderMethodNameCases()
-    {
-        if ((extension_loaded('xdebug') || 'phpdbg' === PHP_SAPI) && false === getenv('CI')) {
-            $this->markTestSkipped('Data provider too slow when Xdebug is loaded or running under phpdbg.');
-        }
-
-        $data = [];
-
-        $testClassNames = $this->getTestClasses();
-
-        foreach ($testClassNames as $testClassName) {
-            $dataProviderMethodNames = [];
-            $tokens = Tokens::fromCode(file_get_contents(
-                str_replace('\\', DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
-            ));
-
-            foreach ($tokens as $token) {
-                if ($token->isGivenKind(T_DOC_COMMENT)) {
-                    $docBlock = new DocBlock($token->getContent());
-                    $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
-
-                    foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
-                        if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
-                            $dataProviderMethodNames[] = $matches['methodName'];
-                        }
-                    }
-                }
-            }
-
-            $dataProviderMethodNames = array_unique($dataProviderMethodNames);
-
-            foreach ($dataProviderMethodNames as $dataProviderMethodName) {
-                $data[] = [
-                    $testClassName,
-                    $dataProviderMethodName,
-                ];
-            }
-        }
-
-        return $data;
-    }
-
     public function provideClassesWherePregFunctionsAreForbiddenCases()
     {
         if ((extension_loaded('xdebug') || 'phpdbg' === PHP_SAPI) && false === getenv('CI')) {
@@ -415,6 +380,29 @@ final class ProjectCodeTest extends TestCase
                 }
             )
         );
+    }
+
+    private function getDataProviderMethodNames($testClassName)
+    {
+        $dataProviderMethodNames = [];
+        $tokens = Tokens::fromCode(file_get_contents(
+            str_replace('\\', DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
+        ));
+
+        foreach ($tokens as $token) {
+            if ($token->isGivenKind(T_DOC_COMMENT)) {
+                $docBlock = new DocBlock($token->getContent());
+                $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
+
+                foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
+                    if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
+                        $dataProviderMethodNames[] = $matches['methodName'];
+                    }
+                }
+            }
+        }
+
+        return array_unique($dataProviderMethodNames);
     }
 
     private function getSrcClasses()

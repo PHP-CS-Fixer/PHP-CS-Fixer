@@ -1186,6 +1186,15 @@ Choose from the list of available rules:
 
   PHPUnit annotations should be a FQCNs including a root namespace.
 
+* **php_unit_internal_class**
+
+  All PHPUnit test classes should be marked as internal.
+
+  Configuration options:
+
+  - ``types`` (a subset of ``['normal', 'final', 'abstract']``): what types of
+    classes to mark as internal; defaults to ``['normal', 'final']``
+
 * **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   Usages of ``->getMock`` and
