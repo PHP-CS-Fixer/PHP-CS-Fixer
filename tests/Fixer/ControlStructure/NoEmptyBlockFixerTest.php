@@ -361,8 +361,6 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/ ?>',
                 '<?php /**1*/do/**2*/{}/**3*/while/**4*/(/**5*/$foo/**6*/)/**7*/;/**8*/ ?>',
             ],
-
-            // for
             'for with side effect in body' => [
                 '<?php for (;;) { foo(); }',
             ],
@@ -435,10 +433,80 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/ ?>',
                 '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/: endfor;/**7*/ ?>',
             ],
+            'switch with side effect in body' => [
+                '<?php switch ($foo) { case 1: foo(); }',
+            ],
+            'switch with side effect in braces' => [
+                '<?php switch ($foo->bar()) {}',
+            ],
+            'switch without side effects' => [
+                '<?php ',
+                '<?php switch ($foo) {}',
+            ],
+            'switch without side effects with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
+                '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
+            ],
+            'switch without side effects with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/',
+                '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/',
+            ],
+            'switch without side effects but comment in body' => [
+                '<?php switch ($foo) { /* todo */ }',
+            ],
+            'switch without side effects but doc comment in body' => [
+                '<?php switch ($foo) { /** todo */ }',
+            ],
+            'alternate switch with side effect in body' => [
+                '<?php switch ($foo): case 1: foo(); endswitch;',
+            ],
+            'alternate switch with side effect in braces' => [
+                '<?php switch ($foo->bar()): endswitch;',
+            ],
+            'alternate switch without side effects' => [
+                '<?php ',
+                '<?php switch ($foo): endswitch;',
+            ],
+            'alternate switch without side effects with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+                '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/: endswitch/*6*/;/*7*/',
+            ],
+            'alternate switch without side effects with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
+                '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/: endswitch/**6*/;/**7*/',
+            ],
+            'alternate switch without side effects but comment in body' => [
+                '<?php switch ($foo): /* todo */ endswitch;',
+            ],
+            'alternate switch without side effects but doc comment in body' => [
+                '<?php switch ($foo): /** todo */ endswitch;',
+            ],
+            'alternate end tag switch with side effect in body' => [
+                '<?php switch ($foo): case 1: foo(); endswitch ?>',
+            ],
+            'alternate end tag switch with side effect in braces' => [
+                '<?php switch ($foo->bar()): endswitch ?>',
+            ],
+            'alternate end tag switch without side effects' => [
+                '<?php ?>',
+                '<?php switch ($foo): endswitch ?>',
+            ],
+            'alternate end tag switch without side effects with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/ ?>',
+                '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/: endswitch/*6*/ ?>',
+            ],
+            'alternate end tag switch without side effects with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/ ?>',
+                '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/: endswitch/**6*/ ?>',
+            ],
+            'alternate end tag switch without side effects but comment in body' => [
+                '<?php switch ($foo): /* todo */ endswitch ?>',
+            ],
+            'alternate end tag switch without side effects but doc comment in body' => [
+                '<?php switch ($foo): /** todo */ endswitch ?>',
+            ],
 
             // try + finally
-
-            // switch
 
             // while
 
