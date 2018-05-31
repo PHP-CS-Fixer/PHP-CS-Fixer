@@ -1,0 +1,92 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-26T16:26:18Z
+
+>  Add to `.php_cs.dist`: only after review
+
+big :-1: for that
+This topic is coming back multiple times around phpunit.
+Assertions are declared as static methods, indeed. It is due to how they were copy-pasted from JUnit ages ago.
+It even happen it's officially documented now: http://phpunit.readthedocs.io/en/latest/assertions.html#static-vs-non-static-usage-of-assertion-methods
+yet, keep in mind that official docs uses `->` convention everywhere, and most devs are following it. We too.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-01-29T09:24:01Z
+
+> > Add to .php_cs.dist: only after review
+>
+> big 👎 for that
+> This topic is coming back multiple times around phpunit.
+> Assertions are declared as static methods, indeed. It is due to how they were copy-pasted from JUnit ages ago.
+> It even happen it's officially documented now: http://phpunit.readthedocs.io/en/latest/assertions.html#static-vs-non-static-usage-of-assertion-methods
+> yet, keep in mind that official docs uses -> convention everywhere, and most devs are following it. We too.
+
+Is it ok for you to add it to `.php_cs.dist` with fixer configured to `$this->`?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-02-15T11:24:18Z
+
+@keradus may we add this to 2.11?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-03-21T09:50:13Z
+
+@keradus is anything blocking this PR to be tagged for the next release?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-21T11:29:21Z
+
+I thought that #3478 shall be merged first.
+Shall it ?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-03-22T08:23:06Z
+
+PR rebased and fixed with the recent rules.
+
+**Nighlty** fails because I don't know, by I'll not consider it.
+**7.2** fails because of the "*exceeded the timeout of 60 seconds*"
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3478 now is merged.
+
+> Add to .php_cs.dist with $this-> syntax: only after review
+
+This point is still to be discussed.
+
+Everything else is ok I think.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-22T09:49:38Z
+
+`$this->` please do, we do follow this syntax in whole project
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-22T10:07:24Z
+
+> 7.2 fails because of the "exceeded the timeout of 60 seconds"
+
+yep, it's weird. please take a look at #3627
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-03-23T07:40:45Z
+
+Bug found when using `$this->` for calls inside static methods, let me the day to fix it :)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-03-23T09:59:10Z
+
+> Bug found when using `$this->` for calls inside static methods, let me the day to fix it :)
+
+Fixed
+
+> `$this->` please do, we do follow this syntax in whole project
+
+Done
