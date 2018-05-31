@@ -37,7 +37,6 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
     public function provideTestFixCases()
     {
         return [
-            // IF/ELSEIF/ELSE
             'if with side effect in body' => [
                 '<?php if ($foo) { echo 1; }',
             ],
@@ -114,8 +113,22 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
                 '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/else/**7*/{}/**8*/',
             ],
-
-            // IF/ELSEIF/ELSE ALTERNATE
+            'if with side effect in braces and else without side effect' => [
+                '<?php if ($foo->bar()) {} ',
+                '<?php if ($foo->bar()) {} else {}',
+            ],
+            'if with side effect in body and else without side effect' => [
+                '<?php if ($foo) { bar(); } ',
+                '<?php if ($foo) { bar(); } else {}',
+            ],
+            'if compact' => [
+                '<?php ',
+                '<?php if($foo){}elseif($bar){}else{}',
+            ],
+            'if spaced' => [
+                '<?php ',
+                '<?php if   (   $foo )  {     }   elseif   (  $bar )   { }',
+            ],
             'alternate if with side effect in body' => [
                 '<?php if ($foo): echo 1; endif;',
             ],
@@ -192,8 +205,22 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*//**2*//**3*//**4*//**5*/',
                 '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif;/**5*/',
             ],
-
-            // IF/ELSEIF/ELSE ALTERNATE + PHP END TAG
+            'alternate if with side effect in braces and else without side effect' => [
+                '<?php if ($foo->bar()):  endif;',
+                '<?php if ($foo->bar()): else: endif;',
+            ],
+            'alternate if with side effect in body and else without side effect' => [
+                '<?php if ($foo): bar();  endif;',
+                '<?php if ($foo): bar(); else: endif;',
+            ],
+            'alternate if compact' => [
+                '<?php ',
+                '<?php if($foo):elseif($bar):else:endif;',
+            ],
+            'alternate if spaced' => [
+                '<?php ',
+                '<?php if   (   $foo ):    elseif   (  $bar ):   endif;',
+            ],
             'alternate end tag if with side effect in body' => [
                 '<?php if ($foo): echo 1; endif ?>',
             ],
@@ -270,280 +297,152 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*//**2*//**3*//**4*/?>',
                 '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif ?>',
             ],
+            'alternate end tag if with side effect in braces and else without side effect' => [
+                '<?php if ($foo->bar()):  endif ?>',
+                '<?php if ($foo->bar()): else: endif ?>',
+            ],
+            'alternate end tag if with side effect in body and else without side effect' => [
+                '<?php if ($foo): bar();  endif ?>',
+                '<?php if ($foo): bar(); else: endif ?>',
+            ],
+            'alternate end tag if compact' => [
+                '<?php ?>',
+                '<?php if($foo):elseif($bar):else:endif ?>',
+            ],
+            'alternate end tag if spaced' => [
+                '<?php ?>',
+                '<?php if   (   $foo ):    elseif   (  $bar ):   endif ?>',
+            ],
+            'do while with side effect in body' => [
+                '<?php do { foo(); } while($foo);',
+            ],
+            'do while with side effect in braces' => [
+                '<?php do {} while (foo());',
+            ],
+            'do while without side effects' => [
+                '<?php ',
+                '<?php do {} while ($foo);',
+            ],
+            'do while without side effects but comment in body' => [
+                '<?php do { /* todo */ } while ($foo);',
+            ],
+            'do while without side effects but doc comment in body' => [
+                '<?php do { /** todo */ } while ($foo);',
+            ],
+            'do while without side effect with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
+                '<?php /*1*/do/*2*/{}/*3*/while/*4*/(/*5*/$foo/*6*/)/*7*/;/*8*/',
+            ],
+            'do while without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
+                '<?php /**1*/do/**2*/{}/**3*/while/**4*/(/**5*/$foo/**6*/)/**7*/;/**8*/',
+            ],
+            'do while end tag with side effect in body' => [
+                '<?php do { foo(); } while($foo) ?>',
+            ],
+            'do while end tag with side effect in braces' => [
+                '<?php do {} while (foo()) ?>',
+            ],
+            'do while end tag without side effects' => [
+                '<?php ?>',
+                '<?php do {} while ($foo) ?>',
+            ],
+            'do while end tag without side effects but comment in body' => [
+                '<?php do { /* todo */ } while ($foo) ?>',
+            ],
+            'do while end tag without side effects but doc comment in body' => [
+                '<?php do { /** todo */ } while ($foo) ?>',
+            ],
+            'do while end tag without side effect with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/ ?>',
+                '<?php /*1*/do/*2*/{}/*3*/while/*4*/(/*5*/$foo/*6*/)/*7*/;/*8*/ ?>',
+            ],
+            'do while end tag without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/ ?>',
+                '<?php /**1*/do/**2*/{}/**3*/while/**4*/(/**5*/$foo/**6*/)/**7*/;/**8*/ ?>',
+            ],
 
+            // for
+            'for with side effect in body' => [
+                '<?php for (;;) { foo(); }',
+            ],
+            'for with side effect in braces' => [
+                '<?php for ($i = 0; $i < count($foo); ++$i) {}',
+            ],
+            'for without side effects' => [
+                '<?php ',
+                '<?php for (;;) {}',
+            ],
+            'for without side effects but comment in body' => [
+                '<?php for (;;) { /* todo */ }',
+            ],
+            'for without side effects but doc comment in body' => [
+                '<?php for (;;) { /** todo */ }',
+            ],
+            'for without side effect with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+                '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/{}/*7*/',
+            ],
+            'for without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
+                '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/{}/**7*/',
+            ],
+            'for alternate with side effect in body' => [
+                '<?php for (;;): foo(); endfor;',
+            ],
+            'for alternate with side effect in braces' => [
+                '<?php for ($i = 0; $i < count($foo); ++$i): endfor;',
+            ],
+            'for alternate without side effects' => [
+                '<?php ',
+                '<?php for (;;): endfor;',
+            ],
+            'for alternate without side effects but comment in body' => [
+                '<?php for (;;): /* todo */ endfor;',
+            ],
+            'for alternate without side effects but doc comment in body' => [
+                '<?php for (;;): /** todo */ endfor;',
+            ],
+            'for alternate without side effect with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+                '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/: endfor;/*7*/',
+            ],
+            'for alternate without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
+                '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/: endfor;/**7*/',
+            ],
+            'for alternate end tag with side effect in body' => [
+                '<?php for (;;): foo(); endfor ?>',
+            ],
+            'for alternate end tag with side effect in braces' => [
+                '<?php for ($i = 0; $i < count($foo); ++$i): endfor ?>',
+            ],
+            'for alternate end tag without side effects' => [
+                '<?php ?>',
+                '<?php for (;;): endfor ?>',
+            ],
+            'for alternate end tag without side effects but comment in body' => [
+                '<?php for (;;): /* todo */ endfor ?>',
+            ],
+            'for alternate end tag without side effects but doc comment in body' => [
+                '<?php for (;;): /** todo */ endfor ?>',
+            ],
+            'for alternate end tag without side effect with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/ ?>',
+                '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/: endfor;/*7*/ ?>',
+            ],
+            'for alternate end tag without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/ ?>',
+                '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/: endfor;/**7*/ ?>',
+            ],
 
-//            [
-//                '<?php if ($foo) { echo 1; } ',
-//                '<?php if ($foo) { echo 1; } while ($foo);',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php do {} while ($foo);',
-//            ],
-//            [
-/*                '<?php  ?>',*/
-/*                '<?php do {} while ($foo) ?>',*/
-//            ],
-//            [
-//                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
-//                '<?php do/*1*/{}/*2*/while/*3*/(/*4*/$foo/*5*/)/*6*/;/*7*/',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php for (;$i < $b;) {}',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php for (;;) {}',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php for (;;);',
-//            ],
-//            [
-/*                '<?php  ?>',*/
-/*                '<?php for (;;) ?>',*/
-//            ],
-//            [
-//                '<?php ',
-//                '<?php for (;;): endfor;',
-//            ],
-//            [
-/*                '<?php  ?>',*/
-/*                '<?php for (;;): endfor ?>',*/
-//            ],
-//            [
-//                '<?php ',
-//                '<?php for (;;): EnDfOr;',
-//            ],
-//            [
-//                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
-//                '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/{}/*7*/',
-//            ],
-//            [
-//                '<?php try { foo(); } ',
-//                '<?php try { foo(); } finally {}',
-//            ],
-//            [
-//                '<?php try { foo(); } catch (Throwable $e) {} ',
-//                '<?php try { foo(); } catch (Throwable $e) {} finally {}',
-//            ],
-//            [
-//                '<?php try { foo(); } catch (Throwable $e) {}/*1*//*2*//*3*/',
-//                '<?php try { foo(); } catch (Throwable $e) {}/*1*/finally/*2*/{}/*3*/',
-//            ],
-//            [
-//                '<?php try { foo(); } catch (Throwable $e) {} catch (Exception $e) {} ',
-//                '<?php try { foo(); } catch (Throwable $e) {} catch (Exception $e) {} finally {}',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php try {} catch (Throwable $e) { handle($e); } catch (Exception $e) { handle($e); } finally { echo "hi"; }',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php try {} catch (Throwable $e) { handle($e); } finally { echo "hi"; }',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php try {} catch (Throwable $e) { handle($e); }',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php try {} finally { echo "hi"; }',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php if ($foo) {}',
-//            ],
-//            [
-//                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
-//                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php if ($foo): endif;',
-//            ],
-//            [
-/*                '<?php  ?>',*/
-/*                '<?php if ($foo): endif ?>',*/
-//            ],
-//            [
-//                '<?php ',
-//                '<?php if ($foo): EnDiF;',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php switch ($foo) {}',
-//            ],
-//            [
-//                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
-//                '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php switch ($foo): endswitch;',
-//            ],
-//            [
-/*                '<?php  ?>',*/
-/*                '<?php switch ($foo): endswitch ?>',*/
-//            ],
-//            [
-//                '<?php ',
-//                '<?php switch ($foo): eNdSwItCh;',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php while ($foo) {}',
-//            ],
-//            [
-//                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
-//                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php while ($foo);',
-//            ],
-//            [
-/*                '<?php  ?>',*/
-/*                '<?php while ($foo) ?>',*/
-//            ],
-//            [
-//                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
-//                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/;/*6*/',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php while ($foo): endwhile;',
-//            ],
-//            [
-/*                '<?php  ?>',*/
-/*                '<?php while ($foo): endwhile ?>',*/
-//            ],
-//            [
-//                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
-//                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/:endwhile/*6*/;/*7*/',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php while ($foo): eNdWhIlE;',
-//            ],
-//            [
-//                "<?php\n",
-//                "<?php\ndo {\n\n}\nwhile (\$foo);",
-//            ],
-//            [
-//                "<?php\ntry {\nfoo();\n} ",
-//                "<?php\ntry {\nfoo();\n} finally {\n}",
-//            ],
-//            [
-//                "<?php\n",
-//                "<?php\nif (\$foo) {\n}",
-//            ],
-//            [
-//                "<?php\n",
-//                "<?php\nswitch (\$foo) {\n}",
-//            ],
-//            [
-//                "<?php\n",
-//                "<?php\ntry {\n} catch (Throwable \$e) {\n}",
-//            ],
-//            [
-//                "<?php\n",
-//                "<?php\nwhile (\$foo) {\n}",
-//            ],
-//            [
-//                '<?php  ',
-//                '<?php if ($foo) {} else {}',
-//            ],
-//            [
-//                '<?php if ($foo) { bar(); } ',
-//                '<?php if ($foo) { bar(); } else {}',
-//            ],
-//            [
-//                '<?php  ',
-//                '<?php if ($foo) {} elseif ($bar) {} else {}',
-//            ],
-//            [
-//                '<?php  ',
-//                '<?php if ($foo) {} elseif ($bar) {} elseif ($baz) {} else {}',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php if ($foo): else: endif;',
-//            ],
-//            [
-//                '<?php ',
-//                '<?php if ($foo): elseif ($bar): elseif ($baz): else: endif;',
-//            ],
-//            ['<?php if (foo()) {}'],
-//            ['<?php if ($foo->bar()) {}'],
-//            ['<?php if ($foo->bar) {}'],
-//            ['<?php if ($a = $b) {}'],
-//            ['<?php if ($a++) {}'],
-//            ['<?php if (++$a) {}'],
-//            ['<?php if ($a--) {}'],
-//            ['<?php if (--$a) {}'],
-//            ['<?php if ($a .= $b) {}'],
-//            ['<?php if ($a /= $b) {}'],
-//            ['<?php if ($a -= $b) {}'],
-//            ['<?php if ($a %= $b) {}'],
-//            ['<?php if ($a *= $b) {}'],
-//            ['<?php if ($a += $b) {}'],
-//            ['<?php if ($a **= $b) {}'],
-//            ['<?php if ($a &= $b) {}'],
-//            ['<?php if ($a |= $b) {}'],
-//            ['<?php if ($a ^= $b) {}'],
-//            ['<?php if ($a <<= $b) {}'],
-//            ['<?php if ($a >>= $b) {}'],
-//            ['<?php if (require "foo.php") {}'],
-//            ['<?php if (require_once "foo.php") {}'],
-//            ['<?php if (include "foo.php") {}'],
-//            ['<?php if (include_once "foo.php") {}'],
-//            ['<?php if ($a[$b]) {}'],
-//            ['<?php do {} while (foo());'],
-//            ['<?php do {} while ($foo->bar());'],
-//            ['<?php do {} while ($foo->bar);'],
-//            ['<?php for ($i = foo(); $i < bar(); ++$i) {}'],
-//            ['<?php for ($i = $foo->bar(); $i < bar(); ++$i) {}'],
-//            ['<?php for ($i = $foo->bar; $i < bar(); ++$i) {}'],
-//            ['<?php for ($i = foo(); $i < bar(); ++$i);'],
-//            ['<?php for ($i = $foo->bar(); $i < bar(); ++$i);'],
-//            ['<?php for ($i = $foo->bar; $i < bar(); ++$i);'],
-//            ['<?php do { echo 1; } while ($foo);'],
-//            ['<?php switch (foo()) {}'],
-//            ['<?php switch ($foo->bar()) {}'],
-//            ['<?php switch ($foo->bar) {}'],
-//            ['<?php while (foo()) {}'],
-//            ['<?php while ($foo->bar()) {}'],
-//            ['<?php while ($foo->bar) {}'],
-//            ['<?php while ($foo->bar);'],
-//            ['<?php if ($foo) { doSomething(); }'],
-//            ['<?php if ($foo) {} else { doSomething(); }'],
-//            ['<?php if ($foo) {} elseif ($bar) { doSomething(); }'],
-//            ['<?php if ($foo) {} elseif ($bar) {} else { doSomething(); }'],
-//            ['<?php if ($foo) { doSomething(); }'],
-//            ['<?php if ($foo): else: doSomething(); endif;'],
-//            ['<?php if ($foo): elseif ($bar): doSomething(); endif;'],
-//            ['<?php if ($foo): elseif ($bar): else: doSomething(); endif;'],
-//            ['<?php do { /* keep */ } while ($foo);'],
-//            ['<?php for (;;) { /* keep */ }'],
-//            ['<?php try { foo(); } finally { /* keep */ }'],
-//            ['<?php if ($foo) { /* keep */ }'],
-//            ['<?php switch ($foo) { /* keep */ }'],
-//            ['<?php try { /* keep */ } catch (Throwable $e) {}'],
-//            ['<?php while ($foo) { /* keep */ }'],
-//            ['<?php do { /** keep */ } while ($foo);'],
-//            ['<?php try { foo(); } finally { /** keep */ }'],
-//            ['<?php if ($foo) { /** keep */ }'],
-//            ['<?php switch ($foo) { /** keep */ }'],
-//            ['<?php try { /** keep */ } catch (Throwable $e) {}'],
-//            ['<?php while ($foo) { /** keep */ }'],
-//            ['<?php do { /* keep */ } while ($foo);'],
-//            ['<?php for (;;): /* keep */ endfor;'],
-//            ['<?php if ($foo): /* keep */ endif;'],
-//            ['<?php switch ($foo): /* keep */ endswitch;'],
-//            ['<?php while ($foo): /* keep */ endwhile;'],
+            // try + finally
+
+            // switch
+
+            // while
+
+            // modifications
         ];
     }
 }
