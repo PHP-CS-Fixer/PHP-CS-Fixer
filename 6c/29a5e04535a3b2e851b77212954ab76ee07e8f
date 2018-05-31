@@ -1,0 +1,84 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-30T23:58:12Z
+
+**BEFORE**
+
+```
+ker@dus:~/github/PHP-CS-Fixer λ vendor/bin/phpunit tests/AutoReview/ProjectCodeTest.php  --filter=testThatDataProvidersAreCorrectlyNamed
+PHPUnit 7.1.5 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 7.2.5-0ubuntu0.18.04.1
+Configuration: /home/keradus/github/PHP-CS-Fixer/phpunit.xml.dist
+
+..................................................................................................................................... 133 / 609 ( 21%)
+..................................................................................................................................... 266 / 609 ( 43%)
+..................................................................................................................................... 399 / 609 ( 65%)
+..................................................................................................................................... 532 / 609 ( 87%)
+.............................................................................                                                         609 / 609 (100%)
+
+Time: 2.43 seconds, Memory: 54.00MB
+
+OK (609 tests, 609 assertions)
+```
+
+```
+ker@dus:~/github/PHP-CS-Fixer λ phpdbg -qrr vendor/bin/phpunit --stop-on-error --stop-on-failure --exclude-group covers-nothing --coverage-clover build/logs/clover.xml tests/AutoReview/ProjectCodeTest.php
+PHPUnit 7.1.5 by Sebastian Bergmann and contributors.
+
+Runtime:       PHPDBG 7.2.5-0ubuntu0.18.04.1
+Configuration: /home/keradus/github/PHP-CS-Fixer/phpunit.xml.dist
+
+Time: 10.59 seconds, Memory: 56.00MB
+
+No tests executed!
+
+Generating code coverage report in Clover XML format ... done
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-30T23:58:21Z
+
+**AFTER**
+
+```
+ker@dus:~/github/PHP-CS-Fixer λ vendor/bin/phpunit tests/AutoReview/ProjectCodeTest.php  --filter=testThatDataProvidersAreCorrectlyNamed
+PHPUnit 7.1.5 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 7.2.5-0ubuntu0.18.04.1
+Configuration: /home/keradus/github/PHP-CS-Fixer/phpunit.xml.dist
+
+..................................................................................................................................... 133 / 337 ( 39%)
+..................................................................................................................................... 266 / 337 ( 78%)
+.......................................................................                                                               337 / 337 (100%)
+
+Time: 3.89 seconds, Memory: 52.00MB
+
+OK (337 tests, 697 assertions)
+```
+
+```
+ker@dus:~/github/PHP-CS-Fixer λ phpdbg -qrr vendor/bin/phpunit --stop-on-error --stop-on-failure --exclude-group covers-nothing --coverage-clover build/logs/clover.xml tests/AutoReview/ProjectCodeTest.php
+PHPUnit 7.1.5 by Sebastian Bergmann and contributors.
+
+Runtime:       PHPDBG 7.2.5-0ubuntu0.18.04.1
+Configuration: /home/keradus/github/PHP-CS-Fixer/phpunit.xml.dist
+
+Time: 274 ms, Memory: 18.00MB
+
+No tests executed!
+
+Generating code coverage report in Clover XML format ... done
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-31T00:00:01Z
+
+```diff
+-Time: 10.59 seconds, Memory: 56.00MB
++Time: 274 ms, Memory: 18.00MB
+
+No tests executed!
+```
