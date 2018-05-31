@@ -51,9 +51,16 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             'if without side effect but comment in body' => [
                 '<?php if ($foo) { /* todo */ }',
             ],
+            'if without side effect but doc comment in body' => [
+                '<?php if ($foo) { /* todo */ }',
+            ],
             'if without side effect with comments' => [
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
                 '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
+            ],
+            'if without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/',
+                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/',
             ],
             'if with side effect in elseif body' => [
                 '<?php if ($foo) {} elseif ($bar) { baz(); }',
@@ -69,8 +76,15 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*//*9*//*10*//*11*/',
                 '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/elseif/*7*/(/*8*/$bar/*9*/)/*10*/{}/*11*/',
             ],
+            'if without side effect and elseif without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*//**9*//**10*//**11*/',
+                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/elseif/**7*/(/**8*/$bar/**9*/)/**10*/{}/**11*/',
+            ],
             'elseif without side effect but comment in body' => [
                 '<?php if ($foo) {} elseif ($bar) { /* todo */ }',
+            ],
+            'elseif without side effect but doc comment in body' => [
+                '<?php if ($foo) {} elseif ($bar) { /** todo */ }',
             ],
             'multiple elseif without side effect' => [
                 '<?php ',
@@ -89,9 +103,16 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             'if with else without side effect but comment in body' => [
                 '<?php if ($foo) {} else { /* todo */ }',
             ],
+            'if with else without side effect but doc comment in body' => [
+                '<?php if ($foo) {} else { /* todo */ }',
+            ],
             'if with else without side effect with comments' => [
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
                 '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/else/*7*/{}/*8*/',
+            ],
+            'if with else without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
+                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/else/**7*/{}/**8*/',
             ],
 
             // IF/ELSEIF/ELSE ALTERNATE
@@ -108,9 +129,16 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             'alternate if without side effect but comment in body' => [
                 '<?php if ($foo): /* todo */ endif;',
             ],
+            'alternate if without side effect but doc comment in body' => [
+                '<?php if ($foo): /** todo */ endif;',
+            ],
             'alternate if without side effect with comments' => [
                 '<?php /*1*//*2*//*3*//*4*//*5*/',
                 '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): endif;/*5*/',
+            ],
+            'alternate if without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*/',
+                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): endif;/**5*/',
             ],
             'alternate if with side effect in elseif body' => [
                 '<?php if ($foo): elseif ($bar): baz(); endif;',
@@ -126,8 +154,15 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
                 '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): elseif/*5*/(/*6*/$bar/*7*/): endif;/*8*/',
             ],
+            'alternate if without side effect and elseif without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
+                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): elseif/**5*/(/**6*/$bar/**7*/): endif;/**8*/',
+            ],
             'alternate elseif without side effect but comment in body' => [
                 '<?php if ($foo): elseif ($bar): /* todo */ endif;',
+            ],
+            'alternate elseif without side effect but doc comment in body' => [
+                '<?php if ($foo): elseif ($bar): /** todo */ endif;',
             ],
             'alternate multiple elseif without side effect' => [
                 '<?php ',
@@ -146,9 +181,16 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             'alternate if with else without side effect but comment in body' => [
                 '<?php if ($foo): else: /* todo */ endif;',
             ],
+            'alternate if with else without side effect but doc comment in body' => [
+                '<?php if ($foo): else: /** todo */ endif;',
+            ],
             'alternate if with else without side effect with comments' => [
                 '<?php /*1*//*2*//*3*//*4*//*5*/',
                 '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): else: endif;/*5*/',
+            ],
+            'alternate if with else without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*/',
+                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif;/**5*/',
             ],
 
             // IF/ELSEIF/ELSE ALTERNATE + PHP END TAG
@@ -165,9 +207,16 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             'alternate end tag if without side effect but comment in body' => [
                 '<?php if ($foo): /* todo */ endif ?>',
             ],
+            'alternate end tag if without side effect but doc comment in body' => [
+                '<?php if ($foo): /** todo */ endif ?>',
+            ],
             'alternate end tag if without side effect with comments' => [
                 '<?php /*1*//*2*//*3*//*4*/?>',
                 '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): endif ?>',
+            ],
+            'alternate end tag if without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*/?>',
+                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): endif ?>',
             ],
             'alternate end tag if with side effect in elseif body' => [
                 '<?php if ($foo): elseif ($bar): baz(); endif ?>',
@@ -183,8 +232,15 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/?>',
                 '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): elseif/*5*/(/*6*/$bar/*7*/): endif ?>',
             ],
+            'alternate end tag if without side effect and elseif without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/?>',
+                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): elseif/**5*/(/**6*/$bar/**7*/): endif ?>',
+            ],
             'alternate end tag elseif without side effect but comment in body' => [
                 '<?php if ($foo): elseif ($bar): /* todo */ endif ?>',
+            ],
+            'alternate end tag elseif without side effect but doc comment in body' => [
+                '<?php if ($foo): elseif ($bar): /** todo */ endif ?>',
             ],
             'alternate end tag multiple elseif without side effect' => [
                 '<?php ?>',
@@ -203,9 +259,16 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             'alternate end tag if with else without side effect but comment in body' => [
                 '<?php if ($foo): else: /* todo */ endif ?>',
             ],
+            'alternate end tag if with else without side effect but doc comment in body' => [
+                '<?php if ($foo): else: /** todo */ endif ?>',
+            ],
             'alternate end tag if with else without side effect with comments' => [
                 '<?php /*1*//*2*//*3*//*4*/?>',
                 '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): else: endif ?>',
+            ],
+            'alternate end tag if with else without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*/?>',
+                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif ?>',
             ],
 
 
