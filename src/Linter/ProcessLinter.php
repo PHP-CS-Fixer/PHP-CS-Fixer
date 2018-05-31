@@ -71,6 +71,7 @@ final class ProcessLinter implements LinterInterface
             }
         }
 
+        var_dump([__METHOD__, $executable]);
         $this->processBuilder = new ProcessLinterProcessBuilder($executable);
 
         $this->fileRemoval = new FileRemoval();
@@ -120,7 +121,7 @@ final class ProcessLinter implements LinterInterface
         }
 
         $process = $this->processBuilder->build($path);
-        $process->setTimeout(null);
+        $process->setTimeout(10);
         $process->start();
 
         return $process;

@@ -6,7 +6,7 @@
     backupGlobals="false"
     backupStaticAttributes="false"
     beStrictAboutChangesToGlobalState="true"
-    beStrictAboutOutputDuringTests="true"
+    beStrictAboutOutputDuringTests="false"
     beStrictAboutTestSize="true"
     beStrictAboutTestsThatDoNotTestAnything="true"
     beStrictAboutTodoAnnotatedTests="true"
@@ -21,8 +21,13 @@
     verbose="true"
 >
     <testsuites>
-        <testsuite>
+        <testsuite name="all">
             <directory>./tests</directory>
+        </testsuite>
+        <testsuite name="coverage">
+            <directory>./tests</directory>
+            <exclude>./tests/AutoReview</exclude>
+            <exclude>./tests/Smoke</exclude>
         </testsuite>
     </testsuites>
 
@@ -31,19 +36,6 @@
             <directory>./src</directory>
         </whitelist>
     </filter>
-
-    <listeners>
-        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener">
-            <arguments>
-                <array>
-                    <element key="slowThreshold">
-                        <integer>100</integer>
-                    </element>
-                </array>
-            </arguments>
-        </listener>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
-    </listeners>
 
     <php>
         <ini name="zend.enable_gc" value="0"/>
