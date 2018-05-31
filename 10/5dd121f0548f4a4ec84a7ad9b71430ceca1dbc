@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-02-19T08:58:45Z
+
+CS will fail, but that are two bugs in the current fixer
+I think RTM here
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-12T07:35:52Z
+
+is there anyone who can review or tell me how to proceed?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-27T06:35:48Z
+
+rebased and reworked, anyone?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-03-29T11:57:27Z
+
+well... no feedback for 3 months... merging ;P
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-04T06:42:37Z
+
+>Do we want to have \ for functions in this fixer or not? I see 2 array_reverse calls - one with leading \ and other without.
+
+Good catch!
+The class is one of the few that has been fixed like this within the project, mainly because the fixer is not part the rules-set of the project. Fixed the CS again.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-04T06:45:10Z
+
+Travis fails because of SF update, @ see the fix here https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3676
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-03T08:07:02Z
+
+so how to get out of this stalemate?
