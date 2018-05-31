@@ -350,6 +350,7 @@ Choose from the list of available rules:
 * **declare_strict_types** [@PHP70Migration:risky]
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
+
   *Risky rule*
   Forcing strict types will stop non strict code from working.
 
@@ -357,6 +358,7 @@ Choose from the list of available rules:
 
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
+
   *Risky rule*
   Risky when the function `dirname` is overridden.
 
@@ -491,6 +493,7 @@ Choose from the list of available rules:
 * **ereg_to_preg** [@Symfony:risky]
 
   Replace deprecated ``ereg`` regular expression functions with ``preg``.
+
   *Risky rule*
   Risky if the `ereg` function is overridden.
 
@@ -515,6 +518,7 @@ Choose from the list of available rules:
 * **function_to_constant** [@Symfony:risky]
 
   Replace core functions calls returning constants with the constants.
+
   *Risky rule*
   Risky when any of the configured functions to replace are overridden.
 
@@ -596,6 +600,7 @@ Choose from the list of available rules:
 * **is_null** [@Symfony:risky]
 
   Replaces ``is_null($var)`` expression with ``null === $var``.
+
   *Risky rule*
   Risky when the function `is_null` is overridden.
 
@@ -634,6 +639,7 @@ Choose from the list of available rules:
 * **mb_str_functions**
 
   Replace non multibyte-safe functions with corresponding mb function.
+
   *Risky rule*
   Risky when any of the functions are overridden.
 
@@ -658,6 +664,7 @@ Choose from the list of available rules:
 
   Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
   function calls with according type casting operator.
+
   *Risky rule*
   Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval`
   or `boolval` are overridden.
@@ -670,6 +677,7 @@ Choose from the list of available rules:
 
   Add leading ``\`` before function invocation of internal function to speed
   up resolving.
+
   *Risky rule*
   Risky when any of the functions are overridden.
 
@@ -688,6 +696,7 @@ Choose from the list of available rules:
 * **no_alias_functions** [@Symfony:risky]
 
   Master functions shall be used instead of aliases.
+
   *Risky rule*
   Risky when any of the alias functions are overridden.
 
@@ -767,6 +776,7 @@ Choose from the list of available rules:
 * **no_php4_constructor**
 
   Convert PHP4-style constructors to ``__construct``.
+
   *Risky rule*
   Risky when old style constructor being fixed is overridden or overrides
   parent one.
@@ -839,6 +849,7 @@ Choose from the list of available rules:
 
   In function arguments there must not be arguments with default values
   before non-default ones.
+
   *Risky rule*
   Modifies the signature of functions; therefore risky when using systems
   (such as some Symfony components) that rely on those (for example
@@ -869,6 +880,7 @@ Choose from the list of available rules:
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.
+
   *Risky rule*
   Risky when strings contain intended invisible characters.
 
@@ -939,6 +951,7 @@ Choose from the list of available rules:
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be
   written with dedicated method like ``->assertTrue($foo)``.
+
   *Risky rule*
   Fixer could be risky if one is overriding PHPUnit's native methods.
 
@@ -957,6 +970,7 @@ Choose from the list of available rules:
 
   PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should
   be used over ``assertTrue``.
+
   *Risky rule*
   Fixer could be risky if one is overriding PHPUnit's native methods.
 
@@ -985,6 +999,7 @@ Choose from the list of available rules:
 
   PHPUnit methods like ``assertSame`` should be used instead of
   ``assertEquals``.
+
   *Risky rule*
   Risky when any of the functions are overridden or when testing object
   equality.
@@ -1118,6 +1133,7 @@ Choose from the list of available rules:
 * **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky]
 
   Converts ``pow`` to the ``**`` operator. Requires PHP >= 5.6.
+
   *Risky rule*
   Risky when the function `pow` is overridden.
 
@@ -1133,6 +1149,7 @@ Choose from the list of available rules:
 
   Classes must be in a path that matches their namespace, be at least one
   namespace deep and the class name should match the file name.
+
   *Risky rule*
   This fixer may change your class name, which will break the code that is
   depended on old name.
@@ -1148,6 +1165,7 @@ Choose from the list of available rules:
 * **psr4** [@Symfony:risky]
 
   Class names should match the file name.
+
   *Risky rule*
   This fixer may change your class name, which will break the code that is
   depended on old name.
@@ -1156,6 +1174,7 @@ Choose from the list of available rules:
 
   Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
   analogs.
+
   *Risky rule*
   Risky when the configured functions are overridden.
 
@@ -1186,6 +1205,7 @@ Choose from the list of available rules:
 
   Inside class or interface element ``self`` should be preferred to the
   class name itself.
+
   *Risky rule*
   Risky when using dynamic calls like get_called_class() or late static
   binding.
@@ -1202,6 +1222,7 @@ Choose from the list of available rules:
 * **silenced_deprecation_error** [@Symfony:risky]
 
   Ensures deprecation notices are silenced.
+
   *Risky rule*
   Silencing of deprecation errors might cause changes to code behaviour.
 
@@ -1256,12 +1277,14 @@ Choose from the list of available rules:
 * **strict_comparison**
 
   Comparisons should be strict.
+
   *Risky rule*
   Changing comparisons to strict might change code behavior.
 
 * **strict_param**
 
   Functions should be used with ``$strict`` param set to ``true``.
+
   *Risky rule*
   Risky when the fixed function is overridden or if the code relies on
   non-strict usage.
