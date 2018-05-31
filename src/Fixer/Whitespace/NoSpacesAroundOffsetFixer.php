@@ -60,7 +60,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if (in_array('inside', $this->configuration['positions'], true)) {
+            if (\in_array('inside', $this->configuration['positions'], true)) {
                 if ($token->equals('[')) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
                 } else {
@@ -78,7 +78,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
                 }
             }
 
-            if (in_array('outside', $this->configuration['positions'], true)) {
+            if (\in_array('outside', $this->configuration['positions'], true)) {
                 $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($index);
                 if ($tokens[$prevNonWhitespaceIndex]->isComment()) {
                     continue;

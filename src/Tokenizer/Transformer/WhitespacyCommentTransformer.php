@@ -58,7 +58,7 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
             return;
         }
 
-        $whitespaces = substr($content, strlen($trimmedContent));
+        $whitespaces = substr($content, \strlen($trimmedContent));
 
         $tokens[$index] = new Token([$token->getId(), $trimmedContent]);
 

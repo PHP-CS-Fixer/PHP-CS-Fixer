@@ -108,6 +108,6 @@ class Tag
      */
     public function valid()
     {
-        return in_array($this->getName(), self::$tags, true);
+        return \in_array($this->getName(), self::$tags, true);
     }
 }

@@ -47,7 +47,7 @@ final class TokensAnalyzer
         $this->tokens->rewind();
         $elements = [];
 
-        for ($index = 1, $count = count($this->tokens) - 2; $index < $count; ++$index) {
+        for ($index = 1, $count = \count($this->tokens) - 2; $index < $count; ++$index) {
             if ($this->tokens[$index]->isClassy()) {
                 list($index, $newElements) = $this->findClassyElements($index);
                 $elements += $newElements;
@@ -545,11 +545,11 @@ final class TokensAnalyzer
                 CT::T_TYPE_ALTERNATION => true, // |
             ];
 
-            if (defined('T_SPACESHIP')) {
+            if (\defined('T_SPACESHIP')) {
                 $arrayOperators[T_SPACESHIP] = true; // <=>
             }
 
-            if (defined('T_COALESCE')) {
+            if (\defined('T_COALESCE')) {
                 $arrayOperators[T_COALESCE] = true;  // ??
             }
         }
@@ -618,7 +618,7 @@ final class TokensAnalyzer
         $classIndex = $index;
         ++$index; // skip the classy index itself
 
-        for ($count = count($this->tokens); $index < $count; ++$index) {
+        for ($count = \count($this->tokens); $index < $count; ++$index) {
             $token = $this->tokens[$index];
 
             if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {

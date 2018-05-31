@@ -82,7 +82,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             $allowedValues = $option->getAllowedValues();
             if (null !== $allowedValues) {
                 foreach ($allowedValues as &$allowedValue) {
-                    if (is_object($allowedValue) && is_callable($allowedValue)) {
+                    if (\is_object($allowedValue) && \is_callable($allowedValue)) {
                         $allowedValue = function ($values) use ($allowedValue) {
                             return $allowedValue($values);
                         };
@@ -117,7 +117,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
     {
         $name = $option->getName();
 
-        if (in_array($name, $this->registeredNames, true)) {
+        if (\in_array($name, $this->registeredNames, true)) {
             throw new \LogicException(sprintf('The "%s" option is defined multiple times.', $name));
         }
 

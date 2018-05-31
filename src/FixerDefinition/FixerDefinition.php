@@ -40,9 +40,9 @@ final class FixerDefinition implements FixerDefinitionInterface
         array $defaultConfiguration = null,
         $riskyDescription = null
     ) {
-        if (6 === func_num_args()) {
+        if (6 === \func_num_args()) {
             @trigger_error('Arguments #5 and #6 of FixerDefinition::__construct() are deprecated and will be removed in 3.0, use argument #4 instead.', E_USER_DEPRECATED);
-        } elseif (5 === func_num_args()) {
+        } elseif (5 === \func_num_args()) {
             @trigger_error('Argument #5 of FixerDefinition::__construct() is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
         } else {
             $riskyDescription = $configurationDescription;

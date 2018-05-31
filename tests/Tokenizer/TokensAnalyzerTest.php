@@ -1116,7 +1116,7 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            $expect = in_array($index, $tokenIndexes, true);
+            $expect = \in_array($index, $tokenIndexes, true);
             $this->assertSame(
                 $expect,
                 $tokensAnalyzer->isArray($index),

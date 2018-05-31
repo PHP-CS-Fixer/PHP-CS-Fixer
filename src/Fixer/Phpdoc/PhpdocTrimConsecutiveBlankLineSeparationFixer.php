@@ -117,7 +117,7 @@ function fnc($foo) {}
             return; // no Description
         }
 
-        if ($annotationStart === count($doc->getLines()) - 1) {
+        if ($annotationStart === \count($doc->getLines()) - 1) {
             return; // no content after Description
         }
 
@@ -127,7 +127,7 @@ function fnc($foo) {}
     private function fixAllTheRest(DocBlock $doc)
     {
         $annotationStart = $this->findFirstAnnotationOrEnd($doc);
-        $lastLine = $this->reverseFindLastUsefulContent($doc, count($doc->getLines()) - 1);
+        $lastLine = $this->reverseFindLastUsefulContent($doc, \count($doc->getLines()) - 1);
 
         if (null !== $lastLine && $annotationStart !== $lastLine) {
             $this->removeExtraBlankLinesBetween($doc, $annotationStart, $lastLine);

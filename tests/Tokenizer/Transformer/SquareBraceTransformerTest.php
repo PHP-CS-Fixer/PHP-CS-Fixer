@@ -49,7 +49,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         }
 
         foreach ($tokens as $index => $token) {
-            if (in_array($index, $inspectIndexes, true)) {
+            if (\in_array($index, $inspectIndexes, true)) {
                 $this->assertSame('[', $tokens[$index]->getContent(), sprintf('Token @ index %d must have content \']\'', $index));
                 $exp = $expected;
             } elseif ('[' === $tokens[$index]->getContent()) {
