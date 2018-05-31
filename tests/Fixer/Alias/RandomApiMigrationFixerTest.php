@@ -48,7 +48,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],
-            static::getObjectAttribute($this->fixer, 'configuration')
+            $this->getObjectAttribute($this->fixer, 'configuration')
         );
     }
 

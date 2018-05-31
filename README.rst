@@ -1217,6 +1217,20 @@ Choose from the list of available rules:
   - ``style`` (``'annotation'``, ``'prefix'``): whether to use the @test annotation or
     not; defaults to ``'prefix'``
 
+* **php_unit_test_case_static_method_calls**
+
+  Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the
+  same type, either ``$this->``, ``self::`` or ``static::``.
+
+  *Risky rule: risky when PHPUnit methods are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``call_type`` (``'self'``, ``'static'``, ``'this'``): the call type to use for referring
+    to PHPUnit methods; defaults to ``'static'``
+  - ``methods`` (``array``): dictionary of ``method`` => ``call_type`` values that
+    differ from the default strategy; defaults to ``[]``
+
 * **php_unit_test_class_requires_covers**
 
   Adds a default ``@coversNothing`` annotation to PHPUnit test classes that

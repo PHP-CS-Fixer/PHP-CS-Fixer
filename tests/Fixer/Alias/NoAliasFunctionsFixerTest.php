@@ -38,7 +38,7 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         /** @var $aliases string[] */
-        $aliases = static::getStaticAttribute(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'aliases');
+        $aliases = $this->getStaticAttribute(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'aliases');
 
         $cases = [];
         foreach ($aliases as $alias => $master) {
