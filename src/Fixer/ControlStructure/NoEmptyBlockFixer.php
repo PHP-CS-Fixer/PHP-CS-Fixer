@@ -470,7 +470,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     {
         for ($index = $endIndex; $startIndex <= $index; --$index) {
             if (!$tokens[$index]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
-                $tokens->clearAt($index);
+                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
         }
     }
