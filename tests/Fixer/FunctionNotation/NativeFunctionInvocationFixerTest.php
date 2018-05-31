@@ -16,6 +16,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
+ * @author SpacePossum
  *
  * @internal
  *
@@ -257,6 +258,257 @@ class Foo
     }
 }
 ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithNamespaceConfigurationCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     * @param string      $scope
+     */
+    public function testFixWithNamespaceConfiguration($expected, $input = null, $scope = 'namespaced')
+    {
+        $this->fixer->configure(['scope' => $scope]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithNamespaceConfigurationCases()
+    {
+        return [
+            [
+                '<?php echo count([1]);',
+            ],
+            [
+                '<?php
+namespace space1 { ?>
+<?php echo \count([2]) ?>
+<?php }namespace {echo count([1]);}
+',
+                '<?php
+namespace space1 { ?>
+<?php echo count([2]) ?>
+<?php }namespace {echo count([1]);}
+',
+            ],
+            [
+                '<?php
+namespace Bar {
+    echo \strtoLOWER("in 1");
+}
+
+namespace {
+    echo strtolower("out 1");
+}
+
+namespace {
+    echo strtolower("out 2");
+}
+
+namespace Bar{
+    echo \strtolower("in 2");
+}
+
+namespace {
+    echo strtolower("out 3");
+}
+',
+                '<?php
+namespace Bar {
+    echo strtoLOWER("in 1");
+}
+
+namespace {
+    echo strtolower("out 1");
+}
+
+namespace {
+    echo strtolower("out 2");
+}
+
+namespace Bar{
+    echo strtolower("in 2");
+}
+
+namespace {
+    echo strtolower("out 3");
+}
+',
+            ],
+            [
+                '<?php
+namespace space11 ?>
+
+    <?php
+echo \strtolower(__NAMESPACE__);
+namespace space2;
+echo \strtolower(__NAMESPACE__);
+',
+                '<?php
+namespace space11 ?>
+
+    <?php
+echo strtolower(__NAMESPACE__);
+namespace space2;
+echo strtolower(__NAMESPACE__);
+',
+            ],
+            [
+                '<?php namespace PhpCsFixer\Tests\Fixer\Casing;\count([1]);',
+                '<?php namespace PhpCsFixer\Tests\Fixer\Casing;count([1]);',
+            ],
+            [
+                '<?php
+namespace Space12;
+
+echo \count([1]);
+
+namespace Space2;
+
+echo \count([1]);
+?>
+',
+                '<?php
+namespace Space12;
+
+echo count([1]);
+
+namespace Space2;
+
+echo count([1]);
+?>
+',
+            ],
+            [
+                '<?php namespace {echo strtolower("out 2");}',
+            ],
+            [
+                '<?php
+namespace space13 {
+    echo \strtolower("in 1");
+}
+
+namespace space2 {
+    echo \strtolower("in 2");
+}
+
+namespace { // global
+    echo strtolower("global 1");
+}
+',
+                '<?php
+namespace space13 {
+    echo strtolower("in 1");
+}
+
+namespace space2 {
+    echo strtolower("in 2");
+}
+
+namespace { // global
+    echo strtolower("global 1");
+}
+',
+            ],
+            [
+                '<?php
+namespace space1 {
+    echo \count([1]);
+}
+namespace {
+    echo \count([1]);
+}
+',
+                '<?php
+namespace space1 {
+    echo count([1]);
+}
+namespace {
+    echo count([1]);
+}
+',
+                'all',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithConfiguredIncludeCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     * @param array       $configuration
+     */
+    public function testFixWithConfiguredInclude($expected, $input = null, array $configuration = [])
+    {
+        $this->fixer->configure($configuration);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFixWithConfiguredIncludeCases()
+    {
+        return [
+            'include set + 1, exclude 1' => [
+                '<?php
+                    echo \count([1]);
+                    \some_other($a, 3);
+                    echo strlen($a);
+                    not_me();
+                ',
+                '<?php
+                    echo count([1]);
+                    some_other($a, 3);
+                    echo strlen($a);
+                    not_me();
+                ',
+                [
+                    'include' => ['@internal', 'some_other'],
+                    'exclude' => ['strlen'],
+                ],
+            ],
+            'include @all' => [
+                '<?php
+                    echo \count([1]);
+                    \some_other($a, 3);
+                    echo \strlen($a);
+                    \me_as_well();
+                ',
+                '<?php
+                    echo count([1]);
+                    some_other($a, 3);
+                    echo strlen($a);
+                    me_as_well();
+                ',
+                [
+                    'include' => ['@all'],
+                ],
+            ],
+            'include @compiler_optimized' => [
+                '<?php
+                    // do not fix
+                    $a = strrev($a);
+                    $a .= str_repeat($a, 4);
+                    // fix
+                    $c = \get_class($d);
+                    $e = \intval($f);
+                ',
+                '<?php
+                    // do not fix
+                    $a = strrev($a);
+                    $a .= str_repeat($a, 4);
+                    // fix
+                    $c = get_class($d);
+                    $e = intval($f);
+                ',
+                [
+                    'include' => ['@compiler_optimized'],
+                ],
             ],
         ];
     }
