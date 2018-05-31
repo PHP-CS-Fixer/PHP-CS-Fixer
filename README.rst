@@ -833,14 +833,19 @@ Choose from the list of available rules:
 
 * **native_function_invocation**
 
-  Add leading ``\`` before function invocation of internal function to speed
-  up resolving.
+  Add leading ``\`` before function invocation to speed up resolving.
 
   *Risky rule: risky when any of the functions are overridden.*
 
   Configuration options:
 
   - ``exclude`` (``array``): list of functions to ignore; defaults to ``[]``
+  - ``include`` (``array``): list of function names or sets to fix. Defined sets are
+    ``@internal`` (all native functions), ``@all`` (all global functions) and
+    ``@compiler_optimized`` (functions that are specially optimized by Zend);
+    defaults to ``['@internal']``
+  - ``scope`` (``'all'``, ``'namespaced'``): only fix function calls that are made
+    within a namespace or fix all; defaults to ``'all'``
 
 * **new_with_braces** [@Symfony]
 
