@@ -49,9 +49,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param mixed $input
-     *
      * @dataProvider provideConstructorValidationCases
+     *
+     * @param mixed $input
      */
     public function testConstructorValidation($input)
     {
@@ -105,8 +105,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isCast
+     * @param bool $isCast
      *
      * @dataProvider provideIsCastCases
      */
@@ -131,8 +130,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isClassy
+     * @param bool $isClassy
      *
      * @dataProvider provideIsClassyCases
      */
@@ -153,8 +151,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isComment
+     * @param bool $isComment
      *
      * @dataProvider provideIsCommentCases
      */
@@ -255,8 +252,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isNativeConstant
+     * @param bool $isNativeConstant
      *
      * @dataProvider provideIsNativeConstantCases
      */
@@ -279,7 +275,6 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token       $token
      * @param bool        $isWhitespace
      * @param null|string $whitespaces
      *
@@ -311,11 +306,11 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param mixed       $prototype
      * @param null|int    $expectedId
      * @param null|string $expectedContent
      * @param null|bool   $expectedIsArray
      * @param null|string $expectedExceptionClass
+     * @param mixed       $prototype
      *
      * @dataProvider provideCreatingTokenCases
      */
@@ -351,7 +346,6 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token              $token
      * @param string             $equals
      * @param array|string|Token $other
      * @param bool               $caseSensitive

@@ -35,9 +35,8 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
     }
 
     /**
-     * @param bool   $expected
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param bool $expected
+     * @param int  $index
      *
      * @dataProvider provideIsPhpUnitClassCases
      */

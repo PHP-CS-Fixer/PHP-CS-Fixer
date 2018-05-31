@@ -257,8 +257,7 @@ $this->assertTrue(is_readable($a));
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $assertCallIndex Token index of assert method call
+     * @param int $assertCallIndex Token index of assert method call
      *
      * @return int|int[] indexes of assert call, test call and positive flag, or last index checked
      */
@@ -316,8 +315,7 @@ $this->assertTrue(is_readable($a));
     }
 
     /**
-     * @param Tokens $tokens
-     * @param array  $assertIndexes
+     * @param array $assertIndexes
      *
      * @return int index up till processed, number of tokens added
      */
@@ -368,7 +366,6 @@ $this->assertTrue(is_readable($a));
     }
 
     /**
-     * @param Tokens    $tokens
      * @param false|int $callNSIndex
      * @param int       $callIndex
      * @param int       $openIndex

@@ -78,9 +78,8 @@ function example($foo = "two words", $bar) {}
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
     private function fixFunctionDefinition(Tokens $tokens, $startIndex, $endIndex)
     {
@@ -110,9 +109,8 @@ function example($foo = "two words", $bar) {}
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      *
      * @return null|int
      */
@@ -134,8 +132,7 @@ function example($foo = "two words", $bar) {}
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $variableIndex
+     * @param int $variableIndex
      *
      * @return bool
      */
@@ -145,9 +142,8 @@ function example($foo = "two words", $bar) {}
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
     private function removeDefaultArgument(Tokens $tokens, $startIndex, $endIndex)
     {
@@ -159,8 +155,7 @@ function example($foo = "two words", $bar) {}
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index  Index of "="
+     * @param int $index Index of "="
      *
      * @return bool
      */
@@ -183,8 +178,7 @@ function example($foo = "two words", $bar) {}
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function clearWhitespacesBeforeIndex(Tokens $tokens, $index)
     {

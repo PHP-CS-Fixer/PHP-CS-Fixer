@@ -22,8 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionsAnalyzer
 {
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -45,8 +44,7 @@ final class FunctionsAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $methodIndex
+     * @param int $methodIndex
      *
      * @return ArgumentAnalysis[]
      */
@@ -66,8 +64,7 @@ final class FunctionsAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $methodIndex
+     * @param int $methodIndex
      *
      * @return null|TypeAnalysis
      */

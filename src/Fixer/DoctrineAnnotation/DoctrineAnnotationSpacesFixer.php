@@ -151,9 +151,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     */
     private function fixSpacesAroundParentheses(Tokens $tokens)
     {
         $inAnnotationUntilIndex = null;
@@ -203,9 +200,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     */
     private function fixSpacesAroundCommas(Tokens $tokens)
     {
         $inAnnotationUntilIndex = null;
@@ -245,9 +239,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     */
     private function fixAroundAssignments(Tokens $tokens)
     {
         $beforeArguments = $this->configuration['before_argument_assignments'];
@@ -302,7 +293,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     }
 
     /**
-     * @param Tokens    $tokens
      * @param int       $index
      * @param null|bool $insert
      */
@@ -312,7 +302,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     }
 
     /**
-     * @param Tokens    $tokens
      * @param int       $index
      * @param null|bool $insert
      */
@@ -322,7 +311,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     }
 
     /**
-     * @param Tokens    $tokens
      * @param int       $index
      * @param int       $insertIndex
      * @param null|bool $insert

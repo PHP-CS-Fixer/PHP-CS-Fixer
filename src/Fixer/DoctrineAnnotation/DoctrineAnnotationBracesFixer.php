@@ -73,9 +73,6 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     */
     private function addBracesToAnnotations(Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
@@ -93,9 +90,6 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     */
     private function removesBracesFromAnnotations(Tokens $tokens)
     {
         for ($index = 0, $max = count($tokens); $index < $max; ++$index) {

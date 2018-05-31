@@ -200,8 +200,7 @@ class Foo {
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index  The index of the first token of the type hint
+     * @param int $index The index of the first token of the type hint
      *
      * @return array
      */

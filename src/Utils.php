@@ -106,8 +106,6 @@ final class Utils
      *
      * What we're doing here is grabbing everything after the final newline.
      *
-     * @param Token $token
-     *
      * @return string
      */
     public static function calculateTrailingWhitespaceIndent(Token $token)

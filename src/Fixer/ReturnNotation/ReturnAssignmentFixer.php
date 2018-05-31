@@ -87,10 +87,9 @@ final class ReturnAssignmentFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $functionIndex      token index of T_FUNCTION
-     * @param int    $functionOpenIndex  token index of the opening brace token of the function
-     * @param int    $functionCloseIndex token index of the closing brace token of the function
+     * @param int $functionIndex      token index of T_FUNCTION
+     * @param int $functionOpenIndex  token index of the opening brace token of the function
+     * @param int $functionCloseIndex token index of the closing brace token of the function
      *
      * @return int >= 0 number of tokens inserted into the Tokens collection
      */
@@ -245,11 +244,10 @@ final class ReturnAssignmentFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $assignVarIndex
-     * @param int    $assignVarOperatorIndex
-     * @param int    $returnIndex
-     * @param int    $returnVarEndIndex
+     * @param int $assignVarIndex
+     * @param int $assignVarOperatorIndex
+     * @param int $returnIndex
+     * @param int $returnVarEndIndex
      *
      * @return int >= 0 number of tokens inserted into the Tokens collection
      */
@@ -329,8 +327,6 @@ final class ReturnAssignmentFixer extends AbstractFixer
     }
 
     /**
-     * @param Token $token
-     *
      * @return bool
      */
     private function isSuperGlobal(Token $token)

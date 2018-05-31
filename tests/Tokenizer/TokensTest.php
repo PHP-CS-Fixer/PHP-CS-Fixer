@@ -836,8 +836,7 @@ PHP;
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isEmpty
+     * @param bool $isEmpty
      *
      * @dataProvider provideIsEmptyCases
      */

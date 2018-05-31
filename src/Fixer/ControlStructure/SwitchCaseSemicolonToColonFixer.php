@@ -68,8 +68,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     protected function fixSwitchCase(Tokens $tokens, $index)
     {

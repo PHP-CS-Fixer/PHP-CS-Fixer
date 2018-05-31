@@ -93,8 +93,6 @@ EOF
     /**
      * Transforms the heredoc start token to nowdoc notation.
      *
-     * @param Token $token
-     *
      * @return Token
      */
     private function convertToNowdoc(Token $token)

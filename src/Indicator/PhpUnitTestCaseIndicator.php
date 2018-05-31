@@ -50,8 +50,7 @@ final class PhpUnitTestCaseIndicator
     }
 
     /**
-     * @param Tokens $tokens
-     * @param bool   $beginAtBottom whether we should start yielding PHPUnit classes from the bottom of the file
+     * @param bool $beginAtBottom whether we should start yielding PHPUnit classes from the bottom of the file
      *
      * @return \Generator array of [int start, int end] indexes from sooner to later classes
      */

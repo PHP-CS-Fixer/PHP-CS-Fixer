@@ -51,8 +51,7 @@ abstract class AbstractReporterTestCase extends TestCase
     }
 
     /**
-     * @param string        $expectedReport
-     * @param ReportSummary $reportSummary
+     * @param string $expectedReport
      *
      * @dataProvider provideGenerateCases
      */

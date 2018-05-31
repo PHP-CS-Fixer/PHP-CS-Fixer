@@ -79,8 +79,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     /**
      * Return the start index, end index and a flag stating if the comment block is empty.
      *
-     * @param Tokens $tokens
-     * @param int    $index  T_COMMENT index
+     * @param int $index T_COMMENT index
      *
      * @return array
      */
@@ -132,9 +131,8 @@ final class NoEmptyCommentFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $whiteStart
-     * @param int    $whiteEnd
+     * @param int $whiteStart
+     * @param int $whiteEnd
      *
      * @return int
      */

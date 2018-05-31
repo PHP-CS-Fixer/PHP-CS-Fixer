@@ -55,8 +55,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -70,8 +69,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function convertElseifToIf(Tokens $tokens, $index)
     {

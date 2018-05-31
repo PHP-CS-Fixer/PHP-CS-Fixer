@@ -97,7 +97,6 @@ class Sample
     /**
      * Replace occurrences of the name of the classy element by "self" (if possible).
      *
-     * @param Tokens $tokens
      * @param string $name
      * @param int    $startIndex
      * @param int    $endIndex

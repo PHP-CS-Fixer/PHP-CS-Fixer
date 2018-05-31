@@ -149,8 +149,7 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $classyIndex Class definition token start index
+     * @param int $classyIndex Class definition token start index
      */
     private function fixClassyDefinition(Tokens $tokens, $classyIndex)
     {
@@ -196,9 +195,8 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $classOpenIndex
-     * @param array  $classExtendsInfo
+     * @param int   $classOpenIndex
+     * @param array $classExtendsInfo
      *
      * @return array
      */
@@ -221,9 +219,8 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $classOpenIndex
-     * @param array  $classImplementsInfo
+     * @param int   $classOpenIndex
+     * @param array $classImplementsInfo
      *
      * @return array
      */
@@ -246,8 +243,7 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
-     * @param array  $classDefInfo
+     * @param array $classDefInfo
      *
      * @return int
      */
@@ -284,8 +280,7 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $classyIndex
+     * @param int $classyIndex
      *
      * @return array
      */
@@ -322,7 +317,6 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $startIndex
      * @param string $label
      *
@@ -350,9 +344,8 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
     private function makeClassyDefinitionSingleLine(Tokens $tokens, $startIndex, $endIndex)
     {
@@ -405,9 +398,8 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
     private function makeClassyInheritancePartMultiLine(Tokens $tokens, $startIndex, $endIndex)
     {

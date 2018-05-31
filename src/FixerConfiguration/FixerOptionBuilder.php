@@ -102,8 +102,6 @@ final class FixerOptionBuilder
     }
 
     /**
-     * @param \Closure $normalizer
-     *
      * @return $this
      */
     public function setNormalizer(\Closure $normalizer)

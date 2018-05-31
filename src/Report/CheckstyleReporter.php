@@ -58,8 +58,7 @@ final class CheckstyleReporter implements ReporterInterface
     }
 
     /**
-     * @param \DOMDocument $dom
-     * @param string       $appliedFixer
+     * @param string $appliedFixer
      *
      * @return \DOMElement
      */

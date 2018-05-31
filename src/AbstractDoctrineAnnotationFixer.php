@@ -64,8 +64,6 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
 
     /**
      * Fixes Doctrine annotations from the given PHPDoc style comment.
-     *
-     * @param DoctrineAnnotationTokens $doctrineAnnotationTokens
      */
     abstract protected function fixAnnotations(DoctrineAnnotationTokens $doctrineAnnotationTokens);
 
@@ -196,8 +194,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
     }
 
     /**
-     * @param PhpTokens $tokens
-     * @param int       $index
+     * @param int $index
      *
      * @return bool
      */

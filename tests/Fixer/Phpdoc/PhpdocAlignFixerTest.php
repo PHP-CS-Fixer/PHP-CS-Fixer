@@ -772,10 +772,9 @@ EOF;
     }
 
     /**
-     * @param array                  $config
-     * @param string                 $expected
-     * @param string                 $input
-     * @param WhitespacesFixerConfig $whitespacesFixerConfig
+     * @param array  $config
+     * @param string $expected
+     * @param string $input
      *
      * @dataProvider provideMessyWhitespacesCases
      */

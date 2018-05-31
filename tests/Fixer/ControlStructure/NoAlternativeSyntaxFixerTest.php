@@ -26,8 +26,8 @@ final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param mixed      $expected
      * @param null|mixed $input
+     * @param mixed      $expected
      */
     public function testFix($expected, $input = null)
     {

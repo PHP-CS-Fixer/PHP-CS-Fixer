@@ -125,8 +125,7 @@ final class FixerFactory
     }
 
     /**
-     * @param FixerInterface $fixer
-     * @param bool           $isCustom
+     * @param bool $isCustom
      *
      * @return $this
      */
@@ -150,8 +149,6 @@ final class FixerFactory
 
     /**
      * Apply RuleSet on fixers to filter out all unwanted fixers.
-     *
-     * @param RuleSetInterface $ruleSet
      *
      * @return $this
      */
@@ -214,8 +211,6 @@ final class FixerFactory
     }
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @return null|string[]
      */
     private function getFixersConflicts(FixerInterface $fixer)

@@ -102,8 +102,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int[]  $indexes
+     * @param int[] $indexes
      */
     private function clearTokens(Tokens $tokens, array $indexes)
     {
@@ -113,8 +112,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index  of T_ISSET
+     * @param int $index of T_ISSET
      *
      * @return int[] indexes of meaningful tokens belonging to the isset statement
      */
@@ -146,8 +144,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int[]  $indexes
+     * @param int[] $indexes
      *
      * @return Token[]
      */

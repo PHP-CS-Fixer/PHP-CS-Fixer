@@ -86,8 +86,7 @@ EOT
     /**
      * Clear the return statement located at a given index.
      *
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function clear(Tokens $tokens, $index)
     {
@@ -101,8 +100,7 @@ EOT
     /**
      * Does the return statement located at a given index need fixing?
      *
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -127,8 +125,7 @@ EOT
     /**
      * Is the return within a function with a non-void or nullable return type?
      *
-     * @param Tokens $tokens
-     * @param int    $returnIndex Current return token index
+     * @param int $returnIndex Current return token index
      *
      * @return bool
      */
@@ -159,8 +156,7 @@ EOT
      * If the token is a comment, or is whitespace that is immediately before a
      * comment, then we'll leave it alone.
      *
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */

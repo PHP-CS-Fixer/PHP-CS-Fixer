@@ -24,7 +24,6 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
 final class Tokens extends \SplFixedArray
 {
     /**
-     * @param PhpToken $input
      * @param string[] $ignoredTags
      *
      * @throws \InvalidArgumentException
@@ -267,8 +266,7 @@ final class Tokens extends \SplFixedArray
     /**
      * Inserts a token at the given index.
      *
-     * @param int   $index
-     * @param Token $token
+     * @param int $index
      */
     public function insertAt($index, Token $token)
     {

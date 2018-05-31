@@ -56,16 +56,13 @@ abstract class AbstractAlignFixerHelper
     /**
      * Inject into the text placeholders of candidates of vertical alignment.
      *
-     * @param Tokens $tokens
-     * @param int    $startAt
-     * @param int    $endAt
+     * @param int $startAt
+     * @param int $endAt
      */
     abstract protected function injectAlignmentPlaceholders(Tokens $tokens, $startAt, $endAt);
 
     /**
      * Look for group of placeholders, and provide vertical alignment.
-     *
-     * @param Tokens $tokens
      *
      * @return string
      */
