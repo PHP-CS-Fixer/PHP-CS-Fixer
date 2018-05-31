@@ -1503,7 +1503,7 @@ Choose from the list of available rules:
 
   Instructions must be terminated with a semicolon.
 
-* **set_type_to_cast**
+* **set_type_to_cast** [@Symfony:risky]
 
   Cast shall be used, not ``settype``.
 

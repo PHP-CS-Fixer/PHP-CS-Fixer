@@ -176,6 +176,7 @@ final class RuleSet implements RuleSetInterface
             'php_unit_construct' => true,
             'psr4' => true,
             'self_accessor' => true,
+            'set_type_to_cast' => true,
         ],
         '@DoctrineAnnotation' => [
             'doctrine_annotation_array_assignment' => [
