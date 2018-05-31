@@ -65,6 +65,8 @@ final class ShortDescriptionTest extends TestCase
                   *
                   * There might be extra blank lines.
                   *
+                  *
+                  * And here is description...
                   */'],
         ];
     }

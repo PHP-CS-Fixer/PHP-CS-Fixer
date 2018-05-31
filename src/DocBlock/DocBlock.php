@@ -173,7 +173,7 @@ class DocBlock
             }
 
             if (!$line->containsUsefulContent()) {
-                // if we next line is also non-useful, or contains a tag, then we're done here
+                // if next line is also non-useful, or contains a tag, then we're done here
                 $next = $this->getLine($index + 1);
                 if (null === $next || !$next->containsUsefulContent() || $next->containsATag()) {
                     break;

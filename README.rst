@@ -1407,7 +1407,7 @@ Choose from the list of available rules:
   PHPDoc should start and end with content, excluding the very first and
   last line of the docblocks.
 
-* **phpdoc_trim_after_description**
+* **phpdoc_trim_consecutive_blank_line_separation**
 
   Removes extra blank lines after summary and after description in PHPDoc.
 
