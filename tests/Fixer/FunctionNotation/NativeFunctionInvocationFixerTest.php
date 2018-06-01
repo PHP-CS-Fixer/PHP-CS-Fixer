@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -73,6 +74,49 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
             'float' => [0.1],
             'object' => [new \stdClass()],
             'not-trimmed' => ['  json_encode  '],
+        ];
+    }
+
+    /**
+     * @param string[]    $include
+     * @param null|string $expectedExceptionClass
+     * @param null|string $expectedExceptionMessage
+     *
+     * @dataProvider provideConfigureIncludeSetsCases
+     */
+    public function testConfigureIncludeSets(
+        array $include,
+        $expectedExceptionClass = null,
+        $expectedExceptionMessage = null
+    ) {
+        if (null !== $expectedExceptionClass) {
+            $this->expectException($expectedExceptionClass);
+            $this->expectExceptionMessageRegExp(sprintf('#^%s$#', preg_quote($expectedExceptionMessage, '#')));
+        }
+
+        $this->fixer->configure(['include' => $include]);
+
+        if (null === $expectedExceptionClass) {
+            $this->addToAssertionCount(1);
+        }
+    }
+
+    public function provideConfigureIncludeSetsCases()
+    {
+        return [
+            [['foo', 'bar']],
+            [['@all']],
+            [['@all', 'bar']],
+            [
+                ['@xxx'],
+                InvalidFixerConfigurationException::class,
+                '[native_function_invocation] Invalid configuration: Unknown set "@xxx", known sets are "@all", "@internal", "@compiler_optimized".',
+            ],
+            [
+                [' x '],
+                InvalidFixerConfigurationException::class,
+                '[native_function_invocation] Invalid configuration: Each element must be a non-empty, trimmed string, got "string" instead.',
+            ],
         ];
     }
 
