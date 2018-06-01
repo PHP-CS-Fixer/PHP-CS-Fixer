@@ -146,8 +146,6 @@ final class ConfigurationResolver
     private $fixerFactory;
 
     /**
-     * ConfigurationResolver constructor.
-     *
      * @param ConfigInterface   $config
      * @param array             $options
      * @param string            $cwd
