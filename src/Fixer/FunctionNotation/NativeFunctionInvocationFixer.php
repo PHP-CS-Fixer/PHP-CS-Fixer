@@ -229,8 +229,8 @@ $c = get_class($d);
                             self::SET_COMPILER_OPTIMIZED,
                         ];
 
-                        if ('@' === $value[0] && !\in_array($value, $sets, true)) {
-                            throw new InvalidOptionsException(\sprintf('Unknown set "%s", known sets are "%s".', $value, \implode('", "', $sets)));
+                        if ('@' === $functionName[0] && !\in_array($functionName, $sets, true)) {
+                            throw new InvalidOptionsException(\sprintf('Unknown set "%s", known sets are "%s".', $functionName, \implode('", "', $sets)));
                         }
                     }
 
