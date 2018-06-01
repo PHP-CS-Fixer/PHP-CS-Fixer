@@ -38,7 +38,6 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     *
      * @dataProvider provideTraitsCases
      */
     public function testFixTraits($expected, $input = null)

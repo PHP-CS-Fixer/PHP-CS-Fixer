@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: fully_qualified_strict_types,phpdoc_to_return_type.
+--RULESET--
+{"fully_qualified_strict_types": true, "phpdoc_to_return_type": true}
+--REQUIREMENTS--
+{"php": 70000}
+--EXPECT--
+<?php
+use \Foo\Bar\Baz;
+/** @return \Foo\Bar\Baz */
+function my_foo(): Baz
+{}
+
+--INPUT--
+<?php
+use \Foo\Bar\Baz;
+/** @return \Foo\Bar\Baz */
+function my_foo()
+{}

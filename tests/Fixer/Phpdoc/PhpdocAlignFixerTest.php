@@ -1130,7 +1130,6 @@ EOF;
      * @param string $expected
      * @param string $input
      *
-     *
      * @dataProvider provideVariadicCases
      */
     public function testVariadicParams(array $config, $expected, $input)

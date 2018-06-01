@@ -23,8 +23,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Nobu Funaki <nobu.funaki@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocTrimAfterDescriptionFixer extends AbstractFixer
+final class PhpdocTrimConsecutiveBlankLineSeparationFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -40,10 +41,16 @@ final class PhpdocTrimAfterDescriptionFixer extends AbstractFixer
  * Summary.
  *
  *
- * Description.
+ * Description that contain 4 lines,
+ *
+ *
+ * while 2 of them are blank!
  *
  *
  * @param string $foo
+ *
+ *
+ * @dataProvider provideFixCases
  */
 function fnc($foo) {}
 '
@@ -73,12 +80,12 @@ function fnc($foo) {}
             $doc = new DocBlock($token->getContent());
             $summaryEnd = (new ShortDescription($doc))->getEnd();
 
-            if (null === $summaryEnd) {
-                continue;
+            if (null !== $summaryEnd) {
+                $this->fixSummary($doc, $summaryEnd);
+                $this->fixDescription($doc, $summaryEnd);
             }
 
-            $this->fixSummary($doc, $summaryEnd);
-            $this->fixDescription($doc, $summaryEnd);
+            $this->fixAllTheRest($doc);
 
             $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
@@ -101,7 +108,8 @@ function fnc($foo) {}
      */
     private function fixDescription(DocBlock $doc, $summaryEnd)
     {
-        $annotationStart = $this->findFirstAnnotation($doc);
+        $annotationStart = $this->findFirstAnnotationOrEnd($doc);
+
         // assuming the end of the Description appears before the first Annotation
         $descriptionEnd = $this->reverseFindLastUsefulContent($doc, $annotationStart);
 
@@ -109,7 +117,21 @@ function fnc($foo) {}
             return; // no Description
         }
 
+        if ($annotationStart === count($doc->getLines()) - 1) {
+            return; // no content after Description
+        }
+
         $this->removeExtraBlankLinesBetween($doc, $descriptionEnd, $annotationStart);
+    }
+
+    private function fixAllTheRest(DocBlock $doc)
+    {
+        $annotationStart = $this->findFirstAnnotationOrEnd($doc);
+        $lastLine = $this->reverseFindLastUsefulContent($doc, count($doc->getLines()) - 1);
+
+        if (null !== $lastLine && $annotationStart !== $lastLine) {
+            $this->removeExtraBlankLinesBetween($doc, $annotationStart, $lastLine);
+        }
     }
 
     /**
@@ -160,9 +182,9 @@ function fnc($foo) {}
     /**
      * @param DocBlock $doc
      *
-     * @return null|int
+     * @return int
      */
-    private function findFirstAnnotation(DocBlock $doc)
+    private function findFirstAnnotationOrEnd(DocBlock $doc)
     {
         $index = null;
         foreach ($doc->getLines() as $index => $line) {

@@ -686,7 +686,6 @@ INPUT
      * @param string $expected
      * @param string $input
      *
-     *
      * @dataProvider provideFix56Cases
      */
     public function testFix56($expected, $input)
