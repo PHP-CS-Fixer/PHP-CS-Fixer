@@ -573,7 +573,6 @@ function test2() {
      * @param string      $expected
      * @param null|string $input
      *
-     *
      * @dataProvider provideFixTraitsCases
      */
     public function testFixTraits($expected, $input = null)

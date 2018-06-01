@@ -684,7 +684,6 @@ public function B(); // allowed comment
      * @param string      $expected
      * @param null|string $input
      *
-     *
      * @dataProvider provideFixTraitsCases
      */
     public function testFixTraits($expected, $input = null)
