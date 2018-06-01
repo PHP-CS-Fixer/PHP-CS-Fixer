@@ -67,7 +67,8 @@ function foo() {}
      */
     public function getPriority()
     {
-        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
+        // must be run before the PhpdocSeparationFixer, PhpdocOrderFixer
+        // must be run after the PhpdocAddMissingParamAnnotationFixer
         return 10;
     }
 
