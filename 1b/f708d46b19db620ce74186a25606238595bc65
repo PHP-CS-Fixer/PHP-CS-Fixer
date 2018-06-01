@@ -1,0 +1,185 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-28T13:56:10Z
+
+> don't need this because FunctionNotation\VoidReturnFixer skips if return annotation is present
+
+could you please add `misc` integrity test between them, so we won't hit the priority issue if one day one would change `VoidReturnFixer` to not skip on annotation ?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-03-28T14:03:42Z
+
+> could you please add misc integrity test between them, so we won't hit the priority issue if one day one would change VoidReturnFixer to not skip on annotation ?
+
+Didn't know about `misc`, wrote that comment because IntegrationTest failed.
+
+Added.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-03T10:25:02Z
+
+It would be nice to do the same with parameter typehints. Do we want this fixer to handle those too? Or do we want a new fixer?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-04-03T10:32:06Z
+
+> It would be nice to do the same with parameter typehints.
+
+I skipped parameter typehints because PHP had them long time before return types, even for arrays.
+
+I suppose that if a programmer wrote a good PHPDoc with object type hint, he/she also wrote it explicitely.
+If so, the only [**userful**] types involved in such fixer would be:
+
+1. scalar ones
+1. callback, iterable, Closure (introduced recently)
+
+For scalar ones, hell no please https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3640#discussion_r177972761.
+For new ones, ok but it would add huge complexity for such little cases.
+
+> Do we want this fixer to handle those too? Or do we want a new fixer?
+
+With above consideration, it would be a new fixer for me.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-03T14:36:33Z
+
+I still don't see the problem with scalar typehints (with strict types enabled).
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-04-03T14:44:12Z
+
+> I still don't see the problem with scalar typehints (with strict types enabled).
+
+A lot of database abstraction layers don't strictly respect typing, or simply can't for example when returning an integer greater than 2^64-1.
+I have experience on a lot of legacy apps where int/float typing is just a waste of time.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-03T14:54:09Z
+
+That doesn't mean no project would benefit from using them. You could still disable the fixer on those legacy projects. Anyway, do you think the code needed to implement such fixer would be very different from this one?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-04-03T15:04:48Z
+
+Honestly I don't know.
+
+It is sad to say this, but in the current year I'm not able anymore to develop FOSS for purposes that aren't useful for me. I still miss #3553, #3558, #3624, #3644, #3648 :(
+
+But I'm open to merge any PR against my PR-branch.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-03T15:07:51Z
+
+No worries, I'm not asking you to implement parameters typehints support here :) I just want to know whether implementing it in the same fixer would be interesting (maybe as a new option later), in which case it would be better to find a more generic name before merging your PR.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-04-03T15:09:26Z
+
+> it would be better to find a more generic name before merging your PR.
+
+I would prefer a different fixer creating a shared helper for both.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-04-03T19:04:28Z
+
+@SpacePossum @keradus WDYT? Should we anticipate a broader scope for this fixer or assume it will be a new one? And what about https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3640#discussion_r177965593?
+
+Beside these questions, the PR is ready IMO.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-05-03T07:18:58Z
+
+@keradus may we include this in the [2.12](https://github.com/FriendsOfPHP/PHP-CS-Fixer/milestone/104) milestone?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-05-17T06:51:35Z
+
+> Yet, I dared to run this rule over repo. Effect? crash with fatal error. About what? Incompatible interfaces.
+> When there is annotation it's moved to singature, which is great.
+> But when there is no annotation or annotation is `@inheritdoc`, fixer can't do a thing, for which project is not running at all after changes.
+>
+> While I strongly believe in value of this rule, having it in current form would bring IMO more harm than good, as it will automate only little piece of code asking user to adjust manually all the rest.
+
+I followed the workflow you described in my projects, both new and legacy, and with non-trivial effort fixing the manual things I found a log of bugs/improvements on my projects.
+You are right, this PR is not ready for **automation**, but I consider it ready to improve userland codebases and give more value than harm.
+
+Stated this, I also agree on your POV and this PR shouldn't be merged as a production-ready feature.
+
+> I see 2 possibilities:
+>     * freeze the PR until PHP CS Fixer will support context-aware rules (no ETA on that)
+>     * create special, internal interface like ExperimentalFixerInterface, mark current fixer with it
+
+I don't trust stalled/freezed features: only maintaners and the main developer are aware of the possible new feature, a lot of effort is required to keep it up to date, and no one gets value in the meantime.
+
+I like your second proposal: all users can explore the feature, contribute, give feedbacks and ideas; or can also downvote it.
+Either the feature will prosper or die, its future is reached much faster and better.
+
+> hide experimental fixers in readme
+
+Little [OT] about this: ok to make experimental features "*tricky*" to enable, but why hiding them? Proper disclaimers are enough for me. If disclaimers are done right, everything can be put well visible.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-17T07:06:37Z
+
+> but why hiding them?
+
+because if we would decide to merge it, I would like to merge #2918
+
+both are problematic from same point of view - they need context.
+And we can get poor's men context by enforcing rule is executed in env that has access to whole project (and not only modified files) and composer autoloader, and even deps.
+Super easy to achieve silly way, like in mentioned 2918, but one needs to know how to properly run such rule (eg installation via phar will always fail). benefit? we can fix every single method, even if it has no docs, but it's parent has docs.
+but that silly way, without doing it properly, will break things like standard CI integration, execution rule from phar, having non-standard autoloader, caching, and so, and so - super bigger thing => that's the reason why not make this public, as it will break a lot in tool itself if one run rule like any other rule.
+
+TLDR - it's not about hiding one rule. It's about hiding all rules that needs context for proper work, until we have that context support.
+yes, that experiments and all constraints can be described somewhere, but not in main readme
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-17T07:30:44Z
+
+:+1: for an `ExperimentalFixerInterface`. I would still show the fixer in the main README, with an explicit note about why the fixer is experimental, just like with risky fixers.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-17T07:33:31Z
+
+Maybe we can add and start working on/with this in a `nightly` type of branch and releases? or maybe in the 3.0 branch?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-17T08:24:15Z
+
+thing is, it's easier to make a fixer than to bring context support to tool.
+later won't happen fast,
+and as such rule will be unstable under phar, under global composer installation, diff-based envs (eg fabbot, or even our own suggested CI integration) and won't play nice with cache, it's premature for exposing it in readme
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-17T08:37:21Z
+
+If we don't show it in the README, I think almost nobody will know the fixer exists and use it, reducing chances users try it, report bugs, suggest improvements and maybe contribute some of them. Something that is not documented simply doesn't exist.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-17T13:13:07Z
+
+Actually I... agree.
+And that's good alternative for me to "not merge until context is ready".
+why?
+
+we can merge, but not expose. We already maintain (eg all bc breakers with v3 would be applied, like for all other printers), but we will announce no sooner than we at least have damn good docs what it means it's experimental, how to use it, how to use it not, what's not working.
+
+for that, we can merge, stop paying long-living PR debt, and start working on that docs in separated PR, that would be merged maybe in 2, 3 weeks, depends how fast one would do it.
