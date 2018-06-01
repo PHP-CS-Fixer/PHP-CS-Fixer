@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-01T07:57:06Z
+
+nice catch :)
+I've update the test to be even more strict, feel free to drop that commit if you thing it is to much.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-06-01T10:02:02Z
+
+I will keep it (but squash during merge)
