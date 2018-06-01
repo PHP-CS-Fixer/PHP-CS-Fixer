@@ -128,6 +128,7 @@ final class FixerFactoryTest extends TestCase
             array($fixers['ordered_class_elements'], $fixers['space_after_semicolon']),
             array($fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']),
             array($fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']),
+            array($fixers['phpdoc_add_missing_param_annotation'], $fixers['no_empty_phpdoc']),
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']),
             array($fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']),
             array($fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']),
