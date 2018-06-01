@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: return_type_declaration,phpdoc_to_return_type.
+--RULESET--
+{"return_type_declaration": {"space_before": "one"}, "phpdoc_to_return_type": true}
+--REQUIREMENTS--
+{"php": 70000}
+--EXPECT--
+<?php
+/** @return Bar */
+function my_foo() : Bar
+{}
+
+--INPUT--
+<?php
+/** @return Bar */
+function my_foo()
+{}
