@@ -134,6 +134,9 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
                     };
                 ',
             ],
+            [
+                '<?php class A { const PARENT = 42; }',
+            ],
         ];
     }
 
