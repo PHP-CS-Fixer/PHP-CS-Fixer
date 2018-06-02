@@ -3,6 +3,42 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.12.0
+---------------------
+
+* feature #2577 Add LogicalOperatorsFixer (hkdobrev, keradus)
+* feature #3060 Add ErrorSuppressionFixer (kubawerlos)
+* feature #3127 Add NativeConstantInvocationFixer (Slamdunk, keradus)
+* feature #3223 NativeFunctionInvocationFixer - add namespace scope and include sets (SpacePossum)
+* feature #3453 PhpdocAlignFixer - add align option (robert.ahmerov)
+* feature #3476 Add PhpUnitTestCaseStaticMethodCallsFixer (Slamdunk, keradus)
+* feature #3524 MethodArgumentSpaceFixer - Add ensure_single_line option (julienfalque, keradus)
+* feature #3534 MultilineWhitespaceBeforeSemicolonsFixer - support static calls (ntzm)
+* feature #3585 Add ReturnAssignmentFixer (SpacePossum, keradus)
+* feature #3640 Add PhpdocToReturnTypeFixer (Slamdunk, keradus)
+* feature #3691 Add PhpdocTrimAfterDescriptionFixer (nobuf, keradus)
+* feature #3698 YodaStyleFixer - Add always_move_variable option (julienfalque, SpacePossum)
+* feature #3709 Add SetTypeToCastFixer (SpacePossum)
+* feature #3724 BlankLineBeforeStatementFixer - Add case and default as options (dmvdbrugge)
+* feature #3734 Add NoSuperfluousPhpdocTagsFixer (julienfalque)
+* feature #3735 Add LowercaseStaticReferenceFixer (kubawerlos, SpacePossum)
+* feature #3737 Add NoUnsetOnPropertyFixer (BackEndTea, SpacePossum)
+* feature #3745 Add PhpUnitInternalClassFixer (BackEndTea, SpacePossum, keradus)
+* feature #3766 Add NoBinaryStringFixer (ntzm, SpacePossum, keradus)
+* feature #3780 ShortScalarCastFixer - Change binary cast to string cast as well (ntzm)
+* feature #3785 PhpUnitDedicateAssertFixer - fix to assertCount too (SpacePossum)
+* feature #3802 Convert PhpdocTrimAfterDescriptionFixer into PhpdocTrimConsecutiveBlankLineSeparationFixer (keradus)
+* minor #3738 ReturnAssignmentFixer description update (kubawerlos)
+* minor #3761 Application: when run with FUTURE_MODE, error_reporting(-1) is done in entry file instead (keradus)
+* minor #3772 DX: use PhpUnitTestCaseIndicator->isPhpUnitClass to discover PHPUnit classes (keradus)
+* minor #3783 CI: Split COLLECT_COVERAGE job (keradus)
+* minor #3789 DX: ProjectCodeTest.testThatDataProvidersAreCorrectlyNamed - performance optimization (keradus)
+* minor #3791 DX: Fix collecting code coverage (keradus)
+* minor #3792 DX: Upgrade DX deps (keradus)
+* minor #3797 DX: ProjectCodeTest - shall not depends on xdebug/phpdbg anymore (keradus, SpacePossum)
+* minor #3800 Symfony:risky ruleset: include set_type_to_cast rule (keradus)
+* minor #3801 NativeFunctionInvocationFixe - fix buggy config validation (keradus, SpacePossum)
+
 Changelog for v2.11.2
 ---------------------
 
