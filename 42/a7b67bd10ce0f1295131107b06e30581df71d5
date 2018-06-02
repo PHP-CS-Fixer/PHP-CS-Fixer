@@ -1,0 +1,363 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-04T15:20:55Z
+
+```
+There was 1 failure:
+
+1) PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest::testFixWithDefaultConfiguration with data set #3 ('<?php namespace M_PI; use M_P...n; } }')
+Failed asserting that 'PHP Fatal error:  Cannot declare class M_PI\M_PI because the name is already in use in /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/cs_fixer_tmp_R5f8K8 on line 1
+
+Source:
+<?php namespace M_PI; use M_PI; class M_PI extends M_PI implements M_PI { const M_PI = 1; use M_PI; public $M_PI = 1; public function M_PI($M_PI) { $M_PI = M_PI(); return; } }' is null.
+
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:175
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/ConstantNotation/NativeConstantInvocationFixerTest.php:109
+```
+I'll fix this tomorrow, splitting all the stuff in separate cases.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-04T16:09:18Z
+
+cc @nicolas-grekas , you might find this usefull
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2017-10-04T16:12:18Z
+
+Can we set a list for the ones we'd like to always namespace?
+I don't thing we will want to add a `\` to all of them in Symfony, but only to a selected few that could contribute to OPcache dead code elimination (eg `PHP_VERSION_ID`)
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-04T16:28:06Z
+
+so, you would say there is no need to add `\` for most of the constants in terms of performance ?
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2017-10-04T16:29:58Z
+
+I think I will not advocate that the *maybe* perf benefit is worth the noise when writing code yes.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-04T16:33:46Z
+
+Then maybe try to add a combined behavior described in other ticket you raised @nicolas-grekas
+- option to add `\` to preset constants where it makes sense (like that `PHP_VERSION_ID`, need to find all)
+- option to change all constants to be applied only before phar building
+
+?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-05T06:58:41Z
+
+> I think I will not advocate that the maybe perf benefit is worth the noise when writing code yes.
+
+I have to say I don't understand this statement. In my humble opinion:
+
+1. The extra `\` is **always** a pain in the *** in therm of noise when writing code: since the introduction of `NativeFunctionInvocationFixer` I have never seen a single programmer adding it manually, the automatism of this tool is here for this very purpose. Since the introduction of this PHP-CS-Fixer I have ended ordering `use` import manually, taking care of newlines, etc: the code deserves only my creativity, not my attention to this smallnesses.
+1. Stated the first point, since all Symfony code (afaik) is all namespaced there will always be a performance improvement.
+1. To me it will be very confusing to have half constants escaped and half not (`exclude` list apart): I am against this approach, if you don't like it don't use the fixer.
+
+As far as I can see, there is no difference, in theory and in practice, between this fixer and `NativeFunctionInvocationFixer`, and shouldn't be.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-05T13:55:35Z
+
+ref #3048
+for functions: there is a difference between adding \` everywhere and for subset of functions that are boosted by compiler to opcode directly. from what I understand from @nicolas-grekas it's somehow similar here
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-05T14:31:07Z
+
+I admit I know nothing about php source code and opcode sources.
+But here are my tests:
+```
+$ php71 -r 'namespace A\B\C; for ($i=0;$i<100000000;++$i) {M_PI;}'
+
+real    0m1.545s
+user    0m1.541s
+sys     0m0.002s
+
+$ php71 -r 'namespace A\B\C; for ($i=0;$i<100000000;++$i) {\M_PI;}'
+
+real    0m0.905s
+user    0m0.903s
+sys     0m0.000s
+```
+Repeated tests always show noticeable improvements around 40%, and with all constants.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-05T14:34:07Z
+
+Tests do the same with opcache present, opcache.enable=1, opcache.enable_cli=1
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2017-10-05T15:20:52Z
+
+Writing is one thing, reading another. Reading a code full of `\` is  no go to me.
+I'm very thankful to the PHP internal team that they didn't make the `\` a requirement, PHP would become a joke to read.
+The benchmark isn't representative of anything. I know no app that access PI 100M times.
+A bench on a real app would be the only way to prove this could be worth the huge readability downgrade.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-10-05T15:42:34Z
+
+I understand your point, and I agree this fixer should be adopted only where it makes sense.
+
+This library access T_* constants millions of times, I would be very happy to apply my fixers in half the time.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-08T13:45:15Z
+
+@nicolas-grekas continuing what written in #3222 we could use the `$categorize` parameter in [get_defined_constants](https://secure.php.net/manual/en/function.get-defined-constants.php) to get this fixer easy to configure and to escape only the certain constants:
+
+```php
+print_r(array_keys(get_defined_constants(true)));
+/*
+Array
+(
+    [0] => Core
+    [1] => date
+    [2] => libxml
+    [3] => pcre
+    [4] => sqlite3
+    [5] => dom
+    [6] => fileinfo
+    [7] => filter
+    [8] => hash
+    [9] => iconv
+    [10] => json
+    [11] => posix
+    [12] => session
+    [13] => standard
+    [14] => tokenizer
+    [15] => xml
+    [16] => openssl
+    [17] => curl
+    [18] => gd
+    [19] => imap
+    [20] => mbstring
+    [21] => mysqli
+    [22] => zlib
+)
+*/
+```
+By default only `Core` would be fixed, but the user could specify a different subset, or all of them.
+
+WDYT?
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2017-11-08T13:48:56Z
+
+I can't tell for everyone else, but on Symfony, we might just cherry-pick a few constants only (and not by "group"), less than 10 for sure (DIRECTORY_SEPARATOR, PHP_VERSION_ID, PHP_SAPI, maybe no more). I don't know how to help much more sorry.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-08T14:05:52Z
+
+Symfony is a leader project not only for its adoption, but also for the good standards it spreads and all the edge cases it faces.
+
+I am willing to make this fixer configurable this way:
+
+1. Escape all the constants
+1. Escape a custom subset of constants
+1. Escape the Symfony sybset of constants
+
+@nicolas-grekas would you be so kind to research what would be the Symfony needs and list an "*official*" Symfony list of the constants to be escaped?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-10T14:01:58Z
+
+If can be of any help, at current commit at master
+https://github.com/symfony/symfony/tree/61b753443d6903d8a9644f62caf020fdfca3ef6f
+
+#### EDITED
+
+Excluding the `/Tests/` folders, the same count gives, the constants with 10 or more occurrences in all symfony are:
+
+| Constant | Count |
+| --- | ---: |
+| DIRECTORY_SEPARATOR | 95 |
+| E_USER_DEPRECATED | 22 |
+| PHP_INT_MAX | 18 |
+| PHP_SAPI | 16 |
+| PHP_EOL | 14 |
+| E_ERROR | 12 |
+| PATHINFO_EXTENSION | 11 |
+| STDIN | 10 |
+
+Of course a constants may occur only one time but can be called a lot of times, but still this may help.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2017-11-10T14:05:46Z
+
+Cool, thanks for the analysis. PHP_VERSION_ID is missing, maybe because you did that on master? What about 3.4?
+Of those constants, we should select only those involved in conditional branching.
+That means DIRECTORY_SEPARATOR, PHP_SAPI and PHP_VERSION_ID only.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-10T14:19:23Z
+
+Yes the previous statistic was for master, where `PHP_VERSION_ID` appears only 7 times.
+On 3.4 we have (still excluding `/Tests/`):
+
+| Constant | Count |
+| --- | ---: |
+| E_USER_DEPRECATED | 352 |
+| DIRECTORY_SEPARATOR | 115 |
+| PHP_VERSION_ID | 62 |
+| PHP_INT_MAX | 18 |
+| PHP_SAPI | 17 |
+| E_ERROR | 15 |
+| PHP_EOL | 14 |
+| PHP_INT_SIZE | 13 |
+| PATHINFO_EXTENSION | 12 |
+| STDIN | 10 |
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2017-11-10T14:21:42Z
+
+OK, so I confirm: only `DIRECTORY_SEPARATOR`, `PHP_SAPI` and `PHP_VERSION_ID`.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-10T16:10:01Z
+
+I've thought about what you said "*we should select only those involved in conditional branching*" and in fact I've found various projects where *conditional branching* vary a lot from the Symfony one.
+
+Thus I've added the `include` parameter to allow arbitrary custom whitelists.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-10T17:27:33Z
+
+`@Symfony` ruleset shall be adjusted
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-11T14:35:57Z
+
+I've added the rule in the `@Symfony:risky` set and applied it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-11T15:09:49Z
+
+that's great. please regenerate readme, as it has to update rule now belongs to ruleset
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-11T15:34:23Z
+
+God, after years of contributing to this project, I still forget to rebuild README.rst every time :rage4:
+
+Done.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-11T20:55:35Z
+
+Actually, me too ;P So we have automated tests for it :)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-12T15:30:16Z
+
+I mean, `get_defined_constants` returns NULL, so excluding null lowercase will result in fixing null but not NULL. The behaviour is instead different for othet constants. If I take care of casing, I would have to exclude NULL, null, Null etc.
+
+I would like to do a case-insensitive match (describing it in the readme) and taunt developers who use the same name on two constant, with different cases.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-12T16:15:32Z
+
+I must admit I would keep it case sensitive, with special handling of true/false/null insensitiveness, so same as PHP treat the constants.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-13T10:51:07Z
+
+Oh my god, after push the latest changes I noticed this in the [define](https://secure.php.net/manual/en/function.define.php) man page:
+> bool define ( string $name , mixed $value [, bool $case_insensitive = false ] )
+> > case_insensitive
+>      If set to TRUE, the constant will be defined case-insensitive. The default behavior is case-sensitive; i.e. CONSTANT and Constant represent different values.
+
+The recent commits consider only NULL, FALSE and TRUE to be case-insensitive.
+
+I'm afraid to ask it: should we give the ability to the user to choose casing for each custom constant?
+
+Tecnically it would be easy, but honestly I would consider the following code a bad practice:
+```php
+define('FOO', 'bar ', true);
+echo FOO . Foo . fOO . FoO;
+// bar bar bar bar
+```
+And bad practices should be discouraged.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-13T12:37:10Z
+
+> should we give the ability to the user to choose casing for each custom constant?
+
+I would stick to case-sensitiveness for all constants except true/false/null.
+For built-in constants, let us follow behaviour how they are declared, for custom `include` list, it's up to end-user what he will put here.
+
+---------------------------------------------------------------------------
+
+by staabm at 2018-02-12T10:32:55Z
+
+whats open to get this feature landed?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-03-30T12:58:49Z
+
+@stof you are right on both your statements. By the way this feature seems controversial, and it's almost 6 months is stalled by the maintainers; I'm not going to develop any further improvement without a clear direction by them.
+
+If you are willing to fix them, I'll be happy to review & merge them as a PR upon my branch in my fork :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-06-01T12:15:38Z
+
+sadly, whole `\` thing got spread across multiple issues and PRs, each of them with conflicting ideas. I believe we got some conclusion finally (not only about constants) in the end and @SpacePossum did implement part of them.
+I believe this is now good time to revive the PR. Thank you for understanding.
+
+Can you, please:
+- merge/rebase the PR with master
+- point out what directions are still missing, so we could make a call on them
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-06-01T12:38:38Z
+
+> point out what directions are still missing, so we could make a call on them
+
+1. Strip user defined constants returned by `get_defined_constants`: easy pick, I'll face this soon
+1. Do not fix constants imported with `use` statement: is there an helper class to retrieve imports?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-06-01T14:59:11Z
+
+> 1. Strip user defined constants returned by get_defined_constants: easy pick, I'll face this soon
+> 1. Do not fix constants imported with use statement: is there an helper class to retrieve imports?
+
+Done both.
