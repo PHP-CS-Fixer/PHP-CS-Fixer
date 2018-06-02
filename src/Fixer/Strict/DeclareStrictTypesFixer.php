@@ -58,7 +58,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 70000 && $tokens[0]->isGivenKind(T_OPEN_TAG);
+        return \PHP_VERSION_ID >= 70000 && $tokens[0]->isGivenKind(T_OPEN_TAG);
     }
 
     /**

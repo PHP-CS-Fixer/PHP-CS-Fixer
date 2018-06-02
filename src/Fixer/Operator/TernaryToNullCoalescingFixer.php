@@ -45,7 +45,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_ISSET);
+        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_ISSET);
     }
 
     /**

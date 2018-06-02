@@ -253,7 +253,7 @@ final class DescribeCommand extends Command
 
         $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample) {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
-                return $codeSample->isSuitableFor(PHP_VERSION_ID);
+                return $codeSample->isSuitableFor(\PHP_VERSION_ID);
             }
 
             return true;

@@ -148,3 +148,4 @@ jobs:
 
     allow_failures:
         - php: nightly
+        - env: COLLECT_COVERAGE=1
