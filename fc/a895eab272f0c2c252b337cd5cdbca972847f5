@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-01T13:25:18Z
+
+I would :heart: a fixer for this at some point :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-06-01T13:38:42Z
+
+Do you mean something like [this](https://github.com/kubawerlos/php-cs-fixer-custom-fixers/blob/master/src/Fixer/NoUselessConstructorCommentFixer.php)?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-02T06:16:17Z
+
+exactly, looks like a great start :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-06-02T08:14:13Z
+
+agreeing here, fixer would be nice :+1:
