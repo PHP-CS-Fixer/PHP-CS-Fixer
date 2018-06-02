@@ -789,9 +789,13 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``ensure_fully_multiline`` (``bool``): ensure every argument of a multiline
-    argument list is on its own line; defaults to ``false``
+    argument list is on its own line; defaults to ``false``. DEPRECATED: use
+    option ``on_multiline`` instead
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
+  - ``on_multiline`` (``'ensure_fully_multiline'``, ``'ensure_single_line'``, ``'ignore'``):
+    defines how to handle function arguments lists that contain newlines;
+    defaults to ``'ignore'``
 
 * **method_chaining_indentation**
 
