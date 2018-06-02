@@ -15,6 +15,8 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
+use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
@@ -128,8 +130,25 @@ final class FixerTest extends TestCase
 
             $options = $fixer->getConfigurationDefinition()->getOptions();
 
+            /** @var FixerOptionInterface $option */
             foreach ($options as $option) {
                 $this->assertRegExp('/^[a-z_]*$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
+
+                $types = $option->getAllowedTypes();
+                $values = $option->getAllowedValues();
+
+                $this->assertFalse(
+                    (null === $types || 0 === count($types)) && (null === $values || 0 === count($values)),
+                    sprintf('[%s] Option %s has no allowed types and values set.', $fixerName, $option->getName())
+                );
+
+                if (null !== $values) {
+                    foreach ($values as $value) {
+                        if ($value instanceof AllowedValueSubset) {
+                            $this->assertContains('array', $types, sprintf('[%s] Option %s has allowed value of type "AllowedValueSubset" but not allowed type "array".', $fixerName, $option->getName()));
+                        }
+                    }
+                }
             }
         }
 
