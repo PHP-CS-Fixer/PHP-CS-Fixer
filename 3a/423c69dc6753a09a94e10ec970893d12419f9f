@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-20T17:44:06Z
+
+@julienfalque , please solve conflicts ;)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-03-20T18:49:15Z
+
+Done. As you noticed in another PR, fabbot is asking to use long array syntax, this is weird...
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-06-02T11:26:16Z
+
+Thanks!
