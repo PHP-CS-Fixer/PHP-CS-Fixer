@@ -1527,6 +1527,20 @@ Choose from the list of available rules:
 
   Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
 
+* **phpdoc_line_span**
+
+  Changes doc blocks from single to multi line, or reversed. Works for
+  class constants, properties and methods only.
+
+  Configuration options:
+
+  - ``const`` (``'multi'``, ``'single'``): whether const blocks should be single or
+    multi line; defaults to ``'multi'``
+  - ``method`` (``'multi'``, ``'single'``): whether method doc blocks should be single
+    or multi line; defaults to ``'multi'``
+  - ``property`` (``'multi'``, ``'single'``): whether property doc blocks should be
+    single or multi line; defaults to ``'multi'``
+
 * **phpdoc_no_access** [@Symfony, @PhpCsFixer]
 
   ``@access`` annotations should be omitted from PHPDoc.

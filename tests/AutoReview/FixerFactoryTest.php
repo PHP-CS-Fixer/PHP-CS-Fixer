@@ -100,6 +100,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_separation']],
             [$fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_trim']],
             [$fixers['general_phpdoc_annotation_remove'], $fixers['no_empty_phpdoc']],
+            [$fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_line_span']],
             [$fixers['indentation_type'], $fixers['phpdoc_indent']],
             [$fixers['implode_call'], $fixers['method_argument_space']],
             [$fixers['is_null'], $fixers['yoda_style']],

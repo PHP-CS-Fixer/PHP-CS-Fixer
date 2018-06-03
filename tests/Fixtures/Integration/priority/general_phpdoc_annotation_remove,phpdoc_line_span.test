@@ -1,0 +1,29 @@
+--TEST--
+Integration of fixers: general_phpdoc_annotation_remove,phpdoc_line_span.
+--RULESET--
+{"general_phpdoc_annotation_remove": {"annotations": ["test"]}, "phpdoc_line_span": {"method": "single"}}
+--EXPECT--
+<?php
+class Foo
+{
+    /** @param string $name */
+    function hello($name)
+    {
+        return 'hello'. $name;
+    }
+}
+
+--INPUT--
+<?php
+class Foo
+{
+    /**
+     * @test
+     *
+     * @param string $name
+     */
+    function hello($name)
+    {
+        return 'hello'. $name;
+    }
+}
