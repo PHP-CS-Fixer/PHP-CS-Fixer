@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: no_unneeded_control_parentheses,return_assignment
+--RULESET--
+{"no_unneeded_control_parentheses": true, "return_assignment": true}
+--EXPECT--
+<?php
+
+$foo = function() {
+    return true
+        ? 1
+        : 2
+    ;
+};
+
+--INPUT--
+<?php
+
+$foo = function() {
+    $var = (true
+        ? 1
+        : 2
+    );
+
+    return $var;
+};
