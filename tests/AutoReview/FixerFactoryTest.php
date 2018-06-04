@@ -192,6 +192,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['pow_to_exponentiation'], $fixers['no_spaces_inside_parenthesis']],
             [$fixers['protected_to_private'], $fixers['ordered_class_elements']],
             [$fixers['return_assignment'], $fixers['blank_line_before_statement']],
+            [$fixers['return_assignment'], $fixers['no_unneeded_control_parentheses']],
             [$fixers['simplified_null_return'], $fixers['no_useless_return']],
             [$fixers['single_import_per_statement'], $fixers['no_leading_import_slash']],
             [$fixers['single_import_per_statement'], $fixers['multiline_whitespace_before_semicolons']],
