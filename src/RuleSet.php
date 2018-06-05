@@ -212,6 +212,7 @@ final class RuleSet implements RuleSetInterface
         ],
         '@PHP70Migration:risky' => [
             '@PHP56Migration:risky' => true,
+            'combine_nested_dirname' => true,
             'declare_strict_types' => true,
             'non_printable_character' => [
                 'use_escape_sequences_in_strings' => true,
