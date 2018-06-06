@@ -400,7 +400,11 @@ EOF
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $output->getFormatter()->setStyle('url', new OutputFormatterStyle('blue'));
+        $formatter = $output->getFormatter();
+        $formatter->setStyle('url', new OutputFormatterStyle('blue'));
+        $formatter->setStyle('risky', new OutputFormatterStyle('black', 'yellow'));
+        $formatter->setStyle('default_block', new OutputFormatterStyle('white'));
+        $formatter->setStyle('default_line', new OutputFormatterStyle('yellow'));
     }
 
     /**
@@ -453,37 +457,30 @@ EOF
 
             if ($fixer instanceof DefinedFixerInterface) {
                 $description = $fixer->getDefinition()->getSummary();
+                $description = implode("\n   | ", self::wordwrap(
+                    Preg::replace('/(`.+?`)/', '<info>$1</info>', $description),
+                    72
+                ));
             } else {
                 $description = '[n/a]';
             }
 
-            $description = implode("\n   | ", self::wordwrap(
-                Preg::replace('/(`.+?`)/', '<info>$1</info>', $description),
-                72
-            ));
-
-            if (!empty($sets)) {
-                $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description);
-            } else {
-                $help .= sprintf(" * <comment>%s</comment>\n   | %s\n", $fixer->getName(), $description);
-            }
+            $help .= empty($sets)
+                ? sprintf(" * <comment>%s</comment>\n   | %s\n", $fixer->getName(), $description)
+                : sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description)
+            ;
 
             if ($fixer->isRisky()) {
-                $help .= sprintf(
-                    "   | *Risky rule: %s.*\n",
-                    Preg::replace(
-                        '/(`.+?`)/',
-                        '<info>$1</info>',
-                        lcfirst(Preg::replace('/\.$/', '', $fixer->getDefinition()->getRiskyDescription()))
-                    )
-                );
+                $help .= "   | <risky>Risky rule</risky>\n";
+                foreach (self::wordwrap($fixer->getDefinition()->getRiskyDescription(), 73) as $line) {
+                    $help .= '   | '.ltrim($line)."\n";
+                }
             }
 
             if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
-                $configurationDefinition = $fixer->getConfigurationDefinition();
-                $configurationDefinitionOptions = $configurationDefinition->getOptions();
+                $configurationDefinitionOptions = $fixer->getConfigurationDefinition()->getOptions();
                 if (count($configurationDefinitionOptions)) {
-                    $help .= "   |\n   | Configuration options:\n";
+                    $help .= "   | Configuration options:\n";
 
                     usort(
                         $configurationDefinitionOptions,
@@ -493,47 +490,47 @@ EOF
                     );
 
                     foreach ($configurationDefinitionOptions as $option) {
-                        $line = '<info>'.$option->getName().'</info>';
+                        $help .= '   | - <info>'.$option->getName()."</info>\n";
+                        foreach (self::wordwrap($option->getDescription(), 72) as $index => $line) {
+                            $help .= '   |   '.ltrim($line)."\n";
+                        }
 
                         $allowed = self::getDisplayableAllowedValues($option);
-                        if (null !== $allowed) {
-                            foreach ($allowed as &$value) {
+                        if (null === $allowed) {
+                            $types = $option->getAllowedTypes();
+                            $help .= count($types) > 1
+                                ? '   |   Types: <comment>'.implode('</comment>, <comment>', $types)."</comment>\n"
+                                : '   |   Type: <comment>'.reset($types)."</comment>\n"
+                            ;
+                        } else {
+                            foreach ($allowed as $value) {
                                 if ($value instanceof AllowedValueSubset) {
-                                    $value = 'a subset of <comment>'.self::toString($value->getAllowedValues()).'</comment>';
+                                    $help .= "   |   Subset of:\n";
+                                    foreach (self::wordwrap(self::toString($value->getAllowedValues()), 65) as $default) {
+                                        $help .= sprintf("   |   <default_line>%s</default_line>\n", ltrim($default));
+                                    }
                                 } else {
-                                    $value = '<comment>'.self::toString($value).'</comment>';
+                                    $help .= sprintf("   |   <comment>%s</comment>\n", self::toString($value));
                                 }
                             }
-                        } else {
-                            $allowed = array_map(
-                                function ($type) {
-                                    return '<comment>'.$type.'</comment>';
-                                },
-                                $option->getAllowedTypes()
-                            );
                         }
 
-                        if (null !== $allowed) {
-                            $line .= ' ('.implode(', ', $allowed).')';
-                        }
+                        $help .= $option->hasDefault()
+                            ? '   |   Defaults to:<default_block>'
+                            : '   |   Required'
+                        ;
 
-                        $line .= ': '.Preg::replace(
-                            '/(`.+?`)/',
-                            '<info>$1</info>',
-                            lcfirst(Preg::replace('/\.$/', '', $option->getDescription()))
-                        ).'; ';
+                        $help .= "\n";
+
                         if ($option->hasDefault()) {
-                            $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
-                        } else {
-                            $line .= 'required';
+                            foreach (self::wordwrap(self::toString($option->getDefault()), 65) as $default) {
+                                $help .= sprintf("   |   <default_line>%s</default_line>\n", ltrim($default));
+                            }
+                            $help .= '</default_block>';
                         }
 
                         if ($option instanceof AliasedFixerOption) {
-                            $line .= '; DEPRECATED alias: <comment>'.$option->getAlias().'</comment>';
-                        }
-
-                        foreach (self::wordwrap($line, 72) as $index => $line) {
-                            $help .= (0 === $index ? '   | - ' : '   |   ').$line."\n";
+                            $help .= '   |   <risky>Deprecated alias</risky>: <comment>'.$option->getAlias()."</comment>\n";
                         }
                     }
                 }

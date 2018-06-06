@@ -222,16 +222,20 @@ EOF;
         $help = $command->getHelp();
         $help = str_replace('%command.full_name%', 'php-cs-fixer.phar '.$command->getName(), $help);
         $help = str_replace('%command.name%', $command->getName(), $help);
+        $help = Preg::replace('#</?(default_line)>#', '', $help);
         $help = Preg::replace('#</?(comment|info)>#', '``', $help);
+        $help = Preg::replace('#</?(risky)>#', '*', $help);
         $help = Preg::replace('#`(``.+?``)`#', '$1', $help);
         $help = Preg::replace('#^(\s+)``(.+)``$#m', '$1$2', $help);
         $help = Preg::replace('#^ \* ``(.+)``(.*?\n)#m', "* **$1**$2\n", $help);
+        $help = Preg::replace("#<default_block>\s*\|\s*#", "\n    ``", $help);
+        $help = Preg::replace("#\s*</default_block>#", "``\n", $help);
         $help = Preg::replace('#^   \\| #m', '  ', $help);
         $help = Preg::replace('#^   \\|#m', '', $help);
-        $help = Preg::replace('#^(?=  \\*Risky rule: )#m', "\n", $help);
-        $help = Preg::replace("#^(  Configuration options:\n)(  - )#m", "$1\n$2", $help);
+        $help = Preg::replace('#^(?=  \\*Risky rule)#m', "\n", $help);
         $help = Preg::replace("#^\n( +\\$ )#m", "\n.. code-block:: bash\n\n$1", $help);
         $help = Preg::replace("#^\n( +<\\?php)#m", "\n.. code-block:: php\n\n$1", $help);
+        $help = str_replace('  Configuration options:', "\n  Configuration options:\n", $help);
         $help = Preg::replaceCallback(
             '#^\\s*<\\?(\\w+).*?\\?>#ms',
             function ($matches) {
