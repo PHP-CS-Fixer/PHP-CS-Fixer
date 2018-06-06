@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -67,7 +67,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
         parent::configure($configuration);
 
         if (isset($this->configuration['functions'])) {
-            @trigger_error('Option "functions" is deprecated and will be removed in 3.0, use option "target" instead.', E_USER_DEPRECATED);
             $this->functions = $this->configuration['functions'];
 
             return;
@@ -142,7 +141,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHPUnit assertions like "assertInternalType", "assertFileExists", should be used over "assertTrue".',
+            'PHPUnit assertions like `assertInternalType`, `assertFileExists`, should be used over `assertTrue`.',
             [
                 new CodeSample(
                     '<?php
@@ -178,23 +177,28 @@ $this->assertTrue(is_readable($a));
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $searchSequence = [
-            [T_VARIABLE, '$this'],
-            [T_OBJECT_OPERATOR, '->'],
-            [T_STRING],
-        ];
-
-        $index = 1;
-        $candidate = $tokens->findSequence($searchSequence, $index);
-        while (null !== $candidate) {
-            end($candidate);
-            $index = $this->getAssertCandidate($tokens, key($candidate));
-            if (is_array($index)) {
-                $index = $this->fixAssert($tokens, $index);
+        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+            $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING]]);
+            if (null === $methodIndex) {
+                break;
             }
 
-            ++$index;
-            $candidate = $tokens->findSequence($searchSequence, $index);
+            $operatorIndex = $tokens->getPrevMeaningfulToken($methodIndex);
+            $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
+            if (
+                !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
+                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
+                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
+            ) {
+                continue;
+            }
+
+            $index = $this->getAssertCandidate($tokens, $methodIndex);
+            if (!is_array($index)) {
+                continue;
+            }
+
+            $index = $this->fixAssert($tokens, $index);
         }
     }
 
@@ -229,13 +233,14 @@ $this->assertTrue(is_readable($a));
         sort($values);
 
         return new FixerConfigurationResolverRootless('functions', [
-            (new FixerOptionBuilder('functions', '(deprecated, use `target` instead) List of assertions to fix (overrides `target`).'))
+            (new FixerOptionBuilder('functions', 'List of assertions to fix (overrides `target`).'))
                 ->setAllowedTypes(['null', 'array'])
                 ->setAllowedValues([
                     null,
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
+                    new AllowedValueSubset($values),
                 ])
                 ->setDefault(null)
+                ->setDeprecationMessage('Use option `target` instead.')
                 ->getOption(),
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
                 ->setAllowedTypes(['string'])
@@ -248,7 +253,7 @@ $this->assertTrue(is_readable($a));
                 ])
                 ->setDefault(PhpUnitTargetVersion::VERSION_5_0) // @TODO 3.x: change to `VERSION_NEWEST`
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     /**

@@ -84,6 +84,15 @@ final class Example
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must be run before PhpdocAddMissingParamAnnotationFixer
+        return 11;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $searchFor = array_keys($this->configuration['replacements']);
@@ -162,6 +171,6 @@ final class Example
                     'link' => 'see',
                 ])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 }

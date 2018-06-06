@@ -15,13 +15,6 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
 ;
 
-if (PHP_VERSION_ID < 70000) {
-    $finder
-        ->notPath('tests/Test/Constraint/SameStringsConstraintForV7.php')
-        ->notPath('tests/Test/Constraint/XmlMatchesXsdConstraintForV7.php')
-    ;
-}
-
 $config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
@@ -46,9 +39,10 @@ $config = PhpCsFixer\Config::create()
         'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
         'list_syntax' => ['syntax' => 'long'],
-        'method_chaining_indentation' => true,
         'method_argument_space' => ['ensure_fully_multiline' => true],
+        'method_chaining_indentation' => true,
         'multiline_comment_opening_closing' => true,
+        'no_alternative_syntax' => true,
         'no_extra_blank_lines' => ['tokens' => ['break', 'continue', 'extra', 'return', 'throw', 'use', 'parenthesis_brace_block', 'square_brace_block', 'curly_brace_block']],
         'no_null_property_initialization' => true,
         'no_short_echo_tag' => true,
@@ -74,7 +68,6 @@ $config = PhpCsFixer\Config::create()
         'strict_param' => true,
         'string_line_ending' => true,
         'yoda_style' => true,
-        'no_alternative_syntax' => true,
     ])
     ->setFinder($finder)
 ;

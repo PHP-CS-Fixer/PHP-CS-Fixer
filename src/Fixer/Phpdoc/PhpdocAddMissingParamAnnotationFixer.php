@@ -37,7 +37,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Phpdoc should contain @param for all params.',
+            'PHPDoc should contain `@param` for all params.',
             [
                 new CodeSample(
                     '<?php
@@ -80,8 +80,9 @@ function f9(string $foo, $bar, $baz) {}
      */
     public function getPriority()
     {
-        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
-        return -1;
+        // must be run after PhpdocNoAliasTagFixer
+        // must be run before PhpdocAlignFixer and PhpdocNoEmptyReturnFixer
+        return 10;
     }
 
     /**

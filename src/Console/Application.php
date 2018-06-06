@@ -35,7 +35,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.11.0';
+    const VERSION = '2.11.2';
     const VERSION_CODENAME = 'Grey Devil';
 
     /**
@@ -74,9 +74,6 @@ final class Application extends BaseApplication
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
-            if (FixCommand::COMMAND_NAME === $this->getCommandName($input)) {
-                $warningsDetector->detectXdebug();
-            }
             foreach ($warningsDetector->getWarnings() as $warning) {
                 $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
             }

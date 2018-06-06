@@ -259,6 +259,43 @@ final class UtilsTest extends TestCase
         ];
     }
 
+    /**
+     * @param int   $expected
+     * @param array $options
+     *
+     * @dataProvider provideCalculateBitmaskCases
+     */
+    public function testCalculateBitmask($expected, array $options)
+    {
+        $this->assertSame($expected, Utils::calculateBitmask($options));
+    }
+
+    public function provideCalculateBitmaskCases()
+    {
+        return [
+            [
+                JSON_HEX_TAG | JSON_HEX_QUOT,
+                ['JSON_HEX_TAG', 'JSON_HEX_QUOT'],
+            ],
+            [
+                JSON_HEX_TAG | JSON_HEX_QUOT,
+                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'NON_EXISTENT_CONST'],
+            ],
+            [
+                JSON_HEX_TAG,
+                ['JSON_HEX_TAG'],
+            ],
+            [
+                JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS,
+                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'JSON_HEX_AMP', 'JSON_HEX_APOS'],
+            ],
+            [
+                0,
+                [],
+            ],
+        ];
+    }
+
     private function createFixerDouble($name, $priority)
     {
         $fixer = $this->prophesize(FixerInterface::class);

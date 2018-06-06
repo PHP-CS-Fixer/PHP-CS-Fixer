@@ -30,6 +30,7 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class ProjectCodeTest extends TestCase
 {
@@ -42,17 +43,12 @@ final class ProjectCodeTest extends TestCase
      */
     private static $classesWithoutTests = [
         \PhpCsFixer\Console\SelfUpdate\GithubClient::class,
-        \PhpCsFixer\Console\WarningsDetector::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
-        \PhpCsFixer\FileReader::class,
-        \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
-        \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
-        \PhpCsFixer\StdinFileInfo::class,
         \PhpCsFixer\Test\AccessibleObject::class,
         \PhpCsFixer\Tokenizer\Transformers::class,
     ];
@@ -484,18 +480,6 @@ final class ProjectCodeTest extends TestCase
             },
             iterator_to_array($finder, false)
         );
-
-        $incomatibleClasses = version_compare(\PHPUnit\Runner\Version::id(), '7.0.0') < 0 ? [
-            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV7::class,
-            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV7::class,
-        ] : [
-            \PhpCsFixer\Tests\Test\Constraint\SameStringsConstraintForV5::class,
-            \PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraintForV5::class,
-        ];
-
-        $classes = array_filter($classes, function ($className) use ($incomatibleClasses) {
-            return !in_array($className, $incomatibleClasses, true);
-        });
 
         sort($classes);
 

@@ -23,6 +23,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class FixerFactoryTest extends TestCase
 {
@@ -58,6 +59,7 @@ final class FixerFactoryTest extends TestCase
         }
 
         return [
+            [$fixers['array_indentation'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
@@ -76,7 +78,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['combine_consecutive_unsets'], $fixers['space_after_semicolon']],
             [$fixers['declare_strict_types'], $fixers['blank_line_after_opening_tag']],
             [$fixers['declare_strict_types'], $fixers['declare_equal_normalize']],
-            [$fixers['declare_strict_types'], $fixers['single_blank_line_before_namespace']],
             [$fixers['doctrine_annotation_array_assignment'], $fixers['doctrine_annotation_spaces']],
             [$fixers['elseif'], $fixers['braces']],
             [$fixers['escape_implicit_backslashes'], $fixers['heredoc_to_nowdoc']],
@@ -91,7 +92,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['general_phpdoc_annotation_remove'], $fixers['no_empty_phpdoc']],
             [$fixers['indentation_type'], $fixers['phpdoc_indent']],
             [$fixers['is_null'], $fixers['yoda_style']],
-            [$fixers['line_ending'], $fixers['single_blank_line_at_eof']],
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['method_separation'], $fixers['braces']],
@@ -152,7 +152,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['php_unit_fqcn_annotation'], $fixers['php_unit_ordered_covers']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['php_unit_expectation']],
-            [$fixers['php_unit_strict'], $fixers['php_unit_construct']],
+            [$fixers['phpdoc_add_missing_param_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']],
             [$fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']],
@@ -264,25 +264,19 @@ final class FixerFactoryTest extends TestCase
             'class_attributes_separation,braces.test',
             'class_attributes_separation,indentation_type.test',
             'indentation_type,phpdoc_indent.test',
-            'line_ending,single_blank_line_at_eof.test',
             'method_separation,braces.test',
             'method_separation,indentation_type.test',
             'no_empty_statement,multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_singleline_whitespace_before_semicolons.test',
-            'php_unit_strict,php_unit_construct.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
-            'phpdoc_no_empty_return,phpdoc_trim.test',
             'phpdoc_no_package,phpdoc_order.test',
-            'phpdoc_no_package,phpdoc_trim.test',
             'phpdoc_order,phpdoc_separation.test',
             'phpdoc_order,phpdoc_trim.test',
             'phpdoc_separation,phpdoc_trim.test',
             'phpdoc_summary,phpdoc_trim.test',
             'phpdoc_var_without_name,phpdoc_trim.test',
-            'unary_operator_spaces,not_operator_with_space.test',
-            'unary_operator_spaces,not_operator_with_successor_space.test',
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
@@ -362,7 +356,6 @@ final class FixerFactoryTest extends TestCase
 
         if (in_array($fileName, [
             'combine_consecutive_issets,no_singleline_whitespace_before_semicolons.test',
-            'comment_to_phpdoc,phpdoc_to_comment.test',
         ], true)) {
             $this->markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));
         }

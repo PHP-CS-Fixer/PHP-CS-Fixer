@@ -15,9 +15,9 @@ namespace PhpCsFixer\Fixer\Whitespace;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -313,9 +313,7 @@ if (true) {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$tokenMap)),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$tokenMap))])
                 ->setDefault([
                     'break',
                     'continue',

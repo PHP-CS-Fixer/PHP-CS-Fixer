@@ -212,8 +212,8 @@ $h = $i===  $j;
      */
     public function getPriority()
     {
-        // must run after ArraySyntaxFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer and StrictComparisonFixer.
-        return -1;
+        // must run after ArraySyntaxFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer, StrictComparisonFixer and ArrayIndentationFixer.
+        return -31;
     }
 
     /**
@@ -298,13 +298,15 @@ $h = $i===  $j;
                 ->setDefault([])
                 ->getOption(),
             // add deprecated options as BC layer
-            (new FixerOptionBuilder('align_double_arrow', '(deprecated) Whether to apply, remove or ignore double arrows alignment.'))
+            (new FixerOptionBuilder('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.'))
                 ->setDefault(false)
                 ->setAllowedValues([true, false, null])
+                ->setDeprecationMessage('Use options `operators` and `default` instead.')
                 ->getOption(),
-            (new FixerOptionBuilder('align_equals', '(deprecated) Whether to apply, remove or ignore equals alignment.'))
+            (new FixerOptionBuilder('align_equals', 'Whether to apply, remove or ignore equals alignment.'))
                 ->setDefault(false)
                 ->setAllowedValues([true, false, null])
+                ->setDeprecationMessage('Use options `operators` and `default` instead.')
                 ->getOption(),
         ]);
     }
@@ -472,11 +474,17 @@ $h = $i===  $j;
             }
         }
 
-        @trigger_error(sprintf(
+        $message = sprintf(
             'Given configuration is deprecated and will be removed in 3.0. Use configuration %s as replacement for %s.',
             HelpCommand::toString($newConfig),
             HelpCommand::toString($configuration)
-        ), E_USER_DEPRECATED);
+        );
+
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            throw new InvalidFixerConfigurationException($this->getName(), "{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
+        }
+
+        @trigger_error($message, E_USER_DEPRECATED);
 
         return $newConfig;
     }

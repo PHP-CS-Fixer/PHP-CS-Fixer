@@ -38,67 +38,95 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-                '<?php /* string $foo */',
+                '<?php /* header comment */ $foo = true; /* string $bar */ $bar = "baz";',
             ],
             [
-                '<?php /* $yoda string @var */',
+                '<?php /* header comment */ $foo = true; /* $yoda string @var */',
             ],
             [
-                '<?php /* $yoda @var string */',
+                '<?php /* header comment */ $foo = true; /* $yoda @var string */',
             ],
             [
-                '<?php /** @var string $foo */',
-                '<?php /* @var string $foo */',
+                '<?php /* header comment */ $foo = true; /** @var string $bar */ $bar = "baz";',
+                '<?php /* header comment */ $foo = true; /* @var string $bar */ $bar = "baz";',
             ],
             [
-                '<?php /** @var string $foo */',
-                '<?php /*@var string $foo */',
+                '<?php /* header comment */ $foo = true; /** @var string $bar */ $bar = "baz";',
+                '<?php /* header comment */ $foo = true; /*@var string $bar */ $bar = "baz";',
             ],
             [
-                '<?php /** @var string $foo */',
-                '<?php /*** @var string $foo */',
+                '<?php /* header comment */ $foo = true;
+                /** @var string $bar */
+                $bar = "baz";
+                ',
+                '<?php /* header comment */ $foo = true;
+                /*** @var string $bar */
+                $bar = "baz";
+                ',
             ],
             [
-                '<?php /** @var string $foo */',
-                '<?php // @var string $foo',
+                '<?php /* header comment */ $foo = true;
+                /** @var string $bar */
+                $bar = "baz";
+                ',
+                '<?php /* header comment */ $foo = true;
+                // @var string $bar
+                $bar = "baz";
+                ',
             ],
             [
-                '<?php /** @var string $foo */',
-                '<?php //@var string $foo',
+                '<?php /* header comment */ $foo = true;
+                /** @var string $bar */
+                $bar = "baz";
+                ',
+                '<?php /* header comment */ $foo = true;
+                //@var string $bar
+                $bar = "baz";
+                ',
             ],
             [
-                '<?php /** @var string $foo */',
-                '<?php # @var string $foo',
+                '<?php /* header comment */ $foo = true;
+                /** @var string $bar */
+                $bar = "baz";
+                ',
+                '<?php /* header comment */ $foo = true;
+                # @var string $bar
+                $bar = "baz";
+                ',
             ],
             [
-                '<?php /** @var string $foo */',
-                '<?php #@var string $foo',
-            ],
-            [
-                '<?php /** @var string $foo */',
-                '<?php #@var string $foo',
+                '<?php /* header comment */ $foo = true;
+                /** @var string $bar */
+                $bar = "baz";
+                ',
+                '<?php /* header comment */ $foo = true;
+                #@var string $bar
+                $bar = "baz";
+                ',
             ],
             [
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 /**
- * @var string $foo
+ * @var string $bar
  */
+$bar = "baz";
 EOT
                 ,
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 /*
- * @var string $foo
+ * @var string $bar
  */
+$bar = "baz";
 EOT
                 ,
             ],
             [
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 /**
  * This is my var
@@ -110,7 +138,7 @@ $foo = 1;
 EOT
                 ,
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 // This is my var
 // @var string $foo
@@ -122,31 +150,31 @@ EOT
             ],
             [
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 for (;;) {
     /**
      * This is my var
      * @var string $foo
      */
-    $foo++;
+    $foo = someValue();
 }
 EOT
                 ,
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 for (;;) {
     // This is my var
     // @var string $foo
-    $foo++;
+    $foo = someValue();
 }
 EOT
                 ,
             ],
             [
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 /**
  * This is my var
@@ -158,7 +186,7 @@ $foo = 1;
 EOT
                 ,
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 # This is my var
 # @var string $foo
@@ -170,37 +198,41 @@ EOT
             ],
             [
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 /**
  * @Column(type="string", length=32, unique=true, nullable=false)
  */
+$bar = 'baz';
 EOT
                 ,
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 /*
  * @Column(type="string", length=32, unique=true, nullable=false)
  */
+$bar = 'baz';
 EOT
                 ,
             ],
             [
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 /**
  * @ORM\Column(name="id", type="integer")
  */
+$bar = 42;
 EOT
                 ,
                 <<<'EOT'
-<?php
+<?php /* header comment */ $foo = true;
 
 /*
  * @ORM\Column(name="id", type="integer")
  */
+$bar = 42;
 EOT
                 ,
             ],

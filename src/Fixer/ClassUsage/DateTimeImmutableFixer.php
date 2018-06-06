@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Fixer\ClassUsage;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -22,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  */
-final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterface
+final class DateTimeImmutableFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -33,7 +32,7 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
             'Class `DateTimeImmutable` should be used instead of `DateTime`.',
             [new CodeSample("<?php\nnew DateTime();\n")],
             null,
-            'Risky when the code relies on modifying `DateTime` object or if any of the `date_create*` functions are overridden.'
+            'Risky when the code relies on modifying `DateTime` objects or if any of the `date_create*` functions are overridden.'
         );
     }
 
@@ -92,7 +91,8 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
             $lowercaseContent = strtolower($token->getContent());
 
             if ('datetime' === $lowercaseContent) {
-                $this->fixClassUpdate($tokens, $index, $isInNamespace, $isImported);
+                $this->fixClassUsage($tokens, $index, $isInNamespace, $isImported);
+                $limit = $tokens->count(); // update limit, as fixing class usage may insert new token
             } elseif ('date_create' === $lowercaseContent) {
                 $this->fixFunctionUsage($tokens, $index, 'date_create_immutable');
             } elseif ('date_create_from_format' === $lowercaseContent) {
@@ -101,7 +101,13 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
         }
     }
 
-    private function fixClassUpdate(Tokens $tokens, $index, $isInNamespace, $isImported)
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param bool   $isInNamespace
+     * @param bool   $isImported
+     */
+    private function fixClassUsage(Tokens $tokens, $index, $isInNamespace, $isImported)
     {
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         if ($tokens[$nextIndex]->isGivenKind(T_DOUBLE_COLON)) {
@@ -128,14 +134,18 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
         }
 
         if ($isUsedWithLeadingBackslash || $isUsedAlone && ($isInNamespace && $isImported || !$isInNamespace)) {
-            $tokens->clearAt($index);
-            $tokens->insertAt($index, new Token([T_STRING, 'DateTimeImmutable']));
+            $tokens[$index] = new Token([T_STRING, 'DateTimeImmutable']);
             if ($isInNamespace && $isUsedAlone) {
                 $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
             }
         }
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     * @param string $replacement
+     */
     private function fixFunctionUsage(Tokens $tokens, $index, $replacement)
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
@@ -149,7 +159,6 @@ final class DateTimeImmutableFixer extends AbstractFixer implements FixerInterfa
             }
         }
 
-        $tokens->clearAt($index);
-        $tokens->insertAt($index, new Token([T_STRING, $replacement]));
+        $tokens[$index] = new Token([T_STRING, $replacement]);
     }
 }

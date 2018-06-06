@@ -408,7 +408,7 @@ EOT
      *
      * @group legacy
      * @dataProvider provideConfigurationCases
-     * @expectedDeprecation Passing "order" at the root of the configuration is deprecated and will not be supported in 3.0, use "order" => array(...) option instead.
+     * @expectedDeprecation Passing "order" at the root of the configuration for rule "ordered_class_elements" is deprecated and will not be supported in 3.0, use "order" => array(...) option instead.
      */
     public function testLegacyFixWithConfiguration(array $configuration, $expected)
     {
@@ -633,7 +633,7 @@ EOT
      *
      * @dataProvider provideSortingConfigurationCases
      */
-    public function testFixWithSortingAlhorithm(array $configuration, $input, $expected)
+    public function testFixWithSortingAlgorithm(array $configuration, $input, $expected)
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);

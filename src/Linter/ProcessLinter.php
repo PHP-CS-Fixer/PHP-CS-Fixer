@@ -120,7 +120,7 @@ final class ProcessLinter implements LinterInterface
         }
 
         $process = $this->processBuilder->build($path);
-        $process->setTimeout(null);
+        $process->setTimeout(10);
         $process->start();
 
         return $process;

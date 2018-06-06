@@ -1111,21 +1111,31 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
+     * @param array|bool $ruleConfig
+     *
+     * @dataProvider provideDeprecatedFixerConfiguredCases
+     *
      * @group legacy
-     * @expectedDeprecation Fixer `Vendor4/foo` is deprecated, use `testA` and `testB` instead.
+     * @expectedDeprecation Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.
      */
-    public function testDeprecatedFixerConfigured()
+    public function testDeprecatedFixerConfigured($ruleConfig)
     {
         $fixer = new DeprecatedFixer();
         $config = new Config();
         $config->registerCustomFixers([$fixer]);
+        $config->setRules([$fixer->getName() => $ruleConfig]);
 
-        $resolver = $this->createConfigurationResolver(
-            ['rules' => $fixer->getName()],
-            $config
-        );
-
+        $resolver = $this->createConfigurationResolver([], $config);
         $resolver->getFixers();
+    }
+
+    public function provideDeprecatedFixerConfiguredCases()
+    {
+        return [
+            [true],
+            [['foo' => true]],
+            [false],
+        ];
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')

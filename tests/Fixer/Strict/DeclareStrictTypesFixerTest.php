@@ -66,6 +66,7 @@ class A {
             ],
             [
                 '<?php declare(strict_types=1);
+
                 phpinfo();',
                 '<?php
 
@@ -73,6 +74,7 @@ class A {
             ],
             [
                 '<?php declare(strict_types=1);
+
 /**
  * Foo
  */
@@ -83,6 +85,20 @@ phpinfo();',
  * Foo
  */
 phpinfo();',
+            ],
+            [
+                '<?php declare(strict_types=1);
+
+// comment after empty line',
+                '<?php
+
+// comment after empty line',
+            ],
+            [
+                '<?php declare(strict_types=1);
+// comment without empty line before',
+                '<?php
+// comment without empty line before',
             ],
             [
                 '<?php declare(strict_types=1);

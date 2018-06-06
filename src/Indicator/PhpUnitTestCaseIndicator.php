@@ -26,21 +26,49 @@ final class PhpUnitTestCaseIndicator
             throw new \LogicException(sprintf('No T_CLASS at given index %d, got %s.', $index, $tokens[$index]->getName()));
         }
 
-        $classNameIndex = $tokens->getNextMeaningfulToken($index);
-        if (0 !== Preg::match('/(?:Test|TestCase)$/', $tokens[$classNameIndex]->getContent())) {
+        $index = $tokens->getNextMeaningfulToken($index);
+        if (0 !== Preg::match('/(?:Test|TestCase)$/', $tokens[$index]->getContent())) {
             return true;
         }
 
-        $braceIndex = $tokens->getNextTokenOfKind($index, ['{']);
-        $maybeParentSubNameToken = $tokens[$tokens->getPrevMeaningfulToken($braceIndex)];
+        do {
+            $index = $tokens->getNextMeaningfulToken($index);
+            if ($tokens[$index]->equals('{')) {
+                break; // end of class signature
+            }
 
-        if (
-            $maybeParentSubNameToken->isGivenKind(T_STRING) &&
-            0 !== Preg::match('/(?:Test|TestCase)$/', $maybeParentSubNameToken->getContent())
-        ) {
-            return true;
-        }
+            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+                continue; // not part of extends nor part of implements; so continue
+            }
+
+            if (0 !== Preg::match('/(?:Test|TestCase)(?:Interface)?$/', $tokens[$index]->getContent())) {
+                return true;
+            }
+        } while (true); // safe `true` as we will always hit an `{` after a T_CLASS
 
         return false;
+    }
+
+    /**
+     * @param Tokens $tokens
+     *
+     * @return \Generator array of [int start, int end] indexes from sooner to later classes
+     */
+    public function findPhpUnitClasses(Tokens $tokens)
+    {
+        for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+                continue;
+            }
+
+            $classIndex = $index;
+            $index = $tokens->getNextTokenOfKind($index, ['{']);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            if ($this->isPhpUnitClass($tokens, $classIndex)) {
+                yield [$index, $endIndex];
+            }
+
+            $index = $endIndex;
+        }
     }
 }

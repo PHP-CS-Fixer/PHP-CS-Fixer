@@ -1145,6 +1145,36 @@ echo $a;',
     }
 
     /**
+     * @dataProvider provideRemoveTrailingWhitespaceCases
+     *
+     * @param int         $index
+     * @param null|string $whitespaces
+     * @param string      $expected
+     * @param string      $input
+     */
+    public function testRemoveTrailingWhitespace($index, $whitespaces, $expected, $input = null)
+    {
+        Tokens::clearCache();
+
+        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens->removeTrailingWhitespace($index, $whitespaces);
+
+        $this->assertSame($expected, $tokens->generateCode());
+    }
+
+    public function provideRemoveTrailingWhitespaceCases()
+    {
+        $cases = [];
+        $leadingCases = $this->provideRemoveLeadingWhitespaceCases();
+        foreach ($leadingCases as $leadingCase) {
+            $leadingCase[0] -= 2;
+            $cases[] = $leadingCase;
+        }
+
+        return $cases;
+    }
+
+    /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */

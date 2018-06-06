@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -56,7 +56,7 @@ final class PhpUnitConstructFixer extends AbstractFixer implements Configuration
     public function getDefinition()
     {
         return new FixerDefinition(
-            'PHPUnit assertion method calls like "->assertSame(true, $foo)" should be written with dedicated method like "->assertTrue($foo)".',
+            'PHPUnit assertion method calls like `->assertSame(true, $foo)` should be written with dedicated method like `->assertTrue($foo)`.',
             [
                 new CodeSample(
                     '<?php
@@ -121,9 +121,7 @@ $this->assertNotSame(null, $d);
         return new FixerConfigurationResolverRootless('assertions', [
             (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$assertionFixers)),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$assertionFixers))])
                 ->setDefault([
                     'assertEquals',
                     'assertSame',
@@ -131,7 +129,7 @@ $this->assertNotSame(null, $d);
                     'assertNotSame',
                 ])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     /**

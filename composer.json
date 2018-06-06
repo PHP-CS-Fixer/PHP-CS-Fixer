@@ -18,6 +18,7 @@
         "ext-json": "*",
         "ext-tokenizer": "*",
         "composer/semver": "^1.4",
+        "composer/xdebug-handler": "^1.0",
         "doctrine/annotations": "^1.2",
         "php-cs-fixer/diff": "^1.3",
         "symfony/console": "^3.2 || ^4.0",
@@ -36,20 +37,23 @@
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.1 || ^2.0 || ^3.0",
         "justinrainbow/json-schema": "^5.0",
-        "keradus/cli-executor": "^1.0",
+        "keradus/cli-executor": "^1.1",
         "mikey179/vfsStream": "^1.6",
         "php-coveralls/php-coveralls": "^2.0",
         "php-cs-fixer/accessible-object": "^1.0",
+        "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.0",
+        "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.0",
         "phpunit/phpunit": "^5.7.23 || ^6.4.3 || ^7.0",
-        "phpunitgoodpractices/traits": "^1.3.1",
+        "phpunitgoodpractices/traits": "^1.3.2",
         "symfony/phpunit-bridge": "^3.2.2 || ^4.0"
     },
     "suggest": {
         "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
+        "php-cs-fixer/phpunit-constraint-isidenticalstring": "For IsIdenticalString constraint.",
+        "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "For XmlMatchesXsd constraint.",
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
     "config": {
-        "optimize-autoloader": true,
         "sort-packages": true
     },
     "extra": {
@@ -66,9 +70,6 @@
             "tests/Test/AbstractIntegrationCaseFactory.php",
             "tests/Test/AbstractIntegrationTestCase.php",
             "tests/Test/Assert/AssertTokensTrait.php",
-            "tests/Test/Constraint/SameStringsConstraint.php",
-            "tests/Test/Constraint/SameStringsConstraintForV5.php",
-            "tests/Test/Constraint/SameStringsConstraintForV7.php",
             "tests/Test/IntegrationCase.php",
             "tests/Test/IntegrationCaseFactory.php",
             "tests/Test/IntegrationCaseFactoryInterface.php",
