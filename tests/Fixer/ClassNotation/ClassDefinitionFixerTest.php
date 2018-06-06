@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
-use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -24,7 +24,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer
  */
-final class ClassDefinitionFixerTest extends AbstractFixerTestCase
+final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTestCase
 {
     /**
      * @group legacy
@@ -33,9 +33,9 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testLegacyConfigureDefaultToNull()
     {
         $defaultConfig = [
-            'multiLineExtendsEachSingleLine' => false,
-            'singleItemSingleLine' => false,
-            'singleLine' => false,
+            'multi_line_extends_each_single_line' => false,
+            'single_item_single_line' => false,
+            'single_line' => false,
         ];
 
         $fixer = new ClassDefinitionFixer();
@@ -49,9 +49,9 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testConfigureDefaultToNull()
     {
         $defaultConfig = [
-            'multiLineExtendsEachSingleLine' => false,
-            'singleItemSingleLine' => false,
-            'singleLine' => false,
+            'multi_line_extends_each_single_line' => false,
+            'single_item_single_line' => false,
+            'single_line' => false,
         ];
 
         $fixer = new ClassDefinitionFixer();
@@ -73,7 +73,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingAnonymousClasses($expected, $input, array $config = [])
     {
-        $this->fixer->configure($config);
+        $this->configureFixerWithAliasedOptions($config);
 
         $this->doTest($expected, $input);
     }
@@ -100,7 +100,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      */
     public function testFixingClassesWithConfig($expected, $input, array $config)
     {
-        $this->fixer->configure($config);
+        $this->configureFixerWithAliasedOptions($config);
 
         $this->doTest($expected, $input);
     }
@@ -135,7 +135,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageRegExp(
-            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multiLineExtendsEachSingleLine", "singleItemSingleLine", "singleLine"\.$/'
+            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multi_line_extends_each_single_line", "single_item_single_line", "single_line"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
@@ -146,7 +146,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageRegExp(
-            '/^\[class_definition\] Invalid configuration: The option "singleLine" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
+            '/^\[class_definition\] Invalid configuration: The option "single_line" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();

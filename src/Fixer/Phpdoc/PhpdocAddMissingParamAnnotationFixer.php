@@ -80,8 +80,9 @@ function f9(string $foo, $bar, $baz) {}
      */
     public function getPriority()
     {
-        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
-        return -1;
+        // must be run after PhpdocNoAliasTagFixer
+        // must be run before PhpdocAlignFixer and PhpdocNoEmptyReturnFixer
+        return 10;
     }
 
     /**

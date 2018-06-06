@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.11.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.11.2/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -351,12 +351,14 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``multiLineExtendsEachSingleLine`` (``bool``): whether definitions should be
-    multiline; defaults to ``false``
-  - ``singleItemSingleLine`` (``bool``): whether definitions should be single line
-    when including a single item; defaults to ``false``
-  - ``singleLine`` (``bool``): whether definitions should be single line; defaults
-    to ``false``
+  - ``multi_line_extends_each_single_line`` (``bool``): whether definitions should
+    be multiline; defaults to ``false``; DEPRECATED alias:
+    ``multiLineExtendsEachSingleLine``
+  - ``single_item_single_line`` (``bool``): whether definitions should be single
+    line when including a single item; defaults to ``false``; DEPRECATED alias:
+    ``singleItemSingleLine``
+  - ``single_line`` (``bool``): whether definitions should be single line; defaults
+    to ``false``; DEPRECATED alias: ``singleLine``
 
 * **class_keyword_remove**
 
@@ -666,8 +668,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``commentType`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to
-    ``'comment'``
+  - ``comment_type`` (``'comment'``, ``'PHPDoc'``): comment syntax type; defaults to
+    ``'comment'``; DEPRECATED alias: ``commentType``
   - ``header`` (``string``): proper header content; required
   - ``location`` (``'after_declare_strict'``, ``'after_open'``): the location of the
     inserted header; defaults to ``'after_declare_strict'``
@@ -1087,11 +1089,11 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``importsOrder`` (``array``, ``null``): defines the order of import types; defaults
-    to ``null``
-  - ``sortAlgorithm`` (``'alpha'``, ``'length'``, ``'none'``): whether the statements should
-    be sorted alphabetically or by length, or not sorted; defaults to
-    ``'alpha'``
+  - ``imports_order`` (``array``, ``null``): defines the order of import types; defaults
+    to ``null``; DEPRECATED alias: ``importsOrder``
+  - ``sort_algorithm`` (``'alpha'``, ``'length'``, ``'none'``): whether the statements
+    should be sorted alphabetically or by length, or not sorted; defaults
+    to ``'alpha'``; DEPRECATED alias: ``sortAlgorithm``
 
 * **php_unit_construct** [@Symfony:risky]
 
@@ -1602,7 +1604,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.11.1/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.11.2/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

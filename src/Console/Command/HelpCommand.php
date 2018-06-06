@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
@@ -562,6 +563,10 @@ EOF
                                 '<info>$1</info>',
                                 lcfirst(Preg::replace('/\.$/', '', OutputFormatter::escape($option->getDeprecationMessage())))
                             );
+                        }
+
+                        if ($option instanceof AliasedFixerOption) {
+                            $line .= '; DEPRECATED alias: <comment>'.$option->getAlias().'</comment>';
                         }
 
                         foreach (self::wordwrap($line, 72) as $index => $line) {

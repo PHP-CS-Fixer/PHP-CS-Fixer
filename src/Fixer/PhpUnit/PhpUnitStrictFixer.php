@@ -121,7 +121,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     continue;
                 }
 
-                $openingParenthesisIndex = $tokens->getNextmeaningfulToken($methodIndex);
+                $openingParenthesisIndex = $tokens->getNextMeaningfulToken($methodIndex);
                 $argumentsCount = $argumentsAnalyzer->countArguments(
                     $tokens,
                     $openingParenthesisIndex,
@@ -153,6 +153,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     'assertNotEquals',
                 ])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 }
