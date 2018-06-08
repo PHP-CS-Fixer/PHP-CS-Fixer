@@ -248,6 +248,22 @@ class Foo {
     public function doFoo(Bar $bar, $baxz) {}
 }',
             ],
+            'with_special_type_hints' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public function doFoo(array $bar, callable $baz) {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @param array    $bar
+     * @param callable $baz
+     */
+    public function doFoo(array $bar, callable $baz) {}
+}',
+            ],
         ];
     }
 
@@ -372,6 +388,25 @@ use Foo\Bar as Baz;
  * @return \Foo\Bar
  */
 function foo(Baz $bar): Baz {}',
+            ],
+            'with_scalar_type_hints' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo(int $bar, string $baz): bool {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @param int    $bar
+     * @param string $baz
+     *
+     * @return bool
+     */
+    public function doFoo(int $bar, string $baz): bool {}
+}',
             ],
         ];
     }
@@ -512,6 +547,25 @@ use Foo\Bar as Baz;
  * @return \Foo\Bar|null
  */
 function foo(?Baz $bar): ?Baz {}',
+            ],
+            'with_special_type_hints' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo(iterable $bar, ?int $baz): ?array {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @param iterable $bar
+     * @param int|null $baz
+     *
+     * @return array|null
+     */
+    public function doFoo(iterable $bar, ?int $baz): ?array {}
+}',
             ],
         ];
     }
