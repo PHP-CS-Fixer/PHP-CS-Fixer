@@ -214,7 +214,7 @@ class Foo {
         }
 
         $type = '';
-        while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
+        while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE])) {
             $type .= $tokens[$index]->getContent();
 
             $index = $tokens->getNextMeaningfulToken($index);
