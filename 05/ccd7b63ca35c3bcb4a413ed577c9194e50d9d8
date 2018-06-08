@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-06-05T21:22:19Z
+
+Thanks @gharlan! This is an oversight in my initial PR, I would consider this a bugfix. Could you add return types in the PHP 7+ test cases you added ?
