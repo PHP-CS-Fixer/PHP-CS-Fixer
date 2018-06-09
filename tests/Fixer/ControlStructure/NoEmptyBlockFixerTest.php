@@ -506,7 +506,20 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php switch ($foo): /** todo */ endswitch ?>',
             ],
 
-            // try + finally
+            'try with side effects' => [
+                '<?php try { foo(); } catch (Exception $e) {}',
+            ],
+            'try with side effects in catch' => [
+                '<?php ',
+                '<?php try {} catch (Exception $e) { foo(); }',
+            ],
+            'try without side effects in catch' => [
+                '<?php ',
+                '<?php try {} catch (Exception $e) {}',
+            ],
+            'try without side effects and finally with side effects' => [
+                '<?php try {} finally { foo(); }'
+            ],
 
             // while
 
