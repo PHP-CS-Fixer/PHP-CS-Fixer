@@ -1,0 +1,18 @@
+--TEST--
+Integration of fixers: native_constant_invocation,global_namespace_import.
+--RULESET--
+{"native_constant_invocation": true, "global_namespace_import": {"import_constants": true}}
+--EXPECT--
+<?php
+
+namespace Test;
+use const PHP_VERSION;
+
+echo PHP_VERSION;
+
+--INPUT--
+<?php
+
+namespace Test;
+
+echo PHP_VERSION;
