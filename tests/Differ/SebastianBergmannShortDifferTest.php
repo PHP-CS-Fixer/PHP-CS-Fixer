@@ -25,14 +25,11 @@ final class SebastianBergmannShortDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsDiff()
     {
-        $diff = <<<'TXT'
---- Original
+        $diff = '--- Original
 +++ New
--    function __construct($foo, $bar) {
-+    public function __construct($foo, $bar)
-+    {
-
-TXT;
+-    if (!array_key_exists("foo", $options)) {
++    if (!\array_key_exists("foo", $options)) {
+';
 
         $differ = new SebastianBergmannShortDiffer();
 
