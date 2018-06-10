@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-06-09T14:23:34Z
+
+@SpacePossum , you made whole differ, what do you think ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-09T15:53:13Z
+
+:+1: for the idea, we could even create a real `full differ` on `sebastianbergmann/diff` one day (I can write one in `PHP-CS-Fixer/diff`, should be easy).
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-06-10T07:53:23Z
+
+What would be the difference in generated output between differ in this PR and that `full differ` you imagine about? TBH, not sure if there is a need - for udiffer, it was important for us, we wanted to use it heavily and in the and, a lot of ppl were looking for udiffer implementation in PHP.
+But `full differ` ? Well, there is not that much usage of it in the wild, and here, at our `code samples` case, it's super edge case.
+Long story short - not sure if it's worth to spend time on it
