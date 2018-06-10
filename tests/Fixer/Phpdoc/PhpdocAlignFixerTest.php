@@ -22,6 +22,16 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class PhpdocAlignFixerTest extends AbstractFixerTestCase
 {
+    private static $alignableTags = [
+        'param',
+        'property',
+        'return',
+        'throws',
+        'type',
+        'var',
+        'method',
+    ];
+
     public function testFix()
     {
         $this->fixer->configure(['tags' => ['param']]);
@@ -942,7 +952,33 @@ final class Sample
         ];
     }
 
-    public function testDescriptionAlignTag()
+    public function testDescriptionAlignTagMethod()
+    {
+        $this->fixer->configure([
+            'tags' => ['method'],
+            'description_align' => 'tag',
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     * ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     *     ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignTagParam()
     {
         $this->fixer->configure(['description_align' => 'tag']);
 
@@ -965,7 +1001,113 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDescriptionAlignHint()
+    public function testDescriptionAlignTagReturn()
+    {
+        $this->fixer->configure(['description_align' => 'tag']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @return string Desc
+     * ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return string Desc
+     *      ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignTag()
+    {
+        $this->fixer->configure([
+            'tags' => static::$alignableTags,
+            'description_align' => 'tag',
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param    int       $foobar          Descrip
+     * tion
+     * @property mixed     $barfoo          Desc
+     * ription
+     * @return   int       Returns
+     * an int
+     * @throws   Exception On
+     * error
+     * @var      FooBar    Foo
+     * Foo
+     * @type     BarFoo    Bar
+     * Bar
+     * @method   int       foo(string $bar) Method
+     * with type
+     * @method             bar(string $foo) Method
+     * without type
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar     Descrip
+     *   tion
+     * @property mixed $barfoo Desc
+     *  ription
+     * @return  int  Returns
+     *   an int
+     * @throws Exception   On
+     *  error
+     * @var       FooBar Foo
+     *     Foo
+     * @type      BarFoo Bar
+     *  Bar
+     * @method        int    foo(string $bar)   Method
+     *  with type
+     * @method            bar(string $foo)   Method
+     *  without type
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignHintMethod()
+    {
+        $this->fixer->configure([
+            'tags' => ['method'],
+            'description_align' => 'hint',
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     *         ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     *     ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string $tag
+     */
+    public function testDescriptionAlignHintParam()
     {
         $this->fixer->configure(['description_align' => 'hint']);
 
@@ -988,7 +1130,110 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDescriptionAlignName()
+    public function testDescriptionAlignHintThrows()
+    {
+        $this->fixer->configure(['description_align' => 'hint']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @throws Exception Desc
+     *         ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @throws Exception Desc
+     *      ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignHint()
+    {
+        $this->fixer->configure([
+            'tags' => static::$alignableTags,
+            'description_align' => 'hint',
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param    int       $foobar          Descrip
+     *           tion
+     * @property mixed     $barfoo          Desc
+     *           ription
+     * @return   int       Returns
+     *           an int
+     * @throws   Exception On
+     *           error
+     * @var      FooBar    Foo
+     *           Foo
+     * @type     BarFoo    Bar
+     *           Bar
+     * @method   int       foo(string $bar) Method
+     *           with type
+     * @method             bar(string $foo) Method
+     *           without type
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar     Descrip
+     *   tion
+     * @property mixed $barfoo Desc
+     *  ription
+     * @return  int  Returns
+     *   an int
+     * @throws Exception   On
+     *  error
+     * @var       FooBar Foo
+     *     Foo
+     * @type      BarFoo Bar
+     *  Bar
+     * @method        int    foo(string $bar)   Method
+     *  with type
+     * @method            bar(string $foo)   Method
+     *  without type
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignNameMethod()
+    {
+        $this->fixer->configure([
+            'tags' => ['method'],
+            'description_align' => 'name',
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     *              ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     *     ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignNameParam()
     {
         $this->fixer->configure(['description_align' => 'name']);
 
@@ -1011,7 +1256,110 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDescriptionAlignDescription()
+    public function testDescriptionAlignNameReturn()
+    {
+        $this->fixer->configure(['description_align' => 'name']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @return string Desc
+     *                ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return string Desc
+     *      ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignName()
+    {
+        $this->fixer->configure([
+            'tags' => static::$alignableTags,
+            'description_align' => 'name',
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param    int       $foobar          Descrip
+     *                     tion
+     * @property mixed     $barfoo          Desc
+     *                     ription
+     * @return   int       Returns
+     *                     an int
+     * @throws   Exception On
+     *                     error
+     * @var      FooBar    Foo
+     *                     Foo
+     * @type     BarFoo    Bar
+     *                     Bar
+     * @method   int       foo(string $bar) Method
+     *                     with type
+     * @method             bar(string $foo) Method
+     *                     without type
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar     Descrip
+     *   tion
+     * @property mixed $barfoo Desc
+     *  ription
+     * @return  int  Returns
+     *   an int
+     * @throws Exception   On
+     *  error
+     * @var       FooBar Foo
+     *     Foo
+     * @type      BarFoo Bar
+     *  Bar
+     * @method        int    foo(string $bar)   Method
+     *  with type
+     * @method            bar(string $foo)   Method
+     *  without type
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignDescriptionMethod()
+    {
+        $this->fixer->configure([
+            'tags' => ['method'],
+            'description_align' => 'description',
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     *                       ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     *     ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignDescriptionParam()
     {
         $this->fixer->configure(['description_align' => 'description']);
 
@@ -1034,15 +1382,145 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDescriptionExtraIndent()
+    public function testDescriptionAlignDescriptionThrows()
     {
-        $this->fixer->configure(['description_extra_indent' => 2]);
+        $this->fixer->configure(['description_align' => 'description']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @throws Exception Desc
+     *                   ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @throws Exception Desc
+     *      ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignDescription()
+    {
+        $this->fixer->configure([
+            'tags' => static::$alignableTags,
+            'description_align' => 'description',
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param    int       $foobar          Descrip
+     *                                      tion
+     * @property mixed     $barfoo          Desc
+     *                                      ription
+     * @return   int       Returns
+     *                                      an int
+     * @throws   Exception On
+     *                                      error
+     * @var      FooBar    Foo
+     *                                      Foo
+     * @type     BarFoo    Bar
+     *                                      Bar
+     * @method   int       foo(string $bar) Method
+     *                                      with type
+     * @method             bar(string $foo) Method
+     *                                      without type
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar     Descrip
+     *   tion
+     * @property mixed $barfoo Desc
+     *  ription
+     * @return  int  Returns
+     *   an int
+     * @throws Exception   On
+     *  error
+     * @var       FooBar Foo
+     *     Foo
+     * @type      BarFoo Bar
+     *  Bar
+     * @method        int    foo(string $bar)   Method
+     *  with type
+     * @method            bar(string $foo)   Method
+     *  without type
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionAlignDescriptionX()
+    {
+        $this->fixer->configure([]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param  int $foobar Desc
+     *                     ription
+     * @return int Desc
+     *                     ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param int $foobar Desc
+     * ription
+     * @return int Desc
+     * ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIntendMethod()
+    {
+        $this->fixer->configure([
+            'tags' => ['method'],
+            'description_extra_indent' => 2,
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     *                         ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @method Type method() Desc
+     *     ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIndentParam()
+    {
+        $this->fixer->configure(['description_extra_indent' => 3]);
 
         $expected = <<<'EOF'
 <?php
     /**
      * @param int $a Desc
-     *                 ription
+     *                  ription
      */
 EOF;
 
@@ -1055,5 +1533,221 @@ EOF;
 EOF;
 
         $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIndentReturn()
+    {
+        $this->fixer->configure(['description_extra_indent' => 4]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @return string Desc
+     *                    ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return string Desc
+     *      ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIndent()
+    {
+        $this->fixer->configure([
+            'tags' => static::$alignableTags,
+            'description_extra_indent' => 1,
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param    int       $foobar          Descrip
+     *                                       tion
+     * @property mixed     $barfoo          Desc
+     *                                       ription
+     * @return   int       Returns
+     *                                       an int
+     * @throws   Exception On
+     *                                       error
+     * @var      FooBar    Foo
+     *                                       Foo
+     * @type     BarFoo    Bar
+     *                                       Bar
+     * @method   int       foo(string $bar) Method
+     *                                       with type
+     * @method             bar(string $foo) Method
+     *                                       without type
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar     Descrip
+     *   tion
+     * @property mixed $barfoo Desc
+     *  ription
+     * @return  int  Returns
+     *   an int
+     * @throws Exception   On
+     *  error
+     * @var       FooBar Foo
+     *     Foo
+     * @type      BarFoo Bar
+     *  Bar
+     * @method        int    foo(string $bar)   Method
+     *  with type
+     * @method            bar(string $foo)   Method
+     *  without type
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIndentNegative()
+    {
+        $this->fixer->configure([
+            'tags' => static::$alignableTags,
+            'description_extra_indent' => -1,
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param    int       $foobar          Descrip
+     *                                     tion
+     * @property mixed     $barfoo          Desc
+     *                                     ription
+     * @return   int       Returns
+     *                                     an int
+     * @throws   Exception On
+     *                                     error
+     * @var      FooBar    Foo
+     *                                     Foo
+     * @type     BarFoo    Bar
+     *                                     Bar
+     * @method   int       foo(string $bar) Method
+     *                                     with type
+     * @method             bar(string $foo) Method
+     *                                     without type
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    int   $foobar     Descrip
+     *   tion
+     * @property mixed $barfoo Desc
+     *  ription
+     * @return  int  Returns
+     *   an int
+     * @throws Exception   On
+     *  error
+     * @var       FooBar Foo
+     *     Foo
+     * @type      BarFoo Bar
+     *  Bar
+     * @method        int    foo(string $bar)   Method
+     *  with type
+     * @method            bar(string $foo)   Method
+     *  without type
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIndentAlignTagParam()
+    {
+        $this->fixer->configure([
+            'description_align' => 'tag',
+            'description_extra_indent' => 2,
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *   ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *    ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIndentAlignHintParam()
+    {
+        $this->fixer->configure([
+            'description_align' => 'hint',
+            'description_extra_indent' => 2,
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *          ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *    ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIndentAlignNameParam()
+    {
+        $this->fixer->configure([
+            'description_align' => 'name',
+            'description_extra_indent' => 2,
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *              ription
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param int $a Desc
+     *    ription
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDescriptionExtraIndentInvalid()
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[phpdoc_align] Invalid configuration: The option "description_extra_indent" with value "invalid" is expected to be of type "int", but is of type "string".');
+        $this->fixer->configure(['description_extra_indent' => 'invalid']);
     }
 }
