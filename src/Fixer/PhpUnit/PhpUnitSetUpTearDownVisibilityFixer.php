@@ -78,26 +78,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($this->findPhpUnitClasses($tokens) as $indexes) {
-            $this->fixSetUpAndTearDown($tokens, $indexes[0], $indexes[1]);
-        }
-    }
-
-    /**
-     * @param Tokens $tokens
-     *
-     * @return int[]
-     */
-    private function findPhpUnitClasses(Tokens $tokens)
-    {
         $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
-                $start = $tokens->getNextTokenOfKind($index, ['{']);
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $start);
-                yield [$start, $endIndex];
-            }
+        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
+            $this->fixSetUpAndTearDown($tokens, $indexes[0], $indexes[1]);
         }
     }
 

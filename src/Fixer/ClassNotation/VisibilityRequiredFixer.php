@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -109,11 +109,9 @@ class Sample
         return new FixerConfigurationResolverRootless('elements', [
             (new FixerOptionBuilder('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(['property', 'method', 'const']),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(['property', 'method', 'const'])])
                 ->setNormalizer(static function (Options $options, $value) {
-                    if (PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
+                    if (\PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
                         throw new InvalidOptionsForEnvException('"const" option can only be enabled with PHP 7.1+.');
                     }
 
@@ -121,7 +119,7 @@ class Sample
                 })
                 ->setDefault(['property', 'method'])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     /**

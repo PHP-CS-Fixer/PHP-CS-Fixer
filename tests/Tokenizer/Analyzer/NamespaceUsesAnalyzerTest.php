@@ -50,7 +50,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'Bar',
                     false,
                     1,
-                    6
+                    6,
+                    NamespaceUseAnalysis::TYPE_CLASS
                 ),
             ], [1]],
             ['<?php use Foo\Bar; use Foo\Baz;', [
@@ -59,14 +60,16 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'Bar',
                     false,
                     1,
-                    6
+                    6,
+                    NamespaceUseAnalysis::TYPE_CLASS
                 ),
                 new NamespaceUseAnalysis(
                     'Foo\Baz',
                     'Baz',
                     false,
                     8,
-                    13
+                    13,
+                    NamespaceUseAnalysis::TYPE_CLASS
                 ),
             ], [1, 8]],
             ['<?php use \Foo\Bar;', [
@@ -75,7 +78,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'Bar',
                     false,
                     1,
-                    7
+                    7,
+                    NamespaceUseAnalysis::TYPE_CLASS
                 ),
             ], [1]],
             ['<?php use Foo\Bar as Baz;', [
@@ -84,7 +88,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'Baz',
                     true,
                     1,
-                    10
+                    10,
+                    NamespaceUseAnalysis::TYPE_CLASS
                 ),
             ], [1]],
             ['<?php use Foo\Bar as Baz; use Foo\Buz as Baz;', [
@@ -93,23 +98,50 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     'Baz',
                     true,
                     1,
-                    10
+                    10,
+                    NamespaceUseAnalysis::TYPE_CLASS
                 ),
                 new NamespaceUseAnalysis(
                     'Foo\Buz',
                     'Baz',
                     true,
                     12,
-                    21
+                    21,
+                    NamespaceUseAnalysis::TYPE_CLASS
                 ),
             ], [1, 12]],
+            ['<?php use function My\count;', [
+                new NamespaceUseAnalysis(
+                    'My\count',
+                    'count',
+                    false,
+                    1,
+                    8,
+                    NamespaceUseAnalysis::TYPE_FUNCTION
+                ),
+            ], [1]],
+            ['<?php use function My\count as myCount;', [
+                new NamespaceUseAnalysis(
+                    'My\count',
+                    'myCount',
+                    true,
+                    1,
+                    12,
+                    NamespaceUseAnalysis::TYPE_FUNCTION
+                ),
+            ], [1]],
+            ['<?php use const My\Full\CONSTANT;', [
+                new NamespaceUseAnalysis(
+                    'My\Full\CONSTANT',
+                    'CONSTANT',
+                    false,
+                    1,
+                    10,
+                    NamespaceUseAnalysis::TYPE_CONSTANT
+                ),
+            ], [1]],
 
             // TODO: How to support these:
-
-            // Function and constant imports
-            // ['<?php use function My\count;', [], []],
-            // ['<?php use function My\count as myCount;', [], []],
-            // ['<?php use const My\Full\CONSTANT;', [], []],
 
             // Multiple imports on one line:
             // use My\Full\Classname as Another, My\Full\NSname;

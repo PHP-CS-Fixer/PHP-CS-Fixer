@@ -57,7 +57,7 @@ final class ProcessLinter implements LinterInterface
                 throw new UnavailableLinterException('Cannot find PHP executable.');
             }
 
-            if ('phpdbg' === PHP_SAPI) {
+            if ('phpdbg' === \PHP_SAPI) {
                 if (false === strpos($executable, 'phpdbg')) {
                     throw new UnavailableLinterException('Automatically found PHP executable is non-standard phpdbg. Could not find proper PHP executable.');
                 }
@@ -120,7 +120,7 @@ final class ProcessLinter implements LinterInterface
         }
 
         $process = $this->processBuilder->build($path);
-        $process->setTimeout(null);
+        $process->setTimeout(10);
         $process->start();
 
         return $process;

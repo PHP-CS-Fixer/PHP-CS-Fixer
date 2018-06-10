@@ -40,7 +40,7 @@ final class RuleSet implements RuleSetInterface
             'line_ending' => true,
             'lowercase_constants' => true,
             'lowercase_keywords' => true,
-            'method_argument_space' => ['ensure_fully_multiline' => true],
+            'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
             'no_break_comment' => true,
             'no_closing_tag' => true,
             'no_spaces_after_function_name' => true,
@@ -67,13 +67,14 @@ final class RuleSet implements RuleSetInterface
             ],
             'cast_spaces' => true,
             'class_attributes_separation' => ['elements' => ['method']],
-            'class_definition' => ['singleLine' => true],
+            'class_definition' => ['single_line' => true],
             'concat_space' => ['spacing' => 'none'],
             'declare_equal_normalize' => true,
             'function_typehint_space' => true,
             'include' => true,
             'increment_style' => true,
             'lowercase_cast' => true,
+            'lowercase_static_reference' => true,
             'magic_constant_casing' => true,
             'method_argument_space' => true,
             'native_function_casing' => true,
@@ -163,9 +164,18 @@ final class RuleSet implements RuleSetInterface
         '@Symfony:risky' => [
             'dir_constant' => true,
             'ereg_to_preg' => true,
+            'error_suppression' => true,
             'function_to_constant' => true,
             'is_null' => true,
             'modernize_types_casting' => true,
+            'native_constant_invocation' => [
+                'fix_built_in' => false,
+                'include' => [
+                    'DIRECTORY_SEPARATOR',
+                    'PHP_SAPI',
+                    'PHP_VERSION_ID',
+                ],
+            ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
             'non_printable_character' => [
@@ -174,7 +184,7 @@ final class RuleSet implements RuleSetInterface
             'php_unit_construct' => true,
             'psr4' => true,
             'self_accessor' => true,
-            'silenced_deprecation_error' => true,
+            'set_type_to_cast' => true,
         ],
         '@DoctrineAnnotation' => [
             'doctrine_annotation_array_assignment' => [

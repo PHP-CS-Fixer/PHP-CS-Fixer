@@ -119,7 +119,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     protected function determineRequirements(SplFileInfo $file, $config)
     {
         $parsed = $this->parseJson($config, [
-            'php' => PHP_VERSION_ID,
+            'php' => \PHP_VERSION_ID,
         ]);
 
         if (!is_int($parsed['php'])) {

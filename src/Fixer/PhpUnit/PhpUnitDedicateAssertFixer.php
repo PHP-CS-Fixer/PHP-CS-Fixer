@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -177,28 +177,24 @@ $this->assertTrue(is_readable($a));
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING]]);
-            if (null === $methodIndex) {
-                break;
+        foreach ($this->getPreviousAssertCall($tokens) as $assertCall) {
+            // test and fix for assertTrue/False to dedicated asserts
+            if ('asserttrue' === $assertCall['loweredName'] || 'assertfalse' === $assertCall['loweredName']) {
+                $this->fixAssertTrueFalse($tokens, $assertCall);
+
+                continue;
             }
 
-            $operatorIndex = $tokens->getPrevMeaningfulToken($methodIndex);
-            $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
             if (
-                !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
-                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
-                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
+                'assertsame' === $assertCall['loweredName']
+                || 'assertnotsame' === $assertCall['loweredName']
+                || 'assertequals' === $assertCall['loweredName']
+                || 'assertnotequals' === $assertCall['loweredName']
             ) {
+                $this->fixAssertSameEquals($tokens, $assertCall);
+
                 continue;
             }
-
-            $index = $this->getAssertCandidate($tokens, $methodIndex);
-            if (!is_array($index)) {
-                continue;
-            }
-
-            $index = $this->fixAssert($tokens, $index);
         }
     }
 
@@ -237,7 +233,7 @@ $this->assertTrue(is_readable($a));
                 ->setAllowedTypes(['null', 'array'])
                 ->setAllowedValues([
                     null,
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
+                    new AllowedValueSubset($values),
                 ])
                 ->setDefault(null)
                 ->setDeprecationMessage('Use option `target` instead.')
@@ -253,38 +249,21 @@ $this->assertTrue(is_readable($a));
                 ])
                 ->setDefault(PhpUnitTargetVersion::VERSION_5_0) // @TODO 3.x: change to `VERSION_NEWEST`
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 
     /**
      * @param Tokens $tokens
-     * @param int    $assertCallIndex Token index of assert method call
-     *
-     * @return int|int[] indexes of assert call, test call and positive flag, or last index checked
+     * @param array  $assertCall
      */
-    private function getAssertCandidate(Tokens $tokens, $assertCallIndex)
+    private function fixAssertTrueFalse(Tokens $tokens, array $assertCall)
     {
-        $content = strtolower($tokens[$assertCallIndex]->getContent());
-        if ('asserttrue' === $content) {
-            $isPositive = 1;
-        } elseif ('assertfalse' === $content) {
-            $isPositive = 0;
-        } else {
-            return $assertCallIndex;
-        }
-
-        // test candidate for simple calls like: ([\]+'some fixable call'(...))
-        $assertCallOpenIndex = $tokens->getNextMeaningfulToken($assertCallIndex);
-        if (!$tokens[$assertCallOpenIndex]->equals('(')) {
-            return $assertCallIndex;
-        }
-
         $testDefaultNamespaceTokenIndex = false;
-        $testIndex = $tokens->getNextMeaningfulToken($assertCallOpenIndex);
+        $testIndex = $tokens->getNextMeaningfulToken($assertCall['openBraceIndex']);
 
         if (!$tokens[$testIndex]->isGivenKind([T_EMPTY, T_STRING])) {
             if (!$tokens[$testIndex]->isGivenKind(T_NS_SEPARATOR)) {
-                return $testIndex;
+                return;
             }
 
             $testDefaultNamespaceTokenIndex = $testIndex;
@@ -293,64 +272,35 @@ $this->assertTrue(is_readable($a));
 
         $testOpenIndex = $tokens->getNextMeaningfulToken($testIndex);
         if (!$tokens[$testOpenIndex]->equals('(')) {
-            return $testOpenIndex;
+            return;
         }
 
         $testCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $testOpenIndex);
 
         $assertCallCloseIndex = $tokens->getNextMeaningfulToken($testCloseIndex);
         if (!$tokens[$assertCallCloseIndex]->equalsAny([')', ','])) {
-            return $assertCallCloseIndex;
+            return;
         }
 
-        return [
-            $isPositive,
-            $assertCallIndex,
-            $assertCallOpenIndex,
-            $testDefaultNamespaceTokenIndex,
-            $testIndex,
-            $testOpenIndex,
-            $testCloseIndex,
-            $assertCallCloseIndex,
-        ];
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param array  $assertIndexes
-     *
-     * @return int index up till processed, number of tokens added
-     */
-    private function fixAssert(Tokens $tokens, array $assertIndexes)
-    {
-        list(
-            $isPositive,
-            $assertCallIndex,
-            ,
-            $testDefaultNamespaceTokenIndex,
-            $testIndex,
-            $testOpenIndex,
-            $testCloseIndex,
-            $assertCallCloseIndex
-        ) = $assertIndexes;
+        $isPositive = 'asserttrue' === $assertCall['loweredName'];
 
         $content = strtolower($tokens[$testIndex]->getContent());
         if (!in_array($content, $this->functions, true)) {
-            return $assertCallCloseIndex;
+            return;
         }
 
         if (is_array(self::$fixMap[$content])) {
             if (false !== self::$fixMap[$content][$isPositive]) {
-                $tokens[$assertCallIndex] = new Token([T_STRING, self::$fixMap[$content][$isPositive]]);
+                $tokens[$assertCall['index']] = new Token([T_STRING, self::$fixMap[$content][$isPositive]]);
                 $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
             }
 
-            return $assertCallCloseIndex;
+            return;
         }
 
         $type = substr($content, 3);
 
-        $tokens[$assertCallIndex] = new Token([T_STRING, $isPositive ? 'assertInternalType' : 'assertNotInternalType']);
+        $tokens[$assertCall['index']] = new Token([T_STRING, $isPositive ? 'assertInternalType' : 'assertNotInternalType']);
         $tokens[$testIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, "'".$type."'"]);
         $tokens[$testOpenIndex] = new Token(',');
 
@@ -363,8 +313,102 @@ $this->assertTrue(is_readable($a));
         if (false !== $testDefaultNamespaceTokenIndex) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($testDefaultNamespaceTokenIndex);
         }
+    }
 
-        return $assertCallCloseIndex;
+    /**
+     * @param Tokens $tokens
+     * @param array  $assertCall
+     */
+    private function fixAssertSameEquals(Tokens $tokens, array $assertCall)
+    {
+        // @ $this->/self::assertEquals/Same([$nextIndex])
+        $expectedIndex = $tokens->getNextMeaningfulToken($assertCall['openBraceIndex']);
+
+        // do not fix
+        // let $a = [1,2]; $b = "2";
+        // "$this->assertEquals("2", count($a)); $this->assertEquals($b, count($a)); $this->assertEquals(2.1, count($a));"
+
+        if (!$tokens[$expectedIndex]->isGivenKind(T_LNUMBER)) {
+            return;
+        }
+
+        // @ $this->/self::assertEquals/Same([$nextIndex,$commaIndex])
+        $commaIndex = $tokens->getNextMeaningfulToken($expectedIndex);
+        if (!$tokens[$commaIndex]->equals(',')) {
+            return;
+        }
+
+        // @ $this->/self::assertEquals/Same([$nextIndex,$commaIndex,$countCallIndex])
+        $countCallIndex = $tokens->getNextMeaningfulToken($commaIndex);
+        if ($tokens[$countCallIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            $defaultNamespaceTokenIndex = $countCallIndex;
+            $countCallIndex = $tokens->getNextMeaningfulToken($countCallIndex);
+        } else {
+            $defaultNamespaceTokenIndex = false;
+        }
+
+        if (!$tokens[$countCallIndex]->isGivenKind(T_STRING) || 'count' !== strtolower($tokens[$countCallIndex]->getContent())) {
+            return; // not a call to "count"
+        }
+
+        // @ $this->/self::assertEquals/Same([$nextIndex,$commaIndex,[$defaultNamespaceTokenIndex,]$countCallIndex,$countCallOpenBraceIndex])
+        $countCallOpenBraceIndex = $tokens->getNextMeaningfulToken($countCallIndex);
+        if (!$tokens[$countCallOpenBraceIndex]->equals('(')) {
+            return;
+        }
+
+        $this->removeFunctionCall(
+            $tokens,
+            $defaultNamespaceTokenIndex,
+            $countCallIndex,
+            $countCallOpenBraceIndex,
+            $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $countCallOpenBraceIndex)
+        );
+
+        $tokens[$assertCall['index']] = new Token([
+            T_STRING,
+            false === strpos($assertCall['loweredName'], 'not', 6) ? 'assertCount' : 'assertNotCount',
+        ]);
+    }
+
+    private function getPreviousAssertCall(Tokens $tokens)
+    {
+        for ($index = $tokens->count(); $index > 0; --$index) {
+            $index = $tokens->getPrevTokenOfKind($index, [[T_STRING]]);
+            if (null === $index) {
+                return;
+            }
+
+            // test if "assert" something call
+            $loweredContent = strtolower($tokens[$index]->getContent());
+            if ('assert' !== substr($loweredContent, 0, 6)) {
+                continue;
+            }
+
+            // test candidate for simple calls like: ([\]+'some fixable call'(...))
+            $openBraceIndex = $tokens->getNextMeaningfulToken($index);
+            if (!$tokens[$openBraceIndex]->equals('(')) {
+                continue;
+            }
+
+            $operatorIndex = $tokens->getPrevMeaningfulToken($index);
+            $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
+
+            if (
+                !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
+                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
+                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
+            ) {
+                continue;
+            }
+
+            yield [
+                'index' => $index,
+                'loweredName' => $loweredContent,
+                'openBraceIndex' => $openBraceIndex,
+                'closeBraceIndex' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex),
+            ];
+        }
     }
 
     /**
