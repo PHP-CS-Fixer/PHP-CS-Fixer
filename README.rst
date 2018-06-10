@@ -1328,11 +1328,16 @@ Choose from the list of available rules:
 * **phpdoc_align** [@Symfony]
 
   All items of the given phpdoc tags must be either left-aligned or (by
-  default) aligned vertically.
+  default) aligned vertically. The alignment of multi-line descriptions
+  must be aligned according to "description_align".
 
   Configuration options:
 
   - ``align`` (``'left'``, ``'vertical'``): align comments; defaults to ``'vertical'``
+  - ``description_align`` (``'description'``, ``'hint'``, ``'name'``, ``'tag'``): the alignment
+    of a description running over multiple lines; defaults to ``'description'``
+  - ``description_extra_indent`` (``int``): extra indent for a description running
+    over multiple lines; defaults to ``0``
   - ``tags`` (a subset of ``['param', 'property', 'return', 'throws', 'type',
     'var', 'method']``): the tags that should be aligned; defaults to
     ``['param', 'return', 'throws', 'type', 'var']``

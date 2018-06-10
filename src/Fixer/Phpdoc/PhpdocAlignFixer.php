@@ -45,6 +45,26 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
     const ALIGN_VERTICAL = 'vertical';
 
     /**
+     * @internal
+     */
+    const DESCRIPTION_ALIGN_TAG = 'tag';
+
+    /**
+     * @internal
+     */
+    const DESCRIPTION_ALIGN_HINT = 'hint';
+
+    /**
+     * @internal
+     */
+    const DESCRIPTION_ALIGN_NAME = 'name';
+
+    /**
+     * @internal
+     */
+    const DESCRIPTION_ALIGN_DESCRIPTION = 'description';
+
+    /**
      * @var string
      */
     private $regex;
@@ -58,6 +78,16 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
      * @var string
      */
     private $align;
+
+    /**
+     * @var string
+     */
+    private $descriptionAlign;
+
+    /**
+     * @var int
+     */
+    private $descriptionExtraIndent;
 
     private static $alignableTags = [
         'param',
@@ -112,6 +142,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
         $this->regex = '/^'.$indent.' \* @(?:'.implode('|', $types).')'.$desc.'\s*$/u';
         $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/u';
         $this->align = $this->configuration['align'];
+        $this->descriptionAlign = $this->configuration['description_align'];
+        $this->descriptionExtraIndent = $this->configuration['description_extra_indent'];
     }
 
     /**
@@ -126,17 +158,23 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
  * @param string      $format
  * @param  int  $code       an HTTP response status code
  * @param    bool         $debug
- * @param  mixed    &$reference     a parameter passed by reference
+ * @param  mixed    &$reference     a parameter passed by
+ *   reference
  */
 
 EOF;
 
         return new FixerDefinition(
-            'All items of the given phpdoc tags must be either left-aligned or (by default) aligned vertically.',
+            'All items of the given phpdoc tags must be either left-aligned or (by default) aligned vertically.'
+            .' The alignment of multi-line descriptions must be aligned according to "description_align".',
             [
                 new CodeSample($code),
                 new CodeSample($code, ['align' => self::ALIGN_VERTICAL]),
                 new CodeSample($code, ['align' => self::ALIGN_LEFT]),
+                new CodeSample($code, ['description_align' => self::DESCRIPTION_ALIGN_TAG]),
+                new CodeSample($code, ['description_align' => self::DESCRIPTION_ALIGN_HINT]),
+                new CodeSample($code, ['description_align' => self::DESCRIPTION_ALIGN_NAME]),
+                new CodeSample($code, ['description_align' => self::DESCRIPTION_ALIGN_DESCRIPTION]),
             ]
         );
     }
@@ -210,8 +248,30 @@ EOF;
             ->setAllowedValues([self::ALIGN_LEFT, self::ALIGN_VERTICAL])
             ->setDefault(self::ALIGN_VERTICAL)
         ;
+        $descriptionAlign = new FixerOptionBuilder('description_align', 'The alignment of a description running over multiple lines.');
+        $descriptionAlign
+            ->setAllowedTypes(['string'])
+            ->setAllowedValues([
+                self::DESCRIPTION_ALIGN_TAG,
+                self::DESCRIPTION_ALIGN_HINT,
+                self::DESCRIPTION_ALIGN_NAME,
+                self::DESCRIPTION_ALIGN_DESCRIPTION,
+            ])
+            ->setDefault(self::DESCRIPTION_ALIGN_DESCRIPTION)
+        ;
 
-        return new FixerConfigurationResolver([$tags->getOption(), $align->getOption()]);
+        $descriptionExtraIndent = new FixerOptionBuilder('description_extra_indent', 'Extra indent for a description running over multiple lines.');
+        $descriptionExtraIndent
+            ->setAllowedTypes(['int'])
+            ->setDefault(0)
+        ;
+
+        return new FixerConfigurationResolver([
+            $tags->getOption(),
+            $align->getOption(),
+            $descriptionAlign->getOption(),
+            $descriptionExtraIndent->getOption(),
+        ]);
     }
 
     /**
@@ -274,19 +334,10 @@ EOF;
                         continue;
                     }
 
-                    $extraIndent = 2;
-
-                    if (in_array($currTag, self::$tagsWithName, true) || in_array($currTag, self::$tagsWithMethodSignature, true)) {
-                        $extraIndent = 3;
-                    }
-
                     $line =
                         $item['indent']
-                        .' *  '
-                        .$this->getIndent(
-                            $tagMax + $hintMax + $varMax + $extraIndent,
-                            $this->getLeftAlignedDescriptionIndent($items, $j)
-                        )
+                        .' * '
+                        .\str_repeat(' ', $this->getDescriptionIndent($tagMax, $hintMax, $varMax, $items, $j))
                         .$item['desc']
                         .$lineEnding;
 
@@ -382,6 +433,54 @@ EOF;
     }
 
     /**
+     * @param int   $maxTagLen
+     * @param int   $maxHintLen
+     * @param int   $maxVarLen
+     * @param array $items
+     * @param int   $index
+     *
+     * @return int
+     */
+    private function getDescriptionIndent($maxTagLen, $maxHintLen, $maxVarLen, array $items, $index)
+    {
+        $indent = self::ALIGN_VERTICAL === $this->align
+            ? $this->getVerticalAlignDescriptionIndent($maxTagLen, $maxHintLen, $maxVarLen)
+            : $this->getLeftAlignedDescriptionIndent($items, $index);
+
+        return max(0, $this->descriptionExtraIndent + $indent);
+    }
+
+    /**
+     * @param int $maxTagLen
+     * @param int $maxHintLen
+     * @param int $maxVarLen
+     *
+     * @return int
+     */
+    private function getVerticalAlignDescriptionIndent($maxTagLen, $maxHintLen, $maxVarLen)
+    {
+        if (self::DESCRIPTION_ALIGN_TAG === $this->descriptionAlign) {
+            return 0;
+        }
+
+        if (self::DESCRIPTION_ALIGN_HINT === $this->descriptionAlign) {
+            return $maxTagLen + 2;
+        }
+
+        if (self::DESCRIPTION_ALIGN_NAME === $this->descriptionAlign) {
+            return $maxTagLen + $maxHintLen + 3;
+        }
+
+        // self::DESCRIPTION_ALIGN_DESCRIPTION === $this->descriptionAlign
+        $indent = $maxTagLen + $maxHintLen + 3;
+        if ($maxVarLen) {
+            $indent += $maxVarLen + 1;
+        }
+
+        return $indent;
+    }
+
+    /**
      * @param array[] $items
      * @param int     $index
      *
@@ -389,7 +488,7 @@ EOF;
      */
     private function getLeftAlignedDescriptionIndent(array $items, $index)
     {
-        if (self::ALIGN_LEFT !== $this->align) {
+        if (self::DESCRIPTION_ALIGN_TAG === $this->descriptionAlign) {
             return 0;
         }
 
@@ -408,10 +507,19 @@ EOF;
         }
 
         // Indent according to existing values:
-        return
-            $this->getSentenceIndent($item['tag']) +
-            $this->getSentenceIndent($item['hint']) +
-            $this->getSentenceIndent($item['var']);
+        $tagIndent = $this->getSentenceIndent($item['tag']) + 1;
+        if (self::DESCRIPTION_ALIGN_HINT === $this->descriptionAlign) {
+            return $tagIndent;
+        }
+
+        $hintIndent = $this->getSentenceIndent($item['hint']);
+        if (self::DESCRIPTION_ALIGN_NAME === $this->descriptionAlign) {
+            return $tagIndent + $hintIndent;
+        }
+
+        $varIndent = $this->getSentenceIndent($item['var']);
+        // self::DESCRIPTION_ALIGN_DESCRIPTION === $this->descriptionAlign
+        return $tagIndent + $hintIndent + $varIndent;
     }
 
     /**
