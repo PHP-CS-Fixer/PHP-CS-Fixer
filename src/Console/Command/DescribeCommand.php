@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Differ\DiffConsoleFormatter;
-use PhpCsFixer\Differ\UnifiedDiffer;
+use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
@@ -267,7 +267,7 @@ final class DescribeCommand extends Command
         } else {
             $output->writeln('Fixing examples:');
 
-            $differ = new UnifiedDiffer();
+            $differ = new FullDiffer();
             $diffFormatter = new DiffConsoleFormatter($output->isDecorated(), sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                 PHP_EOL,

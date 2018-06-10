@@ -25,22 +25,18 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsDiff()
     {
-        $diff = <<<'TXT'
---- Original
+        $diff = '--- Original
 +++ New
-@@ -1,7 +1,8 @@
- <?php
- class Foo extends Bar {
--    function __construct($foo, $bar) {
-+    public function __construct($foo, $bar)
-+    {
-         $this->foo = $foo;
-         $this->bar = $bar;
+@@ -2,7 +2,7 @@
+ '.'
+ function baz($options)
+ {
+-    if (!array_key_exists("foo", $options)) {
++    if (!\array_key_exists("foo", $options)) {
+         throw new \InvalidArgumentException();
      }
- }
-\ No newline at end of file
-
-TXT;
+ '.'
+';
         $differ = new UnifiedDiffer();
 
         $this->assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));

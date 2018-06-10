@@ -12,22 +12,22 @@
 
 namespace PhpCsFixer\Tests\Differ;
 
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\FullDiffer;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
+ * @author SpacePossum
  *
  * @internal
  *
- * @covers \PhpCsFixer\Differ\SebastianBergmannDiffer
+ * @covers \PhpCsFixer\Differ\FullDiffer
  */
-final class SebastianBergmannDifferTest extends AbstractDifferTestCase
+final class FullDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsDiff()
     {
         $diff = '--- Original
 +++ New
-@@ @@
+@@ -1,10 +1,10 @@
  <?php
  '.'
  function baz($options)
@@ -39,10 +39,8 @@ final class SebastianBergmannDifferTest extends AbstractDifferTestCase
  '.'
      return json_encode($options);
  }
- '.'
 ';
-
-        $differ = new SebastianBergmannDiffer();
+        $differ = new FullDiffer();
 
         $this->assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }
