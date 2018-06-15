@@ -99,6 +99,8 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 
     <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
 
+The <comment>--default-indentation</comment> option (e.g. pass ``"  "`` or ``"\t"``) will use given indentation instead of 4 spaces as default.
+
 The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
 
 The <comment>--diff</comment> flag can be used to let the fixer output all the changes it makes.

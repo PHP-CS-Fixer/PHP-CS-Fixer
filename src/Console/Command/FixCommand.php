@@ -102,6 +102,7 @@ final class FixCommand extends Command
                     new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', 'override'),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
+                    new InputOption('default-indentation', '', InputOption::VALUE_REQUIRED, 'The default indentation to use instead of 4 spaces (you should not change it, if you follow strict PSR2 rule)'),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                     new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules.'),
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no).'),
@@ -126,6 +127,10 @@ final class FixCommand extends Command
 
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
+
+        $indent = $input->getOption('default-indentation');
+        Config::setDefaultIndent($indent);
+        $this->defaultConfig->setIndent($indent);
 
         $resolver = new ConfigurationResolver(
             $this->defaultConfig,
