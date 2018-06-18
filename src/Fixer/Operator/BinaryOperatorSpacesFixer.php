@@ -41,6 +41,11 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * @internal
      */
+    const NO_SPACE = 'no_space';
+
+    /**
+     * @internal
+     */
     const ALIGN = 'align';
 
     /**
@@ -82,6 +87,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
         self::ALIGN_SINGLE_SPACE,
         self::ALIGN_SINGLE_SPACE_MINIMAL,
         self::SINGLE_SPACE,
+        self::NO_SPACE,
         null,
     ];
 
@@ -202,6 +208,12 @@ $d = $f   ===  $g;
 $h = $i===  $j;
 ',
                     ['operators' => ['===' => 'align_single_space_minimal']]
+                ),
+                new CodeSample(
+                    '<?php
+$foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
+',
+                    ['operators' => ['|' => 'no_space']]
                 ),
             ]
         );
@@ -329,6 +341,12 @@ $h = $i===  $j;
             return;
         }
 
+        if (self::NO_SPACE === $this->operators[$tokenContent]) {
+            $this->fixWhiteSpaceAroundOperatorToNoSpace($tokens, $index);
+
+            return;
+        }
+
         // schedule for alignment
         $this->alignOperatorTokens[$tokenContent] = $this->operators[$tokenContent];
 
@@ -372,6 +390,29 @@ $h = $i===  $j;
             }
         } else {
             $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixWhiteSpaceAroundOperatorToNoSpace(Tokens $tokens, $index)
+    {
+        // fix white space after operator
+        if ($tokens[$index + 1]->isWhitespace()) {
+            $content = $tokens[$index + 1]->getContent();
+            if (false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+                $tokens->clearAt($index + 1);
+            }
+        }
+
+        // fix white space before operator
+        if ($tokens[$index - 1]->isWhitespace()) {
+            $content = $tokens[$index - 1]->getContent();
+            if (false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                $tokens->clearAt($index - 1);
+            }
         }
     }
 
