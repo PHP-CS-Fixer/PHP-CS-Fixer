@@ -344,4 +344,136 @@ $a#
 
         $this->fixer->configure(['target' => '_unknown_']);
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideTestAssertCountCases
+     */
+    public function testAssertCount($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestAssertCountCases()
+    {
+        return [
+            // positive fixing
+            'assert same' => [
+                '<?php $this->assertCount(1, $a);',
+                '<?php $this->assertSame(1, count($a));',
+            ],
+            'assert equals' => [
+                '<?php $this->assertCount(2, $b);',
+                '<?php $this->assertEquals(2, count($b));',
+            ],
+            // negative fixing
+            'assert not same' => [
+                '<?php $this->assertNotCount(11, $c);',
+                '<?php $this->assertNotSame(11, count($c));',
+            ],
+            'assert not equals' => [
+                '<?php $this->assertNotCount(122, $d);',
+                '<?php $this->assertNotEquals(122, count($d));',
+            ],
+            // other cases
+            'assert same with namespace' => [
+                '<?php $this->assertCount(1, $a);',
+                '<?php $this->assertSame(1, \COUnt($a));',
+            ],
+            'no spacing' => [
+                '<?php $this->assertCount(1,$a);',
+                '<?php $this->assertSame(1,count($a));',
+            ],
+            'lot of spacing' => [
+                '<?php $this->assertCount(
+                1
+                ,
+                '.'
+                '.'
+                $a
+                '.'
+                )
+                ;',
+                '<?php $this->assertSame(
+                1
+                ,
+                count
+                (
+                $a
+                )
+                )
+                ;',
+            ],
+            'lot of fix cases' => [
+                '<?php
+                    $this->assertCount(1, $a);
+                    $this->assertCount(2, $a);
+                    $this->assertCount(3, $a);
+                    $this->assertNotCount(4, $a);
+                    $this->assertCount(5, $a, "abc");
+                    $this->assertCount(6, $a, "def");
+                ',
+                '<?php
+                    $this->assertSame(1, count($a));
+                    $this->assertSame(2, count($a));
+                    $this->assertEquals(3, count($a));
+                    $this->assertNotSame(4, count($a));
+                    $this->assertEquals(5, count($a), "abc");
+                    $this->assertSame(6, \count($a), "def");
+                ',
+            ],
+            'comment handling' => [
+                '<?php $this->assertCount(# 0
+1# 1
+,# 2
+# 3
+# 4
+$a# 5
+# 6
+)# 7
+;# 8',
+                '<?php $this->assertSame(# 0
+1# 1
+,# 2
+count# 3
+(# 4
+$a# 5
+)# 6
+)# 7
+;# 8',
+            ],
+            'do not fix 1' => [
+                '<?php
+                    $this->assertSame($b, count($a));
+                ',
+            ],
+            'do not fix 2' => [
+                '<?php
+                    $this->assertSame(b(), count($a));
+                ',
+            ],
+            'do not fix 3' => [
+                '<?php
+                    $this->assertSame(1.0, count($a));
+                ',
+            ],
+            'do not fix 4' => [
+                '<?php
+                    $this->assertSame(1); // overridden
+                ',
+            ],
+            'do not fix 5' => [
+                '<?php
+                    $this->assertSame(1, "count");
+                ',
+            ],
+            'do not fix 6' => [
+                '<?php
+                    $this->test(); // $this->assertSame($b, count($a));
+                ',
+            ],
+        ];
+    }
 }

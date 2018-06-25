@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: void_return,phpdoc_to_return_type.
+--RULESET--
+{"void_return": true, "phpdoc_to_return_type": true}
+--REQUIREMENTS--
+{"php": 70100}
+--EXPECT--
+<?php
+/** @return void */
+function my_foo(): void
+{}
+
+--INPUT--
+<?php
+/** @return void */
+function my_foo()
+{}

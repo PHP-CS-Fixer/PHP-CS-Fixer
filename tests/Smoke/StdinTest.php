@@ -45,7 +45,7 @@ final class StdinTest extends TestCase
                     $fileResult->getError()
                 ),
                 'output' => str_ireplace(
-                    str_replace('/', DIRECTORY_SEPARATOR, 'PHP-CS-Fixer/tests/Fixtures/Integration/set/@PSR2.test-in.php'),
+                    str_replace('/', \DIRECTORY_SEPARATOR, basename(realpath($cwd)).'/'.$inputFile),
                     'php://stdin',
                     $this->unifyFooter($fileResult->getOutput())
                 ),

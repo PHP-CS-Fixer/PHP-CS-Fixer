@@ -95,9 +95,9 @@ EOF;
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $singleQuotedRegex = '/(?<!\\\\)\\\\(?![\\\'\\\\])/';
-        static $doubleQuotedRegex = '/(?<!\\\\)\\\\(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
-        static $heredocSyntaxRegex = '/(?<!\\\\)\\\\(?![efnrtv$\\\\0-7]|x[0-9A-Fa-f]|u{)/';
+        static $singleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![\\\'\\\\])/';
+        static $doubleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
+        static $heredocSyntaxRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$\\\\0-7]|x[0-9A-Fa-f]|u{)/';
 
         $doubleQuoteOpened = false;
         foreach ($tokens as $index => $token) {
@@ -136,7 +136,7 @@ EOF;
                 $regex = $doubleQuotedRegex;
             }
 
-            $newContent = Preg::replace($regex, '\\\\\\\\', $content);
+            $newContent = Preg::replace($regex, '\\\\\\\\$1', $content);
             if ($newContent !== $content) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);
             }

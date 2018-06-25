@@ -81,8 +81,8 @@ final class VersionSpecificCodeSampleTest extends TestCase
     public function provideIsSuitableForVersionUsesVersionSpecificationCases()
     {
         return [
-            'is-satisfied' => [PHP_VERSION_ID, true],
-            'is-not-satisfied' => [PHP_VERSION_ID, false],
+            'is-satisfied' => [\PHP_VERSION_ID, true],
+            'is-not-satisfied' => [\PHP_VERSION_ID, false],
         ];
     }
 

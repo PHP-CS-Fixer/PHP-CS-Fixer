@@ -68,12 +68,19 @@ final class NamespaceUsesAnalyzer
         $fullName = $shortName = '';
         $aliased = false;
 
+        $type = NamespaceUseAnalysis::TYPE_CLASS;
         for ($i = $startIndex; $i <= $endIndex; ++$i) {
             $token = $tokens[$i];
             if ($token->equals(',') || $token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                 // do not touch group use declarations until the logic of this is added (for example: `use some\a\{ClassD};`)
                 // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
                 return null;
+            }
+
+            if ($token->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+                $type = NamespaceUseAnalysis::TYPE_FUNCTION;
+            } elseif ($token->isGivenKind(CT::T_CONST_IMPORT)) {
+                $type = NamespaceUseAnalysis::TYPE_CONSTANT;
             }
 
             if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind([T_USE])) {
@@ -97,7 +104,8 @@ final class NamespaceUsesAnalyzer
             $shortName,
             $aliased,
             $startIndex,
-            $endIndex
+            $endIndex,
+            $type
         );
     }
 }

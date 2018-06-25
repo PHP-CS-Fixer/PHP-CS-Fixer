@@ -53,7 +53,7 @@ final class VersionSpecificationTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         new VersionSpecification(
-            PHP_VERSION_ID,
+            \PHP_VERSION_ID,
             $maximum
         );
     }
@@ -79,8 +79,8 @@ final class VersionSpecificationTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         new VersionSpecification(
-            PHP_VERSION_ID,
-            PHP_VERSION_ID - 1
+            \PHP_VERSION_ID,
+            \PHP_VERSION_ID - 1
         );
     }
 
@@ -107,10 +107,10 @@ final class VersionSpecificationTest extends TestCase
     public function provideIsSatisfiedByReturnsTrueCases()
     {
         return [
-            'version-same-as-maximum' => [null, PHP_VERSION_ID, PHP_VERSION_ID],
-            'version-same-as-minimum' => [PHP_VERSION_ID, null, PHP_VERSION_ID],
-            'version-between-minimum-and-maximum' => [PHP_VERSION_ID - 1, PHP_VERSION_ID + 1, PHP_VERSION_ID],
-            'version-same-as-minimum-and-maximum' => [PHP_VERSION_ID, PHP_VERSION_ID, PHP_VERSION_ID],
+            'version-same-as-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID],
+            'version-same-as-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID],
+            'version-between-minimum-and-maximum' => [\PHP_VERSION_ID - 1, \PHP_VERSION_ID + 1, \PHP_VERSION_ID],
+            'version-same-as-minimum-and-maximum' => [\PHP_VERSION_ID, \PHP_VERSION_ID, \PHP_VERSION_ID],
         ];
     }
 
@@ -137,8 +137,8 @@ final class VersionSpecificationTest extends TestCase
     public function provideIsSatisfiedByReturnsFalseCases()
     {
         return [
-            'version-greater-than-maximum' => [null, PHP_VERSION_ID, PHP_VERSION_ID + 1],
-            'version-less-than-minimum' => [PHP_VERSION_ID, null, PHP_VERSION_ID - 1],
+            'version-greater-than-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID + 1],
+            'version-less-than-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID - 1],
         ];
     }
 }

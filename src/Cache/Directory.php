@@ -38,7 +38,7 @@ final class Directory implements DirectoryInterface
 
         if (
             '' === $this->directoryName
-            || 0 !== stripos($file, $this->directoryName.DIRECTORY_SEPARATOR)
+            || 0 !== stripos($file, $this->directoryName.\DIRECTORY_SEPARATOR)
         ) {
             return $file;
         }
@@ -48,6 +48,6 @@ final class Directory implements DirectoryInterface
 
     private function normalizePath($path)
     {
-        return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $path);
+        return str_replace(['\\', '/'], \DIRECTORY_SEPARATOR, $path);
     }
 }

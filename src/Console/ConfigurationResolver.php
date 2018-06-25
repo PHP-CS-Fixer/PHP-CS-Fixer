@@ -150,8 +150,6 @@ final class ConfigurationResolver
     private $fixerFactory;
 
     /**
-     * ConfigurationResolver constructor.
-     *
      * @param ConfigInterface   $config
      * @param array             $options
      * @param string            $cwd
@@ -309,7 +307,7 @@ final class ConfigurationResolver
 
             $absolutePath = $filesystem->isAbsolutePath($path)
                 ? $path
-                : $this->cwd.DIRECTORY_SEPARATOR.$path;
+                : $this->cwd.\DIRECTORY_SEPARATOR.$path;
 
             $this->directory = new Directory(dirname($absolutePath));
         }
@@ -380,7 +378,7 @@ final class ConfigurationResolver
                     static function ($path) use ($cwd, $filesystem) {
                         $absolutePath = $filesystem->isAbsolutePath($path)
                             ? $path
-                            : $cwd.DIRECTORY_SEPARATOR.$path;
+                            : $cwd.\DIRECTORY_SEPARATOR.$path;
 
                         if (!file_exists($absolutePath)) {
                             throw new InvalidConfigurationException(sprintf(
@@ -585,13 +583,13 @@ final class ConfigurationResolver
         }
 
         $candidates = [
-            $configDir.DIRECTORY_SEPARATOR.'.php_cs',
-            $configDir.DIRECTORY_SEPARATOR.'.php_cs.dist',
+            $configDir.\DIRECTORY_SEPARATOR.'.php_cs',
+            $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist',
         ];
 
         if ($configDir !== $this->cwd) {
-            $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs';
-            $candidates[] = $this->cwd.DIRECTORY_SEPARATOR.'.php_cs.dist';
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs';
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist';
         }
 
         return $candidates;
@@ -827,7 +825,7 @@ final class ConfigurationResolver
             if (is_file($path)) {
                 $pathsByType['file'][] = $path;
             } else {
-                $pathsByType['dir'][] = $path.DIRECTORY_SEPARATOR;
+                $pathsByType['dir'][] = $path.\DIRECTORY_SEPARATOR;
             }
         }
 

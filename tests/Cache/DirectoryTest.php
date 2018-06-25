@@ -40,8 +40,8 @@ final class DirectoryTest extends TestCase
 
     public function testGetRelativePathToReturnsFileIfAboveLevelOfDirectoryName()
     {
-        $directoryName = __DIR__.DIRECTORY_SEPARATOR.'foo';
-        $file = __DIR__.DIRECTORY_SEPARATOR.'hello.php';
+        $directoryName = __DIR__.\DIRECTORY_SEPARATOR.'foo';
+        $file = __DIR__.\DIRECTORY_SEPARATOR.'hello.php';
 
         $directory = new Directory($directoryName);
 
@@ -50,11 +50,11 @@ final class DirectoryTest extends TestCase
 
     public function testGetRelativePathToReturnsRelativePathIfWithinDirectoryName()
     {
-        $directoryName = __DIR__.DIRECTORY_SEPARATOR.'foo';
-        $file = __DIR__.DIRECTORY_SEPARATOR.'foo'.DIRECTORY_SEPARATOR.'bar'.DIRECTORY_SEPARATOR.'hello.php';
+        $directoryName = __DIR__.\DIRECTORY_SEPARATOR.'foo';
+        $file = __DIR__.\DIRECTORY_SEPARATOR.'foo'.\DIRECTORY_SEPARATOR.'bar'.\DIRECTORY_SEPARATOR.'hello.php';
 
         $directory = new Directory($directoryName);
 
-        $this->assertSame('bar'.DIRECTORY_SEPARATOR.'hello.php', $directory->getRelativePathTo($file));
+        $this->assertSame('bar'.\DIRECTORY_SEPARATOR.'hello.php', $directory->getRelativePathTo($file));
     }
 }

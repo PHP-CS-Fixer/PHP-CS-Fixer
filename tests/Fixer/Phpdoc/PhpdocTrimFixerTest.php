@@ -102,6 +102,7 @@ EOF;
      *
      *  @return bool
      *
+     *
      */
 
 EOF;

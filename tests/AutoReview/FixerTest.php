@@ -94,7 +94,7 @@ final class FixerTest extends TestCase
                 $configSamplesProvided['default'] = true;
             }
 
-            if ($sample instanceof VersionSpecificCodeSampleInterface && !$sample->isSuitableFor(PHP_VERSION_ID)) {
+            if ($sample instanceof VersionSpecificCodeSampleInterface && !$sample->isSuitableFor(\PHP_VERSION_ID)) {
                 continue;
             }
 

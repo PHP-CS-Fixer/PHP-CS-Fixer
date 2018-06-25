@@ -282,7 +282,7 @@ EOTXTb
     );
 ",
             ],
-            [
+            'with_random_comments' => [
                 '<?php xyz#
  (#
 ""#
@@ -290,7 +290,7 @@ EOTXTb
 $a#
 );',
             ],
-            [
+            'keep_multiple_spaces_after_comma_with_newlines' => [
                 "<?php xyz(\$a=10,\n\$b=20);",
                 "<?php xyz(\$a=10,   \n\$b=20);",
                 ['keep_multiple_spaces_after_comma' => true],
@@ -313,7 +313,7 @@ functionCall(
 );
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test wrongly formatted half-multiline function becomes fully-multiline' => [
                 '<?php
@@ -325,7 +325,7 @@ f(
                 '<?php
 f(1,2,
 3);',
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'function calls with here doc cannot be anything but multiline' => [
                 <<<'EXPECTED'
@@ -349,7 +349,7 @@ TEXT
 );
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test barely multiline function with blank lines becomes fully-multiline' => [
                 <<<'EXPECTED'
@@ -369,7 +369,7 @@ functionCall('a', 'b',
     'c');
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test indentation is preserved' => [
                 <<<'EXPECTED'
@@ -393,7 +393,7 @@ if (true) {
 }
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test multiline array arguments do not trigger multiline' => [
                 <<<'EXPECTED'
@@ -406,7 +406,7 @@ defraculate(1, array(
 EXPECTED
                 ,
                 null,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test multiline function arguments do not trigger multiline' => [
                 <<<'EXPECTED'
@@ -417,7 +417,7 @@ defraculate(1, function () {
 EXPECTED
                 ,
                 null,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation after opening parenthesis' => [
                 <<<'EXPECTED'
@@ -435,7 +435,7 @@ defraculate(
     1, 2, 3);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation after opening parenthesis, indented with two spaces' => [
                 <<<'EXPECTED'
@@ -453,7 +453,7 @@ defraculate(
   1, 2, 3);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation after opening parenthesis, indented with tabs' => [
                 <<<'EXPECTED'
@@ -471,7 +471,7 @@ defraculate(
 	1, 2, 3);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation before closing parenthesis' => [
                 <<<'EXPECTED'
@@ -489,7 +489,7 @@ defraculate(1, 2, 3
 );
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation before closing parenthesis in nested call' => [
                 <<<'EXPECTED'
@@ -507,7 +507,7 @@ getSchwifty('rick', defraculate(1, 2, 3
 ), 'morty');
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test with comment between arguments' => [
                 <<<'EXPECTED'
@@ -527,7 +527,7 @@ functionCall(
 );
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test with deeply nested arguments' => [
                 <<<'EXPECTED'
@@ -562,7 +562,7 @@ foo('a',
     ]);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'multiline string argument' => [
                 <<<'UNAFFECTED'
@@ -575,7 +575,7 @@ class FooClass
 UNAFFECTED
                 ,
                 null,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'arrays with whitespace inside' => [
                 <<<'UNAFFECTED'
@@ -589,7 +589,7 @@ $a = array (        1,
 UNAFFECTED
                 ,
                 null,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test code that should not be affected (because not a function nor a method)' => [
                 <<<'UNAFFECTED'
@@ -602,7 +602,7 @@ if (true &&
 UNAFFECTED
                 ,
                 null,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test ungodly code' => [
                 <<<'EXPECTED'
@@ -640,7 +640,7 @@ $c,$d) {
 };
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test list' => [
                 <<<'UNAFFECTED'
@@ -658,7 +658,7 @@ array(1,
 UNAFFECTED
                 ,
                 null,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test function argument with multiline echo in it' => [
                 <<<'UNAFFECTED'
@@ -670,7 +670,7 @@ call_user_func(function ($arguments) {
 UNAFFECTED
                 ,
                 null,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test function argument with oneline echo in it' => [
                 <<<'EXPECTED'
@@ -691,7 +691,142 @@ call_user_func(function ($arguments) {
 $argv);
 INPUT
                 ,
-                ['ensure_fully_multiline' => true],
+                ['on_multiline' => 'ensure_fully_multiline'],
+            ],
+            'ensure_single_line' => [
+                <<<'EXPECTED'
+<?php
+function foo($a, $b) {
+    // foo
+}
+foo($a, $b);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+function foo(
+    $a,
+    $b
+) {
+    // foo
+}
+foo(
+    $a,
+    $b
+);
+INPUT
+                ,
+                ['on_multiline' => 'ensure_single_line'],
+            ],
+            'ensure_single_line_with_random_comments' => [
+                <<<'EXPECTED'
+<?php
+function foo(/* foo */// bar
+    $a, /* foo */// bar
+    $b#foo
+) {
+    // foo
+}
+foo(/* foo */// bar
+    $a, /* foo */// bar
+    $b#foo
+);
+EXPECTED
+                ,
+                null,
+                ['on_multiline' => 'ensure_single_line'],
+            ],
+            'ensure_single_line_with_consecutive_newlines' => [
+                <<<'EXPECTED'
+<?php
+function foo($a, $b) {
+    // foo
+}
+foo($a, $b);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+function foo(
+
+
+    $a,
+
+
+    $b
+
+
+) {
+    // foo
+}
+foo(
+
+
+    $a,
+
+
+    $b
+
+
+);
+INPUT
+                ,
+                ['on_multiline' => 'ensure_single_line'],
+            ],
+            'ensure_single_line_methods' => [
+                <<<'EXPECTED'
+<?php
+class Foo {
+    public static function foo1($a, $b, $c) {}
+    private function foo2($a, $b, $c) {}
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+class Foo {
+    public static function foo1(
+        $a,
+        $b,
+        $c
+    ) {}
+    private function foo2(
+        $a,
+        $b,
+        $c
+    ) {}
+}
+INPUT
+                ,
+                ['on_multiline' => 'ensure_single_line'],
+            ],
+            'ensure_single_line_keep_spaces_after_comma' => [
+                <<<'EXPECTED'
+<?php
+function foo($a,    $b) {
+    // foo
+}
+foo($a,    $b);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+function foo(
+    $a,
+    $b
+) {
+    // foo
+}
+foo(
+    $a,
+    $b
+);
+INPUT
+                ,
+                [
+                    'on_multiline' => 'ensure_single_line',
+                    'keep_multiple_spaces_after_comma' => true,
+                ],
             ],
         ];
     }
@@ -699,7 +834,6 @@ INPUT
     /**
      * @param string $expected
      * @param string $input
-     *
      *
      * @dataProvider provideFix56Cases
      */
@@ -725,5 +859,35 @@ INPUT
     public function testLegacyFixSpace()
     {
         $this->fixer->fixSpace(Tokens::fromCode('<?php xyz("", "", "", "");'), 1);
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Option "ensure_fully_multiline" for rule "method_argument_space" is deprecated and will be removed in version 3.0. Use option "on_multiline" instead.
+     */
+    public function testDeprecatedEnsureFullyMultilineOption()
+    {
+        $this->fixer->configure([
+            'ensure_fully_multiline' => true,
+        ]);
+
+        $expected = <<<'EXPECTED'
+<?php
+functionCall(
+    'a',
+    'b',
+    'c'
+);
+EXPECTED;
+
+        $input = <<<'INPUT'
+<?php
+functionCall(
+    'a', 'b',
+    'c'
+);
+INPUT;
+
+        $this->doTest($expected, $input);
     }
 }
