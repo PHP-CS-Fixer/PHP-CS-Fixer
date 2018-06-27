@@ -23,6 +23,8 @@ before_install:
     # Composer: boost installation
     - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
 
+    - ulimit -c unlimited
+
 jobs:
     include:
         -
