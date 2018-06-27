@@ -878,6 +878,13 @@ Choose from the list of available rules:
 
   *Risky rule: risky when any of the alias functions are overridden.*
 
+  Configuration options:
+
+  - ``sets`` (a subset of ``['@internal', '@IMAP', '@mbreg', '@all']``): list of
+    sets to fix. Defined sets are ``@internal`` (native functions), ``@IMAP``
+    (IMAP functions), ``@mbreg`` (from ``ext-mbstring``) ``@all`` (all listed
+    sets); defaults to ``['@internal', '@IMAP']``
+
 * **no_alternative_syntax**
 
   Replace control structure alternative syntax to use braces.
