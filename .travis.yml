@@ -23,8 +23,6 @@ before_install:
     # Composer: boost installation
     - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
 
-    - ulimit -c unlimited
-
 jobs:
     include:
         -
@@ -115,6 +113,9 @@ jobs:
 
                 # Composer: boost installation
                 - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
+
+                - ulimit -c unlimited
+
             script:
                 - phpdbg -qrr vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
                 - php vendor/bin/php-coveralls -v
