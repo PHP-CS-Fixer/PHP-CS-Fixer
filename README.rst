@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.11.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.12.1/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -758,9 +758,13 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``ensure_fully_multiline`` (``bool``): ensure every argument of a multiline
-    argument list is on its own line; defaults to ``true``
+    argument list is on its own line; defaults to ``false``. DEPRECATED: use
+    option ``on_multiline`` instead
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
+  - ``on_multiline`` (``'ensure_fully_multiline'``, ``'ensure_single_line'``, ``'ignore'``):
+    defines how to handle function arguments lists that contain newlines;
+    defaults to ``'ensure_fully_multiline'``
 
 * **method_chaining_indentation**
 
@@ -790,6 +794,23 @@ Choose from the list of available rules:
   - ``strategy`` (``'new_line_for_chained_calls'``, ``'no_multi_line'``): forbid
     multi-line whitespace or move the semicolon to the new line for chained
     calls; defaults to ``'no_multi_line'``
+
+* **native_constant_invocation** [@Symfony:risky]
+
+  Add leading ``\`` before constant invocation of internal constant to speed
+  up resolving. Constant name match is case-sensitive, except for ``null``,
+  ``false`` and ``true``.
+
+  *Risky rule: risky when any of the constants are namespaced or overridden.*
+
+  Configuration options:
+
+  - ``exclude`` (``array``): list of constants to ignore; defaults to ``['null',
+    'false', 'true']``
+  - ``fix_built_in`` (``bool``): whether to fix constants returned by
+    ``get_defined_constants``. User constants are not accounted in this list
+    and must be specified in the include one; defaults to ``true``
+  - ``include`` (``array``): list of additional constants to fix; defaults to ``[]``
 
 * **native_function_casing** [@Symfony]
 
@@ -1451,7 +1472,7 @@ Choose from the list of available rules:
 
   Instructions must be terminated with a semicolon.
 
-* **set_type_to_cast**
+* **set_type_to_cast** [@Symfony:risky]
 
   Cast shall be used, not ``settype``.
 
@@ -1644,7 +1665,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.11.1/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.12.1/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

@@ -376,7 +376,7 @@ final class ProjectCodeTest extends TestCase
     {
         $dataProviderMethodNames = [];
         $tokens = Tokens::fromCode(file_get_contents(
-            str_replace('\\', DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
+            str_replace('\\', \DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
         ));
 
         foreach ($tokens as $token) {
@@ -417,7 +417,7 @@ final class ProjectCodeTest extends TestCase
                 return sprintf(
                     '%s\\%s%s%s',
                     'PhpCsFixer',
-                    strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
+                    strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                     $file->getRelativePath() ? '\\' : '',
                     $file->getBasename('.'.$file->getExtension())
                 );
@@ -451,7 +451,7 @@ final class ProjectCodeTest extends TestCase
             static function (SplFileInfo $file) {
                 return sprintf(
                     'PhpCsFixer\\Tests\\%s%s%s',
-                    strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
+                    strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                     $file->getRelativePath() ? '\\' : '',
                     $file->getBasename('.'.$file->getExtension())
                 );

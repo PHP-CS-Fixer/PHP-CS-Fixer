@@ -12,22 +12,23 @@
 
 namespace PhpCsFixer\Tests\Differ;
 
-use PhpCsFixer\Differ\UnifiedDiffer;
+use PhpCsFixer\Differ\FullDiffer;
 
 /**
  * @author SpacePossum
  *
  * @internal
  *
- * @covers \PhpCsFixer\Differ\UnifiedDiffer
+ * @covers \PhpCsFixer\Differ\FullDiffer
  */
-final class UnifiedDifferTest extends AbstractDifferTestCase
+final class FullDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsDiff()
     {
         $diff = '--- Original
 +++ New
-@@ -2,7 +2,7 @@
+@@ -1,10 +1,10 @@
+ <?php
  '.'
  function baz($options)
  {
@@ -36,8 +37,10 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
          throw new \InvalidArgumentException();
      }
  '.'
+     return json_encode($options);
+ }
 ';
-        $differ = new UnifiedDiffer();
+        $differ = new FullDiffer();
 
         $this->assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }

@@ -125,16 +125,6 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                 "<?php xyz(\$a=10 , \$b=20 ,\t \$c=30);",
                 ['keep_multiple_spaces_after_comma' => true],
             ],
-            'test method call with \n not affected' => [
-                "<?php xyz(\$a=10, \$b=20,\n                    \$c=30);",
-                null,
-                ['ensure_fully_multiline' => false],
-            ],
-            'test method call with \r\n not affected' => [
-                "<?php xyz(\$a=10, \$b=20,\r\n                    \$c=30);",
-                null,
-                ['ensure_fully_multiline' => false],
-            ],
             'test method call with multiple spaces (II)' => [
                 '<?php xyz($a=10, $b=20, $this->foo(), $c=30);',
                 '<?php xyz($a=10,$b=20 ,         $this->foo() ,$c=30);',
@@ -172,73 +162,6 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                 '<?php xyz($a=10,    /*comment1*/ $b=2000, /*comment2*/ $c=30);',
                 '<?php xyz($a=10,    /*comment1*/ $b=2000,/*comment2*/ $c=30);',
                 ['keep_multiple_spaces_after_comma' => true],
-            ],
-            'must keep align comments' => [
-                '<?php function xyz(
-                    $a=10,      //comment1
-                    $b=20,      //comment2
-                    $c=30) {
-                }',
-                null,
-                ['ensure_fully_multiline' => false],
-            ],
-            'must keep align comments (2)' => [
-                '<?php function xyz(
-                    $a=10,  //comment1
-                    $b=2000,//comment2
-                    $c=30) {
-                }',
-                null,
-                ['ensure_fully_multiline' => false],
-            ],
-            'multiline comments also must be ignored (I)' => [
-                '<?php function xyz(
-                    $a=10,  /* comment1a
-                               comment1b
-                            */
-                    $b=2000,/* comment2a
-                        comment 2b
-                        comment 2c */
-                    $c=30) {
-                }',
-                null,
-                ['ensure_fully_multiline' => false],
-            ],
-            'multiline comments also must be ignored (II)' => [
-                '<?php
-                    function xyz(
-                        $a=10, /* multiline comment
-                                 not at the end of line
-                                */ $b=2000,
-                        $a2=10 /* multiline comment
-                                 not at the end of line
-                                */ , $b2=2000,
-                        $c=30) {
-                    }',
-                '<?php
-                    function xyz(
-                        $a=10, /* multiline comment
-                                 not at the end of line
-                                */ $b=2000,
-                        $a2=10 /* multiline comment
-                                 not at the end of line
-                                */ ,$b2=2000,
-                        $c=30) {
-                    }',
-                ['ensure_fully_multiline' => false],
-            ],
-            'multi line testing method arguments' => [
-                '<?php function xyz(
-                    $a=10,
-                    $b=20,
-                    $c=30) {
-                }',
-                '<?php function xyz(
-                    $a=10 ,
-                    $b=20,
-                    $c=30) {
-                }',
-                ['ensure_fully_multiline' => false],
             ],
             'multi line testing method call' => [
                 '<?php xyz(
@@ -293,21 +216,13 @@ EOTXTb
     );
 ",
             ],
-            [
+            'with_random_comments' => [
                 '<?php xyz#
  (#
 ""#
 ,#
 $a#
 );',
-            ],
-            [
-                "<?php xyz(\$a=10,\n\$b=20);",
-                "<?php xyz(\$a=10,   \n\$b=20);",
-                [
-                    'keep_multiple_spaces_after_comma' => true,
-                    'ensure_fully_multiline' => false,
-                ],
             ],
             'test half-multiline function becomes fully-multiline' => [
                 <<<'EXPECTED'
@@ -679,6 +594,141 @@ $argv);
 INPUT
                 ,
             ],
+            'ensure_single_line' => [
+                <<<'EXPECTED'
+<?php
+function foo($a, $b) {
+    // foo
+}
+foo($a, $b);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+function foo(
+    $a,
+    $b
+) {
+    // foo
+}
+foo(
+    $a,
+    $b
+);
+INPUT
+                ,
+                ['on_multiline' => 'ensure_single_line'],
+            ],
+            'ensure_single_line_with_random_comments' => [
+                <<<'EXPECTED'
+<?php
+function foo(/* foo */// bar
+    $a, /* foo */// bar
+    $b#foo
+) {
+    // foo
+}
+foo(/* foo */// bar
+    $a, /* foo */// bar
+    $b#foo
+);
+EXPECTED
+                ,
+                null,
+                ['on_multiline' => 'ensure_single_line'],
+            ],
+            'ensure_single_line_with_consecutive_newlines' => [
+                <<<'EXPECTED'
+<?php
+function foo($a, $b) {
+    // foo
+}
+foo($a, $b);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+function foo(
+
+
+    $a,
+
+
+    $b
+
+
+) {
+    // foo
+}
+foo(
+
+
+    $a,
+
+
+    $b
+
+
+);
+INPUT
+                ,
+                ['on_multiline' => 'ensure_single_line'],
+            ],
+            'ensure_single_line_methods' => [
+                <<<'EXPECTED'
+<?php
+class Foo {
+    public static function foo1($a, $b, $c) {}
+    private function foo2($a, $b, $c) {}
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+class Foo {
+    public static function foo1(
+        $a,
+        $b,
+        $c
+    ) {}
+    private function foo2(
+        $a,
+        $b,
+        $c
+    ) {}
+}
+INPUT
+                ,
+                ['on_multiline' => 'ensure_single_line'],
+            ],
+            'ensure_single_line_keep_spaces_after_comma' => [
+                <<<'EXPECTED'
+<?php
+function foo($a,    $b) {
+    // foo
+}
+foo($a,    $b);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+function foo(
+    $a,
+    $b
+) {
+    // foo
+}
+foo(
+    $a,
+    $b
+);
+INPUT
+                ,
+                [
+                    'on_multiline' => 'ensure_single_line',
+                    'keep_multiple_spaces_after_comma' => true,
+                ],
+            ],
         ];
     }
 
@@ -699,6 +749,112 @@ INPUT
             [
                 '<?php function A($c, ...$a){}',
                 '<?php function A($c ,...$a){}',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixDeprecatedCases
+     *
+     * @group legacy
+     * @expectedDeprecation Option "ensure_fully_multiline" for rule "method_argument_space" is deprecated and will be removed in version 4.0. Use option "on_multiline" instead.
+     *
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $configuration
+     */
+    public function testFixDeprecated($expected, $input = null, array $configuration = null)
+    {
+        $this->testFix($expected, $input, $configuration);
+    }
+
+    public function provideFixDeprecatedCases()
+    {
+        return [
+            'test method call with \n not affected' => [
+                "<?php xyz(\$a=10, \$b=20,\n                    \$c=30);",
+                null,
+                ['ensure_fully_multiline' => false],
+            ],
+            'test method call with \r\n not affected' => [
+                "<?php xyz(\$a=10, \$b=20,\r\n                    \$c=30);",
+                null,
+                ['ensure_fully_multiline' => false],
+            ],
+            'must keep align comments' => [
+                '<?php function xyz(
+                    $a=10,      //comment1
+                    $b=20,      //comment2
+                    $c=30) {
+                }',
+                null,
+                ['ensure_fully_multiline' => false],
+            ],
+            'must keep align comments (2)' => [
+                '<?php function xyz(
+                    $a=10,  //comment1
+                    $b=2000,//comment2
+                    $c=30) {
+                }',
+                null,
+                ['ensure_fully_multiline' => false],
+            ],
+            'multiline comments also must be ignored (I)' => [
+                '<?php function xyz(
+                    $a=10,  /* comment1a
+                               comment1b
+                            */
+                    $b=2000,/* comment2a
+                        comment 2b
+                        comment 2c */
+                    $c=30) {
+                }',
+                null,
+                ['ensure_fully_multiline' => false],
+            ],
+            'multiline comments also must be ignored (II)' => [
+                '<?php
+                    function xyz(
+                        $a=10, /* multiline comment
+                                 not at the end of line
+                                */ $b=2000,
+                        $a2=10 /* multiline comment
+                                 not at the end of line
+                                */ , $b2=2000,
+                        $c=30) {
+                    }',
+                '<?php
+                    function xyz(
+                        $a=10, /* multiline comment
+                                 not at the end of line
+                                */ $b=2000,
+                        $a2=10 /* multiline comment
+                                 not at the end of line
+                                */ ,$b2=2000,
+                        $c=30) {
+                    }',
+                ['ensure_fully_multiline' => false],
+            ],
+            'multi line testing method arguments' => [
+                '<?php function xyz(
+                    $a=10,
+                    $b=20,
+                    $c=30) {
+                }',
+                '<?php function xyz(
+                    $a=10 ,
+                    $b=20,
+                    $c=30) {
+                }',
+                ['ensure_fully_multiline' => false],
+            ],
+            'keep_multiple_spaces_after_comma_with_newlines' => [
+                "<?php xyz(\$a=10,\n\$b=20);",
+                "<?php xyz(\$a=10,   \n\$b=20);",
+                [
+                    'keep_multiple_spaces_after_comma' => true,
+                    'ensure_fully_multiline' => false,
+                ],
             ],
         ];
     }

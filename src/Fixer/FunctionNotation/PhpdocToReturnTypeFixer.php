@@ -119,7 +119,7 @@ function my_foo()
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_FUNCTION);
+        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_FUNCTION);
     }
 
     /**
@@ -195,7 +195,7 @@ function my_foo()
 
                 $isNullable = true;
 
-                if (PHP_VERSION_ID < 70100) {
+                if (\PHP_VERSION_ID < 70100) {
                     continue;
                 }
 
@@ -212,7 +212,7 @@ function my_foo()
                 continue;
             }
 
-            if (isset($this->versionSpecificTypes[$returnType]) && PHP_VERSION_ID < $this->versionSpecificTypes[$returnType]) {
+            if (isset($this->versionSpecificTypes[$returnType]) && \PHP_VERSION_ID < $this->versionSpecificTypes[$returnType]) {
                 continue;
             }
 

@@ -121,7 +121,7 @@ class SomeClass
      */
     private function fixFunctionReturnType(Tokens $tokens, $index)
     {
-        if (PHP_VERSION_ID < 70000) {
+        if (\PHP_VERSION_ID < 70000) {
             return;
         }
 

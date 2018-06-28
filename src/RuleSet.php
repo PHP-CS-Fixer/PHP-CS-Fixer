@@ -77,7 +77,7 @@ final class RuleSet implements RuleSetInterface
             'lowercase_static_reference' => true,
             'magic_constant_casing' => true,
             'method_argument_space' => [
-                'ensure_fully_multiline' => false,
+                'on_multiline' => 'ignore',
             ],
             'native_function_casing' => true,
             'new_with_braces' => true,
@@ -159,6 +159,14 @@ final class RuleSet implements RuleSetInterface
             'function_to_constant' => true,
             'is_null' => true,
             'modernize_types_casting' => true,
+            'native_constant_invocation' => [
+                'fix_built_in' => false,
+                'include' => [
+                    'DIRECTORY_SEPARATOR',
+                    'PHP_SAPI',
+                    'PHP_VERSION_ID',
+                ],
+            ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
             'non_printable_character' => [
@@ -167,6 +175,7 @@ final class RuleSet implements RuleSetInterface
             'php_unit_construct' => true,
             'psr4' => true,
             'self_accessor' => true,
+            'set_type_to_cast' => true,
         ],
         '@DoctrineAnnotation' => [
             'doctrine_annotation_array_assignment' => [

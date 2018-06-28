@@ -76,7 +76,7 @@ final class Transformers
      */
     private function registerTransformer(TransformerInterface $transformer)
     {
-        if (PHP_VERSION_ID >= $transformer->getRequiredPhpVersionId()) {
+        if (\PHP_VERSION_ID >= $transformer->getRequiredPhpVersionId()) {
             $this->items[] = $transformer;
         }
     }

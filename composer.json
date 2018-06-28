@@ -41,10 +41,10 @@
         "mikey179/vfsStream": "^1.6",
         "php-coveralls/php-coveralls": "^2.1",
         "php-cs-fixer/accessible-object": "^1.0",
-        "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.0",
-        "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.0",
+        "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.0.1",
+        "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.0.1",
         "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1",
-        "phpunitgoodpractices/traits": "^1.4",
+        "phpunitgoodpractices/traits": "^1.5",
         "symfony/phpunit-bridge": "^4.0"
     },
     "suggest": {

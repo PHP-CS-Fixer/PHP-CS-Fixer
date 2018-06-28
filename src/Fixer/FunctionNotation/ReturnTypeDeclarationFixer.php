@@ -62,7 +62,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT::T_TYPE_COLON);
+        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT::T_TYPE_COLON);
     }
 
     /**
