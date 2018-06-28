@@ -2,8 +2,6 @@ language: php
 
 sudo: false
 
-dist: precise
-
 git:
     depth: 1
 
