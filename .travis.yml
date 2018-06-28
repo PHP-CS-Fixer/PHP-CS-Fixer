@@ -2,6 +2,8 @@ language: php
 
 sudo: false
 
+dist: precise
+
 git:
     depth: 1
 
@@ -113,8 +115,6 @@ jobs:
 
                 # Composer: boost installation
                 - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
-
-                - ulimit -n unlimited
 
             script:
                 - phpdbg -qrr vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
