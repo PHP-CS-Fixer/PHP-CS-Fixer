@@ -45,7 +45,7 @@ Changelog for v2.12.0
 * minor #3792 DX: Upgrade DX deps (keradus)
 * minor #3797 DX: ProjectCodeTest - shall not depends on xdebug/phpdbg anymore (keradus, SpacePossum)
 * minor #3800 Symfony:risky ruleset: include set_type_to_cast rule (keradus)
-* minor #3801 NativeFunctionInvocationFixe - fix buggy config validation (keradus, SpacePossum)
+* minor #3801 NativeFunctionInvocationFixer - fix buggy config validation (keradus, SpacePossum)
 
 Changelog for v2.11.2
 ---------------------
@@ -107,7 +107,7 @@ Changelog for v2.11.2
 * minor #3692 DX: Optimize tests (julienfalque)
 * minor #3700 README.rst - Format all code-like strings in fixer description (ntzm)
 * minor #3701 Use correct casing for "PHPDoc" (ntzm)
-* minor #3703 DX: InstallViaComposerTets - groom naming (keradus)
+* minor #3703 DX: InstallViaComposerTest - groom naming (keradus)
 * minor #3704 DX: Tokens - fix naming (keradus)
 * minor #3706 Update homebrew installation instructions (ntzm)
 * minor #3713 Use HTTPS whenever possible (fabpot)
@@ -772,7 +772,7 @@ Changelog for v2.2.20
 * bug #3790 ProcessLinter - don't execute external process without timeout! It can freeze! (keradus)
 * minor #3548 Make shell scripts POSIX-compatible (EvgenyOrekhov, keradus)
 * minor #3568 New Autoreview: Correct option casing (ntzm)
-* minor #3590 Use XdebugHandler to avoid perormance penalty (AJenbo, keradus)
+* minor #3590 Use XdebugHandler to avoid performance penalty (AJenbo, keradus)
 * minor #3607 PhpdocVarWithoutNameFixer - update sample with @ type (SpacePossum)
 * minor #3617 Tests stability patches (Tom Klingenberg, keradus)
 * minor #3627 Fix tests execution under phpdbg (keradus)
@@ -1865,7 +1865,7 @@ Changelog for v1.11
 * feature #1484 Added ArrayElementNoSpaceBeforeCommaFixer and ArrayElementWhiteSpaceAfterCommaFixer (amarczuk)
 * feature #1449 PhpUnitConstructFixer - Fix more use cases (SpacePossum)
 * feature #1382 Added PhpdocTypesFixer (GrahamCampbell)
-* feature #1384 Add intergration tests (SpacePossum)
+* feature #1384 Add integration tests (SpacePossum)
 * feature #1349 Added FunctionTypehintSpaceFixer (keradus)
 * minor #1562 Fix invalid PHP code samples in utests (SpacePossum)
 * minor #1560 Fixed project name in xdebug warning (gharlan)
