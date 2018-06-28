@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.12.1
+---------------------
+
+* bug #3808 LowercaseStaticReferenceFixer - Fix constants handling (kubawerlos, keradus)
+* bug #3815 NoSuperfluousPhpdocTagsFixer - support array/callable type hints (gharlan)
+* minor #3824 DX: Support PHPUnit 7.2 (keradus)
+* minor #3825 UX: Provide full diff for code samples (keradus)
+
 Changelog for v2.12.0
 ---------------------
 
