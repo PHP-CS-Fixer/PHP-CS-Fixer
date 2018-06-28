@@ -21,12 +21,13 @@ use PhpCsFixer\Fixer\FixerInterface;
  */
 class Config implements ConfigInterface
 {
+    private static $defaultIndent = '    ';
     private $cacheFile = '.php_cs.cache';
     private $customFixers = [];
     private $finder;
     private $format = 'txt';
     private $hideProgress = false;
-    private $indent = '    ';
+    private $indent; // default to $defaultIndent
     private $isRiskyAllowed = false;
     private $lineEnding = "\n";
     private $name;
@@ -37,6 +38,14 @@ class Config implements ConfigInterface
     public function __construct($name = 'default')
     {
         $this->name = $name;
+        $this->indent = Config::$defaultIndent;
+    }
+
+    /**
+     * Used by --default-indentation option.  Not recommend to be used in .php_cs config file.
+     */
+    public static function setDefaultIndent($indent) {
+        Config::$defaultIndent = $indent;
     }
 
     /**
