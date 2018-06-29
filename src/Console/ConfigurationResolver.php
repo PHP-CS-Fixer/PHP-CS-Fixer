@@ -119,6 +119,7 @@ final class ConfigurationResolver
         'allow-risky' => null,
         'cache-file' => null,
         'config' => null,
+        'default-indentation' => null,
         'diff' => null,
         'diff-format' => null,
         'dry-run' => null,
@@ -167,6 +168,9 @@ final class ConfigurationResolver
 
         foreach ($options as $name => $value) {
             $this->setOption($name, $value);
+        }
+        if (null !== $this->options['default-indentation']) {
+            $this->defaultConfig->setIndent($this->options['default-indentation']);
         }
     }
 
@@ -241,6 +245,12 @@ final class ConfigurationResolver
 
             if (null === $this->config) {
                 $this->config = $this->defaultConfig;
+            } elseif (null !== $this->options['default-indentation']) {
+                if ($this->config instanceof \PhpCsFixer\Config) { // only support \PhpCsFixer\Config for --default-indentation option
+                    if (!$this->config->isIndentSet()) {
+                        $this->config->setIndent($this->options['default-indentation']);
+                    }
+                }
             }
         }
 

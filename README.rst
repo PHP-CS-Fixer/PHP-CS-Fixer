@@ -188,6 +188,8 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 
     $ php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
 
+The ``--default-indentation`` option (e.g. pass ``"  "`` or ``"\t"``) will use given indentation instead of 4 spaces as default.
+
 The ``--dry-run`` flag will run the fixer without making changes to your files.
 
 The ``--diff`` flag can be used to let the fixer output all the changes it makes.
