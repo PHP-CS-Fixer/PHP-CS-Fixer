@@ -29,6 +29,7 @@ class StreamWrapper
 		});
 
 		--self::$openResourceCount;
+		var_dump(self::$openResourceCount);
 	}
 
 	public function stream_read($count)
@@ -94,9 +95,5 @@ class StreamWrapper
 	}
 }
 
-stream_wrapper_unregister('file');
-stream_wrapper_register('file', StreamWrapper::class);
-
-register_shutdown_function(function () {
-	var_dump(StreamWrapper::$openResourceCount);
-});
+//stream_wrapper_unregister('file');
+//stream_wrapper_register('file', StreamWrapper::class);
