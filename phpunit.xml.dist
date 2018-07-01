@@ -9,7 +9,7 @@
     beStrictAboutOutputDuringTests="true"
     beStrictAboutTestsThatDoNotTestAnything="true"
     beStrictAboutTodoAnnotatedTests="true"
-    bootstrap="./tests/bootstrap.php"
+    bootstrap="./vendor/autoload.php"
     colors="true"
     columns="max"
     convertErrorsToExceptions="true"
