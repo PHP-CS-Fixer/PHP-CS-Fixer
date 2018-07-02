@@ -184,7 +184,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']],
             [$fixers['phpdoc_to_return_type'], $fixers['fully_qualified_strict_types']],
             [$fixers['phpdoc_to_return_type'], $fixers['return_type_declaration']],
-            [$fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']],
             [$fixers['pow_to_exponentiation'], $fixers['binary_operator_spaces']],
             [$fixers['pow_to_exponentiation'], $fixers['method_argument_space']],
             [$fixers['pow_to_exponentiation'], $fixers['native_function_casing']],
@@ -276,7 +275,6 @@ final class FixerFactoryTest extends TestCase
             'method_separation,indentation_type.test',
             'no_empty_statement,multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
-            'no_empty_statement,no_singleline_whitespace_before_semicolons.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
             'phpdoc_no_package,phpdoc_order.test',
@@ -284,7 +282,6 @@ final class FixerFactoryTest extends TestCase
             'phpdoc_order,phpdoc_trim.test',
             'phpdoc_separation,phpdoc_trim.test',
             'phpdoc_summary,phpdoc_trim.test',
-            'phpdoc_var_without_name,phpdoc_trim.test',
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
