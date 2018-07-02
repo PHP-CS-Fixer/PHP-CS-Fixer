@@ -205,7 +205,7 @@ class Foo implements FooInterface
         yield 1;
 
         // generator delegation
-        yield from $this->gen2();
+        yield FROM $this->gen2();
     }
 
     public function gen2()
