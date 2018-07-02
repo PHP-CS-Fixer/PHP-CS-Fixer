@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-06-06T08:29:04Z
+
+Please rebase onto 2.12.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-06T08:30:13Z
+
+we're not doing a 2.2.21?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-06-06T08:32:50Z
+
+Nope: https://medium.com/@keradus/to-make-a-difference-8dce5f7cf9bf
+
+Though branch 2.12 doesn't exist yet, I guess master is fine for now.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-22T11:07:28Z
+
+resolved conflicts after target branch was changed, forced pushed
