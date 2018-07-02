@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: no_empty_statement,no_singleline_whitespace_before_semicolons.
+--RULESET--
+{"no_empty_statement": true, "no_singleline_whitespace_before_semicolons": true}
+--EXPECT--
+<?php    /**/  //
+
+--INPUT--
+<?php  ;  /**/  ;//
