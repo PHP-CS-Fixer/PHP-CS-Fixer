@@ -78,14 +78,14 @@ function foo ($bar) {}
                 $content = $annotation->getContent();
 
                 if (
-                    1 !== Preg::match('/[.。]$/u', $content)
-                    || 0 !== Preg::match('/[.。](?!$)/u', $content, $matches)
+                    1 !== Preg::match('/[.。]\h*$/u', $content)
+                    || 0 !== Preg::match('/[.。](?!\h*$)/u', $content, $matches)
                 ) {
                     continue;
                 }
 
                 $endLine = $doc->getLine($annotation->getEnd());
-                $endLine->setContent(Preg::replace('/(?<![.。])[.。](\s+)$/u', '\1', $endLine->getContent()));
+                $endLine->setContent(Preg::replace('/(?<![.。])[.。]\h*(\H+)$/u', '\1', $endLine->getContent()));
 
                 $startLine = $doc->getLine($annotation->getStart());
                 $optionalTypeRegEx = $annotation->supportTypes()
