@@ -113,6 +113,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurab
                     )
                 ) {
                     $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+                    ++$max;
                 }
 
                 continue;
