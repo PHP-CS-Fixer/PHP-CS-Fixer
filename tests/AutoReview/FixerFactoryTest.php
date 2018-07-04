@@ -183,6 +183,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_to_comment'], $fixers['no_empty_comment']],
             [$fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']],
             [$fixers['phpdoc_to_return_type'], $fixers['fully_qualified_strict_types']],
+            [$fixers['phpdoc_to_return_type'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['phpdoc_to_return_type'], $fixers['return_type_declaration']],
             [$fixers['pow_to_exponentiation'], $fixers['binary_operator_spaces']],
             [$fixers['pow_to_exponentiation'], $fixers['method_argument_space']],
