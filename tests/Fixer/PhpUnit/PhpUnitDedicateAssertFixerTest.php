@@ -279,6 +279,29 @@ $a#
      */
     public function testAssertCount($expected, $input = null)
     {
+        if (null === $input) {
+            $expected = sprintf($expected, 'count');
+        } else {
+            $input = sprintf($input, 'count');
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideTestAssertCountCases
+     */
+    public function testAssertCountFromSizeOf($expected, $input = null)
+    {
+        if (null === $input) {
+            $expected = sprintf($expected, 'sizeof');
+        } else {
+            $input = sprintf($input, 'sizeof');
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -288,29 +311,29 @@ $a#
             // positive fixing
             'assert same' => [
                 '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, count($a));',
+                '<?php $this->assertSame(1, %s($a));',
             ],
             'assert equals' => [
                 '<?php $this->assertCount(2, $b);',
-                '<?php $this->assertEquals(2, count($b));',
+                '<?php $this->assertEquals(2, %s($b));',
             ],
             // negative fixing
             'assert not same' => [
                 '<?php $this->assertNotCount(11, $c);',
-                '<?php $this->assertNotSame(11, count($c));',
+                '<?php $this->assertNotSame(11, %s($c));',
             ],
             'assert not equals' => [
                 '<?php $this->assertNotCount(122, $d);',
-                '<?php $this->assertNotEquals(122, count($d));',
+                '<?php $this->assertNotEquals(122, %s($d));',
             ],
             // other cases
             'assert same with namespace' => [
                 '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, \COUnt($a));',
+                '<?php $this->assertSame(1, \%s($a));',
             ],
             'no spacing' => [
                 '<?php $this->assertCount(1,$a);',
-                '<?php $this->assertSame(1,count($a));',
+                '<?php $this->assertSame(1,%s($a));',
             ],
             'lot of spacing' => [
                 '<?php $this->assertCount(
@@ -325,7 +348,7 @@ $a#
                 '<?php $this->assertSame(
                 1
                 ,
-                count
+                %s
                 (
                 $a
                 )
@@ -342,12 +365,12 @@ $a#
                     $this->assertCount(6, $a, "def");
                 ',
                 '<?php
-                    $this->assertSame(1, count($a));
-                    $this->assertSame(2, count($a));
-                    $this->assertEquals(3, count($a));
-                    $this->assertNotSame(4, count($a));
-                    $this->assertEquals(5, count($a), "abc");
-                    $this->assertSame(6, \count($a), "def");
+                    $this->assertSame(1, %1$s($a));
+                    $this->assertSame(2, %1$s($a));
+                    $this->assertEquals(3, %1$s($a));
+                    $this->assertNotSame(4, %1$s($a));
+                    $this->assertEquals(5, %1$s($a), "abc");
+                    $this->assertSame(6, \%1$s($a), "def");
                 ',
             ],
             'comment handling' => [
@@ -363,7 +386,7 @@ $a# 5
                 '<?php $this->assertSame(# 0
 1# 1
 ,# 2
-count# 3
+%s# 3
 (# 4
 $a# 5
 )# 6
@@ -372,33 +395,75 @@ $a# 5
             ],
             'do not fix 1' => [
                 '<?php
-                    $this->assertSame($b, count($a));
+                    $this->assertSame($b, %s($a));
                 ',
             ],
             'do not fix 2' => [
                 '<?php
-                    $this->assertSame(b(), count($a));
+                    $this->assertSame(b(), %s($a));
                 ',
             ],
             'do not fix 3' => [
                 '<?php
-                    $this->assertSame(1.0, count($a));
+                    $this->assertSame(1.0, %s($a));
                 ',
             ],
             'do not fix 4' => [
                 '<?php
-                    $this->assertSame(1); // overridden
+                    $this->assertSame(1);
                 ',
             ],
             'do not fix 5' => [
                 '<?php
-                    $this->assertSame(1, "count");
+                    $this->assertSame(1, "%s");
                 ',
             ],
             'do not fix 6' => [
                 '<?php
-                    $this->test(); // $this->assertSame($b, count($a));
+                    $this->test(); // $this->assertSame($b, %s($a));
                 ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideTestAssertCountCasingCases
+     */
+    public function testAssertCountCasing($expected, $input)
+    {
+        $expected = sprintf($expected, 'count');
+        $input = sprintf($input, 'COUNT');
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideTestAssertCountCasingCases
+     */
+    public function testAssertCountFromSizeOfCasing($expected, $input)
+    {
+        $expected = sprintf($expected, 'sizeof');
+        $input = sprintf($input, 'SIZEOF');
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestAssertCountCasingCases()
+    {
+        return [
+            [
+                '<?php $this->assertCount(1, $a);',
+                '<?php $this->assertSame(1, %s($a));',
+            ],
+            [
+                '<?php $this->assertCount(1, $a);',
+                '<?php $this->assertSame(1, \%s($a));',
             ],
         ];
     }
