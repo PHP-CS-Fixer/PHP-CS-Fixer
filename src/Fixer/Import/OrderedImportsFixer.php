@@ -289,7 +289,9 @@ use Bar;
         $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first['namespace']));
         $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
 
-        return strcasecmp($firstNamespace, $secondNamespace);
+        $sortFunction = isset($this->configuration['sort_function']) ? $this->configuration['sort_function'] : 'strcasecmp';
+
+        return $sortFunction($firstNamespace, $secondNamespace);
     }
 
     /**
