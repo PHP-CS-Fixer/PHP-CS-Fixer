@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /** @var array<string, string> stores alias (key) - master (value) functions mapping */
     private $aliases = [];
