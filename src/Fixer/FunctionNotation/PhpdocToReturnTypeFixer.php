@@ -128,8 +128,8 @@ function my_foo()
     public function getPriority()
     {
         // should be run after PhpdocScalarFixer.
-        // should be run before ReturnTypeDeclarationFixer, FullyQualifiedStrictTypesFixer.
-        return 1;
+        // should be run before ReturnTypeDeclarationFixer, FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer.
+        return 8;
     }
 
     /**
