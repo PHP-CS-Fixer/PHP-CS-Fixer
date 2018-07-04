@@ -265,7 +265,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``default`` (``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``,
-    ``'single_space'``, ``null``): default fix strategy; defaults to ``'single_space'``
+    ``'no_space'``, ``'single_space'``, ``null``): default fix strategy; defaults to
+    ``'single_space'``
   - ``operators`` (``array``): dictionary of ``binary operator`` => ``fix strategy``
     values that differ from the default strategy; defaults to ``[]``
 
