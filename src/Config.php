@@ -26,7 +26,7 @@ class Config implements ConfigInterface
     private $finder;
     private $format = 'txt';
     private $hideProgress = false;
-    private $indent = '    ';
+    private $indent; // initializes to null for a state meaning not explicitly set -> getIndent() will return default '    '.  @see isIndentSet()
     private $isRiskyAllowed = false;
     private $lineEnding = "\n";
     private $name;
@@ -93,10 +93,22 @@ class Config implements ConfigInterface
 
     /**
      * {@inheritdoc}
+     *
+     * If setIndent() is not called with non-null indent, the indent given in
+     * fix command's --default-indentation option is used (for this class only).
+     * Otherwise, it use '    '.
      */
     public function getIndent()
     {
-        return $this->indent;
+        return null !== $this->indent ? $this->indent : '    ';
+    }
+
+    /**
+     * Check whether a (non-null) indent is set via setIndent().
+     */
+    public function isIndentSet()
+    {
+        return null !== $this->indent;
     }
 
     /**
