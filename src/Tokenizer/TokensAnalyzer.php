@@ -297,6 +297,73 @@ final class TokensAnalyzer
     }
 
     /**
+     * Check if the T_STRING under given index is a constant invocation.
+     *
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isConstantInvocation($index)
+    {
+        if (!$this->tokens[$index]->isGivenKind(T_STRING)) {
+            throw new \LogicException(sprintf('No T_STRING at given index %d, got %s.', $index, $this->tokens[$index]->getName()));
+        }
+
+        $nextIndex = $this->tokens->getNextMeaningfulToken($index);
+
+        if (
+            $this->tokens[$nextIndex]->equalsAny(['(', '{']) ||
+            $this->tokens[$nextIndex]->isGivenKind([T_AS, T_DOUBLE_COLON, T_ELLIPSIS, T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, T_VARIABLE])
+        ) {
+            return false;
+        }
+
+        $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
+
+        if ($this->tokens[$prevIndex]->isGivenKind([T_AS, T_CLASS, T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_GOTO, CT::T_GROUP_IMPORT_BRACE_OPEN, T_INTERFACE, T_OBJECT_OPERATOR, T_TRAIT])) {
+            return false;
+        }
+
+        while ($this->tokens[$prevIndex]->isGivenKind([CT::T_NAMESPACE_OPERATOR, T_NS_SEPARATOR, T_STRING])) {
+            $prevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
+        }
+
+        if ($this->tokens[$prevIndex]->isGivenKind([CT::T_CONST_IMPORT, T_EXTENDS, CT::T_FUNCTION_IMPORT, T_IMPLEMENTS, T_INSTANCEOF, T_INSTEADOF, T_NAMESPACE, T_NEW, T_USE, CT::T_USE_TRAIT])) {
+            return false;
+        }
+
+        // `FOO & $bar` could be:
+        //   - function reference parameter: function baz(Foo & $bar) {}
+        //   - bit operator: $x = FOO & $bar;
+        if ($this->tokens[$nextIndex]->equals('&') && $this->tokens[$this->tokens->getNextMeaningfulToken($nextIndex)]->isGivenKind(T_VARIABLE)) {
+            $checkIndex = $this->tokens->getPrevTokenOfKind($prevIndex, [';', '{', '}', [T_FUNCTION], [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO]]);
+
+            if ($this->tokens[$checkIndex]->isGivenKind(T_FUNCTION)) {
+                return false;
+            }
+        }
+
+        // check for `implements`/`use` list
+        if ($this->tokens[$prevIndex]->equals(',')) {
+            $checkIndex = $prevIndex;
+            while ($this->tokens[$checkIndex]->equalsAny([',', [T_AS], [CT::T_NAMESPACE_OPERATOR], [T_NS_SEPARATOR], [T_STRING]])) {
+                $checkIndex = $this->tokens->getPrevMeaningfulToken($checkIndex);
+            }
+
+            if ($this->tokens[$checkIndex]->isGivenKind([CT::T_GROUP_IMPORT_BRACE_OPEN, T_IMPLEMENTS, CT::T_USE_TRAIT])) {
+                return false;
+            }
+        }
+
+        // check for goto label
+        if ($this->tokens[$nextIndex]->equals(':') && $this->tokens[$prevIndex]->equalsAny([';', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO]])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Checks if there is an unary successor operator under given index.
      *
      * @param int $index
