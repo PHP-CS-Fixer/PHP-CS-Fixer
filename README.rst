@@ -85,6 +85,15 @@ Globally (homebrew)
 
     $ brew install php-cs-fixer
 
+Locally (PHIVE)
+~~~~~~~~~~~~~~~
+
+Install `PHIVE <https://phar.io>`_ and issue the following command:
+
+.. code-block:: bash
+
+    $ phive install php-cs-fixer # use `--global` for global install
+
 Update
 ------
 
@@ -123,6 +132,13 @@ You can update ``php-cs-fixer`` through this command:
 .. code-block:: bash
 
     $ brew upgrade php-cs-fixer
+
+Locally (PHIVE)
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ phive update php-cs-fixer
 
 Usage
 -----
