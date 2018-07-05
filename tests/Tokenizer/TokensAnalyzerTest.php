@@ -506,6 +506,216 @@ preg_replace_callback(
     /**
      * @param string $source
      *
+     * @dataProvider provideIsConstantInvocationCases
+     */
+    public function testIsConstantInvocation($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isLambda) {
+            $this->assertSame($isLambda, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
+        }
+    }
+
+    public function provideIsConstantInvocationCases()
+    {
+        return [
+            [
+                '<?php echo FOO;',
+                [3 => true],
+            ],
+            [
+                '<?php echo \FOO;',
+                [4 => true],
+            ],
+            [
+                '<?php echo Foo\Bar\BAR;',
+                [3 => false, 5 => false, 7 => true],
+            ],
+            [
+                '<?php echo FOO ? BAR : BAZ;',
+                [3 => true, 7 => true, 11 => true],
+            ],
+            [
+                '<?php echo FOO & BAR | BAZ;',
+                [3 => true, 7 => true, 11 => true],
+            ],
+            [
+                '<?php echo FOO & $bar;',
+                [3 => true],
+            ],
+            [
+                '<?php echo FOO[BAR];',
+                [3 => true, 5 => true],
+            ],
+            [
+                '<?php func(FOO, Bar\BAZ);',
+                [3 => true, 8 => true],
+            ],
+            [
+                '<?php if (FOO && BAR) {}',
+                [4 => true, 8 => true],
+            ],
+            [
+                '<?php return FOO * X\Y\BAR;',
+                [3 => true, 11 => true],
+            ],
+            [
+                '<?php function x() { yield FOO; yield FOO => BAR; }',
+                [11 => true, 16 => true, 20 => true],
+            ],
+            [
+                '<?php switch ($a) { case FOO: break; }',
+                [11 => true],
+            ],
+            [
+                '<?php namespace FOO;',
+                [3 => false],
+            ],
+            [
+                '<?php use FOO;',
+                [3 => false],
+            ],
+            [
+                '<?php use function FOO\BAR\BAZ;',
+                [5 => false, 7 => false, 9 => false],
+            ],
+            [
+                '<?php namespace X; const FOO = 1;',
+                [8 => false],
+            ],
+            [
+                '<?php class FOO {}',
+                [3 => false],
+            ],
+            [
+                '<?php interface FOO {}',
+                [3 => false],
+            ],
+            [
+                '<?php trait FOO {}',
+                [3 => false],
+            ],
+            [
+                '<?php class x extends FOO {}',
+                [7 => false],
+            ],
+            [
+                '<?php class x implements FOO {}',
+                [7 => false],
+            ],
+            [
+                '<?php class x implements FOO, BAR, BAZ {}',
+                [7 => false, 10 => false, 13 => false],
+            ],
+            [
+                '<?php class x { const FOO = 1; }',
+                [9 => false],
+            ],
+            [
+                '<?php class x { use FOO; }',
+                [9 => false],
+            ],
+            [
+                '<?php class x { use FOO, BAR { FOO::BAZ insteadof BAR; } }',
+                [9 => false, 12 => false, 16 => false, 18 => false, 22 => false],
+            ],
+            [
+                '<?php function x (FOO $foo, BAR &$bar, BAZ ...$baz) {}',
+                [6 => false, 11 => false, 17 => false],
+            ],
+            [
+                '<?php FOO();',
+                [1 => false],
+            ],
+            [
+                '<?php FOO::x();',
+                [1 => false],
+            ],
+            [
+                '<?php x::FOO();',
+                [3 => false],
+            ],
+            [
+                '<?php $foo instanceof FOO;',
+                [5 => false],
+            ],
+            [
+                '<?php try {} catch (FOO $e) {}',
+                [9 => false],
+            ],
+            [
+                '<?php FOO: goto FOO;',
+                [1 => false, 6 => false],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideIsConstantInvocation70Cases
+     * @requires PHP 7.0
+     */
+    public function testIsConstantInvocation70($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expectedValue) {
+            $this->assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
+        }
+    }
+
+    public function provideIsConstantInvocation70Cases()
+    {
+        return [
+            [
+                '<?php function x(): FOO {}',
+                [8 => false],
+            ],
+            [
+                '<?php use X\Y\{FOO, BAR as BAR2, BAZ};',
+                [8 => false, 11 => false, 15 => false, 18 => false],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideIsConstantInvocation71Cases
+     * @requires PHP 7.1
+     */
+    public function testIsConstantInvocation71($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expectedValue) {
+            $this->assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
+        }
+    }
+
+    public function provideIsConstantInvocation71Cases()
+    {
+        return [
+            [
+                '<?php function x(?FOO $foo) {}',
+                [6 => false],
+            ],
+            [
+                '<?php function x(): ?FOO {}',
+                [9 => false],
+            ],
+            [
+                '<?php try {} catch (FOO|BAR|BAZ $e) {}',
+                [9 => false, 11 => false, 13 => false],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
+     *
      * @dataProvider provideIsUnarySuccessorOperatorCases
      */
     public function testIsUnarySuccessorOperator($source, array $expected)
