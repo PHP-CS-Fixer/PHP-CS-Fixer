@@ -19,9 +19,9 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
-use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
@@ -155,35 +155,31 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
             }
         }
 
+        $tokenAnalyzer = new TokensAnalyzer($tokens);
+
         $indexes = [];
         foreach ($tokens as $index => $token) {
-            $tokenContent = $token->getContent();
-
             // test if we are at a constant call
             if (!$token->isGivenKind(T_STRING)) {
                 continue;
             }
 
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind(T_AS)) {
-                continue;
-            }
-
-            $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$nextIndex]->equals('(')) {
-                continue;
-            }
-
-            $constantNamePrefix = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$constantNamePrefix]->isGivenKind([CT::T_USE_TRAIT, T_CLASS, T_CONST, T_DOUBLE_COLON, T_EXTENDS, T_FUNCTION, T_IMPLEMENTS, T_INTERFACE, T_NAMESPACE, T_NEW, T_NS_SEPARATOR, T_OBJECT_OPERATOR, T_TRAIT, T_USE])) {
-                continue;
-            }
+            $tokenContent = $token->getContent();
 
             if (!isset($this->constantsToEscape[$tokenContent]) && !isset($this->caseInsensitiveConstantsToEscape[strtolower($tokenContent)])) {
                 continue;
             }
 
             if (isset($useConstantDeclarations[$tokenContent])) {
+                continue;
+            }
+
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                continue;
+            }
+
+            if (!$tokenAnalyzer->isConstantInvocation($index)) {
                 continue;
             }
 
