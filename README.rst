@@ -1549,6 +1549,11 @@ Choose from the list of available rules:
   - ``sort_algorithm`` (``'alpha'``, ``'none'``): the sorting algorithm to apply;
     defaults to ``'alpha'``
 
+* **phpdoc_var_annotation_correct_order** [@PhpCsFixer]
+
+  ``@var`` and ``@type`` annotations must have type and name in the correct
+  order.
+
 * **phpdoc_var_without_name** [@Symfony, @PhpCsFixer]
 
   ``@var`` and ``@type`` annotations should not contain the variable name.
