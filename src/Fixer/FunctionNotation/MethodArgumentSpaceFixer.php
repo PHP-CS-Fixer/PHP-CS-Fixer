@@ -285,6 +285,10 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
         return true;
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $startFunctionIndex
+     */
     private function ensureFunctionFullyMultiline(Tokens $tokens, $startFunctionIndex)
     {
         // find out what the indentation is
@@ -295,17 +299,31 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 [[T_WHITESPACE]]
             );
             $searchIndex = $prevWhitespaceTokenIndex;
-        } while ($prevWhitespaceTokenIndex
+        } while (null !== $prevWhitespaceTokenIndex
             && false === strpos($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n")
         );
-        $existingIndentation = $prevWhitespaceTokenIndex
-            ? ltrim($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n\r")
-            : '';
+
+        if (null === $prevWhitespaceTokenIndex) {
+            $existingIndentation = '';
+        } else {
+            $existingIndentation = $tokens[$prevWhitespaceTokenIndex]->getContent();
+            $lastLineIndex = strrpos($existingIndentation, "\n");
+            $existingIndentation = false === $lastLineIndex
+                ? $existingIndentation
+                : substr($existingIndentation, $lastLineIndex + 1)
+            ;
+        }
 
         $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
+
         if (!$this->isNewline($tokens[$endFunctionIndex - 1])) {
-            $tokens->ensureWhitespaceAtIndex($endFunctionIndex, 0, $this->whitespacesConfig->getLineEnding().$existingIndentation);
+            $tokens->ensureWhitespaceAtIndex(
+                $endFunctionIndex,
+                0,
+                $this->whitespacesConfig->getLineEnding().$existingIndentation
+            );
+
             ++$endFunctionIndex;
         }
 
