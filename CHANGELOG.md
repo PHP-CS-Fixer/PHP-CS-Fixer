@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.12.2
+---------------------
+
+* bug #3823 NativeConstantInvocationFixer - better constant detection (gharlan, SpacePossum, keradus)
+* bug #3832 "yield from" as keyword (SpacePossum)
+* bug #3835 Fix priority between PHPDoc return type fixers (julienfalque, keradus)
+* bug #3839 MethodArgumentSpaceFixer - add empty line incorrectly (SpacePossum)
+* bug #3866 SpaceAfterSemicolonFixer - loop over all tokens (SpacePossum)
+* minor #3817 Update integrations tests (SpacePossum)
+* minor #3829 Fix typos in changelog (mnabialek)
+* minor #3848 Add install/update instructions for PHIVE to the README (SpacePossum)
+* minor #3877 NamespacesAnalyzer - Optimize performance (stof)
+* minor #3878 NativeFunctionInvocationFixer - use the NamespacesAnalyzer to remove duplicated code (stof)
+
 Changelog for v2.12.1
 ---------------------
 
