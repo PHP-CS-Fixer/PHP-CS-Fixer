@@ -202,25 +202,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function works() {}
 }',
             ],
-            'Annotation is removed, the function is one word and we want it to use snake case' => [
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-    /**
-     *
-     */
-    public function test_works() {}
-}',
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-    /**
-     * @test
-     */
-    public function works() {}
-}',
-                ['case' => 'snake'],
-            ],
             'Annotation is added, and it is snake case' => [
                 '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
@@ -236,29 +217,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function test_it_has_snake_case() {}
 }',
                 ['style' => 'annotation'],
-            ],
-            'Annotation is removed, and it is snake case' => [
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-    /**
-     *
-     */
-    public function test_it_has_snake_case() {}
-
-    public function helper_function() {}
-}',
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-    /**
-     * @test
-     */
-    public function it_has_snake_case() {}
-
-    public function helper_function() {}
-}',
-                ['case' => 'snake'],
             ],
             'Annotation gets added, it has an @depends, and we use snake case' => [
                 '<?php
@@ -287,37 +245,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function test_works_fine_too() {}
 }',
                 ['style' => 'annotation'],
-            ],
-            'Annotation gets removed, it has an @depends and we use camel case' => [
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-    /**
-     *
-     */
-    public function test_works_fine () {}
-
-    /**
-     *
-     * @depends test_works_fine
-     */
-    public function test_works_fine_too() {}
-}',
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-    /**
-     * @test
-     */
-    public function works_fine () {}
-
-    /**
-     * @test
-     * @depends works_fine
-     */
-    public function works_fine_too() {}
-}',
-                ['case' => 'snake'],
             ],
             'Class has both camel and snake case, annotated functions and not, and wants to add annotations' => [
                 '<?php
@@ -413,53 +340,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
 }',
                 ['style' => 'annotation'],
             ],
-            'Annotation has to be removed from multiple functions and we use snake case' => [
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-    /**
-     *
-     */
-    public function test_it_works() {}
-
-    /**
-     *
-     */
-    public function test_it_does_something() {}
-
-    public function dataProvider() {}
-
-    /**
-     * @dataprovider dataProvider
-     * @depends test_it_does_something
-     */
-    public function test_it_depend_and_has_provider() {}
-
-}',
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-    /**
-     * @test
-     */
-    public function it_works() {}
-
-    /**
-     * @test
-     */
-    public function it_does_something() {}
-
-    public function dataProvider() {}
-
-    /**
-     * @dataprovider dataProvider
-     * @depends it_does_something
-     */
-    public function test_it_depend_and_has_provider() {}
-
-}',
-                ['case' => 'snake'],
-            ],
             'Class with big doc blocks and multiple functions has to remove annotations' => [
                 '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
@@ -545,93 +425,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testDepends () {}
 }',
-            ],
-            'Class with big doc blocks and multiple functions has to remove annotations, but its snake case' => [
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-
-    /**
-     * This test is part of the database group and has a provider.
-     *
-     * @param int $paramOne
-     * @param bool $paramTwo
-     *
-     *
-     * @dataProvider provides
-     * @group Database
-     */
-    public function test_database ($paramOne, $paramTwo) {}
-
-    /**
-     * Provider for the database test function
-     *
-     * @return array
-     */
-    public function provides() {}
-
-    /**
-     * Im just a helper function but i have test in my name.
-     * I also have a doc Block
-     *
-     * @return Foo\Bar
-     */
-    public function help_test() {}
-
-
-    protected function setUp() {}
-
-    /**
-     * I depend on the database function, but i already
-     * had test in my name and a docblock
-     *
-     * @depends test_database
-     */
-    public function testDepends () {}
-}',
-                '<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-
-    /**
-     * This test is part of the database group and has a provider.
-     *
-     * @param int $paramOne
-     * @param bool $paramTwo
-     *
-     * @test
-     * @dataProvider provides
-     * @group Database
-     */
-    public function database ($paramOne, $paramTwo) {}
-
-    /**
-     * Provider for the database test function
-     *
-     * @return array
-     */
-    public function provides() {}
-
-    /**
-     * Im just a helper function but i have test in my name.
-     * I also have a doc Block
-     *
-     * @return Foo\Bar
-     */
-    public function help_test() {}
-
-
-    protected function setUp() {}
-
-    /**
-     * I depend on the database function, but i already
-     * had test in my name and a docblock
-     *
-     * @depends database
-     */
-    public function testDepends () {}
-}',
-                ['case' => 'snake'],
             ],
             'Test Annotation has to be removed, but its just one line' => [
                 '<?php
@@ -1159,6 +952,237 @@ class Test extends \PhpUnit\FrameWork\TestCase
 }',
                 null,
                 ['style' => 'annotation'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixLegacyCaseOptionCases
+     * @group legacy
+     * @expectedDeprecation Option "case" for rule "php_unit_test_annotation" is deprecated and will be removed in version 3.0. Use "php_unit_method_casing" fixer instead.
+     *
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|array  $config
+     */
+    public function testFixLegacyCaseOption($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFixLegacyCaseOptionCases()
+    {
+        return [
+            'Annotation is removed, the function is one word and we want it to use snake case' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     *
+     */
+    public function test_works() {}
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function works() {}
+}',
+                ['case' => 'snake'],
+            ],
+            'Annotation is removed, and it is snake case' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     *
+     */
+    public function test_it_has_snake_case() {}
+
+    public function helper_function() {}
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function it_has_snake_case() {}
+
+    public function helper_function() {}
+}',
+                ['case' => 'snake'],
+            ],
+            'Annotation gets removed, it has an @depends and we use camel case' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     *
+     */
+    public function test_works_fine () {}
+
+    /**
+     *
+     * @depends test_works_fine
+     */
+    public function test_works_fine_too() {}
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function works_fine () {}
+
+    /**
+     * @test
+     * @depends works_fine
+     */
+    public function works_fine_too() {}
+}',
+                ['case' => 'snake'],
+            ],
+            'Annotation has to be removed from multiple functions and we use snake case' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     *
+     */
+    public function test_it_works() {}
+
+    /**
+     *
+     */
+    public function test_it_does_something() {}
+
+    public function dataProvider() {}
+
+    /**
+     * @dataprovider dataProvider
+     * @depends test_it_does_something
+     */
+    public function test_it_depend_and_has_provider() {}
+
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    public function it_works() {}
+
+    /**
+     * @test
+     */
+    public function it_does_something() {}
+
+    public function dataProvider() {}
+
+    /**
+     * @dataprovider dataProvider
+     * @depends it_does_something
+     */
+    public function test_it_depend_and_has_provider() {}
+
+}',
+                ['case' => 'snake'],
+            ],
+            'Class with big doc blocks and multiple functions has to remove annotations, but its snake case' => [
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+
+    /**
+     * This test is part of the database group and has a provider.
+     *
+     * @param int $paramOne
+     * @param bool $paramTwo
+     *
+     *
+     * @dataProvider provides
+     * @group Database
+     */
+    public function test_database ($paramOne, $paramTwo) {}
+
+    /**
+     * Provider for the database test function
+     *
+     * @return array
+     */
+    public function provides() {}
+
+    /**
+     * Im just a helper function but i have test in my name.
+     * I also have a doc Block
+     *
+     * @return Foo\Bar
+     */
+    public function help_test() {}
+
+
+    protected function setUp() {}
+
+    /**
+     * I depend on the database function, but i already
+     * had test in my name and a docblock
+     *
+     * @depends test_database
+     */
+    public function testDepends () {}
+}',
+                '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+
+    /**
+     * This test is part of the database group and has a provider.
+     *
+     * @param int $paramOne
+     * @param bool $paramTwo
+     *
+     * @test
+     * @dataProvider provides
+     * @group Database
+     */
+    public function database ($paramOne, $paramTwo) {}
+
+    /**
+     * Provider for the database test function
+     *
+     * @return array
+     */
+    public function provides() {}
+
+    /**
+     * Im just a helper function but i have test in my name.
+     * I also have a doc Block
+     *
+     * @return Foo\Bar
+     */
+    public function help_test() {}
+
+
+    protected function setUp() {}
+
+    /**
+     * I depend on the database function, but i already
+     * had test in my name and a docblock
+     *
+     * @depends database
+     */
+    public function testDepends () {}
+}',
+                ['case' => 'snake'],
             ],
         ];
     }

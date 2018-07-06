@@ -108,6 +108,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             (new FixerOptionBuilder('case', 'Whether to camel or snake case when adding the test prefix'))
                 ->setAllowedValues(['camel', 'snake'])
                 ->setDefault('camel')
+                ->setDeprecationMessage('Use `php_unit_method_casing` fixer instead.')
                 ->getOption(),
         ]);
     }
