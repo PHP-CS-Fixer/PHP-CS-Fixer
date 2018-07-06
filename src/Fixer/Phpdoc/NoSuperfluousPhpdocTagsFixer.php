@@ -255,8 +255,8 @@ class Foo {
     /**
      * Normalizes types to make them comparable.
      *
-     * Converts given types to lowercase and replaces imports aliases with
-     * their matching FQCN.
+     * Converts given types to lowercase, replaces imports aliases with
+     * their matching FQCN, and finally sorts the result.
      *
      * @param array $types            The types to normalize
      * @param array $symbolShortNames The imports aliases
@@ -265,7 +265,7 @@ class Foo {
      */
     private function toComparableNames(array $types, array $symbolShortNames)
     {
-        return array_map(
+        $normalized = array_map(
             function ($type) use ($symbolShortNames) {
                 $type = strtolower($type);
 
@@ -277,5 +277,9 @@ class Foo {
             },
             $types
         );
+
+        sort($normalized);
+
+        return $normalized;
     }
 }
