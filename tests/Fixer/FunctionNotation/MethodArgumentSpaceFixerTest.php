@@ -82,6 +82,45 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
+            [
+                '<?php
+// space '.'
+$var1 = $a->some_method(
+    $var2
+);
+
+// space '.'
+$var2 = some_function(
+    $var2
+);
+
+    // space     '.'
+    $var2a = $z[1](
+        $var2a
+    );
+    '.'
+    $var3 = function(  $a, $b  ) { };
+',
+                '<?php
+// space '.'
+$var1 = $a->some_method(
+    $var2);
+
+// space '.'
+$var2 = some_function(
+    $var2);
+
+    // space     '.'
+    $var2a = $z[1](
+        $var2a
+    );
+    '.'
+    $var3 = function(  $a , $b  ) { };
+',
+                [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
+            ],
             'default' => [
                 '<?php xyz("", "", "", "");',
                 '<?php xyz("","","","");',
