@@ -5,12 +5,10 @@ Integration of fixers: no_unused_imports,no_extra_blank_lines.
 --EXPECT--
 <?php
 
-
 $bar = null;
 
 --INPUT--
 <?php
-
 
 use Foo\Bar;
 
