@@ -80,8 +80,9 @@ final class StrictParamFixer extends AbstractFixer
                 return;
             }
 
-            if ($token->isGivenKind(T_STRING) && isset($map[$token->getContent()])) {
-                $this->fixFunction($tokens, $index, $map[$token->getContent()]);
+            $lowercaseContent = strtolower($token->getContent());
+            if ($token->isGivenKind(T_STRING) && isset($map[$lowercaseContent])) {
+                $this->fixFunction($tokens, $index, $map[$lowercaseContent]);
             }
         }
     }
