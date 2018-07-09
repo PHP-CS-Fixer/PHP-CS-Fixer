@@ -444,6 +444,24 @@ class Foo {
     public function doFoo(?Bar $bar): ?Baz {}
 }',
             ],
+            'same_nullable_typehint_reversed' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo(?Bar $bar): ?Baz {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @param null|Bar $bar
+     *
+     * @return null|Baz
+     */
+    public function doFoo(?Bar $bar): ?Baz {}
+}',
+            ],
             'same_nullable_typehint_with_description' => [
                 '<?php
 class Foo {
