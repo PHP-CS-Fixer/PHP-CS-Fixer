@@ -6,7 +6,7 @@ If you need any help, don't hesitate to ask the community on [Gitter](https://gi
 
 * [Fork](https://help.github.com/articles/fork-a-repo/) the repo.
 * [Checkout](https://git-scm.com/docs/git-checkout) the branch you want to make changes on:
-  * If you are fixing a bug or typo, improving tests or for any small tweak: the lowest maintained branch where the changes can be applied. Once your Pull Request is accepted, the changes will get merged up to highest branches.
+  * If you are fixing a bug or typo, improving tests or for any small tweak: the lowest maintained branch where the changes can be applied. The lowest maintained branch currently is `2.12`. Once your Pull Request is accepted, the changes will get merged up to highest branches.
   * `master` in other cases (new feature, deprecation, or backwards compatibility breaking changes). Note that most of the time, `master` represents the next minor release of PHP CS Fixer, so Pull Requests that break backwards compatibility might be postponed.
 * Install dependencies: `composer install`.
 * Create a new branch, e.g. `feature-foo` or `bugfix-bar`.
