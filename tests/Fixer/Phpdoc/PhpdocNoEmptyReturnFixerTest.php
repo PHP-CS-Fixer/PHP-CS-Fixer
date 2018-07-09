@@ -63,6 +63,44 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testFixNullWithEndOnSameLine()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return null */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixNullWithEndOnSameLineNoSpace()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return null*/
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testFixVoidCaseInsensitive()
     {
         $expected = <<<'EOF'
