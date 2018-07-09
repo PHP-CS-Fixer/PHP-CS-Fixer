@@ -286,12 +286,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     public function provideMessyWhitespacesCases()
     {
-        return [
-            [
-                '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
+        $expectedTemplate =
+'
+        function testFnc%d()
         {
             aaa();
             $this->expectException(\'RuntimeException\');
@@ -299,18 +296,30 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $this->expectExceptionCode(/*C*/123);
             zzz();
         }
-    }',
-                '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
+';
+        $inputTemplate =
+'
+        function testFnc%d()
         {
             aaa();
             $this->setExpectedException(\'RuntimeException\', \'msg\'/*B*/, /*C*/123);
             zzz();
         }
-    }',
-            ],
-        ];
+'
+;
+        $input = $expected = '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+    ';
+
+        for ($i = 0; $i < 8; ++$i) {
+            $expected .= sprintf($expectedTemplate, $i);
+            $input .= sprintf($inputTemplate, $i);
+        }
+
+        $expected .= "\n}";
+        $input .= "\n}";
+
+        return [[$expected, $input]];
     }
 }
