@@ -704,6 +704,26 @@ EXPECTED
 INPUT
                 ,
             ],
+            [
+                <<<'EXPECTED'
+<?php
+$arr = [
+    'a' => 'b',
+
+    //  'c' => 'd',
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$arr = [
+    'a' => 'b',
+
+//  'c' => 'd',
+];
+INPUT
+                ,
+            ],
         ]);
     }
 

@@ -80,7 +80,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                 $token = $tokens[$index];
                 if ($this->newlineIsInArrayScope($tokens, $index, $array)) {
                     $content = Preg::replace(
-                        '/(\R)[\t ]*$/',
+                        '/(\R+)[\t ]*$/',
                         '$1'.$arrayIndent.str_repeat($this->whitespacesConfig->getIndent(), $currentIndentLevel),
                         $token->getContent()
                     );
