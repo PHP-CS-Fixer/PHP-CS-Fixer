@@ -1330,7 +1330,7 @@ Choose from the list of available rules:
 
 * **phpdoc_no_empty_return** [@Symfony]
 
-  ``@return`` void and ``@return null`` annotations should be omitted from
+  ``@return void`` and ``@return null`` annotations should be omitted from
   PHPDoc.
 
 * **phpdoc_no_package** [@Symfony]
