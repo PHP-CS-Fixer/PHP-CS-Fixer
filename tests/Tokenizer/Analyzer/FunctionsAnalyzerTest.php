@@ -32,19 +32,24 @@ final class FunctionsAnalyzerTest extends TestCase
      * @param string $code
      * @param int    $index
      *
-     * @dataProvider provideIsGlobalFunctionIndexCases
+     * @dataProvider provideIsGlobalFunctionCallCases
      */
-    public function testIsGlobalFunctionIndex($isFunctionIndex, $code, $index)
+    public function testIsGlobalFunctionCall($isFunctionIndex, $code, $index)
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        $this->assertSame($isFunctionIndex, $analyzer->isGlobalFunctionIndex($tokens, $index));
+        $this->assertSame($isFunctionIndex, $analyzer->isGlobalFunctionCall($tokens, $index));
     }
 
-    public function provideIsGlobalFunctionIndexCases()
+    public function provideIsGlobalFunctionCallCases()
     {
         return [
+            [
+                false,
+                '<?php CONSTANT;',
+                1,
+            ],
             [
                 true,
                 '<?php foo("bar");',
@@ -88,6 +93,11 @@ final class FunctionsAnalyzerTest extends TestCase
             [
                 false,
                 '<?php new bar("baz");',
+                3,
+            ],
+            [
+                false,
+                '<?php function foo() {};',
                 3,
             ],
         ];

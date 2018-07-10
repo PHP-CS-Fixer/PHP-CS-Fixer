@@ -27,7 +27,7 @@ final class FunctionsAnalyzer
      *
      * @return bool
      */
-    public function isGlobalFunctionIndex(Tokens $tokens, $index)
+    public function isGlobalFunctionCall(Tokens $tokens, $index)
     {
         if (!$tokens[$index]->isGivenKind(T_STRING)) {
             return false;
@@ -40,8 +40,9 @@ final class FunctionsAnalyzer
 
         $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-        return !$tokens[$prevIndex]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_STRING])
-            && !$tokens[$nextIndex]->isGivenKind([T_DOUBLE_COLON, T_NS_SEPARATOR]);
+        return !$tokens[$prevIndex]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_STRING, T_FUNCTION])
+            && !$tokens[$nextIndex]->isGivenKind([T_DOUBLE_COLON, T_NS_SEPARATOR])
+            && $tokens[$nextIndex]->equals('(');
     }
 
     /**
