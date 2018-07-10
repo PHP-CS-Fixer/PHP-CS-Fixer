@@ -114,7 +114,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements Configuration
                 continue;
             }
 
-            if (!$functionsAnalyzer->isGlobalFunctionIndex($tokens, $index)) {
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 continue;
             }
 
