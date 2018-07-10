@@ -75,6 +75,12 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
+    in_Array(1, $a, true);',
+                '<?php
+    in_Array(1, $a);',
+            ],
+            [
+                '<?php
     base64_decode($foo, true);
     base64_decode($foo, false);
     base64_decode($foo, $useStrict);',
