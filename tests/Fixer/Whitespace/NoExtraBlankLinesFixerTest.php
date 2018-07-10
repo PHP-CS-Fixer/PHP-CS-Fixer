@@ -1103,6 +1103,19 @@ class Foo
         ];
     }
 
+    public function testRemovingEmptyLinesAfterOpenTag()
+    {
+        $this->doTest(
+            '<?php
+
+class Foo {}',
+            '<?php
+
+
+class Foo {}'
+        );
+    }
+
     /**
      * @param string $expected
      * @param string $input
