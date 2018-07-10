@@ -86,6 +86,15 @@ with a line not prefixed with asterisk
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // Should run after ArrayIndentationFixer
+        return -40;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound($this->tokenKinds);
