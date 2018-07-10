@@ -1,0 +1,72 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-07-08T11:09:36Z
+
+Note: my commit can be squashed when merging :)
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-08T11:41:18Z
+
+I'm not sure I agree with the added commit, it serves no use other than taking away the focus of why it was added in the first place.
+
+_**edit:** also, the comment is now no longer valid, since the aligning is even more off haha_
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-07-08T12:04:35Z
+
+I added invalid indent on other lines to make `array_indentation` usage more explicit. This doesn't change the result in any way.
+
+> the comment is now no longer valid, since the aligning is even more off haha
+
+What do you mean?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-08T12:18:32Z
+
+The comment reads `Aligned with the values` (to illustrate the point). That no longer holds true because you invalidated the original alignments.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-07-08T17:07:52Z
+
+The comment is still aligned with values in the expected result, and never was in the input. Adding invalid indent didn't change that.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-08T17:08:59Z
+
+Sorry but no, look again: it's aligned with the keys in the expected result. It was aligned with the values in my original input.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-07-08T17:12:58Z
+
+Oh I see what you meant now. But I still prefer the current input: it explicitly shows that indentation of the array changes, while aligning the comment with values (instead of keys) has few value for this test IMO. If we keep current input, the comment should be updated indeed.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-08T17:22:11Z
+
+The indentation of the array already changed, the comment gets moved. Or at least the first line of the comment. That is being done by `array_indentation` and is the exact reason this change is needed, look at the example code in the issue. I prefer to not "overcomplicate" the testcase, and only show the reason for the priority.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-07-08T17:42:52Z
+
+Ok, I removed my commit.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-09T05:25:32Z
+
+do we've the same (hidden) priority issue with `method_argument_space` and `method_chaining_indentation`?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-09T08:39:58Z
+
+- Just tested `method_chaining_indentation`: it doesn't touch the comment at all (and thus doesn't break alignment).
+- For `method_argument_space` I fail to see the case sorry.
