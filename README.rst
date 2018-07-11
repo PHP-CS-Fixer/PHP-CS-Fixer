@@ -833,7 +833,7 @@ Choose from the list of available rules:
 
   Function defined by PHP should be called using the correct casing.
 
-* **native_function_invocation**
+* **native_function_invocation** [@Symfony:risky]
 
   Add leading ``\`` before function invocation to speed up resolving.
 
