@@ -1,0 +1,64 @@
+---------------------------------------------------------------------------
+
+by stof at 2018-07-05T11:23:07Z
+
+Note that the Symfony codebase itself is not yet updated for this CS rule as we were waiting for the automatic fixer before making this part of our official coding standards (doing it manually was too painful so we were doing it only in the hot paths).
+I'm currently preparing the PR running it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-07-05T11:36:06Z
+
+hi @stof, great to see you here again ;)
+yeah, discussion about this rule, it's expectation and configuration was longs indeed, finally we manage to cover (most of) users requirements, not only one from Sf ;)
+`native_constant_invocation` was already added ;)
+
+be aware that tests are failing, do you want to handle it yourself ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-05T11:39:04Z
+
+>I'm currently preparing the PR running it.
+
+looking forward to that diff ^_^
+
+---------------------------------------------------------------------------
+
+by stof at 2018-07-05T11:41:09Z
+
+I was fixing the tests, but I see that @SpacePossum already did it.
+
+---------------------------------------------------------------------------
+
+by stof at 2018-07-05T12:46:13Z
+
+@SpacePossum the Symfony PR is referenced just before my comment, in case you want to look at it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-07-06T09:20:14Z
+
+looks good, yet we have always pushed change of rulesets to MINOR release, changing target to `2.13@dev`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-06T09:26:32Z
+
+:+1:
+I do feel we are going to get a lot of questions about this when it gets shipped as it will be enabled for a lot of users, like it was done with Yoda, but we'll see :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-07-06T09:35:28Z
+
+it;s really fair config, it does not enforce everything, just what is optimized by compiler.
+all good imo
+
+---------------------------------------------------------------------------
+
+by stof at 2018-07-10T18:34:31Z
+
+@SpacePossum the Symfony rule is also configured to favor readability: we only apply it to the compiler-optimized functions, and only in namespaced code (for non-namespaced code, calls are always fully-qualified, and so always optimized).
+
+Btw, that's also the reason for my change in #3876
