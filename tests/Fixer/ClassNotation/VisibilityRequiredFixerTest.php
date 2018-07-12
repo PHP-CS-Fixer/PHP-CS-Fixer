@@ -510,7 +510,6 @@ const F=1; }',
                     class foo
                     {
                         public const A = 1, B =2, C =3;
-                        // As of PHP 5.6.0
                         public const TWO = ONE * 2;
                         public const THREE = ONE + self::TWO;
                         public const SENTENCE = "The value of THREE is ".self::THREE;
@@ -520,7 +519,6 @@ const F=1; }',
                     class foo
                     {
                         const A = 1, B =2, C =3;
-                        // As of PHP 5.6.0
                         const TWO = ONE * 2;
                         const THREE = ONE + self::TWO;
                         const SENTENCE = "The value of THREE is ".self::THREE;

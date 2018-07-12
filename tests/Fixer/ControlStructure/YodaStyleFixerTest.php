@@ -585,6 +585,10 @@ $a#4
                 '<?php $a = -/* bar */1 === reset($foo);',
                 '<?php $a = reset($foo) === -/* bar */1;',
             ],
+            [
+                '<?php $a **= 4 === $b ? 2 : 3;',
+                '<?php $a **= $b === 4 ? 2 : 3;',
+            ],
         ];
     }
 
@@ -689,47 +693,6 @@ $a#4
     public function testDefinition()
     {
         $this->assertInstanceOf(\PhpCsFixer\FixerDefinition\FixerDefinitionInterface::class, $this->fixer->getDefinition());
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider providePHP56Cases
-     * @requires PHP 5.6
-     */
-    public function testFixPHP56($expected, $input)
-    {
-        $this->fixer->configure(['equal' => true, 'identical' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * Test with the inverse config.
-     *
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider providePHP56Cases
-     * @requires PHP 5.6
-     */
-    public function testFixPHP56Inverse($expected, $input)
-    {
-        $this->fixer->configure(['equal' => false, 'identical' => false]);
-        $this->doTest($input, $expected);
-    }
-
-    /**
-     * @return array<string, string[]>
-     */
-    public function providePHP56Cases()
-    {
-        return [
-            '5.6 Simple non-Yoda conditions that need to be fixed' => [
-                '<?php $a **= 4 === $b ? 2 : 3;',
-                '<?php $a **= $b === 4 ? 2 : 3;',
-            ],
-        ];
     }
 
     /**

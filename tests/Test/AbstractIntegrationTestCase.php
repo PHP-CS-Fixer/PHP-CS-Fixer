@@ -48,8 +48,6 @@ use Symfony\Component\Finder\SplFileInfo;
  * {"indent": "    ", "lineEnding": "\n"}
  * --SETTINGS--*
  * {"key": "value"} # optional extension point for custom IntegrationTestCase class
- * --REQUIREMENTS--*
- * {"php": 50600**}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*

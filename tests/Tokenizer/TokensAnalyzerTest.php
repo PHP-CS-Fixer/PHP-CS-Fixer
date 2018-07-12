@@ -1039,7 +1039,6 @@ $b;',
                 2,
             ],
             [
-                // short array PHP 5.4 single line
                 '<?php
                     ["a" => 2];
                 ',
@@ -1054,7 +1053,6 @@ $b;',
                 2, true,
             ],
             [
-                // short array PHP 5.4 multi line
                 '<?php
                     [
                         "a" => 4
