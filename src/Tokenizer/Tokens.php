@@ -971,7 +971,7 @@ class Tokens extends \SplFixedArray
         $transformers->transform($this);
 
         $this->foundTokenKinds = [];
-        foreach ($this as $index => $token) {
+        foreach ($this as $token) {
             $this->registerFoundToken($token);
         }
 

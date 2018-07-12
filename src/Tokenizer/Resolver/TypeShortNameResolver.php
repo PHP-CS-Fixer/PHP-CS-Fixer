@@ -47,7 +47,7 @@ final class TypeShortNameResolver
         // For now only support one namespace per file:
         $namespaces = $this->getNamespacesFromTokens($tokens);
         if (1 === count($namespaces)) {
-            foreach ($namespaces as $shortName => $fullName) {
+            foreach ($namespaces as $fullName) {
                 $matches = [];
                 $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
                 if (Preg::match($regex, $typeName, $matches)) {

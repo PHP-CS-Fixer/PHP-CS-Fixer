@@ -235,8 +235,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
 
                 $tokens->overrideRange($argBefore, $argBefore, $tokensOverrideArgBefore);
-
-                $limit = $tokens->count();
             }
 
             $tokens[$index] = new Token([T_STRING, 'expectException']);
