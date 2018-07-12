@@ -255,9 +255,9 @@ interface Bar extends
     {
         if ($classDefInfo['anonymousClass']) {
             if (false !== $classDefInfo['implements']) {
-                $spacing = $classDefInfo['implements']['multiLine'] ? $spacing = $this->whitespacesConfig->getLineEnding() : ' ';
+                $spacing = $classDefInfo['implements']['multiLine'] ? $this->whitespacesConfig->getLineEnding() : ' ';
             } elseif (false !== $classDefInfo['extends']) {
-                $spacing = $classDefInfo['extends']['multiLine'] ? $spacing = $this->whitespacesConfig->getLineEnding() : ' ';
+                $spacing = $classDefInfo['extends']['multiLine'] ? $this->whitespacesConfig->getLineEnding() : ' ';
             } else {
                 $spacing = ' ';
             }
