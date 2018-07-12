@@ -170,6 +170,7 @@ final class RuleSet implements RuleSetInterface
             'fopen_flag_order' => true,
             'fopen_flags' => true,
             'function_to_constant' => true,
+            'implode_call' => true,
             'is_null' => true,
             'modernize_types_casting' => true,
             'native_constant_invocation' => [

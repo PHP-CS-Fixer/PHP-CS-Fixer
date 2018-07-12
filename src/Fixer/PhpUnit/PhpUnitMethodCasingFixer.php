@@ -267,7 +267,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         }
 
         if ($docBlockNeesUpdate) {
-            $lines = implode($lines);
+            $lines = implode('', $lines);
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
         }
     }

@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_alias_functions,implode_call.
+--RULESET--
+{"no_alias_functions": true, "implode_call": true}
+--EXPECT--
+<?php
+implode('', $pieces);
+implode('', $morePieces);
+
+--INPUT--
+<?php
+join($pieces, '');
+join($morePieces);

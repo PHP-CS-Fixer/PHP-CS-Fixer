@@ -733,6 +733,13 @@ Choose from the list of available rules:
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
 
+* **implode_call** [@Symfony:risky]
+
+  Function ``implode`` must be called with 2 arguments in the documented
+  order.
+
+  *Risky rule: risky when the function ``implode`` is overridden.*
+
 * **include** [@Symfony]
 
   Include/Require and file path should be divided with a single space.

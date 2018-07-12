@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: no_alias_functions,implode_call.
+--RULESET--
+{"implode_call": true, "method_argument_space": {"on_multiline": "ensure_fully_multiline"}}
+--EXPECT--
+<?php
+implode(
+    '',
+    $foo
+);
+
+--INPUT--
+<?php
+implode(
+    $foo
+);

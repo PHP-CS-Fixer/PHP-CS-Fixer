@@ -383,7 +383,7 @@ switch($a) {
         $count = \count($parts);
 
         if ($count > $expected) {
-            $this->tokens[$index] = new Token([T_WHITESPACE, implode(\array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
+            $this->tokens[$index] = new Token([T_WHITESPACE, implode('', \array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
         }
     }
 
