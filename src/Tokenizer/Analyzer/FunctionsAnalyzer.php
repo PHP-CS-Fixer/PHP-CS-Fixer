@@ -26,10 +26,16 @@ final class FunctionsAnalyzer
      * @param Tokens $tokens
      * @param int    $index
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     public function isGlobalFunctionCall(Tokens $tokens, $index)
     {
+        if (!isset($tokens[$index])) {
+            throw new \InvalidArgumentException('Given index does not exist in the collection.');
+        }
+
         if (!$tokens[$index]->isGivenKind(T_STRING)) {
             return false;
         }

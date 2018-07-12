@@ -27,6 +27,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FunctionsAnalyzerTest extends TestCase
 {
+    public function testWhenIndexDoesNotExistInCollection()
+    {
+        $tokens = Tokens::fromCode('<?php function foo() {};');
+        $analyzer = new FunctionsAnalyzer();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Given index does not exist in the collection.');
+
+        $analyzer->isGlobalFunctionCall($tokens, 1000);
+    }
+
     /**
      * @param bool   $isFunctionIndex
      * @param string $code
