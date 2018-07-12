@@ -97,7 +97,17 @@ final class FunctionsAnalyzerTest extends TestCase
             ],
             [
                 false,
-                '<?php function foo() {};',
+                '<?php function foo() {}',
+                3,
+            ],
+            [
+                false,
+                '<?php function & foo() {}',
+                5,
+            ],
+            [
+                false,
+                '<?php namespace\foo("bar");',
                 3,
             ],
         ];
