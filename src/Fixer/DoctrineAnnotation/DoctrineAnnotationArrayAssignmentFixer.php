@@ -76,7 +76,7 @@ final class DoctrineAnnotationArrayAssignmentFixer extends AbstractDoctrineAnnot
     protected function fixAnnotations(Tokens $tokens)
     {
         $scopes = [];
-        foreach ($tokens as $index => $token) {
+        foreach ($tokens as $token) {
             if ($token->isType(DocLexer::T_OPEN_PARENTHESIS)) {
                 $scopes[] = 'annotation';
 
