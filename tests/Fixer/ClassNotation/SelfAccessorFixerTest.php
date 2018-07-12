@@ -83,7 +83,7 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { function bar() { new Foo\Baz(); } }',
             ],
             [
-                // PHP < 5.4 compatibility: "self" is not available in closures
+                '<?php class Foo { function bar() { function ($a = self::BAZ) { new self(); }; } }',
                 '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
             ],
             [

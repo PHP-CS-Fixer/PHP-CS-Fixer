@@ -177,7 +177,7 @@ final class Utils
                 return $fixer->getPriority();
             },
             static function ($a, $b) {
-                return Utils::cmpInt($b, $a);
+                return self::cmpInt($b, $a);
             }
         );
     }
