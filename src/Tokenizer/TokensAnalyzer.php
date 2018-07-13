@@ -355,6 +355,15 @@ final class TokensAnalyzer
             }
         }
 
+        // check for array in double quoted string: `"..$foo[bar].."`
+        if ($this->tokens[$prevIndex]->equals('[') && $this->tokens[$nextIndex]->equals(']')) {
+            $checkToken = $this->tokens[$this->tokens->getNextMeaningfulToken($nextIndex)];
+
+            if ($checkToken->equals('"') || $checkToken->isGivenKind([T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES, T_ENCAPSED_AND_WHITESPACE, T_VARIABLE])) {
+                return false;
+            }
+        }
+
         // check for goto label
         if ($this->tokens[$nextIndex]->equals(':') && $this->tokens[$prevIndex]->equalsAny([';', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO]])) {
             return false;
