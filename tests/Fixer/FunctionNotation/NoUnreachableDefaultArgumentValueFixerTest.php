@@ -192,4 +192,33 @@ $bar) {}',
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix71Cases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP 7.1
+     */
+    public function testFix71($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFix71cases()
+    {
+        return [
+            [
+                '<?php function foo (?Foo $bar, $baz) {}',
+                '<?php function foo (?Foo $bar = null, $baz) {}',
+            ],
+            [
+                '<?php function foo (?Foo $bar = null, ?Baz $baz = null) {}',
+            ],
+        ];
+    }
 }
