@@ -83,6 +83,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['elseif'], $fixers['braces']],
             [$fixers['escape_implicit_backslashes'], $fixers['heredoc_to_nowdoc']],
             [$fixers['escape_implicit_backslashes'], $fixers['single_quote']],
+            [$fixers['fully_qualified_strict_types'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['function_to_constant'], $fixers['native_function_casing']],
             [$fixers['function_to_constant'], $fixers['no_extra_blank_lines']],
             [$fixers['function_to_constant'], $fixers['no_singleline_whitespace_before_semicolons']],
