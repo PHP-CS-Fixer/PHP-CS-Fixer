@@ -332,7 +332,11 @@ final class NoEmptyBlockFixer extends AbstractFixer
 
         if (null !== $catchOrFinallyIndex && $tokens[$catchOrFinallyIndex]->isGivenKind(T_FINALLY)) {
             $openFinallyBodyIndex = $tokens->getNextMeaningfulToken($catchOrFinallyIndex);
-            $closeFinallyBodyIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openFinallyBodyIndex);
+            $closeFinallyBodyIndex = $tokens->getNextNonWhitespace($openFinallyBodyIndex);
+
+            if (!$tokens[$closeFinallyBodyIndex]->equals('}')) {
+                return;
+            }
 
             $clearRangeIndexEnd = $closeFinallyBodyIndex;
         }

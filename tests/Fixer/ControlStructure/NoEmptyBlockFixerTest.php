@@ -545,6 +545,14 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             'try without side effects and finally with side effects' => [
                 '<?php try {} finally { foo(); }',
             ],
+            'try and finally without side effects' => [
+                '<?php ',
+                '<?php try {} finally {}',
+            ],
+            'try catch and finally without side effects' => [
+                '<?php ',
+                '<?php try {} catch (Exception $e) {} finally {}',
+            ],
             'try nested' => [
                 '<?php ',
                 '<?php try { try {} catch (Exception $e) {} } catch (Exception $e) {}',
