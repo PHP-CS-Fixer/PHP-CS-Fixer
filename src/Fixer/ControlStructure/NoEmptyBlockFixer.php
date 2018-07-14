@@ -353,10 +353,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $openBraceIndex = $tokens->getNextMeaningfulToken($whileIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
 
-        if ($this->canHaveSideEffects($tokens, $openBraceIndex + 1, $closeBraceIndex - 1)) {
-            return;
-        }
-
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $openBody = $tokens[$openBodyIndex];
 
@@ -393,60 +389,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         $this->clearRangeKeepComments($tokens, $whileIndex, $closeBodyIndex);
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
-     *
-     * @return bool
-     */
-    private function canHaveSideEffects(Tokens $tokens, $startIndex, $endIndex)
-    {
-        for ($index = $endIndex; $startIndex <= $index; --$index) {
-            $token = $tokens[$index];
-
-            if ($token->isGivenKind([
-                // loading files
-                T_REQUIRE,
-                T_REQUIRE_ONCE,
-                T_INCLUDE,
-                T_INCLUDE_ONCE,
-                // __get with side effects
-                T_OBJECT_OPERATOR,
-                // modification
-                T_INC,
-                T_DEC,
-                T_CONCAT_EQUAL,
-                T_DIV_EQUAL,
-                T_MINUS_EQUAL,
-                T_MOD_EQUAL,
-                T_MUL_EQUAL,
-                T_PLUS_EQUAL,
-                T_POW_EQUAL,
-                T_AND_EQUAL,
-                T_OR_EQUAL,
-                T_SL_EQUAL,
-                T_SR_EQUAL,
-                T_XOR_EQUAL,
-            ])) {
-                return true;
-            }
-
-            if ($token->equalsAny([
-                // function calls
-                '(',
-                // offsetGet with side effects
-                '[',
-                // modification
-                '=',
-            ])) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
