@@ -531,7 +531,6 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             'alternate end tag switch without side effects but doc comment in body' => [
                 '<?php switch ($foo): /** todo */ endswitch ?>',
             ],
-
             'try with side effects' => [
                 '<?php try { foo(); } catch (Exception $e) {}',
             ],
@@ -550,10 +549,60 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php ',
                 '<?php try { try {} catch (Exception $e) {} } catch (Exception $e) {}',
             ],
-
-            // while
-
-            // modifications
+            'while with side effect in body' => [
+                '<?php while ($foo) { foo(); }',
+            ],
+            'while with side effect in braces' => [
+                '<?php ',
+                '<?php while (foo()) {}',
+            ],
+            'while without side effects' => [
+                '<?php ',
+                '<?php while ($foo) {}',
+            ],
+            'while without side effects but comment in body' => [
+                '<?php while ($foo) { /* todo */ }',
+            ],
+            'while without side effects but doc comment in body' => [
+                '<?php while ($foo) { /** todo */ }',
+            ],
+            'while without side effect with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
+                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
+            ],
+            'while without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/',
+                '<?php /**1*/while/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/',
+            ],
+            'while nested' => [
+                '<?php ',
+                '<?php while ($bar) { while ($foo) {} }'
+            ],
+            'while end tag with side effect in body' => [
+                '<?php while($foo) { foo(); } ?>',
+            ],
+            'while end tag with side effect in braces' => [
+                '<?php ?>',
+                '<?php while (foo()) {} ?>',
+            ],
+            'while end tag without side effects' => [
+                '<?php ?>',
+                '<?php while ($foo) {} ?>',
+            ],
+            'while end tag without side effects but comment in body' => [
+                '<?php while ($foo) { /* todo */ } ?>',
+            ],
+            'while end tag without side effects but doc comment in body' => [
+                '<?php while ($foo) { /** todo */ } ?>',
+            ],
+            'while end tag without side effect with comments' => [
+                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/ ?>',
+                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/ ?>',
+            ],
+            'while end tag without side effect with doc comments' => [
+                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/ ?>',
+                '<?php /**1*/while/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/ ?>',
+            ],
         ];
     }
 }
