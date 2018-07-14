@@ -133,7 +133,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             ],
             'if nested' => [
                 '<?php ',
-                '<?php if ($foo) { if ($bar) {} }'
+                '<?php if ($foo) { if ($bar) {} }',
             ],
             'alternate if with side effect in body' => [
                 '<?php if ($foo): echo 1; endif;',
@@ -350,7 +350,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             ],
             'do while nested' => [
                 '<?php ',
-                '<?php do { do {} while ($foo); } while ($bar);'
+                '<?php do { do {} while ($foo); } while ($bar);',
             ],
             'do while end tag with side effect in body' => [
                 '<?php do { foo(); } while($foo) ?>',
@@ -543,7 +543,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php try {} catch (Exception $e) {}',
             ],
             'try without side effects and finally with side effects' => [
-                '<?php try {} finally { foo(); }'
+                '<?php try {} finally { foo(); }',
             ],
             'try nested' => [
                 '<?php ',
@@ -576,7 +576,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             ],
             'while nested' => [
                 '<?php ',
-                '<?php while ($bar) { while ($foo) {} }'
+                '<?php while ($bar) { while ($foo) {} }',
             ],
             'while end tag with side effect in body' => [
                 '<?php while($foo) { foo(); } ?>',
