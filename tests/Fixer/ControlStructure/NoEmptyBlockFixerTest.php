@@ -131,6 +131,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php ',
                 '<?php if   (   $foo )  {     }   elseif   (  $bar )   { }',
             ],
+            'if nested' => [
+                '<?php ',
+                '<?php if ($foo) { if ($bar) {} }'
+            ],
             'alternate if with side effect in body' => [
                 '<?php if ($foo): echo 1; endif;',
             ],
@@ -344,6 +348,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
                 '<?php /**1*/do/**2*/{}/**3*/while/**4*/(/**5*/$foo/**6*/)/**7*/;/**8*/',
             ],
+            'do while nested' => [
+                '<?php ',
+                '<?php do { do {} while ($foo); } while ($bar);'
+            ],
             'do while end tag with side effect in body' => [
                 '<?php do { foo(); } while($foo) ?>',
             ],
@@ -393,6 +401,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             'for without side effect with doc comments' => [
                 '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
                 '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/{}/**7*/',
+            ],
+            'for nested' => [
+                '<?php ',
+                '<?php for (;;) { for(;;) {} }',
             ],
             'for alternate with side effect in body' => [
                 '<?php for (;;): foo(); endfor;',
@@ -533,6 +545,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             ],
             'try without side effects and finally with side effects' => [
                 '<?php try {} finally { foo(); }'
+            ],
+            'try nested' => [
+                '<?php ',
+                '<?php try { try {} catch (Exception $e) {} } catch (Exception $e) {}',
             ],
 
             // while
