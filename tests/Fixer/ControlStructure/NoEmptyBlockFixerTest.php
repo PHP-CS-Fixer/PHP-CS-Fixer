@@ -611,6 +611,48 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*//**2*//**3*//**4*//**5*//**6*/ ?>',
                 '<?php /**1*/while/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/ ?>',
             ],
+            'general test 0' => [
+                '
+<?php
+
+namespace Foo;
+
+class Bar
+{
+    public function baz($bop): string
+    {
+        if (!$bop) {
+            # todo
+        } }
+}
+',
+                '
+<?php
+
+namespace Foo;
+
+class Bar
+{
+    public function baz($bop): string
+    {
+        if (!$bop) {
+            # todo
+        } else {
+        }
+        try {
+            while ($foo) {}
+        } catch (\\Throwable $e) {
+        } finally {
+        }
+        for ($i = 0; $i < strlen($bop); ++$i) {
+            do {
+                switch ($faz) {}
+            } while ($bop);
+        }
+    }
+}
+',
+            ],
         ];
     }
 }
