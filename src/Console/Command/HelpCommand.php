@@ -499,7 +499,7 @@ EOF
 
             if ($fixer->isRisky()) {
                 $help .= sprintf(
-                    "   | *Risky rule: %s.*\n",
+                    "   | *Risky rule:* %s.\n",
                     Preg::replace(
                         '/(`.+?`)/',
                         '<info>$1</info>',

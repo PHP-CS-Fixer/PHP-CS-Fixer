@@ -244,7 +244,7 @@ EOF;
         $help = Preg::replace('#^ \* ``(.+)``(.*?\n)#m', "* **$1**$2\n", $help);
         $help = Preg::replace('#^   \\| #m', '  ', $help);
         $help = Preg::replace('#^   \\|#m', '', $help);
-        $help = Preg::replace('#^(?=  \\*Risky rule: )#m', "\n", $help);
+        $help = Preg::replace('#^(?=  \\*Risky rule:\\* )#m', "\n", $help);
         $help = Preg::replace("#^(  Configuration options:\n)(  - )#m", "$1\n$2", $help);
         $help = Preg::replace("#^\n( +\\$ )#m", "\n.. code-block:: bash\n\n$1", $help);
         $help = Preg::replace("#^\n( +<\\?php)#m", "\n.. code-block:: php\n\n$1", $help);

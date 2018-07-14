@@ -394,7 +394,7 @@ Choose from the list of available rules:
   Comments with annotation should be docblock when used on structural
   elements.
 
-  *Risky rule: risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.*
+  *Risky rule:* risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.
 
 * **compact_nullable_typehint**
 
@@ -413,7 +413,7 @@ Choose from the list of available rules:
 
   Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
 
-  *Risky rule: risky when the code relies on modifying ``DateTime`` objects or if any of the ``date_create*`` functions are overridden.*
+  *Risky rule:* risky when the code relies on modifying ``DateTime`` objects or if any of the ``date_create*`` functions are overridden.
 
 * **declare_equal_normalize** [@Symfony]
 
@@ -429,14 +429,14 @@ Choose from the list of available rules:
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
 
-  *Risky rule: forcing strict types will stop non strict code from working.*
+  *Risky rule:* forcing strict types will stop non strict code from working.
 
 * **dir_constant** [@Symfony:risky]
 
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
   constant.
 
-  *Risky rule: risky when the function ``dirname`` is overridden.*
+  *Risky rule:* risky when the function ``dirname`` is overridden.
 
 * **doctrine_annotation_array_assignment** [@DoctrineAnnotation]
 
@@ -589,14 +589,14 @@ Choose from the list of available rules:
 
   Replace deprecated ``ereg`` regular expression functions with ``preg``.
 
-  *Risky rule: risky if the ``ereg`` function is overridden.*
+  *Risky rule:* risky if the ``ereg`` function is overridden.
 
 * **error_suppression** [@Symfony:risky]
 
   Error control operator should be added to deprecation notices and/or
   removed from other cases.
 
-  *Risky rule: risky because adding/removing ``@`` might cause changes to code behaviour or if ``trigger_error`` function is overridden.*
+  *Risky rule:* risky because adding/removing ``@`` might cause changes to code behaviour or if ``trigger_error`` function is overridden.
 
   Configuration options:
 
@@ -635,7 +635,7 @@ Choose from the list of available rules:
 
   Internal classes should be ``final``.
 
-  *Risky rule: changing classes to ``final`` might cause code execution to break.*
+  *Risky rule:* changing classes to ``final`` might cause code execution to break.
 
   Configuration options:
 
@@ -669,7 +669,7 @@ Choose from the list of available rules:
 
   Replace core functions calls returning constants with the constants.
 
-  *Risky rule: risky when any of the configured functions to replace are overridden.*
+  *Risky rule:* risky when any of the configured functions to replace are overridden.
 
   Configuration options:
 
@@ -736,7 +736,7 @@ Choose from the list of available rules:
 
   Replaces ``is_null($var)`` expression with ``null === $var``.
 
-  *Risky rule: risky when the function ``is_null`` is overridden.*
+  *Risky rule:* risky when the function ``is_null`` is overridden.
 
   Configuration options:
 
@@ -765,7 +765,7 @@ Choose from the list of available rules:
 
   Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
 
-  *Risky rule: risky, because you must double-check if using and/or with lower precedence was intentional.*
+  *Risky rule:* risky, because you must double-check if using and/or with lower precedence was intentional.
 
 * **lowercase_cast** [@Symfony]
 
@@ -792,7 +792,7 @@ Choose from the list of available rules:
 
   Replace non multibyte-safe functions with corresponding mb function.
 
-  *Risky rule: risky when any of the functions are overridden.*
+  *Risky rule:* risky when any of the functions are overridden.
 
 * **method_argument_space** [@PSR2, @Symfony]
 
@@ -828,7 +828,7 @@ Choose from the list of available rules:
   Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
   function calls with according type casting operator.
 
-  *Risky rule: risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.*
+  *Risky rule:* risky if any of the functions ``intval``, ``floatval``, ``doubleval``, ``strval`` or ``boolval`` are overridden.
 
 * **multiline_comment_opening_closing**
 
@@ -853,7 +853,7 @@ Choose from the list of available rules:
   up resolving. Constant name match is case-sensitive, except for ``null``,
   ``false`` and ``true``.
 
-  *Risky rule: risky when any of the constants are namespaced or overridden.*
+  *Risky rule:* risky when any of the constants are namespaced or overridden.
 
   Configuration options:
 
@@ -872,7 +872,7 @@ Choose from the list of available rules:
 
   Add leading ``\`` before function invocation to speed up resolving.
 
-  *Risky rule: risky when any of the functions are overridden.*
+  *Risky rule:* risky when any of the functions are overridden.
 
   Configuration options:
 
@@ -892,7 +892,7 @@ Choose from the list of available rules:
 
   Master functions shall be used instead of aliases.
 
-  *Risky rule: risky when any of the alias functions are overridden.*
+  *Risky rule:* risky when any of the alias functions are overridden.
 
 * **no_alternative_syntax**
 
@@ -968,7 +968,7 @@ Choose from the list of available rules:
 
   Replace accidental usage of homoglyphs (non ascii characters) in names.
 
-  *Risky rule: renames classes and cannot rename the files. You might have string references to renamed code (``$$name``).*
+  *Risky rule:* renames classes and cannot rename the files. You might have string references to renamed code (``$$name``).
 
 * **no_leading_import_slash** [@Symfony]
 
@@ -1004,7 +1004,7 @@ Choose from the list of available rules:
 
   Convert PHP4-style constructors to ``__construct``.
 
-  *Risky rule: risky when old style constructor being fixed is overridden or overrides parent one.*
+  *Risky rule:* risky when old style constructor being fixed is overridden or overrides parent one.
 
 * **no_short_bool_cast** [@Symfony]
 
@@ -1087,13 +1087,13 @@ Choose from the list of available rules:
   In function arguments there must not be arguments with default values
   before non-default ones.
 
-  *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
+  *Risky rule:* modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).
 
 * **no_unset_on_property**
 
   Properties should be set to ``null`` instead of using ``unset``.
 
-  *Risky rule: changing variables to ``null`` instead of unsetting them will mean they still show up when looping over class variables.*
+  *Risky rule:* changing variables to ``null`` instead of unsetting them will mean they still show up when looping over class variables.
 
 * **no_unused_imports** [@Symfony]
 
@@ -1121,7 +1121,7 @@ Choose from the list of available rules:
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.
 
-  *Risky rule: risky when strings contain intended invisible characters.*
+  *Risky rule:* risky when strings contain intended invisible characters.
 
   Configuration options:
 
@@ -1185,7 +1185,7 @@ Choose from the list of available rules:
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be
   written with dedicated method like ``->assertTrue($foo)``.
 
-  *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
+  *Risky rule:* fixer could be risky if one is overriding PHPUnit's native methods.
 
   Configuration options:
 
@@ -1199,7 +1199,7 @@ Choose from the list of available rules:
   PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should
   be used over ``assertTrue``.
 
-  *Risky rule: fixer could be risky if one is overriding PHPUnit's native methods.*
+  *Risky rule:* fixer could be risky if one is overriding PHPUnit's native methods.
 
   Configuration options:
 
@@ -1217,7 +1217,7 @@ Choose from the list of available rules:
   Usages of ``->setExpectedException*`` methods MUST be replaced by
   ``->expectException*`` methods.
 
-  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+  *Risky rule:* risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.
 
   Configuration options:
 
@@ -1243,7 +1243,7 @@ Choose from the list of available rules:
   ``->getMockWithoutInvokingTheOriginalConstructor`` methods MUST be
   replaced by ``->createMock`` or ``->createPartialMock`` methods.
 
-  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+  *Risky rule:* risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.
 
   Configuration options:
 
@@ -1255,7 +1255,7 @@ Choose from the list of available rules:
   PHPUnit classes MUST be used in namespaced version, eg
   ``\PHPUnit\Framework\TestCase`` instead of ``\PHPUnit_Framework_TestCase``.
 
-  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+  *Risky rule:* risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.
 
   Configuration options:
 
@@ -1267,7 +1267,7 @@ Choose from the list of available rules:
   Usages of ``@expectedException*`` annotations MUST be replaced by
   ``->setExpectedException*`` methods.
 
-  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+  *Risky rule:* risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.
 
   Configuration options:
 
@@ -1284,14 +1284,14 @@ Choose from the list of available rules:
   Changes the visibility of the ``setUp()`` and ``tearDown()`` functions of
   PHPUnit to ``protected``, to match the PHPUnit TestCase.
 
-  *Risky rule: this fixer may change functions named ``setUp()`` or ``tearDown()`` outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
+  *Risky rule:* this fixer may change functions named ``setUp()`` or ``tearDown()`` outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.
 
 * **php_unit_strict**
 
   PHPUnit methods like ``assertSame`` should be used instead of
   ``assertEquals``.
 
-  *Risky rule: risky when any of the functions are overridden or when testing object equality.*
+  *Risky rule:* risky when any of the functions are overridden or when testing object equality.
 
   Configuration options:
 
@@ -1304,7 +1304,7 @@ Choose from the list of available rules:
 
   Adds or removes @test annotations from tests, following configuration.
 
-  *Risky rule: this fixer may change the name of your tests, and could cause incompatibility with abstract classes or interfaces.*
+  *Risky rule:* this fixer may change the name of your tests, and could cause incompatibility with abstract classes or interfaces.
 
   Configuration options:
 
@@ -1318,7 +1318,7 @@ Choose from the list of available rules:
   Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the
   same type, either ``$this->``, ``self::`` or ``static::``.
 
-  *Risky rule: risky when PHPUnit methods are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+  *Risky rule:* risky when PHPUnit methods are overridden or not accessible, or when project has PHPUnit incompatibilities.
 
   Configuration options:
 
@@ -1444,7 +1444,7 @@ Choose from the list of available rules:
   EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts
   accordingly the function signature. Requires PHP >= 7.0.
 
-  *Risky rule: [1] This rule is EXPERIMENTAL and is not covered with backward compatibility promise. [2] ``@return`` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented. [4] ``@inheritdocs`` support is under construction.*
+  *Risky rule:* [1] This rule is EXPERIMENTAL and is not covered with backward compatibility promise. [2] ``@return`` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented. [4] ``@inheritdocs`` support is under construction.
 
   Configuration options:
 
@@ -1484,7 +1484,7 @@ Choose from the list of available rules:
 
   Converts ``pow`` to the ``**`` operator.
 
-  *Risky rule: risky when the function ``pow`` is overridden.*
+  *Risky rule:* risky when the function ``pow`` is overridden.
 
 * **pre_increment**
 
@@ -1500,7 +1500,7 @@ Choose from the list of available rules:
   Classes must be in a path that matches their namespace, be at least one
   namespace deep and the class name should match the file name.
 
-  *Risky rule: this fixer may change your class name, which will break the code that is depended on old name.*
+  *Risky rule:* this fixer may change your class name, which will break the code that is depended on old name.
 
   Configuration options:
 
@@ -1511,14 +1511,14 @@ Choose from the list of available rules:
 
   Class names should match the file name.
 
-  *Risky rule: this fixer may change your class name, which will break the code that is depended on old name.*
+  *Risky rule:* this fixer may change your class name, which will break the code that is depended on old name.
 
 * **random_api_migration** [@PHP70Migration:risky, @PHP71Migration:risky]
 
   Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
   analogs.
 
-  *Risky rule: risky when the configured functions are overridden.*
+  *Risky rule:* risky when the configured functions are overridden.
 
   Configuration options:
 
@@ -1546,7 +1546,7 @@ Choose from the list of available rules:
   Inside class or interface element ``self`` should be preferred to the
   class name itself.
 
-  *Risky rule: risky when using dynamic calls like get_called_class() or late static binding.*
+  *Risky rule:* risky when using dynamic calls like get_called_class() or late static binding.
 
 * **semicolon_after_instruction** [@Symfony]
 
@@ -1556,7 +1556,7 @@ Choose from the list of available rules:
 
   Cast shall be used, not ``settype``.
 
-  *Risky rule: risky when the ``settype`` function is overridden or when used as the 2nd or 3rd expression in a ``for`` loop .*
+  *Risky rule:* risky when the ``settype`` function is overridden or when used as the 2nd or 3rd expression in a ``for`` loop .
 
 * **short_scalar_cast** [@Symfony]
 
@@ -1569,7 +1569,7 @@ Choose from the list of available rules:
   Ensures deprecation notices are silenced. DEPRECATED: use
   ``error_suppression`` instead.
 
-  *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
+  *Risky rule:* silencing of deprecation errors might cause changes to code behaviour.
 
 * **simplified_null_return**
 
@@ -1643,25 +1643,25 @@ Choose from the list of available rules:
 
   Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
 
-  *Risky rule: risky when using "->bindTo" on lambdas without referencing to ``$this``.*
+  *Risky rule:* risky when using "->bindTo" on lambdas without referencing to ``$this``.
 
 * **strict_comparison**
 
   Comparisons should be strict.
 
-  *Risky rule: changing comparisons to strict might change code behavior.*
+  *Risky rule:* changing comparisons to strict might change code behavior.
 
 * **strict_param**
 
   Functions should be used with ``$strict`` param set to ``true``.
 
-  *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
+  *Risky rule:* risky when the fixed function is overridden or if the code relies on non-strict usage.
 
 * **string_line_ending**
 
   All multi-line strings must use correct line ending.
 
-  *Risky rule: changing the line endings of multi-line strings might affect string comparisons and outputs.*
+  *Risky rule:* changing the line endings of multi-line strings might affect string comparisons and outputs.
 
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony]
 
@@ -1710,7 +1710,7 @@ Choose from the list of available rules:
   statements, but priority is given to ``@return`` annotations. Requires
   PHP >= 7.1.
 
-  *Risky rule: modifies the signature of functions.*
+  *Risky rule:* modifies the signature of functions.
 
 * **whitespace_after_comma_in_array** [@Symfony]
 
