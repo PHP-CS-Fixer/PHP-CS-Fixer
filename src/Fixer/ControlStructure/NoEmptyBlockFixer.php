@@ -215,10 +215,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $openBraceIndex = $tokens->getNextMeaningfulToken($ifIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
 
-        if ($this->canHaveSideEffects($tokens, $openBraceIndex + 1, $closeBraceIndex - 1)) {
-            return;
-        }
-
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
@@ -267,10 +263,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
 
             $openElseifBraceIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
             $closeElseifBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openElseifBraceIndex);
-
-            if ($this->canHaveSideEffects($tokens, $openElseifBraceIndex + 1, $closeElseifBraceIndex - 1)) {
-                return;
-            }
 
             $openElseifBodyIndex = $tokens->getNextMeaningfulToken($closeElseifBraceIndex);
             $closeBodyIndex = $tokens->getNextNonWhitespace($openElseifBodyIndex);

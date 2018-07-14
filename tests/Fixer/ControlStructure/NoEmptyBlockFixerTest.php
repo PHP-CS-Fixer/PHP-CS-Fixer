@@ -41,6 +41,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo) { echo 1; }',
             ],
             'if with side effect in braces' => [
+                '<?php ',
                 '<?php if ($foo->bar()) {}',
             ],
             'if without side effect' => [
@@ -51,7 +52,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo) { /* todo */ }',
             ],
             'if without side effect but doc comment in body' => [
-                '<?php if ($foo) { /* todo */ }',
+                '<?php if ($foo) { /** todo */ }',
             ],
             'if without side effect with comments' => [
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
@@ -65,6 +66,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo) {} elseif ($bar) { baz(); }',
             ],
             'if with side effect in elseif braces' => [
+                '<?php ',
                 '<?php if ($foo) {} elseif ($foo->baz()) {}',
             ],
             'if without side effect and elseif without side effect' => [
@@ -103,7 +105,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo) {} else { /* todo */ }',
             ],
             'if with else without side effect but doc comment in body' => [
-                '<?php if ($foo) {} else { /* todo */ }',
+                '<?php if ($foo) {} else { /** todo */ }',
             ],
             'if with else without side effect with comments' => [
                 '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
@@ -114,7 +116,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/else/**7*/{}/**8*/',
             ],
             'if with side effect in braces and else without side effect' => [
-                '<?php if ($foo->bar()) {} ',
+                '<?php ',
                 '<?php if ($foo->bar()) {} else {}',
             ],
             'if with side effect in body and else without side effect' => [
@@ -133,6 +135,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo): echo 1; endif;',
             ],
             'alternate if with side effect in braces' => [
+                '<?php ',
                 '<?php if ($foo->bar()): endif;',
             ],
             'alternate if without side effect' => [
@@ -157,6 +160,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo): elseif ($bar): baz(); endif;',
             ],
             'alternate if with side effect in elseif braces' => [
+                '<?php ',
                 '<?php if ($foo): elseif ($foo->baz()): endif;',
             ],
             'alternate if without side effect and elseif without side effect' => [
@@ -206,7 +210,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif;/**5*/',
             ],
             'alternate if with side effect in braces and else without side effect' => [
-                '<?php if ($foo->bar()):  endif;',
+                '<?php ',
                 '<?php if ($foo->bar()): else: endif;',
             ],
             'alternate if with side effect in body and else without side effect' => [
@@ -225,6 +229,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo): echo 1; endif ?>',
             ],
             'alternate end tag if with side effect in braces' => [
+                '<?php ?>',
                 '<?php if ($foo->bar()): endif ?>',
             ],
             'alternate end tag if without side effect' => [
@@ -249,6 +254,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo): elseif ($bar): baz(); endif ?>',
             ],
             'alternate end tag if with side effect in elseif braces' => [
+                '<?php ?>',
                 '<?php if ($foo): elseif ($foo->baz()): endif ?>',
             ],
             'alternate end tag if without side effect and elseif without side effect' => [
@@ -298,7 +304,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif ?>',
             ],
             'alternate end tag if with side effect in braces and else without side effect' => [
-                '<?php if ($foo->bar()):  endif ?>',
+                '<?php ?>',
                 '<?php if ($foo->bar()): else: endif ?>',
             ],
             'alternate end tag if with side effect in body and else without side effect' => [
