@@ -27,11 +27,18 @@ final class NoEmptyBlockFixer extends AbstractFixer
         return new FixerDefinition(
             'There must not be any empty blocks.',
             [
-                new CodeSample('<?php if ($foo) {}'),
-                new CodeSample('<?php switch ($foo) {}'),
-                new CodeSample('<?php while ($foo) {}'),
-            ]
+                new CodeSample("<?php if (\$foo) {}\n"),
+                new CodeSample("<?php switch (\$foo) {}\n"),
+                new CodeSample("<?php while (\$foo) {}\n"),
+            ],
+            null,
+            'Risky if the block has side effects'
         );
+    }
+
+    public function isRisky()
+    {
+        return true;
     }
 
     public function isCandidate(Tokens $tokens)
