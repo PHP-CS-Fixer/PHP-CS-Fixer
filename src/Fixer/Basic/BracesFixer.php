@@ -565,7 +565,7 @@ class Foo
                     if (
                         self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs']
                         && (
-                            $token->isGivenKind([T_FUNCTION]) && !$tokensAnalyzer->isLambda($index)
+                            $token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)
                             || $token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)
                         )
                         && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()

@@ -343,9 +343,9 @@ use Bar;
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
 
             $group = $tokens[$previous]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
-            if ($tokens[$startIndex]->isGivenKind([CT::T_CONST_IMPORT])) {
+            if ($tokens[$startIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
                 $type = self::IMPORT_TYPE_CONST;
-            } elseif ($tokens[$startIndex]->isGivenKind([CT::T_FUNCTION_IMPORT])) {
+            } elseif ($tokens[$startIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
                 $type = self::IMPORT_TYPE_FUNCTION;
             } else {
                 $type = self::IMPORT_TYPE_CLASS;

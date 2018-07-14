@@ -95,7 +95,7 @@ class Foo extends Bar
                 continue;
             }
 
-            if ('static' === $newContent && $tokens[$nextIndex]->isGivenKind([T_VARIABLE])) {
+            if ('static' === $newContent && $tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
                 continue;
             }
 
