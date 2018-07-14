@@ -22,6 +22,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoEmptyBlockFixer extends AbstractFixer
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getDefinition()
     {
         return new FixerDefinition(
@@ -36,11 +39,17 @@ final class NoEmptyBlockFixer extends AbstractFixer
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isRisky()
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound([
@@ -55,6 +64,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = count($tokens) - 1; 0 <= $index; --$index) {
