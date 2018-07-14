@@ -97,10 +97,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $openBraceIndex = $tokens->getNextMeaningfulToken($whileIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
 
-        if ($this->canHaveSideEffects($tokens, $openBraceIndex + 1, $closeBraceIndex - 1)) {
-            return;
-        }
-
         $semicolonIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
 
         if ($tokens[$semicolonIndex]->equals(';')) {

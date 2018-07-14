@@ -323,6 +323,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php do { foo(); } while($foo);',
             ],
             'do while with side effect in braces' => [
+                '<?php ',
                 '<?php do {} while (foo());',
             ],
             'do while without side effects' => [
@@ -347,6 +348,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php do { foo(); } while($foo) ?>',
             ],
             'do while end tag with side effect in braces' => [
+                '<?php ?>',
                 '<?php do {} while (foo()) ?>',
             ],
             'do while end tag without side effects' => [
