@@ -373,6 +373,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php for (;;) { foo(); }',
             ],
             'for with side effect in braces' => [
+                '<?php ',
                 '<?php for ($i = 0; $i < count($foo); ++$i) {}',
             ],
             'for without side effects' => [
@@ -397,6 +398,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php for (;;): foo(); endfor;',
             ],
             'for alternate with side effect in braces' => [
+                '<?php ',
                 '<?php for ($i = 0; $i < count($foo); ++$i): endfor;',
             ],
             'for alternate without side effects' => [
@@ -421,6 +423,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php for (;;): foo(); endfor ?>',
             ],
             'for alternate end tag with side effect in braces' => [
+                '<?php ?>',
                 '<?php for ($i = 0; $i < count($foo); ++$i): endfor ?>',
             ],
             'for alternate end tag without side effects' => [
