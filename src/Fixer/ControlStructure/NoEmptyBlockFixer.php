@@ -211,11 +211,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
-        while (true) {
-            if (null === $closeBodyIndex) {
-                return;
-            }
-
+        while (null !== $closeBodyIndex) {
             if ($tokens[$closeBodyIndex]->equals('}')) {
                 $nextIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
 
