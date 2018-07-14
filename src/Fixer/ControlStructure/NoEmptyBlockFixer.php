@@ -44,6 +44,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound([
+            T_DO,
             T_ELSE,
             T_FINALLY,
             T_FOR,
@@ -59,14 +60,14 @@ final class NoEmptyBlockFixer extends AbstractFixer
         for ($index = count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_ELSE)) {
-                $this->fixElse($index, $tokens);
-            } elseif ($token->isGivenKind(T_DO)) {
+            if ($token->isGivenKind(T_DO)) {
                 $this->fixDoWhile($index, $tokens);
-            } elseif ($token->isGivenKind(T_FOR)) {
-                $this->fixFor($index, $tokens);
+            } elseif ($token->isGivenKind(T_ELSE)) {
+                $this->fixElse($index, $tokens);
             } elseif ($token->isGivenKind(T_FINALLY)) {
                 $this->fixFinally($index, $tokens);
+            } elseif ($token->isGivenKind(T_FOR)) {
+                $this->fixFor($index, $tokens);
             } elseif ($token->isGivenKind(T_IF)) {
                 $this->fixIf($index, $tokens);
             } elseif ($token->isGivenKind(T_SWITCH)) {
@@ -77,34 +78,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
                 $this->fixWhile($index, $tokens);
             }
         }
-    }
-
-    /**
-     * @param int    $elseIndex
-     * @param Tokens $tokens
-     */
-    private function fixElse($elseIndex, Tokens $tokens)
-    {
-        $openBodyIndex = $tokens->getNextMeaningfulToken($elseIndex);
-
-        if ($tokens[$openBodyIndex]->equals(':')) {
-            $endifIndex = $tokens->getNextNonWhitespace($openBodyIndex);
-
-            if ($tokens[$endifIndex]->isGivenKind(T_ENDIF)) {
-                // keep the endif as the if statement will break without it
-                $this->clearRangeKeepComments($tokens, $elseIndex, $openBodyIndex);
-            }
-
-            return;
-        }
-
-        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
-
-        if (!$tokens[$closeBodyIndex]->equals('}')) {
-            return;
-        }
-
-        $this->clearRangeKeepComments($tokens, $elseIndex, $closeBodyIndex);
     }
 
     /**
@@ -137,6 +110,50 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         $this->clearRangeKeepComments($tokens, $doIndex, $closeBraceIndex);
+    }
+
+    /**
+     * @param int    $elseIndex
+     * @param Tokens $tokens
+     */
+    private function fixElse($elseIndex, Tokens $tokens)
+    {
+        $openBodyIndex = $tokens->getNextMeaningfulToken($elseIndex);
+
+        if ($tokens[$openBodyIndex]->equals(':')) {
+            $endifIndex = $tokens->getNextNonWhitespace($openBodyIndex);
+
+            if ($tokens[$endifIndex]->isGivenKind(T_ENDIF)) {
+                // keep the endif as the if statement will break without it
+                $this->clearRangeKeepComments($tokens, $elseIndex, $openBodyIndex);
+            }
+
+            return;
+        }
+
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
+
+        if (!$tokens[$closeBodyIndex]->equals('}')) {
+            return;
+        }
+
+        $this->clearRangeKeepComments($tokens, $elseIndex, $closeBodyIndex);
+    }
+
+    /**
+     * @param int    $finallyIndex
+     * @param Tokens $tokens
+     */
+    private function fixFinally($finallyIndex, Tokens $tokens)
+    {
+        $openBodyIndex = $tokens->getNextMeaningfulToken($finallyIndex);
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
+
+        if (!$tokens[$closeBodyIndex]->equals('}')) {
+            return;
+        }
+
+        $this->clearRangeKeepComments($tokens, $finallyIndex, $closeBodyIndex);
     }
 
     /**
@@ -188,22 +205,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         $this->clearRangeKeepComments($tokens, $forIndex, $closeBodyIndex);
-    }
-
-    /**
-     * @param int    $finallyIndex
-     * @param Tokens $tokens
-     */
-    private function fixFinally($finallyIndex, Tokens $tokens)
-    {
-        $openBodyIndex = $tokens->getNextMeaningfulToken($finallyIndex);
-        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
-
-        if (!$tokens[$closeBodyIndex]->equals('}')) {
-            return;
-        }
-
-        $this->clearRangeKeepComments($tokens, $finallyIndex, $closeBodyIndex);
     }
 
     /**
