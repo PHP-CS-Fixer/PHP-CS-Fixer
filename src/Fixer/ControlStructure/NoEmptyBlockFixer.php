@@ -271,10 +271,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $openBraceIndex = $tokens->getNextMeaningfulToken($switchIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
 
-        if ($this->canHaveSideEffects($tokens, $openBraceIndex + 1, $closeBraceIndex - 1)) {
-            return;
-        }
-
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 

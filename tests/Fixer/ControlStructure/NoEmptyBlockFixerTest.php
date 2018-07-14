@@ -448,6 +448,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php switch ($foo) { case 1: foo(); }',
             ],
             'switch with side effect in braces' => [
+                '<?php ',
                 '<?php switch ($foo->bar()) {}',
             ],
             'switch without side effects' => [
@@ -472,6 +473,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php switch ($foo): case 1: foo(); endswitch;',
             ],
             'alternate switch with side effect in braces' => [
+                '<?php ',
                 '<?php switch ($foo->bar()): endswitch;',
             ],
             'alternate switch without side effects' => [
@@ -496,6 +498,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
                 '<?php switch ($foo): case 1: foo(); endswitch ?>',
             ],
             'alternate end tag switch with side effect in braces' => [
+                '<?php ?>',
                 '<?php switch ($foo->bar()): endswitch ?>',
             ],
             'alternate end tag switch without side effects' => [
