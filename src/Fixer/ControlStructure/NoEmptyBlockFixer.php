@@ -108,7 +108,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $whileIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
         $openBraceIndex = $tokens->getNextMeaningfulToken($whileIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
-
         $semicolonIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
 
         if ($tokens[$semicolonIndex]->equals(';')) {
@@ -172,7 +171,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
     {
         $openBraceIndex = $tokens->getNextMeaningfulToken($forIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
-
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $openBody = $tokens[$openBodyIndex];
 
@@ -219,7 +217,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
     {
         $openBraceIndex = $tokens->getNextMeaningfulToken($ifIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
-
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
@@ -264,7 +261,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
 
             $openElseifBraceIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
             $closeElseifBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openElseifBraceIndex);
-
             $openElseifBodyIndex = $tokens->getNextMeaningfulToken($closeElseifBraceIndex);
             $closeBodyIndex = $tokens->getNextNonWhitespace($openElseifBodyIndex);
         }
@@ -278,7 +274,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
     {
         $openBraceIndex = $tokens->getNextMeaningfulToken($switchIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
-
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
 
@@ -317,7 +312,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
 
         $clearRangeIndexEnd = $closeBodyIndex;
-
         $catchOrFinallyIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
 
         while (null !== $catchOrFinallyIndex && $tokens[$catchOrFinallyIndex]->isGivenKind(T_CATCH)) {
@@ -325,7 +319,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
             $closeCatchBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openCatchBraceIndex);
             $openCatchBodyIndex = $tokens->getNextMeaningfulToken($closeCatchBraceIndex);
             $closeCatchBodyIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openCatchBodyIndex);
-
             $clearRangeIndexEnd = $closeCatchBodyIndex;
             $catchOrFinallyIndex = $tokens->getNextMeaningfulToken($closeCatchBodyIndex);
         }
@@ -364,7 +357,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
 
         $openBraceIndex = $tokens->getNextMeaningfulToken($whileIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
-
         $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
         $openBody = $tokens[$openBodyIndex];
 
