@@ -20,7 +20,7 @@ use PhpCsFixer\Utils;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Token
+final class Token
 {
     /**
      * Content of token prototype.

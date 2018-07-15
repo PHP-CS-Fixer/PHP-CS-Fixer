@@ -18,7 +18,7 @@ namespace PhpCsFixer\DocBlock;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class TagComparator
+final class TagComparator
 {
     /**
      * Groups of tags that should be allowed to immediately follow each other.
