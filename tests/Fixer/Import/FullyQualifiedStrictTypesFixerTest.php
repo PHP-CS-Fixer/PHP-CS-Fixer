@@ -371,6 +371,13 @@ class SomeClass
     ){}
 }',
             ],
+            // Test reference
+            [
+                '<?php
+function withReference(Exception &$e) {}',
+                '<?php
+function withReference(\Exception &$e) {}',
+            ],
         ];
     }
 }
