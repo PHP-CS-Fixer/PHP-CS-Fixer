@@ -42,6 +42,15 @@ final class NoEmptyBlockFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // Should be run after NoEmptyCommentFixer and before NoTrailingWhitespaceFixer.
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isRisky()
     {
         return true;
