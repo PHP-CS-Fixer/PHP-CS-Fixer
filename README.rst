@@ -1047,6 +1047,11 @@ Choose from the list of available rules:
   Removes ``@param`` and ``@return`` tags that don't provide any useful
   information.
 
+  Configuration options:
+
+  - ``allow_untyped`` (``bool``): whether to remove superfluous ``@param`` annotations
+    for parameters with specified type only; defaults to ``false``
+
 * **no_trailing_comma_in_list_call** [@Symfony]
 
   Remove trailing commas in list function calls.

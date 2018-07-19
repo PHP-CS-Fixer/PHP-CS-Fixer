@@ -15,6 +15,9 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -25,7 +28,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer
+final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -39,18 +42,20 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer
 class Foo {
     /**
      * @param Bar $bar
+     * @param mixed $baz
      */
-    public function doFoo(Bar $bar) {}
+    public function doFoo(Bar $bar, $baz) {}
 }
 '),
                 new VersionSpecificCodeSample('<?php
 class Foo {
     /**
      * @param Bar $bar
+     * @param mixed $baz
      *
      * @return Baz
      */
-    public function doFoo(Bar $bar): Baz {}
+    public function doFoo(Bar $bar, $baz): Baz {}
 }
 ', new VersionSpecification(70000)),
             ]
@@ -132,6 +137,19 @@ class Foo {
 
             $tokens[$index] = new Token([T_DOC_COMMENT, $docBlock->getContent()]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('allow_untyped', 'Whether to remove superfluous `@param` annotations for parameters with specified type only.'))
+                ->setDefault(false)
+                ->setAllowedTypes(['bool'])
+                ->getOption(),
+        ]);
     }
 
     private function findDocumentedFunction(Tokens $tokens, $index)
@@ -254,7 +272,7 @@ class Foo {
 
         $annotationTypes = $this->toComparableNames($annotation->getTypes(), $symbolShortNames);
 
-        if (['mixed'] === $annotationTypes && null === $info['type']) {
+        if (['mixed'] === $annotationTypes && null === $info['type'] && !$this->configuration['allow_untyped']) {
             return true;
         }
 

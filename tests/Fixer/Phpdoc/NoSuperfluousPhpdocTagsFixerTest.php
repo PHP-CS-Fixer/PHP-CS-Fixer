@@ -24,11 +24,14 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $config
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $config = null)
     {
+        $this->fixer->configure($config ?: ['allow_untyped' => false]);
+
         $this->doTest($expected, $input);
     }
 
@@ -102,6 +105,19 @@ class Foo {
      */
     public function doFoo($bar) {}
 }',
+            ],
+            'no typehint mixed allow untyped' => [
+                '<?php
+class Foo {
+    /**
+     * @param mixed $bar
+     *
+     * @return mixed
+     */
+    public function doFoo($bar) {}
+}',
+                null,
+                ['allow_untyped' => true],
             ],
             'multiple different types' => [
                 '<?php
