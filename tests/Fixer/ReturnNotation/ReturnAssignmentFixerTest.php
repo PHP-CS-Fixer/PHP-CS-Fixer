@@ -407,6 +407,22 @@ var names are case insensitive */ }
 var names are case insensitive */ return $a   ;}
                 ',
             ],
+            [
+                '<?php
+                function foo()
+                {
+                    return SomeService::getSomeValue();
+                }
+                ',
+                '<?php
+                function foo()
+                {
+                    /** @var ValueFromSomeService $bar */
+                    $bar = SomeService::getSomeValue();
+                    return $bar;
+                }
+                ',
+            ],
         ];
     }
 
