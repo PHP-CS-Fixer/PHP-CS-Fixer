@@ -189,7 +189,7 @@ mbereg_search_getregs();
             $prevToken = $tokens[$prevTokenIndex];
 
             // handle function reference with namespaces
-            if ($prevToken->isGivenKind([T_NS_SEPARATOR])) {
+            if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($prevTokenIndex)];
             }
 

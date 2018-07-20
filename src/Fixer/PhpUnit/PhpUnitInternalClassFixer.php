@@ -116,11 +116,11 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
     private function isAllowedByConfiguration(Tokens $tokens, $i)
     {
         $typeIndex = $tokens->getPrevMeaningfulToken($i);
-        if ($tokens[$typeIndex]->isGivenKind([T_FINAL])) {
+        if ($tokens[$typeIndex]->isGivenKind(T_FINAL)) {
             return in_array('final', $this->configuration['types'], true);
         }
 
-        if ($tokens[$typeIndex]->isGivenKind([T_ABSTRACT])) {
+        if ($tokens[$typeIndex]->isGivenKind(T_ABSTRACT)) {
             return in_array('abstract', $this->configuration['types'], true);
         }
 

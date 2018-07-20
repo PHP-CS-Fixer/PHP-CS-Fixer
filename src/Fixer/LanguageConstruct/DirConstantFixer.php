@@ -66,7 +66,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $fileCandidateRight = $tokens[$fileCandidateRightIndex];
             $fileCandidateLeftIndex = $tokens->getNextMeaningfulToken($openParenthesis);
             $fileCandidateLeft = $tokens[$fileCandidateLeftIndex];
-            if (!$fileCandidateRight->isGivenKind([T_FILE]) || !$fileCandidateLeft->isGivenKind([T_FILE])) {
+            if (!$fileCandidateRight->isGivenKind(T_FILE) || !$fileCandidateLeft->isGivenKind(T_FILE)) {
                 continue;
             }
 
