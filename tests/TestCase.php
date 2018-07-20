@@ -13,13 +13,14 @@
 namespace PhpCsFixer\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use PHPUnitGoodPractices\Traits\ExpectationViaCodeOverAnnotationTrait;
+use PHPUnitGoodPractices\Traits\ExpectationViaCodeOverAnnotationTrait7;
 use PHPUnitGoodPractices\Traits\ExpectOverSetExceptionTrait;
-use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait;
-use PHPUnitGoodPractices\Traits\ProphecyOverMockObjectTrait;
-use PHPUnitGoodPractices\Traits\ProphesizeOnlyInterfaceTrait;
+use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait7;
+use PHPUnitGoodPractices\Traits\PHPUnitVersionRetriever;
+use PHPUnitGoodPractices\Traits\ProphecyOverMockObjectTrait7;
+use PHPUnitGoodPractices\Traits\ProphesizeOnlyInterfaceTrait7;
 
-if (trait_exists(ProphesizeOnlyInterfaceTrait::class)) {
+if (version_compare('7.0.0', PHPUnitVersionRetriever::getVersion()) < 0) {
     /**
      * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
      *
@@ -27,11 +28,11 @@ if (trait_exists(ProphesizeOnlyInterfaceTrait::class)) {
      */
     abstract class TestCase extends BaseTestCase
     {
-        use ExpectationViaCodeOverAnnotationTrait;
+        use ExpectationViaCodeOverAnnotationTrait7;
         use ExpectOverSetExceptionTrait;
-        use IdentityOverEqualityTrait;
-        use ProphecyOverMockObjectTrait;
-        use ProphesizeOnlyInterfaceTrait;
+        use IdentityOverEqualityTrait7;
+        use ProphecyOverMockObjectTrait7;
+        use ProphesizeOnlyInterfaceTrait7;
     }
 } else {
     /**
