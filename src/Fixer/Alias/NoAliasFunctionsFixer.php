@@ -132,7 +132,7 @@ $a = strchr($haystack, $needle);
             }
 
             // handle function reference with namespaces
-            if ($prevToken->isGivenKind([T_NS_SEPARATOR])) {
+            if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
                 $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
                 $twicePrevToken = $tokens[$twicePrevTokenIndex];
                 if ($twicePrevToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING, CT::T_NAMESPACE_OPERATOR])) {

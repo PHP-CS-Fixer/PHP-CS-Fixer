@@ -83,7 +83,7 @@ final class NamespaceUsesAnalyzer
                 $type = NamespaceUseAnalysis::TYPE_CONSTANT;
             }
 
-            if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind([T_USE])) {
+            if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind(T_USE)) {
                 continue;
             }
 

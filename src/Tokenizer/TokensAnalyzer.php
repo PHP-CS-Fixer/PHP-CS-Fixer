@@ -202,19 +202,19 @@ final class TokensAnalyzer
             $i = $tokenIndex;
             $token = $tokens[$tokenIndex];
 
-            if ($token->isGivenKind([T_STATIC])) {
+            if ($token->isGivenKind(T_STATIC)) {
                 $attributes['static'] = true;
 
                 continue;
             }
 
-            if ($token->isGivenKind([T_FINAL])) {
+            if ($token->isGivenKind(T_FINAL)) {
                 $attributes['final'] = true;
 
                 continue;
             }
 
-            if ($token->isGivenKind([T_ABSTRACT])) {
+            if ($token->isGivenKind(T_ABSTRACT)) {
                 $attributes['abstract'] = true;
 
                 continue;
@@ -222,19 +222,19 @@ final class TokensAnalyzer
 
             // visibility
 
-            if ($token->isGivenKind([T_PRIVATE])) {
+            if ($token->isGivenKind(T_PRIVATE)) {
                 $attributes['visibility'] = T_PRIVATE;
 
                 continue;
             }
 
-            if ($token->isGivenKind([T_PROTECTED])) {
+            if ($token->isGivenKind(T_PROTECTED)) {
                 $attributes['visibility'] = T_PROTECTED;
 
                 continue;
             }
 
-            if ($token->isGivenKind([T_PUBLIC])) {
+            if ($token->isGivenKind(T_PUBLIC)) {
                 $attributes['visibility'] = T_PUBLIC;
 
                 continue;
