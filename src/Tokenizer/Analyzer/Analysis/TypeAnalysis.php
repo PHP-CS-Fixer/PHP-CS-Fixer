@@ -33,7 +33,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         'bool',
         'callable',
         'int',
-        'iteratable',
+        'iterable',
         'float',
         'mixed',
         'numeric',
