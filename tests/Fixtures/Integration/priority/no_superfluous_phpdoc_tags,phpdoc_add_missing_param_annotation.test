@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: no_superfluous_phpdoc_tags,phpdoc_add_missing_param_annotation.
+--RULESET--
+{"no_superfluous_phpdoc_tags": true, "phpdoc_add_missing_param_annotation": true}
+--EXPECT--
+<?php
+
+class Foo {
+    /**
+     * Foo method
+     * @param mixed $bar
+     */
+    public function doFoo($bar) {}
+}
+
+--INPUT--
+<?php
+
+class Foo {
+    /**
+     * Foo method
+     */
+    public function doFoo($bar) {}
+}

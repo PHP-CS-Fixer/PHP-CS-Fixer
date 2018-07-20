@@ -129,7 +129,7 @@ function my_foo()
     {
         // should be run after PhpdocScalarFixer.
         // should be run before ReturnTypeDeclarationFixer, FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer.
-        return 8;
+        return 12;
     }
 
     /**

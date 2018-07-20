@@ -62,8 +62,8 @@ class Foo {
      */
     public function getPriority()
     {
-        // should run before NoEmptyPhpdocFixer
-        return 6;
+        // should run before NoEmptyPhpdocFixer and PhpdocAddMissingParamAnnotationFixer
+        return 11;
     }
 
     /**
