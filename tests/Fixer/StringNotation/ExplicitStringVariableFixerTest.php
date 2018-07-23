@@ -38,8 +38,8 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
     {
         $input = $expected = '<?php';
         for ($inc = 1; $inc < 15; ++$inc) {
-            $input .= " \$var${inc} = \"My name is \$name!\";";
-            $expected .= " \$var${inc} = \"My name is \${name}!\";";
+            $input .= " \$var{$inc} = \"My name is \$name!\";";
+            $expected .= " \$var{$inc} = \"My name is \${name}!\";";
         }
 
         return [

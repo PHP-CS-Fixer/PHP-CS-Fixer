@@ -435,8 +435,8 @@ EOT;
 <?php
 var_dump(
     \\null,
-    ${dontFixMe},
-    \\${fixMe}
+    {$dontFixMe},
+    \\{$fixMe}
 );
 EOT;
 
@@ -444,8 +444,8 @@ EOT;
 <?php
 var_dump(
     null,
-    ${dontFixMe},
-    ${fixMe}
+    {$dontFixMe},
+    {$fixMe}
 );
 EOT;
 
