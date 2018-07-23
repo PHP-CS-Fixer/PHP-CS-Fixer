@@ -17,11 +17,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @author Gert de Pagter <BackEndTea@gmail.com>
+ * @author Jefersson Nathan <malukenho.dev@gmail.com>
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitInternalClassFixer
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitSizeClassFixer
  */
-final class PhpUnitInternalClassFixerTest extends AbstractFixerTestCase
+final class PhpUnitSizeClassFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
@@ -47,11 +47,11 @@ class Hello
 }
 ',
             ],
-            'It marks a test class as internal' => [
+            'It marks a test class as @small by default' => [
                 '<?php
 
 /**
- * @internal
+ * @small
  */
 class Test extends TestCase
 {
@@ -64,13 +64,31 @@ class Test extends TestCase
 }
 ',
             ],
-            'It adds an internal tag to a class that already has a doc block' => [
+            'It marks a test class as specified in the configuration' => [
+                '<?php
+
+/**
+ * @large
+ */
+class Test extends TestCase
+{
+}
+',
+                '<?php
+
+class Test extends TestCase
+{
+}
+',
+                ['group' => 'large'],
+            ],
+            'It adds an @small tag to a class that already has a doc block' => [
                 '<?php
 
 /**
  * @coversNothing
  *
- * @internal
+ * @small
  */
 class Test extends TestCase
 {
@@ -86,24 +104,24 @@ class Test extends TestCase
 }
 ',
             ],
-            'It does not change a class that is already internal' => [
+            'It does not change a class that is already @small' => [
                 '<?php
 
 /**
- * @internal
+ * @small
  */
 class Test extends TestCase
 {
 }
 ',
             ],
-            'It does not change a class that is already internal and has other annotations' => [
+            'It does not change a class that is already @small and has other annotations' => [
                 '<?php
 
 /**
- * @author me
+ * @author malukenho
  * @coversNothing
- * @internal
+ * @large
  * @group large
  */
 class Test extends TestCase
@@ -116,7 +134,7 @@ class Test extends TestCase
 
 if (class_exists("Foo\Bar")) {
     /**
-     * @internal
+     * @small
      */
     class Test Extends TestCase
     {
@@ -137,12 +155,12 @@ if (class_exists("Foo\Bar")) {
 
 if (class_exists("Foo\Bar")) {
     /**
-     * @author me again
+     * @author malukenho again
      *
      *
      * @covers \Other\Class
      *
-     * @internal
+     * @small
      */
     class Test Extends TestCase
     {
@@ -153,7 +171,7 @@ if (class_exists("Foo\Bar")) {
 
 if (class_exists("Foo\Bar")) {
     /**
-     * @author me again
+     * @author malukenho again
      *
      *
      * @covers \Other\Class
@@ -164,39 +182,7 @@ if (class_exists("Foo\Bar")) {
 }
 ',
             ],
-            'It works for tab ident' => [
-                '<?php
-
-if (class_exists("Foo\Bar")) {
-	/**
-	 * @author me again
-	 *
-	 *
-	 * @covers \Other\Class
-	 *
-	 * @internal
-	 */
-	class Test Extends TestCase
-	{
-	}
-}
-',
-                '<?php
-
-if (class_exists("Foo\Bar")) {
-	/**
-	 * @author me again
-	 *
-	 *
-	 * @covers \Other\Class
-	 */
-	class Test Extends TestCase
-	{
-	}
-}
-',
-            ],
-            'It always adds @internal to the bottom of the doc block' => [
+            'It always adds @small to the bottom of the doc block' => [
                 '<?php
 
 /**
@@ -216,7 +202,7 @@ if (class_exists("Foo\Bar")) {
  *
  *
  *
- * @internal
+ * @small
  */
 class Test extends TestCase
 {
@@ -246,22 +232,22 @@ class Test extends TestCase
 }
 ',
             ],
-            'It does not change a class with a single line internal doc block' => [
+            'It does not change a class with a single line @{size} doc block' => [
                 '<?php
 
-/** @internal */
+/** @medium */
 class Test extends TestCase
 {
 }
 ',
             ],
-            'It adds an internal tag to a class that already has a one linedoc block' => [
+            'It adds an @small tag to a class that already has a one linedoc block' => [
                 '<?php
 
 /**
  * @coversNothing
  *
- * @internal
+ * @small
  */
 class Test extends TestCase
 {
@@ -275,63 +261,19 @@ class Test extends TestCase
 }
 ',
             ],
-            'By default it will not mark an abstract class as internal' => [
+            'By default it will not mark an abstract class as @small' => [
                 '<?php
 
 abstract class Test
 {
 }
 ',
-            ],
-            'If abstract is added as an option, abstract classes will be marked internal' => [
-                '<?php
-
-/**
- * @internal
- */
-abstract class Test
-{
-}
-',
-                '<?php
-
-abstract class Test
-{
-}
-',
-                [
-                    'types' => ['abstract'],
-                ],
-            ],
-            'If final is not added as an option, final classes will not be marked internal' => [
-                '<?php
-
-final class Test
-{
-}
-',
-                null,
-                [
-                    'types' => ['abstract'],
-                ],
-            ],
-            'If normal is not added as an option, normal classes will not be marked internal' => [
-                '<?php
-
-class Test
-{
-}
-',
-                null,
-                [
-                    'types' => ['abstract'],
-                ],
             ],
             'It works correctly with multiple classes in one file, even when one of them is not allowed' => [
                 '<?php
 
 /**
- * @internal
+ * @small
  */
 class Test
 {
@@ -346,7 +288,7 @@ class FooBar
 }
 
 /**
- * @internal
+ * @small
  */
 class Test extends TestCase
 {
