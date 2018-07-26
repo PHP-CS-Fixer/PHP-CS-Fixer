@@ -31,6 +31,7 @@ class Finder extends BaseFinder
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
             ->exclude('vendor')
+            ->exclude('node_modules')
         ;
     }
 }
