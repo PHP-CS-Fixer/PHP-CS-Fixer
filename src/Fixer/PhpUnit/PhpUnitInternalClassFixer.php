@@ -256,7 +256,7 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
     }
 
     /**
-     * @param Line []$line
+     * @param Line[] $line
      *
      * @return string
      */
