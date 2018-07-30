@@ -828,6 +828,8 @@ Choose from the list of available rules:
     ``get_defined_constants``. User constants are not accounted in this list
     and must be specified in the include one; defaults to ``true``
   - ``include`` (``array``): list of additional constants to fix; defaults to ``[]``
+  - ``scope`` (``'all'``, ``'namespaced'``): only fix constant invocations that are made
+    within a namespace or fix all; defaults to ``'all'``
 
 * **native_function_casing** [@Symfony]
 
