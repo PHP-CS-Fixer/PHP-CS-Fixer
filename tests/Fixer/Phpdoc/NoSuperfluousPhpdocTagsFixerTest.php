@@ -264,6 +264,12 @@ class Foo {
     public function doFoo(array $bar, callable $baz) {}
 }',
             ],
+            'PHPDoc at the end of file' => [
+                '<?php
+/**
+ * Foo
+ */',
+            ],
         ];
     }
 
