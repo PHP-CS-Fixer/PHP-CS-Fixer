@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-05T07:08:15Z
+
+this looks awesome to me, thanks so much :)
+hope that we get a second reviewer on this
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-05T07:11:07Z
+
+(on a side note, if this fixer is about changing text to a sentence without a stop maybe we should unify what we consider a stop (so not only dots), like done [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.2.20/src/Fixer/Phpdoc/PhpdocSummaryFixer.php#L123))
