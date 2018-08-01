@@ -139,7 +139,7 @@ class Foo {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (null === $index || $tokens[$index]->isGivenKind(T_FUNCTION)) {
                 return $index;
             }
         } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL, T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
