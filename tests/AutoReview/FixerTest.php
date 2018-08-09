@@ -193,10 +193,10 @@ final class FixerTest extends TestCase
     public function testFixersHandleEmptyTokens(FixerInterface $fixer)
     {
         $tokens = Tokens::fromCode('');
+
         try {
             $fixer->fix(new \SplFileInfo(__FILE__), $tokens);
         } catch (RequiredFixerConfigurationException $e) {
-
         }
 
         $this->addToAssertionCount(1);
@@ -208,10 +208,10 @@ final class FixerTest extends TestCase
     public function testFixersHandleSingleToken(FixerInterface $fixer)
     {
         $tokens = Tokens::fromCode("<?php\n");
+
         try {
             $fixer->fix(new \SplFileInfo(__FILE__), $tokens);
         } catch (RequiredFixerConfigurationException $e) {
-
         }
 
         $this->addToAssertionCount(1);
@@ -223,10 +223,10 @@ final class FixerTest extends TestCase
     public function testFixersHandleCommentOnly(FixerInterface $fixer)
     {
         $tokens = Tokens::fromCode("<?php\n# 1");
+
         try {
             $fixer->fix(new \SplFileInfo(__FILE__), $tokens);
         } catch (RequiredFixerConfigurationException $e) {
-
         }
 
         $this->addToAssertionCount(1);
@@ -238,10 +238,10 @@ final class FixerTest extends TestCase
     public function testFixersHandlePHPDocOnly(FixerInterface $fixer)
     {
         $tokens = Tokens::fromCode("<?php\n/** */");
+
         try {
             $fixer->fix(new \SplFileInfo(__FILE__), $tokens);
         } catch (RequiredFixerConfigurationException $e) {
-
         }
 
         $this->addToAssertionCount(1);
