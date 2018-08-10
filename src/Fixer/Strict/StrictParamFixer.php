@@ -77,7 +77,7 @@ final class StrictParamFixer extends AbstractFixer
 
             $previousIndex = $tokens->getPrevMeaningfulToken($index);
             if (null !== $previousIndex && $tokens[$previousIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
-                return;
+                continue;
             }
 
             $lowercaseContent = strtolower($token->getContent());
