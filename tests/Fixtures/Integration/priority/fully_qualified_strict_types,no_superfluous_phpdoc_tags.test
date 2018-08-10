@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: fully_qualified_strict_types,no_superfluous_phpdoc_tags.
+--RULESET--
+{"fully_qualified_strict_types": true, "no_superfluous_phpdoc_tags": true}
+--EXPECT--
+<?php
+// No namespace
+/**
+ * @param bool $expected
+ */
+function testSomething(Foo $foo, $expected) {}
+
+--INPUT--
+<?php
+// No namespace
+/**
+ * @param Foo  $foo
+ * @param bool $expected
+ */
+function testSomething(\Foo $foo, $expected) {}
