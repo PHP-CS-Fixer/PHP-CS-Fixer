@@ -1,0 +1,6 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-12T16:59:43Z
+
+I would say so, the current [`return` ](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.12/src/Fixer/Strict/StrictParamFixer.php#L80) statement seems off.
+Having a test case with a file containing multiple blocked-namespaces which include function imports will show more issues around this.
