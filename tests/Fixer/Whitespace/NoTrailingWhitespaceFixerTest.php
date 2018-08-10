@@ -96,6 +96,44 @@ EOT;
             [
                 "<?php\necho <<<'EOT'\nInline Il y eut un   \r\nrire éclatant    \n     \n   \r\nEOT;\n\n",
             ],
+            [
+                "<?php\necho 'Hello World';",
+                "<?php \necho 'Hello World';",
+            ],
+            [
+                "<?php\n\necho 'Hello World';",
+                "<?php \n\necho 'Hello World';",
+            ],
+            [
+                "<?php\r\necho 'Hello World';",
+                "<?php \r\necho 'Hello World';",
+            ],
+            [
+                "<?php\necho 'Hello World';",
+                "<?php  \necho 'Hello World';",
+            ],
+            [
+                "<?php\necho 'Hello World';",
+                "<?php	\necho 'Hello World';",
+            ],
+            [
+                '<?php ',
+                '<?php  ',
+            ],
+            [
+                "<?php\t",
+                "<?php\t\t",
+            ],
+            [
+                '<?php ', // do not trim this as "<?php" is not valid PHP
+            ],
+            [
+                "<?php\n      \n   \n    ",
+            ],
+            [
+                "<?php\n   \n    ",
+                "<?php      \n   \n    ",
+            ],
         ];
     }
 }
