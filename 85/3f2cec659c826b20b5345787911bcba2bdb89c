@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-07-29T20:10:31Z
+
+Hi @siad007 ! Very first - big thanks for support on this topic! Looks promising, indeed!
+
+Sadly, for PHP CS Fixer, the whole point of using CircleCI is to run tests on MacOS (same as we use Travis for Linux and AppVeyor for Windows)
+
+While using docker image instead of build php using brew on host OS directly, we are not testing on MacOS anymore:
+```
+ker@dus:/tmp λ docker run -it --rm circleci/php:7.2 php -r "print_r(posix_uname()['sysname']);"
+Linux
+```
+
+Can you update your PR please? thanks !
+
+---------------------------------------------------------------------------
+
+by siad007 at 2018-07-29T20:24:37Z
+
+@keradus No problem it would be easy to rewrite this to go by brew as it was before - but still interesting enough that tests were failing! I will change it to mac asap.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-07-29T20:27:33Z
+
+@siad007 can you also add an entry `.circleci/ export-ignore` to `.gitattributes` file?
+
+---------------------------------------------------------------------------
+
+by siad007 at 2018-07-29T20:53:39Z
+
+@keradus @kubawerlos added your changes right now and it seems ok. But do you have an idea why the former linux based config produced the test failures?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-07-29T20:56:09Z
+
+@siad007 in `.circleci/config.yml` in line 22 there are trailing whitespaces.
+
+---------------------------------------------------------------------------
+
+by siad007 at 2018-07-29T20:58:20Z
+
+Ah and btw 8.2 is not supported any longer so i updated to xcode 9.0.
