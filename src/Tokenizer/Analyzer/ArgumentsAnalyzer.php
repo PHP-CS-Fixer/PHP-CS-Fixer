@@ -110,6 +110,7 @@ final class ArgumentsAnalyzer
             if ($token->isComment() || $token->isWhitespace() || $token->isGivenKind(T_ELLIPSIS) || $token->equals('&')) {
                 continue;
             }
+
             if ($token->isGivenKind(T_VARIABLE)) {
                 $sawName = true;
                 $info['name_index'] = $index;
@@ -117,9 +118,11 @@ final class ArgumentsAnalyzer
 
                 continue;
             }
+
             if ($token->equals('=')) {
                 continue;
             }
+
             if ($sawName) {
                 $info['default'] .= $token->getContent();
             } else {

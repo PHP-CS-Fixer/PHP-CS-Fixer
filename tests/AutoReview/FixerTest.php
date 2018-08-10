@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
@@ -184,6 +185,66 @@ final class FixerTest extends TestCase
             $reflection->isFinal(),
             sprintf('Fixer "%s" must be declared "final".', $fixer->getName())
         );
+    }
+
+    /**
+     * @dataProvider provideFixerDefinitionsCases
+     */
+    public function testFixersHandleEmptyTokens(FixerInterface $fixer)
+    {
+        $tokens = Tokens::fromCode('');
+
+        try {
+            $fixer->fix(new \SplFileInfo(__FILE__), $tokens);
+        } catch (RequiredFixerConfigurationException $e) {
+        }
+
+        $this->addToAssertionCount(1);
+    }
+
+    /**
+     * @dataProvider provideFixerDefinitionsCases
+     */
+    public function testFixersHandleSingleToken(FixerInterface $fixer)
+    {
+        $tokens = Tokens::fromCode("<?php\n");
+
+        try {
+            $fixer->fix(new \SplFileInfo(__FILE__), $tokens);
+        } catch (RequiredFixerConfigurationException $e) {
+        }
+
+        $this->addToAssertionCount(1);
+    }
+
+    /**
+     * @dataProvider provideFixerDefinitionsCases
+     */
+    public function testFixersHandleCommentOnly(FixerInterface $fixer)
+    {
+        $tokens = Tokens::fromCode("<?php\n# 1");
+
+        try {
+            $fixer->fix(new \SplFileInfo(__FILE__), $tokens);
+        } catch (RequiredFixerConfigurationException $e) {
+        }
+
+        $this->addToAssertionCount(1);
+    }
+
+    /**
+     * @dataProvider provideFixerDefinitionsCases
+     */
+    public function testFixersHandlePHPDocOnly(FixerInterface $fixer)
+    {
+        $tokens = Tokens::fromCode("<?php\n/** */");
+
+        try {
+            $fixer->fix(new \SplFileInfo(__FILE__), $tokens);
+        } catch (RequiredFixerConfigurationException $e) {
+        }
+
+        $this->addToAssertionCount(1);
     }
 
     /**
