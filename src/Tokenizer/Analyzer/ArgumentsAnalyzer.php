@@ -107,7 +107,7 @@ final class ArgumentsAnalyzer
         $sawName = false;
         for ($index = $argumentStart; $index <= $argumentEnd; ++$index) {
             $token = $tokens[$index];
-            if ($token->isComment() || $token->isWhitespace() || $token->isGivenKind(T_ELLIPSIS)) {
+            if ($token->isComment() || $token->isWhitespace() || $token->isGivenKind(T_ELLIPSIS) || $token->equals('&')) {
                 continue;
             }
             if ($token->isGivenKind(T_VARIABLE)) {
