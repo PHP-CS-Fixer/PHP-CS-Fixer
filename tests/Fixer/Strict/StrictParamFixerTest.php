@@ -137,6 +137,24 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
         public function __construct($foo, $bar) {}
     }',
             ],
+            [
+                '<?php
+    namespace Foo {
+        array_keys($foo, $bar, true);
+    }
+    namespace Bar {
+        use function Foo\LoremIpsum;
+        array_keys($foo, $bar, true);
+    }',
+                '<?php
+    namespace Foo {
+        array_keys($foo, $bar);
+    }
+    namespace Bar {
+        use function Foo\LoremIpsum;
+        array_keys($foo, $bar);
+    }',
+            ],
         ];
     }
 }
