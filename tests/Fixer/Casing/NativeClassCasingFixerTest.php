@@ -49,17 +49,17 @@ final class NativeClassCasingFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                
+
                 namespace Foo;
-                
+
                 class exception extends \Exception
                 {
                 }
                 ',
                 '<?php
-                
+
                 namespace Foo;
-                
+
                 class exception extends \EXCEPTION
                 {
                 }
@@ -67,49 +67,49 @@ final class NativeClassCasingFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                
+
                 echo \Exception::class;
                 echo Exception::class;
                 ',
                 '<?php
-                
+
                 echo \ExCePTion::class;
                 echo ExCePTion::class;
                 ',
             ],
             [
                 '<?php
-                
+
                 $a::exception();
                 ',
             ],
             [
                 '<?php
-                
+
                 $a->exception();
                 ',
             ],
             [
                 '<?php
-                
+
                 function exception() {};
                 ',
             ],
             [
                 '<?php
-                
+
                 echo "This is an " . "exception";
                 ',
             ],
             [
                 '<?php
-                
+
                 namespace Foo;
 
                 trait stdclass
                 {
                 }
-            
+
                 use Foo\stdclass as exception;
             
                 class test
