@@ -111,7 +111,7 @@ final class NativeClassCasingFixerTest extends AbstractFixerTestCase
                 }
 
                 use Foo\stdclass as exception;
-            
+
                 class test
                 {
                     use exception;
