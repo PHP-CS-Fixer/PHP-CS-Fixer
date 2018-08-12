@@ -847,6 +847,10 @@ Choose from the list of available rules:
     multi-line whitespace or move the semicolon to the new line for chained
     calls; defaults to ``'no_multi_line'``
 
+* **native_class_casing**
+
+  Classes should be called using the correct casing.
+
 * **native_constant_invocation** [@Symfony:risky]
 
   Add leading ``\`` before constant invocation of internal constant to speed
