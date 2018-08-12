@@ -30,7 +30,7 @@ final class NativeClassCasingFixer extends AbstractFixer
     {
         parent::__construct();
 
-        if (self::$nativeClassNames === null) {
+        if (null === self::$nativeClassNames) {
             foreach (get_declared_classes() as $class) {
                 self::$nativeClassNames[strtolower($class)] = $class;
             }
@@ -58,7 +58,7 @@ final class NativeClassCasingFixer extends AbstractFixer
 
     /**
      * @param \SplFileInfo $file
-     * @param Tokens $tokens
+     * @param Tokens       $tokens
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
@@ -72,7 +72,7 @@ final class NativeClassCasingFixer extends AbstractFixer
     /**
      * Get the lower case name of the native class or null.
      * @param $index
-     * @param Token $token
+     * @param Token  $token
      * @param Tokens $tokens
      * @return bool|string
      */
