@@ -86,7 +86,7 @@ class Foo extends Bar
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_OBJECT_OPERATOR, T_PRIVATE, T_PROTECTED, T_PUBLIC])) {
+            if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_NAMESPACE, T_NS_SEPARATOR, T_OBJECT_OPERATOR, T_PRIVATE, T_PROTECTED, T_PUBLIC])) {
                 continue;
             }
 

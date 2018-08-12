@@ -139,6 +139,26 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      *                   and Returns `false` otherwise.
      */',
             ],
+            [
+                '<?php
+    /**
+     * @throws \Exception having whitespaces after dot, yet I am fixed
+     */',
+                '<?php
+    /**
+     * @throws \Exception having whitespaces after dot, yet I am fixed.   '.'
+     */',
+            ],
+            [
+                '<?php
+    /**
+     * @throws \Exception having tabs after dot, yet I am fixed
+     */',
+                '<?php
+    /**
+     * @throws \Exception having tabs after dot, yet I am fixed.		'.'
+     */',
+            ],
         ];
     }
 }

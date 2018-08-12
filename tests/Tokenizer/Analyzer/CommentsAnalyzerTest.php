@@ -184,7 +184,6 @@ $bar;',
     }
 
     /**
-     * @param bool   $isPhpdocCandidate
      * @param string $code
      *
      * @dataProvider providePhpdocCandidateCases
@@ -236,7 +235,6 @@ $bar;',
     }
 
     /**
-     * @param bool   $isPhpdocCandidate
      * @param string $code
      *
      * @dataProvider provideNotPhpdocCandidateCases

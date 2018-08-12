@@ -73,6 +73,16 @@ class SomeClass
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should run after PhpdocToReturnTypeFixer
+        // should run before NoSuperfluousPhpdocTagsFixer
+        return 7;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_FUNCTION) && (
