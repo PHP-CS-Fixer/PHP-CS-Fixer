@@ -71,9 +71,11 @@ final class NativeClassCasingFixer extends AbstractFixer
 
     /**
      * Get the lower case name of the native class or null.
+     *
      * @param $index
      * @param Token  $token
      * @param Tokens $tokens
+     *
      * @return bool|string
      */
     private function nativeClass(int $index, Token $token, Tokens $tokens)
@@ -93,7 +95,7 @@ final class NativeClassCasingFixer extends AbstractFixer
                     T_CONST,
                     T_TRAIT,
                     T_USE,
-                    CT::T_USE_TRAIT
+                    CT::T_USE_TRAIT,
                 ]
             )
             &&
