@@ -849,7 +849,7 @@ Choose from the list of available rules:
 
 * **native_class_casing**
 
-  Classes should be called using the correct casing.
+  Classes should be referred to using the correct casing.
 
 * **native_constant_invocation** [@Symfony:risky]
 
