@@ -43,7 +43,7 @@ final class NativeClassCasingFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Classes should be called using the correct casing.',
+            'Classes should be referred to using the correct casing.',
             [new CodeSample("<?php\nnew STDCLASS();\n")]
         );
     }
@@ -72,11 +72,11 @@ final class NativeClassCasingFixer extends AbstractFixer
     /**
      * Get the lower case name of the native class or null.
      *
-     * @param $index
+     * @param int    $index
      * @param Token  $token
      * @param Tokens $tokens
      *
-     * @return bool|string
+     * @return null|string
      */
     private function nativeClass($index, Token $token, Tokens $tokens)
     {
