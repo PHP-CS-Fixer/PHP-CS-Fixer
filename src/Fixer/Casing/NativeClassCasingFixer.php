@@ -78,7 +78,7 @@ final class NativeClassCasingFixer extends AbstractFixer
      *
      * @return bool|string
      */
-    private function nativeClass(int $index, Token $token, Tokens $tokens)
+    private function nativeClass($index, Token $token, Tokens $tokens)
     {
         $beforeClassName = $tokens->getPrevMeaningfulToken($index);
         $lower = strtolower($token->getContent());
