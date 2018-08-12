@@ -95,6 +95,12 @@ EOT
                 foreach ($variableTokens as $variablePartIndex => $variablePartToken) {
                     if ($variablePartToken->isGivenKind(T_NUM_STRING)) {
                         $tokens[$variablePartIndex] = new Token([T_LNUMBER, $variablePartToken->getContent()]);
+
+                        continue;
+                    }
+
+                    if ($variablePartToken->isGivenKind(T_STRING) && $tokens[$variablePartIndex + 1]->equals(']')) {
+                        $tokens[$variablePartIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, "'".$variablePartToken->getContent()."'"]);
                     }
                 }
 

@@ -116,6 +116,16 @@ final class ArgumentsAnalyzerTest extends TestCase
                     3
                 )
             )],
+            ['<?php function(array &$a = array()){};', 3, 12, new ArgumentAnalysis(
+                '$a',
+                6,
+                'array()',
+                new TypeAnalysis(
+                    'array',
+                    3,
+                    3
+                )
+            )],
             ['<?php function(array ... $a){};', 3, 7, new ArgumentAnalysis(
                 '$a',
                 7,
