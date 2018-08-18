@@ -847,7 +847,7 @@ Choose from the list of available rules:
     multi-line whitespace or move the semicolon to the new line for chained
     calls; defaults to ``'no_multi_line'``
 
-* **native_class_casing**
+* **declared_class_casing**
 
   Classes should be referred to using the correct casing.
 
