@@ -431,6 +431,10 @@ Choose from the list of available rules:
 
   *Risky rule: forcing strict types will stop non strict code from working.*
 
+* **declared_class_casing**
+
+  Classes should be referred to using the correct casing.
+
 * **dir_constant** [@Symfony:risky]
 
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
@@ -846,10 +850,6 @@ Choose from the list of available rules:
   - ``strategy`` (``'new_line_for_chained_calls'``, ``'no_multi_line'``): forbid
     multi-line whitespace or move the semicolon to the new line for chained
     calls; defaults to ``'no_multi_line'``
-
-* **declared_class_casing**
-
-  Classes should be referred to using the correct casing.
 
 * **native_constant_invocation** [@Symfony:risky]
 
