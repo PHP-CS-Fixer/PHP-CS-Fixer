@@ -22,17 +22,17 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author siad007
  */
-final class NativeClassCasingFixer extends AbstractFixer
+final class DeclaredClassCasingFixer extends AbstractFixer
 {
-    private static $nativeClassNames;
+    private static $declaredClassNames;
 
     public function __construct()
     {
         parent::__construct();
 
-        if (null === self::$nativeClassNames) {
+        if (null === self::$declaredClassNames) {
             foreach (get_declared_classes() as $class) {
-                self::$nativeClassNames[strtolower($class)] = $class;
+                self::$declaredClassNames[strtolower($class)] = $class;
             }
         }
     }
@@ -63,14 +63,14 @@ final class NativeClassCasingFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if ($name = $this->nativeClass($index, $token, $tokens)) {
-                $tokens[$index] = new Token([T_STRING, self::$nativeClassNames[$name]]);
+            if ($name = $this->declaredClass($index, $token, $tokens)) {
+                $tokens[$index] = new Token([T_STRING, self::$declaredClassNames[$name]]);
             }
         }
     }
 
     /**
-     * Get the lower case name of the native class or null.
+     * Get the lower case name of the declared class or null.
      *
      * @param int    $index
      * @param Token  $token
@@ -78,12 +78,15 @@ final class NativeClassCasingFixer extends AbstractFixer
      *
      * @return null|string
      */
-    private function nativeClass($index, Token $token, Tokens $tokens)
+    private function declaredClass($index, Token $token, Tokens $tokens)
     {
         $beforeClassName = $tokens->getPrevMeaningfulToken($index);
         $lower = strtolower($token->getContent());
 
-        return array_key_exists($lower, self::$nativeClassNames)
+        $isDeclaredClass = null;
+
+        if (
+            array_key_exists($lower, self::$declaredClassNames)
             &&
             !$tokens[$beforeClassName]->isGivenKind(
                 [
@@ -104,7 +107,10 @@ final class NativeClassCasingFixer extends AbstractFixer
                 &&
                 $tokens[$tokens->getPrevMeaningfulToken($beforeClassName)]->isGivenKind([T_STRING])
             )
-            ? $lower
-            : null;
+        ) {
+            $isDeclaredClass = $lower;
+        }
+
+        return $isDeclaredClass;
     }
 }
