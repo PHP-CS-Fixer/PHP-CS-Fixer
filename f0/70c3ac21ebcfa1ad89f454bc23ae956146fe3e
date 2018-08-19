@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-31T21:54:39Z
+
+ping @FriendsOfPHP/php-cs-fixer
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-31T21:56:11Z
+
+What are the before and after benchmarks?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-05-31T22:06:27Z
+
+Why not all native functions?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-31T22:09:52Z
+
+@ntzm , minimal compared to fun with tokenizer
+@kubawerlos , see discussion at #3048
