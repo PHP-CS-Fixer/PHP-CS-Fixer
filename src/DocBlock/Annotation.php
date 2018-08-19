@@ -227,6 +227,22 @@ class Annotation
     }
 
     /**
+     * Get the normalized types associated with this annotation, so they can easily be compared.
+     *
+     * @return string[]
+     */
+    public function getNormalizedTypes()
+    {
+        $normalized = array_map(static function ($type) {
+            return strtolower($type);
+        }, $this->getTypes());
+
+        sort($normalized);
+
+        return $normalized;
+    }
+
+    /**
      * Remove this annotation by removing all its lines.
      */
     public function remove()
