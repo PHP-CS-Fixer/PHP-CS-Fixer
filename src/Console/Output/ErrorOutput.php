@@ -61,14 +61,14 @@ final class ErrorOutput
                 continue;
             }
 
-            $class = sprintf('[%s]', get_class($e));
+            $class = sprintf('[%s]', \get_class($e));
             $message = $e->getMessage();
             $code = $e->getCode();
             if (0 !== $code) {
                 $message .= " (${code})";
             }
 
-            $length = max(strlen($class), strlen($message));
+            $length = max(\strlen($class), \strlen($message));
             $lines = [
                 '',
                 $class,
@@ -79,8 +79,8 @@ final class ErrorOutput
             $this->output->writeln('');
 
             foreach ($lines as $line) {
-                if (strlen($line) < $length) {
-                    $line .= str_repeat(' ', $length - strlen($line));
+                if (\strlen($line) < $length) {
+                    $line .= str_repeat(' ', $length - \strlen($line));
                 }
 
                 $this->output->writeln(sprintf('      <error>  %s  </error>', $this->prepareOutput($line)));
@@ -100,7 +100,7 @@ final class ErrorOutput
                 }
             }
 
-            if (Error::TYPE_LINT === $error->getType() && 0 < count($error->getAppliedFixers())) {
+            if (Error::TYPE_LINT === $error->getType() && 0 < \count($error->getAppliedFixers())) {
                 $this->output->writeln('');
                 $this->output->writeln(sprintf('      Applied fixers: <comment>%s</comment>', implode(', ', $error->getAppliedFixers())));
 

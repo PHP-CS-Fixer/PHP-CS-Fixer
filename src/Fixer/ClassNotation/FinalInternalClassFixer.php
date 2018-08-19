@@ -42,7 +42,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             $this->configuration['annotation-black-list']
         );
 
-        if (count($intersect)) {
+        if (\count($intersect)) {
             throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both the white- and black list, got duplicates: "%s".', implode('", "', array_keys($intersect))));
         }
     }
@@ -112,7 +112,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     {
         $annotationsAsserts = [static function (array $values) {
             foreach ($values as $value) {
-                if (!is_string($value) || '' === $value) {
+                if (!\is_string($value) || '' === $value) {
                     return false;
                 }
             }

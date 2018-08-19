@@ -73,7 +73,7 @@ function foo() {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (!count($this->configuration['annotations'])) {
+        if (!\count($this->configuration['annotations'])) {
             return;
         }
 

@@ -36,8 +36,8 @@ final class Utils
         $bitmask = 0;
 
         foreach ($options as $optionName) {
-            if (defined($optionName)) {
-                $bitmask |= constant($optionName);
+            if (\defined($optionName)) {
+                $bitmask |= \constant($optionName);
             }
         }
 

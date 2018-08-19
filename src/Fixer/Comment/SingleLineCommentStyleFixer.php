@@ -45,8 +45,8 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
     {
         parent::configure($configuration);
 
-        $this->asteriskEnabled = in_array('asterisk', $this->configuration['comment_types'], true);
-        $this->hashEnabled = in_array('hash', $this->configuration['comment_types'], true);
+        $this->asteriskEnabled = \in_array('asterisk', $this->configuration['comment_types'], true);
+        $this->hashEnabled = \in_array('hash', $this->configuration['comment_types'], true);
     }
 
     /**

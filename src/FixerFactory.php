@@ -172,7 +172,7 @@ final class FixerFactory
             $config = $ruleSet->getRuleConfiguration($name);
             if (null !== $config) {
                 if ($fixer instanceof ConfigurableFixerInterface) {
-                    if (!is_array($config) || !count($config)) {
+                    if (!\is_array($config) || !\count($config)) {
                         throw new InvalidFixerConfigurationException($fixer->getName(), 'Configuration must be an array and may not be empty.');
                     }
 
@@ -186,12 +186,12 @@ final class FixerFactory
             $fixersByName[$name] = $fixer;
 
             $conflicts = array_intersect($this->getFixersConflicts($fixer), $fixerNames);
-            if (count($conflicts) > 0) {
+            if (\count($conflicts) > 0) {
                 $fixerConflicts[$name] = $conflicts;
             }
         }
 
-        if (count($fixerConflicts) > 0) {
+        if (\count($fixerConflicts) > 0) {
             throw new \UnexpectedValueException($this->generateConflictMessage($fixerConflicts));
         }
 
@@ -243,11 +243,11 @@ final class FixerFactory
             $report[$fixer] = array_filter(
                 $fixers,
                 static function ($candidate) use ($report, $fixer) {
-                    return !array_key_exists($candidate, $report) || !in_array($fixer, $report[$candidate], true);
+                    return !array_key_exists($candidate, $report) || !\in_array($fixer, $report[$candidate], true);
                 }
             );
 
-            if (count($report[$fixer]) > 0) {
+            if (\count($report[$fixer]) > 0) {
                 $message .= sprintf("\n- \"%s\" with \"%s\"", $fixer, implode('", "', $report[$fixer]));
             }
         }

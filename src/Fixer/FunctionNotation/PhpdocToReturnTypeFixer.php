@@ -169,12 +169,12 @@ function my_foo()
             }
 
             $returnTypeAnnotation = $this->findReturnAnnotations($tokens, $index);
-            if (1 !== count($returnTypeAnnotation)) {
+            if (1 !== \count($returnTypeAnnotation)) {
                 continue;
             }
             $returnTypeAnnotation = current($returnTypeAnnotation);
             $types = array_values($returnTypeAnnotation->getTypes());
-            $typesCount = count($types);
+            $typesCount = \count($types);
             if (1 > $typesCount || 2 < $typesCount) {
                 continue;
             }

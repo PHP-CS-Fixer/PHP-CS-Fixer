@@ -296,7 +296,7 @@ final class RuleSet implements RuleSetInterface
     public function __construct(array $set = [])
     {
         foreach ($set as $key => $value) {
-            if (is_int($key)) {
+            if (\is_int($key)) {
                 throw new \InvalidArgumentException(sprintf('Missing value for "%s" rule/set.', $value));
             }
         }
@@ -377,7 +377,7 @@ final class RuleSet implements RuleSetInterface
         // expand sets
         foreach ($rules as $name => $value) {
             if ('@' === $name[0]) {
-                if (!is_bool($value)) {
+                if (!\is_bool($value)) {
                     throw new \UnexpectedValueException(sprintf('Nested rule set "%s" configuration must be a boolean.', $name));
                 }
 

@@ -68,7 +68,7 @@ final class ProjectCodeTest extends TestCase
     {
         $testClassName = str_replace('PhpCsFixer', 'PhpCsFixer\\Tests', $className).'Test';
 
-        if (in_array($className, self::$classesWithoutTests, true)) {
+        if (\in_array($className, self::$classesWithoutTests, true)) {
             $this->assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, __CLASS__));
             $this->markTestIncomplete(sprintf('Class "%s" has no tests yet, please help and add it.', $className));
         }
@@ -93,7 +93,7 @@ final class ProjectCodeTest extends TestCase
             $rc->getInterfaces()
         );
 
-        if (count($allowedMethods)) {
+        if (\count($allowedMethods)) {
             $allowedMethods = array_unique(array_merge(...array_values($allowedMethods)));
         }
 
@@ -313,9 +313,9 @@ final class ProjectCodeTest extends TestCase
 
                 if (
                     $rc->isInterface()
-                    || ($doc && count($doc->getAnnotationsOfType('internal')))
-                    || 0 === count($rc->getInterfaces())
-                    || in_array($className, [
+                    || ($doc && \count($doc->getAnnotationsOfType('internal')))
+                    || 0 === \count($rc->getInterfaces())
+                    || \in_array($className, [
                         \PhpCsFixer\Finder::class,
                         \PhpCsFixer\Test\AbstractFixerTestCase::class,
                         \PhpCsFixer\Test\AbstractIntegrationTestCase::class,

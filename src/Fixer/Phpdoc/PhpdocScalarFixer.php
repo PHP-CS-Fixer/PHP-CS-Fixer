@@ -94,7 +94,7 @@ function sample($a, $b, $c)
      */
     protected function normalize($type)
     {
-        if (in_array($type, $this->configuration['types'], true)) {
+        if (\in_array($type, $this->configuration['types'], true)) {
             return self::$types[$type];
         }
 

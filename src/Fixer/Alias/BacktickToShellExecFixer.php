@@ -108,7 +108,7 @@ EOT
 
         // Double-quoted strings are parsed differently if they contain
         // variables or not, so we need to build the new token array accordingly
-        $count = count($backtickTokens);
+        $count = \count($backtickTokens);
 
         $newTokens = [
             new Token([T_STRING, 'shell_exec']),

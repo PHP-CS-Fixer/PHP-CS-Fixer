@@ -59,7 +59,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
     {
         $ending = $this->whitespacesConfig->getLineEnding();
 
-        for ($index = 0, $count = count($tokens); $index < $count; ++$index) {
+        for ($index = 0, $count = \count($tokens); $index < $count; ++$index) {
             $token = $tokens[$index];
 
             if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {

@@ -90,7 +90,7 @@ class InvalidName {}
             }
         } else {
             $normClass = str_replace('_', '/', $classyName);
-            $filename = substr(str_replace('\\', '/', $file->getRealPath()), -strlen($normClass) - 4, -4);
+            $filename = substr(str_replace('\\', '/', $file->getRealPath()), -\strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
                 $tokens[$classyIndex] = new Token([T_STRING, str_replace('/', '_', $filename)]);

@@ -138,7 +138,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $lines = $doc->getLines();
             array_splice(
                 $lines,
-                count($lines) - 1,
+                \count($lines) - 1,
                 0,
                 [
                     new Line(sprintf(

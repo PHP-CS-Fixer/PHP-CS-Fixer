@@ -120,7 +120,7 @@ final class StrictParamFixer extends AbstractFixer
             }
         }
 
-        $functionParamsQuantity = count($functionParams);
+        $functionParamsQuantity = \count($functionParams);
         $paramsQuantity = ($sawParameter ? 1 : 0) + $commaCounter;
 
         if ($paramsQuantity === $functionParamsQuantity) {
@@ -137,7 +137,7 @@ final class StrictParamFixer extends AbstractFixer
             $tokensToInsert[] = new Token(',');
             $tokensToInsert[] = new Token([T_WHITESPACE, ' ']);
 
-            if (!is_array($functionParams[$i])) {
+            if (!\is_array($functionParams[$i])) {
                 $tokensToInsert[] = clone $functionParams[$i];
 
                 continue;

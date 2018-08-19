@@ -111,7 +111,7 @@ final class FixerTest extends TestCase
 
             $duplicatedCodeSample = array_search(
                 $sample,
-                array_slice($samples, 0, $sampleCounter),
+                \array_slice($samples, 0, $sampleCounter),
                 false
             );
 
@@ -133,7 +133,7 @@ final class FixerTest extends TestCase
 
             foreach ($options as $option) {
                 // @TODO 2.12 adjust fixers to use new casing and deprecate old one
-                if (in_array($fixerName, [
+                if (\in_array($fixerName, [
                     'final_internal_class',
                     'ordered_class_elements',
                 ], true)) {
@@ -183,7 +183,7 @@ final class FixerTest extends TestCase
 
         if ($fixer instanceof DeprecatedFixerInterface) {
             $this->assertContains('@deprecated', $comment);
-        } elseif (is_string($comment)) {
+        } elseif (\is_string($comment)) {
             $this->assertNotContains('@deprecated', $comment);
         }
     }

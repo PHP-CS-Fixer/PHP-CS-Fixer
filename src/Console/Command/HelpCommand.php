@@ -279,7 +279,7 @@ EOF
             ),
             '%%%CI_INTEGRATION%%%' => implode("\n", array_map(
                 static function ($line) { return '    $ '.$line; },
-                array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
+                \array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
             )),
             '%%%FIXERS_DETAILS%%%' => self::getFixersHelp(),
         ]);
@@ -292,7 +292,7 @@ EOF
      */
     public static function toString($value)
     {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             // Output modifications:
             // - remove new-lines
             // - combine multiple whitespaces
@@ -357,7 +357,7 @@ EOF
                 );
             });
 
-            if (0 === count($allowed)) {
+            if (0 === \count($allowed)) {
                 $allowed = null;
             }
         }
@@ -463,7 +463,7 @@ EOF
             return $sets;
         };
 
-        $count = count($fixers) - 1;
+        $count = \count($fixers) - 1;
         foreach ($fixers as $i => $fixer) {
             $sets = $getSetsWithRule($fixer->getName());
             $description = $fixer->getDefinition()->getSummary();
@@ -501,7 +501,7 @@ EOF
             if ($fixer instanceof ConfigurableFixerInterface) {
                 $configurationDefinition = $fixer->getConfigurationDefinition();
                 $configurationDefinitionOptions = $configurationDefinition->getOptions();
-                if (count($configurationDefinitionOptions)) {
+                if (\count($configurationDefinitionOptions)) {
                     $help .= "   |\n   | Configuration options:\n";
 
                     usort(
@@ -591,7 +591,7 @@ EOF
         $currentLine = 0;
         $lineLength = 0;
         foreach (explode(' ', $string) as $word) {
-            $wordLength = strlen(Preg::replace('~</?(\w+)>~', '', $word));
+            $wordLength = \strlen(Preg::replace('~</?(\w+)>~', '', $word));
             if (0 !== $lineLength) {
                 ++$wordLength; // space before word
             }

@@ -67,7 +67,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
 
         if ($settings['isExplicitPriorityCheck']) {
             if ($fixedInputCode === $fixedInputCodeWithReversedFixers) {
-                if (in_array($case->getFileName(), [
+                if (\in_array($case->getFileName(), [
                     'priority'.\DIRECTORY_SEPARATOR.'backtick_to_shell_exec,escape_implicit_backslashes.test',
                     'priority'.\DIRECTORY_SEPARATOR.'braces,indentation_type,no_break_comment.test',
                     'priority'.\DIRECTORY_SEPARATOR.'standardize_not_equals,binary_operator_spaces.test',

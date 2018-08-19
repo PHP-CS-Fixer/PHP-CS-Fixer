@@ -79,7 +79,7 @@ final class ProcessOutput implements ProcessOutputInterface
         //   max number of characters per line
         // - total length x 2 (e.g. "  1 / 123" => 6 digits and padding spaces)
         // - 11               (extra spaces, parentheses and percentage characters, e.g. " x / x (100%)")
-        $this->symbolsPerLine = max(1, $width - strlen((string) $this->files) * 2 - 11);
+        $this->symbolsPerLine = max(1, $width - \strlen((string) $this->files) * 2 - 11);
     }
 
     public function __destruct()
@@ -99,7 +99,7 @@ final class ProcessOutput implements ProcessOutputInterface
 
         if (0 === $symbolsOnCurrentLine || $isLast) {
             $this->output->write(sprintf(
-                '%s %'.strlen((string) $this->files).'d / %d (%3d%%)',
+                '%s %'.\strlen((string) $this->files).'d / %d (%3d%%)',
                 $isLast && 0 !== $symbolsOnCurrentLine ? str_repeat(' ', $this->symbolsPerLine - $symbolsOnCurrentLine) : '',
                 $this->processedFiles,
                 $this->files,

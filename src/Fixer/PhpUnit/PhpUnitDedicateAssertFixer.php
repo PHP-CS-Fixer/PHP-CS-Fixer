@@ -244,11 +244,11 @@ $this->assertTrue(is_readable($a));
         $isPositive = 'asserttrue' === $assertCall['loweredName'];
 
         $content = strtolower($tokens[$testIndex]->getContent());
-        if (!in_array($content, $this->functions, true)) {
+        if (!\in_array($content, $this->functions, true)) {
             return;
         }
 
-        if (is_array(self::$fixMap[$content])) {
+        if (\is_array(self::$fixMap[$content])) {
             if (false !== self::$fixMap[$content][$isPositive]) {
                 $tokens[$assertCall['index']] = new Token([T_STRING, self::$fixMap[$content][$isPositive]]);
                 $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);

@@ -103,7 +103,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
 
                 list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
-                if (!in_array($count, $functionReplacement['argumentCount'], true)) {
+                if (!\in_array($count, $functionReplacement['argumentCount'], true)) {
                     continue 2;
                 }
 
@@ -145,11 +145,11 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                             ));
                         }
 
-                        if (!is_string($replacement)) {
+                        if (!\is_string($replacement)) {
                             throw new InvalidOptionsException(sprintf(
                                 'Replacement for function "%s" must be a string, "%s" given.',
                                 $functionName,
-                                is_object($replacement) ? get_class($replacement) : gettype($replacement)
+                                \is_object($replacement) ? \get_class($replacement) : \gettype($replacement)
                             ));
                         }
                     }

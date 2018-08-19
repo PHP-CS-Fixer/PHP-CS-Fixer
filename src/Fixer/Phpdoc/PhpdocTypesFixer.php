@@ -94,7 +94,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer
     {
         $lower = strtolower($type);
 
-        if (in_array($lower, self::$types, true)) {
+        if (\in_array($lower, self::$types, true)) {
             return $lower;
         }
 

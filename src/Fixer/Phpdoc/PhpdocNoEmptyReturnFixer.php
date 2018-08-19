@@ -106,7 +106,7 @@ function foo() {}
     {
         $types = $annotation->getNormalizedTypes();
 
-        if (1 === count($types) && ('null' === $types[0] || 'void' === $types[0])) {
+        if (1 === \count($types) && ('null' === $types[0] || 'void' === $types[0])) {
             $annotation->remove();
         }
     }

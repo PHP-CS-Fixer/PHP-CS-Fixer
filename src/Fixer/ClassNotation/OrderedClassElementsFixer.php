@@ -123,7 +123,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
             $this->typePosition[$type] = null;
         }
 
-        $lastPosition = count($this->configuration['order']);
+        $lastPosition = \count($this->configuration['order']);
         foreach ($this->typePosition as &$pos) {
             if (null === $pos) {
                 $pos = $lastPosition;
@@ -236,7 +236,7 @@ class Example
             }
 
             $sorted = $this->sortElements($elements);
-            $endIndex = $elements[count($elements) - 1]['end'];
+            $endIndex = $elements[\count($elements) - 1]['end'];
 
             if ($sorted !== $elements) {
                 $this->sortTokens($tokens, $i, $endIndex, $sorted);
@@ -324,7 +324,7 @@ class Example
                 }
 
                 $type = $this->detectElementType($tokens, $i);
-                if (is_array($type)) {
+                if (\is_array($type)) {
                     $element['type'] = $type[0];
                     $element['name'] = $type[1];
                 } else {
@@ -333,7 +333,7 @@ class Example
 
                 if ('property' === $element['type']) {
                     $element['name'] = $tokens[$i]->getContent();
-                } elseif (in_array($element['type'], ['use_trait', 'constant', 'method', 'magic'], true)) {
+                } elseif (\in_array($element['type'], ['use_trait', 'constant', 'method', 'magic'], true)) {
                     $element['name'] = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
                 }
 
@@ -448,7 +448,7 @@ class Example
                 $type = 'method';
             }
 
-            if (in_array($type, ['constant', 'property', 'method'], true)) {
+            if (\in_array($type, ['constant', 'property', 'method'], true)) {
                 $type .= '_'.$element['visibility'];
                 if ($element['static']) {
                     $type .= '_static';

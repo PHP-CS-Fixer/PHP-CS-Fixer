@@ -105,7 +105,7 @@ final class Example
                 ++$added;
             }
 
-            if ($semicolonIndex === count($tokens) - 1) {
+            if ($semicolonIndex === \count($tokens) - 1) {
                 $tokens->insertAt($insertIndex + 1, new Token([T_WHITESPACE, $ending.$ending.$indent]));
                 ++$added;
             } else {

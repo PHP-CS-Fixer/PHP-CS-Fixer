@@ -50,7 +50,7 @@ class TagComparator
         }
 
         foreach (self::$groups as $group) {
-            if (in_array($firstName, $group, true) && in_array($secondName, $group, true)) {
+            if (\in_array($firstName, $group, true) && \in_array($secondName, $group, true)) {
                 return true;
             }
         }

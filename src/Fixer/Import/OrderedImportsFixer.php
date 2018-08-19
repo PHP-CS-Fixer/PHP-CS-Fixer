@@ -196,7 +196,7 @@ use Bar;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
 
-        if (0 === count($namespacesImports)) {
+        if (0 === \count($namespacesImports)) {
             return;
         }
 
@@ -217,7 +217,7 @@ use Bar;
         foreach ($usesOrder as $index => $use) {
             $declarationTokens = Tokens::fromCode('<?php use '.$use['namespace'].';');
             $declarationTokens->clearRange(0, 2); // clear `<?php use `
-            $declarationTokens->clearAt(count($declarationTokens) - 1); // clear `;`
+            $declarationTokens->clearAt(\count($declarationTokens) - 1); // clear `;`
             $declarationTokens->clearEmptyTokens();
 
             $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
@@ -259,19 +259,19 @@ use Bar;
                 ->setAllowedValues([static function ($value) use ($supportedSortTypes) {
                     if (null !== $value) {
                         $missing = array_diff($supportedSortTypes, $value);
-                        if (count($missing)) {
+                        if (\count($missing)) {
                             throw new InvalidOptionsException(sprintf(
                                 'Missing sort %s "%s".',
-                                1 === count($missing) ? 'type' : 'types',
+                                1 === \count($missing) ? 'type' : 'types',
                                 implode('", "', $missing)
                             ));
                         }
 
                         $unknown = array_diff($value, $supportedSortTypes);
-                        if (count($unknown)) {
+                        if (\count($unknown)) {
                             throw new InvalidOptionsException(sprintf(
                                 'Unknown sort %s "%s".',
-                                1 === count($unknown) ? 'type' : 'types',
+                                1 === \count($unknown) ? 'type' : 'types',
                                 implode('", "', $unknown)
                             ));
                         }
@@ -322,8 +322,8 @@ use Bar;
         $firstNamespace = $this->prepareNamespace($first['namespace']);
         $secondNamespace = $this->prepareNamespace($second['namespace']);
 
-        $firstNamespaceLength = strlen($firstNamespace);
-        $secondNamespaceLength = strlen($secondNamespace);
+        $firstNamespaceLength = \strlen($firstNamespace);
+        $secondNamespaceLength = \strlen($secondNamespace);
 
         if ($firstNamespaceLength === $secondNamespaceLength) {
             $sortResult = strcasecmp($firstNamespace, $secondNamespace);
@@ -350,7 +350,7 @@ use Bar;
         $originalIndexes = [];
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        for ($i = count($uses) - 1; $i >= 0; --$i) {
+        for ($i = \count($uses) - 1; $i >= 0; --$i) {
             $index = $uses[$i];
 
             $startIndex = $tokens->getTokenNotOfKindSibling($index + 1, 1, [[T_WHITESPACE]]);
@@ -377,7 +377,7 @@ use Bar;
                         // if group import, sort the items within the group definition
 
                         // figure out where the list of namespace parts within the group def. starts
-                        $namespaceTokensCount = count($namespaceTokens) - 1;
+                        $namespaceTokensCount = \count($namespaceTokens) - 1;
                         $namespace = '';
                         for ($k = 0; $k < $namespaceTokensCount; ++$k) {
                             if ($namespaceTokens[$k]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {

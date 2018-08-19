@@ -25,7 +25,7 @@ final class LinterTest extends AbstractLinterTestCase
 {
     public function testIsAsync()
     {
-        $this->assertSame(!defined('TOKEN_PARSE'), $this->createLinter()->isAsync());
+        $this->assertSame(!\defined('TOKEN_PARSE'), $this->createLinter()->isAsync());
     }
 
     /**
