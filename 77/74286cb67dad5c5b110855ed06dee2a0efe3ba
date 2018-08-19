@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-07-14T07:57:57Z
+
+I disagree: https://3v4l.org/PCZG4
+
+Tricky and silly edge case, but still
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-07-14T08:30:38Z
+
+@Slamdunk in line 3 `bar` is a constant. but because the constant does not exist, the string "bar" is used (warning).
+
+In line 5 `bar` is not a constant (no warning).
+The fix here is only about line 5.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-07-14T08:33:26Z
+
+https://3v4l.org/2AroY
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-14T09:50:48Z
+
+we don't have a similar issue with `echo "... $foo{bar} .."`?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-07-14T09:53:51Z
+
+@SpacePossum it seems not to be valid syntax: https://3v4l.org/RNv7L
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-16T13:34:33Z
+
+What about
+```php
+echo "{$foo[BAR]}";
+```
+Is that already covered? I don't see that case tested. Does it make sense to add?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-07-16T23:03:59Z
+
+@dmvdbrugge added your test case.
