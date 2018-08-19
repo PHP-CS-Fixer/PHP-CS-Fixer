@@ -87,7 +87,7 @@ class Sample
         $elements = $tokensAnalyzer->getClassyElements();
 
         foreach (array_reverse($elements, true) as $index => $element) {
-            if (!in_array($element['type'], $this->configuration['elements'], true)) {
+            if (!\in_array($element['type'], $this->configuration['elements'], true)) {
                 continue;
             }
 
@@ -111,7 +111,7 @@ class Sample
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset(['property', 'method', 'const'])])
                 ->setNormalizer(static function (Options $options, $value) {
-                    if (\PHP_VERSION_ID < 70100 && in_array('const', $value, true)) {
+                    if (\PHP_VERSION_ID < 70100 && \in_array('const', $value, true)) {
                         throw new InvalidOptionsForEnvException('"const" option can only be enabled with PHP 7.1+.');
                     }
 

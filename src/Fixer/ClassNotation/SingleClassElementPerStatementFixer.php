@@ -83,7 +83,7 @@ final class Example
         $elements = array_reverse($analyzer->getClassyElements(), true);
 
         foreach ($elements as $index => $element) {
-            if (!in_array($element['type'], $this->configuration['elements'], true)) {
+            if (!\in_array($element['type'], $this->configuration['elements'], true)) {
                 continue; // not in configuration
             }
 

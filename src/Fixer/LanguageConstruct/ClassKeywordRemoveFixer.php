@@ -79,7 +79,7 @@ $className = Baz::class;
         $namespaceIndexes = array_keys($tokens->findGivenKind(T_NAMESPACE));
 
         // Namespace blocks
-        if (count($namespaceIndexes) && isset($namespaceIndexes[$namespaceNumber])) {
+        if (\count($namespaceIndexes) && isset($namespaceIndexes[$namespaceNumber])) {
             $startIndex = $namespaceIndexes[$namespaceNumber];
 
             $namespaceBlockStartIndex = $tokens->getNextTokenOfKind($startIndex, [';', '{']);
@@ -89,7 +89,7 @@ $className = Baz::class;
             $endIndex = $endIndex ?: $tokens->count() - 1;
         } elseif (-1 === $namespaceNumber) { // Out of any namespace block
             $startIndex = 0;
-            $endIndex = count($namespaceIndexes) ? $namespaceIndexes[0] : $tokens->count() - 1;
+            $endIndex = \count($namespaceIndexes) ? $namespaceIndexes[0] : $tokens->count() - 1;
         } else {
             return;
         }
@@ -137,7 +137,7 @@ $className = Baz::class;
                     $groupImportParts = array_map(static function ($import) {
                         return trim($import);
                     }, explode(' as ', $groupImport));
-                    if (2 === count($groupImportParts)) {
+                    if (2 === \count($groupImportParts)) {
                         $this->imports[$groupImportParts[1]] = $import.$groupImportParts[0];
                     } else {
                         $this->imports[] = $import.$groupImport;
@@ -204,7 +204,7 @@ $className = Baz::class;
             $classStringArray = explode('\\', $classString);
             $namespaceToTest = $classStringArray[0];
 
-            if (0 === strcmp($namespaceToTest, substr($import, -strlen($namespaceToTest)))) {
+            if (0 === strcmp($namespaceToTest, substr($import, -\strlen($namespaceToTest)))) {
                 $classImport = $import;
 
                 break;
@@ -236,16 +236,16 @@ $className = Baz::class;
         }
 
         $classStringArray = explode('\\', $classString);
-        $classStringLength = count($classStringArray);
+        $classStringLength = \count($classStringArray);
         $classImportArray = explode('\\', $classImport);
-        $classImportLength = count($classImportArray);
+        $classImportLength = \count($classImportArray);
 
         if (1 === $classStringLength) {
             return $classImport;
         }
 
         return implode('\\', array_merge(
-            array_slice($classImportArray, 0, $classImportLength - $classStringLength + 1),
+            \array_slice($classImportArray, 0, $classImportLength - $classStringLength + 1),
             $classStringArray
         ));
     }

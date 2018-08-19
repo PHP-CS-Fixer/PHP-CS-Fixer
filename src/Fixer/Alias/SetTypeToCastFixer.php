@@ -77,7 +77,7 @@ settype($bar, "null");
             $functionNameIndex = $candidate[0];
 
             $arguments = $argumentsAnalyzer->getArguments($tokens, $candidate[1], $candidate[2]);
-            if (2 !== count($arguments)) {
+            if (2 !== \count($arguments)) {
                 continue; // function must be overridden or used incorrectly
             }
 
@@ -156,7 +156,7 @@ settype($bar, "null");
     {
         $candidates = [];
 
-        $end = count($tokens);
+        $end = \count($tokens);
         for ($i = 1; $i < $end; ++$i) {
             $candidate = $this->find('settype', $tokens, $i, $end);
             if (null === $candidate) {

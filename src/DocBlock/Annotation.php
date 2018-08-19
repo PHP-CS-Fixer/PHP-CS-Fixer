@@ -205,7 +205,7 @@ class Annotation
                 );
 
                 $this->types[] = $matches['type'];
-                $content = substr($content, strlen($matches['type']) + 1);
+                $content = substr($content, \strlen($matches['type']) + 1);
             }
         }
 
@@ -266,7 +266,7 @@ class Annotation
 
     public function supportTypes()
     {
-        return in_array($this->getTag()->getName(), self::$tags, true);
+        return \in_array($this->getTag()->getName(), self::$tags, true);
     }
 
     /**

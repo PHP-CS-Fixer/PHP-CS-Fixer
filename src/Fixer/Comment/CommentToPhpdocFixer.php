@@ -72,7 +72,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements WhitespacesAwa
     {
         $commentsAnalyzer = new CommentsAnalyzer();
 
-        for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
+        for ($index = 0, $limit = \count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_COMMENT)) {
@@ -120,7 +120,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements WhitespacesAwa
      */
     private function fixComment(Tokens $tokens, $indices)
     {
-        if (1 === count($indices)) {
+        if (1 === \count($indices)) {
             $this->fixCommentSingleLine($tokens, reset($indices));
         } else {
             $this->fixCommentMultiLine($tokens, $indices);

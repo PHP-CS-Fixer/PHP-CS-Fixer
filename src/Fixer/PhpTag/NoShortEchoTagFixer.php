@@ -47,7 +47,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $i = count($tokens);
+        $i = \count($tokens);
 
         while ($i--) {
             $token = $tokens[$i];

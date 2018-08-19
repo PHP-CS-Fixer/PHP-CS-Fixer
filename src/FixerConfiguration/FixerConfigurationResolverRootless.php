@@ -51,7 +51,7 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
             $this->resolver->getOptions()
         );
 
-        if (!in_array($root, $names, true)) {
+        if (!\in_array($root, $names, true)) {
             throw new \LogicException(sprintf('The "%s" option is not defined.', $root));
         }
 

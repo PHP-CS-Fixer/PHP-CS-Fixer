@@ -205,7 +205,7 @@ Fixing examples:
             ]
         );
 
-        $this->assertContains(get_class($mock), $commandTester->getDisplay(true));
+        $this->assertContains(\get_class($mock), $commandTester->getDisplay(true));
     }
 
     /**

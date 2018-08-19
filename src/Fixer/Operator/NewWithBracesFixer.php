@@ -95,7 +95,7 @@ final class NewWithBracesFixer extends AbstractFixer
                 [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE],
             ];
 
-            if (defined('T_SPACESHIP')) {
+            if (\defined('T_SPACESHIP')) {
                 $nextTokenKinds[] = [T_SPACESHIP];
             }
         }

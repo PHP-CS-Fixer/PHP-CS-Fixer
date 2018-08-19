@@ -65,7 +65,7 @@ Files that were not fixed due to errors reported during %s:
         %s (%d)    '.'
                             '.'
 ',
-                get_class($source),
+                \get_class($source),
                 $source->getMessage(),
                 $source->getCode()
             );

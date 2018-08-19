@@ -522,7 +522,7 @@ PHP;
     public function testClearTokenAndMergeSurroundingWhitespace($source, array $indexes, array $expected)
     {
         $this->doTestClearTokens($source, $indexes, $expected);
-        if (count($indexes) > 1) {
+        if (\count($indexes) > 1) {
             $this->doTestClearTokens($source, array_reverse($indexes), $expected);
         }
     }
@@ -867,7 +867,7 @@ PHP;
         $this->assertTrue($tokens->isTokenKindFound(T_OPEN_TAG));
         $this->assertTrue($tokensClone->isTokenKindFound(T_OPEN_TAG));
 
-        $count = count($tokens);
+        $count = \count($tokens);
         $this->assertCount($count, $tokensClone);
 
         for ($i = 0; $i < $count; ++$i) {
@@ -1213,11 +1213,11 @@ echo $a;',
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
 
-        $this->assertSame(count($expected), $tokens->count());
+        $this->assertSame(\count($expected), $tokens->count());
         foreach ($expected as $index => $expectedToken) {
             $token = $tokens[$index];
             $expectedPrototype = $expectedToken->getPrototype();
-            if (is_array($expectedPrototype)) {
+            if (\is_array($expectedPrototype)) {
                 unset($expectedPrototype[2]); // don't compare token lines as our token mutations don't deal with line numbers
             }
 

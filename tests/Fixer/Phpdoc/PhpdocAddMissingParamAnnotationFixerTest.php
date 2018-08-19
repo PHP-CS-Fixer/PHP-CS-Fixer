@@ -50,7 +50,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
             'expected to be of type "bool", but is of type "%s".',
-            is_object($value) ? get_class($value) : gettype($value)
+            \is_object($value) ? \get_class($value) : \gettype($value)
         ));
 
         $this->fixer->configure([

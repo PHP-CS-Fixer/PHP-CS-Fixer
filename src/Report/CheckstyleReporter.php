@@ -34,7 +34,7 @@ final class CheckstyleReporter implements ReporterInterface
      */
     public function generate(ReportSummary $reportSummary)
     {
-        if (!extension_loaded('dom')) {
+        if (!\extension_loaded('dom')) {
             throw new \RuntimeException('Cannot generate report! `ext-dom` is not available!');
         }
 

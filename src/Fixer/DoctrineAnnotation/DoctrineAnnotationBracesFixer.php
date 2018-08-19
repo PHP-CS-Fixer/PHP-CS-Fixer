@@ -98,7 +98,7 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
      */
     private function removesBracesFromAnnotations(Tokens $tokens)
     {
-        for ($index = 0, $max = count($tokens); $index < $max; ++$index) {
+        for ($index = 0, $max = \count($tokens); $index < $max; ++$index) {
             if (!$tokens[$index]->isType(DocLexer::T_AT)) {
                 continue;
             }

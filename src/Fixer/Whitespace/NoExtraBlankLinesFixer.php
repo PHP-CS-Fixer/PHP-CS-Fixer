@@ -383,7 +383,7 @@ switch($a) {
         $count = \count($parts);
 
         if ($count > $expected) {
-            $this->tokens[$index] = new Token([T_WHITESPACE, implode(array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
+            $this->tokens[$index] = new Token([T_WHITESPACE, implode(\array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
         }
     }
 
@@ -430,7 +430,7 @@ switch($a) {
     private function removeEmptyLinesAfterLineWithTokenAt($index)
     {
         // find the line break
-        $tokenCount = count($this->tokens);
+        $tokenCount = \count($this->tokens);
         for ($end = $index; $end < $tokenCount; ++$end) {
             if (
                 $this->tokens[$end]->equals('}')
@@ -453,7 +453,7 @@ switch($a) {
             }
 
             $pos = strrpos($content, "\n");
-            if ($pos + 2 <= strlen($content)) { // preserve indenting where possible
+            if ($pos + 2 <= \strlen($content)) { // preserve indenting where possible
                 $newContent = $ending.substr($content, $pos + 1);
             } else {
                 $newContent = $ending;

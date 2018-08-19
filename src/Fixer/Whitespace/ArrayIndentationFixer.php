@@ -126,10 +126,10 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
     {
         $arrays = [];
 
-        foreach ($this->findArrayTokenRanges($tokens, 0, count($tokens) - 1) as $arrayTokenRanges) {
+        foreach ($this->findArrayTokenRanges($tokens, 0, \count($tokens) - 1) as $arrayTokenRanges) {
             $array = [
                 'start' => $arrayTokenRanges[0][0],
-                'end' => $arrayTokenRanges[count($arrayTokenRanges) - 1][1],
+                'end' => $arrayTokenRanges[\count($arrayTokenRanges) - 1][1],
                 'token_ranges' => $arrayTokenRanges,
             ];
 

@@ -272,11 +272,11 @@ echo 1;
 
         // fix lines after header comment
         $expectedLineCount = 'both' === $this->configuration['separate'] || 'bottom' === $this->configuration['separate'] ? 2 : 1;
-        if ($headerIndex === count($tokens) - 1) {
+        if ($headerIndex === \count($tokens) - 1) {
             $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount)]));
         } else {
             $afterCommentIndex = $tokens->getNextNonWhitespace($headerIndex);
-            $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex + 1, null === $afterCommentIndex ? count($tokens) : $afterCommentIndex);
+            $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex + 1, null === $afterCommentIndex ? \count($tokens) : $afterCommentIndex);
             if ($lineBreakCount < $expectedLineCount) {
                 $missing = str_repeat($lineEnding, $expectedLineCount - $lineBreakCount);
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
