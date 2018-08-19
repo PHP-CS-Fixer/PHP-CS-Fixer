@@ -159,6 +159,36 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @throws \Exception having tabs after dot, yet I am fixed.		'.'
      */',
             ],
+            [
+                '<?php
+    /**
+     * This is a broken phpdoc
+     * @param string $str surprisingly, it is a string
+
+     */
+    function fixMe($str) {}',
+                '<?php
+    /**
+     * This is a broken phpdoc
+     * @param string $str Surprisingly, it is a string.
+
+     */
+    function fixMe($str) {}',
+            ],
+            [
+                '<?php
+    /**
+     * @return bool|null returns `true` if the class has a single-column ID
+                         Returns `false` otherwise.
+     */
+    function fixMe() {}',
+                '<?php
+    /**
+     * @return bool|null Returns `true` if the class has a single-column ID.
+                         Returns `false` otherwise.
+     */
+    function fixMe() {}',
+            ],
         ];
     }
 }
