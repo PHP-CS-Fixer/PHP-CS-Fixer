@@ -138,9 +138,9 @@ final class PregTest extends TestCase
         return [
             ['/u/u', 'u'],
             ['/u/u', 'u/u'],
-            ['/./', chr(224).'bc'],
+            ['/./', \chr(224).'bc'],
             ['/à/', 'àbc'],
-            ['/'.chr(224).'|í/', 'àbc'],
+            ['/'.\chr(224).'|í/', 'àbc'],
         ];
     }
 
@@ -148,7 +148,7 @@ final class PregTest extends TestCase
     {
         return [
             [['/à/', '/í/'], 'Tàíl'],
-            [['/'.chr(174).'/', '/'.chr(224).'/'], 'foo'],
+            [['/'.\chr(174).'/', '/'.\chr(224).'/'], 'foo'],
         ];
     }
 
@@ -192,12 +192,12 @@ final class PregTest extends TestCase
     public function testCorrectnessForNonUtf8String()
     {
         $pattern = '/./u';
-        $subject = chr(224).'bc';
+        $subject = \chr(224).'bc';
 
         Preg::match($pattern, $subject, $methodMatches);
         preg_match($pattern, $subject, $functionMatches);
 
-        $this->assertSame([chr(224)], $methodMatches);
-        $this->assertNotSame([chr(224)], $functionMatches);
+        $this->assertSame([\chr(224)], $methodMatches);
+        $this->assertNotSame([\chr(224)], $functionMatches);
     }
 }

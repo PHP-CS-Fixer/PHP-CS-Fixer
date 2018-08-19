@@ -83,7 +83,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     {
         $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
 
-        if (0 === count($useDeclarations)) {
+        if (0 === \count($useDeclarations)) {
             return;
         }
 
@@ -232,7 +232,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, NamespaceAnalysis $namespaceDeclaration)
     {
         $namespace = $namespaceDeclaration->getFullName();
-        $nsLength = strlen($namespace.'\\');
+        $nsLength = \strlen($namespace.'\\');
 
         foreach ($useDeclarations as $useDeclaration) {
             if ($useDeclaration->isAliased()) {

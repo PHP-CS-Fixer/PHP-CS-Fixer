@@ -134,7 +134,7 @@ function foo () {
 
     private function applyChainedCallsFix(Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; $index >= 0; --$index) {
+        for ($index = \count($tokens) - 1; $index >= 0; --$index) {
             // continue if token is not a semicolon
             if (!$tokens[$index]->equals(';')) {
                 continue;
@@ -175,7 +175,7 @@ function foo () {
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        for ($index, $count = count($tokens); $index < $count; ++$index) {
+        for ($index, $count = \count($tokens); $index < $count; ++$index) {
             if (false !== strstr($tokens[$index]->getContent(), $lineEnding)) {
                 return $index;
             }

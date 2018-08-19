@@ -264,7 +264,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             --$index;
         }
 
-        if (count($this->alignOperatorTokens)) {
+        if (\count($this->alignOperatorTokens)) {
             $this->fixAlignment($tokens, $this->alignOperatorTokens);
         }
     }
@@ -283,23 +283,23 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function ($option) {
                     foreach ($option as $operator => $value) {
-                        if (!in_array($operator, self::$supportedOperators, true)) {
+                        if (!\in_array($operator, self::$supportedOperators, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected "operators" key, expected any of "%s", got "%s".',
                                     implode('", "', self::$supportedOperators),
-                                    is_object($operator) ? get_class($operator) : gettype($operator).'#'.$operator
+                                    \is_object($operator) ? \get_class($operator) : \gettype($operator).'#'.$operator
                                 )
                             );
                         }
 
-                        if (!in_array($value, self::$allowedValues, true)) {
+                        if (!\in_array($value, self::$allowedValues, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected value for operator "%s", expected any of "%s", got "%s".',
                                     $operator,
                                     implode('", "', self::$allowedValues),
-                                    is_object($value) ? get_class($value) : (null === $value ? 'null' : gettype($value).'#'.$value)
+                                    \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
                                 )
                             );
                         }
@@ -459,11 +459,11 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             }
         }
 
-        if (!defined('T_SPACESHIP')) {
+        if (!\defined('T_SPACESHIP')) {
             unset($operators['<=>']);
         }
 
-        if (!defined('T_COALESCE')) {
+        if (!\defined('T_COALESCE')) {
             unset($operators['??']);
         }
 
@@ -551,9 +551,9 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             $tokensClone = clone $tokens;
 
             if ('=>' === $tokenContent) {
-                $this->injectAlignmentPlaceholdersForArrow($tokensClone, 0, count($tokens));
+                $this->injectAlignmentPlaceholdersForArrow($tokensClone, 0, \count($tokens));
             } else {
-                $this->injectAlignmentPlaceholders($tokensClone, 0, count($tokens), $tokenContent);
+                $this->injectAlignmentPlaceholders($tokensClone, 0, \count($tokens), $tokenContent);
             }
 
             // for all tokens that should be aligned but do not have anything to align with, fix spacing if needed
@@ -790,7 +790,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             }
 
             foreach ($groups as $group) {
-                if (count($group) < 1) {
+                if (\count($group) < 1) {
                     continue;
                 }
 
@@ -801,7 +801,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                         $before = substr($lines[$index], 0, $currentPosition);
 
                         if (self::ALIGN_SINGLE_SPACE === $alignStrategy) {
-                            if (1 > strlen($before) || ' ' !== substr($before, -1)) { // if last char of before-content is not ' '; add it
+                            if (1 > \strlen($before) || ' ' !== substr($before, -1)) { // if last char of before-content is not ' '; add it
                                 $before .= ' ';
                             }
                         } elseif (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {

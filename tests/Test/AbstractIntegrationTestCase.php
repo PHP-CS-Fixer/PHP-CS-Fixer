@@ -81,7 +81,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         self::$fileRemoval->observe($tmpFile);
 
         if (!is_file($tmpFile)) {
-            $dir = dirname($tmpFile);
+            $dir = \dirname($tmpFile);
 
             if (!is_dir($dir)) {
                 $fs = new Filesystem();
@@ -273,7 +273,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             )
         );
 
-        if (1 < count($fixers)) {
+        if (1 < \count($fixers)) {
             $tmpFile = static::getTempFile();
             if (false === @file_put_contents($tmpFile, $input)) {
                 throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
@@ -324,7 +324,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
             static::assertGreaterThan(
                 1,
-                count(array_unique(array_map(
+                \count(array_unique(array_map(
                     static function (FixerInterface $fixer) {
                         return $fixer->getPriority();
                     },

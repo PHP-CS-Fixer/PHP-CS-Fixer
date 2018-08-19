@@ -62,7 +62,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; $index >= 0; --$index) {
+        for ($index = \count($tokens) - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
             if (
                 $token->isGivenKind(T_OPEN_TAG)
@@ -86,7 +86,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
             }
 
             $lines = Preg::split('/(\\R+)/', $token->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
-            $linesSize = count($lines);
+            $linesSize = \count($lines);
 
             // fix only multiline whitespaces or singleline whitespaces at the end of file
             if ($linesSize > 1 || !isset($tokens[$index + 1])) {

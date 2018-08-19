@@ -146,7 +146,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements Configuration
                 continue;
             }
 
-            if ($this->configuration[self::OPTION_NOISE_REMAINING_USAGES] && !in_array($tokens[$functionIndex]->getContent(), $excludedFunctions, true)) {
+            if ($this->configuration[self::OPTION_NOISE_REMAINING_USAGES] && !\in_array($tokens[$functionIndex]->getContent(), $excludedFunctions, true)) {
                 $tokens->clearAt($index);
             }
         }

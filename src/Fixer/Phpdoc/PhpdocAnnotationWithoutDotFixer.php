@@ -70,7 +70,7 @@ function foo ($bar) {}
 
             foreach ($annotations as $annotation) {
                 if (
-                    !$annotation->getTag()->valid() || !in_array($annotation->getTag()->getName(), $this->tags, true)
+                    !$annotation->getTag()->valid() || !\in_array($annotation->getTag()->getName(), $this->tags, true)
                 ) {
                     continue;
                 }

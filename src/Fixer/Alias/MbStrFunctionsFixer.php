@@ -98,7 +98,7 @@ $a = substr_count($a, $b);
 
                 list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
-                if (!in_array($count, $functionReplacement['argumentCount'], true)) {
+                if (!\in_array($count, $functionReplacement['argumentCount'], true)) {
                     continue 2;
                 }
 

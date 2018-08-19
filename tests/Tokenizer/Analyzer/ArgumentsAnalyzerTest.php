@@ -40,7 +40,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
 
-        $this->assertSame(count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
+        $this->assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
         $this->assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 

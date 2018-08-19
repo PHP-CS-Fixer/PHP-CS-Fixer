@@ -59,7 +59,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // skip first as it cannot be a white space token
-        for ($i = 1, $count = count($tokens); $i < $count; ++$i) {
+        for ($i = 1, $count = \count($tokens); $i < $count; ++$i) {
             if ($tokens[$i]->isWhitespace()) {
                 $this->fixWhitespaceToken($tokens, $i);
             }
@@ -74,7 +74,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     {
         $content = $tokens[$index]->getContent();
         $lines = Preg::split("/(\r\n|\n)/", $content);
-        $lineCount = count($lines);
+        $lineCount = \count($lines);
 
         if (
             // fix T_WHITESPACES with at least 3 lines (eg `\n   \n`)

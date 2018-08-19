@@ -62,7 +62,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
             }
 
             $previousUnsetCall = $this->getPreviousUnsetCall($tokens, $index);
-            if (is_int($previousUnsetCall)) {
+            if (\is_int($previousUnsetCall)) {
                 $index = $previousUnsetCall;
 
                 continue;

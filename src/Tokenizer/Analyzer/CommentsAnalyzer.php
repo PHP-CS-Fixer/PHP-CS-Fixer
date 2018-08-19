@@ -115,7 +115,7 @@ final class CommentsAnalyzer
             return $indices;
         }
 
-        $count = count($tokens);
+        $count = \count($tokens);
         ++$index;
 
         for (; $index < $count; ++$index) {

@@ -236,7 +236,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function startsWith($needle, $haystack)
     {
-        $len = strlen($needle);
+        $len = \strlen($needle);
 
         return substr($haystack, 0, $len) === $needle;
     }
@@ -448,7 +448,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         if (' ' === $line[$i]) {
             ++$i;
         }
-        $line = array_slice($line, $i);
+        $line = \array_slice($line, $i);
 
         return implode($line);
     }
@@ -479,7 +479,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $line = \str_split($line->getContent());
 
         $dependsIndex = $this->findWhereDependsFunctionNameStarts($line);
-        $dependsFunctionName = implode(array_slice($line, $dependsIndex));
+        $dependsFunctionName = implode(\array_slice($line, $dependsIndex));
 
         if ($this->startsWith('test', $dependsFunctionName)) {
             $dependsFunctionName = $this->removeTestPrefix($dependsFunctionName);
@@ -498,7 +498,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     {
         $line = \str_split($line->getContent());
         $dependsIndex = $this->findWhereDependsFunctionNameStarts($line);
-        $dependsFunctionName = implode(array_slice($line, $dependsIndex));
+        $dependsFunctionName = implode(\array_slice($line, $dependsIndex));
 
         if (!$this->startsWith('test', $dependsFunctionName)) {
             $dependsFunctionName = $this->addTestPrefix($dependsFunctionName);

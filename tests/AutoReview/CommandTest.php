@@ -34,7 +34,7 @@ final class CommandTest extends TestCase
      */
     public function testCommandHasNameConst(Command $command)
     {
-        $this->assertSame($command->getName(), constant(get_class($command).'::COMMAND_NAME'));
+        $this->assertSame($command->getName(), \constant(\get_class($command).'::COMMAND_NAME'));
     }
 
     public function provideCommandHasNameConstCases()
@@ -45,9 +45,9 @@ final class CommandTest extends TestCase
         $names = array_filter(array_keys($commands), static function ($name) use ($commands) {
             return
                 // is not an alias
-                !in_array($name, $commands[$name]->getAliases(), true)
+                !\in_array($name, $commands[$name]->getAliases(), true)
                 // and is our command
-                && 0 === strpos(get_class($commands[$name]), 'PhpCsFixer\\')
+                && 0 === strpos(\get_class($commands[$name]), 'PhpCsFixer\\')
             ;
         });
 

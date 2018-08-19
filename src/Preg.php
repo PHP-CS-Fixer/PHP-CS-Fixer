@@ -158,7 +158,7 @@ final class Preg
      */
     private static function addUtf8Modifier($pattern)
     {
-        if (is_array($pattern)) {
+        if (\is_array($pattern)) {
             return array_map(__METHOD__, $pattern);
         }
 
@@ -172,7 +172,7 @@ final class Preg
      */
     private static function removeUtf8Modifier($pattern)
     {
-        if (is_array($pattern)) {
+        if (\is_array($pattern)) {
             return array_map(__METHOD__, $pattern);
         }
 

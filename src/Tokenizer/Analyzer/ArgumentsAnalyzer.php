@@ -35,7 +35,7 @@ final class ArgumentsAnalyzer
      */
     public function countArguments(Tokens $tokens, $openParenthesis, $closeParenthesis)
     {
-        return count($this->getArguments($tokens, $openParenthesis, $closeParenthesis));
+        return \count($this->getArguments($tokens, $openParenthesis, $closeParenthesis));
     }
 
     /**

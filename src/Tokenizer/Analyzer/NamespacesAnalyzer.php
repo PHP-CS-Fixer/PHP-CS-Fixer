@@ -46,7 +46,7 @@ final class NamespacesAnalyzer
             } else {
                 $scopeEndIndex = $tokens->getNextTokenOfKind($declarationEndIndex, [[T_NAMESPACE]]);
                 if (null === $scopeEndIndex) {
-                    $scopeEndIndex = count($tokens);
+                    $scopeEndIndex = \count($tokens);
                 }
                 --$scopeEndIndex;
             }
@@ -64,8 +64,8 @@ final class NamespacesAnalyzer
             $index = $scopeEndIndex;
         }
 
-        if (0 === count($namespaces)) {
-            $namespaces[] = new NamespaceAnalysis('', '', 0, 0, 0, count($tokens) - 1);
+        if (0 === \count($namespaces)) {
+            $namespaces[] = new NamespaceAnalysis('', '', 0, 0, 0, \count($tokens) - 1);
         }
 
         return $namespaces;

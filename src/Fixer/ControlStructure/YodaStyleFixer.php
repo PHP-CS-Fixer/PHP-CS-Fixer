@@ -151,7 +151,7 @@ return $foo === count($bar);
     private function findComparisonEnd(Tokens $tokens, $index)
     {
         ++$index;
-        $count = count($tokens);
+        $count = \count($tokens);
         while ($index < $count) {
             $token = $tokens[$index];
             if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
@@ -241,12 +241,12 @@ return $foo === count($bar);
      */
     private function fixTokens(Tokens $tokens)
     {
-        for ($i = count($tokens) - 1; $i > 1; --$i) {
+        for ($i = \count($tokens) - 1; $i > 1; --$i) {
             if ($tokens[$i]->isGivenKind($this->candidateTypes)) {
                 $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getId()];
             } elseif (
-                ($tokens[$i]->equals('<') && in_array('<', $this->candidateTypes, true))
-                || ($tokens[$i]->equals('>') && in_array('>', $this->candidateTypes, true))
+                ($tokens[$i]->equals('<') && \in_array('<', $this->candidateTypes, true))
+                || ($tokens[$i]->equals('>') && \in_array('>', $this->candidateTypes, true))
             ) {
                 $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getContent()];
             } else {
@@ -335,7 +335,7 @@ return $foo === count($bar);
     {
         $newTokens = $tokens->generatePartialCode($start, $end);
         $newTokens = $this->fixTokens(Tokens::fromCode(sprintf('<?php %s;', $newTokens)));
-        $newTokens->clearAt(count($newTokens) - 1);
+        $newTokens->clearAt(\count($newTokens) - 1);
         $newTokens->clearAt(0);
         $newTokens->clearEmptyTokens();
 
@@ -476,11 +476,11 @@ return $foo === count($bar);
                 T_OPEN_TAG_WITH_ECHO,
             ];
 
-            if (defined('T_POW_EQUAL')) {
+            if (\defined('T_POW_EQUAL')) {
                 $tokens[] = T_POW_EQUAL; // **=
             }
 
-            if (defined('T_COALESCE')) {
+            if (\defined('T_COALESCE')) {
                 $tokens[] = T_COALESCE; // ??
             }
         }
