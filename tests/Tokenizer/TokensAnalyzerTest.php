@@ -545,6 +545,10 @@ preg_replace_callback(
                 [3 => true],
             ],
             [
+                '<?php echo $foo[BAR];',
+                [5 => true],
+            ],
+            [
                 '<?php echo FOO[BAR];',
                 [3 => true, 5 => true],
             ],
@@ -643,6 +647,14 @@ preg_replace_callback(
             [
                 '<?php try {} catch (FOO $e) {}',
                 [9 => false],
+            ],
+            [
+                '<?php "$foo[BAR]";',
+                [4 => false],
+            ],
+            [
+                '<?php "{$foo[BAR]}";',
+                [5 => true],
             ],
             [
                 '<?php FOO: goto FOO;',
