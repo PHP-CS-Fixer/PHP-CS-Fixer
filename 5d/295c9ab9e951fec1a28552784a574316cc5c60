@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-11T16:51:21Z
+
+The solutions, this one and resolving the priority, don't have to be exclusive, sorry if I caused confusion about that.
+
+For this PR, I like the direction :+1:
+How would something like
+
+```
+    /**
+     * @return bool|null Returns `true` if the class has a single-column ID
+                        and Returns `false` otherwise.
+     */'
+
+```
+
+be fixed in the new situation?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-07-20T17:03:21Z
+
+@SpacePossum not nicely - `PhpCsFixer\DocBlock\DocBlock::getAnnotations` will lose 2nd line at all.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-28T12:34:40Z
+
+can you add this to the tests?
+
+```
+    /**
+     * @return bool|null Returns `true` if the class has a single-column ID.
+                         Returns `false` otherwise.
+     */
+```
+
+If the fixer removes the dot after `ID` but not after `otherwise` I'm happy, if it doesn't removes any dot than it is fine as well for me. It is nice to have a test to see how the fixer handles invalid PHPDocs, that is all :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-30T17:23:38Z
+
+Thanks for the test, this PR looks good to me.
+Maybe another member can have look as well?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-08-10T11:10:32Z
+
+@kubawerlos , can you rebase please ? we have some conflicts due to recent merging session
