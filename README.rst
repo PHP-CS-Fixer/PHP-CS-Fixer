@@ -290,7 +290,8 @@ Choose from the list of available rules:
     equals alignment; defaults to ``false``. DEPRECATED: use options
     ``operators`` and ``default`` instead
   - ``default`` (``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``,
-    ``'single_space'``, ``null``): default fix strategy; defaults to ``'single_space'``
+    ``'no_space'``, ``'single_space'``, ``null``): default fix strategy; defaults to
+    ``'single_space'``
   - ``operators`` (``array``): dictionary of ``binary operator`` => ``fix strategy``
     values that differ from the default strategy; defaults to ``[]``
 
@@ -863,12 +864,14 @@ Choose from the list of available rules:
     ``get_defined_constants``. User constants are not accounted in this list
     and must be specified in the include one; defaults to ``true``
   - ``include`` (``array``): list of additional constants to fix; defaults to ``[]``
+  - ``scope`` (``'all'``, ``'namespaced'``): only fix constant invocations that are made
+    within a namespace or fix all; defaults to ``'all'``
 
 * **native_function_casing** [@Symfony]
 
   Function defined by PHP should be called using the correct casing.
 
-* **native_function_invocation**
+* **native_function_invocation** [@Symfony:risky]
 
   Add leading ``\`` before function invocation to speed up resolving.
 
@@ -893,6 +896,13 @@ Choose from the list of available rules:
   Master functions shall be used instead of aliases.
 
   *Risky rule: risky when any of the alias functions are overridden.*
+
+  Configuration options:
+
+  - ``sets`` (a subset of ``['@internal', '@IMAP', '@mbreg', '@all']``): list of
+    sets to fix. Defined sets are ``@internal`` (native functions), ``@IMAP``
+    (IMAP functions), ``@mbreg`` (from ``ext-mbstring``) ``@all`` (all listed
+    sets); defaults to ``['@internal', '@IMAP']``
 
 * **no_alternative_syntax**
 

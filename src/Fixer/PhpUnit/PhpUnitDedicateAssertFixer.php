@@ -347,8 +347,13 @@ $this->assertTrue(is_readable($a));
             $defaultNamespaceTokenIndex = false;
         }
 
-        if (!$tokens[$countCallIndex]->isGivenKind(T_STRING) || 'count' !== strtolower($tokens[$countCallIndex]->getContent())) {
-            return; // not a call to "count"
+        if (!$tokens[$countCallIndex]->isGivenKind(T_STRING)) {
+            return;
+        }
+
+        $lowerContent = strtolower($tokens[$countCallIndex]->getContent());
+        if ('count' !== $lowerContent && 'sizeof' !== $lowerContent) {
+            return; // not a call to "count" or "sizeOf"
         }
 
         // @ $this->/self::assertEquals/Same([$nextIndex,$commaIndex,[$defaultNamespaceTokenIndex,]$countCallIndex,$countCallOpenBraceIndex])

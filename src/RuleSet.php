@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 
 /**
@@ -175,6 +176,11 @@ final class RuleSet implements RuleSetInterface
                     'PHP_SAPI',
                     'PHP_VERSION_ID',
                 ],
+                'scope' => 'namespaced',
+            ],
+            'native_function_invocation' => [
+                'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
+                'scope' => 'namespaced',
             ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,

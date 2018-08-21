@@ -401,6 +401,54 @@ $a//
                     );',
                 ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
             ],
+            [
+                '<?php
+                    $foo = 1+$bar;
+                ',
+                '<?php
+                    $foo  =  1 + $bar;
+                ',
+                [
+                    'default' => BinaryOperatorSpacesFixer::NO_SPACE,
+                    'operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE],
+                ],
+            ],
+            [
+                '<?php
+                    $foo = 1    +    $bar|$a;
+                ',
+                '<?php
+                    $foo  =  1    +    $bar | $a;
+                ',
+                [
+                    'default' => null,
+                    'operators' => [
+                        '=' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
+                        '|' => BinaryOperatorSpacesFixer::NO_SPACE,
+                    ],
+                ],
+            ],
+            [
+                '<?php
+                    $foo = $d #
+  |
+ #
+$a|         // foo
+$b#
+   |$d;
+                ',
+                '<?php
+                    $foo           = $d #
+  |
+ #
+$a |         // foo
+$b#
+   | $d;
+                ',
+                [
+                    'operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE],
+                ],
+            ],
         ];
     }
 
@@ -2072,9 +2120,14 @@ $a = $ae?? $b;
                 ',
                 ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
             ],
-            'multiple exceptions catch' => [
+            'multiple exceptions catch, default config' => [
                 '<?php try {} catch (A | B $e) {}',
                 '<?php try {} catch (A   |     B $e) {}',
+            ],
+            'multiple exceptions catch, no space config' => [
+                '<?php try {} catch (A|B $e) {}',
+                '<?php try {} catch (A   |     B $e) {}',
+                ['operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE]],
             ],
         ];
     }
