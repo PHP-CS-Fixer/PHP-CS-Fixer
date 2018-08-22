@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-07-09T07:10:18Z
+
+@kubawerlos thank you very much for the review.
+Just note that I stole almost 90% of the code from [PhpUnitTestAnnotationFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.12.2/src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php) so all your feedback should be addressed there too, and I don't know if I should fix there too or open another PR.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-07-09T21:23:20Z
+
+@Slamdunk I think no need to fix it here - maybe in separate PR it's worth to give try to initialize this fixer in `PhpUnitTestAnnotationFixer` and proxy the fixing.
