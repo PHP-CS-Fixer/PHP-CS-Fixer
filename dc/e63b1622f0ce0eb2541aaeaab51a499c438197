@@ -1,0 +1,47 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-06-07T22:12:01Z
+
+> do we want to have an option to remove flags when found, like `t`
+> do we want to have an option to add flags when not found, like `b`
+
+That could be different fixer that would ensure there is always `b` and never `t`.
+Splitting it into 2 options doesn't make sense to me - from manual:
+> For portability, it is strongly recommended that you always use the 'b' flag when opening files
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-22T11:10:19Z
+
+ping @ntzm could you provide a string that shows all possible flags in the correct order? Than this fixer can be finished :)
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-06-22T11:24:03Z
+
+Sorry missed your initial ping, will sort at the weekend
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-06-25T17:14:27Z
+
+`b` should always be last (apart from `+`, e.g. `wb`, `wb+`), but the order of the others doesn't matter. Might be worth putting them in alphabetical order for uniformity.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-25T21:43:14Z
+
+thanks @ntzm :)
+I think this one should be about finished than, let me know if anything is still open
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-10T17:21:44Z
+
+@ntzm anything you would like me to change here?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-07-10T20:44:18Z
+
+Think something is wrong with my GitHub notifications, seem to be missing some, sorry about the delay
