@@ -647,6 +647,18 @@ Choose from the list of available rules:
     set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``
 
+* **fopen_flag_order** [@Symfony:risky]
+
+  Order the flags in ``fopen`` calls, ``b`` and ``t`` must be last.
+
+  *Risky rule: risky when the function ``fopen`` is overridden.*
+
+* **fopen_flags** [@Symfony:risky]
+
+  The flags in ``fopen`` calls must contain ``b`` and must omit ``t``.
+
+  *Risky rule: risky when the function ``fopen`` is overridden.*
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
