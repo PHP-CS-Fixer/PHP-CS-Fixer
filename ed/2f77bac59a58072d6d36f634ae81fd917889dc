@@ -1,0 +1,178 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-15T14:07:18Z
+
+idea is good, can you fix travis before we would review PR ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-15T14:13:12Z
+
+the failures do not seem related to this PR, I'm looking into those nevertheless in another PR (not sure about a time frame though)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-15T15:26:13Z
+
+> 1) PhpCsFixer\Tests\Fixer\Casing\MagicMethodCasingFixerTest::testFix with data set #2 ('<?php class Foo {public funct...l(){}}', '<?php class Foo {public funct...L(){}}')
+Failed asserting that 'PHP Fatal error:  Method Foo::__call() must take exactly 2 arguments in /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/cs_fixer_tmp_2vUrqF on line 1
+
+looks pretty much related to this PR
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-15T20:42:20Z
+
+```
+There were 12 errors:
+1) PhpCsFixer\Tests\Fixer\Basic\BracesFixerTest::testFixMissingBracesAndIndent with data set #44 ('<?php if (true) {\n    echo "...n} ?>x', '<?php if (true) echo "s" ?>x')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Basic/BracesFixer.php:769
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Basic/BracesFixer.php:617
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Basic/BracesFixer.php:147
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/Basic/BracesFixerTest.php:827
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+2) PhpCsFixer\Tests\Fixer\Basic\BracesFixerTest::testFixMissingBracesAndIndent with data set #110 ('<?php if (true) {\n    echo "...n} ?>x', '<?php if (true) echo "s" ?>x', array('same'))
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Basic/BracesFixer.php:769
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Basic/BracesFixer.php:617
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Basic/BracesFixer.php:147
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/Basic/BracesFixerTest.php:827
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+3) PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::testFixInverse with data set #63 ('<?php return 2 == ($a)?>', '<?php return ($a) == 2?>')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/ControlStructure/YodaStyleFixer.php:352
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/ControlStructure/YodaStyleFixer.php:238
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/ControlStructure/YodaStyleFixer.php:96
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/ControlStructure/YodaStyleFixerTest.php:54
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+4) PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::testFixInverse with data set #77 ('<?php $a = 1 == $$a?>', '<?php $a = $$a == 1?>')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/ControlStructure/YodaStyleFixer.php:352
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/ControlStructure/YodaStyleFixer.php:238
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/ControlStructure/YodaStyleFixer.php:96
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/ControlStructure/YodaStyleFixerTest.php:54
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+5) PhpCsFixer\Tests\Fixer\Import\NoUnusedImportsFixerTest::testFix with data set "close_tag_1" ('<?php\n?>inline content<?php ?>', '<?php\n     use A\AA;\n     u...E\F ?>')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Import/NoUnusedImportsFixer.php:170
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Import/NoUnusedImportsFixer.php:109
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/Import/NoUnusedImportsFixerTest.php:32
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+6) PhpCsFixer\Tests\Fixer\Import\NoUnusedImportsFixerTest::testFix with data set "close_tag_3" ('<?php ?>', '<?php use A\B?>')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Import/NoUnusedImportsFixer.php:170
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Import/NoUnusedImportsFixer.php:109
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/Import/NoUnusedImportsFixerTest.php:32
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+7) PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest::testCodeWithCloseTag
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Import/OrderedImportsFixer.php:338
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Import/OrderedImportsFixer.php:189
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/Import/OrderedImportsFixerTest.php:595
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+8) PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest::testFix with data set #4 ('<?php use FooA;\nuse FooB?>', '<?php use FooA, FooB?>')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Import/SingleImportPerStatementFixer.php:69
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/Import/SingleImportPerStatementFixerTest.php:36
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+9) PhpCsFixer\Tests\Fixer\Import\SingleLineAfterImportsFixerTest::testFix with data set #23 ('<?php use A\B;\n\n?>', '<?php use A\B?>')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Import/SingleLineAfterImportsFixer.php:99
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/Import/SingleLineAfterImportsFixerTest.php:35
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+10) PhpCsFixer\Tests\Fixer\Import\SingleLineAfterImportsFixerTest::testFix70 with data set #0 ('<?php\nuse some\test\{ClassA,... 123\n', '<?php\nuse some\test\{ClassA,... 123\n')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Import/SingleLineAfterImportsFixer.php:99
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/Import/SingleLineAfterImportsFixerTest.php:368
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+11) PhpCsFixer\Tests\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixerTest::testFix with data set #1 ('<?php namespace A\B?>')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/NamespaceNotation/BlankLineAfterNamespaceFixer.php:76
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:159
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/NamespaceNotation/BlankLineAfterNamespaceFixerTest.php:35
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+12) PhpCsFixer\Tests\Fixer\Operator\NewWithBracesFixerTest::testFix with data set #24 ('<?php $b = new \StdClass() /**/?>', '<?php $b = new \StdClass /**/?>')
+RuntimeException: Index invalid or out of range
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/Operator/NewWithBracesFixer.php:111
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/AbstractFixer.php:75
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Test/AbstractFixerTestCase.php:127
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixer/Operator/NewWithBracesFixerTest.php:34
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/vendor/phpunitgoodpractices/traits/src/ExpectationViaCodeOverAnnotationTrait7.php:39
+```
+
+doesn't look much related though
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-15T21:10:04Z
+
+you are talking about nightly build which is allowed to failed and that we have meta 7.3 ticket that mentions this issue already
+
+I'm talking about 5.6 build that must not fail
+
+errors on those builds are different
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-15T21:14:13Z
+
+just listing all failures to look into about this PR so I can work on those, not stating these have the same weight or priority
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-15T21:32:28Z
+
+5.6 build. all
+5.6 build is working on master branch, it fails on your PR.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-16T05:55:49Z
+
+rebased, I need Travis to see the 5.6 failures because only on that version the linter checks to much
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-27T22:13:22Z
+
+@SpacePossum , is there anything missing in this PR ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-28T05:23:35Z
+
+there is this very theoretical missed opportunity [case](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3739#discussion_r190838916), but I'm happy with this PR as it is now and therefore I think it is ready to go :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-07T17:20:58Z
+
+I fixed both edge cases and all tests are green. @julienfalque can I bother you with asking for another review?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-10T15:37:05Z
+
+anything left here? I would like to move on ;)
