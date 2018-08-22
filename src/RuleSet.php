@@ -166,6 +166,8 @@ final class RuleSet implements RuleSetInterface
             'dir_constant' => true,
             'ereg_to_preg' => true,
             'error_suppression' => true,
+            'fopen_flag_order' => true,
+            'fopen_flags' => true,
             'function_to_constant' => true,
             'is_null' => true,
             'modernize_types_casting' => true,
