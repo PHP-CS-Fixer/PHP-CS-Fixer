@@ -801,6 +801,10 @@ Choose from the list of available rules:
 
   Magic constants should be referred to using the correct casing.
 
+* **magic_method_casing** [@Symfony]
+
+  Magic method definitions and calls must be using the correct casing.
+
 * **mb_str_functions**
 
   Replace non multibyte-safe functions with corresponding mb function.
