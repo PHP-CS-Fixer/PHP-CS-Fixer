@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2018-06-10T16:34:06Z
+
+Should this be added to the `@PHP70Migration:risky` ruleset?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-06-10T16:40:48Z
+
+Indeed, I would add it.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-07-12T13:37:59Z
+
+@julienfalque are happy with changes?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-07-12T14:39:18Z
+
+@gharlan please, add a test case:
+```php
+            [
+                '<?php new dirname(dirname($path,2));',
+                '<?php new dirname(dirname(dirname($path)));',
+            ],
+```
+
+You may want to take a look at `FunctionsAnalyzer::isGlobalFunctionCall`.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-07-12T18:51:34Z
+
+@kubawerlos good catch 👍 I will fix it.
+
+---------------------------------------------------------------------------
+
+by staabm at 2018-07-14T09:48:12Z
+
+Really cool. Didnt know this $level parameter of dirname.
