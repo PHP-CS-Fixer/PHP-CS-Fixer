@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-16T16:01:13Z
+
+Is it too much to ask for config to only fix order, not add 2nd param when it's not there? (I like my 1-param implodes...) (I'm obviously ok with my case _not_ being the default behaviour.)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-07-16T20:23:05Z
+
+IMO, let us finish it first config-less, to have working MVP, then we can extend it, if needed
