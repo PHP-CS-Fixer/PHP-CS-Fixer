@@ -109,6 +109,15 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must be run after ImplodeCallFixer
+        return -2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
