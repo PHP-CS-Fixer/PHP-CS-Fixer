@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: dir_constant,combine_nested_dirname.
+--RULESET--
+{"dir_constant": true, "combine_nested_dirname": true}
+--REQUIREMENTS--
+{"php": 70000}
+--EXPECT--
+<?php
+dirname(__DIR__,2);
+
+--INPUT--
+<?php
+dirname(dirname(dirname(__FILE__)));

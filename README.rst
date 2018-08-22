@@ -390,6 +390,13 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
+* **combine_nested_dirname** [@PHP70Migration:risky, @PHP71Migration:risky]
+
+  Replace multiple nested calls of ``dirname`` by only one call with second
+  ``$level`` parameter. Requires PHP >= 7.0.
+
+  *Risky rule: risky when the function ``dirname`` is overridden.*
+
 * **comment_to_phpdoc**
 
   Comments with annotation should be docblock when used on structural
