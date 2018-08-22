@@ -1247,6 +1247,16 @@ Choose from the list of available rules:
   - ``types`` (a subset of ``['normal', 'final', 'abstract']``): what types of
     classes to mark as internal; defaults to ``['normal', 'final']``
 
+* **php_unit_method_casing**
+
+  Enforce camel (or snake) case for PHPUnit test methods, following
+  configuration.
+
+  Configuration options:
+
+  - ``case`` (``'camel_case'``, ``'snake_case'``): apply camel or snake case to test
+    methods; defaults to ``'camel_case'``
+
 * **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   Usages of ``->getMock`` and
@@ -1319,7 +1329,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``case`` (``'camel'``, ``'snake'``): whether to camel or snake case when adding the
-    test prefix; defaults to ``'camel'``
+    test prefix; defaults to ``'camel'``. DEPRECATED: use
+    ``php_unit_method_casing`` fixer instead
   - ``style`` (``'annotation'``, ``'prefix'``): whether to use the @test annotation or
     not; defaults to ``'prefix'``
 
