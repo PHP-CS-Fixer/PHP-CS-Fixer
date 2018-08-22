@@ -204,7 +204,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
      */
     private function startsWith($needle, $haystack)
     {
-        return substr($haystack, 0, strlen($needle)) === $needle;
+        return substr($haystack, 0, \strlen($needle)) === $needle;
     }
 
     /**
