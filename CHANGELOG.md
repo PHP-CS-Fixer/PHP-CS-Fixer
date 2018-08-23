@@ -3,6 +3,22 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.13.0
+---------------------
+
+* feature #3739 Add MagicMethodCasingFixer (SpacePossum)
+* feature #3812 Add FopenFlagOrderFixer & FopenFlagsFixer (SpacePossum)
+* feature #3826 Add CombineNestedDirnameFixer (gharlan)
+* feature #3833 BinaryOperatorSpacesFixer - Add "no space" fix strategy (SpacePossum)
+* feature #3841 NoAliasFunctionsFixer - add opt in option for ext-mbstring aliasses (SpacePossum)
+* feature #3876 NativeConstantInvocationFixer - add the scope option (stof, keradus)
+* feature #3886 Add PhpUnitMethodCasingFixer (Slamdunk)
+* feature #3907 Add ImplodeCallFixer (kubawerlos)
+* feature #3914 NoUnreachableDefaultArgumentValueFixer - remove `null` for nullable typehints (gharlan, keradus)
+* minor #3813 PhpUnitDedicateAssertFixer - fix "sizeOf" same as "count". (SpacePossum)
+* minor #3873 Add the native_function_invocation fixer in the Symfony:risky ruleset (stof)
+* minor #3979 DX: enable php_unit_method_casing (keradus)
+
 Changelog for v2.12.3
 ---------------------
 
