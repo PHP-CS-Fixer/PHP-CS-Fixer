@@ -337,6 +337,47 @@ EOT;
         $this->doTest($expected, $input);
     }
 
+    public function testParamsMixedWithOtherAnnotations()
+    {
+        $expected = <<<'EOT'
+<?php
+/**
+ * [c1] Method description
+ * [c2] over multiple lines
+ *
+ * @see Baz
+ *
+ * @param int   $a Long param
+ *                 description
+ * @param mixed $b
+ * @param mixed $superflous1
+ * @param int $superflous2
+ * @return array
+ * @throws Exception
+ */
+function foo($a, $b) {}
+EOT;
+        $input = <<<'EOT'
+<?php
+/**
+ * [c1] Method description
+ * [c2] over multiple lines
+ *
+ * @see Baz
+ *
+ * @param mixed $b
+ * @param mixed $superflous1
+ * @return array
+ * @param int $superflous2
+ * @throws Exception
+ * @param int   $a Long param
+ *                 description
+ */
+function foo($a, $b) {}
+EOT;
+        $this->doTest($expected, $input);
+    }
+
     public function testOnlyParamsUndocumented()
     {
         $expected = <<<'EOT'
@@ -483,7 +524,6 @@ EOT;
     {
         $expected = <<<'EOT'
 <?php
-
 /**
  * @param string[] $array
  * @param callable $callback {
@@ -500,7 +540,6 @@ EOT;
 
         $input = <<<'EOT'
 <?php
-
 /**
  * @param callable $callback {
  *     @param string $value
@@ -522,7 +561,6 @@ EOT;
     {
         $expected = <<<'EOT'
 <?php
-
 /**
  * @param string[] $a
  * @param callable $b {
@@ -546,7 +584,6 @@ EOT;
 
         $input = <<<'EOT'
 <?php
-
 /**
  * @param mixed    $c
  * @param callable $b {
@@ -575,7 +612,6 @@ EOT;
     {
         $expected = <<<'EOT'
 <?php
-
 /**
  * @param string[] $array
  * @param callable $callback {
@@ -603,7 +639,6 @@ EOT;
 
         $input = <<<'EOT'
 <?php
-
 /**
  * @param $superflous1 Superflous
  * @param callable $callback {
@@ -715,7 +750,81 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testPhp7()
+    public function testClosure()
+    {
+        $expected = <<<'EOT'
+<?php
+/**
+ * @param array $a
+ * @param       $b
+ * @param Foo   $c
+ * @param int   $d
+ */
+$closure = function (array $a, $b, Foo $c, $d) {};
+EOT;
+        $input = <<<'EOT'
+<?php
+/**
+ * @param       $b
+ * @param int   $d
+ * @param Foo   $c
+ * @param array $a
+ */
+$closure = function (array $a, $b, Foo $c, $d) {};
+EOT;
+        $this->doTest($expected, $input);
+    }
+
+    public function testInterface()
+    {
+        $expected = <<<'EOT'
+<?php
+Interface I
+{
+    /**
+     * @param string $a
+     * @param array  $b
+     * @param Foo    $c
+     *
+     * @return int|null
+     */
+    public function foo($a, array $b, Foo $c);
+
+    /**
+     * @param array $a
+     * @param       $b
+     *
+     * @return bool
+     */
+    public static function bar(array $a, $b);
+}
+EOT;
+        $input = <<<'EOT'
+<?php
+Interface I
+{
+    /**
+     * @param Foo    $c
+     * @param string $a
+     * @param array  $b
+     *
+     * @return int|null
+     */
+    public function foo($a, array $b, Foo $c);
+
+    /**
+     * @param       $b
+     * @param array $a
+     *
+     * @return bool
+     */
+    public static function bar(array $a, $b);
+}
+EOT;
+        $this->doTest($expected, $input);
+    }
+
+    public function testPhp7ParamTypes()
     {
         $expected = <<<'EOT'
 <?php

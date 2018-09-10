@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocParamOrderFixer extends AbstractFixer
 {
+    const PARAM_TAG = 'param';
+
     /**
      * {@inheritdoc}
      */
@@ -68,19 +70,24 @@ class C {
                 continue;
             }
 
-            // Check for function signature
-            $functionSequence = $tokens->findSequence([[T_FUNCTION], [T_STRING], '('], $index);
+            // Check for function / closure token
+            $nextFunctionToken = $tokens->getNextTokenOfKind($index, [[T_FUNCTION]]);
+            if (null === $nextFunctionToken) {
+                return;
+            }
 
-            if (null === $functionSequence) {
+            // Find start index of param block (opening parenthesis)
+            $paramBlockStart = $tokens->getNextTokenOfKind($index, ['(']);
+            if (null === $paramBlockStart) {
                 return;
             }
 
             $doc = new DocBlock($tokens[$index]->getContent());
-            $paramAnnotations = $doc->getAnnotationsOfType('param');
+            $paramAnnotations = $doc->getAnnotationsOfType(static::PARAM_TAG);
 
-            if (count($paramAnnotations)) {
-                $funcParamNames = $this->getFuncParamNames($tokens, $functionSequence);
-                $doc = $this->sortDocBlockParamAnnotations($doc, $funcParamNames, $paramAnnotations);
+            if (\count($paramAnnotations)) {
+                $paramNames = $this->getFunctionParamNames($tokens, $paramBlockStart);
+                $doc = $this->rewriteDocBlock($doc, $paramNames, $paramAnnotations);
             }
 
             $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
@@ -90,14 +97,13 @@ class C {
     /**
      * Fetches a list of function parameter names.
      *
-     * @param Tokens            $tokens
-     * @param array<int, Token> $functionSequence
+     * @param Tokens $tokens
+     * @param int    $paramBlockStart
      *
      * @return string[]
      */
-    private function getFuncParamNames(Tokens $tokens, array $functionSequence)
+    private function getFunctionParamNames(Tokens $tokens, $paramBlockStart)
     {
-        $paramBlockStart = array_keys($functionSequence)[2];
         $paramBlockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramBlockStart);
 
         $paramNames = [];
@@ -113,22 +119,58 @@ class C {
     }
 
     /**
-     * Sorts the param annotations according to the function parameters.
-     *
-     * @param DocBlock $doc
-     * @param Token[]  $funcParamNames
-     * @param array    $paramAnnotations
+     * @param DocBlock     $doc
+     * @param Token[]      $paramNames
+     * @param Annotation[] $paramAnnotations
      *
      * @return DocBlock
      */
-    private function sortDocBlockParamAnnotations(DocBlock $doc, array $funcParamNames, array $paramAnnotations)
+    private function rewriteDocBlock(DocBlock $doc, array $paramNames, array $paramAnnotations)
+    {
+        $orderedAnnotations = $this->sortParamAnnotations($paramNames, $paramAnnotations);
+        $otherAnnotations = $this->getOtherAnnotationsBetweenParams($doc, $paramAnnotations);
+
+        // Append annotations found between param ones
+        if (\count($otherAnnotations)) {
+            array_push($orderedAnnotations, ...$otherAnnotations);
+        }
+
+        // Overwrite all annotations between first and last @param tag in order
+        $paramsStart = reset($paramAnnotations)->getStart();
+        $paramsEnd = end($paramAnnotations)->getEnd();
+
+        foreach ($doc->getAnnotations() as $annotation) {
+            if ($annotation->getStart() < $paramsStart || $annotation->getEnd() > $paramsEnd) {
+                continue;
+            }
+
+            $annotation->remove();
+            $doc
+                ->getLine($annotation->getStart())
+                ->setContent(current($orderedAnnotations));
+
+            next($orderedAnnotations);
+        }
+
+        return $doc;
+    }
+
+    /**
+     * Sorts the param annotations according to the function parameters.
+     *
+     * @param Token[]      $funcParamNames
+     * @param Annotation[] $paramAnnotations
+     *
+     * @return string[]
+     */
+    private function sortParamAnnotations(array $funcParamNames, array $paramAnnotations)
     {
         $validParams = [];
         foreach ($funcParamNames as $paramName) {
             $indices = $this->findParamAnnotationByIdentifier($paramAnnotations, $paramName);
 
             // Found an exactly matching @param annotation
-            if (is_array($indices)) {
+            if (\is_array($indices)) {
                 foreach ($indices as $index) {
                     $validParams[$index] = $paramAnnotations[$index]->getContent();
                 }
@@ -141,31 +183,54 @@ class C {
         $invalidParams = array_values($invalidParams);
 
         // Append invalid parameters to the (ordered) valid ones
-        $orderedAnnotations = array_values($validParams);
-        foreach ($invalidParams as $i => $params) {
-            $orderedAnnotations[$i + count($validParams)] = $params->getContent();
+        $orderedParams = array_values($validParams);
+        foreach ($invalidParams as $params) {
+            $orderedParams[] = $params->getContent();
         }
 
-        // Rewrite the param annotations in order
-        foreach ($paramAnnotations as $i => $docAnnotation) {
-            $docAnnotation->remove();
-            $doc
-                ->getLine($docAnnotation->getStart())
-                ->setContent($orderedAnnotations[$i]);
+        return $orderedParams;
+    }
+
+    /**
+     * Fetch all annotations except param ones.
+     *
+     * @param DocBlock $doc
+     * @param array    $paramAnnotations
+     *
+     * @return string[]
+     */
+    private function getOtherAnnotationsBetweenParams(DocBlock $doc, array $paramAnnotations)
+    {
+        if (0 === \count($paramAnnotations)) {
+            return [];
         }
 
-        return $doc;
+        $paramsStart = reset($paramAnnotations)->getStart();
+        $paramsEnd = end($paramAnnotations)->getEnd();
+
+        $otherAnnotations = [];
+        foreach ($doc->getAnnotations() as $annotation) {
+            if ($annotation->getStart() < $paramsStart || $annotation->getEnd() > $paramsEnd) {
+                continue;
+            }
+
+            if ($annotation->getTag()->getName() !== static::PARAM_TAG) {
+                $otherAnnotations[] = $annotation->getContent();
+            }
+        }
+
+        return $otherAnnotations;
     }
 
     /**
      * Returns the indices of the lines of a specific parameter annotation.
      *
-     * @param Annotation[] $docParams
+     * @param Annotation[] $paramAnnotations
      * @param string       $identifier
      *
      * @return null|array
      */
-    private function findParamAnnotationByIdentifier(array $docParams, $identifier)
+    private function findParamAnnotationByIdentifier(array $paramAnnotations, $identifier)
     {
         $blockLevel = 0;
         $blockMatch = false;
@@ -178,7 +243,7 @@ class C {
             substr($identifier, 1) // Remove starting `$` from variable name
         );
 
-        foreach ($docParams as $i => $param) {
+        foreach ($paramAnnotations as $i => $param) {
             $blockStart = Preg::match('/\s*{\s*/', $param->getContent());
             $blockEndMatches = Preg::matchAll('/}[\*\s\n]*/', $param->getContent());
 
