@@ -463,7 +463,7 @@ class C {
     protected static function m3($a, Foo $b, $c, Bar $d, $e) {}
 
     /**
-     * @see Something 
+     * @see Something
      *
      * @param callable $a
      * @param          $b
@@ -535,7 +535,7 @@ class C {
     protected static function m3($a, Foo $b, $c, Bar $d, $e) {}
 
     /**
-     * @see Something 
+     * @see Something
      *
      * @param          $b
      * @param array    $d

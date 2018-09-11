@@ -46,14 +46,14 @@ final class PhpdocParamOrderFixer extends AbstractFixer
             [
                 new CodeSample(
                     '<?php
-class C {
-    /**
-     * @param bool   $a
-     * @param string $c
-     * @param string $b
-     */
-    public function m($a, $b, $c) {}
-}
+/**
+ * Annotations in wrong order
+ *
+ * @param int   $a
+ * @param Foo   $c
+ * @param array $b
+ */
+function m($a, array $b, Foo $c) {}
 '
                 ),
             ]
@@ -95,7 +95,7 @@ class C {
     }
 
     /**
-     * Fetches a list of function parameter names.
+     * Fetch a list of function parameter names.
      *
      * @param Tokens $tokens
      * @param int    $paramBlockStart
@@ -119,6 +119,8 @@ class C {
     }
 
     /**
+     * Overwrite the param annotations in order.
+     *
      * @param DocBlock     $doc
      * @param Token[]      $paramNames
      * @param Annotation[] $paramAnnotations
@@ -156,7 +158,7 @@ class C {
     }
 
     /**
-     * Sorts the param annotations according to the function parameters.
+     * Sort the param annotations according to the function parameters.
      *
      * @param Token[]      $funcParamNames
      * @param Annotation[] $paramAnnotations
@@ -192,7 +194,7 @@ class C {
     }
 
     /**
-     * Fetch all annotations except param ones.
+     * Fetch all annotations except the param ones.
      *
      * @param DocBlock $doc
      * @param array    $paramAnnotations
@@ -223,7 +225,7 @@ class C {
     }
 
     /**
-     * Returns the indices of the lines of a specific parameter annotation.
+     * Return the indices of the lines of a specific parameter annotation.
      *
      * @param Annotation[] $paramAnnotations
      * @param string       $identifier
