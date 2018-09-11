@@ -144,6 +144,97 @@ EOT;
         $this->doTest($expected, $input);
     }
 
+    public function testOnlyParamsUndocumented()
+    {
+        $expected = <<<'EOT'
+<?php
+class C {
+    /**
+     * @param $a
+     * @param $b
+     * @param $c
+     * @param $d
+     */
+    public function m($a, $b, $c, $d, $e, $f) {}
+}
+EOT;
+        $input = <<<'EOT'
+<?php
+class C {
+    /**
+     * @param $a
+     * @param $c
+     * @param $d
+     * @param $b
+     */
+    public function m($a, $b, $c, $d, $e, $f) {}
+}
+EOT;
+        $this->doTest($expected, $input);
+    }
+
+    public function testOnlyParamsSuperfluousAnnotation()
+    {
+        $expected = <<<'EOT'
+<?php
+class C {
+    /**
+     * @param $a
+     * @param $b
+     * @param $c
+     * @param $superfluous
+     */
+    public function m($a, $b, $c) {}
+}
+EOT;
+        $input = <<<'EOT'
+<?php
+class C {
+    /**
+     * @param $a
+     * @param $superfluous
+     * @param $b
+     * @param $c
+     */
+    public function m($a, $b, $c) {}
+}
+EOT;
+        $this->doTest($expected, $input);
+    }
+
+    public function testOnlyParamsSuperfluousAnnotations()
+    {
+        $expected = <<<'EOT'
+<?php
+class C {
+    /**
+     * @param $a
+     * @param $b
+     * @param $c
+     * @param $superfluous2
+     * @param $superfluous1
+     * @param $superfluous3
+     */
+    public function m($a, $b, $c) {}
+}
+EOT;
+        $input = <<<'EOT'
+<?php
+class C {
+    /**
+     * @param $a
+     * @param $superfluous2
+     * @param $b
+     * @param $superfluous1
+     * @param $c
+     * @param $superfluous3
+     */
+    public function m($a, $b, $c) {}
+}
+EOT;
+        $this->doTest($expected, $input);
+    }
+
     public function testParamsUntyped()
     {
         $expected = <<<'EOT'
@@ -337,7 +428,156 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testParamsMixedWithOtherAnnotations()
+    public function testVariousMethodDeclarations()
+    {
+        $expected = <<<'EOT'
+<?php
+class C {
+    /**
+     * @param Foo   $a
+     * @param array $b
+     * @param       $c
+     * @param mixed $d
+     */
+    final public static function m1(Foo $a, array $b, $c, $d) {}
+
+    /**
+     * @param array $a
+     * @param       $b
+     * @throws Exception
+     *
+     * @return bool
+     */
+    abstract public function m2(array $a, $b);
+
+    /**
+     * Description of
+     * method
+     *
+     * @param int    $a
+     * @param Foo    $b
+     * @param        $c
+     * @param Bar    $d
+     * @param string $e
+     */
+    protected static function m3($a, Foo $b, $c, Bar $d, $e) {}
+
+    /**
+     * @see Something 
+     *
+     * @param callable $a
+     * @param          $b
+     * @param array    $c
+     * @param array    $d
+     *
+     * @return int
+     *
+     * Text
+     */
+    final protected function m4(Callable $a, $b, array $c, array $d) {}
+
+    /**
+     * @param Bar   $a
+     * @param Bar   $b
+     * @param       $c
+     * @param int   $d
+     * @param array $e
+     * @param       $f
+     *
+     * @return Foo|null
+     */
+    abstract protected function m5(Bar $a, Bar $b, $c, $d, array $e, $f);
+
+    /**
+     * @param array $a
+     * @param       $b
+     */
+    private function m6(array $a, $b) {}
+
+    /**
+     * @param Foo   $a
+     * @param array $b
+     * @param mixed $c
+     */
+    private static function m7(Foo $a, array $b, $c) {}
+}
+EOT;
+        $input = <<<'EOT'
+<?php
+class C {
+    /**
+     * @param array $b
+     * @param Foo   $a
+     * @param mixed $d
+     * @param       $c
+     */
+    final public static function m1(Foo $a, array $b, $c, $d) {}
+
+    /**
+     * @param       $b
+     * @param array $a
+     * @throws Exception
+     *
+     * @return bool
+     */
+    abstract public function m2(array $a, $b);
+
+    /**
+     * Description of
+     * method
+     *
+     * @param string $e
+     * @param int    $a
+     * @param Foo    $b
+     * @param Bar    $d
+     * @param        $c
+     */
+    protected static function m3($a, Foo $b, $c, Bar $d, $e) {}
+
+    /**
+     * @see Something 
+     *
+     * @param          $b
+     * @param array    $d
+     * @param array    $c
+     * @param callable $a
+     *
+     * @return int
+     *
+     * Text
+     */
+    final protected function m4(Callable $a, $b, array $c, array $d) {}
+
+    /**
+     * @param Bar   $b
+     * @param       $f
+     * @param int   $d
+     * @param array $e
+     * @param       $c
+     * @param Bar   $a
+     *
+     * @return Foo|null
+     */
+    abstract protected function m5(Bar $a, Bar $b, $c, $d, array $e, $f);
+
+    /**
+     * @param       $b
+     * @param array $a
+     */
+    private function m6(array $a, $b) {}
+
+    /**
+     * @param array $b
+     * @param mixed $c
+     * @param Foo   $a
+     */
+    private static function m7(Foo $a, array $b, $c) {}
+}
+EOT;
+        $this->doTest($expected, $input);
+    }
+
+    public function testParamsWithOtherAnnotationsInBetween()
     {
         $expected = <<<'EOT'
 <?php
@@ -350,10 +590,12 @@ EOT;
  * @param int   $a Long param
  *                 description
  * @param mixed $b
- * @param mixed $superflous1
+ * @param mixed $superflous1 With text
  * @param int $superflous2
- * @return array
+ * @return array Long return
+ *               description
  * @throws Exception
+ * @throws FooException
  */
 function foo($a, $b) {}
 EOT;
@@ -366,105 +608,16 @@ EOT;
  * @see Baz
  *
  * @param mixed $b
- * @param mixed $superflous1
- * @return array
+ * @param mixed $superflous1 With text
+ * @return array Long return
+ *               description
  * @param int $superflous2
  * @throws Exception
  * @param int   $a Long param
  *                 description
+ * @throws FooException
  */
 function foo($a, $b) {}
-EOT;
-        $this->doTest($expected, $input);
-    }
-
-    public function testOnlyParamsUndocumented()
-    {
-        $expected = <<<'EOT'
-<?php
-class C {
-    /**
-     * @param $a
-     * @param $b
-     * @param $c
-     * @param $d
-     */
-    public function m($a, $b, $c, $d, $e, $f) {}
-}
-EOT;
-        $input = <<<'EOT'
-<?php
-class C {
-    /**
-     * @param $a
-     * @param $c
-     * @param $d
-     * @param $b
-     */
-    public function m($a, $b, $c, $d, $e, $f) {}
-}
-EOT;
-        $this->doTest($expected, $input);
-    }
-
-    public function testOnlyParamsSuperfluousAnnotation()
-    {
-        $expected = <<<'EOT'
-<?php
-class C {
-    /**
-     * @param $a
-     * @param $b
-     * @param $c
-     * @param $superfluous
-     */
-    public function m($a, $b, $c) {}
-}
-EOT;
-        $input = <<<'EOT'
-<?php
-class C {
-    /**
-     * @param $a
-     * @param $superfluous
-     * @param $b
-     * @param $c
-     */
-    public function m($a, $b, $c) {}
-}
-EOT;
-        $this->doTest($expected, $input);
-    }
-
-    public function testOnlyParamsSuperfluousAnnotations()
-    {
-        $expected = <<<'EOT'
-<?php
-class C {
-    /**
-     * @param $a
-     * @param $b
-     * @param $c
-     * @param $superfluous2
-     * @param $superfluous1
-     * @param $superfluous3
-     */
-    public function m($a, $b, $c) {}
-}
-EOT;
-        $input = <<<'EOT'
-<?php
-class C {
-    /**
-     * @param $a
-     * @param $superfluous2
-     * @param $b
-     * @param $superfluous1
-     * @param $c
-     * @param $superfluous3
-     */
-    public function m($a, $b, $c) {}
-}
 EOT;
         $this->doTest($expected, $input);
     }
