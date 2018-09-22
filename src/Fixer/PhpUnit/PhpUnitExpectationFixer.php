@@ -180,7 +180,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
-            $argumentsCnt = count($arguments);
+            $argumentsCnt = \count($arguments);
 
             $argumentsReplacements = ['expectException', $this->methodMap[$tokens[$index]->getContent()], 'expectExceptionCode'];
 
@@ -235,8 +235,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
 
                 $tokens->overrideRange($argBefore, $argBefore, $tokensOverrideArgBefore);
-
-                $limit = $tokens->count();
             }
 
             $tokens[$index] = new Token([T_STRING, 'expectException']);

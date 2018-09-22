@@ -35,7 +35,7 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
-            'no_typehint' => [
+            'no typehint' => [
                 '<?php
 class Foo {
     /**
@@ -46,7 +46,7 @@ class Foo {
     public function doFoo($bar) {}
 }',
             ],
-            'same_typehint' => [
+            'same typehint' => [
                 '<?php
 class Foo {
     /**
@@ -61,7 +61,7 @@ class Foo {
     public function doFoo(Bar $bar) {}
 }',
             ],
-            'same_optional_typehint' => [
+            'same optional typehint' => [
                 '<?php
 class Foo {
     /**
@@ -76,7 +76,7 @@ class Foo {
     public function doFoo(Bar $bar = null) {}
 }',
             ],
-            'same_typehint_with_description' => [
+            'same typehint with description' => [
                 '<?php
 class Foo {
     /**
@@ -85,7 +85,7 @@ class Foo {
     public function doFoo(Bar $bar) {}
 }',
             ],
-            'no_typehint_mixed' => [
+            'no typehint mixed' => [
                 '<?php
 class Foo {
     /**
@@ -103,7 +103,7 @@ class Foo {
     public function doFoo($bar) {}
 }',
             ],
-            'multiple_different_types' => [
+            'multiple different types' => [
                 '<?php
 class Foo {
     /**
@@ -112,7 +112,7 @@ class Foo {
     public function doFoo(Bar $bar) {}
 }',
             ],
-            'same_typehint_with_different_casing' => [
+            'same typehint with different casing' => [
                 '<?php
 class Foo {
     /**
@@ -127,7 +127,7 @@ class Foo {
     public function doFoo(Bar $bar) {}
 }',
             ],
-            'multiple_arguments' => [
+            'multiple arguments' => [
                 '<?php
 class Foo {
     /**
@@ -144,7 +144,7 @@ class Foo {
     public function doFoo(Bar $bar, Baz $baz = null) {}
 }',
             ],
-            'with_import' => [
+            'with import' => [
                 '<?php
 use Foo\Bar;
 
@@ -159,7 +159,7 @@ use Foo\Bar;
  */
 function foo(Bar $bar) {}',
             ],
-            'with_root_symbols' => [
+            'with root symbols' => [
                 '<?php
 /**
  */
@@ -170,7 +170,7 @@ function foo(\Foo\Bar $bar) {}',
  */
 function foo(\Foo\Bar $bar) {}',
             ],
-            'with_mix_of_imported_and_fully_qualified_symbols' => [
+            'with mix of imported and fully qualified symbols' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -188,7 +188,7 @@ use Foo\Baz;
  */
 function foo(Bar $bar, \Foo\Baz $baz) {}',
             ],
-            'with_aliased_imported' => [
+            'with aliased imported' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -203,7 +203,7 @@ use Foo\Bar as Baz;
  */
 function foo(Baz $bar) {}',
             ],
-            'with_unmapped_param' => [
+            'with unmapped param' => [
                 '<?php
 use Foo\Bar;
 
@@ -212,7 +212,7 @@ use Foo\Bar;
  */
 function foo(Bar $bar) {}',
             ],
-            'with_param_superfluous_but_not_return' => [
+            'with param superfluous but not return' => [
                 '<?php
 class Foo {
     /**
@@ -231,7 +231,7 @@ class Foo {
     public function doFoo(Bar $bar) {}
 }',
             ],
-            'with_not_all_params_superfluous' => [
+            'with not all params superfluous' => [
                 '<?php
 class Foo {
     /**
@@ -248,7 +248,7 @@ class Foo {
     public function doFoo(Bar $bar, $baxz) {}
 }',
             ],
-            'with_special_type_hints' => [
+            'with special type hints' => [
                 '<?php
 class Foo {
     /**
@@ -263,6 +263,12 @@ class Foo {
      */
     public function doFoo(array $bar, callable $baz) {}
 }',
+            ],
+            'PHPDoc at the end of file' => [
+                '<?php
+/**
+ * Foo
+ */',
             ],
         ];
     }
@@ -282,7 +288,7 @@ class Foo {
     public function provideFixPhp70Cases()
     {
         return [
-            'same_typehint' => [
+            'same type hint' => [
                 '<?php
 class Foo {
     /**
@@ -300,7 +306,7 @@ class Foo {
     public function doFoo(Bar $bar): Baz {}
 }',
             ],
-            'same_typehint_with_description' => [
+            'same type hint with description' => [
                 '<?php
 class Foo {
     /**
@@ -311,7 +317,7 @@ class Foo {
     public function doFoo(Bar $bar): Baz {}
 }',
             ],
-            'multiple_different_types' => [
+            'multiple different types' => [
                 '<?php
 class Foo {
     /**
@@ -322,7 +328,7 @@ class Foo {
     public function doFoo(Bar $bar): Baz {}
 }',
             ],
-            'with_import' => [
+            'with import' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -340,7 +346,7 @@ use Foo\Baz;
  */
 function foo(Bar $bar): Baz {}',
             ],
-            'with_root_symbols' => [
+            'with root symbols' => [
                 '<?php
 /**
  */
@@ -352,7 +358,7 @@ function foo(\Foo\Bar $bar): \Foo\Baz {}',
  */
 function foo(\Foo\Bar $bar): \Foo\Baz {}',
             ],
-            'with_mix_of_imported_and_fully_qualified_symbols' => [
+            'with mix of imported and fully qualified symbols' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -373,7 +379,7 @@ use Foo\Qux;
  */
 function foo(Bar $bar, \Foo\Baz $baz): \Foo\Qux {}',
             ],
-            'with_aliased_imported' => [
+            'with aliased imported' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -389,7 +395,7 @@ use Foo\Bar as Baz;
  */
 function foo(Baz $bar): Baz {}',
             ],
-            'with_scalar_type_hints' => [
+            'with scalar type hints' => [
                 '<?php
 class Foo {
     /**
@@ -426,7 +432,7 @@ class Foo {
     public function provideFixPhp71Cases()
     {
         return [
-            'same_nullable_typehint' => [
+            'same nullable type hint' => [
                 '<?php
 class Foo {
     /**
@@ -444,7 +450,25 @@ class Foo {
     public function doFoo(?Bar $bar): ?Baz {}
 }',
             ],
-            'same_nullable_typehint_with_description' => [
+            'same nullable type hint reversed' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo(?Bar $bar): ?Baz {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @param null|Bar $bar
+     *
+     * @return null|Baz
+     */
+    public function doFoo(?Bar $bar): ?Baz {}
+}',
+            ],
+            'same nullable type hint with description' => [
                 '<?php
 class Foo {
     /**
@@ -455,7 +479,7 @@ class Foo {
     public function doFoo(?Bar $bar): ?Baz {}
 }',
             ],
-            'same_optional_nullable_typehint' => [
+            'same optional nullable type hint' => [
                 '<?php
 class Foo {
     /**
@@ -470,7 +494,7 @@ class Foo {
     public function doFoo(?Bar $bar = null) {}
 }',
             ],
-            'multiple_different_types' => [
+            'multiple different types' => [
                 '<?php
 class Foo {
     /**
@@ -481,7 +505,7 @@ class Foo {
     public function doFoo(?Bar $bar): ?Baz {}
 }',
             ],
-            'with_import' => [
+            'with import' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -499,7 +523,7 @@ use Foo\Baz;
  */
 function foo(?Bar $bar): ?Baz {}',
             ],
-            'with_root_symbols' => [
+            'with root symbols' => [
                 '<?php
 /**
  */
@@ -511,7 +535,7 @@ function foo(?\Foo\Bar $bar): ?\Foo\Baz {}',
  */
 function foo(?\Foo\Bar $bar): ?\Foo\Baz {}',
             ],
-            'with_mix_of_imported_and_fully_qualified_symbols' => [
+            'with mix of imported and fully qualified symbols' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -532,7 +556,7 @@ use Foo\Qux;
  */
 function foo(?Bar $bar, ?\Foo\Baz $baz): ?\Foo\Qux {}',
             ],
-            'with_aliased_imported' => [
+            'with aliased imported' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -548,7 +572,7 @@ use Foo\Bar as Baz;
  */
 function foo(?Baz $bar): ?Baz {}',
             ],
-            'with_special_type_hints' => [
+            'with special type hints' => [
                 '<?php
 class Foo {
     /**

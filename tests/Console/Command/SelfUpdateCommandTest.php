@@ -97,8 +97,6 @@ final class SelfUpdateCommandTest extends TestCase
      * @param string $expectedDisplay
      *
      * @dataProvider provideExecuteCases
-     *
-     * @requires PHP 5.4
      */
     public function testExecute(
         $latestVersion,

@@ -128,8 +128,8 @@ function my_foo()
     public function getPriority()
     {
         // should be run after PhpdocScalarFixer.
-        // should be run before ReturnTypeDeclarationFixer, FullyQualifiedStrictTypesFixer.
-        return 1;
+        // should be run before ReturnTypeDeclarationFixer, FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer.
+        return 8;
     }
 
     /**
@@ -169,12 +169,12 @@ function my_foo()
             }
 
             $returnTypeAnnotation = $this->findReturnAnnotations($tokens, $index);
-            if (1 !== count($returnTypeAnnotation)) {
+            if (1 !== \count($returnTypeAnnotation)) {
                 continue;
             }
             $returnTypeAnnotation = current($returnTypeAnnotation);
             $types = array_values($returnTypeAnnotation->getTypes());
-            $typesCount = count($types);
+            $typesCount = \count($types);
             if (1 > $typesCount || 2 < $typesCount) {
                 continue;
             }

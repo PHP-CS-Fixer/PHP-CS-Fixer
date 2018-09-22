@@ -258,6 +258,30 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     }
                 ',
             ],
+            [
+                '<?php if ($a):?>
+                    1
+                <?php endif; ?>
+                <?php if ($b):?>
+                    2
+                <?php endif; ?>
+                <?php if ($c):?>
+                    3
+                <?php endif; ?>',
+                '<?php if ($a):?>
+                    1
+                <?php endif;?>
+                <?php if ($b):?>
+                    2
+                <?php endif;?>
+                <?php if ($c):?>
+                    3
+                <?php endif;?>',
+            ],
+            [
+                '<?php echo 1; ; ; ; ; ; ; ; ;',
+                '<?php echo 1;;;;;;;;;',
+            ],
         ];
     }
 

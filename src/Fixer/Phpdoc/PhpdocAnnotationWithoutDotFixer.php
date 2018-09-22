@@ -70,7 +70,7 @@ function foo ($bar) {}
 
             foreach ($annotations as $annotation) {
                 if (
-                    !$annotation->getTag()->valid() || !in_array($annotation->getTag()->getName(), $this->tags, true)
+                    !$annotation->getTag()->valid() || !\in_array($annotation->getTag()->getName(), $this->tags, true)
                 ) {
                     continue;
                 }
@@ -78,23 +78,23 @@ function foo ($bar) {}
                 $content = $annotation->getContent();
 
                 if (
-                    1 !== Preg::match('/[.。]$/u', $content)
-                    || 0 !== Preg::match('/[.。](?!$)/u', $content, $matches)
+                    1 !== Preg::match('/[.。]\h*(\R|$)/u', $content)
+                    || 0 !== Preg::match('/[.。](?!\h*(\R|$))/u', $content, $matches)
                 ) {
                     continue;
                 }
 
                 $endLine = $doc->getLine($annotation->getEnd());
-                $endLine->setContent(Preg::replace('/(?<![.。])[.。](\s+)$/u', '\1', $endLine->getContent()));
+                $endLine->setContent(Preg::replace('/(?<![.。])[.。]\h*(\H+)$/u', '\1', $endLine->getContent()));
 
                 $startLine = $doc->getLine($annotation->getStart());
                 $optionalTypeRegEx = $annotation->supportTypes()
                     ? sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
                     : '';
                 $content = Preg::replaceCallback(
-                    '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
+                    '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)(\R|$)/',
                     static function (array $matches) {
-                        return $matches[1].strtolower($matches[2]).$matches[3];
+                        return $matches[1].strtolower($matches[2]).$matches[3].$matches[4];
                     },
                     $startLine->getContent(),
                     1

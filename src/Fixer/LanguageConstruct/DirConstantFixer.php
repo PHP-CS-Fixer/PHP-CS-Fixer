@@ -47,6 +47,15 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should run before CombineNestedDirnameFixer
+        return 4;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $currIndex = 0;
@@ -66,7 +75,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $fileCandidateRight = $tokens[$fileCandidateRightIndex];
             $fileCandidateLeftIndex = $tokens->getNextMeaningfulToken($openParenthesis);
             $fileCandidateLeft = $tokens[$fileCandidateLeftIndex];
-            if (!$fileCandidateRight->isGivenKind([T_FILE]) || !$fileCandidateLeft->isGivenKind([T_FILE])) {
+            if (!$fileCandidateRight->isGivenKind(T_FILE) || !$fileCandidateLeft->isGivenKind(T_FILE)) {
                 continue;
             }
 

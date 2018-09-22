@@ -78,7 +78,7 @@ class Foo
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $classes = array_keys($tokens->findGivenKind(T_CLASS));
-        $numClasses = count($classes);
+        $numClasses = \count($classes);
 
         for ($i = 0; $i < $numClasses; ++$i) {
             $index = $classes[$i];
@@ -310,7 +310,7 @@ class Foo
             }
 
             // append a comma if it's not the first variable
-            if (count($seq) > 5) {
+            if (\count($seq) > 5) {
                 $seq[] = ',';
             }
 

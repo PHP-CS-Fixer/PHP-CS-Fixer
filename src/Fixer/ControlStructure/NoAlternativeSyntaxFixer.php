@@ -75,7 +75,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+        for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
             $this->fixElseif($index, $token, $tokens);
             $this->fixElse($index, $token, $tokens);
@@ -209,7 +209,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
         );
 
         // increment the position of the colon by number of items inserted
-        $colonIndex += count($items);
+        $colonIndex += \count($items);
 
         $items = [new Token('{')];
         if (!$tokens[$colonIndex + 1]->isWhitespace()) {

@@ -25,21 +25,22 @@ final class SebastianBergmannDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsDiff()
     {
-        $diff = <<<'TXT'
---- Original
+        $diff = '--- Original
 +++ New
 @@ @@
  <?php
- class Foo extends Bar {
--    function __construct($foo, $bar) {
-+    public function __construct($foo, $bar)
-+    {
-         $this->foo = $foo;
-         $this->bar = $bar;
+ '.'
+ function baz($options)
+ {
+-    if (!array_key_exists("foo", $options)) {
++    if (!\array_key_exists("foo", $options)) {
+         throw new \InvalidArgumentException();
      }
+ '.'
+     return json_encode($options);
  }
-
-TXT;
+ '.'
+';
 
         $differ = new SebastianBergmannDiffer();
 

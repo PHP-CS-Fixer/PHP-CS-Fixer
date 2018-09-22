@@ -53,7 +53,7 @@ Fixing examples:
    ---------- begin diff ----------
    --- Original
    +++ New
-   @@ -1 +1 @@
+   @@ -1,1 +1,1 @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and bad thing';
    "."
@@ -63,7 +63,7 @@ Fixing examples:
    ---------- begin diff ----------
    --- Original
    +++ New
-   @@ -1 +1 @@
+   @@ -1,1 +1,1 @@
    -<?php echo 'bad stuff and bad thing';
    +<?php echo 'good stuff and good thing';
    ".'
@@ -92,7 +92,7 @@ Fixing examples:
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
-   \033[36m@@ -1 +1 @@\033[39m
+   \033[36m@@ -1,1 +1,1 @@\033[39m
    \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
    \033[32m+<?php echo 'good stuff and bad thing';\033[39m
    "."
@@ -102,7 +102,7 @@ Fixing examples:
 \033[33m   ---------- begin diff ----------\033[39m
    \033[31m--- Original\033[39m
    \033[32m+++ New\033[39m
-   \033[36m@@ -1 +1 @@\033[39m
+   \033[36m@@ -1,1 +1,1 @@\033[39m
    \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
    \033[32m+<?php echo 'good stuff and good thing';\033[39m
    "."
@@ -205,7 +205,7 @@ Fixing examples:
             ]
         );
 
-        $this->assertContains(get_class($mock), $commandTester->getDisplay(true));
+        $this->assertContains(\get_class($mock), $commandTester->getDisplay(true));
     }
 
     /**

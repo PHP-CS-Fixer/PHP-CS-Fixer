@@ -40,7 +40,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
 
-        $this->assertSame(count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
+        $this->assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
         $this->assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
@@ -109,6 +109,16 @@ final class ArgumentsAnalyzerTest extends TestCase
             ['<?php function(array $a = array()){};', 3, 11, new ArgumentAnalysis(
                 '$a',
                 5,
+                'array()',
+                new TypeAnalysis(
+                    'array',
+                    3,
+                    3
+                )
+            )],
+            ['<?php function(array &$a = array()){};', 3, 12, new ArgumentAnalysis(
+                '$a',
+                6,
                 'array()',
                 new TypeAnalysis(
                     'array',

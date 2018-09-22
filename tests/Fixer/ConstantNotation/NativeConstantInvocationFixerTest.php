@@ -152,6 +152,13 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
             ['<?php class Foo { function bar() { $this->M_PI(self::M_PI); } }'],
             ['<?php namespace Foo; use M_PI;'],
             ['<?php namespace Foo; use Bar as M_PI;'],
+            ['<?php echo Foo\\M_PI\\Bar;'],
+            ['<?php M_PI::foo();'],
+            ['<?php function x(M_PI $foo, M_PI &$bar, M_PI ...$baz) {}'],
+            ['<?php $foo instanceof M_PI;'],
+            ['<?php class x implements FOO, M_PI, BAZ {}'],
+            ['<?php class Foo { use Bar, M_PI { Bar::baz insteadof M_PI; } }'],
+            ['<?php M_PI: goto M_PI;'],
             [
                 '<?php echo \\M_PI;',
                 '<?php echo M_PI;',
@@ -184,6 +191,29 @@ M_PI;
 echo M_PI;
 ',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix70WithDefaultConfigurationCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     * @requires PHP 7.0
+     */
+    public function testFix70WithDefaultConfiguration($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFix70WithDefaultConfigurationCases()
+    {
+        return [
+            ['<?php function foo(): M_PI {}'],
+            ['<?php use X\Y\{FOO, BAR as BAR2, M_PI};'],
         ];
     }
 
@@ -423,5 +453,47 @@ var_dump(
 EOT;
 
         $this->doTest($expected, $input);
+    }
+
+    public function testFixScopedOnly()
+    {
+        $this->fixer->configure(['scope' => 'namespaced']);
+
+        $expected = <<<'EOT'
+<?php
+
+namespace space1 {
+    echo \PHP_VERSION;
+}
+namespace {
+    echo PHP_VERSION;
+}
+EOT;
+
+        $input = <<<'EOT'
+<?php
+
+namespace space1 {
+    echo PHP_VERSION;
+}
+namespace {
+    echo PHP_VERSION;
+}
+EOT;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixScopedOnlyNoNamespace()
+    {
+        $this->fixer->configure(['scope' => 'namespaced']);
+
+        $expected = <<<'EOT'
+<?php
+
+echo PHP_VERSION . PHP_EOL;
+EOT;
+
+        $this->doTest($expected);
     }
 }

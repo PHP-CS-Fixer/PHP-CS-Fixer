@@ -205,7 +205,7 @@ class Annotation
                 );
 
                 $this->types[] = $matches['type'];
-                $content = substr($content, strlen($matches['type']) + 1);
+                $content = substr($content, \strlen($matches['type']) + 1);
             }
         }
 
@@ -227,6 +227,22 @@ class Annotation
     }
 
     /**
+     * Get the normalized types associated with this annotation, so they can easily be compared.
+     *
+     * @return string[]
+     */
+    public function getNormalizedTypes()
+    {
+        $normalized = array_map(static function ($type) {
+            return strtolower($type);
+        }, $this->getTypes());
+
+        sort($normalized);
+
+        return $normalized;
+    }
+
+    /**
      * Remove this annotation by removing all its lines.
      */
     public function remove()
@@ -245,12 +261,12 @@ class Annotation
      */
     public function getContent()
     {
-        return implode($this->lines);
+        return implode('', $this->lines);
     }
 
     public function supportTypes()
     {
-        return in_array($this->getTag()->getName(), self::$tags, true);
+        return \in_array($this->getTag()->getName(), self::$tags, true);
     }
 
     /**

@@ -235,7 +235,7 @@ class Foo
     {
         $controlContinuationTokens = $this->getControlContinuationTokens();
 
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+        for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind($controlContinuationTokens)) {
@@ -261,7 +261,7 @@ class Foo
 
     private function fixDoWhile(Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+        for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_DO)) {
@@ -295,7 +295,7 @@ class Foo
         );
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
+        for ($index = 0, $limit = \count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
             // if token is not a structure element - continue
@@ -570,7 +570,7 @@ class Foo
                     if (
                         self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs']
                         && (
-                            $token->isGivenKind([T_FUNCTION]) && !$tokensAnalyzer->isLambda($index)
+                            $token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)
                             || $token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)
                         )
                         && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()
@@ -587,7 +587,7 @@ class Foo
             }
 
             // reset loop limit due to collection change
-            $limit = count($tokens);
+            $limit = \count($tokens);
         }
     }
 

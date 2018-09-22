@@ -138,8 +138,8 @@ abstract class AbstractFixerTestCase extends TestCase
             $tokens->clearEmptyTokens();
 
             $this->assertSame(
-                count($tokens),
-                count(array_unique(array_map(static function (Token $token) {
+                \count($tokens),
+                \count(array_unique(array_map(static function (Token $token) {
                     return spl_object_hash($token);
                 }, $tokens->toArray()))),
                 'Token items inside Tokens collection must be unique.'
@@ -180,27 +180,6 @@ abstract class AbstractFixerTestCase extends TestCase
         } catch (\Exception $e) {
             return $e->getMessage()."\n\nSource:\n${source}";
         }
-    }
-
-    private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
-    {
-        foreach ($expectedTokens as $index => $expectedToken) {
-            $option = ['JSON_PRETTY_PRINT'];
-            $inputToken = $inputTokens[$index];
-
-            $this->assertTrue(
-                $expectedToken->equals($inputToken),
-                sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson($option), $inputToken->toJson($option))
-            );
-
-            $expectedTokenKind = $expectedToken->isArray() ? $expectedToken->getId() : $expectedToken->getContent();
-            $this->assertTrue(
-                $inputTokens->isTokenKindFound($expectedTokenKind),
-                sprintf('The token kind %s must be found in fixed tokens collection.', $expectedTokenKind)
-            );
-        }
-
-        $this->assertSame($expectedTokens->count(), $inputTokens->count(), 'Both collections must have the same length.');
     }
 
     /**

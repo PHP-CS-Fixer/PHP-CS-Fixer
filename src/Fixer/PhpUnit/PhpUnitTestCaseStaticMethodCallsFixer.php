@@ -310,7 +310,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                                 sprintf(
                                     'Unexpected "methods" key, expected any of "%s", got "%s".',
                                     implode('", "', array_keys($thisFixer->staticMethods)),
-                                    is_object($method) ? get_class($method) : gettype($method).'#'.$method
+                                    \is_object($method) ? \get_class($method) : \gettype($method).'#'.$method
                                 )
                             );
                         }
@@ -321,7 +321,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                                     'Unexpected value for method "%s", expected any of "%s", got "%s".',
                                     $method,
                                     implode('", "', array_keys($thisFixer->allowedValues)),
-                                    is_object($value) ? get_class($value) : (null === $value ? 'null' : gettype($value).'#'.$value)
+                                    \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
                                 )
                             );
                         }

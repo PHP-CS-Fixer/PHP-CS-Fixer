@@ -85,7 +85,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurat
     {
         $insideForParenthesesUntil = null;
 
-        for ($index = 0, $max = count($tokens) - 1; $index < $max; ++$index) {
+        for ($index = 0, $max = \count($tokens) - 1; $index < $max; ++$index) {
             if ($this->configuration['remove_in_empty_for_expressions']) {
                 if ($tokens[$index]->isGivenKind(T_FOR)) {
                     $index = $tokens->getNextMeaningfulToken($index);
@@ -113,6 +113,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurat
                     )
                 ) {
                     $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+                    ++$max;
                 }
 
                 continue;

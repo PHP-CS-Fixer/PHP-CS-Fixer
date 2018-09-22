@@ -29,7 +29,9 @@ final class NamespacesAnalyzer
     {
         $namespaces = [];
 
-        foreach ($tokens as $index => $token) {
+        for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
+            $token = $tokens[$index];
+
             if (!$token->isGivenKind(T_NAMESPACE)) {
                 continue;
             }
@@ -44,7 +46,7 @@ final class NamespacesAnalyzer
             } else {
                 $scopeEndIndex = $tokens->getNextTokenOfKind($declarationEndIndex, [[T_NAMESPACE]]);
                 if (null === $scopeEndIndex) {
-                    $scopeEndIndex = count($tokens);
+                    $scopeEndIndex = \count($tokens);
                 }
                 --$scopeEndIndex;
             }
@@ -57,10 +59,13 @@ final class NamespacesAnalyzer
                 $index,
                 $scopeEndIndex
             );
+
+            // Continue the analysis after the end of this namespace to find the next one
+            $index = $scopeEndIndex;
         }
 
-        if (0 === count($namespaces)) {
-            $namespaces[] = new NamespaceAnalysis('', '', 0, 0, 0, count($tokens) - 1);
+        if (0 === \count($namespaces)) {
+            $namespaces[] = new NamespaceAnalysis('', '', 0, 0, 0, \count($tokens) - 1);
         }
 
         return $namespaces;

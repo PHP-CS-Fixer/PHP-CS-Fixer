@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.12.0/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.13.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -84,6 +84,15 @@ Globally (homebrew)
 .. code-block:: bash
 
     $ brew install php-cs-fixer
+
+Locally (PHIVE)
+~~~~~~~~~~~~~~~
+
+Install `PHIVE <https://phar.io>`_ and issue the following command:
+
+.. code-block:: bash
+
+    $ phive install php-cs-fixer # use `--global` for global install
 
 Update
 ------
@@ -123,6 +132,13 @@ You can update ``php-cs-fixer`` through this command:
 .. code-block:: bash
 
     $ brew upgrade php-cs-fixer
+
+Locally (PHIVE)
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ phive update php-cs-fixer
 
 Usage
 -----
@@ -274,7 +290,8 @@ Choose from the list of available rules:
     equals alignment; defaults to ``false``. DEPRECATED: use options
     ``operators`` and ``default`` instead
   - ``default`` (``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``,
-    ``'single_space'``, ``null``): default fix strategy; defaults to ``'single_space'``
+    ``'no_space'``, ``'single_space'``, ``null``): default fix strategy; defaults to
+    ``'single_space'``
   - ``operators`` (``array``): dictionary of ``binary operator`` => ``fix strategy``
     values that differ from the default strategy; defaults to ``[]``
 
@@ -372,6 +389,13 @@ Choose from the list of available rules:
 * **combine_consecutive_unsets**
 
   Calling ``unset`` on multiple items should be done in one call.
+
+* **combine_nested_dirname** [@PHP70Migration:risky, @PHP71Migration:risky]
+
+  Replace multiple nested calls of ``dirname`` by only one call with second
+  ``$level`` parameter. Requires PHP >= 7.0.
+
+  *Risky rule: risky when the function ``dirname`` is overridden.*
 
 * **comment_to_phpdoc**
 
@@ -630,6 +654,18 @@ Choose from the list of available rules:
     set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``
 
+* **fopen_flag_order** [@Symfony:risky]
+
+  Order the flags in ``fopen`` calls, ``b`` and ``t`` must be last.
+
+  *Risky rule: risky when the function ``fopen`` is overridden.*
+
+* **fopen_flags** [@Symfony:risky]
+
+  The flags in ``fopen`` calls must contain ``b`` and must omit ``t``.
+
+  *Risky rule: risky when the function ``fopen`` is overridden.*
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
@@ -696,6 +732,13 @@ Choose from the list of available rules:
 * **heredoc_to_nowdoc**
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
+
+* **implode_call** [@Symfony:risky]
+
+  Function ``implode`` must be called with 2 arguments in the documented
+  order.
+
+  *Risky rule: risky when the function ``implode`` is overridden.*
 
 * **include** [@Symfony]
 
@@ -772,6 +815,10 @@ Choose from the list of available rules:
 
   Magic constants should be referred to using the correct casing.
 
+* **magic_method_casing** [@Symfony]
+
+  Magic method definitions and calls must be using the correct casing.
+
 * **mb_str_functions**
 
   Replace non multibyte-safe functions with corresponding mb function.
@@ -847,12 +894,14 @@ Choose from the list of available rules:
     ``get_defined_constants``. User constants are not accounted in this list
     and must be specified in the include one; defaults to ``true``
   - ``include`` (``array``): list of additional constants to fix; defaults to ``[]``
+  - ``scope`` (``'all'``, ``'namespaced'``): only fix constant invocations that are made
+    within a namespace or fix all; defaults to ``'all'``
 
 * **native_function_casing** [@Symfony]
 
   Function defined by PHP should be called using the correct casing.
 
-* **native_function_invocation**
+* **native_function_invocation** [@Symfony:risky]
 
   Add leading ``\`` before function invocation to speed up resolving.
 
@@ -877,6 +926,13 @@ Choose from the list of available rules:
   Master functions shall be used instead of aliases.
 
   *Risky rule: risky when any of the alias functions are overridden.*
+
+  Configuration options:
+
+  - ``sets`` (a subset of ``['@internal', '@IMAP', '@mbreg', '@all']``): list of
+    sets to fix. Defined sets are ``@internal`` (native functions), ``@IMAP``
+    (IMAP functions), ``@mbreg`` (from ``ext-mbstring``) ``@all`` (all listed
+    sets); defaults to ``['@internal', '@IMAP']``
 
 * **no_alternative_syntax**
 
@@ -1221,6 +1277,16 @@ Choose from the list of available rules:
   - ``types`` (a subset of ``['normal', 'final', 'abstract']``): what types of
     classes to mark as internal; defaults to ``['normal', 'final']``
 
+* **php_unit_method_casing**
+
+  Enforce camel (or snake) case for PHPUnit test methods, following
+  configuration.
+
+  Configuration options:
+
+  - ``case`` (``'camel_case'``, ``'snake_case'``): apply camel or snake case to test
+    methods; defaults to ``'camel_case'``
+
 * **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   Usages of ``->getMock`` and
@@ -1293,7 +1359,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``case`` (``'camel'``, ``'snake'``): whether to camel or snake case when adding the
-    test prefix; defaults to ``'camel'``
+    test prefix; defaults to ``'camel'``. DEPRECATED: use
+    ``php_unit_method_casing`` fixer instead
   - ``style`` (``'annotation'``, ``'prefix'``): whether to use the @test annotation or
     not; defaults to ``'prefix'``
 
@@ -1365,7 +1432,7 @@ Choose from the list of available rules:
 
 * **phpdoc_no_empty_return** [@Symfony]
 
-  ``@return`` void and ``@return null`` annotations should be omitted from
+  ``@return void`` and ``@return null`` annotations should be omitted from
   PHPDoc.
 
 * **phpdoc_no_package** [@Symfony]
@@ -1729,7 +1796,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.12.0/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.13.0/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

@@ -46,12 +46,12 @@ abstract class AbstractTransformerTestCase extends TestCase
         $tokens = Tokens::fromCode($source);
 
         $this->assertSame(
-            count($expectedTokens),
+            \count($expectedTokens),
             $this->countTokenPrototypes(
                 $tokens,
                 array_map(
                     static function ($kindOrPrototype) {
-                        return is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype;
+                        return \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype;
                     },
                     array_unique(array_merge($observedKindsOrPrototypes, $expectedTokens))
                 )
@@ -60,7 +60,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         );
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
-            if (is_string($tokenIdOrContent)) {
+            if (\is_string($tokenIdOrContent)) {
                 $this->assertTrue($tokens[$index]->equals($tokenIdOrContent));
 
                 continue;

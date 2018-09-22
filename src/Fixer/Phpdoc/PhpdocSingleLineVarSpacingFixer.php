@@ -90,7 +90,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
             '#^/\*\*[ \t]*@var[ \t]+(\S+)[ \t]*(\$\S+)?[ \t]*([^\n]*)\*/$#',
             static function (array $matches) {
                 $content = '/** @var';
-                for ($i = 1, $m = count($matches); $i < $m; ++$i) {
+                for ($i = 1, $m = \count($matches); $i < $m; ++$i) {
                     if ('' !== $matches[$i]) {
                         $content .= ' '.$matches[$i];
                     }

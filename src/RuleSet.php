@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 
 /**
@@ -76,6 +77,7 @@ final class RuleSet implements RuleSetInterface
             'lowercase_cast' => true,
             'lowercase_static_reference' => true,
             'magic_constant_casing' => true,
+            'magic_method_casing' => true,
             'method_argument_space' => true,
             'native_function_casing' => true,
             'new_with_braces' => true,
@@ -165,7 +167,10 @@ final class RuleSet implements RuleSetInterface
             'dir_constant' => true,
             'ereg_to_preg' => true,
             'error_suppression' => true,
+            'fopen_flag_order' => true,
+            'fopen_flags' => true,
             'function_to_constant' => true,
+            'implode_call' => true,
             'is_null' => true,
             'modernize_types_casting' => true,
             'native_constant_invocation' => [
@@ -175,6 +180,11 @@ final class RuleSet implements RuleSetInterface
                     'PHP_SAPI',
                     'PHP_VERSION_ID',
                 ],
+                'scope' => 'namespaced',
+            ],
+            'native_function_invocation' => [
+                'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
+                'scope' => 'namespaced',
             ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
@@ -206,6 +216,7 @@ final class RuleSet implements RuleSetInterface
         ],
         '@PHP70Migration:risky' => [
             '@PHP56Migration:risky' => true,
+            'combine_nested_dirname' => true,
             'declare_strict_types' => true,
             'non_printable_character' => [
                 'use_escape_sequences_in_strings' => true,
@@ -299,7 +310,7 @@ final class RuleSet implements RuleSetInterface
     public function __construct(array $set = [])
     {
         foreach ($set as $key => $value) {
-            if (is_int($key)) {
+            if (\is_int($key)) {
                 throw new \InvalidArgumentException(sprintf('Missing value for "%s" rule/set.', $value));
             }
         }
@@ -380,7 +391,7 @@ final class RuleSet implements RuleSetInterface
         // expand sets
         foreach ($rules as $name => $value) {
             if ('@' === $name[0]) {
-                if (!is_bool($value)) {
+                if (!\is_bool($value)) {
                     throw new \UnexpectedValueException(sprintf('Nested rule set "%s" configuration must be a boolean.', $name));
                 }
 

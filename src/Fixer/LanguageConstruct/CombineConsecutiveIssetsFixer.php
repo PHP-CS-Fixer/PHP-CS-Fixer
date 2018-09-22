@@ -81,7 +81,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
                 $nextIssetInfo = $this->getIssetInfo($tokens, $issetIndex);
 
                 // clone what we want to move, do not clone '(' and ')' of the 'isset' statement we're merging
-                $clones = $this->getTokenClones($tokens, array_slice($nextIssetInfo, 1, -1));
+                $clones = $this->getTokenClones($tokens, \array_slice($nextIssetInfo, 1, -1));
 
                 // clean up no the tokens of the 'isset' statement we're merging
                 $this->clearTokens($tokens, array_merge($nextIssetInfo, [$issetIndex, $booleanAndTokenIndex]));
@@ -91,7 +91,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
                 $tokens->insertAt($insertLocation, $clones);
 
                 // correct some counts and offset based on # of tokens inserted
-                $numberOfTokensInserted = count($clones);
+                $numberOfTokensInserted = \count($clones);
                 $tokenCount += $numberOfTokensInserted;
                 $issetCloseBraceIndex += $numberOfTokensInserted;
                 $insertLocation += $numberOfTokensInserted;

@@ -224,7 +224,7 @@ EOF;
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $lines = Utils::splitLines($content);
 
-        for ($i = 0, $l = count($lines); $i < $l; ++$i) {
+        for ($i = 0, $l = \count($lines); $i < $l; ++$i) {
             $items = [];
             $matches = $this->getMatches($lines[$i]);
 
@@ -258,9 +258,9 @@ EOF;
                     continue;
                 }
 
-                $tagMax = max($tagMax, strlen($item['tag']));
-                $hintMax = max($hintMax, strlen($item['hint']));
-                $varMax = max($varMax, strlen($item['var']));
+                $tagMax = max($tagMax, \strlen($item['tag']));
+                $hintMax = max($hintMax, \strlen($item['hint']));
+                $varMax = max($varMax, \strlen($item['var']));
             }
 
             $currTag = null;
@@ -276,7 +276,7 @@ EOF;
 
                     $extraIndent = 2;
 
-                    if (in_array($currTag, self::$tagsWithName, true) || in_array($currTag, self::$tagsWithMethodSignature, true)) {
+                    if (\in_array($currTag, self::$tagsWithName, true) || \in_array($currTag, self::$tagsWithMethodSignature, true)) {
                         $extraIndent = 3;
                     }
 
@@ -302,7 +302,7 @@ EOF;
                     .' * @'
                     .$item['tag']
                     .$this->getIndent(
-                        $tagMax - strlen($item['tag']) + 1,
+                        $tagMax - \strlen($item['tag']) + 1,
                         $item['hint'] ? 1 : 0
                     )
                     .$item['hint']
@@ -310,16 +310,16 @@ EOF;
 
                 if (!empty($item['var'])) {
                     $line .=
-                        $this->getIndent(($hintMax ?: -1) - strlen($item['hint']) + 1)
+                        $this->getIndent(($hintMax ?: -1) - \strlen($item['hint']) + 1)
                         .$item['var']
                         .(
                             !empty($item['desc'])
-                            ? $this->getIndent($varMax - strlen($item['var']) + 1).$item['desc'].$lineEnding
+                            ? $this->getIndent($varMax - \strlen($item['var']) + 1).$item['desc'].$lineEnding
                             : $lineEnding
                         )
                     ;
                 } elseif (!empty($item['desc'])) {
-                    $line .= $this->getIndent($hintMax - strlen($item['hint']) + 1).$item['desc'].$lineEnding;
+                    $line .= $this->getIndent($hintMax - \strlen($item['hint']) + 1).$item['desc'].$lineEnding;
                 } else {
                     $line .= $lineEnding;
                 }
@@ -328,7 +328,7 @@ EOF;
             }
         }
 
-        return implode($lines);
+        return implode('', $lines);
     }
 
     /**
@@ -427,7 +427,7 @@ EOF;
             return 0;
         }
 
-        $length = strlen($sentence);
+        $length = \strlen($sentence);
 
         return 0 === $length ? 0 : $length + 1;
     }

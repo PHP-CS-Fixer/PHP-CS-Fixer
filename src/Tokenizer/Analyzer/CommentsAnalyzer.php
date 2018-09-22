@@ -43,7 +43,7 @@ final class CommentsAnalyzer
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        return $tokens[$prevIndex]->isGivenKind([T_OPEN_TAG]) && null !== $tokens->getNextMeaningfulToken($index);
+        return $tokens[$prevIndex]->isGivenKind(T_OPEN_TAG) && null !== $tokens->getNextMeaningfulToken($index);
     }
 
     /**
@@ -115,7 +115,7 @@ final class CommentsAnalyzer
             return $indices;
         }
 
-        $count = count($tokens);
+        $count = \count($tokens);
         ++$index;
 
         for (; $index < $count; ++$index) {

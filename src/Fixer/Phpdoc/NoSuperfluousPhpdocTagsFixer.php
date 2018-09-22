@@ -139,7 +139,7 @@ class Foo {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (null === $index || $tokens[$index]->isGivenKind(T_FUNCTION)) {
                 return $index;
             }
         } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL, T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
@@ -147,6 +147,13 @@ class Foo {
         return null;
     }
 
+    /**
+     * @param Tokens $tokens
+     * @param int    $start
+     * @param int    $end
+     *
+     * @return array<string, array>
+     */
     private function getArgumentsInfo(Tokens $tokens, $start, $end)
     {
         $argumentsInfo = [];
@@ -226,6 +233,13 @@ class Foo {
         ];
     }
 
+    /**
+     * @param Annotation            $annotation
+     * @param array                 $info
+     * @param array<string, string> $symbolShortNames
+     *
+     * @return bool
+     */
     private function annotationIsSuperfluous(Annotation $annotation, array $info, array $symbolShortNames)
     {
         if ('param' === $annotation->getTag()->getName()) {
@@ -244,7 +258,7 @@ class Foo {
             return true;
         }
 
-        $actualTypes = [$info['type']];
+        $actualTypes = null === $info['type'] ? [] : [$info['type']];
         if ($info['allows_null']) {
             $actualTypes[] = 'null';
         }
@@ -255,17 +269,17 @@ class Foo {
     /**
      * Normalizes types to make them comparable.
      *
-     * Converts given types to lowercase and replaces imports aliases with
-     * their matching FQCN.
+     * Converts given types to lowercase, replaces imports aliases with
+     * their matching FQCN, and finally sorts the result.
      *
-     * @param array $types            The types to normalize
-     * @param array $symbolShortNames The imports aliases
+     * @param string[]              $types            The types to normalize
+     * @param array<string, string> $symbolShortNames The imports aliases
      *
      * @return array The normalized types
      */
     private function toComparableNames(array $types, array $symbolShortNames)
     {
-        return array_map(
+        $normalized = array_map(
             function ($type) use ($symbolShortNames) {
                 $type = strtolower($type);
 
@@ -277,5 +291,9 @@ class Foo {
             },
             $types
         );
+
+        sort($normalized);
+
+        return $normalized;
     }
 }

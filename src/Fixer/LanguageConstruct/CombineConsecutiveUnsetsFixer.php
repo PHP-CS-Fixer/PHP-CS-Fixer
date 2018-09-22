@@ -39,7 +39,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before SpaceAfterSemicolonFixer, NoWhitespaceInBlankLineFixer, NoTrailingWhitespaceFixer and NoExtraBlankLinesFixerand after NoEmptyStatementFixer.
+        // should be run before SpaceAfterSemicolonFixer, NoWhitespaceInBlankLineFixer, NoTrailingWhitespaceFixer and NoExtraBlankLinesFixer and after NoEmptyStatementFixer.
         return 24;
     }
 
@@ -62,7 +62,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
             }
 
             $previousUnsetCall = $this->getPreviousUnsetCall($tokens, $index);
-            if (is_int($previousUnsetCall)) {
+            if (\is_int($previousUnsetCall)) {
                 $index = $previousUnsetCall;
 
                 continue;

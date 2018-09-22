@@ -70,7 +70,7 @@ abstract class AbstractProxyFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        if (count($this->proxyFixers) > 1) {
+        if (\count($this->proxyFixers) > 1) {
             throw new \LogicException('You need to override this method to provide the priority of combined fixers.');
         }
 

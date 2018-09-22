@@ -65,7 +65,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // min. offset 4 as minimal candidate is @: <?php\n/** @inheritdoc */class min{}
-        for ($index = 1, $count = count($tokens) - 4; $index < $count; ++$index) {
+        for ($index = 1, $count = \count($tokens) - 4; $index < $count; ++$index) {
             if ($tokens[$index]->isGivenKind([T_CLASS, T_INTERFACE])) {
                 $index = $this->fixClassy($tokens, $index);
             }

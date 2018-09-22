@@ -114,12 +114,8 @@ class Sample
 
             $token = $tokens[$i];
 
-            if (
-                // skip anonymous classes
-                ($token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($i)) ||
-                // skip lambda functions (PHP < 5.4 compatibility)
-                ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($i))
-            ) {
+            // skip anonymous classes
+            if ($token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($i)) {
                 $i = $tokens->getNextTokenOfKind($i, ['{']);
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
 

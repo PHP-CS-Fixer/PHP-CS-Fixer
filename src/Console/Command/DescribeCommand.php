@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Differ\DiffConsoleFormatter;
-use PhpCsFixer\Differ\UnifiedDiffer;
+use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
@@ -161,7 +161,7 @@ final class DescribeCommand extends Command
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', get_class($fixer)));
+            $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', \get_class($fixer)));
         }
 
         $output->writeln($description);
@@ -184,7 +184,7 @@ final class DescribeCommand extends Command
             $configurationDefinition = $fixer->getConfigurationDefinition();
             $options = $configurationDefinition->getOptions();
 
-            $output->writeln(sprintf('Fixer is configurable using following option%s:', 1 === count($options) ? '' : 's'));
+            $output->writeln(sprintf('Fixer is configurable using following option%s:', 1 === \count($options) ? '' : 's'));
 
             foreach ($options as $option) {
                 $line = '* <info>'.OutputFormatter::escape($option->getName()).'</info>';
@@ -259,7 +259,7 @@ final class DescribeCommand extends Command
             return true;
         });
 
-        if (!count($codeSamples)) {
+        if (!\count($codeSamples)) {
             $output->writeln([
                 'Fixing examples can not be demonstrated on the current PHP version.',
                 '',
@@ -267,7 +267,7 @@ final class DescribeCommand extends Command
         } else {
             $output->writeln('Fixing examples:');
 
-            $differ = new UnifiedDiffer();
+            $differ = new FullDiffer();
             $diffFormatter = new DiffConsoleFormatter($output->isDecorated(), sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                 PHP_EOL,
@@ -313,7 +313,7 @@ final class DescribeCommand extends Command
      */
     private function describeSet(OutputInterface $output, $name)
     {
-        if (!in_array($name, $this->getSetNames(), true)) {
+        if (!\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
@@ -400,7 +400,7 @@ final class DescribeCommand extends Command
         foreach ($describe as $list => $items) {
             $output->writeln(sprintf('<comment>Defined %s:</comment>', $list));
             foreach ($items as $name => $item) {
-                $output->writeln(sprintf('* <info>%s</info>', is_string($name) ? $name : $item));
+                $output->writeln(sprintf('* <info>%s</info>', \is_string($name) ? $name : $item));
             }
         }
     }

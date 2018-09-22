@@ -285,11 +285,11 @@ $this->assertTrue(is_readable($a));
         $isPositive = 'asserttrue' === $assertCall['loweredName'];
 
         $content = strtolower($tokens[$testIndex]->getContent());
-        if (!in_array($content, $this->functions, true)) {
+        if (!\in_array($content, $this->functions, true)) {
             return;
         }
 
-        if (is_array(self::$fixMap[$content])) {
+        if (\is_array(self::$fixMap[$content])) {
             if (false !== self::$fixMap[$content][$isPositive]) {
                 $tokens[$assertCall['index']] = new Token([T_STRING, self::$fixMap[$content][$isPositive]]);
                 $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
@@ -347,8 +347,13 @@ $this->assertTrue(is_readable($a));
             $defaultNamespaceTokenIndex = false;
         }
 
-        if (!$tokens[$countCallIndex]->isGivenKind(T_STRING) || 'count' !== strtolower($tokens[$countCallIndex]->getContent())) {
-            return; // not a call to "count"
+        if (!$tokens[$countCallIndex]->isGivenKind(T_STRING)) {
+            return;
+        }
+
+        $lowerContent = strtolower($tokens[$countCallIndex]->getContent());
+        if ('count' !== $lowerContent && 'sizeof' !== $lowerContent) {
+            return; // not a call to "count" or "sizeOf"
         }
 
         // @ $this->/self::assertEquals/Same([$nextIndex,$commaIndex,[$defaultNamespaceTokenIndex,]$countCallIndex,$countCallOpenBraceIndex])

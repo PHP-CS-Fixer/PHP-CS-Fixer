@@ -93,13 +93,13 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
                 // invalid char inside line won't crash the fixer
                 '<?php
     /**
-     * @var string this: '.chr(174).' is an odd character
-     * @var string This: '.chr(174).' is an odd character 2nd time。
+     * @var string this: '.\chr(174).' is an odd character
+     * @var string This: '.\chr(174).' is an odd character 2nd time。
      */',
                 '<?php
     /**
-     * @var string This: '.chr(174).' is an odd character.
-     * @var string This: '.chr(174).' is an odd character 2nd time。
+     * @var string This: '.\chr(174).' is an odd character.
+     * @var string This: '.\chr(174).' is an odd character 2nd time。
      */',
             ],
             [
@@ -138,6 +138,56 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @return bool|null Returns `true` if the class has a single-column ID
      *                   and Returns `false` otherwise.
      */',
+            ],
+            [
+                '<?php
+    /**
+     * @throws \Exception having whitespaces after dot, yet I am fixed
+     */',
+                '<?php
+    /**
+     * @throws \Exception having whitespaces after dot, yet I am fixed.   '.'
+     */',
+            ],
+            [
+                '<?php
+    /**
+     * @throws \Exception having tabs after dot, yet I am fixed
+     */',
+                '<?php
+    /**
+     * @throws \Exception having tabs after dot, yet I am fixed.		'.'
+     */',
+            ],
+            [
+                '<?php
+    /**
+     * This is a broken phpdoc
+     * @param string $str surprisingly, it is a string
+
+     */
+    function fixMe($str) {}',
+                '<?php
+    /**
+     * This is a broken phpdoc
+     * @param string $str Surprisingly, it is a string.
+
+     */
+    function fixMe($str) {}',
+            ],
+            [
+                '<?php
+    /**
+     * @return bool|null returns `true` if the class has a single-column ID
+                         Returns `false` otherwise.
+     */
+    function fixMe() {}',
+                '<?php
+    /**
+     * @return bool|null Returns `true` if the class has a single-column ID.
+                         Returns `false` otherwise.
+     */
+    function fixMe() {}',
             ],
         ];
     }

@@ -18,6 +18,8 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -184,9 +186,16 @@ $c = get_class($d);
             return;
         }
 
+        $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
+
         // 'scope' is 'namespaced' here
-        foreach (\array_reverse($this->getUserDefinedNamespaces($tokens)) as $namespace) {
-            $this->fixFunctionCalls($tokens, $this->functionFilter, $namespace['open'], $namespace['close']);
+        /** @var NamespaceAnalysis $namespace */
+        foreach (\array_reverse($namespaces) as $namespace) {
+            if ('' === $namespace->getFullName()) {
+                continue;
+            }
+
+            $this->fixFunctionCalls($tokens, $this->functionFilter, $namespace->getScopeStartIndex(), $namespace->getScopeEndIndex());
         }
     }
 
@@ -390,53 +399,6 @@ $c = get_class($d);
     private function getAllInternalFunctionsNormalized()
     {
         return $this->normalizeFunctionNames(\get_defined_functions()['internal']);
-    }
-
-    /**
-     * Returns array<'open'|'close', int>[].
-     *
-     * @param Tokens $tokens
-     *
-     * @return array
-     */
-    private function getUserDefinedNamespaces(Tokens $tokens)
-    {
-        $namespaces = [];
-        for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_NAMESPACE)) {
-                continue;
-            }
-
-            $index = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$index]->equals('{')) { // global namespace
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-
-                continue;
-            }
-
-            while (!$tokens[++$index]->equalsAny(['{', ';', [T_CLOSE_TAG]])) {
-                // no-op
-            }
-
-            if ($tokens[$index]->equals('{')) {
-                // namespace ends at block end of `{`
-                $namespaces[] = ['open' => $index, 'close' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index)];
-
-                continue;
-            }
-
-            // namespace ends at next T_NAMESPACE or EOF
-            $close = $tokens->getNextTokenOfKind($index, [[T_NAMESPACE]], false);
-            if (null === $close) {
-                $namespaces[] = ['open' => $index, 'close' => \count($tokens) - 1];
-
-                break;
-            }
-
-            $namespaces[] = ['open' => $index, 'close' => $close];
-        }
-
-        return $namespaces;
     }
 
     /**

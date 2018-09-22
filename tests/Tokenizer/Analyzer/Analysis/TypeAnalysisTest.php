@@ -68,7 +68,7 @@ final class TypeAnalysisTest extends TestCase
             ['bool', true],
             ['callable', true],
             ['int', true],
-            ['iteratable', true],
+            ['iterable', true],
             ['float', true],
             ['mixed', true],
             ['numeric', true],

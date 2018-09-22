@@ -239,7 +239,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                 $token->clear();
             }
 
-            if ($index < count($tokens) - 1 && !Preg::match('/^\s/', $tokens[$index + 1]->getContent())) {
+            if ($index < \count($tokens) - 1 && !Preg::match('/^\s/', $tokens[$index + 1]->getContent())) {
                 $tokens->insertAt($index + 1, new Token(DocLexer::T_NONE, ' '));
             }
         }

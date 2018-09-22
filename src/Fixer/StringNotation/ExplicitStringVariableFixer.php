@@ -61,7 +61,7 @@ EOT
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; $index > 0; --$index) {
+        for ($index = \count($tokens) - 1; $index > 0; --$index) {
             $token = $tokens[$index];
             if (!$token->isGivenKind(T_VARIABLE)) {
                 continue;
@@ -85,7 +85,7 @@ EOT
                 ++$nextIndex;
             }
 
-            if (1 === count($variableTokens)) {
+            if (1 === \count($variableTokens)) {
                 $tokens->overrideRange($index, $index, [
                     new Token([T_DOLLAR_OPEN_CURLY_BRACES, '${']),
                     new Token([T_STRING_VARNAME, substr($token->getContent(), 1)]),
@@ -95,6 +95,12 @@ EOT
                 foreach ($variableTokens as $variablePartIndex => $variablePartToken) {
                     if ($variablePartToken->isGivenKind(T_NUM_STRING)) {
                         $tokens[$variablePartIndex] = new Token([T_LNUMBER, $variablePartToken->getContent()]);
+
+                        continue;
+                    }
+
+                    if ($variablePartToken->isGivenKind(T_STRING) && $tokens[$variablePartIndex + 1]->equals(']')) {
+                        $tokens[$variablePartIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, "'".$variablePartToken->getContent()."'"]);
                     }
                 }
 

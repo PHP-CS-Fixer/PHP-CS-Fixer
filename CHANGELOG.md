@@ -3,6 +3,81 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.13.0
+---------------------
+
+* feature #3739 Add MagicMethodCasingFixer (SpacePossum)
+* feature #3812 Add FopenFlagOrderFixer & FopenFlagsFixer (SpacePossum)
+* feature #3826 Add CombineNestedDirnameFixer (gharlan)
+* feature #3833 BinaryOperatorSpacesFixer - Add "no space" fix strategy (SpacePossum)
+* feature #3841 NoAliasFunctionsFixer - add opt in option for ext-mbstring aliasses (SpacePossum)
+* feature #3876 NativeConstantInvocationFixer - add the scope option (stof, keradus)
+* feature #3886 Add PhpUnitMethodCasingFixer (Slamdunk)
+* feature #3907 Add ImplodeCallFixer (kubawerlos)
+* feature #3914 NoUnreachableDefaultArgumentValueFixer - remove `null` for nullable typehints (gharlan, keradus)
+* minor #3813 PhpUnitDedicateAssertFixer - fix "sizeOf" same as "count". (SpacePossum)
+* minor #3873 Add the native_function_invocation fixer in the Symfony:risky ruleset (stof)
+* minor #3979 DX: enable php_unit_method_casing (keradus)
+
+Changelog for v2.12.3
+---------------------
+
+* bug #3867 PhpdocAnnotationWithoutDotFixer - Handle trailing whitespaces (kubawerlos)
+* bug #3884 NoSuperfluousPhpdocTagsFixer - handle null in every position (dmvdbrugge, julienfalque)
+* bug #3885 AlignMultilineCommentFixer - ArrayIndentationFixer - Priority (dmvdbrugge)
+* bug #3887 ArrayIndentFixer - Don't indent empty lines (dmvdbrugge)
+* bug #3888 NoExtraBlankLinesFixer - remove blank lines after open tag (kubawerlos)
+* bug #3890 StrictParamFixer - make it case-insensitive (kubawerlos)
+* bug #3895 FunctionsAnalyzer - false positive for constant and function definition (kubawerlos)
+* bug #3908 StrictParamFixer - fix edge case (kubawerlos)
+* bug #3910 FunctionsAnalyzer - fix isGlobalFunctionCall (gharlan)
+* bug #3912 FullyQualifiedStrictTypesFixer - NoSuperfluousPhpdocTagsFixer - adjust priority (dmvdbrugge)
+* bug #3913 TokensAnalyzer - fix isConstantInvocation (gharlan, keradus)
+* bug #3921 TypeAnalysis - Fix iterable not being detected as a reserved type (ntzm)
+* bug #3924 FullyQualifiedStrictTypesFixer - space bug (dmvdbrugge)
+* bug #3937 LowercaseStaticReferenceFixer - Fix "Parent" word in namespace (kubawerlos)
+* bug #3944 ExplicitStringVariableFixer - fix array handling (gharlan)
+* bug #3951 NoSuperfluousPhpdocTagsFixer - do not call strtolower with null (SpacePossum)
+* bug #3954 NoSuperfluousPhpdocTagsFixer - Index invalid or out of range (kubawerlos)
+* bug #3957 NoTrailingWhitespaceFixer - trim space after opening tag (kubawerlos)
+* minor #3798 DX: enable native_function_invocation (keradus)
+* minor #3882 PhpdocAnnotationWithoutDotFixer - Handle empty line in comment (kubawerlos)
+* minor #3889 DX: Cleanup - remove unused variables (kubawerlos, SpacePossum)
+* minor #3891 PhpdocNoEmptyReturnFixer - account for null[] (dmvdbrugge)
+* minor #3892 PhpdocNoEmptyReturnFixer - fix docs (keradus)
+* minor #3897 DX: FunctionsAnalyzer - simplifying return expression (kubawerlos)
+* minor #3903 DX: cleanup - remove special treatment for PHP <5.6 (kubawerlos)
+* minor #3905 DX: Upgrade composer-require-checker to stable version (keradus)
+* minor #3919 Simplify single uses of Token::isGivenKind (ntzm)
+* minor #3920 Docs: Fix typo (ntzm)
+* minor #3940 DX: fix phpdoc parameter type (malukenho)
+* minor #3948 DX: cleanup - remove redundant @param annotations (kubawerlos)
+* minor #3950 Circle CI v2 yml (siad007)
+* minor #3952 DX: AbstractFixerTestCase - drop testing method already provided by trait (keradus)
+* minor #3973 Bump xdebug-handler (keradus)
+
+Changelog for v2.12.2
+---------------------
+
+* bug #3823 NativeConstantInvocationFixer - better constant detection (gharlan, SpacePossum, keradus)
+* bug #3832 "yield from" as keyword (SpacePossum)
+* bug #3835 Fix priority between PHPDoc return type fixers (julienfalque, keradus)
+* bug #3839 MethodArgumentSpaceFixer - add empty line incorrectly (SpacePossum)
+* bug #3866 SpaceAfterSemicolonFixer - loop over all tokens (SpacePossum)
+* minor #3817 Update integrations tests (SpacePossum)
+* minor #3829 Fix typos in changelog (mnabialek)
+* minor #3848 Add install/update instructions for PHIVE to the README (SpacePossum)
+* minor #3877 NamespacesAnalyzer - Optimize performance (stof)
+* minor #3878 NativeFunctionInvocationFixer - use the NamespacesAnalyzer to remove duplicated code (stof)
+
+Changelog for v2.12.1
+---------------------
+
+* bug #3808 LowercaseStaticReferenceFixer - Fix constants handling (kubawerlos, keradus)
+* bug #3815 NoSuperfluousPhpdocTagsFixer - support array/callable type hints (gharlan)
+* minor #3824 DX: Support PHPUnit 7.2 (keradus)
+* minor #3825 UX: Provide full diff for code samples (keradus)
+
 Changelog for v2.12.0
 ---------------------
 
@@ -37,7 +112,7 @@ Changelog for v2.12.0
 * minor #3792 DX: Upgrade DX deps (keradus)
 * minor #3797 DX: ProjectCodeTest - shall not depends on xdebug/phpdbg anymore (keradus, SpacePossum)
 * minor #3800 Symfony:risky ruleset: include set_type_to_cast rule (keradus)
-* minor #3801 NativeFunctionInvocationFixe - fix buggy config validation (keradus, SpacePossum)
+* minor #3801 NativeFunctionInvocationFixer - fix buggy config validation (keradus, SpacePossum)
 
 Changelog for v2.11.2
 ---------------------
@@ -99,7 +174,7 @@ Changelog for v2.11.2
 * minor #3692 DX: Optimize tests (julienfalque)
 * minor #3700 README.rst - Format all code-like strings in fixer description (ntzm)
 * minor #3701 Use correct casing for "PHPDoc" (ntzm)
-* minor #3703 DX: InstallViaComposerTets - groom naming (keradus)
+* minor #3703 DX: InstallViaComposerTest - groom naming (keradus)
 * minor #3704 DX: Tokens - fix naming (keradus)
 * minor #3706 Update homebrew installation instructions (ntzm)
 * minor #3713 Use HTTPS whenever possible (fabpot)
@@ -764,7 +839,7 @@ Changelog for v2.2.20
 * bug #3790 ProcessLinter - don't execute external process without timeout! It can freeze! (keradus)
 * minor #3548 Make shell scripts POSIX-compatible (EvgenyOrekhov, keradus)
 * minor #3568 New Autoreview: Correct option casing (ntzm)
-* minor #3590 Use XdebugHandler to avoid perormance penalty (AJenbo, keradus)
+* minor #3590 Use XdebugHandler to avoid performance penalty (AJenbo, keradus)
 * minor #3607 PhpdocVarWithoutNameFixer - update sample with @ type (SpacePossum)
 * minor #3617 Tests stability patches (Tom Klingenberg, keradus)
 * minor #3627 Fix tests execution under phpdbg (keradus)
@@ -1857,7 +1932,7 @@ Changelog for v1.11
 * feature #1484 Added ArrayElementNoSpaceBeforeCommaFixer and ArrayElementWhiteSpaceAfterCommaFixer (amarczuk)
 * feature #1449 PhpUnitConstructFixer - Fix more use cases (SpacePossum)
 * feature #1382 Added PhpdocTypesFixer (GrahamCampbell)
-* feature #1384 Add intergration tests (SpacePossum)
+* feature #1384 Add integration tests (SpacePossum)
 * feature #1349 Added FunctionTypehintSpaceFixer (keradus)
 * minor #1562 Fix invalid PHP code samples in utests (SpacePossum)
 * minor #1560 Fixed project name in xdebug warning (gharlan)

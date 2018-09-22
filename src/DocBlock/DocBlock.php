@@ -92,12 +92,12 @@ class DocBlock
     {
         if (null === $this->annotations) {
             $this->annotations = [];
-            $total = count($this->lines);
+            $total = \count($this->lines);
 
             for ($index = 0; $index < $total; ++$index) {
                 if ($this->lines[$index]->containsATag()) {
                     // get all the lines that make up the annotation
-                    $lines = array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
+                    $lines = \array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
                     $annotation = new Annotation($lines);
                     // move the index to the end of the annotation to avoid
                     // checking it again because we know the lines inside the
@@ -159,7 +159,7 @@ class DocBlock
      */
     public function getContent()
     {
-        return implode($this->lines);
+        return implode('', $this->lines);
     }
 
     private function findAnnotationLength($start)

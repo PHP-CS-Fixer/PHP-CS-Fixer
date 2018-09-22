@@ -35,7 +35,7 @@ final class FixerFactoryTest extends TestCase
 
         $this->assertSame('encoding', $fixers[0]->getName(), 'Expected "encoding" fixer to have the highest priority.');
         $this->assertSame('full_opening_tag', $fixers[1]->getName(), 'Expected "full_opening_tag" fixer has second highest priority.');
-        $this->assertSame('single_blank_line_at_eof', $fixers[count($fixers) - 1]->getName(), 'Expected "single_blank_line_at_eof" to have the lowest priority.');
+        $this->assertSame('single_blank_line_at_eof', $fixers[\count($fixers) - 1]->getName(), 'Expected "single_blank_line_at_eof" to have the lowest priority.');
     }
 
     /**
@@ -44,7 +44,7 @@ final class FixerFactoryTest extends TestCase
      */
     public function testFixersPriority(FixerInterface $first, FixerInterface $second)
     {
-        $this->assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', get_class($second), get_class($first)));
+        $this->assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)));
     }
 
     public function provideFixersPriorityCases()
@@ -60,6 +60,7 @@ final class FixerFactoryTest extends TestCase
 
         return [
             [$fixers['array_indentation'], $fixers['binary_operator_spaces']],
+            [$fixers['array_indentation'], $fixers['align_multiline_comment']],
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
@@ -76,12 +77,18 @@ final class FixerFactoryTest extends TestCase
             [$fixers['combine_consecutive_unsets'], $fixers['no_trailing_whitespace']],
             [$fixers['combine_consecutive_unsets'], $fixers['no_whitespace_in_blank_line']],
             [$fixers['combine_consecutive_unsets'], $fixers['space_after_semicolon']],
+            [$fixers['combine_nested_dirname'], $fixers['method_argument_space']],
+            [$fixers['combine_nested_dirname'], $fixers['no_spaces_inside_parenthesis']],
+            [$fixers['combine_nested_dirname'], $fixers['no_trailing_whitespace']],
+            [$fixers['combine_nested_dirname'], $fixers['no_whitespace_in_blank_line']],
             [$fixers['declare_strict_types'], $fixers['blank_line_after_opening_tag']],
             [$fixers['declare_strict_types'], $fixers['declare_equal_normalize']],
+            [$fixers['dir_constant'], $fixers['combine_nested_dirname']],
             [$fixers['doctrine_annotation_array_assignment'], $fixers['doctrine_annotation_spaces']],
             [$fixers['elseif'], $fixers['braces']],
             [$fixers['escape_implicit_backslashes'], $fixers['heredoc_to_nowdoc']],
             [$fixers['escape_implicit_backslashes'], $fixers['single_quote']],
+            [$fixers['fully_qualified_strict_types'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['function_to_constant'], $fixers['native_function_casing']],
             [$fixers['function_to_constant'], $fixers['no_extra_blank_lines']],
             [$fixers['function_to_constant'], $fixers['no_singleline_whitespace_before_semicolons']],
@@ -91,11 +98,13 @@ final class FixerFactoryTest extends TestCase
             [$fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_trim']],
             [$fixers['general_phpdoc_annotation_remove'], $fixers['no_empty_phpdoc']],
             [$fixers['indentation_type'], $fixers['phpdoc_indent']],
+            [$fixers['implode_call'], $fixers['method_argument_space']],
             [$fixers['is_null'], $fixers['yoda_style']],
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['method_separation'], $fixers['braces']],
             [$fixers['method_separation'], $fixers['indentation_type']],
+            [$fixers['no_alias_functions'], $fixers['implode_call']],
             [$fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']],
             [$fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']],
             [$fixers['no_empty_comment'], $fixers['no_extra_blank_lines']],
@@ -183,8 +192,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_to_comment'], $fixers['no_empty_comment']],
             [$fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']],
             [$fixers['phpdoc_to_return_type'], $fixers['fully_qualified_strict_types']],
+            [$fixers['phpdoc_to_return_type'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['phpdoc_to_return_type'], $fixers['return_type_declaration']],
-            [$fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']],
             [$fixers['pow_to_exponentiation'], $fixers['binary_operator_spaces']],
             [$fixers['pow_to_exponentiation'], $fixers['method_argument_space']],
             [$fixers['pow_to_exponentiation'], $fixers['native_function_casing']],
@@ -206,6 +215,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['void_return'], $fixers['phpdoc_no_empty_return']],
             [$fixers['void_return'], $fixers['return_type_declaration']],
             [$fixers['php_unit_test_annotation'], $fixers['no_empty_phpdoc']],
+            [$fixers['php_unit_test_annotation'], $fixers['php_unit_method_casing']],
             [$fixers['php_unit_test_annotation'], $fixers['phpdoc_trim']],
             [$fixers['no_alternative_syntax'], $fixers['braces']],
             [$fixers['no_alternative_syntax'], $fixers['elseif']],
@@ -245,7 +255,7 @@ final class FixerFactoryTest extends TestCase
         );
 
         foreach ($docFixerNames as $docFixerName) {
-            if (!in_array($docFixerName, ['comment_to_phpdoc', 'phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'], true)) {
+            if (!\in_array($docFixerName, ['comment_to_phpdoc', 'phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'], true)) {
                 $cases[] = [$fixers['comment_to_phpdoc'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_indent'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_scalar'], $fixers[$docFixerName]];
@@ -276,7 +286,6 @@ final class FixerFactoryTest extends TestCase
             'method_separation,indentation_type.test',
             'no_empty_statement,multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
-            'no_empty_statement,no_singleline_whitespace_before_semicolons.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
             'phpdoc_no_package,phpdoc_order.test',
@@ -284,12 +293,11 @@ final class FixerFactoryTest extends TestCase
             'phpdoc_order,phpdoc_trim.test',
             'phpdoc_separation,phpdoc_trim.test',
             'phpdoc_summary,phpdoc_trim.test',
-            'phpdoc_var_without_name,phpdoc_trim.test',
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
 
-        if (in_array($this->generateIntegrationTestName($first, $second), $casesWithoutTests, true)) {
+        if (\in_array($this->generateIntegrationTestName($first, $second), $casesWithoutTests, true)) {
             $this->assertFalse($integrationTestExists, sprintf('Case "%s" already has an integration test, so it should be removed from "$casesWithoutTests".', $this->generateIntegrationTestName($first, $second)));
             $this->markTestIncomplete(sprintf('Case "%s" has no integration test yet, please help and add it.', $this->generateIntegrationTestName($first, $second)));
         }
@@ -303,7 +311,7 @@ final class FixerFactoryTest extends TestCase
             $this->provideFixersPriorityCases(),
             // ignore speed-up only priorities set up
             function (array $case) {
-                return !in_array(
+                return !\in_array(
                     $this->generateIntegrationTestName($case[0], $case[1]),
                     [
                         'function_to_constant,native_function_casing.test',
@@ -356,13 +364,13 @@ final class FixerFactoryTest extends TestCase
             ksort($priorityCases);
         }
 
-        if (in_array($fileName, [
+        if (\in_array($fileName, [
             'braces,indentation_type,no_break_comment.test',
         ], true)) {
             $this->markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
         }
 
-        if (in_array($fileName, [
+        if (\in_array($fileName, [
             'combine_consecutive_issets,no_singleline_whitespace_before_semicolons.test',
         ], true)) {
             $this->markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));

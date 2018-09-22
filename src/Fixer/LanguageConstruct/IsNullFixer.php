@@ -129,7 +129,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
             $isContainingDangerousConstructs = false;
             for ($paramTokenIndex = $matches[1]; $paramTokenIndex <= $referenceEnd; ++$paramTokenIndex) {
-                if (in_array($tokens[$paramTokenIndex]->getContent(), ['?', '?:', '='], true)) {
+                if (\in_array($tokens[$paramTokenIndex]->getContent(), ['?', '?:', '='], true)) {
                     $isContainingDangerousConstructs = true;
 
                     break;

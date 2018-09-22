@@ -119,7 +119,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotationsOfType(Annotation::getTagsWithTypes());
 
-            if (!count($annotations)) {
+            if (!\count($annotations)) {
                 continue;
             }
 
@@ -181,7 +181,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
                 }
             }
 
-            if (count($nulls)) {
+            if (\count($nulls)) {
                 if ('always_last' === $this->configuration['null_adjustment']) {
                     array_push($types, ...$nulls);
                 } else {

@@ -230,7 +230,7 @@ EOF;
             'T_TRAIT' => 'trait',
             'T_TRAIT_C' => '__TRAIT__',
         ] as $tokenType => $tokenValue) {
-            if (defined($tokenType)) {
+            if (\defined($tokenType)) {
                 $ignoreCases[] = [$tokenValue.'.php'];
                 $ignoreCases[] = [strtolower($tokenValue).'.php'];
             }

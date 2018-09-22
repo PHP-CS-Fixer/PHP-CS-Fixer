@@ -36,8 +36,8 @@ final class Utils
         $bitmask = 0;
 
         foreach ($options as $optionName) {
-            if (defined($optionName)) {
-                $bitmask |= constant($optionName);
+            if (\defined($optionName)) {
+                $bitmask |= \constant($optionName);
             }
         }
 
@@ -177,7 +177,7 @@ final class Utils
                 return $fixer->getPriority();
             },
             static function ($a, $b) {
-                return Utils::cmpInt($b, $a);
+                return self::cmpInt($b, $a);
             }
         );
     }

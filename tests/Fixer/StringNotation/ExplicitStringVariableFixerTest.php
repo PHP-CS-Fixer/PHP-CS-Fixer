@@ -114,8 +114,8 @@ EOF;
                 '<?php $a = "My name is $array[1] !";',
             ],
             [
-                '<?php $a = "My name is {$array[MY_CONSTANT]} !";',
-                '<?php $a = "My name is $array[MY_CONSTANT] !";',
+                '<?php $a = "My name is {$array[\'foo\']} !";',
+                '<?php $a = "My name is $array[foo] !";',
             ],
             [
                 '<?php $a = "Closure not allowed ${closure}() text";',
