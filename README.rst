@@ -677,6 +677,10 @@ Choose from the list of available rules:
   - ``consider-absent-docblock-as-internal-class`` (``bool``): should classes
     without any DocBlock be fixed to final?; defaults to ``false``
 
+* **final_static_access**
+
+  Converts ``static`` access to ``self`` access in final classes.
+
 * **fopen_flag_order** [@Symfony:risky, @PhpCsFixer:risky]
 
   Order the flags in ``fopen`` calls, ``b`` and ``t`` must be last.
