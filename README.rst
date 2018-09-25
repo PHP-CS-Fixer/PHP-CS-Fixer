@@ -1087,6 +1087,11 @@ Choose from the list of available rules:
   Removes ``@param`` and ``@return`` tags that don't provide any useful
   information.
 
+  Configuration options:
+
+  - ``allow_mixed`` (``bool``): whether type ``mixed`` without description is allowed
+    (``true``) or considered superfluous (``false``); defaults to ``false``
+
 * **no_trailing_comma_in_list_call** [@Symfony]
 
   Remove trailing commas in list function calls.
