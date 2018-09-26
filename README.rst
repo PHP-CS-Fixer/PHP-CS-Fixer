@@ -812,6 +812,10 @@ Choose from the list of available rules:
   - ``import_functions`` (``false``, ``null``, ``true``): whether to import, not import or
     ignore global functions; defaults to ``null``
 
+* **group_import**
+
+  There MUST be group use for the same namespaces.
+
 * **hash_to_slash_comment**
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
