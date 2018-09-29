@@ -191,6 +191,10 @@ M_PI;
 echo M_PI;
 ',
             ],
+            [
+                '<?php foo(\E_DEPRECATED | \E_USER_DEPRECATED);',
+                '<?php foo(E_DEPRECATED | E_USER_DEPRECATED);',
+            ],
         ];
     }
 
@@ -214,6 +218,41 @@ echo M_PI;
         return [
             ['<?php function foo(): M_PI {}'],
             ['<?php use X\Y\{FOO, BAR as BAR2, M_PI};'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix70WithDefaultConfigurationCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     * @requires PHP 7.1
+     */
+    public function testFix71WithDefaultConfiguration($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFix71WithDefaultConfigurationCases()
+    {
+        return [
+            [
+                '<?php
+try {
+    foo(\JSON_ERROR_DEPTH|\JSON_PRETTY_PRINT|\JOB_QUEUE_PRIORITY_HIGH);
+} catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
+}
+',
+                '<?php
+try {
+    foo(\JSON_ERROR_DEPTH|JSON_PRETTY_PRINT|\JOB_QUEUE_PRIORITY_HIGH);
+} catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
+}
+',
+            ],
         ];
     }
 
