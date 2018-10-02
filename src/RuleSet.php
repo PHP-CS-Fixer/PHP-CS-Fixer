@@ -65,6 +65,7 @@ final class RuleSet implements RuleSetInterface
                 'statements' => ['return'],
             ],
             'braces' => [
+                'allow_single_line_anonymous_class_with_empty_body' => true,
                 'allow_single_line_closure' => true,
             ],
             'cast_spaces' => true,
