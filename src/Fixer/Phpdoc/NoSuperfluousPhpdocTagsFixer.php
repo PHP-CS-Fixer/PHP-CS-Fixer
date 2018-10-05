@@ -108,7 +108,7 @@ class Foo {
             );
 
             foreach ($docBlock->getAnnotationsOfType('param') as $annotation) {
-                if (0 === Preg::match('/@param\s+(?:\S|\s(?!\$))+\s(\$\S+)/', $annotation->getContent(), $matches)) {
+                if (0 === Preg::match('/@param(?:\s+[^\$]\S+)?\s+(\$\S+)/', $annotation->getContent(), $matches)) {
                     continue;
                 }
 
