@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.12.3/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.13.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -376,6 +376,13 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
+* **combine_nested_dirname** [@PHP70Migration:risky, @PHP71Migration:risky]
+
+  Replace multiple nested calls of ``dirname`` by only one call with second
+  ``$level`` parameter. Requires PHP >= 7.0.
+
+  *Risky rule: risky when the function ``dirname`` is overridden.*
+
 * **comment_to_phpdoc**
 
   Comments with annotation should be docblock when used on structural
@@ -625,6 +632,18 @@ Choose from the list of available rules:
     set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``
 
+* **fopen_flag_order** [@Symfony:risky]
+
+  Order the flags in ``fopen`` calls, ``b`` and ``t`` must be last.
+
+  *Risky rule: risky when the function ``fopen`` is overridden.*
+
+* **fopen_flags** [@Symfony:risky]
+
+  The flags in ``fopen`` calls must contain ``b`` and must omit ``t``.
+
+  *Risky rule: risky when the function ``fopen`` is overridden.*
+
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
@@ -687,6 +706,13 @@ Choose from the list of available rules:
 * **heredoc_to_nowdoc**
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
+
+* **implode_call** [@Symfony:risky]
+
+  Function ``implode`` must be called with 2 arguments in the documented
+  order.
+
+  *Risky rule: risky when the function ``implode`` is overridden.*
 
 * **include** [@Symfony]
 
@@ -757,6 +783,10 @@ Choose from the list of available rules:
 * **magic_constant_casing** [@Symfony]
 
   Magic constants should be referred to using the correct casing.
+
+* **magic_method_casing** [@Symfony]
+
+  Magic method definitions and calls must be using the correct casing.
 
 * **mb_str_functions**
 
@@ -1188,6 +1218,16 @@ Choose from the list of available rules:
   - ``types`` (a subset of ``['normal', 'final', 'abstract']``): what types of
     classes to mark as internal; defaults to ``['normal', 'final']``
 
+* **php_unit_method_casing**
+
+  Enforce camel (or snake) case for PHPUnit test methods, following
+  configuration.
+
+  Configuration options:
+
+  - ``case`` (``'camel_case'``, ``'snake_case'``): apply camel or snake case to test
+    methods; defaults to ``'camel_case'``
+
 * **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   Usages of ``->getMock`` and
@@ -1259,8 +1299,6 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``case`` (``'camel'``, ``'snake'``): whether to camel or snake case when adding the
-    test prefix; defaults to ``'camel'``
   - ``style`` (``'annotation'``, ``'prefix'``): whether to use the @test annotation or
     not; defaults to ``'prefix'``
 
@@ -1691,7 +1729,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.12.3/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.13.0/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

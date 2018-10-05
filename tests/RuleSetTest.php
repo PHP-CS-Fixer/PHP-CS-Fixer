@@ -182,7 +182,9 @@ final class RuleSetTest extends TestCase
                 'line_ending' => true,
                 'lowercase_constants' => true,
                 'lowercase_keywords' => true,
-                'method_argument_space' => true,
+                'method_argument_space' => [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
                 'no_break_comment' => true,
                 'no_closing_tag' => true,
                 'no_spaces_after_function_name' => true,
@@ -222,7 +224,9 @@ final class RuleSetTest extends TestCase
                 'line_ending' => true,
                 'lowercase_constants' => true,
                 'lowercase_keywords' => true,
-                'method_argument_space' => true,
+                'method_argument_space' => [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
                 'no_break_comment' => true,
                 'no_closing_tag' => true,
                 'no_spaces_after_function_name' => true,

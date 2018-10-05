@@ -326,7 +326,7 @@ EOF;
             }
         }
 
-        return implode($lines);
+        return implode('', $lines);
     }
 
     /**

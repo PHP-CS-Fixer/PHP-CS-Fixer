@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: php_unit_test_annotation,php_unit_method_casing
+--RULESET--
+{"php_unit_test_annotation": true, "php_unit_method_casing" :  {"case": "snake_case"}}
+--EXPECT--
+<?php
+class Test
+{
+    /**
+     * It does thing for foo and bar
+     *
+     */
+    public function test_foo_bar() {}
+}
+
+--INPUT--
+<?php
+class Test
+{
+    /**
+     * It does thing for foo and bar
+     * @test
+     */
+    public function fooBar() {}
+}

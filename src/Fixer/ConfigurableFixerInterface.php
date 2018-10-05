@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

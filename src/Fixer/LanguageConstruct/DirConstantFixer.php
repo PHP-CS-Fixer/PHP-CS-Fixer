@@ -47,6 +47,15 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should run before CombineNestedDirnameFixer
+        return 4;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $currIndex = 0;

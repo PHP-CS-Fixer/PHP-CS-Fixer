@@ -147,7 +147,7 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
         }
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex);
         $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex);
-        $lines = implode($lines);
+        $lines = implode('', $lines);
 
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
     }
@@ -227,7 +227,7 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
         if (1 === \count($lines) && empty($doc->getAnnotationsOfType('internal'))) {
             $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
 
-            return new DocBlock(implode($lines));
+            return new DocBlock(implode('', $lines));
         }
 
         return $doc;
@@ -275,6 +275,6 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
         }
         $line = \array_slice($line, $i);
 
-        return implode($line);
+        return implode('', $line);
     }
 }
