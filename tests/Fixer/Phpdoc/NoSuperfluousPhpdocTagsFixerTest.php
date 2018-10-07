@@ -270,6 +270,15 @@ class Foo {
  * Foo
  */',
             ],
+            'with_variable_in_description' => [
+                '<?php
+class Foo {
+    /**
+     * @param $foo Some description that includes a $variable
+     */
+    public function doFoo($foo) {}
+}',
+            ],
         ];
     }
 
