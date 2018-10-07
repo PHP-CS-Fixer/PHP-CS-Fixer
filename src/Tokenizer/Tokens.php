@@ -1030,8 +1030,8 @@ class Tokens extends \SplFixedArray
         $this->setSize(0);
 
         $tokens = \defined('TOKEN_PARSE')
-            ? token_get_all($code, TOKEN_PARSE)
-            : token_get_all($code);
+            ? @token_get_all($code, TOKEN_PARSE)
+            : @token_get_all($code);
 
         $this->setSize(\count($tokens));
 
