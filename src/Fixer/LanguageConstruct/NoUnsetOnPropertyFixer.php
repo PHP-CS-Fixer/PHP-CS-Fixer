@@ -197,7 +197,19 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
      */
     private function doTokensInvolveProperty(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_PAAMAYIM_NEKUDOTAYIM, T_OBJECT_OPERATOR]);
+        for ($index = 0; $index < $tokens->count(); ++$index) {
+            if ('(' === $tokens[$index]->getContent()) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind([T_PAAMAYIM_NEKUDOTAYIM, T_OBJECT_OPERATOR])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

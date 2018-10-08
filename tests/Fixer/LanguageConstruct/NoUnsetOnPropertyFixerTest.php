@@ -100,6 +100,9 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
                 '<?php unset($a, $b, $c);
                 unset($this->a);',
             ],
+            'It does not replace function call with class constant inside' => [
+                '<?php unset($foos[array_search(BadFoo::NAME, $foos)]);',
+            ],
         ];
     }
 }
