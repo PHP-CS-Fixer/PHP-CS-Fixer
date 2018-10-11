@@ -56,6 +56,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @param string $ellipsis2  Ellipsis is this: 。。。
      * @param string $ellipsis3  Ellipsis is this: …
      * @param bool   $isStr      Is it a string?
+     * @param int    $int        Some single-line descrioption. With many dots.
      * @param int    $int        Some multiline
      *                           description. With many dots.
      *
@@ -81,6 +82,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @param string $ellipsis2  Ellipsis is this: 。。。
      * @param string $ellipsis3  Ellipsis is this: …
      * @param bool   $isStr      Is it a string?
+     * @param int    $int        Some single-line descrioption. With many dots.
      * @param int    $int        Some multiline
      *                           description. With many dots.
      *
@@ -178,16 +180,39 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
             [
                 '<?php
     /**
-     * @return bool|null returns `true` if the class has a single-column ID
-                         Returns `false` otherwise.
+     * Dispatches an event to all registered listeners.
+     *
+     * @param string    $eventName The name of the event to dispatch. The name of the event is
+     *                             the name of the method that is invoked on listeners.
+     * @param EventArgs $eventArgs The event arguments to pass to the event handlers/listeners.
+     *                             If not supplied, the single empty EventArgs instance is used.
+     *
+     * @return bool
      */
-    function fixMe() {}',
+    function dispatchEvent($eventName, EventArgs $eventArgs = null) {}
+
+    /**
+     * Extract the `object_to_populate` field from the context if it exists
+     * and is an instance of the provided $class.
+     *
+     * @param string $class   The class the object should be
+     * @param array  $context The denormalization context
+     * @param string $key     Key in which to look for the object to populate.
+     *                        Keeps backwards compatibility with `AbstractNormalizer`.
+     *
+     * @return null|object an object if things check out, null otherwise
+     */
+    function extractObjectToPopulate($class, array $context, $key = null) {}
+                ',
+            ],
+            [
                 '<?php
     /**
      * @return bool|null Returns `true` if the class has a single-column ID.
                          Returns `false` otherwise.
+                         That was multilined comment. With plenty of sentenced.
      */
-    function fixMe() {}',
+    function nothingToDo() {}',
             ],
         ];
     }
