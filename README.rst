@@ -1520,7 +1520,7 @@ Choose from the list of available rules:
   - ``groups`` (a subset of ``['simple', 'alias', 'meta']``): type groups to fix;
     defaults to ``['simple', 'alias', 'meta']``
 
-* **phpdoc_types_order**
+* **phpdoc_types_order** [@Symfony]
 
   Sorts PHPDoc types.
 
