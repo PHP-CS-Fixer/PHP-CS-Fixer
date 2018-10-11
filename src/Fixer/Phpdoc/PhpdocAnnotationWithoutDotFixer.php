@@ -75,11 +75,20 @@ function foo ($bar) {}
                     continue;
                 }
 
+                $lineAfterAnnotation = $doc->getLine($annotation->getEnd() + 1);
+                if (null !== $lineAfterAnnotation) {
+                    $lineAfterAnnotationTrimmed = ltrim($lineAfterAnnotation);
+                    if ('' === $lineAfterAnnotationTrimmed || '*' !== $lineAfterAnnotationTrimmed[0]) {
+                        // malformed PHPDoc, missing asterisk !
+                        continue;
+                    }
+                }
+
                 $content = $annotation->getContent();
 
                 if (
-                    1 !== Preg::match('/[.。]\h*(\R|$)/u', $content)
-                    || 0 !== Preg::match('/[.。](?!\h*(\R|$))/u', $content, $matches)
+                    1 !== Preg::match('/[.。]\h*$/u', $content)
+                    || 0 !== Preg::match('/[.。](?!\h*$)/u', $content, $matches)
                 ) {
                     continue;
                 }
@@ -92,9 +101,9 @@ function foo ($bar) {}
                     ? sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
                     : '';
                 $content = Preg::replaceCallback(
-                    '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)(\R|$)/',
+                    '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
                     static function (array $matches) {
-                        return $matches[1].strtolower($matches[2]).$matches[3].$matches[4];
+                        return $matches[1].strtolower($matches[2]).$matches[3];
                     },
                     $startLine->getContent(),
                     1
