@@ -177,6 +177,9 @@ EOF;
                 '<?php $a = B"end {$a[1]}";',
                 '<?php $a = B"end $a[1]";',
             ],
+            [
+                '<?php $a = `echo $foo`;',
+            ],
         ];
     }
 
