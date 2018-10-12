@@ -92,6 +92,18 @@ function foo() {}
                 $this->fixAnnotation($doc, $annotation);
             }
 
+            $newContent = $doc->getContent();
+
+            if ($newContent === $token->getContent()) {
+                continue;
+            }
+
+            if ('' === $newContent) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+
+                continue;
+            }
+
             $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
     }
