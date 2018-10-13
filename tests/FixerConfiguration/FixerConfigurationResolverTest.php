@@ -200,4 +200,18 @@ final class FixerConfigurationResolverTest extends TestCase
             'baz' => '2',
         ]);
     }
+
+    /**
+     * @expectedDeprecation Option "baz" is deprecated, use "bar" instead.
+     */
+    public function testResolveWithDeprecatedAlias()
+    {
+        $configuration = new FixerConfigurationResolver([
+            new AliasedFixerOption(new FixerOption('bar', 'Bar.'), 'baz'),
+        ]);
+
+        $configuration->resolve([
+            'baz' => '1',
+        ]);
+    }
 }
