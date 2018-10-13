@@ -52,6 +52,10 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
                 '<?php $a = "My name is $name!";',
             ],
             [
+                '<?php "My name is {$james$bond}!";',
+                '<?php "My name is $james$bond!";',
+            ],
+            [
                 '<?php $a = <<<EOF
 My name is ${name}!
 EOF;
