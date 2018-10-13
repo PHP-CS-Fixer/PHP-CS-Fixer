@@ -31,8 +31,7 @@ final class PhpUnitTestCaseIndicator
             return true;
         }
 
-        do {
-            $index = $tokens->getNextMeaningfulToken($index);
+        while (null !== $index = $tokens->getNextMeaningfulToken($index)) {
             if ($tokens[$index]->equals('{')) {
                 break; // end of class signature
             }
@@ -44,7 +43,7 @@ final class PhpUnitTestCaseIndicator
             if (0 !== Preg::match('/(?:Test|TestCase)(?:Interface)?$/', $tokens[$index]->getContent())) {
                 return true;
             }
-        } while (true); // safe `true` as we will always hit an `{` after a T_CLASS
+        }
 
         return false;
     }
