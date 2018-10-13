@@ -183,6 +183,28 @@ while ($something = myFunction($foo)) {}
 ',
                 ['annotations' => ['noinspection']],
             ],
+            [
+                '<?php
+/**
+ * @bar
+ */',
+                '<?php
+/** @foo
+ * @bar
+ */',
+                ['annotations' => ['foo']],
+            ],
+            [
+                '<?php
+/**
+ * @foo
+ */',
+                '<?php
+/**
+ * @foo
+ * @bar */',
+                ['annotations' => ['bar']],
+            ],
         ];
     }
 }
