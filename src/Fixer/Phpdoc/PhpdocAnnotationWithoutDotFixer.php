@@ -75,6 +75,15 @@ function foo ($bar) {}
                     continue;
                 }
 
+                $lineAfterAnnotation = $doc->getLine($annotation->getEnd() + 1);
+                if (null !== $lineAfterAnnotation) {
+                    $lineAfterAnnotationTrimmed = ltrim($lineAfterAnnotation);
+                    if ('' === $lineAfterAnnotationTrimmed || '*' !== $lineAfterAnnotationTrimmed[0]) {
+                        // malformed PHPDoc, missing asterisk !
+                        continue;
+                    }
+                }
+
                 $content = $annotation->getContent();
 
                 if (
