@@ -164,22 +164,6 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
             [
                 '<?php
     /**
-     * This is a broken phpdoc
-     * @param string $str surprisingly, it is a string
-
-     */
-    function fixMe($str) {}',
-                '<?php
-    /**
-     * This is a broken phpdoc
-     * @param string $str Surprisingly, it is a string.
-
-     */
-    function fixMe($str) {}',
-            ],
-            [
-                '<?php
-    /**
      * Dispatches an event to all registered listeners.
      *
      * @param string    $eventName The name of the event to dispatch. The name of the event is
@@ -204,6 +188,15 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      */
     function extractObjectToPopulate($class, array $context, $key = null) {}
                 ',
+            ],
+            [
+                '<?php
+    /**
+     * This is a broken phpdoc - missing asterisk
+     * @param string $str As it is broken, let us not apply the rule to description of parameter.
+
+     */
+    function foo($str) {}',
             ],
             [
                 '<?php
