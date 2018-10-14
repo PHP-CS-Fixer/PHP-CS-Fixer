@@ -114,7 +114,10 @@ jobs:
                 # Composer: boost installation
                 - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
             script:
-                - phpdbg -qrr vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
+                - mkdir -p build/logs
+                - phpdbg -qrr vendor/bin/phpunit --testsuite coverage-fixers --exclude-group covers-nothing --coverage-php build/logs/clover-fixers.cov || travis_terminate 1
+                - phpdbg -qrr vendor/bin/phpunit --testsuite coverage-others --exclude-group covers-nothing --coverage-php build/logs/clover-others.cov || travis_terminate 1
+                - phpdbg -qrr vendor/bin/phpcov merge build/logs --clover build/logs/clover.xml || travis_terminate 1
                 - php vendor/bin/php-coveralls -v
 
         -

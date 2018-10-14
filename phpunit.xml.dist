@@ -24,10 +24,12 @@
         <testsuite name="all">
             <directory>./tests</directory>
         </testsuite>
-        <testsuite name="coverage">
+        <testsuite name="coverage-fixers">
+            <directory>./tests/Fixer</directory>
+        </testsuite>
+        <testsuite name="coverage-others">
             <directory>./tests</directory>
-            <exclude>./tests/AutoReview</exclude>
-            <exclude>./tests/Smoke</exclude>
+            <exclude>./tests/Fixer</exclude>
         </testsuite>
     </testsuites>
 

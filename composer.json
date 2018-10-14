@@ -43,6 +43,7 @@
         "php-cs-fixer/accessible-object": "^1.0",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.0.1",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.0.1",
+        "phpunit/phpcov": "^3.1 || ^4.0 || ^5.0",
         "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1",
         "phpunitgoodpractices/traits": "^1.5.1",
         "symfony/phpunit-bridge": "^4.0"
