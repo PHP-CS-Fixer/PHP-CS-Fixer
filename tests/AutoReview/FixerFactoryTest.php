@@ -376,9 +376,9 @@ final class FixerFactoryTest extends TestCase
             $this->markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));
         }
 
-        $this->assertSame(
-            1,
-            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
+        $this->assertRegExp(
+            '#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#',
+            $fileName,
             sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
         );
 
