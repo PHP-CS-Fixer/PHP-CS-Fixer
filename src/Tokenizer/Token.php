@@ -166,11 +166,11 @@ class Token
             return $this->content === $otherPrototype;
         }
 
-        if (array_key_exists(0, $otherPrototype) && $this->id !== $otherPrototype[0]) {
+        if ($this->id !== $otherPrototype[0]) {
             return false;
         }
 
-        if (array_key_exists(1, $otherPrototype)) {
+        if (isset($otherPrototype[1])) {
             if ($caseSensitive) {
                 if ($this->content !== $otherPrototype[1]) {
                     return false;
