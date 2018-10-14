@@ -189,6 +189,7 @@ final class RuleSet implements RuleSetInterface
             'native_function_invocation' => [
                 'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
                 'scope' => 'namespaced',
+                'strict' => true,
             ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,

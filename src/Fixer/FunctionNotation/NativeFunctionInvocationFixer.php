@@ -191,7 +191,7 @@ $c = get_class($d);
 
         // 'scope' is 'namespaced' here
         /** @var NamespaceAnalysis $namespace */
-        foreach (\array_reverse($namespaces) as $namespace) {
+        foreach (array_reverse($namespaces) as $namespace) {
             if ('' === $namespace->getFullName()) {
                 continue;
             }
@@ -210,8 +210,8 @@ $c = get_class($d);
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $value) {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === \trim($functionName) || \trim($functionName) !== $functionName) {
-                            throw new InvalidOptionsException(\sprintf(
+                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                            throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
                             ));
@@ -226,8 +226,8 @@ $c = get_class($d);
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $value) {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === \trim($functionName) || \trim($functionName) !== $functionName) {
-                            throw new InvalidOptionsException(\sprintf(
+                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                            throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
                             ));
@@ -240,7 +240,7 @@ $c = get_class($d);
                         ];
 
                         if ('@' === $functionName[0] && !\in_array($functionName, $sets, true)) {
-                            throw new InvalidOptionsException(\sprintf('Unknown set "%s", known sets are "%s".', $functionName, \implode('", "', $sets)));
+                            throw new InvalidOptionsException(sprintf('Unknown set "%s", known sets are "%s".', $functionName, implode('", "', $sets)));
                         }
                     }
 
@@ -251,6 +251,10 @@ $c = get_class($d);
             (new FixerOptionBuilder('scope', 'Only fix function calls that are made within a namespace or fix all.'))
                 ->setAllowedValues(['all', 'namespaced'])
                 ->setDefault('all')
+                ->getOption(),
+            (new FixerOptionBuilder('strict', 'Whether leading `\` of function call not meant to have it should be removed.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false) // @TODO: 3.0 change to true as default
                 ->getOption(),
         ]);
     }
@@ -271,18 +275,24 @@ $c = get_class($d);
                 continue;
             }
 
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
             if (!$functionFilter($tokens[$index]->getContent())) {
+                if ($this->configuration['strict'] && $tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                    $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
+                }
+
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
                 continue; // do not bother if previous token is already namespace separator
             }
 
             $insertAtIndexes[] = $index;
         }
 
-        foreach (\array_reverse($insertAtIndexes) as $index) {
+        foreach (array_reverse($insertAtIndexes) as $index) {
             $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
         }
     }
@@ -297,7 +307,7 @@ $c = get_class($d);
         if (\in_array(self::SET_ALL, $this->configuration['include'], true)) {
             if (\count($exclude) > 0) {
                 return static function ($functionName) use ($exclude) {
-                    return !isset($exclude[\strtolower($functionName)]);
+                    return !isset($exclude[strtolower($functionName)]);
                 };
             }
 
@@ -315,18 +325,18 @@ $c = get_class($d);
 
         foreach ($this->configuration['include'] as $additional) {
             if ('@' !== $additional[0]) {
-                $include[\strtolower($additional)] = true;
+                $include[strtolower($additional)] = true;
             }
         }
 
         if (\count($exclude) > 0) {
             return static function ($functionName) use ($include, $exclude) {
-                return isset($include[\strtolower($functionName)]) && !isset($exclude[\strtolower($functionName)]);
+                return isset($include[strtolower($functionName)]) && !isset($exclude[strtolower($functionName)]);
             };
         }
 
         return static function ($functionName) use ($include) {
-            return isset($include[\strtolower($functionName)]);
+            return isset($include[strtolower($functionName)]);
         };
     }
 
@@ -384,7 +394,7 @@ $c = get_class($d);
      */
     private function getAllInternalFunctionsNormalized()
     {
-        return $this->normalizeFunctionNames(\get_defined_functions()['internal']);
+        return $this->normalizeFunctionNames(get_defined_functions()['internal']);
     }
 
     /**
@@ -395,7 +405,7 @@ $c = get_class($d);
     private function normalizeFunctionNames(array $functionNames)
     {
         foreach ($functionNames as $index => $functionName) {
-            $functionNames[\strtolower($functionName)] = true;
+            $functionNames[strtolower($functionName)] = true;
             unset($functionNames[$index]);
         }
 
