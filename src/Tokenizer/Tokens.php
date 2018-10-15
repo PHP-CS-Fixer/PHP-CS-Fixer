@@ -884,10 +884,9 @@ class Tokens extends \SplFixedArray
         for ($i = $oldSize + $itemsCnt - 1; $i >= $index; --$i) {
             if ($this->offsetExists($i - $itemsCnt)) {
                 $oldItem = parent::offsetGet($i - $itemsCnt);
-                $this->blockEndCache = [];
-                parent::offsetSet($i, $oldItem);
+                $this[$i] = $oldItem;
             } else {
-                $this->offsetSet($i, new Token(''));
+                $this[$i] = new Token('');
             }
         }
 
