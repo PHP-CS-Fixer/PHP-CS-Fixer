@@ -153,4 +153,101 @@ final class DocBlockTest extends TestCase
         $this->assertInternalType('array', $annotations);
         $this->assertCount(0, $annotations);
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     * @param int    $line
+     *
+     * @dataProvider provideRemovingLineCases
+     */
+    public function testRemovingLine($expected, $input, $line)
+    {
+        $doc = new DocBlock($input);
+        $doc->getLine($line)->remove();
+
+        $this->assertSame($expected, $doc->getContent());
+    }
+
+    public function provideRemovingLineCases()
+    {
+        yield [
+            '/**
+              * Comment
+              */',
+            '/**
+              * Comment
+              */',
+            0,
+        ];
+        yield [
+            '',
+            '/** Comment */',
+            0,
+        ];
+
+        yield [
+            "/**\r              * Comment\r              */",
+            "/**\r              * Comment\r              */",
+            0,
+        ];
+
+        yield [
+            "/**\r\n              * Comment\r\n              */",
+            "/**\r\n              * Comment\r\n              */",
+            0,
+        ];
+
+        yield [
+            '/**
+              * Comment
+              */',
+            '/**
+              * Comment
+              */',
+            2,
+        ];
+
+        yield [
+            "/**\r              * Comment\r              */",
+            "/**\r              * Comment\r              */",
+            2,
+        ];
+
+        yield [
+            "/**\n\t\t\t * Comment\n\t\t\t */",
+            "/**\n\t\t\t * Comment\n\t\t\t */",
+            2,
+        ];
+
+        yield [
+            '/**
+              * Foo
+              */',
+            '/** Comment
+              * Foo
+              */',
+            0,
+        ];
+
+        yield [
+            '/**
+              * Foo
+              */',
+            '/**
+              * Foo
+              * Comment */',
+            2,
+        ];
+
+        yield [
+            '/**
+              * Foo
+              */',
+            '/**
+              * Foo
+              * Comment */',
+            2,
+        ];
+    }
 }

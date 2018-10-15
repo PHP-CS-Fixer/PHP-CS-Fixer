@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\DocBlock;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Utils;
 
 /**
@@ -159,7 +160,29 @@ class DocBlock
      */
     public function getContent()
     {
-        return implode($this->lines);
+        $content = implode('', $this->lines);
+
+        if ('' === $content) {
+            return '';
+        }
+
+        if (0 !== strpos($content, '/**')) {
+            $whitespace = ' ';
+            if (1 === Preg::match('/\R/', $content, $matches)) {
+                $whitespace = $matches[0];
+            }
+            $content = '/**'.$whitespace.$content;
+        }
+
+        if (false === strpos($content, '*/')) {
+            $whitespaces = ' ';
+            if (1 === Preg::match('/\R(\h*)/', $content, $matches)) {
+                $whitespaces = $matches[1];
+            }
+            $content .= $whitespaces.'*/';
+        }
+
+        return $content;
     }
 
     private function findAnnotationLength($start)
