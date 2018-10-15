@@ -882,7 +882,7 @@ class Tokens extends \SplFixedArray
         // since we only move already existing items around, we directly call into SplFixedArray::offset* methods.
         // that way we get around additional overhead this class adds with overridden offset* methods.
         for ($i = $oldSize + $itemsCnt - 1; $i >= $index; --$i) {
-            if (parent::offsetExists($i - $itemsCnt)) {
+            if ($this->offsetExists($i - $itemsCnt)) {
                 $oldItem = parent::offsetGet($i - $itemsCnt);
                 $this->blockEndCache = [];
                 parent::offsetSet($i, $oldItem);
