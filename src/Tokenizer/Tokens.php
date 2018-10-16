@@ -882,12 +882,8 @@ class Tokens extends \SplFixedArray
         // since we only move already existing items around, we directly call into SplFixedArray::offset* methods.
         // that way we get around additional overhead this class adds with overridden offset* methods.
         for ($i = $oldSize + $itemsCnt - 1; $i >= $index; --$i) {
-            if ($this->offsetExists($i - $itemsCnt)) {
-                $oldItem = $this[$i - $itemsCnt];
-                $this->offsetSet($i, $oldItem);
-            } else {
-                $this->offsetSet($i, new Token(''));
-            }
+            $oldItem = $this->offsetExists($i - $itemsCnt) ? parent::offsetGet($i - $itemsCnt) : new Token('');
+            parent::offsetSet($i, $oldItem);
         }
 
         for ($i = 0; $i < $itemsCnt; ++$i) {
@@ -895,7 +891,8 @@ class Tokens extends \SplFixedArray
                 throw new \InvalidArgumentException('Must not add empty token to collection.');
             }
 
-            $this[$i + $index] = $items[$i];
+            $this->registerFoundToken($items[$i]);
+            parent::offsetSet($i + $index, $items[$i]);
         }
     }
 
