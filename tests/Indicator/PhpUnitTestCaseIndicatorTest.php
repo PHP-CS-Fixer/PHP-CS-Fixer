@@ -188,6 +188,18 @@ class Foo implements TestInterface, SomethingElse
                     class Foo3 { public function A() { return function (){}; } }
                 ',
             ],
+            'class with anonymous class inside' => [
+                [],
+                '<?php
+                    class Foo
+                    {
+                        public function getClass()
+                        {
+                            return new class {};
+                        }
+                    }
+                ',
+            ],
         ];
     }
 }

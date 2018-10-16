@@ -16,6 +16,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
@@ -197,5 +198,39 @@ EOF;
 EOF;
 
         $this->doTest($expected, $input);
+    }
+
+    public function testWithConfig()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param self|array|Foo $bar
+     *
+     * @return int|float|callback
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param SELF|Array|Foo $bar
+     *
+     * @return inT|Float|callback
+     */
+
+EOF;
+
+        $this->fixer->configure(['groups' => ['simple', 'meta']]);
+        $this->doTest($expected, $input);
+    }
+
+    public function testWrongConfig()
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[phpdoc_types\] Invalid configuration: The option "groups" .*\.$/');
+
+        $this->fixer->configure(['groups' => ['__TEST__']]);
     }
 }
