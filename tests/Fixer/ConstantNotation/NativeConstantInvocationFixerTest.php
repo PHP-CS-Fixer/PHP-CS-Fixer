@@ -454,4 +454,46 @@ EOT;
 
         $this->doTest($expected, $input);
     }
+
+    public function testFixScopedOnly()
+    {
+        $this->fixer->configure(['scope' => 'namespaced']);
+
+        $expected = <<<'EOT'
+<?php
+
+namespace space1 {
+    echo \PHP_VERSION;
+}
+namespace {
+    echo PHP_VERSION;
+}
+EOT;
+
+        $input = <<<'EOT'
+<?php
+
+namespace space1 {
+    echo PHP_VERSION;
+}
+namespace {
+    echo PHP_VERSION;
+}
+EOT;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixScopedOnlyNoNamespace()
+    {
+        $this->fixer->configure(['scope' => 'namespaced']);
+
+        $expected = <<<'EOT'
+<?php
+
+echo PHP_VERSION . PHP_EOL;
+EOT;
+
+        $this->doTest($expected);
+    }
 }

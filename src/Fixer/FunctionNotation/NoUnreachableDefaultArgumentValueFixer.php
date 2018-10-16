@@ -99,7 +99,7 @@ function example($foo = "two words", $bar) {}
                 continue;
             }
 
-            if (!$token->equals('=') || $this->isTypehintedNullableVariable($tokens, $i)) {
+            if (!$token->equals('=') || $this->isNonNullableTypehintedNullableVariable($tokens, $i)) {
                 continue;
             }
 
@@ -164,7 +164,7 @@ function example($foo = "two words", $bar) {}
      *
      * @return bool
      */
-    private function isTypehintedNullableVariable(Tokens $tokens, $index)
+    private function isNonNullableTypehintedNullableVariable(Tokens $tokens, $index)
     {
         $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
@@ -179,7 +179,11 @@ function example($foo = "two words", $bar) {}
 
         $prevIndex = $tokens->getPrevTokenOfKind($variableIndex, $searchTokens);
 
-        return $tokens[$prevIndex]->isGivenKind($typehintKinds);
+        if (!$tokens[$prevIndex]->isGivenKind($typehintKinds)) {
+            return false;
+        }
+
+        return !$tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(CT::T_NULLABLE_TYPE);
     }
 
     /**

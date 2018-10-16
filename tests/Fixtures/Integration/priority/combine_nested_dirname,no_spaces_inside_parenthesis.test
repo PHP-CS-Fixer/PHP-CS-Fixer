@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: combine_nested_dirname,no_spaces_inside_parenthesis.
+--RULESET--
+{"combine_nested_dirname": true, "no_spaces_inside_parenthesis": true}
+--REQUIREMENTS--
+{"php": 70000}
+--EXPECT--
+<?php
+dirname ($path ,2);
+
+--INPUT--
+<?php
+dirname (dirname ($path) );
