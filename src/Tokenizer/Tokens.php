@@ -877,6 +877,7 @@ class Tokens extends \SplFixedArray
 
         $oldSize = \count($this);
         $this->changed = true;
+        $this->blockEndCache = [];
         $this->setSize($oldSize + $itemsCnt);
 
         // since we only move already existing items around, we directly call into SplFixedArray::offset* methods.
