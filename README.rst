@@ -1453,7 +1453,12 @@ Choose from the list of available rules:
 
   The correct case must be used for standard PHP types in PHPDoc.
 
-* **phpdoc_types_order**
+  Configuration options:
+
+  - ``groups`` (a subset of ``['simple', 'alias', 'meta']``): type groups to fix;
+    defaults to ``['simple', 'alias', 'meta']``
+
+* **phpdoc_types_order** [@Symfony]
 
   Sorts PHPDoc types.
 

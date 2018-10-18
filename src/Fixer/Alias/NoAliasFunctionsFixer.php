@@ -38,6 +38,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
         'close' => 'closedir',
         'doubleval' => 'floatval',
         'fputs' => 'fwrite',
+        'get_required_files' => 'get_included_files',
         'ini_alter' => 'ini_set',
         'is_double' => 'is_float',
         'is_integer' => 'is_int',
@@ -51,6 +52,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
         'show_source' => 'highlight_file',
         'sizeof' => 'count',
         'strchr' => 'strstr',
+        'user_error' => 'trigger_error',
     ];
 
     /** @var array<string, string> stores alias (key) - master (value) functions mapping */
@@ -119,6 +121,7 @@ $a = chop($b);
 close($b);
 $a = doubleval($b);
 $a = fputs($b, $c);
+$a = get_required_files();
 ini_alter($b, $c);
 $a = is_double($b);
 $a = is_integer($b);
@@ -133,6 +136,7 @@ $a = show_source($filename, true);
 $a = sizeof($b);
 $a = strchr($haystack, $needle);
 $a = imap_header($imap_stream, 1);
+user_error($message);
 mbereg_search_getregs();
 '
                 ),

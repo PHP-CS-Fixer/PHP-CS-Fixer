@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -262,27 +263,12 @@ $c = get_class($d);
      */
     private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, $start, $end)
     {
+        $functionsAnalyzer = new FunctionsAnalyzer();
+
         $insertAtIndexes = [];
         for ($index = $start; $index < $end; ++$index) {
-            // test if we are at a function call
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 continue;
-            }
-
-            if (!$tokens[$tokens->getNextMeaningfulToken($index)]->equals('(')) {
-                continue;
-            }
-
-            $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
-                continue;
-            }
-
-            if (
-                $tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)
-                && $tokens[$tokens->getPrevMeaningfulToken($functionNamePrefix)]->isGivenKind([T_STRING, T_NEW])
-            ) {
-                continue; // skip if the call is to a constructor or to a function in a namespace other than the default
             }
 
             if (!$functionFilter($tokens[$index]->getContent())) {
