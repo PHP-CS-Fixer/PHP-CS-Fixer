@@ -216,7 +216,7 @@ abstract class AbstractFixerTestCase extends TestCase
             'PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString',
             'PHPUnit\Framework\Constraint\IsIdentical',
             'PHPUnit_Framework_Constraint_IsIdentical',
-        ], function ($className) { return class_exists($className); });
+        ], 'class_exists');
 
         if (empty($candidates)) {
             throw new \RuntimeException('PHPUnit not installed?!');
