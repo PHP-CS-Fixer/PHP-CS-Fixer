@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-10-13T10:14:50Z
+
+Although, shouldn't branch `2.12` be the target?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-10-13T13:45:02Z
+
+I think I see this as a new feature rather than a bug fix
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-10-15T10:01:44Z
+
+> I think I see this as a new feature rather than a bug fix
+
+In which case it should target master, and get milestone 2.14
+It seems however, @SpacePossum disagrees with you
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-10-15T10:04:15Z
+
+(And I submitted too fast...)
+
+I think I agree with the feature not bug fix approach, also taking into account how some of my previous things were "classified".
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-15T10:11:01Z
+
+it is not exact science,  I'm happy with 2.12, 2.13 and master here TBH
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-10-15T10:37:20Z
+
+I think I will target `master` instead, forgot 2.13 was the stable
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-10-15T17:43:56Z
+
+> SpacePossum added `feature` `RTM` labels
+> SpacePossum added this to the `2.13.1` milestone
+
+@SpacePossum both agrees and disagrees this to be feature :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-15T18:59:36Z
+
+haha, true, what to say, I like this to be in that is all, I'll leave the details to the specialists :)
