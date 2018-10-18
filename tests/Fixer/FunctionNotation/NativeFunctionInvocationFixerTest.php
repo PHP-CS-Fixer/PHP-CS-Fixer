@@ -554,6 +554,13 @@ namespace {
                     'include' => ['@compiler_optimized'],
                 ],
             ],
+            [
+                '<?php class Foo {
+                        public function & strlen($name) {
+                        }
+                    }
+                ',
+            ],
         ];
     }
 }
