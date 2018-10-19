@@ -1451,6 +1451,13 @@ Choose from the list of available rules:
   - ``scalar_types`` (``bool``): fix also scalar types; may have unexpected
     behaviour due to PHP bad type coercion system; defaults to ``true``
 
+* **phpdoc_to_param_type**
+
+  EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts
+  accordingly the function signature. Requires PHP >= 7.0.
+
+  *Risky rule: [1] This rule is EXPERIMENTAL and is not covered with backward compatibility promise. [2] ``@param`` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are require$
+
 * **phpdoc_trim** [@Symfony]
 
   PHPDoc should start and end with content, excluding the very first and

@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: phpdoc_to_param_type.
+--RULESET--
+{"phpdoc_to_param_type": true}
+--REQUIREMENTS--
+{"php": 70100}
+--EXPECT--
+<?php
+/** @param int $foo */
+function my_foo(int $foo)
+{}
+
+--INPUT--
+<?php
+/** @param int $foo */
+function my_foo($foo)
+{}
