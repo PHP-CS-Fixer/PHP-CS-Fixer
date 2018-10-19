@@ -294,7 +294,7 @@ function my_foo($bar)
     {
         $variableIndex = $tokens->getNextTokenOfKind($index, [[T_VARIABLE]]);
         $variableToken = $tokens[$variableIndex]->getContent();
-        preg_match('/@param\s*[^\s]+\s*([^\s]+)/', $paramTypeAnnotation->getContent(), $paramVariable);
+        Preg::match('/@param\s*[^\s]+\s*([^\s]+)/', $paramTypeAnnotation->getContent(), $paramVariable);
         if (isset($paramVariable[1]) && $paramVariable[1] === $variableToken) {
             return $variableIndex;
         }
