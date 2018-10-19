@@ -51,6 +51,15 @@ final class PhpdocToParamTypeFixer extends AbstractFixer implements Configuratio
     ];
 
     /**
+     * @var array
+     */
+    private $versionSpecificTypes = [
+        'void' => 70100,
+        'iterable' => 70100,
+        'object' => 70200,
+    ];
+
+    /**
      * @var string
      */
     private $classRegex = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*(?<array>\[\])*$/';
@@ -175,6 +184,10 @@ function my_foo($bar)
                 }
 
                 if (isset($this->skippedTypes[$paramType])) {
+                    continue;
+                }
+
+                if (isset($this->versionSpecificTypes[$paramType]) && \PHP_VERSION_ID < $this->versionSpecificTypes[$paramType]) {
                     continue;
                 }
 
