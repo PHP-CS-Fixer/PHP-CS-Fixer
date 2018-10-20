@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-16T21:04:23Z
+
+> in my testbenchmark this renders a ~20 second improvement.
+
+20 seconds improvement for 1minute / 1hour / etc run ?
+
+---------------------------------------------------------------------------
+
+by staabm at 2018-10-16T21:21:24Z
+
+From initially 1min10 secs it went down to ~46s
