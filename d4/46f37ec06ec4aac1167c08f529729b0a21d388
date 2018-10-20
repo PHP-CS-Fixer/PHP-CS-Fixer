@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-10T19:20:52Z
+
+60 commits without changelog is hard to catch up
+
+please, target 2.12 LTS
+
+---------------------------------------------------------------------------
+
+by localheinz at 2018-10-16T15:56:39Z
+
+@keradus
+
+Good point, should probably start keeping a changelog!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2018-10-16T16:24:26Z
+
+@keradus
+
+For reference, I have opened a corresponding issue at https://github.com/localheinz/composer-normalize/issues/92. Let me solve this first for easier review!
+
+👍
+
+---------------------------------------------------------------------------
+
+by localheinz at 2018-10-19T19:38:41Z
+
+@keradus @SpacePossum
+
+Since this is admittedly the first time that I have written a changelog, perhaps you can take a look at https://github.com/localheinz/composer-normalize/pull/94 and let me know if this is good?
+
+I would appreciate it!
