@@ -233,7 +233,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $newMethodsCode = '<?php $this->'
                 .(isset($annotations['expectedExceptionMessageRegExp']) ? 'setExpectedExceptionRegExp' : 'setExpectedException')
                 .'('
-                .implode($paramList, ', ')
+                .implode(', ', $paramList)
                 .');';
             $newMethods = Tokens::fromCode($newMethodsCode);
             $newMethods[0] = new Token([

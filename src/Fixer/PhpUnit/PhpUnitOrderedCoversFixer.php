@@ -100,7 +100,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 );
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, implode($lines)]);
+            $tokens[$index] = new Token([T_DOC_COMMENT, implode('', $lines)]);
         }
     }
 }

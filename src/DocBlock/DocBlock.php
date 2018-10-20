@@ -159,7 +159,7 @@ class DocBlock
      */
     public function getContent()
     {
-        return implode($this->lines);
+        return implode('', $this->lines);
     }
 
     private function findAnnotationLength($start)

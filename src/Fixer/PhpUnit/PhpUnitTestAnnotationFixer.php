@@ -108,6 +108,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             (new FixerOptionBuilder('case', 'Whether to camel or snake case when adding the test prefix'))
                 ->setAllowedValues(['camel', 'snake'])
                 ->setDefault('camel')
+                ->setDeprecationMessage('Use `php_unit_method_casing` fixer instead.')
                 ->getOption(),
         ]);
     }
@@ -144,7 +145,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
             $lines = $this->addTestAnnotation($lines, $tokens, $docBlockIndex);
 
-            $lines = implode($lines);
+            $lines = implode('', $lines);
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
         }
     }
@@ -166,7 +167,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
             $lines = $this->updateDocBlock($tokens, $docBlockIndex);
 
-            $lines = implode($lines);
+            $lines = implode('', $lines);
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
 
             $functionNameIndex = $tokens->getNextMeaningfulToken($i);
@@ -450,7 +451,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         }
         $line = \array_slice($line, $i);
 
-        return implode($line);
+        return implode('', $line);
     }
 
     /**
@@ -479,14 +480,14 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $line = \str_split($line->getContent());
 
         $dependsIndex = $this->findWhereDependsFunctionNameStarts($line);
-        $dependsFunctionName = implode(\array_slice($line, $dependsIndex));
+        $dependsFunctionName = implode('', \array_slice($line, $dependsIndex));
 
         if ($this->startsWith('test', $dependsFunctionName)) {
             $dependsFunctionName = $this->removeTestPrefix($dependsFunctionName);
         }
         array_splice($line, $dependsIndex);
 
-        return new Line(implode($line).$dependsFunctionName);
+        return new Line(implode('', $line).$dependsFunctionName);
     }
 
     /**
@@ -498,7 +499,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     {
         $line = \str_split($line->getContent());
         $dependsIndex = $this->findWhereDependsFunctionNameStarts($line);
-        $dependsFunctionName = implode(\array_slice($line, $dependsIndex));
+        $dependsFunctionName = implode('', \array_slice($line, $dependsIndex));
 
         if (!$this->startsWith('test', $dependsFunctionName)) {
             $dependsFunctionName = $this->addTestPrefix($dependsFunctionName);
@@ -506,7 +507,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
         array_splice($line, $dependsIndex);
 
-        return new Line(implode($line).$dependsFunctionName);
+        return new Line(implode('', $line).$dependsFunctionName);
     }
 
     /**

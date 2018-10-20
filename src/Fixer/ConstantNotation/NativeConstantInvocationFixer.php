@@ -18,6 +18,8 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -48,6 +50,17 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
             'Add leading `\` before constant invocation of internal constant to speed up resolving. Constant name match is case-sensitive, except for `null`, `false` and `true`.',
             [
                 new CodeSample('<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);'.PHP_EOL),
+                new CodeSample(
+                    '<?php
+namespace space1 {
+    echo PHP_VERSION;
+}
+namespace {
+    echo M_PI;
+}
+',
+                    ['scope' => 'namespaced']
+                ),
                 new CodeSample(
                     '<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);'.PHP_EOL,
                     [
@@ -147,48 +160,22 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
-        $useConstantDeclarations = [];
-        foreach ($useDeclarations as $use) {
-            if ($use->isConstant()) {
-                $useConstantDeclarations[$use->getShortName()] = true;
-            }
+        if ('all' === $this->configuration['scope']) {
+            $this->fixConstantInvocations($tokens, 0, \count($tokens) - 1);
+
+            return;
         }
 
-        $tokenAnalyzer = new TokensAnalyzer($tokens);
+        $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
 
-        $indexes = [];
-        foreach ($tokens as $index => $token) {
-            // test if we are at a constant call
-            if (!$token->isGivenKind(T_STRING)) {
+        // 'scope' is 'namespaced' here
+        /** @var NamespaceAnalysis $namespace */
+        foreach (\array_reverse($namespaces) as $namespace) {
+            if ('' === $namespace->getFullName()) {
                 continue;
             }
 
-            $tokenContent = $token->getContent();
-
-            if (!isset($this->constantsToEscape[$tokenContent]) && !isset($this->caseInsensitiveConstantsToEscape[strtolower($tokenContent)])) {
-                continue;
-            }
-
-            if (isset($useConstantDeclarations[$tokenContent])) {
-                continue;
-            }
-
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
-                continue;
-            }
-
-            if (!$tokenAnalyzer->isConstantInvocation($index)) {
-                continue;
-            }
-
-            $indexes[] = $index;
-        }
-
-        $indexes = \array_reverse($indexes);
-        foreach ($indexes as $index) {
-            $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+            $this->fixConstantInvocations($tokens, $namespace->getScopeStartIndex(), $namespace->getScopeEndIndex());
         }
     }
 
@@ -225,6 +212,64 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
                 ->setAllowedValues([$constantChecker])
                 ->setDefault(['null', 'false', 'true'])
                 ->getOption(),
+            (new FixerOptionBuilder('scope', 'Only fix constant invocations that are made within a namespace or fix all.'))
+                ->setAllowedValues(['all', 'namespaced'])
+                ->setDefault('all')
+                ->getOption(),
         ]);
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $start
+     * @param int    $end
+     */
+    private function fixConstantInvocations(Tokens $tokens, $start, $end)
+    {
+        $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
+        $useConstantDeclarations = [];
+        foreach ($useDeclarations as $use) {
+            if ($use->isConstant()) {
+                $useConstantDeclarations[$use->getShortName()] = true;
+            }
+        }
+
+        $tokenAnalyzer = new TokensAnalyzer($tokens);
+
+        $indexes = [];
+        for ($index = $start; $index < $end; ++$index) {
+            $token = $tokens[$index];
+
+            // test if we are at a constant call
+            if (!$token->isGivenKind(T_STRING)) {
+                continue;
+            }
+
+            $tokenContent = $token->getContent();
+
+            if (!isset($this->constantsToEscape[$tokenContent]) && !isset($this->caseInsensitiveConstantsToEscape[strtolower($tokenContent)])) {
+                continue;
+            }
+
+            if (isset($useConstantDeclarations[$tokenContent])) {
+                continue;
+            }
+
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                continue;
+            }
+
+            if (!$tokenAnalyzer->isConstantInvocation($index)) {
+                continue;
+            }
+
+            $indexes[] = $index;
+        }
+
+        $indexes = \array_reverse($indexes);
+        foreach ($indexes as $index) {
+            $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+        }
     }
 }
