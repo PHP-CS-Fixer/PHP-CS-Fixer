@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.13.1
+---------------------
+
+* bug #3977 NoSuperfluousPhpdocTagsFixer - Fix handling of description with variable (julienfalque)
+* bug #4027 PhpdocAnnotationWithoutDotFixer - add failing cases (keradus)
+* bug #4028 PhpdocNoEmptyReturnFixer - handle single line PHPDoc (kubawerlos)
+* bug #4034 PhpUnitTestCaseIndicator - handle anonymous class (kubawerlos)
+* bug #4037 NativeFunctionInvocationFixer - fix function detection (kubawerlos)
+* feature #4019 PhpdocTypesFixer - allow for configuration (keradus)
+* minor #3980 Clarifies allow-risky usage (josephzidell)
+* minor #4016 Bump console component due to it's bug (keradus)
+* minor #4023 Enhancement: Update localheinz/composer-normalize (localheinz)
+* minor #4049 use parent::offset*() methods when moving items arround in insertAt() (staabm)
+
 Changelog for v2.13.0
 ---------------------
 
@@ -18,6 +32,20 @@ Changelog for v2.13.0
 * minor #3813 PhpUnitDedicateAssertFixer - fix "sizeOf" same as "count". (SpacePossum)
 * minor #3873 Add the native_function_invocation fixer in the Symfony:risky ruleset (stof)
 * minor #3979 DX: enable php_unit_method_casing (keradus)
+
+Changelog for v2.12.4
+---------------------
+
+* bug #3977 NoSuperfluousPhpdocTagsFixer - Fix handling of description with variable (julienfalque)
+* bug #4027 PhpdocAnnotationWithoutDotFixer - add failing cases (keradus)
+* bug #4028 PhpdocNoEmptyReturnFixer - handle single line PHPDoc (kubawerlos)
+* bug #4034 PhpUnitTestCaseIndicator - handle anonymous class (kubawerlos)
+* bug #4037 NativeFunctionInvocationFixer - fix function detection (kubawerlos)
+* feature #4019 PhpdocTypesFixer - allow for configuration (keradus)
+* minor #3980 Clarifies allow-risky usage (josephzidell)
+* minor #4016 Bump console component due to it's bug (keradus)
+* minor #4023 Enhancement: Update localheinz/composer-normalize (localheinz)
+* minor #4049 use parent::offset*() methods when moving items arround in insertAt() (staabm)
 
 Changelog for v2.12.3
 ---------------------
