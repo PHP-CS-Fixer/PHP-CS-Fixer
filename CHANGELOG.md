@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.12.4
+---------------------
+
+* bug #3977 NoSuperfluousPhpdocTagsFixer - Fix handling of description with variable (julienfalque)
+* bug #4027 PhpdocAnnotationWithoutDotFixer - add failing cases (keradus)
+* bug #4028 PhpdocNoEmptyReturnFixer - handle single line PHPDoc (kubawerlos)
+* bug #4034 PhpUnitTestCaseIndicator - handle anonymous class (kubawerlos)
+* bug #4037 NativeFunctionInvocationFixer - fix function detection (kubawerlos)
+* feature #4019 PhpdocTypesFixer - allow for configuration (keradus)
+* minor #3980 Clarifies allow-risky usage (josephzidell)
+* minor #4016 Bump console component due to it's bug (keradus)
+* minor #4023 Enhancement: Update localheinz/composer-normalize (localheinz)
+* minor #4049 use parent::offset*() methods when moving items arround in insertAt() (staabm)
+
 Changelog for v2.12.3
 ---------------------
 
