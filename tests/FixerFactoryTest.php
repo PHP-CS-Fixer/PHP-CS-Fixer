@@ -111,9 +111,9 @@ final class FixerFactoryTest extends TestCase
         $factory->registerFixer($f1, false);
         $factory->registerCustomFixers([$f2, $f3]);
 
-        $this->assertTrue(\in_array($f1, $factory->getFixers(), true));
-        $this->assertTrue(\in_array($f2, $factory->getFixers(), true));
-        $this->assertTrue(\in_array($f3, $factory->getFixers(), true));
+        $this->assertContains($f1, $factory->getFixers());
+        $this->assertContains($f2, $factory->getFixers());
+        $this->assertContains($f3, $factory->getFixers());
     }
 
     /**
