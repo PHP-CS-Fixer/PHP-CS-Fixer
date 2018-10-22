@@ -151,7 +151,7 @@ EOT;
      */
     private function createStreamOutput($verbosityLevel)
     {
-        $output = new StreamOutput(fopen('php://memory', 'wb', false));
+        $output = new StreamOutput(fopen('php://memory', 'w', false));
         $output->setDecorated(false);
         $output->setVerbosity($verbosityLevel);
 
