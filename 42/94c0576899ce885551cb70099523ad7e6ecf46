@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-15T07:45:44Z
+
+shouldn't this be `FixerOptionInterface` only?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-10-15T08:26:00Z
+
+Possibly, wasn't sure which one was better
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-15T08:59:11Z
+
+ok :)   I'm :+1:  for that one interface only
