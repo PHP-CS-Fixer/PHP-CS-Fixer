@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-09-27T14:46:03Z
+
+See #3118
+
+---------------------------------------------------------------------------
+
+by greeflas at 2018-09-27T14:53:15Z
+
+@ntzm but what about other fixes? :)
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-09-27T15:01:38Z
+
+What other fixes? They are all code style related
+
+---------------------------------------------------------------------------
+
+by greeflas at 2018-09-28T07:50:43Z
+
+@ntzm PR #3118 has only indentation fixes. This PR is updates array syntax, file header and adds additional PHPDoc blocks.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-09-28T09:22:38Z
+
+He linked it not for the fixes but for the discussion:
+
+> it was there on purpose with later request to call fixer itself to fix all the work
+
+and
+
+> remember, CS we use are changing during time, no need to always update sample code, if we could just ask to run the tool and it will fix not only empty skeleton of fixer, but also whole user-added logic
+
+---------------------------------------------------------------------------
+
+by greeflas at 2018-09-28T09:27:48Z
+
+@dmvdbrugge ok, I got it.
+1. For me as for developer of fixers would be good to see updated doc with updated syntax.
+2. Fixer will not add additional PHPDoc that was added in this PR.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-23T09:58:58Z
+
+I know the code should be fixed after running the tool, but as a reader being told to do on thing and than have it changed directly after by a tool feels odd.
+
+If was only on sample-code that is to be fix later by the rule of the cookbook than I get it, but having the skeleton code in shape is still up to date is still a good thing IMHO.
