@@ -180,4 +180,23 @@ EOF;
 
         $this->doTest($expected);
     }
+
+    public function testHandleSingleLinePhpdoc()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+/** @return null */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
 }
