@@ -15,6 +15,9 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -25,7 +28,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer
+final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -132,6 +135,19 @@ class Foo {
 
             $tokens[$index] = new Token([T_DOC_COMMENT, $docBlock->getContent()]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('allow_mixed', 'Whether type `mixed` without description is allowed (`true`) or considered superfluous (`false`)'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     private function findDocumentedFunction(Tokens $tokens, $index)
@@ -255,7 +271,7 @@ class Foo {
         $annotationTypes = $this->toComparableNames($annotation->getTypes(), $symbolShortNames);
 
         if (['mixed'] === $annotationTypes && null === $info['type']) {
-            return true;
+            return !$this->configuration['allow_mixed'];
         }
 
         $actualTypes = null === $info['type'] ? [] : [$info['type']];
