@@ -75,16 +75,7 @@ final class FileFilterIterator extends \FilterIterator
             return false;
         }
 
-        $content = @FileReader::createSingleton()->read($path);
-        if (false === $content) {
-            $error = error_get_last();
-
-            throw new \RuntimeException(sprintf(
-                'Failed to read content from "%s".%s',
-                $path,
-                $error ? ' '.$error['message'] : ''
-            ));
-        }
+        $content = FileReader::createSingleton()->read($path);
 
         // mark as skipped:
         if (
