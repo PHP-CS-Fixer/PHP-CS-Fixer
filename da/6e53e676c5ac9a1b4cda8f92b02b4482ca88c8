@@ -1,0 +1,161 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-09-25T16:56:58Z
+
+What does PHPStan complains about exactly? I don't see the point in enforcing a `mixed` type annotation. Maybe this is a bug or a missing feature in PHPStan rather than PHP CS Fixer.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-09-25T18:47:21Z
+
+I think PHPStan sees a difference between a parameter that has no type (implicitly mixed) and an explicitly mixed parameter
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-09-25T19:17:17Z
+
+I was wondering why this felt so familiar. There is another open PR that wants sort of the same: #3936
+
+I must say the current PR is better, but the feature itself is still questionable.
+
+---------------------------------------------------------------------------
+
+by MortalFlesh at 2018-09-26T11:26:22Z
+
+## Problem
+I've created a mini-repo of the problem example https://github.com/MortalFlesh/cs-fixer-demo
+
+### First example
+PHPstan with strict rules is ok with `test.php` file - running `composer phpstan` will return:
+```
+[OK] No errors
+```
+
+But when you run a `composer cs` (_basically a csfixer hidden in ECS and coding-standards_) you will get:
+```
+1) test.php
+
+    ---------- begin diff ----------
+--- Original
++++ New
+@@ -2,10 +2,6 @@
+
+ class Foo
+ {
+-    /**
+-     * @param mixed $baz
+-     * @return mixed
+-     */
+     public function bar($baz)
+     {
+         return $baz;
+
+    ----------- end diff -----------
+
+Applied checkers:
+
+ - PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
+ - PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer
+ - PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer
+```
+
+### Second example
+If I remove an annotation of the method
+`composer phpstan`:
+```
+------ ------------------------------------------------------------------
+  Line   test.php
+ ------ ------------------------------------------------------------------
+  5      Method Foo::bar() has no return typehint specified.
+  5      Method Foo::bar() has parameter $baz with no typehint specified.
+ ------ ------------------------------------------------------------------
+
+ [ERROR] Found 2 errors
+```
+`composer cs`
+```
+ [OK] No errors found. Great job - your code is shiny in style!
+```
+
+## Solution
+I **want to be strict** and have the annotation with `mixed` there.
+The **first example** with `NoSuperfluousPhpdocTagsFixer` configured to allow a `mixed` would solve this.
+
+---------------------------------------------------------------------------
+
+by OndraM at 2018-09-26T11:35:51Z
+
+The general idea of PHPStan strict rules is to be type strict and type safe, so it forces you to *always* declare a type of a parameter or return type:
+
+> Require parameter and return typehints for functions and methods (either native or phpDocs)
+
+https://github.com/phpstan/phpstan-strict-rules/blob/master/README.md
+
+Because of this, PHP's implicit "mixed" (= undeclared) type is considered as unsafe (meaning "you forgot to declare type!") and causes a warning. But if you in some scenario actually want to use "mixed" as a typehint, you must declare it explicitly (using PHPDoc), to make it obvious you didn't forgot to declare the type and the mixed type is intentional. But in this case this fixer will attempt to remove the phpdoc, because mixed actually is "superfluous" from the PHP point of view (but not from "I want to be sure I didn't forget to declare types" person point of view).
+
+Also note there is [RFC](https://wiki.php.net/rfc/mixed-typehint) targeted for PHP 7.4/8.0, which may add mixed typehint. But until then, there is no other way than use PHPDoc to tell the mixed is intentional.
+
+---------------------------------------------------------------------------
+
+by MortalFlesh at 2018-10-11T07:36:10Z
+
+Hello,
+
+will you be looking at this PR? I'm sure you are busy and have better work to do. But this lack of configuration keeps me frustrating - because I have explicit mixed type in some of my libraries.
+
+Could you please continue in reviewing?
+
+Thank you
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-10-11T11:15:24Z
+
+Ha, you're not the only one, join the waiting list 😆
+
+In the meantime, I had already left an additional comment which you neither responded nor reacted to.
+
+---------------------------------------------------------------------------
+
+by MortalFlesh at 2018-10-11T12:14:41Z
+
+@dmvdbrugge I missed that, the comment was hidden by github as `outdated` 🙃
+I've just send a fix - your wording is better :+1:
+
+I can wait longer ofc, I was just curious if it will continue somehow..
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-10-11T12:34:25Z
+
+Be patient, it will be merged :)
+
+---------------------------------------------------------------------------
+
+by MortalFlesh at 2018-10-12T13:56:48Z
+
+@dmvdbrugge it is fixed. I was sloppy and wanted to just push it right away.
+
+Btw should I rebase it against master now? Or wait till it will be accepted and you will rebase it before merge to master?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-10-12T14:02:47Z
+
+You can rebase until told otherwise 😅
+
+In the end, the merger will squash all anyway, but the best way to guarantee a smooth process is if the branch is up-to-date with base.
+
+What I'd do is rebase now. (But that's just me.)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-10-12T14:20:04Z
+
+You can rebase your branch to make it up-to-date with base branch but please don't squash commits, mergers will take care of that. In the meantime, keeping separate commits help reviewers understand successive changes you make without reading the entire diff each time.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-17T19:31:31Z
+
+@ntzm , I see your review as requesting changes. Can you re-review ?
