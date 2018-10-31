@@ -602,4 +602,60 @@ class Foo {
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithAllowedMixedCases
+     */
+    public function testFixWithAllowedMixed($expected, $input = null)
+    {
+        $this->fixer->configure(['allow_mixed' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithAllowedMixedCases()
+    {
+        $cases = $this->provideFixCases();
+        $cases['no typehint mixed'] = [
+            '<?php
+class Foo {
+    /**
+     * @param mixed $bar
+     *
+     * @return mixed
+     */
+    public function doFoo($bar) {}
+}',
+        ];
+
+        return $cases;
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp70Cases
+     * @requires PHP 7.0
+     */
+    public function testFixPhp70WithAllowedMixed($expected, $input = null)
+    {
+        $this->fixer->configure(['allow_mixed' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp71Cases
+     * @requires PHP 7.1
+     */
+    public function testFixPhp71WithAllowedMixed($expected, $input = null)
+    {
+        $this->fixer->configure(['allow_mixed' => true]);
+        $this->doTest($expected, $input);
+    }
 }
