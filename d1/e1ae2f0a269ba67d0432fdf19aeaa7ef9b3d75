@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-24T12:00:44Z
+
+I would rather throw an exception instead:
+```php
+if (false === @file_get_contents(...)) {
+    throw new \RuntimeException(...);
+}
+```
+WDYT?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-24T12:17:46Z
+
+Could be a BC? Need to look at the usages of FileReader
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-25T06:46:15Z
+
+`FileReader` is an internal class so there is no BC promise (nice to prevent a BC break, but if better with it we should do it IMHO)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-25T14:16:36Z
+
+hi there, please check out the docs for this class:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3778/files#diff-d6800b5e3c38f7bb28db313ffc5012f3R18
+
+it was supposed to be one-to-one replacement for `file_get_contents`, with only difference that it would properly read stdin.
+
+for that, everywhere where it's used, it shall already be checking `false`, thus fixing docs is nice thing for sure.
+
+yet, sadly, we are checking `false === $fileReader->read(...)` only in `FileFilterIterator`.
+for that, we shall add missing error handling.
+
+would we do that with exceptions or `false` (mimics native function vs add more custom logic) ? all fine for me.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-28T12:18:44Z
+
+I'm :+1: for using exceptions, since we already have a layer around the native calls it seems like a good spot to improve further.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-09-22T20:23:42Z
+
+Updated this PR to throw exceptions on failure instead
