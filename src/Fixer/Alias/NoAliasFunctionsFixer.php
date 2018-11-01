@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -110,6 +110,8 @@ $a = strchr($haystack, $needle);
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $functionsAnalyzer = new FunctionsAnalyzer();
+
         /** @var \PhpCsFixer\Tokenizer\Token $token */
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
             // check mapping hit
@@ -124,20 +126,8 @@ $a = strchr($haystack, $needle);
                 continue;
             }
 
-            // skip expressions which are not function reference
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$prevTokenIndex];
-            if ($prevToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF])) {
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 continue;
-            }
-
-            // handle function reference with namespaces
-            if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
-                $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-                $twicePrevToken = $tokens[$twicePrevTokenIndex];
-                if ($twicePrevToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING, CT::T_NAMESPACE_OPERATOR])) {
-                    continue;
-                }
             }
 
             $tokens[$index] = new Token([T_STRING, self::$aliases[$tokenContent]]);
