@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: no_useless_class_comment,phpdoc_trim_consecutive_blank_line_separation.
+--RULESET--
+{"no_useless_class_comment": true, "phpdoc_trim_consecutive_blank_line_separation": true}
+--EXPECT--
+<?php
+/**
+ * @author Coyote
+ *
+ * @copyright Acme Corporation
+ */
+class Foo
+{}
+
+--INPUT--
+<?php
+/**
+ * @author Coyote
+ *
+ * Class Foo
+ *
+ * @copyright Acme Corporation
+ */
+class Foo
+{}

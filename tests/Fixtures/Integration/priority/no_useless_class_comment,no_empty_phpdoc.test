@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: no_useless_class_comment,no_empty_phpdoc.
+--RULESET--
+{"no_useless_class_comment": true, "no_empty_phpdoc": true}
+--EXPECT--
+<?php
+
+class Foo
+{}
+
+--INPUT--
+<?php
+/**
+ * Class Foo
+ */
+class Foo
+{}

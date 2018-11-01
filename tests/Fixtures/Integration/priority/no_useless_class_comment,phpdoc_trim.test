@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_useless_class_comment,phpdoc_trim.
+--RULESET--
+{"no_useless_class_comment": true, "phpdoc_trim": true}
+--EXPECT--
+<?php
+/**
+ * @author Coyote
+ */
+class Foo
+{}
+
+--INPUT--
+<?php
+/**
+ * @author Coyote
+ *
+ * Class Foo
+ */
+class Foo
+{}
