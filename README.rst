@@ -1144,7 +1144,7 @@ Choose from the list of available rules:
 
   Unused ``use`` statements must be removed.
 
-* **no_useless_class_comment**
+* **no_useless_comment**
 
   There must be no comment like "Class Foo".
 

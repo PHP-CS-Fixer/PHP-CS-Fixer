@@ -87,8 +87,6 @@ interface ConfigInterface
     public function getRiskyAllowed();
 
     /**
-     * Get rules.
-     *
      * Keys of array are names of fixers/sets, values are true/false.
      *
      * @return array
@@ -174,8 +172,6 @@ interface ConfigInterface
     public function setRiskyAllowed($isRiskyAllowed);
 
     /**
-     * Set rules.
-     *
      * Keys of array are names of fixers or sets.
      * Value for set must be bool (turn it on or off).
      * Value for fixer may be bool (turn it on or off) or array of configuration

@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  */
-final class NoUselessClassCommentFixer extends AbstractFixer
+final class NoUselessCommentFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -31,13 +31,25 @@ final class NoUselessClassCommentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There must be no comment like "Class Foo".',
-            [new CodeSample('<?php
+            [
+                new CodeSample('<?php
 /**
  * Class Foo
  * Class to do something
  */
-class FooBar {}
-')]
+class Foo {}
+'),
+                new CodeSample('<?php
+class Foo {
+    /**
+     * Get bar
+     */
+    function getBar() {
+        return "bar";
+    }
+}
+'),
+            ]
         );
     }
 
@@ -68,20 +80,30 @@ class FooBar {}
                 continue;
             }
 
-            if (false === \strpos($token->getContent(), 'Class ')) {
-                continue;
-            }
-
-            $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if (null === $nextIndex || !$tokens[$nextIndex]->isGivenKind([T_ABSTRACT, T_CLASS, T_FINAL])) {
-                continue;
-            }
-
-            $newContent = Preg::replace(
-                '/(\*)?\h*\bClass\h+[A-Za-z0-1\\\\_]+\.?(\h*\R\h*|\h*$)/i',
-                '',
-                $token->getContent()
+            $nextIndex = $tokens->getTokenNotOfKindSibling(
+                $index,
+                1,
+                [[T_WHITESPACE], [T_COMMENT], [T_DOC_COMMENT], [T_ABSTRACT], [T_FINAL], [T_PUBLIC], [T_PROTECTED], [T_PRIVATE], [T_STATIC]]
             );
+            if (null === $nextIndex) {
+                continue;
+            }
+
+            if ($tokens[$nextIndex]->isGivenKind([T_CLASS, T_INTERFACE, T_TRAIT])) {
+                $newContent = Preg::replace(
+                    '/((^|\R)\h*(#|\/*\**))\h*\b(Class|Interface|Trait)\h+[A-Za-z0-1\\\\_]+\.?(\h*\R\h*\*?|\h*$)/i',
+                    '$1',
+                    $token->getContent()
+                );
+            } elseif ($tokens[$nextIndex]->isGivenKind(T_FUNCTION)) {
+                $newContent = Preg::replace(
+                    '/((^|\R)\h*(#|\/*\**))\h*\b((Gets?|SetS?)\h+[A-Za-z0-1\\\\_]+|[A-Za-z0-1\\\\_]+\h+constructor)\.?(\h*\R\h*\*?|\h*$)/i',
+                    '$1',
+                    $token->getContent()
+                );
+            } else {
+                continue;
+            }
 
             if ($newContent === $token->getContent()) {
                 continue;

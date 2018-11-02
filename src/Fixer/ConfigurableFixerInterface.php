@@ -23,8 +23,6 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 interface ConfigurableFixerInterface extends FixerInterface
 {
     /**
-     * Set configuration.
-     *
      * New configuration must override current one, not patch it.
      * Using `null` makes fixer to use default configuration (or reset configuration from previously configured back
      * to default one).

@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: no_useless_class_comment,phpdoc_trim.
+Integration of fixers: no_useless_comment,phpdoc_trim.
 --RULESET--
-{"no_useless_class_comment": true, "phpdoc_trim": true}
+{"no_useless_comment": true, "phpdoc_trim": true}
 --EXPECT--
 <?php
 /**
