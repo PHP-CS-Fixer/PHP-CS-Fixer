@@ -101,6 +101,13 @@ final class DiffConsoleFormatterTest extends TestCase
 ',
                 '| %s',
             ],
+            [
+                mb_convert_encoding("<fg=red>--- Original</fg=red>\n<fg=green>+ausgefüllt</fg=green>", 'ISO-8859-1'),
+                true,
+                '%s',
+                mb_convert_encoding("--- Original\n+ausgefüllt", 'ISO-8859-1'),
+                '%s',
+            ],
         ];
     }
 }
