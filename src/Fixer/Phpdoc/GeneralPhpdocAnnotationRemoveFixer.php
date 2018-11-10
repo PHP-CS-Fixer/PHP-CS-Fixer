@@ -86,7 +86,7 @@ function foo() {}
             $annotations = $doc->getAnnotationsOfType($this->configuration['annotations']);
 
             // nothing to do if there are no annotations
-            if (empty($annotations)) {
+            if ([] === $annotations) {
                 continue;
             }
 

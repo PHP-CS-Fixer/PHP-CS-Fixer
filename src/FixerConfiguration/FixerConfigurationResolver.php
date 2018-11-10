@@ -36,7 +36,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             $this->addOption($option);
         }
 
-        if (empty($this->registeredNames)) {
+        if ([] === $this->registeredNames) {
             throw new \LogicException('Options cannot be empty.');
         }
     }

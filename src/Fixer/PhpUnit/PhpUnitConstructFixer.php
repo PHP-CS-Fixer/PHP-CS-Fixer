@@ -96,7 +96,7 @@ $this->assertNotSame(null, $d);
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // no assertions to be fixed - fast return
-        if (empty($this->configuration['assertions'])) {
+        if ([] === $this->configuration['assertions']) {
             return;
         }
 

@@ -216,7 +216,7 @@ final class Runner
 
         $fixInfo = null;
 
-        if (!empty($appliedFixers)) {
+        if ([] !== $appliedFixers) {
             $new = $tokens->generateCode();
             $newHash = $tokens->getCodeHash();
         }

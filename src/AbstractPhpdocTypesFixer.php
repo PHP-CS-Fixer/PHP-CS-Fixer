@@ -64,7 +64,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotationsOfType($this->tags);
 
-            if (empty($annotations)) {
+            if ([] === $annotations) {
                 continue;
             }
 

@@ -69,7 +69,7 @@ final class ErrorsManager
      */
     public function isEmpty()
     {
-        return empty($this->errors);
+        return [] === $this->errors;
     }
 
     /**

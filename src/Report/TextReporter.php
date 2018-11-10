@@ -74,7 +74,7 @@ final class TextReporter implements ReporterInterface
      */
     private function getDiff($isDecoratedOutput, array $fixResult)
     {
-        if (empty($fixResult['diff'])) {
+        if (!isset($fixResult['diff']) || '' === $fixResult['diff']) {
             return '';
         }
 

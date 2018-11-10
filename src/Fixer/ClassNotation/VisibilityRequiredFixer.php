@@ -227,7 +227,7 @@ class Sample
             }
         }
 
-        if (!empty($toOverride)) {
+        if ([] !== $toOverride) {
             $tokens->overrideRange($firstAttribIndex, $memberIndex - 1, $toOverride);
         }
     }

@@ -106,13 +106,13 @@ final class PhpdocOrderFixer extends AbstractFixer
         $params = $doc->getAnnotationsOfType('param');
 
         // nothing to do if there are no param annotations
-        if (empty($params)) {
+        if ([] === $params) {
             return $content;
         }
 
         $others = $doc->getAnnotationsOfType(['throws', 'return']);
 
-        if (empty($others)) {
+        if ([] === $others) {
             return $content;
         }
 
@@ -146,14 +146,14 @@ final class PhpdocOrderFixer extends AbstractFixer
         $returns = $doc->getAnnotationsOfType('return');
 
         // nothing to do if there are no return annotations
-        if (empty($returns)) {
+        if ([] === $returns) {
             return $content;
         }
 
         $others = $doc->getAnnotationsOfType(['param', 'throws']);
 
         // nothing to do if there are no other annotations
-        if (empty($others)) {
+        if ([] === $others) {
             return $content;
         }
 

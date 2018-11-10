@@ -294,6 +294,22 @@ final class ProjectCodeTest extends TestCase
         $this->assertNotContains('preg_split', $strings, $message);
     }
 
+    /**
+     * @dataProvider provideSrcClassCases
+     *
+     * @param string $className
+     */
+    public function testThereIsNoEmptyUsed($className)
+    {
+        $rc = new \ReflectionClass($className);
+        $tokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
+
+        $this->assertFalse(
+            $tokens->isTokenKindFound(T_EMPTY),
+            sprintf('Class %s must not use "empty", use stricter comparison instead.', $className)
+        );
+    }
+
     public function provideSrcClassCases()
     {
         return array_map(

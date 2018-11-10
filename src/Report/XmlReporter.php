@@ -57,7 +57,7 @@ final class XmlReporter implements ReporterInterface
                 $fileXML->appendChild($this->createAppliedFixersElement($dom, $fixResult));
             }
 
-            if (!empty($fixResult['diff'])) {
+            if (isset($fixResult['diff'])) {
                 $fileXML->appendChild($this->createDiffElement($dom, $fixResult));
             }
         }

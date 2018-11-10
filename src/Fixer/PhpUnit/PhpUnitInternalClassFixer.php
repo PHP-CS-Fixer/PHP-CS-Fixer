@@ -142,7 +142,7 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
     private function updateDocBlockIfNeeded(Tokens $tokens, $docBlockIndex)
     {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
-        if (!empty($doc->getAnnotationsOfType('internal'))) {
+        if ([] !== $doc->getAnnotationsOfType('internal')) {
             return;
         }
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex);
@@ -224,7 +224,7 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
     private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, $docBlockIndex)
     {
         $lines = $doc->getLines();
-        if (1 === \count($lines) && empty($doc->getAnnotationsOfType('internal'))) {
+        if (1 === \count($lines) && [] === $doc->getAnnotationsOfType('internal')) {
             $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
 
             return new DocBlock(implode('', $lines));

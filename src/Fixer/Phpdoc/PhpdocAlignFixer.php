@@ -92,17 +92,17 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
 
         $indent = '(?P<indent>(?: {2}|\t)*)';
         // e.g. @param <hint> <$var>
-        if (!empty($tagsWithNameToAlign)) {
+        if ([] !== $tagsWithNameToAlign) {
             $types[] = '(?P<tag>'.implode('|', $tagsWithNameToAlign).')\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
         }
 
         // e.g. @return <hint>
-        if (!empty($tagsWithoutNameToAlign)) {
+        if ([] !== $tagsWithoutNameToAlign) {
             $types[] = '(?P<tag2>'.implode('|', $tagsWithoutNameToAlign).')\s+(?P<hint2>[^\s]+?)';
         }
 
         // e.g. @method <hint> <signature>
-        if (!empty($tagsWithMethodSignatureToAlign)) {
+        if ([] !== $tagsWithMethodSignatureToAlign) {
             $types[] = '(?P<tag3>'.implode('|', $tagsWithMethodSignatureToAlign).')(\s+(?P<hint3>[^\s(]+)|)\s+(?P<signature>.+\))';
         }
 
@@ -308,17 +308,17 @@ EOF;
                     .$item['hint']
                 ;
 
-                if (!empty($item['var'])) {
+                if ('' !== $item['var']) {
                     $line .=
                         $this->getIndent(($hintMax ?: -1) - \strlen($item['hint']) + 1)
                         .$item['var']
                         .(
-                            !empty($item['desc'])
+                            '' !== $item['desc']
                             ? $this->getIndent($varMax - \strlen($item['var']) + 1).$item['desc'].$lineEnding
                             : $lineEnding
                         )
                     ;
-                } elseif (!empty($item['desc'])) {
+                } elseif ('' !== $item['desc']) {
                     $line .= $this->getIndent($hintMax - \strlen($item['hint']) + 1).$item['desc'].$lineEnding;
                 } else {
                     $line .= $lineEnding;
@@ -340,13 +340,13 @@ EOF;
     private function getMatches($line, $matchCommentOnly = false)
     {
         if (Preg::match($this->regex, $line, $matches)) {
-            if (!empty($matches['tag2'])) {
+            if (isset($matches['tag2']) && '' !== $matches['tag2']) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
                 $matches['var'] = '';
             }
 
-            if (!empty($matches['tag3'])) {
+            if (isset($matches['tag3']) && '' !== $matches['tag3']) {
                 $matches['tag'] = $matches['tag3'];
                 $matches['hint'] = $matches['hint3'];
                 $matches['var'] = $matches['signature'];

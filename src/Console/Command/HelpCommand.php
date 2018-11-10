@@ -491,7 +491,7 @@ EOF
                 72
             ));
 
-            if (!empty($sets)) {
+            if ([] !== $sets) {
                 $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description);
             } else {
                 $help .= sprintf(" * <comment>%s</comment>\n   | %s\n", $fixer->getName(), $description);

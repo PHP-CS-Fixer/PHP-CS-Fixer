@@ -64,7 +64,7 @@ function foo ($bar) {}
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotations();
 
-            if (empty($annotations)) {
+            if ([] === $annotations) {
                 continue;
             }
 

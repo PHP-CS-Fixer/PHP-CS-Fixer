@@ -137,7 +137,7 @@ final class JunitReporter implements ReporterInterface
             $failureContent = "Wrong code style\n";
         }
 
-        if (!empty($fixResult['diff'])) {
+        if (isset($fixResult['diff'])) {
             $failureContent .= "\nDiff:\n---------------\n\n".$fixResult['diff'];
         }
 

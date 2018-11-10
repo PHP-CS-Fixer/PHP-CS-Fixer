@@ -475,7 +475,7 @@ use Bar;
             // Ordering groups
             $sortedGroups = [];
             foreach ($this->configuration['imports_order'] as $type) {
-                if (isset($groupedByTypes[$type]) && !empty($groupedByTypes[$type])) {
+                if (isset($groupedByTypes[$type]) && [] !== $groupedByTypes[$type]) {
                     foreach ($groupedByTypes[$type] as $startIndex => $item) {
                         $sortedGroups[$startIndex] = $item;
                     }

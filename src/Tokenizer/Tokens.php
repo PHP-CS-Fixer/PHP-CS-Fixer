@@ -1086,7 +1086,7 @@ class Tokens extends \SplFixedArray
     public function isAllTokenKindsFound(array $tokenKinds)
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (empty($this->foundTokenKinds[$tokenKind])) {
+            if (!isset($this->foundTokenKinds[$tokenKind])) {
                 return false;
             }
         }
@@ -1104,7 +1104,7 @@ class Tokens extends \SplFixedArray
     public function isAnyTokenKindsFound(array $tokenKinds)
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (!empty($this->foundTokenKinds[$tokenKind])) {
+            if (isset($this->foundTokenKinds[$tokenKind])) {
                 return true;
             }
         }
@@ -1121,7 +1121,7 @@ class Tokens extends \SplFixedArray
      */
     public function isTokenKindFound($tokenKind)
     {
-        return !empty($this->foundTokenKinds[$tokenKind]);
+        return isset($this->foundTokenKinds[$tokenKind]);
     }
 
     /**
@@ -1424,6 +1424,10 @@ class Tokens extends \SplFixedArray
         }
 
         --$this->foundTokenKinds[$tokenKind];
+
+        if (0 === $this->foundTokenKinds[$tokenKind]) {
+            unset($this->foundTokenKinds[$tokenKind]);
+        }
     }
 
     /**

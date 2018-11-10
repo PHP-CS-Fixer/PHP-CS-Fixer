@@ -105,7 +105,7 @@ final class Example
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotationsOfType($searchFor);
 
-            if (empty($annotations)) {
+            if ([] === $annotations) {
                 continue;
             }
 

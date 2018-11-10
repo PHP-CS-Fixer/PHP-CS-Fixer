@@ -145,7 +145,7 @@ class Foo
             return;
         }
 
-        if (!empty($php4['modifiers'][T_ABSTRACT]) || !empty($php4['modifiers'][T_STATIC])) {
+        if (array_key_exists(T_ABSTRACT, $php4['modifiers']) || array_key_exists(T_STATIC, $php4['modifiers'])) {
             // PHP4 constructor can't be abstract or static
             return;
         }
