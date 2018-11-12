@@ -134,7 +134,7 @@ final class DateTimeImmutableFixer extends AbstractFixer
         }
 
         if ($isUsedWithLeadingBackslash || $isUsedAlone && ($isInNamespace && $isImported || !$isInNamespace)) {
-            $tokens[$index] = new Token([T_STRING, 'DateTimeImmutable']);
+            $tokens[$index] = new Token([T_STRING, \DateTimeImmutable::class]);
             if ($isInNamespace && $isUsedAlone) {
                 $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
             }
