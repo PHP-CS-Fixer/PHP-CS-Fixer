@@ -26,7 +26,7 @@ final class WarningsDetectorTest extends TestCase
 {
     public function testDetectOldVendorNotInstalledByComposer()
     {
-        $toolInfo = $this->prophesize('PhpCsFixer\ToolInfoInterface');
+        $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
         $toolInfo->isInstalledByComposer()->willReturn(false);
 
         $warningsDetector = new WarningsDetector($toolInfo->reveal());
@@ -37,7 +37,7 @@ final class WarningsDetectorTest extends TestCase
 
     public function testDetectOldVendorNotLegacyPackage()
     {
-        $toolInfo = $this->prophesize('PhpCsFixer\ToolInfoInterface');
+        $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
         $toolInfo->isInstalledByComposer()->willReturn(false);
         $toolInfo->getComposerInstallationDetails()->willReturn([
             'name' => 'friendsofphp/php-cs-fixer',
@@ -51,7 +51,7 @@ final class WarningsDetectorTest extends TestCase
 
     public function testDetectOldVendorLegacyPackage()
     {
-        $toolInfo = $this->prophesize('PhpCsFixer\ToolInfoInterface');
+        $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
         $toolInfo->isInstalledByComposer()->willReturn(true);
         $toolInfo->getComposerInstallationDetails()->willReturn([
             'name' => 'fabpot/php-cs-fixer',
