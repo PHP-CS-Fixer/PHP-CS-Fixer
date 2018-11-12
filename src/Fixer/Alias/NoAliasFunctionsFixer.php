@@ -19,7 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -174,6 +174,8 @@ mbereg_search_getregs();
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $functionsAnalyzer = new FunctionsAnalyzer();
+
         /** @var \PhpCsFixer\Tokenizer\Token $token */
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
             // check mapping hit
@@ -188,16 +190,7 @@ mbereg_search_getregs();
                 continue;
             }
 
-            // skip expressions which are not function reference
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$prevTokenIndex];
-
-            // handle function reference with namespaces
-            if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
-                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($prevTokenIndex)];
-            }
-
-            if ($prevToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING, CT::T_NAMESPACE_OPERATOR, CT::T_RETURN_REF])) {
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 continue;
             }
 
