@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-26T14:49:29Z
+
+@SpacePossum , anything against going 2.12 ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-26T16:31:07Z
+
+2.12 sounds great to me as well :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-31T16:42:07Z
+
+@alexmanno can you retarget the PR to 2.12? if you're not familiar with it or don't have the time I'm happy to do it on your behalf.
+
+---------------------------------------------------------------------------
+
+by alexmanno at 2018-11-01T09:51:24Z
+
+@SpacePossum I'm not very confident with this, can you do it? Many thanks!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-01T11:44:30Z
+
+sure thing, done :)  please note that I force pushed to your branch to change the head
