@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\tests\AutoReview;
+namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\TransformerInterface;
