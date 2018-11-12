@@ -87,7 +87,7 @@ final class DiffConsoleFormatter
 
                         return sprintf($lineTemplate, $string);
                     },
-                    Preg::split('#\R#u', $diff)
+                    preg_split('#\R#', $diff)
                 )
             )
         );
