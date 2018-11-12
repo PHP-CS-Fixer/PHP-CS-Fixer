@@ -66,7 +66,7 @@ final class AliasedFixerOptionBuilderTest extends TestCase
         $this->assertSame('baz', $option->getDefault());
         $this->assertSame(['bool'], $option->getAllowedTypes());
         $this->assertSame([true, false], $option->getAllowedValues());
-        $this->assertInstanceOf('Closure', $option->getNormalizer());
+        $this->assertInstanceOf(\Closure::class, $option->getNormalizer());
         $this->assertSame('baz', $option->getAlias());
     }
 }

@@ -114,7 +114,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.'), 'baz');
 
-        $this->expectException('LogicException');
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('No default value defined.');
         $option->getDefault();
     }
@@ -168,7 +168,7 @@ final class AliasedFixerOptionTest extends TestCase
         $this->assertInternalType('array', $allowedTypes);
         $this->assertCount(1, $allowedTypes);
         $this->assertArrayHasKey(0, $allowedTypes);
-        $this->assertInstanceOf('Closure', $allowedTypes[0]);
+        $this->assertInstanceOf(\Closure::class, $allowedTypes[0]);
     }
 
     public function testGetNormalizers()
@@ -177,7 +177,7 @@ final class AliasedFixerOptionTest extends TestCase
         $this->assertNull($option->getNormalizer());
 
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, null, function () {}), 'baz');
-        $this->assertInstanceOf('Closure', $option->getNormalizer());
+        $this->assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 
     /**
@@ -202,7 +202,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public function testRequiredWithDefaultValue()
     {
-        $this->expectException('LogicException');
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Required options cannot have a default value.');
 
         new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, false), 'baz');
