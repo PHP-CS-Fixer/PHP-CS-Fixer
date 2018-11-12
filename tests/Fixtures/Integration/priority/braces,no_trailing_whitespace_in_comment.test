@@ -1,0 +1,50 @@
+--TEST--
+Integration of fixers: braces,no_trailing_whitespace_in_comment.
+--RULESET--
+{"braces": true, "no_trailing_whitespace_in_comment": true}
+--EXPECT--
+<?php
+// Sorry
+?>
+<h1>Test</h1>
+<div>
+    <?php
+
+    $a = true;
+
+    if ($a) { // This will always run?>
+        <p>First!</p>
+        <?php
+        $b = true;
+
+        if ($b) { // And so will this
+            ?>
+            <p>Hello world</p>
+            <?php
+        }
+    } ?>
+</div>
+
+--INPUT--
+<?php
+// Sorry
+?>
+<h1>Test</h1>
+<div>
+    <?php
+
+    $a = true;
+
+    if ($a) { // This will always run
+        ?>
+        <p>First!</p>
+        <?php
+        $b = true;
+
+        if ($b) { // And so will this
+            ?>
+            <p>Hello world</p>
+            <?php
+        }
+    } ?>
+</div>
