@@ -372,7 +372,7 @@ final class ProjectCodeTest extends TestCase
             array_filter(
                 $this->getSrcClasses(),
                 function ($className) {
-                    return 'PhpCsFixer\\Preg' !== $className;
+                    return 'PhpCsFixer\\Preg' !== $className && 'PhpCsFixer\\Differ\\DiffConsoleFormatter' !== $className;
                 }
             )
         );
