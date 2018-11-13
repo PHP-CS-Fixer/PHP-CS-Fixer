@@ -339,7 +339,7 @@ Choose from the list of available rules:
     structures; defaults to ``'same'``
   - ``position_after_functions_and_oop_constructs`` (``'next'``, ``'same'``): whether
     the opening brace should be placed on "next" or "same" line after
-    classy constructs (non-anonymous classes, interfaces, traits, methods
+    class constructs (non-anonymous classes, interfaces, traits, methods
     and non-lambda functions); defaults to ``'next'``
 
 * **cast_spaces** [@Symfony]
@@ -358,7 +358,7 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``elements`` (a subset of ``['const', 'method', 'property']``): list of classy
+  - ``elements`` (a subset of ``['const', 'method', 'property']``): list of class
     elements; 'const', 'method', 'property'; defaults to ``['const',
     'method', 'property']``
 
@@ -1441,7 +1441,7 @@ Choose from the list of available rules:
 
 * **phpdoc_no_useless_inheritdoc** [@Symfony]
 
-  Classy that does not inherit must not have ``@inheritdoc`` tags.
+  Class that does not inherit must not have ``@inheritdoc`` tags.
 
 * **phpdoc_order**
 
