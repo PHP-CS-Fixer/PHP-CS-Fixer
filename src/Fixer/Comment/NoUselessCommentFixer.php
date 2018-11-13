@@ -91,13 +91,13 @@ class Foo {
 
             if ($tokens[$nextIndex]->isGivenKind([T_CLASS, T_INTERFACE, T_TRAIT])) {
                 $newContent = Preg::replace(
-                    '/((^|\R)\h*(#|\/*\**))\h*\b(Class|Interface|Trait)\h+[A-Za-z0-1\\\\_]+\.?(\h*\R\h*\*?|\h*$)/i',
+                    '/((^|\R)\h*(#|\/*\**))\h*\b(Class|Interface|Trait)\h+[A-Za-z0-9\\\\_]+\.?(\h*\R\h*\*?|\h*$)/i',
                     '$1',
                     $token->getContent()
                 );
             } elseif ($tokens[$nextIndex]->isGivenKind(T_FUNCTION)) {
                 $newContent = Preg::replace(
-                    '/((^|\R)\h*(#|\/*\**))\h*\b((Gets?|SetS?)\h+[A-Za-z0-1\\\\_]+|[A-Za-z0-1\\\\_]+\h+constructor)\.?(\h*\R\h*\*?|\h*$)/i',
+                    '/((^|\R)\h*(#|\/*\**))\h*\b((Gets?|SetS?)\h+[A-Za-z0-9\\\\_]+|[A-Za-z0-9\\\\_]+\h+constructor)\.?(\h*\R\h*\*?|\h*$)/i',
                     '$1',
                     $token->getContent()
                 );
