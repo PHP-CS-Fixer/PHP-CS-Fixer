@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\tests\Tokenizer\Resolver;
+namespace PhpCsFixer\Tests\Tokenizer\Resolver;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Resolver\TypeShortNameResolver;

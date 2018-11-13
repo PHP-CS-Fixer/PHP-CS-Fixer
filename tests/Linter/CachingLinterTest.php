@@ -32,7 +32,7 @@ final class CachingLinterTest extends TestCase
      */
     public function testIsAsync($isAsync)
     {
-        $sublinter = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+        $sublinter = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $sublinter->isAsync()->willReturn($isAsync);
 
         $linter = new CachingLinter($sublinter->reveal());
@@ -56,10 +56,10 @@ final class CachingLinterTest extends TestCase
             'baz.php' => '<?php echo "foobarbaz";',
         ]);
 
-        $result1 = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
-        $result2 = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
+        $result1 = $this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class);
+        $result2 = $this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class);
 
-        $sublinter = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+        $sublinter = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $sublinter->lintFile($fs->url().'/foo.php')->shouldBeCalledTimes(1)->willReturn($result1->reveal());
         $sublinter->lintFile($fs->url().'/bar.php')->shouldNotBeCalled();
         $sublinter->lintFile($fs->url().'/baz.php')->shouldBeCalledTimes(1)->willReturn($result2->reveal());
@@ -74,10 +74,10 @@ final class CachingLinterTest extends TestCase
 
     public function testLintSourceIsCalledOnceOnSameContent()
     {
-        $result1 = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
-        $result2 = $this->prophesize('PhpCsFixer\Linter\LintingResultInterface');
+        $result1 = $this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class);
+        $result2 = $this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class);
 
-        $sublinter = $this->prophesize('PhpCsFixer\Linter\LinterInterface');
+        $sublinter = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $sublinter->lintSource('<?php echo "baz";')->shouldBeCalledTimes(1)->willReturn($result1->reveal());
         $sublinter->lintSource('<?php echo "foobarbaz";')->shouldBeCalledTimes(1)->willReturn($result2->reveal());
 

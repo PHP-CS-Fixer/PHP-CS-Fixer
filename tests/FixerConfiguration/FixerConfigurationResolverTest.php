@@ -48,7 +48,7 @@ final class FixerConfigurationResolverTest extends TestCase
 
     public function testWithDuplicateAliasOptions()
     {
-        $this->expectException('LogicException');
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The "foo" option is defined multiple times.');
 
         new FixerConfigurationResolver([
@@ -192,7 +192,7 @@ final class FixerConfigurationResolverTest extends TestCase
             new AliasedFixerOption(new FixerOption('bar', 'Bar.'), 'baz'),
         ]);
 
-        $this->expectException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
+        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
         $this->expectExceptionMessage('Aliased option bar/baz is passed multiple times');
 
         $configuration->resolve([
