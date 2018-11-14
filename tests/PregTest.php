@@ -166,13 +166,14 @@ final class PregTest extends TestCase
 
     /**
      * @param string $pattern
+     * @param string $subject
      *
      * @dataProvider provideCommonCases
      */
-    public function testSplit($pattern)
+    public function testSplit($pattern, $subject)
     {
-        $expectedResult = preg_split($pattern, 'foo');
-        $actualResult = Preg::split($pattern, 'foo');
+        $expectedResult = preg_split($pattern, $subject);
+        $actualResult = Preg::split($pattern, $subject);
 
         $this->assertSame($expectedResult, $actualResult);
     }
