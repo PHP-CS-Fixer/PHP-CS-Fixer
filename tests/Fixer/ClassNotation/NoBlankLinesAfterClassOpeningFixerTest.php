@@ -130,6 +130,40 @@ class Good
 }',
         ];
 
+        // check if line with spaces is removed when next token is indented
+        $cases[] = [
+            '<?php
+class Foo
+{
+    function bar() {}
+}
+',
+            '<?php
+class Foo
+{
+    '.'
+    function bar() {}
+}
+',
+        ];
+
+        // check if line with spaces is removed when next token is not indented
+        $cases[] = [
+            '<?php
+class Foo
+{
+function bar() {}
+}
+',
+            '<?php
+class Foo
+{
+    '.'
+function bar() {}
+}
+',
+        ];
+
         return $cases;
     }
 

@@ -99,13 +99,12 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
 
             return;
         }
-        $newWhitespaceToken = new Token([T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]);
         if ($previous->isWhitespace()) {
             // Fix the previous whitespace token
-            $tokens[$previousIndex] = $newWhitespaceToken;
+            $tokens[$previousIndex] = new Token([T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken).substr($previous->getContent(), strrpos($previous->getContent(), "\n") + 1)]);
         } else {
             // Add a new whitespace token
-            $tokens->insertAt($index, $newWhitespaceToken);
+            $tokens->insertAt($index, new Token([T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]));
         }
     }
 }

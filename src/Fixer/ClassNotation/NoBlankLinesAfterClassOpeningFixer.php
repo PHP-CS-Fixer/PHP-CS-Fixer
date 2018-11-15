@@ -18,7 +18,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Utils;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
@@ -87,8 +86,7 @@ final class Sample
         // if there is more than one new line in the whitespace, then we need to fix it
         if (substr_count($content, "\n") > 1) {
             // the final bit of the whitespace must be the next statement's indentation
-            $lines = Utils::splitLines($content);
-            $tokens[$index] = new Token([T_WHITESPACE, $this->whitespacesConfig->getLineEnding().end($lines)]);
+            $tokens[$index] = new Token([T_WHITESPACE, $this->whitespacesConfig->getLineEnding().substr($content, strrpos($content, "\n") + 1)]);
         }
     }
 }

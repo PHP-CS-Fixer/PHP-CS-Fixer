@@ -17,7 +17,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Utils;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -107,8 +106,7 @@ class Bar {}
         // if there is more than one new line in the whitespace, then we need to fix it
         if (substr_count($content, "\n") > 1) {
             // the final bit of the whitespace must be the next statement's indentation
-            $lines = Utils::splitLines($content);
-            $tokens[$index] = new Token([T_WHITESPACE, "\n".end($lines)]);
+            $tokens[$index] = new Token([T_WHITESPACE, substr($content, strrpos($content, "\n"))]);
         }
     }
 }
