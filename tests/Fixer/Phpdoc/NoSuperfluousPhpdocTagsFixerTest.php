@@ -24,11 +24,13 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param array       $config
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $config = [])
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -85,7 +87,7 @@ class Foo {
     public function doFoo(Bar $bar) {}
 }',
             ],
-            'no typehint mixed' => [
+            'allow_mixed=>false' => [
                 '<?php
 class Foo {
     /**
@@ -102,6 +104,18 @@ class Foo {
      */
     public function doFoo($bar) {}
 }',
+                ['allow_mixed' => false],
+            ],
+            'allow_mixed=>true' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo($bar) {}
+}',
+                null,
+                ['allow_mixed' => true],
             ],
             'multiple different types' => [
                 '<?php
@@ -601,61 +615,5 @@ class Foo {
 }',
             ],
         ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixWithAllowedMixedCases
-     */
-    public function testFixWithAllowedMixed($expected, $input = null)
-    {
-        $this->fixer->configure(['allow_mixed' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixWithAllowedMixedCases()
-    {
-        $cases = $this->provideFixCases();
-        $cases['no typehint mixed'] = [
-            '<?php
-class Foo {
-    /**
-     * @param mixed $bar
-     *
-     * @return mixed
-     */
-    public function doFoo($bar) {}
-}',
-        ];
-
-        return $cases;
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixPhp70Cases
-     * @requires PHP 7.0
-     */
-    public function testFixPhp70WithAllowedMixed($expected, $input = null)
-    {
-        $this->fixer->configure(['allow_mixed' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixPhp71Cases
-     * @requires PHP 7.1
-     */
-    public function testFixPhp71WithAllowedMixed($expected, $input = null)
-    {
-        $this->fixer->configure(['allow_mixed' => true]);
-        $this->doTest($expected, $input);
     }
 }

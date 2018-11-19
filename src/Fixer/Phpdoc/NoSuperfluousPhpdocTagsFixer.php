@@ -42,18 +42,29 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
 class Foo {
     /**
      * @param Bar $bar
+     * @param mixed $baz
      */
-    public function doFoo(Bar $bar) {}
+    public function doFoo(Bar $bar, $baz) {}
 }
 '),
+                new CodeSample('<?php
+class Foo {
+    /**
+     * @param Bar $bar
+     * @param mixed $baz
+     */
+    public function doFoo(Bar $bar, $baz) {}
+}
+', ['allow_mixed' => true]),
                 new VersionSpecificCodeSample('<?php
 class Foo {
     /**
      * @param Bar $bar
+     * @param mixed $baz
      *
      * @return Baz
      */
-    public function doFoo(Bar $bar): Baz {}
+    public function doFoo(Bar $bar, $baz): Baz {}
 }
 ', new VersionSpecification(70000)),
             ]
