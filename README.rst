@@ -131,7 +131,7 @@ You can update ``php-cs-fixer`` through this command:
 
 .. code-block:: bash
 
-    $ brew upgrade php-cs-fixer
+    $ brew install php-cs-fixer
 
 Locally (PHIVE)
 ~~~~~~~~~~~~~~~~~~~
