@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
@@ -145,12 +146,18 @@ echo 1;
      */
     protected function createConfigurationDefinition()
     {
+        $fixerName = $this->getName();
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('header', 'Proper header content.'))
                 ->setAllowedTypes(['string'])
-                ->setNormalizer(static function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value) use ($fixerName) {
                     if ('' === trim($value)) {
                         return '';
+                    }
+
+                    if (false !== strpos($value, '*/')) {
+                        throw new InvalidFixerConfigurationException($fixerName, 'Cannot use \'*/\' in header.');
                     }
 
                     return $value;
