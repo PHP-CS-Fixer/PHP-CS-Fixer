@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-12T22:27:59Z
+
+> Some noob could not correctly write word "argument" :)
+
+oh cmon...
+
+> do you think it would be useful?
+
+detecting typos by whitelisting accepted words ? then we need to whitelist whole dict...
+
+> "regex" vs "regex"
+
+I would choose "regex" here ;)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-11-12T22:46:09Z
+
+> detecting typos by whitelisting accepted words ? then we need to whitelist whole dict...
+
+"Only" 840 words :)
+
+> I would choose "regex" here ;)
+
+I meant "regex" vs "regexp".
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-13T10:19:13Z
+
+I like the idea of having a basic spelling check rule, aren't there like open standards and open dictionaries?
+Maybe someone knows how fabbot does it?
