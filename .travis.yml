@@ -120,7 +120,15 @@ jobs:
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
-            php: nightly
+            php: 7.3
+            before_script:
+                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,blank_line_after_opening_tag,native_function_invocation -q || travis_terminate 1
+            env: COMPOSER_FLAGS="--ignore-platform-reqs"
+
+        -
+            <<: *STANDARD_TEST_JOB
+            stage: Test
+            php: master
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
 
         -
