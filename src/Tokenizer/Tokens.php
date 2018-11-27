@@ -1254,9 +1254,10 @@ class Tokens extends \SplFixedArray
                 return;
             }
 
-            $this->clearAt($index - $offset);
-            if ('' !== $newContent) {
-                $this->insertAt($index - $offset, new Token([T_WHITESPACE, $newContent]));
+            if ('' === $newContent) {
+                $this->clearAt($index - $offset);
+            } else {
+                $this[$index - $offset] = new Token([T_WHITESPACE, $newContent]);
             }
         }
     }
