@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-10-29T16:00:38Z
+
+@jakebathman I have a question: can you close this PR?
+
+This is PHP CS Fixer and the extension is for PHP_CodeSniffer - completely different tool.
+
+---------------------------------------------------------------------------
+
+by jakebathman at 2018-10-29T16:09:46Z
+
+Wow, I pasted the wrong GitHub URL and didn't even realize. Pushed a fix @kubawerlos
+
+---------------------------------------------------------------------------
+
+by jakebathman at 2018-11-01T15:39:56Z
+
+@keradus Good points and suggestions. Updated to change the URL and actually use it in the readme this time.
