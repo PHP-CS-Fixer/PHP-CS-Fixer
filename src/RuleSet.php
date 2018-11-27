@@ -155,6 +155,7 @@ final class RuleSet implements RuleSetInterface
                 'comment_types' => ['hash'],
             ],
             'single_quote' => true,
+            'single_trait_insert_per_statement' => true,
             'space_after_semicolon' => [
                 'remove_in_empty_for_expressions' => true,
             ],
