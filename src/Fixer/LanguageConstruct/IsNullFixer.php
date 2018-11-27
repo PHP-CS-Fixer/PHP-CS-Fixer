@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\LanguageConstruct;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -70,6 +70,7 @@ final class IsNullFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $sequenceNeeded = [[T_STRING, 'is_null'], '('];
+        $functionsAnalyzer = new FunctionsAnalyzer();
 
         $currIndex = 0;
         while (null !== $currIndex) {
@@ -86,40 +87,33 @@ final class IsNullFixer extends AbstractFixer
             // move the cursor just after the sequence
             list($isNullIndex, $currIndex) = $matches;
 
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $matches[0])) {
+                continue;
+            }
+
             $next = $tokens->getNextMeaningfulToken($currIndex);
             if ($tokens[$next]->equals(')')) {
                 continue;
             }
 
-            // skip all expressions which are not a function reference
-            $inversionCandidateIndex = $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
-            $prevToken = $tokens[$prevTokenIndex];
-            if ($prevToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
-                continue;
-            }
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
 
             // handle function references with namespaces
-            if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
-                $inversionCandidateIndex = $twicePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-                /** @var Token $twicePrevToken */
-                $twicePrevToken = $tokens[$twicePrevTokenIndex];
-                if ($twicePrevToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, T_STRING, CT::T_NAMESPACE_OPERATOR])) {
-                    continue;
-                }
-
-                // get rid of the root namespace when it used and check if the inversion operator provided
+            if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($prevTokenIndex);
                 $tokens->clearAt($prevTokenIndex);
+
+                $prevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
             }
 
             // check if inversion being used, text comparison is due to not existing constant
             $isInvertedNullCheck = false;
-            if ($tokens[$inversionCandidateIndex]->equals('!')) {
+            if ($tokens[$prevTokenIndex]->equals('!')) {
                 $isInvertedNullCheck = true;
 
                 // get rid of inverting for proper transformations
-                $tokens->removeTrailingWhitespace($inversionCandidateIndex);
-                $tokens->clearAt($inversionCandidateIndex);
+                $tokens->removeTrailingWhitespace($prevTokenIndex);
+                $tokens->clearAt($prevTokenIndex);
             }
 
             // before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant
