@@ -107,6 +107,7 @@ FIXED;
 
             ['<?php is_nullSmth(json_decode($x));'],
             ['<?php smth_is_null(json_decode($x));'],
+            ['<?php namespace Foo; function &is_null($x) { return null === $x; }'],
 
             ['<?php "SELECT ... is_null(json_decode($x)) ...";'],
             ['<?php "SELECT ... is_null(json_decode($x)) ...";'],
