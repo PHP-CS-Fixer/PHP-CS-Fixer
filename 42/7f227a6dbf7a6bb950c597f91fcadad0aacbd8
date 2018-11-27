@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-11-14T13:41:38Z
+
+Shall we use `PREG_NO_ERROR` instead of `0`? More verbose and catches if it's redefined it a later release of PHP (highly unlikely ;) )
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-11-14T13:50:56Z
+
+Ok, now I need some help, I cannot reproduce the errors, all tests are passing for me.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-11-14T13:58:50Z
+
+Okay, found the reason: https://bugs.php.net/bug.php?id=74183
+
+See the difference: https://3v4l.org/eF5DO#v7032
