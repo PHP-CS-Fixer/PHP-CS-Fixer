@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-12T07:51:28Z
+
+I like the change to remove the `_toString()` method/call. The test is a good idea as well but as keradus pointed out we already do it :)
+
+So maybe update the PR to only keep the `_toString()` deprecation?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-11-13T09:00:01Z
+
+@keradus @SpacePossum what about making the strict check mandatory?
+
+(Travis will fail until [this](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4098) is merged)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-13T10:35:30Z
+
+maybe we can add the `strict_types` to the standard PHP 7 job without all the other risky ones from the migration sets?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-11-13T12:04:27Z
+
+@SpacePossum like this?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-13T23:46:27Z
+
+btw, please target 2.12, nothing that we shall benefit only since 2.14
