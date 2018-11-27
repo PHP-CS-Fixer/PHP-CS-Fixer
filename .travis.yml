@@ -150,5 +150,5 @@ jobs:
                 - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}
 
     allow_failures:
-        - php: nightly
+        - php: master
         - env: COLLECT_COVERAGE=1
