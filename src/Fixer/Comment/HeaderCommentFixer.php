@@ -106,6 +106,19 @@ echo 1;
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should be run after the NoBlankLinesAfterPhpdocFixer.
+        //
+        // When this fixer is configured with ["separate" => "bottom", "commentType" => "PHPDoc"]
+        // and the target file has no namespace or declare() construct,
+        // the fixed header comment gets trimmed by NoBlankLinesAfterPhpdocFixer if we run before it.
+        return -30;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // figure out where the comment should be placed
