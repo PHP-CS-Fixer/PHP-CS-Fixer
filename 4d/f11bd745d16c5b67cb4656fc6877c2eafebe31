@@ -1,0 +1,88 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-12T08:51:48Z
+
+Hi. please rebase on 2.2
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-01-12T10:47:04Z
+
+Targeted 2.2 in #3440.
+I made it a separate PR, since not all fixers here are present in 2.2
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-01-19T10:22:50Z
+
+@keradus @SpacePossum I have moved the discussed test to the misc folder for now, and added it back to the list of caseswithout tests
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-01-22T08:27:54Z
+
+#3440 was merged, please rebase
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-01-22T08:50:18Z
+
+Rebased and targeted 2.10
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-02-02T14:55:59Z
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3444 got merged, I merged 2.10 into your PR.
+let us see...
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-02-06T08:42:59Z
+
+@keradus It looks like the appveyor failures are unrelated to my changes.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-04-18T07:41:42Z
+
+@BackEndTea please note that I've resolved the merge conflict, so please update your local branch if needed
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-06-28T07:15:36Z
+
+Let us not merge this one yet, we got no answer for `class_attributes_separation,braces.test`, and for that I want to manually test it
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-28T07:20:51Z
+
+sure @keradus , I couldn't find a conflict but like hear your findings :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-06-28T11:07:33Z
+
+maybe i won't find a thing, simply need to find an hour of calm and double check it
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-27T14:18:38Z
+
+I found a prio issue after all and created the test.
+Also updated the fixer factory for it, rebased, resolved conflicts and squashed.
+I know people don't like early squashing but maintaining a PR for 10+ months causes this type of thing.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-28T01:48:22Z
+
+> I know people don't like early squashing (...)
+
+next time, simply keep single commit for original author's changes, and different commit for your changes - now, impossible to see what was your fix
+
+> I found a prio issue after all and created the test.
+> maintaining a PR for 10+
+
+ha, I knew we had a prio issue somewhere here ! nice finding !
