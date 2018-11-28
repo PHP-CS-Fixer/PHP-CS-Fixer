@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by staabm at 2018-10-27T08:05:03Z
+
+Not sure why the coverage build is failling.. do I need todo something about that?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-10-27T08:41:26Z
+
+Coverage build is failing for a long time and is not mandatory, the problem is that deployment stage failed - if you rebase your branch all should be fine.
