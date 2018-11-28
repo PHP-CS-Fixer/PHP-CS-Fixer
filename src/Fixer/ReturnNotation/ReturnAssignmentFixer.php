@@ -153,6 +153,12 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 continue; // don't bother to look into anything else than nested functions as the current is risky already
             }
 
+            if ($tokens[$index]->equals('&')) {
+                $isRisky = true;
+
+                continue;
+            }
+
             if ($tokens[$index]->isGivenKind(T_RETURN)) {
                 $candidates[] = $index;
 
