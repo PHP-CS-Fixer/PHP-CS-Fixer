@@ -64,6 +64,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
+            [$fixers['backtick_to_shell_exec'], $fixers['explicit_string_variable']],
             [$fixers['blank_line_after_opening_tag'], $fixers['no_blank_lines_before_namespace']],
             [$fixers['braces'], $fixers['array_indentation']],
             [$fixers['braces'], $fixers['method_chaining_indentation']],
@@ -277,12 +278,10 @@ final class FixerFactoryTest extends TestCase
         // This structure contains older cases that are not yet covered by tests.
         // It may only shrink, never add anything to it.
         $casesWithoutTests = [
-            'class_attributes_separation,braces.test',
             'class_attributes_separation,indentation_type.test',
             'indentation_type,phpdoc_indent.test',
             'method_separation,braces.test',
             'method_separation,indentation_type.test',
-            'no_empty_statement,multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',

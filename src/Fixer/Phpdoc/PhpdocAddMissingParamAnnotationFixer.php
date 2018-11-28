@@ -268,8 +268,16 @@ function f9(string $foo, $bar, $baz) {}
 
             if ($sawName) {
                 $info['default'] .= $token->getContent();
-            } else {
-                $info['type'] .= $token->getContent();
+            } elseif ('&' !== $token->getContent()) {
+                if ($token->isGivenKind(T_ELLIPSIS)) {
+                    if ('' === $info['type']) {
+                        $info['type'] = 'array';
+                    } else {
+                        $info['type'] .= '[]';
+                    }
+                } else {
+                    $info['type'] .= $token->getContent();
+                }
             }
         }
 
