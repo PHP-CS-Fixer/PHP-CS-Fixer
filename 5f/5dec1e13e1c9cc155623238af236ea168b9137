@@ -1,0 +1,62 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-10-15T06:19:35Z
+
+Yup: https://3v4l.org/eGagi
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-15T06:58:09Z
+
+I got this case stashed;
+```php
+            [
+                '<?php $a = "*{$a[0]}{$b[1]}X{$c[2]}{$d[3]}";',
+                '<?php $a = "*$a[0]$b[1]X$c[2]$d[3]";',
+            ],
+```
+
+(which fails)
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-10-15T07:03:45Z
+
+Solved in https://github.com/kubawerlos/PHP-CS-Fixer/pull/1 @kubawerlos please review and merge if it's ok for you
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-10-15T07:26:13Z
+
+Because of the refactoring, I've also incorporated here the fix for https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4029
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-10-23T15:02:07Z
+
+@SpacePossum I can see this case in tests
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-24T16:32:28Z
+
+@kubawerlos thanks man, I over looked it :+1:
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-13T13:53:31Z
+
+this fixes https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4006 as well I think?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-11-13T14:04:38Z
+
+Yups: see https://github.com/kubawerlos/PHP-CS-Fixer/pull/2 please @kubawerlos merge it to prove the bugfix :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-28T00:31:44Z
+
+Closes #4006
+Closes #4029
