@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-23T11:46:55Z
+
+please add
+
+```php
+<?php
+
+namespace Foo\Foo2;
+
+interface Bar {
+    public function baz00(Foo2\Bar $bar);
+    public function baz10(\Foo2\Bar $bar);
+    public function baz20(Foo\Foo2\Bar $bar);
+    public function baz21(\Foo\Foo2\Bar $bar);
+    public function baz30(Test\Foo\Foo2\Bar $bar);
+    public function baz31(\Test\Foo\Foo2\Bar $bar);
+}
+```
