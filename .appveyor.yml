@@ -29,7 +29,7 @@ install:
     - echo extension=php_curl.dll >> php.ini
     - echo extension=php_openssl.dll >> php.ini
     - echo extension=php_mbstring.dll >> php.ini
-    - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/download/1.4.1/composer.phar)
+    - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/composer.phar)
     - cd C:\projects\php-cs-fixer
     - php C:\tools\composer.phar global show hirak/prestissimo -q || php C:\tools\composer.phar global require hirak/prestissimo
 
