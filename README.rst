@@ -929,6 +929,10 @@ Choose from the list of available rules:
   - ``strict`` (``bool``): whether leading ``\`` of function call not meant to have it
     should be removed; defaults to ``false``
 
+* **native_function_type_declaration_casing** [@Symfony, @PhpCsFixer]
+
+  Native type hints for functions should use the correct case.
+
 * **new_with_braces** [@Symfony, @PhpCsFixer]
 
   All instances created with new keyword must be followed by braces.
