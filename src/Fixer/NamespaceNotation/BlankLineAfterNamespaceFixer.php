@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -62,7 +63,6 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $ending = $this->whitespacesConfig->getLineEnding();
         $lastIndex = $tokens->count() - 1;
 
         for ($index = $lastIndex; $index >= 0; --$index) {
@@ -75,21 +75,70 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
             $semicolonIndex = $tokens->getNextTokenOfKind($index, [';', '{', [T_CLOSE_TAG]]);
             $semicolonToken = $tokens[$semicolonIndex];
 
-            if (!isset($tokens[$semicolonIndex + 1]) || !$semicolonToken->equals(';')) {
+            if (!$semicolonToken->equals(';')) {
                 continue;
             }
 
-            $nextIndex = $semicolonIndex + 1;
-            $nextToken = $tokens[$nextIndex];
+            $indexToEnsureBlankLineAfter = $this->getIndexToEnsureBlankLineAfter($tokens, $semicolonIndex);
+            $indexToEnsureBlankLine = $tokens->getNonEmptySibling($indexToEnsureBlankLineAfter, 1);
 
-            if (!$nextToken->isWhitespace()) {
-                $tokens->insertAt($semicolonIndex + 1, new Token([T_WHITESPACE, $ending.$ending]));
+            if (null !== $indexToEnsureBlankLine && $tokens[$indexToEnsureBlankLine]->isWhitespace()) {
+                $tokens[$indexToEnsureBlankLine] = $this->getTokenToInsert($tokens[$indexToEnsureBlankLine]->getContent(), $indexToEnsureBlankLine === $lastIndex);
             } else {
-                $tokens[$nextIndex] = new Token([
-                    T_WHITESPACE,
-                    ($nextIndex === $lastIndex ? $ending : $ending.$ending).ltrim($nextToken->getContent()),
-                ]);
+                $tokens->insertAt($indexToEnsureBlankLineAfter + 1, $this->getTokenToInsert('', $indexToEnsureBlankLineAfter === $lastIndex));
             }
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     *
+     * @return int
+     */
+    private function getIndexToEnsureBlankLineAfter(Tokens $tokens, $index)
+    {
+        $indexToEnsureBlankLine = $index;
+        $nextIndex = $tokens->getNonEmptySibling($indexToEnsureBlankLine, 1);
+
+        while (null !== $nextIndex) {
+            $token = $tokens[$nextIndex];
+
+            if ($token->isWhitespace()) {
+                if (1 === Preg::match('/\R/', $token->getContent())) {
+                    break;
+                }
+                $nextNextIndex = $tokens->getNonEmptySibling($nextIndex, 1);
+
+                if (!$tokens[$nextNextIndex]->isComment()) {
+                    break;
+                }
+            }
+
+            if (!$token->isWhitespace() && !$token->isComment()) {
+                break;
+            }
+
+            $indexToEnsureBlankLine = $nextIndex;
+            $nextIndex = $tokens->getNonEmptySibling($indexToEnsureBlankLine, 1);
+        }
+
+        return $indexToEnsureBlankLine;
+    }
+
+    /**
+     * @param string $currentContent
+     * @param bool   $isLastIndex
+     *
+     * @return Token
+     */
+    private function getTokenToInsert($currentContent, $isLastIndex)
+    {
+        $ending = $this->whitespacesConfig->getLineEnding();
+
+        $emptyLines = $isLastIndex ? $ending : $ending.$ending;
+        $indent = 1 === Preg::match('/^.*\R( *)$/s', $currentContent, $matches) ? $matches[1] : '';
+
+        return new Token([T_WHITESPACE, $emptyLines.$indent]);
     }
 }
