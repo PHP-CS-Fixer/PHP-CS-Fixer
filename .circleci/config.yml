@@ -15,7 +15,7 @@ jobs:
 
             - run: brew update
             - run: brew install php72
-            - run: echo "memory_limit = 512M" > $(brew --prefix)/etc/php/7.2/conf.d/memory.ini
+            - run: echo "memory_limit = 512M" > $(brew --prefix)/etc/php/7.3/conf.d/memory.ini
             - run: curl -sS https://getcomposer.org/installer | php
             - run: php composer.phar global show hirak/prestissimo -q || php composer.phar global require --no-interaction --no-progress --optimize-autoloader hirak/prestissimo
             - run: php composer.phar install --optimize-autoloader --no-interaction --no-progress --no-suggest
