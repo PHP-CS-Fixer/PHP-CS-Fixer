@@ -56,5 +56,6 @@
         <env name="SKIP_LINT_TEST_CASES" value="0"/>
         <env name="PHP_CS_FIXER_TEST_ALLOW_SKIPPING_PHAR_TESTS" value="1"/>
         <env name="PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER" value="0"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
     </php>
 </phpunit>

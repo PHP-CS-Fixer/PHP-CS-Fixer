@@ -63,10 +63,6 @@ jobs:
             stage: Fast Test
             php: 7.0
             install:
-                # Composer: enforce given Symfony components version
-                - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/force-lowest:$SYMFONY_VERSION; fi
-                - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/lts:$(echo $SYMFONY_VERSION | grep -o 'v[0-9]\+') || true; fi
-
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
             script:
@@ -83,7 +79,7 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.1
-            env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="v4.0"
+            env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
 
         -
             <<: *STANDARD_TEST_JOB
