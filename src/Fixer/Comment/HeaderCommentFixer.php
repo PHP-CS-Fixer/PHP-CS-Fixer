@@ -169,8 +169,10 @@ echo 1;
                         return '';
                     }
 
-                    if (false !== strpos($value, '*/')) {
-                        throw new InvalidFixerConfigurationException($fixerName, 'Cannot use \'*/\' in header.');
+                    foreach (['*/', '?>'] as $invalidSequence) {
+                        if (false !== strpos($value, $invalidSequence)) {
+                            throw new InvalidFixerConfigurationException($fixerName, sprintf('Invalid configuration: Cannot use \'%s\' in header.', $invalidSequence));
+                        }
                     }
 
                     return $value;

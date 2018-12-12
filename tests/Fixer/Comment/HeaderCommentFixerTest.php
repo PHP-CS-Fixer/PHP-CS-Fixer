@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -344,7 +343,7 @@ echo 1;'
     public function testMisconfiguration($configuration, $exceptionMessage)
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[header_comment] '.$exceptionMessage);
+        $this->expectExceptionMessageRegExp('#^\[header_comment\] '.preg_quote($exceptionMessage, '#').'\.$#');
 
         $this->configureFixerWithAliasedOptions($configuration);
     }
@@ -352,38 +351,52 @@ echo 1;'
     public function provideMisconfigurationCases()
     {
         return [
-            [[], 'Missing required configuration: The required option "header" is missing.'],
+            [[], 'Missing required configuration: The required option "header" is missing'],
             [
                 ['header' => 1],
-                'Invalid configuration: The option "header" with value 1 is expected to be of type "string", but is of type "integer".',
+                'Invalid configuration: The option "header" with value 1 is expected to be of type "string", but is of type "integer"',
             ],
             [
                 [
                     'header' => '',
                     'commentType' => 'foo',
                 ],
-                'Invalid configuration: The option "comment_type" with value "foo" is invalid. Accepted values are: "PHPDoc", "comment".',
+                'Invalid configuration: The option "comment_type" with value "foo" is invalid. Accepted values are: "PHPDoc", "comment"',
             ],
             [
                 [
                     'header' => '',
                     'commentType' => new \stdClass(),
                 ],
-                'Invalid configuration: The option "comment_type" with value stdClass is invalid. Accepted values are: "PHPDoc", "comment".',
+                'Invalid configuration: The option "comment_type" with value stdClass is invalid. Accepted values are: "PHPDoc", "comment"',
             ],
             [
                 [
                     'header' => '',
                     'location' => new \stdClass(),
                 ],
-                'Invalid configuration: The option "location" with value stdClass is invalid. Accepted values are: "after_open", "after_declare_strict".',
+                'Invalid configuration: The option "location" with value stdClass is invalid. Accepted values are: "after_open", "after_declare_strict"',
             ],
             [
                 [
                     'header' => '',
                     'separate' => new \stdClass(),
                 ],
-                'Invalid configuration: The option "separate" with value stdClass is invalid. Accepted values are: "both", "top", "bottom", "none".',
+                'Invalid configuration: The option "separate" with value stdClass is invalid. Accepted values are: "both", "top", "bottom", "none"',
+            ],
+            [
+                [
+                    'header' => '/** test */',
+                    'comment_type' => 'PHPDoc',
+                ],
+                'Invalid configuration: Cannot use \'*/\' in header',
+            ],
+            [
+                [
+                    'header' => 'test ?>',
+                    'comment_type' => 'PHPDoc',
+                ],
+                'Invalid configuration: Cannot use \'?>\' in header',
             ],
         ];
     }
@@ -584,16 +597,5 @@ declare(strict_types=1)?>',
             "<?php\n\n/*\n * Bar\n */\n\necho 1;",
             "<?php\necho 1;"
         );
-    }
-
-    public function testInvalidHeaderConfiguration()
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[header_comment\] Cannot use \'\*/\' in header\.$#');
-
-        $this->fixer->configure([
-            'header' => '/** test */',
-            'comment_type' => 'PHPDoc',
-        ]);
     }
 }
