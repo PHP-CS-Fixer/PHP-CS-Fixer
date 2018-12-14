@@ -1,0 +1,50 @@
+--TEST--
+PHP 7.3 test.
+--RULESET--
+{
+    "@Symfony": true,
+    "list_syntax": {"syntax":"short"}
+}
+--REQUIREMENTS--
+{"php": 70300}
+--EXPECT--
+<?php
+
+function foo($a = true) // In PHP 8.0: true, false and null are converted from special-cased constants into reserved keywords.
+{
+}
+
+$firstKey = array_key_first($items);
+$lastKey = array_key_last($items);
+is_countable($foo);
+
+// https://wiki.php.net/rfc/list_reference_assignment
+[$a, &$b] = $array;
+
+// https://wiki.php.net/rfc/trailing-comma-function-calls Trailing commas in function and method calls are now allowed.
+
+foo(
+    $arg,
+    $arg2,
+);
+
+--INPUT--
+<?php
+
+function foo($a = TRUE) // In PHP 8.0: true, false and null are converted from special-cased constants into reserved keywords.
+{
+}
+
+$firstKey = ARRAY_KEY_FIRST($items);
+$lastKey = ARRAY_Key_last($items);
+IS_COUNTABLE($foo);
+
+// https://wiki.php.net/rfc/list_reference_assignment
+list($a, &$b) = $array;
+
+// https://wiki.php.net/rfc/trailing-comma-function-calls Trailing commas in function and method calls are now allowed.
+
+foo(
+    $arg,
+    $arg2,
+);

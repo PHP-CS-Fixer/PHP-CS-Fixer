@@ -76,6 +76,10 @@ final class ArgumentsAnalyzer
 
             // if comma matched, increase arguments counter
             if ($token->equals(',')) {
+                if ($tokens->getNextMeaningfulToken($paramContentIndex) === $closeParenthesis) {
+                    break; // trailing ',' in function call (PHP 7.3)
+                }
+
                 $arguments[$argumentsStart] = $paramContentIndex - 1;
                 $argumentsStart = $paramContentIndex + 1;
             }
