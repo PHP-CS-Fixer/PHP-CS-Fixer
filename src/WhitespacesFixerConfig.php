@@ -27,7 +27,7 @@ final class WhitespacesFixerConfig
     public function __construct($indent = '    ', $lineEnding = "\n")
     {
         $testIndent = ["\t"];
-        for ($i = 1; $i <= 8 ; ++$i) {
+        for ($i = 1; $i <= 8; ++$i) {
             $testIndent[] = str_repeat(' ', $i);
         }
         if (!\in_array($indent, $testIndent, true)) {
