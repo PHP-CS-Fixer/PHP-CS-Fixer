@@ -130,10 +130,11 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             '/(\R)(\h+)/', // find indent
             static function (array $matches) use ($indent) {
                 // normalize mixed indent
-                $content = Preg::replace('/(?:(?<! ) {1,3})?\t/', '    ', $matches[2]);
+                $iduniq();
+                $content = Preg::replace('/(?:(?<! ) {1,3})?\t/', $iduniq, $matches[2]);
 
                 // change indent to expected one
-                return $matches[1].str_replace('    ', $indent, $content);
+                return $matches[1].str_replace($iduniq, $indent, $content);
             },
             $content
         );
