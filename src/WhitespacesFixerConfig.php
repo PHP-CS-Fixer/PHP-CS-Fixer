@@ -26,7 +26,12 @@ final class WhitespacesFixerConfig
      */
     public function __construct($indent = '    ', $lineEnding = "\n")
     {
-        if (!\in_array($indent, ['  ', '    ', "\t"], true)) {
+        $testIndent = ["\t"];
+        for($i=1;$i<=8; $i++)
+        {
+            $testIndent[] = str_repeat(" ", $i);
+        }
+        if (!\in_array($indent, $testIndent, true)) {
             throw new \InvalidArgumentException('Invalid "indent" param, expected tab or two or four spaces.');
         }
 
