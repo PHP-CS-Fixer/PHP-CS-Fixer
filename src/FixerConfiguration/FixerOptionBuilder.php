@@ -126,7 +126,7 @@ final class FixerOptionBuilder
     }
 
     /**
-     * @return FixerOption
+     * @return FixerOptionInterface
      */
     public function getOption()
     {

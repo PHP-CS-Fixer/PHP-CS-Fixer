@@ -546,6 +546,46 @@ EOT
 EOT
                 ,
             ],
+            'annotation with double @' => [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * Double "@" is/was below
+         */
+        public function testFnc()
+        {
+            $this->setExpectedException(\FooException::class);
+
+            aaa();
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * Double "@" is/was below
+         * @@expectedException FooException
+         */
+        public function testFnc()
+        {
+            aaa();
+        }
+    }',
+            ],
+            'annotation with text before @' => [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * We are providing invalid input, for that we @expectedException FooException
+         */
+        public function testFnc()
+        {
+            aaa();
+        }
+    }',
+            ],
         ];
     }
 

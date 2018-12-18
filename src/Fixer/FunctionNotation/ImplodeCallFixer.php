@@ -109,9 +109,9 @@ final class ImplodeCallFixer extends AbstractFixer
                 }
 
                 // collect tokens from first argument
-                $firstArgumenteEndIndex = $argumentsIndices[\key($argumentsIndices)];
+                $firstArgumentEndIndex = $argumentsIndices[\key($argumentsIndices)];
                 $newSecondArgumentTokens = [];
-                for ($i = \key($argumentsIndices); $i <= $firstArgumenteEndIndex; ++$i) {
+                for ($i = \key($argumentsIndices); $i <= $firstArgumentEndIndex; ++$i) {
                     $newSecondArgumentTokens[] = clone $tokens[$i];
                     $tokens->clearAt($i);
                 }

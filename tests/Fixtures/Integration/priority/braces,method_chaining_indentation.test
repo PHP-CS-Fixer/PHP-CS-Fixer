@@ -1,0 +1,37 @@
+--TEST--
+Integration of fixers: braces,method_chaining_indentation.
+--RULESET--
+{"braces": true, "method_chaining_indentation": true}
+--EXPECT--
+<?php
+class SomeUnitTest extends PHPUnit\Framework\TestCase
+{
+    public function testSomething()
+    {
+        // *Only* the next line is indented wrong _before_ fixing
+        $this->entity
+            ->expects($this->once())
+            ->method('toXml')
+            ->willReturnCallback(
+                function (\DOMDocument $dom) {
+                    return $dom->createElement('elem');
+                });
+    }
+}
+
+--INPUT--
+<?php
+class SomeUnitTest extends PHPUnit\Framework\TestCase
+{
+    public function testSomething()
+    {
+        // *Only* the next line is indented wrong _before_ fixing
+         $this->entity
+            ->expects($this->once())
+            ->method('toXml')
+            ->willReturnCallback(
+                function (\DOMDocument $dom) {
+                    return $dom->createElement('elem');
+                });
+    }
+}

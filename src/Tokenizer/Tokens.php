@@ -1254,9 +1254,10 @@ class Tokens extends \SplFixedArray
                 return;
             }
 
-            $this->clearAt($index - $offset);
-            if ('' !== $newContent) {
-                $this->insertAt($index - $offset, new Token([T_WHITESPACE, $newContent]));
+            if ('' === $newContent) {
+                $this->clearAt($index - $offset);
+            } else {
+                $this[$index - $offset] = new Token([T_WHITESPACE, $newContent]);
             }
         }
     }
@@ -1401,7 +1402,11 @@ class Tokens extends \SplFixedArray
      */
     private function registerFoundToken($token)
     {
-        $tokenKind = $this->extractTokenKind($token);
+        // inlined extractTokenKind() call on the hot path
+        $tokenKind = $token instanceof Token
+            ? ($token->isArray() ? $token->getId() : $token->getContent())
+            : (\is_array($token) ? $token[0] : $token)
+        ;
 
         if (!isset($this->foundTokenKinds[$tokenKind])) {
             $this->foundTokenKinds[$tokenKind] = 0;
@@ -1417,7 +1422,11 @@ class Tokens extends \SplFixedArray
      */
     private function unregisterFoundToken($token)
     {
-        $tokenKind = $this->extractTokenKind($token);
+        // inlined extractTokenKind() call on the hot path
+        $tokenKind = $token instanceof Token
+            ? ($token->isArray() ? $token->getId() : $token->getContent())
+            : (\is_array($token) ? $token[0] : $token)
+        ;
 
         if (!isset($this->foundTokenKinds[$tokenKind])) {
             return;

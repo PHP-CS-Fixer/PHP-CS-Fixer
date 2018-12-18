@@ -1175,6 +1175,48 @@ echo $a;',
     }
 
     /**
+     * Action that begins with the word "remove" should not change the size of collection.
+     */
+    public function testRemovingLeadingWhitespaceWillNotIncreaseTokensCount()
+    {
+        $tokens = Tokens::fromCode('<?php
+                                    // Foo
+                                    $bar;');
+        $originalCount = $tokens->count();
+
+        $tokens->removeLeadingWhitespace(4);
+
+        $this->assertSame($originalCount, $tokens->count());
+        $this->assertSame(
+            '<?php
+                                    // Foo
+$bar;',
+            $tokens->generateCode()
+        );
+    }
+
+    /**
+     * Action that begins with the word "remove" should not change the size of collection.
+     */
+    public function testRemovingTrailingWhitespaceWillNotIncreaseTokensCount()
+    {
+        $tokens = Tokens::fromCode('<?php
+                                    // Foo
+                                    $bar;');
+        $originalCount = $tokens->count();
+
+        $tokens->removeTrailingWhitespace(2);
+
+        $this->assertSame($originalCount, $tokens->count());
+        $this->assertSame(
+            '<?php
+                                    // Foo
+$bar;',
+            $tokens->generateCode()
+        );
+    }
+
+    /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */

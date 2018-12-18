@@ -17,6 +17,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
 use PhpCsFixer\PregException;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -79,6 +80,7 @@ final class EregToPregFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $end = $tokens->count() - 1;
+        $functionsAnalyzer = new FunctionsAnalyzer();
 
         foreach (self::$functions as $map) {
             // the sequence is the function name, followed by "(" and a quoted string
@@ -102,9 +104,7 @@ final class EregToPregFixer extends AbstractFixer
                 // advance tokenizer cursor
                 $currIndex = $match[2];
 
-                // ensure it's a function call (not a method / static call)
-                $prev = $tokens->getPrevMeaningfulToken($match[0]);
-                if (null === $prev || $tokens[$prev]->isGivenKind([T_OBJECT_OPERATOR, T_DOUBLE_COLON])) {
+                if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $match[0])) {
                     continue;
                 }
 
