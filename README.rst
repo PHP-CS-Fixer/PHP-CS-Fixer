@@ -1160,6 +1160,11 @@ Choose from the list of available rules:
 
   Unused ``use`` statements must be removed.
 
+  Configuration options:
+
+  - ``treat_same_namespace_as_unused`` (``bool``): whether to treat imports in the
+    same namespace as unused; defaults to ``true``
+
 * **no_useless_else** [@PhpCsFixer]
 
   There should not be useless ``else`` cases.

@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
@@ -26,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoUnusedImportsFixer extends AbstractFixer
+final class NoUnusedImportsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -110,8 +113,23 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 }
             }
 
-            $this->removeUsesInSameNamespace($tokens, $currentNamespaceUseDeclarations, $namespace);
+            if ($this->configuration['treat_same_namespace_as_unused']) {
+                $this->removeUsesInSameNamespace($tokens, $currentNamespaceUseDeclarations, $namespace);
+            }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('treat_same_namespace_as_unused', 'whether to treat imports in the same namespace as unused'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+        ]);
     }
 
     private function importIsUsed(Tokens $tokens, NamespaceAnalysis $namespace, array $ignoredIndexes, $shortName)
