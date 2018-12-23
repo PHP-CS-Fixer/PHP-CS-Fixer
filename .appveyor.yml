@@ -36,6 +36,7 @@ install:
 before_test:
     - cd C:\projects\php-cs-fixer
     - php C:\tools\composer.phar update --optimize-autoloader --no-interaction --no-progress --prefer-stable --no-ansi
+    - php C:\tools\composer.phar info -D | sort
 
 test_script:
     - cd C:\projects\php-cs-fixer
