@@ -3,7 +3,7 @@
         "php": "^7.1"
     },
     "require-dev": {
-        "localheinz/composer-normalize": "^1.0.0",
+        "localheinz/composer-normalize": "^1.1.0",
         "maglnet/composer-require-checker": "^1.0",
         "mi-schi/phpmd-extension": "^4.2",
         "phpmd/phpmd": "^2.4.3"
