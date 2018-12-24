@@ -41,10 +41,10 @@ final class ProcessLinterProcessBuilder
      */
     public function build($path)
     {
-        return new Process(sprintf(
-            '"%s" -l "%s"',
+        return new Process([
             $this->executable,
-            $path
-        ));
+            '-l',
+            $path,
+        ]);
     }
 }
