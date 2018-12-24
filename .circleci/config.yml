@@ -21,5 +21,6 @@ jobs:
             - run: curl -sS https://getcomposer.org/installer | php
             - run: php composer.phar global show hirak/prestissimo -q || php composer.phar global require --no-interaction --no-progress --optimize-autoloader hirak/prestissimo
             - run: php composer.phar install --optimize-autoloader --no-interaction --no-progress --no-suggest
+            - run: php composer.phar info -D | sort
             - run: vendor/bin/phpunit
             - run: PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
