@@ -72,4 +72,56 @@ abstract class AbstractFopenFlagFixer extends AbstractFunctionReferenceFixer
     }
 
     abstract protected function fixFopenFlagToken(Tokens $tokens, $argumentStartIndex, $argumentEndIndex);
+
+    /**
+     * @param string $mode
+     *
+     * @return bool
+     */
+    protected function isValidModeString($mode)
+    {
+        $modeLength = \strlen($mode);
+        if ($modeLength < 1 || $modeLength > 13) { // 13 === length 'r+w+a+x+c+etb'
+            return false;
+        }
+
+        $validFlags = [
+            'a' => true,
+            'b' => true,
+            'c' => true,
+            'e' => true,
+            'r' => true,
+            't' => true,
+            'w' => true,
+            'x' => true,
+        ];
+
+        if (!isset($validFlags[$mode[0]])) {
+            return false;
+        }
+
+        unset($validFlags[$mode[0]]);
+
+        for ($i = 1; $i < $modeLength; ++$i) {
+            if (isset($validFlags[$mode[$i]])) {
+                unset($validFlags[$mode[$i]]);
+
+                continue;
+            }
+
+            if ('+' !== $mode[$i]
+                || (
+                    'a' !== $mode[$i - 1] // 'a+','c+','r+','w+','x+'
+                    && 'c' !== $mode[$i - 1]
+                    && 'r' !== $mode[$i - 1]
+                    && 'w' !== $mode[$i - 1]
+                    && 'x' !== $mode[$i - 1]
+                )
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

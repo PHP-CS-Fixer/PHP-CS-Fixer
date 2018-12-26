@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFopenFlagFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -21,19 +24,40 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author SpacePossum
  */
-final class FopenFlagsFixer extends AbstractFopenFlagFixer
+final class FopenFlagsFixer extends AbstractFopenFlagFixer implements ConfigurationDefinitionFixerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        parent::configure($configuration);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getDefinition()
     {
         return new FixerDefinition(
-            'The flags in `fopen` calls must contain `b` and must omit `t`.',
+            'The flags in `fopen` calls must omit `t`, and `b` must be omitted or included consistently.',
             [new CodeSample("<?php\n\$a = fopen(\$foo, 'rwt');\n")],
             null,
             'Risky when the function `fopen` is overridden.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('b_mode', 'The `b` flag must be used (`true`) or omitted (`false`).'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -74,15 +98,17 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer
             $mode = substr($content, 1, -1);
         }
 
-        $modeLength = \strlen($mode);
-        if ($modeLength < 1 || $modeLength > 13) { // 13 === length 'r+w+a+x+c+etb'
-            return; // sanity check to be less risky
+        if (false === $this->isValidModeString($mode)) {
+            return;
         }
 
         $mode = str_replace('t', '', $mode);
-
-        if (false === strpos($mode, 'b')) {
-            $mode .= 'b';
+        if ($this->configuration['b_mode']) {
+            if (false === strpos($mode, 'b')) {
+                $mode .= 'b';
+            }
+        } else {
+            $mode = str_replace('b', '', $mode);
         }
 
         $newContent = $binPrefix.$contentQuote.$mode.$contentQuote;
