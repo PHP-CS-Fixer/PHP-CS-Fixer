@@ -58,13 +58,29 @@ final class TypeAlternationTransformer extends AbstractTransformer
             return;
         }
 
-        $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-        $prevToken = $tokens[$prevIndex];
+        do {
+            $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+            if (null === $prevIndex) {
+                break;
+            }
 
-        if (!$prevToken->equalsAny(['(', [CT::T_TYPE_ALTERNATION]])) {
-            return;
-        }
+            $prevToken = $tokens[$prevIndex];
 
-        $tokens[$index] = new Token([CT::T_TYPE_ALTERNATION, '|']);
+            if ($prevToken->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
+                continue;
+            }
+
+            if (
+                $prevToken->isGivenKind(CT::T_TYPE_ALTERNATION)
+                || (
+                    $prevToken->equals('(')
+                    && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(T_CATCH)
+                )
+            ) {
+                $tokens[$index] = new Token([CT::T_TYPE_ALTERNATION, '|']);
+            }
+
+            break;
+        } while (true);
     }
 }

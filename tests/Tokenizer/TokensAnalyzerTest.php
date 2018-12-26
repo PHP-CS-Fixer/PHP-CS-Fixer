@@ -660,6 +660,10 @@ preg_replace_callback(
                 '<?php FOO: goto FOO;',
                 [1 => false, 6 => false],
             ],
+            [
+                '<?php foo(E_USER_DEPRECATED | E_DEPRECATED);',
+                [3 => true, 7 => true],
+            ],
         ];
     }
 
@@ -1134,8 +1138,9 @@ $b;',
                     ["a" => $a, "b" => $b] = $array;
                     $c = [$d, $e] = $array[$a];
                     [[$a, $b], [$c, $d]] = $d;
+                    $array = []; $d = array();
                 ',
-                [51, 59],
+                [76, 84],
             ],
         ];
     }
