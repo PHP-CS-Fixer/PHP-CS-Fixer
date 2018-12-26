@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * Performed transformations:
  * - in `[1, 2, 3]` into CT::T_ARRAY_SQUARE_BRACE_OPEN and CT::T_ARRAY_SQUARE_BRACE_CLOSE,
- * - in `[$a, $b, $c] = array(1, 2, 3)` into CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN and CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE.
+ * - in `[$a, &$b, [$c]] = array(1, 2, array(3))` into CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN and CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
@@ -93,6 +93,19 @@ final class SquareBraceTransformer extends AbstractTransformer
 
         $tokens[$index] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
         $tokens[$endIndex] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
+
+        $previousMeaningfulIndex = $index;
+        $index = $tokens->getNextMeaningfulToken($index);
+
+        while ($index < $endIndex) {
+            if ($tokens[$index]->equals('[') && $tokens[$previousMeaningfulIndex]->equalsAny([[CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], ','])) {
+                $tokens[$tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index)] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
+                $tokens[$index] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
+            }
+
+            $previousMeaningfulIndex = $index;
+            $index = $tokens->getNextMeaningfulToken($index);
+        }
     }
 
     /**
@@ -105,6 +118,10 @@ final class SquareBraceTransformer extends AbstractTransformer
      */
     private function isShortArray(Tokens $tokens, $index)
     {
+        if (!$tokens[$index]->equals('[')) {
+            return false;
+        }
+
         static $disallowedPrevTokens = [
             ')',
             ']',
@@ -119,12 +136,6 @@ final class SquareBraceTransformer extends AbstractTransformer
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
         ];
-
-        $token = $tokens[$index];
-
-        if (!$token->equals('[')) {
-            return false;
-        }
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
         if ($prevToken->equalsAny($disallowedPrevTokens)) {
