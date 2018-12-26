@@ -1,0 +1,31 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-05T07:01:50Z
+
+can you add this test case:
+
+```php
+<?php
+try {
+    foo(\JSON_ERROR_DEPTH|JSON_PRETTY_PRINT|\JOB_QUEUE_PRIORITY_HIGH);
+} catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
+}
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-23T09:15:24Z
+
+@ntzm please check my last two commits and let me know what you think :)
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-11-23T10:09:38Z
+
+I'll take a look tomorrow, thanks for fixing, been a bit short on time recently
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-11-24T14:14:11Z
+
+LGTM @SpacePossum, thanks for picking it up
