@@ -640,9 +640,15 @@ Choose from the list of available rules:
 
 * **fopen_flags** [@Symfony:risky]
 
-  The flags in ``fopen`` calls must contain ``b`` and must omit ``t``.
+  The flags in ``fopen`` calls must omit ``t``, and ``b`` must be omitted or
+  included consistently.
 
   *Risky rule: risky when the function ``fopen`` is overridden.*
+
+  Configuration options:
+
+  - ``b_mode`` (``bool``): the ``b`` flag must be used (``true``) or omitted (``false``);
+    defaults to ``true``
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 

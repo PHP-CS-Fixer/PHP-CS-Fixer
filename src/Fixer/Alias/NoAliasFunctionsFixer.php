@@ -81,6 +81,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
         'mbereg_search_setpos' => 'mb_ereg_search_setpos',
         'mberegi' => 'mb_eregi',
         'mberegi_replace' => 'mb_eregi_replace',
+        'mbregex_encoding' => 'mb_regex_encoding',
         'mbsplit' => 'mb_split',
     ];
 

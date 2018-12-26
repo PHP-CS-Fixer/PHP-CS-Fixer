@@ -37,7 +37,7 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
-            [
+            'most simple fix case' => [
                 '<?php
                     $a = fopen($foo, \'rw+b\');
                 ',
@@ -45,17 +45,17 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
                     $a = fopen($foo, \'brw+\');
                 ',
             ],
-            [
+            '"fopen" casing insensitive' => [
                 '<?php
-                    $a = \FOPEN($foo, "cr+w+b");
+                    $a = \FOPen($foo, "cr+w+b");
                     $a = \FOPEN($foo, "crw+b");
                 ',
                 '<?php
-                    $a = \FOPEN($foo, "bw+r+c");
+                    $a = \FOPen($foo, "bw+r+c");
                     $a = \FOPEN($foo, "bw+rc");
                 ',
             ],
-            [
+            'comments around flags' => [
                 '<?php
                     $a = fopen($foo,/*0*/\'rb\'/*1*/);
                 ',
@@ -80,7 +80,7 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
             'common typos' => [
                 '<?php
                      $a = fopen($a, "b+r");
-                     $b = fopen($b, "b+w");
+                     $b = fopen($b, \'b+w\');
                 ',
             ],
             // `t` cases
@@ -94,10 +94,10 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                    $a = fopen($foo, \'rw+tb\');
+                    $a = \fopen($foo, \'rw+tb\');
                 ',
                 '<?php
-                    $a = fopen($foo, \'btrw+\');
+                    $a = \fopen($foo, \'btrw+\');
                 ',
             ],
             // don't fix cases
@@ -114,7 +114,7 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
             ],
             'wrong # of arguments' => [
                 '<?php
-                    $b = fopen("br+");
+                    $b = \fopen("br+");
                     $c = fopen($foo, "bw+", 1, 2 , 3);
                 ',
             ],
@@ -138,6 +138,29 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
                     // fopen($foo, "brw");
                     /* fopen($foo, "brw"); */
                     echo("fopen($foo, \"brw\")");
+                ',
+            ],
+            'invalid flag values' => [
+                '<?php
+                    $a = fopen($foo, \'\');
+                    $a = fopen($foo, \'x\'); // ok but should not mark collection as changed
+                    $a = fopen($foo, \'k\');
+                    $a = fopen($foo, \'kz\');
+                    $a = fopen($foo, \'k+\');
+                    $a = fopen($foo, \'+k\');
+                    $a = fopen($foo, \'xc++\');
+                    $a = fopen($foo, \'w+r+r+\');
+                    $a = fopen($foo, \'+brw+\');
+                    $a = fopen($foo, \'b+rw\');
+                    $a = fopen($foo, \'bbrw+\');
+                    $a = fopen($foo, \'brw++\');
+                    $a = fopen($foo, \'++brw\');
+                    $a = fopen($foo, \'ybrw+\');
+                    $a = fopen($foo, \'rr\');
+                    $a = fopen($foo, \'ロ\');
+                    $a = fopen($foo, \'ロ+\');
+                    $a = \fopen($foo, \'rロ\');
+                    $a = \fopen($foo, \'w+ロ\');
                 ',
             ],
         ];

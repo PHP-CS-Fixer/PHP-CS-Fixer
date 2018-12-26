@@ -76,8 +76,12 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
         }
 
         $modeLength = \strlen($mode);
-        if ($modeLength < 2 || $modeLength > 13) { // 13 === length 'r+w+a+x+c+etb'
-            return; // sanity check to be less risky
+        if ($modeLength < 2) {
+            return; // nothing to sort
+        }
+
+        if (false === $this->isValidModeString($mode)) {
+            return;
         }
 
         $split = $this->sortFlags(Preg::split('#([^\+]\+?)#', $mode, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
