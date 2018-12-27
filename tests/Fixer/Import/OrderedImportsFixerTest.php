@@ -247,7 +247,7 @@ use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar /* He there */ as FooBaz;
  use Foo\Bir as FBB;
 use Foo\Zar\Baz;
 use SomeClass;
-   use /* FIXME */Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
+   use /* check */Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
 use Zoo\Bar as ZooBar;
 
 $a = new Bar();
@@ -286,7 +286,7 @@ use Foo\Bar\FooBar /* He there */ as FooBaz;
 use Zoo\Bar as ZooBar, Zoo\Tar;
  use Foo\Bar;
 use Foo\Zar\Baz;
-use /* FIXME */Symfony\Annotation\Template;
+use /* check */Symfony\Annotation\Template;
    use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
 use SomeClass;
 
@@ -642,12 +642,17 @@ B#
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param null|array  $config
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70($expected, $input = null, array $config = null)
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -695,6 +700,10 @@ use some\b\{
     ClassF
 };
 ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => ['class', 'const', 'function'],
+                ],
             ],
             [
                 '<?php
@@ -717,6 +726,90 @@ use const some\a\{
     ConstC
 };
 ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => ['class', 'const', 'function'],
+                ],
+            ],
+            [
+                '<?php
+use A\B;
+use some\a\{ClassA, ClassB, ClassC as C};
+use const some\a\{ConstA, ConstB, ConstC};
+use function some\a\{fn_a, fn_b, fn_c};
+use some\b\{
+    ClassF,
+    ClassG
+};
+use const some\b\{
+    ConstA,
+    ConstB,
+    ConstC
+};
+use function some\b\{
+    fn_a,
+    fn_b,
+    fn_c
+};
+',
+                '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use function some\b\{
+    fn_b,
+    fn_c,
+    fn_a
+};
+use function some\a\{fn_a, fn_b, fn_c};
+use A\B;
+use const some\b\{
+    ConstC,
+    ConstA,
+    ConstB
+};
+use const some\a\{ConstA, ConstB, ConstC};
+use some\b\{
+    ClassG,
+    ClassF
+};
+',
+            ],
+            [
+                '<?php
+use A\B;
+use const some\a\{
+    ConstA,
+    ConstB,
+    ConstC
+};
+use some\a\{ClassA as A /*z2*/, ClassB, ClassC};
+use function some\a\{fn_a, fn_b, fn_c};
+',
+                '<?php
+use some\a\{  ClassB,ClassC, /*z2*/ ClassA as A};
+use function some\a\{fn_c,  fn_a,fn_b   };
+use A\B;
+use const some\a\{
+    ConstA,
+    ConstB,
+    ConstC
+};
+',
+            ],
+            [
+                '<?php
+use C\B;
+use function B\fn;
+use const A\ConstA;
+                ',
+                '<?php
+use const A\ConstA;
+use function B\fn;
+use C\B;
+                ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => ['class', 'function', 'const'],
+                ],
             ],
             [
                 '<?php
@@ -773,6 +866,119 @@ use Foo\Bor\{
 };
 ',
             ],
+            'alpha - [\'class\', \'function\', \'const\']' => [
+                '<?php
+use Z\Z;
+use function X\X;
+use const Y\Y;
+                ',
+                '<?php
+use const Y\Y;
+use function X\X;
+use Z\Z;
+                ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => ['class', 'function', 'const'],
+                ],
+            ],
+            'alpha - [\'class\', \'const\', \'function\']' => [
+                '<?php
+use Z\Z;
+use const Y\Y;
+use function X\X;
+                ',
+                '<?php
+use function X\X;
+use const Y\Y;
+use Z\Z;
+                ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => ['class', 'const', 'function'],
+                ],
+            ],
+            'alpha - [\'function\', \'class\', \'const\']' => [
+                '<?php
+use function Z\Z;
+use Y\Y;
+use const X\X;
+                ',
+                '<?php
+use const X\X;
+use Y\Y;
+use function Z\Z;
+                ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => ['function', 'class', 'const'],
+                ],
+            ],
+            'alpha - [\'function\', \'const\', \'class\']' => [
+                '<?php
+use function Z\Z;
+use const Y\Y;
+use X\X;
+                ',
+                '<?php
+use X\X;
+use const Y\Y;
+use function Z\Z;
+                ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => ['function', 'const', 'class'],
+                ],
+            ],
+            'alpha - [\'const\', \'function\', \'class\']' => [
+                '<?php
+use const Z\Z;
+use function Y\Y;
+use X\X;
+                ',
+                '<?php
+use X\X;
+use function Y\Y;
+use const Z\Z;
+                ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => ['const', 'function', 'class'],
+                ],
+            ],
+            'alpha - [\'const\', \'class\', \'function\']' => [
+                '<?php
+use const Z\Z;
+use Y\Y;
+use function X\X;
+                ',
+                '<?php
+use function X\X;
+use Y\Y;
+use const Z\Z;
+                ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => ['const', 'class', 'function'],
+                ],
+            ],
+            '"strcasecmp" vs. "strnatcasecmp"' => [
+                '<?php
+use A\A1;
+use A\A10;
+use A\A2;
+use A\A20;
+                ',
+                '<?php
+use A\A20;
+use A\A2;
+use A\A10;
+use A\A1;
+                ',
+                [
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                ],
+            ],
         ];
     }
 
@@ -810,7 +1016,7 @@ use Foo\Bor\{
      * @param array  $configuration
      * @param string $expectedValue
      */
-    public function testInvalidSortAlgorithm($configuration, $expectedValue)
+    public function testInvalidSortAlgorithm(array $configuration, $expectedValue)
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
@@ -1567,6 +1773,18 @@ use some\b\{ClassA, ClassB, ClassC as C};
 use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
 ',
             ],
+            [
+                '<?php
+use const ZZZ;
+use function B;
+use function A123;
+',
+                '<?php
+use function B;
+use function A123;
+use const ZZZ;
+',
+            ],
         ];
     }
 
@@ -1704,9 +1922,9 @@ use function some\a\{fn_a, fn_b};
      * @dataProvider provideFix70TypesOrderAndNoneCases
      * @requires PHP 7.0
      *
-     * @param string      $expected
-     * @param null|string $input
-     * @param string[]    $importOrder
+     * @param string        $expected
+     * @param null|string   $input
+     * @param null|string[] $importOrder
      */
     public function testFix70TypesOrderAndNone($expected, $input = null, array $importOrder = null)
     {
