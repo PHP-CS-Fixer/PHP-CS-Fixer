@@ -390,4 +390,113 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideByReferenceCases
+     */
+    public function testByReference($expected, $input)
+    {
+        $this->fixer->configure(['only_untyped' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideByReferenceCases()
+    {
+        return [
+            [
+                '<?php
+                    /**
+                     * something
+                     * @param mixed $numbers
+                     */
+                    function add(&$numbers) {}
+                ',
+                '<?php
+                    /**
+                     * something
+                     */
+                    function add(&$numbers) {}
+                ',
+            ],
+            [
+                '<?php
+                    /**
+                     * something
+                     * @param null|array $numbers
+                     */
+                    function add(array &$numbers = null) {}
+                ',
+                '<?php
+                    /**
+                     * something
+                     */
+                    function add(array &$numbers = null) {}
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideVariableNumberOfArgumentsCases
+     */
+    public function testVariableNumberOfArguments($expected, $input)
+    {
+        $this->fixer->configure(['only_untyped' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideVariableNumberOfArgumentsCases()
+    {
+        return [
+            [
+                '<?php
+                    /**
+                     * something
+                     * @param array $numbers
+                     */
+                    function sum(...$numbers) {}
+                ',
+                '<?php
+                    /**
+                     * something
+                     */
+                    function sum(...$numbers) {}
+                ',
+            ],
+            [
+                '<?php
+                    /**
+                     * @param int $a
+                     * @param array $numbers
+                     */
+                    function sum($a, ...$numbers) {}
+                ',
+                '<?php
+                    /**
+                     * @param int $a
+                     */
+                    function sum($a, ...$numbers) {}
+                ',
+            ],
+            [
+                '<?php
+                    /**
+                     * @param \Date[] $numbers
+                     */
+                    function sum(\Date ...$numbers) {}
+                ',
+                '<?php
+                    /**
+                     */
+                    function sum(\Date ...$numbers) {}
+                ',
+            ],
+        ];
+    }
 }

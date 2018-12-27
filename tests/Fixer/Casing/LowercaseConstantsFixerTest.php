@@ -139,6 +139,7 @@ final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
         }
     }',
             ],
+            ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'],
         ];
     }
 }

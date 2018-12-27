@@ -662,9 +662,15 @@ Choose from the list of available rules:
 
 * **fopen_flags** [@Symfony:risky]
 
-  The flags in ``fopen`` calls must contain ``b`` and must omit ``t``.
+  The flags in ``fopen`` calls must omit ``t``, and ``b`` must be omitted or
+  included consistently.
 
   *Risky rule: risky when the function ``fopen`` is overridden.*
+
+  Configuration options:
+
+  - ``b_mode`` (``bool``): the ``b`` flag must be used (``true``) or omitted (``false``);
+    defaults to ``true``
 
 * **full_opening_tag** [@PSR1, @PSR2, @Symfony]
 
@@ -1954,6 +1960,7 @@ Dedicated plugins exist for:
 * `PhpStorm`_
 * `Sublime Text`_
 * `Vim`_
+* `VS Code`_
 
 Contribute
 ----------
@@ -1981,4 +1988,5 @@ projects for instance).
 .. _PhpStorm:          https://medium.com/@valeryan/how-to-configure-phpstorm-to-use-php-cs-fixer-1844991e521f
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
+.. _VS Code:           https://github.com/junstyle/vscode-php-cs-fixer
 .. _contribute:        https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md

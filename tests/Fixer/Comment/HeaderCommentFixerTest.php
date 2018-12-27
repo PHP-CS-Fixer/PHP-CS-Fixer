@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -583,5 +584,16 @@ declare(strict_types=1)?>',
             "<?php\n\n/*\n * Bar\n */\n\necho 1;",
             "<?php\necho 1;"
         );
+    }
+
+    public function testInvalidHeaderConfiguration()
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('#^\[header_comment\] Cannot use \'\*/\' in header\.$#');
+
+        $this->fixer->configure([
+            'header' => '/** test */',
+            'comment_type' => 'PHPDoc',
+        ]);
     }
 }

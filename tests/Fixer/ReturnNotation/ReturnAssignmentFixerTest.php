@@ -423,6 +423,13 @@ var names are case insensitive */ return $a   ;}
     public function provideDoNotFixCases()
     {
         return [
+            'invalid reference stays invalid' => [
+                '<?php
+                    function bar() {
+                        $foo = &foo();
+                        return $foo;
+                }',
+            ],
             'static' => [
                 '<?php
                     function a() {
