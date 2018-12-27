@@ -199,7 +199,7 @@ final class FixCommand extends Command
                 $stdErr,
                 $this->eventDispatcher,
                 'estimating' !== $progressType ? (new Terminal())->getWidth() : null,
-                count($finder)
+                \count($finder)
             );
         }
 
@@ -245,15 +245,15 @@ final class FixCommand extends Command
         if (null !== $stdErr) {
             $errorOutput = new ErrorOutput($stdErr);
 
-            if (count($invalidErrors) > 0) {
+            if (\count($invalidErrors) > 0) {
                 $errorOutput->listErrors('linting before fixing', $invalidErrors);
             }
 
-            if (count($exceptionErrors) > 0) {
+            if (\count($exceptionErrors) > 0) {
                 $errorOutput->listErrors('fixing', $exceptionErrors);
             }
 
-            if (count($lintErrors) > 0) {
+            if (\count($lintErrors) > 0) {
                 $errorOutput->listErrors('linting after fixing', $lintErrors);
             }
         }
@@ -262,9 +262,9 @@ final class FixCommand extends Command
 
         return $exitStatusCalculator->calculate(
             $resolver->isDryRun(),
-            count($changed) > 0,
-            count($invalidErrors) > 0,
-            count($exceptionErrors) > 0
+            \count($changed) > 0,
+            \count($invalidErrors) > 0,
+            \count($exceptionErrors) > 0
         );
     }
 }

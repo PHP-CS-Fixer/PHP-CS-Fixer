@@ -63,6 +63,46 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testFixVoidCaseInsensitive()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return vOId
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixNullCaseInsensitive()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return nULl
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testFixFull()
     {
         $expected = <<<'EOF'
@@ -126,5 +166,37 @@ EOF;
 EOF;
 
         $this->doTest($expected);
+    }
+
+    public function testYetAnotherDoNothing()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @return null[]|string[]
+     */
+
+EOF;
+
+        $this->doTest($expected);
+    }
+
+    public function testHandleSingleLinePhpdoc()
+    {
+        $expected = <<<'EOF'
+<?php
+
+
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+/** @return null */
+
+EOF;
+
+        $this->doTest($expected, $input);
     }
 }

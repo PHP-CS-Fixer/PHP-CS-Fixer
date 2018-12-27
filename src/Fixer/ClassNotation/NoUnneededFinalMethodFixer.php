@@ -63,7 +63,7 @@ class Foo {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokensCount = count($tokens);
+        $tokensCount = \count($tokens);
         for ($index = 0; $index < $tokensCount; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_CLASS)) {
                 continue;
@@ -84,7 +84,7 @@ class Foo {
      */
     private function fixClass(Tokens $tokens, $classOpenIndex, $classIsFinal)
     {
-        $tokensCount = count($tokens);
+        $tokensCount = \count($tokens);
         for ($index = $classOpenIndex + 1; $index < $tokensCount; ++$index) {
             // Class end
             if ($tokens[$index]->equals('}')) {

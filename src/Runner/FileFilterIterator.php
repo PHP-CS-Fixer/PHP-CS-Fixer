@@ -58,7 +58,7 @@ final class FileFilterIterator extends \FilterIterator
             throw new \RuntimeException(
                 sprintf(
                     'Expected instance of "\SplFileInfo", got "%s".',
-                    is_object($file) ? get_class($file) : gettype($file)
+                    \is_object($file) ? \get_class($file) : \gettype($file)
                 )
             );
         }
@@ -75,16 +75,7 @@ final class FileFilterIterator extends \FilterIterator
             return false;
         }
 
-        $content = @FileReader::createSingleton()->read($path);
-        if (false === $content) {
-            $error = error_get_last();
-
-            throw new \RuntimeException(sprintf(
-                'Failed to read content from "%s".%s',
-                $path,
-                $error ? ' '.$error['message'] : ''
-            ));
-        }
+        $content = FileReader::createSingleton()->read($path);
 
         // mark as skipped:
         if (

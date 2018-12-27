@@ -174,7 +174,7 @@ class Tokens extends \SplFixedArray
      */
     public static function fromArray($array, $saveIndexes = null)
     {
-        $tokens = new self(count($array));
+        $tokens = new self(\count($array));
 
         if (null === $saveIndexes || $saveIndexes) {
             foreach ($array as $key => $val) {
@@ -388,7 +388,7 @@ class Tokens extends \SplFixedArray
                 if (0 === strpos($whitespace, "\r\n")) {
                     $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
 
-                    return strlen($whitespace) > 2 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
+                    return \strlen($whitespace) > 2 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
                         ? substr($whitespace, 2)
                         : ''
                     ;
@@ -396,7 +396,7 @@ class Tokens extends \SplFixedArray
 
                 $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent()).$whitespace[0]]);
 
-                return strlen($whitespace) > 1 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
+                return \strlen($whitespace) > 1 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
                     ? substr($whitespace, 1)
                     : ''
                 ;
@@ -441,7 +441,7 @@ class Tokens extends \SplFixedArray
      */
     public function findBlockEnd($type, $searchIndex, $findEnd = true)
     {
-        if (3 === func_num_args()) {
+        if (3 === \func_num_args()) {
             if ($findEnd) {
                 @trigger_error('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.', E_USER_DEPRECATED);
             } else {
@@ -490,7 +490,7 @@ class Tokens extends \SplFixedArray
             });
         }
 
-        if (count($possibleKinds)) {
+        if (\count($possibleKinds)) {
             for ($i = $start; $i < $end; ++$i) {
                 $token = $this[$i];
                 if ($token->isGivenKind($possibleKinds)) {
@@ -499,7 +499,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        return is_array($possibleKind) ? $elements : $elements[$possibleKind];
+        return \is_array($possibleKind) ? $elements : $elements[$possibleKind];
     }
 
     /**
@@ -507,7 +507,7 @@ class Tokens extends \SplFixedArray
      */
     public function generateCode()
     {
-        $code = $this->generatePartialCode(0, count($this) - 1);
+        $code = $this->generatePartialCode(0, \count($this) - 1);
         $this->changeCodeHash(self::calculateCodeHash($code));
 
         return $code;
@@ -647,7 +647,7 @@ class Tokens extends \SplFixedArray
             });
         }
 
-        if (!count($tokens)) {
+        if (!\count($tokens)) {
             return null;
         }
 
@@ -774,13 +774,13 @@ class Tokens extends \SplFixedArray
      */
     public function findSequence(array $sequence, $start = 0, $end = null, $caseSensitive = true)
     {
-        $sequenceCount = count($sequence);
+        $sequenceCount = \count($sequence);
         if (0 === $sequenceCount) {
             throw new \InvalidArgumentException('Invalid sequence.');
         }
 
         // $end defaults to the end of the collection
-        $end = null === $end ? count($this) - 1 : min($end, count($this) - 1);
+        $end = null === $end ? \count($this) - 1 : min($end, \count($this) - 1);
 
         if ($start + $sequenceCount - 1 > $end) {
             return null;
@@ -790,7 +790,7 @@ class Tokens extends \SplFixedArray
         foreach ($sequence as $key => $token) {
             // if not a Token instance already, we convert it to verify the meaningfulness
             if (!$token instanceof Token) {
-                if (is_array($token) && !isset($token[1])) {
+                if (\is_array($token) && !isset($token[1])) {
                     // fake some content as it is required by the Token constructor,
                     // although optional for search purposes
                     $token[1] = 'DUMMY';
@@ -854,7 +854,7 @@ class Tokens extends \SplFixedArray
 
             // do we have a complete match?
             // hint: $result is bigger than $sequence since the first token has been removed from the latter
-            if (count($sequence) < count($result)) {
+            if (\count($sequence) < \count($result)) {
                 return $result;
             }
         }
@@ -868,19 +868,23 @@ class Tokens extends \SplFixedArray
      */
     public function insertAt($index, $items)
     {
-        $items = is_array($items) || $items instanceof self ? $items : [$items];
-        $itemsCnt = count($items);
+        $items = \is_array($items) || $items instanceof self ? $items : [$items];
+        $itemsCnt = \count($items);
 
         if (0 === $itemsCnt) {
             return;
         }
 
-        $oldSize = count($this);
+        $oldSize = \count($this);
         $this->changed = true;
+        $this->blockEndCache = [];
         $this->setSize($oldSize + $itemsCnt);
 
+        // since we only move already existing items around, we directly call into SplFixedArray::offset* methods.
+        // that way we get around additional overhead this class adds with overridden offset* methods.
         for ($i = $oldSize + $itemsCnt - 1; $i >= $index; --$i) {
-            $this[$i] = $this->offsetExists($i - $itemsCnt) ? $this[$i - $itemsCnt] : new Token('');
+            $oldItem = parent::offsetExists($i - $itemsCnt) ? parent::offsetGet($i - $itemsCnt) : new Token('');
+            parent::offsetSet($i, $oldItem);
         }
 
         for ($i = 0; $i < $itemsCnt; ++$i) {
@@ -888,7 +892,8 @@ class Tokens extends \SplFixedArray
                 throw new \InvalidArgumentException('Must not add empty token to collection.');
             }
 
-            $this[$i + $index] = $items[$i];
+            $this->registerFoundToken($items[$i]);
+            parent::offsetSet($i + $index, $items[$i]);
         }
     }
 
@@ -970,7 +975,7 @@ class Tokens extends \SplFixedArray
         }
 
         $indexToChange = $indexEnd - $indexStart + 1;
-        $itemsCount = count($items);
+        $itemsCount = \count($items);
 
         // If we want to add more items than passed range contains we need to
         // add placeholders for overhead items.
@@ -1029,11 +1034,11 @@ class Tokens extends \SplFixedArray
         // clear memory
         $this->setSize(0);
 
-        $tokens = defined('TOKEN_PARSE')
+        $tokens = \defined('TOKEN_PARSE')
             ? token_get_all($code, TOKEN_PARSE)
             : token_get_all($code);
 
-        $this->setSize(count($tokens));
+        $this->setSize(\count($tokens));
 
         foreach ($tokens as $index => $token) {
             $this[$index] = new Token($token);
@@ -1060,7 +1065,7 @@ class Tokens extends \SplFixedArray
             $options = Utils::calculateBitmask(['JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK']);
         }
 
-        $output = new \SplFixedArray(count($this));
+        $output = new \SplFixedArray(\count($this));
 
         foreach ($this as $index => $token) {
             $output[$index] = $token->toArray();
@@ -1206,7 +1211,7 @@ class Tokens extends \SplFixedArray
      */
     public function clearTokenAndMergeSurroundingWhitespace($index)
     {
-        $count = count($this);
+        $count = \count($this);
         $this->clearAt($index);
 
         if ($index === $count - 1) {
@@ -1249,9 +1254,10 @@ class Tokens extends \SplFixedArray
                 return;
             }
 
-            $this->clearAt($index - $offset);
-            if ('' !== $newContent) {
-                $this->insertAt($index - $offset, new Token([T_WHITESPACE, $newContent]));
+            if ('' === $newContent) {
+                $this->clearAt($index - $offset);
+            } else {
+                $this[$index - $offset] = new Token([T_WHITESPACE, $newContent]);
             }
         }
     }
@@ -1396,7 +1402,11 @@ class Tokens extends \SplFixedArray
      */
     private function registerFoundToken($token)
     {
-        $tokenKind = $this->extractTokenKind($token);
+        // inlined extractTokenKind() call on the hot path
+        $tokenKind = $token instanceof Token
+            ? ($token->isArray() ? $token->getId() : $token->getContent())
+            : (\is_array($token) ? $token[0] : $token)
+        ;
 
         if (!isset($this->foundTokenKinds[$tokenKind])) {
             $this->foundTokenKinds[$tokenKind] = 0;
@@ -1412,7 +1422,11 @@ class Tokens extends \SplFixedArray
      */
     private function unregisterFoundToken($token)
     {
-        $tokenKind = $this->extractTokenKind($token);
+        // inlined extractTokenKind() call on the hot path
+        $tokenKind = $token instanceof Token
+            ? ($token->isArray() ? $token->getId() : $token->getContent())
+            : (\is_array($token) ? $token[0] : $token)
+        ;
 
         if (!isset($this->foundTokenKinds[$tokenKind])) {
             return;
@@ -1430,7 +1444,7 @@ class Tokens extends \SplFixedArray
     {
         return $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
-            : (is_array($token) ? $token[0] : $token)
+            : (\is_array($token) ? $token[0] : $token)
         ;
     }
 }

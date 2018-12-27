@@ -75,15 +75,15 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
                 new CodeSample("<?php\nuse Z; use A;\n"),
                 new CodeSample(
 '<?php
+use Acme\Bar;
 use Bar1;
 use Acme;
-use Barr;
-use Acme\Bar;
+use Bar;
 ',
                     ['sort_algorithm' => self::SORT_LENGTH]
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nuse function AAA;\nuse const AAB;\nuse AAC;\n",
+                    "<?php\nuse function AAC;\nuse const AAB;\nuse AAA;\n",
                     new VersionSpecification(70000)
                 ),
                 new VersionSpecificCodeSample(
@@ -181,7 +181,7 @@ use Bar;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
 
-        if (0 === count($namespacesImports)) {
+        if (0 === \count($namespacesImports)) {
             return;
         }
 
@@ -200,9 +200,16 @@ use Bar;
 
         // Now insert the new tokens, starting from the end
         foreach ($usesOrder as $index => $use) {
-            $declarationTokens = Tokens::fromCode('<?php use '.$use['namespace'].';');
+            $declarationTokens = Tokens::fromCode(
+                sprintf(
+                    '<?php use %s%s;',
+                    self::IMPORT_TYPE_CLASS === $use['importType'] ? '' : ' '.$use['importType'].' ',
+                    $use['namespace']
+                )
+            );
+
             $declarationTokens->clearRange(0, 2); // clear `<?php use `
-            $declarationTokens->clearAt(count($declarationTokens) - 1); // clear `;`
+            $declarationTokens->clearAt(\count($declarationTokens) - 1); // clear `;`
             $declarationTokens->clearEmptyTokens();
 
             $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
@@ -244,19 +251,19 @@ use Bar;
                 ->setAllowedValues([static function ($value) use ($supportedSortTypes) {
                     if (null !== $value) {
                         $missing = array_diff($supportedSortTypes, $value);
-                        if (count($missing)) {
+                        if (\count($missing)) {
                             throw new InvalidOptionsException(sprintf(
                                 'Missing sort %s "%s".',
-                                1 === count($missing) ? 'type' : 'types',
+                                1 === \count($missing) ? 'type' : 'types',
                                 implode('", "', $missing)
                             ));
                         }
 
                         $unknown = array_diff($value, $supportedSortTypes);
-                        if (count($unknown)) {
+                        if (\count($unknown)) {
                             throw new InvalidOptionsException(sprintf(
                                 'Unknown sort %s "%s".',
-                                1 === count($unknown) ? 'type' : 'types',
+                                1 === \count($unknown) ? 'type' : 'types',
                                 implode('", "', $unknown)
                             ));
                         }
@@ -272,8 +279,8 @@ use Bar;
     /**
      * This method is used for sorting the uses in a namespace.
      *
-     * @param string[] $first
-     * @param string[] $second
+     * @param array<string, bool|int|string> $first
+     * @param array<string, bool|int|string> $second
      *
      * @return int
      *
@@ -281,10 +288,6 @@ use Bar;
      */
     private function sortAlphabetically(array $first, array $second)
     {
-        if ($first['importType'] !== $second['importType']) {
-            return $first['importType'] > $second['importType'] ? 1 : -1;
-        }
-
         // Replace backslashes by spaces before sorting for correct sort order
         $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first['namespace']));
         $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
@@ -295,8 +298,8 @@ use Bar;
     /**
      * This method is used for sorting the uses statements in a namespace by length.
      *
-     * @param string[] $first
-     * @param string[] $second
+     * @param array<string, bool|int|string> $first
+     * @param array<string, bool|int|string> $second
      *
      * @return int
      *
@@ -304,11 +307,11 @@ use Bar;
      */
     private function sortByLength(array $first, array $second)
     {
-        $firstNamespace = $this->prepareNamespace($first['namespace']);
-        $secondNamespace = $this->prepareNamespace($second['namespace']);
+        $firstNamespace = (self::IMPORT_TYPE_CLASS === $first['importType'] ? '' : $first['importType'].' ').$this->prepareNamespace($first['namespace']);
+        $secondNamespace = (self::IMPORT_TYPE_CLASS === $second['importType'] ? '' : $second['importType'].' ').$this->prepareNamespace($second['namespace']);
 
-        $firstNamespaceLength = strlen($firstNamespace);
-        $secondNamespaceLength = strlen($secondNamespace);
+        $firstNamespaceLength = \strlen($firstNamespace);
+        $secondNamespaceLength = \strlen($secondNamespace);
 
         if ($firstNamespaceLength === $secondNamespaceLength) {
             $sortResult = strcasecmp($firstNamespace, $secondNamespace);
@@ -329,13 +332,19 @@ use Bar;
         return trim(Preg::replace('%/\*(.*)\*/%s', '', $namespace));
     }
 
+    /**
+     * @param int[]  $uses
+     * @param Tokens $tokens
+     *
+     * @return array
+     */
     private function getNewOrder(array $uses, Tokens $tokens)
     {
         $indexes = [];
         $originalIndexes = [];
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        for ($i = count($uses) - 1; $i >= 0; --$i) {
+        for ($i = \count($uses) - 1; $i >= 0; --$i) {
             $index = $uses[$i];
 
             $startIndex = $tokens->getTokenNotOfKindSibling($index + 1, 1, [[T_WHITESPACE]]);
@@ -345,14 +354,16 @@ use Bar;
             $group = $tokens[$previous]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
             if ($tokens[$startIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
                 $type = self::IMPORT_TYPE_CONST;
+                $index = $tokens->getNextNonWhitespace($startIndex);
             } elseif ($tokens[$startIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
                 $type = self::IMPORT_TYPE_FUNCTION;
+                $index = $tokens->getNextNonWhitespace($startIndex);
             } else {
                 $type = self::IMPORT_TYPE_CLASS;
+                $index = $startIndex;
             }
 
             $namespaceTokens = [];
-            $index = $startIndex;
 
             while ($index <= $endIndex) {
                 $token = $tokens[$index];
@@ -362,7 +373,7 @@ use Bar;
                         // if group import, sort the items within the group definition
 
                         // figure out where the list of namespace parts within the group def. starts
-                        $namespaceTokensCount = count($namespaceTokens) - 1;
+                        $namespaceTokensCount = \count($namespaceTokens) - 1;
                         $namespace = '';
                         for ($k = 0; $k < $namespaceTokensCount; ++$k) {
                             if ($namespaceTokens[$k]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
@@ -460,7 +471,7 @@ use Bar;
         }
 
         // Is sort types provided, sorting by groups and each group by algorithm
-        if ($this->configuration['imports_order']) {
+        if (null !== $this->configuration['imports_order']) {
             // Grouping indexes by import type.
             $groupedByTypes = [];
             foreach ($indexes as $startIndex => $item) {

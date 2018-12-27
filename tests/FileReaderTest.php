@@ -38,7 +38,7 @@ final class FileReaderTest extends TestCase
     {
         $instance = FileReader::createSingleton();
 
-        $this->assertInstanceOf('PhpCsFixer\FileReader', $instance);
+        $this->assertInstanceOf(\PhpCsFixer\FileReader::class, $instance);
         $this->assertSame($instance, FileReader::createSingleton());
     }
 
@@ -62,5 +62,18 @@ final class FileReaderTest extends TestCase
 
         $this->assertSame('<?php echo "foo";', $reader->read('php://stdin'));
         $this->assertSame('<?php echo "foo";', $reader->read('php://stdin'));
+    }
+
+    public function testThrowsExceptionOnFail()
+    {
+        $fs = vfsStream::setup();
+        $nonExistentFilePath = $fs->url().'/non-existent.php';
+
+        $reader = new FileReader();
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Failed to read content from "'.$nonExistentFilePath.'". file_get_contents('.$nonExistentFilePath.'): failed to open stream: "org\bovigo\vfs\vfsStreamWrapper::stream_open" call failed');
+
+        $reader->read($nonExistentFilePath);
     }
 }

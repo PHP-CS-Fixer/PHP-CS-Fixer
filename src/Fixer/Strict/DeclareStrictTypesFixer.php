@@ -139,7 +139,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     {
         $sequence = $this->getDeclareStrictTypeSequence();
         $sequence[] = new Token(';');
-        $endIndex = count($sequence);
+        $endIndex = \count($sequence);
 
         $tokens->insertAt(1, $sequence);
 
@@ -149,7 +149,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             $tokens[0] = new Token([$tokens[0]->getId(), trim($tokens[0]->getContent()).' ']);
         }
 
-        if ($endIndex === count($tokens) - 1) {
+        if ($endIndex === \count($tokens) - 1) {
             return; // no more tokens afters sequence, single_blank_line_at_eof might add a line
         }
 

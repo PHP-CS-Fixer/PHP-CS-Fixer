@@ -542,7 +542,7 @@ final class RuleSetTest extends TestCase
         }
 
         foreach ($data as $key => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $this->sort($data[$key]);
             }
         }
@@ -556,7 +556,7 @@ final class RuleSetTest extends TestCase
     private function allInteger(array $values)
     {
         foreach ($values as $value) {
-            if (!is_int($value)) {
+            if (!\is_int($value)) {
                 return false;
             }
         }

@@ -162,7 +162,7 @@ function f9(string $foo, $bar, $baz) {}
                 }
             }
 
-            if (!count($arguments)) {
+            if (!\count($arguments)) {
                 continue;
             }
 
@@ -179,12 +179,12 @@ function f9(string $foo, $bar, $baz) {}
                 $lastParamLine = max($lastParamLine, $annotation->getEnd());
             }
 
-            if (!count($arguments)) {
+            if (!\count($arguments)) {
                 continue;
             }
 
             $lines = $doc->getLines();
-            $linesCount = count($lines);
+            $linesCount = \count($lines);
 
             Preg::match('/^(\s*).*$/', $lines[$linesCount - 1]->getContent(), $matches);
             $indent = $matches[1];
@@ -268,8 +268,16 @@ function f9(string $foo, $bar, $baz) {}
 
             if ($sawName) {
                 $info['default'] .= $token->getContent();
-            } else {
-                $info['type'] .= $token->getContent();
+            } elseif ('&' !== $token->getContent()) {
+                if ($token->isGivenKind(T_ELLIPSIS)) {
+                    if ('' === $info['type']) {
+                        $info['type'] = 'array';
+                    } else {
+                        $info['type'] .= '[]';
+                    }
+                } else {
+                    $info['type'] .= $token->getContent();
+                }
             }
         }
 

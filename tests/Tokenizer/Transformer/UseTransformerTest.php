@@ -72,6 +72,78 @@ final class UseTransformerTest extends AbstractTransformerTestCase
                     42 => CT::T_USE_LAMBDA,
                 ],
             ],
+            [
+                '<?php
+                    namespace A {
+                        class Foo {}
+                        echo Foo::class;
+                    }
+
+                    namespace B {
+                        use \stdClass;
+
+                        echo 123;
+                    }',
+                [
+                    30 => T_USE,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param string          $source
+     * @param array<int, int> $expectedTokens index => kind
+     *
+     * @dataProvider provideFix70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70($source, array $expectedTokens = [])
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                T_USE,
+                CT::T_USE_LAMBDA,
+                CT::T_USE_TRAIT,
+            ]
+        );
+    }
+
+    public function provideFix70Cases()
+    {
+        return [
+            'nested anonymous classes' => [
+                '<?php
+
+namespace SomeWhereOverTheRainbow;
+
+trait Foo {
+    public function test()
+    {
+        $a = time();
+        return function() use ($a) { echo $a; };
+    }
+};
+
+$a = new class(
+    new class() {
+        use Foo;
+    }
+) {
+    public function __construct($bar)
+    {
+        $a = $bar->test();
+        $a();
+    }
+};
+',
+                [
+                    38 => CT::T_USE_LAMBDA,
+                    76 => CT::T_USE_TRAIT,
+                ],
+            ],
         ];
     }
 

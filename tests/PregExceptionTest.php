@@ -27,6 +27,6 @@ final class PregExceptionTest extends TestCase
     {
         $exception = new PregException();
 
-        $this->assertInstanceOf('\\RuntimeException', $exception);
+        $this->assertInstanceOf(\RuntimeException::class, $exception);
     }
 }

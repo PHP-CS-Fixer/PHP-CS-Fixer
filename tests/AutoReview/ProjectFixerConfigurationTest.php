@@ -32,7 +32,7 @@ final class ProjectFixerConfigurationTest extends TestCase
     {
         $config = $this->loadConfig();
 
-        $this->assertInstanceOf('PhpCsFixer\Config', $config);
+        $this->assertInstanceOf(\PhpCsFixer\Config::class, $config);
         $this->assertEmpty($config->getCustomFixers());
         $this->assertNotEmpty($config->getRules());
 

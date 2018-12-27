@@ -70,9 +70,18 @@ function foo ($bar) {}
 
             foreach ($annotations as $annotation) {
                 if (
-                    !$annotation->getTag()->valid() || !in_array($annotation->getTag()->getName(), $this->tags, true)
+                    !$annotation->getTag()->valid() || !\in_array($annotation->getTag()->getName(), $this->tags, true)
                 ) {
                     continue;
+                }
+
+                $lineAfterAnnotation = $doc->getLine($annotation->getEnd() + 1);
+                if (null !== $lineAfterAnnotation) {
+                    $lineAfterAnnotationTrimmed = ltrim($lineAfterAnnotation->getContent());
+                    if ('' === $lineAfterAnnotationTrimmed || '*' !== $lineAfterAnnotationTrimmed[0]) {
+                        // malformed PHPDoc, missing asterisk !
+                        continue;
+                    }
                 }
 
                 $content = $annotation->getContent();

@@ -336,7 +336,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver(
             ['path' => [basename(__DIR__)]],
             null,
-            dirname(__DIR__)
+            \dirname(__DIR__)
         );
 
         $this->assertSame([__DIR__], $resolver->getPath());
@@ -374,7 +374,7 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolvePathWithFileThatIsExcludedByDirOverridePathMode()
     {
-        $dir = dirname(__DIR__);
+        $dir = \dirname(__DIR__);
         $config = new Config();
         $config->getFinder()
             ->in($dir)
@@ -390,7 +390,7 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolvePathWithFileThatIsExcludedByDirIntersectionPathMode()
     {
-        $dir = dirname(__DIR__);
+        $dir = \dirname(__DIR__);
         $config = new Config();
         $config->getFinder()
             ->in($dir)
@@ -431,7 +431,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveIntersectionOfPaths($expected, $configFinder, array $path, $pathMode, $configOption = null)
     {
         if ($expected instanceof \Exception) {
-            $this->expectException(get_class($expected));
+            $this->expectException(\get_class($expected));
         }
 
         if (null !== $configFinder) {

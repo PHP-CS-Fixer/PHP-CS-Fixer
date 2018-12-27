@@ -3,6 +3,57 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.12.4
+---------------------
+
+* bug #3977 NoSuperfluousPhpdocTagsFixer - Fix handling of description with variable (julienfalque)
+* bug #4027 PhpdocAnnotationWithoutDotFixer - add failing cases (keradus)
+* bug #4028 PhpdocNoEmptyReturnFixer - handle single line PHPDoc (kubawerlos)
+* bug #4034 PhpUnitTestCaseIndicator - handle anonymous class (kubawerlos)
+* bug #4037 NativeFunctionInvocationFixer - fix function detection (kubawerlos)
+* feature #4019 PhpdocTypesFixer - allow for configuration (keradus)
+* minor #3980 Clarifies allow-risky usage (josephzidell)
+* minor #4016 Bump console component due to it's bug (keradus)
+* minor #4023 Enhancement: Update localheinz/composer-normalize (localheinz)
+* minor #4049 use parent::offset*() methods when moving items arround in insertAt() (staabm)
+
+Changelog for v2.12.3
+---------------------
+
+* bug #3867 PhpdocAnnotationWithoutDotFixer - Handle trailing whitespaces (kubawerlos)
+* bug #3884 NoSuperfluousPhpdocTagsFixer - handle null in every position (dmvdbrugge, julienfalque)
+* bug #3885 AlignMultilineCommentFixer - ArrayIndentationFixer - Priority (dmvdbrugge)
+* bug #3887 ArrayIndentFixer - Don't indent empty lines (dmvdbrugge)
+* bug #3888 NoExtraBlankLinesFixer - remove blank lines after open tag (kubawerlos)
+* bug #3890 StrictParamFixer - make it case-insensitive (kubawerlos)
+* bug #3895 FunctionsAnalyzer - false positive for constant and function definition (kubawerlos)
+* bug #3908 StrictParamFixer - fix edge case (kubawerlos)
+* bug #3910 FunctionsAnalyzer - fix isGlobalFunctionCall (gharlan)
+* bug #3912 FullyQualifiedStrictTypesFixer - NoSuperfluousPhpdocTagsFixer - adjust priority (dmvdbrugge)
+* bug #3913 TokensAnalyzer - fix isConstantInvocation (gharlan, keradus)
+* bug #3921 TypeAnalysis - Fix iterable not being detected as a reserved type (ntzm)
+* bug #3924 FullyQualifiedStrictTypesFixer - space bug (dmvdbrugge)
+* bug #3937 LowercaseStaticReferenceFixer - Fix "Parent" word in namespace (kubawerlos)
+* bug #3944 ExplicitStringVariableFixer - fix array handling (gharlan)
+* bug #3951 NoSuperfluousPhpdocTagsFixer - do not call strtolower with null (SpacePossum)
+* bug #3954 NoSuperfluousPhpdocTagsFixer - Index invalid or out of range (kubawerlos)
+* bug #3957 NoTrailingWhitespaceFixer - trim space after opening tag (kubawerlos)
+* minor #3798 DX: enable native_function_invocation (keradus)
+* minor #3882 PhpdocAnnotationWithoutDotFixer - Handle empty line in comment (kubawerlos)
+* minor #3889 DX: Cleanup - remove unused variables (kubawerlos, SpacePossum)
+* minor #3891 PhpdocNoEmptyReturnFixer - account for null[] (dmvdbrugge)
+* minor #3892 PhpdocNoEmptyReturnFixer - fix docs (keradus)
+* minor #3897 DX: FunctionsAnalyzer - simplifying return expression (kubawerlos)
+* minor #3903 DX: cleanup - remove special treatment for PHP <5.6 (kubawerlos)
+* minor #3905 DX: Upgrade composer-require-checker to stable version (keradus)
+* minor #3919 Simplify single uses of Token::isGivenKind (ntzm)
+* minor #3920 Docs: Fix typo (ntzm)
+* minor #3940 DX: fix phpdoc parameter type (malukenho)
+* minor #3948 DX: cleanup - remove redundant @param annotations (kubawerlos)
+* minor #3950 Circle CI v2 yml (siad007)
+* minor #3952 DX: AbstractFixerTestCase - drop testing method already provided by trait (keradus)
+* minor #3973 Bump xdebug-handler (keradus)
+
 Changelog for v2.12.2
 ---------------------
 

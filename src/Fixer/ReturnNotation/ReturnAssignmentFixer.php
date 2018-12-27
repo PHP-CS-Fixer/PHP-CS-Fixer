@@ -58,7 +58,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokenCount = count($tokens);
+        $tokenCount = \count($tokens);
 
         for ($index = 1; $index < $tokenCount; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
@@ -153,6 +153,12 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 continue; // don't bother to look into anything else than nested functions as the current is risky already
             }
 
+            if ($tokens[$index]->equals('&')) {
+                $isRisky = true;
+
+                continue;
+            }
+
             if ($tokens[$index]->isGivenKind(T_RETURN)) {
                 $candidates[] = $index;
 
@@ -189,7 +195,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
         }
 
         // fix the candidates in reverse order when applicable
-        for ($i = count($candidates) - 1; $i >= 0; --$i) {
+        for ($i = \count($candidates) - 1; $i >= 0; --$i) {
             $index = $candidates[$i];
 
             // Check if returning only a variable (i.e. not the result of an expression, function call etc.)

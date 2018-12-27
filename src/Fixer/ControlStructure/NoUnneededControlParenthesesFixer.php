@@ -47,7 +47,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         parent::__construct();
 
         // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
-        if (defined('T_COALESCE')) {
+        if (\defined('T_COALESCE')) {
             self::$loops['clone']['forbiddenContents'][] = [T_COALESCE, '??'];
         }
     }

@@ -545,6 +545,10 @@ preg_replace_callback(
                 [3 => true],
             ],
             [
+                '<?php echo $foo[BAR];',
+                [5 => true],
+            ],
+            [
                 '<?php echo FOO[BAR];',
                 [3 => true, 5 => true],
             ],
@@ -645,8 +649,20 @@ preg_replace_callback(
                 [9 => false],
             ],
             [
+                '<?php "$foo[BAR]";',
+                [4 => false],
+            ],
+            [
+                '<?php "{$foo[BAR]}";',
+                [5 => true],
+            ],
+            [
                 '<?php FOO: goto FOO;',
                 [1 => false, 6 => false],
+            ],
+            [
+                '<?php foo(E_USER_DEPRECATED | E_DEPRECATED);',
+                [3 => true, 7 => true],
             ],
         ];
     }
@@ -1104,7 +1120,7 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            $expect = in_array($index, $tokenIndexes, true);
+            $expect = \in_array($index, $tokenIndexes, true);
             $this->assertSame(
                 $expect,
                 $tokensAnalyzer->isArray($index),
@@ -1122,8 +1138,9 @@ $b;',
                     ["a" => $a, "b" => $b] = $array;
                     $c = [$d, $e] = $array[$a];
                     [[$a, $b], [$c, $d]] = $d;
+                    $array = []; $d = array();
                 ',
-                [51, 59],
+                [76, 84],
             ],
         ];
     }

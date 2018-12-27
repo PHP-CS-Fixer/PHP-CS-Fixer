@@ -47,7 +47,7 @@ final class TokensAnalyzer
         $this->tokens->rewind();
         $elements = [];
 
-        for ($index = 1, $count = count($this->tokens) - 2; $index < $count; ++$index) {
+        for ($index = 1, $count = \count($this->tokens) - 2; $index < $count; ++$index) {
             if ($this->tokens[$index]->isClassy()) {
                 list($index, $newElements) = $this->findClassyElements($index);
                 $elements += $newElements;
@@ -355,6 +355,15 @@ final class TokensAnalyzer
             }
         }
 
+        // check for array in double quoted string: `"..$foo[bar].."`
+        if ($this->tokens[$prevIndex]->equals('[') && $this->tokens[$nextIndex]->equals(']')) {
+            $checkToken = $this->tokens[$this->tokens->getNextMeaningfulToken($nextIndex)];
+
+            if ($checkToken->equals('"') || $checkToken->isGivenKind([T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES, T_ENCAPSED_AND_WHITESPACE, T_VARIABLE])) {
+                return false;
+            }
+        }
+
         // check for goto label
         if ($this->tokens[$nextIndex]->equals(':') && $this->tokens[$prevIndex]->equalsAny([';', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO]])) {
             return false;
@@ -536,11 +545,11 @@ final class TokensAnalyzer
                 CT::T_TYPE_ALTERNATION => true, // |
             ];
 
-            if (defined('T_SPACESHIP')) {
+            if (\defined('T_SPACESHIP')) {
                 $arrayOperators[T_SPACESHIP] = true; // <=>
             }
 
-            if (defined('T_COALESCE')) {
+            if (\defined('T_COALESCE')) {
                 $arrayOperators[T_COALESCE] = true;  // ??
             }
         }
@@ -609,7 +618,7 @@ final class TokensAnalyzer
         $classIndex = $index;
         ++$index; // skip the classy index itself
 
-        for ($count = count($this->tokens); $index < $count; ++$index) {
+        for ($count = \count($this->tokens); $index < $count; ++$index) {
             $token = $this->tokens[$index];
 
             if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {

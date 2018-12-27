@@ -71,7 +71,7 @@ final class FixerFactoryTest extends TestCase
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
-        $this->assertGreaterThan(0, count($factory->getFixers()));
+        $this->assertGreaterThan(0, \count($factory->getFixers()));
     }
 
     /**
@@ -92,7 +92,7 @@ final class FixerFactoryTest extends TestCase
         }
 
         // There are no rules that forces $fxs[1] to be prioritized before $fxs[3]. We should not test against that
-        $this->assertSame([$fxs[2], $fxs[0]], array_slice($factory->getFixers(), 0, 2));
+        $this->assertSame([$fxs[2], $fxs[0]], \array_slice($factory->getFixers(), 0, 2));
     }
 
     /**
@@ -111,9 +111,9 @@ final class FixerFactoryTest extends TestCase
         $factory->registerFixer($f1, false);
         $factory->registerCustomFixers([$f2, $f3]);
 
-        $this->assertTrue(in_array($f1, $factory->getFixers(), true));
-        $this->assertTrue(in_array($f2, $factory->getFixers(), true));
-        $this->assertTrue(in_array($f3, $factory->getFixers(), true));
+        $this->assertTrue(\in_array($f1, $factory->getFixers(), true));
+        $this->assertTrue(\in_array($f2, $factory->getFixers(), true));
+        $this->assertTrue(\in_array($f3, $factory->getFixers(), true));
     }
 
     /**
@@ -250,7 +250,7 @@ final class FixerFactoryTest extends TestCase
         $factory = new FixerFactory();
         $config = new WhitespacesFixerConfig();
 
-        $fixer = $this->prophesize('PhpCsFixer\Fixer\WhitespacesAwareFixerInterface');
+        $fixer = $this->prophesize(\PhpCsFixer\Fixer\WhitespacesAwareFixerInterface::class);
         $fixer->getName()->willReturn('foo');
         $fixer->setWhitespacesConfig($config)->shouldBeCalled();
 
@@ -265,7 +265,7 @@ final class FixerFactoryTest extends TestCase
 
         $fixer = $this->createFixerDouble('0');
 
-        $this->expectException('UnexpectedValueException');
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Fixer named "0" has invalid name.');
 
         $factory->registerFixer($fixer, false);
@@ -279,7 +279,7 @@ final class FixerFactoryTest extends TestCase
         $factory->registerFixer($fixer, false);
 
         $this->expectException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException'
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class
         );
         $this->expectExceptionMessage(
             '[non_configurable] Is not configurable.'
@@ -299,13 +299,13 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $fixer = $this->prophesize('PhpCsFixer\Fixer\ConfigurableFixerInterface');
+        $fixer = $this->prophesize(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
         $fixer->getName()->willReturn('foo');
 
         $factory->registerFixer($fixer->reveal(), false);
 
         $this->expectException(
-            'PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException'
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class
         );
         $this->expectExceptionMessage(
             '[foo] Configuration must be an array and may not be empty.'
@@ -328,7 +328,7 @@ final class FixerFactoryTest extends TestCase
 
     public function testConfigurableFixerIsConfigured()
     {
-        $fixer = $this->prophesize('PhpCsFixer\Fixer\ConfigurableFixerInterface');
+        $fixer = $this->prophesize(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
         $fixer->getName()->willReturn('foo');
         $fixer->configure(['bar' => 'baz'])->shouldBeCalled();
 

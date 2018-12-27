@@ -46,6 +46,7 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
 
             ['<?php $x = Foo::split("[A-Z]", $m);'],
             ['<?php $x = $foo->split("[A-Z]", $m);'],
+            ['<?php $x = Foo\split("[A-Z]", $m);'],
 
             ['<?php $x = preg_match(\'/[A-Z]/D\');', '<?php $x = ereg(\'[A-Z]\');'],
             ['<?php $x = preg_match(\'/[A-Z]/D\', $m);', '<?php $x = ereg(\'[A-Z]\', $m);'],

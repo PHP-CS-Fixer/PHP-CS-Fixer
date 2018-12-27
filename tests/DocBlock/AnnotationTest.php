@@ -342,6 +342,29 @@ final class AnnotationTest extends TestCase
         ];
     }
 
+    /**
+     * @param string[] $expected
+     * @param string   $input
+     *
+     * @dataProvider provideNormalizedTypesCases
+     */
+    public function testNormalizedTypes($expected, $input)
+    {
+        $line = new Line($input);
+        $tag = new Annotation([$line]);
+
+        $this->assertSame($expected, $tag->getNormalizedTypes());
+    }
+
+    public function provideNormalizedTypesCases()
+    {
+        return [
+            [['null', 'string'], '* @param StRiNg|NuLl $foo'],
+            [['void'], '* @return Void'],
+            [['bar', 'baz', 'foo', 'null', 'qux'], '* @return Foo|Bar|Baz|Qux|null'],
+        ];
+    }
+
     public function testGetTypesOnBadTag()
     {
         $this->expectException(\RuntimeException::class);

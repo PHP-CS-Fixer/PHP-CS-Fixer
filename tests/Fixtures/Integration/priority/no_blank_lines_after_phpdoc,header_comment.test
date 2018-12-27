@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: no_blank_lines_after_phpdoc,header_comment.
+--RULESET--
+{"no_blank_lines_after_phpdoc": true, "header_comment": {"header": "Header", "commentType": "PHPDoc", "separate": "bottom"}}
+--EXPECT--
+<?php
+/**
+ * Header
+ */
+
+function F() {}
+
+--INPUT--
+<?php
+function F() {}
