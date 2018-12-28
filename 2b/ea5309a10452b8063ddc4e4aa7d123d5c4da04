@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2018-07-14T12:16:18Z
+
+@gharlan
+
+I think it would be great if rulesets could be concrete classes, perhaps for 3.0?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-27T08:29:59Z
+
+:+1:  for this :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-28T12:00:20Z
+
+sounds interesting and I see ppl like it.
+(i didn't added it myself for a reason of what @localheinz is asking for)
+
+yet, we have already some conflicts here,
+@gharlan , can you target 2.12 branch, please ?
+it would easier the maintainance
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-12-28T17:02:21Z
+
+> @gharlan , can you target 2.12 branch, please ?
+
+done.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-28T17:34:41Z
+
+Thank you @gharlan.
