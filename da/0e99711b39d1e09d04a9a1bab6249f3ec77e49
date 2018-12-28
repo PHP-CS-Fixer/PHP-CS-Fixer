@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-27T09:17:13Z
+
+Clean up looks good!
+However I would like some tests for the `AbstractFunctionReferenceFixer::find` method (currently there are no dedicated tests for it). as to show what supports (global/no-global, namespaced/global, calling function/method, function signatures, stuff like that ;) )
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-27T13:17:44Z
+
+Are you sure we want to have tests dedicated to this function? Now it is covered by 132 tests from different fixers. Also, we don't test other abstract classes.
+
+To test it I'd have to create a dummy fixer in `PhpCsFixer\Tests\Fixtures` extending `AbstractFunctionReferenceFixer` and proxy `find` function, right?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-28T09:46:52Z
+
+yeah I was thinking of something like; https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4128/commits/a38dca7683e96bb0d16aaf66ba1c442c86e715d6
+
+(feel free to push out again if you don't like it)
