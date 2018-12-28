@@ -86,6 +86,10 @@ FIXED;
                 '<?php $x = dirname(__FILE__);',
             ],
             [
+                '<?php $x =   /* A */ __DIR__     /* B */;',
+                '<?php $x = dirname  (  /* A */ __FILE__  )   /* B */;',
+            ],
+            [
                 '<?php $x = __DIR__;',
                 '<?php $x = \\dirname(__FILE__);',
             ],
@@ -97,10 +101,9 @@ FIXED;
                 '<?php $x = __DIR__.".dist";',
                 '<?php $x = \\dirname(__FILE__).".dist";',
             ],
-            [$multiLinePatternFixed, $multiLinePatternToFix],
             [
-                '<?php $x = /**//**/ /** x*//**//** */__DIR__/***//*xx*/;',
-                '<?php $x = /**/dirname/**/ /** x*/(/**//** */__FILE__/***/)/*xx*/;',
+                '<?php $x = /* 0 *//* 1 */ /** x2*//*3*//** 4*/__DIR__/**5*//*xx*/;',
+                '<?php $x = /* 0 */dirname/* 1 */ /** x2*/(/*3*//** 4*/__FILE__/**5*/)/*xx*/;',
             ],
             [
                 '<?php
@@ -121,6 +124,10 @@ FIXED;
                 "<?php echo dirname\n(\n__FILE__\n)\n?>",
             ],
             [
+                "<?php echo __DIR__/*1*/\n?>",
+                "<?php echo dirname\n(\n__FILE__/*1*/\n)\n?>",
+            ],
+            [
                 '<?php $x =# A
 # A1
 # B
@@ -138,6 +145,42 @@ __FILE__# D
 )# E
 ;# F
 ',
+            ],
+            [
+                $multiLinePatternFixed,
+                $multiLinePatternToFix,
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php $x = __DIR__.".dist";',
+                '<?php $x = dirname(__FILE__,   ).".dist";',
+            ],
+            [
+                '<?php $x = __DIR__/* a */  /* b */  .".dist";',
+                '<?php $x = \dirname(__FILE__/* a */,  /* b */)  .".dist";',
+            ],
+            [
+                '<?php $x = __DIR__   ;',
+                '<?php $x = \dirname(
+                    __FILE__   ,                     '.'
+                );',
             ],
         ];
     }
