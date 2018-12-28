@@ -188,4 +188,34 @@ final class FileFilterIteratorTest extends TestCase
 
         iterator_to_array($filter);
     }
+
+    /**
+     * @requires OS Linux|Darwin
+     */
+    public function testFileIsAcceptedAfterFilteredAsSymlink()
+    {
+        $link = __DIR__.'/../Fixtures/Test/FileFilterIteratorTest/FileFilterIteratorTest.php.link';
+
+        $this->assertTrue(is_link($link), 'Fixture data is no longer correct for this test.');
+        $this->assertSame(__FILE__, realpath($link), 'Fixture data is no longer correct for this test.');
+
+        $file = new \SplFileInfo(__FILE__);
+        $link = new \SplFileInfo($link);
+
+        $cache = $this->prophesize(\PhpCsFixer\Cache\CacheManagerInterface::class);
+        $cache->needFixing(
+            __FILE__,
+            file_get_contents($file->getPathname())
+        )->willReturn(true);
+
+        $filter = new FileFilterIterator(
+            new \ArrayIterator([$link, $file]),
+            null,
+            $cache->reveal()
+        );
+
+        $files = iterator_to_array($filter);
+        $this->assertCount(1, $files);
+        $this->assertSame($file, reset($files));
+    }
 }
