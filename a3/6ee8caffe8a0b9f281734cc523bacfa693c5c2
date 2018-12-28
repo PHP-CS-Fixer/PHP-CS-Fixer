@@ -1,0 +1,106 @@
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-16T12:33:24Z
+
+Is it strange that I'd prefer it to be like this? It would be the same as other opening/closing pairs.
+```
+<?php
+    $a = [
+        <<<'EOD'
+            abcdef
+                ghi
+            jkl
+        EOD
+    ];
+```
+~~Or does the standard not allow that?~~ It indeed doesn't, I should learn to read the provided links before commenting...
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-07-16T12:40:46Z
+
+It would change the string content, so it would be risky.
+
+This would be non-risky:
+
+```php
+<?php
+    $a = [
+        <<<'EOD'
+        abcdef
+            ghi
+        jkl
+        EOD
+    ];
+```
+
+If it is desired, there could be a configuration option for choosing this style, or the style from my first comment.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-07-16T12:44:50Z
+
+But I think the style from my first comment is better, especially in other cases, like function calls:
+
+Input:
+
+```php
+<?php
+    foo(<<<'EOD'
+abcdef
+    ghi
+jkl
+EOD
+    );
+```
+
+Style 1 (current indentation + 1):
+
+```php
+<?php
+    foo(<<<'EOD'
+        abcdef
+            ghi
+        jkl
+        EOD
+    );
+```
+
+Style 2 (current indentation + 0):
+
+```php
+<?php
+    foo(<<<'EOD'
+    abcdef
+        ghi
+    jkl
+    EOD
+    );
+```
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-16T12:48:31Z
+
+Oh yeah I agree, definitely current +1.
+
+What I commented goes against the standard unfortunately (but understandably too, how else would they determine what whitespace to strip).
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-11-27T23:14:50Z
+
+Anything to do here?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-04T11:25:29Z
+
+On PHP7.4 the tests fail; https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/460930989  (I can reproduce these local on PHP 7.3.0RC6 (cli) )
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-12-04T21:46:19Z
+
+@SpacePossum it is fixed now.
+(the current errors seem not to be not related to this pr)
