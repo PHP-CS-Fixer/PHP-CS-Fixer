@@ -29,14 +29,6 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurat
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
-    {
-        parent::configure($configuration);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition()
     {
         return new FixerDefinition(
