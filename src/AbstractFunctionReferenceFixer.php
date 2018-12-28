@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer;
 
-use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -57,28 +57,12 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         // translate results for humans
         list($functionName, $openParenthesis) = array_keys($matches);
 
-        // first criteria check: shall look like function call
-        $functionNamePrefix = $tokens->getPrevMeaningfulToken($functionName);
-        $functionNamePrecedingToken = $tokens[$functionNamePrefix];
-        if ($functionNamePrecedingToken->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF])) {
-            // this expression is differs from expected, resume
+        $functionsAnalyzer = new FunctionsAnalyzer();
+
+        if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $functionName)) {
             return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
         }
 
-        // second criteria check: ensure namespace is the root one
-        if ($functionNamePrecedingToken->isGivenKind(T_NS_SEPARATOR)) {
-            $namespaceCandidate = $tokens->getPrevMeaningfulToken($functionNamePrefix);
-            $namespaceCandidateToken = $tokens[$namespaceCandidate];
-            if ($namespaceCandidateToken->isGivenKind([T_NEW, T_STRING, CT::T_NAMESPACE_OPERATOR])) {
-                // here can be added complete namespace scan
-                // this expression is differs from expected, resume
-                return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
-            }
-        }
-
-        // final step: find closing parenthesis
-        $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
-
-        return [$functionName, $openParenthesis, $closeParenthesis];
+        return [$functionName, $openParenthesis, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis)];
     }
 }
