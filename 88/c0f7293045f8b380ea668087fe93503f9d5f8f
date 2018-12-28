@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-10T17:32:10Z
+
+nice update to newer PHPUnit :)  :+1:
+
+maybe these should be added using something like `PhpUnitTargetVersion::fulfills` ?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2018-12-11T08:20:52Z
+
+You are right. We should have used `PhpUnitTargetVersion` since the beginning, but for some unknowable reason we didn't.
+
+I have to say currently I'm unable to code this improvement: if it's ok for you all, I'll leave this PR as it is and create a dedicated Issue for the future.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-28T22:14:39Z
+
+for most PHPUnit fixers we do have PHPUnit target version, as manipulation of assertion (like changing one assertion (`::assertSame(true === $x)`) into another (`::assertTrue($x)`) may fail, if later one does not exist (yet, as someone is using old version).
+
+adding support for `::assertX` vs `->assertX` is not that problematic that we need to know target version, as long as one doesn't implement assertion on his own - but that's exactly why Fixer is already marked as risky, and we don't increase the riskiness by supporting more assertions
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-28T22:55:48Z
+
+Tested with 7.5: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/473161761#L654
