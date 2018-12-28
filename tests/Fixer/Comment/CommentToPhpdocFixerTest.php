@@ -236,6 +236,16 @@ $bar = 42;
 EOT
                 ,
             ],
+            [
+                <<<'EOT'
+<?php /* header comment */ $foo = true;
+
+// This is my var
+// /** @var string $foo */
+$foo = 1;
+EOT
+                ,
+            ],
         ];
     }
 }
