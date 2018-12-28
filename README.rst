@@ -709,6 +709,10 @@ Choose from the list of available rules:
   - ``separate`` (``'both'``, ``'bottom'``, ``'none'``, ``'top'``): whether the header should be
     separated from the file content with a new line; defaults to ``'both'``
 
+* **heredoc_indentation**
+
+  Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
+
 * **heredoc_to_nowdoc**
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
