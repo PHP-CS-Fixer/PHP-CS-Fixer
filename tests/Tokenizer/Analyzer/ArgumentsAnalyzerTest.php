@@ -67,7 +67,9 @@ final class ArgumentsAnalyzerTest extends TestCase
     {
         return [
             ['<?php function(){};', 2, 3, []],
+            ['<?php foo();', 2, 3, []],
             ['<?php function($a){};', 2, 4, [3 => 3]],
+            ['<?php \foo($a);', 3, 5, [4 => 4]],
             ['<?php function($a, $b){};', 2, 7, [3 => 3, 5 => 6]],
             ['<?php function($a, $b = array(1,2), $c = 3){};', 2, 23, [3 => 3, 5 => 15, 17 => 22]],
         ];
@@ -82,7 +84,19 @@ final class ArgumentsAnalyzerTest extends TestCase
                 null,
                 null
             )],
+            ['<?php \test($a);', 4, 4, new ArgumentAnalysis(
+                '$a',
+                4,
+                null,
+                null
+            )],
             ['<?php function($a, $b){};', 5, 6, new ArgumentAnalysis(
+                '$b',
+                6,
+                null,
+                null
+            )],
+            ['<?php foo($a, $b)?>', 5, 6, new ArgumentAnalysis(
                 '$b',
                 6,
                 null,
@@ -146,6 +160,36 @@ final class ArgumentsAnalyzerTest extends TestCase
                     6
                 )
             )],
+        ];
+    }
+
+    /**
+     * @param string $code
+     * @param int    $openIndex
+     * @param int    $closeIndex
+     * @param array  $arguments
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideArguments73Cases
+     */
+    public function testArguments73($code, $openIndex, $closeIndex, array $arguments)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new ArgumentsAnalyzer();
+
+        $this->assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
+        $this->assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
+    }
+
+    public function provideArguments73Cases()
+    {
+        return [
+            ['<?php foo($a,);', 2, 5, [3 => 3]],
+            ['<?php foo($a,/**/);', 2, 6, [3 => 3]],
+            ['<?php foo($a(1,2,3,4,5),);', 2, 16, [3 => 14]],
+            ['<?php foo($a(1,2,3,4,5,),);', 2, 17, [3 => 15]],
+            ['<?php foo($a(1,2,3,4,5,),);', 4, 15, [5 => 5, 7 => 7, 9 => 9, 11 => 11, 13 => 13]],
+            ['<?php bar($a, $b , ) ;', 2, 10, [3 => 3, 5 => 7]],
         ];
     }
 }
