@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-15T11:27:26Z
+
+how about merging those into `no_extra_blank_lines` ?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-11-15T12:31:43Z
+
+> how about merging those into `no_extra_blank_lines` ?
+
+There's a difference between "no extra" (meaning at most 1) or "no" (meaning 0).
+
+I'd be for combining the ones pointed out into a single fixer (just like the `blank_line_before_statement`), however think that it should be a new one. (With the deprecations ofc.)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-15T18:37:49Z
+
+if I expect 0 than 1 is `extra` to me
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-11-15T21:36:01Z
+
+But how are you going to configure where you expect zero and where one? Sounds like configuration hell. I for one, wouldn't want `NoBlankLinesBeforeNamespaceFixer` while I do want the others.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-11-16T06:21:47Z
+
+Okay, as there obviously going to be discussion about new fixer to remove blank lines let's focus here about fixing the bugs only.
