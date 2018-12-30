@@ -67,7 +67,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
             'It does not replace unsets on arrays' => [
                 '<?php unset($bar->foo[0]);',
             ],
-            'It works in a more complex unset ' => [
+            'It works in a more complex unset' => [
                 '<?php unset($bar->foo[0]); self::$foo = null; \Test\Baz::$fooBar = null; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b);',
                 '<?php unset($bar->foo[0], self::$foo, \Test\Baz::$fooBar, $bar->foo[0], $this->foo, $a, $b);',
             ],
@@ -89,7 +89,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 ',
             ],
             'It works with weirdly placed comments' => [
-                '<?php unset(/*foo*//*bar*/$bar->foo[0]); self::$foo/*baz*/ = null; /*ello*/\Test\Baz::$fooBar/*comment*/ = null; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b);
+                '<?php unset/*foo*/(/*bar*/$bar->foo[0]); self::$foo = null/*baz*/; /*ello*/\Test\Baz::$fooBar = null/*comment*/; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b);
                 unset/*foo*/(/*bar*/$bar);',
                 '<?php unset/*foo*/(/*bar*/$bar->foo[0], self::$foo/*baz*/, /*ello*/\Test\Baz::$fooBar/*comment*/, $bar->foo[0], $this->foo, $a, $b);
                 unset/*foo*/(/*bar*/$bar);',
@@ -99,6 +99,39 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
                 $this->a = null;',
                 '<?php unset($a, $b, $c);
                 unset($this->a);',
+            ],
+            'It does not replace function call with class constant inside' => [
+                '<?php unset($foos[array_search(BadFoo::NAME, $foos)]);',
+            ],
+            'It does not replace function call with class constant and property inside' => [
+                '<?php unset($this->property[array_search(\Types::TYPE_RANDOM, $this->property)]);',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        return [
+            'It does not break complex expressions' => [
+                '<?php
+                    unset(a()[b()["a"]]);
+                    unset(a()[b()]);
+                    unset(a()["a"]);
+                    unset(a(){"a"});
+                    unset(c($a)->a);
+                ',
             ],
         ];
     }

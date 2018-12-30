@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\LanguageConstruct;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -71,142 +71,157 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
                 continue;
             }
 
-            $unsetStart = $tokens->getNextTokenOfKind($index, ['(']);
-            $unsetEnd = $tokens->findBlockEnd(
-                Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                $unsetStart
-            );
-            $closingSemiColon = $tokens->getNextTokenOfKind($unsetEnd, [';']);
+            $unsetsInfo = $this->getUnsetsInfo($tokens, $index);
 
-            $unsetTokensSubset = $this->createTokensSubSet($tokens, $index, $unsetEnd);
-            $unsetOpening = $unsetTokensSubset->getNextTokenOfKind(0, ['(']);
-
-            //We want to remove the `unset` and the `(`
-            $unsetTokensSubset->clearAt(0);
-            $unsetTokensSubset->clearAt($unsetOpening);
-            $unsetTokensSubset->clearEmptyTokens();
-
-            if (!$this->doTokensInvolveProperty($unsetTokensSubset)) {
+            if (!$this->isAnyUnsetToTransform($unsetsInfo)) {
                 continue;
             }
 
-            $this->updateUnset($unsetTokensSubset);
-
-            $tokens->overrideRange($index, $closingSemiColon, $unsetTokensSubset);
-        }
-    }
-
-    /**
-     * Attempts to change unset into is null where possible.
-     *
-     * @param Tokens $tokens
-     */
-    private function updateUnset(Tokens $tokens)
-    {
-        $index = 0;
-        $atLastUnset = false;
-        do {
-            $next = $tokens->getNextTokenOfKind($index, [',']);
-            if (null === $next) {
-                $atLastUnset = true;
-                $next = $tokens->count() - 1;
-                $nextTokenSet = $this->createTokensSubSet($tokens, $index, $next + 1);
-            } else {
-                $nextTokenSet = $this->createTokensSubSet($tokens, $index, $next);
+            $isLastUnset = true; // yes, last - we reverse the array below
+            foreach (array_reverse($unsetsInfo) as $unsetInfo) {
+                $this->updateTokens($tokens, $unsetInfo, $isLastUnset);
+                $isLastUnset = false;
             }
-
-            if ($this->doTokensInvolveProperty($nextTokenSet)
-                && !$this->doTokensInvolveArrayAccess($nextTokenSet)
-            ) {
-                $replacement = $this->createReplacementIsNull($nextTokenSet);
-            } else {
-                $replacement = $this->createReplacementUnset($nextTokenSet);
-            }
-
-            $tokens->overrideRange($index, $next, $replacement);
-            $index = $tokens->getNextTokenOfKind($index, [';']) + 1;
-        } while (!$atLastUnset);
-    }
-
-    /**
-     * @param Tokens $filteredTokens
-     *
-     * @return Token[]
-     */
-    private function createReplacementIsNull(Tokens $filteredTokens)
-    {
-        return array_merge(
-            $filteredTokens->toArray(),
-            [
-                new Token([T_WHITESPACE, ' ']),
-                new Token('='),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_STRING, 'null']),
-                new Token(';'),
-            ]
-        );
-    }
-
-    /**
-     * @param Tokens $filteredTokens
-     *
-     * @return Token[]
-     */
-    private function createReplacementUnset(Tokens $filteredTokens)
-    {
-        if ($filteredTokens[0]->isWhitespace()) {
-            $filteredTokens->clearAt(0);
         }
-
-        $unsetOpeningTokens = [];
-        if ($filteredTokens[0]->isWhitespace()) {
-            $unsetOpeningTokens[] = new Token([T_WHITESPACE, ' ']);
-        }
-
-        array_push($unsetOpeningTokens, new Token([T_UNSET, 'unset']), new Token('('));
-
-        return array_merge(
-            $unsetOpeningTokens,
-            $filteredTokens->toArray(),
-            [
-                new Token(')'),
-                new Token(';'),
-            ]
-        );
     }
 
     /**
      * @param Tokens $tokens
-     * @param int    $startIndex
+     * @param int    $index
+     *
+     * @return string[]
+     */
+    private function getUnsetsInfo(Tokens $tokens, $index)
+    {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+
+        $unsetStart = $tokens->getNextTokenOfKind($index, ['(']);
+        $unsetEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $unsetStart);
+        $isFirst = true;
+
+        $unsets = [];
+        foreach ($argumentsAnalyzer->getArguments($tokens, $unsetStart, $unsetEnd) as $startIndex => $endIndex) {
+            $startIndex = $tokens->getNextMeaningfulToken($startIndex - 1);
+            $endIndex = $tokens->getPrevMeaningfulToken($endIndex + 1);
+            $unsets[] = [
+                'startIndex' => $startIndex,
+                'endIndex' => $endIndex,
+                'isToTransform' => $this->isProperty($tokens, $startIndex, $endIndex),
+                'isFirst' => $isFirst,
+            ];
+            $isFirst = false;
+        }
+
+        return $unsets;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
      * @param int    $endIndex
      *
-     * @return Tokens
+     * @return bool
      */
-    private function createTokensSubSet(Tokens $tokens, $startIndex, $endIndex)
+    private function isProperty(Tokens $tokens, $index, $endIndex)
     {
-        $array = $tokens->toArray();
-        $toAnalyze = array_splice($array, $startIndex, $endIndex - $startIndex);
+        if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            if (null === $nextIndex || !$tokens[$nextIndex]->isGivenKind(T_OBJECT_OPERATOR)) {
+                return false;
+            }
+            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+            $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+            if (null !== $nextNextIndex && $nextNextIndex < $endIndex) {
+                return false;
+            }
 
-        return Tokens::fromArray($toAnalyze);
+            return null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_STRING);
+        }
+
+        if ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
+            $nextIndex = $tokens->getTokenNotOfKindSibling($index, 1, [[T_DOUBLE_COLON], [T_NS_SEPARATOR], [T_STRING]]);
+            $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+            if (null !== $nextNextIndex && $nextNextIndex < $endIndex) {
+                return false;
+            }
+
+            return null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_VARIABLE);
+        }
+
+        return false;
     }
 
     /**
-     * @param Tokens $tokens
+     * @param string[] $unsetsInfo
      *
      * @return bool
      */
-    private function doTokensInvolveProperty(Tokens $tokens)
+    private function isAnyUnsetToTransform(array $unsetsInfo)
     {
-        return $tokens->isAnyTokenKindsFound([T_PAAMAYIM_NEKUDOTAYIM, T_OBJECT_OPERATOR]);
+        foreach ($unsetsInfo as $unsetInfo) {
+            if ($unsetInfo['isToTransform']) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * @param Tokens $tokens
-     *
-     * @return bool
+     * @param Tokens   $tokens
+     * @param string[] $unsetInfo
+     * @param bool     $isLastUnset
      */
-    private function doTokensInvolveArrayAccess(Tokens $tokens)
+    private function updateTokens(Tokens $tokens, array $unsetInfo, $isLastUnset)
     {
-        return $tokens->isAnyTokenKindsFound(['[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]);
+        // if entry is first and to be transform we remove leading "unset("
+        if ($unsetInfo['isFirst'] && $unsetInfo['isToTransform']) {
+            $braceIndex = $tokens->getPrevTokenOfKind($unsetInfo['startIndex'], ['(']);
+            $unsetIndex = $tokens->getPrevTokenOfKind($braceIndex, [[T_UNSET]]);
+            $tokens->clearTokenAndMergeSurroundingWhitespace($braceIndex);
+            $tokens->clearTokenAndMergeSurroundingWhitespace($unsetIndex);
+        }
+
+        // if entry is last and to be transformed we remove trailing ")"
+        if ($isLastUnset && $unsetInfo['isToTransform']) {
+            $braceIndex = $tokens->getNextTokenOfKind($unsetInfo['endIndex'], [')']);
+            $tokens->clearTokenAndMergeSurroundingWhitespace($braceIndex);
+        }
+
+        // if entry is not last we replace comma with semicolon (last entry already has semicolon - from original unset)
+        if (!$isLastUnset) {
+            $commaIndex = $tokens->getNextTokenOfKind($unsetInfo['endIndex'], [',']);
+            $tokens[$commaIndex] = new Token(';');
+        }
+
+        // if entry is to be unset and is not last we add trailing ")"
+        if (!$unsetInfo['isToTransform'] && !$isLastUnset) {
+            $tokens->insertAt($unsetInfo['endIndex'] + 1, new Token(')'));
+        }
+
+        // if entry is to be unset and is not first we add leading "unset("
+        if (!$unsetInfo['isToTransform'] && !$unsetInfo['isFirst']) {
+            $tokens->insertAt(
+                $unsetInfo['startIndex'],
+                [
+                    new Token([T_UNSET, 'unset']),
+                    new Token('('),
+                ]
+            );
+        }
+
+        // and finally
+        // if entry is to be transformed we add trailing " = null"
+        if ($unsetInfo['isToTransform']) {
+            $tokens->insertAt(
+                $unsetInfo['endIndex'] + 1,
+                [
+                    new Token([T_WHITESPACE, ' ']),
+                    new Token('='),
+                    new Token([T_WHITESPACE, ' ']),
+                    new Token([T_STRING, 'null']),
+                ]
+            );
+        }
     }
 }
