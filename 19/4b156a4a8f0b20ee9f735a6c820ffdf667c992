@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-21T00:01:56Z
+
+please, add code sample provided in #4086 to `NoUnusedImportsFixerTest.php` as well, that way:
+- we will have a proof that fix to Transformer fixes the Fixer
+- when one would change Transformer logic, we will be sure that Fixer still works properly
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-11-21T09:42:17Z
+
+> please, add code sample (...) to `NoUnusedImportsFixerTest.php` as well
+
+Done, and I also added it to `OrderedClassElementsFixerTest` as that suffers from the same issue (which explains "_Weird thing 2_").
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-21T19:30:49Z
+
+for next time - please don't squash commits of yours,
+now, one needs to re-review everything, instead of just few fixes you made according to comments :(
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-11-22T08:57:01Z
+
+> for next time - please don't squash commits of yours,
+> now, one needs to re-review everything, instead of just few fixes you made according to comments :(
+
+My apologies, I had misinterpreted some earlier comments in this repo. I usually don't even do it this way. Won't happen again.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-25T20:46:18Z
+
+don't worry, nothing big (squashing or not). sometimes, when we can't ~split~ squash ourselves, we ask original creator to squash, but it is very rarely happening
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-30T15:14:15Z
+
+I let myself do some dirty things with this PR, now CI shall be green, let's wait and see
