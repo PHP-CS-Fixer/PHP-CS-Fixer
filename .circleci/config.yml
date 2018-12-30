@@ -3,15 +3,13 @@ version: 2
 jobs:
     build:
         macos:
-            xcode: '9.0'
+            xcode: '10.1.0'
         steps:
             - checkout
 
-            - save_cache:
-                key: dependency-cache
-                paths:
-                    - ~/.composer
-                    - ~/Library/Caches/Homebrew
+            - restore_cache:
+                keys:
+                    - cache-{{ checksum "composer.json" }}
 
             - run: brew update
             - run: brew install php@7.2
@@ -22,5 +20,12 @@ jobs:
             - run: php composer.phar global show hirak/prestissimo -q || php composer.phar global require --no-interaction --no-progress --optimize-autoloader hirak/prestissimo
             - run: php composer.phar install --optimize-autoloader --no-interaction --no-progress --no-suggest
             - run: php composer.phar info -D | sort
+
+            - save_cache:
+                key: cache-{{ checksum "composer.json" }}
+                paths:
+                    - ~/.composer
+                    - ~/Library/Caches/Homebrew
+
             - run: vendor/bin/phpunit
             - run: PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
