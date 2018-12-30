@@ -27,6 +27,12 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
     {
         $expected = <<<'EOF'
 <?php
+/**
+ * @covers \Foo
+ * @covers ::fooMethod
+ * @coversDefaultClass \Bar
+ */
+class FooTest extends TestCase {
     /**
      * @ExpectedException Value
      * @expectedException \X
@@ -36,14 +42,21 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
  * @expectedExceptionCode 123
      * @expectedExceptionMessage Foo bar
      *
-     * @covers \Foo
-     * @covers ::fooMethod
-     * @coversDefaultClass \Bar
      * @uses \Baz
+     * @uses \selfieGenerator
+     * @uses self::someFunction
+     * @uses static::someOtherFunction
      */
+}
 EOF;
         $input = <<<'EOF'
 <?php
+/**
+ * @covers Foo
+ * @covers ::fooMethod
+ * @coversDefaultClass Bar
+ */
+class FooTest extends TestCase {
     /**
      * @ExpectedException Value
      * @expectedException X
@@ -53,13 +66,29 @@ EOF;
  * @expectedExceptionCode 123
      * @expectedExceptionMessage Foo bar
      *
-     * @covers Foo
-     * @covers ::fooMethod
-     * @coversDefaultClass Bar
      * @uses Baz
+     * @uses selfieGenerator
+     * @uses self::someFunction
+     * @uses static::someOtherFunction
      */
+}
 EOF;
 
         $this->doTest($expected, $input);
+    }
+
+    public function testIgnoringNonPhpUnitClass()
+    {
+        $this->doTest('
+<?php
+class Foo {
+    /**
+     * @expectedException Some\Exception\ClassName
+     * @covers Foo
+     * @uses Baz
+     * @uses self::someFunction
+     */
+}
+');
     }
 }

@@ -140,6 +140,10 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 
         // clean up the function call tokens prt. I
         $tokens->clearAt($closeParenthesisIndex);
+        $previousIndex = $tokens->getPrevMeaningfulToken($closeParenthesisIndex);
+        if ($tokens[$previousIndex]->equals(',')) {
+            $tokens->clearAt($previousIndex); // trailing ',' in function call (PHP 7.3)
+        }
 
         $added = 0;
         // check if the arguments need to be wrapped in parenthesis
