@@ -1019,6 +1019,27 @@ is_int(1);
 EOF
                 ,
             ],
+            'use_trait should never be removed' => [
+                <<<'EOF'
+<?php
+
+class UsesTraits
+{
+    /**
+     * @see #4086
+     */
+    private function withComplexStringVariable()
+    {
+        $name = 'World';
+
+        return "Hello, {$name}!";
+    }
+
+    use MyTrait;
+}
+
+EOF
+            ],
         ];
     }
 
