@@ -47,6 +47,16 @@ Allowed values: ``'next'``, ``'same'``
 
 Default value: ``'same'``
 
+``position_before_control_structures``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+whether the closing brace should be placed on "previous" or "same" line before
+control structures.
+
+Allowed values: ``'previous'``, ``'same'``
+
+Default value: ``'same'``
+
 ``position_after_anonymous_constructs``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

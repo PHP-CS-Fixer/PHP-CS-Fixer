@@ -26,6 +26,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
 {
     private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => 'same'];
     private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => 'next'];
+    private static $configurationCtrlStructPositionPreviousLine = ['position_before_control_structures' => 'previous'];
     private static $configurationAnonymousPositionNextLine = ['position_after_anonymous_constructs' => 'next'];
 
     public function testInvalidConfigurationClassyConstructs()
@@ -144,6 +145,80 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         echo 2;
     }',
+            ],
+            [
+                '<?php
+    if (true) {
+        $a = 1;
+    }
+    else {
+        $b = 2;
+    }',
+                '<?php
+    if (true) {
+        $a = 1;
+    } else {
+        $b = 2;
+    }',
+                self::$configurationCtrlStructPositionPreviousLine,
+            ],
+            [
+                '<?php
+    try {
+        throw new \Exception();
+    }
+    catch (\LogicException $e) {
+        // do nothing
+    }
+    catch (\Exception $e) {
+        // do nothing
+    }',
+                '<?php
+    try {
+        throw new \Exception();
+    }catch (\LogicException $e) {
+        // do nothing
+    }
+    catch (\Exception $e) {
+        // do nothing
+    }',
+                self::$configurationCtrlStructPositionPreviousLine,
+            ],
+            [
+                '<?php
+    if (true) {
+        echo 1;
+    }
+    elseif (true) {
+        echo 2;
+    }',
+                '<?php
+    if (true) {
+        echo 1;
+    } elseif (true)
+    {
+        echo 2;
+    }',
+                self::$configurationCtrlStructPositionPreviousLine,
+            ],
+            [
+                '<?php
+    try {
+        echo 1;
+    }
+    catch (Exception $e) {
+        echo 2;
+    }',
+                '<?php
+    try
+    {
+        echo 1;
+    }
+    catch (Exception $e)
+    {
+        echo 2;
+    }',
+                self::$configurationCtrlStructPositionPreviousLine,
             ],
             [
                 '<?php
