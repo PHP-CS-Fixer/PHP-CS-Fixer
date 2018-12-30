@@ -129,6 +129,10 @@ jobs:
             install: ./dev-tools/build.sh
             script:
                 - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_PHAR_TESTS=0 vendor/bin/phpunit tests/Smoke/
+
+            before_deploy:
+                # ensure that deployment is happening only if tag matches version of PHP CS Fixer
+                - test $(php dev-tools/info-extractor.php | jq .version.number) == echo "\"$TRAVIS_TAG\""
             deploy:
                 provider: releases
                 api_key:
