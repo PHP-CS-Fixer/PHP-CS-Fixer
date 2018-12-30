@@ -40,6 +40,11 @@ final class BracesFixer extends AbstractFixer implements ConfigurationDefinition
     /**
      * @internal
      */
+    const LINE_PREVIOUS = 'previous';
+
+    /**
+     * @internal
+     */
     const LINE_SAME = 'same';
 
     /**
@@ -169,6 +174,10 @@ class Foo
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_SAME)
                 ->getOption(),
+            (new FixerOptionBuilder('position_before_control_structures', 'whether the closing brace should be placed on "previous" or "same" line before control structures.'))
+                ->setAllowedValues([self::LINE_PREVIOUS, self::LINE_SAME])
+                ->setDefault(self::LINE_SAME)
+                ->getOption(),
             (new FixerOptionBuilder('position_after_anonymous_constructs', 'whether the opening brace should be placed on "next" or "same" line after anonymous constructs (anonymous classes and lambda functions).'))
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_SAME)
@@ -252,7 +261,8 @@ class Foo
             $tokens->ensureWhitespaceAtIndex(
                 $index - 1,
                 1,
-                self::LINE_NEXT === $this->configuration['position_after_control_structures'] ?
+                self::LINE_NEXT === $this->configuration['position_after_control_structures'] ||
+                self::LINE_PREVIOUS === $this->configuration['position_before_control_structures'] ?
                     $this->whitespacesConfig->getLineEnding().$this->detectIndent($tokens, $index)
                     : ' '
             );

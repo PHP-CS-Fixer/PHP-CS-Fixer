@@ -341,6 +341,9 @@ Choose from the list of available rules:
     the opening brace should be placed on "next" or "same" line after
     classy constructs (non-anonymous classes, interfaces, traits, methods
     and non-lambda functions); defaults to ``'next'``
+  - ``position_before_control_structures`` (``'previous'``, ``'same'``): whether the
+    closing brace should be placed on "previous" or "same" line before
+    control structures; defaults to ``'same'``
 
 * **cast_spaces** [@Symfony]
 
