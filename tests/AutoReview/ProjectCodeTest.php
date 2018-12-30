@@ -46,7 +46,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
-        \PhpCsFixer\Tokenizer\Transformers::class,
     ];
 
     public function testThatClassesWithoutTestsVarIsProper()

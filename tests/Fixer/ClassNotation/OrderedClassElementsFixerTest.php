@@ -326,6 +326,41 @@ trait FooTrait
 }
 EOT
             ],
+            [
+                <<<'EOT'
+<?php
+
+/**
+ * @see #4086
+ */
+class ComplexStringVariableAndUseTrait
+{
+    use FooTrait;
+    public function sayHello($name)
+    {
+        echo "Hello, {$name}!";
+    }
+}
+
+EOT
+                ,
+                <<<'EOT'
+<?php
+
+/**
+ * @see #4086
+ */
+class ComplexStringVariableAndUseTrait
+{
+    public function sayHello($name)
+    {
+        echo "Hello, {$name}!";
+    }
+    use FooTrait;
+}
+
+EOT
+            ],
         ];
     }
 
