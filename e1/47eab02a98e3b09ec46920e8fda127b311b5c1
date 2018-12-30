@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-23T11:23:38Z
+
+Looking good!
+
+For completeness, can you extract tests from these cases;
+
+```php
+<?php
+
+function a()
+{
+    return [1 => 2];
+}
+
+unset(a()[b()['a']]);
+unset(a()[b()]);
+unset(a()['a']);
+unset(a(){'a'});
+
+function c(&$a)
+{
+    return $a;
+}
+
+$a = new \stdClass();
+$a->a = 1;
+unset(c($a)->a);
+
+var_dump($a);
+die;
+```
