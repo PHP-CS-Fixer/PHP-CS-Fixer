@@ -45,7 +45,7 @@ Changelog for v2.12.4
 * minor #3980 Clarifies allow-risky usage (josephzidell)
 * minor #4016 Bump console component due to it's bug (keradus)
 * minor #4023 Enhancement: Update localheinz/composer-normalize (localheinz)
-* minor #4049 use parent::offset*() methods when moving items arround in insertAt() (staabm)
+* minor #4049 use parent::offset*() methods when moving items around in insertAt() (staabm)
 
 Changelog for v2.12.3
 ---------------------
