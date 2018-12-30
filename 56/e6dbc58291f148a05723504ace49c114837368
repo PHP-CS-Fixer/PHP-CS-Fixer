@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by jbnv at 2018-12-16T19:21:24Z
+
+Can you make this configurable? It would help me a lot if it take this...
+
+```
+@uses self::_somePrivateMethod
+@uses UsedClass::blah
+@uses UnusedClass::yada
+@uses count
+@uses Iterator::current
+```
+
+... and have Fixer turn it to this...
+
+```
+@uses \count
+@uses \Iterator::current
+@uses \MyOrganization\MyProject\MyLibrary\UsedClass::blah
+@uses self::_somePrivateMethod
+@uses UnusedClass::yada
+```
+
+Here's what happened:
+
+* Native PHP functions and classes are qualified.
+* The classes specified by `use` are resolved.
+* Any class method reference that isn't resolved remains unqualified.
+* And of course, `self` is not prefixed.
+* Finally, the entire list is sorted alphabetically. (Bonus points: group PHP functions, resolved class methods, unresolved class methods, `self` methods and `static` methods.)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-24T11:30:07Z
+
+> * Native PHP functions and classes are qualified.
+
+This happens currently.
+
+> * The classes specified by `use` are resolved.
+
+Definitely out of scope for this fixer, yet good idea for a new fixer.
+
+> * Any class method reference that isn't resolved remains unqualified.
+
+That would be against what this fixer should do and I can't see why anyone would like skipping unresolved classes.
+
+> * And of course, `self` is not prefixed.
+
+Fixed in this PR.
+
+> * Finally, the entire list is sorted alphabetically. (Bonus points: group PHP functions, resolved class methods, unresolved class methods, `self` methods and `static` methods.)
+
+Sorting annotations would be quite interesting fixer - don't forget we could have multi-line annotations.
