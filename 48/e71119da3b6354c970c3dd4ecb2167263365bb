@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-28T18:49:44Z
+
+Okay, summarising:
+ - updating xcode from 9.0 to 10.0.1 reduced build time (precisely `brew update`) by 2.5~3 minutes
+ - fixing cache gave a very little boost (composer installing `prestissimo` and rest of deps took up to 20 seconds, after fix almost 0)
