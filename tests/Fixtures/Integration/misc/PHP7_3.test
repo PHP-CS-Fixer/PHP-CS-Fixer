@@ -37,6 +37,7 @@ foo(
     $arg2,
 );
 __DIR__; // `dir_constant` rule
+null === $var; // `is_null` rule
 mb_strpos($a, $b, ); // `mb_str_functions` rule
 sample('foo', 'foobarbaz', 'baz', ); // `method_argument_space` rule
 mb_strlen($str, ); // `native_function_casing` rule
@@ -73,6 +74,7 @@ foo(
     $arg2,
 );
 dirname(__FILE__, ); // `dir_constant` rule
+is_null($var, ); // `is_null` rule
 strpos($a, $b, ); // `mb_str_functions` rule
 sample('foo',    'foobarbaz', 'baz'   , ); // `method_argument_space` rule
 STRLEN($str, ); // `native_function_casing` rule
