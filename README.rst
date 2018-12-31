@@ -926,6 +926,8 @@ Choose from the list of available rules:
     defaults to ``['@internal']``
   - ``scope`` (``'all'``, ``'namespaced'``): only fix function calls that are made
     within a namespace or fix all; defaults to ``'all'``
+  - ``strict`` (``bool``): whether leading ``\`` of function call not meant to have it
+    should be removed; defaults to ``false``
 
 * **new_with_braces** [@Symfony, @PhpCsFixer]
 
