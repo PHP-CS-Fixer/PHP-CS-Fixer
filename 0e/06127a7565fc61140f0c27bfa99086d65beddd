@@ -1,0 +1,109 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-22T20:39:40Z
+
+> If we add it to @Symfony rule set with true then in Symfony v4.1.6 26 files would be affected, and here - at master - 6 files.
+
+@nicolas-grekas , WDYT ?
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2018-10-22T20:45:18Z
+
+We could enable it, so that things have only one valid way to be written.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-22T21:01:18Z
+
+:+1:
+
+@kubawerlos , can you update ruleset definition, in that case ?
+
+and a TODO for v3 to make option enabled by default ?
+
+and PR for v3 later on to resolve that TODO ?
+
+thanks ;)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-10-23T14:56:44Z
+
+@keradus updated
+
+@nicolas-grekas should I make PR to Symfony to remove extra `\` to avoid surprise when this is released? If so what branch to target?
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2018-10-23T15:04:19Z
+
+no need, let's wait for the fabbot update and we'll do it in a batch starting from 2.8
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-27T13:02:40Z
+
+@kubawerlos friendly heads up about the conflict here
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-11-27T15:47:06Z
+
+@SpacePossum updated, I had to remove it from Travis's "strict" job as it was conflicting with the `@Symfony` configuration. Why did we had it there anyway?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-27T18:41:34Z
+
+The test was added so that we will know that if we would make all function calls within the project native calls (were applicable) we would still be good, as we currently do not enforce this.
+
+I think this is still a good idea though, but I see the trouble arise here, therefore I need some time to think about removing it as proposed in the PR.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-24T12:17:27Z
+
+@SpacePossum we can create separate step to apply these rules and run only tests or (more hacky) update the config with `native_function_invocation` to override the one from `@Symfony`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-27T09:45:07Z
+
+@kubawerlos  please add tests @ `NativeConstantInvocationFixerTest` to cover the new configuration option, than I think this PR is good to go :)
+
+About the test, if I run the original fix command and than the unit tests the test passes. So I'm not sure where this would fail now?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-27T11:22:18Z
+
+> please add tests @ `NativeConstantInvocationFixerTest` to cover the new configuration option, than I think this PR is good to go :)
+
+What do you mean? We are adding new option to `NativeFunctionInvocationFixer` in this PR.
+
+> About the test, if I run the original fix command and than the unit tests the test passes. So I'm not sure where this would fail now?
+
+Tests were fine all the time - Fixer checking was [failing](https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/460247862) - we were applying inline `native_function_invocation` - so `strict` was resolved to it's default `false` and then testing with our config - containing `@Symfony` version - with `strict` being `true`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-28T10:14:48Z
+
+Sorry for being slow; please ignore my first remark and about the test; I agree with your previous suggestion;
+
+>we can create separate step to apply these rules and run only tests
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-28T15:22:22Z
+
+@SpacePossum what about this? To run only tests on PHP 7.2 - static analysis under PHP 7.2 was already run in the fist stage or is this not good idea and we need actually new build on `Test` stage?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-31T12:58:48Z
+
+I had drop `native_function_invocation` from migration again.
+We had it to see if we run on optimized build.
+Now, definition of `what` optimized means changed due to better understanding of `\` resolution, and default setting of it is not what we now consider as best practice. `native_function_invocation` we have in our config we use internally is enough for CI.
