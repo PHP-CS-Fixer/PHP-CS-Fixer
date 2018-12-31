@@ -324,4 +324,64 @@ function myFunction() {
             ARRAY_FILTER_USE_KEY
         );
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideDoubleSpaceIndentCases
+     */
+    public function testDoubleSpaceIndent($expected, $input = null)
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('  '));
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDoubleSpaceIndentCases()
+    {
+        return [
+            ['<?php
+if (true) {
+  if (true) {
+    (new stdClass())->foo(
+      "text",
+      "text2"
+    );
+  }
+}'],
+            [
+                "<?php
+if (true) {
+  if (true) {
+    (new stdClass())->foo(
+      'text',
+      'text2'
+    );
+  }
+}",
+                "<?php
+if (true) {
+  if (true) {
+\t(new stdClass())->foo(
+\t  'text',
+\t  'text2'
+\t);
+  }
+}",
+            ],
+            [
+                '<?php
+    /*
+     * Foo
+     */
+',
+
+                "<?php
+\t/*
+\t * Foo
+\t */
+", ],
+        ];
+    }
 }
