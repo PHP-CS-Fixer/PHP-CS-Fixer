@@ -2,7 +2,7 @@
 <?php
 
 /*
- * This file is part of the PHP CS utility.
+ * This file is part of PHP CS Fixer.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -15,7 +15,6 @@
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-
 if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
     error_reporting(-1);
 }
@@ -28,7 +27,7 @@ if (defined('HHVM_VERSION_ID')) {
     } else {
         exit(1);
     }
-} elseif (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50600 || PHP_VERSION_ID >= 70300) {
+} elseif (!defined('PHP_VERSION_ID') || \PHP_VERSION_ID < 50600 || \PHP_VERSION_ID >= 70300) {
     fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.2.*.\n");
 
     if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
