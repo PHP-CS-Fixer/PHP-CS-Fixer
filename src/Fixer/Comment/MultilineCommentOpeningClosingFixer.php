@@ -81,11 +81,11 @@ EOT
 
             // Fix opening
             if ($token->isGivenKind(T_COMMENT)) {
-                $newContent = Preg::replace('/^\\/\\*\\*+/', '/*', $newContent);
+                $newContent = Preg::replace('/^\\/\\*{2,}(?!\\/)/', '/*', $newContent);
             }
 
             // Fix closing
-            $newContent = Preg::replace('/\\*+\\*\\/$/', '*/', $newContent);
+            $newContent = Preg::replace('/(?<!\\/)\\*{2,}\\/$/', '*/', $newContent);
 
             if ($newContent !== $originalContent) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);
