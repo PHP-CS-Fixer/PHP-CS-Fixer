@@ -378,7 +378,7 @@ EOF;
     {
         $indent = self::ALIGN_VERTICAL === $this->align ? $verticalAlignIndent : $leftAlignIndent;
 
-        return \str_repeat(' ', $indent);
+        return str_repeat(' ', $indent);
     }
 
     /**
