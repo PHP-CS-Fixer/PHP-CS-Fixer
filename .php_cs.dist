@@ -13,6 +13,7 @@ EOF;
 $finder = PhpCsFixer\Finder::create()
     ->exclude('tests/Fixtures')
     ->in(__DIR__)
+    ->append([__DIR__.'/php-cs-fixer'])
 ;
 
 $config = PhpCsFixer\Config::create()
