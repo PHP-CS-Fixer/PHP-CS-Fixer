@@ -150,6 +150,12 @@ __FILE__# D
                 $multiLinePatternFixed,
                 $multiLinePatternToFix,
             ],
+            [
+                '<?php $x = __DIR__;',
+                '<?php $x = \dirname(
+                    __FILE__                     '.'
+                );',
+            ],
         ];
     }
 
@@ -177,7 +183,7 @@ __FILE__# D
                 '<?php $x = \dirname(__FILE__/* a */,  /* b */)  .".dist";',
             ],
             [
-                '<?php $x = __DIR__   ;',
+                '<?php $x = __DIR__;',
                 '<?php $x = \dirname(
                     __FILE__   ,                     '.'
                 );',

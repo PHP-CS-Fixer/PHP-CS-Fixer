@@ -3,6 +3,7 @@ PHP 7.3 test.
 --RULESET--
 {
     "@Symfony": true,
+    "@Symfony:risky": true,
     "list_syntax": {"syntax":"short"}
 }
 --REQUIREMENTS--
@@ -27,6 +28,8 @@ foo(
     $arg,
     $arg2,
 );
+implode('', $pieces, ); // `implode_call` rule
+implode('', $pieces, ); // `implode_call` rule
 
 --INPUT--
 <?php
@@ -48,3 +51,5 @@ foo(
     $arg,
     $arg2,
 );
+implode($pieces, '', ); // `implode_call` rule
+implode($pieces, ); // `implode_call` rule

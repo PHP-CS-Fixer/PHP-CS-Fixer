@@ -146,4 +146,42 @@ implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
 ',
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        yield [
+            '<?php implode("", $foo, );',
+            '<?php implode($foo, "", );',
+        ];
+
+        yield [
+            '<?php implode(\'\', $foo, );',
+            '<?php implode($foo, );',
+        ];
+
+        yield [
+            '<?php
+                implode(
+                    "",
+                    $foo,
+                );',
+            '<?php
+                implode(
+                    $foo,
+                    "",
+                );',
+        ];
+    }
 }
