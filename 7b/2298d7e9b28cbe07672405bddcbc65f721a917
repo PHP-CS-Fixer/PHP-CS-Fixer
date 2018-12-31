@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-31T09:16:56Z
+
+but isn't the fix already applied on 2.13 as well https://github.com/FriendsOfPHP/PHP-CS-Fixer/commits/2.13/CHANGELOG.md ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-31T09:42:36Z
+
+no, due to support of multiple versions at same time, PR with typo in title was released under v2.12.4 and v2.13.1.
+for that, one typo to be fixed on 2.12 branch, one on 2.13
