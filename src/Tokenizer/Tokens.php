@@ -313,13 +313,14 @@ class Tokens extends \SplFixedArray
 
         if (!$this[$index] || !$this[$index]->equals($newval)) {
             $this->changed = true;
+
+            if (isset($this[$index])) {
+                $this->unregisterFoundToken($this[$index]);
+            }
+
+            $this->registerFoundToken($newval);
         }
 
-        if (isset($this[$index])) {
-            $this->unregisterFoundToken($this[$index]);
-        }
-
-        $this->registerFoundToken($newval);
         parent::offsetSet($index, $newval);
     }
 
