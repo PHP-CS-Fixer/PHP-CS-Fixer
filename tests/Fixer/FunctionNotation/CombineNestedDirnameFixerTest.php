@@ -52,7 +52,7 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
                 '<?php dirname(dirname($path));',
             ],
             [
-                '<?php dirname /* a */ ( /* b */  /* c */ $path /* d */,2);',
+                '<?php dirname /* a */ ( /* b */ /* c */ $path /* d */,2);',
                 '<?php dirname /* a */ ( /* b */ dirname( /* c */ $path) /* d */);',
             ],
             [
@@ -60,7 +60,7 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
                 '<?php dirname(\dirname(dirname($path)));',
             ],
             [
-                '<?php dirname($path ,4);',
+                '<?php dirname($path,4);',
                 '<?php dirname(dirname($path, 3));',
             ],
             [
@@ -68,11 +68,11 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
                 '<?php dirname(dirname($path), 3);',
             ],
             [
-                '<?php dirname($path , 5);',
+                '<?php dirname($path, 5);',
                 '<?php dirname(dirname($path, 2), 3);',
             ],
             [
-                '<?php dirname($path ,5);',
+                '<?php dirname($path,5);',
                 '<?php dirname(dirname(dirname($path), 3));',
             ],
             [
@@ -104,5 +104,31 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
     public function testDoNotFix()
     {
         $this->doTest('<?php dirname(dirname($path));');
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php dirname($path,3);',
+                '<?php dirname(dirname(dirname($path, ), ));',
+            ],
+            [
+                '<?php dirname($path, 3);',
+                '<?php dirname(dirname(dirname($path, ), ), );',
+            ],
+        ];
     }
 }

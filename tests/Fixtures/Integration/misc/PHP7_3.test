@@ -37,6 +37,7 @@ foo(
     $arg2,
 );
 __DIR__; // `dir_constant` rule
+dirname($path, 3); // `combine_nested_dirname` rule
 $foo->__invoke(1, ); // `magic_method_casing` rule
 implode('', $pieces, ); // `implode_call` rule
 implode('', $pieces, ); // `implode_call` rule
@@ -85,6 +86,7 @@ foo(
     $arg2,
 );
 dirname(__FILE__, ); // `dir_constant` rule
+dirname(dirname(dirname($path, ), ), ); // `combine_nested_dirname` rule
 $foo->__INVOKE(1, ); // `magic_method_casing` rule
 implode($pieces, '', ); // `implode_call` rule
 implode($pieces, ); // `implode_call` rule
