@@ -138,7 +138,7 @@ jobs:
 
             before_deploy:
                 # ensure that deployment is happening only if tag matches version of PHP CS Fixer
-                - test $(php dev-tools/info-extractor.php | jq .version.number) == echo "\"$TRAVIS_TAG\""
+                - test $(php dev-tools/info-extractor.php | jq .version.vnumber) == "\"$TRAVIS_TAG\""
             deploy:
                 provider: releases
                 api_key:
