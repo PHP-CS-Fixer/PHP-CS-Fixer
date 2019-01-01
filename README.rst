@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.13.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.13.2/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -1093,6 +1093,10 @@ Choose from the list of available rules:
 
   *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
 
+* **no_unset_cast** [@PhpCsFixer]
+
+  Variables must be set ``null`` instead of using ``(unset)`` casting.
+
 * **no_unset_on_property** [@PhpCsFixer:risky]
 
   Properties should be set to ``null`` instead of using ``unset``.
@@ -1487,6 +1491,11 @@ Choose from the list of available rules:
   - ``sort_algorithm`` (``'alpha'``, ``'none'``): the sorting algorithm to apply;
     defaults to ``'alpha'``
 
+* **phpdoc_var_annotation_correct_order** [@PhpCsFixer]
+
+  ``@var`` and ``@type`` annotations must have type and name in the correct
+  order.
+
 * **phpdoc_var_without_name** [@Symfony, @PhpCsFixer]
 
   ``@var`` and ``@type`` annotations should not contain the variable name.
@@ -1751,7 +1760,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.13.1/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.13.2/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
