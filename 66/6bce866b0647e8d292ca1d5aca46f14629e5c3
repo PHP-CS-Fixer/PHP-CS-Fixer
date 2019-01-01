@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-31T13:40:54Z
+
+I believe that atomic fixes to different rules shall also add respective part to integration test, taken from #4184
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-31T14:05:24Z
+
+wonder why the tests are executed on PHP 7 on travis...
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-31T16:13:41Z
+
+Updating as mentioned in description.
