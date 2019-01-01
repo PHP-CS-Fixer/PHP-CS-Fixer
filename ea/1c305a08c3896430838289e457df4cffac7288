@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-16T15:56:50Z
+
+What is the reasoning behind not fixing `@param`?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-07-16T16:50:56Z
+
+@dmvdbrugge the alternative for 2 is not a acceptable as we cannot assume some will use `PhpdocNoAliasTagFixer`.
+
+`@param` is not fixed as the idea is to fix `@var` cases - I've never seen `@param` with variable name before type and `@param` more often has description than `@var`.
+
+I'm not sure now, maybe we can aim to have `PhpdocCorrectOrderOfTypeAndNameFixer` to handle all Phpdoc types that have type and name the same, yet I prefer to add [`mixed`](https://github.com/kubawerlos/php-cs-fixer-custom-fixers/blob/v1.5.1/tests/Fixer/PhpdocParamTypeFixerTest.php#L108) when type is missing instead of getting first word of string behind the name as it can do more harm like:
+
+```diff
+ /**
+- * @param $foo This is foo
++ * @param This $foo us foo
+  */
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-07-16T16:58:45Z
+
+> the alternative for 2 is not a acceptable as we cannot assume some will use `PhpdocNoAliasTagFixer`.
+
+Was thinking that as well, removed the suggestion.
+
+As for the `@param`, makes sense. So only those 2 points for me.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-07-16T20:34:47Z
+
+@dmvdbrugge `@type` added, yet I cannot find valid case for priority integration test with `PhpdocVarWithoutNameFixer` - it handles well name with both orders:
+```diff
+ <?php
+ /**
+- * @var FooInterface $foo
++ * @var FooInterface
+  */
+ $foo;
+
+ /**
+- * @var $bar BarInterface
++ * @var BarInterface
+  */
+ $bar;
+```
