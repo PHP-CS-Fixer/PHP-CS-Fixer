@@ -581,4 +581,15 @@ namespace {
             ],
         ];
     }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+             '<?php $name = \get_class($foo, );',
+             '<?php $name = get_class($foo, );'
+         );
+    }
 }

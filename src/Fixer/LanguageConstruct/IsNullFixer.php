@@ -136,6 +136,10 @@ final class IsNullFixer extends AbstractFixer
             if (!$isContainingDangerousConstructs) {
                 if (!$wrapIntoParentheses) {
                     // closing parenthesis removed with leading spaces
+                    $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);
+                    if ($tokens[$prevIndex]->equals(',')) {
+                        $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
+                    }
                     $tokens->removeLeadingWhitespace($referenceEnd);
                     $tokens->clearAt($referenceEnd);
                 }

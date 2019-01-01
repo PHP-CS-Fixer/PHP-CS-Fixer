@@ -192,4 +192,38 @@ FIXED;
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php null === $x;',
+                '<?php is_null($x, );',
+            ],
+            [
+                '<?php null === $x;',
+                '<?php is_null( $x , );',
+            ],
+            [
+                '<?php null === a(null === a(null === a(null === b(), ), ), );',
+                '<?php \is_null(a(\is_null(a(\is_null(a(\is_null(b(), ), ), ), ), ), ), );',
+            ],
+            [
+                '<?php if ((null === $u or $v) and ($w || null === $x) xor (null !== $y and $z)) echo "foo"; ?>',
+                '<?php if ((is_null($u, ) or $v) and ($w || is_null($x, )) xor (!is_null($y, ) and $z)) echo "foo"; ?>',
+            ],
+        ];
+    }
 }
