@@ -54,6 +54,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 random_int($a, $b, ); // `random_api_migration` rule
+$foo = (int) $foo; // `set_type_to_cast` rule
 foo(null === $a, ); // `yoda_style` rule
 
 --INPUT--
@@ -92,4 +93,5 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 rand($a, $b, ); // `random_api_migration` rule
+settype($foo, "integer", ); // `set_type_to_cast` rule
 foo($a === null, ); // `yoda_style` rule
