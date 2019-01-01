@@ -158,7 +158,7 @@ EOF;
                  */
                 '.'
                 class Foo {}'
-            );
+        );
     }
 
     public function testLineWithSpacesIsRemovedWhenNextTokenIsNotIndented()
