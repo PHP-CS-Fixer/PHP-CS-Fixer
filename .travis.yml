@@ -153,4 +153,4 @@ jobs:
 
     allow_failures:
         - php: nightly
-        - env: COLLECT_COVERAGE=1
+        - env: COLLECT_COVERAGE=1 COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
