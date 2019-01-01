@@ -37,6 +37,7 @@ foo(
     $arg2,
 );
 __DIR__; // `dir_constant` rule
+$foo->__invoke(1, ); // `magic_method_casing` rule
 implode('', $pieces, ); // `implode_call` rule
 implode('', $pieces, ); // `implode_call` rule
 mb_strpos($a, $b, ); // `mb_str_functions` rule
@@ -75,6 +76,7 @@ foo(
     $arg2,
 );
 dirname(__FILE__, ); // `dir_constant` rule
+$foo->__INVOKE(1, ); // `magic_method_casing` rule
 implode($pieces, '', ); // `implode_call` rule
 implode($pieces, ); // `implode_call` rule
 strpos($a, $b, ); // `mb_str_functions` rule
