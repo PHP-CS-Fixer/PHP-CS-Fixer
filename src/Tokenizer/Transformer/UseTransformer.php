@@ -39,6 +39,15 @@ final class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // Should run after CurlyBraceTransformer
+        return -5;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRequiredPhpVersionId()
     {
         return 50300;

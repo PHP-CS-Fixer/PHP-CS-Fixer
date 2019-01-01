@@ -144,6 +144,40 @@ EOF;
         $this->doTest($expected);
     }
 
+    public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented()
+    {
+        $this->doTest(
+            '<?php
+                /**
+                 * PHPDoc with a line with space
+                 */
+                class Foo {}',
+            '<?php
+                /**
+                 * PHPDoc with a line with space
+                 */
+                '.'
+                class Foo {}'
+            );
+    }
+
+    public function testLineWithSpacesIsRemovedWhenNextTokenIsNotIndented()
+    {
+        $this->doTest(
+            '<?php
+    /**
+     * PHPDoc with a line with space
+     */
+class Foo {}',
+            '<?php
+    /**
+     * PHPDoc with a line with space
+     */
+    '.'
+class Foo {}'
+        );
+    }
+
     public function testFixesSimpleClass()
     {
         $expected = <<<'EOF'

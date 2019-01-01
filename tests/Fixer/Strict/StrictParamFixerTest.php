@@ -157,4 +157,15 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+             '<?php in_array($b, $c, true, );',
+             '<?php in_array($b, $c, );'
+         );
+    }
 }
