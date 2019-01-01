@@ -1146,6 +1146,10 @@ Choose from the list of available rules:
 
   *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
 
+* **no_unset_cast** [@PhpCsFixer]
+
+  Variables must be set ``null`` instead of using ``(unset)`` casting.
+
 * **no_unset_on_property** [@PhpCsFixer:risky]
 
   Properties should be set to ``null`` instead of using ``unset``.
