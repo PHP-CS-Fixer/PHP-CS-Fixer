@@ -53,6 +53,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
     }
 }
+$a ** 1; // `pow_to_exponentiation` rule
 random_int($a, $b, ); // `random_api_migration` rule
 $foo = (int) $foo; // `set_type_to_cast` rule
 in_array($b, $c, true, ); // `strict_param` rule
@@ -93,6 +94,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         static::assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
     }
 }
+pow($a, 1, ); // `pow_to_exponentiation` rule
 rand($a, $b, ); // `random_api_migration` rule
 settype($foo, "integer", ); // `set_type_to_cast` rule
 in_array($b, $c, ); // `strict_param` rule
