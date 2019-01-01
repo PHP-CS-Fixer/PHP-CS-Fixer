@@ -248,6 +248,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_order' => true,
             'phpdoc_trim_consecutive_blank_line_separation' => true,
             'phpdoc_types_order' => true,
+            'phpdoc_var_annotation_correct_order' => true,
             'return_assignment' => true,
             'single_line_comment_style' => true,
         ],
