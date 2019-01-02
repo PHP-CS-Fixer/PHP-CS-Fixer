@@ -40,13 +40,16 @@ final class RunnerTest extends TestCase
         $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $linterProphecy
             ->isAsync()
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
         $linterProphecy
             ->lintFile(Argument::type('string'))
-            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
+            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
+        ;
         $linterProphecy
             ->lintSource(Argument::type('string'))
-            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
+            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
+        ;
 
         $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
