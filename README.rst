@@ -841,7 +841,7 @@ Choose from the list of available rules:
   with a single asterisk, after the opening slash. Both must end with a
   single asterisk before the closing slash.
 
-* **multiline_whitespace_before_semicolons**
+* **multiline_whitespace_before_semicolons** [@PhpCsFixer]
 
   Forbid multi-line whitespace before the closing semicolon or move the
   semicolon to the new line for chained calls.

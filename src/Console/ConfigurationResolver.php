@@ -318,7 +318,8 @@ final class ConfigurationResolver
             $this->fixers = $this->createFixerFactory()
                 ->useRuleSet($this->getRuleSet())
                 ->setWhitespacesConfig(new WhitespacesFixerConfig($this->config->getIndent(), $this->config->getLineEnding()))
-                ->getFixers();
+                ->getFixers()
+            ;
 
             if (false === $this->getRiskyAllowed()) {
                 $riskyFixers = array_map(

@@ -312,7 +312,8 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in(__DIR__)
-            ->notPath(basename(__FILE__));
+            ->notPath(basename(__FILE__))
+        ;
 
         $resolver = $this->createConfigurationResolver(
             ['path' => [__FILE__]],
@@ -327,7 +328,8 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in(__DIR__)
-            ->notPath(basename(__FILE__));
+            ->notPath(basename(__FILE__))
+        ;
 
         $resolver = $this->createConfigurationResolver([
             'path' => [__FILE__],
@@ -343,7 +345,8 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->exclude(basename(__DIR__));
+            ->exclude(basename(__DIR__))
+        ;
 
         $resolver = $this->createConfigurationResolver(
             ['path' => [__FILE__]],
@@ -359,7 +362,8 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->exclude(basename(__DIR__));
+            ->exclude(basename(__DIR__))
+        ;
 
         $resolver = $this->createConfigurationResolver([
             'path-mode' => 'intersection',
@@ -375,7 +379,8 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->notPath('foo-'.basename(__FILE__));
+            ->notPath('foo-'.basename(__FILE__))
+        ;
 
         $resolver = $this->createConfigurationResolver(
             ['path' => [__FILE__]],

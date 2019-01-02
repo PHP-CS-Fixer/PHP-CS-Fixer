@@ -344,7 +344,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
             ->setWhitespacesConfig(
                 new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])
             )
-            ->getFixers();
+            ->getFixers()
+        ;
     }
 
     /**
