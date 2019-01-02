@@ -203,6 +203,7 @@ final class RuleSet implements RuleSetInterface
             'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
             'method_chaining_indentation' => true,
             'multiline_comment_opening_closing' => true,
+            'multiline_whitespace_before_semicolons' => ['strategy' => 'new_line_for_chained_calls'],
             'no_alternative_syntax' => true,
             'no_binary_string' => true,
             'no_extra_blank_lines' => ['tokens' => [
