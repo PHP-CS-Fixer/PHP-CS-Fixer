@@ -122,4 +122,15 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
             ],
         ];
     }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+            '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
+            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );'
+        );
+    }
 }
