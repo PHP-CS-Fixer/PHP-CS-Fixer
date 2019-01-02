@@ -166,4 +166,34 @@ class srand extends SrandClass{
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     * @param array  $config
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input, array $config = [])
+    {
+        $this->fixer->configure($config);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php $a = random_int(1,2,) + random_int(3,4,);',
+                '<?php $a = rand(1,2,) + mt_rand(3,4,);',
+                ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
+            ],
+            [
+                '<?php mt_srand($a,);',
+                '<?php srand($a,);',
+            ],
+        ];
+    }
 }
