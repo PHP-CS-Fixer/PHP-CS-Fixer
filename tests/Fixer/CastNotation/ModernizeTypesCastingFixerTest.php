@@ -136,6 +136,10 @@ OVERRIDDEN;
             [$overriddenFunctionFixed, $overriddenFunction],
 
             [
+                '<?php $a = (string) ($b . $c);',
+                '<?php $a = strval($b . $c);',
+            ],
+            [
                 '<?php $x = /**/(int) /**/ /** x*/(/**//** */mt_rand(0, 100)/***/)/*xx*/;',
                 '<?php $x = /**/intval/**/ /** x*/(/**//** */mt_rand(0, 100)/***/)/*xx*/;',
             ],
@@ -174,6 +178,36 @@ intval#
  $b#
  )#
  ;#',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php $a = (int) $b;',
+                '<?php $a = intval($b, );',
+            ],
+            [
+                '<?php $a = (int) $b;',
+                '<?php $a = intval($b , );',
+            ],
+            [
+                '<?php $a = (string) ($b . $c);',
+                '<?php $a = strval($b . $c, );',
             ],
         ];
     }
