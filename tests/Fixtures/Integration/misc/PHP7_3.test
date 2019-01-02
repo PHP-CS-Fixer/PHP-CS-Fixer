@@ -11,7 +11,6 @@ PHP 7.3 test.
     "multiline_whitespace_before_semicolons": true,
     "native_function_invocation": {"include": ["get_class"]},
     "php_unit_test_case_static_method_calls": {"call_type": "this"},
-    "silenced_deprecation_error": true,
     "strict_param": true
 }
 --REQUIREMENTS--
@@ -58,6 +57,7 @@ $a ** 1; // `pow_to_exponentiation` rule
 random_int($a, $b, ); // `random_api_migration` rule
 $foo = (int) $foo; // `set_type_to_cast` rule
 in_array($b, $c, true, ); // `strict_param` rule
+@trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 foo(null === $a, ); // `yoda_style` rule
 
 --INPUT--
@@ -100,4 +100,5 @@ pow($a, 1, ); // `pow_to_exponentiation` rule
 rand($a, $b, ); // `random_api_migration` rule
 settype($foo, "integer", ); // `set_type_to_cast` rule
 in_array($b, $c, ); // `strict_param` rule
+trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 foo($a === null, ); // `yoda_style` rule
