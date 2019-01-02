@@ -265,8 +265,7 @@ $c = get_class($d);
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        $insertAtIndexes = [];
-        for ($index = $start; $index < $end; ++$index) {
+        for ($index = $end; $index > $start; --$index) {
             if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 continue;
             }
@@ -279,10 +278,6 @@ $c = get_class($d);
                 continue; // do not bother if previous token is already namespace separator
             }
 
-            $insertAtIndexes[] = $index;
-        }
-
-        foreach (array_reverse($insertAtIndexes) as $index) {
             $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
         }
     }
