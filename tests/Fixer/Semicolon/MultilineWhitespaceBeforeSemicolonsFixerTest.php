@@ -847,4 +847,31 @@ Service
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                "<?php\n\$this\n    ->one()\n    ->two(2, )\n;",
+                "<?php\n\$this\n    ->one()\n    ->two(2, );",
+            ],
+            [
+                "<?php\n\$this\n    ->one(1, )\n    ->two()\n;",
+                "<?php\n\$this\n    ->one(1, )\n    ->two();",
+            ],
+        ];
+    }
 }
