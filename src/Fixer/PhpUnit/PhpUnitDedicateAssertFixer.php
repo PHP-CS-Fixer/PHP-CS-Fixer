@@ -305,6 +305,11 @@ $this->assertTrue(is_readable($a));
         $tokens[$testOpenIndex] = new Token(',');
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($testCloseIndex);
+        $commaIndex = $tokens->getPrevMeaningfulToken($testCloseIndex);
+        if ($tokens[$commaIndex]->equals(',')) {
+            $tokens->removeTrailingWhitespace($commaIndex);
+            $tokens->clearAt($commaIndex);
+        }
 
         if (!$tokens[$testOpenIndex + 1]->isWhitespace()) {
             $tokens->insertAt($testOpenIndex + 1, new Token([T_WHITESPACE, ' ']));
@@ -426,6 +431,12 @@ $this->assertTrue(is_readable($a));
         }
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($openIndex);
+        $commaIndex = $tokens->getPrevMeaningfulToken($closeIndex);
+        if ($tokens[$commaIndex]->equals(',')) {
+            $tokens->removeTrailingWhitespace($commaIndex);
+            $tokens->clearAt($commaIndex);
+        }
+
         $tokens->clearTokenAndMergeSurroundingWhitespace($closeIndex);
     }
 }
