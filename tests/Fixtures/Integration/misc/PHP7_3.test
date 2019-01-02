@@ -10,6 +10,7 @@ PHP 7.3 test.
     "mb_str_functions": true,
     "multiline_whitespace_before_semicolons": true,
     "native_function_invocation": {"include": ["get_class"]},
+    "php_unit_strict": true,
     "php_unit_test_case_static_method_calls": {"call_type": "this"},
     "strict_param": true
 }
@@ -53,6 +54,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function testFoo(): void
     {
         $this->assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
+        $this->assertSame(1, $a, '', ); // `php_unit_strict` rule
     }
 }
 $a ** 1; // `pow_to_exponentiation` rule
@@ -99,6 +101,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function testFoo(): void
     {
         static::assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
+        self::assertEquals(1, $a, '', ); // `php_unit_strict` rule
     }
 }
 pow($a, 1, ); // `pow_to_exponentiation` rule
