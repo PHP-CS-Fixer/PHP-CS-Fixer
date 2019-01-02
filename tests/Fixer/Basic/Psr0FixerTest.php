@@ -57,11 +57,11 @@ EOF;
         $this->doTest($expected, $input, $file);
     }
 
-    public function testFixIgnoreMultipleClassyInFile()
+    public function testIgnoreMultipleClassyInFile()
     {
-      $file = $this->getTestFile(__FILE__);
+        $file = $this->getTestFile(__FILE__);
 
-      $expected = <<<'EOF'
+        $expected = <<<'EOF'
 <?php
 namespace PhpCsFixer\Tests\Fixer\Basic;
 interface SomeInterfaceToBeUsedInTests {}
@@ -69,7 +69,7 @@ class blah {}
 /* class foo */
 EOF;
 
-      $this->doTest($expected, null, $file);
+        $this->doTest($expected, null, $file);
     }
 
     public function testFixClassName()
