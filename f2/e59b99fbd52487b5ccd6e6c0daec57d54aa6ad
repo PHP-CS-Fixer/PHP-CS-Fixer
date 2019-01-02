@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-02T08:42:04Z
+
+I think the SCA job fails here because we give PHPMD the modified files from the PR, which in this case do not contain any `.php`-source files.
