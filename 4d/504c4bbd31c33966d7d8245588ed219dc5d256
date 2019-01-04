@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-02T11:17:43Z
+
+please see https://github.com/SpacePossum/PHP-CS-Fixer/commit/3d7875c3e04329e23b34be8e3f0f0b1430f28c32 as well
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-02T11:18:23Z
+
+please add:
+
+```
+             [
+                 '<?php $this->assertInternalType(\'array\', $a,);',
+                 '<?php $this->assertTrue(is_array($a,),);',
+             ],
+```
+
+as these are fixed through a different path
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-01-02T11:49:56Z
+
+@SpacePossum I've added your test cases
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-03T18:26:43Z
+
+please add this test as well:
+
+```php
+            [
+                '<?php $this->assertNan($y  , );',
+                '<?php $this->assertTrue(is_nan($y)  , );',
+            ],
+```
+
+I think your change aims to remove the trailing `,` or at least remove the trailing spacing, but it seems not. Maybe removing the trailing space before removing the `,` token is the cause?
+
+I'm happy with results anyway, but like to capture the behavior of the fixer in this test case :)
