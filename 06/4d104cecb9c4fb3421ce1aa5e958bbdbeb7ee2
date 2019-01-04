@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-01-02T13:20:41Z
+
+Can we add this test cases:
+```php
+[
+                 '<?php $foo->bar = null;',
+                 '<?php unset($foo->bar, );',
+],
+[
+                 '<?php $foo->bar = null;',
+                 '<?php unset($foo->bar ,);',
+],
+[
+                 '<?php $foo->bar = null;',
+                 '<?php unset($foo->bar , );',
+],
+```
+?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-02T14:15:01Z
+
+@kubawerlos done, it proves the need for merging the spacing :+1:
