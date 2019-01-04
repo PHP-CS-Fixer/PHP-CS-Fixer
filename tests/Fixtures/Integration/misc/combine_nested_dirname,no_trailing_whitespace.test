@@ -6,8 +6,7 @@ Integration of fixers: combine_nested_dirname,no_trailing_whitespace.
 {"php": 70000}
 --EXPECT--
 <?php
-dirname(
-    $path
+dirname($path
 ,3);
 
 --INPUT--

@@ -81,8 +81,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['combine_consecutive_unsets'], $fixers['space_after_semicolon']],
             [$fixers['combine_nested_dirname'], $fixers['method_argument_space']],
             [$fixers['combine_nested_dirname'], $fixers['no_spaces_inside_parenthesis']],
-            [$fixers['combine_nested_dirname'], $fixers['no_trailing_whitespace']],
-            [$fixers['combine_nested_dirname'], $fixers['no_whitespace_in_blank_line']],
             [$fixers['declare_strict_types'], $fixers['blank_line_after_opening_tag']],
             [$fixers['declare_strict_types'], $fixers['declare_equal_normalize']],
             [$fixers['dir_constant'], $fixers['combine_nested_dirname']],
