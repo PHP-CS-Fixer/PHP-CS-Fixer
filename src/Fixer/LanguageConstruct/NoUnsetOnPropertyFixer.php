@@ -185,6 +185,11 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
         // if entry is last and to be transformed we remove trailing ")"
         if ($isLastUnset && $unsetInfo['isToTransform']) {
             $braceIndex = $tokens->getNextTokenOfKind($unsetInfo['endIndex'], [')']);
+            $previousIndex = $tokens->getPrevMeaningfulToken($braceIndex);
+            if ($tokens[$previousIndex]->equals(',')) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($previousIndex); // trailing ',' in function call (PHP 7.3)
+            }
+
             $tokens->clearTokenAndMergeSurroundingWhitespace($braceIndex);
         }
 

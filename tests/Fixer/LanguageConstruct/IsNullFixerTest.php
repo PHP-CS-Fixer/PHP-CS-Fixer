@@ -223,6 +223,20 @@ FIXED;
                 '<?php if ((null === $u or $v) and ($w || null === $x) xor (null !== $y and $z)) echo "foo"; ?>',
                 '<?php if ((is_null($u) or $v) and ($w || is_null($x)) xor (!is_null($y) and $z)) echo "foo"; ?>',
             ],
+
+            // edge cases: contains dangerous constructs, wrapped into parentheses
+            [
+                '<?php null === ($a ? $x : $y);',
+                '<?php is_null($a ? $x : $y);',
+            ],
+            [
+                '<?php $a === (null === $x);',
+                '<?php $a === is_null($x);',
+            ],
+            [
+                '<?php $a === (null === ($a ? $x : $y));',
+                '<?php $a === is_null($a ? $x : $y);',
+            ],
         ];
     }
 
