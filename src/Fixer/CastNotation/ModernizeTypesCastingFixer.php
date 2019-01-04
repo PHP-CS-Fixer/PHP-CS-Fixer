@@ -91,9 +91,17 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     continue;
                 }
 
+                $paramContentEnd = $closeParenthesis;
+                $commaCandidate = $tokens->getPrevMeaningfulToken($paramContentEnd);
+                if ($tokens[$commaCandidate]->equals(',')) {
+                    $tokens->removeTrailingWhitespace($commaCandidate);
+                    $tokens->clearAt($commaCandidate);
+                    $paramContentEnd = $commaCandidate;
+                }
+
                 // check if something complex passed as an argument and preserve parenthesises then
                 $countParamTokens = 0;
-                for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
+                for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $paramContentEnd; ++$paramContentIndex) {
                     //not a space, means some sensible token
                     if (!$tokens[$paramContentIndex]->isGivenKind(T_WHITESPACE)) {
                         ++$countParamTokens;

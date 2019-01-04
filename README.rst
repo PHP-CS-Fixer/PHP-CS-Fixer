@@ -40,19 +40,19 @@ your system:
 
 .. code-block:: bash
 
-    $ wget https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O php-cs-fixer
+    $ wget https://cs.symfony.com/download/php-cs-fixer-v2.phar -O php-cs-fixer
 
 or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.12.4/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.12.5/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
 .. code-block:: bash
 
-    $ curl -L https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -o php-cs-fixer
+    $ curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
 
 then:
 
@@ -836,7 +836,7 @@ Choose from the list of available rules:
   with a single asterisk, after the opening slash. Both must end with a
   single asterisk before the closing slash.
 
-* **multiline_whitespace_before_semicolons**
+* **multiline_whitespace_before_semicolons** [@PhpCsFixer]
 
   Forbid multi-line whitespace before the closing semicolon or move the
   semicolon to the new line for chained calls.
@@ -1750,7 +1750,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.12.4/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.12.5/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -1916,7 +1916,7 @@ scanned by the tool when run in the directory of your project. It is useful for
 projects that follow a well-known directory structures (like for Symfony
 projects for instance).
 
-.. _php-cs-fixer.phar: https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar
+.. _php-cs-fixer.phar: https://cs.symfony.com/download/php-cs-fixer-v2.phar
 .. _Atom:              https://github.com/Glavin001/atom-beautify
 .. _NetBeans:          http://plugins.netbeans.org/plugin/49042/php-cs-fixer
 .. _PhpStorm:          https://medium.com/@valeryan/how-to-configure-phpstorm-to-use-php-cs-fixer-1844991e521f
