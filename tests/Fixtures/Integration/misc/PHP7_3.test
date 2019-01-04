@@ -12,6 +12,7 @@ PHP 7.3 test.
     "multiline_whitespace_before_semicolons": true,
     "native_function_invocation": {"include": ["get_class"]},
     "php_unit_dedicate_assert": true,
+    "php_unit_expectation": true,
     "php_unit_test_case_static_method_calls": {"call_type": "this"},
     "strict_param": true
 }
@@ -57,6 +58,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo(): void
     {
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Msg');
+        $this->expectExceptionCode(123); // `php_unit_expectation` rule
         $this->assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
     }
 }
@@ -106,6 +110,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo(): void
     {
+        $this->setExpectedException('RuntimeException', 'Msg', 123, ); // `php_unit_expectation` rule
         static::assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
     }
 }
