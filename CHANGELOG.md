@@ -3,6 +3,33 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.12.6
+---------------------
+
+* bug #4216 Psr4Fixer - fix for multiple classy elements in file (keradus, kubawerlos)
+* bug #4217 Psr0Fixer - class with anonymous class (kubawerlos)
+* bug #4219  NativeFunctionCasingFixer - handle T_RETURN_REF  (kubawerlos)
+* bug #4224 FunctionToConstantFixer - handle T_RETURN_REF (SpacePossum)
+* bug #4229 IsNullFixer - fix parenthesis not closed (guilliamxavier)
+* minor #4198 [7.3] PowToExponentiationFixer - adding to PHP7.3 integration test (kubawerlos)
+* minor #4199 [7.3] MethodChainingIndentationFixer - add tests for PHP 7.3 (kubawerlos)
+* minor #4200 [7.3] ModernizeTypesCastingFixer - support PHP 7.3 (kubawerlos)
+* minor #4201 [7.3] MultilineWhitespaceBeforeSemicolonsFixer - add tests for PHP 7.3 (kubawerlos)
+* minor #4202 [7.3] ErrorSuppressionFixer - support PHP 7.3 (kubawerlos)
+* minor #4205 DX: PhpdocAlignFixer - refactor to use DocBlock (kubawerlos)
+* minor #4206 DX: enable multiline_whitespace_before_semicolons (keradus)
+* minor #4207 [7.3] RandomApiMigrationFixerTest - tests for 7.3 (SpacePossum)
+* minor #4208 [7.3] NativeFunctionCasingFixerTest - tests for 7.3 (SpacePossum)
+* minor #4209 [7.3] PhpUnitStrictFixerTest - tests for 7.3 (SpacePossum)
+* minor #4210 [7.3] PhpUnitConstructFixer - add test for PHP 7.3 (kubawerlos)
+* minor #4211 [7.3] PhpUnitDedicateAssertFixer - support PHP 7.3 (kubawerlos)
+* minor #4214 [7.3] NoUnsetOnPropertyFixerTest - tests for 7.3 (SpacePossum)
+* minor #4222 [7.3] PhpUnitExpectationFixer - support PHP 7.3 (kubawerlos)
+* minor #4223 [7.3] PhpUnitMockFixer - add tests for PHP 7.3 (kubawerlos)
+* minor #4230 [7.3] IsNullFixer - fix trailing comma (guilliamxavier)
+* minor #4232 DX: remove Utils::splitLines (kubawerlos)
+* minor #4234 [7.3] Test that "LITERAL instanceof X" is valid (guilliamxavier)
+
 Changelog for v2.12.5
 ---------------------
 
