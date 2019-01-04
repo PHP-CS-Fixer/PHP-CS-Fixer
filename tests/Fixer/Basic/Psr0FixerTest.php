@@ -194,6 +194,35 @@ EOF;
     /**
      * @requires PHP 7.0
      */
+    public function testClassWithAnonymousClass()
+    {
+        $file = $this->getTestFile(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+class Psr0FixerTest {
+    public function foo() {
+        return new class() implements FooInterface {};
+    }
+}
+EOF;
+        $input = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+class stdClass {
+    public function foo() {
+        return new class() implements FooInterface {};
+    }
+}
+EOF;
+
+        $this->doTest($expected, $input, $file);
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
     public function testIgnoreAnonymousClass()
     {
         $file = $this->getTestFile(__FILE__);

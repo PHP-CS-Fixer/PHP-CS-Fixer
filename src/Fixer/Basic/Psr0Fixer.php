@@ -81,12 +81,12 @@ class InvalidName {}
 
                 $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
-                if (null !== $classyName) {
-                    return;
-                }
-
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
                 if ($prevToken->isGivenKind(T_NEW)) {
+                    break;
+                }
+
+                if (null !== $classyName) {
                     return;
                 }
 

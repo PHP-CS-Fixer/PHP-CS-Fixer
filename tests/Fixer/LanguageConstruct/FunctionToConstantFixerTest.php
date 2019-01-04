@@ -245,4 +245,25 @@ get_called_class#1
 
         $this->fixer->configure(['pi123']);
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideFix70Cases
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        return [
+            [
+                '<?php function &PHPversion(){} ?>',
+            ],
+        ];
+    }
 }

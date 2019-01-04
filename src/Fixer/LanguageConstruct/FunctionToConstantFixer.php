@@ -206,7 +206,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         }
 
         $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
+        if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF])) {
             return null;
         }
 

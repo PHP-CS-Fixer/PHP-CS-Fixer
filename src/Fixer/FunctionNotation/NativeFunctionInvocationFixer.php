@@ -182,7 +182,7 @@ $c = get_class($d);
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         if ('all' === $this->configuration['scope']) {
-            $this->fixFunctionCalls($tokens, $this->functionFilter, 0, \count($tokens) - 1);
+            $this->fixFunctionCalls($tokens, $this->functionFilter, 0, \count($tokens) - 1, false);
 
             return;
         }
@@ -192,11 +192,7 @@ $c = get_class($d);
         // 'scope' is 'namespaced' here
         /** @var NamespaceAnalysis $namespace */
         foreach (array_reverse($namespaces) as $namespace) {
-            if ('' === $namespace->getFullName()) {
-                continue;
-            }
-
-            $this->fixFunctionCalls($tokens, $this->functionFilter, $namespace->getScopeStartIndex(), $namespace->getScopeEndIndex());
+            $this->fixFunctionCalls($tokens, $this->functionFilter, $namespace->getScopeStartIndex(), $namespace->getScopeEndIndex(), '' === $namespace->getFullName());
         }
     }
 
@@ -264,8 +260,9 @@ $c = get_class($d);
      * @param callable $functionFilter
      * @param int      $start
      * @param int      $end
+     * @param bool     $tryToRemove
      */
-    private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, $start, $end)
+    private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, $start, $end, $tryToRemove)
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
@@ -277,8 +274,11 @@ $c = get_class($d);
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if (!$functionFilter($tokens[$index]->getContent())) {
-                if ($this->configuration['strict'] && $tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if (!$functionFilter($tokens[$index]->getContent()) || $tryToRemove) {
+                if (!$this->configuration['strict']) {
+                    continue;
+                }
+                if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
                 }
 

@@ -134,15 +134,13 @@ final class IsNullFixer extends AbstractFixer
             $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
 
             if (!$isContainingDangerousConstructs) {
-                if (!$wrapIntoParentheses) {
-                    // closing parenthesis removed with leading spaces
-                    $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);
-                    if ($tokens[$prevIndex]->equals(',')) {
-                        $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
-                    }
-                    $tokens->removeLeadingWhitespace($referenceEnd);
-                    $tokens->clearAt($referenceEnd);
+                // closing parenthesis removed with leading spaces
+                $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);
+                if ($tokens[$prevIndex]->equals(',')) {
+                    $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
                 }
+                $tokens->removeLeadingWhitespace($referenceEnd);
+                $tokens->clearAt($referenceEnd);
 
                 // opening parenthesis removed with trailing spaces
                 $tokens->removeLeadingWhitespace($matches[1]);
@@ -160,6 +158,7 @@ final class IsNullFixer extends AbstractFixer
 
             if ($wrapIntoParentheses) {
                 array_unshift($replacement, new Token('('));
+                $tokens->insertAt($referenceEnd + 1, new Token(')'));
             }
 
             $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);

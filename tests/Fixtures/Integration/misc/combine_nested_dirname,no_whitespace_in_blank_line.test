@@ -7,9 +7,7 @@ Integration of fixers: combine_nested_dirname,no_whitespace_in_blank_line.
 --EXPECT--
 <?php
 dirname(
-
         $path
-
 ,2);
 
 --INPUT--
