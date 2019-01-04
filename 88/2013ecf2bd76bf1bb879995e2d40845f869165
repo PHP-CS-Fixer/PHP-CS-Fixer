@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-02T14:17:24Z
+
+failing tests are:
+- PHPMD is run without any files (since no php files are touched in the PR)
+- timeout when using collecting-coverage (this test is allowed to fail)
