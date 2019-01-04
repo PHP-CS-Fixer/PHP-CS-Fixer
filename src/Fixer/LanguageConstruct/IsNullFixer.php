@@ -133,12 +133,14 @@ final class IsNullFixer extends AbstractFixer
             $parentOperations = [T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL];
             $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
 
+            // possible trailing comma removed
+            $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);
+            if ($tokens[$prevIndex]->equals(',')) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
+            }
+
             if (!$isContainingDangerousConstructs) {
                 // closing parenthesis removed with leading spaces
-                $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);
-                if ($tokens[$prevIndex]->equals(',')) {
-                    $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
-                }
                 $tokens->removeLeadingWhitespace($referenceEnd);
                 $tokens->clearAt($referenceEnd);
 
