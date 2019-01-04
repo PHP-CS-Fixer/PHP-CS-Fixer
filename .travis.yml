@@ -94,7 +94,6 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.3
-            env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
             before_script:
                 - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q || travis_terminate 1
 
@@ -102,7 +101,7 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.3
-            env: COLLECT_COVERAGE=1 COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
+            env: COLLECT_COVERAGE=1
             before_install:
                 # check phpdbg
                 - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export COLLECT_COVERAGE=0; }
@@ -153,4 +152,4 @@ jobs:
 
     allow_failures:
         - php: nightly
-        - env: COLLECT_COVERAGE=1 COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
+        - env: COLLECT_COVERAGE=1
