@@ -161,7 +161,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    private function fixExpectation($tokens, $startIndex, $endIndex)
+    private function fixExpectation(Tokens $tokens, $startIndex, $endIndex)
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
@@ -186,6 +186,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $commaIndex = $tokens->getPrevMeaningfulToken($closeIndex);
+            if ($tokens[$commaIndex]->equals(',')) {
+                $tokens->removeTrailingWhitespace($commaIndex);
+                $tokens->clearAt($commaIndex);
+            }
 
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
             $argumentsCnt = \count($arguments);

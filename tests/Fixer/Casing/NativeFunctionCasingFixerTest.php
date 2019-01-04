@@ -102,6 +102,10 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                         function sqrT($a)
                         {
                         }
+
+                        function &END($a)
+                        {
+                        }
                     }
                 ',
             ],
@@ -128,6 +132,24 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
             [
                 '<?php
                     $a->STRTOLOWER();
+                ',
+            ],
+            [
+                '<?php
+                    namespace Foo {
+                        function &Next() {
+                            return prev(-1);
+                        }
+                    }',
+            ],
+            [
+                '<?php
+                    $next1 = & next($array1);
+                    $next2 = & \next($array2);
+                ',
+                '<?php
+                    $next1 = & Next($array1);
+                    $next2 = & \Next($array2);
                 ',
             ],
         ];

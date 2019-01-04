@@ -151,7 +151,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         $next = $tokens->getNextMeaningfulToken($index);
         $info['indexes'][] = $next;
 
-        if ($firstArgumentEndIndex) {
+        if (null !== $firstArgumentEndIndex) {
             $next = $tokens->getNextMeaningfulToken($firstArgumentEndIndex);
         } else {
             $next = $tokens->getNextMeaningfulToken($next);
@@ -173,6 +173,11 @@ final class CombineNestedDirnameFixer extends AbstractFixer
 
         $info['indexes'][] = $next;
 
+        if ($tokens[$next]->equals(',')) {
+            $next = $tokens->getNextMeaningfulToken($next);
+            $info['indexes'][] = $next;
+        }
+
         if ($tokens[$next]->equals(')')) {
             $info['levels'] = 1;
             $info['end'] = $next;
@@ -180,17 +185,19 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             return $info;
         }
 
-        $next = $tokens->getNextMeaningfulToken($next);
-
         if (!$tokens[$next]->isGivenKind(T_LNUMBER)) {
             return false;
         }
 
-        $info['indexes'][] = $next;
         $info['secondArgument'] = $next;
         $info['levels'] = (int) $tokens[$next]->getContent();
 
         $next = $tokens->getNextMeaningfulToken($next);
+
+        if ($tokens[$next]->equals(',')) {
+            $info['indexes'][] = $next;
+            $next = $tokens->getNextMeaningfulToken($next);
+        }
 
         if (!$tokens[$next]->equals(')')) {
             return false;
@@ -211,6 +218,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             $levels += $dirnameInfo['levels'];
 
             foreach ($dirnameInfo['indexes'] as $index) {
+                $tokens->removeLeadingWhitespace($index);
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
         }
@@ -220,7 +228,13 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         if (isset($outerDirnameInfo['secondArgument'])) {
             $tokens[$outerDirnameInfo['secondArgument']] = $levelsToken;
         } else {
-            $tokens->insertAt($outerDirnameInfo['end'], [new Token(','), $levelsToken]);
+            $prev = $tokens->getPrevMeaningfulToken($outerDirnameInfo['end']);
+            $items = [];
+            if (!$tokens[$prev]->equals(',')) {
+                $items[] = new Token(',');
+            }
+            $items[] = $levelsToken;
+            $tokens->insertAt($outerDirnameInfo['end'], $items);
         }
     }
 }
