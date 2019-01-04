@@ -6,10 +6,12 @@ PHP 7.3 test.
     "@PHP71Migration:risky": true,
     "@Symfony": true,
     "@Symfony:risky": true,
+    "heredoc_indentation": true,
     "list_syntax": {"syntax": "short"},
     "mb_str_functions": true,
     "multiline_whitespace_before_semicolons": true,
     "native_function_invocation": {"include": ["get_class"]},
+    "no_unset_cast": true,
     "php_unit_test_case_static_method_calls": {"call_type": "this"},
     "strict_param": true
 }
@@ -64,6 +66,13 @@ $foo = (int) $foo; // `set_type_to_cast` rule
 in_array($b, $c, true, ); // `strict_param` rule
 @trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 foo(null === $a, ); // `yoda_style` rule
+$a = null; // `no_unset_cast` rule
+// `heredoc_indentation` rule
+    $a = <<<'EOD'
+        abc
+            def
+            ghi
+        EOD;
 
 --INPUT--
 <?php
@@ -113,3 +122,10 @@ settype($foo, "integer", ); // `set_type_to_cast` rule
 in_array($b, $c, ); // `strict_param` rule
 trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 foo($a === null, ); // `yoda_style` rule
+$a =(unset)$z; // `no_unset_cast` rule
+// `heredoc_indentation` rule
+    $a = <<<'EOD'
+abc
+    def
+    ghi
+EOD;
