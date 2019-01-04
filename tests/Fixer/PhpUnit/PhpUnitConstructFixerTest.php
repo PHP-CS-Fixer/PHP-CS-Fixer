@@ -144,6 +144,32 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['assertions' => ['__TEST__']]);
     }
 
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php $this->assertTrue($a, );',
+                '<?php $this->assertSame(true, $a, );',
+            ],
+            [
+                '<?php $this->assertTrue($a, $message , );',
+                '<?php $this->assertSame(true, $a, $message , );',
+            ],
+        ];
+    }
+
     private function generateCases($expectedTemplate, $inputTemplate)
     {
         $cases = [];
