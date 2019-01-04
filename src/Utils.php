@@ -83,25 +83,6 @@ final class Utils
     }
 
     /**
-     * Split a multi-line string up into an array of strings.
-     *
-     * We're retaining a newline character at the end of non-blank lines, and
-     * discarding other lines, so this function is unsuitable for anyone for
-     * wishing to retain the exact number of line endings. If a single-line
-     * string is passed, we'll just return an array with a element.
-     *
-     * @param string $content
-     *
-     * @return string[]
-     */
-    public static function splitLines($content)
-    {
-        Preg::matchAll("/[^\n\r]+[\r\n]*/", $content, $matches);
-
-        return $matches[0];
-    }
-
-    /**
      * Calculate the trailing whitespace.
      *
      * What we're doing here is grabbing everything after the final newline.
