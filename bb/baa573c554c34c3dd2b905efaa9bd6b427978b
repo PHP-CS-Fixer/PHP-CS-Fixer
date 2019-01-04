@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-01-02T10:55:04Z
+
+Travis is failing on 7.3
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-01-02T11:09:01Z
+
+Fixed, `multiline_whitespace_before_semicolons` update affected integration test.
