@@ -579,6 +579,20 @@ namespace {
                     'strict' => true,
                 ],
             ],
+            'scope namespaced and strict enabled' => [
+                '<?php
+                    $a = not_compiler_optimized_function();
+                    $b = intval($c);
+                ',
+                '<?php
+                    $a = \not_compiler_optimized_function();
+                    $b = \intval($c);
+                ',
+                [
+                    'scope' => 'namespaced',
+                    'strict' => true,
+                ],
+            ],
         ];
     }
 
