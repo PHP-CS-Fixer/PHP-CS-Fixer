@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.14.0
+---------------------
+
+* bug #4220 NativeFunctionInvocationFixer - namespaced strict to remove backslash (kubawerlos)
+* feature #3881 Add PhpdocVarAnnotationCorrectOrderFixer (kubawerlos)
+* feature #3915 Add HeredocIndentationFixer (gharlan)
+* feature #4002 NoSuperfluousPhpdocTagsFixer - Allow `mixed` in superfluous PHPDoc by configuration (MortalFlesh)
+* feature #4030 Add get_required_files and user_error aliases (ntzm)
+* feature #4043 NativeFunctionInvocationFixer - add option to remove redundant backslashes (kubawerlos)
+* feature #4102 Add NoUnsetCastFixer (SpacePossum)
+* minor #4025 Add phpdoc_types_order rule to Symfony's ruleset (carusogabriel)
+* minor #4213 [7.3] PHP7.3 integration tests (SpacePossum)
+* minor #4233 Add official support for PHP 7.3 (keradus)
+
 Changelog for v2.13.3
 ---------------------
 
