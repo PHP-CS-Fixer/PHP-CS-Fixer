@@ -11,6 +11,7 @@ PHP 7.3 test.
     "method_chaining_indentation": true,
     "multiline_whitespace_before_semicolons": true,
     "native_function_invocation": {"include": ["get_class"]},
+    "no_unset_on_property": true,
     "php_unit_dedicate_assert": true,
     "php_unit_expectation": true,
     "php_unit_mock": true,
@@ -74,6 +75,7 @@ $foo = (int) $foo; // `set_type_to_cast` rule
 in_array($b, $c, true, ); // `strict_param` rule
 @trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 foo(null === $a, ); // `yoda_style` rule
+$foo->bar = null; // `no_unset_on_property` rule
 
 --INPUT--
 <?php
@@ -126,3 +128,4 @@ settype($foo, "integer", ); // `set_type_to_cast` rule
 in_array($b, $c, ); // `strict_param` rule
 trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 foo($a === null, ); // `yoda_style` rule
+unset($foo->bar,); // `no_unset_on_property` rule
