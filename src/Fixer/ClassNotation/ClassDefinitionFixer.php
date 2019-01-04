@@ -42,7 +42,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurationD
             'Whitespace around the keywords of a class, trait or interfaces definition should be one space.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 
 class  Foo  extends  Bar  implements  Baz,  BarBaz
 {
@@ -58,14 +58,14 @@ trait  Foo
 '
                 ),
                 new VersionSpecificCodeSample(
-'<?php
+                    '<?php
 
 $foo = new  class  extends  Bar  implements  Baz,  BarBaz {};
 ',
                     new VersionSpecification(70100)
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 class Foo
 extends Bar
@@ -75,7 +75,7 @@ implements Baz, BarBaz
                     ['single_line' => true]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 class Foo
 extends Bar
@@ -85,7 +85,7 @@ implements Baz
                     ['single_item_single_line' => true]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 interface Bar extends
     Bar, BarBaz, FooBarBaz

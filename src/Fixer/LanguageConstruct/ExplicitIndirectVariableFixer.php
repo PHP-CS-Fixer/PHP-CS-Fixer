@@ -42,7 +42,7 @@ echo $foo->$bar['baz'];
 echo $foo->$callback($baz);
 
 EOT
-,
+                    ,
                     new VersionSpecification(70000)
                 ),
             ]

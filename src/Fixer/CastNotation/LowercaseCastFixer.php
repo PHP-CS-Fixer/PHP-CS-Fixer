@@ -32,7 +32,7 @@ final class LowercaseCastFixer extends AbstractFixer
             'Cast should be written in lower case.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
     $a = (BOOLEAN) $b;
     $a = (BOOL) $b;
     $a = (INTEGER) $b;

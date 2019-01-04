@@ -74,7 +74,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurationDe
             [
                 new CodeSample("<?php\nuse Z; use A;\n"),
                 new CodeSample(
-'<?php
+                    '<?php
 use Acme\Bar;
 use Bar1;
 use Acme;
@@ -87,7 +87,7 @@ use Bar;
                     new VersionSpecification(70000)
                 ),
                 new VersionSpecificCodeSample(
-'<?php
+                    '<?php
 use const AAAA;
 use const BBB;
 
