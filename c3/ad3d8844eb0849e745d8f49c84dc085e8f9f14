@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by guilliamxavier at 2019-01-04T16:54:55Z
+
+@julienfalque @SpacePossum does it satisfy what you intended in https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/3697#issuecomment-450361627 and its reply? (i.e. is it enough to check the 3rd checkbox?)
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-01-04T16:55:55Z
+
+It's perfect !
+you will have my +1 after Travis will be green ;) (ignore first failing job).
+Hopefully, nothing more for you on this PR. thanks!
