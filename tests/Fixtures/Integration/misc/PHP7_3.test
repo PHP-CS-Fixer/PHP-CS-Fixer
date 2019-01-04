@@ -46,7 +46,6 @@ foo(
     $arg2,
 );
 __DIR__; // `dir_constant` rule
-dirname(dirname(dirname($path, ), ), ); // `combine_nested_dirname` rule
 null === $var; // `is_null` rule
 mb_strpos($a, $b, ); // `mb_str_functions` rule
 sample('foo', 'foobarbaz', 'baz', ); // `method_argument_space` rule
@@ -69,7 +68,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $this->expectExceptionMessage('Msg');
         $this->expectExceptionCode(123); // `php_unit_expectation` rule
         $this->createMock('Foo', ); // `php_unit_mock` rule
-        $this->assertSame(a(), b(), ); // `php_unit_strict` rule
         $this->assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
         $this->assertSame(1, $a, '', ); // `php_unit_strict` rule
     }
@@ -77,8 +75,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 $a ** 1; // `pow_to_exponentiation` rule
 random_int($a, $b, ); // `random_api_migration` rule
 $foo = (int) $foo; // `set_type_to_cast` rule
-@trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 in_array($b, $c, true, ); // `strict_param` rule
+@trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 foo(null === $a, ); // `yoda_style` rule
 $foo->bar = null; // `no_unset_on_property` rule
 
@@ -105,7 +103,6 @@ foo(
     $arg2,
 );
 dirname(__FILE__, ); // `dir_constant` rule
-dirname(dirname(dirname($path, ), ), ); // `combine_nested_dirname` rule
 is_null($var, ); // `is_null` rule
 strpos($a, $b, ); // `mb_str_functions` rule
 sample('foo',    'foobarbaz', 'baz'   , ); // `method_argument_space` rule
@@ -113,7 +110,8 @@ $user->setEmail('voff.web@gmail.com', ) // `method_chaining_indentation` rule
                ->setPassword('233434', );
 $a = intval($b, ); // `modernize_types_casting` rule
 $this->method1() // `multiline_whitespace_before_semicolons` rule
-     ->method2(3, );
+    ->method2(3, )
+;
 STRLEN($str, ); // `native_function_casing` rule
 $c = get_class($d, ); // `native_function_invocation` rule
 $a = chop($b, ); // `no_alias_functions` rule
@@ -124,9 +122,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo(): void
     {
-        $this->setExpectedException("RuntimeException", "Msg", 123); // `php_unit_expectation` rule
-        $this->getMock("Foo", ); // `php_unit_mock` rule
-        $this->assertEquals(a(), b(), ); // `php_unit_strict` rule
+        $this->setExpectedException('RuntimeException', 'Msg', 123, ); // `php_unit_expectation` rule
+        $this->getMock('Foo', ); // `php_unit_mock` rule
         static::assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
         self::assertEquals(1, $a, '', ); // `php_unit_strict` rule
     }
@@ -134,7 +131,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 pow($a, 1, ); // `pow_to_exponentiation` rule
 rand($a, $b, ); // `random_api_migration` rule
 settype($foo, "integer", ); // `set_type_to_cast` rule
-trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 in_array($b, $c, ); // `strict_param` rule
+trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 foo($a === null, ); // `yoda_style` rule
 unset($foo->bar,); // `no_unset_on_property` rule
