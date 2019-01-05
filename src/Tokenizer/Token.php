@@ -156,7 +156,21 @@ class Token
      */
     public function equals($other, $caseSensitive = true)
     {
-        $otherPrototype = $other instanceof self ? $other->getPrototype() : $other;
+        if ($other instanceof self) {
+            // Inlined getPrototype() on this very hot path.
+            // We access the private properties of $other directly to save function call overhead.
+            // This is only possible because $other is of the same class as `self`.
+            if (!$other->isArray) {
+                $otherPrototype = $other->content;
+            } else {
+                $otherPrototype = [
+                    $other->id,
+                    $other->content,
+                ];
+            }
+        } else {
+            $otherPrototype = $other;
+        }
 
         if ($this->isArray !== \is_array($otherPrototype)) {
             return false;
@@ -166,11 +180,11 @@ class Token
             return $this->content === $otherPrototype;
         }
 
-        if (array_key_exists(0, $otherPrototype) && $this->id !== $otherPrototype[0]) {
+        if ($this->id !== $otherPrototype[0]) {
             return false;
         }
 
-        if (array_key_exists(1, $otherPrototype)) {
+        if (isset($otherPrototype[1])) {
             if ($caseSensitive) {
                 if ($this->content !== $otherPrototype[1]) {
                     return false;

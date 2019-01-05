@@ -263,9 +263,9 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
     private function getSingleLineDocBlockEntry($line)
     {
         $line = $line[0];
-        $line = \str_replace('*/', '', $line);
+        $line = str_replace('*/', '', $line);
         $line = trim($line);
-        $line = \str_split($line);
+        $line = str_split($line);
         $i = \count($line);
         do {
             --$i;

@@ -86,7 +86,7 @@ final class ImplodeCallFixer extends AbstractFixer
             $argumentsIndices = $this->getArgumentIndices($tokens, $index);
 
             if (1 === \count($argumentsIndices)) {
-                $firstArgumentIndex = \key($argumentsIndices);
+                $firstArgumentIndex = key($argumentsIndices);
                 $tokens->insertAt($firstArgumentIndex, [
                     new Token([T_CONSTANT_ENCAPSED_STRING, "''"]),
                     new Token(','),
@@ -97,7 +97,7 @@ final class ImplodeCallFixer extends AbstractFixer
             }
 
             if (2 === \count($argumentsIndices)) {
-                list($firstArgumentIndex, $secondArgumentIndex) = \array_keys($argumentsIndices);
+                list($firstArgumentIndex, $secondArgumentIndex) = array_keys($argumentsIndices);
 
                 // If the first argument is string we have nothing to do
                 if ($tokens[$firstArgumentIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
@@ -109,9 +109,9 @@ final class ImplodeCallFixer extends AbstractFixer
                 }
 
                 // collect tokens from first argument
-                $firstArgumenteEndIndex = $argumentsIndices[\key($argumentsIndices)];
+                $firstArgumentEndIndex = $argumentsIndices[key($argumentsIndices)];
                 $newSecondArgumentTokens = [];
-                for ($i = \key($argumentsIndices); $i <= $firstArgumenteEndIndex; ++$i) {
+                for ($i = key($argumentsIndices); $i <= $firstArgumentEndIndex; ++$i) {
                     $newSecondArgumentTokens[] = clone $tokens[$i];
                     $tokens->clearAt($i);
                 }

@@ -59,7 +59,7 @@ final class CTTest extends TestCase
 
     public function testGetNameNotExists()
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('No custom token was found for "123".');
 
         CT::getName(123);

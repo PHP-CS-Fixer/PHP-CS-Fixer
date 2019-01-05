@@ -81,29 +81,6 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = $tokensAnalyzer->getClassyElements();
-
-        foreach (array_reverse($elements, true) as $index => $element) {
-            if (!\in_array($element['type'], $this->configuration['elements'], true)) {
-                continue;
-            }
-
-            if ('method' === $element['type']) {
-                $this->fixMethodVisibility($tokens, $index);
-            } elseif ('property' === $element['type']) {
-                $this->fixPropertyVisibility($tokens, $index);
-            } elseif ('const' === $element['type']) {
-                $this->fixConstVisibility($tokens, $index);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolverRootless('elements', [
@@ -123,186 +100,94 @@ class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * {@inheritdoc}
      */
-    private function fixMethodVisibility(Tokens $tokens, $index)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforeMethodToken($tokens, $index));
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
 
-        // force whitespace between function keyword and function name to be single space char
-        if ($tokens[$index + 1]->isWhitespace()) {
-            $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
-        }
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     */
-    private function fixPropertyVisibility(Tokens $tokens, $index)
-    {
-        $prevIndex = $tokens->getPrevTokenOfKind($index, [';', ',', '{']);
-
-        if (null === $prevIndex || !$tokens[$prevIndex]->equals(',')) {
-            $this->overrideAttribs($tokens, $index, $this->grabAttribsBeforePropertyToken($tokens, $index));
-        }
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     */
-    private function fixConstVisibility(Tokens $tokens, $index)
-    {
-        $prev = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$prev]->isGivenKind([T_PRIVATE, T_PROTECTED, T_PUBLIC])) {
-            return;
-        }
-
-        $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
-        $tokens->insertAt($index, new Token([T_PUBLIC, 'public']));
-    }
-
-    /**
-     * Grab attributes before method token at given index.
-     *
-     * It's a shorthand for grabAttribsBeforeToken method.
-     *
-     * @param Tokens $tokens Tokens collection
-     * @param int    $index  token index
-     *
-     * @return array<string, null|Token> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
-     */
-    private function grabAttribsBeforeMethodToken(Tokens $tokens, $index)
-    {
-        static $tokenAttribsMap = [
-            T_PRIVATE => 'visibility',
-            T_PROTECTED => 'visibility',
-            T_PUBLIC => 'visibility',
-            T_ABSTRACT => 'abstract',
-            T_FINAL => 'final',
-            T_STATIC => 'static',
-        ];
-
-        return $this->grabAttribsBeforeToken(
-            $tokens,
-            $index,
-            $tokenAttribsMap,
-            [
-                'abstract' => null,
-                'final' => null,
-                'visibility' => ['index' => null, 'token' => new Token([T_PUBLIC, 'public'])],
-                'static' => null,
-            ]
-        );
-    }
-
-    /**
-     * Apply token attributes.
-     *
-     * Token at given index is prepended by attributes.
-     *
-     * @param Tokens                    $tokens      Tokens collection
-     * @param int                       $memberIndex token index
-     * @param array<string, null|Token> $attribs     map of grabbed attributes, key is attribute name and value is array of index and clone of Token
-     */
-    private function overrideAttribs(Tokens $tokens, $memberIndex, array $attribs)
-    {
-        $toOverride = [];
-        $firstAttribIndex = $memberIndex;
-
-        foreach ($attribs as $attrib) {
-            if (null === $attrib) {
+        foreach (array_reverse($elements, true) as $index => $element) {
+            if (!\in_array($element['type'], $this->configuration['elements'], true)) {
                 continue;
             }
 
-            if (null !== $attrib['index']) {
-                $firstAttribIndex = min($firstAttribIndex, $attrib['index']);
-            }
-
-            if (!$attrib['token']->isGivenKind(T_VAR) && '' !== $attrib['token']->getContent()) {
-                $toOverride[] = $attrib['token'];
-                $toOverride[] = new Token([T_WHITESPACE, ' ']);
-            }
-        }
-
-        if ([] !== $toOverride) {
-            $tokens->overrideRange($firstAttribIndex, $memberIndex - 1, $toOverride);
-        }
-    }
-
-    /**
-     * Grab attributes before property token at given index.
-     *
-     * It's a shorthand for grabAttribsBeforeToken method.
-     *
-     * @param Tokens $tokens Tokens collection
-     * @param int    $index  token index
-     *
-     * @return array<string, null|Token> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
-     */
-    private function grabAttribsBeforePropertyToken(Tokens $tokens, $index)
-    {
-        static $tokenAttribsMap = [
-            T_VAR => 'var',
-            T_PRIVATE => 'visibility',
-            T_PROTECTED => 'visibility',
-            T_PUBLIC => 'visibility',
-            T_STATIC => 'static',
-        ];
-
-        return $this->grabAttribsBeforeToken(
-            $tokens,
-            $index,
-            $tokenAttribsMap,
-            [
-                'visibility' => ['index' => null, 'token' => new Token([T_PUBLIC, 'public'])],
-                'static' => null,
-            ]
-        );
-    }
-
-    /**
-     * Grab info about attributes before token at given index.
-     *
-     * @param Tokens                    $tokens          Tokens collection
-     * @param int                       $index           token index
-     * @param array<int, null|string>   $tokenAttribsMap token to attribute name map
-     * @param array<string, null|Token> $attribs         array of token attributes
-     *
-     * @return array<string, null|Token> map of grabbed attributes, key is attribute name and value is array of index and clone of Token
-     */
-    private function grabAttribsBeforeToken(Tokens $tokens, $index, array $tokenAttribsMap, array $attribs)
-    {
-        while (true) {
-            $token = $tokens[--$index];
-
-            if (!$token->isArray()) {
-                if ($token->equalsAny(['{', '}', '(', ')'])) {
-                    break;
+            $abstractFinalIndex = null;
+            $visibilityIndex = null;
+            $staticIndex = null;
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            while ($tokens[$prevIndex]->isGivenKind([T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR])) {
+                if ($tokens[$prevIndex]->isGivenKind([T_ABSTRACT, T_FINAL])) {
+                    $abstractFinalIndex = $prevIndex;
+                } elseif ($tokens[$prevIndex]->isGivenKind(T_STATIC)) {
+                    $staticIndex = $prevIndex;
+                } else {
+                    $visibilityIndex = $prevIndex;
                 }
+                $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+            }
 
+            if ($tokens[$prevIndex]->equals(',')) {
                 continue;
             }
 
-            // if token is attribute, set token attribute name
-            if (isset($tokenAttribsMap[$token->getId()])) {
-                $attribs[$tokenAttribsMap[$token->getId()]] = [
-                    'token' => clone $token,
-                    'index' => $index,
-                ];
+            if (null !== $staticIndex) {
+                if ($this->isKeywordPlacedProperly($tokens, $staticIndex, $index)) {
+                    $index = $staticIndex;
+                } else {
+                    $this->moveTokenAndEnsureSingleSpaceFollows($tokens, $staticIndex, $index);
+                }
+            }
 
+            if (null === $visibilityIndex) {
+                $tokens->insertAt($index, [new Token([T_PUBLIC, 'public']), new Token([T_WHITESPACE, ' '])]);
+            } else {
+                if ($tokens[$visibilityIndex]->isGivenKind(T_VAR)) {
+                    $tokens[$visibilityIndex] = new Token([T_PUBLIC, 'public']);
+                }
+                if ($this->isKeywordPlacedProperly($tokens, $visibilityIndex, $index)) {
+                    $index = $visibilityIndex;
+                } else {
+                    $this->moveTokenAndEnsureSingleSpaceFollows($tokens, $visibilityIndex, $index);
+                }
+            }
+
+            if (null === $abstractFinalIndex) {
                 continue;
             }
 
-            if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+            if ($this->isKeywordPlacedProperly($tokens, $abstractFinalIndex, $index)) {
                 continue;
             }
 
-            break;
+            $this->moveTokenAndEnsureSingleSpaceFollows($tokens, $abstractFinalIndex, $index);
         }
+    }
 
-        return $attribs;
+    /**
+     * @param Tokens $tokens
+     * @param int    $keywordIndex
+     * @param int    $comparedIndex
+     *
+     * @return bool
+     */
+    private function isKeywordPlacedProperly(Tokens $tokens, $keywordIndex, $comparedIndex)
+    {
+        return $keywordIndex + 2 === $comparedIndex && ' ' === $tokens[$keywordIndex + 1]->getContent();
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $fromIndex
+     * @param int    $toIndex
+     */
+    private function moveTokenAndEnsureSingleSpaceFollows(Tokens $tokens, $fromIndex, $toIndex)
+    {
+        $tokens->insertAt($toIndex, [$tokens[$fromIndex], new Token([T_WHITESPACE, ' '])]);
+
+        $tokens->clearAt($fromIndex);
+        if ($tokens[$fromIndex + 1]->isWhitespace()) {
+            $tokens->clearAt($fromIndex + 1);
+        }
     }
 }

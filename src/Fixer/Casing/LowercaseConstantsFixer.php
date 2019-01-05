@@ -83,6 +83,7 @@ final class LowercaseConstantsFixer extends AbstractFixer
             T_INTERFACE,
             T_NEW,
             T_NS_SEPARATOR,
+            T_OBJECT_OPERATOR,
             T_PAAMAYIM_NEKUDOTAYIM,
             T_TRAIT,
             T_USE,

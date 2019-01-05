@@ -52,24 +52,24 @@ class InvalidName {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $namespace = false;
-        $classyName = null;
+        $isNamespaceFound = false;
         $classyIndex = 0;
+        $classyName = null;
 
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_NAMESPACE)) {
-                if (false !== $namespace) {
+                if ($isNamespaceFound) {
                     return;
                 }
 
-                $namespace = true;
+                $isNamespaceFound = true;
             } elseif ($token->isClassy()) {
-                if (null !== $classyName) {
-                    return;
-                }
-
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
                 if ($prevToken->isGivenKind(T_NEW)) {
+                    break;
+                }
+
+                if (null !== $classyName) {
                     return;
                 }
 
@@ -82,7 +82,7 @@ class InvalidName {}
             return;
         }
 
-        if (false !== $namespace) {
+        if ($isNamespaceFound) {
             $filename = basename(str_replace('\\', '/', $file->getRealPath()), '.php');
 
             if ($classyName !== $filename) {

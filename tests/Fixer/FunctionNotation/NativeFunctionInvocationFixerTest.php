@@ -538,6 +538,7 @@ namespace {
                     // do not fix
                     $a = strrev($a);
                     $a .= str_repeat($a, 4);
+                    $b = \already_prefixed_function();
                     // fix
                     $c = \get_class($d);
                     $e = \intval($f);
@@ -546,6 +547,7 @@ namespace {
                     // do not fix
                     $a = strrev($a);
                     $a .= str_repeat($a, 4);
+                    $b = \already_prefixed_function();
                     // fix
                     $c = get_class($d);
                     $e = intval($f);
@@ -561,6 +563,47 @@ namespace {
                     }
                 ',
             ],
+            'include @compiler_optimized with strict enabled' => [
+                '<?php
+                    $a = not_compiler_optimized_function();
+                    $b =  not_compiler_optimized_function();
+                    $c = \intval($d);
+                ',
+                '<?php
+                    $a = \not_compiler_optimized_function();
+                    $b = \ not_compiler_optimized_function();
+                    $c = intval($d);
+                ',
+                [
+                    'include' => ['@compiler_optimized'],
+                    'strict' => true,
+                ],
+            ],
+            'scope namespaced and strict enabled' => [
+                '<?php
+                    $a = not_compiler_optimized_function();
+                    $b = intval($c);
+                ',
+                '<?php
+                    $a = \not_compiler_optimized_function();
+                    $b = \intval($c);
+                ',
+                [
+                    'scope' => 'namespaced',
+                    'strict' => true,
+                ],
+            ],
         ];
+    }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+             '<?php $name = \get_class($foo, );',
+             '<?php $name = get_class($foo, );'
+         );
     }
 }

@@ -1174,6 +1174,72 @@ echo $a;',
         return $cases;
     }
 
+    public function testRemovingLeadingWhitespaceWithEmptyTokenInCollection()
+    {
+        $code = "<?php\n    /* I will be removed */MY_INDEX_IS_THREE;foo();";
+        $tokens = Tokens::fromCode($code);
+        $tokens->clearAt(2);
+
+        $tokens->removeLeadingWhitespace(3);
+
+        $tokens->clearEmptyTokens();
+        $this->assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_THREE;foo();"), $tokens);
+    }
+
+    public function testRemovingTrailingWhitespaceWithEmptyTokenInCollection()
+    {
+        $code = "<?php\nMY_INDEX_IS_ONE/* I will be removed */    ;foo();";
+        $tokens = Tokens::fromCode($code);
+        $tokens->clearAt(2);
+
+        $tokens->removeTrailingWhitespace(1);
+
+        $tokens->clearEmptyTokens();
+        $this->assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_ONE;foo();"), $tokens);
+    }
+
+    /**
+     * Action that begins with the word "remove" should not change the size of collection.
+     */
+    public function testRemovingLeadingWhitespaceWillNotIncreaseTokensCount()
+    {
+        $tokens = Tokens::fromCode('<?php
+                                    // Foo
+                                    $bar;');
+        $originalCount = $tokens->count();
+
+        $tokens->removeLeadingWhitespace(4);
+
+        $this->assertSame($originalCount, $tokens->count());
+        $this->assertSame(
+            '<?php
+                                    // Foo
+$bar;',
+            $tokens->generateCode()
+        );
+    }
+
+    /**
+     * Action that begins with the word "remove" should not change the size of collection.
+     */
+    public function testRemovingTrailingWhitespaceWillNotIncreaseTokensCount()
+    {
+        $tokens = Tokens::fromCode('<?php
+                                    // Foo
+                                    $bar;');
+        $originalCount = $tokens->count();
+
+        $tokens->removeTrailingWhitespace(2);
+
+        $this->assertSame($originalCount, $tokens->count());
+        $this->assertSame(
+            '<?php
+                                    // Foo
+$bar;',
+            $tokens->generateCode()
+        );
+    }
+
     /**
      * @param null|Token[] $expected
      * @param null|Token[] $input

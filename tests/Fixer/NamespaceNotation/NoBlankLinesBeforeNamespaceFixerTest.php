@@ -53,6 +53,28 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
             ["<?php\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
             ["<?php\r\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
             ["<?php\n\nnamespace\\Sub\\Foo::bar();"],
+            [
+                '<?php
+    // Foo
+    namespace Foo;
+',
+                '<?php
+    // Foo
+    '.'
+    namespace Foo;
+',
+            ],
+            [
+                '<?php
+// Foo
+namespace Foo;
+',
+                '<?php
+// Foo
+    '.'
+namespace Foo;
+',
+            ],
         ];
     }
 

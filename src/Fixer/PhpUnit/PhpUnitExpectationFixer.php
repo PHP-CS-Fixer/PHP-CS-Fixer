@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitExpectationFixer extends AbstractFunctionReferenceFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class PhpUnitExpectationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @var array<string, string>
@@ -131,6 +131,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
@@ -153,7 +161,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    private function fixExpectation($tokens, $startIndex, $endIndex)
+    private function fixExpectation(Tokens $tokens, $startIndex, $endIndex)
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
@@ -178,6 +186,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $commaIndex = $tokens->getPrevMeaningfulToken($closeIndex);
+            if ($tokens[$commaIndex]->equals(',')) {
+                $tokens->removeTrailingWhitespace($commaIndex);
+                $tokens->clearAt($commaIndex);
+            }
 
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
             $argumentsCnt = \count($arguments);

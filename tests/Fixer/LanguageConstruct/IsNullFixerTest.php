@@ -107,6 +107,7 @@ FIXED;
 
             ['<?php is_nullSmth(json_decode($x));'],
             ['<?php smth_is_null(json_decode($x));'],
+            ['<?php namespace Foo; function &is_null($x) { return null === $x; }'],
 
             ['<?php "SELECT ... is_null(json_decode($x)) ...";'],
             ['<?php "SELECT ... is_null(json_decode($x)) ...";'],
@@ -222,6 +223,20 @@ FIXED;
                 '<?php if ((null === $u or $v) and ($w || null === $x) xor (null !== $y and $z)) echo "foo"; ?>',
                 '<?php if ((is_null($u) or $v) and ($w || is_null($x)) xor (!is_null($y) and $z)) echo "foo"; ?>',
             ],
+
+            // edge cases: $isContainingDangerousConstructs, $wrapIntoParentheses
+            [
+                '<?php null === ($a ? $x : $y);',
+                '<?php is_null($a ? $x : $y);',
+            ],
+            [
+                '<?php $a === (null === $x);',
+                '<?php $a === is_null($x);',
+            ],
+            [
+                '<?php $a === (null === ($a ? $x : $y));',
+                '<?php $a === is_null($a ? $x : $y);',
+            ],
         ];
     }
 
@@ -261,6 +276,54 @@ FIXED;
             [
                 '<?php while (($nextMaxId = $myTimeline->getNextMaxId()) === null);',
                 '<?php while (is_null($nextMaxId = $myTimeline->getNextMaxId()));',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php null === $x;',
+                '<?php is_null($x, );',
+            ],
+            [
+                '<?php null === $x;',
+                '<?php is_null( $x , );',
+            ],
+            [
+                '<?php null === a(null === a(null === a(null === b(), ), ), );',
+                '<?php \is_null(a(\is_null(a(\is_null(a(\is_null(b(), ), ), ), ), ), ), );',
+            ],
+            [
+                '<?php if ((null === $u or $v) and ($w || null === $x) xor (null !== $y and $z)) echo "foo"; ?>',
+                '<?php if ((is_null($u, ) or $v) and ($w || is_null($x, )) xor (!is_null($y, ) and $z)) echo "foo"; ?>',
+            ],
+
+            // edge cases: $isContainingDangerousConstructs, $wrapIntoParentheses
+            [
+                '<?php null === ($a ? $x : $y );',
+                '<?php is_null($a ? $x : $y, );',
+            ],
+            [
+                '<?php $a === (null === $x);',
+                '<?php $a === is_null($x, );',
+            ],
+            [
+                '<?php $a === (null === ($a ? $x : $y ));',
+                '<?php $a === is_null($a ? $x : $y, );',
             ],
         ];
     }

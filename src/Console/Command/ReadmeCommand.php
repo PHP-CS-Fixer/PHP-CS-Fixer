@@ -203,6 +203,7 @@ Dedicated plugins exist for:
 * `PhpStorm`_
 * `Sublime Text`_
 * `Vim`_
+* `VS Code`_
 
 Contribute
 ----------
@@ -230,6 +231,7 @@ projects for instance).
 .. _PhpStorm:          https://medium.com/@valeryan/how-to-configure-phpstorm-to-use-php-cs-fixer-1844991e521f
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
+.. _VS Code:           https://github.com/junstyle/vscode-php-cs-fixer
 .. _contribute:        https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md
 
 EOF;
@@ -280,7 +282,7 @@ EOF;
         $help = Preg::replace('#\*\* +\[#', '** [', $help);
 
         $downloadLatestUrl = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v%s/php-cs-fixer.phar', HelpCommand::getLatestReleaseVersionFromChangeLog());
-        $downloadUrl = 'https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar';
+        $downloadUrl = 'https://cs.symfony.com/download/php-cs-fixer-v2.phar';
 
         $header = str_replace('%download.version_url%', $downloadLatestUrl, $header);
         $header = str_replace('%download.url%', $downloadUrl, $header);

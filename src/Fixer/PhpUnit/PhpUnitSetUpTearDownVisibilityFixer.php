@@ -135,7 +135,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
 
         $functionNameIndex = $tokens->getNextMeaningfulToken($index);
-        $functionName = \strtolower($tokens[$functionNameIndex]->getContent());
+        $functionName = strtolower($tokens[$functionNameIndex]->getContent());
 
         return 'setup' === $functionName || 'teardown' === $functionName;
     }

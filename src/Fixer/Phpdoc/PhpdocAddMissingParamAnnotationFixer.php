@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Fixer\Phpdoc;
 
-use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
@@ -29,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -268,8 +268,16 @@ function f9(string $foo, $bar, $baz) {}
 
             if ($sawName) {
                 $info['default'] .= $token->getContent();
-            } else {
-                $info['type'] .= $token->getContent();
+            } elseif ('&' !== $token->getContent()) {
+                if ($token->isGivenKind(T_ELLIPSIS)) {
+                    if ('' === $info['type']) {
+                        $info['type'] = 'array';
+                    } else {
+                        $info['type'] .= '[]';
+                    }
+                } else {
+                    $info['type'] .= $token->getContent();
+                }
             }
         }
 

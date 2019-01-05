@@ -39,6 +39,15 @@ final class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // Should run after CurlyBraceTransformer
+        return -5;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRequiredPhpVersionId()
     {
         return 50300;
@@ -51,21 +60,20 @@ final class UseTransformer extends AbstractTransformer
     {
         if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
             $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
-        }
 
-        if (!$token->isClassy()) {
             return;
         }
 
-        $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-        $prevToken = null === $prevTokenIndex ? null : $tokens[$prevTokenIndex];
+        // Only search inside class/trait body for `T_USE` for traits.
+        // Cannot import traits inside interfaces or anywhere else
 
-        if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
+        if (!$token->isGivenKind([T_CLASS, T_TRAIT])) {
             return;
         }
 
-        // Skip whole class braces content.
-        // That way we can skip whole tokens in class declaration, therefore skip `T_USE` for traits.
+        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_DOUBLE_COLON)) {
+            return;
+        }
 
         $index = $tokens->getNextTokenOfKind($index, ['{']);
         $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);

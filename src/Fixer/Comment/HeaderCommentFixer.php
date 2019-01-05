@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
@@ -112,6 +113,19 @@ echo 1;
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should be run after the NoBlankLinesAfterPhpdocFixer.
+        //
+        // When this fixer is configured with ["separate" => "bottom", "commentType" => "PHPDoc"]
+        // and the target file has no namespace or declare() construct,
+        // the fixed header comment gets trimmed by NoBlankLinesAfterPhpdocFixer if we run before it.
+        return -30;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // figure out where the comment should be placed
@@ -145,12 +159,18 @@ echo 1;
      */
     protected function createConfigurationDefinition()
     {
+        $fixerName = $this->getName();
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('header', 'Proper header content.'))
                 ->setAllowedTypes(['string'])
-                ->setNormalizer(static function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value) use ($fixerName) {
                     if ('' === trim($value)) {
                         return '';
+                    }
+
+                    if (false !== strpos($value, '*/')) {
+                        throw new InvalidFixerConfigurationException($fixerName, 'Cannot use \'*/\' in header.');
                     }
 
                     return $value;

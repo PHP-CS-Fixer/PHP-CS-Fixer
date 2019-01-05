@@ -260,4 +260,28 @@ $foo
             ],
         ];
     }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+            '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+        ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+        ->setEmailConfirmationCode("123456",    );
+',
+            '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+
+     ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+->setEmailConfirmationCode("123456",    );
+'
+        );
+    }
 }

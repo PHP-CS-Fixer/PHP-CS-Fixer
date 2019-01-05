@@ -36,12 +36,12 @@ final class Preg
     public static function match($pattern, $subject, &$matches = null, $flags = 0, $offset = 0)
     {
         $result = @preg_match(self::addUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
-        if (false !== $result) {
+        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_match(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
-        if (false !== $result) {
+        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
@@ -62,12 +62,12 @@ final class Preg
     public static function matchAll($pattern, $subject, &$matches = null, $flags = PREG_PATTERN_ORDER, $offset = 0)
     {
         $result = @preg_match_all(self::addUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
-        if (false !== $result) {
+        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_match_all(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
-        if (false !== $result) {
+        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
@@ -88,12 +88,12 @@ final class Preg
     public static function replace($pattern, $replacement, $subject, $limit = -1, &$count = null)
     {
         $result = @preg_replace(self::addUtf8Modifier($pattern), $replacement, $subject, $limit, $count);
-        if (null !== $result) {
+        if (null !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_replace(self::removeUtf8Modifier($pattern), $replacement, $subject, $limit, $count);
-        if (null !== $result) {
+        if (null !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
@@ -114,12 +114,12 @@ final class Preg
     public static function replaceCallback($pattern, $callback, $subject, $limit = -1, &$count = null)
     {
         $result = @preg_replace_callback(self::addUtf8Modifier($pattern), $callback, $subject, $limit, $count);
-        if (null !== $result) {
+        if (null !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_replace_callback(self::removeUtf8Modifier($pattern), $callback, $subject, $limit, $count);
-        if (null !== $result) {
+        if (null !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
@@ -139,12 +139,12 @@ final class Preg
     public static function split($pattern, $subject, $limit = -1, $flags = 0)
     {
         $result = @preg_split(self::addUtf8Modifier($pattern), $subject, $limit, $flags);
-        if (false !== $result) {
+        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_split(self::removeUtf8Modifier($pattern), $subject, $limit, $flags);
-        if (false !== $result) {
+        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 

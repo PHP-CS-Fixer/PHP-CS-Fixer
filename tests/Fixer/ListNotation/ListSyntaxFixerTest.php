@@ -88,10 +88,6 @@ $a#
 ;#',
         ];
 
-        // cannot fix cases
-        $cases[] = ['<?php [[$a, $b], [$c, $d]] = $a;'];
-        $cases[] = ['<?php [[$a, [$b]], [[$c, [$d]]]] = $a;'];
-
         return $cases;
     }
 
@@ -149,6 +145,66 @@ $a#
 $a;#
 #
 ',
+            ],
+            [
+                '<?php [$a, $b,, [$c, $d]] = $a;',
+                '<?php list($a, $b,, list($c, $d)) = $a;',
+            ],
+            [
+                '<?php [[$a, $b], [$c, $d]] = $a;',
+                '<?php list(list($a, $b), list($c, $d)) = $a;',
+            ],
+            [
+                '<?php [[$a, [$b]], [[$c, [$d]]]] = $a;',
+                '<?php list(list($a, list($b)), list(list($c, list($d)))) = $a;',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.2
+     * @dataProvider providePhp72Cases
+     */
+    public function testFixToShortSyntaxPhp72($expected, $input)
+    {
+        $this->fixer->configure(['syntax' => 'short']);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string $input
+     * @param string $expected
+     *
+     * @requires PHP 7.2
+     * @dataProvider providePhp72Cases
+     */
+    public function testFixToLongSyntaxPhp72($input, $expected)
+    {
+        $this->fixer->configure(['syntax' => 'long']);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp72Cases()
+    {
+        return [
+            [
+                '<?php [&$a, $b] = $a;',
+                '<?php list(&$a, $b) = $a;',
+            ],
+            [
+                '<?php [&$a,/* */&$b] = $a;',
+                '<?php list(&$a,/* */&$b) = $a;',
+            ],
+            [
+                '<?php [&$a, $b,, [&$c, $d]] = $a;',
+                '<?php list(&$a, $b,, list(&$c, $d)) = $a;',
+            ],
+            [
+                '<?php [$a, $b,, [$c, $d]] = $a;',
+                '<?php list($a, $b,, list($c, $d)) = $a;',
             ],
         ];
     }
