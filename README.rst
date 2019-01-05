@@ -1891,6 +1891,7 @@ Choose from the list of available rules:
 
   Classes must be in a path that matches their namespace, be at least one
   namespace deep and the class name should match the file name.
+  DEPRECATED: use ``psr_autoloading`` instead.
 
   *Risky rule: this fixer may change your class name, which will break the code that depends on the old name.*
 
@@ -1899,11 +1900,24 @@ Choose from the list of available rules:
   - ``dir`` (``string``): the directory where the project code is placed; defaults
     to ``''``
 
-* **psr4** [@Symfony:risky, @PhpCsFixer:risky]
+* **psr4**
 
-  Class names should match the file name.
+  Class names should match the file name. DEPRECATED: use
+  ``psr_autoloading`` instead.
 
   *Risky rule: this fixer may change your class name, which will break the code that depends on the old name.*
+
+* **psr_autoloading** [@Symfony:risky, @PhpCsFixer:risky]
+
+  Classes must be in a path that matches their namespace, be at least one
+  namespace deep and the class name should match the file name.
+
+  *Risky rule: this fixer may change your class name, which will break the code that depends on the old name.*
+
+  Configuration options:
+
+  - ``dir`` (``null``, ``string``): if provided, the directory where the project code is
+    placed; defaults to ``null``
 
 * **random_api_migration** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP74Migration:risky]
 

@@ -258,7 +258,7 @@ final class RuleSet implements RuleSetInterface
             'php_unit_mock_short_will_return' => true,
             'php_unit_set_up_tear_down_visibility' => true,
             'php_unit_test_annotation' => true,
-            'psr4' => true,
+            'psr_autoloading' => true,
             'self_accessor' => true,
             'set_type_to_cast' => true,
             'string_line_ending' => true,
