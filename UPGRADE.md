@@ -87,10 +87,10 @@ concat_with_spaces                             | concat_space                   
 concat_without_spaces                          | concat_space                                      | use configuration ['spacing' => 'none']
 double_arrow_multiline_whitespaces             | no_multiline_whitespace_around_double_arrow
 duplicate_semicolon                            | no_empty_statement                                | new one fixes more cases
-empty_return                                   | simplified_null_return
 echo_to_print                                  | no_mixed_echo_print                               | use configuration ['use' => 'print']
+empty_return                                   | simplified_null_return
 eof_ending                                     | single_blank_line_at_eof
-extra_empty_lines                              | no_extra_consecutive_blank_lines
+extra_empty_lines                              | no_extra_blank_lines
 function_call_space                            | no_spaces_after_function_name
 general_phpdoc_annotation_rename               | phpdoc_no_alias_tag                               | use configuration ['property-read' => 'property', 'property-write' => 'property']
 indentation                                    | indentation_type
@@ -103,7 +103,7 @@ logical_not_operators_with_successor_space     | not_operator_with_successor_spa
 long_array_syntax                              | array_syntax                                      | use configuration ['syntax' => 'long']
 method_argument_default_value                  | no_unreachable_default_argument_value
 multiline_array_trailing_comma                 | trailing_comma_in_multiline_array
-multiline_spaces_before_semicolon              | no_multiline_whitespace_before_semicolons
+multiline_spaces_before_semicolon              | multiline_whitespace_before_semicolons            | use configuration ['strategy' => 'no_multi_line']
 multiple_use                                   | single_import_per_statement
 namespace_no_leading_whitespace                | no_leading_namespace_whitespace
 newline_after_open_tag                         | linebreak_after_opening_tag
@@ -121,8 +121,8 @@ phpdoc_type_to_var                             | phpdoc_no_alias_tag            
 phpdoc_var_to_type                             | phpdoc_no_alias_tag                               | use configuration ['var' => 'type']
 print_to_echo                                  | no_mixed_echo_print                               | use configuration ['use' => 'echo']
 remove_leading_slash_use                       | no_leading_import_slash
-remove_lines_between_uses                      | no_extra_consecutive_blank_lines                  | use configuration ['use']
-return                                         | blank_line_before_return
+remove_lines_between_uses                      | no_extra_blank_lines                              | use configuration ['use']
+return                                         | blank_line_before_statement                       | use configuration ['return']
 short_array_syntax                             | array_syntax                                      | use configuration ['syntax' => 'short']
 short_bool_cast                                | no_short_bool_cast
 short_echo_tag                                 | no_short_echo_tag
