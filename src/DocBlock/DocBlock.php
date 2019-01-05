@@ -13,7 +13,6 @@
 namespace PhpCsFixer\DocBlock;
 
 use PhpCsFixer\Preg;
-use PhpCsFixer\Utils;
 
 /**
  * This class represents a docblock.
@@ -45,7 +44,7 @@ class DocBlock
      */
     public function __construct($content)
     {
-        foreach (Utils::splitLines($content) as $line) {
+        foreach (Preg::split('/([^\n\r]+\R*)/', $content, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE) as $line) {
             $this->lines[] = new Line($line);
         }
     }

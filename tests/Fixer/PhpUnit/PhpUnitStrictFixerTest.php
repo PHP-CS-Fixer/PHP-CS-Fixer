@@ -60,6 +60,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
             $cases[] = ["<?php \$sth->${methodBefore}(1, 1);"];
             $cases[] = ["<?php \$sth->${methodAfter}(1, 1);"];
+            $cases[] = ["<?php \$this->${methodBefore}(1, 2, 'message', \$toMuch);"];
             $cases[] = [
                 "<?php \$this->${methodAfter}(1, 2);",
                 "<?php \$this->${methodBefore}(1, 2);",
@@ -134,6 +135,33 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->expectExceptionMessageRegExp('/^\[php_unit_strict\] Invalid configuration: The option "assertions" .*\.$/');
 
         $this->fixer->configure(['assertions' => ['__TEST__']]);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
+            yield [
+                "<?php static::${methodAfter}(1, 2,);",
+                "<?php static::${methodBefore}(1, 2,);",
+            ];
+
+            yield [
+                "<?php self::${methodAfter}(1, \$a, '', );",
+                "<?php self::${methodBefore}(1, \$a, '', );",
+            ];
+        }
     }
 
     /**
