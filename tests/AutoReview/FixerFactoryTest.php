@@ -96,6 +96,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['general_phpdoc_annotation_remove'], $fixers['no_empty_phpdoc']],
             [$fixers['indentation_type'], $fixers['phpdoc_indent']],
             [$fixers['is_null'], $fixers['yoda_style']],
+            [$fixers['line_ending'], $fixers['braces']],
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['method_chaining_indentation'], $fixers['array_indentation']],
@@ -289,13 +290,14 @@ final class FixerFactoryTest extends TestCase
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
+        $integrationTestName = $this->generateIntegrationTestName($first, $second);
 
-        if (\in_array($this->generateIntegrationTestName($first, $second), $casesWithoutTests, true)) {
-            $this->assertFalse($integrationTestExists, sprintf('Case "%s" already has an integration test, so it should be removed from "$casesWithoutTests".', $this->generateIntegrationTestName($first, $second)));
-            $this->markTestIncomplete(sprintf('Case "%s" has no integration test yet, please help and add it.', $this->generateIntegrationTestName($first, $second)));
+        if (\in_array($integrationTestName, $casesWithoutTests, true)) {
+            $this->assertFalse($integrationTestExists, sprintf('Case "%s" already has an integration test, so it should be removed from "$casesWithoutTests".', $integrationTestName));
+            $this->markTestIncomplete(sprintf('Case "%s" has no integration test yet, please help and add it.', $integrationTestName));
         }
 
-        $this->assertTrue($integrationTestExists, sprintf('There shall be an integration test "%s". How do you know that priority set up is good, if there is no integration test to check it?', $this->generateIntegrationTestName($first, $second)));
+        $this->assertTrue($integrationTestExists, sprintf('There shall be an integration test "%s". How do you know that priority set up is good, if there is no integration test to check it?', $integrationTestName));
     }
 
     public function provideFixersPriorityPairsHaveIntegrationTestCases()
@@ -371,7 +373,7 @@ final class FixerFactoryTest extends TestCase
 
         $this->assertSame(
             1,
-            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
+            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test(-(in|out)\.php)?$#', $fileName, $matches),
             sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
         );
 
