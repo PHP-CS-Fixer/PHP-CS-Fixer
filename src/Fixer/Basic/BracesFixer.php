@@ -127,6 +127,7 @@ class Foo
     public function getPriority()
     {
         // should be run after the ElseIfFixer, NoEmptyStatementFixer and NoUselessElseFixer
+        // should be run before NoTrailingWhitespaceInCommentFixer
         return -25;
     }
 

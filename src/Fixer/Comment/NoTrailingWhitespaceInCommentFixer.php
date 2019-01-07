@@ -38,6 +38,12 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
         );
     }
 
+    public function getPriority()
+    {
+        // should be run after BracesFixer and PhpdocNoUselessInheritdocFixer
+        return -30;
+    }
+
     /**
      * {@inheritdoc}
      */
