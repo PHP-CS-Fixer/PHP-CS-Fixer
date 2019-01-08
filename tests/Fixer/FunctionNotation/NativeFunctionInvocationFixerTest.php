@@ -215,6 +215,18 @@ class Foo
             [
                 '<?php
 
+\json_encode($foo);
+\strlen($foo);
+',
+                '<?php
+
+json_encode($foo);
+strlen($foo);
+',
+            ],
+            [
+                '<?php
+
 class Foo
 {
     public function bar($foo)
@@ -232,6 +244,20 @@ class Foo
         return JSON_ENCODE($foo);
     }
 }
+',
+            ],
+            'fix multiple calls in single code' => [
+                '<?php
+
+\json_encode($foo);
+\strlen($foo);
+\strlen($foo);
+',
+                '<?php
+
+json_encode($foo);
+strlen($foo);
+strlen($foo);
 ',
             ],
         ];
