@@ -169,4 +169,36 @@ string {}',
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFixWithSpaceAfterNullableCases
+     *
+     * @requires PHP 7.1
+     */
+    public function testFixWithSpaceNullable($expected, $input = null)
+    {
+        $this->fixer->configure([]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithSpaceAfterNullableCases()
+    {
+        return [
+            [
+                '<?php function fooA(int $a) {}',
+            ],
+            [
+                '<?php function fooB(int $a): ?string {}',
+            ],
+            [
+                '<?php function fooC(int $a): ?string {}',
+                '<?php function fooC(int $a): ? string {}',
+            ],
+            [
+                '<?php function fooE(int $a): ?string {}',
+                '<?php function fooE(int $a): ?  string {}',
+            ],
+        ];
+    }
 }
