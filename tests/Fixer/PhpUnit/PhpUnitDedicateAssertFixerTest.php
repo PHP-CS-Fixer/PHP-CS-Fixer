@@ -474,6 +474,11 @@ $a# 5
                     $this->test(); // $this->assertSame($b, count($a));
                 ',
             ],
+            'do not fix 7' => [
+                '<?php
+                    $this->assertSame(2, count($array) - 1);
+                ',
+            ],
         ];
     }
 
