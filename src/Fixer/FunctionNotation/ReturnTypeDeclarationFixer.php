@@ -36,7 +36,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
         $versionSpecification = new VersionSpecification(70000);
 
         $definition = new FixerDefinition(
-            'There should be one or no space before colon, and one space after it in return type declarations, according to configuration. ' +
+            'There should be one or no space before colon, and one space after it in return type declarations, according to configuration. ' .
             'Also there should no space after the question mark on nullable declarations (PHP 7.1+).',
             [
                 new VersionSpecificCodeSample(
