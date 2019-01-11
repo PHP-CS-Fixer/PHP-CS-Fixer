@@ -35,8 +35,8 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     {
         $versionSpecification = new VersionSpecification(70000);
 
-        $definition = new FixerDefinition(
-            'There should be one or no space before colon, and one space after it in return type declarations, according to configuration. ' .
+        return new FixerDefinition(
+            'There should be one or no space before colon, and one space after it in return type declarations, according to configuration. '.
             'Also there should no space after the question mark on nullable declarations (PHP 7.1+).',
             [
                 new VersionSpecificCodeSample(
@@ -60,8 +60,6 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
             ],
             'Rule is applied only in a PHP 7+ environment.'
         );
-
-        return $definition;
     }
 
     /**
@@ -113,10 +111,10 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
                 ++$limit;
             }
 
-            if ($tokens[$index+1]->isGivenKind(CT::T_NULLABLE_TYPE)) {
+            if ($tokens[$index + 1]->isGivenKind(CT::T_NULLABLE_TYPE)) {
                 ++$index;
-                if ($tokens[$index+1]->isWhitespace()) {
-                    $tokens->clearAt($index+1);
+                if ($tokens[$index + 1]->isWhitespace()) {
+                    $tokens->clearAt($index + 1);
                     --$limit;
                 }
             }

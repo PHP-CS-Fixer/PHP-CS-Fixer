@@ -174,6 +174,9 @@ string {}',
      * @dataProvider provideFixWithSpaceAfterNullableCases
      *
      * @requires PHP 7.1
+     *
+     * @param mixed      $expected
+     * @param null|mixed $input
      */
     public function testFixWithSpaceNullable($expected, $input = null)
     {
