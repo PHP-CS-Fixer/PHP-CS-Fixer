@@ -1616,7 +1616,8 @@ Choose from the list of available rules:
 * **return_type_declaration** [@Symfony, @PhpCsFixer]
 
   There should be one or no space before colon, and one space after it in
-  return type declarations, according to configuration.
+  return type declarations, according to configuration. Also there should
+  no space after the question mark on nullable declarations (PHP 7.1+).
 
   Configuration options:
 
