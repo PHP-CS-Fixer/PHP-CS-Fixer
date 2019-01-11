@@ -39,6 +39,9 @@ is_countable($foo);
 // https://wiki.php.net/rfc/list_reference_assignment
 [$a, &$b] = $array; // `list_syntax` rule
 
+// https://github.com/php/php-src/pull/2978 instanceof now allows literals as the first operand (the result is always false).
+null instanceof \stdClass;
+
 // https://wiki.php.net/rfc/trailing-comma-function-calls Trailing commas in function and method calls are now allowed.
 foo(
     $arg,
@@ -103,6 +106,9 @@ IS_COUNTABLE($foo);
 
 // https://wiki.php.net/rfc/list_reference_assignment
 list($a, &$b) = $array; // `list_syntax` rule
+
+// https://github.com/php/php-src/pull/2978 instanceof now allows literals as the first operand (the result is always false).
+null instanceof \stdClass;
 
 // https://wiki.php.net/rfc/trailing-comma-function-calls Trailing commas in function and method calls are now allowed.
 foo(
