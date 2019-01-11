@@ -367,12 +367,19 @@ $this->assertTrue(is_readable($a));
             return;
         }
 
+        $countCallCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $countCallOpenBraceIndex);
+
+        $afterCountCallCloseBraceIndex = $tokens->getNextMeaningfulToken($countCallCloseBraceIndex);
+        if (!$tokens[$afterCountCallCloseBraceIndex]->equalsAny([')', ','])) {
+            return;
+        }
+
         $this->removeFunctionCall(
             $tokens,
             $defaultNamespaceTokenIndex,
             $countCallIndex,
             $countCallOpenBraceIndex,
-            $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $countCallOpenBraceIndex)
+            $countCallCloseBraceIndex
         );
 
         $tokens[$assertCall['index']] = new Token([
