@@ -359,7 +359,7 @@ INPUT
 f(
     1,
     2,
-3
+    3
 );',
                 '<?php
 f(1,2,
@@ -396,7 +396,6 @@ INPUT
 functionCall(
     'a',
     'b',
-
     'c'
 );
 EXPECTED
@@ -718,7 +717,7 @@ call_user_func(
     function ($arguments) {
     echo 'a', 'b';
 },
-$argv
+    $argv
 );
 EXPECTED
                 ,
