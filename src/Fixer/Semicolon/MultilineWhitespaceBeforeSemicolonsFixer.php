@@ -83,8 +83,8 @@ function foo () {
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
-                    'strategy',
-                    'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'
+                'strategy',
+                'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'
             ))
                 ->setAllowedValues([self::STRATEGY_NO_MULTI_LINE, self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS])
                 ->setDefault(self::STRATEGY_NO_MULTI_LINE)

@@ -50,7 +50,7 @@ final class MagicMethodCasingFixer extends AbstractFixer
             'Magic method definitions and calls must be using the correct casing.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 class Foo
 {
     public function __Sleep()
@@ -60,7 +60,7 @@ class Foo
 '
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 $foo->__INVOKE(1);
 '
                 ),
