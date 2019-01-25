@@ -1753,6 +1753,19 @@ Choose from the list of available rules:
 
   Removes extra spaces between colon and case value.
 
+* **ternary_operator_multiline**
+
+  Standardize multi-lines ternary operators.
+
+  Configuration options:
+
+  - ``ignore-single-line`` (``bool``): should ignore the single line operators;
+    defaults to ``false``
+  - ``strategy`` (``'no_multi_line'``, ``'operators_at_beginning'``,
+    ``'operators_at_end'``): forbid multi-line, force operators at the end of
+    lines or force operators at the beginning of lines; defaults to
+    ``'no_multi_line'``
+
 * **ternary_operator_spaces** [@Symfony, @PhpCsFixer]
 
   Standardize spaces around ternary operator.
