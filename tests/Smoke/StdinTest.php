@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -24,7 +23,7 @@ use PHPUnit\Framework\TestCase;
  * @coversNothing
  * @group covers-nothing
  */
-final class StdinTest extends TestCase
+final class StdinTest extends AbstractSmokeTest
 {
     public function testFixingStdin()
     {
