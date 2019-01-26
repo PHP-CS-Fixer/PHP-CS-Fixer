@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-01-14T11:46:12Z
+
+ref #4069
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-01-14T11:46:27Z
+
+it's failing when running locally. i need to find a way to have it failed on CI as well
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-01-14T22:56:49Z
+
+Failure reproduced on Travis: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/479635066#L671-L673
