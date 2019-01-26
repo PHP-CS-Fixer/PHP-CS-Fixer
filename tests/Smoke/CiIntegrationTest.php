@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
 use Keradus\CliExecutor\ScriptExecutor;
-use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,7 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  * @group covers-nothing
  * @large
  */
-final class CiIntegrationTest extends TestCase
+final class CiIntegrationTest extends AbstractSmokeTest
 {
     public static $fixtureDir;
 
@@ -35,6 +34,18 @@ final class CiIntegrationTest extends TestCase
         parent::setUpBeforeClass();
 
         self::$fixtureDir = __DIR__.'/../Fixtures/ci-integration';
+
+        try {
+            CommandExecutor::create('composer --version', __DIR__)->getResult();
+        } catch (\RuntimeException $e) {
+            self::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
+        }
+
+        try {
+            CommandExecutor::create('composer check', __DIR__.'/../..')->getResult();
+        } catch (\RuntimeException $e) {
+            self::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
+        }
 
         try {
             self::executeScript([
@@ -46,7 +57,7 @@ final class CiIntegrationTest extends TestCase
                 'git commit -m "init" -q',
             ]);
         } catch (\RuntimeException $e) {
-            self::markTestSkipped($e->getMessage());
+            self::markTestSkippedOrFail($e->getMessage());
         }
     }
 
