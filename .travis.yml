@@ -133,7 +133,7 @@ jobs:
             php: 7.1
             install: ./dev-tools/build.sh
             script:
-                - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_PHAR_TESTS=0 vendor/bin/phpunit tests/Smoke/
+                - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
 
             before_deploy:
                 # ensure that deployment is happening only if tag matches version of PHP CS Fixer
