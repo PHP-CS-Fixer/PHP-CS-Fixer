@@ -2,7 +2,7 @@
 <?php
 
 require_once __DIR__.'/../vendor/autoload.php';
-
+// determines the version
 $version = [
     'number' => PhpCsFixer\Console\Application::VERSION,
     'vnumber' => 'v'.PhpCsFixer\Console\Application::VERSION,
