@@ -102,6 +102,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['is_null'], $fixers['yoda_style']],
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
+            [$fixers['method_chaining_indentation'], $fixers['array_indentation']],
             [$fixers['no_alias_functions'], $fixers['implode_call']],
             [$fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']],
             [$fixers['no_blank_lines_after_phpdoc'], $fixers['header_comment']],
