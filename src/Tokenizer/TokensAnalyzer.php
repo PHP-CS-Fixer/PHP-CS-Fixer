@@ -64,7 +64,7 @@ final class TokensAnalyzer
      *
      * @param bool $perNamespace Return namespace uses per namespace
      *
-     * @return array|array[]
+     * @return int[]|int[][]
      */
     public function getImportUseIndexes($perNamespace = false)
     {

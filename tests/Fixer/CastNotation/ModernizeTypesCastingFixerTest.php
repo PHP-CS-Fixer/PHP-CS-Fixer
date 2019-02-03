@@ -179,6 +179,36 @@ intval#
  )#
  ;#',
             ],
+            [
+                '<?php $foo = ((int) $x)**2;',
+                '<?php $foo = intval($x)**2;',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideFix70Cases
+     */
+    public function testFix70($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        return [
+            [
+                '<?php $foo = ((string) $x)[0];',
+                '<?php $foo = strval($x)[0];',
+            ],
+            [
+                '<?php $foo = ((string) ($x + $y))[0];',
+                '<?php $foo = strval($x + $y)[0];',
+            ],
         ];
     }
 
