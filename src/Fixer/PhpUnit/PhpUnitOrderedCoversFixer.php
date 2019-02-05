@@ -34,7 +34,7 @@ final class PhpUnitOrderedCoversFixer extends AbstractFixer
             'Order `@covers` annotation of PHPUnit tests.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 /**
  * @covers Foo
  * @covers Bar
