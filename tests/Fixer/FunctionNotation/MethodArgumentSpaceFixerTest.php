@@ -203,16 +203,20 @@ $var2 = some_function(
                 ['keep_multiple_spaces_after_comma' => true],
             ],
             'multi line testing method call' => [
-                '<?php xyz(
+                '<?php if (1) {
+                xyz(
                     $a=10,
                     $b=20,
                     $c=30
-                    );',
-                '<?php xyz(
+                );
+                }',
+                '<?php if (1) {
+                xyz(
                     $a=10 ,
                     $b=20,
                     $c=30
-                    );',
+                );
+                }',
             ],
             'skip arrays but replace arg methods' => [
                 '<?php fnc(1, array(2, func2(6, 7) ,4), 5);',
@@ -241,7 +245,7 @@ $var2 = some_function(
     ',
             ],
             'don\'t change HEREDOC and NOWDOC' => [
-                "<?php
+                "<?php if (1) {
     \$this->foo(
         <<<EOTXTa
     heredoc
@@ -253,7 +257,7 @@ EOTXTb
         ,
         'foo'
     );
-",
+}",
             ],
             'with_random_comments' => [
                 '<?php xyz#
@@ -287,7 +291,7 @@ INPUT
 f(
     1,
     2,
-3
+    3
 );',
                 '<?php
 f(1,2,
@@ -322,7 +326,6 @@ INPUT
 functionCall(
     'a',
     'b',
-
     'c'
 );
 EXPECTED
@@ -620,7 +623,7 @@ call_user_func(
     function ($arguments) {
     echo 'a', 'b';
 },
-$argv
+    $argv
 );
 EXPECTED
                 ,

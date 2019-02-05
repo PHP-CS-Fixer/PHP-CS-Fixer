@@ -35,7 +35,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
             [
                 new CodeSample("<?php return null;\n"),
                 new VersionSpecificCodeSample(
-<<<'EOT'
+                    <<<'EOT'
 <?php
 function foo() { return null; }
 function bar(): int { return null; }

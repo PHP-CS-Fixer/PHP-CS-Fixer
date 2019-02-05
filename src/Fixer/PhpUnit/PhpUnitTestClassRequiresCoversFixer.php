@@ -37,7 +37,7 @@ final class PhpUnitTestClassRequiresCoversFixer extends AbstractFixer implements
             'Adds a default `@coversNothing` annotation to PHPUnit test classes that have no `@covers*` annotation.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testSomeTest()

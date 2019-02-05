@@ -74,7 +74,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
             'Add leading `\` before function invocation to speed up resolving.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 
 function baz($options)
 {
@@ -87,7 +87,7 @@ function baz($options)
 '
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 function baz($options)
 {

@@ -117,7 +117,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
             'Master functions shall be used instead of aliases.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 $a = chop($b);
 close($b);
 $a = doubleval($b);

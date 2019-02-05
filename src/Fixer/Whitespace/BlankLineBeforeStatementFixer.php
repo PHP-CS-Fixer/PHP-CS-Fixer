@@ -209,7 +209,7 @@ switch ($a) {
                     ]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 if (null === $a) {
     $foo->bar();
     throw new \UnexpectedValueException("A cannot be null");
@@ -220,7 +220,7 @@ if (null === $a) {
                     ]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 $a = 9000;
 try {
     $foo->bar();

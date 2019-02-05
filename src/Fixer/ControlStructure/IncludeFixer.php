@@ -33,7 +33,7 @@ final class IncludeFixer extends AbstractFixer
             'Include/Require and file path should be divided with a single space. File path should not be placed under brackets.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 require ("sample1.php");
 require_once  "sample2.php";
 include       "sample3.php";

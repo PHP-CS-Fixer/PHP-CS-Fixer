@@ -51,7 +51,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
             'Replace non multibyte-safe functions with corresponding mb function.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 $a = strlen($a);
 $a = strpos($a, $b);
 $a = strrpos($a, $b);

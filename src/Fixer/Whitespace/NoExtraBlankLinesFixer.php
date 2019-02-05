@@ -128,7 +128,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
             'Removes extra blank lines and/or blank lines following configuration.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 
 $foo = array("foo");
 
@@ -137,7 +137,7 @@ $bar = "bar";
 '
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 switch ($foo) {
     case 41:
@@ -151,7 +151,7 @@ switch ($foo) {
                     ['tokens' => ['break']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 for ($i = 0; $i < 9000; ++$i) {
     if (true) {
@@ -163,7 +163,7 @@ for ($i = 0; $i < 9000; ++$i) {
                     ['tokens' => ['continue']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 for ($i = 0; $i < 9000; ++$i) {
 
@@ -174,7 +174,7 @@ for ($i = 0; $i < 9000; ++$i) {
                     ['tokens' => ['curly_brace_block']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 $foo = array("foo");
 
@@ -184,7 +184,7 @@ $bar = "bar";
                     ['tokens' => ['extra']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 $foo = array(
 
@@ -195,7 +195,7 @@ $foo = array(
                     ['tokens' => ['parenthesis_brace_block']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 function foo($bar)
 {
@@ -206,7 +206,7 @@ function foo($bar)
                     ['tokens' => ['return']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 $foo = [
 
@@ -217,7 +217,7 @@ $foo = [
                     ['tokens' => ['square_brace_block']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 function foo($bar)
 {
@@ -228,7 +228,7 @@ function foo($bar)
                     ['tokens' => ['throw']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 namespace Foo;
 
@@ -243,7 +243,7 @@ class Bar
                     ['tokens' => ['use']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 class Foo
 {
@@ -255,7 +255,7 @@ class Foo
                     ['tokens' => ['use_trait']]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 switch($a) {
 
     case 1:

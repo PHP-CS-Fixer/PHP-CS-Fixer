@@ -271,7 +271,7 @@ EOF;
         //      `description <http://...>`_
 
         $help = Preg::replaceCallback(
-           '#`(.+)`\s?\(<url>(.+)<\/url>\)#',
+            '#`(.+)`\s?\(<url>(.+)<\/url>\)#',
             static function (array $matches) {
                 return sprintf('`%s <%s>`_', str_replace('\\', '\\\\', $matches[1]), $matches[2]);
             },
