@@ -31,7 +31,7 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer
             'A final class must not have final methods.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 final class Foo {
     final public function foo() {}
     final protected function bar() {}
@@ -40,7 +40,7 @@ final class Foo {
 '
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 class Foo {
     final private function bar() {}
 }

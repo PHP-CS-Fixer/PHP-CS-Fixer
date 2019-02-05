@@ -41,7 +41,7 @@ final class PhpUnitNamespacedFixer extends AbstractFixer implements Configuratio
             'PHPUnit classes MUST be used in namespaced version, eg `\PHPUnit\Framework\TestCase` instead of `\PHPUnit_Framework_TestCase`.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
 }

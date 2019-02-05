@@ -60,7 +60,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
             'Spaces should be properly placed in a function declaration.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 
 class Foo
 {
@@ -77,7 +77,7 @@ function  foo  ($bar, $baz)
 '
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 $f = function () {};
 ',
                     ['closure_function_spacing' => self::SPACING_NONE]
