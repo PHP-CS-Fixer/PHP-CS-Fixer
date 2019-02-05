@@ -34,21 +34,25 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null, array $configuration = null)
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
         $indent = '    ';
         $lineEnding = "\n";
-        if (null !== $input) {
-            if (false !== strpos($input, "\t")) {
+
+        if (null !== $expected) {
+            if (false !== strpos($expected, "\t")) {
                 $indent = "\t";
-            } elseif (preg_match('/\n  \S/', $input)) {
+            } elseif (preg_match('/\n  \S/', $expected)) {
                 $indent = '  ';
             }
-            if (false !== strpos($input, "\r")) {
+
+            if (false !== strpos($expected, "\r")) {
                 $lineEnding = "\r\n";
             }
         }
+
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig(
             $indent,
             $lineEnding
