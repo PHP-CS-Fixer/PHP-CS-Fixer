@@ -135,7 +135,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
             }
 
             $name = $option->getName();
-            if (array_key_exists($name, $configuration)) {
+            if (\array_key_exists($name, $configuration)) {
                 $message = sprintf(
                     'Option "%s" for rule "%s" is deprecated and will be removed in version %d.0. %s',
                     $name,
