@@ -30,11 +30,11 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideWithTabsCases
      */
-    public function testWithTabs($expected, $input = null, array $configuration = null)
+    public function testWithTabs($expected, $input = null, array $configuration = [])
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
@@ -79,11 +79,11 @@ public function myFunction() {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideTestCases
      */
-    public function testConfigured($expected, $input = null, array $configuration = null)
+    public function testConfigured($expected, $input = null, array $configuration = [])
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);

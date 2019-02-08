@@ -839,9 +839,9 @@ $a = new Qux();',
      *
      * @dataProvider provideBraceCases
      */
-    public function testBraces(array $config = null, $expected, $input = null)
+    public function testBraces(array $config, $expected, $input = null)
     {
-        $this->fixer->configure(['tokens' => $config]);
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -849,16 +849,16 @@ $a = new Qux();',
     {
         return [
             [
-                ['curly_brace_block'],
+                ['tokens' => ['curly_brace_block']],
                 "<?php function test()\n\n{}\n\necho 789;",
             ],
             [
-                ['curly_brace_block'],
+                ['tokens' => ['curly_brace_block']],
                 "<?php switch(\$a){\ncase 1:echo 789;}",
                 "<?php switch(\$a){\n   \ncase 1:echo 789;}",
             ],
             [
-                ['parenthesis_brace_block'],
+                ['tokens' => ['parenthesis_brace_block']],
                 '<?php
 is_int(
 1);
@@ -889,12 +889,12 @@ $c
 }',
             ],
             [
-                ['parenthesis_brace_block'],
+                ['tokens' => ['parenthesis_brace_block']],
                 "<?php array(\n1,\n2,\n3,\n);",
                 "<?php array(\n  \n1,\n2,\n3,\n\n\n);",
             ],
             [
-                ['parenthesis_brace_block'],
+                ['tokens' => ['parenthesis_brace_block']],
                 '<?php
     function a()
     {
@@ -906,7 +906,7 @@ $c
     }',
             ],
             [
-                ['return'],
+                ['tokens' => ['return']],
                 '<?php
 class Foo
 {
@@ -926,7 +926,7 @@ class Foo
 }',
             ],
             [
-                ['square_brace_block'],
+                ['tokens' => ['square_brace_block']],
                 "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
                 "<?php \$c = \$b[0];\n\n\n\$a = [\n\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
             ],
