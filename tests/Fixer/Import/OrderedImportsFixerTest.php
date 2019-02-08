@@ -642,16 +642,14 @@ B#
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null, array $config = null)
+    public function testFix70($expected, $input = null, array $config = [])
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -1992,16 +1990,14 @@ use function some\a\{fn_a, fn_b};
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($expected, $input = null, array $config = null)
+    public function testFix72($expected, $input = null, array $config = [])
     {
-        if (null !== $config) {
-            $this->configureFixerWithAliasedOptions($config);
-        }
+        $this->configureFixerWithAliasedOptions($config);
 
         $this->doTest($expected, $input);
     }

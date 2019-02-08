@@ -29,7 +29,7 @@ final class PhpUnitTestAnnotationFixerTest extends AbstractFixerTestCase
      *
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      */
     public function testFix($expected, $input = null, array $config = [])
     {
@@ -959,7 +959,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      *
      * @dataProvider provideMessyWhitespacesCases
      */

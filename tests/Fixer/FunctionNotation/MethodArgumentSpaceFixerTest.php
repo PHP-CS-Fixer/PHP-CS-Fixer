@@ -27,11 +27,11 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $configuration = null)
+    public function testFix($expected, $input = null, array $configuration = [])
     {
         $indent = '    ';
         $lineEnding = "\n";
@@ -48,10 +48,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
             }
         }
 
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
-
+        $this->fixer->configure($configuration);
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig(
             $indent,
             $lineEnding
@@ -63,15 +60,12 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixCases
      */
-    public function testFixWithDifferentLineEndings(
-        $expected,
-        $input = null,
-        array $configuration = null
-    ) {
+    public function testFixWithDifferentLineEndings($expected, $input = null, array $configuration = [])
+    {
         if (null !== $input) {
             $input = str_replace("\n", "\r\n", $input);
         }
