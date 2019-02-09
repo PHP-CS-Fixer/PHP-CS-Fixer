@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-02-08T12:34:42Z
+
+Do we really want to run only a single php7 case? It's a matrix right, why not run all off 7.x? (Yes I know those are on travis as well, but do we really want to support latest-only for windows?)
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-02-08T14:56:17Z
+
+to not waste time
+we care about unix users most.
+then, we have basic checks for Windows and Mac.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-02-08T15:04:49Z
+
+Then isn't there a specifier for "latest stable" or something? I mean, manually upping all the time shouldn't be required either right?
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-02-09T16:13:49Z
+
+i don't know it. i don't also need to always have last version there - i just wanted to have 5.x latest, 7.x update is by the way
