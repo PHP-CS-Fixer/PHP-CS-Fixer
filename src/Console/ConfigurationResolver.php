@@ -885,7 +885,7 @@ final class ConfigurationResolver
      */
     private function setOption($name, $value)
     {
-        if (!array_key_exists($name, $this->options)) {
+        if (!\array_key_exists($name, $this->options)) {
             throw new InvalidConfigurationException(sprintf('Unknown option name: "%s".', $name));
         }
 

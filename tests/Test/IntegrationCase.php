@@ -131,7 +131,7 @@ final class IntegrationCase
             ));
         }
 
-        if (!array_key_exists($name, $this->requirements)) {
+        if (!\array_key_exists($name, $this->requirements)) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown requirement key "%s", expected any of "%s".',
                 $name,
