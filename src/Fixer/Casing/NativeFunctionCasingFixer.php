@@ -82,7 +82,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
 
             // test if the function call is to a native PHP function
             $lower = strtolower($tokens[$index]->getContent());
-            if (!array_key_exists($lower, $nativeFunctionNames)) {
+            if (!\array_key_exists($lower, $nativeFunctionNames)) {
                 continue;
             }
 

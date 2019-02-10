@@ -270,6 +270,10 @@ class Foo {
 
         $annotationTypes = $this->toComparableNames($annotation->getTypes(), $symbolShortNames);
 
+        if (['null'] === $annotationTypes) {
+            return false;
+        }
+
         if (['mixed'] === $annotationTypes && null === $info['type']) {
             return !$this->configuration['allow_mixed'];
         }

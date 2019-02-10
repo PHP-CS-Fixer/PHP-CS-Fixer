@@ -346,7 +346,8 @@ $c = get_class($d);
     private function getAllCompilerOptimizedFunctionsNormalized()
     {
         return $this->normalizeFunctionNames([
-            // @see https://github.com/php/php-src/blob/php-7.2.6/Zend/zend_compile.c "zend_try_compile_special_func"
+            // @see https://github.com/php/php-src/blob/PHP-7.4/Zend/zend_compile.c "zend_try_compile_special_func"
+            'array_key_exists',
             'array_slice',
             'assert',
             'boolval',

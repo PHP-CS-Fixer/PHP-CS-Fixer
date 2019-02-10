@@ -41,7 +41,7 @@ final class Cache implements CacheInterface
 
     public function has($file)
     {
-        return array_key_exists($file, $this->hashes);
+        return \array_key_exists($file, $this->hashes);
     }
 
     public function get($file)
