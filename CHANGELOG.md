@@ -3,6 +3,27 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.14.1
+---------------------
+
+* bug #4240 ModernizeTypesCastingFixer - fix for operators with higher precedence (kubawerlos)
+* bug #4254 PhpUnitDedicateAssertFixer - fix for count with additional operations (kubawerlos)
+* bug #4260 Psr0Fixer and Psr4Fixer  - fix for multiple classes in file with anonymous class (kubawerlos)
+* bug #4262 FixCommand - fix help (keradus)
+* bug #4276 MethodChainingIndentationFixer, ArrayIndentationFixer - Fix priority issue (dmvdbrugge)
+* bug #4280 MethodArgumentSpaceFixer - Fix method argument alignment (Billz95)
+* bug #4286 IncrementStyleFixer - fix for static statement (kubawerlos)
+* bug #4291 ArrayIndentationFixer - Fix indentation after trailing spaces (julienfalque, keradus)
+* bug #4292 NoSuperfluousPhpdocTagsFixer - Make null only type not considered superfluous (julienfalque)
+* minor #4204 DX: Tokens - do not unregister/register found tokens when collection is not changing (kubawerlos)
+* minor #4235 DX: more specific @param types (kubawerlos)
+* minor #4263 DX: AppVeyor - bump PHP version (keradus)
+* minor #4293 Add official support for PHP 7.3 (keradus)
+* minor #4295 DX: MethodArgumentSpaceFixerTest - fix edge case for handling different line ending when only expected code is provided (keradus)
+* minor #4296 DX: cleanup testing with fixer config (keradus)
+* minor #4299 NativeFunctionInvocationFixer - add array_key_exists (deguif, keradus)
+* minor #4300 DX: cleanup testing with fixer config (keradus)
+
 Changelog for v2.14.0
 ---------------------
 
@@ -153,6 +174,26 @@ Changelog for v2.13.0
 * minor #3813 PhpUnitDedicateAssertFixer - fix "sizeOf" same as "count". (SpacePossum)
 * minor #3873 Add the native_function_invocation fixer in the Symfony:risky ruleset (stof)
 * minor #3979 DX: enable php_unit_method_casing (keradus)
+
+Changelog for v2.12.7
+---------------------
+
+* bug #4240 ModernizeTypesCastingFixer - fix for operators with higher precedence (kubawerlos)
+* bug #4254 PhpUnitDedicateAssertFixer - fix for count with additional operations (kubawerlos)
+* bug #4260 Psr0Fixer and Psr4Fixer  - fix for multiple classes in file with anonymous class (kubawerlos)
+* bug #4262 FixCommand - fix help (keradus)
+* bug #4276 MethodChainingIndentationFixer, ArrayIndentationFixer - Fix priority issue (dmvdbrugge)
+* bug #4280 MethodArgumentSpaceFixer - Fix method argument alignment (Billz95)
+* bug #4286 IncrementStyleFixer - fix for static statement (kubawerlos)
+* bug #4291 ArrayIndentationFixer - Fix indentation after trailing spaces (julienfalque, keradus)
+* bug #4292 NoSuperfluousPhpdocTagsFixer - Make null only type not considered superfluous (julienfalque)
+* minor #4204 DX: Tokens - do not unregister/register found tokens when collection is not changing (kubawerlos)
+* minor #4235 DX: more specific @param types (kubawerlos)
+* minor #4263 DX: AppVeyor - bump PHP version (keradus)
+* minor #4293 Add official support for PHP 7.3 (keradus)
+* minor #4295 DX: MethodArgumentSpaceFixerTest - fix edge case for handling different line ending when only expected code is provided (keradus)
+* minor #4296 DX: cleanup testing with fixer config (keradus)
+* minor #4299 NativeFunctionInvocationFixer - add array_key_exists (deguif, keradus)
 
 Changelog for v2.12.6
 ---------------------
