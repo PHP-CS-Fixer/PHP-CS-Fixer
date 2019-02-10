@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-02-07T12:27:36Z
+
+Thanks for the PR @deguif !
+
+I wander if we want this on 2.12 branch as well so more users will benefit from this and we'll have less differences among the maintained branches.
+
+---------------------------------------------------------------------------
+
+by deguif at 2019-02-07T13:04:23Z
+
+I can change the base branch to 2.12 and do the adaptions if needed?
