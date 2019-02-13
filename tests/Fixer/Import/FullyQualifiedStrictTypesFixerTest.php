@@ -60,6 +60,39 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @dataProvider provideCodeWithExtendsTypesCases
+     *
+     * @param mixed      $expected
+     * @param null|mixed $input
+     */
+    public function testCodeWithExtendsTypes($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCodeWithExtendsTypesCases()
+    {
+        return [
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+class SomeClass extends Izumi
+{
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+class SomeClass extends \Foo\Bar\Izumi
+{
+}',
+            ],
+        ];
+    }
+
     public function provideCodeWithReturnTypesCases()
     {
         return [
