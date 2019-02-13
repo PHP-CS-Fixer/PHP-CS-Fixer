@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Tokenizer\Analyzer\ClassAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 

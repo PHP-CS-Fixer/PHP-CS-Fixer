@@ -71,7 +71,7 @@ final class ClassAnalyzer
      *
      * @return array
      */
-    public function getClassyInheritanceInfo(Tokens $tokens, $startIndex, $label)
+    public function getClassInheritanceInfo(Tokens $tokens, $startIndex, $label)
     {
         $implementsInfo = ['start' => $startIndex, $label => 1, 'multiLine' => false];
         ++$startIndex;
@@ -110,11 +110,11 @@ final class ClassAnalyzer
 
         if (!$tokens[$classIndex]->isGivenKind(T_TRAIT)) {
             $extends = $tokens->findGivenKind(T_EXTENDS, $classIndex, $openIndex);
-            $extends = \count($extends) ? $this->getClassyInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
+            $extends = \count($extends) ? $this->getClassInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
 
             if (!$tokens[$classIndex]->isGivenKind(T_INTERFACE)) {
                 $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classIndex, $openIndex);
-                $implements = \count($implements) ? $this->getClassyInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
+                $implements = \count($implements) ? $this->getClassInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
                 $tokensAnalyzer = new TokensAnalyzer($tokens);
                 $anonymousClass = $tokensAnalyzer->isAnonymousClass($classIndex);
             }
@@ -129,5 +129,4 @@ final class ClassAnalyzer
             'anonymousClass' => $anonymousClass,
         ];
     }
-
 }
