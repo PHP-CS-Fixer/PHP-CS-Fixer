@@ -380,6 +380,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            if (!$tokens[$nextIndex]->equals('(')) {
+                continue;
+            }
+
             $methodName = $tokens[$index]->getContent();
             $callType = $this->configuration['call_type'];
             if (isset($this->configuration['methods'][$methodName])) {
