@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.14.2
+---------------------
+
+* minor #4306 DX: Drop HHVM conflict on Composer level to help Composer with HHVM compatibility, we still prevent HHVM on runtime (keradus)
+
 Changelog for v2.14.1
 ---------------------
 
@@ -174,6 +179,11 @@ Changelog for v2.13.0
 * minor #3813 PhpUnitDedicateAssertFixer - fix "sizeOf" same as "count". (SpacePossum)
 * minor #3873 Add the native_function_invocation fixer in the Symfony:risky ruleset (stof)
 * minor #3979 DX: enable php_unit_method_casing (keradus)
+
+Changelog for v2.12.8
+---------------------
+
+* minor #4306 DX: Drop HHVM conflict on Composer level to help Composer with HHVM compatibility, we still prevent HHVM on runtime (keradus)
 
 Changelog for v2.12.7
 ---------------------

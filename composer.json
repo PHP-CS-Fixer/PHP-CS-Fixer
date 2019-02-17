@@ -31,9 +31,6 @@
         "symfony/process": "^3.0 || ^4.0",
         "symfony/stopwatch": "^3.0 || ^4.0"
     },
-    "conflict": {
-        "hhvm": "*"
-    },
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.1 || ^2.0 || ^3.0",
         "justinrainbow/json-schema": "^5.0",
