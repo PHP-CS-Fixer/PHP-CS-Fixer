@@ -279,6 +279,16 @@ class Foo {
     public function doFoo($foo) {}
 }',
             ],
+            'with_null' => [
+                '<?php
+class Foo {
+    /**
+     * @param null $foo
+     * @return null
+     */
+    public function doFoo($foo) {}
+}',
+            ],
         ];
     }
 

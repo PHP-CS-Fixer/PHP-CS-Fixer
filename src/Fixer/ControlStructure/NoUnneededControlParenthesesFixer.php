@@ -146,7 +146,7 @@ yield(2);
                     continue;
                 }
 
-                if (array_key_exists('forbiddenContents', $loop)) {
+                if (\array_key_exists('forbiddenContents', $loop)) {
                     $forbiddenTokenIndex = $tokens->getNextTokenOfKind($blockStartIndex, $loop['forbiddenContents']);
                     // A forbidden token is found and is inside the parenthesis.
                     if (null !== $forbiddenTokenIndex && $forbiddenTokenIndex < $blockEndIndex) {

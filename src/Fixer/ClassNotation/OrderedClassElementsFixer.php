@@ -435,7 +435,7 @@ class Example
         foreach ($elements as &$element) {
             $type = $element['type'];
 
-            if (array_key_exists($type, self::$specialTypes)) {
+            if (\array_key_exists($type, self::$specialTypes)) {
                 if (isset($this->typePosition[$type])) {
                     $element['position'] = $this->typePosition[$type];
                     if ('phpunit' === $type) {
