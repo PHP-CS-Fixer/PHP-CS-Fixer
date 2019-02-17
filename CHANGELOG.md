@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.14.2
+---------------------
+
+* minor #4306 DX: Drop HHVM conflict on Composer level to help Composer with HHVM compatibility, we still prevent HHVM on runtime (keradus)
+
 Changelog for v2.14.1
 ---------------------
 
