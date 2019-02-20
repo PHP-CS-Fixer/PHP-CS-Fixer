@@ -1504,8 +1504,8 @@ Choose from the list of available rules:
 
 * **phpdoc_summary** [@Symfony, @PhpCsFixer]
 
-  PHPDoc summary should end in either a full stop, exclamation mark, or
-  question mark.
+  PHPDoc summary should end in either a full stop, colon, exclamation
+  mark, or question mark.
 
 * **phpdoc_to_comment** [@Symfony, @PhpCsFixer]
 
