@@ -57,6 +57,42 @@ EOF;
         $this->doTest($expected);
     }
 
+    public function testWithColon()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * The description has a list with items and line ends with colon:
+     *
+     *      - First item in a list
+     *      - Last item in a list
+     *
+     * @return bool
+     */
+
+EOF;
+
+        $this->doTest($expected);
+    }
+
+    public function testWithFullwidthColon()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * The description has a list with items and line ends with colon：
+     *
+     *      - First item in a list
+     *      - Last item in a list
+     *
+     * @return bool
+     */
+
+EOF;
+
+        $this->doTest($expected);
+    }
+
     public function testWithQuestionMark()
     {
         $expected = <<<'EOF'
