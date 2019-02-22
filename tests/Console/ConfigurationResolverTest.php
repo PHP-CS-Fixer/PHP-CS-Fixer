@@ -287,7 +287,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveConfigFileChooseFileWithInvalidFormat()
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "checkstyle", "json", "junit", "txt", "xml"\.$/');
+        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "checkstyle", "json", "junit", "null", "txt", "xml"\.$/');
 
         $dirBase = $this->getFixtureDir();
 
@@ -968,7 +968,7 @@ final class ConfigurationResolverTest extends TestCase
 
         $options = $definition->getOptions();
         $this->assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'diff-format', 'format', 'stop-on-violation', 'show-progress'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'diff-format', 'format', 'stop-on-violation', 'show-progress', 'stdout'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -984,6 +984,7 @@ final class ConfigurationResolverTest extends TestCase
             'diff-format' => 'udiff',
             'format' => 'json',
             'stop-on-violation' => true,
+            'stdout' => false,
         ]);
 
         $this->assertTrue($resolver->shouldStopOnViolation());

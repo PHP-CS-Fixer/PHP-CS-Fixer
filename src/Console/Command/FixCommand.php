@@ -111,6 +111,7 @@ final class FixCommand extends Command
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                     new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, estimating, estimating-max or dots).'),
+                    new InputOption('stdout', '', InputOption::VALUE_NONE, 'Send output to stdout'),
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
@@ -144,17 +145,21 @@ final class FixCommand extends Command
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
+                'stdout' => $input->getOption('stdout'),
             ],
             getcwd(),
             $this->toolInfo
         );
 
+        // Supress any text-based errors when target is stdout.
         $reporter = $resolver->getReporter();
-
-        $stdErr = $output instanceof ConsoleOutputInterface
-            ? $output->getErrorOutput()
-            : ('txt' === $reporter->getFormat() ? $output : null)
-        ;
+        if ($resolver->isStdOut()) {
+            $stdErr = null;
+        } else {
+            $stdErr = $output instanceof ConsoleOutputInterface
+                ? $output->getErrorOutput()
+                : ('txt' === $reporter->getFormat() ? $output : null);
+        }
 
         if (null !== $stdErr) {
             if (null !== $passedConfig && null !== $passedRules) {
@@ -213,7 +218,8 @@ final class FixCommand extends Command
             $resolver->isDryRun(),
             $resolver->getCacheManager(),
             $resolver->getDirectory(),
-            $resolver->shouldStopOnViolation()
+            $resolver->shouldStopOnViolation(),
+            $resolver->isStdOut()
         );
 
         $this->stopwatch->start('fixFiles');

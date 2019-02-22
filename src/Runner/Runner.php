@@ -95,7 +95,8 @@ final class Runner
         $isDryRun,
         CacheManagerInterface $cacheManager,
         DirectoryInterface $directory = null,
-        $stopOnViolation = false
+        $stopOnViolation = false,
+        $stdOut = false
     ) {
         $this->finder = $finder;
         $this->fixers = $fixers;
@@ -107,6 +108,7 @@ final class Runner
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?: new Directory('');
         $this->stopOnViolation = $stopOnViolation;
+        $this->stdOut = $stdOut;
     }
 
     /**
@@ -244,7 +246,9 @@ final class Runner
                 return;
             }
 
-            if (!$this->isDryRun) {
+            if ($this->stdOut) {
+                fwrite(STDOUT, $new);
+            } elseif (!$this->isDryRun) {
                 if (false === @file_put_contents($file->getRealPath(), $new)) {
                     $error = error_get_last();
 

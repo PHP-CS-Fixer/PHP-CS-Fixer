@@ -130,6 +130,7 @@ final class ConfigurationResolver
         'stop-on-violation' => null,
         'using-cache' => null,
         'verbosity' => null,
+        'stdout' => null,
     ];
 
     private $cacheFile;
@@ -555,6 +556,14 @@ final class ConfigurationResolver
     }
 
     /**
+     * @return bool
+     */
+    public function isStdOut()
+    {
+        return true === $this->options['stdout'];
+    }
+
+    /**
      * Compute file candidates for config file.
      *
      * @return string[]
@@ -617,6 +626,10 @@ final class ConfigurationResolver
      */
     private function getFormat()
     {
+        if ($this->isStdOut()) {
+            return 'null';
+        }
+
         if (null === $this->format) {
             $this->format = null === $this->options['format']
                 ? $this->getConfig()->getFormat()
