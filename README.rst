@@ -1437,6 +1437,11 @@ Choose from the list of available rules:
 
   Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
 
+* **phpdoc_multiline_to_singleline**
+
+  PHPDoc annotations with single meaningful line should be on a single
+  line.
+
 * **phpdoc_no_access** [@Symfony, @PhpCsFixer]
 
   ``@access`` annotations should be omitted from PHPDoc.
