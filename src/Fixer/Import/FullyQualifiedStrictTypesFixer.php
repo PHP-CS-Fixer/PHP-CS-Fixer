@@ -88,7 +88,7 @@ class SomeClass
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->findGivenKind([T_FUNCTION, T_CLASS]) && (
+        return $tokens->findGivenKind([T_FUNCTION, T_CLASS, T_INTERFACE]) && (
             \count((new NamespacesAnalyzer())->getDeclarations($tokens)) ||
             \count((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens))
         );
@@ -108,7 +108,7 @@ class SomeClass
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(T_CLASS)) {
+            if ($tokens[$index]->isGivenKind([T_CLASS, T_INTERFACE])) {
                 $this->fixClassExtendsType($tokens, $index);
 
                 continue;

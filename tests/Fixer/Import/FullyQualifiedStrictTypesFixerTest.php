@@ -90,6 +90,22 @@ class SomeClass extends \Foo\Bar\Izumi
 {
 }',
             ],
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+interface NakanoInterface extends IzumiInterface
+{
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+interface NakanoInterface extends \Foo\Bar\IzumiInterface
+{
+}',
+            ],
         ];
     }
 
